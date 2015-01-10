@@ -1,0 +1,5 @@
+platform :ios, '8.0'
+
+link_with 'ProtonMail', 'ProtonMailTests'
+pod 'AFNetworking'
+
