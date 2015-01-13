@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07009EFC1A64AEF800129B07 /* PGPService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07009EFB1A64AEF800129B07 /* PGPService.swift */; };
 		075E3DEC1A5F4ECF00E001A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */; };
 		075E3DEF1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 075E3DED1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld */; };
 		075E3DF11A5F4ECF00E001A7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075E3DF01A5F4ECF00E001A7 /* ViewController.swift */; };
@@ -30,6 +31,7 @@
 
 /* Begin PBXFileReference section */
 		07009EF91A64AA6A00129B07 /* ProtonMail-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ProtonMail-Bridging-Header.h"; sourceTree = "<group>"; };
+		07009EFB1A64AEF800129B07 /* PGPService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PGPService.swift; sourceTree = "<group>"; };
 		075E3DE61A5F4ECF00E001A7 /* ProtonMail.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProtonMail.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		075E3DEA1A5F4ECF00E001A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -66,6 +68,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		07009EFA1A64AEC800129B07 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				07009EFB1A64AEF800129B07 /* PGPService.swift */,
+			);
+			name = Services;
+			sourceTree = "<group>";
+		};
 		075E3DDD1A5F4ECF00E001A7 = {
 			isa = PBXGroup;
 			children = (
@@ -90,12 +100,13 @@
 			isa = PBXGroup;
 			children = (
 				075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */,
-				075E3DF01A5F4ECF00E001A7 /* ViewController.swift */,
-				075E3DF21A5F4ECF00E001A7 /* Main.storyboard */,
 				075E3DF51A5F4ECF00E001A7 /* Images.xcassets */,
 				075E3DF71A5F4ECF00E001A7 /* LaunchScreen.xib */,
+				075E3DF21A5F4ECF00E001A7 /* Main.storyboard */,
 				075E3DED1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld */,
+				07009EFA1A64AEC800129B07 /* Services */,
 				075E3DE91A5F4ECF00E001A7 /* Supporting Files */,
+				075E3DF01A5F4ECF00E001A7 /* ViewController.swift */,
 			);
 			path = ProtonMail;
 			sourceTree = "<group>";
@@ -313,6 +324,7 @@
 				075E3DF11A5F4ECF00E001A7 /* ViewController.swift in Sources */,
 				075E3DEF1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld in Sources */,
 				075E3DEC1A5F4ECF00E001A7 /* AppDelegate.swift in Sources */,
+				07009EFC1A64AEF800129B07 /* PGPService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
