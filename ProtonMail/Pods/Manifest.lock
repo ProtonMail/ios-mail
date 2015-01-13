@@ -20,11 +20,24 @@ PODS:
   - AFNetworking/UIKit (2.5.0):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - OpenSSL-Universal (1.0.1.k)
+  - UNNetPGP (0.8.1):
+    - OpenSSL-Universal
 
 DEPENDENCIES:
   - AFNetworking
+  - OpenSSL-Universal (from `https://raw.github.com/krzyzanowskim/OpenSSL/master/OpenSSL-Universal.podspec`)
+  - UNNetPGP (from `https://raw.github.com/upnext/unnetpgp/master/UNNetPGP.podspec`)
+
+EXTERNAL SOURCES:
+  OpenSSL-Universal:
+    :podspec: https://raw.github.com/krzyzanowskim/OpenSSL/master/OpenSSL-Universal.podspec
+  UNNetPGP:
+    :podspec: https://raw.github.com/upnext/unnetpgp/master/UNNetPGP.podspec
 
 SPEC CHECKSUMS:
   AFNetworking: 0f54cb5d16ce38c1b76948faffb8d5fb705021c7
+  OpenSSL-Universal: 9da17ec1117951783ad59aade70c511907799203
+  UNNetPGP: 112d12c81d8a479553e26315d2512be61c8f12af
 
 COCOAPODS: 0.35.0
