@@ -12,6 +12,7 @@
 		07009F011A65CF4800129B07 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07009F001A65CF4800129B07 /* SignInViewController.swift */; };
 		07009F091A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07009F081A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift */; };
 		07009F0B1A66E36500129B07 /* NSNotification+KeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07009F0A1A66E36500129B07 /* NSNotification+KeyboardExtension.swift */; };
+		07009F0D1A6700CF00129B07 /* Pods.distribution.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 07009F0C1A6700CF00129B07 /* Pods.distribution.xcconfig */; };
 		075E3DEC1A5F4ECF00E001A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */; };
 		075E3DEF1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 075E3DED1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld */; };
 		075E3DF11A5F4ECF00E001A7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075E3DF01A5F4ECF00E001A7 /* ViewController.swift */; };
@@ -40,6 +41,7 @@
 		07009F001A65CF4800129B07 /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		07009F081A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNotificationCenter+KeyboardExtension.swift"; sourceTree = "<group>"; };
 		07009F0A1A66E36500129B07 /* NSNotification+KeyboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNotification+KeyboardExtension.swift"; sourceTree = "<group>"; };
+		07009F0C1A6700CF00129B07 /* Pods.distribution.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Pods.distribution.xcconfig; path = "Pods/Target Support Files/Pods/Pods.distribution.xcconfig"; sourceTree = "<group>"; };
 		075E3DE61A5F4ECF00E001A7 /* ProtonMail.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProtonMail.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		075E3DEA1A5F4ECF00E001A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				AF1532103B091E2244D6CFE4 /* Pods.debug.xcconfig */,
+				07009F0C1A6700CF00129B07 /* Pods.distribution.xcconfig */,
 				132129A26ED76512DB66C024 /* Pods.release.xcconfig */,
 			);
 			name = Pods;
@@ -275,6 +278,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				07009EFF1A659AD400129B07 /* SignIn.storyboard in Resources */,
+				07009F0D1A6700CF00129B07 /* Pods.distribution.xcconfig in Resources */,
 				075E3DF41A5F4ECF00E001A7 /* Main.storyboard in Resources */,
 				075E3DF91A5F4ECF00E001A7 /* LaunchScreen.xib in Resources */,
 				075E3DF61A5F4ECF00E001A7 /* Images.xcassets in Resources */,
@@ -582,7 +586,7 @@
 		};
 		C321D6EC1A65D2730036EFFB /* Distribution */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 132129A26ED76512DB66C024 /* Pods.release.xcconfig */;
+			baseConfigurationReference = 07009F0C1A6700CF00129B07 /* Pods.distribution.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = ProtonMail/Info.plist;
@@ -595,7 +599,7 @@
 		};
 		C321D6ED1A65D2730036EFFB /* Distribution */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 132129A26ED76512DB66C024 /* Pods.release.xcconfig */;
+			baseConfigurationReference = 07009F0C1A6700CF00129B07 /* Pods.distribution.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
