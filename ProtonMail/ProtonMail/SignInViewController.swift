@@ -14,7 +14,7 @@
 // the license agreement.
 //
 
-import Foundation
+import UIKit
 
 class SignInViewController: UIViewController {
     let keyboardPadding: CGFloat = 12

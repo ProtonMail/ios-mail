@@ -14,7 +14,7 @@
 // the license agreement.
 //
 
-import Foundation
+import UIKit
 
 @objc protocol NSNotificationCenterKeyboardObserverProtocol: NSObjectProtocol {
     optional func keyboardWillHideNotification(notification: NSNotification)

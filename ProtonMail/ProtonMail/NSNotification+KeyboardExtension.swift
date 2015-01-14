@@ -14,7 +14,7 @@
 // the license agreement.
 //
 
-import Foundation
+import UIKit
 
 struct KeyboardInfo {
     let beginFrame: CGRect

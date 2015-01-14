@@ -16,8 +16,12 @@
 #ifndef ProtonMail_ProtonMail_Bridging_Header_h
 #define ProtonMail_ProtonMail_Bridging_Header_h
 
-#import <AFNetworking/AFNetworking.h>
-#import <AFNetworking/UIKit+AFNetworking.h>
+// Imports required by RestKit to avoid compiler warnings
+#import <MobileCoreServices/MobileCoreServices.h>
+#import <SystemConfiguration/SystemConfiguration.h>
+#import <RestKit/CoreData.h>
+#import <RestKit/RestKit.h>
+
 #import <UNNetPGP/UNNetPGP.h>
 
 #endif

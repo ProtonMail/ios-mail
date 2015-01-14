@@ -14,8 +14,6 @@
 		07009F0B1A66E36500129B07 /* NSNotification+KeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07009F0A1A66E36500129B07 /* NSNotification+KeyboardExtension.swift */; };
 		075E3DEC1A5F4ECF00E001A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */; };
 		075E3DEF1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 075E3DED1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld */; };
-		075E3DF11A5F4ECF00E001A7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075E3DF01A5F4ECF00E001A7 /* ViewController.swift */; };
-		075E3DF41A5F4ECF00E001A7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 075E3DF21A5F4ECF00E001A7 /* Main.storyboard */; };
 		075E3DF61A5F4ECF00E001A7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 075E3DF51A5F4ECF00E001A7 /* Images.xcassets */; };
 		075E3DF91A5F4ECF00E001A7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 075E3DF71A5F4ECF00E001A7 /* LaunchScreen.xib */; };
 		075E3E051A5F4ECF00E001A7 /* ProtonMailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075E3E041A5F4ECF00E001A7 /* ProtonMailTests.swift */; };
@@ -45,8 +43,6 @@
 		075E3DEA1A5F4ECF00E001A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		075E3DEE1A5F4ECF00E001A7 /* ProtonMail.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProtonMail.xcdatamodel; sourceTree = "<group>"; };
-		075E3DF01A5F4ECF00E001A7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		075E3DF31A5F4ECF00E001A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		075E3DF51A5F4ECF00E001A7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		075E3DF81A5F4ECF00E001A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		075E3DFE1A5F4ECF00E001A7 /* ProtonMailTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProtonMailTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -137,13 +133,11 @@
 				07009F071A65E3C600129B07 /* Extensions */,
 				075E3DF51A5F4ECF00E001A7 /* Images.xcassets */,
 				075E3DF71A5F4ECF00E001A7 /* LaunchScreen.xib */,
-				075E3DF21A5F4ECF00E001A7 /* Main.storyboard */,
 				07009F021A65DC3500129B07 /* Protocols */,
 				075E3DED1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld */,
 				07009EFA1A64AEC800129B07 /* Services */,
 				07009EFD1A659A8000129B07 /* Sign In */,
 				075E3DE91A5F4ECF00E001A7 /* Supporting Files */,
-				075E3DF01A5F4ECF00E001A7 /* ViewController.swift */,
 			);
 			path = ProtonMail;
 			sourceTree = "<group>";
@@ -277,7 +271,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				07009EFF1A659AD400129B07 /* SignIn.storyboard in Resources */,
-				075E3DF41A5F4ECF00E001A7 /* Main.storyboard in Resources */,
 				075E3DF91A5F4ECF00E001A7 /* LaunchScreen.xib in Resources */,
 				075E3DF61A5F4ECF00E001A7 /* Images.xcassets in Resources */,
 			);
@@ -361,7 +354,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				07009F091A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift in Sources */,
-				075E3DF11A5F4ECF00E001A7 /* ViewController.swift in Sources */,
 				075E3DEF1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld in Sources */,
 				075E3DEC1A5F4ECF00E001A7 /* AppDelegate.swift in Sources */,
 				07009F011A65CF4800129B07 /* SignInViewController.swift in Sources */,
@@ -389,14 +381,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		075E3DF21A5F4ECF00E001A7 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				075E3DF31A5F4ECF00E001A7 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		075E3DF71A5F4ECF00E001A7 /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
