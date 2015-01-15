@@ -3,6 +3,7 @@ platform :ios, '8.0'
 inhibit_all_warnings!
 
 link_with 'ProtonMail', 'ProtonMailTests'
+pod 'AFNetworking'
+pod 'AFOAuth2Manager'
 pod 'OpenSSL-Universal', :podspec => 'https://raw.github.com/krzyzanowskim/OpenSSL/master/OpenSSL-Universal.podspec'
-pod 'RestKit'
 pod 'UNNetPGP', :podspec => 'https://raw.github.com/upnext/unnetpgp/master/UNNetPGP.podspec'

@@ -1,0 +1,1 @@
+../../../AFOAuth2Manager/AFOAuth2Manager/AFHTTPRequestSerializer+OAuth2.h
