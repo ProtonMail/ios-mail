@@ -12,6 +12,9 @@
 		07009F011A65CF4800129B07 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07009F001A65CF4800129B07 /* SignInViewController.swift */; };
 		07009F091A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07009F081A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift */; };
 		07009F0B1A66E36500129B07 /* NSNotification+KeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07009F0A1A66E36500129B07 /* NSNotification+KeyboardExtension.swift */; };
+		07009F0F1A6849A500129B07 /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07009F0E1A6849A500129B07 /* AuthenticationService.swift */; };
+		07009F131A684C1900129B07 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07009F111A684C1900129B07 /* Roboto-Light.ttf */; };
+		07009F141A684C1900129B07 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07009F121A684C1900129B07 /* Roboto-Thin.ttf */; };
 		075E3DEC1A5F4ECF00E001A7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */; };
 		075E3DEF1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 075E3DED1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld */; };
 		075E3DF61A5F4ECF00E001A7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 075E3DF51A5F4ECF00E001A7 /* Images.xcassets */; };
@@ -39,6 +42,9 @@
 		07009F081A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNotificationCenter+KeyboardExtension.swift"; sourceTree = "<group>"; };
 		07009F0A1A66E36500129B07 /* NSNotification+KeyboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNotification+KeyboardExtension.swift"; sourceTree = "<group>"; };
 		07009F0C1A6700CF00129B07 /* Pods.distribution.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Pods.distribution.xcconfig; path = "Pods/Target Support Files/Pods/Pods.distribution.xcconfig"; sourceTree = "<group>"; };
+		07009F0E1A6849A500129B07 /* AuthenticationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
+		07009F111A684C1900129B07 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
+		07009F121A684C1900129B07 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
 		075E3DE61A5F4ECF00E001A7 /* ProtonMail.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProtonMail.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		075E3DEA1A5F4ECF00E001A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -76,6 +82,7 @@
 		07009EFA1A64AEC800129B07 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				07009F0E1A6849A500129B07 /* AuthenticationService.swift */,
 				07009EFB1A64AEF800129B07 /* PGPService.swift */,
 			);
 			name = Services;
@@ -90,13 +97,6 @@
 			name = "Sign In";
 			sourceTree = "<group>";
 		};
-		07009F021A65DC3500129B07 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Protocols;
-			sourceTree = "<group>";
-		};
 		07009F071A65E3C600129B07 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -104,6 +104,16 @@
 				07009F081A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift */,
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		07009F101A684BDB00129B07 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				07009F111A684C1900129B07 /* Roboto-Light.ttf */,
+				07009F121A684C1900129B07 /* Roboto-Thin.ttf */,
+			);
+			name = Fonts;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		075E3DDD1A5F4ECF00E001A7 = {
@@ -131,9 +141,9 @@
 			children = (
 				075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */,
 				07009F071A65E3C600129B07 /* Extensions */,
+				07009F101A684BDB00129B07 /* Fonts */,
 				075E3DF51A5F4ECF00E001A7 /* Images.xcassets */,
 				075E3DF71A5F4ECF00E001A7 /* LaunchScreen.xib */,
-				07009F021A65DC3500129B07 /* Protocols */,
 				075E3DED1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld */,
 				07009EFA1A64AEC800129B07 /* Services */,
 				07009EFD1A659A8000129B07 /* Sign In */,
@@ -272,6 +282,8 @@
 			files = (
 				07009EFF1A659AD400129B07 /* SignIn.storyboard in Resources */,
 				075E3DF91A5F4ECF00E001A7 /* LaunchScreen.xib in Resources */,
+				07009F131A684C1900129B07 /* Roboto-Light.ttf in Resources */,
+				07009F141A684C1900129B07 /* Roboto-Thin.ttf in Resources */,
 				075E3DF61A5F4ECF00E001A7 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -359,6 +371,7 @@
 				07009F011A65CF4800129B07 /* SignInViewController.swift in Sources */,
 				07009F0B1A66E36500129B07 /* NSNotification+KeyboardExtension.swift in Sources */,
 				07009EFC1A64AEF800129B07 /* PGPService.swift in Sources */,
+				07009F0F1A6849A500129B07 /* AuthenticationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

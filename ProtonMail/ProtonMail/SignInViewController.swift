@@ -18,14 +18,23 @@ import UIKit
 
 class SignInViewController: UIViewController {
     let keyboardPadding: CGFloat = 12
-    
+    let signUpURL = NSURL(string: "https://protonmail.ch/sign_up.php")!
+        
     @IBOutlet weak var keyboardPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet weak var rememberMeButton: UIButton!
+    @IBOutlet weak var rememberMeSwitch: UISwitch!
+    @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var usernameTextField: UITextField!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        rememberMeSwitch.setOn(AuthenticationService().isRemembered, animated: false)
+        
+        setupSignUpButton()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -40,15 +49,36 @@ class SignInViewController: UIViewController {
     
     // MARK: - Private methods
     
-    // MARK: - Button Actions
-    
-    @IBAction func rememberMeAction(sender: UIButton) {
+    // FIXME: Work around for http://stackoverflow.com/questions/25925914/attributed-string-with-custom-fonts-in-storyboard-does-not-load-correctly <http://openradar.appspot.com/18425809>
+    func setupSignUpButton() {
+        let needAnAccount = NSLocalizedString("Need an account? ", comment: "Need an account? ")
+        let signUp = NSLocalizedString("SignUp.", comment: "SignUp.")
+        
+        let title = NSMutableAttributedString(string: needAnAccount, attributes: [NSUnderlineStyleAttributeName : NSUnderlineStyle.StyleNone.rawValue])
+        let signUpAttributed = NSAttributedString(string: signUp, attributes: [NSUnderlineStyleAttributeName : NSUnderlineStyle.StyleSingle.rawValue])
+        
+        title.appendAttributedString(signUpAttributed)
+        
+        if let font = UIFont(name: "Roboto-Thin", size: 12.5) {
+            title.addAttribute(NSFontAttributeName, value: font, range: NSMakeRange(0, title.length))
+        }
+        
+        signUpButton.setAttributedTitle(title, forState: .Normal)
     }
-
+    
+    // MARK: - Actions
+    
+    @IBAction func rememberMeChanged(sender: UISwitch) {
+        AuthenticationService().isRemembered = sender.on
+    }
+    
     @IBAction func signInAction(sender: UIButton) {
+        // TODO: sign in the user
+        
     }
     
     @IBAction func signUpAction(sender: UIButton) {
+        UIApplication.sharedApplication().openURL(signUpURL)
     }
 }
 
@@ -82,7 +112,12 @@ extension SignInViewController: NSNotificationCenterKeyboardObserverProtocol {
 // MARK: - UITextFieldDelegate
 extension SignInViewController: UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+        if textField == usernameTextField {
+            passwordTextField.becomeFirstResponder()
+        } else {
+            textField.resignFirstResponder()
+        }
+        
         return true
     }
 }
