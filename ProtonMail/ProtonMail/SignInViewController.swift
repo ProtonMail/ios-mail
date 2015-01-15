@@ -23,6 +23,7 @@ class SignInViewController: UIViewController {
     @IBOutlet weak var keyboardPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var rememberMeSwitch: UISwitch!
+    @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var usernameTextField: UITextField!
     
@@ -66,6 +67,13 @@ class SignInViewController: UIViewController {
         signUpButton.setAttributedTitle(title, forState: .Normal)
     }
     
+    func signIn() {
+        AuthenticationService().signIn(usernameTextField.text, password: passwordTextField.text) {error in
+            // TODO: Hide activity indicator
+            
+        }
+    }
+    
     // MARK: - Actions
     
     @IBAction func rememberMeChanged(sender: UISwitch) {
@@ -73,20 +81,22 @@ class SignInViewController: UIViewController {
     }
     
     @IBAction func signInAction(sender: UIButton) {
-        // TODO: sign in the user
-        
+        signIn()
     }
     
     @IBAction func signUpAction(sender: UIButton) {
         UIApplication.sharedApplication().openURL(signUpURL)
+    }
+    
+    @IBAction func tapAction(sender: UITapGestureRecognizer) {
+        usernameTextField.resignFirstResponder()
+        passwordTextField.resignFirstResponder()
     }
 }
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 extension SignInViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(notification: NSNotification) {
-        NSLog("\(__FUNCTION__)")
-        
         let keyboardInfo = notification.keyboardInfo
         
         keyboardPaddingConstraint.constant = 0
@@ -97,8 +107,6 @@ extension SignInViewController: NSNotificationCenterKeyboardObserverProtocol {
     }
     
     func keyboardWillShowNotification(notification: NSNotification) {
-        NSLog("\(__FUNCTION__)")
-        
         let keyboardInfo = notification.keyboardInfo
         
         keyboardPaddingConstraint.constant = keyboardInfo.beginFrame.height + keyboardPadding
@@ -111,11 +119,28 @@ extension SignInViewController: NSNotificationCenterKeyboardObserverProtocol {
 
 // MARK: - UITextFieldDelegate
 extension SignInViewController: UITextFieldDelegate {
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        let text = textField.text as NSString
+        let changedText = text.stringByReplacingCharactersInRange(range, withString: string)
+        
+        if textField == usernameTextField {
+            signInButton.enabled = !changedText.isEmpty && !passwordTextField.text.isEmpty
+        } else if textField == passwordTextField {
+            signInButton.enabled = !changedText.isEmpty && !usernameTextField.text.isEmpty
+        }
+        
+        return true
+    }
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         if textField == usernameTextField {
             passwordTextField.becomeFirstResponder()
         } else {
             textField.resignFirstResponder()
+        }
+        
+        if !usernameTextField.text.isEmpty && !passwordTextField.text.isEmpty {
+            signIn()
         }
         
         return true

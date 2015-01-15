@@ -28,5 +28,10 @@ class AuthenticationService {
         }
     }
     
-    // TODO: save username and password to Keychain if set for remember
+    func signIn(username: String, password: String, completion: (NSError? -> Void)) {
+        // TODO: save username and password to Keychain if set for remember
+        
+        completion(nil)
+    }
+    
 }
