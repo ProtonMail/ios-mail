@@ -6,7 +6,6 @@
     <customFonts key="customFonts">
         <mutableArray key="Roboto-Light.ttf">
             <string>Roboto-Light</string>
-            <string>Roboto-Light</string>
         </mutableArray>
         <mutableArray key="Roboto-Thin.ttf">
             <string>Roboto-Thin</string>
@@ -31,19 +30,15 @@
                             <imageView userInteractionEnabled="NO" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SignIn" translatesAutoresizingMaskIntoConstraints="NO" id="ZKK-VD-dsX">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Logo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dvY-Wg-evi">
-                                <rect key="frame" x="186" y="226" width="228" height="21"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="WWe-i8-Jtn">
+                                <rect key="frame" x="186" y="211" width="228" height="37"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="BOA-aN-gUQ"/>
-                                    <constraint firstAttribute="width" constant="228" id="dxj-w9-YgP"/>
+                                    <constraint firstAttribute="width" constant="228" id="6Lc-n5-dpv"/>
+                                    <constraint firstAttribute="height" constant="37" id="Ajb-2I-lem"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SIGN IN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fjY-z1-3LU">
-                                <rect key="frame" x="269" y="332" width="63" height="21.5"/>
+                                <rect key="frame" x="269" y="333" width="63" height="22"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -106,16 +101,18 @@
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="ZKK-VD-dsX" secondAttribute="trailing" id="1Zh-Vm-Rhb"/>
-                            <constraint firstItem="fjY-z1-3LU" firstAttribute="top" secondItem="dvY-Wg-evi" secondAttribute="bottom" priority="250" constant="85" id="499-bN-Mep"/>
+                            <constraint firstItem="WWe-i8-Jtn" firstAttribute="centerX" secondItem="ZKK-VD-dsX" secondAttribute="centerX" id="4he-q0-BR5"/>
                             <constraint firstItem="gnm-cH-vcp" firstAttribute="centerX" secondItem="sKV-Mt-Vgi" secondAttribute="centerX" id="64B-hd-2vN"/>
                             <constraint firstItem="Sfi-uH-1aX" firstAttribute="top" secondItem="AJu-1e-alo" secondAttribute="bottom" constant="12" id="9DW-G2-jky"/>
                             <constraint firstItem="xhj-cY-n4I" firstAttribute="leading" secondItem="gnm-cH-vcp" secondAttribute="leading" id="9Wk-lk-DMh"/>
                             <constraint firstItem="gnm-cH-vcp" firstAttribute="width" secondItem="sKV-Mt-Vgi" secondAttribute="width" id="BdG-0a-KE8"/>
                             <constraint firstItem="72N-j7-s2R" firstAttribute="centerX" secondItem="fjY-z1-3LU" secondAttribute="centerX" id="F4A-gw-0zw"/>
                             <constraint firstAttribute="centerX" secondItem="sKV-Mt-Vgi" secondAttribute="centerX" id="FDj-Et-ovL"/>
+                            <constraint firstItem="fjY-z1-3LU" firstAttribute="top" secondItem="WWe-i8-Jtn" secondAttribute="bottom" constant="85" id="Klj-ga-6io"/>
                             <constraint firstItem="gnm-cH-vcp" firstAttribute="top" secondItem="sKV-Mt-Vgi" secondAttribute="bottom" constant="11" id="LMu-Fh-XNr"/>
                             <constraint firstItem="sKV-Mt-Vgi" firstAttribute="centerX" secondItem="fjY-z1-3LU" secondAttribute="centerX" id="Lfl-ej-UV5"/>
                             <constraint firstItem="gnm-cH-vcp" firstAttribute="top" secondItem="fjY-z1-3LU" secondAttribute="bottom" constant="95" id="NhO-ZC-DhT"/>
+                            <constraint firstItem="WWe-i8-Jtn" firstAttribute="leading" secondItem="ZKK-VD-dsX" secondAttribute="trailing" constant="-420" id="Sgn-Nh-qFl"/>
                             <constraint firstItem="Sfi-uH-1aX" firstAttribute="top" relation="greaterThanOrEqual" secondItem="72N-j7-s2R" secondAttribute="bottom" id="XkH-IR-RIB"/>
                             <constraint firstItem="xhj-cY-n4I" firstAttribute="top" secondItem="gnm-cH-vcp" secondAttribute="bottom" constant="17" id="ZYL-MO-mSn"/>
                             <constraint firstItem="2Rc-qf-brg" firstAttribute="leading" secondItem="xhj-cY-n4I" secondAttribute="trailing" constant="8" id="b7f-1c-LAa"/>
@@ -123,7 +120,6 @@
                             <constraint firstItem="sKV-Mt-Vgi" firstAttribute="top" secondItem="fjY-z1-3LU" secondAttribute="bottom" constant="39" id="cgv-XF-pMT"/>
                             <constraint firstItem="ZKK-VD-dsX" firstAttribute="leading" secondItem="Jgs-h6-fBb" secondAttribute="leading" id="eFx-kD-JYC"/>
                             <constraint firstItem="72N-j7-s2R" firstAttribute="top" secondItem="xhj-cY-n4I" secondAttribute="bottom" constant="23" id="es6-8t-eIh"/>
-                            <constraint firstAttribute="centerY" secondItem="dvY-Wg-evi" secondAttribute="centerY" constant="202.5" id="gbo-sO-rm5"/>
                             <constraint firstAttribute="centerX" secondItem="fjY-z1-3LU" secondAttribute="centerX" id="hA5-rd-f3U"/>
                             <constraint firstItem="AJu-1e-alo" firstAttribute="top" secondItem="72N-j7-s2R" secondAttribute="bottom" constant="12" id="hE8-cU-Pgu"/>
                             <constraint firstItem="gnm-cH-vcp" firstAttribute="width" secondItem="72N-j7-s2R" secondAttribute="width" constant="55" id="hMe-p6-dS5"/>
@@ -136,13 +132,13 @@
                             <constraint firstItem="72N-j7-s2R" firstAttribute="top" secondItem="fjY-z1-3LU" secondAttribute="bottom" constant="196" id="uJw-SI-8HZ"/>
                             <constraint firstAttribute="centerX" secondItem="72N-j7-s2R" secondAttribute="centerX" id="uhT-Y9-1sa"/>
                             <constraint firstAttribute="centerX" secondItem="gnm-cH-vcp" secondAttribute="centerX" id="vUi-Gm-TcK"/>
+                            <constraint firstAttribute="centerX" secondItem="WWe-i8-Jtn" secondAttribute="centerX" id="vt7-KT-PoV"/>
                             <constraint firstItem="Sfi-uH-1aX" firstAttribute="top" secondItem="fjY-z1-3LU" secondAttribute="bottom" constant="287" id="w9M-Ih-q9S"/>
-                            <constraint firstAttribute="centerX" secondItem="dvY-Wg-evi" secondAttribute="centerX" id="yiH-Co-1uu"/>
-                            <constraint firstItem="dvY-Wg-evi" firstAttribute="top" relation="greaterThanOrEqual" secondItem="PjX-cc-uu3" secondAttribute="bottom" constant="18" id="zWO-Vc-Xli"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="gbo-sO-rm5"/>
+                                <exclude reference="4he-q0-BR5"/>
+                                <exclude reference="Sgn-Nh-qFl"/>
                                 <exclude reference="Lfl-ej-UV5"/>
                                 <exclude reference="64B-hd-2vN"/>
                                 <exclude reference="NhO-ZC-DhT"/>
@@ -177,6 +173,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Logo" width="228" height="37"/>
         <image name="SignIn" width="320" height="568"/>
     </resources>
 </document>
