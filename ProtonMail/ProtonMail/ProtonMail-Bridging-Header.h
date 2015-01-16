@@ -22,6 +22,8 @@
 #import <AFOAuth2Manager/AFHTTPRequestSerializer+OAuth2.h>
 #import <AFOAuth2Manager/AFOAuth2Manager.h>
 
+#import <MBProgressHUD/MBProgressHUD.h>
+
 #import <UNNetPGP/UNNetPGP.h>
 
 #endif

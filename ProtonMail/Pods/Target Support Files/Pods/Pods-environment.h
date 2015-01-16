@@ -54,6 +54,12 @@
 #define COCOAPODS_VERSION_MINOR_AFOAuth2Manager 0
 #define COCOAPODS_VERSION_PATCH_AFOAuth2Manager 0
 
+// MBProgressHUD
+#define COCOAPODS_POD_AVAILABLE_MBProgressHUD
+#define COCOAPODS_VERSION_MAJOR_MBProgressHUD 0
+#define COCOAPODS_VERSION_MINOR_MBProgressHUD 9
+#define COCOAPODS_VERSION_PATCH_MBProgressHUD 0
+
 // OpenSSL-Universal
 #define COCOAPODS_POD_AVAILABLE_OpenSSL_Universal
 // This library does not follow semantic-versioning,
