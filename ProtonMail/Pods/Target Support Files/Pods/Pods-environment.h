@@ -67,6 +67,12 @@
 // Please contact the author.
 // Version: 1.0.1.k.
 
+// UICKeyChainStore
+#define COCOAPODS_POD_AVAILABLE_UICKeyChainStore
+#define COCOAPODS_VERSION_MAJOR_UICKeyChainStore 1
+#define COCOAPODS_VERSION_MINOR_UICKeyChainStore 1
+#define COCOAPODS_VERSION_PATCH_UICKeyChainStore 1
+
 // UNNetPGP
 #define COCOAPODS_POD_AVAILABLE_UNNetPGP
 #define COCOAPODS_VERSION_MAJOR_UNNetPGP 0

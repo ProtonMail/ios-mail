@@ -24,6 +24,7 @@ PODS:
     - AFNetworking (~> 2.2)
   - MBProgressHUD (0.9)
   - OpenSSL-Universal (1.0.1.k)
+  - UICKeyChainStore (1.1.1)
   - UNNetPGP (0.8.1):
     - OpenSSL-Universal
 
@@ -32,6 +33,7 @@ DEPENDENCIES:
   - AFOAuth2Manager
   - MBProgressHUD
   - OpenSSL-Universal (from `https://raw.github.com/krzyzanowskim/OpenSSL/master/OpenSSL-Universal.podspec`)
+  - UICKeyChainStore
   - UNNetPGP (from `https://raw.github.com/upnext/unnetpgp/master/UNNetPGP.podspec`)
 
 EXTERNAL SOURCES:
@@ -45,6 +47,7 @@ SPEC CHECKSUMS:
   AFOAuth2Manager: a7726957cbc14c229b5d5d648c934453b6bb55b0
   MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
   OpenSSL-Universal: 9da17ec1117951783ad59aade70c511907799203
+  UICKeyChainStore: ea8f9851811284c6b9ff5b2133acd53342127cc3
   UNNetPGP: 112d12c81d8a479553e26315d2512be61c8f12af
 
 COCOAPODS: 0.35.0
