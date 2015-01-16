@@ -24,6 +24,8 @@
 
 #import <MBProgressHUD/MBProgressHUD.h>
 
+#import <UICKeyChainStore/UICKeyChainStore.h>
+
 #import <UNNetPGP/UNNetPGP.h>
 
 #endif

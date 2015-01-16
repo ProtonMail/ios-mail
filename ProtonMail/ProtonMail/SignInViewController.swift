@@ -19,6 +19,8 @@ import UIKit
 class SignInViewController: UIViewController {
     let keyboardPadding: CGFloat = 12
     let signUpURL = NSURL(string: "https://protonmail.ch/sign_up.php")!
+    
+    var isRemembered = false
         
     @IBOutlet weak var keyboardPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -33,7 +35,7 @@ class SignInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        rememberMeSwitch.setOn(AuthenticationService().isRemembered, animated: false)
+        rememberMeSwitch.setOn(isRemembered, animated: false)
         
         setupSignUpButton()
     }
@@ -49,6 +51,11 @@ class SignInViewController: UIViewController {
     }
     
     // MARK: - Private methods
+    
+    func dismissKeyboard() {
+        usernameTextField.resignFirstResponder()
+        passwordTextField.resignFirstResponder()
+    }
     
     // FIXME: Work around for http://stackoverflow.com/questions/25925914/attributed-string-with-custom-fonts-in-storyboard-does-not-load-correctly <http://openradar.appspot.com/18425809>
     func setupSignUpButton() {
@@ -68,29 +75,32 @@ class SignInViewController: UIViewController {
     }
     
     func signIn() {
-        AuthenticationService().signIn(usernameTextField.text, password: passwordTextField.text) {error in
-            // TODO: Hide activity indicator
-            
+        MBProgressHUD.showHUDAddedTo(view, animated: true)
+        
+        AuthenticationService().signIn(usernameTextField.text, password: passwordTextField.text, isRemembered: isRemembered) {error in
+            MBProgressHUD.hideHUDForView(self.view, animated: true)
+            return
         }
     }
     
     // MARK: - Actions
     
     @IBAction func rememberMeChanged(sender: UISwitch) {
-        AuthenticationService().isRemembered = sender.on
+        isRemembered = sender.on
     }
     
     @IBAction func signInAction(sender: UIButton) {
+        dismissKeyboard()
         signIn()
     }
     
     @IBAction func signUpAction(sender: UIButton) {
+        dismissKeyboard()
         UIApplication.sharedApplication().openURL(signUpURL)
     }
     
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
-        usernameTextField.resignFirstResponder()
-        passwordTextField.resignFirstResponder()
+        dismissKeyboard()
     }
 }
 
