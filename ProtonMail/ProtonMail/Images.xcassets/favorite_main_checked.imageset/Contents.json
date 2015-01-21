@@ -2,17 +2,16 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "SignIn.png"
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "SignIn@2x.png"
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x"
+      "scale" : "3x",
+      "filename" : "favorite_main_checked@3x.png"
     }
   ],
   "info" : {
