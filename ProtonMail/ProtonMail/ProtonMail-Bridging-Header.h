@@ -19,9 +19,6 @@
 #import <AFNetworking/AFNetworking.h>
 #import <AFNetworking/UIKit+AFNetworking.h>
 
-#import <AFOAuth2Manager/AFHTTPRequestSerializer+OAuth2.h>
-#import <AFOAuth2Manager/AFOAuth2Manager.h>
-
 #import <MBProgressHUD/MBProgressHUD.h>
 
 #import <UICKeyChainStore/UICKeyChainStore.h>
