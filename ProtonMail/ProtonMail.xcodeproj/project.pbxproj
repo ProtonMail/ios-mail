@@ -20,6 +20,12 @@
 		075E3DF61A5F4ECF00E001A7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 075E3DF51A5F4ECF00E001A7 /* Images.xcassets */; };
 		075E3DF91A5F4ECF00E001A7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 075E3DF71A5F4ECF00E001A7 /* LaunchScreen.xib */; };
 		075E3E051A5F4ECF00E001A7 /* ProtonMailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075E3E041A5F4ECF00E001A7 /* ProtonMailTests.swift */; };
+		7027B02B1A700F0200D28F52 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7027B02A1A700F0200D28F52 /* MenuTableViewCell.swift */; };
+		7061A3F31A6E8C6A0006D36C /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7061A3F21A6E8C6A0006D36C /* MenuViewController.swift */; };
+		7061A3F51A6E8C9D0006D36C /* Menu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7061A3F41A6E8C9D0006D36C /* Menu.storyboard */; };
+		7061A3F91A6E8F460006D36C /* InboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7061A3F81A6E8F460006D36C /* InboxViewController.swift */; };
+		70C9133B1A6D832D002CBE61 /* Inbox.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 70C9133A1A6D832D002CBE61 /* Inbox.storyboard */; };
+		70C9133D1A6D83FA002CBE61 /* UIColor+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */; };
 		EAF4B9D23FDBAA4F2F237B3A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7171A1EF5F60DDA876FD139 /* libPods.a */; };
 		F77B8F0DFAD04EC03F166E0A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7171A1EF5F60DDA876FD139 /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -55,6 +61,13 @@
 		075E3E031A5F4ECF00E001A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		075E3E041A5F4ECF00E001A7 /* ProtonMailTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonMailTests.swift; sourceTree = "<group>"; };
 		132129A26ED76512DB66C024 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		7027B02A1A700F0200D28F52 /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
+		7061A3F21A6E8C6A0006D36C /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		7061A3F41A6E8C9D0006D36C /* Menu.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Menu.storyboard; sourceTree = "<group>"; };
+		7061A3F81A6E8F460006D36C /* InboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxViewController.swift; sourceTree = "<group>"; };
+		70C9133A1A6D832D002CBE61 /* Inbox.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Inbox.storyboard; sourceTree = "<group>"; };
+		70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+ProtonMail.swift"; sourceTree = "<group>"; };
+		70FD2BCB1A6FDC9B0086ADC5 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		AF1532103B091E2244D6CFE4 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E7171A1EF5F60DDA876FD139 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -102,6 +115,7 @@
 			children = (
 				07009F0A1A66E36500129B07 /* NSNotification+KeyboardExtension.swift */,
 				07009F081A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift */,
+				70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -109,6 +123,7 @@
 		07009F101A684BDB00129B07 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				70FD2BCB1A6FDC9B0086ADC5 /* Roboto-Regular.ttf */,
 				07009F111A684C1900129B07 /* Roboto-Light.ttf */,
 				07009F121A684C1900129B07 /* Roboto-Thin.ttf */,
 			);
@@ -143,7 +158,9 @@
 				07009F071A65E3C600129B07 /* Extensions */,
 				07009F101A684BDB00129B07 /* Fonts */,
 				075E3DF51A5F4ECF00E001A7 /* Images.xcassets */,
+				70C913391A6D82F0002CBE61 /* Inbox */,
 				075E3DF71A5F4ECF00E001A7 /* LaunchScreen.xib */,
+				7061A3F11A6E8C4A0006D36C /* Menu */,
 				075E3DED1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld */,
 				07009EFA1A64AEC800129B07 /* Services */,
 				07009EFD1A659A8000129B07 /* Sign In */,
@@ -186,6 +203,25 @@
 				132129A26ED76512DB66C024 /* Pods.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		7061A3F11A6E8C4A0006D36C /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				7061A3F41A6E8C9D0006D36C /* Menu.storyboard */,
+				7027B02A1A700F0200D28F52 /* MenuTableViewCell.swift */,
+				7061A3F21A6E8C6A0006D36C /* MenuViewController.swift */,
+			);
+			name = Menu;
+			sourceTree = "<group>";
+		};
+		70C913391A6D82F0002CBE61 /* Inbox */ = {
+			isa = PBXGroup;
+			children = (
+				70C9133A1A6D832D002CBE61 /* Inbox.storyboard */,
+				7061A3F81A6E8F460006D36C /* InboxViewController.swift */,
+			);
+			name = Inbox;
 			sourceTree = "<group>";
 		};
 		EDDC3A27CB6370D84ADB05EA /* Frameworks */ = {
@@ -281,10 +317,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				07009EFF1A659AD400129B07 /* SignIn.storyboard in Resources */,
+				7061A3F51A6E8C9D0006D36C /* Menu.storyboard in Resources */,
 				075E3DF91A5F4ECF00E001A7 /* LaunchScreen.xib in Resources */,
 				07009F131A684C1900129B07 /* Roboto-Light.ttf in Resources */,
 				07009F141A684C1900129B07 /* Roboto-Thin.ttf in Resources */,
 				075E3DF61A5F4ECF00E001A7 /* Images.xcassets in Resources */,
+				70C9133B1A6D832D002CBE61 /* Inbox.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -365,13 +403,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				70C9133D1A6D83FA002CBE61 /* UIColor+ProtonMail.swift in Sources */,
+				7061A3F91A6E8F460006D36C /* InboxViewController.swift in Sources */,
 				07009F091A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift in Sources */,
 				075E3DEF1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld in Sources */,
 				075E3DEC1A5F4ECF00E001A7 /* AppDelegate.swift in Sources */,
+				7061A3F31A6E8C6A0006D36C /* MenuViewController.swift in Sources */,
 				07009F011A65CF4800129B07 /* SignInViewController.swift in Sources */,
 				07009F0B1A66E36500129B07 /* NSNotification+KeyboardExtension.swift in Sources */,
 				07009EFC1A64AEF800129B07 /* PGPService.swift in Sources */,
 				07009F0F1A6849A500129B07 /* AuthenticationService.swift in Sources */,
+				7027B02B1A700F0200D28F52 /* MenuTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

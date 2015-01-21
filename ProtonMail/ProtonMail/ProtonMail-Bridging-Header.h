@@ -28,4 +28,6 @@
 
 #import <UNNetPGP/UNNetPGP.h>
 
+#import <SWRevealViewController/SWRevealViewController.h>
+
 #endif
