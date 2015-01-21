@@ -76,9 +76,7 @@ class SignInViewController: UIViewController {
         
         title.appendAttributedString(signUpAttributed)
         
-        if let font = UIFont(name: "Roboto-Thin", size: 12.5) {
-            title.addAttribute(NSFontAttributeName, value: font, range: NSMakeRange(0, title.length))
-        }
+        title.addAttribute(NSFontAttributeName, value: UIFont.robotoThin(size: 12.5), range: NSMakeRange(0, title.length))
         
         signUpButton.setAttributedTitle(title, forState: .Normal)
     }

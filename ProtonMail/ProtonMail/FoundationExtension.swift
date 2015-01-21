@@ -1,5 +1,5 @@
 //
-//  FoundationExtensions.swift
+//  FoundationExtension.swift
 //  ProtonMail
 //
 //
