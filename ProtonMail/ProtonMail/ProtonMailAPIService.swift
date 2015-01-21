@@ -26,5 +26,13 @@ class ProtonMailAPIService {
     init() {
         sessionManager = AFHTTPSessionManager(baseURL: NSURL(string: BaseURLString)!)
         sessionManager.requestSerializer = AFJSONRequestSerializer() as AFHTTPRequestSerializer
-    }    
+    }
+    
+    func isErrorResponse(response: AnyObject!) -> Bool {
+        if let dict = response as? NSDictionary {
+            return dict["error"] != nil
+        }
+        
+        return false
+    }
 }

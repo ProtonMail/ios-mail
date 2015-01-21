@@ -18,6 +18,7 @@ import Foundation
 
 extension ProtonMailAPIService {
     enum AuthErrorCode: Int {
+        case InvalidGrant
         case UnableToParseAuthenticationToken
     }
     
@@ -39,24 +40,29 @@ extension ProtonMailAPIService {
             "redirect_uri" : "https://protonmail.ch",
             "state" : "\(NSUUID().UUIDString)"]
         
-        sessionManager.POST(authenticationPath, parameters: parameters, success: { (task, credential) -> Void in
-            var error: NSError? = nil
+        sessionManager.POST(authenticationPath, parameters: parameters, success: { (task, response) -> Void in
+            NSLog("\(__FUNCTION__) response: \(response)")
             
-            NSLog("\(__FUNCTION__) credential: \(credential)")
-            
-            if let credential = AuthCredential(credential: credential) {
+            if let credential = AuthCredential(credential: response) {
                 credential.storeInKeychain()
                 
                 success(credential)
+                return
+            }
+
+            var error: NSError? = nil
+            let description = NSLocalizedString("Unable to sign in")
+            
+            if self.isErrorResponse(response) {
+                error = NSError.protonMailError(code: AuthErrorCode.InvalidGrant.rawValue, localizedDescription: description, localizedFailureReason: response["error_description"] as? String)
             } else {
                 error = NSError.protonMailError(code: AuthErrorCode.UnableToParseAuthenticationToken.rawValue,
-                    localizedDescription: NSLocalizedString("Unable to authenticate"),
+                    localizedDescription: description,
                     localizedFailureReason: NSLocalizedString("Unable to parse authentication token!"),
                     localizedRecoverySuggestion: NSLocalizedString("Contact customer support."))
- 
-                failure(error!)
             }
             
+            failure(error!)
             }) { (task, error) -> Void in
                 failure(error)
         }

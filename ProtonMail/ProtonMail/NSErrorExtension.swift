@@ -44,4 +44,20 @@ extension NSError {
         
         return domain
     }
+    
+    func alertController() -> UIAlertController {
+        var message = localizedFailureReason
+        
+        if localizedRecoverySuggestion != nil {
+            if message != nil {
+                message = message! + "\n\n"
+            } else {
+                message = ""
+            }
+            
+            message = message! + localizedRecoverySuggestion!
+        }
+        
+        return UIAlertController(title: localizedDescription, message: message, preferredStyle: .Alert)
+    }
 }

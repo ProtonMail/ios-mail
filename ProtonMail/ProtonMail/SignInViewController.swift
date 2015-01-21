@@ -89,10 +89,13 @@ class SignInViewController: UIViewController {
         AuthenticationService().signIn(usernameTextField.text, password: passwordTextField.text, isRemembered: isRemembered) {error in
             MBProgressHUD.hideHUDForView(self.view, animated: true)
             
-            if error != nil {
+            if let error = error {
                 NSLog("\(__FUNCTION__) error: \(error)")
                 
-                // TODO: show error to user
+                let alertController = error.alertController()
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
+                
+                self.presentViewController(alertController, animated: true, completion: nil)
             }
         }
     }
