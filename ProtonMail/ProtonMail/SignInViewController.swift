@@ -36,8 +36,9 @@ class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         rememberMeSwitch.setOn(isRemembered, animated: false)
-        
+        setupSignInButton()
         setupSignUpButton()
+        signInIfRememberedCredentials()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -55,6 +56,11 @@ class SignInViewController: UIViewController {
     func dismissKeyboard() {
         usernameTextField.resignFirstResponder()
         passwordTextField.resignFirstResponder()
+    }
+    
+    func setupSignInButton() {
+        signInButton.layer.cornerRadius = 4.0
+        signInButton.clipsToBounds = true
     }
     
     // FIXME: Work around for http://stackoverflow.com/questions/25925914/attributed-string-with-custom-fonts-in-storyboard-does-not-load-correctly <http://openradar.appspot.com/18425809>
@@ -79,7 +85,23 @@ class SignInViewController: UIViewController {
         
         AuthenticationService().signIn(usernameTextField.text, password: passwordTextField.text, isRemembered: isRemembered) {error in
             MBProgressHUD.hideHUDForView(self.view, animated: true)
-            return
+            
+            if error != nil {
+                NSLog("\(__FUNCTION__) error: \(error)")
+                
+                // TODO: show error to user
+            }
+        }
+    }
+    
+    func signInIfRememberedCredentials() {
+        if let (username, password) = AuthenticationService().rememberedCredentials() {
+            isRemembered = true
+            rememberMeSwitch.setOn(true, animated: false)
+            usernameTextField.text = username
+            passwordTextField.text = password
+            
+            signIn()
         }
     }
     
