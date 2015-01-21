@@ -26,6 +26,7 @@
 		07CC99641A6F076A000FD6F8 /* NSErrorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC99631A6F076A000FD6F8 /* NSErrorExtension.swift */; };
 		07CC99661A6F1380000FD6F8 /* FoundationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC99651A6F1380000FD6F8 /* FoundationExtension.swift */; };
 		07CC99681A702368000FD6F8 /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC99671A702368000FD6F8 /* UIFontExtension.swift */; };
+		07CC996A1A705BA4000FD6F8 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 07CC99691A705BA4000FD6F8 /* Settings.bundle */; };
 		EAF4B9D23FDBAA4F2F237B3A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7171A1EF5F60DDA876FD139 /* libPods.a */; };
 		F77B8F0DFAD04EC03F166E0A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7171A1EF5F60DDA876FD139 /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -66,6 +67,7 @@
 		07CC99631A6F076A000FD6F8 /* NSErrorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSErrorExtension.swift; sourceTree = "<group>"; };
 		07CC99651A6F1380000FD6F8 /* FoundationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoundationExtension.swift; sourceTree = "<group>"; };
 		07CC99671A702368000FD6F8 /* UIFontExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
+		07CC99691A705BA4000FD6F8 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		132129A26ED76512DB66C024 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		AF1532103B091E2244D6CFE4 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E7171A1EF5F60DDA876FD139 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -173,6 +175,7 @@
 			children = (
 				075E3DEA1A5F4ECF00E001A7 /* Info.plist */,
 				07009EF91A64AA6A00129B07 /* ProtonMail-Bridging-Header.h */,
+				07CC99691A705BA4000FD6F8 /* Settings.bundle */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -310,6 +313,7 @@
 				075E3DF91A5F4ECF00E001A7 /* LaunchScreen.xib in Resources */,
 				07009F131A684C1900129B07 /* Roboto-Light.ttf in Resources */,
 				07009F141A684C1900129B07 /* Roboto-Thin.ttf in Resources */,
+				07CC996A1A705BA4000FD6F8 /* Settings.bundle in Resources */,
 				075E3DF61A5F4ECF00E001A7 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
