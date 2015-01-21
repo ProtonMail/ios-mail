@@ -17,7 +17,9 @@
 import UIKit
 
 class SignInViewController: UIViewController {
+    let animationDuration: NSTimeInterval = 0.5
     let keyboardPadding: CGFloat = 12
+    let signInButtonDisabledAlpha: CGFloat = 0.5
     let signUpURL = NSURL(string: "https://protonmail.ch/sign_up.php")!
     
     var isRemembered = false
@@ -61,6 +63,7 @@ class SignInViewController: UIViewController {
     func setupSignInButton() {
         signInButton.layer.cornerRadius = 4.0
         signInButton.clipsToBounds = true
+        signInButton.alpha = signInButtonDisabledAlpha
     }
     
     // FIXME: Work around for http://stackoverflow.com/questions/25925914/attributed-string-with-custom-fonts-in-storyboard-does-not-load-correctly <http://openradar.appspot.com/18425809>
@@ -160,6 +163,10 @@ extension SignInViewController: UITextFieldDelegate {
         } else if textField == passwordTextField {
             signInButton.enabled = !changedText.isEmpty && !usernameTextField.text.isEmpty
         }
+        
+        UIView.animateWithDuration(animationDuration, animations: { () -> Void in
+            self.signInButton.alpha = self.signInButton.enabled ? 1.0 : self.signInButtonDisabledAlpha
+        })
         
         return true
     }
