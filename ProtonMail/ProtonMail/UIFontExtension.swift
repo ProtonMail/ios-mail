@@ -1,6 +1,7 @@
 //
-//  ProtonMail-Bridging-Header.h
+//  UIFontExtension.swift
 //  ProtonMail
+//
 //
 // Copyright 2015 ArcTouch, Inc.
 // All rights reserved.
@@ -13,16 +14,10 @@
 // the license agreement.
 //
 
-#ifndef ProtonMail_ProtonMail_Bridging_Header_h
-#define ProtonMail_ProtonMail_Bridging_Header_h
+import Foundation
 
-#import <AFNetworking/AFNetworking.h>
-#import <AFNetworking/UIKit+AFNetworking.h>
-
-#import <MBProgressHUD/MBProgressHUD.h>
-
-#import <UICKeyChainStore/UICKeyChainStore.h>
-
-#import <UNNetPGP/UNNetPGP.h>
-
-#endif
+extension UIFont {
+    class func robotoThin(#size: CGFloat) -> UIFont {
+        return UIFont(name: "Roboto-Thin", size: size)!
+    }
+}
