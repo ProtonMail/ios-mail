@@ -17,23 +17,34 @@
 import Foundation
 
 class AuthenticationService {
-    let usernameKey = "AuthenticationServiceUsernameKey"
+    
     let passwordKey = "AuthenticationServicePasswordKey"
+    let usernameKey = "AuthenticationServiceUsernameKey"
+    
+    func rememberedCredentials() -> (username: String, password: String)? {
+        let store = UICKeyChainStore()
+        let username = store.stringForKey(usernameKey)
+        let password = store.stringForKey(passwordKey)
+        
+        if username == nil || password == nil {
+            return nil
+        }
+        
+        return (username, password)
+    }
     
     func signIn(username: String, password: String, isRemembered: Bool, completion: (NSError? -> Void)) {
-        
-        // TODO: network authentication call
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW,
-            Int64(5 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) { () -> Void in
-            
-            var error: NSError? = nil
-            
+        SharedProtonMailAPIService.authAuth(username: username, password: password, success: { credential in
             if isRemembered {
-                self.saveUserCredentials(username: username, password: password, error: &error)
+                self.saveUserCredentials(username: username, password: password)
             }
-
+            
+            NSLog("\(__FUNCTION__) credential: \(credential)")
+            
             completion(nil)
+            }) { error in
+                self.removeUserCredentials()
+                completion(error)
         }
     }
     
@@ -49,14 +60,11 @@ class AuthenticationService {
         let store = UICKeyChainStore()
         store.removeItemForKey(usernameKey)
         store.removeItemForKey(passwordKey)
-        store.synchronize()
     }
     
-    func saveUserCredentials(#username: String, password: String, error: NSErrorPointer) -> Bool {
+    func saveUserCredentials(#username: String, password: String) {
         let store = UICKeyChainStore()
         store.setString(username, forKey: usernameKey)
         store.setString(password, forKey: passwordKey)
-        
-        return store.synchronizeWithError(error)
     }
 }

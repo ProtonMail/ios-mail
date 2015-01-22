@@ -17,7 +17,9 @@
 import UIKit
 
 class SignInViewController: UIViewController {
+    let animationDuration: NSTimeInterval = 0.5
     let keyboardPadding: CGFloat = 12
+    let signInButtonDisabledAlpha: CGFloat = 0.5
     let signUpURL = NSURL(string: "https://protonmail.ch/sign_up.php")!
     
     var isRemembered = false
@@ -36,8 +38,9 @@ class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         rememberMeSwitch.setOn(isRemembered, animated: false)
-        
+        setupSignInButton()
         setupSignUpButton()
+        signInIfRememberedCredentials()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -57,6 +60,12 @@ class SignInViewController: UIViewController {
         passwordTextField.resignFirstResponder()
     }
     
+    func setupSignInButton() {
+        signInButton.layer.cornerRadius = 4.0
+        signInButton.clipsToBounds = true
+        signInButton.alpha = signInButtonDisabledAlpha
+    }
+    
     // FIXME: Work around for http://stackoverflow.com/questions/25925914/attributed-string-with-custom-fonts-in-storyboard-does-not-load-correctly <http://openradar.appspot.com/18425809>
     func setupSignUpButton() {
         let needAnAccount = NSLocalizedString("Need an account? ", comment: "Need an account? ")
@@ -67,9 +76,7 @@ class SignInViewController: UIViewController {
         
         title.appendAttributedString(signUpAttributed)
         
-        if let font = UIFont(name: "Roboto-Thin", size: 12.5) {
-            title.addAttribute(NSFontAttributeName, value: font, range: NSMakeRange(0, title.length))
-        }
+        title.addAttribute(NSFontAttributeName, value: UIFont.robotoThin(size: 12.5), range: NSMakeRange(0, title.length))
         
         signUpButton.setAttributedTitle(title, forState: .Normal)
     }
@@ -79,7 +86,26 @@ class SignInViewController: UIViewController {
         
         AuthenticationService().signIn(usernameTextField.text, password: passwordTextField.text, isRemembered: isRemembered) {error in
             MBProgressHUD.hideHUDForView(self.view, animated: true)
-            return
+            
+            if let error = error {
+                NSLog("\(__FUNCTION__) error: \(error)")
+                
+                let alertController = error.alertController()
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
+                
+                self.presentViewController(alertController, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func signInIfRememberedCredentials() {
+        if let (username, password) = AuthenticationService().rememberedCredentials() {
+            isRemembered = true
+            rememberMeSwitch.setOn(true, animated: false)
+            usernameTextField.text = username
+            passwordTextField.text = password
+            
+            signIn()
         }
     }
     
@@ -138,6 +164,10 @@ extension SignInViewController: UITextFieldDelegate {
         } else if textField == passwordTextField {
             signInButton.enabled = !changedText.isEmpty && !usernameTextField.text.isEmpty
         }
+        
+        UIView.animateWithDuration(animationDuration, animations: { () -> Void in
+            self.signInButton.alpha = self.signInButton.enabled ? 1.0 : self.signInButtonDisabledAlpha
+        })
         
         return true
     }

@@ -1,6 +1,7 @@
 //
-//  ProtonMail-Bridging-Header.h
+//  FoundationExtension.swift
 //  ProtonMail
+//
 //
 // Copyright 2015 ArcTouch, Inc.
 // All rights reserved.
@@ -13,18 +14,8 @@
 // the license agreement.
 //
 
-#ifndef ProtonMail_ProtonMail_Bridging_Header_h
-#define ProtonMail_ProtonMail_Bridging_Header_h
+import Foundation
 
-#import <AFNetworking/AFNetworking.h>
-#import <AFNetworking/UIKit+AFNetworking.h>
-
-#import <MBProgressHUD/MBProgressHUD.h>
-
-#import <UICKeyChainStore/UICKeyChainStore.h>
-
-#import <UNNetPGP/UNNetPGP.h>
-
-#import <SWRevealViewController/SWRevealViewController.h>
-
-#endif
+func NSLocalizedString(key: String) -> String {
+    return NSLocalizedString(key, comment: "")
+}
