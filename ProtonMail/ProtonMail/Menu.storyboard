@@ -95,7 +95,7 @@
                                     <constraint firstItem="dGF-dy-Rrr" firstAttribute="top" secondItem="UJa-fM-KPk" secondAttribute="bottom" constant="2" id="qoy-VF-EUt"/>
                                     <constraint firstItem="UJa-fM-KPk" firstAttribute="leading" secondItem="E7U-Dc-qS6" secondAttribute="leading" constant="16" id="tej-Zq-zyY"/>
                                     <constraint firstAttribute="bottom" secondItem="dGF-dy-Rrr" secondAttribute="bottom" constant="9" id="xXE-sK-jly"/>
-                                    <constraint firstAttribute="height" constant="65" id="y0K-kb-VJl"/>
+                                    <constraint firstAttribute="height" constant="64" id="y0K-kb-VJl"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="subviews">
