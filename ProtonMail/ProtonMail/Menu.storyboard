@@ -168,9 +168,6 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
-                                                    <variation key="widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="84" y="5" width="236" height="52"/>
-                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -327,9 +324,6 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
-                                                    <variation key="widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="84" y="5" width="236" height="52"/>
-                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -408,9 +402,6 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
-                                                    <variation key="widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="84" y="5" width="236" height="52"/>
-                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -489,9 +480,6 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
-                                                    <variation key="widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="84" y="5" width="236" height="52"/>
-                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -570,9 +558,6 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
-                                                    <variation key="widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="84" y="5" width="236" height="52"/>
-                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -651,9 +636,6 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
-                                                    <variation key="widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="84" y="5" width="236" height="52"/>
-                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -985,15 +967,15 @@
                                                     <exclude reference="R8e-6C-a5X"/>
                                                     <exclude reference="hAv-2g-kQj"/>
                                                     <exclude reference="y8C-R6-X0v"/>
-                                                    <exclude reference="HLa-0n-sbO"/>
-                                                    <exclude reference="6Jp-ji-wfQ"/>
-                                                    <exclude reference="Zad-Ot-Jcf"/>
-                                                    <exclude reference="jad-eC-yGr"/>
                                                     <exclude reference="LZX-6w-dBn"/>
                                                     <exclude reference="UpI-bo-3Sn"/>
                                                     <exclude reference="03t-bv-eif"/>
                                                     <exclude reference="8sR-iy-xWi"/>
                                                     <exclude reference="zhI-hY-CJ3"/>
+                                                    <exclude reference="HLa-0n-sbO"/>
+                                                    <exclude reference="6Jp-ji-wfQ"/>
+                                                    <exclude reference="Zad-Ot-Jcf"/>
+                                                    <exclude reference="jad-eC-yGr"/>
                                                 </mask>
                                             </variation>
                                             <variation key="widthClass=compact">
@@ -1011,15 +993,15 @@
                                                     <include reference="R8e-6C-a5X"/>
                                                     <include reference="hAv-2g-kQj"/>
                                                     <include reference="y8C-R6-X0v"/>
-                                                    <include reference="HLa-0n-sbO"/>
-                                                    <include reference="6Jp-ji-wfQ"/>
-                                                    <include reference="Zad-Ot-Jcf"/>
-                                                    <include reference="jad-eC-yGr"/>
                                                     <include reference="LZX-6w-dBn"/>
                                                     <include reference="UpI-bo-3Sn"/>
                                                     <include reference="03t-bv-eif"/>
                                                     <include reference="8sR-iy-xWi"/>
                                                     <include reference="zhI-hY-CJ3"/>
+                                                    <include reference="HLa-0n-sbO"/>
+                                                    <include reference="6Jp-ji-wfQ"/>
+                                                    <include reference="Zad-Ot-Jcf"/>
+                                                    <include reference="jad-eC-yGr"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -1050,12 +1032,12 @@
                                 <exclude reference="7Zx-Yy-VI3"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="L45-V5-s10"/>
+                                <exclude reference="XQT-sc-dGs"/>
+                                <exclude reference="pDX-q7-tNC"/>
                                 <exclude reference="3Cw-jR-TWl"/>
                                 <exclude reference="Ddi-B2-aIo"/>
                                 <exclude reference="hZH-vh-rJr"/>
-                                <exclude reference="XQT-sc-dGs"/>
-                                <exclude reference="pDX-q7-tNC"/>
-                                <exclude reference="L45-V5-s10"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -1064,12 +1046,12 @@
                                 <include reference="7Zx-Yy-VI3"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="L45-V5-s10"/>
+                                <include reference="XQT-sc-dGs"/>
+                                <include reference="pDX-q7-tNC"/>
                                 <include reference="3Cw-jR-TWl"/>
                                 <include reference="Ddi-B2-aIo"/>
                                 <include reference="hZH-vh-rJr"/>
-                                <include reference="XQT-sc-dGs"/>
-                                <include reference="pDX-q7-tNC"/>
-                                <include reference="L45-V5-s10"/>
                             </mask>
                         </variation>
                     </view>
