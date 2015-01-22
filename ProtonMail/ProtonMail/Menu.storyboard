@@ -35,6 +35,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
                         <segue destination="N9H-or-xL9" kind="custom" identifier="sw_front" customClass="SWRevealViewControllerSegueSetController" id="YGe-pV-72F"/>
                         <segue destination="JMB-iY-fYD" kind="custom" identifier="sw_rear" customClass="SWRevealViewControllerSegueSetController" id="mhi-4S-eTV"/>
@@ -42,7 +43,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="92z-LV-j1w" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="138" y="265"/>
+            <point key="canvasLocation" x="-612" y="1601"/>
         </scene>
         <!--Menu View Controller-->
         <scene sceneID="CA9-P3-QyV">
@@ -94,7 +95,7 @@
                                     <constraint firstItem="dGF-dy-Rrr" firstAttribute="top" secondItem="UJa-fM-KPk" secondAttribute="bottom" constant="2" id="qoy-VF-EUt"/>
                                     <constraint firstItem="UJa-fM-KPk" firstAttribute="leading" secondItem="E7U-Dc-qS6" secondAttribute="leading" constant="16" id="tej-Zq-zyY"/>
                                     <constraint firstAttribute="bottom" secondItem="dGF-dy-Rrr" secondAttribute="bottom" constant="9" id="xXE-sK-jly"/>
-                                    <constraint firstAttribute="height" constant="65" id="y0K-kb-VJl"/>
+                                    <constraint firstAttribute="height" constant="64" id="y0K-kb-VJl"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="subviews">
@@ -208,6 +209,9 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="N9H-or-xL9" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="o3e-Jf-WEv"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Drafts" rowHeight="62" id="1Gc-fv-W1T" customClass="MenuTableViewCell" customModule="ProtonMail" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -239,9 +243,6 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
-                                                    <variation key="widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="84" y="5" width="236" height="52"/>
-                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -286,6 +287,9 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="4k2-7f-Ctm" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="HtB-0y-JeP"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Sent" rowHeight="62" id="r9v-zs-647" customClass="MenuTableViewCell" customModule="ProtonMail" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -317,9 +321,6 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
-                                                    <variation key="widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="84" y="5" width="236" height="52"/>
-                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -364,6 +365,9 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="aCJ-kJ-lGQ" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="QzI-7j-poP"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Trash" rowHeight="62" id="gvd-m3-zaa" customClass="MenuTableViewCell" customModule="ProtonMail" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -395,9 +399,6 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
-                                                    <variation key="widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="84" y="5" width="236" height="52"/>
-                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -442,6 +443,9 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="UZg-eh-qs6" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="jyc-uh-78B"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Spam" rowHeight="62" id="HZV-Xn-NWT" customClass="MenuTableViewCell" customModule="ProtonMail" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -473,9 +477,6 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
-                                                    <variation key="widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="84" y="5" width="236" height="52"/>
-                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -520,6 +521,9 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="ya0-05-xz8" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="AkH-Cx-fpo"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Contacts" rowHeight="62" id="RFI-HL-zIu" customClass="MenuTableViewCell" customModule="ProtonMail" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -595,6 +599,9 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="PFX-v3-PCL" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="hPG-1Q-wNs"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Settings" rowHeight="62" id="Aqk-Su-pS8" customClass="MenuTableViewCell" customModule="ProtonMail" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -670,6 +677,9 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="Olh-tY-NxQ" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="I9a-Rs-5KR"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Signout" rowHeight="62" id="dJD-jx-bvD" customClass="MenuTableViewCell" customModule="ProtonMail" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -797,7 +807,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JBp-ua-X1G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="933" y="263"/>
+            <point key="canvasLocation" x="582" y="1601"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="O0q-7F-TSt">
@@ -813,9 +823,9 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HCF-St-8mR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1146" y="1019"/>
+            <point key="canvasLocation" x="2128.5" y="-511"/>
         </scene>
-        <!--Inbox View Controller-->
+        <!--INBOX-->
         <scene sceneID="TsM-2X-LzZ">
             <objects>
                 <viewController id="aed-G8-Az6" customClass="InboxViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
@@ -827,7 +837,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hFI-9J-iHr">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Inbox" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hFI-9J-iHr">
                                 <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -858,7 +868,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="Y7X-YF-pK8">
+                    <navigationItem key="navigationItem" title="INBOX" id="Y7X-YF-pK8">
                         <barButtonItem key="leftBarButtonItem" image="hamburger" id="MGt-Hd-KyR"/>
                     </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
@@ -868,7 +878,435 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v5f-i5-kem" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1972.5" y="1019"/>
+            <point key="canvasLocation" x="2943" y="-511"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="I1g-nG-Fit">
+            <objects>
+                <navigationController id="4k2-7f-Ctm" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="pr4-Xc-ZFO">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="IDg-tp-Vn4" kind="relationship" relationship="rootViewController" id="Vy3-aD-VtZ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vRQ-y5-2lf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2139" y="253"/>
+        </scene>
+        <!--DRAFTS-->
+        <scene sceneID="bpL-AN-jt6">
+            <objects>
+                <viewController id="IDg-tp-Vn4" customClass="DraftsViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="FfK-7g-hxk"/>
+                        <viewControllerLayoutGuide type="bottom" id="hmM-Pt-kWj"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="DMg-NF-6nr">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Drafts" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oh2-8z-Qun">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerY" secondItem="Oh2-8z-Qun" secondAttribute="centerY" constant="0.5" id="W8R-uw-C8e"/>
+                            <constraint firstAttribute="centerX" secondItem="Oh2-8z-Qun" secondAttribute="centerX" constant="-0.5" id="pbA-re-Bqc"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="Oh2-8z-Qun"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="W8R-uw-C8e"/>
+                                <exclude reference="pbA-re-Bqc"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="Oh2-8z-Qun"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="W8R-uw-C8e"/>
+                                <include reference="pbA-re-Bqc"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" title="DRAFTS" id="MmS-yw-ZSY">
+                        <barButtonItem key="leftBarButtonItem" image="hamburger" id="Y0S-qG-lku"/>
+                    </navigationItem>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
+                    <connections>
+                        <outlet property="menuButton" destination="Y0S-qG-lku" id="pQN-dN-36Z"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ux6-aK-wXM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2943" y="253"/>
+        </scene>
+        <!--Contacts View Controller-->
+        <scene sceneID="4eW-b9-zGJ">
+            <objects>
+                <viewController id="dsh-3G-k23" userLabel="Contacts View Controller" customClass="ContactsViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="60O-Ao-olg"/>
+                        <viewControllerLayoutGuide type="bottom" id="SMa-Y1-qS2"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="S4B-4p-Yy3">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contacts" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yrQ-ju-uX7">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerY" secondItem="yrQ-ju-uX7" secondAttribute="centerY" constant="0.5" id="CFE-B7-cB8"/>
+                            <constraint firstAttribute="centerX" secondItem="yrQ-ju-uX7" secondAttribute="centerX" id="INx-AB-moZ"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="yrQ-ju-uX7"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="CFE-B7-cB8"/>
+                                <exclude reference="INx-AB-moZ"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="yrQ-ju-uX7"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="CFE-B7-cB8"/>
+                                <include reference="INx-AB-moZ"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" title="CONTACTS" id="dNI-3f-weZ">
+                        <barButtonItem key="leftBarButtonItem" image="hamburger" id="G3m-Jr-Xhu"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="menuButton" destination="G3m-Jr-Xhu" id="iLB-dg-whJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4Rs-Sb-Nje" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2943" y="3030"/>
+        </scene>
+        <!--Settings View Controller-->
+        <scene sceneID="bP7-XD-X6l">
+            <objects>
+                <viewController id="xvt-qd-lEh" userLabel="Settings View Controller" customClass="SettingsViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="OmT-Yz-1Ug"/>
+                        <viewControllerLayoutGuide type="bottom" id="LUb-EZ-k9D"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="zDe-FI-9JM">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SETTINGS" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Roh-Y0-Yrw">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="Roh-Y0-Yrw" secondAttribute="centerX" constant="-0.5" id="fU8-Rc-wZR"/>
+                            <constraint firstAttribute="centerY" secondItem="Roh-Y0-Yrw" secondAttribute="centerY" constant="0.5" id="xTj-3o-KOM"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="Roh-Y0-Yrw"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="fU8-Rc-wZR"/>
+                                <exclude reference="xTj-3o-KOM"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="Roh-Y0-Yrw"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="fU8-Rc-wZR"/>
+                                <include reference="xTj-3o-KOM"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" title="SETTINGS" id="OTU-vl-ETb" userLabel="SETTINGS">
+                        <barButtonItem key="leftBarButtonItem" image="hamburger" id="Cdw-uX-rMU"/>
+                    </navigationItem>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
+                    <connections>
+                        <outlet property="menuButton" destination="Cdw-uX-rMU" id="lvZ-Za-q1u"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="euu-s4-kUT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2943" y="3829"/>
+        </scene>
+        <!--SENT-->
+        <scene sceneID="Brh-i5-bju">
+            <objects>
+                <viewController id="Spa-hx-Sox" customClass="SentViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="45g-yL-Ehq"/>
+                        <viewControllerLayoutGuide type="bottom" id="nUL-SF-l5e"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="58o-XV-gzq">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sent" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hoq-xg-pGv">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="hoq-xg-pGv" secondAttribute="centerX" constant="3" id="AqI-6L-odg"/>
+                            <constraint firstAttribute="centerY" secondItem="hoq-xg-pGv" secondAttribute="centerY" constant="0.5" id="Meh-JF-KdR"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="hoq-xg-pGv"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="AqI-6L-odg"/>
+                                <exclude reference="Meh-JF-KdR"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="hoq-xg-pGv"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="AqI-6L-odg"/>
+                                <include reference="Meh-JF-KdR"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" title="SENT" id="b5m-iz-yse">
+                        <barButtonItem key="leftBarButtonItem" image="hamburger" id="LeB-yt-DTC"/>
+                    </navigationItem>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
+                    <connections>
+                        <outlet property="menuButton" destination="LeB-yt-DTC" id="G9X-bU-Xia"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3IR-ba-CMg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2943" y="924"/>
+        </scene>
+        <!--TRASH-->
+        <scene sceneID="Bvv-7L-ATF">
+            <objects>
+                <viewController id="y9F-EC-BPC" customClass="TrashViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="EHC-ec-7sX"/>
+                        <viewControllerLayoutGuide type="bottom" id="6YY-he-y75"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="dfZ-lK-URs">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trash" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M9d-cc-AEh">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="M9d-cc-AEh" secondAttribute="centerX" id="dPO-CD-AJ8"/>
+                            <constraint firstAttribute="centerY" secondItem="M9d-cc-AEh" secondAttribute="centerY" constant="0.5" id="lZu-p1-vkQ"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="M9d-cc-AEh"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="dPO-CD-AJ8"/>
+                                <exclude reference="lZu-p1-vkQ"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="M9d-cc-AEh"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="dPO-CD-AJ8"/>
+                                <include reference="lZu-p1-vkQ"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" title="TRASH" id="eC1-F0-boA">
+                        <barButtonItem key="leftBarButtonItem" image="hamburger" id="4ag-9W-iKA"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="menuButton" destination="4ag-9W-iKA" id="eZ2-yq-8UO"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iKF-ow-73f" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2943" y="1610"/>
+        </scene>
+        <!--SPAM-->
+        <scene sceneID="eS0-Vn-wDw">
+            <objects>
+                <viewController id="yqo-4V-RY2" customClass="SpamViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="MdB-g3-ST8"/>
+                        <viewControllerLayoutGuide type="bottom" id="Pfb-9N-3rC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="9Oz-Ga-IZP">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Spam" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1sH-h0-Dmw">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerY" secondItem="1sH-h0-Dmw" secondAttribute="centerY" constant="0.5" id="fv8-AH-bGK"/>
+                            <constraint firstAttribute="centerX" secondItem="1sH-h0-Dmw" secondAttribute="centerX" constant="-1.5" id="v1A-FG-1Wn"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="1sH-h0-Dmw"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="fv8-AH-bGK"/>
+                                <exclude reference="v1A-FG-1Wn"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="1sH-h0-Dmw"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="fv8-AH-bGK"/>
+                                <include reference="v1A-FG-1Wn"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" title="SPAM" id="Cx3-4c-xCr">
+                        <barButtonItem key="leftBarButtonItem" image="hamburger" id="e0z-MR-OBz"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="menuButton" destination="e0z-MR-OBz" id="hcS-NZ-u3x"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="K7T-AM-EqU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2943" y="2317"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="NdW-eQ-KwY">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="aCJ-kJ-lGQ" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="pcR-gQ-cOj">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Spa-hx-Sox" kind="relationship" relationship="rootViewController" id="DQL-OT-JcZ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QYY-yL-JE8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2128.5" y="924"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="4BU-df-1rW">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="UZg-eh-qs6" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="809-zP-apH">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="y9F-EC-BPC" kind="relationship" relationship="rootViewController" id="YQr-bp-J4r"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UkA-A0-anh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2128.5" y="1610"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="GNJ-Ze-9mv">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ya0-05-xz8" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="YfW-8X-AHE">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="yqo-4V-RY2" kind="relationship" relationship="rootViewController" id="hkp-Oe-QuB"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4Zm-1n-JSX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2128.5" y="2317"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="SEY-3E-LYY">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="PFX-v3-PCL" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="n9F-Oz-CJH">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="dsh-3G-k23" kind="relationship" relationship="rootViewController" id="mSp-l3-W51"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pqM-EV-O7S" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2128.5" y="3030"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ueG-Jo-XMf">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Olh-tY-NxQ" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xAT-mr-j4s">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="xvt-qd-lEh" kind="relationship" relationship="rootViewController" id="dSJ-5j-lGh"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qa1-Wk-FfJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2139" y="3829"/>
         </scene>
     </scenes>
     <resources>
@@ -890,4 +1328,7 @@
         <image name="trash" width="52" height="52"/>
         <image name="trash_selected" width="20" height="27"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="o3e-Jf-WEv"/>
+    </inferredMetricsTieBreakers>
 </document>

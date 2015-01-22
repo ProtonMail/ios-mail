@@ -12,9 +12,9 @@
 
 import UIKit
 
-class InboxViewController: ProtonMailViewController {
+class SettingsViewController: ProtonMailViewController {
     
     override func viewDidLoad() {
-        super.viewDidLoad()   
+        super.viewDidLoad()
     }
 }
