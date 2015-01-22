@@ -9,3 +9,8 @@ pod 'OpenSSL-Universal', :podspec => 'https://raw.github.com/krzyzanowskim/OpenS
 pod 'UICKeyChainStore'
 pod 'UNNetPGP', :podspec => 'https://raw.github.com/upnext/unnetpgp/master/UNNetPGP.podspec'
 pod 'SWRevealViewController', '2.3.0'
+
+post_install do | installer |
+    require 'fileutils'
+    FileUtils.cp_r('Pods/Target Support Files/Pods/Pods-Acknowledgements.plist', 'ProtonMail/Settings.bundle/Acknowledgements.plist', :remove_destination => true)
+end
