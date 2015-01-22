@@ -28,6 +28,20 @@ class InboxViewController: ProtonMailViewController {
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.tableView.tableFooterView = UIView(frame: CGRectZero)
+        
+        var composeBarButtonItem = UIBarButtonItem(image: UIImage(named: "compose"), style: UIBarButtonItemStyle.Plain, target: self, action: "composeButtonTapped")
+        var searchBarButtonItem = UIBarButtonItem(image: UIImage(named: "search"), style: UIBarButtonItemStyle.Plain, target: self, action: "searchButtonTapped")
+        var rightButtons = [composeBarButtonItem, searchBarButtonItem]
+        
+        self.navigationItem.rightBarButtonItems = rightButtons
+    }
+    
+    func composeButtonTapped() {
+        
+    }
+    
+    func searchButtonTapped() {
+        
     }
 }
 
