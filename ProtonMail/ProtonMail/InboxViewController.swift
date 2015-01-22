@@ -14,7 +14,52 @@ import UIKit
 
 class InboxViewController: ProtonMailViewController {
     
+    @IBOutlet weak var tableView: UITableView!
+    
+    private let kInboxCellHeight: CGFloat = 64.0
+    private let kCellIdentifier: String = "InboxCell"
+    
+    private var messages: [EmailThread]!
+    
     override func viewDidLoad() {
-        super.viewDidLoad()   
+        super.viewDidLoad()
+        self.messages = EmailService.retrieveMessages()
+        
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
+        self.tableView.tableFooterView = UIView(frame: CGRectZero)
+    }
+}
+
+extension InboxViewController: UITableViewDataSource {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+
+        let thread: EmailThread = messages[indexPath.row]
+        var inboxCell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as InboxTableViewCell
+        inboxCell.title.text = thread.title
+        inboxCell.sender.text = thread.sender
+        inboxCell.time.text = thread.time
+        inboxCell.encryptedImage.hidden = !thread.isEncrypted
+        inboxCell.attachImage.hidden = !thread.hasAttachments
+        
+        if (thread.isFavorite) {
+            inboxCell.favoriteButton.setImage(UIImage(named: "favorite_main_selected"), forState: UIControlState.Normal)
+        }
+        
+        return inboxCell
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return messages.count
+    }
+}
+
+extension InboxViewController: UITableViewDelegate {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return kInboxCellHeight
     }
 }
