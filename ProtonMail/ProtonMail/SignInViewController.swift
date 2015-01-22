@@ -53,6 +53,12 @@ class SignInViewController: UIViewController {
         NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
     }
     
+    // MARK: - Class methods
+    
+    class func newViewController() -> UIViewController {
+        return UIStoryboard.signIn().instantiateInitialViewController() as UIViewController
+    }
+    
     // MARK: - Private methods
     
     func dismissKeyboard() {
@@ -94,6 +100,8 @@ class SignInViewController: UIViewController {
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
                 
                 self.presentViewController(alertController, animated: true, completion: nil)
+            } else {
+                self.dismissViewControllerAnimated(true, completion: nil)
             }
         }
     }
