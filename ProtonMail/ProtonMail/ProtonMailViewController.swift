@@ -38,6 +38,11 @@ class ProtonMailViewController: UIViewController {
         self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Blue_475F77
         self.navigationController?.navigationBar.translucent = false
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        
+        let navigationBarTitleFont = UIFont(name:"Roboto-Light", size: 18.0)
+        self.navigationController?.navigationBar.titleTextAttributes = [
+            NSForegroundColorAttributeName: UIColor.whiteColor(),
+            NSFontAttributeName: navigationBarTitleFont!
+        ]
     }
 }
