@@ -14,6 +14,7 @@ import Foundation
 
 class EmailThread: NSObject {
     
+    internal var id: String!
     internal var title: String!
     internal var sender: String!
     internal var time: String!
@@ -25,9 +26,10 @@ class EmailThread: NSObject {
         super.init()
     }
     
-    convenience init(title: String, sender:String, time: String, hasAttachments: Bool = false, isEncrypted: Bool = false, isFavorite: Bool = false) {
+    convenience init(id: String, title: String, sender:String, time: String, hasAttachments: Bool = false, isEncrypted: Bool = false, isFavorite: Bool = false) {
         
         self.init()
+        self.id = id
         self.title = title
         self.sender = sender
         self.time = time

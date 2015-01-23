@@ -40,6 +40,23 @@ class InboxTableViewCell: UITableViewCell {
     
     private var isChecked: Bool = false
     
+    
+    // MARK: - Cell configuration
+    
+    func configureCell(thread: EmailThread) {
+        self.title.text = thread.title
+        self.sender.text = thread.sender
+        self.time.text = thread.time
+        self.encryptedImage.hidden = !thread.isEncrypted
+        self.attachImage.hidden = !thread.hasAttachments
+        
+        if (thread.isFavorite) {
+            self.favoriteButton.setImage(UIImage(named: "favorite_main_selected"), forState: UIControlState.Normal)
+        } else {
+            self.favoriteButton.setImage(UIImage(named: "favorite_main"), forState: UIControlState.Normal)
+        }
+    }
+    
     func showCheckboxOnLeftSide() {
         self.checkboxWidth.constant = kCheckboxWidth
         self.setNeedsUpdateConstraints()        
@@ -53,5 +70,19 @@ class InboxTableViewCell: UITableViewCell {
         }
         
         self.isChecked = !self.isChecked
+    }
+    
+    func setCellIsChecked(checked: Bool) {
+        self.isChecked = checked
+        
+        if (checked) {
+            self.checkboxButton.setImage(UIImage(named: "checked"), forState: UIControlState.Normal)
+        } else {
+            self.checkboxButton.setImage(UIImage(named: "unchecked"), forState: UIControlState.Normal)
+        }
+    }
+    
+    func isSelected() -> Bool {
+        return self.isChecked
     }
 }

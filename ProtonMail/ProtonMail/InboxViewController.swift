@@ -30,6 +30,7 @@ class InboxViewController: ProtonMailViewController {
     // MARK: - Private attributes
     
     private var messages: [EmailThread]!
+    private var selectedMessages: NSMutableSet = NSMutableSet()
     private var isEditing: Bool = false
     
     override func viewDidLoad() {
@@ -68,7 +69,15 @@ class InboxViewController: ProtonMailViewController {
         
         if let indexPath = indexPath {
             let selectedCell: InboxTableViewCell = self.tableView.cellForRowAtIndexPath(indexPath) as InboxTableViewCell
+            
+            if (selectedMessages.containsObject(messages[indexPath.row].id)) {
+                selectedMessages.removeObject(messages[indexPath.row].id)
+            } else {
+                selectedMessages.addObject(messages[indexPath.row].id)
+            }
+            
             selectedCell.checkboxTapped()
+            self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
         }
     }
     
@@ -112,16 +121,9 @@ extension InboxViewController: UITableViewDataSource {
 
         let thread: EmailThread = messages[indexPath.row]
         var inboxCell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as InboxTableViewCell
-        inboxCell.title.text = thread.title
-        inboxCell.sender.text = thread.sender
-        inboxCell.time.text = thread.time
-        inboxCell.encryptedImage.hidden = !thread.isEncrypted
-        inboxCell.attachImage.hidden = !thread.hasAttachments
-        
-        if (thread.isFavorite) {
-            inboxCell.favoriteButton.setImage(UIImage(named: "favorite_main_selected"), forState: UIControlState.Normal)
-        }
-        
+        inboxCell.configureCell(thread)
+        inboxCell.setCellIsChecked(selectedMessages.containsObject(thread.id))
+                        
         if (self.isEditing) {
             inboxCell.showCheckboxOnLeftSide()
         }
