@@ -87,6 +87,11 @@ class InboxTableViewCell: UITableViewCell {
         self.setNeedsUpdateConstraints()        
     }
     
+    func hideCheckboxOnLeftSide() {
+        self.checkboxWidth.constant = 0.0
+        self.setNeedsUpdateConstraints()
+    }
+    
     func checkboxTapped() {
         if (isChecked) {
             checkboxButton.setImage(kCheckboxUncheckedImage, forState: UIControlState.Normal)
