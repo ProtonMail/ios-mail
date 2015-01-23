@@ -34,6 +34,9 @@ class InboxTableViewCell: UITableViewCell {
     // MARK: - Private constants
     
     private let kCheckboxWidth: CGFloat = 22.0
+    private let kCheckboxButtonCornerRadius: CGFloat = 1.0
+    private let kCheckboxUncheckedImage: UIImage = UIImage(named: "unchecked")!
+    private let kCheckboxCheckedImage: UIImage = UIImage(named: "checked")!
     
     
     // MARK: - Private attributes
@@ -49,6 +52,8 @@ class InboxTableViewCell: UITableViewCell {
         self.time.text = thread.time
         self.encryptedImage.hidden = !thread.isEncrypted
         self.attachImage.hidden = !thread.hasAttachments
+        self.checkboxButton.layer.cornerRadius = kCheckboxButtonCornerRadius
+        self.checkboxButton.layer.masksToBounds = true
         
         if (thread.isFavorite) {
             self.favoriteButton.setImage(UIImage(named: "favorite_main_selected"), forState: UIControlState.Normal)
@@ -64,9 +69,9 @@ class InboxTableViewCell: UITableViewCell {
     
     func checkboxTapped() {
         if (isChecked) {
-            checkboxButton.setImage(UIImage(named: "unchecked"), forState: UIControlState.Normal)
+            checkboxButton.setImage(kCheckboxUncheckedImage, forState: UIControlState.Normal)
         } else {
-            checkboxButton.setImage(UIImage(named: "checked"), forState: UIControlState.Normal)
+            checkboxButton.setImage(kCheckboxCheckedImage, forState: UIControlState.Normal)
         }
         
         self.isChecked = !self.isChecked
@@ -76,9 +81,9 @@ class InboxTableViewCell: UITableViewCell {
         self.isChecked = checked
         
         if (checked) {
-            self.checkboxButton.setImage(UIImage(named: "checked"), forState: UIControlState.Normal)
+            self.checkboxButton.setImage(kCheckboxCheckedImage, forState: UIControlState.Normal)
         } else {
-            self.checkboxButton.setImage(UIImage(named: "unchecked"), forState: UIControlState.Normal)
+            self.checkboxButton.setImage(kCheckboxUncheckedImage, forState: UIControlState.Normal)
         }
     }
     
