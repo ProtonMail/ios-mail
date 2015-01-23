@@ -17,6 +17,10 @@
 import Foundation
 
 class AuthCredential: NSObject, NSCoding {
+    enum Key: String {
+        case keychainStore = "keychainStoreKey"
+    }
+    
     let accessToken: String!
     let refreshToken: String!
     let userID: String!
@@ -30,8 +34,6 @@ class AuthCredential: NSObject, NSCoding {
     private let refreshTokenCoderKey = "refreshTokenCoderKey"
     private let userIDCoderKey = "userIDCoderKey"
     private let expirationCoderKey = "expirationCoderKey"
-    
-    private let keychainStoreKey = "keychainStoreKey"
 
     required init?(credential: AnyObject!) {
         super.init()
@@ -52,7 +54,19 @@ class AuthCredential: NSObject, NSCoding {
     }
     
     func storeInKeychain() {
-        UICKeyChainStore().setData(NSKeyedArchiver.archivedDataWithRootObject(self), forKey: keychainStoreKey)
+        UICKeyChainStore().setData(NSKeyedArchiver.archivedDataWithRootObject(self), forKey: Key.keychainStore.rawValue)
+    }
+    
+    // MARK - Class methods
+    
+    class func fetchFromKeychain() -> AuthCredential? {
+        if let data = UICKeyChainStore.dataForKey(Key.keychainStore.rawValue) {
+            if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? AuthCredential {
+                return authCredential
+            }
+        }
+        
+        return nil
     }
     
     // MARK - NSCoding

@@ -62,7 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window.rootViewController = viewController
             window.makeKeyAndVisible()
             
-            if !AuthenticationService().isAuthenticated() {
+            if !sharedUserDataService.isUserCredentialStored {
                 NSRunLoop.currentRunLoop().runUntilDate(NSDate())
                 viewController.presentViewController(SignInViewController.newViewController(), animated: false, completion: nil)
             }
