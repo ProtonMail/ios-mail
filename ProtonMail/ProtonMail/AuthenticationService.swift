@@ -21,6 +21,14 @@ class AuthenticationService {
     let passwordKey = "AuthenticationServicePasswordKey"
     let usernameKey = "AuthenticationServiceUsernameKey"
     
+    func isAuthenticated() -> Bool {
+        // TODO: check if we have credentials that work
+        
+        let store = UICKeyChainStore()
+        
+        return store.stringForKey(usernameKey) != nil
+    }
+    
     func rememberedCredentials() -> (username: String, password: String)? {
         let store = UICKeyChainStore()
         let username = store.stringForKey(usernameKey)

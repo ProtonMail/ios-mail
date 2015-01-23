@@ -27,6 +27,7 @@
 		07CC99661A6F1380000FD6F8 /* FoundationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC99651A6F1380000FD6F8 /* FoundationExtension.swift */; };
 		07CC99681A702368000FD6F8 /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC99671A702368000FD6F8 /* UIFontExtension.swift */; };
 		07CC996A1A705BA4000FD6F8 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 07CC99691A705BA4000FD6F8 /* Settings.bundle */; };
+		07CC996C1A717ABD000FD6F8 /* UIStoryboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC996B1A717ABD000FD6F8 /* UIStoryboardExtension.swift */; };
 		7027B02B1A700F0200D28F52 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7027B02A1A700F0200D28F52 /* MenuTableViewCell.swift */; };
 		7061A3F31A6E8C6A0006D36C /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7061A3F21A6E8C6A0006D36C /* MenuViewController.swift */; };
 		7061A3F51A6E8C9D0006D36C /* Menu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7061A3F41A6E8C9D0006D36C /* Menu.storyboard */; };
@@ -83,6 +84,7 @@
 		07CC99651A6F1380000FD6F8 /* FoundationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoundationExtension.swift; sourceTree = "<group>"; };
 		07CC99671A702368000FD6F8 /* UIFontExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
 		07CC99691A705BA4000FD6F8 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		07CC996B1A717ABD000FD6F8 /* UIStoryboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStoryboardExtension.swift; sourceTree = "<group>"; };
 		132129A26ED76512DB66C024 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		7027B02A1A700F0200D28F52 /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		7061A3F21A6E8C6A0006D36C /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				07009F081A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift */,
 				70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */,
 				07CC99671A702368000FD6F8 /* UIFontExtension.swift */,
+				07CC996B1A717ABD000FD6F8 /* UIStoryboardExtension.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -529,6 +532,7 @@
 				706628211A715A0900164117 /* InboxTableViewCell.swift in Sources */,
 				706961FF1A7136A0001443B2 /* ProtonMailViewController.swift in Sources */,
 				07B797C21A6EE50F00244532 /* ProtonMailAPIService+AuthenticationExtension.swift in Sources */,
+				07CC996C1A717ABD000FD6F8 /* UIStoryboardExtension.swift in Sources */,
 				075E3DEF1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld in Sources */,
 				075E3DEC1A5F4ECF00E001A7 /* AppDelegate.swift in Sources */,
 				7061A3F31A6E8C6A0006D36C /* MenuViewController.swift in Sources */,
