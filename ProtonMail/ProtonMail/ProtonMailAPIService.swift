@@ -28,6 +28,10 @@ class ProtonMailAPIService {
         sessionManager.requestSerializer = AFJSONRequestSerializer() as AFHTTPRequestSerializer
     }
     
+    func authCredential() -> AuthCredential? {
+        return AuthCredential.fetchFromKeychain()
+    }
+    
     func isErrorResponse(response: AnyObject!) -> Bool {
         if let dict = response as? NSDictionary {
             return dict["error"] != nil
