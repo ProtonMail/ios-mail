@@ -934,21 +934,48 @@
                                                         </mask>
                                                     </variation>
                                                 </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CWu-xu-Rc3" userLabel="Checked">
+                                                    <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="22" id="I5d-A8-i7v"/>
+                                                        <constraint firstAttribute="width" id="ohL-Zn-uTt"/>
+                                                    </constraints>
+                                                    <state key="normal" image="unchecked">
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="I5d-A8-i7v"/>
+                                                            <exclude reference="ohL-Zn-uTt"/>
+                                                        </mask>
+                                                    </variation>
+                                                    <variation key="widthClass=compact">
+                                                        <mask key="constraints">
+                                                            <include reference="I5d-A8-i7v"/>
+                                                            <include reference="ohL-Zn-uTt"/>
+                                                        </mask>
+                                                    </variation>
+                                                    <connections>
+                                                        <action selector="didTapCheckMessage:" destination="aed-G8-Az6" eventType="touchUpInside" id="vp7-jg-LlO"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" red="0.9882352941176471" green="0.99607843137254903" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="trailingMargin" secondItem="aKV-ph-ziD" secondAttribute="trailing" constant="8" id="03t-bv-eif"/>
                                                 <constraint firstItem="pXj-OE-cWa" firstAttribute="bottom" secondItem="aKV-ph-ziD" secondAttribute="bottom" id="6Jp-ji-wfQ"/>
                                                 <constraint firstItem="aKV-ph-ziD" firstAttribute="leading" secondItem="pXj-OE-cWa" secondAttribute="trailing" constant="8" id="8sR-iy-xWi"/>
+                                                <constraint firstAttribute="centerY" secondItem="CWu-xu-Rc3" secondAttribute="centerY" constant="-0.25" id="Bca-iX-Dj7"/>
                                                 <constraint firstItem="eZS-fQ-wdc" firstAttribute="leading" secondItem="7GD-28-QOt" secondAttribute="trailing" constant="8" id="HLa-0n-sbO"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="d4p-Fy-H08" secondAttribute="trailing" constant="8" id="LZX-6w-dBn"/>
-                                                <constraint firstItem="7GD-28-QOt" firstAttribute="leading" secondItem="ksF-aC-XEE" secondAttribute="leadingMargin" constant="8" id="R8e-6C-a5X"/>
                                                 <constraint firstItem="d4p-Fy-H08" firstAttribute="top" secondItem="ksF-aC-XEE" secondAttribute="topMargin" constant="2" id="UpI-bo-3Sn"/>
-                                                <constraint firstItem="20n-9z-aN4" firstAttribute="leading" secondItem="ksF-aC-XEE" secondAttribute="leadingMargin" constant="8" id="Wfr-lQ-NDb"/>
                                                 <constraint firstItem="pXj-OE-cWa" firstAttribute="bottom" secondItem="eZS-fQ-wdc" secondAttribute="bottom" id="Zad-Ot-Jcf" userLabel="Bottom Alignment - (2) - encrypted_main - attached_main"/>
+                                                <constraint firstItem="7GD-28-QOt" firstAttribute="leading" secondItem="20n-9z-aN4" secondAttribute="leading" id="gBQ-2T-x9M"/>
                                                 <constraint firstItem="7GD-28-QOt" firstAttribute="trailing" secondItem="20n-9z-aN4" secondAttribute="trailing" id="hAv-2g-kQj"/>
                                                 <constraint firstItem="20n-9z-aN4" firstAttribute="top" secondItem="ksF-aC-XEE" secondAttribute="topMargin" constant="4" id="hse-Mw-wEK"/>
                                                 <constraint firstItem="pXj-OE-cWa" firstAttribute="leading" secondItem="eZS-fQ-wdc" secondAttribute="trailing" constant="8" id="jad-eC-yGr"/>
+                                                <constraint firstItem="CWu-xu-Rc3" firstAttribute="leading" secondItem="ksF-aC-XEE" secondAttribute="leadingMargin" constant="8" id="seq-dn-5NO"/>
+                                                <constraint firstItem="20n-9z-aN4" firstAttribute="leading" secondItem="CWu-xu-Rc3" secondAttribute="trailing" constant="16" id="tDt-AB-x8R"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="7GD-28-QOt" secondAttribute="bottom" constant="4" id="y8C-R6-X0v"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="aKV-ph-ziD" secondAttribute="bottom" constant="4" id="zhI-hY-CJ3"/>
                                             </constraints>
@@ -960,22 +987,25 @@
                                                     <exclude reference="pXj-OE-cWa"/>
                                                     <exclude reference="aKV-ph-ziD"/>
                                                     <exclude reference="eZS-fQ-wdc"/>
+                                                    <exclude reference="CWu-xu-Rc3"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="Wfr-lQ-NDb"/>
+                                                    <exclude reference="Bca-iX-Dj7"/>
+                                                    <exclude reference="seq-dn-5NO"/>
                                                     <exclude reference="hse-Mw-wEK"/>
-                                                    <exclude reference="R8e-6C-a5X"/>
+                                                    <exclude reference="tDt-AB-x8R"/>
+                                                    <exclude reference="gBQ-2T-x9M"/>
                                                     <exclude reference="hAv-2g-kQj"/>
                                                     <exclude reference="y8C-R6-X0v"/>
+                                                    <exclude reference="HLa-0n-sbO"/>
+                                                    <exclude reference="6Jp-ji-wfQ"/>
+                                                    <exclude reference="Zad-Ot-Jcf"/>
+                                                    <exclude reference="jad-eC-yGr"/>
                                                     <exclude reference="LZX-6w-dBn"/>
                                                     <exclude reference="UpI-bo-3Sn"/>
                                                     <exclude reference="03t-bv-eif"/>
                                                     <exclude reference="8sR-iy-xWi"/>
                                                     <exclude reference="zhI-hY-CJ3"/>
-                                                    <exclude reference="HLa-0n-sbO"/>
-                                                    <exclude reference="6Jp-ji-wfQ"/>
-                                                    <exclude reference="Zad-Ot-Jcf"/>
-                                                    <exclude reference="jad-eC-yGr"/>
                                                 </mask>
                                             </variation>
                                             <variation key="widthClass=compact">
@@ -986,27 +1016,32 @@
                                                     <include reference="pXj-OE-cWa"/>
                                                     <include reference="aKV-ph-ziD"/>
                                                     <include reference="eZS-fQ-wdc"/>
+                                                    <include reference="CWu-xu-Rc3"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="Wfr-lQ-NDb"/>
+                                                    <include reference="Bca-iX-Dj7"/>
+                                                    <include reference="seq-dn-5NO"/>
                                                     <include reference="hse-Mw-wEK"/>
-                                                    <include reference="R8e-6C-a5X"/>
+                                                    <include reference="tDt-AB-x8R"/>
+                                                    <include reference="gBQ-2T-x9M"/>
                                                     <include reference="hAv-2g-kQj"/>
                                                     <include reference="y8C-R6-X0v"/>
+                                                    <include reference="HLa-0n-sbO"/>
+                                                    <include reference="6Jp-ji-wfQ"/>
+                                                    <include reference="Zad-Ot-Jcf"/>
+                                                    <include reference="jad-eC-yGr"/>
                                                     <include reference="LZX-6w-dBn"/>
                                                     <include reference="UpI-bo-3Sn"/>
                                                     <include reference="03t-bv-eif"/>
                                                     <include reference="8sR-iy-xWi"/>
                                                     <include reference="zhI-hY-CJ3"/>
-                                                    <include reference="HLa-0n-sbO"/>
-                                                    <include reference="6Jp-ji-wfQ"/>
-                                                    <include reference="Zad-Ot-Jcf"/>
-                                                    <include reference="jad-eC-yGr"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="attachImage" destination="eZS-fQ-wdc" id="wD6-DQ-Et6"/>
+                                            <outlet property="checkboxButton" destination="CWu-xu-Rc3" id="6OH-dD-yMq"/>
+                                            <outlet property="checkboxWidth" destination="ohL-Zn-uTt" id="m3a-p4-Tev"/>
                                             <outlet property="encryptedImage" destination="pXj-OE-cWa" id="MfC-jA-LaJ"/>
                                             <outlet property="favoriteButton" destination="aKV-ph-ziD" id="PNl-W0-FEj"/>
                                             <outlet property="sender" destination="7GD-28-QOt" id="YMg-uB-STC"/>
@@ -1524,6 +1559,7 @@
         <image name="spam_selected" width="29" height="19"/>
         <image name="trash" width="52" height="52"/>
         <image name="trash_selected" width="20" height="27"/>
+        <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="o3e-Jf-WEv"/>

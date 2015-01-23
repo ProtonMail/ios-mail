@@ -14,10 +14,44 @@ import UIKit
 
 class InboxTableViewCell: UITableViewCell {
     
+    
+    // MARK: - View Outlets
+    
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var sender: UILabel!
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var favoriteButton: UIButton!
     @IBOutlet weak var encryptedImage: UIImageView!
     @IBOutlet weak var attachImage: UIImageView!
+    @IBOutlet weak var checkboxButton: UIButton!
+    
+    
+    // MARK: - Constraint Outlets
+    
+    @IBOutlet weak var checkboxWidth: NSLayoutConstraint!
+    
+    
+    // MARK: - Private constants
+    
+    private let kCheckboxWidth: CGFloat = 22.0
+    
+    
+    // MARK: - Private attributes
+    
+    private var isChecked: Bool = false
+    
+    func showCheckboxOnLeftSide() {
+        self.checkboxWidth.constant = kCheckboxWidth
+        self.setNeedsUpdateConstraints()        
+    }
+    
+    func checkboxTapped() {
+        if (isChecked) {
+            checkboxButton.setImage(UIImage(named: "unchecked"), forState: UIControlState.Normal)
+        } else {
+            checkboxButton.setImage(UIImage(named: "checked"), forState: UIControlState.Normal)
+        }
+        
+        self.isChecked = !self.isChecked
+    }
 }

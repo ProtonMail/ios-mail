@@ -14,12 +14,23 @@ import UIKit
 
 class InboxViewController: ProtonMailViewController {
     
+    
+    // MARK: - View Outlets
+    
     @IBOutlet weak var tableView: UITableView!
+    
+    
+    // MARK: - Private constants
     
     private let kInboxCellHeight: CGFloat = 64.0
     private let kCellIdentifier: String = "InboxCell"
+    private let kLongPressDuration: CFTimeInterval = 0.60 // seconds
+    
+    
+    // MARK: - Private attributes
     
     private var messages: [EmailThread]!
+    private var isEditing: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +40,10 @@ class InboxViewController: ProtonMailViewController {
         self.tableView.delegate = self
         self.tableView.tableFooterView = UIView(frame: CGRectZero)
         
+        let longPressGestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
+        longPressGestureRecognizer.minimumPressDuration = kLongPressDuration
+        self.tableView.addGestureRecognizer(longPressGestureRecognizer)
+        
         var composeBarButtonItem = UIBarButtonItem(image: UIImage(named: "compose"), style: UIBarButtonItemStyle.Plain, target: self, action: "composeButtonTapped")
         var searchBarButtonItem = UIBarButtonItem(image: UIImage(named: "search"), style: UIBarButtonItemStyle.Plain, target: self, action: "searchButtonTapped")
         var rightButtons = [composeBarButtonItem, searchBarButtonItem]
@@ -36,14 +51,57 @@ class InboxViewController: ProtonMailViewController {
         self.navigationItem.rightBarButtonItems = rightButtons
     }
     
-    func composeButtonTapped() {
+    
+    // MARK: - Button Targets
+    
+    internal func composeButtonTapped() {
         
     }
     
-    func searchButtonTapped() {
+    internal func searchButtonTapped() {
         
     }
+    
+    @IBAction func didTapCheckMessage(sender: UIButton) {
+        let point: CGPoint = sender.convertPoint(CGPointZero, toView: self.tableView)
+        let indexPath: NSIndexPath? = self.tableView.indexPathForRowAtPoint(point)
+        
+        if let indexPath = indexPath {
+            let selectedCell: InboxTableViewCell = self.tableView.cellForRowAtIndexPath(indexPath) as InboxTableViewCell
+            selectedCell.checkboxTapped()
+        }
+    }
+    
+    internal func handleLongPress(longPressGestureRecognizer: UILongPressGestureRecognizer) {
+        let point: CGPoint = longPressGestureRecognizer.locationInView(self.tableView)
+        let indexPath: NSIndexPath? = self.tableView.indexPathForRowAtPoint(point)
+    
+        if let indexPath = indexPath {
+            if (longPressGestureRecognizer.state == UIGestureRecognizerState.Began) {
+                self.isEditing = true
+                
+                let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows() as? [NSIndexPath]
+                
+                if let indexPathsForVisibleRows = indexPathsForVisibleRows {
+                    for indexPath in indexPathsForVisibleRows {
+                        let inboxTableViewCell: InboxTableViewCell = self.tableView.cellForRowAtIndexPath(indexPath) as InboxTableViewCell
+                        inboxTableViewCell.showCheckboxOnLeftSide()
+                        
+                        UIView.animateWithDuration(0.25, animations: { () -> Void in
+                            inboxTableViewCell.layoutIfNeeded()
+                        })
+                    }
+                }
+                println("Long press on table view at row \(indexPath.row)")
+            }
+        } else {
+            println("Long press on table view, but not on a row.")
+        }
+    }
 }
+
+
+// MARK: - UITableViewDataSource
 
 extension InboxViewController: UITableViewDataSource {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -64,6 +122,10 @@ extension InboxViewController: UITableViewDataSource {
             inboxCell.favoriteButton.setImage(UIImage(named: "favorite_main_selected"), forState: UIControlState.Normal)
         }
         
+        if (self.isEditing) {
+            inboxCell.showCheckboxOnLeftSide()
+        }
+        
         return inboxCell
     }
     
@@ -71,6 +133,9 @@ extension InboxViewController: UITableViewDataSource {
         return messages.count
     }
 }
+
+
+// MARK: - UITableViewDelegate
 
 extension InboxViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
