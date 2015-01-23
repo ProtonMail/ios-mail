@@ -14,10 +14,80 @@ import UIKit
 
 class InboxTableViewCell: UITableViewCell {
     
+    
+    // MARK: - View Outlets
+    
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var sender: UILabel!
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var favoriteButton: UIButton!
     @IBOutlet weak var encryptedImage: UIImageView!
     @IBOutlet weak var attachImage: UIImageView!
+    @IBOutlet weak var checkboxButton: UIButton!
+    
+    
+    // MARK: - Constraint Outlets
+    
+    @IBOutlet weak var checkboxWidth: NSLayoutConstraint!
+    
+    
+    // MARK: - Private constants
+    
+    private let kCheckboxWidth: CGFloat = 22.0
+    private let kCheckboxButtonCornerRadius: CGFloat = 1.0
+    private let kCheckboxUncheckedImage: UIImage = UIImage(named: "unchecked")!
+    private let kCheckboxCheckedImage: UIImage = UIImage(named: "checked")!
+    
+    
+    // MARK: - Private attributes
+    
+    private var isChecked: Bool = false
+    
+    
+    // MARK: - Cell configuration
+    
+    func configureCell(thread: EmailThread) {
+        self.title.text = thread.title
+        self.sender.text = thread.sender
+        self.time.text = thread.time
+        self.encryptedImage.hidden = !thread.isEncrypted
+        self.attachImage.hidden = !thread.hasAttachments
+        self.checkboxButton.layer.cornerRadius = kCheckboxButtonCornerRadius
+        self.checkboxButton.layer.masksToBounds = true
+        
+        if (thread.isFavorite) {
+            self.favoriteButton.setImage(UIImage(named: "favorite_main_selected"), forState: UIControlState.Normal)
+        } else {
+            self.favoriteButton.setImage(UIImage(named: "favorite_main"), forState: UIControlState.Normal)
+        }
+    }
+    
+    func showCheckboxOnLeftSide() {
+        self.checkboxWidth.constant = kCheckboxWidth
+        self.setNeedsUpdateConstraints()        
+    }
+    
+    func checkboxTapped() {
+        if (isChecked) {
+            checkboxButton.setImage(kCheckboxUncheckedImage, forState: UIControlState.Normal)
+        } else {
+            checkboxButton.setImage(kCheckboxCheckedImage, forState: UIControlState.Normal)
+        }
+        
+        self.isChecked = !self.isChecked
+    }
+    
+    func setCellIsChecked(checked: Bool) {
+        self.isChecked = checked
+        
+        if (checked) {
+            self.checkboxButton.setImage(kCheckboxCheckedImage, forState: UIControlState.Normal)
+        } else {
+            self.checkboxButton.setImage(kCheckboxUncheckedImage, forState: UIControlState.Normal)
+        }
+    }
+    
+    func isSelected() -> Bool {
+        return self.isChecked
+    }
 }
