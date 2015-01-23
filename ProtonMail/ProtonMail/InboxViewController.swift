@@ -217,9 +217,17 @@ class InboxViewController: ProtonMailViewController {
                 let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows() as? [NSIndexPath]
                 
                 if let indexPathsForVisibleRows = indexPathsForVisibleRows {
-                    for indexPath in indexPathsForVisibleRows {
-                        let inboxTableViewCell: InboxTableViewCell = self.tableView.cellForRowAtIndexPath(indexPath) as InboxTableViewCell
+                    for visibleIndexPath in indexPathsForVisibleRows {
+                        
+                        let inboxTableViewCell: InboxTableViewCell = self.tableView.cellForRowAtIndexPath(visibleIndexPath) as InboxTableViewCell
                         inboxTableViewCell.showCheckboxOnLeftSide()
+                        
+                        // set selected row to checked
+                        
+                        if (indexPath.row == visibleIndexPath.row) {
+                            selectedMessages.addObject(messages[indexPath.row].id)
+                            inboxTableViewCell.setCellIsChecked(true)
+                        }
                         
                         UIView.animateWithDuration(0.25, animations: { () -> Void in
                             inboxTableViewCell.layoutIfNeeded()
