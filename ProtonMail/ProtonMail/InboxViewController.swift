@@ -113,6 +113,19 @@ class InboxViewController: ProtonMailViewController {
 // MARK: - UITableViewDataSource
 
 extension InboxViewController: UITableViewDataSource {
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if (self.tableView.respondsToSelector("setSeparatorInset:")) {
+            self.tableView.separatorInset = UIEdgeInsetsZero
+        }
+        
+        if (self.tableView.respondsToSelector("setLayoutMargins:")) {
+            self.tableView.layoutMargins = UIEdgeInsetsZero
+        }
+    }
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -133,6 +146,16 @@ extension InboxViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
+    }
+    
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if (cell.respondsToSelector("setSeparatorInset:")) {
+            cell.separatorInset = UIEdgeInsetsZero
+        }
+        
+        if (cell.respondsToSelector("setLayoutMargins:")) {
+            cell.layoutMargins = UIEdgeInsetsZero
+        }
     }
 }
 
