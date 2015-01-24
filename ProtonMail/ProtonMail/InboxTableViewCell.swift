@@ -60,11 +60,36 @@ class InboxTableViewCell: UITableViewCell {
         } else {
             self.favoriteButton.setImage(UIImage(named: "favorite_main"), forState: UIControlState.Normal)
         }
+        
+        if (thread.isRead) {
+            changeStyleToReadDesign()
+        } else {
+            changeStyleToUnreadDesign()
+        }
+    }
+    
+    func changeStyleToReadDesign() {
+        self.contentView.backgroundColor = UIColor.ProtonMail.Gray_E8EBED
+        self.title.font = UIFont.robotoLight(size: UIFont.Size.h4)
+        self.sender.font = UIFont.robotoLight(size: UIFont.Size.h6)
+        self.time.font = UIFont.robotoLight(size: UIFont.Size.h6)
+    }
+    
+    func changeStyleToUnreadDesign() {
+        self.contentView.backgroundColor = UIColor.ProtonMail.Gray_FCFEFF
+        self.title.font = UIFont.robotoRegular(size: UIFont.Size.h4)
+        self.sender.font = UIFont.robotoRegular(size: UIFont.Size.h6)
+        self.time.font = UIFont.robotoRegular(size: UIFont.Size.h6)
     }
     
     func showCheckboxOnLeftSide() {
         self.checkboxWidth.constant = kCheckboxWidth
         self.setNeedsUpdateConstraints()        
+    }
+    
+    func hideCheckboxOnLeftSide() {
+        self.checkboxWidth.constant = 0.0
+        self.setNeedsUpdateConstraints()
     }
     
     func checkboxTapped() {

@@ -20,4 +20,22 @@ extension UIFont {
     class func robotoThin(#size: CGFloat) -> UIFont {
         return UIFont(name: "Roboto-Thin", size: size)!
     }
+    
+    class func robotoRegular(#size: CGFloat) -> UIFont {
+        return UIFont(name: "Roboto-Regular", size: size)!
+    }
+    
+    class func robotoLight(#size: CGFloat) -> UIFont {
+        return UIFont(name: "Roboto-Light", size: size)!
+    }
+    
+    struct Size {
+        static var h1:CGFloat = 24.0
+        static var h2:CGFloat = 18.0
+        static var h3:CGFloat = 17.0
+        static var h4:CGFloat = 16.0
+        static var h5:CGFloat = 14.0
+        static var h6:CGFloat = 12.0
+        static var h7:CGFloat = 9.0
+    }
 }
