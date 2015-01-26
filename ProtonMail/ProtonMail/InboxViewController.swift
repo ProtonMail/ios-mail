@@ -37,6 +37,7 @@ class InboxViewController: ProtonMailViewController {
     private var isEditing: Bool = false
     private var isViewingMoreOptions: Bool = false
     private var refreshControl: UIRefreshControl!
+    private var isUndoButtonTapped: Bool = false
     
     // MARK: - Right bar buttons
     
@@ -72,11 +73,14 @@ class InboxViewController: ProtonMailViewController {
         let longPressGestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
         longPressGestureRecognizer.minimumPressDuration = kLongPressDuration
         self.tableView.addGestureRecognizer(longPressGestureRecognizer)
+        
         self.menuBarButtonItem = self.navigationItem.leftBarButtonItem
             
         self.updateNavigationController(isEditing)
         
         self.moreOptionsView.alpha = 1.0
+        
+        // to move the view out of the screen, animating later
         self.moreOptionsViewTopConstraint.constant = -self.moreOptionsViewHeightConstraint.constant
     }
     
@@ -186,6 +190,10 @@ class InboxViewController: ProtonMailViewController {
     internal func getLatestMessages() {
         self.messages = EmailService.retrieveMessages()
         self.refreshControl.endRefreshing()
+        
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
+        })
     }
     
     internal func cancelButtonTapped() {
@@ -304,7 +312,7 @@ extension InboxViewController: UITableViewDataSource {
         var inboxCell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as InboxTableViewCell
         inboxCell.configureCell(thread)
         inboxCell.setCellIsChecked(selectedMessages.containsObject(thread.id))
-                        
+        
         if (self.isEditing) {
             inboxCell.showCheckboxOnLeftSide()
         }
@@ -333,5 +341,38 @@ extension InboxViewController: UITableViewDataSource {
 extension InboxViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return kInboxCellHeight
+    }
+    
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+        let messageTrashed: UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Message Trashed") { (rowAction, indexPath) -> Void in
+            
+        }
+        
+        messageTrashed.backgroundColor = UIColor.ProtonMail.Red_D74B4B
+        
+        let undo: UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Undo") { (rowAction, indexPath) -> Void in
+            self.isUndoButtonTapped = true
+        }
+        
+        undo.backgroundColor = UIColor.ProtonMail.Gray_999DA1
+        
+        return [undo, messageTrashed]
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        // just to allow tableview swipe-left
+    }
+    
+    func tableView(tableView: UITableView, willBeginEditingRowAtIndexPath indexPath: NSIndexPath) {
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue()) {
+            if (!self.isUndoButtonTapped) {
+                self.isUndoButtonTapped = false
+                self.messages.removeAtIndex(indexPath.row)
+                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+            }
+            
+            self.tableView.editing = false
+        }
     }
 }
