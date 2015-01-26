@@ -18,6 +18,9 @@ class InboxViewController: ProtonMailViewController {
     // MARK: - View Outlets
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var moreOptionsView: UIView!
+    @IBOutlet weak var moreOptionsViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var moreOptionsViewTopConstraint: NSLayoutConstraint!
     
     
     // MARK: - Private constants
@@ -32,6 +35,7 @@ class InboxViewController: ProtonMailViewController {
     private var messages: [EmailThread]!
     private var selectedMessages: NSMutableSet = NSMutableSet()
     private var isEditing: Bool = false
+    private var isViewingMoreOptions: Bool = false
     
     // MARK: - Right bar buttons
     
@@ -64,6 +68,9 @@ class InboxViewController: ProtonMailViewController {
         self.menuBarButtonItem = self.navigationItem.leftBarButtonItem
             
         self.updateNavigationController(isEditing)
+        
+        self.moreOptionsView.alpha = 1.0
+        self.moreOptionsViewTopConstraint.constant = -self.moreOptionsViewHeightConstraint.constant
     }
     
     
@@ -156,7 +163,17 @@ class InboxViewController: ProtonMailViewController {
     }
     
     internal func moreButtonTapped() {
+        if (self.isViewingMoreOptions) {
+            self.moreOptionsViewTopConstraint.constant = -self.moreOptionsViewHeightConstraint.constant
+        } else {
+            self.moreOptionsViewTopConstraint.constant = 0.0
+        }
         
+        self.isViewingMoreOptions = !self.isViewingMoreOptions
+
+        UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+            }, completion: nil)
     }
     
     internal func cancelButtonTapped() {
