@@ -36,6 +36,7 @@ class InboxViewController: ProtonMailViewController {
     private var selectedMessages: NSMutableSet = NSMutableSet()
     private var isEditing: Bool = false
     private var isViewingMoreOptions: Bool = false
+    private var refreshControl: UIRefreshControl!
     
     // MARK: - Right bar buttons
     
@@ -56,8 +57,14 @@ class InboxViewController: ProtonMailViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.messages = EmailService.retrieveMessages()
         
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl.backgroundColor = UIColor.ProtonMail.Blue_475F77
+        self.refreshControl.tintColor = UIColor.whiteColor()
+        self.refreshControl.addTarget(self, action: "getLatestMessages", forControlEvents: UIControlEvents.ValueChanged)
+        
+        self.getLatestMessages()
+        self.tableView.addSubview(self.refreshControl)
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.tableView.tableFooterView = UIView(frame: CGRectZero)
@@ -174,6 +181,11 @@ class InboxViewController: ProtonMailViewController {
         UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
+    }
+    
+    internal func getLatestMessages() {
+        self.messages = EmailService.retrieveMessages()
+        self.refreshControl.endRefreshing()
     }
     
     internal func cancelButtonTapped() {

@@ -1193,14 +1193,14 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="izv-3g-GNT" secondAttribute="trailing" constant="-16" id="1VW-Jh-HhZ"/>
-                            <constraint firstItem="7Zx-Yy-VI3" firstAttribute="leading" secondItem="OTG-Sc-6eN" secondAttribute="leadingMargin" constant="-16" id="3Cw-jR-TWl"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="7Zx-Yy-VI3" secondAttribute="trailing" constant="-16" id="Ddi-B2-aIo"/>
+                            <constraint firstAttribute="trailing" secondItem="izv-3g-GNT" secondAttribute="trailing" id="1VW-Jh-HhZ"/>
+                            <constraint firstItem="7Zx-Yy-VI3" firstAttribute="leading" secondItem="OTG-Sc-6eN" secondAttribute="leading" id="3Cw-jR-TWl"/>
+                            <constraint firstAttribute="trailing" secondItem="7Zx-Yy-VI3" secondAttribute="trailing" id="Ddi-B2-aIo"/>
                             <constraint firstItem="Jzd-SW-ZeK" firstAttribute="top" secondItem="7Zx-Yy-VI3" secondAttribute="bottom" id="L45-V5-s10"/>
                             <constraint firstItem="izv-3g-GNT" firstAttribute="top" secondItem="vYi-81-AYM" secondAttribute="bottom" id="QnY-x2-HD0"/>
                             <constraint firstAttribute="centerY" secondItem="hFI-9J-iHr" secondAttribute="centerY" constant="0.5" id="XQT-sc-dGs"/>
                             <constraint firstItem="7Zx-Yy-VI3" firstAttribute="top" secondItem="vYi-81-AYM" secondAttribute="bottom" id="hZH-vh-rJr"/>
-                            <constraint firstItem="izv-3g-GNT" firstAttribute="leading" secondItem="OTG-Sc-6eN" secondAttribute="leadingMargin" constant="-16" id="oPX-tJ-9Yu"/>
+                            <constraint firstItem="izv-3g-GNT" firstAttribute="leading" secondItem="OTG-Sc-6eN" secondAttribute="leading" id="oPX-tJ-9Yu"/>
                             <constraint firstAttribute="centerX" secondItem="hFI-9J-iHr" secondAttribute="centerX" id="pDX-q7-tNC"/>
                         </constraints>
                         <variation key="default">
