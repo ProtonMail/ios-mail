@@ -27,6 +27,8 @@ class MenuViewController: UIViewController {
         var identifier: String { return rawValue }
 }
     
+    @IBOutlet weak var displayNameLabel: UILabel!
+    @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
     private let kMenuCellHeight: CGFloat = 62.0
@@ -42,12 +44,41 @@ class MenuViewController: UIViewController {
         tableView.delegate = self
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        updateEmailLabel()
+        updateDisplayNameLabel()
+    }
+    
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
     }
     
     func itemForIndexPath(indexPath: NSIndexPath) -> MenuItem {
         return items[indexPath.row]
+    }
+    
+    func updateDisplayNameLabel() {
+        if let displayName = sharedUserDataService.displayName {
+            if !displayName.isEmpty {
+                displayNameLabel.text = displayName
+                return
+            }
+        }
+
+        displayNameLabel.text = emailLabel.text
+    }
+    
+    func updateEmailLabel() {
+        if let username = sharedUserDataService.username {
+            if !username.isEmpty {
+                emailLabel.text = "\(username)@protonmail.ch"
+                return
+            }
+        }
+        
+        emailLabel.text = ""
     }
 }
 

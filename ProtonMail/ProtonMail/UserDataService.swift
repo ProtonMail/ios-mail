@@ -84,10 +84,11 @@ class UserDataService {
     
     func signIn(username: String, password: String, isRemembered: Bool, completion: (NSError? -> Void)) {
         sharedProtonMailAPIService.authAuth(username: username, password: password, success: { () in
+            self.isSignedIn = true
+            self.username = username
+
             if isRemembered {
                 self.isRememberUser = isRemembered
-                self.isSignedIn = true
-                self.username = username
                 self.password = password
             }
             
