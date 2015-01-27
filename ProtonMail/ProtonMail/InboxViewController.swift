@@ -33,6 +33,23 @@ class InboxViewController: ProtonMailViewController {
     private var selectedMessages: NSMutableSet = NSMutableSet()
     private var isEditing: Bool = false
     
+    // MARK: - Right bar buttons
+    
+    private var composeBarButtonItem: UIBarButtonItem!
+    private var searchBarButtonItem: UIBarButtonItem!
+    private var removeBarButtonItem: UIBarButtonItem!
+    private var favoriteBarButtonItem: UIBarButtonItem!
+    private var moreBarButtonItem: UIBarButtonItem!
+    
+    
+    // MARK: - Left bar button
+    
+    private var cancelBarButtonItem: UIBarButtonItem!
+    private var menuBarButtonItem: UIBarButtonItem!
+    
+    
+    // MARK: - UIViewController Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.messages = EmailService.retrieveMessages()
@@ -44,12 +61,79 @@ class InboxViewController: ProtonMailViewController {
         let longPressGestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
         longPressGestureRecognizer.minimumPressDuration = kLongPressDuration
         self.tableView.addGestureRecognizer(longPressGestureRecognizer)
+        self.menuBarButtonItem = self.navigationItem.leftBarButtonItem
+            
+        self.updateNavigationController(isEditing)
+    }
+    
+    
+    // MARK: - Private methods
+    
+    private func setupLeftButtons(editingMode: Bool) {
+        var leftButtons: [UIBarButtonItem]
         
-        var composeBarButtonItem = UIBarButtonItem(image: UIImage(named: "compose"), style: UIBarButtonItemStyle.Plain, target: self, action: "composeButtonTapped")
-        var searchBarButtonItem = UIBarButtonItem(image: UIImage(named: "search"), style: UIBarButtonItemStyle.Plain, target: self, action: "searchButtonTapped")
-        var rightButtons = [composeBarButtonItem, searchBarButtonItem]
+        if (!editingMode) {
+            leftButtons = [self.menuBarButtonItem]
+        } else {
+            if (self.cancelBarButtonItem == nil) {
+                self.cancelBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Cancel, target: self, action: "cancelButtonTapped")
+            }
+            
+            leftButtons = [self.cancelBarButtonItem]
+        }
         
-        self.navigationItem.rightBarButtonItems = rightButtons
+        self.navigationItem.setLeftBarButtonItems(leftButtons, animated: true)
+    }
+    
+    private func setupNavigationTitle(editingMode: Bool) {
+        
+        // title animation
+        
+        let animation = CATransition()
+        animation.duration = 0.25
+        animation.type = kCATransitionFade
+        
+        self.navigationController?.navigationBar.layer.addAnimation(animation, forKey: "fadeText")
+        
+        if (editingMode) {
+            self.navigationItem.title = ""
+        } else {
+            self.navigationItem.title = "INBOX"
+        }
+    }
+    
+    private func setupRightButtons(editingMode: Bool) {
+        var rightButtons: [UIBarButtonItem]
+        
+        if (!editingMode) {
+            if (self.composeBarButtonItem == nil) {
+                self.composeBarButtonItem = UIBarButtonItem(image: UIImage(named: "compose"), style: UIBarButtonItemStyle.Plain, target: self, action: "composeButtonTapped")
+            }
+            
+            if (self.searchBarButtonItem == nil) {
+                self.searchBarButtonItem = UIBarButtonItem(image: UIImage(named: "search"), style: UIBarButtonItemStyle.Plain, target: self, action: "searchButtonTapped")
+            }
+            
+            rightButtons = [self.composeBarButtonItem, self.searchBarButtonItem]
+        
+        } else {
+            
+            if (self.removeBarButtonItem == nil) {
+                self.removeBarButtonItem = UIBarButtonItem(image: UIImage(named: "trash_selected"), style: UIBarButtonItemStyle.Plain, target: self, action: "removeButtonTapped")
+            }
+
+            if (self.favoriteBarButtonItem == nil) {
+                self.favoriteBarButtonItem = UIBarButtonItem(image: UIImage(named: "favorite"), style: UIBarButtonItemStyle.Plain, target: self, action: "favoriteButtonTapped")
+            }
+
+            if (self.moreBarButtonItem == nil) {
+                self.moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "arrow_down"), style: UIBarButtonItemStyle.Plain, target: self, action: "moreButtonTapped")
+            }
+            
+            rightButtons = [self.moreBarButtonItem, self.favoriteBarButtonItem, self.removeBarButtonItem]
+        }
+        
+        self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
     }
     
     
@@ -61,6 +145,24 @@ class InboxViewController: ProtonMailViewController {
     
     internal func searchButtonTapped() {
         
+    }
+    
+    internal func removeButtonTapped() {
+        
+    }
+    
+    internal func favoriteButtonTapped() {
+        
+    }
+    
+    internal func moreButtonTapped() {
+        
+    }
+    
+    internal func cancelButtonTapped() {
+        selectedMessages.removeAllObjects()
+        self.hideCheckOptions()
+        self.updateNavigationController(false)
     }
     
     @IBAction func didTapCheckMessage(sender: UIButton) {
@@ -82,9 +184,32 @@ class InboxViewController: ProtonMailViewController {
     }
     
     internal func handleLongPress(longPressGestureRecognizer: UILongPressGestureRecognizer) {
+        showCheckOptions(longPressGestureRecognizer)
+        updateNavigationController(isEditing)
+    }
+    
+    private func hideCheckOptions() {
+        self.isEditing = false
+     
+        let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows() as? [NSIndexPath]
+        
+        if let indexPathsForVisibleRows = indexPathsForVisibleRows {
+            for indexPath in indexPathsForVisibleRows {
+                let inboxTableViewCell: InboxTableViewCell = self.tableView.cellForRowAtIndexPath(indexPath) as InboxTableViewCell
+                inboxTableViewCell.setCellIsChecked(false)
+                inboxTableViewCell.hideCheckboxOnLeftSide()
+                
+                UIView.animateWithDuration(0.25, animations: { () -> Void in
+                    inboxTableViewCell.layoutIfNeeded()
+                })
+            }
+        }
+    }
+    
+    private func showCheckOptions(longPressGestureRecognizer: UILongPressGestureRecognizer) {
         let point: CGPoint = longPressGestureRecognizer.locationInView(self.tableView)
         let indexPath: NSIndexPath? = self.tableView.indexPathForRowAtPoint(point)
-    
+        
         if let indexPath = indexPath {
             if (longPressGestureRecognizer.state == UIGestureRecognizerState.Began) {
                 self.isEditing = true
@@ -92,9 +217,17 @@ class InboxViewController: ProtonMailViewController {
                 let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows() as? [NSIndexPath]
                 
                 if let indexPathsForVisibleRows = indexPathsForVisibleRows {
-                    for indexPath in indexPathsForVisibleRows {
-                        let inboxTableViewCell: InboxTableViewCell = self.tableView.cellForRowAtIndexPath(indexPath) as InboxTableViewCell
+                    for visibleIndexPath in indexPathsForVisibleRows {
+                        
+                        let inboxTableViewCell: InboxTableViewCell = self.tableView.cellForRowAtIndexPath(visibleIndexPath) as InboxTableViewCell
                         inboxTableViewCell.showCheckboxOnLeftSide()
+                        
+                        // set selected row to checked
+                        
+                        if (indexPath.row == visibleIndexPath.row) {
+                            selectedMessages.addObject(messages[indexPath.row].id)
+                            inboxTableViewCell.setCellIsChecked(true)
+                        }
                         
                         UIView.animateWithDuration(0.25, animations: { () -> Void in
                             inboxTableViewCell.layoutIfNeeded()
@@ -107,12 +240,31 @@ class InboxViewController: ProtonMailViewController {
             println("Long press on table view, but not on a row.")
         }
     }
+    
+    private func updateNavigationController(editingMode: Bool) {
+        self.setupLeftButtons(editingMode)
+        self.setupNavigationTitle(editingMode)
+        self.setupRightButtons(editingMode)
+    }
 }
 
 
 // MARK: - UITableViewDataSource
 
 extension InboxViewController: UITableViewDataSource {
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if (self.tableView.respondsToSelector("setSeparatorInset:")) {
+            self.tableView.separatorInset = UIEdgeInsetsZero
+        }
+        
+        if (self.tableView.respondsToSelector("setLayoutMargins:")) {
+            self.tableView.layoutMargins = UIEdgeInsetsZero
+        }
+    }
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -133,6 +285,16 @@ extension InboxViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
+    }
+    
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if (cell.respondsToSelector("setSeparatorInset:")) {
+            cell.separatorInset = UIEdgeInsetsZero
+        }
+        
+        if (cell.respondsToSelector("setLayoutMargins:")) {
+            cell.layoutMargins = UIEdgeInsetsZero
+        }
     }
 }
 

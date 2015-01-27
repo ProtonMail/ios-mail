@@ -21,12 +21,13 @@ class EmailThread: NSObject {
     internal var hasAttachments: Bool = false
     internal var isEncrypted: Bool = false
     internal var isFavorite: Bool = false
+    internal var isRead: Bool = false
     
     override init() {
         super.init()
     }
     
-    convenience init(id: String, title: String, sender:String, time: String, hasAttachments: Bool = false, isEncrypted: Bool = false, isFavorite: Bool = false) {
+    convenience init(id: String, title: String, sender:String, time: String, hasAttachments: Bool = false, isEncrypted: Bool = false, isFavorite: Bool = false, isRead: Bool = false) {
         
         self.init()
         self.id = id
@@ -36,5 +37,6 @@ class EmailThread: NSObject {
         self.hasAttachments = hasAttachments
         self.isEncrypted = isEncrypted
         self.isFavorite = isFavorite
+        self.isRead = isRead
     }
 }
