@@ -18,6 +18,9 @@ class InboxViewController: ProtonMailViewController {
     // MARK: - View Outlets
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var moreOptionsView: UIView!
+    @IBOutlet weak var moreOptionsViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var moreOptionsViewTopConstraint: NSLayoutConstraint!
     
     
     // MARK: - Private constants
@@ -32,6 +35,8 @@ class InboxViewController: ProtonMailViewController {
     private var messages: [EmailThread]!
     private var selectedMessages: NSMutableSet = NSMutableSet()
     private var isEditing: Bool = false
+    private var isViewingMoreOptions: Bool = false
+    private var refreshControl: UIRefreshControl!
     
     // MARK: - Right bar buttons
     
@@ -52,8 +57,14 @@ class InboxViewController: ProtonMailViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.messages = EmailService.retrieveMessages()
         
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl.backgroundColor = UIColor.ProtonMail.Blue_475F77
+        self.refreshControl.tintColor = UIColor.whiteColor()
+        self.refreshControl.addTarget(self, action: "getLatestMessages", forControlEvents: UIControlEvents.ValueChanged)
+        
+        self.getLatestMessages()
+        self.tableView.addSubview(self.refreshControl)
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.tableView.tableFooterView = UIView(frame: CGRectZero)
@@ -64,6 +75,9 @@ class InboxViewController: ProtonMailViewController {
         self.menuBarButtonItem = self.navigationItem.leftBarButtonItem
             
         self.updateNavigationController(isEditing)
+        
+        self.moreOptionsView.alpha = 1.0
+        self.moreOptionsViewTopConstraint.constant = -self.moreOptionsViewHeightConstraint.constant
     }
     
     
@@ -156,7 +170,22 @@ class InboxViewController: ProtonMailViewController {
     }
     
     internal func moreButtonTapped() {
+        if (self.isViewingMoreOptions) {
+            self.moreOptionsViewTopConstraint.constant = -self.moreOptionsViewHeightConstraint.constant
+        } else {
+            self.moreOptionsViewTopConstraint.constant = 0.0
+        }
         
+        self.isViewingMoreOptions = !self.isViewingMoreOptions
+
+        UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+            }, completion: nil)
+    }
+    
+    internal func getLatestMessages() {
+        self.messages = EmailService.retrieveMessages()
+        self.refreshControl.endRefreshing()
     }
     
     internal func cancelButtonTapped() {
