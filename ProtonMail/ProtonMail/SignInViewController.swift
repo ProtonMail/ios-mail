@@ -90,7 +90,7 @@ class SignInViewController: UIViewController {
     func signIn() {
         MBProgressHUD.showHUDAddedTo(view, animated: true)
         
-        AuthenticationService().signIn(usernameTextField.text, password: passwordTextField.text, isRemembered: isRemembered) {error in
+        sharedUserDataService.signIn(usernameTextField.text, password: passwordTextField.text, isRemembered: isRemembered) {error in
             MBProgressHUD.hideHUDForView(self.view, animated: true)
             
             if let error = error {
@@ -107,11 +107,11 @@ class SignInViewController: UIViewController {
     }
     
     func signInIfRememberedCredentials() {
-        if let (username, password) = AuthenticationService().rememberedCredentials() {
+        if sharedUserDataService.isUserCredentialStored {
             isRemembered = true
             rememberMeSwitch.setOn(true, animated: false)
-            usernameTextField.text = username
-            passwordTextField.text = password
+            usernameTextField.text = sharedUserDataService.username
+            passwordTextField.text = sharedUserDataService.password
             
             signIn()
         }

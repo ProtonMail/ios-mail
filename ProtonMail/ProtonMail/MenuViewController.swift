@@ -65,7 +65,7 @@ extension MenuViewController: UITableViewDelegate {
         let item = itemForIndexPath(indexPath)
         
         if item == .signout {
-            AuthenticationService().signOut()
+            sharedUserDataService.signOut()
             
             presentViewController(SignInViewController.newViewController(), animated: true) { () -> Void in
                 self.revealViewController().revealToggleAnimated(false)

@@ -17,6 +17,10 @@
 import Foundation
 
 class AuthCredential: NSObject, NSCoding {
+    enum Key: String {
+        case keychainStore = "keychainStoreKey"
+    }
+    
     let accessToken: String!
     let refreshToken: String!
     let userID: String!
@@ -25,43 +29,48 @@ class AuthCredential: NSObject, NSCoding {
     override var description: String {
         return "\n  accessToken: \(accessToken)\n  refreshToken: \(refreshToken)\n  expiration: \(expiration)\n  userID: \(userID)"
     }
+    
+    var isExpired: Bool {
+        return expiration == nil || NSDate().compare(expiration) != .OrderedAscending
+    }
 
+    required init(accessToken: String!, refreshToken: String!, userID: String!, expiration: NSDate!) {
+        super.init()
+        
+        self.accessToken = accessToken
+        self.refreshToken = refreshToken
+        self.userID = userID
+        self.expiration = expiration
+    }
+    
+    func storeInKeychain() {
+        UICKeyChainStore().setData(NSKeyedArchiver.archivedDataWithRootObject(self), forKey: Key.keychainStore.rawValue)
+    }
+    
+    // MARK - Class methods
+    
+    class func fetchFromKeychain() -> AuthCredential? {
+        if let data = UICKeyChainStore.dataForKey(Key.keychainStore.rawValue) {
+            if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? AuthCredential {
+                return authCredential
+            }
+        }
+        
+        return nil
+    }
+    
+    // MARK - NSCoding
+    
     private let accessTokenCoderKey = "accessTokenCoderKey"
     private let refreshTokenCoderKey = "refreshTokenCoderKey"
     private let userIDCoderKey = "userIDCoderKey"
     private let expirationCoderKey = "expirationCoderKey"
     
-    private let keychainStoreKey = "keychainStoreKey"
-
-    required init?(credential: AnyObject!) {
-        super.init()
-        
-        if let credential = credential as? NSDictionary {
-            accessToken = credential["access_token"] as? String
-            refreshToken = credential["refresh_token"] as? String
-            userID = credential["uid"] as? String
-            
-            if let expiresIn = credential["expires_in"] as? NSTimeInterval {
-                expiration = NSDate(timeIntervalSinceNow: expiresIn)
-            }
-        }
-        
-        if accessToken == nil || refreshToken == nil || userID == nil || expiration == nil {
-            return nil
-        }
-    }
-    
-    func storeInKeychain() {
-        UICKeyChainStore().setData(NSKeyedArchiver.archivedDataWithRootObject(self), forKey: keychainStoreKey)
-    }
-    
-    // MARK - NSCoding
-    
     required init(coder aDecoder: NSCoder) {
         super.init()
         
         accessToken = aDecoder.decodeObjectForKey(accessTokenCoderKey) as? String
-        refreshToken = aDecoder.decodeObjectForKey(refreshToken) as? String
+        refreshToken = aDecoder.decodeObjectForKey(refreshTokenCoderKey) as? String
         userID = aDecoder.decodeObjectForKey(userIDCoderKey) as? String
         expiration = aDecoder.decodeObjectForKey(expirationCoderKey) as? NSDate
     }
