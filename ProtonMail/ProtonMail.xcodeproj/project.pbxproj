@@ -34,6 +34,7 @@
 		706628211A715A0900164117 /* InboxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706628201A715A0900164117 /* InboxTableViewCell.swift */; };
 		706628231A71651700164117 /* EmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706628221A71651700164117 /* EmailService.swift */; };
 		706628271A71695A00164117 /* EmailThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706628261A71695A00164117 /* EmailThread.swift */; };
+		706932AB1A77BE3D00A75A93 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706932AA1A77BE3D00A75A93 /* SearchViewController.swift */; };
 		706961FD1A713670001443B2 /* DraftsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706961FC1A713670001443B2 /* DraftsViewController.swift */; };
 		706961FF1A7136A0001443B2 /* ProtonMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706961FE1A7136A0001443B2 /* ProtonMailViewController.swift */; };
 		706962071A71399D001443B2 /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706962061A71399D001443B2 /* ContactsViewController.swift */; };
@@ -92,6 +93,7 @@
 		706628201A715A0900164117 /* InboxTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxTableViewCell.swift; sourceTree = "<group>"; };
 		706628221A71651700164117 /* EmailService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailService.swift; sourceTree = "<group>"; };
 		706628261A71695A00164117 /* EmailThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailThread.swift; sourceTree = "<group>"; };
+		706932AA1A77BE3D00A75A93 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		706961FC1A713670001443B2 /* DraftsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraftsViewController.swift; sourceTree = "<group>"; };
 		706961FE1A7136A0001443B2 /* ProtonMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProtonMailViewController.swift; path = ProtonMail/ProtonMailViewController.swift; sourceTree = "<group>"; };
 		706962061A71399D001443B2 /* ContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 				706961FB1A71365F001443B2 /* Drafts */,
 				7061A3F11A6E8C4A0006D36C /* Menu */,
 				70C913391A6D82F0002CBE61 /* Inbox */,
+				706932A91A77BE2900A75A93 /* Search */,
 				706962001A713926001443B2 /* Sent */,
 				706962041A713960001443B2 /* Settings */,
 				07009EFD1A659A8000129B07 /* Sign In */,
@@ -286,6 +289,14 @@
 				706628261A71695A00164117 /* EmailThread.swift */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		706932A91A77BE2900A75A93 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				706932AA1A77BE3D00A75A93 /* SearchViewController.swift */,
+			);
+			name = Search;
 			sourceTree = "<group>";
 		};
 		706961FB1A71365F001443B2 /* Drafts */ = {
@@ -547,6 +558,7 @@
 				7069620F1A7139FE001443B2 /* SpamViewController.swift in Sources */,
 				07B797C01A6EDFF400244532 /* ProtonMailAPIService.swift in Sources */,
 				07009EFC1A64AEF800129B07 /* PGPService.swift in Sources */,
+				706932AB1A77BE3D00A75A93 /* SearchViewController.swift in Sources */,
 				07009F0F1A6849A500129B07 /* AuthenticationService.swift in Sources */,
 				706962111A713A0F001443B2 /* TrashViewController.swift in Sources */,
 				7027B02B1A700F0200D28F52 /* MenuTableViewCell.swift in Sources */,

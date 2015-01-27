@@ -28,6 +28,7 @@ class InboxViewController: ProtonMailViewController {
     private let kInboxCellHeight: CGFloat = 64.0
     private let kCellIdentifier: String = "InboxCell"
     private let kLongPressDuration: CFTimeInterval = 0.60 // seconds
+    private let kSegueToSearchController: String = "toSearchViewController"
     
     
     // MARK: - Private attributes
@@ -162,7 +163,7 @@ class InboxViewController: ProtonMailViewController {
     }
     
     internal func searchButtonTapped() {
-        
+        self.performSegueWithIdentifier(kSegueToSearchController, sender: self)
     }
     
     internal func removeButtonTapped() {
