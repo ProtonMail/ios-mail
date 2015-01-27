@@ -42,5 +42,6 @@ extension UIColor {
         static let Gray_FCFEFF = UIColor(RRGGBB: UInt(0xFCFEFF))
         static let Gray_E8EBED = UIColor(RRGGBB: UInt(0xE8EBED))
         static let Gray_999DA1 = UIColor(RRGGBB: UInt(0x999DA1))
+        static let Red_D74B4B = UIColor(RRGGBB: UInt(0xD74B4B))
     }    
 }
