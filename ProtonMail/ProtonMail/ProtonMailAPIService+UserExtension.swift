@@ -17,25 +17,32 @@
 import Foundation
 
 extension ProtonMailAPIService {
-    enum UserErrorCode: Int {
-        case NoUser = 200
+    typealias UserInfo = (displayName: String?, privateKey: String?)
+    
+    func userInfo(#success: (UserInfo -> Void), failure: (NSError? -> Void)) {
+        fetchAuthCredential(success: { authCredential in
+            let userInfoPath = "/users/\(authCredential.userID)"
+            
+            self.sessionManager.GET(userInfoPath, parameters: nil, success: { (task, response) -> Void in
+                if let userInfo = self.userInfoForResponse(response) {
+                    success(userInfo)
+                } else {
+                    failure(NSError.protonMailError(code: APIError.unknown.rawValue, localizedDescription: APIError.unknown.localizedDescription, localizedFailureReason: response.description))
+                }
+                }) { task, error in
+                    failure(error)
+            }
+        }, failure: failure)
     }
     
-    func userInfo(success: (AnyObject! -> Void), failure: (NSError -> Void)) {
-        if let authCredential = authCredential() {
-            let userInfoPath = "/user/\(authCredential.userID)"
+    func userInfoForResponse(response: AnyObject!) -> UserInfo? {
+        if let response = response as? NSDictionary {
+            let displayName = response["DisplayName"] as? String
+            let privateKey = response["EncPrivateKey"] as? String
             
-            sessionManager.GET(userInfoPath, parameters: nil, success: { (task, response) -> Void in
-                if let response = response as NSDictionary {
-                    
-                }
-            }, failure: { (task, error) -> Void in
-                failure(error)
-            })
-        } else {
-            let error = NSError.protonMailError(code: UserErrorCode.NoUser.rawValue, localizedDescription: NSLocalizedString("User not logged in"), localizedFailureReason: NSLocalizedString("The user is not logged in."))
-            
-            failure(error)
+            return (displayName, privateKey)
         }
+        
+        return nil
     }
 }

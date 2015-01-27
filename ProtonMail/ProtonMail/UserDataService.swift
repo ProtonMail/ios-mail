@@ -20,6 +20,7 @@ let sharedUserDataService = UserDataService()
 
 /// Stores information related to the user
 class UserDataService {
+    private let displayNameKey = "displayNameKey"
     private let isRememberUserKey = "isRememberUserKey"
     private let usernameKey = "usernameKey"
     private let passwordKey = "passwordKey"
@@ -29,6 +30,14 @@ class UserDataService {
     var isRememberUser: Bool {
         didSet {
             userDefaults.setBool(isRememberUser, forKey: isRememberUserKey)
+        }
+    }
+    
+    private(set) var isSignedIn: Bool = false
+    
+    private(set) var displayName: String? {
+        didSet {
+            userDefaults.setValue(displayName, forKey: displayNameKey)
         }
     }
     
@@ -53,19 +62,40 @@ class UserDataService {
     }
     
     init() {
+        displayName = userDefaults.stringForKey(displayNameKey)
         isRememberUser = userDefaults.boolForKey(isRememberUserKey)
         username = userDefaults.stringForKey(usernameKey)
     }
     
+    func fetchUserInfo(completion: (NSError? -> Void)? = nil) {
+        sharedProtonMailAPIService.userInfo(success: { (displayName, privateKey) -> Void in
+            self.displayName = displayName
+            
+            if completion != nil {
+                completion!(nil)
+            }
+            
+            }, failure: { error in
+                if completion != nil {
+                    completion!(error)
+                }
+        })
+    }
+    
     func signIn(username: String, password: String, isRemembered: Bool, completion: (NSError? -> Void)) {
-        SharedProtonMailAPIService.authAuth(username: username, password: password, success: { () in
+        sharedProtonMailAPIService.authAuth(username: username, password: password, success: { () in
             if isRemembered {
                 self.isRememberUser = isRemembered
+                self.isSignedIn = true
                 self.username = username
                 self.password = password
             }
             
-            completion(nil)
+            sharedUserDataService.fetchUserInfo() { error in
+                completion(error)
+            }
+            
+            
             }) { error in
                 self.signOut()
                 completion(error)
@@ -74,6 +104,7 @@ class UserDataService {
     
     func signOut() {
         isRememberUser = false
+        isSignedIn = false
         password = nil
         username = nil
     }
