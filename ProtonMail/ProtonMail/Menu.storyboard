@@ -805,6 +805,8 @@
                     </view>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
+                        <outlet property="displayNameLabel" destination="UJa-fM-KPk" id="gmL-HX-nrN"/>
+                        <outlet property="emailLabel" destination="dGF-dy-Rrr" id="pon-Wp-B7h"/>
                         <outlet property="tableView" destination="wwg-Tx-xnK" id="6s2-NN-nIS"/>
                     </connections>
                 </viewController>
