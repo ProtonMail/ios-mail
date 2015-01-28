@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="rb7-9h-TvB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iNi-o2-nXB">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="Roboto-Light.ttf">
+            <string>Roboto-Light</string>
+            <string>Roboto-Light</string>
             <string>Roboto-Light</string>
         </mutableArray>
         <mutableArray key="Roboto-Thin.ttf">
@@ -12,9 +14,27 @@
             <string>Roboto-Thin</string>
             <string>Roboto-Thin</string>
             <string>Roboto-Thin</string>
+            <string>Roboto-Thin</string>
+            <string>Roboto-Thin</string>
         </mutableArray>
     </customFonts>
     <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="Yge-wa-Lrb">
+            <objects>
+                <navigationController navigationBarHidden="YES" id="iNi-o2-nXB" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="WlM-tk-eWt">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="rb7-9h-TvB" kind="relationship" relationship="rootViewController" id="YLD-Tr-S1a"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bFp-Ct-li7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-698" y="253"/>
+        </scene>
         <!--Sign In-->
         <scene sceneID="ISM-1u-629">
             <objects>
@@ -155,6 +175,7 @@
                             <outletCollection property="gestureRecognizers" destination="2Zw-i3-E3u" appends="YES" id="P66-eb-emr"/>
                         </connections>
                     </view>
+                    <navigationItem key="navigationItem" id="UC0-zs-LZ5"/>
                     <connections>
                         <outlet property="keyboardPaddingConstraint" destination="XkH-IR-RIB" id="hYK-A9-mUp"/>
                         <outlet property="passwordTextField" destination="gnm-cH-vcp" id="1D6-sA-0j4"/>
@@ -162,6 +183,7 @@
                         <outlet property="signInButton" destination="72N-j7-s2R" id="910-jm-k2J"/>
                         <outlet property="signUpButton" destination="AJu-1e-alo" id="qIr-He-zqh"/>
                         <outlet property="usernameTextField" destination="sKV-Mt-Vgi" id="fer-Ki-efM"/>
+                        <segue destination="Zzb-6r-tlP" kind="show" identifier="mailboxSegue" id="u8v-7D-eFi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GLw-RM-bn5" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -171,11 +193,95 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="506" y="522"/>
+            <point key="canvasLocation" x="34" y="253"/>
+        </scene>
+        <!--Mailbox Password View Controller-->
+        <scene sceneID="pHR-Af-VAi">
+            <objects>
+                <viewController storyboardIdentifier="MailBoxPasswordViewController" id="Zzb-6r-tlP" customClass="MailboxPasswordViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Wmm-ES-Jna"/>
+                        <viewControllerLayoutGuide type="bottom" id="pD8-Aw-owT"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="C5N-oS-rAC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="b63-Fw-RYH">
+                                <rect key="frame" x="186" y="186" width="228" height="37"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DECRYPT MAILBOX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jzp-6U-vEt">
+                                <rect key="frame" x="221" y="307" width="159" height="22"/>
+                                <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Mailbox Password" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="16" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="aXn-9j-Mz5">
+                                <rect key="frame" x="164" y="367" width="272" height="44"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="Sv0-bR-hjk"/>
+                                    <constraint firstAttribute="width" constant="272" id="uCE-9i-FmG"/>
+                                </constraints>
+                                <color key="textColor" red="0.30980392159999998" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="tTZ-9P-EdG">
+                                <rect key="frame" x="164" y="421" width="272" height="15"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="272" id="mhK-Iv-o8E"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="12"/>
+                                <inset key="titleEdgeInsets" minX="11" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Remember me on this device." image="unchecked"/>
+                                <state key="selected" image="checked"/>
+                                <connections>
+                                    <action selector="rememberButtonAction:" destination="Zzb-6r-tlP" eventType="touchUpInside" id="YTW-d3-ciO"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zUC-Hd-aMe">
+                                <rect key="frame" x="137" y="518" width="327" height="31"/>
+                                <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="16"/>
+                                <state key="normal" title="Decrypt">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="decryptAction:" destination="Zzb-6r-tlP" eventType="touchUpInside" id="frH-Jq-je5"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.20784313730000001" green="0.29411764709999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="aXn-9j-Mz5" secondAttribute="centerX" id="63d-P7-z78"/>
+                            <constraint firstItem="zUC-Hd-aMe" firstAttribute="width" secondItem="aXn-9j-Mz5" secondAttribute="width" constant="55" id="6Nw-xH-AJM"/>
+                            <constraint firstAttribute="centerX" secondItem="b63-Fw-RYH" secondAttribute="centerX" id="EDF-N9-RHO"/>
+                            <constraint firstItem="pD8-Aw-owT" firstAttribute="top" secondItem="zUC-Hd-aMe" secondAttribute="bottom" constant="51" id="Q75-Oc-rVu"/>
+                            <constraint firstItem="aXn-9j-Mz5" firstAttribute="top" secondItem="Jzp-6U-vEt" secondAttribute="bottom" constant="38" id="WqS-7S-Yaw"/>
+                            <constraint firstAttribute="centerX" secondItem="Jzp-6U-vEt" secondAttribute="centerX" id="Wx4-rr-ZaW"/>
+                            <constraint firstItem="Jzp-6U-vEt" firstAttribute="top" secondItem="b63-Fw-RYH" secondAttribute="bottom" constant="84" id="Zlc-SP-nlN"/>
+                            <constraint firstItem="zUC-Hd-aMe" firstAttribute="top" secondItem="tTZ-9P-EdG" secondAttribute="bottom" constant="82" id="e0k-kN-uPP"/>
+                            <constraint firstAttribute="centerX" secondItem="tTZ-9P-EdG" secondAttribute="centerX" id="hC9-o4-sIB"/>
+                            <constraint firstItem="tTZ-9P-EdG" firstAttribute="top" secondItem="aXn-9j-Mz5" secondAttribute="bottom" constant="10" id="he5-O6-zH6"/>
+                            <constraint firstAttribute="centerX" secondItem="zUC-Hd-aMe" secondAttribute="centerX" constant="-0.5" id="qGa-WE-cJH"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="decryptButton" destination="zUC-Hd-aMe" id="VWe-xu-pNg"/>
+                        <outlet property="passwordTextField" destination="aXn-9j-Mz5" id="eml-rl-HGE"/>
+                        <outlet property="rememberButton" destination="tTZ-9P-EdG" id="ULf-Hl-DUS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gtd-a3-Tsl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="757" y="253"/>
         </scene>
     </scenes>
     <resources>
         <image name="Logo" width="228" height="37"/>
         <image name="SignIn" width="320" height="568"/>
+        <image name="checked" width="22" height="22"/>
+        <image name="unchecked" width="11" height="11"/>
     </resources>
 </document>
