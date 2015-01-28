@@ -13,13 +13,28 @@
 import UIKit
 
 class MenuViewController: UIViewController {
+
+    enum MenuItem: String {
+        case inbox = "Inbox"
+        case drafts = "Drafts"
+        case sent = "Sent"
+        case trash = "Trash"
+        case spam = "Spam"
+        case contacts = "Contacts"
+        case settings = "Settings"
+        case signout = "Signout"
+        
+        var identifier: String { return rawValue }
+}
     
+    @IBOutlet weak var displayNameLabel: UILabel!
+    @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
     private let kMenuCellHeight: CGFloat = 62.0
     private let kMenuOptionsWidth: CGFloat = 227.0
     
-    private let items = ["Inbox", "Drafts", "Sent", "Trash", "Spam", "Contacts", "Settings", "Signout"]
+    private let items = [MenuItem.inbox, MenuItem.drafts, MenuItem.sent, MenuItem.trash, MenuItem.spam, MenuItem.contacts, MenuItem.settings, MenuItem.signout]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,8 +44,41 @@ class MenuViewController: UIViewController {
         tableView.delegate = self
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        updateEmailLabel()
+        updateDisplayNameLabel()
+    }
+    
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
+    }
+    
+    func itemForIndexPath(indexPath: NSIndexPath) -> MenuItem {
+        return items[indexPath.row]
+    }
+    
+    func updateDisplayNameLabel() {
+        if let displayName = sharedUserDataService.displayName {
+            if !displayName.isEmpty {
+                displayNameLabel.text = displayName
+                return
+            }
+        }
+
+        displayNameLabel.text = emailLabel.text
+    }
+    
+    func updateEmailLabel() {
+        if let username = sharedUserDataService.username {
+            if !username.isEmpty {
+                emailLabel.text = "\(username)@protonmail.ch"
+                return
+            }
+        }
+        
+        emailLabel.text = ""
     }
 }
 
@@ -43,6 +91,18 @@ extension MenuViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return kMenuCellHeight
     }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let item = itemForIndexPath(indexPath)
+        
+        if item == .signout {
+            sharedUserDataService.signOut()
+            
+            presentViewController(SignInViewController.newViewController(), animated: true) { () -> Void in
+                self.revealViewController().revealToggleAnimated(false)
+            }
+        }
+    }
 }
 
 extension MenuViewController: UITableViewDataSource {
@@ -52,7 +112,7 @@ extension MenuViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: MenuTableViewCell = tableView.dequeueReusableCellWithIdentifier(items[indexPath.row], forIndexPath: indexPath) as MenuTableViewCell
+        var cell: MenuTableViewCell = tableView.dequeueReusableCellWithIdentifier(itemForIndexPath(indexPath).identifier, forIndexPath: indexPath) as MenuTableViewCell
         
         let selectedBackgroundView = UIView(frame: CGRectZero)
         selectedBackgroundView.backgroundColor = UIColor.ProtonMail.Blue_5C7A99

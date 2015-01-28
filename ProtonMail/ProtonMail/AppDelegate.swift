@@ -19,12 +19,12 @@ import CoreData
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    var window: UIWindow?
-    
+    lazy var window: UIWindow? = UIWindow(frame: UIScreen.mainScreen().bounds)
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         AFNetworkActivityIndicatorManager.sharedManager().enabled = true
-        
+        setupWindow()
+
         return true
     }
     
@@ -39,7 +39,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationWillEnterForeground(application: UIApplication) {
-        // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        if sharedUserDataService.isSignedIn {
+            sharedUserDataService.fetchUserInfo()
+        }
     }
     
     func applicationDidBecomeActive(application: UIApplication) {
@@ -50,6 +52,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
         self.saveContext()
+    }
+
+    // MARK: - Screen setup
+
+    func setupWindow() {
+        if let window = window {
+            let storyboard = UIStoryboard.menu()
+            let viewController = storyboard.instantiateInitialViewController() as UIViewController
+            
+            window.rootViewController = viewController
+            window.makeKeyAndVisible()
+            
+            if !sharedUserDataService.isUserCredentialStored {
+                NSRunLoop.currentRunLoop().runUntilDate(NSDate())
+                viewController.presentViewController(SignInViewController.newViewController(), animated: false, completion: nil)
+            }
+        }
     }
     
     // MARK: - Core Data stack
@@ -114,6 +133,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-    
 }
 

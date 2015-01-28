@@ -200,6 +200,13 @@ class InboxViewController: ProtonMailViewController {
     internal func cancelButtonTapped() {
         selectedMessages.removeAllObjects()
         self.hideCheckOptions()
+        
+        // dismiss more options view
+        
+        if (isViewingMoreOptions) {
+            self.moreButtonTapped()
+        }
+        
         self.updateNavigationController(false)
     }
     

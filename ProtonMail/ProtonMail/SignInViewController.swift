@@ -53,6 +53,12 @@ class SignInViewController: UIViewController {
         NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
     }
     
+    // MARK: - Class methods
+    
+    class func newViewController() -> UIViewController {
+        return UIStoryboard.signIn().instantiateInitialViewController() as UIViewController
+    }
+    
     // MARK: - Private methods
     
     func dismissKeyboard() {
@@ -84,7 +90,7 @@ class SignInViewController: UIViewController {
     func signIn() {
         MBProgressHUD.showHUDAddedTo(view, animated: true)
         
-        AuthenticationService().signIn(usernameTextField.text, password: passwordTextField.text, isRemembered: isRemembered) {error in
+        sharedUserDataService.signIn(usernameTextField.text, password: passwordTextField.text, isRemembered: isRemembered) {error in
             MBProgressHUD.hideHUDForView(self.view, animated: true)
             
             if let error = error {
@@ -94,16 +100,18 @@ class SignInViewController: UIViewController {
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
                 
                 self.presentViewController(alertController, animated: true, completion: nil)
+            } else {
+                self.dismissViewControllerAnimated(true, completion: nil)
             }
         }
     }
     
     func signInIfRememberedCredentials() {
-        if let (username, password) = AuthenticationService().rememberedCredentials() {
+        if sharedUserDataService.isUserCredentialStored {
             isRemembered = true
             rememberMeSwitch.setOn(true, animated: false)
-            usernameTextField.text = username
-            passwordTextField.text = password
+            usernameTextField.text = sharedUserDataService.username
+            passwordTextField.text = sharedUserDataService.password
             
             signIn()
         }

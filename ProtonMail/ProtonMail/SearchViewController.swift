@@ -41,7 +41,7 @@ class SearchViewController: ProtonMailViewController {
         searchTextField.font = UIFont.robotoRegular(size: UIFont.Size.h4)
         searchTextField.textColor = UIColor.whiteColor()
         searchTextField.tintColor = UIColor.whiteColor()
-        searchTextField.attributedPlaceholder = NSAttributedString(string: "Search", attributes:
+        searchTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Search"), attributes:
             [
                 NSForegroundColorAttributeName: UIColor.whiteColor(),
                 NSFontAttributeName: UIFont.robotoLight(size: UIFont.Size.h3)
@@ -68,6 +68,7 @@ class SearchViewController: ProtonMailViewController {
 // MARK: - UITableViewDataSource
 
 extension SearchViewController: UITableViewDataSource {
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.filteredMessages.count
     }

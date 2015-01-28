@@ -17,12 +17,9 @@
 import Foundation
 
 extension ProtonMailAPIService {
-    enum AuthErrorCode: Int {
-        case InvalidGrant
-        case UnableToParseAuthenticationToken
-    }
+    typealias AuthInfo = (accessToken: String?, expiresId: NSTimeInterval?, refreshToken: String?, userID: String?)
     
-    func authAuth(#username: String, password: String, success: (AnyObject! -> Void), failure: (NSError -> Void)) -> Void {
+    func authAuth(#username: String, password: String, success: (() -> Void), failure: (NSError -> Void)) -> Void {
         let authenticationPath = "/auth/auth"
         
         // FIXME: These values would be obtainable by inspecting the binary code, but to make thins a little more difficult, we probably don't want to these values visible when the source code is distributed.  We will probably want to come up with a way to pass in these values as pre-compiler macros.  Swift doesn't support pre-compiler macros, but we have Objective-C and can still use them.  The values would be passed in by the build scripts at build time.  Or, these values could be cleared before publishing the code.
@@ -41,12 +38,12 @@ extension ProtonMailAPIService {
             "state" : "\(NSUUID().UUIDString)"]
         
         sessionManager.POST(authenticationPath, parameters: parameters, success: { (task, response) -> Void in
-            NSLog("\(__FUNCTION__) response: \(response)")
-            
-            if let credential = AuthCredential(credential: response) {
+            if let authInfo = self.authInfoForResponse(response) {
+                let credential = AuthCredential(authInfo: authInfo)
+                
                 credential.storeInKeychain()
                 
-                success(credential)
+                success()
                 return
             }
 
@@ -54,17 +51,35 @@ extension ProtonMailAPIService {
             let description = NSLocalizedString("Unable to sign in")
             
             if self.isErrorResponse(response) {
-                error = NSError.protonMailError(code: AuthErrorCode.InvalidGrant.rawValue, localizedDescription: description, localizedFailureReason: response["error_description"] as? String)
+                error = APIError.authInvalidGrant.asNSError()
             } else {
-                error = NSError.protonMailError(code: AuthErrorCode.UnableToParseAuthenticationToken.rawValue,
-                    localizedDescription: description,
-                    localizedFailureReason: NSLocalizedString("Unable to parse authentication token!"),
-                    localizedRecoverySuggestion: NSLocalizedString("Contact customer support."))
+                error = APIError.authUnableToParseToken.asNSError()
             }
             
             failure(error!)
             }) { (task, error) -> Void in
                 failure(error)
         }
+    }
+    
+    func authInfoForResponse(response: AnyObject!) -> AuthInfo? {
+        if let response = response as? NSDictionary {
+            let accessToken = response["access_token"] as? String
+            let expiresIn = response["expires_in"] as? NSTimeInterval
+            let refreshToken = response["refresh_token"] as? String
+            let userID = response["uid"] as? String
+
+            return (accessToken, expiresIn, refreshToken, userID)
+        }
+        
+        return nil
+    }
+}
+
+extension AuthCredential {
+    convenience init(authInfo: ProtonMailAPIService.AuthInfo) {
+        let expiration = NSDate(timeIntervalSinceNow: (authInfo.expiresId ?? 0))
+        
+        self.init(accessToken: authInfo.accessToken, refreshToken: authInfo.refreshToken, userID: authInfo.userID, expiration: expiration)
     }
 }
