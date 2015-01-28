@@ -59,7 +59,7 @@ class MailboxPasswordViewController: UIViewController {
     
     func decryptPassword() {
         sharedUserDataService.setMailboxPassword(passwordTextField.text, isRemembered: isRemembered)
-        (UIApplication.sharedApplication().delegate as AppDelegate).switchToInbox()
+        (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .inbox)
     }
     
     func updateButton(button: UIButton) {

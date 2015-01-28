@@ -68,15 +68,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
     }
     
-    func switchToInbox() {
-        let inboxViewController = UIStoryboard.instantiateInitialViewController(storyboard: .inbox)
-        window?.rootViewController = inboxViewController
+    func switchTo(#storyboard: UIStoryboard.Storyboard) {
+        let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
+        window?.rootViewController = viewController
         
-        self.window?.rootViewController = inboxViewController
+        self.window?.rootViewController = viewController
         
         if let window = window {
             UIView.transitionWithView(window, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
-                window.rootViewController = inboxViewController
+                window.rootViewController = viewController
                 }, completion: nil)
         }
     }

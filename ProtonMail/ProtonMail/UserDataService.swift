@@ -109,7 +109,7 @@ class UserDataService {
         mailboxPassword = password
         isRememberMailboxPassword = isRemembered
     }
-        
+    
     func signIn(username: String, password: String, isRemembered: Bool, completion: (NSError? -> Void)) {
         sharedProtonMailAPIService.authAuth(username: username, password: password, success: { () in
             self.isSignedIn = true
@@ -140,6 +140,6 @@ class UserDataService {
             mailboxPassword = nil
         }
         
-        // TODO: Tell app delegate to return to the sign in flow
+        (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .signIn)
     }
 }

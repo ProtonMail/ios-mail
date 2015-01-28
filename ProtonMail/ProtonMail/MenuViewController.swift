@@ -55,6 +55,16 @@ class MenuViewController: UIViewController {
         return UIStatusBarStyle.LightContent
     }
     
+    func handleSignOut() {
+        let alertController = UIAlertController(title: NSLocalizedString("Confirm"), message: nil, preferredStyle: .ActionSheet)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Sign Out"), style: .Destructive, handler: { (action) -> Void in
+            sharedUserDataService.signOut()
+        }))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
+        
+        presentViewController(alertController, animated: true, completion: nil)
+    }
+    
     func itemForIndexPath(indexPath: NSIndexPath) -> MenuItem {
         return items[indexPath.row]
     }
@@ -96,7 +106,8 @@ extension MenuViewController: UITableViewDelegate {
         let item = itemForIndexPath(indexPath)
         
         if item == .signout {
-            sharedUserDataService.signOut()
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            self.handleSignOut()
         }
     }
 }
