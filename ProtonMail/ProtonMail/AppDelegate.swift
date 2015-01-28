@@ -19,7 +19,7 @@ import CoreData
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    lazy var window: UIWindow? = UIWindow(frame: UIScreen.mainScreen().bounds)
+    var window: UIWindow?
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         AFNetworkActivityIndicatorManager.sharedManager().enabled = true
@@ -57,18 +57,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Screen setup
 
     func setupWindow() {
-        if let window = window {
-            let storyboard = UIStoryboard.menu()
-            let viewController = storyboard.instantiateInitialViewController() as UIViewController
-            
-            window.rootViewController = viewController
-            window.makeKeyAndVisible()
-            
-            if !sharedUserDataService.isUserCredentialStored {
-                NSRunLoop.currentRunLoop().runUntilDate(NSDate())
-                viewController.presentViewController(SignInViewController.newViewController(), animated: false, completion: nil)
-            }
+        window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        
+        if !sharedUserDataService.isUserCredentialStored {
+            window?.rootViewController = viewControllerForSignIn()
+        } else {
+            window?.rootViewController = viewControllerForInbox()
         }
+        
+        window?.makeKeyAndVisible()
+    }
+    
+    func viewControllerForInbox() -> UIViewController {
+        return UIStoryboard.menu().instantiateInitialViewController() as UIViewController
+    }
+    
+    func viewControllerForSignIn() -> UIViewController {
+        let navigationController = UIStoryboard.signIn().instantiateInitialViewController() as UINavigationController
+        let signInViewController = navigationController.topViewController as SignInViewController
+        signInViewController.delegate = self
+        
+        return navigationController
     }
     
     // MARK: - Core Data stack
@@ -135,3 +144,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
+// MARK: - SignInViewControllerDelegate
+extension AppDelegate: SignInViewControllerDelegate {
+    func signInViewControllerDidSignIn(signInViewController: SignInViewController) {
+        signInViewController.segueToMailboxPasswordViewController()
+    }
+}

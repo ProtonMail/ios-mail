@@ -98,7 +98,7 @@ extension MenuViewController: UITableViewDelegate {
         if item == .signout {
             sharedUserDataService.signOut()
             
-            presentViewController(SignInViewController.newViewController(), animated: true) { () -> Void in
+            presentViewController(UIStoryboard.signIn().instantiateInitialViewController() as UIViewController, animated: true) { () -> Void in
                 self.revealViewController().revealToggleAnimated(false)
             }
         }
