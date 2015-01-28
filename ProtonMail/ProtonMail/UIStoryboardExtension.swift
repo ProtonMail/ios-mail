@@ -17,11 +17,20 @@
 import Foundation
 
 extension UIStoryboard {
-    class func menu() -> UIStoryboard {
-        return UIStoryboard(name: "Menu", bundle: nil)
+    enum Storyboard: String {
+        case inbox = "Menu"
+        case signIn = "SignIn"
+        
+        var storyboard: UIStoryboard {
+            return UIStoryboard(name: rawValue, bundle: nil)
+        }
+        
+        func instantiateInitialViewController() -> UIViewController {
+            return storyboard.instantiateInitialViewController() as UIViewController
+        }
     }
     
-    class func signIn() -> UIStoryboard {
-        return UIStoryboard(name: "SignIn", bundle: nil)
+    class func instantiateInitialViewController(#storyboard: Storyboard) -> UIViewController {
+        return storyboard.instantiateInitialViewController()
     }
 }

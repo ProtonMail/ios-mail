@@ -16,17 +16,11 @@
 
 import UIKit
 
-@objc protocol SignInViewControllerDelegate {
-    optional func signInViewControllerDidSignIn(signInViewController: SignInViewController)
-}
-
 class SignInViewController: UIViewController {
     let animationDuration: NSTimeInterval = 0.5
     let keyboardPadding: CGFloat = 12
     let signInButtonDisabledAlpha: CGFloat = 0.5
     let signUpURL = NSURL(string: "https://protonmail.ch/sign_up.php")!
-    
-    weak var delegate: SignInViewControllerDelegate?
     
     var isRemembered = false
         
@@ -58,9 +52,16 @@ class SignInViewController: UIViewController {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
     }
-
+    
     func segueToMailboxPasswordViewController() {
-        performSegueWithIdentifier("mailboxSegue", sender: self)
+        performSegueWithIdentifier(SignInViewController.mailboxSegue(), sender: self)
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
+    // MARK: - Class methods
+    
+    class func mailboxSegue() -> String {
+        return "mailboxSegue"
     }
     
     // MARK: - Private methods
@@ -104,7 +105,11 @@ class SignInViewController: UIViewController {
                 
                 self.presentViewController(alertController, animated: true, completion: nil)
             } else {
-                self.delegate?.signInViewControllerDidSignIn?(self)
+                if sharedUserDataService.isMailboxPasswordStored {
+                    (UIApplication.sharedApplication().delegate as AppDelegate).switchToInbox()
+                } else {
+                    self.segueToMailboxPasswordViewController()
+                }
             }
         }
     }

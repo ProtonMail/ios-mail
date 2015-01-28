@@ -55,29 +55,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // MARK: - Screen setup
+    
+    func instantiateRootViewController() -> UIViewController {
+        var storyboard: UIStoryboard.Storyboard = sharedUserDataService.isUserCredentialStored ? .inbox : .signIn
+        
+        return UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
+    }
 
     func setupWindow() {
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        
-        if !sharedUserDataService.isUserCredentialStored {
-            window?.rootViewController = viewControllerForSignIn()
-        } else {
-            window?.rootViewController = viewControllerForInbox()
-        }
-        
+        window?.rootViewController = instantiateRootViewController()
         window?.makeKeyAndVisible()
     }
     
-    func viewControllerForInbox() -> UIViewController {
-        return UIStoryboard.menu().instantiateInitialViewController() as UIViewController
-    }
-    
-    func viewControllerForSignIn() -> UIViewController {
-        let navigationController = UIStoryboard.signIn().instantiateInitialViewController() as UINavigationController
-        let signInViewController = navigationController.topViewController as SignInViewController
-        signInViewController.delegate = self
+    func switchToInbox() {
+        let inboxViewController = UIStoryboard.instantiateInitialViewController(storyboard: .inbox)
+        window?.rootViewController = inboxViewController
         
-        return navigationController
+        self.window?.rootViewController = inboxViewController
+        
+        if let window = window {
+            UIView.transitionWithView(window, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                window.rootViewController = inboxViewController
+                }, completion: nil)
+        }
     }
     
     // MARK: - Core Data stack
@@ -141,12 +142,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 abort()
             }
         }
-    }
-}
-
-// MARK: - SignInViewControllerDelegate
-extension AppDelegate: SignInViewControllerDelegate {
-    func signInViewControllerDidSignIn(signInViewController: SignInViewController) {
-        signInViewController.segueToMailboxPasswordViewController()
     }
 }

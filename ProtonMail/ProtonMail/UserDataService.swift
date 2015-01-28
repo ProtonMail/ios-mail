@@ -21,11 +21,23 @@ let sharedUserDataService = UserDataService()
 /// Stores information related to the user
 class UserDataService {
     private let displayNameKey = "displayNameKey"
+    private let isRememberMailboxPasswordKey = "isRememberMailboxPasswordKey"
     private let isRememberUserKey = "isRememberUserKey"
+    private let mailboxPasswordKey = "mailboxPasswordKey"
     private let usernameKey = "usernameKey"
     private let passwordKey = "passwordKey"
     
     let userDefaults = NSUserDefaults.standardUserDefaults()
+    
+    var isMailboxPasswordStored: Bool {
+        return mailboxPassword != nil
+    }
+    
+    var isRememberMailboxPassword: Bool {
+        didSet {
+            userDefaults.setBool(isRememberMailboxPassword, forKey: isRememberMailboxPasswordKey)
+        }
+    }
     
     var isRememberUser: Bool {
         didSet {
@@ -35,14 +47,24 @@ class UserDataService {
     
     private(set) var isSignedIn: Bool = false
     
+    var isUserCredentialStored: Bool {
+        return username != nil && password != nil
+    }
+    
     private(set) var displayName: String? {
         didSet {
             userDefaults.setValue(displayName, forKey: displayNameKey)
         }
     }
     
-    var isUserCredentialStored: Bool {
-        return username != nil && password != nil
+    /// Value is only stored in the keychain
+    private(set) var mailboxPassword: String? {
+        get {
+            return UICKeyChainStore.stringForKey(mailboxPasswordKey)
+        }
+        set {
+            UICKeyChainStore.setString(mailboxPassword, forKey: mailboxPasswordKey)
+        }
     }
     
     /// Value is only stored in the keychain
@@ -63,6 +85,7 @@ class UserDataService {
     
     init() {
         displayName = userDefaults.stringForKey(displayNameKey)
+        isRememberMailboxPassword = userDefaults.boolForKey(isRememberMailboxPasswordKey)
         isRememberUser = userDefaults.boolForKey(isRememberUserKey)
         username = userDefaults.stringForKey(usernameKey)
     }
@@ -82,6 +105,11 @@ class UserDataService {
         })
     }
     
+    func setMailboxPassword(password: String, isRemembered: Bool) {
+        mailboxPassword = password
+        isRememberMailboxPassword = isRemembered
+    }
+        
     func signIn(username: String, password: String, isRemembered: Bool, completion: (NSError? -> Void)) {
         sharedProtonMailAPIService.authAuth(username: username, password: password, success: { () in
             self.isSignedIn = true
@@ -96,7 +124,6 @@ class UserDataService {
                 completion(error)
             }
             
-            
             }) { error in
                 self.signOut()
                 completion(error)
@@ -108,5 +135,11 @@ class UserDataService {
         isSignedIn = false
         password = nil
         username = nil
+        
+        if !isRememberMailboxPassword {
+            mailboxPassword = nil
+        }
+        
+        // TODO: Tell app delegate to return to the sign in flow
     }
 }
