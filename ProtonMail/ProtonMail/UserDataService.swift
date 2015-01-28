@@ -63,7 +63,7 @@ class UserDataService {
             return UICKeyChainStore.stringForKey(mailboxPasswordKey)
         }
         set {
-            UICKeyChainStore.setString(mailboxPassword, forKey: mailboxPasswordKey)
+            UICKeyChainStore.setString(newValue, forKey: mailboxPasswordKey)
         }
     }
     
@@ -73,7 +73,7 @@ class UserDataService {
             return UICKeyChainStore.stringForKey(passwordKey)
         }
         set {
-            UICKeyChainStore.setString(password, forKey: passwordKey)
+            UICKeyChainStore.setString(newValue, forKey: passwordKey)
         }
     }
     

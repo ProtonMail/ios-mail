@@ -57,8 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Screen setup
     
     func instantiateRootViewController() -> UIViewController {
-        var storyboard: UIStoryboard.Storyboard = sharedUserDataService.isUserCredentialStored ? .inbox : .signIn
-        
+        let storyboard = UIStoryboard.Storyboard.signIn
         return UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
     }
 
