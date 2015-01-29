@@ -2097,9 +2097,9 @@
         <image name="tag" width="52" height="52"/>
         <image name="trash" width="52" height="52"/>
         <image name="trash_selected" width="20" height="27"/>
-        <image name="unchecked" width="22" height="22"/>
+        <image name="unchecked" width="11" height="11"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="o3e-Jf-WEv"/>
+        <segue reference="YGe-pV-72F"/>
     </inferredMetricsTieBreakers>
 </document>

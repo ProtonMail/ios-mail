@@ -53,10 +53,15 @@ class SignInViewController: UIViewController {
         NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
     }
     
+    func segueToMailboxPasswordViewController() {
+        performSegueWithIdentifier(SignInViewController.mailboxSegue(), sender: self)
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
     // MARK: - Class methods
     
-    class func newViewController() -> UIViewController {
-        return UIStoryboard.signIn().instantiateInitialViewController() as UIViewController
+    class func mailboxSegue() -> String {
+        return "mailboxSegue"
     }
     
     // MARK: - Private methods
@@ -67,8 +72,7 @@ class SignInViewController: UIViewController {
     }
     
     func setupSignInButton() {
-        signInButton.layer.cornerRadius = 4.0
-        signInButton.clipsToBounds = true
+        signInButton.roundCorners()
         signInButton.alpha = signInButtonDisabledAlpha
     }
     
@@ -101,7 +105,11 @@ class SignInViewController: UIViewController {
                 
                 self.presentViewController(alertController, animated: true, completion: nil)
             } else {
-                self.dismissViewControllerAnimated(true, completion: nil)
+                if sharedUserDataService.isMailboxPasswordStored {
+                    (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .inbox)
+                } else {
+                    self.segueToMailboxPasswordViewController()
+                }
             }
         }
     }

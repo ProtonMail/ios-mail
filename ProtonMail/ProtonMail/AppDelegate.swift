@@ -19,7 +19,7 @@ import CoreData
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    lazy var window: UIWindow? = UIWindow(frame: UIScreen.mainScreen().bounds)
+    var window: UIWindow?
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         AFNetworkActivityIndicatorManager.sharedManager().enabled = true
@@ -55,19 +55,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // MARK: - Screen setup
+    
+    func instantiateRootViewController() -> UIViewController {
+        let storyboard = UIStoryboard.Storyboard.signIn
+        return UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
+    }
 
     func setupWindow() {
+        window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        window?.rootViewController = instantiateRootViewController()
+        window?.makeKeyAndVisible()
+    }
+    
+    func switchTo(#storyboard: UIStoryboard.Storyboard) {
+        let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
+        window?.rootViewController = viewController
+        
+        self.window?.rootViewController = viewController
+        
         if let window = window {
-            let storyboard = UIStoryboard.menu()
-            let viewController = storyboard.instantiateInitialViewController() as UIViewController
-            
-            window.rootViewController = viewController
-            window.makeKeyAndVisible()
-            
-            if !sharedUserDataService.isUserCredentialStored {
-                NSRunLoop.currentRunLoop().runUntilDate(NSDate())
-                viewController.presentViewController(SignInViewController.newViewController(), animated: false, completion: nil)
-            }
+            UIView.transitionWithView(window, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                window.rootViewController = viewController
+                }, completion: nil)
         }
     }
     
@@ -134,4 +143,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 }
-
