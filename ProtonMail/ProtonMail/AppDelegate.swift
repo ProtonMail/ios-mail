@@ -68,15 +68,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func switchTo(#storyboard: UIStoryboard.Storyboard) {
-        let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
-        window?.rootViewController = viewController
-        
-        self.window?.rootViewController = viewController
-        
         if let window = window {
-            UIView.transitionWithView(window, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
-                window.rootViewController = viewController
-                }, completion: nil)
+            if let rootViewController = window.rootViewController {
+                if rootViewController.restorationIdentifier != storyboard.restorationIdentifier {
+                    UIView.transitionWithView(window, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                        window.rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
+                        }, completion: nil)
+                }
+            }
         }
     }
     
