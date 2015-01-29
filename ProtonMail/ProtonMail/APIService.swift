@@ -1,5 +1,5 @@
 //
-//  ProtonMailAPIService.swift
+//  APIService.swift
 //  ProtonMail
 //
 //
@@ -18,9 +18,9 @@ import Foundation
 
 private let BaseURLString = "http://protonmail.xyz"
 
-let sharedProtonMailAPIService = ProtonMailAPIService()
+let sharedAPIService = APIService()
 
-class ProtonMailAPIService {
+class APIService {
     enum APIError: Int {
         case authCredentialExpired
         case authCredentialInvalid
@@ -89,7 +89,7 @@ class ProtonMailAPIService {
         if let credential = AuthCredential.fetchFromKeychain() {
             if !credential.isExpired {
                 self.sessionManager.requestSerializer.setAuthorizationHeaderFieldWithCredential(credential)
-                
+                NSLog("credential: \(credential)")
                 success(credential)
             } else {
                 // TODO: Replace with logic that will refresh the authToken.
