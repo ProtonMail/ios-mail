@@ -29,6 +29,7 @@ class InboxViewController: ProtonMailViewController {
     private let kCellIdentifier: String = "InboxCell"
     private let kLongPressDuration: CFTimeInterval = 0.60 // seconds
     private let kSegueToSearchController: String = "toSearchViewController"
+    private let kSegueToThreadController: String = "toThreadViewController"
     
     
     // MARK: - Private attributes
@@ -85,74 +86,14 @@ class InboxViewController: ProtonMailViewController {
         self.moreOptionsViewTopConstraint.constant = -self.moreOptionsViewHeightConstraint.constant
     }
     
-    
-    // MARK: - Private methods
-    
-    private func setupLeftButtons(editingMode: Bool) {
-        var leftButtons: [UIBarButtonItem]
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
-        if (!editingMode) {
-            leftButtons = [self.menuBarButtonItem]
-        } else {
-            if (self.cancelBarButtonItem == nil) {
-                self.cancelBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Cancel, target: self, action: "cancelButtonTapped")
-            }
-            
-            leftButtons = [self.cancelBarButtonItem]
+        let selectedItem: NSIndexPath? = self.tableView.indexPathForSelectedRow() as NSIndexPath?
+        
+        if let selectedItem = selectedItem {
+            self.tableView.deselectRowAtIndexPath(selectedItem, animated: true)
         }
-        
-        self.navigationItem.setLeftBarButtonItems(leftButtons, animated: true)
-    }
-    
-    private func setupNavigationTitle(editingMode: Bool) {
-        
-        // title animation
-        
-        let animation = CATransition()
-        animation.duration = 0.25
-        animation.type = kCATransitionFade
-        
-        self.navigationController?.navigationBar.layer.addAnimation(animation, forKey: "fadeText")
-        
-        if (editingMode) {
-            self.navigationItem.title = ""
-        } else {
-            self.navigationItem.title = "INBOX"
-        }
-    }
-    
-    private func setupRightButtons(editingMode: Bool) {
-        var rightButtons: [UIBarButtonItem]
-        
-        if (!editingMode) {
-            if (self.composeBarButtonItem == nil) {
-                self.composeBarButtonItem = UIBarButtonItem(image: UIImage(named: "compose"), style: UIBarButtonItemStyle.Plain, target: self, action: "composeButtonTapped")
-            }
-            
-            if (self.searchBarButtonItem == nil) {
-                self.searchBarButtonItem = UIBarButtonItem(image: UIImage(named: "search"), style: UIBarButtonItemStyle.Plain, target: self, action: "searchButtonTapped")
-            }
-            
-            rightButtons = [self.composeBarButtonItem, self.searchBarButtonItem]
-        
-        } else {
-            
-            if (self.removeBarButtonItem == nil) {
-                self.removeBarButtonItem = UIBarButtonItem(image: UIImage(named: "trash_selected"), style: UIBarButtonItemStyle.Plain, target: self, action: "removeButtonTapped")
-            }
-
-            if (self.favoriteBarButtonItem == nil) {
-                self.favoriteBarButtonItem = UIBarButtonItem(image: UIImage(named: "favorite"), style: UIBarButtonItemStyle.Plain, target: self, action: "favoriteButtonTapped")
-            }
-
-            if (self.moreBarButtonItem == nil) {
-                self.moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "arrow_down"), style: UIBarButtonItemStyle.Plain, target: self, action: "moreButtonTapped")
-            }
-            
-            rightButtons = [self.moreBarButtonItem, self.favoriteBarButtonItem, self.removeBarButtonItem]
-        }
-        
-        self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
     }
     
     
@@ -232,6 +173,93 @@ class InboxViewController: ProtonMailViewController {
         showCheckOptions(longPressGestureRecognizer)
         updateNavigationController(isEditing)
     }
+    
+    
+    // MARK: - Prepare for segue
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == kSegueToThreadController) {
+            let threadViewController: ThreadViewController = segue.destinationViewController as ThreadViewController
+            let indexPathForSelectedRow: NSIndexPath? = self.tableView.indexPathForSelectedRow()?
+            
+            if let selectedRow = indexPathForSelectedRow {
+                threadViewController.emailThread = messages[selectedRow.row]
+            } else {
+                println("No selected row.")
+            }
+        }
+    }
+    
+    
+    // MARK: - Private methods
+    
+    private func setupLeftButtons(editingMode: Bool) {
+        var leftButtons: [UIBarButtonItem]
+        
+        if (!editingMode) {
+            leftButtons = [self.menuBarButtonItem]
+        } else {
+            if (self.cancelBarButtonItem == nil) {
+                self.cancelBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Cancel, target: self, action: "cancelButtonTapped")
+            }
+            
+            leftButtons = [self.cancelBarButtonItem]
+        }
+        
+        self.navigationItem.setLeftBarButtonItems(leftButtons, animated: true)
+    }
+    
+    private func setupNavigationTitle(editingMode: Bool) {
+        
+        // title animation
+        
+        let animation = CATransition()
+        animation.duration = 0.25
+        animation.type = kCATransitionFade
+        
+        self.navigationController?.navigationBar.layer.addAnimation(animation, forKey: "fadeText")
+        
+        if (editingMode) {
+            self.navigationItem.title = ""
+        } else {
+            self.navigationItem.title = "INBOX"
+        }
+    }
+    
+    private func setupRightButtons(editingMode: Bool) {
+        var rightButtons: [UIBarButtonItem]
+        
+        if (!editingMode) {
+            if (self.composeBarButtonItem == nil) {
+                self.composeBarButtonItem = UIBarButtonItem(image: UIImage(named: "compose"), style: UIBarButtonItemStyle.Plain, target: self, action: "composeButtonTapped")
+            }
+            
+            if (self.searchBarButtonItem == nil) {
+                self.searchBarButtonItem = UIBarButtonItem(image: UIImage(named: "search"), style: UIBarButtonItemStyle.Plain, target: self, action: "searchButtonTapped")
+            }
+            
+            rightButtons = [self.composeBarButtonItem, self.searchBarButtonItem]
+            
+        } else {
+            
+            if (self.removeBarButtonItem == nil) {
+                self.removeBarButtonItem = UIBarButtonItem(image: UIImage(named: "trash_selected"), style: UIBarButtonItemStyle.Plain, target: self, action: "removeButtonTapped")
+            }
+            
+            if (self.favoriteBarButtonItem == nil) {
+                self.favoriteBarButtonItem = UIBarButtonItem(image: UIImage(named: "favorite"), style: UIBarButtonItemStyle.Plain, target: self, action: "favoriteButtonTapped")
+            }
+            
+            if (self.moreBarButtonItem == nil) {
+                self.moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "arrow_down"), style: UIBarButtonItemStyle.Plain, target: self, action: "moreButtonTapped")
+            }
+            
+            rightButtons = [self.moreBarButtonItem, self.favoriteBarButtonItem, self.removeBarButtonItem]
+        }
+        
+        self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
+    }
+
     
     private func hideCheckOptions() {
         self.isEditing = false
