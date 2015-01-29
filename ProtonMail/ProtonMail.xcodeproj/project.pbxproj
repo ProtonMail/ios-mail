@@ -16,6 +16,7 @@
 		07009F141A684C1900129B07 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07009F121A684C1900129B07 /* Roboto-Thin.ttf */; };
 		0713237F1A7844390043DB41 /* MailboxPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0713237E1A7844390043DB41 /* MailboxPasswordViewController.swift */; };
 		071323811A7846150043DB41 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071323801A7846150043DB41 /* UIViewExtension.swift */; };
+		071323901A79BD8F0043DB41 /* TextInsetTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0713238F1A79BD8F0043DB41 /* TextInsetTextField.swift */; };
 		073FD92C1A719B7900EB0CAF /* ProtonMailAPIService+UserExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FD92B1A719B7900EB0CAF /* ProtonMailAPIService+UserExtension.swift */; };
 		073FD9321A71C60900EB0CAF /* UserDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FD9311A71C60900EB0CAF /* UserDataService.swift */; };
 		073FD9341A732C5F00EB0CAF /* AFHTTPRequestSerializerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FD9331A732C5F00EB0CAF /* AFHTTPRequestSerializerExtension.swift */; };
@@ -75,6 +76,7 @@
 		07009F121A684C1900129B07 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
 		0713237E1A7844390043DB41 /* MailboxPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxPasswordViewController.swift; sourceTree = "<group>"; };
 		071323801A7846150043DB41 /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		0713238F1A79BD8F0043DB41 /* TextInsetTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextInsetTextField.swift; sourceTree = "<group>"; };
 		073FD92B1A719B7900EB0CAF /* ProtonMailAPIService+UserExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ProtonMailAPIService+UserExtension.swift"; sourceTree = "<group>"; };
 		073FD9311A71C60900EB0CAF /* UserDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDataService.swift; sourceTree = "<group>"; };
 		073FD9331A732C5F00EB0CAF /* AFHTTPRequestSerializerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFHTTPRequestSerializerExtension.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				0713237E1A7844390043DB41 /* MailboxPasswordViewController.swift */,
 				07009EFE1A659AD400129B07 /* SignIn.storyboard */,
 				07009F001A65CF4800129B07 /* SignInViewController.swift */,
+				0713238F1A79BD8F0043DB41 /* TextInsetTextField.swift */,
 			);
 			name = "Sign In";
 			sourceTree = "<group>";
@@ -559,6 +562,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				071323901A79BD8F0043DB41 /* TextInsetTextField.swift in Sources */,
 				70C9133D1A6D83FA002CBE61 /* UIColor+ProtonMail.swift in Sources */,
 				7061A3F91A6E8F460006D36C /* InboxViewController.swift in Sources */,
 				073FD9321A71C60900EB0CAF /* UserDataService.swift in Sources */,
