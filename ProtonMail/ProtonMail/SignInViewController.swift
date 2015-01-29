@@ -17,16 +17,16 @@
 import UIKit
 
 class SignInViewController: UIViewController {
-    let animationDuration: NSTimeInterval = 0.5
-    let keyboardPadding: CGFloat = 12
-    let signInButtonDisabledAlpha: CGFloat = 0.5
-    let signUpURL = NSURL(string: "https://protonmail.ch/sign_up.php")!
+    private let animationDuration: NSTimeInterval = 0.5
+    private let keyboardPadding: CGFloat = 12
+    private let buttonDisabledAlpha: CGFloat = 0.5
+    private let signUpURL = NSURL(string: "https://protonmail.ch/sign_up.php")!
     
     var isRemembered = false
         
     @IBOutlet weak var keyboardPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet weak var rememberMeSwitch: UISwitch!
+    @IBOutlet weak var rememberButton: UIButton!
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var usernameTextField: UITextField!
@@ -37,7 +37,9 @@ class SignInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        rememberMeSwitch.setOn(isRemembered, animated: false)
+        usernameTextField.roundCorners()
+        passwordTextField.roundCorners()
+        rememberButton.selected = isRemembered
         setupSignInButton()
         setupSignUpButton()
         signInIfRememberedCredentials()
@@ -73,7 +75,7 @@ class SignInViewController: UIViewController {
     
     func setupSignInButton() {
         signInButton.roundCorners()
-        signInButton.alpha = signInButtonDisabledAlpha
+        signInButton.alpha = buttonDisabledAlpha
     }
     
     // FIXME: Work around for http://stackoverflow.com/questions/25925914/attributed-string-with-custom-fonts-in-storyboard-does-not-load-correctly <http://openradar.appspot.com/18425809>
@@ -117,7 +119,7 @@ class SignInViewController: UIViewController {
     func signInIfRememberedCredentials() {
         if sharedUserDataService.isUserCredentialStored {
             isRemembered = true
-            rememberMeSwitch.setOn(true, animated: false)
+            rememberButton.selected = true
             usernameTextField.text = sharedUserDataService.username
             passwordTextField.text = sharedUserDataService.password
             
@@ -125,11 +127,19 @@ class SignInViewController: UIViewController {
         }
     }
     
+    func updateButton(button: UIButton) {
+        UIView.animateWithDuration(animationDuration, animations: { () -> Void in
+            button.alpha = button.enabled ? 1.0 : self.buttonDisabledAlpha
+        })
+    }
+    
     // MARK: - Actions
     
-    @IBAction func rememberMeChanged(sender: UISwitch) {
-        isRemembered = sender.on
+    @IBAction func rememberButtonAction(sender: UIButton) {
+        isRemembered = !isRemembered
+        rememberButton.selected = isRemembered
     }
+    
     
     @IBAction func signInAction(sender: UIButton) {
         dismissKeyboard()
@@ -171,6 +181,12 @@ extension SignInViewController: NSNotificationCenterKeyboardObserverProtocol {
 
 // MARK: - UITextFieldDelegate
 extension SignInViewController: UITextFieldDelegate {
+    func textFieldShouldClear(textField: UITextField) -> Bool {
+        signInButton.enabled = false
+        updateButton(signInButton)
+        return true
+    }
+
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         let text = textField.text as NSString
         let changedText = text.stringByReplacingCharactersInRange(range, withString: string)
@@ -181,9 +197,7 @@ extension SignInViewController: UITextFieldDelegate {
             signInButton.enabled = !changedText.isEmpty && !usernameTextField.text.isEmpty
         }
         
-        UIView.animateWithDuration(animationDuration, animations: { () -> Void in
-            self.signInButton.alpha = self.signInButton.enabled ? 1.0 : self.signInButtonDisabledAlpha
-        })
+        updateButton(signInButton)
         
         return true
     }

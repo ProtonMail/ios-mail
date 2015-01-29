@@ -110,6 +110,7 @@ extension MailboxPasswordViewController: NSNotificationCenterKeyboardObserverPro
 // MARK: - UITextFieldDelegate
 extension MailboxPasswordViewController: UITextFieldDelegate {
     func textFieldShouldClear(textField: UITextField) -> Bool {
+        decryptButton.enabled = false
         updateButton(decryptButton)
         return true
     }
