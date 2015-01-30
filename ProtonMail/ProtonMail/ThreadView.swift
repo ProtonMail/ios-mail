@@ -17,7 +17,7 @@ class ThreadView: UIView {
     var delegate: ThreadViewDelegate?
     private var emailThread: EmailThread!
     
-    // Mark: - private constants
+    // MARK: - Private constants
     
     private let kScrollViewDistanceToBottom: CGFloat = -69.0
     private let kSeparatorBetweenHeaderAndBodyMarginTop: CGFloat = 16.0
@@ -44,7 +44,8 @@ class ThreadView: UIView {
     private let kForwardButtonMarginRight: CGFloat = -50.0
     private let kForwardButtonLabelMarginTop: CGFloat = 4.0
     
-    // MARK: - email header views
+    
+    // MARK: - Email header views
     
     private var emailHeaderView: UIView!
     private var emailTitle: UILabel!
@@ -57,13 +58,15 @@ class ThreadView: UIView {
     private var separatorBetweenHeaderAndBodyView: UIView!
     private var separatorBetweenBodyViewAndFooter: UIView!
     
-    // MARK: - email body views
+    
+    // MARK: - Email body views
     
     private var scrollView: UIScrollView!
     private var contentView: UIView!
     private var emailBodyTextView: UILabel!
     
-    // MARK: - email footer views
+    
+    // MARK: - Email footer views
     
     private var buttonsView: UIView!
     private var replyButton: UIButton!
@@ -391,15 +394,15 @@ class ThreadView: UIView {
     // MARK: - Button actions
     
     internal func replyButtonTapped() {
-        self.delegate?.threadViewdidTapReplyThread(self, thread: emailThread)
+        self.delegate?.threadViewDidTapReplyThread(self, thread: emailThread)
     }
     
     internal func replyAllButtonTapped() {
-        self.delegate?.threadViewdidTapReplyAllThread(self, thread: emailThread)
+        self.delegate?.threadViewDidTapReplyAllThread(self, thread: emailThread)
     }
     
     internal func forwardButtonTapped() {
-        self.delegate?.threadViewdidTapForwardThread(self, thread: emailThread)
+        self.delegate?.threadViewDidTapForwardThread(self, thread: emailThread)
     }
 }
 
@@ -407,8 +410,8 @@ class ThreadView: UIView {
 // MARK: - View Delegate
 
 protocol ThreadViewDelegate {
-    func threadViewdidTapForwardThread(threadView: ThreadView, thread: EmailThread)
-    func threadViewdidTapReplyThread(threadView: ThreadView, thread: EmailThread)
-    func threadViewdidTapReplyAllThread(threadView: ThreadView, thread: EmailThread)
+    func threadViewDidTapForwardThread(threadView: ThreadView, thread: EmailThread)
+    func threadViewDidTapReplyThread(threadView: ThreadView, thread: EmailThread)
+    func threadViewDidTapReplyAllThread(threadView: ThreadView, thread: EmailThread)
 }
 

@@ -60,18 +60,18 @@ class ThreadViewController: ProtonMailViewController {
 
 extension ThreadViewController: ThreadViewDelegate {
     
-    func threadViewdidTapForwardThread(threadView: ThreadView, thread: EmailThread) {
+    func threadViewDidTapForwardThread(threadView: ThreadView, thread: EmailThread) {
         
-        println("threadViewdidTapForwardThread: \(thread.title)")
+        println("threadViewDidTapForwardThread: \(thread.title)")
     }
     
-    func threadViewdidTapReplyAllThread(threadView: ThreadView, thread: EmailThread) {
+    func threadViewDidTapReplyAllThread(threadView: ThreadView, thread: EmailThread) {
 
-        println("threadViewdidTapReplyAllThread: \(thread.title)")
+        println("threadViewDidTapReplyAllThread: \(thread.title)")
     }
     
-    func threadViewdidTapReplyThread(threadView: ThreadView, thread: EmailThread) {
+    func threadViewDidTapReplyThread(threadView: ThreadView, thread: EmailThread) {
         
-        println("threadViewdidTapReplyThread: \(thread.title)")
+        println("threadViewDidTapReplyThread: \(thread.title)")
     }
 }
