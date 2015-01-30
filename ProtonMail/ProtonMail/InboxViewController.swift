@@ -88,12 +88,12 @@ class InboxViewController: ProtonMailViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         let selectedItem: NSIndexPath? = self.tableView.indexPathForSelectedRow() as NSIndexPath?
-        
+
         if let selectedItem = selectedItem {
-            self.tableView.deselectRowAtIndexPath(selectedItem, animated: true)
             self.tableView.reloadRowsAtIndexPaths([selectedItem], withRowAnimation: UITableViewRowAnimation.Automatic)
+            self.tableView.deselectRowAtIndexPath(selectedItem, animated: true)
         }
     }
     
@@ -140,7 +140,7 @@ class InboxViewController: ProtonMailViewController {
     }
     
     internal func cancelButtonTapped() {
-        selectedMessages.removeAllObjects()
+        self.selectedMessages.removeAllObjects()
         self.hideCheckOptions()
         
         // dismiss more options view
@@ -166,7 +166,6 @@ class InboxViewController: ProtonMailViewController {
             }
             
             selectedCell.checkboxTapped()
-            self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
         }
     }
     
@@ -180,6 +179,7 @@ class InboxViewController: ProtonMailViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == kSegueToThreadController) {
+            self.cancelButtonTapped()
             let threadViewController: ThreadViewController = segue.destinationViewController as ThreadViewController
             let indexPathForSelectedRow: NSIndexPath? = self.tableView.indexPathForSelectedRow()?
             
