@@ -35,6 +35,7 @@ class InboxViewController: ProtonMailViewController {
     // MARK: - Private attributes
     
     private var messages: [EmailThread]!
+    private var navigationTitleLabel = UILabel()
     private var selectedMessages: NSMutableSet = NSMutableSet()
     private var isEditing: Bool = false
     private var isViewingMoreOptions: Bool = false
@@ -60,6 +61,14 @@ class InboxViewController: ProtonMailViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationTitleLabel.backgroundColor = UIColor.clearColor()
+        self.navigationTitleLabel.font = UIFont.robotoLight(size: UIFont.Size.h2)
+        self.navigationTitleLabel.textAlignment = NSTextAlignment.Center
+        self.navigationTitleLabel.textColor = UIColor.whiteColor()
+        self.navigationTitleLabel.text = NSLocalizedString("INBOX")
+        self.navigationTitleLabel.sizeToFit()
+        self.navigationItem.titleView = navigationTitleLabel
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl.backgroundColor = UIColor.ProtonMail.Blue_475F77
@@ -221,9 +230,9 @@ class InboxViewController: ProtonMailViewController {
         self.navigationController?.navigationBar.layer.addAnimation(animation, forKey: "fadeText")
         
         if (editingMode) {
-            self.navigationItem.title = ""
+            self.navigationTitleLabel.text = ""
         } else {
-            self.navigationItem.title = "INBOX"
+            self.navigationTitleLabel.text = NSLocalizedString("INBOX")
         }
     }
     
