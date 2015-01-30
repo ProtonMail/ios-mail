@@ -19,6 +19,7 @@ class ThreadViewController: ProtonMailViewController {
     @IBOutlet var threadView: ThreadView!
     
     override func loadView() {
+        emailThread.isRead = true
         threadView = ThreadView(thread: emailThread)
         threadView.delegate = self
         

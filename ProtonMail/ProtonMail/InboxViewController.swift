@@ -93,6 +93,7 @@ class InboxViewController: ProtonMailViewController {
         
         if let selectedItem = selectedItem {
             self.tableView.deselectRowAtIndexPath(selectedItem, animated: true)
+            self.tableView.reloadRowsAtIndexPaths([selectedItem], withRowAnimation: UITableViewRowAnimation.Automatic)
         }
     }
     
