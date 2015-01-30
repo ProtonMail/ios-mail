@@ -1246,7 +1246,7 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" title="INBOX" id="Y7X-YF-pK8">
+                    <navigationItem key="navigationItem" id="Y7X-YF-pK8">
                         <barButtonItem key="leftBarButtonItem" image="hamburger" id="MGt-Hd-KyR"/>
                     </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
@@ -2119,7 +2119,7 @@
         <image name="tag" width="52" height="52"/>
         <image name="trash" width="52" height="52"/>
         <image name="trash_selected" width="20" height="27"/>
-        <image name="unchecked" width="11" height="11"/>
+        <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="YGe-pV-72F"/>
