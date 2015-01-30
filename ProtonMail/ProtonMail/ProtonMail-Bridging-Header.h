@@ -27,4 +27,6 @@
 
 #import <SWRevealViewController/SWRevealViewController.h>
 
+#import <Masonry/Masonry.h>
+
 #endif

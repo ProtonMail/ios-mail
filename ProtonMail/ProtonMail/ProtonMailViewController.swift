@@ -20,9 +20,12 @@ class ProtonMailViewController: UIViewController {
         super.viewDidLoad()
         
         if let revealViewController = self.revealViewController() {
-            self.menuButton.target = self.revealViewController()
-            self.menuButton.action = "revealToggle:"
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            
+            if (self.shouldShowSideMenu()) {
+                self.menuButton.target = self.revealViewController()
+                self.menuButton.action = "revealToggle:"
+                self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            }
         }
         
         configureNavigationBar()
@@ -44,5 +47,9 @@ class ProtonMailViewController: UIViewController {
             NSForegroundColorAttributeName: UIColor.whiteColor(),
             NSFontAttributeName: navigationBarTitleFont
         ]
+    }
+    
+    func shouldShowSideMenu() -> Bool {
+        return true
     }
 }
