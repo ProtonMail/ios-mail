@@ -1646,13 +1646,13 @@
                         <viewControllerLayoutGuide type="top" id="4UT-uL-VoF"/>
                         <viewControllerLayoutGuide type="bottom" id="fG8-2r-ucJ"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="xpP-qB-Kil">
+                    <view key="view" contentMode="scaleToFill" id="xpP-qB-Kil" customClass="ThreadView" customModule="ProtonMail" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <outlet property="view" destination="xpP-qB-Kil" id="Gje-Ne-oji"/>
+                        <outlet property="threadView" destination="xpP-qB-Kil" id="ATr-1J-YOj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1vF-jC-K0B" userLabel="First Responder" sceneMemberID="firstResponder"/>
