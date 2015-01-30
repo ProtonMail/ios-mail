@@ -16,6 +16,7 @@
 
 import Foundation
 
+/// Auth extension
 extension APIService {
     typealias AuthInfo = (accessToken: String?, expiresId: NSTimeInterval?, refreshToken: String?, userID: String?)
     

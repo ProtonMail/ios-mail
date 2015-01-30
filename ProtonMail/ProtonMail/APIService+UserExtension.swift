@@ -16,6 +16,7 @@
 
 import Foundation
 
+/// User extensions
 extension APIService {
     typealias UserInfo = (displayName: String?, privateKey: String?)
     

@@ -26,6 +26,7 @@ class APIService {
         case authCredentialInvalid
         case authInvalidGrant
         case authUnableToParseToken
+        case unableToParseResponse
         case userNone
         case unknown
         
@@ -46,6 +47,8 @@ class APIService {
                 return NSLocalizedString("Invalid grant")
             case .authUnableToParseToken:
                 return NSLocalizedString("Unable to parse token")
+            case .unableToParseResponse:
+                return NSLocalizedString("Unable to parse response")
             default:
                 return NSLocalizedString("Unknown error")
             }
@@ -61,6 +64,8 @@ class APIService {
                 return NSLocalizedString("The supplied credentials are invalid.")
             case .authUnableToParseToken:
                 return NSLocalizedString("Unable to parse authentication token!")
+            case .unableToParseResponse:
+                return NSLocalizedString("Unable to parse the response object.")
             default:
                 return nil
             }
