@@ -18,7 +18,8 @@ class Message: NSManagedObject {
     @NSManaged var sender: String
     @NSManaged var recipientNameList: String
     @NSManaged var recipientList: String
-    @NSManaged var totalSize: Int64
+    @NSManaged var totalSize: Int32
+    @NSManaged var isAttachment: Bool
     @NSManaged var isRead: Bool
     @NSManaged var isEncrypted: Bool
     @NSManaged var tag: String

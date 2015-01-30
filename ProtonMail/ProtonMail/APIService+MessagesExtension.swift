@@ -57,13 +57,10 @@ extension APIService {
                 "FilterUnread" : filter.rawValue]
             
             self.sessionManager.GET(messagesPath, parameters: parameters, success: { (task, response) -> Void in
-                NSLog("\(__FUNCTION__)\n request:\(task.currentRequest)\nresponse: \(response)")
-                
                 if let error = self.messagesForResponse(response) {
                     failure(error)
                 }
             }, failure: { (task, error) -> Void in
-                NSLog("\(__FUNCTION__)\n request:\(task.currentRequest)\nheaders: \(task.currentRequest.allHTTPHeaderFields)\nerror: \(error)\n\n")
                 failure(error)
             })
 
@@ -107,17 +104,41 @@ extension APIService {
             
             if let message = message {
                 message.expirationTime = self.dateForKey("ExpirationTime", dictionary: messageDict)
+                message.isAttachment = self.boolForKey("HasAttachment", dictionary: messageDict)
+                message.isEncrypted = self.boolForKey("IsEncrypted", dictionary: messageDict)
+                message.isForwarded = self.boolForKey("IsForwarded", dictionary: messageDict)
+                message.isRead = self.boolForKey("IsRead", dictionary: messageDict)
+                message.isReplied = self.boolForKey("IsReplied", dictionary: messageDict)
+                message.isRepliedAll = self.boolForKey("IsRepliedAll", dictionary: messageDict)
+                message.recipientList = messageDict["RecipientList"] as String
+                message.recipientNameList = messageDict["RecipientNameList"] as String
+                message.sender = messageDict["Sender"] as String
+                message.senderName = messageDict["SenderName"] as String
+                message.tag = messageDict["Tag"] as String
                 
                 if let time = self.dateForKey("Time", dictionary: messageDict) {
                     message.time = time
                 }
                 
+                message.title = messageDict["MessageTitle"] as String
+                
+                if let totalSize = messageDict["TotalSize"] as? NSString {
+                    message.totalSize = totalSize.intValue
+                }
             }
         } else {
             error = APIError.unableToParseResponse.asNSError()
         }
         
         return (message: message, error: error)
+    }
+    
+    private func boolForKey(key: String, dictionary: NSDictionary) -> Bool {
+        if let result = dictionary[key] as? Bool {
+            return result
+        }
+        
+        return false
     }
     
     private func dateForKey(key: String, dictionary: NSDictionary) -> NSDate? {
