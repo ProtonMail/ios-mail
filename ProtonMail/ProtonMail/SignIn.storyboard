@@ -24,7 +24,7 @@
         <!--Navigation Controller-->
         <scene sceneID="Yge-wa-Lrb">
             <objects>
-                <navigationController navigationBarHidden="YES" id="iNi-o2-nXB" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="SignIn" useStoryboardIdentifierAsRestorationIdentifier="YES" navigationBarHidden="YES" id="iNi-o2-nXB" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="WlM-tk-eWt">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -126,8 +126,8 @@
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="8Jy-HS-Ft2"/>
-                                        <exclude reference="kfo-8j-pHo"/>
                                         <exclude reference="KoV-VS-CbZ"/>
+                                        <exclude reference="kfo-8j-pHo"/>
                                         <exclude reference="3lf-Jl-0yv"/>
                                     </mask>
                                 </variation>

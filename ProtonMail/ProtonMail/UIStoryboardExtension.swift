@@ -17,9 +17,14 @@
 import Foundation
 
 extension UIStoryboard {
+    /// The raw value must match the restorationIdentifier for the initialViewController
     enum Storyboard: String {
         case inbox = "Menu"
         case signIn = "SignIn"
+        
+        var restorationIdentifier: String {
+            return rawValue
+        }
         
         var storyboard: UIStoryboard {
             return UIStoryboard(name: rawValue, bundle: nil)
