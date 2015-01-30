@@ -9,6 +9,7 @@ pod 'OpenSSL-Universal', :podspec => 'https://raw.github.com/krzyzanowskim/OpenS
 pod 'UICKeyChainStore'
 pod 'UNNetPGP', :podspec => 'https://raw.github.com/upnext/unnetpgp/master/UNNetPGP.podspec'
 pod 'SWRevealViewController', '2.3.0'
+pod 'Masonry', '0.6.0'
 
 post_install do | installer |
     require 'fileutils'
