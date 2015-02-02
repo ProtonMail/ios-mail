@@ -53,20 +53,20 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="WWe-i8-Jtn">
-                                <rect key="frame" x="186" y="187" width="228" height="37"/>
+                                <rect key="frame" x="186" y="186" width="228" height="37"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="228" id="6Lc-n5-dpv"/>
                                     <constraint firstAttribute="height" constant="37" id="Ajb-2I-lem"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SIGN IN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fjY-z1-3LU">
-                                <rect key="frame" x="269" y="309" width="63" height="22"/>
+                                <rect key="frame" x="269" y="308" width="63" height="22"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="gnm-cH-vcp" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="161" y="425" width="278" height="44"/>
+                                <rect key="frame" x="161" y="423" width="278" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="MLH-6b-gXi"/>
@@ -79,19 +79,19 @@
                                 </connections>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oyG-Fo-wN1">
-                                <rect key="frame" x="161" y="484" width="157" height="12"/>
+                                <rect key="frame" x="161" y="482" width="158" height="14"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Z40-fI-qfm">
-                                        <rect key="frame" x="0.0" y="0.0" width="12" height="12"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="13" height="14"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="12" id="4Ar-eT-1Ac"/>
-                                            <constraint firstAttribute="width" constant="12" id="UWr-gO-5B1"/>
+                                            <constraint firstAttribute="height" constant="14" id="4Ar-eT-1Ac"/>
+                                            <constraint firstAttribute="width" constant="13" id="UWr-gO-5B1"/>
                                             <constraint firstAttribute="width" constant="272" id="rdf-OZ-QPU"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="12"/>
                                         <inset key="titleEdgeInsets" minX="11" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" image="unchecked"/>
-                                        <state key="selected" image="checked"/>
+                                        <state key="normal" image="unchecked_signin"/>
+                                        <state key="selected" image="checked_signin"/>
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="rdf-OZ-QPU"/>
@@ -103,7 +103,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remember me on this device." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VAX-s6-YBf">
-                                        <rect key="frame" x="20" y="0.0" width="129" height="12"/>
+                                        <rect key="frame" x="21" y="0.0" width="129" height="14"/>
                                         <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="10"/>
                                         <color key="textColor" red="0.30980392159999998" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -153,7 +153,7 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="User name" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="sKV-Mt-Vgi" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="161" y="370" width="278" height="44"/>
+                                <rect key="frame" x="161" y="368" width="278" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="MrK-Cj-2dW"/>
@@ -261,16 +261,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="b63-Fw-RYH">
-                                <rect key="frame" x="186" y="189" width="228" height="37"/>
+                                <rect key="frame" x="186" y="188" width="228" height="37"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DECRYPT MAILBOX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jzp-6U-vEt">
-                                <rect key="frame" x="221" y="310" width="159" height="22"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="DECRYPT MAILBOX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jzp-6U-vEt">
+                                <rect key="frame" x="222" y="311" width="159" height="22"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Mailbox Password" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="16" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="aXn-9j-Mz5" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="164" y="370" width="272" height="44"/>
+                                <rect key="frame" x="164" y="368" width="272" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="Sv0-bR-hjk"/>
@@ -295,19 +295,19 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZpN-rJ-f5g">
-                                <rect key="frame" x="222" y="424" width="157" height="12"/>
+                                <rect key="frame" x="222" y="422" width="158" height="14"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="tTZ-9P-EdG">
-                                        <rect key="frame" x="0.0" y="0.0" width="12" height="12"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="13" height="14"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="12" id="MTP-xv-mvf"/>
-                                            <constraint firstAttribute="width" constant="12" id="hi8-hd-0hm"/>
+                                            <constraint firstAttribute="height" constant="14" id="MTP-xv-mvf"/>
+                                            <constraint firstAttribute="width" constant="13" id="hi8-hd-0hm"/>
                                             <constraint firstAttribute="width" constant="272" id="mhK-Iv-o8E"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="12"/>
                                         <inset key="titleEdgeInsets" minX="11" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" image="unchecked"/>
-                                        <state key="selected" image="checked"/>
+                                        <state key="normal" image="unchecked_signin"/>
+                                        <state key="selected" image="checked_signin"/>
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="mhK-Iv-o8E"/>
@@ -318,7 +318,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remember me on this device." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FVo-0c-RsR">
-                                        <rect key="frame" x="20" y="0.0" width="129" height="12"/>
+                                        <rect key="frame" x="21" y="0.0" width="129" height="14"/>
                                         <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="10"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -394,7 +394,7 @@
     <resources>
         <image name="Logo" width="228" height="37"/>
         <image name="SignIn" width="320" height="568"/>
-        <image name="checked" width="22" height="22"/>
-        <image name="unchecked" width="22" height="22"/>
+        <image name="checked_signin" width="13" height="14"/>
+        <image name="unchecked_signin" width="13" height="14"/>
     </resources>
 </document>
