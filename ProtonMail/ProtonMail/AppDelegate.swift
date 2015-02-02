@@ -57,7 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Screen setup
     
     func instantiateRootViewController() -> UIViewController {
-        let storyboard = UIStoryboard.Storyboard.signIn
+        let storyboard = UIStoryboard.Storyboard.inbox
         return UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
     }
 

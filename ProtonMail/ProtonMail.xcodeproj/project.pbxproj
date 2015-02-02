@@ -51,6 +51,7 @@
 		7069620B1A7139C8001443B2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7069620A1A7139C8001443B2 /* SettingsViewController.swift */; };
 		7069620F1A7139FE001443B2 /* SpamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7069620E1A7139FE001443B2 /* SpamViewController.swift */; };
 		706962111A713A0F001443B2 /* TrashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706962101A713A0F001443B2 /* TrashViewController.swift */; };
+		709AD69C1A7FDC9C00D9F30B /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709AD69B1A7FDC9C00D9F30B /* ComposeViewController.swift */; };
 		70C6ABE41A72C1B7006EC400 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70FD2BCB1A6FDC9B0086ADC5 /* Roboto-Regular.ttf */; };
 		70C9133D1A6D83FA002CBE61 /* UIColor+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */; };
 		70F9C3211A7BA8F400A45DF3 /* ThreadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9C3201A7BA8F400A45DF3 /* ThreadView.swift */; };
@@ -120,6 +121,7 @@
 		7069620A1A7139C8001443B2 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		7069620E1A7139FE001443B2 /* SpamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpamViewController.swift; sourceTree = "<group>"; };
 		706962101A713A0F001443B2 /* TrashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrashViewController.swift; sourceTree = "<group>"; };
+		709AD69B1A7FDC9C00D9F30B /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+ProtonMail.swift"; sourceTree = "<group>"; };
 		70F9C3201A7BA8F400A45DF3 /* ThreadView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadView.swift; sourceTree = "<group>"; };
 		70FD2BCB1A6FDC9B0086ADC5 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
@@ -242,6 +244,7 @@
 		075E3DE81A5F4ECF00E001A7 /* ProtonMail */ = {
 			isa = PBXGroup;
 			children = (
+				709AD69A1A7FDC8E00D9F30B /* Compose */,
 				706962031A713959001443B2 /* Contacts */,
 				706628241A71681300164117 /* Controller */,
 				073FD9301A71C5F000EB0CAF /* DataServices */,
@@ -391,6 +394,14 @@
 				7069620A1A7139C8001443B2 /* SettingsViewController.swift */,
 			);
 			name = Settings;
+			sourceTree = "<group>";
+		};
+		709AD69A1A7FDC8E00D9F30B /* Compose */ = {
+			isa = PBXGroup;
+			children = (
+				709AD69B1A7FDC9C00D9F30B /* ComposeViewController.swift */,
+			);
+			name = Compose;
 			sourceTree = "<group>";
 		};
 		70C913391A6D82F0002CBE61 /* Inbox */ = {
@@ -619,6 +630,7 @@
 				706962111A713A0F001443B2 /* TrashViewController.swift in Sources */,
 				7027B02B1A700F0200D28F52 /* MenuTableViewCell.swift in Sources */,
 				706628231A71651700164117 /* EmailService.swift in Sources */,
+				709AD69C1A7FDC9C00D9F30B /* ComposeViewController.swift in Sources */,
 				07CC99681A702368000FD6F8 /* UIFontExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1257,6 +1257,7 @@
                         <outlet property="moreOptionsViewTopConstraint" destination="QnY-x2-HD0" id="kKg-Mu-GAB"/>
                         <outlet property="tableView" destination="7Zx-Yy-VI3" id="SDD-Ol-nIU"/>
                         <segue destination="tCC-l6-ucI" kind="presentation" identifier="toSearchViewController" id="6qA-ON-8KL"/>
+                        <segue destination="3MT-j3-sAH" kind="presentation" identifier="toComposeScreen" id="PSs-NC-YLr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v5f-i5-kem" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1636,7 +1637,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u4L-eI-FSG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3714" y="-89"/>
+            <point key="canvasLocation" x="3714" y="-520"/>
         </scene>
         <!--Thread View Controller-->
         <scene sceneID="RpF-e6-Us1">
@@ -1657,7 +1658,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1vF-jC-K0B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3714" y="-873"/>
+            <point key="canvasLocation" x="3714" y="-1249"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="I1g-nG-Fit">
@@ -1729,6 +1730,37 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ux6-aK-wXM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2943" y="253"/>
+        </scene>
+        <!--Compose View Controller-->
+        <scene sceneID="LmP-bN-st7">
+            <objects>
+                <viewController id="rax-aX-ZUf" customClass="ComposeViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="7sd-U6-ufC"/>
+                        <viewControllerLayoutGuide type="bottom" id="IT6-e8-cS0"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ZAy-I2-nRW">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="RcN-lr-Y6c">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="yYE-FL-SMv">
+                            <color key="tintColor" red="0.98823529409999999" green="0.99607843139999996" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <action selector="cancelButtonTapped:" destination="rax-aX-ZUf" id="r1O-UT-cBB"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="sent_compose" id="HCw-eI-Xph" userLabel="Send button">
+                            <connections>
+                                <action selector="sendButtonTapped:" destination="rax-aX-ZUf" id="kbl-SR-piN"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vAd-jh-jpw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4489.5" y="253"/>
         </scene>
         <!--Contacts View Controller-->
         <scene sceneID="4eW-b9-zGJ">
@@ -2093,6 +2125,24 @@
             </objects>
             <point key="canvasLocation" x="2139" y="3829"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="uAZ-sl-RCo">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="3MT-j3-sAH" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="QJf-FX-ZDe">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="rax-aX-ZUf" kind="relationship" relationship="rootViewController" id="cSb-Js-xKp"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="75j-5r-t8r" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3714" y="253"/>
+        </scene>
     </scenes>
     <resources>
         <image name="attached_main" width="14" height="16"/>
@@ -2109,6 +2159,7 @@
         <image name="move" width="52" height="52"/>
         <image name="search" width="22" height="22"/>
         <image name="sent" width="52" height="52"/>
+        <image name="sent_compose" width="26" height="22"/>
         <image name="sent_selected" width="26" height="26"/>
         <image name="settings" width="52" height="52"/>
         <image name="settings_selected" width="24" height="24"/>

@@ -30,6 +30,7 @@ class InboxViewController: ProtonMailViewController {
     private let kLongPressDuration: CFTimeInterval = 0.60 // seconds
     private let kSegueToSearchController: String = "toSearchViewController"
     private let kSegueToThreadController: String = "toThreadViewController"
+    private let kSegueToComposeController: String = "toComposeScreen"
     
     
     // MARK: - Private attributes
@@ -110,7 +111,7 @@ class InboxViewController: ProtonMailViewController {
     // MARK: - Button Targets
     
     internal func composeButtonTapped() {
-        
+        self.performSegueWithIdentifier(kSegueToComposeController, sender: self)
     }
     
     internal func searchButtonTapped() {
