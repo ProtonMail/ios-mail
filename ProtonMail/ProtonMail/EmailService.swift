@@ -43,6 +43,9 @@ class EmailService {
             EmailThread(id: "24", title:"TriNet Notice: Important Information", sender: "TriNet Passport", time: "7:36pm", hasAttachments: true, isEncrypted: true)
         ]
         
+        sharedAPIService.messageList(.inbox, page: 1, sortedColumn: .date, order: .ascending, filter: .noFilter, failure: { error in
+            NSLog("error: \(error)")
+            })
         return messages
     }
 }
