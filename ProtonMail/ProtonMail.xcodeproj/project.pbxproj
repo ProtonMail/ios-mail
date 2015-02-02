@@ -31,6 +31,7 @@
 		075E3DF61A5F4ECF00E001A7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 075E3DF51A5F4ECF00E001A7 /* Images.xcassets */; };
 		075E3DF91A5F4ECF00E001A7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 075E3DF71A5F4ECF00E001A7 /* LaunchScreen.xib */; };
 		075E3E051A5F4ECF00E001A7 /* ProtonMailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075E3E041A5F4ECF00E001A7 /* ProtonMailTests.swift */; };
+		078A3A4C1A7FF4DC002C5FF3 /* MessageDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078A3A4B1A7FF4DC002C5FF3 /* MessageDataService.swift */; };
 		07B797C01A6EDFF400244532 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B797BF1A6EDFF400244532 /* APIService.swift */; };
 		07B797C21A6EE50F00244532 /* APIService+AuthenticationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B797C11A6EE50F00244532 /* APIService+AuthenticationExtension.swift */; };
 		07B797C51A6EE5FF00244532 /* AuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B797C41A6EE5FF00244532 /* AuthCredential.swift */; };
@@ -39,6 +40,7 @@
 		07CC99681A702368000FD6F8 /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC99671A702368000FD6F8 /* UIFontExtension.swift */; };
 		07CC996A1A705BA4000FD6F8 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 07CC99691A705BA4000FD6F8 /* Settings.bundle */; };
 		07CC996C1A717ABD000FD6F8 /* UIStoryboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC996B1A717ABD000FD6F8 /* UIStoryboardExtension.swift */; };
+		07FBA7A51A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FBA7A41A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift */; };
 		701704751A791856000A90D2 /* ThreadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701704741A791856000A90D2 /* ThreadViewController.swift */; };
 		701704781A794C69000A90D2 /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701704771A794C69000A90D2 /* Roboto-MediumItalic.ttf */; };
 		7017047A1A794C9F000A90D2 /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701704791A794C9F000A90D2 /* Roboto-LightItalic.ttf */; };
@@ -47,8 +49,6 @@
 		7061A3F51A6E8C9D0006D36C /* Menu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7061A3F41A6E8C9D0006D36C /* Menu.storyboard */; };
 		7061A3F91A6E8F460006D36C /* InboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7061A3F81A6E8F460006D36C /* InboxViewController.swift */; };
 		706628211A715A0900164117 /* InboxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706628201A715A0900164117 /* InboxTableViewCell.swift */; };
-		706628231A71651700164117 /* EmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706628221A71651700164117 /* EmailService.swift */; };
-		706628271A71695A00164117 /* EmailThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706628261A71695A00164117 /* EmailThread.swift */; };
 		706932AB1A77BE3D00A75A93 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706932AA1A77BE3D00A75A93 /* SearchViewController.swift */; };
 		706961FD1A713670001443B2 /* DraftsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706961FC1A713670001443B2 /* DraftsViewController.swift */; };
 		706961FF1A7136A0001443B2 /* ProtonMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706961FE1A7136A0001443B2 /* ProtonMailViewController.swift */; };
@@ -105,6 +105,7 @@
 		075E3DFE1A5F4ECF00E001A7 /* ProtonMailTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProtonMailTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		075E3E031A5F4ECF00E001A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		075E3E041A5F4ECF00E001A7 /* ProtonMailTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonMailTests.swift; sourceTree = "<group>"; };
+		078A3A4B1A7FF4DC002C5FF3 /* MessageDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDataService.swift; sourceTree = "<group>"; };
 		07B797BF1A6EDFF400244532 /* APIService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		07B797C11A6EE50F00244532 /* APIService+AuthenticationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+AuthenticationExtension.swift"; sourceTree = "<group>"; };
 		07B797C41A6EE5FF00244532 /* AuthCredential.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthCredential.swift; sourceTree = "<group>"; };
@@ -113,6 +114,7 @@
 		07CC99671A702368000FD6F8 /* UIFontExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
 		07CC99691A705BA4000FD6F8 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		07CC996B1A717ABD000FD6F8 /* UIStoryboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStoryboardExtension.swift; sourceTree = "<group>"; };
+		07FBA7A41A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSFetchedResultsControllerExtension.swift; sourceTree = "<group>"; };
 		132129A26ED76512DB66C024 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		701704741A791856000A90D2 /* ThreadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadViewController.swift; sourceTree = "<group>"; };
 		701704771A794C69000A90D2 /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-MediumItalic.ttf"; sourceTree = "<group>"; };
@@ -122,8 +124,6 @@
 		7061A3F41A6E8C9D0006D36C /* Menu.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Menu.storyboard; sourceTree = "<group>"; };
 		7061A3F81A6E8F460006D36C /* InboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxViewController.swift; sourceTree = "<group>"; };
 		706628201A715A0900164117 /* InboxTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxTableViewCell.swift; sourceTree = "<group>"; };
-		706628221A71651700164117 /* EmailService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailService.swift; sourceTree = "<group>"; };
-		706628261A71695A00164117 /* EmailThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailThread.swift; sourceTree = "<group>"; };
 		706932AA1A77BE3D00A75A93 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		706961FC1A713670001443B2 /* DraftsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraftsViewController.swift; sourceTree = "<group>"; };
 		706961FE1A7136A0001443B2 /* ProtonMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProtonMailViewController.swift; path = ProtonMail/ProtonMailViewController.swift; sourceTree = "<group>"; };
@@ -163,7 +163,6 @@
 			isa = PBXGroup;
 			children = (
 				07B797C31A6EE54600244532 /* Network */,
-				706628221A71651700164117 /* EmailService.swift */,
 				07009EFB1A64AEF800129B07 /* PGPService.swift */,
 			);
 			name = Services;
@@ -195,6 +194,7 @@
 				07CC996B1A717ABD000FD6F8 /* UIStoryboardExtension.swift */,
 				071323801A7846150043DB41 /* UIViewExtension.swift */,
 				0713239F1A7C1AB10043DB41 /* NSTimeIntervalExtension.swift */,
+				07FBA7A41A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -216,7 +216,6 @@
 			isa = PBXGroup;
 			children = (
 				07B797C41A6EE5FF00244532 /* AuthCredential.swift */,
-				706628261A71695A00164117 /* EmailThread.swift */,
 				071323991A7C02AB0043DB41 /* Message.swift */,
 				071323951A7C01FB0043DB41 /* MessageExtension.swift */,
 			);
@@ -226,6 +225,7 @@
 		073FD9301A71C5F000EB0CAF /* DataServices */ = {
 			isa = PBXGroup;
 			children = (
+				078A3A4B1A7FF4DC002C5FF3 /* MessageDataService.swift */,
 				073FD9311A71C60900EB0CAF /* UserDataService.swift */,
 			);
 			name = DataServices;
@@ -620,6 +620,7 @@
 				075E3DEC1A5F4ECF00E001A7 /* AppDelegate.swift in Sources */,
 				7061A3F31A6E8C6A0006D36C /* MenuViewController.swift in Sources */,
 				07B797C51A6EE5FF00244532 /* AuthCredential.swift in Sources */,
+				078A3A4C1A7FF4DC002C5FF3 /* MessageDataService.swift in Sources */,
 				70F9C3211A7BA8F400A45DF3 /* ThreadView.swift in Sources */,
 				701704751A791856000A90D2 /* ThreadViewController.swift in Sources */,
 				706962071A71399D001443B2 /* ContactsViewController.swift in Sources */,
@@ -629,7 +630,6 @@
 				07009F0B1A66E36500129B07 /* NSNotification+KeyboardExtension.swift in Sources */,
 				7069620B1A7139C8001443B2 /* SettingsViewController.swift in Sources */,
 				706962091A7139B3001443B2 /* SentViewController.swift in Sources */,
-				706628271A71695A00164117 /* EmailThread.swift in Sources */,
 				07CC99641A6F076A000FD6F8 /* NSErrorExtension.swift in Sources */,
 				07CC99661A6F1380000FD6F8 /* FoundationExtension.swift in Sources */,
 				7069620F1A7139FE001443B2 /* SpamViewController.swift in Sources */,
@@ -641,7 +641,7 @@
 				071323A01A7C1AB10043DB41 /* NSTimeIntervalExtension.swift in Sources */,
 				706962111A713A0F001443B2 /* TrashViewController.swift in Sources */,
 				7027B02B1A700F0200D28F52 /* MenuTableViewCell.swift in Sources */,
-				706628231A71651700164117 /* EmailService.swift in Sources */,
+				07FBA7A51A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift in Sources */,
 				0713239E1A7C1A670043DB41 /* NSDictonaryExtension.swift in Sources */,
 				07CC99681A702368000FD6F8 /* UIFontExtension.swift in Sources */,
 			);

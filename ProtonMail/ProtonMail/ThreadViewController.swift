@@ -14,13 +14,13 @@ import UIKit
 
 class ThreadViewController: ProtonMailViewController {
     
-    var emailThread: EmailThread!
+    var message: Message!
     
     @IBOutlet var threadView: ThreadView!
     
     override func loadView() {
-        emailThread.isRead = true
-        threadView = ThreadView(thread: emailThread)
+        message.isRead = true
+        threadView = ThreadView(thread: message)
         threadView.delegate = self
         
         self.view = threadView
@@ -61,17 +61,17 @@ class ThreadViewController: ProtonMailViewController {
 
 extension ThreadViewController: ThreadViewDelegate {
     
-    func threadViewDidTapForwardThread(threadView: ThreadView, thread: EmailThread) {
+    func threadViewDidTapForwardThread(threadView: ThreadView, thread: Message) {
         
         println("threadViewDidTapForwardThread: \(thread.title)")
     }
     
-    func threadViewDidTapReplyAllThread(threadView: ThreadView, thread: EmailThread) {
+    func threadViewDidTapReplyAllThread(threadView: ThreadView, thread: Message) {
 
         println("threadViewDidTapReplyAllThread: \(thread.title)")
     }
     
-    func threadViewDidTapReplyThread(threadView: ThreadView, thread: EmailThread) {
+    func threadViewDidTapReplyThread(threadView: ThreadView, thread: Message) {
         
         println("threadViewDidTapReplyThread: \(thread.title)")
     }

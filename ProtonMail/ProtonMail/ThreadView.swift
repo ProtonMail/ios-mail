@@ -15,7 +15,7 @@ import UIKit
 class ThreadView: UIView {
     
     var delegate: ThreadViewDelegate?
-    private var emailThread: EmailThread!
+    private var emailThread: Message!
     
     // MARK: - Private constants
     
@@ -81,7 +81,7 @@ class ThreadView: UIView {
         super.init()
     }
     
-    convenience init(thread: EmailThread) {
+    convenience init(thread: Message) {
         self.init()
         self.emailThread = thread
         self.backgroundColor = UIColor.whiteColor()
@@ -417,8 +417,8 @@ class ThreadView: UIView {
 // MARK: - View Delegate
 
 protocol ThreadViewDelegate {
-    func threadViewDidTapForwardThread(threadView: ThreadView, thread: EmailThread)
-    func threadViewDidTapReplyThread(threadView: ThreadView, thread: EmailThread)
-    func threadViewDidTapReplyAllThread(threadView: ThreadView, thread: EmailThread)
+    func threadViewDidTapForwardThread(threadView: ThreadView, thread: Message)
+    func threadViewDidTapReplyThread(threadView: ThreadView, thread: Message)
+    func threadViewDidTapReplyAllThread(threadView: ThreadView, thread: Message)
 }
 
