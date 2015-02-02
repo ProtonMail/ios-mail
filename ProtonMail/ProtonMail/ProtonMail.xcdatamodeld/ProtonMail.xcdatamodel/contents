@@ -1,4 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="Test1.xcdatamodel" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <elements/>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14B25" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Message" representedClassName="ProtonMail.Message" syncable="YES">
+        <attribute name="expirationTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="isAttachment" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isEncrypted" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isForwarded" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isRead" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
+        <attribute name="isReplied" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isRepliedAll" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="messageID" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="recipientList" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recipientNameList" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sender" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="senderName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tag" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="time" attributeType="Date" indexed="YES" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="totalSize" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Message" positionX="-63" positionY="-18" width="128" height="285"/>
+    </elements>
 </model>

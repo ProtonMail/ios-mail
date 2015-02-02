@@ -1,5 +1,5 @@
 //
-//  ProtonMailAPIService+UserExtension.swift
+//  APIService+UserExtension.swift
 //  ProtonMail
 //
 //
@@ -16,7 +16,8 @@
 
 import Foundation
 
-extension ProtonMailAPIService {
+/// User extensions
+extension APIService {
     typealias UserInfo = (displayName: String?, privateKey: String?)
     
     func userInfo(#success: (UserInfo -> Void), failure: (NSError? -> Void)) {

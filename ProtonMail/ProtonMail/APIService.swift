@@ -1,5 +1,5 @@
 //
-//  ProtonMailAPIService.swift
+//  APIService.swift
 //  ProtonMail
 //
 //
@@ -18,14 +18,15 @@ import Foundation
 
 private let BaseURLString = "http://protonmail.xyz"
 
-let sharedProtonMailAPIService = ProtonMailAPIService()
+let sharedAPIService = APIService()
 
-class ProtonMailAPIService {
+class APIService {
     enum APIError: Int {
         case authCredentialExpired
         case authCredentialInvalid
         case authInvalidGrant
         case authUnableToParseToken
+        case unableToParseResponse
         case userNone
         case unknown
         
@@ -46,6 +47,8 @@ class ProtonMailAPIService {
                 return NSLocalizedString("Invalid grant")
             case .authUnableToParseToken:
                 return NSLocalizedString("Unable to parse token")
+            case .unableToParseResponse:
+                return NSLocalizedString("Unable to parse response")
             default:
                 return NSLocalizedString("Unknown error")
             }
@@ -61,6 +64,8 @@ class ProtonMailAPIService {
                 return NSLocalizedString("The supplied credentials are invalid.")
             case .authUnableToParseToken:
                 return NSLocalizedString("Unable to parse authentication token!")
+            case .unableToParseResponse:
+                return NSLocalizedString("Unable to parse the response object.")
             default:
                 return nil
             }
@@ -89,7 +94,7 @@ class ProtonMailAPIService {
         if let credential = AuthCredential.fetchFromKeychain() {
             if !credential.isExpired {
                 self.sessionManager.requestSerializer.setAuthorizationHeaderFieldWithCredential(credential)
-                
+                NSLog("credential: \(credential)")
                 success(credential)
             } else {
                 // TODO: Replace with logic that will refresh the authToken.

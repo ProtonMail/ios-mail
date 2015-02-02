@@ -1,5 +1,5 @@
 //
-//  ProtonMailAPIService+AuthenticationExtension.swift
+//  APIService+AuthenticationExtension.swift
 //  ProtonMail
 //
 //
@@ -16,7 +16,8 @@
 
 import Foundation
 
-extension ProtonMailAPIService {
+/// Auth extension
+extension APIService {
     typealias AuthInfo = (accessToken: String?, expiresId: NSTimeInterval?, refreshToken: String?, userID: String?)
     
     func authAuth(#username: String, password: String, success: (() -> Void), failure: (NSError -> Void)) -> Void {
@@ -77,7 +78,7 @@ extension ProtonMailAPIService {
 }
 
 extension AuthCredential {
-    convenience init(authInfo: ProtonMailAPIService.AuthInfo) {
+    convenience init(authInfo: APIService.AuthInfo) {
         let expiration = NSDate(timeIntervalSinceNow: (authInfo.expiresId ?? 0))
         
         self.init(accessToken: authInfo.accessToken, refreshToken: authInfo.refreshToken, userID: authInfo.userID, expiration: expiration)

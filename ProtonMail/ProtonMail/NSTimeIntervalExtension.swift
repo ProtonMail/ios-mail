@@ -1,5 +1,5 @@
 //
-//  AFHTTPRequestSerializerExtension.swift
+//  NSTimeIntervalExtension.swift
 //  ProtonMail
 //
 //
@@ -16,10 +16,8 @@
 
 import Foundation
 
-extension AFHTTPRequestSerializer {
-    func setAuthorizationHeaderFieldWithCredential(credential: AuthCredential) {
-        let accessToken = credential.accessToken ?? ""
-        setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-        setValue(credential.userID, forHTTPHeaderField: "x-pm-uid")
+extension NSTimeInterval {
+    func asDate() -> NSDate {
+        return NSDate(timeIntervalSince1970: self)
     }
 }
