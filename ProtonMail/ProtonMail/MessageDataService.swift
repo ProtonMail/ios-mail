@@ -34,7 +34,7 @@ class MessageDataService {
         
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.entityName())
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "time", ascending: true)]
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "time", ascending: false)]
             
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         }
