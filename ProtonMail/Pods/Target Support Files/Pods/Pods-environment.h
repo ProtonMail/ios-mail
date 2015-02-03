@@ -60,6 +60,12 @@
 #define COCOAPODS_VERSION_MINOR_Masonry 6
 #define COCOAPODS_VERSION_PATCH_Masonry 0
 
+// NSDate+Helper
+#define COCOAPODS_POD_AVAILABLE_NSDate_Helper
+#define COCOAPODS_VERSION_MAJOR_NSDate_Helper 1
+#define COCOAPODS_VERSION_MINOR_NSDate_Helper 0
+#define COCOAPODS_VERSION_PATCH_NSDate_Helper 0
+
 // OpenSSL-Universal
 #define COCOAPODS_POD_AVAILABLE_OpenSSL_Universal
 // This library does not follow semantic-versioning,

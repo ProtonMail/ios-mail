@@ -49,7 +49,7 @@ class InboxTableViewCell: UITableViewCell {
     func configureCell(thread: Message) {
         self.title.text = thread.title
         self.sender.text = thread.sender
-        self.time.text = thread.time.description
+        self.time.text = NSDate.stringForDisplayFromDate(thread.time)
         self.encryptedImage.hidden = !thread.isEncrypted
         self.attachImage.hidden = !thread.isAttachment
         self.checkboxButton.layer.cornerRadius = kCheckboxButtonCornerRadius
