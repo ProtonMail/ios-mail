@@ -47,7 +47,17 @@ class SearchViewController: ProtonMailViewController {
                 NSFontAttributeName: UIFont.robotoLight(size: UIFont.Size.h3)
             ])
         
-        self.messages = EmailService.retrieveMessages()
+        self.messages = EmailService.retrieveInboxMessages()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        searchTextField.becomeFirstResponder()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        searchTextField.resignFirstResponder()
     }
     
     override func configureNavigationBar() {

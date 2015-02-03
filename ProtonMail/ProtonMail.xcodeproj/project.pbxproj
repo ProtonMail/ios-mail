@@ -51,6 +51,10 @@
 		7069620B1A7139C8001443B2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7069620A1A7139C8001443B2 /* SettingsViewController.swift */; };
 		7069620F1A7139FE001443B2 /* SpamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7069620E1A7139FE001443B2 /* SpamViewController.swift */; };
 		706962111A713A0F001443B2 /* TrashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706962101A713A0F001443B2 /* TrashViewController.swift */; };
+		70945E6A1A80F351002B6837 /* MailBoxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70945E691A80F351002B6837 /* MailBoxViewController.swift */; };
+		70945E6C1A8133B8002B6837 /* MoreOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70945E6B1A8133B8002B6837 /* MoreOptionsView.swift */; };
+		70945E6E1A813550002B6837 /* UIButton+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70945E6D1A813550002B6837 /* UIButton+ProtonMail.swift */; };
+		70945E701A8135EC002B6837 /* UILabel+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70945E6F1A8135EC002B6837 /* UILabel+ProtonMail.swift */; };
 		70C6ABE41A72C1B7006EC400 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70FD2BCB1A6FDC9B0086ADC5 /* Roboto-Regular.ttf */; };
 		70C9133D1A6D83FA002CBE61 /* UIColor+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */; };
 		70F9C3211A7BA8F400A45DF3 /* ThreadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9C3201A7BA8F400A45DF3 /* ThreadView.swift */; };
@@ -120,6 +124,10 @@
 		7069620A1A7139C8001443B2 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		7069620E1A7139FE001443B2 /* SpamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpamViewController.swift; sourceTree = "<group>"; };
 		706962101A713A0F001443B2 /* TrashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrashViewController.swift; sourceTree = "<group>"; };
+		70945E691A80F351002B6837 /* MailBoxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailBoxViewController.swift; sourceTree = "<group>"; };
+		70945E6B1A8133B8002B6837 /* MoreOptionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreOptionsView.swift; sourceTree = "<group>"; };
+		70945E6D1A813550002B6837 /* UIButton+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+ProtonMail.swift"; sourceTree = "<group>"; };
+		70945E6F1A8135EC002B6837 /* UILabel+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+ProtonMail.swift"; sourceTree = "<group>"; };
 		70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+ProtonMail.swift"; sourceTree = "<group>"; };
 		70F9C3201A7BA8F400A45DF3 /* ThreadView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadView.swift; sourceTree = "<group>"; };
 		70FD2BCB1A6FDC9B0086ADC5 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
@@ -180,6 +188,8 @@
 				07CC99671A702368000FD6F8 /* UIFontExtension.swift */,
 				07CC996B1A717ABD000FD6F8 /* UIStoryboardExtension.swift */,
 				071323801A7846150043DB41 /* UIViewExtension.swift */,
+				70945E6D1A813550002B6837 /* UIButton+ProtonMail.swift */,
+				70945E6F1A8135EC002B6837 /* UILabel+ProtonMail.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -249,6 +259,7 @@
 				07009F071A65E3C600129B07 /* Extensions */,
 				07009F101A684BDB00129B07 /* Fonts */,
 				70C913391A6D82F0002CBE61 /* Inbox */,
+				70945E681A80F331002B6837 /* MailBox */,
 				7061A3F11A6E8C4A0006D36C /* Menu */,
 				073FD92D1A71C33B00EB0CAF /* Models */,
 				706962001A713926001443B2 /* Sent */,
@@ -321,6 +332,7 @@
 				7061A3F41A6E8C9D0006D36C /* Menu.storyboard */,
 				7027B02A1A700F0200D28F52 /* MenuTableViewCell.swift */,
 				7061A3F21A6E8C6A0006D36C /* MenuViewController.swift */,
+				70945E6B1A8133B8002B6837 /* MoreOptionsView.swift */,
 			);
 			name = Menu;
 			sourceTree = "<group>";
@@ -391,6 +403,14 @@
 				7069620A1A7139C8001443B2 /* SettingsViewController.swift */,
 			);
 			name = Settings;
+			sourceTree = "<group>";
+		};
+		70945E681A80F331002B6837 /* MailBox */ = {
+			isa = PBXGroup;
+			children = (
+				70945E691A80F351002B6837 /* MailBoxViewController.swift */,
+			);
+			name = MailBox;
 			sourceTree = "<group>";
 		};
 		70C913391A6D82F0002CBE61 /* Inbox */ = {
@@ -598,6 +618,7 @@
 				075E3DEF1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld in Sources */,
 				075E3DEC1A5F4ECF00E001A7 /* AppDelegate.swift in Sources */,
 				7061A3F31A6E8C6A0006D36C /* MenuViewController.swift in Sources */,
+				70945E6E1A813550002B6837 /* UIButton+ProtonMail.swift in Sources */,
 				07B797C51A6EE5FF00244532 /* AuthCredential.swift in Sources */,
 				70F9C3211A7BA8F400A45DF3 /* ThreadView.swift in Sources */,
 				701704751A791856000A90D2 /* ThreadViewController.swift in Sources */,
@@ -608,9 +629,11 @@
 				07009F0B1A66E36500129B07 /* NSNotification+KeyboardExtension.swift in Sources */,
 				7069620B1A7139C8001443B2 /* SettingsViewController.swift in Sources */,
 				706962091A7139B3001443B2 /* SentViewController.swift in Sources */,
+				70945E701A8135EC002B6837 /* UILabel+ProtonMail.swift in Sources */,
 				706628271A71695A00164117 /* EmailThread.swift in Sources */,
 				07CC99641A6F076A000FD6F8 /* NSErrorExtension.swift in Sources */,
 				07CC99661A6F1380000FD6F8 /* FoundationExtension.swift in Sources */,
+				70945E6A1A80F351002B6837 /* MailBoxViewController.swift in Sources */,
 				7069620F1A7139FE001443B2 /* SpamViewController.swift in Sources */,
 				07B797C01A6EDFF400244532 /* ProtonMailAPIService.swift in Sources */,
 				073FD92C1A719B7900EB0CAF /* ProtonMailAPIService+UserExtension.swift in Sources */,
@@ -619,6 +642,7 @@
 				706962111A713A0F001443B2 /* TrashViewController.swift in Sources */,
 				7027B02B1A700F0200D28F52 /* MenuTableViewCell.swift in Sources */,
 				706628231A71651700164117 /* EmailService.swift in Sources */,
+				70945E6C1A8133B8002B6837 /* MoreOptionsView.swift in Sources */,
 				07CC99681A702368000FD6F8 /* UIFontExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

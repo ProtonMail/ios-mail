@@ -1,4 +1,8 @@
 //
+//  UIViewExtension.swift
+//  ProtonMail
+//
+//
 // Copyright 2015 ArcTouch, Inc.
 // All rights reserved.
 //
@@ -10,17 +14,14 @@
 // the license agreement.
 //
 
-import UIKit
+import Foundation
 
-class DraftsViewController: MailBoxViewController {
+extension UIButton {
     
-    override func loadView() {
-        self.title = NSLocalizedString("DRAFTS")
-        super.loadView()
-    }
-    
-    override func retrieveMessagesFromServer() -> [EmailThread] {
-        println("Retrieving Drafts")
-        return EmailService.retrieveDraftMessages()
+    class func buttonWithImage(image: UIImage) -> UIButton {
+        let button = UIButton()
+        button.setImage(image, forState: UIControlState.Normal)
+        button.sizeToFit()
+        return button
     }
 }
