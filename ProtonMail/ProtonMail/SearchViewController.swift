@@ -48,7 +48,7 @@ class SearchViewController: ProtonMailViewController {
                 NSFontAttributeName: UIFont.robotoLight(size: UIFont.Size.h3)
             ])
         
-        self.messages = EmailService.retrieveInboxMessages()
+        fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLocation(.inbox)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -59,7 +59,6 @@ class SearchViewController: ProtonMailViewController {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         searchTextField.resignFirstResponder()
-        fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLocation(.inbox)
     }
     
     override func configureNavigationBar() {
@@ -88,10 +87,7 @@ extension SearchViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
         var cell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as InboxTableViewCell
-
-        if let thread = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-            cell.configureCell(thread)
-        }
+        cell.configureCell(filteredMessages[indexPath.row])
         
         return cell
     }
@@ -125,7 +121,7 @@ extension SearchViewController: UITableViewDelegate {
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return fetchedResultsController?.numberOfSections() ?? 1
+        return 1
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -140,10 +136,11 @@ extension SearchViewController: UITextFieldDelegate {
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         self.filteredMessages.removeAll(keepCapacity: true)
-        
+        fetchedResultsController?.performFetch(nil)
         var filterText = textField.text
         filterText = (filterText as NSString).stringByReplacingCharactersInRange(range, withString: string)
         let messages = fetchedResultsController?.fetchedObjects as [Message]
+
         for message in messages {
             if (message.title.lowercaseString.rangeOfString(filterText.lowercaseString) != nil) {
                 filteredMessages.append(message)

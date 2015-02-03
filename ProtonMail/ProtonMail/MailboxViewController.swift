@@ -13,7 +13,7 @@
 import CoreData
 import UIKit
 
-class MailBoxViewController: ProtonMailViewController {
+class MailboxViewController: ProtonMailViewController {
     
     
     // MARK: - View Outlets
@@ -33,7 +33,6 @@ class MailBoxViewController: ProtonMailViewController {
     
     // MARK: - Private attributes
     
-    internal var messages: [EmailThread]!
     internal var refreshControl: UIRefreshControl!
 
     private var fetchedResultsController: NSFetchedResultsController?
@@ -64,10 +63,12 @@ class MailBoxViewController: ProtonMailViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        setupFetchedResultsController()
         addSubViews()
         addConstraints()
-        setupFetchedResultsController()
+        refreshControl.beginRefreshing()
+        getLatestMessages()
         
         self.updateNavigationController(isEditing)
     }
@@ -100,7 +101,6 @@ class MailBoxViewController: ProtonMailViewController {
         self.refreshControl.tintColor = UIColor.whiteColor()
         self.refreshControl.addTarget(self, action: "getLatestMessages", forControlEvents: UIControlEvents.ValueChanged)
         
-        self.getLatestMessages()
         self.tableView.addSubview(self.refreshControl)
         self.tableView.dataSource = self
         self.tableView.delegate = self
@@ -121,6 +121,13 @@ class MailBoxViewController: ProtonMailViewController {
             make.bottom.equalTo()(self.view.mas_top)
             return ()
         }
+    }
+    
+    
+    // MARK: - Methods that should be overriden
+    
+    internal func mailboxLocation() -> APIService.Location {
+        fatalError("You must override MailboxViewController.mailboxLocation()")
     }
     
     // MARK: - Button Targets
@@ -228,8 +235,19 @@ class MailBoxViewController: ProtonMailViewController {
     
     // MARK: - Private methods
     
+    private func configureCell(inboxCell: InboxTableViewCell, atIndexPath indexPath: NSIndexPath) {
+        if let thread = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+            inboxCell.configureCell(thread)
+            inboxCell.setCellIsChecked(selectedMessages.containsObject(thread.messageID))
+            
+            if (self.isEditing) {
+                inboxCell.showCheckboxOnLeftSide()
+            }
+        }
+    }
+    
     private func setupFetchedResultsController() {
-        self.fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLocation(.inbox)
+        self.fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLocation(mailboxLocation())
         self.fetchedResultsController?.delegate = self
         
         if let fetchedResultsController = fetchedResultsController {
@@ -240,13 +258,13 @@ class MailBoxViewController: ProtonMailViewController {
         }
     }
     
-    private func getLatestMessages() {
-        self.messages = retrieveMessagesFromServer()
-        self.refreshControl.endRefreshing()
-        
-        UIView.animateWithDuration(0.5, animations: { () -> Void in
-            self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
-        })
+    func getLatestMessages() {
+        sharedMessageDataService.fetchMessagesForLocation(mailboxLocation()) { error in
+            if let error = error {
+                NSLog("error: \(error)")
+            }
+            self.refreshControl.endRefreshing()
+        }
     }
     
     private func setupLeftButtons(editingMode: Bool) {
@@ -377,18 +395,12 @@ class MailBoxViewController: ProtonMailViewController {
         self.setupNavigationTitle(editingMode)
         self.setupRightButtons(editingMode)
     }
-    
-    // MARK: - Functions that should be overriden
-    
-    internal func retrieveMessagesFromServer() -> [EmailThread] {
-        return [EmailThread]()
-    }
 }
 
 
 // MARK: - InboxTableViewCellDelegate
 
-extension MailBoxViewController: MailBoxTableViewCellDelegate {
+extension MailboxViewController: InboxTableViewCellDelegate {
     func inboxTableViewCell(cell: InboxTableViewCell, didChangeStarred isStarred: Bool) {
         if let indexPath = tableView.indexPathForCell(cell) {
             if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
@@ -405,7 +417,7 @@ extension MailBoxViewController: MailBoxTableViewCellDelegate {
 
 // MARK: - UITableViewDataSource
 
-extension MailBoxViewController: UITableViewDataSource {
+extension MailboxViewController: UITableViewDataSource {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -451,7 +463,7 @@ extension MailBoxViewController: UITableViewDataSource {
 
 // MARK: - NSFetchedResultsControllerDelegate
 
-extension MailBoxViewController: NSFetchedResultsControllerDelegate {
+extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
     }
@@ -496,7 +508,7 @@ extension MailBoxViewController: NSFetchedResultsControllerDelegate {
 
 // MARK: - UITableViewDelegate
 
-extension MailBoxViewController: UITableViewDelegate {
+extension MailboxViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return kInboxCellHeight
     }

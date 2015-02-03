@@ -13,21 +13,14 @@
 import CoreData
 import UIKit
 
-class InboxViewController: MailBoxViewController {
+class InboxViewController: MailboxViewController {
  
     override func loadView() {
         self.title = NSLocalizedString("INBOX")
         super.loadView()
     }
     
-    override func retrieveMessagesFromServer() -> [EmailThread] {
-        println("Retrieving Inbox")
-//        sharedMessageDataService.fetchMessagesForLocation(.inbox) { error in
-//            if let error = error {
-//                NSLog("error: \(error)")
-//            }
-//            self.refreshControl.endRefreshing()
-//        }
-        return EmailService.retrieveInboxMessages()
+    override func mailboxLocation() -> APIService.Location {
+        return .inbox
     }
 }

@@ -57,7 +57,7 @@
 		7069620B1A7139C8001443B2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7069620A1A7139C8001443B2 /* SettingsViewController.swift */; };
 		7069620F1A7139FE001443B2 /* SpamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7069620E1A7139FE001443B2 /* SpamViewController.swift */; };
 		706962111A713A0F001443B2 /* TrashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706962101A713A0F001443B2 /* TrashViewController.swift */; };
-		70945E6A1A80F351002B6837 /* MailBoxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70945E691A80F351002B6837 /* MailBoxViewController.swift */; };
+		70945E6A1A80F351002B6837 /* MailboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70945E691A80F351002B6837 /* MailboxViewController.swift */; };
 		70945E6C1A8133B8002B6837 /* MoreOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70945E6B1A8133B8002B6837 /* MoreOptionsView.swift */; };
 		70945E6E1A813550002B6837 /* UIButton+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70945E6D1A813550002B6837 /* UIButton+ProtonMail.swift */; };
 		70945E701A8135EC002B6837 /* UILabel+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70945E6F1A8135EC002B6837 /* UILabel+ProtonMail.swift */; };
@@ -136,7 +136,7 @@
 		7069620A1A7139C8001443B2 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		7069620E1A7139FE001443B2 /* SpamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpamViewController.swift; sourceTree = "<group>"; };
 		706962101A713A0F001443B2 /* TrashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrashViewController.swift; sourceTree = "<group>"; };
-		70945E691A80F351002B6837 /* MailBoxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailBoxViewController.swift; sourceTree = "<group>"; };
+		70945E691A80F351002B6837 /* MailboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxViewController.swift; sourceTree = "<group>"; };
 		70945E6B1A8133B8002B6837 /* MoreOptionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreOptionsView.swift; sourceTree = "<group>"; };
 		70945E6D1A813550002B6837 /* UIButton+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+ProtonMail.swift"; sourceTree = "<group>"; };
 		70945E6F1A8135EC002B6837 /* UILabel+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+ProtonMail.swift"; sourceTree = "<group>"; };
@@ -276,7 +276,7 @@
 				07009F071A65E3C600129B07 /* Extensions */,
 				07009F101A684BDB00129B07 /* Fonts */,
 				70C913391A6D82F0002CBE61 /* Inbox */,
-				70945E681A80F331002B6837 /* MailBox */,
+				70945E681A80F331002B6837 /* Mailbox */,
 				7061A3F11A6E8C4A0006D36C /* Menu */,
 				073FD92D1A71C33B00EB0CAF /* Models */,
 				706962001A713926001443B2 /* Sent */,
@@ -423,12 +423,12 @@
 			name = Settings;
 			sourceTree = "<group>";
 		};
-		70945E681A80F331002B6837 /* MailBox */ = {
+		70945E681A80F331002B6837 /* Mailbox */ = {
 			isa = PBXGroup;
 			children = (
-				70945E691A80F351002B6837 /* MailBoxViewController.swift */,
+				70945E691A80F351002B6837 /* MailboxViewController.swift */,
 			);
-			name = MailBox;
+			name = Mailbox;
 			sourceTree = "<group>";
 		};
 		70C913391A6D82F0002CBE61 /* Inbox */ = {
@@ -652,10 +652,9 @@
 				7069620B1A7139C8001443B2 /* SettingsViewController.swift in Sources */,
 				706962091A7139B3001443B2 /* SentViewController.swift in Sources */,
 				70945E701A8135EC002B6837 /* UILabel+ProtonMail.swift in Sources */,
-				706628271A71695A00164117 /* EmailThread.swift in Sources */,
 				07CC99641A6F076A000FD6F8 /* NSErrorExtension.swift in Sources */,
 				07CC99661A6F1380000FD6F8 /* FoundationExtension.swift in Sources */,
-				70945E6A1A80F351002B6837 /* MailBoxViewController.swift in Sources */,
+				70945E6A1A80F351002B6837 /* MailboxViewController.swift in Sources */,
 				7069620F1A7139FE001443B2 /* SpamViewController.swift in Sources */,
 				0713239A1A7C02AB0043DB41 /* Message.swift in Sources */,
 				07B797C01A6EDFF400244532 /* APIService.swift in Sources */,
@@ -665,7 +664,6 @@
 				071323A01A7C1AB10043DB41 /* NSTimeIntervalExtension.swift in Sources */,
 				706962111A713A0F001443B2 /* TrashViewController.swift in Sources */,
 				7027B02B1A700F0200D28F52 /* MenuTableViewCell.swift in Sources */,
-				706628231A71651700164117 /* EmailService.swift in Sources */,
 				70945E6C1A8133B8002B6837 /* MoreOptionsView.swift in Sources */,
 				07FBA7A51A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift in Sources */,
 				0713239E1A7C1A670043DB41 /* NSDictonaryExtension.swift in Sources */,
@@ -789,6 +787,7 @@
 				INFOPLIST_FILE = ProtonMail/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ProtonMail/ProtonMail-Bridging-Header.h";
 			};
@@ -802,6 +801,7 @@
 				INFOPLIST_FILE = ProtonMail/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ProtonMail/ProtonMail-Bridging-Header.h";
 			};
@@ -886,6 +886,7 @@
 				INFOPLIST_FILE = ProtonMail/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ProtonMail/ProtonMail-Bridging-Header.h";
 			};

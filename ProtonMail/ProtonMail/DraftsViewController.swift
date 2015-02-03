@@ -12,15 +12,14 @@
 
 import UIKit
 
-class DraftsViewController: MailBoxViewController {
+class DraftsViewController: MailboxViewController {
     
     override func loadView() {
         self.title = NSLocalizedString("DRAFTS")
         super.loadView()
     }
     
-    override func retrieveMessagesFromServer() -> [EmailThread] {
-        println("Retrieving Drafts")
-        return EmailService.retrieveDraftMessages()
+    override func mailboxLocation() -> APIService.Location {
+        return .draft
     }
 }
