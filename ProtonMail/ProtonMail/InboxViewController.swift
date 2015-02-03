@@ -78,7 +78,9 @@ class InboxViewController: ProtonMailViewController {
         
         setupFetchedResultsController()
         
+        self.refreshControl.beginRefreshing()
         self.getLatestMessages()
+        
         self.tableView.addSubview(self.refreshControl)
         self.tableView.dataSource = self
         self.tableView.delegate = self
@@ -143,12 +145,12 @@ class InboxViewController: ProtonMailViewController {
     }
     
     internal func getLatestMessages() {
-        sharedMessageDataService.fetchMessagesForLocation(.inbox)
-        self.refreshControl.endRefreshing()
-        
-        UIView.animateWithDuration(0.5, animations: { () -> Void in
-            self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
-        })
+        sharedMessageDataService.fetchMessagesForLocation(.inbox) { error in
+            if let error = error {
+                NSLog("error: \(error)")
+            }
+            self.refreshControl.endRefreshing()
+        }
     }
     
     internal func cancelButtonTapped() {

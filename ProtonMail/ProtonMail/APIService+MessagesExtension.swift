@@ -45,7 +45,7 @@ extension APIService {
         case subject = "Subject"
     }
     
-    func messageList(location: Location, page: Int, sortedColumn: SortedColumn, order: Order, filter: Filter, failure: (NSError? -> Void)) {
+    func messageList(location: Location, page: Int, sortedColumn: SortedColumn, order: Order, filter: Filter, completion: (NSError? -> Void)) {
         fetchAuthCredential(success: { credential in
             let messagesPath = "/messages"
             
@@ -57,14 +57,12 @@ extension APIService {
                 "FilterUnread" : filter.rawValue]
             
             self.sessionManager.GET(messagesPath, parameters: parameters, success: { (task, response) -> Void in
-                if let error = self.messagesForResponse(response) {
-                    failure(error)
-                }
+                completion(self.messagesForResponse(response))
             }, failure: { (task, error) -> Void in
-                failure(error)
+                completion(error)
             })
 
-        }, failure: failure)
+        }, failure: completion)
     }
     
     func messagesForResponse(response: AnyObject?) -> NSError? {

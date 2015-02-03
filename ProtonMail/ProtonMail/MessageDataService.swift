@@ -24,10 +24,8 @@ class MessageDataService {
         return (UIApplication.sharedApplication().delegate as AppDelegate).managedObjectContext
     }
     
-    func fetchMessagesForLocation(location: APIService.Location) {
-        sharedAPIService.messageList(location, page: 1, sortedColumn: .date, order: .ascending, filter: .noFilter, failure: { error in
-            NSLog("error: \(error)")
-        })
+    func fetchMessagesForLocation(location: APIService.Location, completion: (NSError? -> Void)) {
+        sharedAPIService.messageList(location, page: 1, sortedColumn: .date, order: .descending, filter: .noFilter, completion: completion)
     }
     
     func fetchedResultsControllerForLocation(location: APIService.Location) -> NSFetchedResultsController? {
