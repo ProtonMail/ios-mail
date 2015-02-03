@@ -46,12 +46,12 @@ class InboxTableViewCell: UITableViewCell {
     
     // MARK: - Cell configuration
     
-    func configureCell(thread: EmailThread) {
+    func configureCell(thread: Message) {
         self.title.text = thread.title
         self.sender.text = thread.sender
-        self.time.text = thread.time
+        self.time.text = thread.time.description
         self.encryptedImage.hidden = !thread.isEncrypted
-        self.attachImage.hidden = !thread.hasAttachments
+        self.attachImage.hidden = !thread.isAttachment
         self.checkboxButton.layer.cornerRadius = kCheckboxButtonCornerRadius
         self.checkboxButton.layer.masksToBounds = true
         
