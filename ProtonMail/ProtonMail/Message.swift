@@ -20,7 +20,6 @@ class Message: NSManagedObject {
     @NSManaged var recipientList: String
     @NSManaged var totalSize: Int32
     @NSManaged var isAttachment: Bool
-    @NSManaged var isFavorite: Bool
     @NSManaged var isRead: Bool
     @NSManaged var isEncrypted: Bool
     @NSManaged var tag: String
@@ -28,5 +27,6 @@ class Message: NSManagedObject {
     @NSManaged var isReplied: Bool
     @NSManaged var isRepliedAll: Bool
     @NSManaged var isForwarded: Bool
+    @NSManaged var isStarred: Bool
 
 }

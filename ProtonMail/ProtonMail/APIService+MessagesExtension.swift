@@ -67,7 +67,37 @@ extension APIService {
         }, failure: failure)
     }
     
-    func messagesForResponse(response: AnyObject?) -> NSError? {
+    func starMessage(message: Message, completion: (NSError? -> Void)) {
+        fetchAuthCredential(success: { credential in
+            let path = "/messages/\(message.messageID)/star"
+            
+            self.sessionManager.PUT(path, parameters: nil, success: { (task, result) -> Void in
+                // TODO: update message details
+                completion(nil)
+            }, failure: { (task, error) -> Void in
+                completion(error)
+            })
+            
+        }, failure: completion)
+    }
+    
+    func unstarMessage(message: Message, completion: (NSError? -> Void)) {
+        fetchAuthCredential(success: { credential in
+            let path = "/messages/\(message.messageID)/unstar"
+            
+            self.sessionManager.PUT(path, parameters: nil, success: { (task, result) -> Void in
+                // TODO: update message details
+                completion(nil)
+                }, failure: { (task, error) -> Void in
+                    completion(error)
+            })
+            
+            }, failure: completion)
+    }
+    
+    // MARK: - Private methods
+    
+    private func messagesForResponse(response: AnyObject?) -> NSError? {
         if let response = response as? NSDictionary {
             if let messagesArray = response["Messages"] as? [NSDictionary] {
                 let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
@@ -115,6 +145,7 @@ extension APIService {
                 message.sender = messageDict["Sender"] as String
                 message.senderName = messageDict["SenderName"] as String
                 message.tag = messageDict["Tag"] as String
+                message.isStarred = message.tag.rangeOfString("starred") != nil
                 
                 if let time = self.dateForKey("Time", dictionary: messageDict) {
                     message.time = time

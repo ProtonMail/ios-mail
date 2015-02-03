@@ -4,11 +4,11 @@
         <attribute name="expirationTime" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="isAttachment" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isEncrypted" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isFavorite" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isForwarded" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isRead" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="isReplied" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isRepliedAll" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isStarred" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="messageID" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="recipientList" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="recipientNameList" optional="YES" attributeType="String" syncable="YES"/>
