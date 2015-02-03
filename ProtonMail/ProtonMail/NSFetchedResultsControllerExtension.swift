@@ -1,5 +1,5 @@
 //
-//  AFHTTPRequestSerializerExtension.swift
+//  NSFetchedResultsControllerExtension.swift
 //  ProtonMail
 //
 //
@@ -14,12 +14,16 @@
 // the license agreement.
 //
 
+import CoreData
 import Foundation
 
-extension AFHTTPRequestSerializer {
-    func setAuthorizationHeaderFieldWithCredential(credential: AuthCredential) {
-        let accessToken = credential.accessToken ?? ""
-        setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-        setValue(credential.userID, forHTTPHeaderField: "x-pm-uid")
+extension NSFetchedResultsController {
+    func numberOfRowsInSection(section: Int) -> Int {
+        let sectionInfo = sections?[section] as NSFetchedResultsSectionInfo
+        return sectionInfo.numberOfObjects ?? 0
+    }
+    
+    func numberOfSections() -> Int {
+        return sections?.count ?? 0
     }
 }

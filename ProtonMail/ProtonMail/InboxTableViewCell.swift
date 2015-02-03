@@ -12,8 +12,14 @@
 
 import UIKit
 
+@objc protocol InboxTableViewCellDelegate {
+    func inboxTableViewCell(cell: InboxTableViewCell, didChangeStarred: Bool)
+}
+
+
 class InboxTableViewCell: UITableViewCell {
     
+    weak var delegate: InboxTableViewCellDelegate?
     
     // MARK: - View Outlets
     
@@ -42,24 +48,34 @@ class InboxTableViewCell: UITableViewCell {
     // MARK: - Private attributes
     
     private var isChecked: Bool = false
+    private var isStarred: Bool = false {
+        didSet {
+            self.favoriteButton.selected = isStarred
+        }
+    }
     
+    
+    // MARK: - Actions
+    
+    @IBAction func favoriteButtonAction(sender: UIButton) {
+        self.isStarred = !self.isStarred
+        
+        // TODO: display activity indicator
+        
+        delegate?.inboxTableViewCell(self, didChangeStarred: isStarred)
+    }
     
     // MARK: - Cell configuration
     
-    func configureCell(thread: EmailThread) {
+    func configureCell(thread: Message) {
         self.title.text = thread.title
         self.sender.text = thread.sender
-        self.time.text = thread.time
+        self.time.text = NSDate.stringForDisplayFromDate(thread.time)
         self.encryptedImage.hidden = !thread.isEncrypted
-        self.attachImage.hidden = !thread.hasAttachments
+        self.attachImage.hidden = !thread.isAttachment
         self.checkboxButton.layer.cornerRadius = kCheckboxButtonCornerRadius
         self.checkboxButton.layer.masksToBounds = true
-        
-        if (thread.isFavorite) {
-            self.favoriteButton.setImage(UIImage(named: "favorite_main_selected"), forState: UIControlState.Normal)
-        } else {
-            self.favoriteButton.setImage(UIImage(named: "favorite_main"), forState: UIControlState.Normal)
-        }
+        self.isStarred = thread.isStarred
         
         if (thread.isRead) {
             changeStyleToReadDesign()
@@ -80,6 +96,12 @@ class InboxTableViewCell: UITableViewCell {
         self.title.font = UIFont.robotoRegular(size: UIFont.Size.h4)
         self.sender.font = UIFont.robotoRegular(size: UIFont.Size.h6)
         self.time.font = UIFont.robotoRegular(size: UIFont.Size.h6)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        delegate = nil
     }
     
     func showCheckboxOnLeftSide() {

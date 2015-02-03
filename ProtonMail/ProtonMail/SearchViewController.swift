@@ -10,6 +10,7 @@
 // the license agreement.
 //
 
+import CoreData
 import UIKit
 
 class SearchViewController: ProtonMailViewController {
@@ -26,8 +27,8 @@ class SearchViewController: ProtonMailViewController {
     
     // MARK: - Private attributes
     
-    private var messages: [EmailThread] = []
-    private var filteredMessages: [EmailThread] = []
+    private var fetchedResultsController: NSFetchedResultsController?
+    private var filteredMessages: [Message] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,6 +59,7 @@ class SearchViewController: ProtonMailViewController {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         searchTextField.resignFirstResponder()
+        fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLocation(.inbox)
     }
     
     override func configureNavigationBar() {
@@ -84,10 +86,12 @@ extension SearchViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        let thread: EmailThread = filteredMessages[indexPath.row]
+
         var cell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as InboxTableViewCell
-        cell.configureCell(thread)
+
+        if let thread = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+            cell.configureCell(thread)
+        }
         
         return cell
     }
@@ -121,7 +125,7 @@ extension SearchViewController: UITableViewDelegate {
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return fetchedResultsController?.numberOfSections() ?? 1
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -139,6 +143,7 @@ extension SearchViewController: UITextFieldDelegate {
         
         var filterText = textField.text
         filterText = (filterText as NSString).stringByReplacingCharactersInRange(range, withString: string)
+        let messages = fetchedResultsController?.fetchedObjects as [Message]
         for message in messages {
             if (message.title.lowercaseString.rangeOfString(filterText.lowercaseString) != nil) {
                 filteredMessages.append(message)
@@ -149,5 +154,3 @@ extension SearchViewController: UITextFieldDelegate {
         return true
     }
 }
-
-

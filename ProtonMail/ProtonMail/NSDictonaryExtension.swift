@@ -1,5 +1,5 @@
 //
-//  AFHTTPRequestSerializerExtension.swift
+//  NSDictonaryExtension.swift
 //  ProtonMail
 //
 //
@@ -16,10 +16,14 @@
 
 import Foundation
 
-extension AFHTTPRequestSerializer {
-    func setAuthorizationHeaderFieldWithCredential(credential: AuthCredential) {
-        let accessToken = credential.accessToken ?? ""
-        setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-        setValue(credential.userID, forHTTPHeaderField: "x-pm-uid")
+extension NSDictionary {
+    func timeIntervalForKey(key: String) -> NSTimeInterval? {
+        if let time: NSTimeInterval = (self[key] as? NSString)?.doubleValue {
+            if time != 0 {
+                return time
+            }
+        }
+        
+        return nil
     }
 }

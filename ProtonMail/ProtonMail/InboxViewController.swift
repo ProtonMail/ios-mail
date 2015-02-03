@@ -10,6 +10,7 @@
 // the license agreement.
 //
 
+import CoreData
 import UIKit
 
 class InboxViewController: MailBoxViewController {
@@ -21,6 +22,12 @@ class InboxViewController: MailBoxViewController {
     
     override func retrieveMessagesFromServer() -> [EmailThread] {
         println("Retrieving Inbox")
+//        sharedMessageDataService.fetchMessagesForLocation(.inbox) { error in
+//            if let error = error {
+//                NSLog("error: \(error)")
+//            }
+//            self.refreshControl.endRefreshing()
+//        }
         return EmailService.retrieveInboxMessages()
     }
 }

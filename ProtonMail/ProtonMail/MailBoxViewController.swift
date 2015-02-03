@@ -10,6 +10,7 @@
 // the license agreement.
 //
 
+import CoreData
 import UIKit
 
 class MailBoxViewController: ProtonMailViewController {
@@ -35,6 +36,7 @@ class MailBoxViewController: ProtonMailViewController {
     internal var messages: [EmailThread]!
     internal var refreshControl: UIRefreshControl!
 
+    private var fetchedResultsController: NSFetchedResultsController?
     private var moreOptionsView: MoreOptionsView!
     private var navigationTitleLabel = UILabel()
     private var selectedMessages: NSMutableSet = NSMutableSet()
@@ -65,6 +67,7 @@ class MailBoxViewController: ProtonMailViewController {
         
         addSubViews()
         addConstraints()
+        setupFetchedResultsController()
         
         self.updateNavigationController(isEditing)
     }
@@ -187,13 +190,15 @@ class MailBoxViewController: ProtonMailViewController {
         if let indexPath = indexPath {
             let selectedCell: InboxTableViewCell = self.tableView.cellForRowAtIndexPath(indexPath) as InboxTableViewCell
             
-            if (selectedMessages.containsObject(messages[indexPath.row].id)) {
-                selectedMessages.removeObject(messages[indexPath.row].id)
-            } else {
-                selectedMessages.addObject(messages[indexPath.row].id)
+            if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+                if (selectedMessages.containsObject(message.messageID)) {
+                    selectedMessages.removeObject(message.messageID)
+                } else {
+                    selectedMessages.addObject(message.messageID)
+                }
+                
+                selectedCell.checkboxTapped()
             }
-            
-            selectedCell.checkboxTapped()
         }
     }
     
@@ -209,10 +214,11 @@ class MailBoxViewController: ProtonMailViewController {
         if (segue.identifier == kSegueToThreadController) {
             self.cancelButtonTapped()
             let threadViewController: ThreadViewController = segue.destinationViewController as ThreadViewController
-            let indexPathForSelectedRow: NSIndexPath? = self.tableView.indexPathForSelectedRow()?
-            
-            if let selectedRow = indexPathForSelectedRow {
-                threadViewController.emailThread = messages[selectedRow.row]
+            let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
+            if let indexPathForSelectedRow = indexPathForSelectedRow {
+                if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {
+                    threadViewController.message = message
+                }
             } else {
                 println("No selected row.")
             }
@@ -222,6 +228,17 @@ class MailBoxViewController: ProtonMailViewController {
     
     // MARK: - Private methods
     
+    private func setupFetchedResultsController() {
+        self.fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLocation(.inbox)
+        self.fetchedResultsController?.delegate = self
+        
+        if let fetchedResultsController = fetchedResultsController {
+            var error: NSError?
+            if !fetchedResultsController.performFetch(&error) {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
+        }
+    }
     
     private func getLatestMessages() {
         self.messages = retrieveMessagesFromServer()
@@ -337,7 +354,9 @@ class MailBoxViewController: ProtonMailViewController {
                         // set selected row to checked
                         
                         if (indexPath.row == visibleIndexPath.row) {
-                            selectedMessages.addObject(messages[indexPath.row].id)
+                            if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+                                selectedMessages.addObject(message.messageID)
+                            }
                             inboxTableViewCell.setCellIsChecked(true)
                         }
                         
@@ -367,6 +386,23 @@ class MailBoxViewController: ProtonMailViewController {
 }
 
 
+// MARK: - InboxTableViewCellDelegate
+
+extension MailBoxViewController: MailBoxTableViewCellDelegate {
+    func inboxTableViewCell(cell: InboxTableViewCell, didChangeStarred isStarred: Bool) {
+        if let indexPath = tableView.indexPathForCell(cell) {
+            if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+                message.setIsStarred(isStarred) { error in
+                    if error != nil {
+                        NSLog("error: \(error)")
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 // MARK: - UITableViewDataSource
 
 extension MailBoxViewController: UITableViewDataSource {
@@ -384,25 +420,21 @@ extension MailBoxViewController: UITableViewDataSource {
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return fetchedResultsController?.numberOfSections() ?? 1
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let thread: EmailThread = messages[indexPath.row]
         var inboxCell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as InboxTableViewCell
-        inboxCell.configureCell(thread)
-        inboxCell.setCellIsChecked(selectedMessages.containsObject(thread.id))
+        inboxCell.delegate = self
         
-        if (self.isEditing) {
-            inboxCell.showCheckboxOnLeftSide()
-        }
+        configureCell(inboxCell, atIndexPath: indexPath)
         
         return inboxCell
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messages.count
+        return fetchedResultsController?.numberOfRowsInSection(section) ?? 0
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -412,6 +444,51 @@ extension MailBoxViewController: UITableViewDataSource {
         
         if (cell.respondsToSelector("setLayoutMargins:")) {
             cell.layoutMargins = UIEdgeInsetsZero
+        }
+    }
+}
+
+
+// MARK: - NSFetchedResultsControllerDelegate
+
+extension MailBoxViewController: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        tableView.endUpdates()
+    }
+    
+    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+        tableView.beginUpdates()
+    }
+    
+    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+        switch(type) {
+        case .Delete:
+            tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+        case .Insert:
+            tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+        default:
+            return
+        }
+    }
+    
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+        switch(type) {
+        case .Delete:
+            if let newIndexPath = newIndexPath {
+                tableView.deleteRowsAtIndexPaths([newIndexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+            }
+        case .Insert:
+            if let newIndexPath = newIndexPath {
+                tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+            }
+        case .Update:
+            if let indexPath = indexPath {
+                if let cell = tableView.cellForRowAtIndexPath(indexPath) as? InboxTableViewCell {
+                    configureCell(cell, atIndexPath: indexPath)
+                }
+            }
+        default:
+            return
         }
     }
 }
@@ -449,7 +526,9 @@ extension MailBoxViewController: UITableViewDelegate {
         dispatch_after(delayTime, dispatch_get_main_queue()) {
             if (!self.isUndoButtonTapped) {
                 self.isUndoButtonTapped = false
-                self.messages.removeAtIndex(indexPath.row)
+                
+                // TODO: delete message from server and Core Data
+                // self.messages.removeAtIndex(indexPath.row)
                 self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
             }
             
@@ -457,3 +536,4 @@ extension MailBoxViewController: UITableViewDelegate {
         }
     }
 }
+

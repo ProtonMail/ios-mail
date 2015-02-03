@@ -91,7 +91,7 @@ class UserDataService {
     }
     
     func fetchUserInfo(completion: (NSError? -> Void)? = nil) {
-        sharedProtonMailAPIService.userInfo(success: { (displayName, privateKey) -> Void in
+        sharedAPIService.userInfo(success: { (displayName, privateKey) -> Void in
             self.displayName = displayName
             
             if completion != nil {
@@ -111,7 +111,7 @@ class UserDataService {
     }
     
     func signIn(username: String, password: String, isRemembered: Bool, completion: (NSError? -> Void)) {
-        sharedProtonMailAPIService.authAuth(username: username, password: password, success: { () in
+        sharedAPIService.authAuth(username: username, password: password, success: { () in
             self.isSignedIn = true
             self.username = username
 

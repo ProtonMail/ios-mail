@@ -1,5 +1,5 @@
 //
-//  AFHTTPRequestSerializerExtension.swift
+//  NSManagedObjectContextExtension.swift
 //  ProtonMail
 //
 //
@@ -14,12 +14,21 @@
 // the license agreement.
 //
 
+import CoreData
 import Foundation
 
-extension AFHTTPRequestSerializer {
-    func setAuthorizationHeaderFieldWithCredential(credential: AuthCredential) {
-        let accessToken = credential.accessToken ?? ""
-        setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-        setValue(credential.userID, forHTTPHeaderField: "x-pm-uid")
+extension NSManagedObjectContext {
+    func saveAndSaveParents(error: NSErrorPointer) -> Bool {
+        var result = save(error)
+        
+        if result {
+            if let parentContext = parentContext {
+                parentContext.performBlockAndWait() { () -> Void in
+                    result = parentContext.saveAndSaveParents(error)
+                }
+            }
+        }
+        
+        return result
     }
 }
