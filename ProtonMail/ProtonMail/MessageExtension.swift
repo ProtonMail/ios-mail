@@ -48,4 +48,8 @@ extension Message {
         
         return (message, error)
     }
+    
+    func setIsStarred(isStarred: Bool, completion: (NSError? -> Void)) {
+        sharedMessageDataService.setMessage(self, isStarred: isStarred, completion: completion)
+    }
 }

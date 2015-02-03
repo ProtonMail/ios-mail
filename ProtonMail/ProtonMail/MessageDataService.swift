@@ -39,4 +39,16 @@ class MessageDataService {
      
         return nil
     }
+    
+    func setMessage(message: Message, isStarred: Bool, completion: (NSError? -> Void)) {
+        if isStarred {
+            sharedAPIService.starMessage(message) { error in
+                NSLog("error: \(error)")
+            }
+        } else {
+            sharedAPIService.unstarMessage(message) { error in
+                NSLog("error: \(error)")
+            }
+        }
+    }
 }

@@ -365,6 +365,22 @@ class InboxViewController: ProtonMailViewController {
 }
 
 
+// MARK: - InboxTableViewCellDelegate
+
+extension InboxViewController: InboxTableViewCellDelegate {
+    func inboxTableViewCell(cell: InboxTableViewCell, didChangeStarred isStarred: Bool) {
+        if let indexPath = tableView.indexPathForCell(cell) {
+            if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+                message.setIsStarred(isStarred) { error in
+                    if error != nil {
+                        NSLog("error: \(error)")
+                    }
+                }
+            }
+        }
+    }
+}
+
 // MARK: - NSFetchedResultsControllerDelegate
 
 extension InboxViewController: NSFetchedResultsControllerDelegate {
@@ -432,6 +448,7 @@ extension InboxViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
         var inboxCell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as InboxTableViewCell
+        inboxCell.delegate = self
         
         configureCell(inboxCell, atIndexPath: indexPath)
         

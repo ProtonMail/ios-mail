@@ -141,7 +141,7 @@ class ThreadView: UIView {
         
         self.emailFavoriteButton = UIButton()
         var favoriteImage: UIImage
-        if (self.emailThread.isFavorite) {
+        if (self.emailThread.isStarred) {
             favoriteImage = UIImage(named: "favorite_selected")!
         } else {
             favoriteImage = UIImage(named: "favorite")!
