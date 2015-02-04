@@ -1,4 +1,8 @@
 //
+//  UIViewExtension.swift
+//  ProtonMail
+//
+//
 // Copyright 2015 ArcTouch, Inc.
 // All rights reserved.
 //
@@ -10,16 +14,17 @@
 // the license agreement.
 //
 
-import UIKit
+import Foundation
 
-class DraftsViewController: MailboxViewController {
+extension UILabel {
     
-    override func loadView() {
-        self.title = NSLocalizedString("DRAFTS")
-        super.loadView()
-    }
-    
-    override func mailboxLocation() -> APIService.Location {
-        return .draft
+    class func labelWith(font: UIFont, text: String, textColor: UIColor) -> UILabel {
+        let label = UILabel()
+        label.font = font
+        label.numberOfLines = 1
+        label.text = text
+        label.textColor = textColor
+        label.sizeToFit()
+        return label
     }
 }
