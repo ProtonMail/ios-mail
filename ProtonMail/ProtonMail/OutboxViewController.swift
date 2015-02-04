@@ -12,9 +12,14 @@
 
 import UIKit
 
-class SentViewController: ProtonMailViewController {
+class OutboxViewController: MailboxViewController {
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func loadView() {
+        self.title = NSLocalizedString("SENT")
+        super.loadView()
+    }
+    
+    override func mailboxLocation() -> APIService.Location {
+        return .outbox
     }
 }
