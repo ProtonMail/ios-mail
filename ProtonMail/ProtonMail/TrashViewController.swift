@@ -12,9 +12,14 @@
 
 import UIKit
 
-class TrashViewController: ProtonMailViewController {
-        
-    override func viewDidLoad() {
-        super.viewDidLoad()
+class TrashViewController: MailboxViewController {
+    
+    override func loadView() {
+        self.title = NSLocalizedString("TRASH")
+        super.loadView()
+    }
+    
+    override func mailboxLocation() -> APIService.Location {
+        return .trash
     }
 }
