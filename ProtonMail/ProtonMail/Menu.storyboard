@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="14k-5d-srV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="14k-5d-srV">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -18,6 +18,9 @@
             <string>Roboto-Light</string>
         </mutableArray>
         <mutableArray key="Roboto-Regular.ttf">
+            <string>Roboto-Regular</string>
+            <string>Roboto-Regular</string>
+            <string>Roboto-Regular</string>
             <string>Roboto-Regular</string>
             <string>Roboto-Regular</string>
             <string>Roboto-Regular</string>
@@ -857,7 +860,7 @@
                                 <color key="separatorColor" red="0.78823529411764703" green="0.80784313725490198" blue="0.83137254901960789" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="InboxCell" id="zLw-l0-Ery" customClass="InboxTableViewCell" customModule="ProtonMail" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MailboxCell" id="zLw-l0-Ery" customClass="MailboxTableViewCell" customModule="ProtonMail" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zLw-l0-Ery" id="ksF-aC-XEE">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -965,9 +968,6 @@
                                                             <include reference="ohL-Zn-uTt"/>
                                                         </mask>
                                                     </variation>
-                                                    <connections>
-                                                        <action selector="didTapCheckMessage:" destination="aed-G8-Az6" eventType="touchUpInside" id="vp7-jg-LlO"/>
-                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <color key="backgroundColor" red="0.9882352941176471" green="0.99607843137254903" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1235,7 +1235,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" red="0.78823529411764703" green="0.80784313725490198" blue="0.83137254901960789" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SearchedCell" id="dPv-H5-B16" userLabel="SearchedCell" customClass="InboxTableViewCell" customModule="ProtonMail" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SearchedCell" id="dPv-H5-B16" userLabel="SearchedCell" customClass="MailboxTableViewCell" customModule="ProtonMail" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dPv-H5-B16" id="NPq-YL-tsi">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -1524,10 +1524,10 @@
             </objects>
             <point key="canvasLocation" x="2139" y="253"/>
         </scene>
-        <!--DRAFTS-->
+        <!--Drafts View Controller-->
         <scene sceneID="bpL-AN-jt6">
             <objects>
-                <viewController id="IDg-tp-Vn4" customClass="DraftsViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="IDg-tp-Vn4" userLabel="Drafts View Controller" customClass="DraftsViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="FfK-7g-hxk"/>
                         <viewControllerLayoutGuide type="bottom" id="hmM-Pt-kWj"/>
@@ -1548,7 +1548,7 @@
                                 <color key="separatorColor" red="0.78823529410000004" green="0.80784313730000001" blue="0.83137254900000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="InboxCell" id="TLm-rP-2za" customClass="InboxTableViewCell" customModule="ProtonMail" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MailboxCell" id="TLm-rP-2za" customClass="MailboxTableViewCell" customModule="ProtonMail" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TLm-rP-2za" id="RdA-XW-J3U">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -1614,14 +1614,14 @@
                                                     </constraints>
                                                     <variation key="default">
                                                         <mask key="constraints">
-                                                            <exclude reference="Rc7-tL-559"/>
                                                             <exclude reference="FQM-E7-02L"/>
+                                                            <exclude reference="Rc7-tL-559"/>
                                                         </mask>
                                                     </variation>
                                                     <variation key="widthClass=compact">
                                                         <mask key="constraints">
-                                                            <include reference="Rc7-tL-559"/>
                                                             <include reference="FQM-E7-02L"/>
+                                                            <include reference="Rc7-tL-559"/>
                                                         </mask>
                                                     </variation>
                                                 </imageView>
@@ -1636,14 +1636,14 @@
                                                     </state>
                                                     <variation key="default">
                                                         <mask key="constraints">
-                                                            <exclude reference="yTP-zY-nBk"/>
                                                             <exclude reference="GQa-bu-LAc"/>
+                                                            <exclude reference="yTP-zY-nBk"/>
                                                         </mask>
                                                     </variation>
                                                     <variation key="widthClass=compact">
                                                         <mask key="constraints">
-                                                            <include reference="yTP-zY-nBk"/>
                                                             <include reference="GQa-bu-LAc"/>
+                                                            <include reference="yTP-zY-nBk"/>
                                                         </mask>
                                                     </variation>
                                                 </button>
@@ -1684,22 +1684,22 @@
                                                     <exclude reference="KXc-L1-mqZ"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="aZK-hu-rQd"/>
-                                                    <exclude reference="obw-mw-Nik"/>
-                                                    <exclude reference="GYk-DZ-20Z"/>
-                                                    <exclude reference="ISO-3u-dpD"/>
-                                                    <exclude reference="38P-D8-mDV"/>
                                                     <exclude reference="95A-dV-GTO"/>
                                                     <exclude reference="OXI-Z4-e7C"/>
+                                                    <exclude reference="38P-D8-mDV"/>
+                                                    <exclude reference="GYk-DZ-20Z"/>
+                                                    <exclude reference="ISO-3u-dpD"/>
+                                                    <exclude reference="aZK-hu-rQd"/>
+                                                    <exclude reference="obw-mw-Nik"/>
+                                                    <exclude reference="1un-bA-LRE"/>
+                                                    <exclude reference="KPm-N2-RbD"/>
+                                                    <exclude reference="f3J-qM-RiK"/>
                                                     <exclude reference="9bc-QK-exX"/>
                                                     <exclude reference="mIR-Wq-unt"/>
-                                                    <exclude reference="1un-bA-LRE"/>
-                                                    <exclude reference="f3J-qM-RiK"/>
-                                                    <exclude reference="KPm-N2-RbD"/>
-                                                    <exclude reference="v4j-13-niF"/>
-                                                    <exclude reference="Qrt-Mc-f0Z"/>
                                                     <exclude reference="Cpm-U4-Ybw"/>
+                                                    <exclude reference="Qrt-Mc-f0Z"/>
                                                     <exclude reference="oCq-by-gga"/>
+                                                    <exclude reference="v4j-13-niF"/>
                                                 </mask>
                                             </variation>
                                             <variation key="widthClass=compact">
@@ -1713,22 +1713,22 @@
                                                     <include reference="KXc-L1-mqZ"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="aZK-hu-rQd"/>
-                                                    <include reference="obw-mw-Nik"/>
-                                                    <include reference="GYk-DZ-20Z"/>
-                                                    <include reference="ISO-3u-dpD"/>
-                                                    <include reference="38P-D8-mDV"/>
                                                     <include reference="95A-dV-GTO"/>
                                                     <include reference="OXI-Z4-e7C"/>
+                                                    <include reference="38P-D8-mDV"/>
+                                                    <include reference="GYk-DZ-20Z"/>
+                                                    <include reference="ISO-3u-dpD"/>
+                                                    <include reference="aZK-hu-rQd"/>
+                                                    <include reference="obw-mw-Nik"/>
+                                                    <include reference="1un-bA-LRE"/>
+                                                    <include reference="KPm-N2-RbD"/>
+                                                    <include reference="f3J-qM-RiK"/>
                                                     <include reference="9bc-QK-exX"/>
                                                     <include reference="mIR-Wq-unt"/>
-                                                    <include reference="1un-bA-LRE"/>
-                                                    <include reference="f3J-qM-RiK"/>
-                                                    <include reference="KPm-N2-RbD"/>
-                                                    <include reference="v4j-13-niF"/>
-                                                    <include reference="Qrt-Mc-f0Z"/>
                                                     <include reference="Cpm-U4-Ybw"/>
+                                                    <include reference="Qrt-Mc-f0Z"/>
                                                     <include reference="oCq-by-gga"/>
+                                                    <include reference="v4j-13-niF"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -1761,12 +1761,12 @@
                                 <exclude reference="Gh2-WU-rzI"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="923-cO-uK2"/>
-                                <exclude reference="A3r-Kb-Tok"/>
-                                <exclude reference="meh-3T-MvD"/>
                                 <exclude reference="W8R-uw-C8e"/>
                                 <exclude reference="pbA-re-Bqc"/>
                                 <exclude reference="LAV-XV-vpF"/>
+                                <exclude reference="923-cO-uK2"/>
+                                <exclude reference="A3r-Kb-Tok"/>
+                                <exclude reference="meh-3T-MvD"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -1775,12 +1775,12 @@
                                 <include reference="Gh2-WU-rzI"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="923-cO-uK2"/>
-                                <include reference="A3r-Kb-Tok"/>
-                                <include reference="meh-3T-MvD"/>
                                 <include reference="W8R-uw-C8e"/>
                                 <include reference="pbA-re-Bqc"/>
                                 <include reference="LAV-XV-vpF"/>
+                                <include reference="923-cO-uK2"/>
+                                <include reference="A3r-Kb-Tok"/>
+                                <include reference="meh-3T-MvD"/>
                             </mask>
                         </variation>
                     </view>
@@ -2189,6 +2189,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="YGe-pV-72F"/>
-        <segue reference="6qA-ON-8KL"/>
+        <segue reference="3gE-aM-RBg"/>
     </inferredMetricsTieBreakers>
 </document>

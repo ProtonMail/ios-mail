@@ -23,8 +23,8 @@ class MailboxViewController: ProtonMailViewController {
     
     // MARK: - Private constants
     
-    private let kInboxCellHeight: CGFloat = 64.0
-    private let kCellIdentifier: String = "InboxCell"
+    private let kMailboxCellHeight: CGFloat = 64.0
+    private let kCellIdentifier: String = "MailboxCell"
     private let kLongPressDuration: CFTimeInterval = 0.60 // seconds
     private let kSegueToSearchController: String = "toSearchViewController"
     private let kSegueToThreadController: String = "toThreadViewController"
@@ -190,25 +190,6 @@ class MailboxViewController: ProtonMailViewController {
         self.updateNavigationController(false)
     }
     
-    @IBAction func didTapCheckMessage(sender: UIButton) {
-        let point: CGPoint = sender.convertPoint(CGPointZero, toView: self.tableView)
-        let indexPath: NSIndexPath? = self.tableView.indexPathForRowAtPoint(point)
-        
-        if let indexPath = indexPath {
-            let selectedCell: InboxTableViewCell = self.tableView.cellForRowAtIndexPath(indexPath) as InboxTableViewCell
-            
-            if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-                if (selectedMessages.containsObject(message.messageID)) {
-                    selectedMessages.removeObject(message.messageID)
-                } else {
-                    selectedMessages.addObject(message.messageID)
-                }
-                
-                selectedCell.checkboxTapped()
-            }
-        }
-    }
-    
     internal func handleLongPress(longPressGestureRecognizer: UILongPressGestureRecognizer) {
         showCheckOptions(longPressGestureRecognizer)
         updateNavigationController(isEditing)
@@ -235,13 +216,13 @@ class MailboxViewController: ProtonMailViewController {
     
     // MARK: - Private methods
     
-    private func configureCell(inboxCell: InboxTableViewCell, atIndexPath indexPath: NSIndexPath) {
+    private func configureCell(mailboxCell: MailboxTableViewCell, atIndexPath indexPath: NSIndexPath) {
         if let thread = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-            inboxCell.configureCell(thread)
-            inboxCell.setCellIsChecked(selectedMessages.containsObject(thread.messageID))
+            mailboxCell.configureCell(thread)
+            mailboxCell.setCellIsChecked(selectedMessages.containsObject(thread.messageID))
             
             if (self.isEditing) {
-                inboxCell.showCheckboxOnLeftSide()
+                mailboxCell.showCheckboxOnLeftSide()
             }
         }
     }
@@ -342,12 +323,12 @@ class MailboxViewController: ProtonMailViewController {
         
         if let indexPathsForVisibleRows = indexPathsForVisibleRows {
             for indexPath in indexPathsForVisibleRows {
-                let inboxTableViewCell: InboxTableViewCell = self.tableView.cellForRowAtIndexPath(indexPath) as InboxTableViewCell
-                inboxTableViewCell.setCellIsChecked(false)
-                inboxTableViewCell.hideCheckboxOnLeftSide()
+                let mailboxTableViewCell: MailboxTableViewCell = self.tableView.cellForRowAtIndexPath(indexPath) as MailboxTableViewCell
+                mailboxTableViewCell.setCellIsChecked(false)
+                mailboxTableViewCell.hideCheckboxOnLeftSide()
                 
                 UIView.animateWithDuration(0.25, animations: { () -> Void in
-                    inboxTableViewCell.layoutIfNeeded()
+                    mailboxTableViewCell.layoutIfNeeded()
                 })
             }
         }
@@ -366,8 +347,8 @@ class MailboxViewController: ProtonMailViewController {
                 if let indexPathsForVisibleRows = indexPathsForVisibleRows {
                     for visibleIndexPath in indexPathsForVisibleRows {
                         
-                        let inboxTableViewCell: InboxTableViewCell = self.tableView.cellForRowAtIndexPath(visibleIndexPath) as InboxTableViewCell
-                        inboxTableViewCell.showCheckboxOnLeftSide()
+                        let mailboxTableViewCell: MailboxTableViewCell = self.tableView.cellForRowAtIndexPath(visibleIndexPath) as MailboxTableViewCell
+                        mailboxTableViewCell.showCheckboxOnLeftSide()
                         
                         // set selected row to checked
                         
@@ -375,11 +356,11 @@ class MailboxViewController: ProtonMailViewController {
                             if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
                                 selectedMessages.addObject(message.messageID)
                             }
-                            inboxTableViewCell.setCellIsChecked(true)
+                            mailboxTableViewCell.setCellIsChecked(true)
                         }
                         
                         UIView.animateWithDuration(0.25, animations: { () -> Void in
-                            inboxTableViewCell.layoutIfNeeded()
+                            mailboxTableViewCell.layoutIfNeeded()
                         })
                     }
                 }
@@ -398,16 +379,29 @@ class MailboxViewController: ProtonMailViewController {
 }
 
 
-// MARK: - InboxTableViewCellDelegate
+// MARK: - MailboxTableViewCellDelegate
 
-extension MailboxViewController: InboxTableViewCellDelegate {
-    func inboxTableViewCell(cell: InboxTableViewCell, didChangeStarred isStarred: Bool) {
+extension MailboxViewController: MailboxTableViewCellDelegate {
+    func mailboxTableViewCell(cell: MailboxTableViewCell, didChangeStarred isStarred: Bool) {
         if let indexPath = tableView.indexPathForCell(cell) {
             if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
                 message.setIsStarred(isStarred) { error in
                     if error != nil {
                         NSLog("error: \(error)")
                     }
+                }
+            }
+        }
+    }
+    
+    func mailBoxTableViewCell(cell: MailboxTableViewCell, didChangeChecked: Bool) {
+        var indexPath: NSIndexPath? = tableView.indexPathForCell(cell) as NSIndexPath?
+        if let indexPath = indexPath {
+            if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+                if (selectedMessages.containsObject(message.messageID)) {
+                    selectedMessages.removeObject(message.messageID)
+                } else {
+                    selectedMessages.addObject(message.messageID)
                 }
             }
         }
@@ -437,12 +431,12 @@ extension MailboxViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var inboxCell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as InboxTableViewCell
-        inboxCell.delegate = self
+        var mailboxCell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as MailboxTableViewCell
+        mailboxCell.delegate = self
         
-        configureCell(inboxCell, atIndexPath: indexPath)
+        configureCell(mailboxCell, atIndexPath: indexPath)
         
-        return inboxCell
+        return mailboxCell
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -495,7 +489,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             }
         case .Update:
             if let indexPath = indexPath {
-                if let cell = tableView.cellForRowAtIndexPath(indexPath) as? InboxTableViewCell {
+                if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MailboxTableViewCell {
                     configureCell(cell, atIndexPath: indexPath)
                 }
             }
@@ -510,7 +504,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
 
 extension MailboxViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return kInboxCellHeight
+        return kMailboxCellHeight
     }
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {

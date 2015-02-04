@@ -48,7 +48,7 @@
 		7061A3F31A6E8C6A0006D36C /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7061A3F21A6E8C6A0006D36C /* MenuViewController.swift */; };
 		7061A3F51A6E8C9D0006D36C /* Menu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7061A3F41A6E8C9D0006D36C /* Menu.storyboard */; };
 		7061A3F91A6E8F460006D36C /* InboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7061A3F81A6E8F460006D36C /* InboxViewController.swift */; };
-		706628211A715A0900164117 /* InboxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706628201A715A0900164117 /* InboxTableViewCell.swift */; };
+		706628211A715A0900164117 /* MailboxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706628201A715A0900164117 /* MailboxTableViewCell.swift */; };
 		706932AB1A77BE3D00A75A93 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706932AA1A77BE3D00A75A93 /* SearchViewController.swift */; };
 		706961FD1A713670001443B2 /* DraftsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706961FC1A713670001443B2 /* DraftsViewController.swift */; };
 		706961FF1A7136A0001443B2 /* ProtonMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706961FE1A7136A0001443B2 /* ProtonMailViewController.swift */; };
@@ -127,7 +127,7 @@
 		7061A3F21A6E8C6A0006D36C /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		7061A3F41A6E8C9D0006D36C /* Menu.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Menu.storyboard; sourceTree = "<group>"; };
 		7061A3F81A6E8F460006D36C /* InboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxViewController.swift; sourceTree = "<group>"; };
-		706628201A715A0900164117 /* InboxTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxTableViewCell.swift; sourceTree = "<group>"; };
+		706628201A715A0900164117 /* MailboxTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxTableViewCell.swift; sourceTree = "<group>"; };
 		706932AA1A77BE3D00A75A93 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		706961FC1A713670001443B2 /* DraftsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraftsViewController.swift; sourceTree = "<group>"; };
 		706961FE1A7136A0001443B2 /* ProtonMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProtonMailViewController.swift; path = ProtonMail/ProtonMailViewController.swift; sourceTree = "<group>"; };
@@ -426,6 +426,7 @@
 		70945E681A80F331002B6837 /* Mailbox */ = {
 			isa = PBXGroup;
 			children = (
+				706628201A715A0900164117 /* MailboxTableViewCell.swift */,
 				70945E691A80F351002B6837 /* MailboxViewController.swift */,
 			);
 			name = Mailbox;
@@ -435,7 +436,6 @@
 			isa = PBXGroup;
 			children = (
 				7061A3F81A6E8F460006D36C /* InboxViewController.swift */,
-				706628201A715A0900164117 /* InboxTableViewCell.swift */,
 			);
 			name = Inbox;
 			sourceTree = "<group>";
@@ -630,7 +630,7 @@
 				073FD9321A71C60900EB0CAF /* UserDataService.swift in Sources */,
 				07009F091A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift in Sources */,
 				0713239C1A7C0B4C0043DB41 /* NSManagedObjectContextExtension.swift in Sources */,
-				706628211A715A0900164117 /* InboxTableViewCell.swift in Sources */,
+				706628211A715A0900164117 /* MailboxTableViewCell.swift in Sources */,
 				706961FF1A7136A0001443B2 /* ProtonMailViewController.swift in Sources */,
 				071323811A7846150043DB41 /* UIViewExtension.swift in Sources */,
 				07B797C21A6EE50F00244532 /* APIService+AuthenticationExtension.swift in Sources */,

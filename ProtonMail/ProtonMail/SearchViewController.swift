@@ -21,7 +21,7 @@ class SearchViewController: ProtonMailViewController {
     
     // MARK: - Private Constants
     
-    private let kInboxCellHeight: CGFloat = 64.0
+    private let kSearchCellHeight: CGFloat = 64.0
     private let kCellIdentifier: String = "SearchedCell"
 
     
@@ -86,7 +86,7 @@ extension SearchViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
-        var cell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as InboxTableViewCell
+        var cell: MailboxTableViewCell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as MailboxTableViewCell
         cell.configureCell(filteredMessages[indexPath.row])
         
         return cell
@@ -125,7 +125,7 @@ extension SearchViewController: UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return kInboxCellHeight
+        return kSearchCellHeight
     }
 }
 
