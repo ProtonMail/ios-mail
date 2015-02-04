@@ -12,9 +12,14 @@
 
 import UIKit
 
-class SpamViewController: ProtonMailViewController {
+class SpamViewController: MailboxViewController {
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func loadView() {
+        self.title = NSLocalizedString("SPAM")
+        super.loadView()
+    }
+    
+    override func mailboxLocation() -> APIService.Location {
+        return .spam
     }
 }
