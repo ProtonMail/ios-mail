@@ -119,7 +119,6 @@ class MailboxViewController: ProtonMailViewController {
             make.right.equalTo()(self.view)
             make.height.equalTo()(self.kMoreOptionsViewHeight)
             make.bottom.equalTo()(self.view.mas_top)
-            return ()
         }
     }
     
@@ -539,6 +538,12 @@ extension MailboxViewController: UITableViewDelegate {
             }
             
             self.tableView.editing = false
+        }
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+            self.performSegueWithIdentifier(kSegueToThreadController, sender: self)
         }
     }
 }

@@ -54,6 +54,11 @@ class MailboxTableViewCell: UITableViewCell {
             self.favoriteButton.selected = isStarred
         }
     }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        checkboxButton.addTarget(self, action: "checkboxTapped", forControlEvents: UIControlEvents.TouchUpInside)
+    }
 
     
     // MARK: - Actions
@@ -64,11 +69,6 @@ class MailboxTableViewCell: UITableViewCell {
         // TODO: display activity indicator
         
         delegate?.mailboxTableViewCell(self, didChangeStarred: isStarred)
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        checkboxButton.addTarget(self, action: "checkboxTapped", forControlEvents: UIControlEvents.TouchUpInside)
     }
     
     func checkboxTapped() {

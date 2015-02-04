@@ -1057,7 +1057,6 @@
                                             <outlet property="sender" destination="7GD-28-QOt" id="YMg-uB-STC"/>
                                             <outlet property="time" destination="d4p-Fy-H08" id="9F4-MA-nes"/>
                                             <outlet property="title" destination="20n-9z-aN4" id="hWd-xX-hPD"/>
-                                            <segue destination="NZX-qa-4Ud" kind="show" identifier="toThreadViewController" id="YrW-pE-uVG"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1109,6 +1108,7 @@
                         <outlet property="menuButton" destination="MGt-Hd-KyR" id="g5E-fz-E2f"/>
                         <outlet property="tableView" destination="7Zx-Yy-VI3" id="xAI-ZE-pMC"/>
                         <segue destination="tCC-l6-ucI" kind="presentation" identifier="toSearchViewController" id="6qA-ON-8KL"/>
+                        <segue destination="NZX-qa-4Ud" kind="show" identifier="toThreadViewController" id="dxU-wZ-inN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v5f-i5-kem" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1506,7 +1506,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1vF-jC-K0B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3828" y="-511"/>
+            <point key="canvasLocation" x="3747" y="-520"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="I1g-nG-Fit">
@@ -1792,6 +1792,7 @@
                         <outlet property="menuButton" destination="Y0S-qG-lku" id="pQN-dN-36Z"/>
                         <outlet property="tableView" destination="Gh2-WU-rzI" id="kjX-53-z3G"/>
                         <segue destination="tCC-l6-ucI" kind="presentation" identifier="toSearchViewController" id="3gE-aM-RBg"/>
+                        <segue destination="NZX-qa-4Ud" kind="show" identifier="toThreadViewController" id="iNZ-Pf-rqK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ux6-aK-wXM" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2190,5 +2191,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="YGe-pV-72F"/>
         <segue reference="3gE-aM-RBg"/>
+        <segue reference="iNZ-Pf-rqK"/>
     </inferredMetricsTieBreakers>
 </document>
