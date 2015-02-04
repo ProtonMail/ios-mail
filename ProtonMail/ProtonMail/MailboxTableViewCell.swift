@@ -36,6 +36,7 @@ class MailboxTableViewCell: UITableViewCell {
     // MARK: - Constraint Outlets
     
     @IBOutlet weak var checkboxWidth: NSLayoutConstraint!
+    @IBOutlet var titleLeadingConstraint: NSLayoutConstraint!
     
     
     // MARK: - Private constants
@@ -44,6 +45,7 @@ class MailboxTableViewCell: UITableViewCell {
     private let kCheckboxButtonCornerRadius: CGFloat = 1.0
     private let kCheckboxUncheckedImage: UIImage = UIImage(named: "unchecked")!
     private let kCheckboxCheckedImage: UIImage = UIImage(named: "checked")!
+    private let kTitleMarginLeft: CGFloat = 16.0
     
     
     // MARK: - Private attributes
@@ -124,11 +126,13 @@ class MailboxTableViewCell: UITableViewCell {
     
     func showCheckboxOnLeftSide() {
         self.checkboxWidth.constant = kCheckboxWidth
+        self.titleLeadingConstraint.constant = kTitleMarginLeft
         self.setNeedsUpdateConstraints()        
     }
     
     func hideCheckboxOnLeftSide() {
         self.checkboxWidth.constant = 0.0
+        self.titleLeadingConstraint.constant = 0.0
         self.setNeedsUpdateConstraints()
     }
     
