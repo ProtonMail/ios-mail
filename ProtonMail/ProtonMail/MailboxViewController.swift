@@ -34,7 +34,8 @@ class MailboxViewController: ProtonMailViewController {
     // MARK: - Private attributes
     
     internal var refreshControl: UIRefreshControl!
-
+    internal var mailboxLocation: APIService.Location!
+    
     private var fetchedResultsController: NSFetchedResultsController?
     private var moreOptionsView: MoreOptionsView!
     private var navigationTitleLabel = UILabel()
@@ -63,7 +64,6 @@ class MailboxViewController: ProtonMailViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setupFetchedResultsController()
         addSubViews()
         addConstraints()
@@ -92,7 +92,7 @@ class MailboxViewController: ProtonMailViewController {
         self.navigationTitleLabel.font = UIFont.robotoLight(size: UIFont.Size.h2)
         self.navigationTitleLabel.textAlignment = NSTextAlignment.Center
         self.navigationTitleLabel.textColor = UIColor.whiteColor()
-        self.navigationTitleLabel.text = self.title
+        self.navigationTitleLabel.text = self.title ?? NSLocalizedString("INBOX")
         self.navigationTitleLabel.sizeToFit()
         self.navigationItem.titleView = navigationTitleLabel
         
@@ -122,12 +122,6 @@ class MailboxViewController: ProtonMailViewController {
         }
     }
     
-    
-    // MARK: - Methods that should be overriden
-    
-    internal func mailboxLocation() -> APIService.Location {
-        fatalError("You must override MailboxViewController.mailboxLocation()")
-    }
     
     // MARK: - Button Targets
     
@@ -227,7 +221,7 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     private func setupFetchedResultsController() {
-        self.fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLocation(mailboxLocation())
+        self.fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLocation(self.mailboxLocation ?? .inbox)
         self.fetchedResultsController?.delegate = self
         
         if let fetchedResultsController = fetchedResultsController {
@@ -239,7 +233,7 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     func getLatestMessages() {
-        sharedMessageDataService.fetchMessagesForLocation(mailboxLocation()) { error in
+        sharedMessageDataService.fetchMessagesForLocation(self.mailboxLocation ?? .inbox) { error in
             if let error = error {
                 NSLog("error: \(error)")
             }
@@ -266,17 +260,10 @@ class MailboxViewController: ProtonMailViewController {
     private func setupNavigationTitle(editingMode: Bool) {
         
         // title animation
-        
-        let animation = CATransition()
-        animation.duration = 0.25
-        animation.type = kCATransitionFade
-        
-        self.navigationController?.navigationBar.layer.addAnimation(animation, forKey: "fadeText")
-        
         if (editingMode) {
-            self.navigationTitleLabel.text = ""
+            setNavigationTitleText("")
         } else {
-            self.navigationTitleLabel.text = self.title
+            setNavigationTitleText(self.title ?? "INBOX")
         }
     }
     
@@ -374,6 +361,19 @@ class MailboxViewController: ProtonMailViewController {
         self.setupLeftButtons(editingMode)
         self.setupNavigationTitle(editingMode)
         self.setupRightButtons(editingMode)
+    }
+    
+    
+    // MARK: - Public methods
+    
+    func setNavigationTitleText(text: String) {
+        let animation = CATransition()
+        animation.duration = 0.25
+        animation.type = kCATransitionFade
+
+        self.navigationController?.navigationBar.layer.addAnimation(animation, forKey: "fadeText")
+        self.title = text
+        self.navigationTitleLabel.text = text
     }
 }
 
