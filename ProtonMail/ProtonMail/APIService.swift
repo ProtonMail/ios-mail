@@ -14,6 +14,7 @@
 // the license agreement.
 //
 
+import CoreData
 import Foundation
 
 private let BaseURLString = "http://protonmail.xyz"
@@ -112,5 +113,13 @@ class APIService {
         }
         
         return false
+    }
+    
+    func newManagedObjectContext() -> NSManagedObjectContext {
+        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        let managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        managedObjectContext.parentContext = appDelegate.managedObjectContext
+
+        return managedObjectContext
     }
 }

@@ -18,7 +18,6 @@
 		071323811A7846150043DB41 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071323801A7846150043DB41 /* UIViewExtension.swift */; };
 		071323901A79BD8F0043DB41 /* TextInsetTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0713238F1A79BD8F0043DB41 /* TextInsetTextField.swift */; };
 		071323921A7ADA590043DB41 /* APIService+MessagesExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071323911A7ADA590043DB41 /* APIService+MessagesExtension.swift */; };
-		071323961A7C01FB0043DB41 /* MessageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071323951A7C01FB0043DB41 /* MessageExtension.swift */; };
 		0713239A1A7C02AB0043DB41 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071323991A7C02AB0043DB41 /* Message.swift */; };
 		0713239C1A7C0B4C0043DB41 /* NSManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0713239B1A7C0B4C0043DB41 /* NSManagedObjectContextExtension.swift */; };
 		0713239E1A7C1A670043DB41 /* NSDictonaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0713239D1A7C1A670043DB41 /* NSDictonaryExtension.swift */; };
@@ -40,6 +39,7 @@
 		07CC99681A702368000FD6F8 /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC99671A702368000FD6F8 /* UIFontExtension.swift */; };
 		07CC996A1A705BA4000FD6F8 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 07CC99691A705BA4000FD6F8 /* Settings.bundle */; };
 		07CC996C1A717ABD000FD6F8 /* UIStoryboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC996B1A717ABD000FD6F8 /* UIStoryboardExtension.swift */; };
+		07CFC9D41A81A2B0007A72B7 /* Attachments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CFC9D31A81A2B0007A72B7 /* Attachments.swift */; };
 		07FBA7A51A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FBA7A41A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift */; };
 		701704751A791856000A90D2 /* ThreadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701704741A791856000A90D2 /* ThreadViewController.swift */; };
 		701704781A794C69000A90D2 /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701704771A794C69000A90D2 /* Roboto-MediumItalic.ttf */; };
@@ -88,7 +88,6 @@
 		071323801A7846150043DB41 /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		0713238F1A79BD8F0043DB41 /* TextInsetTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextInsetTextField.swift; sourceTree = "<group>"; };
 		071323911A7ADA590043DB41 /* APIService+MessagesExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+MessagesExtension.swift"; sourceTree = "<group>"; };
-		071323951A7C01FB0043DB41 /* MessageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageExtension.swift; sourceTree = "<group>"; };
 		071323991A7C02AB0043DB41 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		0713239B1A7C0B4C0043DB41 /* NSManagedObjectContextExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSManagedObjectContextExtension.swift; sourceTree = "<group>"; };
 		0713239D1A7C1A670043DB41 /* NSDictonaryExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDictonaryExtension.swift; sourceTree = "<group>"; };
@@ -114,6 +113,7 @@
 		07CC99671A702368000FD6F8 /* UIFontExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
 		07CC99691A705BA4000FD6F8 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		07CC996B1A717ABD000FD6F8 /* UIStoryboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStoryboardExtension.swift; sourceTree = "<group>"; };
+		07CFC9D31A81A2B0007A72B7 /* Attachments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attachments.swift; sourceTree = "<group>"; };
 		07FBA7A41A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSFetchedResultsControllerExtension.swift; sourceTree = "<group>"; };
 		132129A26ED76512DB66C024 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		701704741A791856000A90D2 /* ThreadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadViewController.swift; sourceTree = "<group>"; };
@@ -215,9 +215,9 @@
 		073FD92D1A71C33B00EB0CAF /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				07CFC9D31A81A2B0007A72B7 /* Attachments.swift */,
 				07B797C41A6EE5FF00244532 /* AuthCredential.swift */,
 				071323991A7C02AB0043DB41 /* Message.swift */,
-				071323951A7C01FB0043DB41 /* MessageExtension.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -603,7 +603,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				071323901A79BD8F0043DB41 /* TextInsetTextField.swift in Sources */,
-				071323961A7C01FB0043DB41 /* MessageExtension.swift in Sources */,
 				071323921A7ADA590043DB41 /* APIService+MessagesExtension.swift in Sources */,
 				70C9133D1A6D83FA002CBE61 /* UIColor+ProtonMail.swift in Sources */,
 				7061A3F91A6E8F460006D36C /* InboxViewController.swift in Sources */,
@@ -613,6 +612,7 @@
 				706628211A715A0900164117 /* InboxTableViewCell.swift in Sources */,
 				706961FF1A7136A0001443B2 /* ProtonMailViewController.swift in Sources */,
 				071323811A7846150043DB41 /* UIViewExtension.swift in Sources */,
+				07CFC9D41A81A2B0007A72B7 /* Attachments.swift in Sources */,
 				07B797C21A6EE50F00244532 /* APIService+AuthenticationExtension.swift in Sources */,
 				0713237F1A7844390043DB41 /* MailboxPasswordViewController.swift in Sources */,
 				07CC996C1A717ABD000FD6F8 /* UIStoryboardExtension.swift in Sources */,
