@@ -12,10 +12,10 @@
 
 import UIKit
 
-class ThreadView: UIView {
+class MessageDetailView: UIView {
     
-    var delegate: ThreadViewDelegate?
-    private var emailThread: Message!
+    var delegate: MessageDetailViewDelegate?
+    private var message: Message!
     
     // MARK: - Private constants
     
@@ -83,7 +83,7 @@ class ThreadView: UIView {
     
     convenience init(thread: Message) {
         self.init()
-        self.emailThread = thread
+        self.message = thread
         self.backgroundColor = UIColor.whiteColor()
         self.addSubviews()
         self.makeConstraints()
@@ -120,28 +120,28 @@ class ThreadView: UIView {
         self.emailTitle = UILabel()
         self.emailTitle.font = UIFont.robotoLight(size: UIFont.Size.h1)
         self.emailTitle.numberOfLines = 1
-        self.emailTitle.text = self.emailThread.title
+        self.emailTitle.text = self.message.title
         self.emailTitle.textColor = UIColor.ProtonMail.Gray_383A3B
         self.emailHeaderView.addSubview(emailTitle)
         
         self.emailRecipients = UILabel()
         self.emailRecipients.font = UIFont.robotoRegular(size: UIFont.Size.h6)
         self.emailRecipients.numberOfLines = 1
-        self.emailRecipients.text = "To \(self.emailThread.sender)"
+        self.emailRecipients.text = "To \(self.message.sender)"
         self.emailRecipients.textColor = UIColor.ProtonMail.Gray_999DA1
         self.emailHeaderView.addSubview(emailRecipients)
         
         self.emailTime = UILabel()
         self.emailTime.font = UIFont.robotoLight(size: UIFont.Size.h6)
         self.emailTime.numberOfLines = 1
-        self.emailTime.text = "at \(self.emailThread.time)"
+        self.emailTime.text = "at \(self.message.time)"
         self.emailTime.textColor = UIColor.ProtonMail.Gray_999DA1
         self.emailTime.sizeToFit()
         self.emailHeaderView.addSubview(emailTime)
         
         self.emailFavoriteButton = UIButton()
         var favoriteImage: UIImage
-        if (self.emailThread.isStarred) {
+        if (self.message.isStarred) {
             favoriteImage = UIImage(named: "favorite_selected")!
         } else {
             favoriteImage = UIImage(named: "favorite")!
@@ -401,24 +401,24 @@ class ThreadView: UIView {
     // MARK: - Button actions
     
     internal func replyButtonTapped() {
-        self.delegate?.threadViewDidTapReplyThread(self, thread: emailThread)
+        self.delegate?.messageDetailViewDidTapReplyThread(self, thread: message)
     }
     
     internal func replyAllButtonTapped() {
-        self.delegate?.threadViewDidTapReplyAllThread(self, thread: emailThread)
+        self.delegate?.messageDetailViewDidTapReplyAllThread(self, thread: message)
     }
     
     internal func forwardButtonTapped() {
-        self.delegate?.threadViewDidTapForwardThread(self, thread: emailThread)
+        self.delegate?.messageDetailViewDidTapForwardThread(self, thread: message)
     }
 }
 
 
 // MARK: - View Delegate
 
-protocol ThreadViewDelegate {
-    func threadViewDidTapForwardThread(threadView: ThreadView, thread: Message)
-    func threadViewDidTapReplyThread(threadView: ThreadView, thread: Message)
-    func threadViewDidTapReplyAllThread(threadView: ThreadView, thread: Message)
+protocol MessageDetailViewDelegate {
+    func messageDetailViewDidTapForwardThread(threadView: MessageDetailView, thread: Message)
+    func messageDetailViewDidTapReplyThread(threadView: MessageDetailView, thread: Message)
+    func messageDetailViewDidTapReplyAllThread(threadView: MessageDetailView, thread: Message)
 }
 

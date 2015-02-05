@@ -1106,7 +1106,7 @@
                         <outlet property="menuButton" destination="MGt-Hd-KyR" id="g5E-fz-E2f"/>
                         <outlet property="tableView" destination="7Zx-Yy-VI3" id="xAI-ZE-pMC"/>
                         <segue destination="tCC-l6-ucI" kind="presentation" identifier="toSearchViewController" id="6qA-ON-8KL"/>
-                        <segue destination="NZX-qa-4Ud" kind="show" identifier="toThreadViewController" id="dxU-wZ-inN"/>
+                        <segue destination="NZX-qa-4Ud" kind="show" identifier="toMessageDetailViewController" id="dxU-wZ-inN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v5f-i5-kem" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1485,15 +1485,15 @@
             </objects>
             <point key="canvasLocation" x="2056.5" y="2342"/>
         </scene>
-        <!--Thread View Controller-->
+        <!--Message Detail View Controller-->
         <scene sceneID="RpF-e6-Us1">
             <objects>
-                <viewController id="NZX-qa-4Ud" customClass="ThreadViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="NZX-qa-4Ud" customClass="MessageDetailViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="4UT-uL-VoF"/>
                         <viewControllerLayoutGuide type="bottom" id="fG8-2r-ucJ"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="xpP-qB-Kil" customClass="ThreadView" customModule="ProtonMail" customModuleProvider="target">
+                    <view key="view" contentMode="scaleToFill" id="xpP-qB-Kil" customClass="MessageDetailView" customModule="ProtonMail" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1618,7 +1618,6 @@
         <!--Navigation Controller-->
         <scene sceneID="SEY-3E-LYY">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="pqM-EV-O7S" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="PFX-v3-PCL" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="n9F-Oz-CJH">
@@ -1630,6 +1629,7 @@
                         <segue destination="dsh-3G-k23" kind="relationship" relationship="rootViewController" id="mSp-l3-W51"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pqM-EV-O7S" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1221" y="2690"/>
         </scene>

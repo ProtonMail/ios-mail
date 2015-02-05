@@ -27,7 +27,7 @@ class MailboxViewController: ProtonMailViewController {
     private let kCellIdentifier: String = "MailboxCell"
     private let kLongPressDuration: CFTimeInterval = 0.60 // seconds
     private let kSegueToSearchController: String = "toSearchViewController"
-    private let kSegueToThreadController: String = "toThreadViewController"
+    private let kSegueToMessageDetailController: String = "toMessageDetailViewController"
     private let kMoreOptionsViewHeight: CGFloat = 123.0
     
     
@@ -192,13 +192,13 @@ class MailboxViewController: ProtonMailViewController {
     // MARK: - Prepare for segue
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if (segue.identifier == kSegueToThreadController) {
+        if (segue.identifier == kSegueToMessageDetailController) {
             self.cancelButtonTapped()
-            let threadViewController: ThreadViewController = segue.destinationViewController as ThreadViewController
+            let messageDetailViewController: MessageDetailViewController = segue.destinationViewController as MessageDetailViewController
             let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {
-                    threadViewController.message = message
+                    messageDetailViewController.message = message
                 }
             } else {
                 println("No selected row.")
@@ -366,14 +366,18 @@ class MailboxViewController: ProtonMailViewController {
     
     // MARK: - Public methods
     
-    func setNavigationTitleText(text: String) {
+    func setNavigationTitleText(text: String?) {
         let animation = CATransition()
         animation.duration = 0.25
         animation.type = kCATransitionFade
 
         self.navigationController?.navigationBar.layer.addAnimation(animation, forKey: "fadeText")
-        self.title = text
+
         self.navigationTitleLabel.text = text
+        
+        if (text != nil && countElements(text!) > 0) {
+            self.title = text
+        }
     }
 }
 
@@ -543,7 +547,7 @@ extension MailboxViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-            self.performSegueWithIdentifier(kSegueToThreadController, sender: self)
+            self.performSegueWithIdentifier(kSegueToMessageDetailController, sender: self)
         }
     }
 }

@@ -12,18 +12,18 @@
 
 import UIKit
 
-class ThreadViewController: ProtonMailViewController {
+class MessageDetailViewController: ProtonMailViewController {
     
     var message: Message!
     
-    @IBOutlet var threadView: ThreadView!
+    @IBOutlet var messageDetailView: MessageDetailView!
     
     override func loadView() {
         message.isRead = true
-        threadView = ThreadView(thread: message)
-        threadView.delegate = self
+        messageDetailView = MessageDetailView(thread: message)
+        messageDetailView.delegate = self
         
-        self.view = threadView
+        self.view = messageDetailView
     }
     
     override func viewDidLoad() {
@@ -59,20 +59,17 @@ class ThreadViewController: ProtonMailViewController {
     }
 }
 
-extension ThreadViewController: ThreadViewDelegate {
+extension MessageDetailViewController: MessageDetailViewDelegate {
     
-    func threadViewDidTapForwardThread(threadView: ThreadView, thread: Message) {
-        
-        println("threadViewDidTapForwardThread: \(thread.title)")
+    func messageDetailViewDidTapForwardThread(threadView: MessageDetailView, thread: Message) {
+        println("messageDetailViewDidTapForwardThread: \(thread.title)")
     }
     
-    func threadViewDidTapReplyAllThread(threadView: ThreadView, thread: Message) {
-
-        println("threadViewDidTapReplyAllThread: \(thread.title)")
+    func messageDetailViewDidTapReplyAllThread(threadView: MessageDetailView, thread: Message) {
+        println("messageDetailViewDidTapReplyAllThread: \(thread.title)")
     }
     
-    func threadViewDidTapReplyThread(threadView: ThreadView, thread: Message) {
-        
-        println("threadViewDidTapReplyThread: \(thread.title)")
+    func messageDetailViewDidTapReplyThread(threadView: MessageDetailView, thread: Message) {
+        println("messageDetailViewDidTapReplyThread: \(thread.title)")
     }
 }
