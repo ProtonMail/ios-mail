@@ -10,6 +10,10 @@ import Foundation
 import CoreData
 
 class MessageDetail: NSManagedObject {
+    
+    struct Attributes {
+        static let entityName = "MessageDetail"
+    }
 
     @NSManaged var bccList: String
     @NSManaged var bccNameList: String
@@ -18,10 +22,16 @@ class MessageDetail: NSManagedObject {
     @NSManaged var ccNameList: String
     @NSManaged var header: String
     @NSManaged var spamScore: NSNumber
+    
+    @NSManaged var attachments: NSMutableSet
     @NSManaged var message: Message
-    @NSManaged var attachments: NSSet
 
     var hasAttachments: Bool {
         return attachments.isEmpty
     }
+    
+    convenience init(context: NSManagedObjectContext) {
+        self.init(entity: NSEntityDescription.entityForName(Attributes.entityName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
+    }
+
 }

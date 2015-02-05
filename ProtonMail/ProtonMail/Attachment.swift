@@ -12,15 +12,21 @@ import CoreData
 class Attachment: NSManagedObject {
     
     struct Attributes {
+        static let entityName = "Attachment"
+        
         static let attachmentID = "attachmentID"
     }
 
     @NSManaged var attachmentID: String
-    @NSManaged var fileName: String
-    @NSManaged var mimeType: String
-    @NSManaged var fileSize: NSNumber
     @NSManaged var data: NSData?
+    @NSManaged var fileName: String
+    @NSManaged var fileSize: NSNumber
+    @NSManaged var mimeType: String
     
-    @NSManaged var messages: NSSet
+    @NSManaged var detail: MessageDetail
 
+    convenience init(context: NSManagedObjectContext) {
+        self.init(entity: NSEntityDescription.entityForName(Attributes.entityName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
+    }
+    
 }

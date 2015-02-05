@@ -11,7 +11,10 @@ import CoreData
 
 class Message: NSManagedObject {
     struct Attributes {
+        static let entityName = "Message"
+        
         static let messageID = "messageID"
+        static let time = "time"
     }
 
     @NSManaged var expirationTime: NSDate?
@@ -34,7 +37,7 @@ class Message: NSManagedObject {
     @NSManaged var totalSize: NSNumber
     
     @NSManaged var attachments: NSSet
-    @NSManaged var detail: MessageDetail
+    @NSManaged var detail: MessageDetail?
     
     // MARK: - Private variables
     
@@ -43,17 +46,13 @@ class Message: NSManagedObject {
     // MARK: - Public methods
 
     convenience init(context: NSManagedObjectContext) {
-        self.init(entity: NSEntityDescription.entityForName(Message.entityName(), inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
-    }
-    
-    class func entityName() -> String {
-        return "Message"
+        self.init(entity: NSEntityDescription.entityForName(Attributes.entityName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
     }
     
     class func fetchOrCreateMessageForMessageID(messageID: String, context: NSManagedObjectContext) -> (message: Message?, error: NSError?) {
         var error: NSError?
         var message: Message?
-        let fetchRequest = NSFetchRequest(entityName: entityName())
+        let fetchRequest = NSFetchRequest(entityName: Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "%K == %@", Attributes.messageID, messageID)
         
         if let messages = context.executeFetchRequest(fetchRequest, error: &error) {

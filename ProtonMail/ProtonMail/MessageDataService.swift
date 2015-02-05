@@ -31,8 +31,8 @@ class MessageDataService {
     func fetchedResultsControllerForLocation(location: APIService.Location) -> NSFetchedResultsController? {
         
         if let moc = managedObjectContext {
-            let fetchRequest = NSFetchRequest(entityName: Message.entityName())
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "time", ascending: false)]
+            let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
             
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         }
