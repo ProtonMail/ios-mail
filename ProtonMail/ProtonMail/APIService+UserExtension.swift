@@ -20,7 +20,7 @@ import Foundation
 extension APIService {
     typealias UserInfo = (displayName: String?, privateKey: String?)
     
-    func userInfo(#success: (UserInfo -> Void), failure: (NSError? -> Void)) {
+    func userInfo(#success: (UserInfo -> Void), failure: FailureBlock) {
         fetchAuthCredential(success: { authCredential in
             let userInfoPath = "/users/\(authCredential.userID)"
             

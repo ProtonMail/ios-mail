@@ -1,5 +1,5 @@
 //
-//  Attachments.swift
+//  Attachment.swift
 //  ProtonMail
 //
 //  Created by Eric Chamberlain on 2/3/15.
@@ -9,7 +9,11 @@
 import Foundation
 import CoreData
 
-class Attachments: NSManagedObject {
+class Attachment: NSManagedObject {
+    
+    struct Attributes {
+        static let attachmentID = "attachmentID"
+    }
 
     @NSManaged var attachmentID: String
     @NSManaged var fileName: String

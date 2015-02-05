@@ -14,33 +14,31 @@ class Message: NSManagedObject {
         static let messageID = "messageID"
     }
 
-    @NSManaged var bccList: String
-    @NSManaged var bccNameList: String
-    @NSManaged var body: String
-    @NSManaged var ccList: String
-    @NSManaged var ccNameList: String
     @NSManaged var expirationTime: NSDate?
     @NSManaged var hasAttachment: Bool
-    @NSManaged var header: String
     @NSManaged var isEncrypted: Bool
     @NSManaged var isForwarded: Bool
     @NSManaged var isRead: Bool
     @NSManaged var isReplied: Bool
     @NSManaged var isRepliedAll: Bool
     @NSManaged var isStarred: Bool
-    @NSManaged var locationInt: Int32
+    @NSManaged var locationNumber: NSNumber
     @NSManaged var messageID: String
     @NSManaged var recipientList: String
     @NSManaged var recipientNameList: String
     @NSManaged var sender: String
     @NSManaged var senderName: String
-    @NSManaged var spamScore: Int32
     @NSManaged var tag: String
     @NSManaged var time: NSDate?
     @NSManaged var title: String
-    @NSManaged var totalSize: Int32
+    @NSManaged var totalSize: NSNumber
     
     @NSManaged var attachments: NSSet
+    @NSManaged var detail: MessageDetail
+    
+    // MARK: - Private variables
+    
+    private let starredTag = "starred"
     
     // MARK: - Public methods
 
@@ -77,5 +75,10 @@ class Message: NSManagedObject {
     
     func setIsStarred(isStarred: Bool, completion: (NSError? -> Void)) {
         sharedMessageDataService.setMessage(self, isStarred: isStarred, completion: completion)
+    }
+    
+    func updateTag(tag: String) {
+        self.tag = tag
+        isStarred = tag.rangeOfString(starredTag) != nil
     }
 }

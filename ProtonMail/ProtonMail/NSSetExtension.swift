@@ -1,5 +1,5 @@
 //
-//  NSManagedObjectContextExtension.swift
+//  NSSetExtension.swift
 //  ProtonMail
 //
 //
@@ -14,23 +14,10 @@
 // the license agreement.
 //
 
-import CoreData
 import Foundation
 
-extension NSManagedObjectContext {
-    
-    func saveUpstreamIfNeeded() -> NSError? {
-        var error: NSError?
-        
-        if hasChanges && save(&error) {
-            if let parentContext = parentContext {
-                parentContext.performBlockAndWait() { () -> Void in
-                    error = self.saveUpstreamIfNeeded()
-                }
-            }
-        }
-        
-        return error
+extension NSSet {
+    var isEmpty: Bool {
+        return count == 0
     }
-    
 }
