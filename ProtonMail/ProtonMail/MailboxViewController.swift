@@ -13,35 +13,37 @@
 import CoreData
 import UIKit
 
-class InboxViewController: ProtonMailViewController {
+class MailboxViewController: ProtonMailViewController {
     
     
     // MARK: - View Outlets
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var moreOptionsView: UIView!
-    @IBOutlet weak var moreOptionsViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var moreOptionsViewTopConstraint: NSLayoutConstraint!
     
     
     // MARK: - Private constants
     
-    private let kInboxCellHeight: CGFloat = 64.0
-    private let kCellIdentifier: String = "InboxCell"
+    private let kMailboxCellHeight: CGFloat = 64.0
+    private let kCellIdentifier: String = "MailboxCell"
     private let kLongPressDuration: CFTimeInterval = 0.60 // seconds
     private let kSegueToSearchController: String = "toSearchViewController"
     private let kSegueToThreadController: String = "toThreadViewController"
+    private let kMoreOptionsViewHeight: CGFloat = 123.0
     
     
     // MARK: - Private attributes
     
+    internal var refreshControl: UIRefreshControl!
+    internal var mailboxLocation: APIService.Location!
+    
     private var fetchedResultsController: NSFetchedResultsController?
+    private var moreOptionsView: MoreOptionsView!
     private var navigationTitleLabel = UILabel()
     private var selectedMessages: NSMutableSet = NSMutableSet()
     private var isEditing: Bool = false
     private var isViewingMoreOptions: Bool = false
-    private var refreshControl: UIRefreshControl!
     private var isUndoButtonTapped: Bool = false
+    
     
     // MARK: - Right bar buttons
     
@@ -62,12 +64,35 @@ class InboxViewController: ProtonMailViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupFetchedResultsController()
+        addSubViews()
+        addConstraints()
+        refreshControl.beginRefreshing()
+        getLatestMessages()
+        
+        self.updateNavigationController(isEditing)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let selectedItem: NSIndexPath? = self.tableView.indexPathForSelectedRow() as NSIndexPath?
+        
+        if let selectedItem = selectedItem {
+            self.tableView.reloadRowsAtIndexPaths([selectedItem], withRowAnimation: UITableViewRowAnimation.Automatic)
+            self.tableView.deselectRowAtIndexPath(selectedItem, animated: true)
+        }
+    }
+    
+    private func addSubViews() {
+        self.moreOptionsView = MoreOptionsView()
+        self.view.addSubview(self.moreOptionsView)
         
         self.navigationTitleLabel.backgroundColor = UIColor.clearColor()
         self.navigationTitleLabel.font = UIFont.robotoLight(size: UIFont.Size.h2)
         self.navigationTitleLabel.textAlignment = NSTextAlignment.Center
         self.navigationTitleLabel.textColor = UIColor.whiteColor()
-        self.navigationTitleLabel.text = NSLocalizedString("INBOX")
+        self.navigationTitleLabel.text = self.title ?? NSLocalizedString("INBOX")
         self.navigationTitleLabel.sizeToFit()
         self.navigationItem.titleView = navigationTitleLabel
         
@@ -75,11 +100,6 @@ class InboxViewController: ProtonMailViewController {
         self.refreshControl.backgroundColor = UIColor.ProtonMail.Blue_475F77
         self.refreshControl.tintColor = UIColor.whiteColor()
         self.refreshControl.addTarget(self, action: "getLatestMessages", forControlEvents: UIControlEvents.ValueChanged)
-        
-        setupFetchedResultsController()
-        
-        self.refreshControl.beginRefreshing()
-        self.getLatestMessages()
         
         self.tableView.addSubview(self.refreshControl)
         self.tableView.dataSource = self
@@ -91,23 +111,14 @@ class InboxViewController: ProtonMailViewController {
         self.tableView.addGestureRecognizer(longPressGestureRecognizer)
         
         self.menuBarButtonItem = self.navigationItem.leftBarButtonItem
-            
-        self.updateNavigationController(isEditing)
-        
-        self.moreOptionsView.alpha = 1.0
-        
-        // to move the view out of the screen, animating later
-        self.moreOptionsViewTopConstraint.constant = -self.moreOptionsViewHeightConstraint.constant
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-
-        let selectedItem: NSIndexPath? = self.tableView.indexPathForSelectedRow() as NSIndexPath?
-
-        if let selectedItem = selectedItem {
-            self.tableView.reloadRowsAtIndexPaths([selectedItem], withRowAnimation: UITableViewRowAnimation.Automatic)
-            self.tableView.deselectRowAtIndexPath(selectedItem, animated: true)
+    private func addConstraints() {
+        self.moreOptionsView.mas_makeConstraints { (make) -> Void in
+            make.left.equalTo()(self.view)
+            make.right.equalTo()(self.view)
+            make.height.equalTo()(self.kMoreOptionsViewHeight)
+            make.bottom.equalTo()(self.view.mas_top)
         }
     }
     
@@ -131,26 +142,32 @@ class InboxViewController: ProtonMailViewController {
     }
     
     internal func moreButtonTapped() {
+        self.view.bringSubviewToFront(self.moreOptionsView)
+        let topLayoutGuide: UIView = self.topLayoutGuide as AnyObject! as UIView
         if (self.isViewingMoreOptions) {
-            self.moreOptionsViewTopConstraint.constant = -self.moreOptionsViewHeightConstraint.constant
+            self.moreOptionsView.mas_updateConstraints({ (make) -> Void in
+                make.removeExisting = true
+                make.left.equalTo()(self.view)
+                make.right.equalTo()(self.view)
+                make.height.equalTo()(self.kMoreOptionsViewHeight)
+                make.bottom.equalTo()(topLayoutGuide.mas_top)
+            })
         } else {
-            self.moreOptionsViewTopConstraint.constant = 0.0
+            self.moreOptionsView.mas_updateConstraints({ (make) -> Void in
+                make.removeExisting = true
+                make.left.equalTo()(self.view)
+                make.right.equalTo()(self.view)
+                make.height.equalTo()(self.kMoreOptionsViewHeight)
+                
+                make.top.equalTo()(topLayoutGuide.mas_bottom)
+            })
         }
         
         self.isViewingMoreOptions = !self.isViewingMoreOptions
-
+        
         UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
-    }
-    
-    internal func getLatestMessages() {
-        sharedMessageDataService.fetchMessagesForLocation(.inbox) { error in
-            if let error = error {
-                NSLog("error: \(error)")
-            }
-            self.refreshControl.endRefreshing()
-        }
     }
     
     internal func cancelButtonTapped() {
@@ -164,25 +181,6 @@ class InboxViewController: ProtonMailViewController {
         }
         
         self.updateNavigationController(false)
-    }
-    
-    @IBAction func didTapCheckMessage(sender: UIButton) {
-        let point: CGPoint = sender.convertPoint(CGPointZero, toView: self.tableView)
-        let indexPath: NSIndexPath? = self.tableView.indexPathForRowAtPoint(point)
-        
-        if let indexPath = indexPath {
-            let selectedCell: InboxTableViewCell = self.tableView.cellForRowAtIndexPath(indexPath) as InboxTableViewCell
-            
-            if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-                if (selectedMessages.containsObject(message.messageID)) {
-                    selectedMessages.removeObject(message.messageID)
-                } else {
-                    selectedMessages.addObject(message.messageID)
-                }
-                
-                selectedCell.checkboxTapped()
-            }
-        }
     }
     
     internal func handleLongPress(longPressGestureRecognizer: UILongPressGestureRecognizer) {
@@ -211,19 +209,19 @@ class InboxViewController: ProtonMailViewController {
     
     // MARK: - Private methods
     
-    private func configureCell(inboxCell: InboxTableViewCell, atIndexPath indexPath: NSIndexPath) {
+    private func configureCell(mailboxCell: MailboxTableViewCell, atIndexPath indexPath: NSIndexPath) {
         if let thread = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-            inboxCell.configureCell(thread)
-            inboxCell.setCellIsChecked(selectedMessages.containsObject(thread.messageID))
+            mailboxCell.configureCell(thread)
+            mailboxCell.setCellIsChecked(selectedMessages.containsObject(thread.messageID))
             
             if (self.isEditing) {
-                inboxCell.showCheckboxOnLeftSide()
+                mailboxCell.showCheckboxOnLeftSide()
             }
         }
     }
     
     private func setupFetchedResultsController() {
-        self.fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLocation(.inbox)
+        self.fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLocation(self.mailboxLocation ?? .inbox)
         self.fetchedResultsController?.delegate = self
         
         if let fetchedResultsController = fetchedResultsController {
@@ -231,6 +229,15 @@ class InboxViewController: ProtonMailViewController {
             if !fetchedResultsController.performFetch(&error) {
                 NSLog("\(__FUNCTION__) error: \(error)")
             }
+        }
+    }
+    
+    func getLatestMessages() {
+        sharedMessageDataService.fetchMessagesForLocation(self.mailboxLocation ?? .inbox) { error in
+            if let error = error {
+                NSLog("error: \(error)")
+            }
+            self.refreshControl.endRefreshing()
         }
     }
     
@@ -253,17 +260,10 @@ class InboxViewController: ProtonMailViewController {
     private func setupNavigationTitle(editingMode: Bool) {
         
         // title animation
-        
-        let animation = CATransition()
-        animation.duration = 0.25
-        animation.type = kCATransitionFade
-        
-        self.navigationController?.navigationBar.layer.addAnimation(animation, forKey: "fadeText")
-        
         if (editingMode) {
-            self.navigationTitleLabel.text = ""
+            setNavigationTitleText("")
         } else {
-            self.navigationTitleLabel.text = NSLocalizedString("INBOX")
+            setNavigationTitleText(self.title ?? "INBOX")
         }
     }
     
@@ -300,21 +300,21 @@ class InboxViewController: ProtonMailViewController {
         
         self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
     }
-
+    
     
     private func hideCheckOptions() {
         self.isEditing = false
-     
+        
         let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows() as? [NSIndexPath]
         
         if let indexPathsForVisibleRows = indexPathsForVisibleRows {
             for indexPath in indexPathsForVisibleRows {
-                let inboxTableViewCell: InboxTableViewCell = self.tableView.cellForRowAtIndexPath(indexPath) as InboxTableViewCell
-                inboxTableViewCell.setCellIsChecked(false)
-                inboxTableViewCell.hideCheckboxOnLeftSide()
+                let mailboxTableViewCell: MailboxTableViewCell = self.tableView.cellForRowAtIndexPath(indexPath) as MailboxTableViewCell
+                mailboxTableViewCell.setCellIsChecked(false)
+                mailboxTableViewCell.hideCheckboxOnLeftSide()
                 
                 UIView.animateWithDuration(0.25, animations: { () -> Void in
-                    inboxTableViewCell.layoutIfNeeded()
+                    mailboxTableViewCell.layoutIfNeeded()
                 })
             }
         }
@@ -333,8 +333,8 @@ class InboxViewController: ProtonMailViewController {
                 if let indexPathsForVisibleRows = indexPathsForVisibleRows {
                     for visibleIndexPath in indexPathsForVisibleRows {
                         
-                        let inboxTableViewCell: InboxTableViewCell = self.tableView.cellForRowAtIndexPath(visibleIndexPath) as InboxTableViewCell
-                        inboxTableViewCell.showCheckboxOnLeftSide()
+                        let mailboxTableViewCell: MailboxTableViewCell = self.tableView.cellForRowAtIndexPath(visibleIndexPath) as MailboxTableViewCell
+                        mailboxTableViewCell.showCheckboxOnLeftSide()
                         
                         // set selected row to checked
                         
@@ -342,11 +342,11 @@ class InboxViewController: ProtonMailViewController {
                             if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
                                 selectedMessages.addObject(message.messageID)
                             }
-                            inboxTableViewCell.setCellIsChecked(true)
+                            mailboxTableViewCell.setCellIsChecked(true)
                         }
                         
                         UIView.animateWithDuration(0.25, animations: { () -> Void in
-                            inboxTableViewCell.layoutIfNeeded()
+                            mailboxTableViewCell.layoutIfNeeded()
                         })
                     }
                 }
@@ -362,13 +362,26 @@ class InboxViewController: ProtonMailViewController {
         self.setupNavigationTitle(editingMode)
         self.setupRightButtons(editingMode)
     }
+    
+    
+    // MARK: - Public methods
+    
+    func setNavigationTitleText(text: String) {
+        let animation = CATransition()
+        animation.duration = 0.25
+        animation.type = kCATransitionFade
+
+        self.navigationController?.navigationBar.layer.addAnimation(animation, forKey: "fadeText")
+        self.title = text
+        self.navigationTitleLabel.text = text
+    }
 }
 
 
-// MARK: - InboxTableViewCellDelegate
+// MARK: - MailboxTableViewCellDelegate
 
-extension InboxViewController: InboxTableViewCellDelegate {
-    func inboxTableViewCell(cell: InboxTableViewCell, didChangeStarred isStarred: Bool) {
+extension MailboxViewController: MailboxTableViewCellDelegate {
+    func mailboxTableViewCell(cell: MailboxTableViewCell, didChangeStarred isStarred: Bool) {
         if let indexPath = tableView.indexPathForCell(cell) {
             if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
                 message.setIsStarred(isStarred) { error in
@@ -379,11 +392,71 @@ extension InboxViewController: InboxTableViewCellDelegate {
             }
         }
     }
+    
+    func mailBoxTableViewCell(cell: MailboxTableViewCell, didChangeChecked: Bool) {
+        var indexPath: NSIndexPath? = tableView.indexPathForCell(cell) as NSIndexPath?
+        if let indexPath = indexPath {
+            if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+                if (selectedMessages.containsObject(message.messageID)) {
+                    selectedMessages.removeObject(message.messageID)
+                } else {
+                    selectedMessages.addObject(message.messageID)
+                }
+            }
+        }
+    }
 }
+
+
+// MARK: - UITableViewDataSource
+
+extension MailboxViewController: UITableViewDataSource {
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if (self.tableView.respondsToSelector("setSeparatorInset:")) {
+            self.tableView.separatorInset = UIEdgeInsetsZero
+        }
+        
+        if (self.tableView.respondsToSelector("setLayoutMargins:")) {
+            self.tableView.layoutMargins = UIEdgeInsetsZero
+        }
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return fetchedResultsController?.numberOfSections() ?? 1
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        var mailboxCell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as MailboxTableViewCell
+        mailboxCell.delegate = self
+        
+        configureCell(mailboxCell, atIndexPath: indexPath)
+        
+        return mailboxCell
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return fetchedResultsController?.numberOfRowsInSection(section) ?? 0
+    }
+    
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if (cell.respondsToSelector("setSeparatorInset:")) {
+            cell.separatorInset = UIEdgeInsetsZero
+        }
+        
+        if (cell.respondsToSelector("setLayoutMargins:")) {
+            cell.layoutMargins = UIEdgeInsetsZero
+        }
+    }
+}
+
 
 // MARK: - NSFetchedResultsControllerDelegate
 
-extension InboxViewController: NSFetchedResultsControllerDelegate {
+extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
     }
@@ -415,7 +488,7 @@ extension InboxViewController: NSFetchedResultsControllerDelegate {
             }
         case .Update:
             if let indexPath = indexPath {
-                if let cell = tableView.cellForRowAtIndexPath(indexPath) as? InboxTableViewCell {
+                if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MailboxTableViewCell {
                     configureCell(cell, atIndexPath: indexPath)
                 }
             }
@@ -425,57 +498,12 @@ extension InboxViewController: NSFetchedResultsControllerDelegate {
     }
 }
 
-// MARK: - UITableViewDataSource
-
-extension InboxViewController: UITableViewDataSource {
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        if (self.tableView.respondsToSelector("setSeparatorInset:")) {
-            self.tableView.separatorInset = UIEdgeInsetsZero
-        }
-        
-        if (self.tableView.respondsToSelector("setLayoutMargins:")) {
-            self.tableView.layoutMargins = UIEdgeInsetsZero
-        }
-    }
-    
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return fetchedResultsController?.numberOfSections() ?? 1
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-
-        var inboxCell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as InboxTableViewCell
-        inboxCell.delegate = self
-        
-        configureCell(inboxCell, atIndexPath: indexPath)
-        
-        return inboxCell
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultsController?.numberOfRowsInSection(section) ?? 0
-    }
-    
-    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if (cell.respondsToSelector("setSeparatorInset:")) {
-            cell.separatorInset = UIEdgeInsetsZero
-        }
-        
-        if (cell.respondsToSelector("setLayoutMargins:")) {
-            cell.layoutMargins = UIEdgeInsetsZero
-        }
-    }
-}
-
 
 // MARK: - UITableViewDelegate
 
-extension InboxViewController: UITableViewDelegate {
+extension MailboxViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return kInboxCellHeight
+        return kMailboxCellHeight
     }
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
@@ -505,11 +533,18 @@ extension InboxViewController: UITableViewDelegate {
                 self.isUndoButtonTapped = false
                 
                 // TODO: delete message from server and Core Data
-//                self.messages.removeAtIndex(indexPath.row)
+                // self.messages.removeAtIndex(indexPath.row)
                 self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
             }
             
             self.tableView.editing = false
         }
     }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+            self.performSegueWithIdentifier(kSegueToThreadController, sender: self)
+        }
+    }
 }
+

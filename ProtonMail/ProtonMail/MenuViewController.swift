@@ -13,28 +13,29 @@
 import UIKit
 
 class MenuViewController: UIViewController {
-
-    enum MenuItem: String {
-        case inbox = "Inbox"
-        case drafts = "Drafts"
-        case sent = "Sent"
-        case trash = "Trash"
-        case spam = "Spam"
-        case contacts = "Contacts"
-        case settings = "Settings"
-        case signout = "Signout"
-        
-        var identifier: String { return rawValue }
-}
+    
+    
+    // MARK - Views Outlets
     
     @IBOutlet weak var displayNameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
+    
+    // MARK: - Private constants
+    
+    private let items = [MenuItem.inbox, MenuItem.drafts, MenuItem.sent, MenuItem.trash, MenuItem.spam, MenuItem.contacts, MenuItem.settings, MenuItem.signout]
     private let kMenuCellHeight: CGFloat = 62.0
     private let kMenuOptionsWidth: CGFloat = 227.0
     
-    private let items = [MenuItem.inbox, MenuItem.drafts, MenuItem.sent, MenuItem.trash, MenuItem.spam, MenuItem.contacts, MenuItem.settings, MenuItem.signout]
+    private let kSegueToInbox: String = "toInbox"
+    private let kSegueToDrafts: String = "toDrafts"
+    private let kSegueToSent: String = "toSent"
+    private let kSegueToTrash: String = "toTrash"
+    private let kSegueToSpam: String = "toSpam"
+    
+    
+    // MARK: Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +51,39 @@ class MenuViewController: UIViewController {
         updateEmailLabel()
         updateDisplayNameLabel()
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let navigationController = segue.destinationViewController as UINavigationController
+        let mailboxViewController: MailboxViewController = navigationController.viewControllers.first as MailboxViewController
+        
+        switch(segue.identifier!) {
+        case kSegueToInbox:
+            mailboxViewController.mailboxLocation = .inbox
+            mailboxViewController.setNavigationTitleText("INBOX")
+            
+        case kSegueToDrafts:
+            mailboxViewController.mailboxLocation = .draft
+            mailboxViewController.setNavigationTitleText("DRAFTS")
+
+        case kSegueToSent:
+            mailboxViewController.mailboxLocation = .outbox
+            mailboxViewController.setNavigationTitleText("SENT")
+        
+        case kSegueToTrash:
+            mailboxViewController.mailboxLocation = .trash
+            mailboxViewController.setNavigationTitleText("TRASH")
+        
+        case kSegueToSpam:
+            mailboxViewController.mailboxLocation = .spam
+            mailboxViewController.setNavigationTitleText("SPAM")
+        default:
+            mailboxViewController.mailboxLocation = .inbox
+            mailboxViewController.setNavigationTitleText("INBOX")
+        }
+    }
+    
+    
+    // MARK: - Methods
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
@@ -126,5 +160,20 @@ extension MenuViewController: UITableViewDataSource {
         
         cell.selectedBackgroundView = selectedBackgroundView
         return cell
+    }
+}
+
+extension MenuViewController {
+    enum MenuItem: String {
+        case inbox = "Inbox"
+        case drafts = "Drafts"
+        case sent = "Sent"
+        case trash = "Trash"
+        case spam = "Spam"
+        case contacts = "Contacts"
+        case settings = "Settings"
+        case signout = "Signout"
+        
+        var identifier: String { return rawValue }
     }
 }

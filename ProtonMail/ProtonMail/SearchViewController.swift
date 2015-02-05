@@ -21,7 +21,7 @@ class SearchViewController: ProtonMailViewController {
     
     // MARK: - Private Constants
     
-    private let kInboxCellHeight: CGFloat = 64.0
+    private let kSearchCellHeight: CGFloat = 64.0
     private let kCellIdentifier: String = "SearchedCell"
 
     
@@ -51,6 +51,16 @@ class SearchViewController: ProtonMailViewController {
         fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLocation(.inbox)
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        searchTextField.becomeFirstResponder()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        searchTextField.resignFirstResponder()
+    }
+    
     override func configureNavigationBar() {
         super.configureNavigationBar()
         self.searchDisplayController?.displaysSearchBarInNavigationBar = true
@@ -76,11 +86,8 @@ extension SearchViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
-        var cell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as InboxTableViewCell
-
-        if let thread = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-            cell.configureCell(thread)
-        }
+        var cell: MailboxTableViewCell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as MailboxTableViewCell
+        cell.configureCell(filteredMessages[indexPath.row])
         
         return cell
     }
@@ -114,11 +121,11 @@ extension SearchViewController: UITableViewDelegate {
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return fetchedResultsController?.numberOfSections() ?? 1
+        return 1
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return kInboxCellHeight
+        return kSearchCellHeight
     }
 }
 
@@ -129,10 +136,11 @@ extension SearchViewController: UITextFieldDelegate {
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         self.filteredMessages.removeAll(keepCapacity: true)
-        
+        fetchedResultsController?.performFetch(nil)
         var filterText = textField.text
         filterText = (filterText as NSString).stringByReplacingCharactersInRange(range, withString: string)
         let messages = fetchedResultsController?.fetchedObjects as [Message]
+
         for message in messages {
             if (message.title.lowercaseString.rangeOfString(filterText.lowercaseString) != nil) {
                 filteredMessages.append(message)
@@ -143,5 +151,3 @@ extension SearchViewController: UITextFieldDelegate {
         return true
     }
 }
-
-

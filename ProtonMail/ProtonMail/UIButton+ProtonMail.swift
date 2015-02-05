@@ -1,4 +1,8 @@
 //
+//  UIViewExtension.swift
+//  ProtonMail
+//
+//
 // Copyright 2015 ArcTouch, Inc.
 // All rights reserved.
 //
@@ -10,11 +14,14 @@
 // the license agreement.
 //
 
-import UIKit
+import Foundation
 
-class TrashViewController: ProtonMailViewController {
-        
-    override func viewDidLoad() {
-        super.viewDidLoad()
+extension UIButton {
+    
+    class func buttonWithImage(image: UIImage) -> UIButton {
+        let button = UIButton()
+        button.setImage(image, forState: UIControlState.Normal)
+        button.sizeToFit()
+        return button
     }
 }
