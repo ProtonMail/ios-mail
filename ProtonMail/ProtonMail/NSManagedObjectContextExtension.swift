@@ -25,7 +25,7 @@ extension NSManagedObjectContext {
         if hasChanges && save(&error) {
             if let parentContext = parentContext {
                 parentContext.performBlockAndWait() { () -> Void in
-                    error = self.saveUpstreamIfNeeded()
+                    error = parentContext.saveUpstreamIfNeeded()
                 }
             }
         }

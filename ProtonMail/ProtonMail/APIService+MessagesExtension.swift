@@ -180,8 +180,11 @@ extension APIService {
         var messageDetail: MessageDetail!
         
         if let message = context.existingObjectWithID(messageObjectID, error: &error) as? Message {
-            if message.detail == nil {
+            messageDetail = message.detail
+            
+            if messageDetail == nil {
                 messageDetail = MessageDetail(context: context)
+                messageDetail.message = message
                 messageDetail.bccList = dictionary.stringForMessageKey(.bccList)
                 messageDetail.bccNameList = dictionary.stringForMessageKey(.bccNameList)
                 messageDetail.body = dictionary.stringForMessageKey(.body)
@@ -201,9 +204,9 @@ extension APIService {
                         messageDetail.attachments.addObject(attachment)
                     }
                 }
+                
+                message.detail = messageDetail
             }
-            
-            messageDetail = message.detail
         }
         
         return (messageDetail, error)

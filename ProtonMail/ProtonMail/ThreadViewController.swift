@@ -14,7 +14,15 @@ import UIKit
 
 class ThreadViewController: ProtonMailViewController {
     
-    var message: Message!
+    var message: Message! {
+        didSet {
+            message.fetchDetailIfNeeded() { error in
+                if error != nil {
+                    NSLog("\(__FUNCTION__) error: \(error)")
+                }
+            }
+        }
+    }
     
     @IBOutlet var threadView: ThreadView!
     

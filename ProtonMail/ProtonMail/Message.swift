@@ -16,6 +16,8 @@ class Message: NSManagedObject {
         static let messageID = "messageID"
         static let time = "time"
     }
+    
+    typealias CompletionBlock = MessageDataService.CompletionBlock
 
     @NSManaged var expirationTime: NSDate?
     @NSManaged var hasAttachment: Bool
@@ -72,7 +74,11 @@ class Message: NSManagedObject {
         return (message, error)
     }
     
-    func setIsStarred(isStarred: Bool, completion: (NSError? -> Void)) {
+    func fetchDetailIfNeeded(completion: CompletionBlock) {
+        sharedMessageDataService.fetchMessageDetailForMessage(self, completion: completion)
+    }
+    
+    func setIsStarred(isStarred: Bool, completion: CompletionBlock) {
         sharedMessageDataService.setMessage(self, isStarred: isStarred, completion: completion)
     }
     
