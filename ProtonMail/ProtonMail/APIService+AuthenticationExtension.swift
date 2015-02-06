@@ -20,7 +20,7 @@ import Foundation
 extension APIService {
     typealias AuthInfo = (accessToken: String?, expiresId: NSTimeInterval?, refreshToken: String?, userID: String?)
     
-    func authAuth(#username: String, password: String, success: (() -> Void), failure: (NSError -> Void)) -> Void {
+    func authAuth(#username: String, password: String, success: (() -> Void), failure: FailureBlock) {
         let authenticationPath = "/auth/auth"
         
         // FIXME: These values would be obtainable by inspecting the binary code, but to make thins a little more difficult, we probably don't want to these values visible when the source code is distributed.  We will probably want to come up with a way to pass in these values as pre-compiler macros.  Swift doesn't support pre-compiler macros, but we have Objective-C and can still use them.  The values would be passed in by the build scripts at build time.  Or, these values could be cleared before publishing the code.

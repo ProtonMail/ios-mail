@@ -14,6 +14,7 @@
 // the license agreement.
 //
 
+import CoreData
 import Foundation
 
 private let BaseURLString = "http://protonmail.xyz"
@@ -21,6 +22,13 @@ private let BaseURLString = "http://protonmail.xyz"
 let sharedAPIService = APIService()
 
 class APIService {
+    typealias AFNetworkingFailureBlock = (NSURLSessionDataTask!, NSError!) -> Void
+    typealias AFNetworkingSuccessBlock = (NSURLSessionDataTask!, AnyObject!) -> Void
+    typealias AuthSuccessBlock = AuthCredential -> Void
+    typealias CompletionBlock = NSError? -> Void
+    typealias FailureBlock = NSError -> Void
+    typealias SuccessBlock = NSDictionary -> Void
+    
     enum APIError: Int {
         case authCredentialExpired
         case authCredentialInvalid
@@ -90,7 +98,7 @@ class APIService {
         sessionManager.requestSerializer = AFJSONRequestSerializer() as AFHTTPRequestSerializer
     }
     
-    func fetchAuthCredential(#success: (AuthCredential -> Void), failure: (NSError -> Void)) {
+    func fetchAuthCredential(#success: AuthSuccessBlock, failure: FailureBlock) {
         if let credential = AuthCredential.fetchFromKeychain() {
             if !credential.isExpired {
                 self.sessionManager.requestSerializer.setAuthorizationHeaderFieldWithCredential(credential)
@@ -106,11 +114,48 @@ class APIService {
         }
     }
     
+    func GET(path: String, parameters: AnyObject?, success: SuccessBlock, failure: FailureBlock) {
+        let authSuccess: AuthSuccessBlock = { auth in
+            let successBlock = self.networkingSuccessBlockForFailure(failure, success: success)
+            let failureBlock = self.networkingFailureBlockForFailure(failure)
+            
+            self.sessionManager.GET(path, parameters: parameters, success: successBlock, failure: failureBlock)
+        }
+        
+        fetchAuthCredential(success: authSuccess, failure: failure)
+    }
+    
     func isErrorResponse(response: AnyObject!) -> Bool {
         if let dict = response as? NSDictionary {
             return dict["error"] != nil
         }
         
         return false
+    }
+    
+    func newManagedObjectContext() -> NSManagedObjectContext {
+        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        let managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        managedObjectContext.parentContext = appDelegate.managedObjectContext
+
+        return managedObjectContext
+    }
+    
+    // MARK: - Private methods
+    
+    private func networkingFailureBlockForFailure(failure: FailureBlock) -> AFNetworkingFailureBlock {
+        return { task, error in
+            failure(error)
+        }
+    }
+    
+    private func networkingSuccessBlockForFailure(failure: FailureBlock, success: SuccessBlock) -> AFNetworkingSuccessBlock {
+        return { task, responseObject in
+            if let response = responseObject as? NSDictionary {
+                success(response)
+            } else {
+                failure(APIError.unableToParseResponse.asNSError())
+            }
+        }
     }
 }

@@ -20,19 +20,29 @@ import Foundation
 let sharedMessageDataService = MessageDataService()
 
 class MessageDataService {
+    typealias CompletionBlock = APIService.CompletionBlock
+    
     var managedObjectContext: NSManagedObjectContext? {
         return (UIApplication.sharedApplication().delegate as AppDelegate).managedObjectContext
     }
     
-    func fetchMessagesForLocation(location: APIService.Location, completion: (NSError? -> Void)) {
+    func fetchMessageDetailForMessage(message: Message, completion: CompletionBlock) {
+        if message.detail == nil {
+            sharedAPIService.messageDetail(message: message, completion: completion)
+        } else {
+            completion(nil)
+        }
+    }
+    
+    func fetchMessagesForLocation(location: APIService.Location, completion: CompletionBlock) {
         sharedAPIService.messageList(location, page: 1, sortedColumn: .date, order: .descending, filter: .noFilter, completion: completion)
     }
     
     func fetchedResultsControllerForLocation(location: APIService.Location) -> NSFetchedResultsController? {
         
         if let moc = managedObjectContext {
-            let fetchRequest = NSFetchRequest(entityName: Message.entityName())
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "time", ascending: false)]
+            let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
             
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         }
@@ -40,7 +50,7 @@ class MessageDataService {
         return nil
     }
     
-    func setMessage(message: Message, isStarred: Bool, completion: (NSError? -> Void)) {
+    func setMessage(message: Message, isStarred: Bool, completion: CompletionBlock) {
         if isStarred {
             sharedAPIService.starMessage(message) { error in
                 NSLog("error: \(error)")

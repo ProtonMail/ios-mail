@@ -38,6 +38,43 @@ extension APIService {
         case descending = 1
     }
     
+    enum MessageKey: String {
+        case attachmentID = "AttachmentID"
+        case attachments = "AttachmentIDList"
+        case bccList = "BCCList"
+        case bccNameList = "BCCNameList"
+        case body = "MessageBody"
+        case ccList = "CCList"
+        case ccNameList = "CCNameList"
+        case expirationTime = "ExpirationTime"
+        case fileName = "FileName"
+        case fileSize = "FileSize"
+        case hasAttachment = "HasAttachment"
+        case header = "Header"
+        case isEncrypted = "IsEncrypted"
+        case isForwarded = "IsForwarded"
+        case isRead = "IsRead"
+        case isReplied = "IsReplied"
+        case isRepliedAll = "IsRepliedAll"
+        case location = "Location"
+        case messageID = "MessageID"
+        case messages = "Messages"
+        case mimeType = "MIMEType"
+        case recipientList = "RecipientList"
+        case recipientNameList = "RecipientNameList"
+        case sender = "Sender"
+        case senderName = "SenderName"
+        case spamScore = "MessageSpamScore"
+        case tag = "Tag"
+        case time = "Time"
+        case title = "MessageTitle"
+        case totalSize = "TotalSize"
+        
+        var keyValue: String {
+            return rawValue
+        }
+    }
+    
     enum SortedColumn: String {
         case date = "Date"
         case from = "From"
@@ -45,24 +82,66 @@ extension APIService {
         case subject = "Subject"
     }
     
-    func messageList(location: Location, page: Int, sortedColumn: SortedColumn, order: Order, filter: Filter, completion: (NSError? -> Void)) {
-        fetchAuthCredential(success: { credential in
-            let messagesPath = "/messages"
+    
+    // MARK: - Public methods
+    
+    func messageDetail(#message: Message, completion: (NSError? -> Void)) {
+        let path = "/messages/\(message.messageID)"
+        
+        let successBlock: SuccessBlock = { response in
+            let context = self.newManagedObjectContext()
             
-            let parameters = [
-                "Location" : location.rawValue,
-                "Page" : page,
-                "SortedColumn" : sortedColumn.rawValue,
-                "Order" : order.rawValue,
-                "FilterUnread" : filter.rawValue]
+            context.performBlock() {
+                var (messageDetail, error) = self.messageDetailFromDictionary(response, inManagedObjectContext: context, messageObjectID: message.objectID)
+                
+                if let error = context.saveUpstreamIfNeeded() {
+                    NSLog("\(__FUNCTION__) error: \(error)")
+                }
+            }
             
-            self.sessionManager.GET(messagesPath, parameters: parameters, success: { (task, response) -> Void in
-                completion(self.messagesForResponse(response))
-            }, failure: { (task, error) -> Void in
-                completion(error)
-            })
-
-        }, failure: completion)
+            completion(nil)
+        }
+        
+        GET(path, parameters: nil, success: successBlock, failure: completion)
+    }
+    
+    func messageList(location: Location, page: Int, sortedColumn: SortedColumn, order: Order, filter: Filter, completion: CompletionBlock) {
+        let path = "/messages"
+        
+        let parameters = [
+            "Location" : location.rawValue,
+            "Page" : page,
+            "SortedColumn" : sortedColumn.rawValue,
+            "Order" : order.rawValue,
+            "FilterUnread" : filter.rawValue]
+        
+        let successBlock: SuccessBlock = { response in
+            var error: NSError?
+            
+            if let messagesArray = response[MessageKey.messages.keyValue] as? [NSDictionary] {
+                let context = self.newManagedObjectContext()
+                
+                for messageDictionary in messagesArray {
+                    context.performBlock() { () -> Void in
+                        var (message, error) = self.messageFromDictionary(messageDictionary, inManagedObjectContext: context)
+                        
+                        if let message = message {
+                            message.locationNumber = location.rawValue
+                            
+                            if let error = context.saveUpstreamIfNeeded() {
+                                NSLog("\(__FUNCTION__) error: \(error)")
+                            }
+                        }
+                    }
+                }
+            } else {
+                error = APIError.unableToParseResponse.asNSError()
+            }
+            
+            completion(error)
+        }
+        
+        GET(path, parameters: parameters, success: successBlock, failure: completion)
     }
     
     func starMessage(message: Message, completion: (NSError? -> Void)) {
@@ -93,67 +172,70 @@ extension APIService {
             }, failure: completion)
     }
     
+    
     // MARK: - Private methods
     
-    private func messagesForResponse(response: AnyObject?) -> NSError? {
-        if let response = response as? NSDictionary {
-            if let messagesArray = response["Messages"] as? [NSDictionary] {
-                let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
-                let managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-                managedObjectContext.parentContext = appDelegate.managedObjectContext
+    private func messageDetailFromDictionary(dictionary: NSDictionary, inManagedObjectContext context: NSManagedObjectContext, messageObjectID: NSManagedObjectID) -> (messageDetail: MessageDetail?, error: NSError?) {
+        var error: NSError?
+        var messageDetail: MessageDetail!
+        
+        if let message = context.existingObjectWithID(messageObjectID, error: &error) as? Message {
+            messageDetail = message.detail
+            
+            if messageDetail == nil {
+                messageDetail = MessageDetail(context: context)
+                messageDetail.message = message
+                messageDetail.bccList = dictionary.stringForMessageKey(.bccList)
+                messageDetail.bccNameList = dictionary.stringForMessageKey(.bccNameList)
+                messageDetail.body = dictionary.stringForMessageKey(.body)
+                messageDetail.ccList = dictionary.stringForMessageKey(.ccList)
+                messageDetail.ccNameList = dictionary.stringForMessageKey(.ccNameList)
+                messageDetail.header = dictionary.stringForMessageKey(.header)
+                messageDetail.spamScore = dictionary.numberForMessageKey(.spamScore)
                 
-                for messageDict in messagesArray {
-                    managedObjectContext.performBlock() { () -> Void in
-                        var (message, error) = self.messageWithMessageDict(messageDict, inManagedObjectContext: managedObjectContext)
-
-                        if let message = message {
-                            var error: NSError?
-                            
-                            if !managedObjectContext.saveAndSaveParents(&error) {
-                                NSLog("\(__FUNCTION__) error: \(error)")
-                            }
-                        }
+                if let attachments = dictionary[MessageKey.attachments.keyValue] as? [NSDictionary] {
+                    for dictionary in attachments {
+                        let attachment = Attachment(context: context)
+                        attachment.attachmentID = dictionary.stringForMessageKey(.attachmentID)
+                        attachment.fileName = dictionary.stringForMessageKey(.fileName)
+                        attachment.fileSize = dictionary.numberForMessageKey(.fileSize)
+                        attachment.mimeType = dictionary.stringForMessageKey(.mimeType)
+                        
+                        messageDetail.attachments.addObject(attachment)
                     }
                 }
                 
-                return nil
+                message.detail = messageDetail
             }
         }
         
-        return APIError.unableToParseResponse.asNSError()
+        return (messageDetail, error)
     }
-    
-    private func messageWithMessageDict(messageDict: NSDictionary, inManagedObjectContext context: NSManagedObjectContext) -> (message: Message?, error: NSError?) {
+
+    private func messageFromDictionary(dictionary: NSDictionary, inManagedObjectContext context: NSManagedObjectContext) -> (message: Message?, error: NSError?) {
         var error: NSError?
         var message: Message?
         
-        if let messageID = messageDict["MessageID"] as? String {
+        if let messageID = dictionary[MessageKey.messageID.keyValue] as? String {
             (message, error) = Message.fetchOrCreateMessageForMessageID(messageID, context: context)
             
             if let message = message {
-                message.expirationTime = self.dateForKey("ExpirationTime", dictionary: messageDict)
-                message.isAttachment = self.boolForKey("HasAttachment", dictionary: messageDict)
-                message.isEncrypted = self.boolForKey("IsEncrypted", dictionary: messageDict)
-                message.isForwarded = self.boolForKey("IsForwarded", dictionary: messageDict)
-                message.isRead = self.boolForKey("IsRead", dictionary: messageDict)
-                message.isReplied = self.boolForKey("IsReplied", dictionary: messageDict)
-                message.isRepliedAll = self.boolForKey("IsRepliedAll", dictionary: messageDict)
-                message.recipientList = messageDict["RecipientList"] as String
-                message.recipientNameList = messageDict["RecipientNameList"] as String
-                message.sender = messageDict["Sender"] as String
-                message.senderName = messageDict["SenderName"] as String
-                message.tag = messageDict["Tag"] as String
-                message.isStarred = message.tag.rangeOfString("starred") != nil
+                message.expirationTime = dictionary.dateForMessageKey(.expirationTime)
+                message.hasAttachment = dictionary.boolForMessageKey(.hasAttachment)
+                message.isEncrypted = dictionary.boolForMessageKey(.isEncrypted)
+                message.isForwarded = dictionary.boolForMessageKey(.isForwarded)
+                message.isRead = dictionary.boolForMessageKey(.isRead)
+                message.isReplied = dictionary.boolForMessageKey(.isReplied)
+                message.isRepliedAll = dictionary.boolForMessageKey(.isRepliedAll)
+                message.recipientList = dictionary.stringForMessageKey(.recipientList)
+                message.recipientNameList = dictionary.stringForMessageKey(.recipientNameList)
+                message.sender = dictionary.stringForMessageKey(.sender)
+                message.senderName = dictionary.stringForMessageKey(.senderName)
+                message.updateTag(dictionary.stringForMessageKey(.tag))
+                message.time = dictionary.dateForMessageKey(.time)
+                message.title = dictionary.stringForMessageKey(.title)
+                message.totalSize = dictionary.numberForMessageKey(.totalSize)
                 
-                if let time = self.dateForKey("Time", dictionary: messageDict) {
-                    message.time = time
-                }
-                
-                message.title = messageDict["MessageTitle"] as String
-                
-                if let totalSize = messageDict["TotalSize"] as? NSString {
-                    message.totalSize = totalSize.intValue
-                }
             }
         } else {
             error = APIError.unableToParseResponse.asNSError()
@@ -161,22 +243,30 @@ extension APIService {
         
         return (message: message, error: error)
     }
+}
+
+
+// MARK: - NSDictionary message extensions
+
+extension NSDictionary {
     
-    private func boolForKey(key: String, dictionary: NSDictionary) -> Bool {
-        if let result = dictionary[key] as? Bool {
-            return result
-        }
-        
-        return false
+    func boolForMessageKey(key: APIService.MessageKey) -> Bool {
+        return self[key.keyValue] as? Bool ?? false
     }
     
-    private func dateForKey(key: String, dictionary: NSDictionary) -> NSDate? {
-        if let time = dictionary.timeIntervalForKey(key) {
-            if time != 0 {
-                return time.asDate()
-            }
+    func dateForMessageKey(key: APIService.MessageKey) -> NSDate? {
+        if let time = timeIntervalForKey(key.keyValue) {
+            return time.asDate()
         }
         
         return nil
+    }
+    
+    func numberForMessageKey(key: APIService.MessageKey) -> NSNumber {
+        return (self[key.keyValue] as? String)?.toInt() ?? 0
+    }
+    
+    func stringForMessageKey(key: APIService.MessageKey) -> String {
+        return self[key.keyValue] as? String ?? ""
     }
 }
