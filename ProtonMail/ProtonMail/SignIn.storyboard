@@ -261,10 +261,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="b63-Fw-RYH">
-                                <rect key="frame" x="186" y="188" width="228" height="37"/>
+                                <rect key="frame" x="186" y="198" width="228" height="37"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="DECRYPT MAILBOX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jzp-6U-vEt">
-                                <rect key="frame" x="222" y="311" width="159" height="22"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DECRYPT MAILBOX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jzp-6U-vEt">
+                                <rect key="frame" x="221" y="309" width="159" height="22"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -284,7 +284,7 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zUC-Hd-aMe">
-                                <rect key="frame" x="137" y="518" width="327" height="31"/>
+                                <rect key="frame" x="192" y="518" width="217" height="31"/>
                                 <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="16"/>
                                 <state key="normal" title="Decrypt">
@@ -295,7 +295,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZpN-rJ-f5g">
-                                <rect key="frame" x="222" y="422" width="158" height="14"/>
+                                <rect key="frame" x="221" y="422" width="158" height="14"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="tTZ-9P-EdG">
                                         <rect key="frame" x="0.0" y="0.0" width="13" height="14"/>
@@ -352,21 +352,23 @@
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="aXn-9j-Mz5" secondAttribute="centerX" id="63d-P7-z78"/>
-                            <constraint firstItem="zUC-Hd-aMe" firstAttribute="width" secondItem="aXn-9j-Mz5" secondAttribute="width" constant="55" id="6Nw-xH-AJM"/>
+                            <constraint firstItem="zUC-Hd-aMe" firstAttribute="width" secondItem="aXn-9j-Mz5" secondAttribute="width" constant="-55" id="6Nw-xH-AJM"/>
                             <constraint firstAttribute="centerX" secondItem="b63-Fw-RYH" secondAttribute="centerX" id="EDF-N9-RHO"/>
                             <constraint firstItem="pD8-Aw-owT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="zUC-Hd-aMe" secondAttribute="bottom" id="Q75-Oc-rVu"/>
                             <constraint firstItem="pD8-Aw-owT" firstAttribute="top" secondItem="zUC-Hd-aMe" secondAttribute="bottom" priority="750" constant="51" id="QPC-lh-xTc"/>
                             <constraint firstItem="zUC-Hd-aMe" firstAttribute="top" secondItem="ZpN-rJ-f5g" secondAttribute="bottom" constant="82" id="U3e-Ev-cL1"/>
                             <constraint firstItem="aXn-9j-Mz5" firstAttribute="top" secondItem="Jzp-6U-vEt" secondAttribute="bottom" constant="38" id="WqS-7S-Yaw"/>
                             <constraint firstAttribute="centerX" secondItem="Jzp-6U-vEt" secondAttribute="centerX" id="Wx4-rr-ZaW"/>
-                            <constraint firstItem="Jzp-6U-vEt" firstAttribute="top" secondItem="b63-Fw-RYH" secondAttribute="bottom" constant="84" id="Zlc-SP-nlN"/>
+                            <constraint firstItem="Jzp-6U-vEt" firstAttribute="top" secondItem="b63-Fw-RYH" secondAttribute="bottom" constant="73" id="Zlc-SP-nlN"/>
                             <constraint firstItem="ZpN-rJ-f5g" firstAttribute="top" secondItem="aXn-9j-Mz5" secondAttribute="bottom" constant="10" id="cYb-cX-Xlx"/>
                             <constraint firstItem="ZpN-rJ-f5g" firstAttribute="width" secondItem="aXn-9j-Mz5" secondAttribute="width" id="ctN-VO-nrI"/>
                             <constraint firstAttribute="centerX" secondItem="ZpN-rJ-f5g" secondAttribute="centerX" id="lue-SG-9C1"/>
+                            <constraint firstItem="Jzp-6U-vEt" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Wmm-ES-Jna" secondAttribute="bottom" constant="11" id="nfv-cv-m8s"/>
                             <constraint firstAttribute="centerX" secondItem="zUC-Hd-aMe" secondAttribute="centerX" id="qGa-WE-cJH"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="nfv-cv-m8s"/>
                                 <exclude reference="ctN-VO-nrI"/>
                             </mask>
                         </variation>
@@ -374,6 +376,7 @@
                             <outletCollection property="gestureRecognizers" destination="Wpl-TL-83p" appends="YES" id="hE6-qB-oeF"/>
                         </connections>
                     </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="decryptButton" destination="zUC-Hd-aMe" id="VWe-xu-pNg"/>
                         <outlet property="keyboardPaddingConstraint" destination="Q75-Oc-rVu" id="Rov-E4-NzZ"/>
