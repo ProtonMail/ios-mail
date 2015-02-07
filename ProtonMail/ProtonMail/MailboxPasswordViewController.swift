@@ -37,6 +37,7 @@ class MailboxPasswordViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
         NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
     }
     
