@@ -19,6 +19,26 @@ import Foundation
 
 extension NSManagedObjectContext {
     
+    func deleteAll(entityName: String) {
+        let fetchRequest = NSFetchRequest(entityName: entityName)
+        fetchRequest.includesPropertyValues = false
+        
+        performBlock { () -> Void in
+            var error: NSError?
+            if let objects = self.executeFetchRequest(fetchRequest, error: &error) {
+                for object in objects as [NSManagedObject] {
+                    self.deleteObject(object)
+                }
+                
+                NSLog("\(__FUNCTION__) Deleted \(objects.count) objects.")
+                
+                if let error = self.saveUpstreamIfNeeded() {
+                    NSLog("\(__FUNCTION__) error: \(error)")
+                }
+            }
+        }
+    }
+    
     func saveUpstreamIfNeeded() -> NSError? {
         var error: NSError?
         

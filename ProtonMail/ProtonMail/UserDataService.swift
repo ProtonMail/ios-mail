@@ -131,14 +131,16 @@ class UserDataService {
     }
     
     func signOut() {
-        isRememberUser = false
         isSignedIn = false
+
+        isRememberUser = false
         password = nil
         username = nil
         
-        if !isRememberMailboxPassword {
-            mailboxPassword = nil
-        }
+        isRememberMailboxPassword = false
+        mailboxPassword = nil
+        
+        sharedMessageDataService.deleteAllMessages()
         
         (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .signIn)
     }
