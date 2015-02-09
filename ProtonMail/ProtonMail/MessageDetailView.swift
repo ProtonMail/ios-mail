@@ -12,10 +12,10 @@
 
 import UIKit
 
-class ThreadView: UIView {
+class MessageDetailView: UIView {
     
-    var delegate: ThreadViewDelegate?
-    private var emailThread: Message!
+    var delegate: MessageDetailViewDelegate?
+    private var message: Message!
     
     // MARK: - Private constants
     
@@ -77,16 +77,17 @@ class ThreadView: UIView {
     private var forwardButton: UIButton!
     private var forwardButtonLabel: UILabel!
 
-    override init() {
+    init(message: Message) {
         super.init()
-    }
-    
-    convenience init(thread: Message) {
-        self.init()
-        self.emailThread = thread
+        self.message = message
         self.backgroundColor = UIColor.whiteColor()
         self.addSubviews()
         self.makeConstraints()
+        
+        if (!message.hasAttachment) {
+            self.emailHasAttachmentsImageView.hidden = true
+            self.emailAttachmentsAmount.hidden = true
+        }
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -120,28 +121,28 @@ class ThreadView: UIView {
         self.emailTitle = UILabel()
         self.emailTitle.font = UIFont.robotoLight(size: UIFont.Size.h1)
         self.emailTitle.numberOfLines = 1
-        self.emailTitle.text = self.emailThread.title
+        self.emailTitle.text = self.message.title
         self.emailTitle.textColor = UIColor.ProtonMail.Gray_383A3B
         self.emailHeaderView.addSubview(emailTitle)
         
         self.emailRecipients = UILabel()
         self.emailRecipients.font = UIFont.robotoRegular(size: UIFont.Size.h6)
         self.emailRecipients.numberOfLines = 1
-        self.emailRecipients.text = "To \(self.emailThread.sender)"
+        self.emailRecipients.text = "To \(self.message.sender)"
         self.emailRecipients.textColor = UIColor.ProtonMail.Gray_999DA1
         self.emailHeaderView.addSubview(emailRecipients)
         
         self.emailTime = UILabel()
         self.emailTime.font = UIFont.robotoLight(size: UIFont.Size.h6)
         self.emailTime.numberOfLines = 1
-        self.emailTime.text = "at \(self.emailThread.time)"
+        self.emailTime.text = "at \(self.message.time)"
         self.emailTime.textColor = UIColor.ProtonMail.Gray_999DA1
         self.emailTime.sizeToFit()
         self.emailHeaderView.addSubview(emailTime)
         
         self.emailFavoriteButton = UIButton()
         var favoriteImage: UIImage
-        if (self.emailThread.isStarred) {
+        if (self.message.isStarred) {
             favoriteImage = UIImage(named: "favorite_selected")!
         } else {
             favoriteImage = UIImage(named: "favorite")!
@@ -164,7 +165,7 @@ class ThreadView: UIView {
         self.emailAttachmentsAmount = UILabel()
         self.emailAttachmentsAmount.font = UIFont.robotoRegular(size: UIFont.Size.h4)
         self.emailAttachmentsAmount.numberOfLines = 1
-        self.emailAttachmentsAmount.text = "2"
+        self.emailAttachmentsAmount.text = self.message.hasAttachment ? "\(self.message.attachments.count)" : "0"
         self.emailAttachmentsAmount.textColor = UIColor.ProtonMail.Gray_999DA1
         self.emailAttachmentsAmount.sizeToFit()
         self.emailHeaderView.addSubview(emailAttachmentsAmount)
@@ -337,7 +338,12 @@ class ThreadView: UIView {
         }
         
         emailIsEncryptedImageView.mas_makeConstraints { (make) -> Void in
-            make.right.equalTo()(self.emailHasAttachmentsImageView.mas_left).with().offset()(self.kEmailIsEncryptedImageViewMarginRight)
+            if (self.message.hasAttachment) {
+                make.right.equalTo()(self.emailHasAttachmentsImageView.mas_left).with().offset()(self.kEmailIsEncryptedImageViewMarginRight)
+            } else {
+                make.right.equalTo()(self.emailHeaderView)
+            }
+            
             make.bottom.equalTo()(self.emailAttachmentsAmount)
             make.height.equalTo()(self.emailIsEncryptedImageView.frame.height)
             make.width.equalTo()(self.emailIsEncryptedImageView.frame.width)
@@ -401,24 +407,24 @@ class ThreadView: UIView {
     // MARK: - Button actions
     
     internal func replyButtonTapped() {
-        self.delegate?.threadViewDidTapReplyThread(self, thread: emailThread)
+        self.delegate?.messageDetailViewDidTapReplyMessage(self, message: message)
     }
     
     internal func replyAllButtonTapped() {
-        self.delegate?.threadViewDidTapReplyAllThread(self, thread: emailThread)
+        self.delegate?.messageDetailViewDidTapReplyAllMessage(self, message: message)
     }
     
     internal func forwardButtonTapped() {
-        self.delegate?.threadViewDidTapForwardThread(self, thread: emailThread)
+        self.delegate?.messageDetailViewDidTapForwardMessage(self, message: message)
     }
 }
 
 
 // MARK: - View Delegate
 
-protocol ThreadViewDelegate {
-    func threadViewDidTapForwardThread(threadView: ThreadView, thread: Message)
-    func threadViewDidTapReplyThread(threadView: ThreadView, thread: Message)
-    func threadViewDidTapReplyAllThread(threadView: ThreadView, thread: Message)
+protocol MessageDetailViewDelegate {
+    func messageDetailViewDidTapForwardMessage(messageDetailView: MessageDetailView, message: Message)
+    func messageDetailViewDidTapReplyMessage(messageDetailView: MessageDetailView, message: Message)
+    func messageDetailViewDidTapReplyAllMessage(messageDetailView: MessageDetailView, message: Message)
 }
 
