@@ -87,17 +87,17 @@ class MailboxTableViewCell: UITableViewCell {
     
     // MARK: - Cell configuration
     
-    func configureCell(thread: Message) {
-        self.title.text = thread.title
-        self.sender.text = thread.sender
-        self.time.text = NSDate.stringForDisplayFromDate(thread.time)
-        self.encryptedImage.hidden = !thread.isEncrypted
-        self.attachImage.hidden = !thread.hasAttachment
+    func configureCell(message: Message) {
+        self.title.text = message.title
+        self.sender.text = message.sender
+        self.time.text = NSDate.stringForDisplayFromDate(message.time)
+        self.encryptedImage.hidden = !message.isEncrypted
+        self.attachImage.hidden = !message.hasAttachment
         self.checkboxButton.layer.cornerRadius = kCheckboxButtonCornerRadius
         self.checkboxButton.layer.masksToBounds = true
-        self.isStarred = thread.isStarred
+        self.isStarred = message.isStarred
         
-        if (thread.isRead) {
+        if (message.isRead) {
             changeStyleToReadDesign()
         } else {
             changeStyleToUnreadDesign()

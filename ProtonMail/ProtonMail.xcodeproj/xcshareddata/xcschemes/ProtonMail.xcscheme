@@ -20,20 +20,6 @@
                ReferencedContainer = "container:ProtonMail.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "075E3DFD1A5F4ECF00E001A7"
-               BuildableName = "ProtonMailTests.xctest"
-               BlueprintName = "ProtonMailTests"
-               ReferencedContainer = "container:ProtonMail.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -42,26 +28,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "075E3DFD1A5F4ECF00E001A7"
-               BuildableName = "ProtonMailTests.xctest"
-               BlueprintName = "ProtonMailTests"
-               ReferencedContainer = "container:ProtonMail.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "075E3DE51A5F4ECF00E001A7"
-            BuildableName = "ProtonMail.app"
-            BlueprintName = "ProtonMail"
-            ReferencedContainer = "container:ProtonMail.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
@@ -90,15 +57,6 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "075E3DE51A5F4ECF00E001A7"
-            BuildableName = "ProtonMail.app"
-            BlueprintName = "ProtonMail"
-            ReferencedContainer = "container:ProtonMail.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

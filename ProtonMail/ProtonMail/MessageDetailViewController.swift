@@ -12,7 +12,7 @@
 
 import UIKit
 
-class ThreadViewController: ProtonMailViewController {
+class MessageDetailViewController: ProtonMailViewController {
     
     var message: Message! {
         didSet {
@@ -24,14 +24,14 @@ class ThreadViewController: ProtonMailViewController {
         }
     }
     
-    @IBOutlet var threadView: ThreadView!
+    @IBOutlet var messageDetailView: MessageDetailView!
     
     override func loadView() {
         message.isRead = true
-        threadView = ThreadView(thread: message)
-        threadView.delegate = self
+        messageDetailView = MessageDetailView(message: message)
+        messageDetailView.delegate = self
         
-        self.view = threadView
+        self.view = messageDetailView
     }
     
     override func viewDidLoad() {
@@ -55,32 +55,29 @@ class ThreadViewController: ProtonMailViewController {
     }
     
     func removeButtonTapped() {
-        
+        println("removeButtonTapped: \(message.title)")
     }
     
     func spamButtonTapped() {
-        
+        println("spamButtonTapped: \(message.title)")
     }
     
     func moreButtonTapped() {
-            
+        println("moreButtonTapped: \(message.title)")
     }
 }
 
-extension ThreadViewController: ThreadViewDelegate {
+extension MessageDetailViewController: MessageDetailViewDelegate {
     
-    func threadViewDidTapForwardThread(threadView: ThreadView, thread: Message) {
-        
-        println("threadViewDidTapForwardThread: \(thread.title)")
+    func messageDetailViewDidTapForwardMessage(messageView: MessageDetailView, message: Message) {
+        println("messageDetailViewDidTapForwardMessage: \(message.title)")
     }
     
-    func threadViewDidTapReplyAllThread(threadView: ThreadView, thread: Message) {
-
-        println("threadViewDidTapReplyAllThread: \(thread.title)")
+    func messageDetailViewDidTapReplyAllMessage(messageView: MessageDetailView, message: Message) {
+        println("messageDetailViewDidTapReplyAllMessage: \(message.title)")
     }
     
-    func threadViewDidTapReplyThread(threadView: ThreadView, thread: Message) {
-        
-        println("threadViewDidTapReplyThread: \(thread.title)")
+    func messageDetailViewDidTapReplyMessage(messageView: MessageDetailView, message: Message) {
+        println("messageDetailViewDidTapReplyMessage: \(message.title)")
     }
 }
