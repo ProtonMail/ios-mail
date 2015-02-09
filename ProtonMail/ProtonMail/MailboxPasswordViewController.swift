@@ -33,10 +33,14 @@ class MailboxPasswordViewController: UIViewController {
         setupDecryptButton()
         rememberButton.selected = isRemembered
         passwordTextField.roundCorners()
+        
+        configureNavigationBar()
+        setNeedsStatusBarAppearanceUpdate()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
         NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
     }
     
@@ -56,6 +60,19 @@ class MailboxPasswordViewController: UIViewController {
     }
     
     // MARK: - private methods
+    
+    func configureNavigationBar() {
+        self.navigationController?.navigationBar.barStyle = UIBarStyle.Black
+        self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Blue_475F77
+        self.navigationController?.navigationBar.translucent = false
+        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        
+        let navigationBarTitleFont = UIFont.robotoLight(size: UIFont.Size.h2)
+        self.navigationController?.navigationBar.titleTextAttributes = [
+            NSForegroundColorAttributeName: UIColor.whiteColor(),
+            NSFontAttributeName: navigationBarTitleFont
+        ]
+    }
     
     func decryptPassword() {
         sharedUserDataService.setMailboxPassword(passwordTextField.text, isRemembered: isRemembered)

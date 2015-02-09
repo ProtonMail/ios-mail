@@ -14,7 +14,15 @@ import UIKit
 
 class MessageDetailViewController: ProtonMailViewController {
     
-    var message: Message!
+    var message: Message! {
+        didSet {
+            message.fetchDetailIfNeeded() { error in
+                if error != nil {
+                    NSLog("\(__FUNCTION__) error: \(error)")
+                }
+            }
+        }
+    }
     
     @IBOutlet var messageDetailView: MessageDetailView!
     
