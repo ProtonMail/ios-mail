@@ -38,6 +38,7 @@
 		07CAB8021A8815DF00C5E347 /* NSFileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB8011A8815DF00C5E347 /* NSFileManagerExtension.swift */; };
 		07CAB8031A894A3B00C5E347 /* MessageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701704741A791856000A90D2 /* MessageDetailViewController.swift */; };
 		07CAB8041A894A3B00C5E347 /* MessageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9C3201A7BA8F400A45DF3 /* MessageDetailView.swift */; };
+		07CAB8061A894F8600C5E347 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB8051A894F8600C5E347 /* CoreDataService.swift */; };
 		07CC99641A6F076A000FD6F8 /* NSErrorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC99631A6F076A000FD6F8 /* NSErrorExtension.swift */; };
 		07CC99661A6F1380000FD6F8 /* FoundationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC99651A6F1380000FD6F8 /* FoundationExtension.swift */; };
 		07CC99681A702368000FD6F8 /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC99671A702368000FD6F8 /* UIFontExtension.swift */; };
@@ -100,7 +101,7 @@
 		073FD9331A732C5F00EB0CAF /* AFHTTPRequestSerializerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFHTTPRequestSerializerExtension.swift; sourceTree = "<group>"; };
 		075E3DE61A5F4ECF00E001A7 /* ProtonMail.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProtonMail.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		075E3DEA1A5F4ECF00E001A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ProtonMail/AppDelegate.swift; sourceTree = "<group>"; };
+		075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		075E3DEE1A5F4ECF00E001A7 /* ProtonMail.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProtonMail.xcdatamodel; sourceTree = "<group>"; };
 		075E3DF51A5F4ECF00E001A7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ProtonMail/Images.xcassets; sourceTree = "<group>"; };
 		075E3DF81A5F4ECF00E001A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -113,6 +114,7 @@
 		07B797C41A6EE5FF00244532 /* AuthCredential.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthCredential.swift; sourceTree = "<group>"; };
 		07CAB7FD1A880B1200C5E347 /* PersistentQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentQueue.swift; sourceTree = "<group>"; };
 		07CAB8011A8815DF00C5E347 /* NSFileManagerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSFileManagerExtension.swift; sourceTree = "<group>"; };
+		07CAB8051A894F8600C5E347 /* CoreDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
 		07CC99631A6F076A000FD6F8 /* NSErrorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSErrorExtension.swift; sourceTree = "<group>"; };
 		07CC99651A6F1380000FD6F8 /* FoundationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoundationExtension.swift; sourceTree = "<group>"; };
 		07CC99671A702368000FD6F8 /* UIFontExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
@@ -131,7 +133,7 @@
 		7061A3F41A6E8C9D0006D36C /* Menu.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Menu.storyboard; sourceTree = "<group>"; };
 		706628201A715A0900164117 /* MailboxTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxTableViewCell.swift; sourceTree = "<group>"; };
 		706932AA1A77BE3D00A75A93 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
-		706961FE1A7136A0001443B2 /* ProtonMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProtonMailViewController.swift; path = ProtonMail/ProtonMailViewController.swift; sourceTree = "<group>"; };
+		706961FE1A7136A0001443B2 /* ProtonMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtonMailViewController.swift; sourceTree = "<group>"; };
 		706962061A71399D001443B2 /* ContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
 		7069620A1A7139C8001443B2 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		70945E691A80F351002B6837 /* MailboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxViewController.swift; sourceTree = "<group>"; };
@@ -236,6 +238,7 @@
 		073FD9301A71C5F000EB0CAF /* DataServices */ = {
 			isa = PBXGroup;
 			children = (
+				07CAB8051A894F8600C5E347 /* CoreDataService.swift */,
 				078A3A4B1A7FF4DC002C5FF3 /* MessageDataService.swift */,
 				073FD9311A71C60900EB0CAF /* UserDataService.swift */,
 			);
@@ -246,10 +249,8 @@
 			isa = PBXGroup;
 			children = (
 				075E3DE81A5F4ECF00E001A7 /* ProtonMail */,
-				075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */,
 				075E3DF51A5F4ECF00E001A7 /* Images.xcassets */,
 				075E3DF71A5F4ECF00E001A7 /* LaunchScreen.xib */,
-				706961FE1A7136A0001443B2 /* ProtonMailViewController.swift */,
 				075E3DED1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld */,
 				075E3E011A5F4ECF00E001A7 /* ProtonMailTests */,
 				075E3DE71A5F4ECF00E001A7 /* Products */,
@@ -270,6 +271,7 @@
 		075E3DE81A5F4ECF00E001A7 /* ProtonMail */ = {
 			isa = PBXGroup;
 			children = (
+				075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */,
 				706628241A71681300164117 /* Controller */,
 				073FD9301A71C5F000EB0CAF /* DataServices */,
 				07009F071A65E3C600129B07 /* Extensions */,
@@ -401,6 +403,7 @@
 			children = (
 				706628201A715A0900164117 /* MailboxTableViewCell.swift */,
 				70945E691A80F351002B6837 /* MailboxViewController.swift */,
+				706961FE1A7136A0001443B2 /* ProtonMailViewController.swift */,
 			);
 			name = Mailbox;
 			sourceTree = "<group>";
@@ -631,6 +634,7 @@
 				07FBA7A51A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift in Sources */,
 				0713239E1A7C1A670043DB41 /* NSDictonaryExtension.swift in Sources */,
 				07CC99681A702368000FD6F8 /* UIFontExtension.swift in Sources */,
+				07CAB8061A894F8600C5E347 /* CoreDataService.swift in Sources */,
 				07CFC9D81A82D1A4007A72B7 /* MessageDetail.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

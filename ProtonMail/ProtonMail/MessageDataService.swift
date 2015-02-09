@@ -23,7 +23,7 @@ class MessageDataService {
     typealias CompletionBlock = APIService.CompletionBlock
     
     private var managedObjectContext: NSManagedObjectContext? {
-        return (UIApplication.sharedApplication().delegate as AppDelegate).managedObjectContext
+        return sharedCoreDataService.mainManagedObjectContext
     }
     
     /// Removes all messages from the store.
