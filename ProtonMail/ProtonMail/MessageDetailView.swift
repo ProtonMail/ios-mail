@@ -77,16 +77,17 @@ class MessageDetailView: UIView {
     private var forwardButton: UIButton!
     private var forwardButtonLabel: UILabel!
 
-    override init() {
+    init(message: Message) {
         super.init()
-    }
-    
-    convenience init(thread: Message) {
-        self.init()
-        self.message = thread
+        self.message = message
         self.backgroundColor = UIColor.whiteColor()
         self.addSubviews()
         self.makeConstraints()
+        
+        if (!message.hasAttachment) {
+            self.emailHasAttachmentsImageView.hidden = true
+            self.emailAttachmentsAmount.hidden = true
+        }
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -164,7 +165,7 @@ class MessageDetailView: UIView {
         self.emailAttachmentsAmount = UILabel()
         self.emailAttachmentsAmount.font = UIFont.robotoRegular(size: UIFont.Size.h4)
         self.emailAttachmentsAmount.numberOfLines = 1
-        self.emailAttachmentsAmount.text = "2"
+        self.emailAttachmentsAmount.text = self.message.hasAttachment ? "\(self.message.attachments.count)" : "0"
         self.emailAttachmentsAmount.textColor = UIColor.ProtonMail.Gray_999DA1
         self.emailAttachmentsAmount.sizeToFit()
         self.emailHeaderView.addSubview(emailAttachmentsAmount)
@@ -337,7 +338,12 @@ class MessageDetailView: UIView {
         }
         
         emailIsEncryptedImageView.mas_makeConstraints { (make) -> Void in
-            make.right.equalTo()(self.emailHasAttachmentsImageView.mas_left).with().offset()(self.kEmailIsEncryptedImageViewMarginRight)
+            if (self.message.hasAttachment) {
+                make.right.equalTo()(self.emailHasAttachmentsImageView.mas_left).with().offset()(self.kEmailIsEncryptedImageViewMarginRight)
+            } else {
+                make.right.equalTo()(self.emailHeaderView)
+            }
+            
             make.bottom.equalTo()(self.emailAttachmentsAmount)
             make.height.equalTo()(self.emailIsEncryptedImageView.frame.height)
             make.width.equalTo()(self.emailIsEncryptedImageView.frame.width)
@@ -401,15 +407,15 @@ class MessageDetailView: UIView {
     // MARK: - Button actions
     
     internal func replyButtonTapped() {
-        self.delegate?.messageDetailViewDidTapReplyThread(self, thread: message)
+        self.delegate?.messageDetailViewDidTapReplyMessage(self, message: message)
     }
     
     internal func replyAllButtonTapped() {
-        self.delegate?.messageDetailViewDidTapReplyAllThread(self, thread: message)
+        self.delegate?.messageDetailViewDidTapReplyAllMessage(self, message: message)
     }
     
     internal func forwardButtonTapped() {
-        self.delegate?.messageDetailViewDidTapForwardThread(self, thread: message)
+        self.delegate?.messageDetailViewDidTapForwardMessage(self, message: message)
     }
 }
 
@@ -417,8 +423,8 @@ class MessageDetailView: UIView {
 // MARK: - View Delegate
 
 protocol MessageDetailViewDelegate {
-    func messageDetailViewDidTapForwardThread(threadView: MessageDetailView, thread: Message)
-    func messageDetailViewDidTapReplyThread(threadView: MessageDetailView, thread: Message)
-    func messageDetailViewDidTapReplyAllThread(threadView: MessageDetailView, thread: Message)
+    func messageDetailViewDidTapForwardMessage(messageDetailView: MessageDetailView, message: Message)
+    func messageDetailViewDidTapReplyMessage(messageDetailView: MessageDetailView, message: Message)
+    func messageDetailViewDidTapReplyAllMessage(messageDetailView: MessageDetailView, message: Message)
 }
 

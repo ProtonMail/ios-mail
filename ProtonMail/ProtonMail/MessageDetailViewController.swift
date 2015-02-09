@@ -28,7 +28,7 @@ class MessageDetailViewController: ProtonMailViewController {
     
     override func loadView() {
         message.isRead = true
-        messageDetailView = MessageDetailView(thread: message)
+        messageDetailView = MessageDetailView(message: message)
         messageDetailView.delegate = self
         
         self.view = messageDetailView
@@ -55,29 +55,29 @@ class MessageDetailViewController: ProtonMailViewController {
     }
     
     func removeButtonTapped() {
-        
+        println("removeButtonTapped: \(message.title)")
     }
     
     func spamButtonTapped() {
-        
+        println("spamButtonTapped: \(message.title)")
     }
     
     func moreButtonTapped() {
-            
+        println("moreButtonTapped: \(message.title)")
     }
 }
 
 extension MessageDetailViewController: MessageDetailViewDelegate {
     
-    func messageDetailViewDidTapForwardThread(threadView: MessageDetailView, thread: Message) {
-        println("messageDetailViewDidTapForwardThread: \(thread.title)")
+    func messageDetailViewDidTapForwardMessage(messageView: MessageDetailView, message: Message) {
+        println("messageDetailViewDidTapForwardMessage: \(message.title)")
     }
     
-    func messageDetailViewDidTapReplyAllThread(threadView: MessageDetailView, thread: Message) {
-        println("messageDetailViewDidTapReplyAllThread: \(thread.title)")
+    func messageDetailViewDidTapReplyAllMessage(messageView: MessageDetailView, message: Message) {
+        println("messageDetailViewDidTapReplyAllMessage: \(message.title)")
     }
     
-    func messageDetailViewDidTapReplyThread(threadView: MessageDetailView, thread: Message) {
-        println("messageDetailViewDidTapReplyThread: \(thread.title)")
+    func messageDetailViewDidTapReplyMessage(messageView: MessageDetailView, message: Message) {
+        println("messageDetailViewDidTapReplyMessage: \(message.title)")
     }
 }

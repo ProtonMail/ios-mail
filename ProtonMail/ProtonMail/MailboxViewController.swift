@@ -126,7 +126,7 @@ class MailboxViewController: ProtonMailViewController {
     // MARK: - Button Targets
     
     internal func composeButtonTapped() {
-        
+        println("composeButtonTapped with \(self.selectedMessages.count) messages selected.")
     }
     
     internal func searchButtonTapped() {
@@ -134,11 +134,11 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     internal func removeButtonTapped() {
-        
+        println("removeButtonTapped with \(self.selectedMessages.count) messages selected.")
     }
     
     internal func favoriteButtonTapped() {
-        
+        println("favoriteButtonTapped with \(self.selectedMessages.count) messages selected.")
     }
     
     internal func moreButtonTapped() {
@@ -210,9 +210,9 @@ class MailboxViewController: ProtonMailViewController {
     // MARK: - Private methods
     
     private func configureCell(mailboxCell: MailboxTableViewCell, atIndexPath indexPath: NSIndexPath) {
-        if let thread = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-            mailboxCell.configureCell(thread)
-            mailboxCell.setCellIsChecked(selectedMessages.containsObject(thread.messageID))
+        if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+            mailboxCell.configureCell(message)
+            mailboxCell.setCellIsChecked(selectedMessages.containsObject(message.messageID))
             
             if (self.isEditing) {
                 mailboxCell.showCheckboxOnLeftSide()
@@ -538,7 +538,7 @@ extension MailboxViewController: UITableViewDelegate {
                 
                 // TODO: delete message from server and Core Data
                 // self.messages.removeAtIndex(indexPath.row)
-                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+                //self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
             }
             
             self.tableView.editing = false
@@ -546,8 +546,28 @@ extension MailboxViewController: UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-            self.performSegueWithIdentifier(kSegueToMessageDetailController, sender: self)
+        // verify whether the user is checking messages or not
+        
+        if (self.isEditing) {
+            if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+                let messageAlreadySelected: Bool = selectedMessages.containsObject(message.messageID)
+                
+                if (messageAlreadySelected) {
+                    selectedMessages.removeObject(message.messageID)
+                } else {
+                    selectedMessages.addObject(message.messageID)
+                }
+                
+                // update checkbox state
+                
+                if let mailboxCell: MailboxTableViewCell = tableView.cellForRowAtIndexPath(indexPath) as? MailboxTableViewCell {
+                    mailboxCell.setCellIsChecked(!messageAlreadySelected)
+                }
+            }
+        } else {
+            if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+                self.performSegueWithIdentifier(kSegueToMessageDetailController, sender: self)
+            }
         }
     }
 }
