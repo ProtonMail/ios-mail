@@ -22,8 +22,15 @@ let sharedMessageDataService = MessageDataService()
 class MessageDataService {
     typealias CompletionBlock = APIService.CompletionBlock
     
-    var managedObjectContext: NSManagedObjectContext? {
+    private var managedObjectContext: NSManagedObjectContext? {
         return (UIApplication.sharedApplication().delegate as AppDelegate).managedObjectContext
+    }
+    
+    /// Removes all messages from the store.
+    func deleteAllMessages() {
+        let context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        context.parentContext = managedObjectContext
+        context.deleteAll(Message.Attributes.entityName)
     }
     
     func fetchMessageDetailForMessage(message: Message, completion: CompletionBlock) {

@@ -188,18 +188,18 @@
 				07CC99651A6F1380000FD6F8 /* FoundationExtension.swift */,
 				0713239D1A7C1A670043DB41 /* NSDictonaryExtension.swift */,
 				07CC99631A6F076A000FD6F8 /* NSErrorExtension.swift */,
+				07FBA7A41A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift */,
 				0713239B1A7C0B4C0043DB41 /* NSManagedObjectContextExtension.swift */,
 				07009F0A1A66E36500129B07 /* NSNotification+KeyboardExtension.swift */,
 				07009F081A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift */,
+				07CFC9D91A82D4CF007A72B7 /* NSSetExtension.swift */,
+				0713239F1A7C1AB10043DB41 /* NSTimeIntervalExtension.swift */,
+				70945E6D1A813550002B6837 /* UIButton+ProtonMail.swift */,
 				70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */,
 				07CC99671A702368000FD6F8 /* UIFontExtension.swift */,
+				70945E6F1A8135EC002B6837 /* UILabel+ProtonMail.swift */,
 				07CC996B1A717ABD000FD6F8 /* UIStoryboardExtension.swift */,
 				071323801A7846150043DB41 /* UIViewExtension.swift */,
-				70945E6D1A813550002B6837 /* UIButton+ProtonMail.swift */,
-				70945E6F1A8135EC002B6837 /* UILabel+ProtonMail.swift */,
-				0713239F1A7C1AB10043DB41 /* NSTimeIntervalExtension.swift */,
-				07FBA7A41A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift */,
-				07CFC9D91A82D4CF007A72B7 /* NSSetExtension.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
