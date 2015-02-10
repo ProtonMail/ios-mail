@@ -135,7 +135,15 @@ class MessageDetailView: UIView {
         self.emailTime = UILabel()
         self.emailTime.font = UIFont.robotoLight(size: UIFont.Size.h6)
         self.emailTime.numberOfLines = 1
-        self.emailTime.text = "at \(self.message.time)"
+        
+        let hourMinuteFormat = "h:mma"
+
+        if let messageTime = self.message.time {
+            self.emailTime.text = "at \(messageTime.stringWithFormat(hourMinuteFormat))".lowercaseString
+        } else {
+            self.emailTime.text = ""
+        }
+        
         self.emailTime.textColor = UIColor.ProtonMail.Gray_999DA1
         self.emailTime.sizeToFit()
         self.emailHeaderView.addSubview(emailTime)
