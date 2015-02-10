@@ -11,10 +11,6 @@ import CoreData
 
 class MessageDetail: NSManagedObject {
     
-    struct Attributes {
-        static let entityName = "MessageDetail"
-    }
-
     @NSManaged var bccList: String
     @NSManaged var bccNameList: String
     @NSManaged var body: String
@@ -25,13 +21,5 @@ class MessageDetail: NSManagedObject {
     
     @NSManaged var attachments: NSMutableSet
     @NSManaged var message: Message
-
-    var hasAttachments: Bool {
-        return attachments.isEmpty
-    }
-    
-    convenience init(context: NSManagedObjectContext) {
-        self.init(entity: NSEntityDescription.entityForName(Attributes.entityName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
-    }
 
 }
