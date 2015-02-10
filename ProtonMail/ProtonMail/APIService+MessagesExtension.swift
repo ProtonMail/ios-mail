@@ -89,7 +89,7 @@ extension APIService {
         let path = "/messages/\(message.messageID)"
         
         let successBlock: SuccessBlock = { response in
-            let context = self.newManagedObjectContext()
+            let context = sharedCoreDataService.newManagedObjectContext()
             
             context.performBlock() {
                 var (messageDetail, error) = self.messageDetailFromDictionary(response, inManagedObjectContext: context, messageObjectID: message.objectID)
@@ -119,7 +119,7 @@ extension APIService {
             var error: NSError?
             
             if let messagesArray = response[MessageKey.messages.keyValue] as? [NSDictionary] {
-                let context = self.newManagedObjectContext()
+                let context = sharedCoreDataService.newManagedObjectContext()
                 
                 for messageDictionary in messagesArray {
                     context.performBlock() { () -> Void in

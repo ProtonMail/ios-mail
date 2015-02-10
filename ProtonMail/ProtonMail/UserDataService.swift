@@ -20,74 +20,86 @@ let sharedUserDataService = UserDataService()
 
 /// Stores information related to the user
 class UserDataService {
-    private let displayNameKey = "displayNameKey"
-    private let isRememberMailboxPasswordKey = "isRememberMailboxPasswordKey"
-    private let isRememberUserKey = "isRememberUserKey"
-    private let mailboxPasswordKey = "mailboxPasswordKey"
-    private let usernameKey = "usernameKey"
-    private let passwordKey = "passwordKey"
     
-    let userDefaults = NSUserDefaults.standardUserDefaults()
-    
-    var isMailboxPasswordStored: Bool {
-        return mailboxPassword != nil
+    struct Key {
+        static let displayName = "displayNameKey"
+        static let isRememberMailboxPassword = "isRememberMailboxPasswordKey"
+        static let isRememberUser = "isRememberUserKey"
+        static let mailboxPassword = "mailboxPasswordKey"
+        static let username = "usernameKey"
+        static let password = "passwordKey"
     }
     
-    var isRememberMailboxPassword: Bool {
-        didSet {
-            userDefaults.setBool(isRememberMailboxPassword, forKey: isRememberMailboxPasswordKey)
-        }
-    }
+    // MARK: - Private variables
     
-    var isRememberUser: Bool {
+    private(set) var displayName: String? {
         didSet {
-            userDefaults.setBool(isRememberUser, forKey: isRememberUserKey)
+            NSUserDefaults.standardUserDefaults().setValue(displayName, forKey: Key.displayName)
+            NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
     
     private(set) var isSignedIn: Bool = false
     
-    var isUserCredentialStored: Bool {
-        return username != nil && password != nil
-    }
-    
-    private(set) var displayName: String? {
-        didSet {
-            userDefaults.setValue(displayName, forKey: displayNameKey)
-        }
-    }
-    
     /// Value is only stored in the keychain
     private(set) var mailboxPassword: String? {
         get {
-            return UICKeyChainStore.stringForKey(mailboxPasswordKey)
+            return UICKeyChainStore.stringForKey(Key.mailboxPassword)
         }
         set {
-            UICKeyChainStore.setString(newValue, forKey: mailboxPasswordKey)
+            UICKeyChainStore.setString(newValue, forKey: Key.mailboxPassword)
         }
     }
     
     /// Value is only stored in the keychain
     private(set) var password: String? {
         get {
-            return UICKeyChainStore.stringForKey(passwordKey)
+            return UICKeyChainStore.stringForKey(Key.password)
         }
         set {
-            UICKeyChainStore.setString(newValue, forKey: passwordKey)
+            UICKeyChainStore.setString(newValue, forKey: Key.password)
         }
     }
-    
+
     private(set) var username: String? {
         didSet {
-            userDefaults.setValue(username, forKey: usernameKey)
+            NSUserDefaults.standardUserDefaults().setValue(username, forKey: Key.username)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    // MARK: - Public variables
+    
+    var isMailboxPasswordStored: Bool {
+        return mailboxPassword != nil
+    }
+    
+    var isRememberMailboxPassword: Bool = false {
+        didSet {
+            NSUserDefaults.standardUserDefaults().setBool(isRememberMailboxPassword, forKey: Key.isRememberMailboxPassword)
+            NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
     
+    var isRememberUser: Bool = false {
+        didSet {
+            NSUserDefaults.standardUserDefaults().setBool(isRememberUser, forKey: Key.isRememberUser)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
+    var isUserCredentialStored: Bool {
+        return username != nil && password != nil
+    }
+    
+    // MARK: - Public methods
+    
     init() {
-        displayName = userDefaults.stringForKey(displayNameKey)
-        isRememberMailboxPassword = userDefaults.boolForKey(isRememberMailboxPasswordKey)
-        isRememberUser = userDefaults.boolForKey(isRememberUserKey)
-        username = userDefaults.stringForKey(usernameKey)
+        cleanUpIfFirstRun()
+
+        displayName = NSUserDefaults.standardUserDefaults().stringForKey(Key.displayName)
+        isRememberMailboxPassword = NSUserDefaults.standardUserDefaults().boolForKey(Key.isRememberMailboxPassword)
+        isRememberUser = NSUserDefaults.standardUserDefaults().boolForKey(Key.isRememberUser)
+        username = NSUserDefaults.standardUserDefaults().stringForKey(Key.username)
     }
     
     func fetchUserInfo(completion: (NSError? -> Void)? = nil) {
@@ -131,15 +143,34 @@ class UserDataService {
     }
     
     func signOut() {
-        isRememberUser = false
+        clearAll()
+        
+        sharedMessageDataService.deleteAllMessages()
+        
+        (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .signIn)
+    }
+    
+    // MARK: - Private methods
+    
+    private func cleanUpIfFirstRun() {
+        let firstRunKey = "FirstRunKey"
+        
+        if NSUserDefaults.standardUserDefaults().objectForKey(firstRunKey) == nil {
+            clearAll()
+            
+            NSUserDefaults.standardUserDefaults().setObject(NSDate(), forKey: firstRunKey)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
+    private func clearAll() {
         isSignedIn = false
+        
+        isRememberUser = false
         password = nil
         username = nil
         
-        if !isRememberMailboxPassword {
-            mailboxPassword = nil
-        }
-        
-        (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .signIn)
+        isRememberMailboxPassword = false
+        mailboxPassword = nil
     }
 }
