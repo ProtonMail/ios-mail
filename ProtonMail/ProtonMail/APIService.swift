@@ -133,14 +133,6 @@ class APIService {
         return false
     }
     
-    func newManagedObjectContext() -> NSManagedObjectContext {
-        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
-        let managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-        managedObjectContext.parentContext = appDelegate.managedObjectContext
-
-        return managedObjectContext
-    }
-    
     // MARK: - Private methods
     
     private func networkingFailureBlockForFailure(failure: FailureBlock) -> AFNetworkingFailureBlock {
