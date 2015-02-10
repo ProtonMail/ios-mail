@@ -239,6 +239,8 @@ class MailboxViewController: ProtonMailViewController {
             }
             self.refreshControl.endRefreshing()
         }
+        
+        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
     }
     
     private func setupLeftButtons(editingMode: Bool) {
