@@ -30,6 +30,7 @@ class MessageDetailView: UIView {
     private let kEmailTitleViewMarginRight: CGFloat = -8.0
     private let kEmailRecipientsViewMarginTop: CGFloat = 6.0
     private let kEmailTimeViewMarginTop: CGFloat = 6.0
+    private let kEmailDetailButtonMarginLeft: CGFloat = 5.0
     private let kEmailAttachmentsAmountMarginBottom: CGFloat = -16.0
     private let kEmailHasAttachmentsImageViewMarginRight: CGFloat = -4.0
     private let kEmailIsEncryptedImageViewMarginRight: CGFloat = -8.0
@@ -52,6 +53,7 @@ class MessageDetailView: UIView {
     private var emailTitle: UILabel!
     private var emailRecipients: UILabel!
     private var emailTime: UILabel!
+    private var emailDetailButton: UIButton!
     private var emailFavoriteButton: UIButton!
     private var emailIsEncryptedImageView: UIImageView!
     private var emailHasAttachmentsImageView: UIImageView!
@@ -147,6 +149,14 @@ class MessageDetailView: UIView {
         self.emailTime.textColor = UIColor.ProtonMail.Gray_999DA1
         self.emailTime.sizeToFit()
         self.emailHeaderView.addSubview(emailTime)
+        
+        self.emailDetailButton = UIButton()
+        self.emailDetailButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
+        self.emailDetailButton.titleLabel?.font = UIFont.robotoRegular(size: UIFont.Size.h6)
+        self.emailDetailButton.setTitle(NSLocalizedString("Details"), forState: UIControlState.Normal)
+        self.emailDetailButton.setTitleColor(UIColor.ProtonMail.Blue_85B1DE, forState: UIControlState.Normal)
+        self.emailDetailButton.sizeToFit()
+        self.emailHeaderView.addSubview(emailDetailButton)
         
         self.emailFavoriteButton = UIButton()
         var favoriteImage: UIImage
@@ -326,7 +336,15 @@ class MessageDetailView: UIView {
         emailTime.mas_makeConstraints { (make) -> Void in
             make.left.equalTo()(self.emailHeaderView)
             make.width.equalTo()(self.emailTime.frame.size.width)
+            make.height.equalTo()(self.emailTime.frame.size.height)
             make.top.equalTo()(self.emailRecipients.mas_bottom).with().offset()(self.kEmailTimeViewMarginTop)
+        }
+        
+        emailDetailButton.mas_makeConstraints { (make) -> Void in
+            make.left.equalTo()(self.emailTime.mas_right).with().offset()(self.kEmailDetailButtonMarginLeft)
+            make.bottom.equalTo()(self.emailTime)
+            make.top.equalTo()(self.emailTime)
+            make.width.equalTo()(self.emailDetailButton)
         }
         
         emailFavoriteButton.mas_makeConstraints { (make) -> Void in
