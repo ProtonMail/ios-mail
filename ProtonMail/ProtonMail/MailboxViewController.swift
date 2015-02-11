@@ -34,7 +34,7 @@ class MailboxViewController: ProtonMailViewController {
     // MARK: - Private attributes
     
     internal var refreshControl: UIRefreshControl!
-    internal var mailboxLocation: APIService.Location!
+    internal var mailboxLocation: APIService.Location! = .inbox
     
     private var fetchedResultsController: NSFetchedResultsController?
     private var moreOptionsView: MoreOptionsView!
@@ -221,7 +221,7 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     private func setupFetchedResultsController() {
-        self.fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLocation(self.mailboxLocation ?? .inbox)
+        self.fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLocation(self.mailboxLocation)
         self.fetchedResultsController?.delegate = self
         
         if let fetchedResultsController = fetchedResultsController {
@@ -233,7 +233,7 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     func getLatestMessages() {
-        sharedMessageDataService.fetchMessagesForLocation(self.mailboxLocation ?? .inbox) { error in
+        sharedMessageDataService.fetchMessagesForLocation(self.mailboxLocation) { error in
             if let error = error {
                 NSLog("error: \(error)")
             }

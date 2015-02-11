@@ -27,7 +27,6 @@ class MessageDetailViewController: ProtonMailViewController {
     @IBOutlet var messageDetailView: MessageDetailView!
     
     override func loadView() {
-        message.isRead = true
         messageDetailView = MessageDetailView(message: message)
         messageDetailView.delegate = self
         
@@ -37,6 +36,7 @@ class MessageDetailViewController: ProtonMailViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupRightButtons()
+//        message.isRead = true
     }
     
     override func shouldShowSideMenu() -> Bool {
