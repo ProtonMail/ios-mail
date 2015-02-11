@@ -22,6 +22,7 @@ extension Message {
     struct Attributes {
         static let entityName = "Message"
         
+        static let isStarred = "isStarred"
         static let messageID = "messageID"
         static let time = "time"
     }
@@ -63,10 +64,6 @@ extension Message {
     
     func fetchDetailIfNeeded(completion: CompletionBlock) {
         sharedMessageDataService.fetchMessageDetailForMessage(self, completion: completion)
-    }
-    
-    func setIsStarred(isStarred: Bool, completion: CompletionBlock) {
-        sharedMessageDataService.setMessage(self, isStarred: isStarred, completion: completion)
     }
     
     func updateTag(tag: String) {

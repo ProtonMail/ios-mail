@@ -54,6 +54,8 @@ class MonitorSavesDataService {
         }
         
         handlers?.append(handler)
+        
+        monitorQueue[managedObject] = handlers
     }
     
     private func clearMonitorQueue() {
@@ -82,7 +84,7 @@ class MonitorSavesDataService {
     
     // MARK: - Notifications
     
-    private func didSaveNotification(notification: NSNotification) {
+    @objc func didSaveNotification(notification: NSNotification) {
         if let updatedObjects = notification.userInfo?[NSUpdatedObjectsKey] as? NSSet {
             executeHandlersForUpdatedObjects(updatedObjects)
         }
@@ -90,7 +92,7 @@ class MonitorSavesDataService {
         clearMonitorQueue()
     }
     
-    private func willSaveNotification(notification: NSNotification) {
+    @objc func willSaveNotification(notification: NSNotification) {
         clearMonitorQueue()
         
         if let updatedObjects = sharedCoreDataService.mainManagedObjectContext?.updatedObjects {

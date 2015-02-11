@@ -387,13 +387,13 @@ class MailboxViewController: ProtonMailViewController {
 // MARK: - MailboxTableViewCellDelegate
 
 extension MailboxViewController: MailboxTableViewCellDelegate {
+    
     func mailboxTableViewCell(cell: MailboxTableViewCell, didChangeStarred isStarred: Bool) {
         if let indexPath = tableView.indexPathForCell(cell) {
             if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-                message.setIsStarred(isStarred) { error in
-                    if error != nil {
-                        NSLog("error: \(error)")
-                    }
+                message.isStarred = isStarred
+                if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
+                    NSLog("\(__FUNCTION__) error: \(error)")
                 }
             }
         }
