@@ -16,6 +16,7 @@ class MessageDetailView: UIView {
     
     var delegate: MessageDetailViewDelegate?
     private var message: Message!
+    private var isShowingDetail: Bool = false
     
     // MARK: - Private constants
     
@@ -30,6 +31,7 @@ class MessageDetailView: UIView {
     private let kEmailTitleViewMarginRight: CGFloat = -8.0
     private let kEmailRecipientsViewMarginTop: CGFloat = 6.0
     private let kEmailTimeViewMarginTop: CGFloat = 6.0
+    private let kEmailDetailButtonMarginLeft: CGFloat = 5.0
     private let kEmailAttachmentsAmountMarginBottom: CGFloat = -16.0
     private let kEmailHasAttachmentsImageViewMarginRight: CGFloat = -4.0
     private let kEmailIsEncryptedImageViewMarginRight: CGFloat = -8.0
@@ -52,6 +54,7 @@ class MessageDetailView: UIView {
     private var emailTitle: UILabel!
     private var emailRecipients: UILabel!
     private var emailTime: UILabel!
+    private var emailDetailButton: UIButton!
     private var emailFavoriteButton: UIButton!
     private var emailIsEncryptedImageView: UIImageView!
     private var emailHasAttachmentsImageView: UIImageView!
@@ -77,6 +80,9 @@ class MessageDetailView: UIView {
     private var forwardButton: UIButton!
     private var forwardButtonLabel: UILabel!
 
+    
+    // MARK: - Init methods
+    
     init(message: Message) {
         super.init()
         self.message = message
@@ -128,7 +134,7 @@ class MessageDetailView: UIView {
         self.emailRecipients = UILabel()
         self.emailRecipients.font = UIFont.robotoRegular(size: UIFont.Size.h6)
         self.emailRecipients.numberOfLines = 1
-        self.emailRecipients.text = "To \(self.message.sender)"
+        self.emailRecipients.text = "To \(self.message.recipientList)"
         self.emailRecipients.textColor = UIColor.ProtonMail.Gray_999DA1
         self.emailHeaderView.addSubview(emailRecipients)
         
@@ -147,6 +153,15 @@ class MessageDetailView: UIView {
         self.emailTime.textColor = UIColor.ProtonMail.Gray_999DA1
         self.emailTime.sizeToFit()
         self.emailHeaderView.addSubview(emailTime)
+        
+        self.emailDetailButton = UIButton()
+        self.emailDetailButton.addTarget(self, action: "detailsButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        self.emailDetailButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
+        self.emailDetailButton.titleLabel?.font = UIFont.robotoRegular(size: UIFont.Size.h6)
+        self.emailDetailButton.setTitle(NSLocalizedString("Details"), forState: UIControlState.Normal)
+        self.emailDetailButton.setTitleColor(UIColor.ProtonMail.Blue_85B1DE, forState: UIControlState.Normal)
+        self.emailDetailButton.sizeToFit()
+        self.emailHeaderView.addSubview(emailDetailButton)
         
         self.emailFavoriteButton = UIButton()
         var favoriteImage: UIImage
@@ -326,7 +341,15 @@ class MessageDetailView: UIView {
         emailTime.mas_makeConstraints { (make) -> Void in
             make.left.equalTo()(self.emailHeaderView)
             make.width.equalTo()(self.emailTime.frame.size.width)
+            make.height.equalTo()(self.emailTime.frame.size.height)
             make.top.equalTo()(self.emailRecipients.mas_bottom).with().offset()(self.kEmailTimeViewMarginTop)
+        }
+        
+        emailDetailButton.mas_makeConstraints { (make) -> Void in
+            make.left.equalTo()(self.emailTime.mas_right).with().offset()(self.kEmailDetailButtonMarginLeft)
+            make.bottom.equalTo()(self.emailTime)
+            make.top.equalTo()(self.emailTime)
+            make.width.equalTo()(self.emailDetailButton)
         }
         
         emailFavoriteButton.mas_makeConstraints { (make) -> Void in
@@ -418,6 +441,59 @@ class MessageDetailView: UIView {
     
     
     // MARK: - Button actions
+    
+    internal func detailsButtonTapped() {
+        self.isShowingDetail = !self.isShowingDetail
+
+        if (isShowingDetail) {
+            UIView.transitionWithView(self.emailRecipients, duration: 0.3, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                self.emailRecipients.text = self.message.sender
+            }, completion: nil)
+            
+            self.emailDetailButton.setTitle(NSLocalizedString("Hide Details"), forState: UIControlState.Normal)
+            self.emailDetailButton.mas_updateConstraints({ (make) -> Void in
+                make.removeExisting = true
+                make.left.equalTo()(self.emailTime)
+                make.bottom.equalTo()(self.emailTime)
+                make.top.equalTo()(self.emailTime)
+                make.width.equalTo()(self.emailDetailButton)
+            })
+            
+            self.emailTime.mas_updateConstraints({ (make) -> Void in
+                make.removeExisting = true
+                make.left.equalTo()(self.emailHeaderView)
+                make.width.equalTo()(0)
+                make.height.equalTo()(self.emailTime.frame.size.height)
+                make.top.equalTo()(self.emailRecipients.mas_bottom).with().offset()(self.kEmailTimeViewMarginTop)
+            })
+        } else {
+            UIView.transitionWithView(self.emailRecipients, duration: 0.3, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                self.emailRecipients.text = "To \(self.message.recipientList)"
+                }, completion: nil)
+            
+            self.emailDetailButton.setTitle(NSLocalizedString("Details"), forState: UIControlState.Normal)
+            self.emailDetailButton.mas_updateConstraints({ (make) -> Void in
+                make.removeExisting = true
+                make.left.equalTo()(self.emailTime.mas_right).with().offset()(self.kEmailDetailButtonMarginLeft)
+                make.bottom.equalTo()(self.emailTime)
+                make.top.equalTo()(self.emailTime)
+                make.width.equalTo()(self.emailDetailButton)
+            })
+
+            self.emailTime.sizeToFit()
+            self.emailTime.mas_updateConstraints { (make) -> Void in
+                make.removeExisting = true
+                make.left.equalTo()(self.emailHeaderView)
+                make.width.equalTo()(self.emailTime.frame.size.width)
+                make.height.equalTo()(self.emailTime.frame.size.height)
+                make.top.equalTo()(self.emailRecipients.mas_bottom).with().offset()(self.kEmailTimeViewMarginTop)
+            }
+        }
+        
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.layoutIfNeeded()
+        })
+    }
     
     internal func replyButtonTapped() {
         self.delegate?.messageDetailViewDidTapReplyMessage(self, message: message)
