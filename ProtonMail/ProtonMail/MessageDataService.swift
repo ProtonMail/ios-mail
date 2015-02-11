@@ -26,6 +26,10 @@ class MessageDataService {
         return sharedCoreDataService.mainManagedObjectContext
     }
     
+    init() {
+        setupMessageMonitoring()
+    }
+    
     /// Removes all messages from the store.
     func deleteAllMessages() {
         let context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
@@ -57,15 +61,26 @@ class MessageDataService {
         return nil
     }
     
-    func setMessage(message: Message, isStarred: Bool, completion: CompletionBlock) {
-        if isStarred {
-            sharedAPIService.starMessage(message) { error in
-                NSLog("error: \(error)")
+    // MARK: - Private methods
+    
+    func setupMessageMonitoring() {
+        sharedMonitorSavesDataService.registerEntityName(Message.Attributes.entityName, attribute: Message.Attributes.isStarred, handler: { message in
+            if let message = message as? Message {
+                if message.isStarred {
+                    sharedAPIService.starMessage(message) { error in
+                        if error != nil {
+                            NSLog("error: \(error)")
+                        }
+                    }
+                } else {
+                    sharedAPIService.unstarMessage(message) { error in
+                        if error != nil {
+                            NSLog("error: \(error)")
+                        }
+                    }
+                }
             }
-        } else {
-            sharedAPIService.unstarMessage(message) { error in
-                NSLog("error: \(error)")
-            }
-        }
+        })
     }
+
 }
