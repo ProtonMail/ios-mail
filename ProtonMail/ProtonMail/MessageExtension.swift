@@ -70,5 +70,4 @@ extension Message {
         self.tag = tag
         isStarred = tag.rangeOfString(Constants.starredTag) != nil
     }
-
 }

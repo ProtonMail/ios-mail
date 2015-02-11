@@ -37,6 +37,7 @@ extension UIColor {
     
     internal struct ProtonMail {
         static let Blue_475F77 = UIColor(RRGGBB: UInt(0x475F77))
+        static let Blue_85B1DE = UIColor(RRGGBB: UInt(0x85B1DE))
         static let Blue_5C7A99 = UIColor(RRGGBB: UInt(0x5C7A99))
         static let Blue_6789AB = UIColor(RRGGBB: UInt(0x6789AB))
         static let Gray_383A3B = UIColor(RRGGBB: UInt(0x383A3B))
