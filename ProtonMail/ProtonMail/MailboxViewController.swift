@@ -34,7 +34,7 @@ class MailboxViewController: ProtonMailViewController {
     // MARK: - Private attributes
     
     internal var refreshControl: UIRefreshControl!
-    internal var mailboxLocation: APIService.Location!
+    internal var mailboxLocation: APIService.Location! = .inbox
     
     private var fetchedResultsController: NSFetchedResultsController?
     private var moreOptionsView: MoreOptionsView!
@@ -79,7 +79,7 @@ class MailboxViewController: ProtonMailViewController {
         let selectedItem: NSIndexPath? = self.tableView.indexPathForSelectedRow() as NSIndexPath?
         
         if let selectedItem = selectedItem {
-            self.tableView.reloadRowsAtIndexPaths([selectedItem], withRowAnimation: UITableViewRowAnimation.Automatic)
+            self.tableView.reloadRowsAtIndexPaths([selectedItem], withRowAnimation: UITableViewRowAnimation.Fade)
             self.tableView.deselectRowAtIndexPath(selectedItem, animated: true)
         }
     }
@@ -221,7 +221,7 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     private func setupFetchedResultsController() {
-        self.fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLocation(self.mailboxLocation ?? .inbox)
+        self.fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLocation(self.mailboxLocation)
         self.fetchedResultsController?.delegate = self
         
         if let fetchedResultsController = fetchedResultsController {
@@ -233,7 +233,7 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     func getLatestMessages() {
-        sharedMessageDataService.fetchMessagesForLocation(self.mailboxLocation ?? .inbox) { error in
+        sharedMessageDataService.fetchMessagesForLocation(self.mailboxLocation) { error in
             if let error = error {
                 NSLog("error: \(error)")
             }
@@ -392,6 +392,7 @@ extension MailboxViewController: MailboxTableViewCellDelegate {
         if let indexPath = tableView.indexPathForCell(cell) {
             if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
                 message.isStarred = isStarred
+                
                 if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
                     NSLog("\(__FUNCTION__) error: \(error)")
                 }

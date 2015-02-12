@@ -19,18 +19,39 @@ import Foundation
 
 /// Messages extension
 extension APIService {
+    
     enum Filter: Int {
         case noFilter = -2
         case read = 0
         case unRead = 1
     }
-    enum Location: Int {
+    
+    enum Location: Int, Printable {
         case draft = 1
         case inbox = 0
         case outbox = 2
         case spam = 4
         case starred = 5
         case trash = 3
+        
+        var description : String {
+            get {
+                switch(self) {
+                case inbox:
+                    return "Inbox"
+                case draft:
+                    return "Draft"
+                case outbox:
+                    return "Outbox"
+                case spam:
+                    return "Spam"
+                case starred:
+                    return "Starred"
+                case trash:
+                    return "Trash"
+                }
+            }
+        }
     }
     
     enum Order: Int {

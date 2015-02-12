@@ -31,8 +31,11 @@ class MessageDetailView: UIView {
     private let kEmailTitleViewMarginRight: CGFloat = -8.0
     private let kEmailRecipientsViewMarginTop: CGFloat = 6.0
     private let kEmailTimeViewMarginTop: CGFloat = 6.0
+    private let kEmailDetailToWidth: CGFloat = 40.0
+    private let kEmailDetailCCLabelMarginTop: CGFloat = 10.0
+    private let kEmailDetailDateLabelMarginTop: CGFloat = 10.0
+    private let kEmailTimeLongFormat: String = "MMMM d, yyyy, h:mm a"
     private let kEmailDetailButtonMarginLeft: CGFloat = 5.0
-    private let kEmailAttachmentsAmountMarginBottom: CGFloat = -16.0
     private let kEmailHasAttachmentsImageViewMarginRight: CGFloat = -4.0
     private let kEmailIsEncryptedImageViewMarginRight: CGFloat = -8.0
     private let kEmailBodyTextViewMarginLeft: CGFloat = 16.0
@@ -55,6 +58,13 @@ class MessageDetailView: UIView {
     private var emailRecipients: UILabel!
     private var emailTime: UILabel!
     private var emailDetailButton: UIButton!
+    private var emailDetailView: UIView!
+    private var emailDetailToLabel: UILabel!
+    private var emailDetailToContentLabel: UILabel!
+    private var emailDetailCCLabel: UILabel!
+    private var emailDetailCCContentLabel: UILabel!
+    private var emailDetailDateLabel: UILabel!
+    private var emailDetailDateContentLabel: UILabel!
     private var emailFavoriteButton: UIButton!
     private var emailIsEncryptedImageView: UIImageView!
     private var emailHasAttachmentsImageView: UIImageView!
@@ -139,7 +149,7 @@ class MessageDetailView: UIView {
         self.emailHeaderView.addSubview(emailRecipients)
         
         self.emailTime = UILabel()
-        self.emailTime.font = UIFont.robotoLight(size: UIFont.Size.h6)
+        self.emailTime.font = UIFont.robotoMediumItalic(size: UIFont.Size.h6)
         self.emailTime.numberOfLines = 1
         
         let hourMinuteFormat = "h:mma"
@@ -162,6 +172,10 @@ class MessageDetailView: UIView {
         self.emailDetailButton.setTitleColor(UIColor.ProtonMail.Blue_85B1DE, forState: UIControlState.Normal)
         self.emailDetailButton.sizeToFit()
         self.emailHeaderView.addSubview(emailDetailButton)
+        
+        self.configureEmailDetailToLabel()
+        self.configureEmailDetailCCLabel()
+        self.configureEmailDetailDateLabel()
         
         self.emailFavoriteButton = UIButton()
         var favoriteImage: UIImage
@@ -323,7 +337,7 @@ class MessageDetailView: UIView {
             make.top.equalTo()(self.contentView).with().offset()(self.kEmailHeaderViewMarginTop)
             make.left.equalTo()(self.contentView).with().offset()(self.kEmailHeaderViewMarginLeft)
             make.right.equalTo()(self.contentView).with().offset()(self.kEmailHeaderViewMarginRight)
-            make.height.equalTo()(self.kEmailHeaderViewHeight)
+            make.bottom.equalTo()(self.emailDetailView)
         }
         
         emailTitle.mas_makeConstraints { (make) -> Void in
@@ -352,6 +366,55 @@ class MessageDetailView: UIView {
             make.width.equalTo()(self.emailDetailButton)
         }
         
+        emailDetailView.mas_makeConstraints { (make) -> Void in
+            make.left.equalTo()(self.emailTitle)
+            make.right.equalTo()(self.emailHeaderView)
+            make.top.equalTo()(self.emailDetailButton.mas_bottom)
+            make.height.equalTo()(0)
+        }
+        
+        emailDetailToLabel.mas_makeConstraints { (make) -> Void in
+            make.top.equalTo()(self.emailDetailView)
+            make.left.equalTo()(self.emailDetailView)
+            make.width.equalTo()(self.kEmailDetailToWidth)
+            make.height.equalTo()(self.emailDetailToLabel.frame.size.height)
+        }
+        
+        emailDetailToContentLabel.mas_makeConstraints { (make) -> Void in
+            make.centerY.equalTo()(self.emailDetailToLabel)
+            make.left.equalTo()(self.emailDetailToLabel.mas_right)
+            make.right.equalTo()(self.emailDetailView)
+            make.height.equalTo()(self.emailDetailToContentLabel.frame.size.height)
+        }
+        
+        emailDetailCCLabel.mas_makeConstraints { (make) -> Void in
+            make.left.equalTo()(self.emailDetailToLabel)
+            make.top.equalTo()(self.emailDetailToLabel.mas_bottom).with().offset()(self.kEmailDetailCCLabelMarginTop)
+            make.width.equalTo()(self.emailDetailToLabel)
+            make.height.equalTo()(self.emailDetailCCLabel.frame.size.height)
+        }
+        
+        emailDetailCCContentLabel.mas_makeConstraints { (make) -> Void in
+            make.centerY.equalTo()(self.emailDetailCCLabel)
+            make.left.equalTo()(self.emailDetailCCLabel.mas_right)
+            make.right.equalTo()(self.emailDetailView)
+            make.height.equalTo()(self.emailDetailCCContentLabel.frame.size.height)
+        }
+        
+        emailDetailDateLabel.mas_makeConstraints { (make) -> Void in
+            make.left.equalTo()(self.emailDetailToLabel)
+            make.top.equalTo()(self.emailDetailCCLabel.mas_bottom).with().offset()(self.kEmailDetailDateLabelMarginTop)
+            make.width.equalTo()(self.emailDetailToLabel)
+            make.height.equalTo()(self.emailDetailCCLabel.frame.size.height)
+        }
+        
+        emailDetailDateContentLabel.mas_makeConstraints { (make) -> Void in
+            make.centerY.equalTo()(self.emailDetailDateLabel)
+            make.left.equalTo()(self.emailDetailDateLabel.mas_right)
+            make.right.equalTo()(self.emailDetailView)
+            make.height.equalTo()(self.emailDetailDateLabel.frame.size.height)
+        }
+        
         emailFavoriteButton.mas_makeConstraints { (make) -> Void in
             make.top.equalTo()(self.emailTitle)
             make.right.equalTo()(self.emailHeaderView)
@@ -361,7 +424,7 @@ class MessageDetailView: UIView {
         
         emailAttachmentsAmount.mas_makeConstraints { (make) -> Void in
             make.right.equalTo()(self.emailHeaderView)
-            make.bottom.equalTo()(self.separatorBetweenHeaderAndBodyView.mas_top).with().offset()(self.kEmailAttachmentsAmountMarginBottom)
+            make.bottom.equalTo()(self.emailDetailButton)
             make.height.equalTo()(self.emailAttachmentsAmount.frame.height)
             make.width.equalTo()(self.emailAttachmentsAmount.frame.width)
         }
@@ -466,6 +529,14 @@ class MessageDetailView: UIView {
                 make.height.equalTo()(self.emailTime.frame.size.height)
                 make.top.equalTo()(self.emailRecipients.mas_bottom).with().offset()(self.kEmailTimeViewMarginTop)
             })
+            
+            self.emailDetailView.mas_updateConstraints({ (make) -> Void in
+                make.removeExisting = true
+                make.left.equalTo()(self.emailTitle)
+                make.right.equalTo()(self.emailHeaderView)
+                make.top.equalTo()(self.emailDetailButton.mas_bottom).with().offset()(10)
+                make.bottom.equalTo()(self.emailDetailDateLabel)
+            })
         } else {
             UIView.transitionWithView(self.emailRecipients, duration: 0.3, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
                 self.emailRecipients.text = "To \(self.message.recipientList)"
@@ -488,6 +559,14 @@ class MessageDetailView: UIView {
                 make.height.equalTo()(self.emailTime.frame.size.height)
                 make.top.equalTo()(self.emailRecipients.mas_bottom).with().offset()(self.kEmailTimeViewMarginTop)
             }
+            
+            self.emailDetailView.mas_updateConstraints({ (make) -> Void in
+                make.removeExisting = true
+                make.left.equalTo()(self.emailTitle)
+                make.right.equalTo()(self.emailHeaderView)
+                make.top.equalTo()(self.emailDetailButton.mas_bottom)
+                make.height.equalTo()(0)
+            })
         }
         
         UIView.animateWithDuration(0.3, animations: { () -> Void in
@@ -506,6 +585,73 @@ class MessageDetailView: UIView {
     internal func forwardButtonTapped() {
         self.delegate?.messageDetailViewDidTapForwardMessage(self, message: message)
     }
+    
+    
+    // MARK: - Private methods
+    
+    private func configureEmailDetailToLabel() {
+        self.emailDetailView = UIView()
+        self.emailDetailView.clipsToBounds = true
+        self.emailHeaderView.addSubview(emailDetailView)
+        
+        self.emailDetailToLabel = UILabel()
+        self.emailDetailToLabel.font = UIFont.robotoLight(size: UIFont.Size.h5)
+        self.emailDetailToLabel.numberOfLines = 1
+        self.emailDetailToLabel.text = "To:"
+        self.emailDetailToLabel.textColor = UIColor.ProtonMail.Gray_999DA1
+        self.emailDetailToLabel.sizeToFit()
+        self.emailDetailView.addSubview(emailDetailToLabel)
+        
+        self.emailDetailToContentLabel = UILabel()
+        self.emailDetailToContentLabel.font = UIFont.robotoRegular(size: UIFont.Size.h5)
+        self.emailDetailToContentLabel.numberOfLines = 1
+        self.emailDetailToContentLabel.text = "\(message.recipientNameList)"
+        self.emailDetailToContentLabel.textColor = UIColor.ProtonMail.Blue_85B1DE
+        self.emailDetailToContentLabel.sizeToFit()
+        self.emailDetailView.addSubview(emailDetailToContentLabel)
+    }
+    
+    private func configureEmailDetailCCLabel() {
+        self.emailDetailCCLabel = UILabel()
+        self.emailDetailCCLabel.font = UIFont.robotoLight(size: UIFont.Size.h5)
+        self.emailDetailCCLabel.numberOfLines = 1
+        self.emailDetailCCLabel.text = "Cc:"
+        self.emailDetailCCLabel.textColor = UIColor.ProtonMail.Gray_999DA1
+        self.emailDetailCCLabel.sizeToFit()
+        self.emailDetailView.addSubview(emailDetailCCLabel)
+        
+        self.emailDetailCCContentLabel = UILabel()
+        self.emailDetailCCContentLabel.font = UIFont.robotoRegular(size: UIFont.Size.h5)
+        self.emailDetailCCContentLabel.numberOfLines = 1
+        
+        if let detail = self.message.detail {
+            self.emailDetailCCContentLabel.text = detail.ccNameList
+        } else {
+            self.emailDetailCCContentLabel.text = ""
+        }
+        
+        self.emailDetailCCContentLabel.textColor = UIColor.ProtonMail.Blue_85B1DE
+        self.emailDetailCCContentLabel.sizeToFit()
+        self.emailDetailView.addSubview(emailDetailCCContentLabel)
+    }
+    
+    private func configureEmailDetailDateLabel() {
+        self.emailDetailDateLabel = UILabel()
+        self.emailDetailDateLabel.font = UIFont.robotoLight(size: UIFont.Size.h5)
+        self.emailDetailDateLabel.numberOfLines = 1
+        self.emailDetailDateLabel.text = "Date:"
+        self.emailDetailDateLabel.textColor = UIColor.ProtonMail.Gray_999DA1
+        self.emailDetailDateLabel.sizeToFit()
+        self.emailDetailView.addSubview(emailDetailDateLabel)
+        
+        self.emailDetailDateContentLabel = UILabel()
+        self.emailDetailDateContentLabel.font = UIFont.robotoRegular(size: UIFont.Size.h5)
+        self.emailDetailDateContentLabel.numberOfLines = 1
+        self.emailDetailDateContentLabel.text = message.time!.stringWithFormat(kEmailTimeLongFormat)
+        self.emailDetailDateContentLabel.textColor = UIColor.ProtonMail.Gray_383A3B
+        self.emailDetailDateContentLabel.sizeToFit()
+        self.emailDetailView.addSubview(emailDetailDateContentLabel)
+    }
 }
 
 
@@ -516,4 +662,3 @@ protocol MessageDetailViewDelegate {
     func messageDetailViewDidTapReplyMessage(messageDetailView: MessageDetailView, message: Message)
     func messageDetailViewDidTapReplyAllMessage(messageDetailView: MessageDetailView, message: Message)
 }
-
