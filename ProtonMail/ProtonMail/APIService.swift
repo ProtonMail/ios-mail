@@ -91,14 +91,27 @@ class APIService {
         }
     }
     
-    let sessionManager: AFHTTPSessionManager
+    internal enum Method: String {
+        case PUT = "PUT"
+    }
+    
+    // MARK: - Private variables
+    
+    internal let sessionManager: AFHTTPSessionManager
+    
+    private var writeInProgress: Bool = false
+    private let writeQueue: NetworkQueue
+    
+    // MARK: - Internal methods
     
     init() {
         sessionManager = AFHTTPSessionManager(baseURL: NSURL(string: BaseURLString)!)
         sessionManager.requestSerializer = AFJSONRequestSerializer() as AFHTTPRequestSerializer
+        
+        writeQueue = NetworkQueue(queueName: "writeQueue")
     }
     
-    func fetchAuthCredential(#success: AuthSuccessBlock, failure: FailureBlock) {
+    internal func fetchAuthCredential(#success: AuthSuccessBlock, failure: FailureBlock?) {
         if let credential = AuthCredential.fetchFromKeychain() {
             if !credential.isExpired {
                 self.sessionManager.requestSerializer.setAuthorizationHeaderFieldWithCredential(credential)
@@ -106,18 +119,28 @@ class APIService {
                 success(credential)
             } else {
                 // TODO: Replace with logic that will refresh the authToken.
-                failure(APIError.authCredentialExpired.asNSError())
+                failure?(APIError.authCredentialExpired.asNSError())
             }
         } else {
             // TODO: Replace with logic that prompt for username and password, if needed.
-            failure(APIError.authCredentialInvalid.asNSError())
+            failure?(APIError.authCredentialInvalid.asNSError())
         }
     }
     
-    func GET(path: String, parameters: AnyObject?, success: SuccessBlock, failure: FailureBlock) {
+    internal func GET(path: String, parameters: AnyObject?, success: SuccessBlock, failure: FailureBlock?) {
         let authSuccess: AuthSuccessBlock = { auth in
-            let successBlock = self.networkingSuccessBlockForFailure(failure, success: success)
-            let failureBlock = self.networkingFailureBlockForFailure(failure)
+            let failureBlock: AFNetworkingFailureBlock = { task, error in
+                failure?(error)
+                return
+            }
+            
+            let successBlock: AFNetworkingSuccessBlock = { task, responseObject in
+                if let response = responseObject as? NSDictionary {
+                    success(response)
+                } else {
+                    failure?(APIError.unableToParseResponse.asNSError())
+                }
+            }
             
             self.sessionManager.GET(path, parameters: parameters, success: successBlock, failure: failureBlock)
         }
@@ -125,7 +148,7 @@ class APIService {
         fetchAuthCredential(success: authSuccess, failure: failure)
     }
     
-    func isErrorResponse(response: AnyObject!) -> Bool {
+    internal func isErrorResponse(response: AnyObject!) -> Bool {
         if let dict = response as? NSDictionary {
             return dict["error"] != nil
         }
@@ -133,21 +156,62 @@ class APIService {
         return false
     }
     
-    // MARK: - Private methods
-    
-    private func networkingFailureBlockForFailure(failure: FailureBlock) -> AFNetworkingFailureBlock {
-        return { task, error in
-            failure(error)
-        }
+    internal func writeRequest(method: Method, path: String, parameters: AnyObject?) {
+        writeQueue.addRequest(method: method.rawValue, path: path, parameters: parameters)
+        processQueueIfNeeded(writeQueue)
     }
     
-    private func networkingSuccessBlockForFailure(failure: FailureBlock, success: SuccessBlock) -> AFNetworkingSuccessBlock {
-        return { task, responseObject in
-            if let response = responseObject as? NSDictionary {
-                success(response)
-            } else {
-                failure(APIError.unableToParseResponse.asNSError())
+    // MARK: - Private methods
+    
+    private func processQueueIfNeeded(queue: NetworkQueue) {
+        if writeInProgress {
+            return
+        }
+        
+        if let (uuid, methodString, path, parameters: AnyObject?) = queue.nextRequest() {
+            let method = Method(rawValue: methodString)
+            
+            let failureBlock: AFNetworkingFailureBlock  = { (task, error) in
+                NSLog("\(__FUNCTION__) failed with error: \(error)")
+                
+                // TODO: add authentication failure handling
+                
+                self.writeInProgress = false
             }
+            
+            let successBlock: AFNetworkingSuccessBlock = { (task, responseObject) in
+                if let response = responseObject as? NSDictionary {
+                    
+                } else {
+                    NSLog("\(__FUNCTION__) unable to parse response:\n\(responseObject)\nRemoving from queue.")
+                }
+                
+                queue.remove(elementID: uuid)
+                
+                self.writeInProgress = false
+                
+                self.processQueueIfNeeded(queue)
+            }
+            
+            var authSuccess: AuthSuccessBlock
+            
+            switch(method) {
+            case .Some(.PUT):
+                authSuccess = { auth in
+                    self.sessionManager.PUT(path, parameters: parameters, success: successBlock, failure: failureBlock)
+                    return
+                }
+            default:
+                NSLog("\(__FUNCTION__) Unsupported method \(methodString), removing from queue.")
+                queue.remove(elementID: uuid)
+                
+                return
+            }
+            
+            writeInProgress = true
+            
+            fetchAuthCredential(success: authSuccess, failure: { error in
+                self.writeInProgress = false})
         }
     }
 }

@@ -67,17 +67,9 @@ class MessageDataService {
         sharedMonitorSavesDataService.registerEntityName(Message.Attributes.entityName, attribute: Message.Attributes.isStarred, handler: { message in
             if let message = message as? Message {
                 if message.isStarred {
-                    sharedAPIService.starMessage(message) { error in
-                        if error != nil {
-                            NSLog("error: \(error)")
-                        }
-                    }
+                    sharedAPIService.starMessage(message)
                 } else {
-                    sharedAPIService.unstarMessage(message) { error in
-                        if error != nil {
-                            NSLog("error: \(error)")
-                        }
-                    }
+                    sharedAPIService.unstarMessage(message)
                 }
             }
         })
