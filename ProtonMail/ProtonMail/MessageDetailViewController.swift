@@ -36,11 +36,15 @@ class MessageDetailViewController: ProtonMailViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupRightButtons()
-//        message.isRead = true
     }
     
     override func shouldShowSideMenu() -> Bool {
         return false
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        message.isRead = true
     }
     
     private func setupRightButtons() {
