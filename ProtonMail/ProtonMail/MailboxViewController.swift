@@ -79,7 +79,7 @@ class MailboxViewController: ProtonMailViewController {
         let selectedItem: NSIndexPath? = self.tableView.indexPathForSelectedRow() as NSIndexPath?
         
         if let selectedItem = selectedItem {
-            self.tableView.reloadRowsAtIndexPaths([selectedItem], withRowAnimation: UITableViewRowAnimation.Automatic)
+            self.tableView.reloadRowsAtIndexPaths([selectedItem], withRowAnimation: UITableViewRowAnimation.Fade)
             self.tableView.deselectRowAtIndexPath(selectedItem, animated: true)
         }
     }
@@ -392,6 +392,7 @@ extension MailboxViewController: MailboxTableViewCellDelegate {
         if let indexPath = tableView.indexPathForCell(cell) {
             if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
                 message.isStarred = isStarred
+                
                 if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
                     NSLog("\(__FUNCTION__) error: \(error)")
                 }
