@@ -20,6 +20,7 @@ PODS:
   - AFNetworking/UIKit (2.5.0):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - Groot (0.2)
   - Masonry (0.6.0)
   - MBProgressHUD (0.9)
   - NSDate+Helper (1.0.0)
@@ -31,6 +32,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking
+  - Groot
   - Masonry (= 0.6.0)
   - MBProgressHUD
   - NSDate+Helper
@@ -47,6 +49,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 0f54cb5d16ce38c1b76948faffb8d5fb705021c7
+  Groot: a0b9670711aaa88420cfbb4b4bc8e0ec7950780b
   Masonry: 0bc111d6902e3a55ff8423bcbdf7155261806547
   MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
   NSDate+Helper: ebde22e90dc7ae5e9b49179a0c32e550f7a9cd57

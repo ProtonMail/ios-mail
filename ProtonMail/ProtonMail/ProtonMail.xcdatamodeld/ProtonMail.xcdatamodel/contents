@@ -7,9 +7,16 @@
         <attribute name="fileSize" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="mimeType" attributeType="String" syncable="YES"/>
         <relationship name="detail" maxCount="1" deletionRule="Nullify" destinationEntity="MessageDetail" inverseName="attachments" inverseEntity="MessageDetail" syncable="YES"/>
+        <userInfo>
+            <entry key="identityAttribute" value="attachmentID"/>
+        </userInfo>
     </entity>
     <entity name="Message" representedClassName="ProtonMail.Message" syncable="YES">
-        <attribute name="expirationTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="expirationTime" optional="YES" attributeType="Date" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="ExpirationTime"/>
+            </userInfo>
+        </attribute>
         <attribute name="hasAttachment" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isEncrypted" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isForwarded" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -28,6 +35,9 @@
         <attribute name="title" attributeType="String" syncable="YES"/>
         <attribute name="totalSize" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="detail" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="MessageDetail" inverseName="message" inverseEntity="MessageDetail" syncable="YES"/>
+        <userInfo>
+            <entry key="identityAttribute" value="messageID"/>
+        </userInfo>
     </entity>
     <entity name="MessageDetail" representedClassName="ProtonMail.MessageDetail" syncable="YES">
         <attribute name="bccList" attributeType="String" syncable="YES"/>
@@ -41,8 +51,8 @@
         <relationship name="message" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="detail" inverseEntity="Message" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Message" positionX="-63" positionY="-18" width="128" height="328"/>
         <element name="Attachment" positionX="-63" positionY="135" width="128" height="133"/>
+        <element name="Message" positionX="-63" positionY="-18" width="128" height="328"/>
         <element name="MessageDetail" positionX="-45" positionY="144" width="128" height="178"/>
     </elements>
 </model>
