@@ -64,15 +64,20 @@ class MessageDataService {
     // MARK: - Private methods
     
     func setupMessageMonitoring() {
-        sharedMonitorSavesDataService.registerEntityName(Message.Attributes.entityName, attribute: Message.Attributes.isStarred, handler: { message in
-            if let message = message as? Message {
-                if message.isStarred {
-                    sharedAPIService.starMessage(message)
-                } else {
-                    sharedAPIService.unstarMessage(message)
-                }
+        sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isRead, handler: { message in
+            if message.isRead {
+                sharedAPIService.messageRead(message)
+            } else {
+                sharedAPIService.messageUnread(message)
+            }
+        })
+        
+        sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isStarred, handler: { message in
+            if message.isStarred {
+                sharedAPIService.messageStar(message)
+            } else {
+                sharedAPIService.messageUnstar(message)
             }
         })
     }
-
 }

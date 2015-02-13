@@ -141,13 +141,29 @@ extension APIService {
         GET(path, parameters: parameters, success: successBlock, failure: completion)
     }
     
-    func starMessage(message: Message) {
+    // MARK: Read/unread message
+    
+    func messageRead(message: Message) {
+        let path = "/messages/\(message.messageID)/read"
+        
+        writeRequest(.PUT, path: path, parameters: nil)
+    }
+    
+    func messageUnread(message: Message) {
+        let path = "/messages/\(message.messageID)/unread"
+        
+        writeRequest(.PUT, path: path, parameters: nil)
+    }
+    
+    // MARK: Star/unstar message
+    
+    func messageStar(message: Message) {
         let path = "/messages/\(message.messageID)/star"
         
         writeRequest(.PUT, path: path, parameters: nil)
     }
     
-    func unstarMessage(message: Message) {
+    func messageUnstar(message: Message) {
         let path = "/messages/\(message.messageID)/unstar"
         
         writeRequest(.PUT, path: path, parameters: nil)
