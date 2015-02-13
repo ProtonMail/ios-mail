@@ -165,32 +165,16 @@ extension APIService {
         GET(path, parameters: parameters, success: successBlock, failure: completion)
     }
     
-    func starMessage(message: Message, completion: (NSError? -> Void)) {
-        fetchAuthCredential(success: { credential in
-            let path = "/messages/\(message.messageID)/star"
-            
-            self.sessionManager.PUT(path, parameters: nil, success: { (task, result) -> Void in
-                // TODO: update message details
-                completion(nil)
-            }, failure: { (task, error) -> Void in
-                completion(error)
-            })
-            
-        }, failure: completion)
+    func starMessage(message: Message) {
+        let path = "/messages/\(message.messageID)/star"
+        
+        writeRequest(.PUT, path: path, parameters: nil)
     }
     
-    func unstarMessage(message: Message, completion: (NSError? -> Void)) {
-        fetchAuthCredential(success: { credential in
-            let path = "/messages/\(message.messageID)/unstar"
-            
-            self.sessionManager.PUT(path, parameters: nil, success: { (task, result) -> Void in
-                // TODO: update message details
-                completion(nil)
-                }, failure: { (task, error) -> Void in
-                    completion(error)
-            })
-            
-            }, failure: completion)
+    func unstarMessage(message: Message) {
+        let path = "/messages/\(message.messageID)/unstar"
+        
+        writeRequest(.PUT, path: path, parameters: nil)
     }
     
     
