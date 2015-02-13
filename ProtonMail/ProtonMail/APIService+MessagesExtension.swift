@@ -59,43 +59,10 @@ extension APIService {
         case descending = 1
     }
     
-    enum MessageKey: String {
-        case attachmentID = "AttachmentID"
-        case attachments = "AttachmentIDList"
-        case bccList = "BCCList"
-        case bccNameList = "BCCNameList"
-        case body = "MessageBody"
-        case ccList = "CCList"
-        case ccNameList = "CCNameList"
-        case expirationTime = "ExpirationTime"
-        case fileName = "FileName"
-        case fileSize = "FileSize"
-        case hasAttachment = "HasAttachment"
-        case header = "Header"
-        case isEncrypted = "IsEncrypted"
-        case isForwarded = "IsForwarded"
-        case isRead = "IsRead"
-        case isReplied = "IsReplied"
-        case isRepliedAll = "IsRepliedAll"
-        case location = "Location"
-        case messageID = "MessageID"
-        case messages = "Messages"
-        case mimeType = "MIMEType"
-        case recipientList = "RecipientList"
-        case recipientNameList = "RecipientNameList"
-        case sender = "Sender"
-        case senderName = "SenderName"
-        case spamScore = "MessageSpamScore"
-        case tag = "Tag"
-        case time = "Time"
-        case title = "MessageTitle"
-        case totalSize = "TotalSize"
-        
-        var keyValue: String {
-            return rawValue
-        }
+    struct KeyPath {
+        static let messages = "Messages"
     }
-    
+        
     enum SortedColumn: String {
         case date = "Date"
         case from = "From"
@@ -113,9 +80,16 @@ extension APIService {
             let context = sharedCoreDataService.newManagedObjectContext()
             
             context.performBlock() {
-                var (messageDetail, error) = self.messageDetailFromDictionary(response, inManagedObjectContext: context, messageObjectID: message.objectID)
+                var error: NSError?
+                let message = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: response, inManagedObjectContext: context, error: &error) as Message
                 
-                if let error = context.saveUpstreamIfNeeded() {
+                if error == nil {
+                    message.isDetailDownloaded = true
+                    
+                    error = context.saveUpstreamIfNeeded()
+                }
+                
+                if error != nil  {
                     NSLog("\(__FUNCTION__) error: \(error)")
                 }
             }
@@ -139,20 +113,22 @@ extension APIService {
         let successBlock: SuccessBlock = { response in
             var error: NSError?
             
-            if let messagesArray = response[MessageKey.messages.keyValue] as? [NSDictionary] {
+            if let messagesArray = response[KeyPath.messages] as? [NSDictionary] {
                 let context = sharedCoreDataService.newManagedObjectContext()
                 
-                for messageDictionary in messagesArray {
-                    context.performBlock() { () -> Void in
-                        var (message, error) = self.messageFromDictionary(messageDictionary, inManagedObjectContext: context)
-                        
-                        if let message = message {
+                context.performBlock() {
+                    var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
+                    
+                    if error == nil {
+                        for message in messages as [Message] {
                             message.locationNumber = location.rawValue
-                            
-                            if let error = context.saveUpstreamIfNeeded() {
-                                NSLog("\(__FUNCTION__) error: \(error)")
-                            }
                         }
+
+                        error = context.saveUpstreamIfNeeded()
+                    }
+                    
+                    if error != nil  {
+                        NSLog("\(__FUNCTION__) error: \(error)")
                     }
                 }
             } else {
@@ -180,98 +156,72 @@ extension APIService {
     
     // MARK: - Private methods
     
-    private func messageDetailFromDictionary(dictionary: NSDictionary, inManagedObjectContext context: NSManagedObjectContext, messageObjectID: NSManagedObjectID) -> (messageDetail: MessageDetail?, error: NSError?) {
-        var error: NSError?
-        var messageDetail: MessageDetail!
-        
-        if let message = context.existingObjectWithID(messageObjectID, error: &error) as? Message {
-            messageDetail = message.detail
-            
-            if messageDetail == nil {
-                messageDetail = MessageDetail(context: context)
-                messageDetail.message = message
-                messageDetail.bccList = dictionary.stringForMessageKey(.bccList)
-                messageDetail.bccNameList = dictionary.stringForMessageKey(.bccNameList)
-                messageDetail.body = dictionary.stringForMessageKey(.body)
-                messageDetail.ccList = dictionary.stringForMessageKey(.ccList)
-                messageDetail.ccNameList = dictionary.stringForMessageKey(.ccNameList)
-                messageDetail.header = dictionary.stringForMessageKey(.header)
-                messageDetail.spamScore = dictionary.numberForMessageKey(.spamScore)
-                
-                if let attachments = dictionary[MessageKey.attachments.keyValue] as? [NSDictionary] {
-                    for dictionary in attachments {
-                        let attachment = Attachment(context: context)
-                        attachment.attachmentID = dictionary.stringForMessageKey(.attachmentID)
-                        attachment.fileName = dictionary.stringForMessageKey(.fileName)
-                        attachment.fileSize = dictionary.numberForMessageKey(.fileSize)
-                        attachment.mimeType = dictionary.stringForMessageKey(.mimeType)
-                        
-                        messageDetail.attachments.addObject(attachment)
-                    }
-                }
-                
-                message.detail = messageDetail
-            }
-        }
-        
-        return (messageDetail, error)
-    }
-
-    private func messageFromDictionary(dictionary: NSDictionary, inManagedObjectContext context: NSManagedObjectContext) -> (message: Message?, error: NSError?) {
-        var error: NSError?
-        var message: Message?
-        
-        if let messageID = dictionary[MessageKey.messageID.keyValue] as? String {
-            (message, error) = Message.fetchOrCreateMessageForMessageID(messageID, context: context)
-            
-            if let message = message {
-                message.expirationTime = dictionary.dateForMessageKey(.expirationTime)
-                message.hasAttachment = dictionary.boolForMessageKey(.hasAttachment)
-                message.isEncrypted = dictionary.boolForMessageKey(.isEncrypted)
-                message.isForwarded = dictionary.boolForMessageKey(.isForwarded)
-                message.isRead = dictionary.boolForMessageKey(.isRead)
-                message.isReplied = dictionary.boolForMessageKey(.isReplied)
-                message.isRepliedAll = dictionary.boolForMessageKey(.isRepliedAll)
-                message.recipientList = dictionary.stringForMessageKey(.recipientList)
-                message.recipientNameList = dictionary.stringForMessageKey(.recipientNameList)
-                message.sender = dictionary.stringForMessageKey(.sender)
-                message.senderName = dictionary.stringForMessageKey(.senderName)
-                message.updateTag(dictionary.stringForMessageKey(.tag))
-                message.time = dictionary.dateForMessageKey(.time)
-                message.title = dictionary.stringForMessageKey(.title)
-                message.totalSize = dictionary.numberForMessageKey(.totalSize)
-                
-            }
-        } else {
-            error = APIError.unableToParseResponse.asNSError()
-        }
-        
-        return (message: message, error: error)
-    }
-}
-
-
-// MARK: - NSDictionary message extensions
-
-extension NSDictionary {
-    
-    func boolForMessageKey(key: APIService.MessageKey) -> Bool {
-        return self[key.keyValue] as? Bool ?? false
-    }
-    
-    func dateForMessageKey(key: APIService.MessageKey) -> NSDate? {
-        if let time = timeIntervalForKey(key.keyValue) {
-            return time.asDate()
-        }
-        
-        return nil
-    }
-    
-    func numberForMessageKey(key: APIService.MessageKey) -> NSNumber {
-        return (self[key.keyValue] as? String)?.toInt() ?? 0
-    }
-    
-    func stringForMessageKey(key: APIService.MessageKey) -> String {
-        return self[key.keyValue] as? String ?? ""
-    }
+//    private func messageDetailFromDictionary(dictionary: NSDictionary, inManagedObjectContext context: NSManagedObjectContext, messageObjectID: NSManagedObjectID) -> (messageDetail: MessageDetail?, error: NSError?) {
+//        var error: NSError?
+//        var messageDetail: MessageDetail!
+//        
+//        if let message = context.existingObjectWithID(messageObjectID, error: &error) as? Message {
+//            messageDetail = message.detail
+//            
+//            if messageDetail == nil {
+//                messageDetail = MessageDetail(context: context)
+//                messageDetail.message = message
+//                messageDetail.bccList = dictionary.stringForMessageKey(.bccList)
+//                messageDetail.bccNameList = dictionary.stringForMessageKey(.bccNameList)
+//                messageDetail.body = dictionary.stringForMessageKey(.body)
+//                messageDetail.ccList = dictionary.stringForMessageKey(.ccList)
+//                messageDetail.ccNameList = dictionary.stringForMessageKey(.ccNameList)
+//                messageDetail.header = dictionary.stringForMessageKey(.header)
+//                messageDetail.spamScore = dictionary.numberForMessageKey(.spamScore)
+//                
+//                if let attachments = dictionary[MessageKey.attachments.keyValue] as? [NSDictionary] {
+//                    for dictionary in attachments {
+//                        let attachment = Attachment(context: context)
+//                        attachment.attachmentID = dictionary.stringForMessageKey(.attachmentID)
+//                        attachment.fileName = dictionary.stringForMessageKey(.fileName)
+//                        attachment.fileSize = dictionary.numberForMessageKey(.fileSize)
+//                        attachment.mimeType = dictionary.stringForMessageKey(.mimeType)
+//                        
+//                        messageDetail.attachments.addObject(attachment)
+//                    }
+//                }
+//                
+//                message.detail = messageDetail
+//            }
+//        }
+//        
+//        return (messageDetail, error)
+//    }
+//
+//    private func messageFromDictionary(dictionary: NSDictionary, inManagedObjectContext context: NSManagedObjectContext) -> (message: Message?, error: NSError?) {
+//        var error: NSError?
+//        var message: Message?
+//        
+//        if let messageID = dictionary[MessageKey.messageID.keyValue] as? String {
+//            (message, error) = Message.fetchOrCreateMessageForMessageID(messageID, context: context)
+//            
+//            if let message = message {
+//                message.expirationTime = dictionary.dateForMessageKey(.expirationTime)
+//                message.hasAttachment = dictionary.boolForMessageKey(.hasAttachment)
+//                message.isEncrypted = dictionary.boolForMessageKey(.isEncrypted)
+//                message.isForwarded = dictionary.boolForMessageKey(.isForwarded)
+//                message.isRead = dictionary.boolForMessageKey(.isRead)
+//                message.isReplied = dictionary.boolForMessageKey(.isReplied)
+//                message.isRepliedAll = dictionary.boolForMessageKey(.isRepliedAll)
+//                message.recipientList = dictionary.stringForMessageKey(.recipientList)
+//                message.recipientNameList = dictionary.stringForMessageKey(.recipientNameList)
+//                message.sender = dictionary.stringForMessageKey(.sender)
+//                message.senderName = dictionary.stringForMessageKey(.senderName)
+//                message.updateTag(dictionary.stringForMessageKey(.tag))
+//                message.time = dictionary.dateForMessageKey(.time)
+//                message.title = dictionary.stringForMessageKey(.title)
+//                message.totalSize = dictionary.numberForMessageKey(.totalSize)
+//                
+//            }
+//        } else {
+//            error = APIError.unableToParseResponse.asNSError()
+//        }
+//        
+//        return (message: message, error: error)
+//    }
 }

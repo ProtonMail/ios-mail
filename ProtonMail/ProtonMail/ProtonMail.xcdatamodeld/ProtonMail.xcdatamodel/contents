@@ -1,58 +1,173 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14C109" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Attachment" representedClassName="ProtonMail.Attachments" syncable="YES">
-        <attribute name="attachmentID" attributeType="String" syncable="YES"/>
+        <attribute name="attachmentID" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="AttachmentID"/>
+            </userInfo>
+        </attribute>
         <attribute name="data" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
-        <attribute name="fileName" attributeType="String" syncable="YES"/>
-        <attribute name="fileSize" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="mimeType" attributeType="String" syncable="YES"/>
-        <relationship name="detail" maxCount="1" deletionRule="Nullify" destinationEntity="MessageDetail" inverseName="attachments" inverseEntity="MessageDetail" syncable="YES"/>
+        <attribute name="fileName" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="FileName"/>
+            </userInfo>
+        </attribute>
+        <attribute name="fileSize" attributeType="Integer 64" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="FileSize"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="mimeType" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="MIMEType"/>
+            </userInfo>
+        </attribute>
+        <relationship name="message" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="attachments" inverseEntity="Message" syncable="YES"/>
         <userInfo>
             <entry key="identityAttribute" value="attachmentID"/>
         </userInfo>
     </entity>
     <entity name="Message" representedClassName="ProtonMail.Message" syncable="YES">
+        <attribute name="bccList" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="BCCList"/>
+            </userInfo>
+        </attribute>
+        <attribute name="bccNameList" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="BCCNameList"/>
+            </userInfo>
+        </attribute>
+        <attribute name="body" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="MessageBody"/>
+            </userInfo>
+        </attribute>
+        <attribute name="ccList" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="CCList"/>
+            </userInfo>
+        </attribute>
+        <attribute name="ccNameList" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="CCNameList"/>
+            </userInfo>
+        </attribute>
         <attribute name="expirationTime" optional="YES" attributeType="Date" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="ExpirationTime"/>
+                <entry key="JSONTransformerName" value="DateTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="hasAttachment" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isEncrypted" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isForwarded" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isRead" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
-        <attribute name="isReplied" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isRepliedAll" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isStarred" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="locationNumber" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="messageID" attributeType="String" indexed="YES" syncable="YES"/>
-        <attribute name="recipientList" attributeType="String" syncable="YES"/>
-        <attribute name="recipientNameList" attributeType="String" syncable="YES"/>
-        <attribute name="sender" attributeType="String" syncable="YES"/>
-        <attribute name="senderName" attributeType="String" syncable="YES"/>
-        <attribute name="tag" attributeType="String" syncable="YES"/>
-        <attribute name="time" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
-        <attribute name="title" attributeType="String" syncable="YES"/>
-        <attribute name="totalSize" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="detail" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="MessageDetail" inverseName="message" inverseEntity="MessageDetail" syncable="YES"/>
+        <attribute name="header" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Header"/>
+            </userInfo>
+        </attribute>
+        <attribute name="isDetailDownloaded" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isEncrypted" attributeType="Boolean" defaultValueString="NO" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="IsEncrypted"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="isForwarded" attributeType="Boolean" defaultValueString="NO" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="IsForwarded"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="isRead" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="IsRead"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="isReplied" attributeType="Boolean" defaultValueString="NO" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="IsReplied"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="isRepliedAll" attributeType="Boolean" defaultValueString="NO" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="IsRepliedAll"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="isStarred" attributeType="Boolean" defaultValueString="NO" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Tag"/>
+                <entry key="JSONTransformerName" value="TagTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="locationNumber" attributeType="Integer 16" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Location"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="messageID" attributeType="String" indexed="YES" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="MessageID"/>
+            </userInfo>
+        </attribute>
+        <attribute name="recipientList" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="RecipientList"/>
+            </userInfo>
+        </attribute>
+        <attribute name="recipientNameList" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="RecipientNameList"/>
+            </userInfo>
+        </attribute>
+        <attribute name="sender" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Sender"/>
+            </userInfo>
+        </attribute>
+        <attribute name="senderName" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="SenderName"/>
+            </userInfo>
+        </attribute>
+        <attribute name="spamScore" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="MessageSpamScore"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="tag" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Tag"/>
+            </userInfo>
+        </attribute>
+        <attribute name="time" optional="YES" attributeType="Date" indexed="YES" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Time"/>
+                <entry key="JSONTransformerName" value="DateTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="title" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="MessageTitle"/>
+            </userInfo>
+        </attribute>
+        <attribute name="totalSize" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="TotalSize"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <relationship name="attachments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Attachment" inverseName="message" inverseEntity="Attachment" syncable="YES"/>
         <userInfo>
             <entry key="identityAttribute" value="messageID"/>
         </userInfo>
     </entity>
-    <entity name="MessageDetail" representedClassName="ProtonMail.MessageDetail" syncable="YES">
-        <attribute name="bccList" attributeType="String" syncable="YES"/>
-        <attribute name="bccNameList" attributeType="String" syncable="YES"/>
-        <attribute name="body" attributeType="String" syncable="YES"/>
-        <attribute name="ccList" attributeType="String" syncable="YES"/>
-        <attribute name="ccNameList" attributeType="String" syncable="YES"/>
-        <attribute name="header" attributeType="String" syncable="YES"/>
-        <attribute name="spamScore" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="attachments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Attachment" inverseName="detail" inverseEntity="Attachment" syncable="YES"/>
-        <relationship name="message" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="detail" inverseEntity="Message" syncable="YES"/>
-    </entity>
     <elements>
         <element name="Attachment" positionX="-63" positionY="135" width="128" height="133"/>
-        <element name="Message" positionX="-63" positionY="-18" width="128" height="328"/>
-        <element name="MessageDetail" positionX="-45" positionY="144" width="128" height="178"/>
+        <element name="Message" positionX="-63" positionY="-18" width="128" height="433"/>
     </elements>
 </model>

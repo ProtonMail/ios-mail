@@ -109,6 +109,8 @@ class APIService {
         sessionManager.requestSerializer = AFJSONRequestSerializer() as AFHTTPRequestSerializer
         
         writeQueue = NetworkQueue(queueName: "writeQueue")
+        
+        setupValueTransforms()
     }
     
     internal func fetchAuthCredential(#success: AuthSuccessBlock, failure: FailureBlock?) {
@@ -213,5 +215,43 @@ class APIService {
             fetchAuthCredential(success: authSuccess, failure: { error in
                 self.writeInProgress = false})
         }
+    }
+    
+    private func setupValueTransforms() {
+        let dateTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
+            if let time: NSTimeInterval = (value as? NSString)?.doubleValue {
+                if time != 0 {
+                    return time.asDate()
+                }
+            } else if let date = value as? NSDate {
+                return date.timeIntervalSince1970
+            }
+            
+            return nil
+        }
+        
+        NSValueTransformer.setValueTransformer(dateTransformer, forName: "DateTransformer")
+
+        let numberTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
+            if let number = (value as? String)?.toInt() ?? 0 as NSNumber {
+                return number
+            } else if let number = value as? NSNumber {
+                return number.stringValue
+            }
+            
+            return nil
+        }
+        
+        NSValueTransformer.setValueTransformer(numberTransformer, forName: "NumberTransformer")
+
+        let tagTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
+            if let tag = value as? String {
+                return tag.rangeOfString(Message.Constants.starredTag) != nil
+            }
+            
+            return nil
+        }
+        
+        NSValueTransformer.setValueTransformer(tagTransformer, forName: "TagTransformer")
     }
 }

@@ -18,8 +18,14 @@ import CoreData
 
 class Message: NSManagedObject {
 
+    @NSManaged var bccList: String
+    @NSManaged var bccNameList: String
+    @NSManaged var body: String
+    @NSManaged var ccList: String
+    @NSManaged var ccNameList: String
     @NSManaged var expirationTime: NSDate?
-    @NSManaged var hasAttachment: Bool
+    @NSManaged var header: String
+    @NSManaged var isDetailDownloaded: Bool
     @NSManaged var isEncrypted: Bool
     @NSManaged var isForwarded: Bool
     @NSManaged var isRead: Bool
@@ -32,12 +38,12 @@ class Message: NSManagedObject {
     @NSManaged var recipientNameList: String
     @NSManaged var sender: String
     @NSManaged var senderName: String
+    @NSManaged var spamScore: NSNumber
     @NSManaged var tag: String
     @NSManaged var time: NSDate?
     @NSManaged var title: String
     @NSManaged var totalSize: NSNumber
     
     @NSManaged var attachments: NSSet
-    @NSManaged var detail: MessageDetail?
     
 }

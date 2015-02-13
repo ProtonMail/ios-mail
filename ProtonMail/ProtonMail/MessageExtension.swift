@@ -33,6 +33,12 @@ extension Message {
         static let starredTag = "starred"
     }
     
+    // MARK: - Public variables
+    
+    var hasAttachments: Bool {
+        return attachments.isEmpty
+    }
+    
     // MARK: - Public methods
     
     convenience init(context: NSManagedObjectContext) {
@@ -69,5 +75,20 @@ extension Message {
     func updateTag(tag: String) {
         self.tag = tag
         isStarred = tag.rangeOfString(Constants.starredTag) != nil
+    }
+    
+    // MARK: - Private methods
+    
+    override func awakeFromInsert() {
+        super.awakeFromInsert()
+        
+        // Set nil string attributes to ""
+        for (_, attribute) in entity.attributesByName as [String : NSAttributeDescription] {
+            if attribute.attributeType == .StringAttributeType {
+                if valueForKey(attribute.name) == nil {
+                    setValue("", forKey: attribute.name)
+                }
+            }
+        }
     }
 }
