@@ -91,7 +91,9 @@ class APIService {
         }
     }
     
-    internal enum Method: String {
+    internal enum HTTPMethod: String {
+        case DELETE = "DELETE"
+        case GET = "GET"
         case PUT = "PUT"
     }
     
@@ -158,7 +160,7 @@ class APIService {
         return false
     }
     
-    internal func writeRequest(method: Method, path: String, parameters: AnyObject?) {
+    internal func writeRequest(method: HTTPMethod, path: String, parameters: AnyObject?) {
         writeQueue.addRequest(method: method.rawValue, path: path, parameters: parameters)
         processQueueIfNeeded(writeQueue)
     }
@@ -171,7 +173,7 @@ class APIService {
         }
         
         if let (uuid, methodString, path, parameters: AnyObject?) = queue.nextRequest() {
-            let method = Method(rawValue: methodString)
+            let method = HTTPMethod(rawValue: methodString)
             
             let failureBlock: AFNetworkingFailureBlock  = { (task, error) in
                 NSLog("\(__FUNCTION__) failed with error: \(error)")

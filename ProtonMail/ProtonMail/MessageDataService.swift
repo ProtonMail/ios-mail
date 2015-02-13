@@ -64,20 +64,26 @@ class MessageDataService {
     // MARK: - Private methods
     
     func setupMessageMonitoring() {
-        sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isRead, handler: { message in
-            if message.isRead {
-                sharedAPIService.messageRead(message)
+        sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.locationNumber, handler: { message in
+            var action = message.location.moveAction
+            
+            if action != nil {
+                sharedAPIService.message(message, action: action!)
             } else {
-                sharedAPIService.messageUnread(message)
+                NSLog("\(__FUNCTION__) \(message.messageID) move to \(message.location) was not a user initiated move.")
             }
         })
         
+        sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isRead, handler: { message in
+            var action: APIService.MessageAction = message.isRead ? .read : .unread
+            
+            sharedAPIService.message(message, action: action)
+        })
+        
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isStarred, handler: { message in
-            if message.isStarred {
-                sharedAPIService.messageStar(message)
-            } else {
-                sharedAPIService.messageUnstar(message)
-            }
+            var action: APIService.MessageAction = message.isStarred ? .star : .unstar
+            
+            sharedAPIService.message(message, action: action)
         })
     }
 }
