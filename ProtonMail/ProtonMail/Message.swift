@@ -24,6 +24,7 @@ class Message: NSManagedObject {
     @NSManaged var ccList: String
     @NSManaged var ccNameList: String
     @NSManaged var expirationTime: NSDate?
+    @NSManaged var hasAttachments: Bool
     @NSManaged var header: String
     @NSManaged var isDetailDownloaded: Bool
     @NSManaged var isEncrypted: Bool

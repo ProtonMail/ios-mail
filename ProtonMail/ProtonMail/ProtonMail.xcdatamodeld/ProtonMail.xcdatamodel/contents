@@ -60,6 +60,11 @@
                 <entry key="JSONTransformerName" value="DateTransformer"/>
             </userInfo>
         </attribute>
+        <attribute name="hasAttachments" attributeType="Boolean" defaultValueString="NO" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="HasAttachment"/>
+            </userInfo>
+        </attribute>
         <attribute name="header" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Header"/>
@@ -81,7 +86,6 @@
         <attribute name="isRead" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="IsRead"/>
-                <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="isReplied" attributeType="Boolean" defaultValueString="NO" syncable="YES">
@@ -168,6 +172,6 @@
     </entity>
     <elements>
         <element name="Attachment" positionX="-63" positionY="135" width="128" height="133"/>
-        <element name="Message" positionX="-63" positionY="-18" width="128" height="433"/>
+        <element name="Message" positionX="-63" positionY="-18" width="128" height="448"/>
     </elements>
 </model>

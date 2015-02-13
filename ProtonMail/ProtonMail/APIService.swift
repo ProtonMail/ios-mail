@@ -219,7 +219,8 @@ class APIService {
     
     private func setupValueTransforms() {
         let dateTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
-            if let time: NSTimeInterval = (value as? NSString)?.doubleValue {
+            if let timeString = value as? NSString {
+                let time = timeString.doubleValue as NSTimeInterval
                 if time != 0 {
                     return time.asDate()
                 }
@@ -233,8 +234,8 @@ class APIService {
         NSValueTransformer.setValueTransformer(dateTransformer, forName: "DateTransformer")
 
         let numberTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
-            if let number = (value as? String)?.toInt() ?? 0 as NSNumber {
-                return number
+            if let number = value as? String {
+                return number.toInt() ?? 0 as NSNumber
             } else if let number = value as? NSNumber {
                 return number.stringValue
             }

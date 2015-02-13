@@ -33,12 +33,6 @@ extension Message {
         static let starredTag = "starred"
     }
     
-    // MARK: - Public variables
-    
-    var hasAttachments: Bool {
-        return attachments.isEmpty
-    }
-    
     // MARK: - Public methods
     
     convenience init(context: NSManagedObjectContext) {
