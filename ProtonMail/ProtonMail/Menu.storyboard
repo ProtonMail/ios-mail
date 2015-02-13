@@ -219,6 +219,84 @@
                                             <segue destination="N9H-or-xL9" kind="custom" identifier="toInbox" customClass="SWRevealViewControllerSeguePushController" id="o3e-Jf-WEv"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Starred" rowHeight="62" id="hEb-SX-lfB" userLabel="Starred" customClass="MenuTableViewCell" customModule="ProtonMail" customModuleProvider="target">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hEb-SX-lfB" id="f0O-mM-GcL">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="starred" highlightedImage="starred_selected" translatesAutoresizingMaskIntoConstraints="NO" id="ajk-oQ-qbu" userLabel="Starred Image">
+                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                                    <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="52" id="QU9-gg-Aex"/>
+                                                        <constraint firstAttribute="height" constant="52" id="hK9-nA-bFE"/>
+                                                    </constraints>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="hK9-nA-bFE"/>
+                                                            <exclude reference="QU9-gg-Aex"/>
+                                                        </mask>
+                                                    </variation>
+                                                    <variation key="widthClass=compact">
+                                                        <mask key="constraints">
+                                                            <include reference="hK9-nA-bFE"/>
+                                                            <include reference="QU9-gg-Aex"/>
+                                                        </mask>
+                                                    </variation>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="STARRED" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zVh-cE-nFv" userLabel="Starred Label">
+                                                    <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                                    <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="zVh-cE-nFv" secondAttribute="trailing" constant="-8" id="HXe-RO-LMs"/>
+                                                <constraint firstItem="zVh-cE-nFv" firstAttribute="height" secondItem="ajk-oQ-qbu" secondAttribute="height" id="J7z-1m-kZD"/>
+                                                <constraint firstItem="zVh-cE-nFv" firstAttribute="leading" secondItem="ajk-oQ-qbu" secondAttribute="trailing" constant="16" id="ZyW-2T-PyA"/>
+                                                <constraint firstItem="ajk-oQ-qbu" firstAttribute="leading" secondItem="f0O-mM-GcL" secondAttribute="leadingMargin" constant="16" id="dVM-3L-QsO">
+                                                    <variation key="widthClass=compact" constant="8"/>
+                                                </constraint>
+                                                <constraint firstAttribute="centerY" secondItem="ajk-oQ-qbu" secondAttribute="centerY" constant="5" id="iZz-if-tMa">
+                                                    <variation key="widthClass=compact" constant="0.0"/>
+                                                </constraint>
+                                                <constraint firstItem="zVh-cE-nFv" firstAttribute="centerY" secondItem="ajk-oQ-qbu" secondAttribute="centerY" id="zMI-Ni-kLN"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="subviews">
+                                                    <exclude reference="ajk-oQ-qbu"/>
+                                                    <exclude reference="zVh-cE-nFv"/>
+                                                </mask>
+                                                <mask key="constraints">
+                                                    <exclude reference="J7z-1m-kZD"/>
+                                                    <exclude reference="zMI-Ni-kLN"/>
+                                                    <exclude reference="ZyW-2T-PyA"/>
+                                                    <exclude reference="HXe-RO-LMs"/>
+                                                    <exclude reference="iZz-if-tMa"/>
+                                                    <exclude reference="dVM-3L-QsO"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="widthClass=compact">
+                                                <mask key="subviews">
+                                                    <include reference="ajk-oQ-qbu"/>
+                                                    <include reference="zVh-cE-nFv"/>
+                                                </mask>
+                                                <mask key="constraints">
+                                                    <include reference="J7z-1m-kZD"/>
+                                                    <include reference="zMI-Ni-kLN"/>
+                                                    <include reference="ZyW-2T-PyA"/>
+                                                    <include reference="HXe-RO-LMs"/>
+                                                    <include reference="iZz-if-tMa"/>
+                                                    <include reference="dVM-3L-QsO"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="N9H-or-xL9" kind="custom" identifier="toStarred" customClass="SWRevealViewControllerSeguePushController" id="YW9-oL-Adg"/>
+                                        </connections>
+                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Drafts" rowHeight="62" id="1Gc-fv-W1T" customClass="MenuTableViewCell" customModule="ProtonMail" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Gc-fv-W1T" id="0Je-Wk-CKP">
@@ -1674,11 +1752,13 @@
         <image name="signout_selected" width="20" height="30"/>
         <image name="spam" width="52" height="52"/>
         <image name="spam_selected" width="29" height="19"/>
+        <image name="starred" width="52" height="52"/>
+        <image name="starred_selected" width="26" height="24"/>
         <image name="trash" width="52" height="52"/>
         <image name="trash_selected" width="20" height="27"/>
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="o3e-Jf-WEv"/>
+        <segue reference="YW9-oL-Adg"/>
     </inferredMetricsTieBreakers>
 </document>
