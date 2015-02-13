@@ -24,11 +24,12 @@ class MenuViewController: UIViewController {
     
     // MARK: - Private constants
     
-    private let items = [MenuItem.inbox, MenuItem.drafts, MenuItem.sent, MenuItem.trash, MenuItem.spam, MenuItem.contacts, MenuItem.settings, MenuItem.signout]
+    private let items = [MenuItem.inbox, MenuItem.starred, MenuItem.drafts, MenuItem.sent, MenuItem.trash, MenuItem.spam, MenuItem.contacts, MenuItem.settings, MenuItem.signout]
     private let kMenuCellHeight: CGFloat = 62.0
     private let kMenuOptionsWidth: CGFloat = 227.0
     
     private let kSegueToInbox: String = "toInbox"
+    private let kSegueToStarred: String = "toStarred"
     private let kSegueToDrafts: String = "toDrafts"
     private let kSegueToSent: String = "toSent"
     private let kSegueToTrash: String = "toTrash"
@@ -60,6 +61,10 @@ class MenuViewController: UIViewController {
         case kSegueToInbox:
             mailboxViewController.mailboxLocation = .inbox
             mailboxViewController.setNavigationTitleText("INBOX")
+            
+        case kSegueToStarred:
+            mailboxViewController.mailboxLocation = .starred
+            mailboxViewController.setNavigationTitleText("STARRED")
             
         case kSegueToDrafts:
             mailboxViewController.mailboxLocation = .draft
@@ -166,6 +171,7 @@ extension MenuViewController: UITableViewDataSource {
 extension MenuViewController {
     enum MenuItem: String {
         case inbox = "Inbox"
+        case starred = "Starred"
         case drafts = "Drafts"
         case sent = "Sent"
         case trash = "Trash"
