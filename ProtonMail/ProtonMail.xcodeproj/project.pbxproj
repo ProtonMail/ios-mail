@@ -20,7 +20,6 @@
 		071323921A7ADA590043DB41 /* APIService+MessagesExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071323911A7ADA590043DB41 /* APIService+MessagesExtension.swift */; };
 		0713239A1A7C02AB0043DB41 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071323991A7C02AB0043DB41 /* Message.swift */; };
 		0713239C1A7C0B4C0043DB41 /* NSManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0713239B1A7C0B4C0043DB41 /* NSManagedObjectContextExtension.swift */; };
-		0713239E1A7C1A670043DB41 /* NSDictonaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0713239D1A7C1A670043DB41 /* NSDictonaryExtension.swift */; };
 		071323A01A7C1AB10043DB41 /* NSTimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0713239F1A7C1AB10043DB41 /* NSTimeIntervalExtension.swift */; };
 		072AB68D1A8D218400AF45D6 /* NetworkQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072AB68C1A8D218400AF45D6 /* NetworkQueue.swift */; };
 		073FD92C1A719B7900EB0CAF /* APIService+UserExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FD92B1A719B7900EB0CAF /* APIService+UserExtension.swift */; };
@@ -47,10 +46,8 @@
 		07CC996C1A717ABD000FD6F8 /* UIStoryboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC996B1A717ABD000FD6F8 /* UIStoryboardExtension.swift */; };
 		07CF61921A8988F100ED38AE /* AttachmentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF61911A8988F100ED38AE /* AttachmentExtension.swift */; };
 		07CF61941A89895600ED38AE /* MessageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF61931A89895600ED38AE /* MessageExtension.swift */; };
-		07CF61961A898A1700ED38AE /* MessageDetailExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF61951A898A1700ED38AE /* MessageDetailExtension.swift */; };
 		07CF61981A8AE5AA00ED38AE /* MonitorSavesDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF61971A8AE5AA00ED38AE /* MonitorSavesDataService.swift */; };
 		07CFC9D41A81A2B0007A72B7 /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CFC9D31A81A2B0007A72B7 /* Attachment.swift */; };
-		07CFC9D81A82D1A4007A72B7 /* MessageDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CFC9D71A82D1A4007A72B7 /* MessageDetail.swift */; };
 		07CFC9DA1A82D4CF007A72B7 /* NSSetExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CFC9D91A82D4CF007A72B7 /* NSSetExtension.swift */; };
 		07FBA7A51A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FBA7A41A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift */; };
 		701704781A794C69000A90D2 /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701704771A794C69000A90D2 /* Roboto-MediumItalic.ttf */; };
@@ -99,7 +96,6 @@
 		071323911A7ADA590043DB41 /* APIService+MessagesExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+MessagesExtension.swift"; sourceTree = "<group>"; };
 		071323991A7C02AB0043DB41 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		0713239B1A7C0B4C0043DB41 /* NSManagedObjectContextExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSManagedObjectContextExtension.swift; sourceTree = "<group>"; };
-		0713239D1A7C1A670043DB41 /* NSDictonaryExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDictonaryExtension.swift; sourceTree = "<group>"; };
 		0713239F1A7C1AB10043DB41 /* NSTimeIntervalExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTimeIntervalExtension.swift; sourceTree = "<group>"; };
 		072AB68C1A8D218400AF45D6 /* NetworkQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkQueue.swift; sourceTree = "<group>"; };
 		073FD92B1A719B7900EB0CAF /* APIService+UserExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+UserExtension.swift"; sourceTree = "<group>"; };
@@ -128,10 +124,8 @@
 		07CC996B1A717ABD000FD6F8 /* UIStoryboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStoryboardExtension.swift; sourceTree = "<group>"; };
 		07CF61911A8988F100ED38AE /* AttachmentExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentExtension.swift; sourceTree = "<group>"; };
 		07CF61931A89895600ED38AE /* MessageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageExtension.swift; sourceTree = "<group>"; };
-		07CF61951A898A1700ED38AE /* MessageDetailExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDetailExtension.swift; sourceTree = "<group>"; };
 		07CF61971A8AE5AA00ED38AE /* MonitorSavesDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonitorSavesDataService.swift; sourceTree = "<group>"; };
 		07CFC9D31A81A2B0007A72B7 /* Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
-		07CFC9D71A82D1A4007A72B7 /* MessageDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDetail.swift; sourceTree = "<group>"; };
 		07CFC9D91A82D4CF007A72B7 /* NSSetExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSSetExtension.swift; sourceTree = "<group>"; };
 		07FBA7A41A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSFetchedResultsControllerExtension.swift; sourceTree = "<group>"; };
 		132129A26ED76512DB66C024 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -202,7 +196,6 @@
 			children = (
 				073FD9331A732C5F00EB0CAF /* AFHTTPRequestSerializerExtension.swift */,
 				07CC99651A6F1380000FD6F8 /* FoundationExtension.swift */,
-				0713239D1A7C1A670043DB41 /* NSDictonaryExtension.swift */,
 				07CC99631A6F076A000FD6F8 /* NSErrorExtension.swift */,
 				07FBA7A41A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift */,
 				07CAB8011A8815DF00C5E347 /* NSFileManagerExtension.swift */,
@@ -242,8 +235,6 @@
 				07B797C41A6EE5FF00244532 /* AuthCredential.swift */,
 				071323991A7C02AB0043DB41 /* Message.swift */,
 				07CF61931A89895600ED38AE /* MessageExtension.swift */,
-				07CFC9D71A82D1A4007A72B7 /* MessageDetail.swift */,
-				07CF61951A898A1700ED38AE /* MessageDetailExtension.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -634,7 +625,6 @@
 				706962071A71399D001443B2 /* ContactsViewController.swift in Sources */,
 				073FD9341A732C5F00EB0CAF /* AFHTTPRequestSerializerExtension.swift in Sources */,
 				07009F011A65CF4800129B07 /* SignInViewController.swift in Sources */,
-				07CF61961A898A1700ED38AE /* MessageDetailExtension.swift in Sources */,
 				07009F0B1A66E36500129B07 /* NSNotification+KeyboardExtension.swift in Sources */,
 				7069620B1A7139C8001443B2 /* SettingsViewController.swift in Sources */,
 				70945E701A8135EC002B6837 /* UILabel+ProtonMail.swift in Sources */,
@@ -652,10 +642,8 @@
 				7027B02B1A700F0200D28F52 /* MenuTableViewCell.swift in Sources */,
 				70945E6C1A8133B8002B6837 /* MoreOptionsView.swift in Sources */,
 				07FBA7A51A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift in Sources */,
-				0713239E1A7C1A670043DB41 /* NSDictonaryExtension.swift in Sources */,
 				07CC99681A702368000FD6F8 /* UIFontExtension.swift in Sources */,
 				07CAB8061A894F8600C5E347 /* CoreDataService.swift in Sources */,
-				07CFC9D81A82D1A4007A72B7 /* MessageDetail.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

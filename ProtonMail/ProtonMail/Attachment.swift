@@ -17,6 +17,6 @@ class Attachment: NSManagedObject {
     @NSManaged var fileSize: NSNumber
     @NSManaged var mimeType: String
     
-    @NSManaged var detail: MessageDetail
+    @NSManaged var message: Message
 
 }

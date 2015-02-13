@@ -100,7 +100,7 @@ class MessageDetailView: UIView {
         self.addSubviews()
         self.makeConstraints()
         
-        if (!message.hasAttachment) {
+        if (!message.hasAttachments) {
             self.emailHasAttachmentsImageView.hidden = true
             self.emailAttachmentsAmount.hidden = true
         }
@@ -202,7 +202,7 @@ class MessageDetailView: UIView {
         self.emailAttachmentsAmount = UILabel()
         self.emailAttachmentsAmount.font = UIFont.robotoRegular(size: UIFont.Size.h4)
         self.emailAttachmentsAmount.numberOfLines = 1
-        self.emailAttachmentsAmount.text = self.message.hasAttachment ? "\(self.message.attachments.count)" : "0"
+        self.emailAttachmentsAmount.text = "\(self.message.attachments.count)"
         self.emailAttachmentsAmount.textColor = UIColor.ProtonMail.Gray_999DA1
         self.emailAttachmentsAmount.sizeToFit()
         self.emailHeaderView.addSubview(emailAttachmentsAmount)
@@ -228,8 +228,8 @@ class MessageDetailView: UIView {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = kEmailBodyLineSpacing
         
-        if let bodyContent = message.detail?.body {
-            self.emailBodyTextView.text = message.detail?.body
+        if message.body != "" {
+            self.emailBodyTextView.text = message.body
         } else {
             self.emailBodyTextView.text = "No body content."
         }
@@ -437,7 +437,7 @@ class MessageDetailView: UIView {
         }
         
         emailIsEncryptedImageView.mas_makeConstraints { (make) -> Void in
-            if (self.message.hasAttachment) {
+            if (self.message.hasAttachments) {
                 make.right.equalTo()(self.emailHasAttachmentsImageView.mas_left).with().offset()(self.kEmailIsEncryptedImageViewMarginRight)
             } else {
                 make.right.equalTo()(self.emailHeaderView)
@@ -623,13 +623,7 @@ class MessageDetailView: UIView {
         self.emailDetailCCContentLabel = UILabel()
         self.emailDetailCCContentLabel.font = UIFont.robotoRegular(size: UIFont.Size.h5)
         self.emailDetailCCContentLabel.numberOfLines = 1
-        
-        if let detail = self.message.detail {
-            self.emailDetailCCContentLabel.text = detail.ccNameList
-        } else {
-            self.emailDetailCCContentLabel.text = ""
-        }
-        
+        self.emailDetailCCContentLabel.text = message.ccNameList
         self.emailDetailCCContentLabel.textColor = UIColor.ProtonMail.Blue_85B1DE
         self.emailDetailCCContentLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailCCContentLabel)

@@ -38,7 +38,7 @@ class MessageDataService {
     }
     
     func fetchMessageDetailForMessage(message: Message, completion: CompletionBlock) {
-        if message.detail == nil {
+        if !message.isDetailDownloaded {
             sharedAPIService.messageDetail(message: message, completion: completion)
         } else {
             completion(nil)

@@ -4,6 +4,7 @@ inhibit_all_warnings!
 
 link_with 'ProtonMail', 'ProtonMailTests'
 pod 'AFNetworking'
+pod 'Groot'
 pod 'MBProgressHUD'
 pod 'NSDate+Helper'
 pod 'OpenSSL-Universal', :podspec => 'https://raw.github.com/krzyzanowskim/OpenSSL/master/OpenSSL-Universal.podspec'
