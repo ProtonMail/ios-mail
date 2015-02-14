@@ -18,5 +18,6 @@ import Foundation
 
 /// PGP service abstraction wrapper
 class PGPService {
+    let openPGP = OpenPGP()
     
 }

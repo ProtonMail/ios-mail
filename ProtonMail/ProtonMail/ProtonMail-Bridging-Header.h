@@ -25,7 +25,7 @@
 
 #import <NSDate+Helper/NSDate+Helper.h>
 
-#import "OpenPGP/OpenPGP.h"
+#import "OpenPGP.h"
 
 #import <UICKeyChainStore/UICKeyChainStore.h>
 

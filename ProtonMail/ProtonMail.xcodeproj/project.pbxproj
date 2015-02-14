@@ -108,6 +108,7 @@
 		072AB69E1A8EDE1200AF45D6 /* libbz2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libbz2.dylib; path = usr/lib/libbz2.dylib; sourceTree = SDKROOT; };
 		072AB6A01A8EE50000AF45D6 /* ProtonMail-Bridging-Header.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "ProtonMail-Bridging-Header.cpp"; sourceTree = "<group>"; };
 		072AB6A21A8EE54F00AF45D6 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		072AB6A61A8FAFF900AF45D6 /* OpenPGP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpenPGP.h; path = bin/include/OpenPGP/OpenPGP.h; sourceTree = SOURCE_ROOT; };
 		073FD92B1A719B7900EB0CAF /* APIService+UserExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+UserExtension.swift"; sourceTree = "<group>"; };
 		073FD9311A71C60900EB0CAF /* UserDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDataService.swift; sourceTree = "<group>"; };
 		073FD9331A732C5F00EB0CAF /* AFHTTPRequestSerializerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFHTTPRequestSerializerExtension.swift; sourceTree = "<group>"; };
@@ -187,8 +188,8 @@
 		07009EFA1A64AEC800129B07 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				072AB6A71A8FB0AB00AF45D6 /* Encryption */,
 				07B797C31A6EE54600244532 /* Network */,
-				07009EFB1A64AEF800129B07 /* PGPService.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -238,6 +239,15 @@
 			);
 			name = Fonts;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		072AB6A71A8FB0AB00AF45D6 /* Encryption */ = {
+			isa = PBXGroup;
+			children = (
+				072AB6A61A8FAFF900AF45D6 /* OpenPGP.h */,
+				07009EFB1A64AEF800129B07 /* PGPService.swift */,
+			);
+			name = Encryption;
 			sourceTree = "<group>";
 		};
 		073FD92D1A71C33B00EB0CAF /* Models */ = {
@@ -735,7 +745,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(PROJECT_DIR)/bin/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*]" = "$(PROJECT_DIR)/bin/libs/iPhoneOS_OpenPGP";
@@ -778,9 +787,10 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(PROJECT_DIR)/bin/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*]" = "$(PROJECT_DIR)/bin/libs/iPhoneOS_OpenPGP";
+				"LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*]" = "$(PROJECT_DIR)/bin/libs/Simulator_OpenPGP";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -801,7 +811,6 @@
 					"\"${PODS_ROOT}/Headers/Public/NSDate+Helper\"",
 					"\"${PODS_ROOT}/Headers/Public/SWRevealViewController\"",
 					"\"${PODS_ROOT}/Headers/Public/UICKeyChainStore\"",
-					"$(PROJECT_DIR)/bin/include",
 				);
 				INFOPLIST_FILE = ProtonMail/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -830,7 +839,6 @@
 					"\"${PODS_ROOT}/Headers/Public/NSDate+Helper\"",
 					"\"${PODS_ROOT}/Headers/Public/SWRevealViewController\"",
 					"\"${PODS_ROOT}/Headers/Public/UICKeyChainStore\"",
-					"$(PROJECT_DIR)/bin/include",
 				);
 				INFOPLIST_FILE = ProtonMail/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -912,9 +920,10 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(PROJECT_DIR)/bin/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*]" = "$(PROJECT_DIR)/bin/libs/iPhoneOS_OpenPGP";
+				"LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*]" = "$(PROJECT_DIR)/bin/libs/Simulator_OpenPGP";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -935,7 +944,6 @@
 					"\"${PODS_ROOT}/Headers/Public/NSDate+Helper\"",
 					"\"${PODS_ROOT}/Headers/Public/SWRevealViewController\"",
 					"\"${PODS_ROOT}/Headers/Public/UICKeyChainStore\"",
-					"$(PROJECT_DIR)/bin/include",
 				);
 				INFOPLIST_FILE = ProtonMail/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
