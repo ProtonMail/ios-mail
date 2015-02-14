@@ -1,1 +1,0 @@
-PODS_UNNETPGP_OTHER_LDFLAGS = -l"bz2" -l"z"

@@ -25,9 +25,9 @@
 
 #import <NSDate+Helper/NSDate+Helper.h>
 
-#import <UICKeyChainStore/UICKeyChainStore.h>
+#import "OpenPGP/OpenPGP.h"
 
-#import <UNNetPGP/UNNetPGP.h>
+#import <UICKeyChainStore/UICKeyChainStore.h>
 
 #import <SWRevealViewController/SWRevealViewController.h>
 

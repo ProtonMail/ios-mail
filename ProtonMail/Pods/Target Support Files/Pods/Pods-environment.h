@@ -72,12 +72,11 @@
 #define COCOAPODS_VERSION_MINOR_NSDate_Helper 0
 #define COCOAPODS_VERSION_PATCH_NSDate_Helper 0
 
-// OpenSSL-Universal
-#define COCOAPODS_POD_AVAILABLE_OpenSSL_Universal
-// This library does not follow semantic-versioning,
-// so we were not able to define version macros.
-// Please contact the author.
-// Version: 1.0.1.k.
+// OpenSSL
+#define COCOAPODS_POD_AVAILABLE_OpenSSL
+#define COCOAPODS_VERSION_MAJOR_OpenSSL 1
+#define COCOAPODS_VERSION_MINOR_OpenSSL 0
+#define COCOAPODS_VERSION_PATCH_OpenSSL 200
 
 // SWRevealViewController
 #define COCOAPODS_POD_AVAILABLE_SWRevealViewController
@@ -90,10 +89,4 @@
 #define COCOAPODS_VERSION_MAJOR_UICKeyChainStore 2
 #define COCOAPODS_VERSION_MINOR_UICKeyChainStore 0
 #define COCOAPODS_VERSION_PATCH_UICKeyChainStore 1
-
-// UNNetPGP
-#define COCOAPODS_POD_AVAILABLE_UNNetPGP
-#define COCOAPODS_VERSION_MAJOR_UNNetPGP 0
-#define COCOAPODS_VERSION_MINOR_UNNetPGP 8
-#define COCOAPODS_VERSION_PATCH_UNNetPGP 1
 
