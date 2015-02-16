@@ -7,12 +7,11 @@
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "checked_signin@2x.png"
+      "filename" : "info_circle.png"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "checked_signin@3x.png"
+      "scale" : "3x"
     }
   ],
   "info" : {

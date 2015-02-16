@@ -14,7 +14,23 @@ import UIKit
 
 class SettingsViewController: ProtonMailViewController {
     
+    @IBOutlet var notificationContainerView: UIView!
+    @IBOutlet var loginPasswordContainerView: UIView!
+    @IBOutlet var mailboxPasswordContainerView: UIView!
+    @IBOutlet var displayNameContainerView: UIView!
+    @IBOutlet var signatureContainerView: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        includeBorderOnView(notificationContainerView)
+        includeBorderOnView(loginPasswordContainerView)
+        includeBorderOnView(mailboxPasswordContainerView)
+        includeBorderOnView(displayNameContainerView)
+        includeBorderOnView(signatureContainerView)
+    }
+    
+    private func includeBorderOnView(view: UIView) {
+        view.layer.borderWidth = 0.5
+        view.layer.borderColor = UIColor.ProtonMail.Gray_E8EBED.CGColor
     }
 }
