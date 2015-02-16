@@ -55,35 +55,40 @@ class MenuViewController: UIViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let navigationController = segue.destinationViewController as UINavigationController
-        let mailboxViewController: MailboxViewController = navigationController.viewControllers.first as MailboxViewController
         
-        switch(segue.identifier!) {
-        case kSegueToInbox:
-            mailboxViewController.mailboxLocation = .inbox
-            mailboxViewController.setNavigationTitleText("INBOX")
-            
-        case kSegueToStarred:
-            mailboxViewController.mailboxLocation = .starred
-            mailboxViewController.setNavigationTitleText("STARRED")
-            
-        case kSegueToDrafts:
-            mailboxViewController.mailboxLocation = .draft
-            mailboxViewController.setNavigationTitleText("DRAFTS")
-
-        case kSegueToSent:
-            mailboxViewController.mailboxLocation = .outbox
-            mailboxViewController.setNavigationTitleText("SENT")
-        
-        case kSegueToTrash:
-            mailboxViewController.mailboxLocation = .trash
-            mailboxViewController.setNavigationTitleText("TRASH")
-        
-        case kSegueToSpam:
-            mailboxViewController.mailboxLocation = .spam
-            mailboxViewController.setNavigationTitleText("SPAM")
-        default:
-            mailboxViewController.mailboxLocation = .inbox
-            mailboxViewController.setNavigationTitleText("INBOX")
+        if let firstViewController: UIViewController = navigationController.viewControllers.first as? UIViewController {
+            if (firstViewController.isKindOfClass(MailboxViewController)) {
+                let mailboxViewController: MailboxViewController = navigationController.viewControllers.first as MailboxViewController
+                
+                switch(segue.identifier!) {
+                case kSegueToInbox:
+                    mailboxViewController.mailboxLocation = .inbox
+                    mailboxViewController.setNavigationTitleText("INBOX")
+                    
+                case kSegueToStarred:
+                    mailboxViewController.mailboxLocation = .starred
+                    mailboxViewController.setNavigationTitleText("STARRED")
+                    
+                case kSegueToDrafts:
+                    mailboxViewController.mailboxLocation = .draft
+                    mailboxViewController.setNavigationTitleText("DRAFTS")
+                    
+                case kSegueToSent:
+                    mailboxViewController.mailboxLocation = .outbox
+                    mailboxViewController.setNavigationTitleText("SENT")
+                    
+                case kSegueToTrash:
+                    mailboxViewController.mailboxLocation = .trash
+                    mailboxViewController.setNavigationTitleText("TRASH")
+                    
+                case kSegueToSpam:
+                    mailboxViewController.mailboxLocation = .spam
+                    mailboxViewController.setNavigationTitleText("SPAM")
+                default:
+                    mailboxViewController.mailboxLocation = .inbox
+                    mailboxViewController.setNavigationTitleText("INBOX")
+                }
+            }
         }
     }
     

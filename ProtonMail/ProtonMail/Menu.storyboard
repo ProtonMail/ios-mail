@@ -16,6 +16,7 @@
             <string>Roboto-Light</string>
             <string>Roboto-Light</string>
             <string>Roboto-Light</string>
+            <string>Roboto-Light</string>
         </mutableArray>
         <mutableArray key="Roboto-Regular.ttf">
             <string>Roboto-Regular</string>
@@ -233,14 +234,14 @@
                                                     </constraints>
                                                     <variation key="default">
                                                         <mask key="constraints">
-                                                            <exclude reference="hK9-nA-bFE"/>
                                                             <exclude reference="QU9-gg-Aex"/>
+                                                            <exclude reference="hK9-nA-bFE"/>
                                                         </mask>
                                                     </variation>
                                                     <variation key="widthClass=compact">
                                                         <mask key="constraints">
-                                                            <include reference="hK9-nA-bFE"/>
                                                             <include reference="QU9-gg-Aex"/>
+                                                            <include reference="hK9-nA-bFE"/>
                                                         </mask>
                                                     </variation>
                                                 </imageView>
@@ -270,12 +271,12 @@
                                                     <exclude reference="zVh-cE-nFv"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="J7z-1m-kZD"/>
-                                                    <exclude reference="zMI-Ni-kLN"/>
-                                                    <exclude reference="ZyW-2T-PyA"/>
                                                     <exclude reference="HXe-RO-LMs"/>
-                                                    <exclude reference="iZz-if-tMa"/>
+                                                    <exclude reference="J7z-1m-kZD"/>
+                                                    <exclude reference="ZyW-2T-PyA"/>
+                                                    <exclude reference="zMI-Ni-kLN"/>
                                                     <exclude reference="dVM-3L-QsO"/>
+                                                    <exclude reference="iZz-if-tMa"/>
                                                 </mask>
                                             </variation>
                                             <variation key="widthClass=compact">
@@ -284,12 +285,12 @@
                                                     <include reference="zVh-cE-nFv"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="J7z-1m-kZD"/>
-                                                    <include reference="zMI-Ni-kLN"/>
-                                                    <include reference="ZyW-2T-PyA"/>
                                                     <include reference="HXe-RO-LMs"/>
-                                                    <include reference="iZz-if-tMa"/>
+                                                    <include reference="J7z-1m-kZD"/>
+                                                    <include reference="ZyW-2T-PyA"/>
+                                                    <include reference="zMI-Ni-kLN"/>
                                                     <include reference="dVM-3L-QsO"/>
+                                                    <include reference="iZz-if-tMa"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
