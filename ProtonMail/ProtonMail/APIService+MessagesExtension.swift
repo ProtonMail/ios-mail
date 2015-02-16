@@ -52,6 +52,61 @@ extension APIService {
                 }
             }
         }
+        
+        var moveAction: MessageAction? {
+            var action: APIService.MessageAction?
+            
+            switch(self) {
+            case .inbox:
+                action = .inbox
+            case .spam:
+                action = .spam
+            case .trash:
+                action = .trash
+            default:
+                action = nil
+            }
+            
+            return action
+        }
+    }
+    
+    enum MessageAction: String {
+        
+        // Read/unread
+        case read = "read"
+        case unread = "unread"
+        
+        // Star/unstar
+        case star = "star"
+        case unstar = "unstar"
+        
+        // Move mailbox
+        case delete = "delete"
+        case inbox = "inbox"
+        case spam = "spam"
+        case trash = "trash"
+        
+        var method: HTTPMethod {
+            switch(self) {
+            case .delete:
+                return .DELETE
+            case .read, .unread, .star, .unstar, .inbox, .spam, .trash:
+                return .PUT
+            default:
+                return .GET
+            }
+        }
+        
+        var pathSuffix: String {
+            return rawValue
+        }
+        
+        func pathForMessage(message: Message) -> String {
+            let path = "/messages/\(message.messageID)/\(pathSuffix)"
+            
+            return path
+        }
     }
     
     enum Order: Int {
@@ -70,8 +125,11 @@ extension APIService {
         case subject = "Subject"
     }
     
-    
     // MARK: - Public methods
+    
+    func message(message: Message, action: MessageAction) {
+        writeRequest(action.method, path: action.pathForMessage(message), parameters: nil)
+    }
     
     func messageDetail(#message: Message, completion: (NSError? -> Void)) {
         let path = "/messages/\(message.messageID)"
@@ -140,32 +198,15 @@ extension APIService {
         
         GET(path, parameters: parameters, success: successBlock, failure: completion)
     }
+}
+
+
+/// Message APIService extension
+extension Message {
     
-    // MARK: Read/unread message
+    // MARK: - Public variables
     
-    func messageRead(message: Message) {
-        let path = "/messages/\(message.messageID)/read"
-        
-        writeRequest(.PUT, path: path, parameters: nil)
+    var location: APIService.Location {
+        return APIService.Location(rawValue: locationNumber.integerValue) ?? APIService.Location.inbox
     }
-    
-    func messageUnread(message: Message) {
-        let path = "/messages/\(message.messageID)/unread"
-        
-        writeRequest(.PUT, path: path, parameters: nil)
-    }
-    
-    // MARK: Star/unstar message
-    
-    func messageStar(message: Message) {
-        let path = "/messages/\(message.messageID)/star"
-        
-        writeRequest(.PUT, path: path, parameters: nil)
-    }
-    
-    func messageUnstar(message: Message) {
-        let path = "/messages/\(message.messageID)/unstar"
-        
-        writeRequest(.PUT, path: path, parameters: nil)
-    }    
 }
