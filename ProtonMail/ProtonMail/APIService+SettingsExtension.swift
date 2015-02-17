@@ -18,6 +18,22 @@ import Foundation
 
 /// Settings extension
 extension APIService {
+    func settingUpdateMailboxPassword(newPassword: String, completion: CompletionBlock) {
+        fetchAuthCredential(success: { authCredential in
+            let path = "/setting/keypwd"
+            
+            // TODO: Add parameters for update mailbox password when defined in API
+            let parameters = [:]
+            
+            self.sessionManager.PUT(path, parameters: parameters, success: { (task, response) -> Void in
+                // TODO: handle response when defined in the API
+                completion(nil)
+                }, failure: { task, error in
+                    completion(error)
+            })
+            }, failure: completion)
+    }
+    
     func settingUpdatePassword(newPassword: String, completion: CompletionBlock) {
         fetchAuthCredential(success: { authCredential in
             let path = "/setting/password"
