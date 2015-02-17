@@ -1,0 +1,6 @@
+#include "Pods-OpenPGP.xcconfig"
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Build" "${PODS_ROOT}/Headers/Build/OpenPGP" "${PODS_ROOT}/Headers/Build/OpenPGP/OpenPGP" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/Groot" "${PODS_ROOT}/Headers/Public/MBProgressHUD" "${PODS_ROOT}/Headers/Public/Masonry" "${PODS_ROOT}/Headers/Public/NSDate+Helper" "${PODS_ROOT}/Headers/Public/OpenPGP" "${PODS_ROOT}/Headers/Public/OpenPGP/OpenPGP" "${PODS_ROOT}/Headers/Public/OpenSSL" "${PODS_ROOT}/Headers/Public/OpenSSL/openssl" "${PODS_ROOT}/Headers/Public/SWRevealViewController" "${PODS_ROOT}/Headers/Public/UICKeyChainStore"
+LIBRARY_SEARCH_PATHS = ${PODS_OPENPGP_LIBRARY_SEARCH_PATHS}
+OTHER_LDFLAGS = ${PODS_OPENPGP_OTHER_LDFLAGS} -ObjC
+PODS_ROOT = ${SRCROOT}

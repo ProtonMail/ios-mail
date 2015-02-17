@@ -24,6 +24,8 @@ PODS:
   - Masonry (0.6.0)
   - MBProgressHUD (0.9)
   - NSDate+Helper (1.0.0)
+  - OpenPGP (0.0.1):
+    - OpenSSL
   - OpenSSL (1.0.200)
   - SWRevealViewController (2.3.0)
   - UICKeyChainStore (2.0.1)
@@ -34,9 +36,14 @@ DEPENDENCIES:
   - Masonry (= 0.6.0)
   - MBProgressHUD
   - NSDate+Helper
+  - OpenPGP (from `../OpenPGP`)
   - OpenSSL
   - SWRevealViewController (= 2.3.0)
   - UICKeyChainStore
+
+EXTERNAL SOURCES:
+  OpenPGP:
+    :path: ../OpenPGP
 
 SPEC CHECKSUMS:
   AFNetworking: 0f54cb5d16ce38c1b76948faffb8d5fb705021c7
@@ -44,6 +51,7 @@ SPEC CHECKSUMS:
   Masonry: 0bc111d6902e3a55ff8423bcbdf7155261806547
   MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
   NSDate+Helper: ebde22e90dc7ae5e9b49179a0c32e550f7a9cd57
+  OpenPGP: d6b628f0d24693608b46dc81f017abe9d0cc51c7
   OpenSSL: 4c7be3eca71139f52984542d8c4c0752154d26c3
   SWRevealViewController: f6d80638b8e12323e87ac79562345403a799cb77
   UICKeyChainStore: 779de9c089920a79d8755e7ba887e51c745819a8
