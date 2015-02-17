@@ -18,7 +18,7 @@ import Foundation
 
 /// User extensions
 extension APIService {
-    typealias UserInfo = (displayName: String?, privateKey: String?)
+    typealias UserInfo = (displayName: String, notificationEmail: String, privateKey: String, signature: String)
     
     func userInfo(#success: (UserInfo -> Void), failure: FailureBlock) {
         fetchAuthCredential(success: { authCredential in
@@ -38,10 +38,12 @@ extension APIService {
     
     func userInfoForResponse(response: AnyObject!) -> UserInfo? {
         if let response = response as? NSDictionary {
-            let displayName = response["DisplayName"] as? String
-            let privateKey = response["EncPrivateKey"] as? String
+            let displayName = response["DisplayName"] as? String ?? ""
+            let notificationEmail = response["NotificationEmail"] as? String ?? ""
+            let privateKey = response["EncPrivateKey"] as? String ?? ""
+            let signature = response["Signature"] as? String ?? ""
             
-            return (displayName, privateKey)
+            return (displayName, notificationEmail, privateKey, signature)
         }
         
         return nil
