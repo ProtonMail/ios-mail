@@ -154,6 +154,10 @@ class UserDataService {
         sharedAPIService.settingUpdateMailboxPassword(newMailboxPassword, completion: completion)
     }
     
+    func updateNotifcationEmail(notificationEmail: String, completion: APIService.CompletionBlock) {
+        sharedAPIService.settingUpdateNotificationEmail(notificationEmail, completion: completion)
+    }
+    
     func updatePassword(newPassword: String, completion: APIService.CompletionBlock) {
         sharedAPIService.settingUpdatePassword(newPassword, completion: completion)
     }

@@ -34,6 +34,20 @@ extension APIService {
             }, failure: completion)
     }
     
+    func settingUpdateNotificationEmail(notificationEmail: String, completion: CompletionBlock) {
+        fetchAuthCredential(success: { authCredential in
+            let path = "/setting/noticeemail"
+            
+            let parameters = ["NotificationEmail" : notificationEmail]
+            
+            self.sessionManager.PUT(path, parameters: parameters, success: { (task, response) -> Void in
+                completion(nil)
+                }, failure: { task, error in
+                    completion(error)
+            })
+            }, failure: completion)
+    }
+    
     func settingUpdatePassword(newPassword: String, completion: CompletionBlock) {
         fetchAuthCredential(success: { authCredential in
             let path = "/setting/password"
