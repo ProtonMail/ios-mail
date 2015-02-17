@@ -18,6 +18,21 @@ import Foundation
 
 /// Settings extension
 extension APIService {
+    
+    func settingUpdateDisplayName(displayName: String, completion: CompletionBlock) {
+        fetchAuthCredential(success: { authCredential in
+            let path = "/setting/display"
+            
+            let parameters = ["DisplayName" : displayName]
+            
+            self.sessionManager.PUT(path, parameters: parameters, success: { (task, response) -> Void in
+                completion(nil)
+                }, failure: { task, error in
+                    completion(error)
+            })
+            }, failure: completion)
+    }
+
     func settingUpdateMailboxPassword(newPassword: String, completion: CompletionBlock) {
         fetchAuthCredential(success: { authCredential in
             let path = "/setting/keypwd"

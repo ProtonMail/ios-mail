@@ -150,6 +150,10 @@ class UserDataService {
         (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .signIn)
     }
     
+    func updateDisplayName(displayName: String, completion: APIService.CompletionBlock) {
+        sharedAPIService.settingUpdateDisplayName(displayName, completion: completion)
+    }
+    
     func updateMailboxPassword(newMailboxPassword: String, completion: APIService.CompletionBlock) {
         sharedAPIService.settingUpdateMailboxPassword(newMailboxPassword, completion: completion)
     }
