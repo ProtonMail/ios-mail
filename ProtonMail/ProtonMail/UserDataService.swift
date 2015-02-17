@@ -162,6 +162,10 @@ class UserDataService {
         sharedAPIService.settingUpdatePassword(newPassword, completion: completion)
     }
     
+    func updateSignature(signature: String, completion: APIService.CompletionBlock) {
+        sharedAPIService.settingUpdateSignature(signature, completion: completion)
+    }
+    
     // MARK: - Private methods
     
     private func cleanUpIfFirstRun() {
