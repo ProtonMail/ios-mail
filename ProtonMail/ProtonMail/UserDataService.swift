@@ -150,6 +150,10 @@ class UserDataService {
         (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .signIn)
     }
     
+    func updatePassword(newPassword: String, completion: APIService.CompletionBlock) {
+        sharedAPIService.settingUpdatePassword(newPassword, completion: completion)
+    }
+    
     // MARK: - Private methods
     
     private func cleanUpIfFirstRun() {
