@@ -17,6 +17,7 @@
 import CoreData
 import Foundation
 
+
 /// Messages extension
 extension APIService {
     
@@ -127,8 +128,23 @@ extension APIService {
     
     // MARK: - Public methods
     
-    func message(message: Message, action: MessageAction) {
-        writeRequest(action.method, path: action.pathForMessage(message), parameters: nil)
+    func messageID(messageID: String, updateWithAction action: MessageDataService.MessageAction, completion: CompletionBlock) {
+        let failureBlock: AFNetworkingFailureBlock  = { (task, error) in
+            completion(error)
+        }
+        
+        let successBlock: AFNetworkingSuccessBlock = { (task, responseObject) in
+            completion(nil)
+        }
+        
+        let authSuccess: AuthSuccessBlock = { auth in
+            action.sessionManager(self.sessionManager, performRequestForMessageID: messageID, success: successBlock, failure: failureBlock)
+            return
+        }
+        
+        fetchAuthCredential(success: authSuccess, failure: { error in
+            completion(error)
+        })
     }
     
     func messageDetail(#message: Message, completion: (NSError? -> Void)) {
@@ -201,12 +217,38 @@ extension APIService {
 }
 
 
-/// Message APIService extension
+// MARK: - Message APIService extension
+
 extension Message {
     
     // MARK: - Public variables
     
     var location: APIService.Location {
         return APIService.Location(rawValue: locationNumber.integerValue) ?? APIService.Location.inbox
+    }
+}
+
+extension MessageDataService.MessageAction {
+    var pathSuffix: String {
+        return self.rawValue
+    }
+    
+    func pathForMessageID(messageID: String) -> String {
+        let path = "/messages/\(messageID)/\(pathSuffix)"
+        
+        return path
+    }
+    
+    func sessionManager(sessionManager: AFHTTPSessionManager, performRequestForMessageID messageID: String, success: APIService.AFNetworkingSuccessBlock?, failure: APIService.AFNetworkingFailureBlock?) -> NSURLSessionDataTask {
+        let path = pathForMessageID(messageID)
+        
+        switch(self) {
+        case .delete:
+            return sessionManager.DELETE(path, parameters: nil, success: success, failure: failure)
+        case .read, .unread, .star, .unstar, .inbox, .spam, .trash:
+            return sessionManager.PUT(path, parameters: nil, success: success, failure: failure)
+        default:
+            return sessionManager.GET(path, parameters: nil, success: success, failure: failure)
+        }
     }
 }
