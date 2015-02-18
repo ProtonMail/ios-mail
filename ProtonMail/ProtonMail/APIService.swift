@@ -120,16 +120,44 @@ class APIService {
         }
     }
     
-    internal func GET(path: String, parameters: AnyObject?, success: SuccessBlock, failure: FailureBlock?) {
+    internal func isErrorResponse(response: AnyObject!) -> Bool {
+        if let dict = response as? NSDictionary {
+            return dict["error"] != nil
+        }
+        
+        return false
+    }
+    
+    // MARK: - Request methods
+    
+    internal func DELETE(path: String, parameters: AnyObject?, completion: CompletionBlock?) {
         let authSuccess: AuthSuccessBlock = { auth in
-            let failureBlock: AFNetworkingFailureBlock = { task, error in
-                failure?(error)
-                return
-            }
+            let failureBlock = self.afNetworkingFailureBlockForCompletion(completion)
+            let successBlock = self.afNetworkingSuccessBlockForCompletion(completion)
             
+            self.sessionManager.DELETE(path, parameters: parameters, success: successBlock, failure: failureBlock)
+        }
+        
+        fetchAuthCredential(success: authSuccess, failure: completion)
+    }
+    
+    internal func DELETE(path: String, parameters: AnyObject?, success: (AnyObject? -> Void)?, failure: FailureBlock?) {
+        let authSuccess: AuthSuccessBlock = { auth in
+            let failureBlock = self.afNetworkingFailureBlockForFailure(failure)
+            let successBlock = self.afNetworkingSuccessBlockForSuccess(success)
+            
+            self.sessionManager.DELETE(path, parameters: parameters, success: successBlock, failure: failureBlock)
+        }
+        
+        fetchAuthCredential(success: authSuccess, failure: failure)
+    }
+    
+    internal func GET(path: String, parameters: AnyObject?, success: SuccessBlock?, failure: FailureBlock?) {
+        let authSuccess: AuthSuccessBlock = { auth in
+            let failureBlock = self.afNetworkingFailureBlockForFailure(failure)
             let successBlock: AFNetworkingSuccessBlock = { task, responseObject in
                 if let response = responseObject as? NSDictionary {
-                    success(response)
+                    success?(response)
                 } else {
                     failure?(APIError.unableToParseResponse.asNSError())
                 }
@@ -140,16 +168,91 @@ class APIService {
         
         fetchAuthCredential(success: authSuccess, failure: failure)
     }
-    
-    internal func isErrorResponse(response: AnyObject!) -> Bool {
-        if let dict = response as? NSDictionary {
-            return dict["error"] != nil
+
+    internal func POST(path: String, parameters: AnyObject?, completion: CompletionBlock?) {
+        let authSuccess: AuthSuccessBlock = { auth in
+            let failureBlock = self.afNetworkingFailureBlockForCompletion(completion)
+            let successBlock = self.afNetworkingSuccessBlockForCompletion(completion)
+            
+            self.sessionManager.POST(path, parameters: parameters, success: successBlock, failure: failureBlock)
         }
         
-        return false
+        fetchAuthCredential(success: authSuccess, failure: completion)
+    }
+    internal func POST(path: String, parameters: AnyObject?, success: (AnyObject? -> Void)?, failure: FailureBlock?) {
+        let authSuccess: AuthSuccessBlock = { auth in
+            let failureBlock = self.afNetworkingFailureBlockForFailure(failure)
+            let successBlock = self.afNetworkingSuccessBlockForSuccess(success)
+            
+            self.sessionManager.POST(path, parameters: parameters, success: successBlock, failure: failureBlock)
+        }
+        
+        fetchAuthCredential(success: authSuccess, failure: failure)
+    }
+    
+    internal func PUT(path: String, parameters: AnyObject?, completion: CompletionBlock?) {
+        let authSuccess: AuthSuccessBlock = { auth in
+            let failureBlock = self.afNetworkingFailureBlockForCompletion(completion)
+            let successBlock = self.afNetworkingSuccessBlockForCompletion(completion)
+            
+            self.sessionManager.DELETE(path, parameters: parameters, success: successBlock, failure: failureBlock)
+        }
+        
+        fetchAuthCredential(success: authSuccess, failure: completion)
+    }
+    
+    internal func PUT(path: String, parameters: AnyObject?, success: (AnyObject? -> Void)?, failure: FailureBlock?) {
+        let authSuccess: AuthSuccessBlock = { auth in
+            let failureBlock = self.afNetworkingFailureBlockForFailure(failure)
+            let successBlock = self.afNetworkingSuccessBlockForSuccess(success)
+            
+            self.sessionManager.PUT(path, parameters: parameters, success: successBlock, failure: failureBlock)
+        }
+        
+        fetchAuthCredential(success: authSuccess, failure: failure)
     }
     
     // MARK: - Private methods
+    
+    private func afNetworkingFailureBlockForCompletion(completion: CompletionBlock?) -> AFNetworkingFailureBlock? {
+        if let completion = completion {
+            return { task, error in
+                completion(error)
+            }
+        }
+        
+        return nil
+    }
+    
+    private func afNetworkingFailureBlockForFailure(failure: FailureBlock?) -> AFNetworkingFailureBlock? {
+        if let failure = failure {
+            return { task, error in
+                failure(error)
+            }
+        }
+        
+        return nil
+    }
+    
+    private func afNetworkingSuccessBlockForCompletion(completion: CompletionBlock?) -> AFNetworkingSuccessBlock? {
+        if let completion = completion {
+            return { task, responseObject in
+                completion(nil)
+            }
+        }
+        
+        return nil
+    }
+    
+    private func afNetworkingSuccessBlockForSuccess(success: (AnyObject? -> Void)?) -> AFNetworkingSuccessBlock? {
+        if let success = success {
+            return { task, responseObject in
+                success(responseObject)
+            }
+        }
+        
+        return nil
+    }
     
     private func setupValueTransforms() {
         let dateTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
