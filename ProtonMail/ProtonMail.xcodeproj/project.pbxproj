@@ -38,6 +38,8 @@
 		078FF4C51A9106A3008321D1 /* ProtonMail-Bridging-Header.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 072AB6A01A8EE50000AF45D6 /* ProtonMail-Bridging-Header.cpp */; };
 		078FF4CA1A91232D008321D1 /* OpenPGPExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4C91A91232D008321D1 /* OpenPGPExtension.swift */; };
 		078FF4CB1A91232D008321D1 /* OpenPGPExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4C91A91232D008321D1 /* OpenPGPExtension.swift */; };
+		078FF4D01A92CE15008321D1 /* APIService+SettingsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4CF1A92CE15008321D1 /* APIService+SettingsExtension.swift */; };
+		078FF4D31A92D06B008321D1 /* AuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B797C41A6EE5FF00244532 /* AuthCredential.swift */; };
 		07B797C01A6EDFF400244532 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B797BF1A6EDFF400244532 /* APIService.swift */; };
 		07B797C21A6EE50F00244532 /* APIService+AuthenticationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B797C11A6EE50F00244532 /* APIService+AuthenticationExtension.swift */; };
 		07B797C51A6EE5FF00244532 /* AuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B797C41A6EE5FF00244532 /* AuthCredential.swift */; };
@@ -124,6 +126,7 @@
 		078A3A4B1A7FF4DC002C5FF3 /* MessageDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDataService.swift; sourceTree = "<group>"; };
 		078FF4C11A91032C008321D1 /* OpenPGPTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenPGPTests.swift; sourceTree = "<group>"; };
 		078FF4C91A91232D008321D1 /* OpenPGPExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenPGPExtension.swift; sourceTree = "<group>"; };
+		078FF4CF1A92CE15008321D1 /* APIService+SettingsExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+SettingsExtension.swift"; sourceTree = "<group>"; };
 		07B797BF1A6EDFF400244532 /* APIService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		07B797C11A6EE50F00244532 /* APIService+AuthenticationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+AuthenticationExtension.swift"; sourceTree = "<group>"; };
 		07B797C41A6EE5FF00244532 /* AuthCredential.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthCredential.swift; sourceTree = "<group>"; };
@@ -342,6 +345,7 @@
 				07B797BF1A6EDFF400244532 /* APIService.swift */,
 				07B797C11A6EE50F00244532 /* APIService+AuthenticationExtension.swift */,
 				071323911A7ADA590043DB41 /* APIService+MessagesExtension.swift */,
+				078FF4CF1A92CE15008321D1 /* APIService+SettingsExtension.swift */,
 				073FD92B1A719B7900EB0CAF /* APIService+UserExtension.swift */,
 			);
 			name = Network;
@@ -620,6 +624,7 @@
 			files = (
 				07CF61921A8988F100ED38AE /* AttachmentExtension.swift in Sources */,
 				071323901A79BD8F0043DB41 /* TextInsetTextField.swift in Sources */,
+				078FF4D01A92CE15008321D1 /* APIService+SettingsExtension.swift in Sources */,
 				071323921A7ADA590043DB41 /* APIService+MessagesExtension.swift in Sources */,
 				078FF4CA1A91232D008321D1 /* OpenPGPExtension.swift in Sources */,
 				07CF61941A89895600ED38AE /* MessageExtension.swift in Sources */,
@@ -677,6 +682,7 @@
 			files = (
 				078FF4C21A91032C008321D1 /* OpenPGPTests.swift in Sources */,
 				078FF4C51A9106A3008321D1 /* ProtonMail-Bridging-Header.cpp in Sources */,
+				078FF4D31A92D06B008321D1 /* AuthCredential.swift in Sources */,
 				078FF4CB1A91232D008321D1 /* OpenPGPExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
