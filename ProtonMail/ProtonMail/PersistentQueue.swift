@@ -38,6 +38,11 @@ class PersistentQueue {
     }
     private let queueURL: NSURL
     
+    /// Number of objects in the Queue
+    var count: Int {
+        return queue.count
+    }
+    
     init(queueName: String) {
         queueURL = NSFileManager.defaultManager().cachesDirectoryURL().URLByAppendingPathComponent("\(Constant.queueIdentifer).\(queueName)")
         self.queue = NSMutableArray(contentsOfURL: queueURL) ?? []
