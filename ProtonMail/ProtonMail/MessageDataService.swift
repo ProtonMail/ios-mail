@@ -89,15 +89,15 @@ class MessageDataService {
             if let action = MessageAction(rawValue: actionString) {
                 messageQueue.isInProgress = true
                 
-                sharedAPIService.messageID(messageID, updateWithAction: action) { error in
+                sharedAPIService.messageID(messageID, updateWithAction: action.rawValue) { error in
                     self.messageQueue.isInProgress = false
-                    
+
                     if error == nil {
                         self.messageQueue.remove(elementID: uuid)
                         self.dequeueMessageIfNeeded()
                     } else {
                         NSLog("\(__FUNCTION__) error: \(error)")
-                        
+
                         // TODO: handle error
                     }
                 }

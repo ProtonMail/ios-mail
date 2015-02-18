@@ -128,7 +128,8 @@ extension APIService {
     
     // MARK: - Public methods
     
-    func messageID(messageID: String, updateWithAction action: MessageDataService.MessageAction, completion: CompletionBlock) {
+    // FIXME: Pass in MessageDataService.MessageAction, instead of a String.  Xcode 6.1.1 generates a segmentation fault 11, try it again when a newer version is released.
+    func messageID(messageID: String, updateWithAction action: String, completion: CompletionBlock) {
         let failureBlock: AFNetworkingFailureBlock  = { (task, error) in
             completion(error)
         }
@@ -138,7 +139,10 @@ extension APIService {
         }
         
         let authSuccess: AuthSuccessBlock = { auth in
-            action.sessionManager(self.sessionManager, performRequestForMessageID: messageID, success: successBlock, failure: failureBlock)
+            // FIXME: Remove this wrapper when action can be passed in directly
+            if let action = MessageDataService.MessageAction(rawValue: action) {
+                action.sessionManager(self.sessionManager, performRequestForMessageID: messageID, success: successBlock, failure: failureBlock)
+            }
             return
         }
         
