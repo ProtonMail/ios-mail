@@ -22,10 +22,7 @@
 		071323A01A7C1AB10043DB41 /* NSTimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0713239F1A7C1AB10043DB41 /* NSTimeIntervalExtension.swift */; };
 		072AB68D1A8D218400AF45D6 /* NetworkQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072AB68C1A8D218400AF45D6 /* NetworkQueue.swift */; };
 		072AB6911A8E89AD00AF45D6 /* MonitorSavesDataServiceMessageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072AB6901A8E89AD00AF45D6 /* MonitorSavesDataServiceMessageExtension.swift */; };
-		072AB69D1A8ED7D600AF45D6 /* libOpenPGP.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 072AB69C1A8ED7D600AF45D6 /* libOpenPGP.a */; };
-		072AB69F1A8EDE1200AF45D6 /* libbz2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 072AB69E1A8EDE1200AF45D6 /* libbz2.dylib */; };
 		072AB6A11A8EE50000AF45D6 /* ProtonMail-Bridging-Header.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 072AB6A01A8EE50000AF45D6 /* ProtonMail-Bridging-Header.cpp */; };
-		072AB6A31A8EE54F00AF45D6 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 072AB6A21A8EE54F00AF45D6 /* libz.dylib */; };
 		073FD92C1A719B7900EB0CAF /* APIService+UserExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FD92B1A719B7900EB0CAF /* APIService+UserExtension.swift */; };
 		073FD9321A71C60900EB0CAF /* UserDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FD9311A71C60900EB0CAF /* UserDataService.swift */; };
 		073FD9341A732C5F00EB0CAF /* AFHTTPRequestSerializerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073FD9331A732C5F00EB0CAF /* AFHTTPRequestSerializerExtension.swift */; };
@@ -107,11 +104,7 @@
 		0713239F1A7C1AB10043DB41 /* NSTimeIntervalExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTimeIntervalExtension.swift; sourceTree = "<group>"; };
 		072AB68C1A8D218400AF45D6 /* NetworkQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkQueue.swift; sourceTree = "<group>"; };
 		072AB6901A8E89AD00AF45D6 /* MonitorSavesDataServiceMessageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonitorSavesDataServiceMessageExtension.swift; sourceTree = "<group>"; };
-		072AB69C1A8ED7D600AF45D6 /* libOpenPGP.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libOpenPGP.a; path = bin/libs/Simulator_OpenPGP/libOpenPGP.a; sourceTree = "<group>"; };
-		072AB69E1A8EDE1200AF45D6 /* libbz2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libbz2.dylib; path = usr/lib/libbz2.dylib; sourceTree = SDKROOT; };
 		072AB6A01A8EE50000AF45D6 /* ProtonMail-Bridging-Header.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "ProtonMail-Bridging-Header.cpp"; sourceTree = "<group>"; };
-		072AB6A21A8EE54F00AF45D6 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		072AB6A61A8FAFF900AF45D6 /* OpenPGP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpenPGP.h; path = bin/include/OpenPGP/OpenPGP.h; sourceTree = SOURCE_ROOT; };
 		073FD92B1A719B7900EB0CAF /* APIService+UserExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+UserExtension.swift"; sourceTree = "<group>"; };
 		073FD9311A71C60900EB0CAF /* UserDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDataService.swift; sourceTree = "<group>"; };
 		073FD9331A732C5F00EB0CAF /* AFHTTPRequestSerializerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AFHTTPRequestSerializerExtension.swift; sourceTree = "<group>"; };
@@ -172,10 +165,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				072AB6A31A8EE54F00AF45D6 /* libz.dylib in Frameworks */,
-				072AB69F1A8EDE1200AF45D6 /* libbz2.dylib in Frameworks */,
 				F77B8F0DFAD04EC03F166E0A /* libPods.a in Frameworks */,
-				072AB69D1A8ED7D600AF45D6 /* libOpenPGP.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,7 +230,6 @@
 		072AB6A71A8FB0AB00AF45D6 /* Encryption */ = {
 			isa = PBXGroup;
 			children = (
-				072AB6A61A8FAFF900AF45D6 /* OpenPGP.h */,
 				078FF4C91A91232D008321D1 /* OpenPGPExtension.swift */,
 			);
 			name = Encryption;
@@ -440,9 +429,6 @@
 		EDDC3A27CB6370D84ADB05EA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				072AB6A21A8EE54F00AF45D6 /* libz.dylib */,
-				072AB69E1A8EDE1200AF45D6 /* libbz2.dylib */,
-				072AB69C1A8ED7D600AF45D6 /* libOpenPGP.a */,
 				E7171A1EF5F60DDA876FD139 /* libPods.a */,
 			);
 			name = Frameworks;
@@ -749,8 +735,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
-				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*]" = "$(PROJECT_DIR)/bin/libs/iPhoneOS_OpenPGP";
-				"LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*]" = "$(PROJECT_DIR)/bin/libs/Simulator_OpenPGP";
+				LIBRARY_SEARCH_PATHS = "";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -792,8 +777,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
-				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*]" = "$(PROJECT_DIR)/bin/libs/iPhoneOS_OpenPGP";
-				"LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*]" = "$(PROJECT_DIR)/bin/libs/Simulator_OpenPGP";
+				LIBRARY_SEARCH_PATHS = "";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "ProtonMail/ProtonMail-Bridging-Header.h";
@@ -806,23 +790,11 @@
 			baseConfigurationReference = AF1532103B091E2244D6CFE4 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				HEADER_SEARCH_PATHS = (
-					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
-					"\"${PODS_ROOT}/Headers/Public/Groot\"",
-					"\"${PODS_ROOT}/Headers/Public/MBProgressHUD\"",
-					"\"${PODS_ROOT}/Headers/Public/Masonry\"",
-					"\"${PODS_ROOT}/Headers/Public/NSDate+Helper\"",
-					"\"${PODS_ROOT}/Headers/Public/SWRevealViewController\"",
-					"\"${PODS_ROOT}/Headers/Public/UICKeyChainStore\"",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ProtonMail/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/bin/libs/Simulator_OpenPGP",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(inherited)";
@@ -834,23 +806,11 @@
 			baseConfigurationReference = 132129A26ED76512DB66C024 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				HEADER_SEARCH_PATHS = (
-					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
-					"\"${PODS_ROOT}/Headers/Public/Groot\"",
-					"\"${PODS_ROOT}/Headers/Public/MBProgressHUD\"",
-					"\"${PODS_ROOT}/Headers/Public/Masonry\"",
-					"\"${PODS_ROOT}/Headers/Public/NSDate+Helper\"",
-					"\"${PODS_ROOT}/Headers/Public/SWRevealViewController\"",
-					"\"${PODS_ROOT}/Headers/Public/UICKeyChainStore\"",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ProtonMail/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/bin/libs/Simulator_OpenPGP",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(inherited)";
@@ -872,6 +832,7 @@
 				);
 				INFOPLIST_FILE = ProtonMailTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ProtonMail.app/ProtonMail";
 			};
@@ -888,6 +849,7 @@
 				);
 				INFOPLIST_FILE = ProtonMailTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ProtonMail.app/ProtonMail";
 			};
@@ -926,8 +888,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
-				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*]" = "$(PROJECT_DIR)/bin/libs/iPhoneOS_OpenPGP";
-				"LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*]" = "$(PROJECT_DIR)/bin/libs/Simulator_OpenPGP";
+				LIBRARY_SEARCH_PATHS = "";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "ProtonMail/ProtonMail-Bridging-Header.h";
@@ -940,23 +901,11 @@
 			baseConfigurationReference = 07009F0C1A6700CF00129B07 /* Pods.distribution.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				HEADER_SEARCH_PATHS = (
-					"\"${PODS_ROOT}/Headers/Public\"",
-					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
-					"\"${PODS_ROOT}/Headers/Public/Groot\"",
-					"\"${PODS_ROOT}/Headers/Public/MBProgressHUD\"",
-					"\"${PODS_ROOT}/Headers/Public/Masonry\"",
-					"\"${PODS_ROOT}/Headers/Public/NSDate+Helper\"",
-					"\"${PODS_ROOT}/Headers/Public/SWRevealViewController\"",
-					"\"${PODS_ROOT}/Headers/Public/UICKeyChainStore\"",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ProtonMail/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/bin/libs/Simulator_OpenPGP",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(inherited)";
@@ -974,6 +923,7 @@
 				);
 				INFOPLIST_FILE = ProtonMailTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ProtonMail.app/ProtonMail";
 			};
