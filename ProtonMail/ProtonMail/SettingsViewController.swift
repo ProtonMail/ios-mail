@@ -14,11 +14,23 @@ import UIKit
 
 class SettingsViewController: ProtonMailViewController {
     
+    typealias CompletionBlock = APIService.CompletionBlock
+    
+    // MARK: - View Outlets
+    
     @IBOutlet var notificationContainerView: UIView!
     @IBOutlet var loginPasswordContainerView: UIView!
     @IBOutlet var mailboxPasswordContainerView: UIView!
     @IBOutlet var displayNameContainerView: UIView!
     @IBOutlet var signatureContainerView: UIView!
+    
+    @IBOutlet var recoveryEmailTextField: UITextField!
+    @IBOutlet var currentLoginPasswordTextField: UITextField!
+    @IBOutlet var currentMailboxPasswordTextField: UITextField!
+    @IBOutlet var displayNameTextField: UITextField!
+    @IBOutlet var signatureTextView: UITextView!
+    
+    // MARK: - ViewController lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +39,49 @@ class SettingsViewController: ProtonMailViewController {
         includeBorderOnView(mailboxPasswordContainerView)
         includeBorderOnView(displayNameContainerView)
         includeBorderOnView(signatureContainerView)
+        includeBorderOnView(signatureTextView)
+        
+        setupUserInfo()
+    }
+    
+    
+    // MARK: - Actions Outlets
+    
+    @IBAction func recoveryEmailSaveButtonTapped(sender: UIButton) {
+    }
+    
+    @IBAction func recoveryEmailDeleteButtonTapped(sender: UIButton) {
+    }
+    
+    @IBAction func loginPasswordSaveButtonTapped(sender: UIButton) {
+    }
+    
+    @IBAction func mailboxSaveButtonTapped(sender: UIButton) {
+    }
+    
+    @IBAction func displayNameSaveButtonTapped(sender: UIButton) {
+        ActivityIndicatorHelper.showActivityIndicatorAtView(displayNameContainerView)
+        
+        sharedUserDataService.updateDisplayName(displayNameTextField.text) { error in
+            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.displayNameContainerView)
+        }
+    }
+    
+    @IBAction func signatureSaveButtonTapped(sender: UIButton) {
+        ActivityIndicatorHelper.showActivityIndicatorAtView(signatureContainerView)
+        
+        sharedUserDataService.updateSignature(signatureTextView.text) { error in
+            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.signatureContainerView)
+        }
+    }
+    
+    
+    // MARK: - Private methods
+    
+    private func setupUserInfo() {
+        recoveryEmailTextField.text = sharedUserDataService.notificationEmail
+        displayNameTextField.text = sharedUserDataService.displayName
+        signatureTextView.text = sharedUserDataService.signature
     }
     
     private func includeBorderOnView(view: UIView) {

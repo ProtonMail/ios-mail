@@ -123,6 +123,8 @@ class UserDataService {
     func fetchUserInfo(completion: (NSError? -> Void)? = nil) {
         sharedAPIService.userInfo(success: { (displayName, notificationEmail, privateKey, signature) -> Void in
             self.displayName = displayName
+            self.notificationEmail = notificationEmail
+            self.signature = signature
             
             if completion != nil {
                 completion!(nil)
@@ -173,6 +175,8 @@ class UserDataService {
             if error == nil {
                 self.displayName = displayName
             }
+            
+            completion(error)
         })
     }
     
@@ -180,11 +184,12 @@ class UserDataService {
         sharedAPIService.settingUpdateMailboxPassword(newMailboxPassword, completion: completion)
     }
     
-    func updateNotifcationEmail(newNotificationEmail: String, completion: APIService.CompletionBlock) {
+    func updateNotificationEmail(newNotificationEmail: String, completion: APIService.CompletionBlock) {
         sharedAPIService.settingUpdateNotificationEmail(newNotificationEmail, completion: { error in
             if error == nil {
                 self.notificationEmail = newNotificationEmail
             }
+            
             completion(error)
         })
     }
@@ -203,6 +208,8 @@ class UserDataService {
             if error == nil {
                 self.signature = signature
             }
+            
+            completion(error)
         })
     }
     
