@@ -30,6 +30,10 @@ class SettingsViewController: ProtonMailViewController {
     @IBOutlet var displayNameTextField: UITextField!
     @IBOutlet var signatureTextView: UITextView!
     
+    @IBOutlet var storageProgressBar: UIProgressView!
+    @IBOutlet var storageUsageDescriptionLabel: UILabel!
+    
+    
     // MARK: - ViewController lifecycle
     
     override func viewDidLoad() {
@@ -40,6 +44,10 @@ class SettingsViewController: ProtonMailViewController {
         includeBorderOnView(displayNameContainerView)
         includeBorderOnView(signatureContainerView)
         includeBorderOnView(signatureTextView)
+        
+        storageProgressBar.layer.cornerRadius = 5.0
+        storageProgressBar.layer.masksToBounds = true
+        storageProgressBar.clipsToBounds = true
         
         setupUserInfo()
     }
@@ -79,9 +87,22 @@ class SettingsViewController: ProtonMailViewController {
     // MARK: - Private methods
     
     private func setupUserInfo() {
+        storageProgressBar.progress = 0.0
+        
         recoveryEmailTextField.text = sharedUserDataService.notificationEmail
         displayNameTextField.text = sharedUserDataService.displayName
         signatureTextView.text = sharedUserDataService.signature
+        
+        let usedSpace = sharedUserDataService.usedSpace
+        let maxSpace = sharedUserDataService.maxSpace
+        
+        let formattedUsedSpace = NSByteCountFormatter.stringFromByteCount(Int64(usedSpace), countStyle: NSByteCountFormatterCountStyle.File)
+        let formattedMaxSpace = NSByteCountFormatter.stringFromByteCount(Int64(maxSpace), countStyle: NSByteCountFormatterCountStyle.File)
+        
+        let progress: Float = Float(usedSpace) / Float(maxSpace)
+        
+        storageProgressBar.setProgress(progress, animated: true)
+        storageUsageDescriptionLabel.text = "\(formattedUsedSpace)/\(formattedMaxSpace)"
     }
     
     private func includeBorderOnView(view: UIView) {

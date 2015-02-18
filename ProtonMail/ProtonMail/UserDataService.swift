@@ -83,6 +83,10 @@ class UserDataService {
             NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
+    
+    private(set) var usedSpace: Int!
+    private(set) var maxSpace: Int!
+    
     // MARK: - Public variables
     
     var isMailboxPasswordStored: Bool {
@@ -121,10 +125,12 @@ class UserDataService {
     }
     
     func fetchUserInfo(completion: (NSError? -> Void)? = nil) {
-        sharedAPIService.userInfo(success: { (displayName, notificationEmail, privateKey, signature) -> Void in
+        sharedAPIService.userInfo(success: { (displayName, notificationEmail, privateKey, signature, usedSpace, maxSpace) -> Void in
             self.displayName = displayName
             self.notificationEmail = notificationEmail
             self.signature = signature
+            self.usedSpace = usedSpace.toInt()
+            self.maxSpace = maxSpace
             
             if completion != nil {
                 completion!(nil)
