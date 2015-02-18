@@ -74,9 +74,9 @@ class MessageDataService {
         }
     }
     
-    func fetchMessagesForLocation(location: APIService.Location, completion: CompletionBlock) {
+    func fetchMessagesForLocation(location: APIService.Location, page: Int, completion: CompletionBlock) {
         queue() {
-            sharedAPIService.messageList(location, page: 1, sortedColumn: .date, order: .descending, filter: .noFilter, completion: completion)
+            sharedAPIService.messageList(location, page: page, sortedColumn: .date, order: .descending, filter: .noFilter, completion: completion)
         }
     }
     
