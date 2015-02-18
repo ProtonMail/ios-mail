@@ -114,11 +114,11 @@ class MenuViewController: UIViewController {
     }
     
     func updateDisplayNameLabel() {
-        if let displayName = sharedUserDataService.displayName {
-            if !displayName.isEmpty {
-                displayNameLabel.text = displayName
-                return
-            }
+        let displayName = sharedUserDataService.displayName
+        
+        if !displayName.isEmpty {
+            displayNameLabel.text = displayName
+            return
         }
 
         displayNameLabel.text = emailLabel.text

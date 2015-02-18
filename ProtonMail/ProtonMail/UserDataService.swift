@@ -26,13 +26,15 @@ class UserDataService {
         static let isRememberMailboxPassword = "isRememberMailboxPasswordKey"
         static let isRememberUser = "isRememberUserKey"
         static let mailboxPassword = "mailboxPasswordKey"
+        static let notificationEmail = "notificationEmailKey"
+        static let signature = "signatureKey"
         static let username = "usernameKey"
         static let password = "passwordKey"
     }
     
     // MARK: - Private variables
     
-    private(set) var displayName: String? {
+    private(set) var displayName: String = "" {
         didSet {
             NSUserDefaults.standardUserDefaults().setValue(displayName, forKey: Key.displayName)
             NSUserDefaults.standardUserDefaults().synchronize()
@@ -51,6 +53,13 @@ class UserDataService {
         }
     }
     
+    private(set) var notificationEmail: String = "" {
+        didSet {
+            NSUserDefaults.standardUserDefaults().setValue(notificationEmail, forKey: Key.notificationEmail)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
     /// Value is only stored in the keychain
     private(set) var password: String? {
         get {
@@ -61,6 +70,13 @@ class UserDataService {
         }
     }
 
+    private(set) var signature: String = "" {
+        didSet {
+            NSUserDefaults.standardUserDefaults().setValue(signature, forKey: Key.signature)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
     private(set) var username: String? {
         didSet {
             NSUserDefaults.standardUserDefaults().setValue(username, forKey: Key.username)
@@ -96,14 +112,16 @@ class UserDataService {
     init() {
         cleanUpIfFirstRun()
 
-        displayName = NSUserDefaults.standardUserDefaults().stringForKey(Key.displayName)
+        displayName = NSUserDefaults.standardUserDefaults().stringForKey(Key.displayName) ?? ""
         isRememberMailboxPassword = NSUserDefaults.standardUserDefaults().boolForKey(Key.isRememberMailboxPassword)
         isRememberUser = NSUserDefaults.standardUserDefaults().boolForKey(Key.isRememberUser)
+        notificationEmail = NSUserDefaults.standardUserDefaults().stringForKey(Key.notificationEmail) ?? ""
+        signature = NSUserDefaults.standardUserDefaults().stringForKey(Key.signature) ?? ""
         username = NSUserDefaults.standardUserDefaults().stringForKey(Key.username)
     }
     
     func fetchUserInfo(completion: (NSError? -> Void)? = nil) {
-        sharedAPIService.userInfo(success: { (displayName, privateKey) -> Void in
+        sharedAPIService.userInfo(success: { (displayName, notificationEmail, privateKey, signature) -> Void in
             self.displayName = displayName
             
             if completion != nil {
@@ -150,6 +168,44 @@ class UserDataService {
         (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .signIn)
     }
     
+    func updateDisplayName(displayName: String, completion: APIService.CompletionBlock) {
+        sharedAPIService.settingUpdateDisplayName(displayName, completion: { error in
+            if error == nil {
+                self.displayName = displayName
+            }
+        })
+    }
+    
+    func updateMailboxPassword(newMailboxPassword: String, completion: APIService.CompletionBlock) {
+        sharedAPIService.settingUpdateMailboxPassword(newMailboxPassword, completion: completion)
+    }
+    
+    func updateNotifcationEmail(newNotificationEmail: String, completion: APIService.CompletionBlock) {
+        sharedAPIService.settingUpdateNotificationEmail(newNotificationEmail, completion: { error in
+            if error == nil {
+                self.notificationEmail = newNotificationEmail
+            }
+            completion(error)
+        })
+    }
+    
+    func updatePassword(newPassword: String, completion: APIService.CompletionBlock) {
+        sharedAPIService.settingUpdatePassword(newPassword, completion: { error in
+            if error == nil {
+                self.password = newPassword
+            }
+        })
+
+    }
+    
+    func updateSignature(signature: String, completion: APIService.CompletionBlock) {
+        sharedAPIService.settingUpdateSignature(signature, completion: { error in
+            if error == nil {
+                self.signature = signature
+            }
+        })
+    }
+    
     // MARK: - Private methods
     
     private func cleanUpIfFirstRun() {
@@ -172,5 +228,9 @@ class UserDataService {
         
         isRememberMailboxPassword = false
         mailboxPassword = nil
+        
+        displayName = ""
+        notificationEmail = ""
+        signature = ""
     }
 }
