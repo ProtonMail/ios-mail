@@ -91,26 +91,15 @@ class APIService {
         }
     }
     
-    internal enum HTTPMethod: String {
-        case DELETE = "DELETE"
-        case GET = "GET"
-        case PUT = "PUT"
-    }
-    
     // MARK: - Private variables
     
     internal let sessionManager: AFHTTPSessionManager
-    
-    private var writeInProgress: Bool = false
-    private let writeQueue: NetworkQueue
     
     // MARK: - Internal methods
     
     init() {
         sessionManager = AFHTTPSessionManager(baseURL: NSURL(string: BaseURLString)!)
         sessionManager.requestSerializer = AFJSONRequestSerializer() as AFHTTPRequestSerializer
-        
-        writeQueue = NetworkQueue(queueName: "writeQueue")
         
         setupValueTransforms()
     }
@@ -160,64 +149,7 @@ class APIService {
         return false
     }
     
-    internal func writeRequest(method: HTTPMethod, path: String, parameters: AnyObject?) {
-        writeQueue.addRequest(method: method.rawValue, path: path, parameters: parameters)
-        processQueueIfNeeded(writeQueue)
-    }
-    
     // MARK: - Private methods
-    
-    private func processQueueIfNeeded(queue: NetworkQueue) {
-        if writeInProgress {
-            return
-        }
-        
-        if let (uuid, methodString, path, parameters: AnyObject?) = queue.nextRequest() {
-            let method = HTTPMethod(rawValue: methodString)
-            
-            let failureBlock: AFNetworkingFailureBlock  = { (task, error) in
-                NSLog("\(__FUNCTION__) failed with error: \(error)")
-                
-                // TODO: add authentication failure handling
-                
-                self.writeInProgress = false
-            }
-            
-            let successBlock: AFNetworkingSuccessBlock = { (task, responseObject) in
-                if let response = responseObject as? NSDictionary {
-                    
-                } else {
-                    NSLog("\(__FUNCTION__) unable to parse response:\n\(responseObject)\nRemoving from queue.")
-                }
-                
-                queue.remove(elementID: uuid)
-                
-                self.writeInProgress = false
-                
-                self.processQueueIfNeeded(queue)
-            }
-            
-            var authSuccess: AuthSuccessBlock
-            
-            switch(method) {
-            case .Some(.PUT):
-                authSuccess = { auth in
-                    self.sessionManager.PUT(path, parameters: parameters, success: successBlock, failure: failureBlock)
-                    return
-                }
-            default:
-                NSLog("\(__FUNCTION__) Unsupported method \(methodString), removing from queue.")
-                queue.remove(elementID: uuid)
-                
-                return
-            }
-            
-            writeInProgress = true
-            
-            fetchAuthCredential(success: authSuccess, failure: { error in
-                self.writeInProgress = false})
-        }
-    }
     
     private func setupValueTransforms() {
         let dateTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in

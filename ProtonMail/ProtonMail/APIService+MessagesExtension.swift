@@ -54,59 +54,17 @@ extension APIService {
             }
         }
         
-        var moveAction: MessageAction? {
-            var action: APIService.MessageAction?
-            
+        var moveAction: MessageDataService.MessageAction? {
             switch(self) {
             case .inbox:
-                action = .inbox
+                return .inbox
             case .spam:
-                action = .spam
+                return .spam
             case .trash:
-                action = .trash
+                return .trash
             default:
-                action = nil
+                return nil
             }
-            
-            return action
-        }
-    }
-    
-    enum MessageAction: String {
-        
-        // Read/unread
-        case read = "read"
-        case unread = "unread"
-        
-        // Star/unstar
-        case star = "star"
-        case unstar = "unstar"
-        
-        // Move mailbox
-        case delete = "delete"
-        case inbox = "inbox"
-        case spam = "spam"
-        case trash = "trash"
-        
-        var method: HTTPMethod {
-            switch(self) {
-            case .delete:
-                return .DELETE
-            case .read, .unread, .star, .unstar, .inbox, .spam, .trash:
-                return .PUT
-            default:
-                return .GET
-            }
-        }
-        
-        var pathSuffix: String {
-            return rawValue
-        }
-        
-        func pathForMessage(message: Message) -> String {
-            let path = "/messages/\(message.messageID)/\(pathSuffix)"
-            
-            return path
         }
     }
     
