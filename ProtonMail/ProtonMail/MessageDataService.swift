@@ -22,12 +22,33 @@ let sharedMessageDataService = MessageDataService()
 class MessageDataService {
     typealias CompletionBlock = APIService.CompletionBlock
     
+    enum MessageAction: String {
+        
+        // Read/unread
+        case read = "read"
+        case unread = "unread"
+        
+        // Star/unstar
+        case star = "star"
+        case unstar = "unstar"
+        
+        // Move mailbox
+        case delete = "delete"
+        case inbox = "inbox"
+        case spam = "spam"
+        case trash = "trash"
+    }
+    
     private var managedObjectContext: NSManagedObjectContext? {
         return sharedCoreDataService.mainManagedObjectContext
     }
     
+    private let messageQueue = MessageQueue(queueName: "messageQueue")
+    
     init() {
         setupMessageMonitoring()
+        
+        // TODO: add monitoring for didBecomeActive
     }
     
     /// Removes all messages from the store.
@@ -63,27 +84,56 @@ class MessageDataService {
     
     // MARK: - Private methods
     
-    func setupMessageMonitoring() {
+    private func dequeueMessageIfNeeded() {
+        if let (uuid, messageID, actionString) = messageQueue.nextMessage() {
+            if let action = MessageAction(rawValue: actionString) {
+                messageQueue.isInProgress = true
+                
+                sharedAPIService.messageID(messageID, updateWithAction: action) { error in
+                    self.messageQueue.isInProgress = false
+                    
+                    if error == nil {
+                        self.messageQueue.remove(elementID: uuid)
+                        self.dequeueMessageIfNeeded()
+                    } else {
+                        NSLog("\(__FUNCTION__) error: \(error)")
+                        
+                        // TODO: handle error
+                    }
+                }
+                
+            } else {
+                NSLog("\(__FUNCTION__) Unsupported action \(actionString), removing from queue.")
+                messageQueue.remove(elementID: uuid)
+            }
+        }
+    }
+    
+    private func queue(#message: Message, action: MessageAction) {
+        messageQueue.addMessage(message.messageID, action: action.rawValue)
+        
+        dequeueMessageIfNeeded()
+    }
+    
+    private func setupMessageMonitoring() {
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.locationNumber, handler: { message in
-            var action = message.location.moveAction
-            
-            if action != nil {
-                sharedAPIService.message(message, action: action!)
+            if let action = message.location.moveAction {
+                self.queue(message: message, action: action)
             } else {
                 NSLog("\(__FUNCTION__) \(message.messageID) move to \(message.location) was not a user initiated move.")
             }
         })
         
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isRead, handler: { message in
-            var action: APIService.MessageAction = message.isRead ? .read : .unread
+            let action: MessageAction = message.isRead ? .read : .unread
             
-            sharedAPIService.message(message, action: action)
+            self.queue(message: message, action: action)
         })
         
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isStarred, handler: { message in
-            var action: APIService.MessageAction = message.isStarred ? .star : .unstar
+            let action: MessageAction = message.isStarred ? .star : .unstar
             
-            sharedAPIService.message(message, action: action)
+            self.queue(message: message, action: action)
         })
     }
 }
