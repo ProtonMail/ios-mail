@@ -195,7 +195,7 @@ class APIService {
             let failureBlock = self.afNetworkingFailureBlockForCompletion(completion)
             let successBlock = self.afNetworkingSuccessBlockForCompletion(completion)
             
-            self.sessionManager.DELETE(path, parameters: parameters, success: successBlock, failure: failureBlock)
+            self.sessionManager.PUT(path, parameters: parameters, success: successBlock, failure: failureBlock)
         }
         
         fetchAuthCredential(success: authSuccess, failure: completion)

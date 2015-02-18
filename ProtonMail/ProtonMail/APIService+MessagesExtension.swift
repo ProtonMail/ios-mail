@@ -88,25 +88,18 @@ extension APIService {
     
     // FIXME: Pass in MessageDataService.MessageAction, instead of a String.  Xcode 6.1.1 generates a segmentation fault 11, try it again when a newer version is released.
     func messageID(messageID: String, updateWithAction action: String, completion: CompletionBlock) {
-        let failureBlock: AFNetworkingFailureBlock  = { (task, error) in
-            completion(error)
-        }
-        
-        let successBlock: AFNetworkingSuccessBlock = { (task, responseObject) in
-            completion(nil)
-        }
-        
-        let authSuccess: AuthSuccessBlock = { auth in
-            // FIXME: Remove this wrapper when action can be passed in directly
-            if let action = MessageDataService.MessageAction(rawValue: action) {
-                action.sessionManager(self.sessionManager, performRequestForMessageID: messageID, success: successBlock, failure: failureBlock)
+
+        // FIXME: Remove this wrapper when action can be passed in directly
+        if let action = MessageDataService.MessageAction(rawValue: action) {
+            let path = "/messages/\(messageID)/\(action.rawValue)"
+
+            switch(action) {
+            case .delete:
+                DELETE(path, parameters: nil, completion: completion)
+            default:
+                PUT(path, parameters: nil, completion: completion)
             }
-            return
         }
-        
-        fetchAuthCredential(success: authSuccess, failure: { error in
-            completion(error)
-        })
     }
     
     func messageDetail(#message: Message, completion: (NSError? -> Void)) {
@@ -187,30 +180,5 @@ extension Message {
     
     var location: APIService.Location {
         return APIService.Location(rawValue: locationNumber.integerValue) ?? APIService.Location.inbox
-    }
-}
-
-extension MessageDataService.MessageAction {
-    var pathSuffix: String {
-        return self.rawValue
-    }
-    
-    func pathForMessageID(messageID: String) -> String {
-        let path = "/messages/\(messageID)/\(pathSuffix)"
-        
-        return path
-    }
-    
-    func sessionManager(sessionManager: AFHTTPSessionManager, performRequestForMessageID messageID: String, success: APIService.AFNetworkingSuccessBlock?, failure: APIService.AFNetworkingFailureBlock?) -> NSURLSessionDataTask {
-        let path = pathForMessageID(messageID)
-        
-        switch(self) {
-        case .delete:
-            return sessionManager.DELETE(path, parameters: nil, success: success, failure: failure)
-        case .read, .unread, .star, .unstar, .inbox, .spam, .trash:
-            return sessionManager.PUT(path, parameters: nil, success: success, failure: failure)
-        default:
-            return sessionManager.GET(path, parameters: nil, success: success, failure: failure)
-        }
     }
 }
