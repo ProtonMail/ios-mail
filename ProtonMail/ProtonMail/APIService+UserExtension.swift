@@ -18,7 +18,7 @@ import Foundation
 
 /// User extensions
 extension APIService {
-    typealias UserInfo = (displayName: String, notificationEmail: String, privateKey: String, signature: String)
+    typealias UserInfo = (displayName: String, notificationEmail: String, privateKey: String, signature: String, usedSpace: String, maxSpace: Int)
     
     func userInfo(#success: (UserInfo -> Void), failure: FailureBlock) {
         fetchAuthCredential(success: { authCredential in
@@ -42,8 +42,10 @@ extension APIService {
             let notificationEmail = response["NotificationEmail"] as? String ?? ""
             let privateKey = response["EncPrivateKey"] as? String ?? ""
             let signature = response["Signature"] as? String ?? ""
+            let usedSpace = response["UsedSpace"] as? String ?? "0"
+            let maxSpace = response["MaxSpace"] as? Int ?? 0
             
-            return (displayName, notificationEmail, privateKey, signature)
+            return (displayName, notificationEmail, privateKey, signature, usedSpace, maxSpace)
         }
         
         return nil

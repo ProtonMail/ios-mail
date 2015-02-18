@@ -66,6 +66,7 @@
 		706961FF1A7136A0001443B2 /* ProtonMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706961FE1A7136A0001443B2 /* ProtonMailViewController.swift */; };
 		706962071A71399D001443B2 /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706962061A71399D001443B2 /* ContactsViewController.swift */; };
 		7069620B1A7139C8001443B2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7069620A1A7139C8001443B2 /* SettingsViewController.swift */; };
+		70762C3B1A94EC30006B9693 /* ActivityIndicatorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70762C3A1A94EC30006B9693 /* ActivityIndicatorHelper.swift */; };
 		70945E6A1A80F351002B6837 /* MailboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70945E691A80F351002B6837 /* MailboxViewController.swift */; };
 		70945E6C1A8133B8002B6837 /* MoreOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70945E6B1A8133B8002B6837 /* MoreOptionsView.swift */; };
 		70945E6E1A813550002B6837 /* UIButton+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70945E6D1A813550002B6837 /* UIButton+ProtonMail.swift */; };
@@ -149,6 +150,7 @@
 		706961FE1A7136A0001443B2 /* ProtonMailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtonMailViewController.swift; sourceTree = "<group>"; };
 		706962061A71399D001443B2 /* ContactsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
 		7069620A1A7139C8001443B2 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		70762C3A1A94EC30006B9693 /* ActivityIndicatorHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorHelper.swift; sourceTree = "<group>"; };
 		70945E691A80F351002B6837 /* MailboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxViewController.swift; sourceTree = "<group>"; };
 		70945E6B1A8133B8002B6837 /* MoreOptionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreOptionsView.swift; sourceTree = "<group>"; };
 		70945E6D1A813550002B6837 /* UIButton+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+ProtonMail.swift"; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 				70945E6F1A8135EC002B6837 /* UILabel+ProtonMail.swift */,
 				07CC996B1A717ABD000FD6F8 /* UIStoryboardExtension.swift */,
 				071323801A7846150043DB41 /* UIViewExtension.swift */,
+				70762C3A1A94EC30006B9693 /* ActivityIndicatorHelper.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -626,6 +629,7 @@
 				07B797C21A6EE50F00244532 /* APIService+AuthenticationExtension.swift in Sources */,
 				0713237F1A7844390043DB41 /* MailboxPasswordViewController.swift in Sources */,
 				07CC996C1A717ABD000FD6F8 /* UIStoryboardExtension.swift in Sources */,
+				70762C3B1A94EC30006B9693 /* ActivityIndicatorHelper.swift in Sources */,
 				075E3DEF1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld in Sources */,
 				07CAB7FE1A880B1200C5E347 /* PersistentQueue.swift in Sources */,
 				075E3DEC1A5F4ECF00E001A7 /* AppDelegate.swift in Sources */,
