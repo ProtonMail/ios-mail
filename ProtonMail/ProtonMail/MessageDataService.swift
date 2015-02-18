@@ -21,6 +21,7 @@ let sharedMessageDataService = MessageDataService()
 
 class MessageDataService {
     typealias CompletionBlock = APIService.CompletionBlock
+    typealias ReadBlock = (() -> Void)
     
     enum MessageAction: String {
         
@@ -43,7 +44,12 @@ class MessageDataService {
         return sharedCoreDataService.mainManagedObjectContext
     }
     
-    private let messageQueue = MessageQueue(queueName: "messageQueue")
+    private var readQueue: [ReadBlock] = [] {
+        didSet {
+            NSLog("\(__FUNCTION__) readQueue.count: \(readQueue.count)")
+        }
+    }
+    private let writeQueue = MessageQueue(queueName: "writeQueue")
     
     init() {
         setupMessageMonitoring()
@@ -60,14 +66,18 @@ class MessageDataService {
     
     func fetchMessageDetailForMessage(message: Message, completion: CompletionBlock) {
         if !message.isDetailDownloaded {
-            sharedAPIService.messageDetail(message: message, completion: completion)
+            queue() {
+                sharedAPIService.messageDetail(message: message, completion: completion)
+            }
         } else {
             completion(nil)
         }
     }
     
     func fetchMessagesForLocation(location: APIService.Location, completion: CompletionBlock) {
-        sharedAPIService.messageList(location, page: 1, sortedColumn: .date, order: .descending, filter: .noFilter, completion: completion)
+        queue() {
+            sharedAPIService.messageList(location, page: 1, sortedColumn: .date, order: .descending, filter: .noFilter, completion: completion)
+        }
     }
     
     func fetchedResultsControllerForLocation(location: APIService.Location) -> NSFetchedResultsController? {
@@ -84,17 +94,17 @@ class MessageDataService {
     
     // MARK: - Private methods
     
-    private func dequeueMessageIfNeeded() {
-        if let (uuid, messageID, actionString) = messageQueue.nextMessage() {
+    private func dequeueIfNeeded() {
+        if let (uuid, messageID, actionString) = writeQueue.nextMessage() {
             if let action = MessageAction(rawValue: actionString) {
-                messageQueue.isInProgress = true
+                writeQueue.isInProgress = true
                 
                 sharedAPIService.messageID(messageID, updateWithAction: action.rawValue) { error in
-                    self.messageQueue.isInProgress = false
+                    self.writeQueue.isInProgress = false
 
                     if error == nil {
-                        self.messageQueue.remove(elementID: uuid)
-                        self.dequeueMessageIfNeeded()
+                        self.writeQueue.remove(elementID: uuid)
+                        self.dequeueIfNeeded()
                     } else {
                         NSLog("\(__FUNCTION__) error: \(error)")
 
@@ -104,15 +114,22 @@ class MessageDataService {
                 
             } else {
                 NSLog("\(__FUNCTION__) Unsupported action \(actionString), removing from queue.")
-                messageQueue.remove(elementID: uuid)
+                writeQueue.remove(elementID: uuid)
             }
+        } else if !writeQueue.isBlocked && writeQueue.count == 0 && readQueue.count > 0 {
+            readQueue.removeAtIndex(0)()
         }
     }
     
     private func queue(#message: Message, action: MessageAction) {
-        messageQueue.addMessage(message.messageID, action: action.rawValue)
+        writeQueue.addMessage(message.messageID, action: action.rawValue)
         
-        dequeueMessageIfNeeded()
+        dequeueIfNeeded()
+    }
+    
+    private func queue(#readBlock: ReadBlock) {
+        readQueue.append(readBlock)
+        dequeueIfNeeded()
     }
     
     private func setupMessageMonitoring() {
