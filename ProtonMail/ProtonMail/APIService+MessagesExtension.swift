@@ -17,6 +17,7 @@
 import CoreData
 import Foundation
 
+
 /// Messages extension
 extension APIService {
     
@@ -53,59 +54,17 @@ extension APIService {
             }
         }
         
-        var moveAction: MessageAction? {
-            var action: APIService.MessageAction?
-            
+        var moveAction: MessageDataService.MessageAction? {
             switch(self) {
             case .inbox:
-                action = .inbox
+                return .inbox
             case .spam:
-                action = .spam
+                return .spam
             case .trash:
-                action = .trash
+                return .trash
             default:
-                action = nil
+                return nil
             }
-            
-            return action
-        }
-    }
-    
-    enum MessageAction: String {
-        
-        // Read/unread
-        case read = "read"
-        case unread = "unread"
-        
-        // Star/unstar
-        case star = "star"
-        case unstar = "unstar"
-        
-        // Move mailbox
-        case delete = "delete"
-        case inbox = "inbox"
-        case spam = "spam"
-        case trash = "trash"
-        
-        var method: HTTPMethod {
-            switch(self) {
-            case .delete:
-                return .DELETE
-            case .read, .unread, .star, .unstar, .inbox, .spam, .trash:
-                return .PUT
-            default:
-                return .GET
-            }
-        }
-        
-        var pathSuffix: String {
-            return rawValue
-        }
-        
-        func pathForMessage(message: Message) -> String {
-            let path = "/messages/\(message.messageID)/\(pathSuffix)"
-            
-            return path
         }
     }
     
@@ -127,8 +86,20 @@ extension APIService {
     
     // MARK: - Public methods
     
-    func message(message: Message, action: MessageAction) {
-        writeRequest(action.method, path: action.pathForMessage(message), parameters: nil)
+    // FIXME: Pass in MessageDataService.MessageAction, instead of a String.  Xcode 6.1.1 generates a segmentation fault 11, try it again when a newer version is released.
+    func messageID(messageID: String, updateWithAction action: String, completion: CompletionBlock) {
+
+        // FIXME: Remove this wrapper when action can be passed in directly
+        if let action = MessageDataService.MessageAction(rawValue: action) {
+            let path = "/messages/\(messageID)/\(action.rawValue)"
+
+            switch(action) {
+            case .delete:
+                DELETE(path, parameters: nil, completion: completion)
+            default:
+                PUT(path, parameters: nil, completion: completion)
+            }
+        }
     }
     
     func messageDetail(#message: Message, completion: (NSError? -> Void)) {
@@ -201,7 +172,8 @@ extension APIService {
 }
 
 
-/// Message APIService extension
+// MARK: - Message APIService extension
+
 extension Message {
     
     // MARK: - Public variables

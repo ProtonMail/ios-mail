@@ -29,18 +29,29 @@ class PersistentQueue {
     
     private var queue: [AnyObject] {
         didSet {
+            NSLog("\(__FUNCTION__) Queue: \(queueName) count: \(queue.count)")
+            
             dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)) { () -> Void in
-                if !(self.queue as NSArray).writeToURL(self.queueURL, atomically: true) {
-                    NSLog("\(__FUNCTION__) Unable to save queue to \(self.queueURL.absoluteString)")
+                let data = NSKeyedArchiver.archivedDataWithRootObject(self.queue)
+                if !data.writeToURL(self.queueURL, atomically: true) {
+                    NSLog("\(__FUNCTION__) Unable to save queue: \(self.queue as NSArray)\n to \(self.queueURL.absoluteString)")
                 }
             }
         }
     }
     private let queueURL: NSURL
+
+    let queueName: String
+
+    /// Number of objects in the Queue
+    var count: Int {
+        return queue.count
+    }
     
     init(queueName: String) {
-        queueURL = NSFileManager.defaultManager().cachesDirectoryURL().URLByAppendingPathComponent("\(Constant.queueIdentifer).\(queueName)")
-        self.queue = NSMutableArray(contentsOfURL: queueURL) ?? []
+        self.queueName = "\(Constant.queueIdentifer).\(queueName)"
+        queueURL = NSFileManager.defaultManager().cachesDirectoryURL().URLByAppendingPathComponent(self.queueName)
+        queue = NSMutableArray(contentsOfURL: queueURL) ?? []
     }
     
     /// Adds an object to the persistent queue.

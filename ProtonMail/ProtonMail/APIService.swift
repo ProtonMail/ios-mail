@@ -91,26 +91,15 @@ class APIService {
         }
     }
     
-    internal enum HTTPMethod: String {
-        case DELETE = "DELETE"
-        case GET = "GET"
-        case PUT = "PUT"
-    }
-    
     // MARK: - Private variables
     
     internal let sessionManager: AFHTTPSessionManager
-    
-    private var writeInProgress: Bool = false
-    private let writeQueue: NetworkQueue
     
     // MARK: - Internal methods
     
     init() {
         sessionManager = AFHTTPSessionManager(baseURL: NSURL(string: BaseURLString)!)
         sessionManager.requestSerializer = AFJSONRequestSerializer() as AFHTTPRequestSerializer
-        
-        writeQueue = NetworkQueue(queueName: "writeQueue")
         
         setupValueTransforms()
     }
@@ -131,16 +120,44 @@ class APIService {
         }
     }
     
-    internal func GET(path: String, parameters: AnyObject?, success: SuccessBlock, failure: FailureBlock?) {
+    internal func isErrorResponse(response: AnyObject!) -> Bool {
+        if let dict = response as? NSDictionary {
+            return dict["error"] != nil
+        }
+        
+        return false
+    }
+    
+    // MARK: - Request methods
+    
+    internal func DELETE(path: String, parameters: AnyObject?, completion: CompletionBlock?) {
         let authSuccess: AuthSuccessBlock = { auth in
-            let failureBlock: AFNetworkingFailureBlock = { task, error in
-                failure?(error)
-                return
-            }
+            let failureBlock = self.afNetworkingFailureBlockForCompletion(completion)
+            let successBlock = self.afNetworkingSuccessBlockForCompletion(completion)
             
+            self.sessionManager.DELETE(path, parameters: parameters, success: successBlock, failure: failureBlock)
+        }
+        
+        fetchAuthCredential(success: authSuccess, failure: completion)
+    }
+    
+    internal func DELETE(path: String, parameters: AnyObject?, success: (AnyObject? -> Void)?, failure: FailureBlock?) {
+        let authSuccess: AuthSuccessBlock = { auth in
+            let failureBlock = self.afNetworkingFailureBlockForFailure(failure)
+            let successBlock = self.afNetworkingSuccessBlockForSuccess(success)
+            
+            self.sessionManager.DELETE(path, parameters: parameters, success: successBlock, failure: failureBlock)
+        }
+        
+        fetchAuthCredential(success: authSuccess, failure: failure)
+    }
+    
+    internal func GET(path: String, parameters: AnyObject?, success: SuccessBlock?, failure: FailureBlock?) {
+        let authSuccess: AuthSuccessBlock = { auth in
+            let failureBlock = self.afNetworkingFailureBlockForFailure(failure)
             let successBlock: AFNetworkingSuccessBlock = { task, responseObject in
                 if let response = responseObject as? NSDictionary {
-                    success(response)
+                    success?(response)
                 } else {
                     failure?(APIError.unableToParseResponse.asNSError())
                 }
@@ -151,72 +168,90 @@ class APIService {
         
         fetchAuthCredential(success: authSuccess, failure: failure)
     }
-    
-    internal func isErrorResponse(response: AnyObject!) -> Bool {
-        if let dict = response as? NSDictionary {
-            return dict["error"] != nil
+
+    internal func POST(path: String, parameters: AnyObject?, completion: CompletionBlock?) {
+        let authSuccess: AuthSuccessBlock = { auth in
+            let failureBlock = self.afNetworkingFailureBlockForCompletion(completion)
+            let successBlock = self.afNetworkingSuccessBlockForCompletion(completion)
+            
+            self.sessionManager.POST(path, parameters: parameters, success: successBlock, failure: failureBlock)
         }
         
-        return false
+        fetchAuthCredential(success: authSuccess, failure: completion)
+    }
+    internal func POST(path: String, parameters: AnyObject?, success: (AnyObject? -> Void)?, failure: FailureBlock?) {
+        let authSuccess: AuthSuccessBlock = { auth in
+            let failureBlock = self.afNetworkingFailureBlockForFailure(failure)
+            let successBlock = self.afNetworkingSuccessBlockForSuccess(success)
+            
+            self.sessionManager.POST(path, parameters: parameters, success: successBlock, failure: failureBlock)
+        }
+        
+        fetchAuthCredential(success: authSuccess, failure: failure)
     }
     
-    internal func writeRequest(method: HTTPMethod, path: String, parameters: AnyObject?) {
-        writeQueue.addRequest(method: method.rawValue, path: path, parameters: parameters)
-        processQueueIfNeeded(writeQueue)
+    internal func PUT(path: String, parameters: AnyObject?, completion: CompletionBlock?) {
+        let authSuccess: AuthSuccessBlock = { auth in
+            let failureBlock = self.afNetworkingFailureBlockForCompletion(completion)
+            let successBlock = self.afNetworkingSuccessBlockForCompletion(completion)
+            
+            self.sessionManager.PUT(path, parameters: parameters, success: successBlock, failure: failureBlock)
+        }
+        
+        fetchAuthCredential(success: authSuccess, failure: completion)
+    }
+    
+    internal func PUT(path: String, parameters: AnyObject?, success: (AnyObject? -> Void)?, failure: FailureBlock?) {
+        let authSuccess: AuthSuccessBlock = { auth in
+            let failureBlock = self.afNetworkingFailureBlockForFailure(failure)
+            let successBlock = self.afNetworkingSuccessBlockForSuccess(success)
+            
+            self.sessionManager.PUT(path, parameters: parameters, success: successBlock, failure: failureBlock)
+        }
+        
+        fetchAuthCredential(success: authSuccess, failure: failure)
     }
     
     // MARK: - Private methods
     
-    private func processQueueIfNeeded(queue: NetworkQueue) {
-        if writeInProgress {
-            return
+    private func afNetworkingFailureBlockForCompletion(completion: CompletionBlock?) -> AFNetworkingFailureBlock? {
+        if let completion = completion {
+            return { task, error in
+                completion(error)
+            }
         }
         
-        if let (uuid, methodString, path, parameters: AnyObject?) = queue.nextRequest() {
-            let method = HTTPMethod(rawValue: methodString)
-            
-            let failureBlock: AFNetworkingFailureBlock  = { (task, error) in
-                NSLog("\(__FUNCTION__) failed with error: \(error)")
-                
-                // TODO: add authentication failure handling
-                
-                self.writeInProgress = false
+        return nil
+    }
+    
+    private func afNetworkingFailureBlockForFailure(failure: FailureBlock?) -> AFNetworkingFailureBlock? {
+        if let failure = failure {
+            return { task, error in
+                failure(error)
             }
-            
-            let successBlock: AFNetworkingSuccessBlock = { (task, responseObject) in
-                if let response = responseObject as? NSDictionary {
-                    
-                } else {
-                    NSLog("\(__FUNCTION__) unable to parse response:\n\(responseObject)\nRemoving from queue.")
-                }
-                
-                queue.remove(elementID: uuid)
-                
-                self.writeInProgress = false
-                
-                self.processQueueIfNeeded(queue)
-            }
-            
-            var authSuccess: AuthSuccessBlock
-            
-            switch(method) {
-            case .Some(.PUT):
-                authSuccess = { auth in
-                    self.sessionManager.PUT(path, parameters: parameters, success: successBlock, failure: failureBlock)
-                    return
-                }
-            default:
-                NSLog("\(__FUNCTION__) Unsupported method \(methodString), removing from queue.")
-                queue.remove(elementID: uuid)
-                
-                return
-            }
-            
-            writeInProgress = true
-            
-            fetchAuthCredential(success: authSuccess, failure: { error in
-                self.writeInProgress = false})
         }
+        
+        return nil
+    }
+    
+    private func afNetworkingSuccessBlockForCompletion(completion: CompletionBlock?) -> AFNetworkingSuccessBlock? {
+        if let completion = completion {
+            return { task, responseObject in
+                completion(nil)
+            }
+        }
+        
+        return nil
+    }
+    
+    private func afNetworkingSuccessBlockForSuccess(success: (AnyObject? -> Void)?) -> AFNetworkingSuccessBlock? {
+        if let success = success {
+            return { task, responseObject in
+                success(responseObject)
+            }
+        }
+        
+        return nil
     }
     
     private func setupValueTransforms() {
