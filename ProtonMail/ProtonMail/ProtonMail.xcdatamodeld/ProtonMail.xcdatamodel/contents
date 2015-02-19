@@ -28,6 +28,26 @@
             <entry key="identityAttribute" value="attachmentID"/>
         </userInfo>
     </entity>
+    <entity name="Contact" representedClassName="ProtonMail.Contact" syncable="YES">
+        <attribute name="contactID" attributeType="String" indexed="YES" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="ContactID"/>
+            </userInfo>
+        </attribute>
+        <attribute name="email" attributeType="String" indexed="YES" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="ContactEmail"/>
+            </userInfo>
+        </attribute>
+        <attribute name="name" attributeType="String" indexed="YES" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="ContactName"/>
+            </userInfo>
+        </attribute>
+        <userInfo>
+            <entry key="identityAttribute" value="contactID"/>
+        </userInfo>
+    </entity>
     <entity name="Message" representedClassName="ProtonMail.Message" syncable="YES">
         <attribute name="bccList" attributeType="String" syncable="YES">
             <userInfo>
@@ -172,6 +192,7 @@
     </entity>
     <elements>
         <element name="Attachment" positionX="-63" positionY="135" width="128" height="133"/>
+        <element name="Contact" positionX="-54" positionY="135" width="128" height="88"/>
         <element name="Message" positionX="-63" positionY="-18" width="128" height="448"/>
     </elements>
 </model>

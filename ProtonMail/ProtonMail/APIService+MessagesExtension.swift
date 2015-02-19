@@ -73,7 +73,7 @@ extension APIService {
         case descending = 1
     }
     
-    struct KeyPath {
+    private struct KeyPath {
         static let messages = "Messages"
     }
         
