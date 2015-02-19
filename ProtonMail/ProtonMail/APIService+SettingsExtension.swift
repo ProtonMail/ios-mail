@@ -20,85 +20,52 @@ import Foundation
 extension APIService {
     
     func settingUpdateDisplayName(displayName: String, completion: CompletionBlock) {
-        fetchAuthCredential(success: { authCredential in
-            let path = "/setting/display"
-            
-            let parameters = ["DisplayName" : displayName]
-            
-            self.sessionManager.PUT(path, parameters: parameters, success: { (task, response) -> Void in
-                completion(nil)
-                }, failure: { task, error in
-                    completion(error)
-            })
-            }, failure: completion)
+        let path = "/setting/display"
+        let parameters = ["DisplayName" : displayName]
+        
+        PUT(path, parameters: parameters, completion: completion)
     }
 
     func settingUpdateMailboxPassword(newPassword: String, completion: CompletionBlock) {
-        fetchAuthCredential(success: { authCredential in
-            let path = "/setting/keypwd"
-            
-            // TODO: Add parameters for update mailbox password when defined in API
-            let parameters = [:]
-            
-            self.sessionManager.PUT(path, parameters: parameters, success: { (task, response) -> Void in
-                // TODO: handle response when defined in the API
-                completion(nil)
-                }, failure: { task, error in
-                    completion(error)
-            })
-            }, failure: completion)
+        let path = "/setting/keypwd"
+        // TODO: Add parameters for update mailbox password when defined in API
+        let parameters = [:]
+
+        PUT(path, parameters: parameters, completion: completion)
     }
     
     func settingUpdateNotificationEmail(notificationEmail: String, completion: CompletionBlock) {
-        fetchAuthCredential(success: { authCredential in
-            let path = "/setting/noticeemail"
-            
-            let parameters = ["NotificationEmail" : notificationEmail]
-            
-            self.sessionManager.PUT(path, parameters: parameters, success: { (task, response) -> Void in
-                completion(nil)
-                }, failure: { task, error in
-                    completion(error)
-            })
-            }, failure: completion)
+        let path = "/setting/noticeemail"
+        let parameters = ["NotificationEmail" : notificationEmail]
+
+        PUT(path, parameters: parameters, completion: completion)
     }
     
     func settingUpdatePassword(newPassword: String, completion: CompletionBlock) {
-        fetchAuthCredential(success: { authCredential in
-            let path = "/setting/password"
-            
-            let parameters = [
-                "username" : sharedUserDataService.username ?? "",
-                "password" : newPassword,
-                "client_id" : "demoapp",
-                "response_type" : "password"]
-            
-            self.sessionManager.PUT(path, parameters: parameters, success: { (task, response) -> Void in
-                if let response = response as? NSDictionary {
-                    if let data = response["data"] as? NSDictionary {
-                        completion(nil)
-                        return
-                    }
+        let path = "/setting/password"
+        let parameters = [
+            "username" : sharedUserDataService.username ?? "",
+            "password" : newPassword,
+            "client_id" : "demoapp",
+            "response_type" : "password"]
+        let success: (AnyObject? -> Void) = { response in
+            if let response = response as? NSDictionary {
+                if let data = response["data"] as? NSDictionary {
+                    completion(nil)
+                    return
                 }
-                
-                completion(APIError.unableToParseResponse.asNSError())
-                }, failure: { task, error in
-                    completion(error)
-            })
-            }, failure: completion)
+            }
+            
+            completion(APIError.unableToParseResponse.asNSError())
+        }
+        
+        PUT(path, parameters: parameters, success: success, failure: completion)
     }
     
     func settingUpdateSignature(signature: String, completion: CompletionBlock) {
-        fetchAuthCredential(success: { authCredential in
-            let path = "/setting/signature"
-            
-            let parameters = ["Signature" : signature]
-            
-            self.sessionManager.PUT(path, parameters: parameters, success: { (task, response) -> Void in
-                completion(nil)
-                }, failure: { task, error in
-                    completion(error)
-            })
-            }, failure: completion)
+        let path = "/setting/signature"
+        let parameters = ["Signature" : signature]
+        
+        PUT(path, parameters: parameters, completion: completion)
     }
 }
