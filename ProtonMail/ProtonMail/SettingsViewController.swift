@@ -15,11 +15,17 @@ import UIKit
 class SettingsViewController: ProtonMailViewController {
     typealias CompletionBlock = APIService.CompletionBlock
     
+    // MARK: - Private constants
+    
+    private let kKeyboardOffsetHeight: CGFloat = 100.0
+    private let kFieldsMarginLeft: CGFloat = 8.0
+    private let kFieldsMarginTop: CGFloat = 50.0
+    
     
     // MARK: - Private attributes
     
-    private let kKeyboardOffsetHeight: CGFloat = 100.0
     private var activeField: UIView!
+    
     
     // MARK: - Constraint Outlets
     
@@ -38,7 +44,9 @@ class SettingsViewController: ProtonMailViewController {
     
     @IBOutlet var recoveryEmailTextField: UITextField!
     @IBOutlet var currentLoginPasswordTextField: UITextField!
+    @IBOutlet var newLoginPasswordTextField: UITextField!
     @IBOutlet var currentMailboxPasswordTextField: UITextField!
+    @IBOutlet var newMailboxPasswordTextField: UITextField!
     @IBOutlet var displayNameTextField: UITextField!
     @IBOutlet var signatureTextView: UITextView!
     
@@ -77,15 +85,30 @@ class SettingsViewController: ProtonMailViewController {
     // MARK: - Actions Outlets
     
     @IBAction func recoveryEmailSaveButtonTapped(sender: UIButton) {
+        ActivityIndicatorHelper.showActivityIndicatorAtView(notificationContainerView)
+        
+        sharedUserDataService.updateNotificationEmail(recoveryEmailTextField.text) { error in
+            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.notificationContainerView)
+        }
     }
     
     @IBAction func recoveryEmailDeleteButtonTapped(sender: UIButton) {
     }
     
     @IBAction func loginPasswordSaveButtonTapped(sender: UIButton) {
+        ActivityIndicatorHelper.showActivityIndicatorAtView(loginPasswordContainerView)
+        
+        sharedUserDataService.updatePassword(newLoginPasswordTextField.text) { error in
+            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.loginPasswordContainerView)
+        }
     }
     
     @IBAction func mailboxSaveButtonTapped(sender: UIButton) {
+        ActivityIndicatorHelper.showActivityIndicatorAtView(mailboxPasswordContainerView)
+        
+        sharedUserDataService.updateMailboxPassword(newMailboxPasswordTextField.text) { error in
+            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.mailboxPasswordContainerView)
+        }
     }
     
     @IBAction func displayNameSaveButtonTapped(sender: UIButton) {
@@ -135,6 +158,8 @@ class SettingsViewController: ProtonMailViewController {
 extension SettingsViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(textField: UITextField) {
         self.activeField = textField
+        let fieldPosition: CGPoint = self.scrollView.convertPoint(CGPointZero, fromView: textField)
+        self.scrollView.setContentOffset(CGPointMake(textField.frame.minX - kFieldsMarginLeft, fieldPosition.y - kFieldsMarginTop), animated: true)
     }
     
     func textFieldDidEndEditing(textField: UITextField) {

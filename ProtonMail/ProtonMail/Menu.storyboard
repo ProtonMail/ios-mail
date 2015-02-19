@@ -2938,7 +2938,15 @@
                                         <exclude reference="FRX-uF-48X"/>
                                     </mask>
                                     <mask key="constraints">
-                                        <exclude reference="OJH-N1-HAb"/>
+                                        <exclude reference="2Jt-GV-FCZ"/>
+                                        <exclude reference="JFX-FS-x02"/>
+                                        <exclude reference="Ng0-zM-o3j"/>
+                                        <exclude reference="hL3-Vb-6jd"/>
+                                        <exclude reference="q7v-oR-Gc5"/>
+                                        <exclude reference="LfY-iz-WcJ"/>
+                                        <exclude reference="V80-FO-zfD"/>
+                                        <exclude reference="uhO-Hm-P71"/>
+                                        <exclude reference="zCg-tN-ljz"/>
                                         <exclude reference="K2E-4t-54E"/>
                                         <exclude reference="NkN-Iz-G1q"/>
                                         <exclude reference="ar4-pS-aJU"/>
@@ -2946,21 +2954,13 @@
                                         <exclude reference="qcW-Xh-Ett"/>
                                         <exclude reference="vZg-Al-rqL"/>
                                         <exclude reference="HiS-pn-oIo"/>
-                                        <exclude reference="2Jt-GV-FCZ"/>
-                                        <exclude reference="JFX-FS-x02"/>
-                                        <exclude reference="Ng0-zM-o3j"/>
-                                        <exclude reference="hL3-Vb-6jd"/>
-                                        <exclude reference="q7v-oR-Gc5"/>
-                                        <exclude reference="qMW-fg-LUZ"/>
-                                        <exclude reference="sIO-Er-GKM"/>
                                         <exclude reference="CNK-7K-HlB"/>
                                         <exclude reference="IdI-pk-3oB"/>
                                         <exclude reference="T7M-xz-gOc"/>
                                         <exclude reference="tCB-yU-Oj1"/>
-                                        <exclude reference="LfY-iz-WcJ"/>
-                                        <exclude reference="V80-FO-zfD"/>
-                                        <exclude reference="uhO-Hm-P71"/>
-                                        <exclude reference="zCg-tN-ljz"/>
+                                        <exclude reference="OJH-N1-HAb"/>
+                                        <exclude reference="qMW-fg-LUZ"/>
+                                        <exclude reference="sIO-Er-GKM"/>
                                     </mask>
                                 </variation>
                                 <variation key="widthClass=compact">
@@ -2974,7 +2974,15 @@
                                         <include reference="FRX-uF-48X"/>
                                     </mask>
                                     <mask key="constraints">
-                                        <include reference="OJH-N1-HAb"/>
+                                        <include reference="2Jt-GV-FCZ"/>
+                                        <include reference="JFX-FS-x02"/>
+                                        <include reference="Ng0-zM-o3j"/>
+                                        <include reference="hL3-Vb-6jd"/>
+                                        <include reference="q7v-oR-Gc5"/>
+                                        <include reference="LfY-iz-WcJ"/>
+                                        <include reference="V80-FO-zfD"/>
+                                        <include reference="uhO-Hm-P71"/>
+                                        <include reference="zCg-tN-ljz"/>
                                         <include reference="K2E-4t-54E"/>
                                         <include reference="NkN-Iz-G1q"/>
                                         <include reference="ar4-pS-aJU"/>
@@ -2982,21 +2990,13 @@
                                         <include reference="qcW-Xh-Ett"/>
                                         <include reference="vZg-Al-rqL"/>
                                         <include reference="HiS-pn-oIo"/>
-                                        <include reference="2Jt-GV-FCZ"/>
-                                        <include reference="JFX-FS-x02"/>
-                                        <include reference="Ng0-zM-o3j"/>
-                                        <include reference="hL3-Vb-6jd"/>
-                                        <include reference="q7v-oR-Gc5"/>
-                                        <include reference="qMW-fg-LUZ"/>
-                                        <include reference="sIO-Er-GKM"/>
                                         <include reference="CNK-7K-HlB"/>
                                         <include reference="IdI-pk-3oB"/>
                                         <include reference="T7M-xz-gOc"/>
                                         <include reference="tCB-yU-Oj1"/>
-                                        <include reference="LfY-iz-WcJ"/>
-                                        <include reference="V80-FO-zfD"/>
-                                        <include reference="uhO-Hm-P71"/>
-                                        <include reference="zCg-tN-ljz"/>
+                                        <include reference="OJH-N1-HAb"/>
+                                        <include reference="qMW-fg-LUZ"/>
+                                        <include reference="sIO-Er-GKM"/>
                                     </mask>
                                 </variation>
                             </scrollView>
@@ -3046,6 +3046,8 @@
                         <outlet property="loginPasswordContainerView" destination="RF1-D2-8qj" id="urV-5m-990"/>
                         <outlet property="mailboxPasswordContainerView" destination="RcL-ek-FHj" id="OM3-mB-FhQ"/>
                         <outlet property="menuButton" destination="Cdw-uX-rMU" id="lvZ-Za-q1u"/>
+                        <outlet property="newLoginPasswordTextField" destination="PS0-Pf-6ha" id="MWs-W2-BSf"/>
+                        <outlet property="newMailboxPasswordTextField" destination="TRd-fA-5mo" id="dwx-yM-odN"/>
                         <outlet property="notificationContainerView" destination="vO8-m3-XOB" id="n5H-yQ-SLu"/>
                         <outlet property="recoveryEmailTextField" destination="Pw5-6M-NY2" id="LUC-le-RDx"/>
                         <outlet property="scrollView" destination="WqR-ss-MpS" id="tiM-RB-6Z6"/>
