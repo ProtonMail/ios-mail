@@ -13,10 +13,22 @@
 import UIKit
 
 class SettingsViewController: ProtonMailViewController {
-    
     typealias CompletionBlock = APIService.CompletionBlock
     
+    
+    // MARK: - Private attributes
+    
+    private let kKeyboardOffsetHeight: CGFloat = 100.0
+    private var activeField: UIView!
+    
+    // MARK: - Constraint Outlets
+    
+    @IBOutlet var keyboardOffsetHeightConstraint: NSLayoutConstraint!
+    
+    
     // MARK: - View Outlets
+    
+    @IBOutlet var scrollView: UIScrollView!
     
     @IBOutlet var notificationContainerView: UIView!
     @IBOutlet var loginPasswordContainerView: UIView!
@@ -49,7 +61,16 @@ class SettingsViewController: ProtonMailViewController {
         storageProgressBar.layer.masksToBounds = true
         storageProgressBar.clipsToBounds = true
         
+        var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        self.view.addGestureRecognizer(tapGestureRecognizer)
+        
         setupUserInfo()
+    }
+    
+    func dismissKeyboard() {
+        if (self.activeField != nil) {
+            self.activeField.resignFirstResponder()
+        }
     }
     
     
@@ -108,5 +129,38 @@ class SettingsViewController: ProtonMailViewController {
     private func includeBorderOnView(view: UIView) {
         view.layer.borderWidth = 0.5
         view.layer.borderColor = UIColor.ProtonMail.Gray_E8EBED.CGColor
+    }
+}
+
+extension SettingsViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(textField: UITextField) {
+        self.activeField = textField
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        self.activeField = nil
+    }
+}
+
+extension SettingsViewController: UITextViewDelegate {
+    func textViewDidBeginEditing(textView: UITextView) {
+        self.activeField = textView
+        
+        keyboardOffsetHeightConstraint.constant = kKeyboardOffsetHeight
+        
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+            self.scrollView.slideToBottom()
+        })
+    }
+    
+    func textViewDidEndEditing(textView: UITextView) {
+        self.activeField = nil
+        keyboardOffsetHeightConstraint.constant = 0.0
+        
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+            self.scrollView.slideToBottom()
+        })
     }
 }
