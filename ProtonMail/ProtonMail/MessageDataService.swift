@@ -23,6 +23,47 @@ class MessageDataService {
     typealias CompletionBlock = APIService.CompletionBlock
     typealias ReadBlock = (() -> Void)
     
+    enum Location: Int, Printable {
+        case draft = 1
+        case inbox = 0
+        case outbox = 2
+        case spam = 4
+        case starred = 5
+        case trash = 3
+        
+        var description : String {
+            get {
+                switch(self) {
+                case inbox:
+                    return "Inbox"
+                case draft:
+                    return "Draft"
+                case outbox:
+                    return "Outbox"
+                case spam:
+                    return "Spam"
+                case starred:
+                    return "Starred"
+                case trash:
+                    return "Trash"
+                }
+            }
+        }
+        
+        var moveAction: MessageAction? {
+            switch(self) {
+            case .inbox:
+                return .inbox
+            case .spam:
+                return .spam
+            case .trash:
+                return .trash
+            default:
+                return nil
+            }
+        }
+    }
+    
     enum MessageAction: String {
         
         // Read/unread
@@ -97,7 +138,7 @@ class MessageDataService {
         }
     }
     
-    func fetchMessagesForLocation(location: APIService.Location, page: Int, completion: CompletionBlock) {
+    func fetchMessagesForLocation(location: Location, page: Int, completion: CompletionBlock) {
         queue() {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 if let messagesArray = responseDict?["Messages"] as? [Dictionary<String,AnyObject>] {
@@ -129,11 +170,11 @@ class MessageDataService {
                 }
             }
 
-            sharedAPIService.messageList(location, page: page, sortedColumn: .date, order: .descending, filter: .noFilter, completion: completionWrapper)
+            sharedAPIService.messageList(location.rawValue, page: page, sortedColumn: .date, order: .descending, filter: .noFilter, completion: completionWrapper)
         }
     }
     
-    func fetchedResultsControllerForLocation(location: APIService.Location) -> NSFetchedResultsController? {
+    func fetchedResultsControllerForLocation(location: Location) -> NSFetchedResultsController? {
         
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
@@ -173,7 +214,7 @@ class MessageDataService {
             readQueue.removeAtIndex(0)()
         }
     }
-    
+        
     private func queue(#message: Message, action: MessageAction) {
         writeQueue.addMessage(message.messageID, action: action.rawValue)
         
@@ -184,6 +225,8 @@ class MessageDataService {
         readQueue.append(readBlock)
         dequeueIfNeeded()
     }
+    
+    // MARK: Setup
     
     private func setupMessageMonitoring() {
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.locationNumber, handler: { message in
@@ -205,5 +248,16 @@ class MessageDataService {
             
             self.queue(message: message, action: action)
         })
+    }
+}
+
+// MARK: - Message extension
+
+extension Message {
+    
+    // MARK: - Public variables
+    
+    var location: MessageDataService.Location {
+        return MessageDataService.Location(rawValue: locationNumber.integerValue) ?? MessageDataService.Location.inbox
     }
 }
