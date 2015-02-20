@@ -205,6 +205,8 @@ class UserDataService {
             if error == nil {
                 self.password = newPassword
             }
+            
+            completion(error)
         })
 
     }
