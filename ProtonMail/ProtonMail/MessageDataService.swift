@@ -188,6 +188,33 @@ class MessageDataService {
     
     // MARK: - Private methods
     
+    // MARK: Last updated
+    
+    private func clearLastUpdated() {
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(lastUpdatedKey)
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+    
+    private let lastUpdatedKey = "MessageDataServiceLastUpdatedKey"
+    
+    private func lastUpdated(#location: Location) -> NSDate {
+        return lastUpdateds[location.description] ?? NSDate.distantPast() as NSDate
+    }
+
+    private func setLastUpdated(date: NSDate, forLocation location: Location) {
+        var lastUpdateds = self.lastUpdateds
+        lastUpdateds[location.description] = date
+        
+        NSUserDefaults.standardUserDefaults().setObject(lastUpdateds, forKey: lastUpdatedKey)
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+
+    private var lastUpdateds: Dictionary<String, NSDate> {
+        return (NSUserDefaults.standardUserDefaults().objectForKey(lastUpdatedKey) as? Dictionary<String, NSDate>) ?? [:]
+    }
+    
+    // MARK: Queue
+    
     private func dequeueIfNeeded() {
         if let (uuid, messageID, actionString) = writeQueue.nextMessage() {
             if let action = MessageAction(rawValue: actionString) {
