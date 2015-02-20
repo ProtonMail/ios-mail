@@ -21,6 +21,9 @@ let sharedUserDataService = UserDataService()
 /// Stores information related to the user
 class UserDataService {
     
+    typealias CompletionBlock = APIService.CompletionBlock
+    typealias UserInfoBlock = APIService.UserInfoBlock
+    
     struct Key {
         static let displayName = "displayNameKey"
         static let isRememberMailboxPassword = "isRememberMailboxPasswordKey"
@@ -116,31 +119,26 @@ class UserDataService {
     init() {
         cleanUpIfFirstRun()
 
-        displayName = NSUserDefaults.standardUserDefaults().stringForKey(Key.displayName) ?? ""
+        displayName = NSUserDefaults.standardUserDefaults().stringOrEmptyStringForKey(Key.displayName)
         isRememberMailboxPassword = NSUserDefaults.standardUserDefaults().boolForKey(Key.isRememberMailboxPassword)
         isRememberUser = NSUserDefaults.standardUserDefaults().boolForKey(Key.isRememberUser)
-        notificationEmail = NSUserDefaults.standardUserDefaults().stringForKey(Key.notificationEmail) ?? ""
-        signature = NSUserDefaults.standardUserDefaults().stringForKey(Key.signature) ?? ""
+        notificationEmail = NSUserDefaults.standardUserDefaults().stringOrEmptyStringForKey(Key.notificationEmail)
+        signature = NSUserDefaults.standardUserDefaults().stringOrEmptyStringForKey(Key.signature)
         username = NSUserDefaults.standardUserDefaults().stringForKey(Key.username)
     }
     
-    func fetchUserInfo(completion: (NSError? -> Void)? = nil) {
-        sharedAPIService.userInfo(success: { (displayName, notificationEmail, privateKey, signature, usedSpace, maxSpace) -> Void in
-            self.displayName = displayName
-            self.notificationEmail = notificationEmail
-            self.signature = signature
-            self.usedSpace = usedSpace.toInt()
-            self.maxSpace = maxSpace
-            
-            if completion != nil {
-                completion!(nil)
+    func fetchUserInfo(completion: UserInfoBlock? = nil) {
+        sharedAPIService.userInfo() { userInfo, error in
+            if let (displayName, notificationEmail, privateKey, signature, usedSpace, maxSpace) = userInfo {
+                self.displayName = displayName
+                self.notificationEmail = notificationEmail
+                self.signature = signature
+                self.usedSpace = usedSpace.toInt()
+                self.maxSpace = maxSpace
             }
             
-            }, failure: { error in
-                if completion != nil {
-                    completion!(error)
-                }
-        })
+            completion?(userInfo, error)
+        }
     }
     
     func setMailboxPassword(password: String, isRemembered: Bool) {
@@ -148,23 +146,24 @@ class UserDataService {
         isRememberMailboxPassword = isRemembered
     }
     
-    func signIn(username: String, password: String, isRemembered: Bool, completion: (NSError? -> Void)) {
-        sharedAPIService.authAuth(username: username, password: password, success: { () in
-            self.isSignedIn = true
-            self.username = username
-
-            if isRemembered {
-                self.isRememberUser = isRemembered
-                self.password = password
-            }
-            
-            sharedUserDataService.fetchUserInfo() { error in
-                completion(error)
-            }
-            
-            }) { error in
+    func signIn(username: String, password: String, isRemembered: Bool, completion: UserInfoBlock) {
+        sharedAPIService.authAuth(username: username, password: password) { auth, error in
+            if error == nil {
+                self.isSignedIn = true
+                self.username = username
+                
+                if isRemembered {
+                    self.isRememberUser = isRemembered
+                    self.password = password
+                }
+                
+                self.fetchUserInfo() { userInfo, error in
+                    completion(userInfo, error)
+                }
+            } else {
                 self.signOut()
-                completion(error)
+                completion(nil, error)
+            }
         }
     }
     
@@ -176,46 +175,59 @@ class UserDataService {
         (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .signIn)
     }
     
-    func updateDisplayName(displayName: String, completion: APIService.CompletionBlock) {
-        sharedAPIService.settingUpdateDisplayName(displayName, completion: { error in
+    func updateDisplayName(displayName: String, completion: CompletionBlock) {
+        sharedAPIService.settingUpdateDisplayName(displayName, completion: { task, response, error in
             if error == nil {
                 self.displayName = displayName
             }
             
-            completion(error)
+            completion(task, response, error)
         })
     }
     
-    func updateMailboxPassword(newMailboxPassword: String, completion: APIService.CompletionBlock) {
-        sharedAPIService.settingUpdateMailboxPassword(newMailboxPassword, completion: completion)
+    func updateMailboxPassword(newMailboxPassword: String, completion: CompletionBlock) {
+        sharedAPIService.settingUpdateMailboxPassword(newMailboxPassword, completion: { task, response, error in
+            if error == nil {
+                self.mailboxPassword = newMailboxPassword
+            }
+            
+            completion(task, response, error)
+        })
     }
     
-    func updateNotificationEmail(newNotificationEmail: String, completion: APIService.CompletionBlock) {
-        sharedAPIService.settingUpdateNotificationEmail(newNotificationEmail, completion: { error in
+    func updateNotificationEmail(newNotificationEmail: String, completion: CompletionBlock) {
+        sharedAPIService.settingUpdateNotificationEmail(newNotificationEmail, completion: { task, response, error in
             if error == nil {
                 self.notificationEmail = newNotificationEmail
             }
             
-            completion(error)
+            completion(task, response, error)
         })
     }
     
-    func updatePassword(newPassword: String, completion: APIService.CompletionBlock) {
-        sharedAPIService.settingUpdatePassword(newPassword, completion: { error in
+    func updatePassword(newPassword: String, completion: CompletionBlock) {
+        sharedAPIService.settingUpdatePassword(newPassword, completion: { task, responseDict, anError in
+            var error = anError
+            
             if error == nil {
-                self.password = newPassword
+                if let data = responseDict?["data"] as? Dictionary<String,AnyObject> {
+                    self.password = newPassword
+                } else {
+                    error = NSError.unableToParseResponse(responseDict)
+                }
             }
+            
+            completion(task, responseDict, error)
         })
-
     }
-    
-    func updateSignature(signature: String, completion: APIService.CompletionBlock) {
-        sharedAPIService.settingUpdateSignature(signature, completion: { error in
+
+    func updateSignature(signature: String, completion: CompletionBlock) {
+        sharedAPIService.settingUpdateSignature(signature, completion: { task, response, error in
             if error == nil {
                 self.signature = signature
             }
             
-            completion(error)
+            completion(task, response, error)
         })
     }
     

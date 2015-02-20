@@ -18,26 +18,32 @@ import Foundation
 
 /// User extensions
 extension APIService {
-    typealias UserInfo = (displayName: String, notificationEmail: String, privateKey: String, signature: String, usedSpace: String, maxSpace: Int)
     
-    func userInfo(#success: (UserInfo -> Void), failure: FailureBlock) {
-        fetchAuthCredential(success: { authCredential in
-            let userInfoPath = "/users/\(authCredential.userID)"
-            
-            self.sessionManager.GET(userInfoPath, parameters: nil, success: { (task, response) -> Void in
-                if let userInfo = self.userInfoForResponse(response) {
-                    success(userInfo)
-                } else {
-                    failure(NSError.protonMailError(code: APIError.unknown.rawValue, localizedDescription: APIError.unknown.localizedDescription, localizedFailureReason: response.description))
+    typealias UserInfo = (displayName: String, notificationEmail: String, privateKey: String, signature: String, usedSpace: String, maxSpace: Int)
+    typealias UserInfoBlock = (UserInfo?, NSError?) -> Void
+    
+    func userInfo(completion: UserInfoBlock) {
+        fetchAuthCredential() { authCredential, error in
+            if let authCredential = authCredential {
+                let path = "/users/\(authCredential.userID)"
+                
+                let completionWrapper: CompletionBlock = { task, response, error in
+                    if let userInfo = self.userInfoForResponse(response) {
+                        completion(userInfo, nil)
+                    } else {
+                        completion(nil, NSError.unableToParseResponse(response))
+                    }
                 }
-                }) { task, error in
-                    failure(error)
+                
+                self.request(method: .GET, path: path, parameters: nil, completion: completionWrapper)
+            } else {
+                completion(nil, error)
             }
-        }, failure: failure)
+        }
     }
     
-    func userInfoForResponse(response: AnyObject!) -> UserInfo? {
-        if let response = response as? NSDictionary {
+    private func userInfoForResponse(response: Dictionary<String, AnyObject>?) -> UserInfo? {
+        if let response = response {
             let displayName = response["DisplayName"] as? String ?? ""
             let notificationEmail = response["NotificationEmail"] as? String ?? ""
             let privateKey = response["EncPrivateKey"] as? String ?? ""

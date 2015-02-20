@@ -31,7 +31,35 @@ class ContactDataService {
     }
     
     func fetchContacts(completion: CompletionBlock?) {
-        sharedAPIService.contactList(completion)
+        let completionWrapper: CompletionBlock = { task, response, error in
+            if let contactsArray = response?["Contacts"] as? [Dictionary<String, AnyObject>] {
+                let context = sharedCoreDataService.newManagedObjectContext()
+                
+                context.performBlock() {
+                    var error: NSError? = nil
+                    var contacts = GRTJSONSerialization.mergeObjectsForEntityName(Contact.Attributes.entityName, fromJSONArray: contactsArray, inManagedObjectContext: context, error: &error)
+                    
+                    if error == nil {
+                        self.removeContacts(contacts as [Contact], notInContext: context, error: &error)
+                        
+                        if error == nil {
+                            error = context.saveUpstreamIfNeeded()
+                        }
+                    }
+                    
+                    NSLog("\(__FUNCTION__) error: \(error)")
+                    
+                    dispatch_async(dispatch_get_main_queue()) {
+                        completion?(task, response, error)
+                        return
+                    }
+                }
+            } else {
+                completion?(task, response, NSError.unableToParseResponse(response))
+            }
+        }
+        
+        sharedAPIService.contactList(completionWrapper)
     }
     
     func updateContact(#contactID: String, name: String, email: String, completion: CompletionBlock?) {
@@ -41,11 +69,26 @@ class ContactDataService {
     // MARK: - Private methods
     
     private func fetchContactsCompletionBlockForCompletion(completion: CompletionBlock?) -> CompletionBlock {
-        return { error in
+        return { task, response, error in
             if error == nil {
                 self.fetchContacts(completion)
             } else {
-                completion?(error)
+                completion?(task, response, error)
+            }
+        }
+    }
+
+    private func removeContacts(contacts: [Contact], notInContext context: NSManagedObjectContext, error: NSErrorPointer) {
+        if contacts.count == 0 {
+            return
+        }
+        
+        let fetchRequest = NSFetchRequest(entityName: Contact.Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(format: "SELF NOT IN %@", contacts)
+        
+        if let deletedObjects = context.executeFetchRequest(fetchRequest, error: error) {
+            for deletedObject in deletedObjects as [NSManagedObject] {
+                context.deleteObject(deletedObject)
             }
         }
     }

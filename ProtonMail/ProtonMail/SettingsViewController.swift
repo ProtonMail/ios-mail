@@ -15,7 +15,6 @@ import UIKit
 class SettingsViewController: ProtonMailViewController {
     typealias CompletionBlock = APIService.CompletionBlock
     
-    
     // MARK: - Private attributes
     
     private let kKeyboardOffsetHeight: CGFloat = 100.0

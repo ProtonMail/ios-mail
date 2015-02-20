@@ -67,16 +67,69 @@ class MessageDataService {
     func fetchMessageDetailForMessage(message: Message, completion: CompletionBlock) {
         if !message.isDetailDownloaded {
             queue() {
-                sharedAPIService.messageDetail(message: message, completion: completion)
+                let completionWrapper: CompletionBlock = { task, response, error in
+                    let context = sharedCoreDataService.newManagedObjectContext()
+                    
+                    context.performBlock() {
+                        var error: NSError?
+                        let message = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: response, inManagedObjectContext: context, error: &error) as Message
+                        
+                        if error == nil {
+                            message.isDetailDownloaded = true
+                            
+                            error = context.saveUpstreamIfNeeded()
+                        }
+                        
+                        if error != nil  {
+                            NSLog("\(__FUNCTION__) error: \(error)")
+                        }
+                        
+                        dispatch_async(dispatch_get_main_queue()) {
+                            completion(task, response, error)
+                        }
+                    }
+                }
+
+                sharedAPIService.messageDetail(messageID: message.messageID, completion: completionWrapper)
             }
         } else {
-            completion(nil)
+            completion(nil, nil, nil)
         }
     }
     
     func fetchMessagesForLocation(location: APIService.Location, page: Int, completion: CompletionBlock) {
         queue() {
-            sharedAPIService.messageList(location, page: page, sortedColumn: .date, order: .descending, filter: .noFilter, completion: completion)
+            let completionWrapper: CompletionBlock = { task, responseDict, error in
+                if let messagesArray = responseDict?["Messages"] as? [Dictionary<String,AnyObject>] {
+                    
+                    let context = sharedCoreDataService.newManagedObjectContext()
+                    
+                    context.performBlock() {
+                        var error: NSError?
+                        var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
+                        
+                        if error == nil {
+                            for message in messages as [Message] {
+                                message.locationNumber = location.rawValue
+                            }
+                            
+                            error = context.saveUpstreamIfNeeded()
+                        }
+                        
+                        if error != nil  {
+                            NSLog("\(__FUNCTION__) error: \(error)")
+                        }
+                        
+                        dispatch_async(dispatch_get_main_queue()) {
+                            completion(task, responseDict, error)
+                        }
+                    }
+                } else {
+                    completion(task, responseDict, NSError.unableToParseResponse(responseDict))
+                }
+            }
+
+            sharedAPIService.messageList(location, page: page, sortedColumn: .date, order: .descending, filter: .noFilter, completion: completionWrapper)
         }
     }
     
@@ -99,7 +152,7 @@ class MessageDataService {
             if let action = MessageAction(rawValue: actionString) {
                 writeQueue.isInProgress = true
                 
-                sharedAPIService.messageID(messageID, updateWithAction: action.rawValue) { error in
+                sharedAPIService.messageID(messageID, updateWithAction: action.rawValue) { task, response, error in
                     self.writeQueue.isInProgress = false
 
                     if error == nil {
