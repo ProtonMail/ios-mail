@@ -22,6 +22,7 @@ PODS:
     - AFNetworking/NSURLSession
   - Groot (0.2)
   - Masonry (0.6.0)
+  - MBContactPicker (0.1.6)
   - MBProgressHUD (0.9)
   - NSDate+Helper (1.0.0)
   - OpenPGP (0.0.1):
@@ -34,6 +35,7 @@ DEPENDENCIES:
   - AFNetworking
   - Groot
   - Masonry (= 0.6.0)
+  - MBContactPicker
   - MBProgressHUD
   - NSDate+Helper
   - OpenPGP (from `../OpenPGP`)
@@ -48,6 +50,7 @@ SPEC CHECKSUMS:
   AFNetworking: 0f54cb5d16ce38c1b76948faffb8d5fb705021c7
   Groot: a0b9670711aaa88420cfbb4b4bc8e0ec7950780b
   Masonry: 0bc111d6902e3a55ff8423bcbdf7155261806547
+  MBContactPicker: 71d513bb28bafcbe991c94843509243c181aaa86
   MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
   NSDate+Helper: ebde22e90dc7ae5e9b49179a0c32e550f7a9cd57
   OpenPGP: 7474a5b555d034306a9985c5bce0bfacdd9ba762

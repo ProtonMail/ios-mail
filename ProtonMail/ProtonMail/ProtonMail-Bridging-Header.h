@@ -33,4 +33,6 @@
 
 #import <Masonry/Masonry.h>
 
+#import <MBContactPicker/MBContactPicker.h>
+
 #endif

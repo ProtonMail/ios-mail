@@ -11,6 +11,7 @@ pod 'OpenPGP', :path => '../OpenPGP'
 pod 'UICKeyChainStore'
 pod 'SWRevealViewController', '2.3.0'
 pod 'Masonry', '0.6.0'
+pod 'MBContactPicker'
 
 post_install do | installer |
     require 'fileutils'

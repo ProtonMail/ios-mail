@@ -1622,34 +1622,48 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contacts" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yrQ-ju-uX7">
-                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pAT-Gz-qiB" customClass="MBContactPicker">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="WTf-RK-aGv"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="WTf-RK-aGv"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="WTf-RK-aGv"/>
+                                    </mask>
+                                </variation>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="centerY" secondItem="yrQ-ju-uX7" secondAttribute="centerY" constant="0.5" id="CFE-B7-cB8"/>
-                            <constraint firstAttribute="centerX" secondItem="yrQ-ju-uX7" secondAttribute="centerX" id="INx-AB-moZ"/>
+                            <constraint firstItem="pAT-Gz-qiB" firstAttribute="top" secondItem="60O-Ao-olg" secondAttribute="bottom" id="Bw0-dq-7cM"/>
+                            <constraint firstItem="pAT-Gz-qiB" firstAttribute="leading" secondItem="S4B-4p-Yy3" secondAttribute="leading" id="RZO-lj-OX3"/>
+                            <constraint firstAttribute="trailing" secondItem="pAT-Gz-qiB" secondAttribute="trailing" id="mEB-bp-BdD"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
-                                <exclude reference="yrQ-ju-uX7"/>
+                                <exclude reference="pAT-Gz-qiB"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="CFE-B7-cB8"/>
-                                <exclude reference="INx-AB-moZ"/>
+                                <exclude reference="Bw0-dq-7cM"/>
+                                <exclude reference="RZO-lj-OX3"/>
+                                <exclude reference="mEB-bp-BdD"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
-                                <include reference="yrQ-ju-uX7"/>
+                                <include reference="pAT-Gz-qiB"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="CFE-B7-cB8"/>
-                                <include reference="INx-AB-moZ"/>
+                                <include reference="Bw0-dq-7cM"/>
+                                <include reference="RZO-lj-OX3"/>
+                                <include reference="mEB-bp-BdD"/>
                             </mask>
                         </variation>
                     </view>
@@ -1657,6 +1671,8 @@
                         <barButtonItem key="leftBarButtonItem" image="hamburger" id="G3m-Jr-Xhu"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="contactPicker" destination="pAT-Gz-qiB" id="N3c-xa-IRg"/>
+                        <outlet property="contactPickerHeightConstraint" destination="WTf-RK-aGv" id="oIg-np-gDf"/>
                         <outlet property="menuButton" destination="G3m-Jr-Xhu" id="iLB-dg-whJ"/>
                     </connections>
                 </viewController>
