@@ -26,47 +26,6 @@ extension APIService {
         case unRead = 1
     }
     
-    enum Location: Int, Printable {
-        case draft = 1
-        case inbox = 0
-        case outbox = 2
-        case spam = 4
-        case starred = 5
-        case trash = 3
-        
-        var description : String {
-            get {
-                switch(self) {
-                case inbox:
-                    return "Inbox"
-                case draft:
-                    return "Draft"
-                case outbox:
-                    return "Outbox"
-                case spam:
-                    return "Spam"
-                case starred:
-                    return "Starred"
-                case trash:
-                    return "Trash"
-                }
-            }
-        }
-        
-        var moveAction: MessageDataService.MessageAction? {
-            switch(self) {
-            case .inbox:
-                return .inbox
-            case .spam:
-                return .spam
-            case .trash:
-                return .trash
-            default:
-                return nil
-            }
-        }
-    }
-    
     enum Order: Int {
         case ascending = 0
         case descending = 1
@@ -103,28 +62,16 @@ extension APIService {
         request(method: .GET, path: path, parameters: nil, completion: completion)
     }
     
-    func messageList(location: Location, page: Int, sortedColumn: SortedColumn, order: Order, filter: Filter, completion: CompletionBlock) {
+    func messageList(location: Int, page: Int, sortedColumn: SortedColumn, order: Order, filter: Filter, completion: CompletionBlock) {
         let path = "/messages"
         
         let parameters = [
-            "Location" : location.rawValue,
+            "Location" : location,
             "Page" : page,
             "SortedColumn" : sortedColumn.rawValue,
             "Order" : order.rawValue,
             "FilterUnread" : filter.rawValue]
         
         request(method: .GET, path: path, parameters: parameters, completion: completion)
-    }
-}
-
-
-// MARK: - Message APIService extension
-
-extension Message {
-    
-    // MARK: - Public variables
-    
-    var location: APIService.Location {
-        return APIService.Location(rawValue: locationNumber.integerValue) ?? APIService.Location.inbox
     }
 }
