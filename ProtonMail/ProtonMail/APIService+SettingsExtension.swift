@@ -23,7 +23,7 @@ extension APIService {
         let path = "/setting/display"
         let parameters = ["DisplayName" : displayName]
         
-        PUT(path, parameters: parameters, completion: completion)
+        request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
 
     func settingUpdateMailboxPassword(newPassword: String, completion: CompletionBlock) {
@@ -31,14 +31,14 @@ extension APIService {
         // TODO: Add parameters for update mailbox password when defined in API
         let parameters = [:]
 
-        PUT(path, parameters: parameters, completion: completion)
+        request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
     
     func settingUpdateNotificationEmail(notificationEmail: String, completion: CompletionBlock) {
         let path = "/setting/noticeemail"
         let parameters = ["NotificationEmail" : notificationEmail]
 
-        PUT(path, parameters: parameters, completion: completion)
+        request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
     
     func settingUpdatePassword(newPassword: String, completion: CompletionBlock) {
@@ -48,24 +48,14 @@ extension APIService {
             "password" : newPassword,
             "client_id" : "demoapp",
             "response_type" : "password"]
-        let success: (AnyObject? -> Void) = { response in
-            if let response = response as? NSDictionary {
-                if let data = response["data"] as? NSDictionary {
-                    completion(nil)
-                    return
-                }
-            }
-            
-            completion(APIError.unableToParseResponse.asNSError())
-        }
         
-        PUT(path, parameters: parameters, success: success, failure: completion)
+        request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
     
     func settingUpdateSignature(signature: String, completion: CompletionBlock) {
         let path = "/setting/signature"
         let parameters = ["Signature" : signature]
         
-        PUT(path, parameters: parameters, completion: completion)
+        request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
 }

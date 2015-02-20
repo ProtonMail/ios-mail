@@ -14,7 +14,6 @@
 // the license agreement.
 //
 
-import CoreData
 import Foundation
 
 /// Contact extension
@@ -24,7 +23,6 @@ extension APIService {
         static let basePath = "/contacts"
         static let contactEmail = "ContactEmail"
         static let contactName = "ContactName"
-        static let contacts = "Contacts"
     }
     
     func contactAdd(#name: String, email: String, completion: CompletionBlock?) {
@@ -33,49 +31,19 @@ extension APIService {
             KeyPath.contactName : name,
             KeyPath.contactEmail : email]
         
-        POST(path, parameters: parameters, completion: completion)
+        request(method: .POST, path: path, parameters: parameters, completion: completion)
     }
     
     func contactDelete(#contactID: String, completion: CompletionBlock?) {
         let path = "\(KeyPath.basePath)/\(contactID)"
         
-        DELETE(path, parameters: nil, completion: completion)
+        request(method: .DELETE, path: path, parameters: nil, completion: completion)
     }
     
     func contactList(completion: CompletionBlock?) {
         let path = KeyPath.basePath
         
-        let successBlock: SuccessBlock = { response in
-            var error: NSError?
-            
-            if let contactsArray = response[KeyPath.contacts] as? [NSDictionary] {
-                let context = sharedCoreDataService.newManagedObjectContext()
-                
-                context.performBlock() {
-                    var contacts = GRTJSONSerialization.mergeObjectsForEntityName(Contact.Attributes.entityName, fromJSONArray: contactsArray, inManagedObjectContext: context, error: &error)
-                    
-                    if error == nil {
-                        self.removeContacts(contacts as [Contact], notInContext: context, error: &error)
-                        
-                        if error != nil  {
-                            NSLog("\(__FUNCTION__) error: \(error)")
-                        }
-
-                        error = context.saveUpstreamIfNeeded()
-                    }
-                    
-                    if error != nil  {
-                        NSLog("\(__FUNCTION__) error: \(error)")
-                    }
-                }
-            } else {
-                error = APIError.unableToParseResponse.asNSError()
-            }
-            
-            completion?(error)
-        }
-        
-        GET(path, parameters: nil, success: successBlock, failure: completion)
+        request(method: .GET, path: path, parameters: nil, completion: completion)
     }
     
     func contactUpdate(#contactID: String, name: String, email: String, completion: CompletionBlock?) {
@@ -85,23 +53,6 @@ extension APIService {
             KeyPath.contactName : name,
             KeyPath.contactEmail : email]
         
-        PUT(path, parameters: parameters, completion: completion)
-    }
-    
-    // MARK: - Private methods
-    
-    private func removeContacts(contacts: [Contact], notInContext context: NSManagedObjectContext, error: NSErrorPointer) {
-        if contacts.count == 0 {
-            return
-        }
-        
-        let fetchRequest = NSFetchRequest(entityName: Contact.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "SELF NOT IN %@", contacts)
-        
-        if let deletedObjects = context.executeFetchRequest(fetchRequest, error: error) {
-            for deletedObject in deletedObjects as [NSManagedObject] {
-                context.deleteObject(deletedObject)
-            }
-        }
-    }
+        request(method: .PUT, path: path, parameters: parameters, completion: completion)
+    }    
 }

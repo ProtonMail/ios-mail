@@ -87,7 +87,7 @@ class SignInViewController: UIViewController {
     func signIn() {
         MBProgressHUD.showHUDAddedTo(view, animated: true)
         
-        sharedUserDataService.signIn(usernameTextField.text, password: passwordTextField.text, isRemembered: isRemembered) {error in
+        sharedUserDataService.signIn(usernameTextField.text, password: passwordTextField.text, isRemembered: isRemembered) { _, error in
             MBProgressHUD.hideHUDForView(self.view, animated: true)
             
             if let error = error {

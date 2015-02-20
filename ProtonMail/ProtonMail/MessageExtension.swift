@@ -40,29 +40,6 @@ extension Message {
         self.init(entity: NSEntityDescription.entityForName(Attributes.entityName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
     }
     
-    class func fetchOrCreateMessageForMessageID(messageID: String, context: NSManagedObjectContext) -> (message: Message?, error: NSError?) {
-        var error: NSError?
-        var message: Message?
-        let fetchRequest = NSFetchRequest(entityName: Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", Attributes.messageID, messageID)
-        
-        if let messages = context.executeFetchRequest(fetchRequest, error: &error) {
-            switch(messages.count) {
-            case 0:
-                message = Message(context: context)
-            case 1:
-                message = messages.first as? Message
-            default:
-                message = messages.first as? Message
-                NSLog("\(__FUNCTION__) messageID: \(messageID) has \(messages.count) messages.")
-            }
-            
-            message?.messageID = messageID
-        }
-        
-        return (message, error)
-    }
-    
     func fetchDetailIfNeeded(completion: CompletionBlock) {
         sharedMessageDataService.fetchMessageDetailForMessage(self, completion: completion)
     }

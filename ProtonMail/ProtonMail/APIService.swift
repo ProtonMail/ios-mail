@@ -19,81 +19,33 @@ import Foundation
 
 private let BaseURLString = "http://protonmail.xyz"
 
+let APIServiceErrorDomain = NSError.protonMailErrorDomain(subdomain: "APIService")
+
 let sharedAPIService = APIService()
 
 class APIService {
-    typealias AFNetworkingFailureBlock = (NSURLSessionDataTask!, NSError!) -> Void
-    typealias AFNetworkingSuccessBlock = (NSURLSessionDataTask!, AnyObject!) -> Void
-    typealias AuthSuccessBlock = AuthCredential -> Void
-    typealias CompletionBlock = NSError? -> Void
-    typealias FailureBlock = NSError -> Void
-    typealias SuccessBlock = NSDictionary -> Void
-    
-    enum APIError: Int {
-        case authCredentialExpired
-        case authCredentialInvalid
-        case authInvalidGrant
-        case authUnableToParseToken
-        case unableToParseResponse
-        case userNone
-        case unknown
-        
-        var code: Int {
-            switch(self) {
-            default:
-                return 0
-            }
-        }
-        
-        var localizedDescription: String {
-            switch(self) {
-            case .authCredentialInvalid:
-                return NSLocalizedString("Invalid credential")
-            case .authCredentialExpired:
-                return NSLocalizedString("Token expired")
-            case .authInvalidGrant:
-                return NSLocalizedString("Invalid grant")
-            case .authUnableToParseToken:
-                return NSLocalizedString("Unable to parse token")
-            case .unableToParseResponse:
-                return NSLocalizedString("Unable to parse response")
-            default:
-                return NSLocalizedString("Unknown error")
-            }
-        }
-        
-        var localizedFailureReason: String? {
-            switch(self) {
-            case .authCredentialInvalid:
-                return NSLocalizedString("The authentication credentials are invalid.")
-            case .authCredentialExpired:
-                return NSLocalizedString("The authentication token has expired.")
-            case .authInvalidGrant:
-                return NSLocalizedString("The supplied credentials are invalid.")
-            case .authUnableToParseToken:
-                return NSLocalizedString("Unable to parse authentication token!")
-            case .unableToParseResponse:
-                return NSLocalizedString("Unable to parse the response object.")
-            default:
-                return nil
-            }
-        }
-        
-        var localizedRecoverySuggestion: String? {
-            switch(self) {
-            default:
-                return nil
-            }
-        }
-        
-        func asNSError() -> NSError {
-            return NSError.protonMailError(code: code, localizedDescription: localizedDescription, localizedFailureReason: localizedFailureReason, localizedRecoverySuggestion: localizedRecoverySuggestion)
-        }
+
+    typealias CompletionBlock = (NSURLSessionDataTask!, Dictionary<String,AnyObject>?, NSError?) -> Void
+
+    struct ErrorCode {
+        static let unableToParseResponse = 1
     }
+
+    enum HTTPMethod {
+        case DELETE
+        case GET
+        case POST
+        case PUT
+    }
+    
+    // MARK: - Internal variables
+    
+    internal typealias AFNetworkingFailureBlock = (NSURLSessionDataTask!, NSError!) -> Void
+    internal typealias AFNetworkingSuccessBlock = (NSURLSessionDataTask!, AnyObject!) -> Void
     
     // MARK: - Private variables
     
-    internal let sessionManager: AFHTTPSessionManager
+    private let sessionManager: AFHTTPSessionManager
     
     // MARK: - Internal methods
     
@@ -103,156 +55,74 @@ class APIService {
         
         setupValueTransforms()
     }
+
+    internal func afNetworkingBlocksForCompletion(completion: CompletionBlock?) -> (AFNetworkingSuccessBlock?, AFNetworkingFailureBlock?) {
+        if let completion = completion {
+            let failure: AFNetworkingFailureBlock = { task, error in
+                completion(task, nil, error)
+            }
+            let success: AFNetworkingSuccessBlock = { task, responseObject in
+                if let responseDictionary = responseObject as? Dictionary<String, AnyObject> {
+                    completion(task, responseDictionary, nil)
+                } else if responseObject == nil {
+                    completion(task, [:], nil)
+                } else {
+                    completion(task, nil, NSError.unableToParseResponse(responseObject))
+                }
+            }
+            
+            return (success, failure)
+        }
+        
+        return (nil, nil)
+    }
     
-    internal func fetchAuthCredential(#success: AuthSuccessBlock, failure: FailureBlock?) {
+    internal func fetchAuthCredential(#completion: AuthCredentialBlock) {
         if let credential = AuthCredential.fetchFromKeychain() {
             if !credential.isExpired {
                 self.sessionManager.requestSerializer.setAuthorizationHeaderFieldWithCredential(credential)
                 NSLog("credential: \(credential)")
-                success(credential)
+                completion(credential, nil)
             } else {
                 // TODO: Replace with logic that will refresh the authToken.
-                failure?(APIError.authCredentialExpired.asNSError())
+                completion(nil, NSError.authCredentialExpired())
             }
         } else {
             // TODO: Replace with logic that prompt for username and password, if needed.
-            failure?(APIError.authCredentialInvalid.asNSError())
+            completion(nil, NSError.authCredentialInvalid())
         }
-    }
-    
-    internal func isErrorResponse(response: AnyObject!) -> Bool {
-        if let dict = response as? NSDictionary {
-            return dict["error"] != nil
-        }
-        
-        return false
-    }
-    
-    // MARK: - Request methods
-    
-    internal func DELETE(path: String, parameters: AnyObject?, completion: CompletionBlock?) {
-        let authSuccess: AuthSuccessBlock = { auth in
-            let failureBlock = self.afNetworkingFailureBlockForCompletion(completion)
-            let successBlock = self.afNetworkingSuccessBlockForCompletion(completion)
-            
-            self.sessionManager.DELETE(path, parameters: parameters, success: successBlock, failure: failureBlock)
-        }
-        
-        fetchAuthCredential(success: authSuccess, failure: completion)
-    }
-    
-    internal func DELETE(path: String, parameters: AnyObject?, success: (AnyObject? -> Void)?, failure: FailureBlock?) {
-        let authSuccess: AuthSuccessBlock = { auth in
-            let failureBlock = self.afNetworkingFailureBlockForFailure(failure)
-            let successBlock = self.afNetworkingSuccessBlockForSuccess(success)
-            
-            self.sessionManager.DELETE(path, parameters: parameters, success: successBlock, failure: failureBlock)
-        }
-        
-        fetchAuthCredential(success: authSuccess, failure: failure)
-    }
-    
-    internal func GET(path: String, parameters: AnyObject?, success: SuccessBlock?, failure: FailureBlock?) {
-        let authSuccess: AuthSuccessBlock = { auth in
-            let failureBlock = self.afNetworkingFailureBlockForFailure(failure)
-            let successBlock: AFNetworkingSuccessBlock = { task, responseObject in
-                if let response = responseObject as? NSDictionary {
-                    success?(response)
-                } else {
-                    failure?(APIError.unableToParseResponse.asNSError())
-                }
-            }
-            
-            self.sessionManager.GET(path, parameters: parameters, success: successBlock, failure: failureBlock)
-        }
-        
-        fetchAuthCredential(success: authSuccess, failure: failure)
     }
 
-    internal func POST(path: String, parameters: AnyObject?, completion: CompletionBlock?) {
-        let authSuccess: AuthSuccessBlock = { auth in
-            let failureBlock = self.afNetworkingFailureBlockForCompletion(completion)
-            let successBlock = self.afNetworkingSuccessBlockForCompletion(completion)
-            
-            self.sessionManager.POST(path, parameters: parameters, success: successBlock, failure: failureBlock)
-        }
-        
-        fetchAuthCredential(success: authSuccess, failure: completion)
-    }
-    internal func POST(path: String, parameters: AnyObject?, success: (AnyObject? -> Void)?, failure: FailureBlock?) {
-        let authSuccess: AuthSuccessBlock = { auth in
-            let failureBlock = self.afNetworkingFailureBlockForFailure(failure)
-            let successBlock = self.afNetworkingSuccessBlockForSuccess(success)
-            
-            self.sessionManager.POST(path, parameters: parameters, success: successBlock, failure: failureBlock)
-        }
-        
-        fetchAuthCredential(success: authSuccess, failure: failure)
-    }
+    // MARK: - Request methods
     
-    internal func PUT(path: String, parameters: AnyObject?, completion: CompletionBlock?) {
-        let authSuccess: AuthSuccessBlock = { auth in
-            let failureBlock = self.afNetworkingFailureBlockForCompletion(completion)
-            let successBlock = self.afNetworkingSuccessBlockForCompletion(completion)
-            
-            self.sessionManager.PUT(path, parameters: parameters, success: successBlock, failure: failureBlock)
+    internal func request(#method: HTTPMethod, path: String, parameters: AnyObject?, authenticated: Bool = true, completion: CompletionBlock?) {
+        let authBlock: AuthCredentialBlock = { _, error in
+            if error == nil {
+                let (successBlock, failureBlock) = self.afNetworkingBlocksForCompletion(completion)
+                
+                switch(method) {
+                case .DELETE:
+                    self.sessionManager.DELETE(path, parameters: parameters, success: successBlock, failure: failureBlock)
+                case .POST:
+                    self.sessionManager.POST(path, parameters: parameters, success: successBlock, failure: failureBlock)
+                case .PUT:
+                    self.sessionManager.PUT(path, parameters: parameters, success: successBlock, failure: failureBlock)
+                default:
+                    self.sessionManager.GET(path, parameters: parameters, success: successBlock, failure: failureBlock)
+                }
+            } else {
+                completion?(nil, nil, error)
+            }
         }
-        
-        fetchAuthCredential(success: authSuccess, failure: completion)
-    }
-    
-    internal func PUT(path: String, parameters: AnyObject?, success: (AnyObject? -> Void)?, failure: FailureBlock?) {
-        let authSuccess: AuthSuccessBlock = { auth in
-            let failureBlock = self.afNetworkingFailureBlockForFailure(failure)
-            let successBlock = self.afNetworkingSuccessBlockForSuccess(success)
-            
-            self.sessionManager.PUT(path, parameters: parameters, success: successBlock, failure: failureBlock)
+
+        if authenticated {
+            fetchAuthCredential(completion: authBlock)
+        } else {
+            authBlock(nil, nil)
         }
-        
-        fetchAuthCredential(success: authSuccess, failure: failure)
     }
     
     // MARK: - Private methods
-    
-    private func afNetworkingFailureBlockForCompletion(completion: CompletionBlock?) -> AFNetworkingFailureBlock? {
-        if let completion = completion {
-            return { task, error in
-                completion(error)
-            }
-        }
-        
-        return nil
-    }
-    
-    private func afNetworkingFailureBlockForFailure(failure: FailureBlock?) -> AFNetworkingFailureBlock? {
-        if let failure = failure {
-            return { task, error in
-                failure(error)
-            }
-        }
-        
-        return nil
-    }
-    
-    private func afNetworkingSuccessBlockForCompletion(completion: CompletionBlock?) -> AFNetworkingSuccessBlock? {
-        if let completion = completion {
-            return { task, responseObject in
-                completion(nil)
-            }
-        }
-        
-        return nil
-    }
-    
-    private func afNetworkingSuccessBlockForSuccess(success: (AnyObject? -> Void)?) -> AFNetworkingSuccessBlock? {
-        if let success = success {
-            return { task, responseObject in
-                success(responseObject)
-            }
-        }
-        
-        return nil
-    }
     
     private func setupValueTransforms() {
         let dateTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
@@ -291,5 +161,28 @@ class APIService {
         }
         
         NSValueTransformer.setValueTransformer(tagTransformer, forName: "TagTransformer")
+    }
+}
+
+// MARK: - NSError APIService extension
+
+extension NSError {
+    
+    class func apiServiceError(#code: Int, localizedDescription: String, localizedFailureReason: String?, localizedRecoverySuggestion: String? = nil) -> NSError {
+        return NSError(
+            domain: APIServiceErrorDomain,
+            code: code,
+            localizedDescription: localizedDescription,
+            localizedFailureReason: localizedFailureReason,
+            localizedRecoverySuggestion: localizedRecoverySuggestion)
+    }
+    
+    class func unableToParseResponse(response: AnyObject?) -> NSError {
+        let noObject = NSLocalizedString("<no object>")
+        
+        return apiServiceError(
+            code: APIService.ErrorCode.unableToParseResponse,
+            localizedDescription: NSLocalizedString("Unable to parse response"),
+            localizedFailureReason: NSLocalizedString("Unable to parse the response object:\n\(response ?? noObject)"))
     }
 }
