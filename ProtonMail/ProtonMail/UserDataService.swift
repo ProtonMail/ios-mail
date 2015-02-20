@@ -35,6 +35,10 @@ class UserDataService {
         static let password = "passwordKey"
     }
     
+    struct Notification {
+        static let didSignOut = "UserDataServiceDidSignOutNotification"
+    }
+    
     // MARK: - Private variables
     
     private(set) var displayName: String = "" {
@@ -170,7 +174,7 @@ class UserDataService {
     func signOut() {
         clearAll()
         
-        sharedMessageDataService.deleteAllMessages()
+        NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignOut, object: self)
         
         (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .signIn)
     }

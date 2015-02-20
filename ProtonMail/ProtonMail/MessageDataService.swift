@@ -81,6 +81,8 @@ class MessageDataService {
         case trash = "trash"
     }
     
+    private let lastUpdated = LastUpdated()
+    
     private var managedObjectContext: NSManagedObjectContext? {
         return sharedCoreDataService.mainManagedObjectContext
     }
@@ -94,15 +96,11 @@ class MessageDataService {
     
     init() {
         setupMessageMonitoring()
-        
-        // TODO: add monitoring for didBecomeActive
+        setupNotifications()
     }
     
-    /// Removes all messages from the store.
-    func deleteAllMessages() {
-        let context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-        context.parentContext = managedObjectContext
-        context.deleteAll(Message.Attributes.entityName)
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     func fetchMessageDetailForMessage(message: Message, completion: CompletionBlock) {
@@ -188,29 +186,21 @@ class MessageDataService {
     
     // MARK: - Private methods
     
-    // MARK: Last updated
+    // MARK: Notifications
     
-    private func clearLastUpdated() {
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(lastUpdatedKey)
-        NSUserDefaults.standardUserDefaults().synchronize()
-    }
-    
-    private let lastUpdatedKey = "MessageDataServiceLastUpdatedKey"
-    
-    private func lastUpdated(#location: Location) -> NSDate {
-        return lastUpdateds[location.description] ?? NSDate.distantPast() as NSDate
-    }
-
-    private func setLastUpdated(date: NSDate, forLocation location: Location) {
-        var lastUpdateds = self.lastUpdateds
-        lastUpdateds[location.description] = date
+    private func setupNotifications() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didSignOutNotification:", name: UserDataService.Notification.didSignOut, object: nil)
         
-        NSUserDefaults.standardUserDefaults().setObject(lastUpdateds, forKey: lastUpdatedKey)
-        NSUserDefaults.standardUserDefaults().synchronize()
+        // TODO: add monitoring for didBecomeActive
+        
     }
-
-    private var lastUpdateds: Dictionary<String, NSDate> {
-        return (NSUserDefaults.standardUserDefaults().objectForKey(lastUpdatedKey) as? Dictionary<String, NSDate>) ?? [:]
+    
+    @objc private func didSignOutNotification(notification: NSNotification) {
+        if let context = managedObjectContext {
+            Message.deleteAll(inContext: context)
+        }
+        
+        lastUpdated.clear()
     }
     
     // MARK: Queue
@@ -286,5 +276,12 @@ extension Message {
     
     var location: MessageDataService.Location {
         return MessageDataService.Location(rawValue: locationNumber.integerValue) ?? MessageDataService.Location.inbox
+    }
+    
+    /// Removes all messages from the store.
+    class func deleteAll(inContext context: NSManagedObjectContext) {
+        let context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        context.parentContext = context
+        context.deleteAll(Attributes.entityName)
     }
 }
