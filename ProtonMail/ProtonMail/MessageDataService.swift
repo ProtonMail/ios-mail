@@ -201,6 +201,7 @@ class MessageDataService {
         }
         
         lastUpdated.clear()
+        writeQueue.clear()
     }
     
     // MARK: Queue
