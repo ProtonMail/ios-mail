@@ -28,7 +28,8 @@ class APIService {
     typealias CompletionBlock = (NSURLSessionDataTask!, Dictionary<String,AnyObject>?, NSError?) -> Void
 
     struct ErrorCode {
-        static let unableToParseResponse = 1
+        static let badPath = 1
+        static let unableToParseResponse = 2
     }
 
     enum HTTPMethod {
@@ -94,6 +95,26 @@ class APIService {
     }
 
     // MARK: - Request methods
+    
+    internal func download(#path: String, destinationDirectoryURL: NSURL, completion: ((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
+        fetchAuthCredential() { _, error in
+            if error == nil {
+                if let url = NSURL(string: path, relativeToURL: self.sessionManager.baseURL) {
+                    let request = NSURLRequest(URL: url)
+                    
+                    self.sessionManager.downloadTaskWithRequest(request, progress: nil, destination: { (targetURL, response) -> NSURL! in
+                        return destinationDirectoryURL.URLByAppendingPathComponent(response.suggestedFilename!)
+                    }, completionHandler: completion)
+                } else {
+                    completion?(nil, nil, NSError.badPath(path))
+                    return
+                }
+                
+            } else {
+                completion?(nil, nil, error)
+            }
+        }
+    }
     
     internal func request(#method: HTTPMethod, path: String, parameters: AnyObject?, authenticated: Bool = true, completion: CompletionBlock?) {
         let authBlock: AuthCredentialBlock = { _, error in
@@ -175,6 +196,13 @@ extension NSError {
             localizedDescription: localizedDescription,
             localizedFailureReason: localizedFailureReason,
             localizedRecoverySuggestion: localizedRecoverySuggestion)
+    }
+    
+    class func badPath(path: String) -> NSError {
+        return apiServiceError(
+            code: APIService.ErrorCode.badPath,
+            localizedDescription: NSLocalizedString("Bad path"),
+            localizedFailureReason: NSLocalizedString("Unable to construct a valid URL with the following path: \(path)"))
     }
     
     class func unableToParseResponse(response: AnyObject?) -> NSError {
