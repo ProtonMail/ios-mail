@@ -28,6 +28,7 @@ PODS:
   - OpenPGP (0.0.1):
     - OpenSSL
   - OpenSSL (1.0.200)
+  - RHAddressBook (1.1.1)
   - SWRevealViewController (2.3.0)
   - UICKeyChainStore (2.0.1)
 
@@ -35,10 +36,11 @@ DEPENDENCIES:
   - AFNetworking
   - Groot
   - Masonry (= 0.6.0)
-  - MBContactPicker
+  - MBContactPicker (= 0.1.6)
   - MBProgressHUD
   - NSDate+Helper
   - OpenPGP (from `../OpenPGP`)
+  - RHAddressBook (= 1.1.1)
   - SWRevealViewController (= 2.3.0)
   - UICKeyChainStore
 
@@ -55,6 +57,7 @@ SPEC CHECKSUMS:
   NSDate+Helper: ebde22e90dc7ae5e9b49179a0c32e550f7a9cd57
   OpenPGP: 7474a5b555d034306a9985c5bce0bfacdd9ba762
   OpenSSL: 4c7be3eca71139f52984542d8c4c0752154d26c3
+  RHAddressBook: 0cad9d33b9494d1e28323b62e5c7afc109cc4294
   SWRevealViewController: f6d80638b8e12323e87ac79562345403a799cb77
   UICKeyChainStore: 779de9c089920a79d8755e7ba887e51c745819a8
 

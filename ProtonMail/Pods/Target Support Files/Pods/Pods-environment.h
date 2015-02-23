@@ -90,6 +90,12 @@
 #define COCOAPODS_VERSION_MINOR_OpenSSL 0
 #define COCOAPODS_VERSION_PATCH_OpenSSL 200
 
+// RHAddressBook
+#define COCOAPODS_POD_AVAILABLE_RHAddressBook
+#define COCOAPODS_VERSION_MAJOR_RHAddressBook 1
+#define COCOAPODS_VERSION_MINOR_RHAddressBook 1
+#define COCOAPODS_VERSION_PATCH_RHAddressBook 1
+
 // SWRevealViewController
 #define COCOAPODS_POD_AVAILABLE_SWRevealViewController
 #define COCOAPODS_VERSION_MAJOR_SWRevealViewController 2

@@ -39,6 +39,7 @@ class ContactsViewController: ProtonMailViewController {
     
     private var contacts: [Contact] = [Contact]()
     private var searchResults: [Contact] = [Contact]()
+    private var hasAccessToAddressBook: Bool = false
     
     
     // MARK: - View Controller Lifecycle
@@ -46,9 +47,50 @@ class ContactsViewController: ProtonMailViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        contacts.append(Contact(name: "Diego Santiviago", email: "diego.santiviago@arctouch.com"))
-        contacts.append(Contact(name: "Eric Chamberlain", email: "eric.chamberlain@arctouch.com"))
+        if (sharedAddressBookService.hasAccessToAddressBook()) {
+            self.hasAccessToAddressBook = true
+        } else {
+            sharedAddressBookService.requestAuthorizationWithCompletion({ (granted: Bool, error: NSError?) -> Void in
+                if (granted) {
+                    self.hasAccessToAddressBook = true
+                }
+                
+                if let error = error {
+                    let alertController = error.alertController()
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
+                    
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                    println("Error trying to access Address Book = \(error.localizedDescription).")
+                }
+            })
+        }
         
+        if (self.hasAccessToAddressBook) {
+            let addressBookContacts = sharedAddressBookService.contacts()
+            for contact in addressBookContacts {
+                var name = contact.name?
+                let emails: RHMultiStringValue = contact.emails
+                
+                for (var emailIndex: UInt = 0; Int(emailIndex) < Int(emails.count()); emailIndex++) {
+                    let emailAsString = emails.valueAtIndex(emailIndex) as String
+                    
+                    if (emailAsString.isValidEmail()) {
+                        let email = emailAsString
+                        
+                        if (name == nil) {
+                            name = email
+                        }
+                        
+                        self.contacts.append(Contact(name: name, email: email))
+                    }
+                }
+            }
+        }
+        
+        self.contacts.sort { $0.name.lowercaseString < $1.name.lowercaseString }
+        
+        tableView.registerClass(ContactsTableViewCell.self, forCellReuseIdentifier: kContactCellIdentifier)
+        self.searchDisplayController?.searchResultsTableView.registerClass(ContactsTableViewCell.self, forCellReuseIdentifier: kContactCellIdentifier)
         tableView.dataSource = self
         tableView.delegate = self
     }
@@ -81,11 +123,7 @@ extension ContactsViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(kContactCellIdentifier) as UITableViewCell?
-        
-        if (cell == nil) {
-            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: kContactCellIdentifier)
-        }
+        var cell: ContactsTableViewCell = tableView.dequeueReusableCellWithIdentifier(kContactCellIdentifier, forIndexPath: indexPath) as ContactsTableViewCell
         
         var name: String
         var email: String
@@ -97,10 +135,10 @@ extension ContactsViewController: UITableViewDataSource {
             email = contacts[indexPath.row].email
         }
         
-        cell?.textLabel?.text = name
-        cell?.detailTextLabel?.text = email
+        cell.textLabel?.text = name
+        cell.detailTextLabel?.text = email
         
-        return cell!
+        return cell
     }
 }
 

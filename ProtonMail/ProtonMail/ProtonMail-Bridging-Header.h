@@ -35,4 +35,6 @@
 
 #import <MBContactPicker/MBContactPicker.h>
 
+#import <RHAddressBook/AddressBook.h>
+
 #endif
