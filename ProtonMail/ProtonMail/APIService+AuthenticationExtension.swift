@@ -28,16 +28,19 @@ extension APIService {
         static let unableToParseToken = 40
     }
     
+    struct Constants {
+        // FIXME: These values would be obtainable by inspecting the binary code, but to make thins a little more difficult, we probably don't want to these values visible when the source code is distributed.  We will probably want to come up with a way to pass in these values as pre-compiler macros.  Swift doesn't support pre-compiler macros, but we have Objective-C and can still use them.  The values would be passed in by the build scripts at build time.  Or, these values could be cleared before publishing the code.
+        static let clientID = "demoapp"
+        static let clientSecret = "demopass"
+    }
+    
     func authAuth(#username: String, password: String, completion: AuthCredentialBlock?) {
         let path = "/auth/auth"
         
-        // FIXME: These values would be obtainable by inspecting the binary code, but to make thins a little more difficult, we probably don't want to these values visible when the source code is distributed.  We will probably want to come up with a way to pass in these values as pre-compiler macros.  Swift doesn't support pre-compiler macros, but we have Objective-C and can still use them.  The values would be passed in by the build scripts at build time.  Or, these values could be cleared before publishing the code.
-        let clientID = "demoapp"
-        let clientSecret = "client_secret"
         
         let parameters = [
-            "client_id" : "demoapp",
-            "client_secret" : "demopass",
+            "client_id" : Constants.clientID,
+            "client_secret" : Constants.clientSecret,
             "response_type" : "token",
             "username" : username,
             "password" : password,
@@ -68,6 +71,39 @@ extension APIService {
     // TODO: make network call when API is finished
 //    func authRevoke(authCredential: AuthCredential, completion: CompletionBlock?) {
 //    }
+
+    func authRefresh(completion: AuthCredentialBlock?) {
+        if let authCredential = AuthCredential.fetchFromKeychain() {
+            let path = "/auth/refresh"
+            
+            let parameters = [
+                "client_id": Constants.clientID,
+                "response_type": "token",
+                "access_token": authCredential.accessToken,
+                "refresh_token": authCredential.refreshToken,
+                "grant_type": "refresh_token"]
+            
+            let completionWrapper: CompletionBlock = { task, response, error in
+                if let authInfo = self.authInfoForResponse(response) {
+                    let credential = AuthCredential(authInfo: authInfo)
+                    
+                    credential.storeInKeychain()
+                    
+                    completion?(credential, nil)
+                } else if self.isErrorResponse(response) {
+                    completion?(nil, NSError.authInvalidGrant())
+                } else if error == nil {
+                    completion?(nil, NSError.authUnableToParseToken())
+                } else {
+                    completion?(nil, NSError.unableToParseResponse(response))
+                }
+            }
+            
+            request(method: .POST, path: path, parameters: parameters, authenticated: false, completion: completionWrapper)
+        } else {
+            completion?(nil, NSError.authCredentialInvalid())
+        }
+    }
     
     // MARK: - Private methods
     
