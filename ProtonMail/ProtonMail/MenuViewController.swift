@@ -49,8 +49,16 @@ class MenuViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.revealViewController().frontViewController.view.userInteractionEnabled = false
+        self.revealViewController().view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+
         updateEmailLabel()
         updateDisplayNameLabel()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.revealViewController().frontViewController.view.userInteractionEnabled = true
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

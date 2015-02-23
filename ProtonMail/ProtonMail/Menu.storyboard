@@ -1675,10 +1675,10 @@
                                 <exclude reference="RIQ-6S-Rqf"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="Rc8-Bf-RFt"/>
                                 <exclude reference="3dh-Mo-n5Y"/>
                                 <exclude reference="Y24-4r-1jf"/>
                                 <exclude reference="q6w-PW-q3f"/>
-                                <exclude reference="Rc8-Bf-RFt"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -1686,10 +1686,10 @@
                                 <include reference="RIQ-6S-Rqf"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="Rc8-Bf-RFt"/>
                                 <include reference="3dh-Mo-n5Y"/>
                                 <include reference="Y24-4r-1jf"/>
                                 <include reference="q6w-PW-q3f"/>
-                                <include reference="Rc8-Bf-RFt"/>
                             </mask>
                         </variation>
                     </view>
