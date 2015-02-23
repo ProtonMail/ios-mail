@@ -31,19 +31,4 @@ extension Contact {
     convenience init(context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entityForName(Attributes.entityName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
     }
-    
-    // MARK: - Private methods
-    
-    override func awakeFromInsert() {
-        super.awakeFromInsert()
-        
-        // Set nil string attributes to ""
-        for (_, attribute) in entity.attributesByName as [String : NSAttributeDescription] {
-            if attribute.attributeType == .StringAttributeType {
-                if valueForKey(attribute.name) == nil {
-                    setValue("", forKey: attribute.name)
-                }
-            }
-        }
-    }
 }

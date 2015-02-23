@@ -96,20 +96,26 @@ class APIService {
 
     // MARK: - Request methods
     
-    internal func download(#path: String, destinationDirectoryURL: NSURL, completion: ((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
+    /// downloadTask returns the download task for use with UIProgressView+AFNetworking
+    internal func download(#path: String, destinationDirectoryURL: NSURL, downloadTask: ((NSURLSessionDownloadTask) -> Void)?, completion: ((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
         fetchAuthCredential() { _, error in
             if error == nil {
                 if let url = NSURL(string: path, relativeToURL: self.sessionManager.baseURL) {
                     let request = NSURLRequest(URL: url)
                     
-                    self.sessionManager.downloadTaskWithRequest(request, progress: nil, destination: { (targetURL, response) -> NSURL! in
-                        return destinationDirectoryURL.URLByAppendingPathComponent(response.suggestedFilename!)
-                    }, completionHandler: completion)
+                    if let sessionDownloadTask = self.sessionManager.downloadTaskWithRequest(
+                        request,
+                        progress: nil,
+                        destination: { (targetURL, response) -> NSURL! in
+                            return destinationDirectoryURL.URLByAppendingPathComponent(response.suggestedFilename!)
+                        },
+                        completionHandler: completion) {
+                            downloadTask?(sessionDownloadTask)
+                    }
                 } else {
                     completion?(nil, nil, NSError.badPath(path))
                     return
                 }
-                
             } else {
                 completion?(nil, nil, error)
             }

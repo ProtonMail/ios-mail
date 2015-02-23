@@ -24,10 +24,8 @@ extension Attachment {
         
         static let attachmentID = "attachmentID"
     }
-
+    
     convenience init(context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entityForName(Attributes.entityName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
     }
-    
-    
 }

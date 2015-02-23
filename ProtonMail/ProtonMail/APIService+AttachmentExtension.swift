@@ -18,8 +18,9 @@ import Foundation
 
 extension APIService {
     
-    func attachmentForAttachmentID(attachmentID: String, destinationDirectoryURL: NSURL, completion: ((NSURLResponse?, NSURL?, NSError?) -> Void)) {
-        download(path: pathForAttachmentID(attachmentID), destinationDirectoryURL: destinationDirectoryURL, completion: completion)
+    /// downloadTask returns the download task for use with UIProgressView+AFNetworking
+    func attachmentForAttachmentID(attachmentID: String, destinationDirectoryURL: NSURL, downloadTask: ((NSURLSessionDownloadTask) -> Void)?, completion: ((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
+        download(path: pathForAttachmentID(attachmentID), destinationDirectoryURL: destinationDirectoryURL, downloadTask: downloadTask, completion: completion)
     }
     
     func attachmentDeleteForAttachmentID(attachmentID: String, completion: CompletionBlock?) {
