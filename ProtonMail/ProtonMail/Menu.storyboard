@@ -1622,48 +1622,74 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pAT-Gz-qiB" customClass="MBContactPicker">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="RIQ-6S-Rqf">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="WTf-RK-aGv"/>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="WTf-RK-aGv"/>
-                                    </mask>
-                                </variation>
-                                <variation key="widthClass=compact">
-                                    <mask key="constraints">
-                                        <include reference="WTf-RK-aGv"/>
-                                    </mask>
-                                </variation>
-                            </view>
+                                <searchBar key="tableHeaderView" contentMode="redraw" searchBarStyle="prominent" showsCancelButton="YES" id="WSg-s3-RV4">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="dsh-3G-k23" id="mjv-rX-umN"/>
+                                    </connections>
+                                </searchBar>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ContactCell" textLabel="p4W-yQ-glr" detailTextLabel="wFM-qp-fVz" style="IBUITableViewCellStyleSubtitle" id="v5c-d0-GfG">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v5c-d0-GfG" id="9ay-oW-dYx">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="p4W-yQ-glr">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <variation key="widthClass=compact">
+                                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    </variation>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wFM-qp-fVz">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <variation key="widthClass=compact">
+                                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                    </variation>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="pAT-Gz-qiB" firstAttribute="top" secondItem="60O-Ao-olg" secondAttribute="bottom" id="Bw0-dq-7cM"/>
-                            <constraint firstItem="pAT-Gz-qiB" firstAttribute="leading" secondItem="S4B-4p-Yy3" secondAttribute="leading" id="RZO-lj-OX3"/>
-                            <constraint firstAttribute="trailing" secondItem="pAT-Gz-qiB" secondAttribute="trailing" id="mEB-bp-BdD"/>
+                            <constraint firstItem="RIQ-6S-Rqf" firstAttribute="top" secondItem="60O-Ao-olg" secondAttribute="bottom" id="3dh-Mo-n5Y"/>
+                            <constraint firstItem="SMa-Y1-qS2" firstAttribute="top" secondItem="RIQ-6S-Rqf" secondAttribute="bottom" id="Rc8-Bf-RFt"/>
+                            <constraint firstAttribute="trailing" secondItem="RIQ-6S-Rqf" secondAttribute="trailing" id="Y24-4r-1jf"/>
+                            <constraint firstItem="RIQ-6S-Rqf" firstAttribute="leading" secondItem="S4B-4p-Yy3" secondAttribute="leading" id="q6w-PW-q3f"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
-                                <exclude reference="pAT-Gz-qiB"/>
+                                <exclude reference="RIQ-6S-Rqf"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="Bw0-dq-7cM"/>
-                                <exclude reference="RZO-lj-OX3"/>
-                                <exclude reference="mEB-bp-BdD"/>
+                                <exclude reference="3dh-Mo-n5Y"/>
+                                <exclude reference="Y24-4r-1jf"/>
+                                <exclude reference="q6w-PW-q3f"/>
+                                <exclude reference="Rc8-Bf-RFt"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
-                                <include reference="pAT-Gz-qiB"/>
+                                <include reference="RIQ-6S-Rqf"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="Bw0-dq-7cM"/>
-                                <include reference="RZO-lj-OX3"/>
-                                <include reference="mEB-bp-BdD"/>
+                                <include reference="3dh-Mo-n5Y"/>
+                                <include reference="Y24-4r-1jf"/>
+                                <include reference="q6w-PW-q3f"/>
+                                <include reference="Rc8-Bf-RFt"/>
                             </mask>
                         </variation>
                     </view>
@@ -1671,12 +1697,22 @@
                         <barButtonItem key="leftBarButtonItem" image="hamburger" id="G3m-Jr-Xhu"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="contactPicker" destination="pAT-Gz-qiB" id="N3c-xa-IRg"/>
-                        <outlet property="contactPickerHeightConstraint" destination="WTf-RK-aGv" id="oIg-np-gDf"/>
                         <outlet property="menuButton" destination="G3m-Jr-Xhu" id="iLB-dg-whJ"/>
+                        <outlet property="searchBar" destination="WSg-s3-RV4" id="OsS-kR-eKe"/>
+                        <outlet property="searchDisplayController" destination="mKK-GV-NK5" id="yU5-XN-CG5"/>
+                        <outlet property="tableView" destination="RIQ-6S-Rqf" id="ctQ-AU-tvT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Rs-Sb-Nje" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="mKK-GV-NK5">
+                    <connections>
+                        <outlet property="delegate" destination="dsh-3G-k23" id="chL-Nf-Ny6"/>
+                        <outlet property="searchBar" destination="WSg-s3-RV4" id="RXd-YI-vUC"/>
+                        <outlet property="searchContentsController" destination="dsh-3G-k23" id="Ebi-JM-MAr"/>
+                        <outlet property="searchResultsDataSource" destination="dsh-3G-k23" id="GPY-HT-cDk"/>
+                        <outlet property="searchResultsDelegate" destination="dsh-3G-k23" id="acw-oM-YWy"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="2056.5" y="3068"/>
         </scene>

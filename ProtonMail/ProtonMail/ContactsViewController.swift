@@ -14,112 +14,108 @@ import UIKit
 
 class ContactsViewController: ProtonMailViewController {
     
+    private let kContactCellIdentifier: String = "ContactCell"
     
-    // Temporary class, just to bind the temporary array.
+    // temporary class, just to populate the tableview
     
-    class Contact: NSObject, MBContactPickerModelProtocol {
-        var contactTitle: String!
-        var contactSubtitle: String!
+    class Contact: NSObject {
+        var name: String!
+        var email: String!
         
         init(name: String!, email: String!) {
-            self.contactTitle = name
-            self.contactSubtitle = email
+            self.name = name
+            self.email = email
         }
     }
-    
-    
-    // MARK: - Private attributes
-    
-    private var contacts: [Contact]! = [Contact]()
     
     
     // MARK: - View Outlets
     
-    @IBOutlet var contactPickerHeightConstraint: NSLayoutConstraint!
-    @IBOutlet var contactPicker: MBContactPicker!
+    @IBOutlet var tableView: UITableView!
+    @IBOutlet var searchBar: UISearchBar!
     
     
-    // MARK: - View Controller lifecycle
+    // MARK: - Private attributes
+    
+    private var contacts: [Contact] = [Contact]()
+    private var searchResults: [Contact] = [Contact]()
+    
+    
+    // MARK: - View Controller Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let contactExample: [Dictionary<String, String>] = [
-            ["Name" : "Diego Santiviago", "Email" : "diego.santiviago@arctouch.com"],
-            ["Name" : "Eric Chamberlain", "Email" : "eric.chamberlain@arctouch.com"]
-        ]
+        contacts.append(Contact(name: "Diego Santiviago", email: "diego.santiviago@arctouch.com"))
+        contacts.append(Contact(name: "Eric Chamberlain", email: "eric.chamberlain@arctouch.com"))
         
-        for contact in contactExample {
-            let name = contact["Name"]
-            let email = contact["Email"]
-            contacts.append(Contact(name: name, email: email))
-        }
-        
-        contactPicker.datasource = self
-        contactPicker.delegate = self
+        tableView.dataSource = self
+        tableView.delegate = self
     }
     
-    
-    // MARK: - Private Methods
-    
-    private func updateContactPickerHeight(newHeight: CGFloat) {
-        self.contactPickerHeightConstraint.constant = newHeight
-        
-        UIView.animateWithDuration(NSTimeInterval(contactPicker.animationSpeed), animations: { () -> Void in
-            self.view.layoutIfNeeded()
+    func filterContentForSearchText(searchText: String) {
+        searchResults = contacts.filter({ (contact: Contact) -> Bool in
+            let contactNameContainsFilteredText = contact.name.lowercaseString.rangeOfString(searchText.lowercaseString) != nil
+            let contactEmailContainsFilteredText = contact.email.lowercaseString.rangeOfString(searchText.lowercaseString) != nil
+            return contactNameContainsFilteredText || contactEmailContainsFilteredText
         })
     }
 }
 
 
-// MARK: - MBContactPickerDataSource
+// MARK: - UITableViewDataSource
 
-extension ContactsViewController: MBContactPickerDataSource {
-    func contactModelsForContactPicker(contactPickerView: MBContactPicker!) -> [AnyObject]! {
-        return self.contacts
+extension ContactsViewController: UITableViewDataSource {
+
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
     }
     
-    func selectedContactModelsForContactPicker(contactPickerView: MBContactPicker!) -> [AnyObject]! {
-        return []
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if (tableView == self.searchDisplayController?.searchResultsTableView) {
+            return searchResults.count
+        }
+        
+        return contacts.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        var cell: UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(kContactCellIdentifier) as UITableViewCell?
+        
+        if (cell == nil) {
+            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: kContactCellIdentifier)
+        }
+        
+        var name: String
+        var email: String
+        if (tableView == self.searchDisplayController?.searchResultsTableView) {
+            name = searchResults[indexPath.row].name
+            email = searchResults[indexPath.row].email
+        } else {
+            name = contacts[indexPath.row].name
+            email = contacts[indexPath.row].email
+        }
+        
+        cell?.textLabel?.text = name
+        cell?.detailTextLabel?.text = email
+        
+        return cell!
     }
 }
 
 
-// MARK: - MBContactPickerDelegate
+// MARK: - UITableViewDelegate
 
-extension ContactsViewController: MBContactPickerDelegate {
-    
-    func customFilterPredicate(searchString: String!) -> NSPredicate! {
-        return NSPredicate(format: "contactTitle CONTAINS[cd] %@ or contactSubtitle CONTAINS[cd] %@", argumentArray: [searchString, searchString])
-    }
-    
-    func contactCollectionView(contactCollectionView: MBContactCollectionView!, didSelectContact model: MBContactPickerModelProtocol!) {
-        
-    }
-    
-    func contactCollectionView(contactCollectionView: MBContactCollectionView!, didAddContact model: MBContactPickerModelProtocol!) {
-        
-    }
-    
-    func contactCollectionView(contactCollectionView: MBContactCollectionView!, didRemoveContact model: MBContactPickerModelProtocol!) {
-        
-    }
-    
-    func didShowFilteredContactsForContactPicker(contactPicker: MBContactPicker!) {
-        if (self.contactPickerHeightConstraint.constant <= contactPicker.currentContentHeight) {
-            let pickerRectInWindow = self.view.convertRect(contactPicker.frame, fromView: nil)
-            let newHeight = self.view.window!.bounds.size.height - pickerRectInWindow.origin.y - contactPicker.keyboardHeight
-            self.updateContactPickerHeight(newHeight)
-        }
-    }
-    
-    func didHideFilteredContactsForContactPicker(contactPicker: MBContactPicker!) {
-        if (self.contactPickerHeightConstraint.constant > contactPicker.currentContentHeight) {
-            self.updateContactPickerHeight(contactPicker.currentContentHeight)
-        }
-    }
-    
-    func contactPicker(contactPicker: MBContactPicker!, didUpdateContentHeightTo newHeight: CGFloat) {
-        self.updateContactPickerHeight(newHeight)
+extension ContactsViewController: UITableViewDelegate {
+}
+
+
+// MARK: - UISearchDisplayDelegate
+
+extension ContactsViewController: UISearchDisplayDelegate {
+    func searchDisplayController(controller: UISearchDisplayController, shouldReloadTableForSearchString searchString: String!) -> Bool {
+        self.filterContentForSearchText(searchString)
+        return true
     }
 }
