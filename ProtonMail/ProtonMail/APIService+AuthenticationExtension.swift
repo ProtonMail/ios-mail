@@ -65,14 +65,9 @@ extension APIService {
         request(method: .POST, path: path, parameters: parameters, authenticated: false, completion: completionWrapper)
     }
     
-    func authRevoke(authCredential: AuthCredential, completion: CompletionBlock?) {
-        authCredential.expiration = NSDate.distantPast() as NSDate
-        authCredential.storeInKeychain()
-        
-        // TODO: make network call when API is finished
-        
-        completion?(nil, nil, nil)
-    }
+    // TODO: make network call when API is finished
+//    func authRevoke(authCredential: AuthCredential, completion: CompletionBlock?) {
+//    }
     
     // MARK: - Private methods
     
