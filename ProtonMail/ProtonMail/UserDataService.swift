@@ -173,6 +173,7 @@ class UserDataService {
     
     func signOut() {
         clearAll()
+        clearAuthToken()
         
         NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignOut, object: self)
         
@@ -261,5 +262,9 @@ class UserDataService {
         displayName = ""
         notificationEmail = ""
         signature = ""
+    }
+    
+    private func clearAuthToken() {
+        AuthCredential.clearFromKeychain()
     }
 }
