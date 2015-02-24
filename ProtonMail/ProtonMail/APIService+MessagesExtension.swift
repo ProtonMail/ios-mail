@@ -78,7 +78,7 @@ extension APIService {
     }
     
     func messageCreate(
-        messageID: String = "0",
+        #messageID: String = "0",
         recipientList: String = "",
         bccList: String = "",
         ccList: String = "",
@@ -113,6 +113,79 @@ extension APIService {
             
             request(method: .POST, path: path, parameters: parameters, completion: completion)
     }
+    
+    func messageDraft(
+        #recipientList: String = "",
+        bccList: String = "",
+        ccList: String = "",
+        title: String = "",
+        passwordHint: String = "",
+        expirationDate: NSDate? = nil,
+        isEncrypted: Bool,
+        body: Dictionary<String,String>,
+        attachments: Array<Attachment>?,
+        completion: CompletionBlock?) {
+            let path = "/messages/draft"
+            var parameters: Dictionary<String,AnyObject> = [
+                "RecipientList" : recipientList,
+                "BCCList" : bccList,
+                "CCList" : ccList,
+                "MessageTitle" : title,
+                "PasswordHint" : passwordHint,
+                "ExpirationTime" : expirationDate?.timeIntervalSince1970 ?? 0,
+                "IsEncrypted" : isEncrypted,
+                "MessageBody" : body]
+            
+            if let attachments = attachments {
+                var attachmentsJSON: Array<Dictionary<String,AnyObject>> = []
+                
+                for attachment in attachments {
+                    attachmentsJSON.append(attachment.asJSON())
+                }
+                
+                parameters["Attachments"] = attachmentsJSON
+            }
+            
+            request(method: .POST, path: path, parameters: parameters, completion: completion)
+    }
+    
+    func messageDraftUpdate(
+        #messageID: String,
+        recipientList: String = "",
+        bccList: String = "",
+        ccList: String = "",
+        title: String = "",
+        passwordHint: String = "",
+        expirationDate: NSDate? = nil,
+        isEncrypted: Bool,
+        body: Dictionary<String,String>,
+        attachments: Array<Attachment>?,
+        completion: CompletionBlock?) {
+            let path = "/messages/\(messageID)/draft"
+            var parameters: Dictionary<String,AnyObject> = [
+                "MessageID" : messageID,
+                "RecipientList" : recipientList,
+                "BCCList" : bccList,
+                "CCList" : ccList,
+                "MessageTitle" : title,
+                "PasswordHint" : passwordHint,
+                "ExpirationTime" : expirationDate?.timeIntervalSince1970 ?? 0,
+                "IsEncrypted" : isEncrypted,
+                "MessageBody" : body]
+            
+            if let attachments = attachments {
+                var attachmentsJSON: Array<Dictionary<String,AnyObject>> = []
+                
+                for attachment in attachments {
+                    attachmentsJSON.append(attachment.asJSON())
+                }
+                
+                parameters["Attachments"] = attachmentsJSON
+            }
+            
+            request(method: .POST, path: path, parameters: parameters, completion: completion)
+    }
+
     
     // FIXME: Pass in MessageDataService.MessageAction, instead of a String.  Xcode 6.1.1 generates a segmentation fault 11, try it again when a newer version is released.
     func messageID(messageID: String, updateWithAction action: String, completion: CompletionBlock) {
