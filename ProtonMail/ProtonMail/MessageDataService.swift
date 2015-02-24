@@ -130,21 +130,73 @@ class MessageDataService {
     }
     
     func fetchMessageIncrementalUpdates(completion: CompletionBlock?) {
+        struct IncrementalUpdateType {
+            static let delete = "1"
+            static let insert = "0"
+            static let update = "2"
+        }
+        
+        struct ResponseKey {
+            static let code = "code"
+            static let message = "message"
+            static let messageID = "MessageID"
+            static let response = "response"
+            static let type = "type"
+        }
+        
+        let validResponse = 1000
+        
         queue { () -> Void in
             // TODO: find the most recent timestamp
             let timestamp = 0 as NSTimeInterval
             let completionWrapper: CompletionBlock = { task, response, error in
-                if let code = response?["code"] as? Int {
-                    if code == 1000 {
-                        if let response = response?["response"] as? Dictionary<String, AnyObject> {
-                            if let messages = response["message"] as? Dictionary<String, AnyObject> {
+                if error != nil {
+                    completion?(task, nil, error)
+                    return
+                }
+                
+                if let code = response?[ResponseKey.code] as? Int {
+                    if code == validResponse {
+                        if let response = response?[ResponseKey.response] as? Dictionary<String, AnyObject> {
+                            if let messages = response[ResponseKey.message] as? Array<Dictionary<String, AnyObject>> {
                                 if messages.isEmpty {
-                                    completion?(task, messages, nil)
+                                    completion?(task, nil, nil)
                                 } else {
-                                    // TODO: iterate through each message checking the type
-                                    // TODO: insert type 0
-                                    // TODO: delete type 1
-                                    // TODO: merge type 2
+                                    let context = sharedCoreDataService.newManagedObjectContext()
+                                    
+                                    context.performBlock { () -> Void in
+                                        for message in messages {
+                                            switch(message[ResponseKey.type] as? String) {
+                                            case .Some(IncrementalUpdateType.delete):
+                                                if let messageID = message[ResponseKey.messageID] as? String {
+                                                    if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                                                        context.deleteObject(message)
+                                                    }
+                                                }
+                                            case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update):
+                                                var error: NSError?
+                                                GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: message, inManagedObjectContext: context, error: &error)
+
+                                                if error != nil  {
+                                                    NSLog("\(__FUNCTION__) error: \(error)")
+                                                }
+                                            default:
+                                                NSLog("\(__FUNCTION__) unknown type in message: \(message)")
+                                            }
+                                        }
+                                        
+                                        var error: NSError?
+                                        error = context.saveUpstreamIfNeeded()
+                                        
+                                        if error != nil  {
+                                            NSLog("\(__FUNCTION__) error: \(error)")
+                                        }
+                                        
+                                        dispatch_async(dispatch_get_main_queue()) {
+                                            completion?(task, response, error)
+                                            return
+                                        }
+                                    }
                                 }
                                 
                                 return
@@ -365,6 +417,10 @@ extension Message {
         let context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         context.parentContext = context
         context.deleteAll(Attributes.entityName)
+    }
+    
+    class func messageForMessageID(messageID: String, inManagedObjectContext context: NSManagedObjectContext) -> Message? {
+        return context.managedObjectWithEntityName(Message.Attributes.entityName, forKey: Message.Attributes.messageID, matchingValue: messageID) as? Message
     }
 }
 

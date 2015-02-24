@@ -126,6 +126,12 @@
                 <entry key="JSONTransformerName" value="TagTransformer"/>
             </userInfo>
         </attribute>
+        <attribute name="lastModified" optional="YES" attributeType="Date" indexed="YES" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="modify_time"/>
+                <entry key="JSONTransformerName" value="DateTransformer"/>
+            </userInfo>
+        </attribute>
         <attribute name="locationNumber" attributeType="Integer 16" defaultValueString="0" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Location"/>
@@ -193,6 +199,6 @@
     <elements>
         <element name="Attachment" positionX="-63" positionY="135" width="128" height="135"/>
         <element name="Contact" positionX="-54" positionY="135" width="128" height="88"/>
-        <element name="Message" positionX="-63" positionY="-18" width="128" height="448"/>
+        <element name="Message" positionX="-63" positionY="-18" width="128" height="465"/>
     </elements>
 </model>
