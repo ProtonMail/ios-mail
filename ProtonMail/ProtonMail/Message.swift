@@ -46,5 +46,4 @@ class Message: NSManagedObject {
     @NSManaged var totalSize: NSNumber
     
     @NSManaged var attachments: NSSet
-    
 }

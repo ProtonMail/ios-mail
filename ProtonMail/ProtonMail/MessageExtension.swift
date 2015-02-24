@@ -40,6 +40,11 @@ extension Message {
         self.init(entity: NSEntityDescription.entityForName(Attributes.entityName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
     }
     
+    override func awakeFromInsert() {
+        super.awakeFromInsert()
+        replaceNilStringAttributesWithEmptyString()
+    }
+    
     func fetchDetailIfNeeded(completion: CompletionBlock) {
         sharedMessageDataService.fetchMessageDetailForMessage(self, completion: completion)
     }
@@ -47,20 +52,5 @@ extension Message {
     func updateTag(tag: String) {
         self.tag = tag
         isStarred = tag.rangeOfString(Constants.starredTag) != nil
-    }
-    
-    // MARK: - Private methods
-    
-    override func awakeFromInsert() {
-        super.awakeFromInsert()
-        
-        // Set nil string attributes to ""
-        for (_, attribute) in entity.attributesByName as [String : NSAttributeDescription] {
-            if attribute.attributeType == .StringAttributeType {
-                if valueForKey(attribute.name) == nil {
-                    setValue("", forKey: attribute.name)
-                }
-            }
-        }
     }
 }

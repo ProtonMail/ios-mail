@@ -6,7 +6,6 @@
                 <entry key="JSONKeyPath" value="AttachmentID"/>
             </userInfo>
         </attribute>
-        <attribute name="data" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="fileName" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="FileName"/>
@@ -18,6 +17,7 @@
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
+        <attribute name="localURL" optional="YES" attributeType="Transformable" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="mimeType" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="MIMEType"/>
@@ -191,7 +191,7 @@
         </userInfo>
     </entity>
     <elements>
-        <element name="Attachment" positionX="-63" positionY="135" width="128" height="133"/>
+        <element name="Attachment" positionX="-63" positionY="135" width="128" height="135"/>
         <element name="Contact" positionX="-54" positionY="135" width="128" height="88"/>
         <element name="Message" positionX="-63" positionY="-18" width="128" height="448"/>
     </elements>

@@ -61,6 +61,9 @@
 		07CFC9DA1A82D4CF007A72B7 /* NSSetExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CFC9D91A82D4CF007A72B7 /* NSSetExtension.swift */; };
 		07DD68A11A96BCDD00ED130C /* NSUserDefaultsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD68A01A96BCDD00ED130C /* NSUserDefaultsExtension.swift */; };
 		07DD68A31A96CFB800ED130C /* LastUpdated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD68A21A96CFB800ED130C /* LastUpdated.swift */; };
+		07DD68A51A97DE9F00ED130C /* APIService+AttachmentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD68A41A97DE9F00ED130C /* APIService+AttachmentExtension.swift */; };
+		07DD68A71A9815DF00ED130C /* NSURLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DD68A61A9815DF00ED130C /* NSURLExtension.swift */; };
+		07E6C8281A9CF36400D4C8D4 /* NSManagedObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E6C8271A9CF36400D4C8D4 /* NSManagedObjectExtension.swift */; };
 		07FBA7A51A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FBA7A41A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift */; };
 		701704781A794C69000A90D2 /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701704771A794C69000A90D2 /* Roboto-MediumItalic.ttf */; };
 		7017047A1A794C9F000A90D2 /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701704791A794C9F000A90D2 /* Roboto-LightItalic.ttf */; };
@@ -150,6 +153,9 @@
 		07CFC9D91A82D4CF007A72B7 /* NSSetExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSSetExtension.swift; sourceTree = "<group>"; };
 		07DD68A01A96BCDD00ED130C /* NSUserDefaultsExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSUserDefaultsExtension.swift; sourceTree = "<group>"; };
 		07DD68A21A96CFB800ED130C /* LastUpdated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastUpdated.swift; sourceTree = "<group>"; };
+		07DD68A41A97DE9F00ED130C /* APIService+AttachmentExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+AttachmentExtension.swift"; sourceTree = "<group>"; };
+		07DD68A61A9815DF00ED130C /* NSURLExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSURLExtension.swift; sourceTree = "<group>"; };
+		07E6C8271A9CF36400D4C8D4 /* NSManagedObjectExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSManagedObjectExtension.swift; sourceTree = "<group>"; };
 		07FBA7A41A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSFetchedResultsControllerExtension.swift; sourceTree = "<group>"; };
 		132129A26ED76512DB66C024 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		701704741A791856000A90D2 /* MessageDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDetailViewController.swift; sourceTree = "<group>"; };
@@ -217,10 +223,12 @@
 				07FBA7A41A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift */,
 				07CAB8011A8815DF00C5E347 /* NSFileManagerExtension.swift */,
 				0713239B1A7C0B4C0043DB41 /* NSManagedObjectContextExtension.swift */,
+				07E6C8271A9CF36400D4C8D4 /* NSManagedObjectExtension.swift */,
 				07009F0A1A66E36500129B07 /* NSNotification+KeyboardExtension.swift */,
 				07009F081A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift */,
 				07CFC9D91A82D4CF007A72B7 /* NSSetExtension.swift */,
 				0713239F1A7C1AB10043DB41 /* NSTimeIntervalExtension.swift */,
+				07DD68A61A9815DF00ED130C /* NSURLExtension.swift */,
 				07DD68A01A96BCDD00ED130C /* NSUserDefaultsExtension.swift */,
 				70945E6D1A813550002B6837 /* UIButton+ProtonMail.swift */,
 				70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */,
@@ -355,6 +363,7 @@
 			isa = PBXGroup;
 			children = (
 				07B797BF1A6EDFF400244532 /* APIService.swift */,
+				07DD68A41A97DE9F00ED130C /* APIService+AttachmentExtension.swift */,
 				07B797C11A6EE50F00244532 /* APIService+AuthenticationExtension.swift */,
 				073FE01A1A955F4A00825980 /* APIService+ContactExtension.swift */,
 				071323911A7ADA590043DB41 /* APIService+MessagesExtension.swift */,
@@ -657,6 +666,7 @@
 				07CAB7FE1A880B1200C5E347 /* PersistentQueue.swift in Sources */,
 				075E3DEC1A5F4ECF00E001A7 /* AppDelegate.swift in Sources */,
 				072AB6911A8E89AD00AF45D6 /* MonitorSavesDataServiceMessageExtension.swift in Sources */,
+				07E6C8281A9CF36400D4C8D4 /* NSManagedObjectExtension.swift in Sources */,
 				7061A3F31A6E8C6A0006D36C /* MenuViewController.swift in Sources */,
 				70945E6E1A813550002B6837 /* UIButton+ProtonMail.swift in Sources */,
 				07B797C51A6EE5FF00244532 /* AuthCredential.swift in Sources */,
@@ -682,6 +692,7 @@
 				073FE01B1A955F4A00825980 /* APIService+ContactExtension.swift in Sources */,
 				073FD92C1A719B7900EB0CAF /* APIService+UserExtension.swift in Sources */,
 				07CC3F931A941C7A0005E39F /* MessageQueue.swift in Sources */,
+				07DD68A71A9815DF00ED130C /* NSURLExtension.swift in Sources */,
 				706932AB1A77BE3D00A75A93 /* SearchViewController.swift in Sources */,
 				071323A01A7C1AB10043DB41 /* NSTimeIntervalExtension.swift in Sources */,
 				07CFC9DA1A82D4CF007A72B7 /* NSSetExtension.swift in Sources */,
@@ -691,6 +702,7 @@
 				07FBA7A51A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift in Sources */,
 				07CC99681A702368000FD6F8 /* UIFontExtension.swift in Sources */,
 				07CAB8061A894F8600C5E347 /* CoreDataService.swift in Sources */,
+				07DD68A51A97DE9F00ED130C /* APIService+AttachmentExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
