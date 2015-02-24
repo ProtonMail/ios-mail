@@ -103,6 +103,37 @@ class MessageDataService {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
+    func fetchMessageIncrementalUpdates(completion: CompletionBlock?) {
+        queue { () -> Void in
+            // TODO: find the most recent timestamp
+            let timestamp = 0 as NSTimeInterval
+            let completionWrapper: CompletionBlock = { task, response, error in
+                if let code = response?["code"] as? Int {
+                    if code == 1000 {
+                        if let response = response?["response"] as? Dictionary<String, AnyObject> {
+                            if let messages = response["message"] as? Dictionary<String, AnyObject> {
+                                if messages.isEmpty {
+                                    completion?(task, messages, nil)
+                                } else {
+                                    // TODO: iterate through each message checking the type
+                                    // TODO: insert type 0
+                                    // TODO: delete type 1
+                                    // TODO: merge type 2
+                                }
+                                
+                                return
+                            }
+                        }
+                    }
+                }
+                
+                completion?(task, nil, NSError.unableToParseResponse(response))
+            }
+            
+            sharedAPIService.messageCheck(timestamp: timestamp, completion: completionWrapper)
+        }
+    }
+    
     func fetchMessageCountForLocation(location: Location, completion: CompletionBlock?) {
         queue { () -> Void in
             let completionWrapper: CompletionBlock = {task, response, error in

@@ -40,6 +40,13 @@ extension APIService {
     
     // MARK: - Public methods
     
+    func messageCheck(#timestamp: NSTimeInterval, completion: CompletionBlock?) {
+        let path = "/messages/check"
+        let parameters = ["t" : timestamp]
+        
+        request(method: .GET, path: path, parameters: parameters, completion: completion)
+    }
+    
     func messageCountForLocation(location: Int, completion: CompletionBlock?) {
         let path = "/messages"
         let parameters = ["Location" : location]
