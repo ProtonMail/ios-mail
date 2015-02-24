@@ -81,8 +81,12 @@
 		70945E6E1A813550002B6837 /* UIButton+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70945E6D1A813550002B6837 /* UIButton+ProtonMail.swift */; };
 		70945E701A8135EC002B6837 /* UILabel+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70945E6F1A8135EC002B6837 /* UILabel+ProtonMail.swift */; };
 		709FE39D1A9643CF00034288 /* UIScrollViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709FE39C1A9643CF00034288 /* UIScrollViewExtension.swift */; };
+		709FE3A01A977C9000034288 /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709FE39F1A977C9000034288 /* ComposeViewController.swift */; };
+		70B28D081A9B7B4D002D9EC8 /* ContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B28D071A9B7B4D002D9EC8 /* ContactsTableViewCell.swift */; };
+		70B28D0A1A9BA0AC002D9EC8 /* AddressBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B28D091A9BA0AC002D9EC8 /* AddressBookService.swift */; };
 		70C6ABE41A72C1B7006EC400 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70FD2BCB1A6FDC9B0086ADC5 /* Roboto-Regular.ttf */; };
 		70C9133D1A6D83FA002CBE61 /* UIColor+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */; };
+		70FC90DA1A9BC11F00498B42 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FC90D91A9BC11F00498B42 /* StringExtension.swift */; };
 		EAF4B9D23FDBAA4F2F237B3A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7171A1EF5F60DDA876FD139 /* libPods.a */; };
 		F77B8F0DFAD04EC03F166E0A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7171A1EF5F60DDA876FD139 /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -175,8 +179,12 @@
 		70945E6D1A813550002B6837 /* UIButton+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+ProtonMail.swift"; sourceTree = "<group>"; };
 		70945E6F1A8135EC002B6837 /* UILabel+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+ProtonMail.swift"; sourceTree = "<group>"; };
 		709FE39C1A9643CF00034288 /* UIScrollViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIScrollViewExtension.swift; sourceTree = "<group>"; };
+		709FE39F1A977C9000034288 /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
+		70B28D071A9B7B4D002D9EC8 /* ContactsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsTableViewCell.swift; sourceTree = "<group>"; };
+		70B28D091A9BA0AC002D9EC8 /* AddressBookService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBookService.swift; sourceTree = "<group>"; };
 		70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+ProtonMail.swift"; sourceTree = "<group>"; };
 		70F9C3201A7BA8F400A45DF3 /* MessageDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDetailView.swift; sourceTree = "<group>"; };
+		70FC90D91A9BC11F00498B42 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		70FD2BCB1A6FDC9B0086ADC5 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		AF1532103B091E2244D6CFE4 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E7171A1EF5F60DDA876FD139 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -237,6 +245,7 @@
 				709FE39C1A9643CF00034288 /* UIScrollViewExtension.swift */,
 				07CC996B1A717ABD000FD6F8 /* UIStoryboardExtension.swift */,
 				071323801A7846150043DB41 /* UIViewExtension.swift */,
+				70FC90D91A9BC11F00498B42 /* StringExtension.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -280,6 +289,7 @@
 		073FD9301A71C5F000EB0CAF /* DataServices */ = {
 			isa = PBXGroup;
 			children = (
+				70B28D091A9BA0AC002D9EC8 /* AddressBookService.swift */,
 				073FE0181A955ED900825980 /* ContactDataService.swift */,
 				07CAB8051A894F8600C5E347 /* CoreDataService.swift */,
 				07DD68A21A96CFB800ED130C /* LastUpdated.swift */,
@@ -415,6 +425,7 @@
 		706628241A71681300164117 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				709FE39E1A977C8400034288 /* Compose */,
 				706962031A713959001443B2 /* Contacts */,
 				70945E681A80F331002B6837 /* Mailbox */,
 				701704761A79185D000A90D2 /* Message Detail */,
@@ -437,6 +448,7 @@
 			isa = PBXGroup;
 			children = (
 				706962061A71399D001443B2 /* ContactsViewController.swift */,
+				70B28D071A9B7B4D002D9EC8 /* ContactsTableViewCell.swift */,
 			);
 			name = Contacts;
 			sourceTree = "<group>";
@@ -457,6 +469,14 @@
 				706961FE1A7136A0001443B2 /* ProtonMailViewController.swift */,
 			);
 			name = Mailbox;
+			sourceTree = "<group>";
+		};
+		709FE39E1A977C8400034288 /* Compose */ = {
+			isa = PBXGroup;
+			children = (
+				709FE39F1A977C9000034288 /* ComposeViewController.swift */,
+			);
+			name = Compose;
 			sourceTree = "<group>";
 		};
 		EDDC3A27CB6370D84ADB05EA /* Frameworks */ = {
@@ -659,7 +679,9 @@
 				07B797C21A6EE50F00244532 /* APIService+AuthenticationExtension.swift in Sources */,
 				0713237F1A7844390043DB41 /* MailboxPasswordViewController.swift in Sources */,
 				073FE01D1A9561F600825980 /* Contact.swift in Sources */,
+				70B28D081A9B7B4D002D9EC8 /* ContactsTableViewCell.swift in Sources */,
 				073FE01F1A95620D00825980 /* ContactExtension.swift in Sources */,
+				70FC90DA1A9BC11F00498B42 /* StringExtension.swift in Sources */,
 				07CC996C1A717ABD000FD6F8 /* UIStoryboardExtension.swift in Sources */,
 				70762C3B1A94EC30006B9693 /* ActivityIndicatorHelper.swift in Sources */,
 				075E3DEF1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld in Sources */,
@@ -671,6 +693,7 @@
 				70945E6E1A813550002B6837 /* UIButton+ProtonMail.swift in Sources */,
 				07B797C51A6EE5FF00244532 /* AuthCredential.swift in Sources */,
 				078A3A4C1A7FF4DC002C5FF3 /* MessageDataService.swift in Sources */,
+				709FE3A01A977C9000034288 /* ComposeViewController.swift in Sources */,
 				07CAB8041A894A3B00C5E347 /* MessageDetailView.swift in Sources */,
 				07CAB8031A894A3B00C5E347 /* MessageDetailViewController.swift in Sources */,
 				07CAB8021A8815DF00C5E347 /* NSFileManagerExtension.swift in Sources */,
@@ -678,6 +701,7 @@
 				07DD68A31A96CFB800ED130C /* LastUpdated.swift in Sources */,
 				073FD9341A732C5F00EB0CAF /* AFHTTPRequestSerializerExtension.swift in Sources */,
 				07009F011A65CF4800129B07 /* SignInViewController.swift in Sources */,
+				70B28D0A1A9BA0AC002D9EC8 /* AddressBookService.swift in Sources */,
 				07009F0B1A66E36500129B07 /* NSNotification+KeyboardExtension.swift in Sources */,
 				7069620B1A7139C8001443B2 /* SettingsViewController.swift in Sources */,
 				70945E701A8135EC002B6837 /* UILabel+ProtonMail.swift in Sources */,
