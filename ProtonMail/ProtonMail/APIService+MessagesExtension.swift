@@ -78,7 +78,7 @@ extension APIService {
     }
     
     func messageCreate(
-        #messageID: String = "0",
+        messageID: String = "0",
         recipientList: String = "",
         bccList: String = "",
         ccList: String = "",
@@ -115,7 +115,7 @@ extension APIService {
     }
     
     func messageDraft(
-        #recipientList: String = "",
+        recipientList: String = "",
         bccList: String = "",
         ccList: String = "",
         title: String = "",
