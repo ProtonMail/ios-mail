@@ -103,6 +103,21 @@ class MessageDataService {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
+    func fetchMessageCountForLocation(location: Location, completion: CompletionBlock?) {
+        queue { () -> Void in
+            let completionWrapper: CompletionBlock = {task, response, error in
+                let countInfo: Dictionary<String, Int> = [
+                    "unread" : response?["UnRead"] as? Int ?? 0,
+                    "read" : response?["Read"] as? Int ?? 0,
+                    "total" : response?["Total"] as? Int ?? 0]
+                
+                completion?(task, countInfo, nil)
+            }
+            
+            sharedAPIService.messageCountForLocation(location.rawValue, completion: completionWrapper)
+        }
+    }
+    
     func fetchMessageDetailForMessage(message: Message, completion: CompletionBlock) {
         if !message.isDetailDownloaded {
             queue() {

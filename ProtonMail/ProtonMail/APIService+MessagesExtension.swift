@@ -40,6 +40,14 @@ extension APIService {
     
     // MARK: - Public methods
     
+    func messageCountForLocation(location: Int, completion: CompletionBlock?) {
+        let path = "/messages"
+        let parameters = ["Location" : location]
+        let completionWrapper = completionWrapperParseCompletion(completion, forKey: "MessageCount")
+        
+        request(method: .GET, path: path, parameters: parameters, completion: completionWrapper)
+    }
+    
     // FIXME: Pass in MessageDataService.MessageAction, instead of a String.  Xcode 6.1.1 generates a segmentation fault 11, try it again when a newer version is released.
     func messageID(messageID: String, updateWithAction action: String, completion: CompletionBlock) {
 
