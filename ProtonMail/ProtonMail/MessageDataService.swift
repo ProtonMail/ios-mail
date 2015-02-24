@@ -308,6 +308,43 @@ class MessageDataService {
         return nil
     }
     
+    func search(query: String, page: Int, completion: CompletionBlock?) {
+        queue {
+            let completionWrapper: CompletionBlock = {task, response, error in
+                if error != nil {
+                    completion?(task, response, error)
+                }
+                
+                if let messagesArray = response?["Messages"] as? [Dictionary<String,AnyObject>] {
+                    
+                    let context = sharedCoreDataService.newManagedObjectContext()
+                    
+                    context.performBlock() {
+                        var error: NSError?
+                        var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
+                        
+                        if error == nil {
+                            error = context.saveUpstreamIfNeeded()
+                        }
+                        
+                        if error != nil  {
+                            NSLog("\(__FUNCTION__) error: \(error)")
+                        }
+                        
+                        dispatch_async(dispatch_get_main_queue()) {
+                            completion?(task, response, error)
+                            return
+                        }
+                    }
+                } else {
+                    completion?(task, response, NSError.unableToParseResponse(response))
+                }
+            }
+            
+            sharedAPIService.messageSearch(query, page: page, completion: completionWrapper)
+        }
+    }
+    
     // MARK: - Private methods
     
     // MARK: Notifications

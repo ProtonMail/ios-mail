@@ -89,4 +89,13 @@ extension APIService {
         
         request(method: .GET, path: path, parameters: parameters, completion: completion)
     }
+    
+    func messageSearch(query: String, page: Int, completion: CompletionBlock?) {
+        let path = "/messages/search"
+        let parameters = [
+            "query" : query,
+            "page" : page]
+        
+        request(method: .GET, path: path, parameters: parameters, completion: completion)
+    }
 }
