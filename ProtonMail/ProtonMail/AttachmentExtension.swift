@@ -28,4 +28,15 @@ extension Attachment {
     convenience init(context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entityForName(Attributes.entityName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
     }
+    
+    override func prepareForDeletion() {
+        super.prepareForDeletion()
+        
+        if let localURL = localURL {
+            var error: NSError? = nil
+            if !NSFileManager.defaultManager().removeItemAtURL(localURL, error: &error) {
+                NSLog("\(__FUNCTION__) Could not delete \(localURL) with error: \(error)")
+            }
+        }
+    }
 }

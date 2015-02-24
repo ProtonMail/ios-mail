@@ -40,6 +40,11 @@ extension Message {
         self.init(entity: NSEntityDescription.entityForName(Attributes.entityName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
     }
     
+    override func awakeFromInsert() {
+        super.awakeFromInsert()
+        replaceNilStringAttributesWithEmptyString()
+    }
+    
     func fetchDetailIfNeeded(completion: CompletionBlock) {
         sharedMessageDataService.fetchMessageDetailForMessage(self, completion: completion)
     }

@@ -31,4 +31,9 @@ extension Contact {
     convenience init(context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entityForName(Attributes.entityName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
     }
+    
+    override func awakeFromInsert() {
+        super.awakeFromInsert()
+        replaceNilStringAttributesWithEmptyString()
+    }
 }

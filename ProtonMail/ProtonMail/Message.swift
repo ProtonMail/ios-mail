@@ -46,19 +46,4 @@ class Message: NSManagedObject {
     @NSManaged var totalSize: NSNumber
     
     @NSManaged var attachments: NSSet
-    
-    // MARK: - Private methods
-    
-    override func awakeFromInsert() {
-        super.awakeFromInsert()
-        
-        // Set nil string attributes to ""
-        for (_, attribute) in entity.attributesByName as [String : NSAttributeDescription] {
-            if attribute.attributeType == .StringAttributeType {
-                if valueForKey(attribute.name) == nil {
-                    setValue("", forKey: attribute.name)
-                }
-            }
-        }
-    }
 }

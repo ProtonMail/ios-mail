@@ -1,6 +1,7 @@
 //
-//  Attachment.swift
+//  NSManagedObjectExtension.swift
 //  ProtonMail
+//
 //
 // Copyright 2015 ArcTouch, Inc.
 // All rights reserved.
@@ -14,15 +15,17 @@
 //
 
 import Foundation
-import CoreData
 
-class Attachment: NSManagedObject {
+extension NSManagedObject {
     
-    @NSManaged var attachmentID: String
-    @NSManaged var fileName: String
-    @NSManaged var fileSize: NSNumber
-    @NSManaged var localURL: NSURL?
-    @NSManaged var mimeType: String
-    
-    @NSManaged var message: Message
+    /// Set nil string attributes to ""
+    internal func replaceNilStringAttributesWithEmptyString() {
+        for (_, attribute) in entity.attributesByName as [String : NSAttributeDescription] {
+            if attribute.attributeType == .StringAttributeType {
+                if valueForKey(attribute.name) == nil {
+                    setValue("", forKey: attribute.name)
+                }
+            }
+        }
+    }
 }
