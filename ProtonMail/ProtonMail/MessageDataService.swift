@@ -103,6 +103,32 @@ class MessageDataService {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
+    /// downloadTask returns the download task for use with UIProgressView+AFNetworking
+    func fetchAttachmentForAttachment(attachment: Attachment, downloadTask: ((NSURLSessionDownloadTask) -> Void)?, completion:((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
+        if let localURL = attachment.localURL {
+            completion?(nil, localURL, nil)
+            return
+        }
+        
+        // TODO: check for existing download tasks and return that task rather than start a new download
+
+        queue { () -> Void in
+            sharedAPIService.attachmentForAttachmentID(attachment.attachmentID, destinationDirectoryURL: NSFileManager.defaultManager().attachmentDirectory, downloadTask: downloadTask, completion: { task, fileURL, error in
+                var error = error
+                if let fileURL = fileURL {
+                    attachment.localURL = fileURL
+                    
+                    error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
+                    if error != nil  {
+                        NSLog("\(__FUNCTION__) error: \(error)")
+                    }
+                }
+                
+                completion?(task, fileURL, error)
+            })
+        }
+    }
+    
     func fetchMessageIncrementalUpdates(completion: CompletionBlock?) {
         queue { () -> Void in
             // TODO: find the most recent timestamp
@@ -151,7 +177,7 @@ class MessageDataService {
     
     func fetchMessageDetailForMessage(message: Message, completion: CompletionBlock) {
         if !message.isDetailDownloaded {
-            queue() {
+            queue {
                 let completionWrapper: CompletionBlock = { task, response, error in
                     let context = sharedCoreDataService.newManagedObjectContext()
                     
@@ -183,7 +209,7 @@ class MessageDataService {
     }
     
     func fetchMessagesForLocation(location: Location, page: Int, completion: CompletionBlock) {
-        queue() {
+        queue {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 if let messagesArray = responseDict?["Messages"] as? [Dictionary<String,AnyObject>] {
                     
@@ -247,6 +273,7 @@ class MessageDataService {
         }
         
         lastUpdated.clear()
+        writeQueue.clear()
     }
     
     // MARK: Queue
@@ -314,6 +341,15 @@ class MessageDataService {
     }
 }
 
+// MARK: - Attachment extension
+
+extension Attachment {
+    
+    func fetchAttachment(downloadTask: ((NSURLSessionDownloadTask) -> Void)?, completion:((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
+        sharedMessageDataService.fetchAttachmentForAttachment(self, downloadTask: downloadTask, completion: completion)
+    }
+}
+
 // MARK: - Message extension
 
 extension Message {
@@ -329,5 +365,14 @@ extension Message {
         let context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         context.parentContext = context
         context.deleteAll(Attributes.entityName)
+    }
+}
+
+// MARK: - NSFileManager extension
+
+extension NSFileManager {
+    
+    var attachmentDirectory: NSURL {
+        return applicationSupportDirectoryURL.URLByAppendingPathComponent("attachments", isDirectory: true)
     }
 }

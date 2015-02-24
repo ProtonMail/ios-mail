@@ -1,5 +1,5 @@
 //
-//  NSFileManagerExtension.swift
+//  NSManagedObjectExtension.swift
 //  ProtonMail
 //
 //
@@ -16,16 +16,16 @@
 
 import Foundation
 
-extension NSFileManager {
+extension NSManagedObject {
     
-    var applicationSupportDirectoryURL: NSURL {
-        let urls = URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask) as [NSURL]
-        return urls.first!
+    /// Set nil string attributes to ""
+    internal func replaceNilStringAttributesWithEmptyString() {
+        for (_, attribute) in entity.attributesByName as [String : NSAttributeDescription] {
+            if attribute.attributeType == .StringAttributeType {
+                if valueForKey(attribute.name) == nil {
+                    setValue("", forKey: attribute.name)
+                }
+            }
+        }
     }
-    
-    var cachesDirectoryURL: NSURL {
-        let urls = URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask) as [NSURL]
-        return urls.first!
-    }
-    
 }

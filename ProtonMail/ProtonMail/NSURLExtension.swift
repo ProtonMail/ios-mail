@@ -1,5 +1,5 @@
 //
-//  NSFileManagerExtension.swift
+//  NSURLExtension.swift
 //  ProtonMail
 //
 //
@@ -16,16 +16,12 @@
 
 import Foundation
 
-extension NSFileManager {
+extension NSURL {
     
-    var applicationSupportDirectoryURL: NSURL {
-        let urls = URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask) as [NSURL]
-        return urls.first!
+    func excludeFromBackup() {
+        var error: NSError? = nil
+        if !setResourceValue(true, forKey: NSURLIsExcludedFromBackupKey, error: &error) {
+            NSLog("\(__FUNCTION__) path: \(absoluteString) excludeFromBackup error: \(error)")
+        }
     }
-    
-    var cachesDirectoryURL: NSURL {
-        let urls = URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask) as [NSURL]
-        return urls.first!
-    }
-    
 }
