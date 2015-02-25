@@ -19,40 +19,42 @@ import Foundation
 /// Contact extension
 extension APIService {
     
-    private struct KeyPath {
-        static let basePath = "/contacts"
-        static let contactEmail = "ContactEmail"
-        static let contactName = "ContactName"
+    private struct ContactPath {
+        static let base = "/contacts"
     }
     
     func contactAdd(#name: String, email: String, completion: CompletionBlock?) {
-        let path = KeyPath.basePath
-        let parameters = [
-            KeyPath.contactName : name,
-            KeyPath.contactEmail : email]
+        let path = ContactPath.base
+        let parameters = parametersForName(name, email: email)
         
         request(method: .POST, path: path, parameters: parameters, completion: completion)
     }
     
     func contactDelete(#contactID: String, completion: CompletionBlock?) {
-        let path = "\(KeyPath.basePath)/\(contactID)"
+        let path = ContactPath.base.stringByAppendingPathComponent(contactID)
         
         request(method: .DELETE, path: path, parameters: nil, completion: completion)
     }
     
     func contactList(completion: CompletionBlock?) {
-        let path = KeyPath.basePath
+        let path = ContactPath.base
         
         request(method: .GET, path: path, parameters: nil, completion: completion)
     }
     
     func contactUpdate(#contactID: String, name: String, email: String, completion: CompletionBlock?) {
-        let path = "\(KeyPath.basePath)/\(contactID)"
+        let path = ContactPath.base.stringByAppendingPathComponent(contactID)
         
-        let parameters = [
-            KeyPath.contactName : name,
-            KeyPath.contactEmail : email]
+        let parameters = parametersForName(name, email: email)
         
         request(method: .PUT, path: path, parameters: parameters, completion: completion)
-    }    
+    }
+    
+    // MARK: - Private methods
+    
+    private func parametersForName(name: String, email: String) -> NSDictionary {
+        return [
+            "ContactName" : name,
+            "ContactEmail" :email]
+    }
 }

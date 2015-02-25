@@ -28,8 +28,9 @@ class APIService {
     typealias CompletionBlock = (NSURLSessionDataTask!, Dictionary<String,AnyObject>?, NSError?) -> Void
 
     struct ErrorCode {
-        static let badPath = 1
-        static let unableToParseResponse = 2
+        static let badParameter = 1
+        static let badPath = 2
+        static let unableToParseResponse = 3
     }
 
     enum HTTPMethod {
@@ -202,6 +203,13 @@ extension NSError {
             localizedDescription: localizedDescription,
             localizedFailureReason: localizedFailureReason,
             localizedRecoverySuggestion: localizedRecoverySuggestion)
+    }
+    
+    class func badParameter(parameter: AnyObject?) -> NSError {
+        return apiServiceError(
+            code: APIService.ErrorCode.badParameter,
+            localizedDescription: NSLocalizedString("Bad parameter"),
+            localizedFailureReason: NSLocalizedString("Bad parameter: \(parameter)"))
     }
     
     class func badPath(path: String) -> NSError {

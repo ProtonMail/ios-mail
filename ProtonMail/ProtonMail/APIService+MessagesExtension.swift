@@ -26,6 +26,10 @@ extension APIService {
         case unRead = 1
     }
     
+    private struct MessagePath {
+        static let base = "/messages"
+    }
+    
     enum Order: Int {
         case ascending = 0
         case descending = 1
@@ -45,7 +49,7 @@ extension APIService {
 
         // FIXME: Remove this wrapper when action can be passed in directly
         if let action = MessageDataService.MessageAction(rawValue: action) {
-            let path = "/messages/\(messageID)/\(action.rawValue)"
+            let path = MessagePath.base.stringByAppendingPathComponent(messageID).stringByAppendingPathComponent(action.rawValue)
 
             switch(action) {
             case .delete:
@@ -57,13 +61,13 @@ extension APIService {
     }
     
     func messageDetail(#messageID: String, completion: CompletionBlock) {
-        let path = "/messages/\(messageID)"
+        let path = MessagePath.base.stringByAppendingPathComponent(messageID)
         
         request(method: .GET, path: path, parameters: nil, completion: completion)
     }
     
     func messageList(location: Int, page: Int, sortedColumn: SortedColumn, order: Order, filter: Filter, completion: CompletionBlock) {
-        let path = "/messages"
+        let path = MessagePath.base
         
         let parameters = [
             "Location" : location,
