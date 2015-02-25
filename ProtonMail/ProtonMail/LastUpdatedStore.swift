@@ -1,5 +1,5 @@
 //
-//  LastUpdated.swift
+//  LastUpdatedStore.swift
 //  ProtonMail
 //
 //
@@ -16,14 +16,29 @@
 
 import Foundation
 
-class LastUpdated {
+class LastUpdatedStore {
     
     private struct Key {
         static let lastUpdated = "LastUpdatedKey"
     }
     
     private var lastUpdateds: Dictionary<String, NSDate> {
-        return (NSUserDefaults.standardUserDefaults().objectForKey(Key.lastUpdated) as? Dictionary<String, NSDate>) ?? [:]
+        get {
+            return (NSUserDefaults.standardUserDefaults().objectForKey(Key.lastUpdated) as? Dictionary<String, NSDate>) ?? [:]
+        }
+        set {
+            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: Key.lastUpdated)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
+    subscript(key: String) -> NSDate {
+        get {
+            return lastUpdatedForKey(key)
+        }
+        set {
+            setLastUpdated(newValue, forKey: key)
+        }
     }
     
     /// Clears all the last updated values from the store.
@@ -33,14 +48,10 @@ class LastUpdated {
     }
     
     func lastUpdatedForKey(key: String) -> NSDate {
-        return lastUpdateds[key] ?? NSDate.distantPast() as NSDate
+        return lastUpdateds[key] ?? (NSDate.distantPast() as NSDate)
     }
     
     func setLastUpdated(date: NSDate, forKey key: String) {
-        var lastUpdateds = self.lastUpdateds
         lastUpdateds[key] = date
-        
-        NSUserDefaults.standardUserDefaults().setObject(lastUpdateds, forKey: key)
-        NSUserDefaults.standardUserDefaults().synchronize()
     }
 }

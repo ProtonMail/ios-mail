@@ -35,18 +35,35 @@ class MessageDataService {
             get {
                 switch(self) {
                 case inbox:
-                    return "Inbox"
+                    return NSLocalizedString("Inbox")
                 case draft:
-                    return "Draft"
+                    return NSLocalizedString("Draft")
                 case outbox:
-                    return "Outbox"
+                    return NSLocalizedString("Outbox")
                 case spam:
-                    return "Spam"
+                    return NSLocalizedString("Spam")
                 case starred:
-                    return "Starred"
+                    return NSLocalizedString("Starred")
                 case trash:
-                    return "Trash"
+                    return NSLocalizedString("Trash")
                 }
+            }
+        }
+        
+        var key: String {
+            switch(self) {
+            case inbox:
+                return "Inbox"
+            case draft:
+                return "Draft"
+            case outbox:
+                return "Outbox"
+            case spam:
+                return "Spam"
+            case starred:
+                return "Starred"
+            case trash:
+                return "Trash"
             }
         }
         
@@ -81,7 +98,10 @@ class MessageDataService {
         case trash = "trash"
     }
     
-    private let lastUpdated = LastUpdated()
+    private let firstPage = 1
+
+    private let lastUpdatedMaximumTimeInterval: NSTimeInterval = 24 /*hours*/ * 3600
+    private let lastUpdatedStore = LastUpdatedStore()
     
     private var managedObjectContext: NSManagedObjectContext? {
         return sharedCoreDataService.mainManagedObjectContext
@@ -129,86 +149,28 @@ class MessageDataService {
         }
     }
     
-    func fetchMessageIncrementalUpdates(completion: CompletionBlock?) {
-        struct IncrementalUpdateType {
-            static let delete = "1"
-            static let insert = "0"
-            static let update = "2"
-        }
+    func fetchLatestMessagesForLocation(location: Location, completion: CompletionBlock?) {
+        let locationLastUpdated = lastUpdatedStore[location.key]
+        let lastUpdatedCuttoff = NSDate(timeIntervalSinceNow: -lastUpdatedMaximumTimeInterval)
         
-        struct ResponseKey {
-            static let code = "code"
-            static let message = "message"
-            static let messageID = "MessageID"
-            static let response = "response"
-            static let type = "type"
-        }
-        
-        let validResponse = 1000
-        
-        queue { () -> Void in
-            // TODO: find the most recent timestamp
-            let timestamp = 0 as NSTimeInterval
+        if locationLastUpdated.compare(lastUpdatedCuttoff) == .OrderedAscending {
+            NSLog("\(__FUNCTION__) paging update")
+            // use paging
+            fetchMessagesForLocation(location, page: firstPage, completion: completion)
+        } else {
+            // use incremental
+            NSLog("\(__FUNCTION__) incremental update")
+            let lastUpdated = NSDate()
+            
             let completionWrapper: CompletionBlock = { task, response, error in
-                if error != nil {
-                    completion?(task, nil, error)
-                    return
+                if error == nil {
+                    self.lastUpdatedStore[location.key] = lastUpdated
                 }
                 
-                if let code = response?[ResponseKey.code] as? Int {
-                    if code == validResponse {
-                        if let response = response?[ResponseKey.response] as? Dictionary<String, AnyObject> {
-                            if let messages = response[ResponseKey.message] as? Array<Dictionary<String, AnyObject>> {
-                                if messages.isEmpty {
-                                    completion?(task, nil, nil)
-                                } else {
-                                    let context = sharedCoreDataService.newManagedObjectContext()
-                                    
-                                    context.performBlock { () -> Void in
-                                        for message in messages {
-                                            switch(message[ResponseKey.type] as? String) {
-                                            case .Some(IncrementalUpdateType.delete):
-                                                if let messageID = message[ResponseKey.messageID] as? String {
-                                                    if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                                                        context.deleteObject(message)
-                                                    }
-                                                }
-                                            case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update):
-                                                var error: NSError?
-                                                GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: message, inManagedObjectContext: context, error: &error)
-
-                                                if error != nil  {
-                                                    NSLog("\(__FUNCTION__) error: \(error)")
-                                                }
-                                            default:
-                                                NSLog("\(__FUNCTION__) unknown type in message: \(message)")
-                                            }
-                                        }
-                                        
-                                        var error: NSError?
-                                        error = context.saveUpstreamIfNeeded()
-                                        
-                                        if error != nil  {
-                                            NSLog("\(__FUNCTION__) error: \(error)")
-                                        }
-                                        
-                                        dispatch_async(dispatch_get_main_queue()) {
-                                            completion?(task, response, error)
-                                            return
-                                        }
-                                    }
-                                }
-                                
-                                return
-                            }
-                        }
-                    }
-                }
-                
-                completion?(task, nil, NSError.unableToParseResponse(response))
+                completion?(task, response, error)
             }
             
-            sharedAPIService.messageCheck(timestamp: timestamp, completion: completionWrapper)
+            fetchMessageIncrementalUpdates(completionWrapper)
         }
     }
     
@@ -260,8 +222,10 @@ class MessageDataService {
         }
     }
     
-    func fetchMessagesForLocation(location: Location, page: Int, completion: CompletionBlock) {
+    func fetchMessagesForLocation(location: Location, page: Int, completion: CompletionBlock?) {
         queue {
+            let lastUpdated = NSDate()
+            
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 if let messagesArray = responseDict?["Messages"] as? [Dictionary<String,AnyObject>] {
                     
@@ -284,11 +248,15 @@ class MessageDataService {
                         }
                         
                         dispatch_async(dispatch_get_main_queue()) {
-                            completion(task, responseDict, error)
+                            if page == self.firstPage {
+                                self.lastUpdatedStore[location.key] = lastUpdated
+                            }
+                            
+                            completion?(task, responseDict, error)
                         }
                     }
                 } else {
-                    completion(task, responseDict, NSError.unableToParseResponse(responseDict))
+                    completion?(task, responseDict, NSError.unableToParseResponse(responseDict))
                 }
             }
 
@@ -347,6 +315,89 @@ class MessageDataService {
     
     // MARK: - Private methods
     
+    private func fetchMessageIncrementalUpdates(completion: CompletionBlock?) {
+        struct IncrementalUpdateType {
+            static let delete = "1"
+            static let insert = "0"
+            static let update = "2"
+        }
+        
+        struct ResponseKey {
+            static let code = "code"
+            static let message = "message"
+            static let messageID = "MessageID"
+            static let response = "response"
+            static let type = "type"
+        }
+        
+        let validResponse = 1000
+        
+        queue { () -> Void in
+            // TODO: find the most recent timestamp
+            let timestamp = 0 as NSTimeInterval
+            let completionWrapper: CompletionBlock = { task, response, error in
+                if error != nil {
+                    completion?(task, nil, error)
+                    return
+                }
+                
+                if let code = response?[ResponseKey.code] as? Int {
+                    if code == validResponse {
+                        if let response = response?[ResponseKey.response] as? Dictionary<String, AnyObject> {
+                            if let messages = response[ResponseKey.message] as? Array<Dictionary<String, AnyObject>> {
+                                if messages.isEmpty {
+                                    completion?(task, nil, nil)
+                                } else {
+                                    let context = sharedCoreDataService.newManagedObjectContext()
+                                    
+                                    context.performBlock { () -> Void in
+                                        for message in messages {
+                                            switch(message[ResponseKey.type] as? String) {
+                                            case .Some(IncrementalUpdateType.delete):
+                                                if let messageID = message[ResponseKey.messageID] as? String {
+                                                    if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                                                        context.deleteObject(message)
+                                                    }
+                                                }
+                                            case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update):
+                                                var error: NSError?
+                                                GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: message, inManagedObjectContext: context, error: &error)
+                                                
+                                                if error != nil  {
+                                                    NSLog("\(__FUNCTION__) error: \(error)")
+                                                }
+                                            default:
+                                                NSLog("\(__FUNCTION__) unknown type in message: \(message)")
+                                            }
+                                        }
+                                        
+                                        var error: NSError?
+                                        error = context.saveUpstreamIfNeeded()
+                                        
+                                        if error != nil  {
+                                            NSLog("\(__FUNCTION__) error: \(error)")
+                                        }
+                                        
+                                        dispatch_async(dispatch_get_main_queue()) {
+                                            completion?(task, response, error)
+                                            return
+                                        }
+                                    }
+                                }
+                                
+                                return
+                            }
+                        }
+                    }
+                }
+                
+                completion?(task, nil, NSError.unableToParseResponse(response))
+            }
+            
+            sharedAPIService.messageCheck(timestamp: timestamp, completion: completionWrapper)
+        }
+    }
+    
     // MARK: Notifications
     
     private func setupNotifications() {
@@ -361,7 +412,7 @@ class MessageDataService {
             Message.deleteAll(inContext: context)
         }
         
-        lastUpdated.clear()
+        lastUpdatedStore.clear()
         writeQueue.clear()
     }
     
