@@ -39,6 +39,23 @@ extension NSManagedObjectContext {
         }
     }
     
+    func managedObjectWithEntityName(entityName: String, forKey key: String, matchingValue value: CVarArgType) -> NSManagedObject? {
+        let fetchRequest = NSFetchRequest(entityName: entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", key, value)
+        
+        var error: NSError?
+        if let results = executeFetchRequest(fetchRequest, error: &error) {
+            return results.first as? NSManagedObject
+        }
+        
+        if error != nil  {
+            NSLog("\(__FUNCTION__) error: \(error)")
+        }
+        
+        return nil
+    }
+
+    
     func saveUpstreamIfNeeded() -> NSError? {
         var error: NSError?
         

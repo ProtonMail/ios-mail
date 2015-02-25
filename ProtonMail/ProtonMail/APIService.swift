@@ -78,6 +78,24 @@ class APIService {
         return (nil, nil)
     }
     
+    internal func completionWrapperParseCompletion(completion: CompletionBlock?, forKey key: String) -> CompletionBlock? {
+        if completion == nil {
+            return nil
+        }
+        
+        return { task, response, error in
+            if error != nil {
+                completion?(task, nil, error)
+            } else {
+                if let parsedResponse = response?[key] as? Dictionary<String, AnyObject> {
+                    completion?(task, parsedResponse, nil)
+                } else {
+                    completion?(task, nil, NSError.unableToParseResponse(response))
+                }
+            }
+        }
+    }
+    
     internal func fetchAuthCredential(#completion: AuthCredentialBlock) {
         if let credential = AuthCredential.fetchFromKeychain() {
             if !credential.isExpired {
@@ -93,7 +111,7 @@ class APIService {
             completion(nil, NSError.authCredentialInvalid())
         }
     }
-
+    
     // MARK: - Request methods
     
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
