@@ -47,7 +47,11 @@ class ContactDataService {
                         }
                     }
                     
-                    NSLog("\(__FUNCTION__) error: \(error)")
+                    if error != nil {
+                        NSLog("\(__FUNCTION__) error: \(error)")
+                    } else {
+                        NSLog("\(__FUNCTION__) updated \(contacts.count) contacts")
+                    }
                     
                     dispatch_async(dispatch_get_main_queue()) {
                         completion?(task, response, error)
@@ -84,7 +88,7 @@ class ContactDataService {
         }
         
         let fetchRequest = NSFetchRequest(entityName: Contact.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "SELF NOT IN %@", contacts)
+        fetchRequest.predicate = NSPredicate(format: "NOT (SELF IN %@)", contacts)
         
         if let deletedObjects = context.executeFetchRequest(fetchRequest, error: error) {
             for deletedObject in deletedObjects as [NSManagedObject] {
