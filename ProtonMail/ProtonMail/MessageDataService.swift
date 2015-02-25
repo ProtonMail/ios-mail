@@ -154,12 +154,12 @@ class MessageDataService {
         let lastUpdatedCuttoff = NSDate(timeIntervalSinceNow: -lastUpdatedMaximumTimeInterval)
         
         if locationLastUpdated.compare(lastUpdatedCuttoff) == .OrderedAscending {
-            NSLog("\(__FUNCTION__) paging update")
+            NSLog("\(__FUNCTION__) lastUpdated: \(locationLastUpdated), paging update")
             // use paging
             fetchMessagesForLocation(location, page: firstPage, completion: completion)
         } else {
             // use incremental
-            NSLog("\(__FUNCTION__) incremental update")
+            NSLog("\(__FUNCTION__) lastUpdated: \(locationLastUpdated), incremental update")
             let lastUpdated = NSDate()
             
             let completionWrapper: CompletionBlock = { task, response, error in
@@ -170,7 +170,7 @@ class MessageDataService {
                 completion?(task, response, error)
             }
             
-            fetchMessageIncrementalUpdates(completionWrapper)
+            fetchMessageIncrementalUpdates(lastUpdated: locationLastUpdated, completion: completionWrapper)
         }
     }
     
@@ -315,7 +315,7 @@ class MessageDataService {
     
     // MARK: - Private methods
     
-    private func fetchMessageIncrementalUpdates(completion: CompletionBlock?) {
+    private func fetchMessageIncrementalUpdates(#lastUpdated: NSDate, completion: CompletionBlock?) {
         struct IncrementalUpdateType {
             static let delete = "1"
             static let insert = "0"
@@ -333,8 +333,6 @@ class MessageDataService {
         let validResponse = 1000
         
         queue { () -> Void in
-            // TODO: find the most recent timestamp
-            let timestamp = 0 as NSTimeInterval
             let completionWrapper: CompletionBlock = { task, response, error in
                 if error != nil {
                     completion?(task, nil, error)
@@ -394,7 +392,7 @@ class MessageDataService {
                 completion?(task, nil, NSError.unableToParseResponse(response))
             }
             
-            sharedAPIService.messageCheck(timestamp: timestamp, completion: completionWrapper)
+            sharedAPIService.messageCheck(timestamp: lastUpdated.timeIntervalSince1970, completion: completionWrapper)
         }
     }
     
