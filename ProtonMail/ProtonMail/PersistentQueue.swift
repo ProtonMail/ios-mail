@@ -50,7 +50,8 @@ class PersistentQueue {
     
     init(queueName: String) {
         self.queueName = "\(Constant.queueIdentifer).\(queueName)"
-        queueURL = NSFileManager.defaultManager().cachesDirectoryURL().URLByAppendingPathComponent(self.queueName)
+        queueURL = NSFileManager.defaultManager().applicationSupportDirectoryURL.URLByAppendingPathComponent(self.queueName)
+        queueURL.excludeFromBackup()
         queue = NSMutableArray(contentsOfURL: queueURL) ?? []
     }
     

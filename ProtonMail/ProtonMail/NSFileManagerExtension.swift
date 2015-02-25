@@ -18,7 +18,12 @@ import Foundation
 
 extension NSFileManager {
     
-    func cachesDirectoryURL() -> NSURL {
+    var applicationSupportDirectoryURL: NSURL {
+        let urls = URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask) as [NSURL]
+        return urls.first!
+    }
+    
+    var cachesDirectoryURL: NSURL {
         let urls = URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask) as [NSURL]
         return urls.first!
     }

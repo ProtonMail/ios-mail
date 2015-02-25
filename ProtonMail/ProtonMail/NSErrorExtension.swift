@@ -17,6 +17,7 @@
 import Foundation
 
 extension NSError {
+    
     convenience init(domain: String, code: Int, localizedDescription: String, localizedFailureReason: String? = nil, localizedRecoverySuggestion: String? = nil) {
         var userInfo = [NSLocalizedDescriptionKey : localizedDescription]
         

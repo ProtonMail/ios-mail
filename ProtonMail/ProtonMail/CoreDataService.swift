@@ -17,15 +17,11 @@
 import CoreData
 import Foundation
 
+let CoreDataServiceErrorDomain = NSError.protonMailErrorDomain(subdomain: "CoreDataService")
+
 let sharedCoreDataService = CoreDataService()
 
 class CoreDataService {
-    
-    private lazy var applicationDocumentsDirectory: NSURL = {
-        // The directory the application uses to store the Core Data store file. This code uses a directory named "com.arctouch.ProtonMail" in the application's documents Application Support directory.
-        let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-        return urls[urls.count-1] as NSURL
-        }()
     
     private lazy var managedObjectModel: NSManagedObjectModel = {
         // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
@@ -37,10 +33,11 @@ class CoreDataService {
         // The persistent store coordinator for the application. This implementation creates and return a coordinator, having added the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
         // Create the coordinator and store
         var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-        let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent("ProtonMail.sqlite")
+        let url = NSFileManager.defaultManager().applicationSupportDirectoryURL.URLByAppendingPathComponent("ProtonMail.sqlite")
+        url.excludeFromBackup()
         
         NSLog("\(__FUNCTION__) path: \(url.absoluteString)")
-        
+
         var error: NSError? = nil
         var failureReason = NSLocalizedString("There was an error creating or loading the application's saved data.")
         if coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil, error: &error) == nil {
@@ -50,7 +47,7 @@ class CoreDataService {
             dict[NSLocalizedDescriptionKey] = NSLocalizedString("Failed to initialize the application's saved data")
             dict[NSLocalizedFailureReasonErrorKey] = failureReason
             dict[NSUnderlyingErrorKey] = error
-            error = NSError(domain: NSError.protonMailErrorDomain(subdomain: "CoreDataService"), code: 9999, userInfo: dict)
+            error = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict)
             // Replace this with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             NSLog("Unresolved error \(error), \(error!.userInfo)")

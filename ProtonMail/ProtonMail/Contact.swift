@@ -14,5 +14,4 @@ class Contact: NSManagedObject {
     @NSManaged var contactID: String
     @NSManaged var name: String
     @NSManaged var email: String
-
 }

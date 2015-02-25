@@ -40,27 +40,9 @@ extension Message {
         self.init(entity: NSEntityDescription.entityForName(Attributes.entityName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
     }
     
-    class func fetchOrCreateMessageForMessageID(messageID: String, context: NSManagedObjectContext) -> (message: Message?, error: NSError?) {
-        var error: NSError?
-        var message: Message?
-        let fetchRequest = NSFetchRequest(entityName: Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", Attributes.messageID, messageID)
-        
-        if let messages = context.executeFetchRequest(fetchRequest, error: &error) {
-            switch(messages.count) {
-            case 0:
-                message = Message(context: context)
-            case 1:
-                message = messages.first as? Message
-            default:
-                message = messages.first as? Message
-                NSLog("\(__FUNCTION__) messageID: \(messageID) has \(messages.count) messages.")
-            }
-            
-            message?.messageID = messageID
-        }
-        
-        return (message, error)
+    override func awakeFromInsert() {
+        super.awakeFromInsert()
+        replaceNilStringAttributesWithEmptyString()
     }
     
     func fetchDetailIfNeeded(completion: CompletionBlock) {
@@ -70,20 +52,5 @@ extension Message {
     func updateTag(tag: String) {
         self.tag = tag
         isStarred = tag.rangeOfString(Constants.starredTag) != nil
-    }
-    
-    // MARK: - Private methods
-    
-    override func awakeFromInsert() {
-        super.awakeFromInsert()
-        
-        // Set nil string attributes to ""
-        for (_, attribute) in entity.attributesByName as [String : NSAttributeDescription] {
-            if attribute.attributeType == .StringAttributeType {
-                if valueForKey(attribute.name) == nil {
-                    setValue("", forKey: attribute.name)
-                }
-            }
-        }
     }
 }

@@ -17,8 +17,8 @@
 import Foundation
 
 class AuthCredential: NSObject, NSCoding {
-    enum Key: String {
-        case keychainStore = "keychainStoreKey"
+    struct Key{
+        static let keychainStore = "keychainStoreKey"
     }
     
     let accessToken: String!
@@ -44,13 +44,17 @@ class AuthCredential: NSObject, NSCoding {
     }
     
     func storeInKeychain() {
-        UICKeyChainStore().setData(NSKeyedArchiver.archivedDataWithRootObject(self), forKey: Key.keychainStore.rawValue)
+        UICKeyChainStore().setData(NSKeyedArchiver.archivedDataWithRootObject(self), forKey: Key.keychainStore)
     }
     
     // MARK - Class methods
     
+    class func clearFromKeychain() {
+        UICKeyChainStore.removeItemForKey(Key.keychainStore)
+    }
+    
     class func fetchFromKeychain() -> AuthCredential? {
-        if let data = UICKeyChainStore.dataForKey(Key.keychainStore.rawValue) {
+        if let data = UICKeyChainStore.dataForKey(Key.keychainStore) {
             if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? AuthCredential {
                 return authCredential
             }
@@ -61,24 +65,26 @@ class AuthCredential: NSObject, NSCoding {
     
     // MARK - NSCoding
     
-    private let accessTokenCoderKey = "accessTokenCoderKey"
-    private let refreshTokenCoderKey = "refreshTokenCoderKey"
-    private let userIDCoderKey = "userIDCoderKey"
-    private let expirationCoderKey = "expirationCoderKey"
+    struct CoderKey {
+        static let accessToken = "accessTokenCoderKey"
+        static let refreshToken = "refreshTokenCoderKey"
+        static let userID = "userIDCoderKey"
+        static let expiration = "expirationCoderKey"
+    }
     
     required init(coder aDecoder: NSCoder) {
         super.init()
         
-        accessToken = aDecoder.decodeObjectForKey(accessTokenCoderKey) as? String
-        refreshToken = aDecoder.decodeObjectForKey(refreshTokenCoderKey) as? String
-        userID = aDecoder.decodeObjectForKey(userIDCoderKey) as? String
-        expiration = aDecoder.decodeObjectForKey(expirationCoderKey) as? NSDate
+        accessToken = aDecoder.decodeObjectForKey(CoderKey.accessToken) as? String
+        refreshToken = aDecoder.decodeObjectForKey(CoderKey.refreshToken) as? String
+        userID = aDecoder.decodeObjectForKey(CoderKey.userID) as? String
+        expiration = aDecoder.decodeObjectForKey(CoderKey.expiration) as? NSDate
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(accessToken, forKey: accessTokenCoderKey)
-        aCoder.encodeObject(refreshToken, forKey: refreshTokenCoderKey)
-        aCoder.encodeObject(userID, forKey: userIDCoderKey)
-        aCoder.encodeObject(expiration, forKey: expirationCoderKey)
+        aCoder.encodeObject(accessToken, forKey: CoderKey.accessToken)
+        aCoder.encodeObject(refreshToken, forKey: CoderKey.refreshToken)
+        aCoder.encodeObject(userID, forKey: CoderKey.userID)
+        aCoder.encodeObject(expiration, forKey: CoderKey.expiration)
     }
 }
