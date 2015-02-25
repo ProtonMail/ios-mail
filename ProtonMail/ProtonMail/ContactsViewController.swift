@@ -23,11 +23,12 @@ class ContactsViewController: ProtonMailViewController {
     class Contact: NSObject {
         var name: String!
         var email: String!
-        var isAddressBookContact: Bool = true
+        var isProtonMailContact: Bool = false
         
-        init(name: String!, email: String!) {
+        init(name: String!, email: String!, isProtonMailContact: Bool) {
             self.name = name
             self.email = email
+            self.isProtonMailContact = isProtonMailContact
         }
     }
     
@@ -132,7 +133,11 @@ class ContactsViewController: ProtonMailViewController {
                             name = email
                         }
                         
-                        self.contacts.append(Contact(name: name, email: email))
+                        
+                        // temporary solution
+                        var isProtonMailContact = self.contacts.count % 2 == 0
+                        
+                        self.contacts.append(Contact(name: name, email: email, isProtonMailContact: isProtonMailContact))
                     }
                 }
             }
@@ -165,23 +170,20 @@ extension ContactsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: ContactsTableViewCell = tableView.dequeueReusableCellWithIdentifier(kContactCellIdentifier, forIndexPath: indexPath) as ContactsTableViewCell
         
-        var name: String
-        var email: String
+        var contact: Contact
         
         if (tableView == self.searchDisplayController?.searchResultsTableView) {
-            name = searchResults[indexPath.row].name
-            email = searchResults[indexPath.row].email
+            contact = searchResults[indexPath.row]
         } else {
-            name = contacts[indexPath.row].name
-            email = contacts[indexPath.row].email
+            contact = contacts[indexPath.row]
         }
-        
-        cell.contactEmailLabel.text = email
-        cell.contactNameLabel.text = name
+
+        cell.contactEmailLabel.text = contact.email
+        cell.contactNameLabel.text = contact.name
 
         
         // temporary solution to show the icon
-        if (indexPath.row % 2 == 0) {
+        if (contact.isProtonMailContact) {
             cell.contactSourceImageView.image = kProtonMailImage
         } else {
             cell.contactSourceImageView.hidden = true
@@ -198,6 +200,34 @@ extension ContactsViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 60.0
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if (tableView == self.tableView) {
+            
+            let contact = self.contacts[indexPath.row]
+            
+            if (!contact.isProtonMailContact) {
+                let description = NSLocalizedString("This contact belongs to your Address Book.")
+                let message = NSLocalizedString("Please, remove it in your phone.")
+                let alertController = UIAlertController(title: description, message: message, preferredStyle: .Alert)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
+                
+                self.presentViewController(alertController, animated: true, completion: nil)
+                return
+            }
+            
+            self.contacts.removeAtIndex(indexPath.row)
+            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+        }
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if (tableView == self.searchDisplayController?.searchResultsTableView) {
+            return false
+        }
+        
+        return true
     }
 }
 
