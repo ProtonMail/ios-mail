@@ -17,8 +17,22 @@
 import Foundation
 
 extension UIView {
+    
     func roundCorners() {
         layer.cornerRadius = 4.0
         clipsToBounds = true
+    }
+    
+    func shake(times: Float, offset: CGFloat) {
+        UIView.animateWithDuration(1.0, animations: {
+            var shakeAnimation = CABasicAnimation(keyPath: "position")
+            shakeAnimation.duration = 0.075
+            shakeAnimation.repeatCount = times
+            shakeAnimation.autoreverses = true
+            shakeAnimation.fromValue = NSValue(CGPoint: CGPointMake(self.center.x - offset, self.center.y))
+            shakeAnimation.toValue = NSValue(CGPoint: CGPointMake(self.center.x + offset, self.center.y))
+            
+            self.layer.addAnimation(shakeAnimation, forKey: "position")
+        })
     }
 }

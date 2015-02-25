@@ -15,12 +15,15 @@ import UIKit
 class ContactsViewController: ProtonMailViewController {
     
     private let kContactCellIdentifier: String = "ContactCell"
+    private let kProtonMailImage: UIImage = UIImage(named: "encrypted_main")!
+    private let kAddressBookImage: UIImage = UIImage(named: "addressbook_icon")!
     
     // temporary class, just to populate the tableview
     
     class Contact: NSObject {
         var name: String!
         var email: String!
+        var isAddressBookContact: Bool = true
         
         init(name: String!, email: String!) {
             self.name = name
@@ -47,8 +50,52 @@ class ContactsViewController: ProtonMailViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.registerNib(UINib(nibName: "ContactsTableViewCell", bundle: NSBundle.mainBundle()), forCellReuseIdentifier: kContactCellIdentifier)
+        
+        self.searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ContactsTableViewCell", bundle: NSBundle.mainBundle()), forCellReuseIdentifier: kContactCellIdentifier)
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if (!isContactsLoaded()) {
+            ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
+            retrieveAddressBook()
+            retrieveServerContactList()
+            
+            self.contacts.sort { $0.name.lowercaseString < $1.name.lowercaseString }
+            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+        }
+        
+        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
+    }
+    
+    func filterContentForSearchText(searchText: String) {
+        searchResults = contacts.filter({ (contact: Contact) -> Bool in
+            let contactNameContainsFilteredText = contact.name.lowercaseString.rangeOfString(searchText.lowercaseString) != nil
+            let contactEmailContainsFilteredText = contact.email.lowercaseString.rangeOfString(searchText.lowercaseString) != nil
+            return contactNameContainsFilteredText || contactEmailContainsFilteredText
+        })
+    }
+    
+    
+    // MARK: - Private methods
+    
+    private func isContactsLoaded() -> Bool {
+        return self.contacts.count > 0
+    }
+    
+    private func retrieveAddressBook() {
+        var addressBookGroupQueue = dispatch_group_create()
+
+        dispatch_group_enter(addressBookGroupQueue)
+        
         if (sharedAddressBookService.hasAccessToAddressBook()) {
             self.hasAccessToAddressBook = true
+            dispatch_group_leave(addressBookGroupQueue)
         } else {
             sharedAddressBookService.requestAuthorizationWithCompletion({ (granted: Bool, error: NSError?) -> Void in
                 if (granted) {
@@ -62,8 +109,12 @@ class ContactsViewController: ProtonMailViewController {
                     self.presentViewController(alertController, animated: true, completion: nil)
                     println("Error trying to access Address Book = \(error.localizedDescription).")
                 }
+                
+                dispatch_group_leave(addressBookGroupQueue)
             })
         }
+        
+        dispatch_group_wait(addressBookGroupQueue, DISPATCH_TIME_FOREVER)
         
         if (self.hasAccessToAddressBook) {
             let addressBookContacts = sharedAddressBookService.contacts()
@@ -86,21 +137,10 @@ class ContactsViewController: ProtonMailViewController {
                 }
             }
         }
-        
-        self.contacts.sort { $0.name.lowercaseString < $1.name.lowercaseString }
-        
-        tableView.registerClass(ContactsTableViewCell.self, forCellReuseIdentifier: kContactCellIdentifier)
-        self.searchDisplayController?.searchResultsTableView.registerClass(ContactsTableViewCell.self, forCellReuseIdentifier: kContactCellIdentifier)
-        tableView.dataSource = self
-        tableView.delegate = self
     }
     
-    func filterContentForSearchText(searchText: String) {
-        searchResults = contacts.filter({ (contact: Contact) -> Bool in
-            let contactNameContainsFilteredText = contact.name.lowercaseString.rangeOfString(searchText.lowercaseString) != nil
-            let contactEmailContainsFilteredText = contact.email.lowercaseString.rangeOfString(searchText.lowercaseString) != nil
-            return contactNameContainsFilteredText || contactEmailContainsFilteredText
-        })
+    private func retrieveServerContactList() {
+        var contacts: [Contact]
     }
 }
 
@@ -127,6 +167,7 @@ extension ContactsViewController: UITableViewDataSource {
         
         var name: String
         var email: String
+        
         if (tableView == self.searchDisplayController?.searchResultsTableView) {
             name = searchResults[indexPath.row].name
             email = searchResults[indexPath.row].email
@@ -135,8 +176,16 @@ extension ContactsViewController: UITableViewDataSource {
             email = contacts[indexPath.row].email
         }
         
-        cell.textLabel?.text = name
-        cell.detailTextLabel?.text = email
+        cell.contactEmailLabel.text = email
+        cell.contactNameLabel.text = name
+
+        
+        // temporary solution to show the icon
+        if (indexPath.row % 2 == 0) {
+            cell.contactSourceImageView.image = kProtonMailImage
+        } else {
+            cell.contactSourceImageView.hidden = true
+        }
         
         return cell
     }
@@ -146,6 +195,10 @@ extension ContactsViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension ContactsViewController: UITableViewDelegate {
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 60.0
+    }
 }
 
 
