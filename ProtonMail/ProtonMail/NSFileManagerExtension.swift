@@ -20,7 +20,16 @@ extension NSFileManager {
     
     var applicationSupportDirectoryURL: NSURL {
         let urls = URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask) as [NSURL]
-        return urls.first!
+        let applicationSupportDirectoryURL = urls.first!
+        
+        if !NSFileManager.defaultManager().fileExistsAtPath(applicationSupportDirectoryURL.absoluteString!) {
+            var error: NSError?
+            if !NSFileManager.defaultManager().createDirectoryAtURL(applicationSupportDirectoryURL, withIntermediateDirectories: true, attributes: nil, error: &error) {
+                NSLog("\(__FUNCTION__) Could not create \(applicationSupportDirectoryURL.absoluteString!) with error: \(error)")
+            }
+        }
+        
+        return applicationSupportDirectoryURL
     }
     
     var cachesDirectoryURL: NSURL {
