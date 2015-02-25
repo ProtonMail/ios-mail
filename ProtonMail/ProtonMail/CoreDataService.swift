@@ -34,7 +34,6 @@ class CoreDataService {
         // Create the coordinator and store
         var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
         let url = NSFileManager.defaultManager().applicationSupportDirectoryURL.URLByAppendingPathComponent("ProtonMail.sqlite")
-        url.excludeFromBackup()
         
         NSLog("\(__FUNCTION__) path: \(url.absoluteString)")
 
@@ -56,6 +55,8 @@ class CoreDataService {
             let action = UIAlertAction(title: NSLocalizedString("Close"), style: .Default, handler: { (action) -> Void in
                 abort()
             })
+        } else {
+           url.excludeFromBackup()
         }
         
         return coordinator
