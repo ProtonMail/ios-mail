@@ -18,6 +18,19 @@ import Foundation
 
 extension NSUserDefaults {
     
+    func customObjectForKey(key: String) -> AnyObject? {
+        if let data = NSUserDefaults.standardUserDefaults().objectForKey(key) as? NSData {
+            return NSKeyedUnarchiver.unarchiveObjectWithData(data)
+        }
+        
+        return nil
+    }
+    
+    func setCustomValue(value: NSCoding?, forKey key: String) {
+        let data: NSData? = (value == nil) ? nil : NSKeyedArchiver.archivedDataWithRootObject(value!)
+        NSUserDefaults.standardUserDefaults().setValue(data, forKey: key)
+    }
+    
     func stringOrEmptyStringForKey(key: String) -> String {
         return stringForKey(key) ?? ""
     }

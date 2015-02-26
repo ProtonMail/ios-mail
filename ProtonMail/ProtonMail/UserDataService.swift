@@ -25,61 +25,23 @@ class UserDataService {
     typealias UserInfoBlock = APIService.UserInfoBlock
     
     struct Key {
-        static let displayName = "displayNameKey"
         static let isRememberMailboxPassword = "isRememberMailboxPasswordKey"
         static let isRememberUser = "isRememberUserKey"
         static let mailboxPassword = "mailboxPasswordKey"
-        static let notificationEmail = "notificationEmailKey"
-        static let signature = "signatureKey"
         static let username = "usernameKey"
         static let password = "passwordKey"
+        static let userInfo = "userInfoKey"
     }
     
     struct Notification {
         static let didSignOut = "UserDataServiceDidSignOutNotification"
     }
-    
+        
     // MARK: - Private variables
     
-    private(set) var displayName: String = "" {
+    private(set) var userInfo: UserInfo? {
         didSet {
-            NSUserDefaults.standardUserDefaults().setValue(displayName, forKey: Key.displayName)
-            NSUserDefaults.standardUserDefaults().synchronize()
-        }
-    }
-    
-    private(set) var isSignedIn: Bool = false
-    
-    /// Value is only stored in the keychain
-    private(set) var mailboxPassword: String? {
-        get {
-            return UICKeyChainStore.stringForKey(Key.mailboxPassword)
-        }
-        set {
-            UICKeyChainStore.setString(newValue, forKey: Key.mailboxPassword)
-        }
-    }
-    
-    private(set) var notificationEmail: String = "" {
-        didSet {
-            NSUserDefaults.standardUserDefaults().setValue(notificationEmail, forKey: Key.notificationEmail)
-            NSUserDefaults.standardUserDefaults().synchronize()
-        }
-    }
-    
-    /// Value is only stored in the keychain
-    private(set) var password: String? {
-        get {
-            return UICKeyChainStore.stringForKey(Key.password)
-        }
-        set {
-            UICKeyChainStore.setString(newValue, forKey: Key.password)
-        }
-    }
-
-    private(set) var signature: String = "" {
-        didSet {
-            NSUserDefaults.standardUserDefaults().setValue(signature, forKey: Key.signature)
+            NSUserDefaults.standardUserDefaults().setCustomValue(userInfo, forKey: Key.userInfo)
             NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
@@ -91,10 +53,15 @@ class UserDataService {
         }
     }
     
-    private(set) var usedSpace: Int!
-    private(set) var maxSpace: Int!
+    var usedSpace: Int {
+        return userInfo?.usedSpace ?? 0
+    }
     
     // MARK: - Public variables
+    
+    var displayName: String {
+        return userInfo?.displayName ?? ""
+    }
     
     var isMailboxPasswordStored: Bool {
         return mailboxPassword != nil
@@ -114,31 +81,59 @@ class UserDataService {
         }
     }
     
+    private(set) var isSignedIn: Bool = false
+    
     var isUserCredentialStored: Bool {
         return username != nil && password != nil
+    }
+    
+    /// Value is only stored in the keychain
+    private(set) var mailboxPassword: String? {
+        get {
+            return UICKeyChainStore.stringForKey(Key.mailboxPassword)
+        }
+        set {
+            UICKeyChainStore.setString(newValue, forKey: Key.mailboxPassword)
+        }
+    }
+    
+    var maxSpace: Int {
+        return userInfo?.maxSpace ?? 0
+    }
+    
+    var notificationEmail: String {
+        return userInfo?.notificationEmail ?? ""
+    }
+    
+    /// Value is only stored in the keychain
+    private(set) var password: String? {
+        get {
+            return UICKeyChainStore.stringForKey(Key.password)
+        }
+        set {
+            UICKeyChainStore.setString(newValue, forKey: Key.password)
+        }
+    }
+    
+    var signature: String {
+        return userInfo?.signature ?? ""
     }
     
     // MARK: - Public methods
     
     init() {
         cleanUpIfFirstRun()
-
-        displayName = NSUserDefaults.standardUserDefaults().stringOrEmptyStringForKey(Key.displayName)
+        
         isRememberMailboxPassword = NSUserDefaults.standardUserDefaults().boolForKey(Key.isRememberMailboxPassword)
         isRememberUser = NSUserDefaults.standardUserDefaults().boolForKey(Key.isRememberUser)
-        notificationEmail = NSUserDefaults.standardUserDefaults().stringOrEmptyStringForKey(Key.notificationEmail)
-        signature = NSUserDefaults.standardUserDefaults().stringOrEmptyStringForKey(Key.signature)
+        userInfo = NSUserDefaults.standardUserDefaults().customObjectForKey(Key.userInfo) as? UserInfo
         username = NSUserDefaults.standardUserDefaults().stringForKey(Key.username)
     }
     
     func fetchUserInfo(completion: UserInfoBlock? = nil) {
         sharedAPIService.userInfo() { userInfo, error in
-            if let (displayName, notificationEmail, privateKey, signature, usedSpace, maxSpace) = userInfo {
-                self.displayName = displayName
-                self.notificationEmail = notificationEmail
-                self.signature = signature
-                self.usedSpace = usedSpace.toInt()
-                self.maxSpace = maxSpace
+            if error == nil {
+                self.userInfo = userInfo
             }
             
             completion?(userInfo, error)
@@ -161,9 +156,7 @@ class UserDataService {
                     self.password = password
                 }
                 
-                self.fetchUserInfo() { userInfo, error in
-                    completion(userInfo, error)
-                }
+                self.fetchUserInfo(completion: completion)
             } else {
                 self.signOut()
                 completion(nil, error)
@@ -180,14 +173,8 @@ class UserDataService {
         (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .signIn)
     }
     
-    func updateDisplayName(displayName: String, completion: CompletionBlock) {
-        sharedAPIService.settingUpdateDisplayName(displayName, completion: { task, response, error in
-            if error == nil {
-                self.displayName = displayName
-            }
-            
-            completion(task, response, error)
-        })
+    func updateDisplayName(displayName: String, completion: UserInfoBlock?) {
+        sharedAPIService.settingUpdateDisplayName(displayName, completion: completionForUserInfo(completion))
     }
     
     func updateMailboxPassword(newMailboxPassword: String, completion: CompletionBlock) {
@@ -200,14 +187,8 @@ class UserDataService {
         })
     }
     
-    func updateNotificationEmail(newNotificationEmail: String, completion: CompletionBlock) {
-        sharedAPIService.settingUpdateNotificationEmail(newNotificationEmail, completion: { task, response, error in
-            if error == nil {
-                self.notificationEmail = newNotificationEmail
-            }
-            
-            completion(task, response, error)
-        })
+    func updateNotificationEmail(newNotificationEmail: String, completion: UserInfoBlock?) {
+        sharedAPIService.settingUpdateNotificationEmail(newNotificationEmail, completion: completionForUserInfo(completion))
     }
     
     func updatePassword(newPassword: String, completion: CompletionBlock) {
@@ -226,14 +207,8 @@ class UserDataService {
         })
     }
 
-    func updateSignature(signature: String, completion: CompletionBlock) {
-        sharedAPIService.settingUpdateSignature(signature, completion: { task, response, error in
-            if error == nil {
-                self.signature = signature
-            }
-            
-            completion(task, response, error)
-        })
+    func updateSignature(signature: String, completion: UserInfoBlock?) {
+        sharedAPIService.settingUpdateSignature(signature, completion: completionForUserInfo(completion))
     }
     
     // MARK: - Private methods
@@ -259,12 +234,20 @@ class UserDataService {
         isRememberMailboxPassword = false
         mailboxPassword = nil
         
-        displayName = ""
-        notificationEmail = ""
-        signature = ""
+        userInfo = nil
     }
     
     private func clearAuthToken() {
         AuthCredential.clearFromKeychain()
+    }
+    
+    private func completionForUserInfo(completion: UserInfoBlock?) -> CompletionBlock {
+        return { task, response, error in
+            if error == nil {
+                self.fetchUserInfo(completion: completion)
+            } else {
+                completion?(nil, error)
+            }
+        }
     }
 }
