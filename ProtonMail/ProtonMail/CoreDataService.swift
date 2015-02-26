@@ -23,6 +23,10 @@ let sharedCoreDataService = CoreDataService()
 
 class CoreDataService {
     
+    struct ErrorCode {
+        static let noManagedObjectContext = 10000
+    }
+    
     private lazy var managedObjectModel: NSManagedObjectModel = {
         // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
         let modelURL = NSBundle.mainBundle().URLForResource("ProtonMail", withExtension: "momd")!
@@ -84,4 +88,15 @@ class CoreDataService {
         return managedObjectContext
     }
     
+}
+
+// MARK: - NSError Core Data extensions
+
+extension NSError {
+    class func noManagedObjectContext() -> NSError {
+        return NSError.protonMailError(
+            code: 10000,
+            localizedDescription: NSLocalizedString("No managed object context"),
+            localizedFailureReason: NSLocalizedString("No managed object context."))
+    }
 }

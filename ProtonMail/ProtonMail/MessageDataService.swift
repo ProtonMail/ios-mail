@@ -276,11 +276,11 @@ class MessageDataService {
         return nil
     }
     
-    func search(query: String, page: Int, completion: CompletionBlock?) {
+    func search(#query: String, page: Int, completion: (([Message]?, NSError?) -> Void)?) {
         queue {
             let completionWrapper: CompletionBlock = {task, response, error in
                 if error != nil {
-                    completion?(task, response, error)
+                    completion?(nil, error)
                 }
                 
                 if let messagesArray = response?["Messages"] as? [Dictionary<String,AnyObject>] {
@@ -295,17 +295,26 @@ class MessageDataService {
                             error = context.saveUpstreamIfNeeded()
                         }
                         
-                        if error != nil  {
-                            NSLog("\(__FUNCTION__) error: \(error)")
-                        }
-                        
-                        dispatch_async(dispatch_get_main_queue()) {
-                            completion?(task, response, error)
-                            return
+                        if let completion = completion {
+                            let objectIDs = (messages as NSArray).valueForKey("objectID") as [NSManagedObjectID]
+
+                            dispatch_async(dispatch_get_main_queue()) {
+                                if error != nil  {
+                                    NSLog("\(__FUNCTION__) error: \(error)")
+                                    completion(nil, error)
+                                } else {
+                                    if let context = sharedCoreDataService.mainManagedObjectContext {
+                                        let messages = Message.messagesForObjectIDs(objectIDs, inManagedObjectContext: context, error: &error)
+                                        completion(messages, error)
+                                    } else {
+                                        completion(nil, NSError.noManagedObjectContext())
+                                    }
+                                }
+                            }
                         }
                     }
                 } else {
-                    completion?(task, response, NSError.unableToParseResponse(response))
+                    completion?(nil, NSError.unableToParseResponse(response))
                 }
             }
             

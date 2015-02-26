@@ -55,6 +55,12 @@ extension NSManagedObjectContext {
         return nil
     }
 
+    func managedObjectsWithEntityName(entityName: String, forManagedObjectIDs objectIDs: [NSManagedObjectID], error: NSErrorPointer) -> [NSManagedObject]? {
+        let request = NSFetchRequest(entityName: entityName)
+        request.predicate = NSPredicate(format: "SELF in %@", objectIDs)
+
+        return executeFetchRequest(request, error: error) as? [NSManagedObject]
+    }
     
     func saveUpstreamIfNeeded() -> NSError? {
         var error: NSError?
