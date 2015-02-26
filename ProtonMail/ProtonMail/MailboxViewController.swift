@@ -233,7 +233,7 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     func getLatestMessages() {
-        sharedMessageDataService.fetchMessagesForLocation(self.mailboxLocation, page: 1) { _, _, error in
+        sharedMessageDataService.fetchLatestMessagesForLocation(self.mailboxLocation) { _, _, error in
             if let error = error {
                 NSLog("error: \(error)")
             }
