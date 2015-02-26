@@ -15,11 +15,14 @@ import UIKit
 class MessageDetailView: UIView {
     
     var delegate: MessageDetailViewDelegate?
-    private var message: Message!
+    let message: Message
     private var isShowingDetail: Bool = false
     
     // MARK: - Private constants
     
+    private let kAnimationDuration: NSTimeInterval = 0.3
+    private let kAnimationOption: UIViewAnimationOptions = .TransitionCrossDissolve
+    private var kKVOContext = 0
     private let kScrollViewDistanceToBottom: CGFloat = -69.0
     private let kSeparatorBetweenHeaderAndBodyMarginTop: CGFloat = 16.0
     private let kSeparatorBetweenHeaderAndBodyMarginHeight: CGFloat = 1.0
@@ -93,9 +96,13 @@ class MessageDetailView: UIView {
     
     // MARK: - Init methods
     
-    init(message: Message) {
-        super.init()
+    required init(message: Message) {
         self.message = message
+        
+        super.init(frame: CGRectZero)
+        
+        message.addObserver(self, forKeyPath: Message.Attributes.isDetailDownloaded, options: .New, context: &kKVOContext)
+        
         self.backgroundColor = UIColor.whiteColor()
         self.addSubviews()
         self.makeConstraints()
@@ -110,8 +117,43 @@ class MessageDetailView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    deinit {
+        message.removeObserver(self, forKeyPath: Message.Attributes.isDetailDownloaded, context: &kKVOContext)
+    }
+    
+    // MARK: - Public methods
+    
+    func updateEmailBodyView(animated: Bool) {
+        let completion: ((Bool) -> Void) = { finished in
+            if self.message.isDetailDownloaded {
+                self.emailBodyTextView.text = self.message.body
+            } else {
+                self.emailBodyTextView.text = NSLocalizedString("Loading...")
+            }
+            
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineSpacing = self.kEmailBodyLineSpacing
+            
+            let attributedString = NSMutableAttributedString(string: self.emailBodyTextView.text!)
+            attributedString.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, countElements(self.emailBodyTextView.text!)))
+            
+            self.emailBodyTextView.attributedText = attributedString
+            self.emailBodyTextView.sizeToFit()
+            
+            if animated {
+                UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
+                    self.emailBodyTextView.alpha = 1.0
+                })
+            }
+        }
+        
+        if animated {
+            UIView.animateWithDuration(kAnimationDuration, animations: { () -> Void in
+                self.emailBodyTextView.alpha = 0
+            }, completion: completion)
+        } else {
+            completion(true)
+        }
     }
     
     
@@ -225,19 +267,7 @@ class MessageDetailView: UIView {
         self.emailBodyTextView.numberOfLines = 0
         self.emailBodyTextView.textColor = UIColor.ProtonMail.Gray_383A3B
         
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = kEmailBodyLineSpacing
-        
-        if message.body != "" {
-            self.emailBodyTextView.text = message.body
-        } else {
-            self.emailBodyTextView.text = "No body content."
-        }
-        
-        let attributedString = NSMutableAttributedString(string: self.emailBodyTextView.text!)
-        attributedString.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, countElements(self.emailBodyTextView.text!)))
-        self.emailBodyTextView.attributedText = attributedString
-        self.emailBodyTextView.sizeToFit()
+        updateEmailBodyView(false)
     }
 
     private func createFooterView() {
@@ -509,7 +539,7 @@ class MessageDetailView: UIView {
         self.isShowingDetail = !self.isShowingDetail
 
         if (isShowingDetail) {
-            UIView.transitionWithView(self.emailRecipients, duration: 0.3, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+            UIView.transitionWithView(self.emailRecipients, duration: kAnimationDuration, options: kAnimationOption, animations: { () -> Void in
                 self.emailRecipients.text = self.message.sender
             }, completion: nil)
             
@@ -538,7 +568,7 @@ class MessageDetailView: UIView {
                 make.bottom.equalTo()(self.emailDetailDateLabel)
             })
         } else {
-            UIView.transitionWithView(self.emailRecipients, duration: 0.3, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+            UIView.transitionWithView(self.emailRecipients, duration: kAnimationDuration, options: kAnimationOption, animations: { () -> Void in
                 self.emailRecipients.text = "To \(self.message.recipientList)"
                 }, completion: nil)
             
@@ -569,7 +599,7 @@ class MessageDetailView: UIView {
             })
         }
         
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
+        UIView.animateWithDuration(kAnimationDuration, animations: { () -> Void in
             self.layoutIfNeeded()
         })
     }
@@ -646,8 +676,17 @@ class MessageDetailView: UIView {
         self.emailDetailDateContentLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailDateContentLabel)
     }
+    
+    // MARK: - KVO
+    
+    override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+        if context != &kKVOContext {
+            super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+        } else if object as NSObject == message && keyPath == Message.Attributes.isDetailDownloaded {
+            updateEmailBodyView(true)
+        }
+    }
 }
-
 
 // MARK: - View Delegate
 
