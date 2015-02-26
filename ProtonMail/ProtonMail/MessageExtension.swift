@@ -40,6 +40,10 @@ extension Message {
         self.init(entity: NSEntityDescription.entityForName(Attributes.entityName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
     }
     
+    class func messagesForObjectIDs(objectIDs: [NSManagedObjectID], inManagedObjectContext context: NSManagedObjectContext, error: NSErrorPointer) -> [Message]? {
+        return context.managedObjectsWithEntityName(Attributes.entityName, forManagedObjectIDs: objectIDs, error: error) as? [Message]
+    }
+    
     override func awakeFromInsert() {
         super.awakeFromInsert()
         replaceNilStringAttributesWithEmptyString()
