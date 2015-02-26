@@ -19,15 +19,19 @@ import Foundation
 /// Settings extension
 extension APIService {
     
+    private struct SettingPath {
+        static let base = "/setting"
+    }
+    
     func settingUpdateDisplayName(displayName: String, completion: CompletionBlock) {
-        let path = "/setting/display"
+        let path = SettingPath.base.stringByAppendingPathComponent("display")
         let parameters = ["DisplayName" : displayName]
         
         request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
 
     func settingUpdateMailboxPassword(newPassword: String, completion: CompletionBlock) {
-        let path = "/setting/keypwd"
+        let path = SettingPath.base.stringByAppendingPathComponent("keypwd")
         // TODO: Add parameters for update mailbox password when defined in API
         let parameters = [:]
 
@@ -35,14 +39,14 @@ extension APIService {
     }
     
     func settingUpdateNotificationEmail(notificationEmail: String, completion: CompletionBlock) {
-        let path = "/setting/noticeemail"
+        let path = SettingPath.base.stringByAppendingPathComponent("noticeemail")
         let parameters = ["NotificationEmail" : notificationEmail]
 
         request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
     
     func settingUpdatePassword(newPassword: String, completion: CompletionBlock) {
-        let path = "/setting/password"
+        let path = SettingPath.base.stringByAppendingPathComponent("password")
         let parameters = [
             "username" : sharedUserDataService.username ?? "",
             "password" : newPassword,
@@ -53,7 +57,7 @@ extension APIService {
     }
     
     func settingUpdateSignature(signature: String, completion: CompletionBlock) {
-        let path = "/setting/signature"
+        let path = SettingPath.base.stringByAppendingPathComponent("signature")
         let parameters = ["Signature" : signature]
         
         request(method: .PUT, path: path, parameters: parameters, completion: completion)

@@ -19,19 +19,33 @@ import Foundation
 /// User extensions
 extension APIService {
     
-    typealias UserInfo = (displayName: String, notificationEmail: String, privateKey: String, signature: String, usedSpace: String, maxSpace: Int)
     typealias UserInfoBlock = (UserInfo?, NSError?) -> Void
+    
+    private struct UserPath {
+        static let base = "/users"
+    }
     
     func userInfo(completion: UserInfoBlock) {
         fetchAuthCredential() { authCredential, error in
             if let authCredential = authCredential {
-                let path = "/users/\(authCredential.userID)"
+                let path = UserPath.base.stringByAppendingPathComponent(authCredential.userID)
                 
                 let completionWrapper: CompletionBlock = { task, response, error in
-                    if let userInfo = self.userInfoForResponse(response) {
+                    if error != nil {
+                        completion(nil, error)
+                    } else if let response = response {
+                        let userInfo = UserInfo(
+                            response: response,
+                            displayNameResponseKey: "DisplayName",
+                            maxSpaceResponseKey: "MaxSpace",
+                            notificationEmailResponseKey: "NotificationEmail",
+                            privateKeyResponseKey: "EncPrivateKey",
+                            signatureResponseKey: "Signature",
+                            usedSpaceResponseKey: "UsedSpace")
+                        
                         completion(userInfo, nil)
                     } else {
-                        completion(nil, NSError.unableToParseResponse(response))
+                       completion(nil, NSError.unableToParseResponse(response))
                     }
                 }
                 
@@ -42,18 +56,48 @@ extension APIService {
         }
     }
     
-    private func userInfoForResponse(response: Dictionary<String, AnyObject>?) -> UserInfo? {
-        if let response = response {
-            let displayName = response["DisplayName"] as? String ?? ""
-            let notificationEmail = response["NotificationEmail"] as? String ?? ""
-            let privateKey = response["EncPrivateKey"] as? String ?? ""
-            let signature = response["Signature"] as? String ?? ""
-            let usedSpace = response["UsedSpace"] as? String ?? "0"
-            let maxSpace = response["MaxSpace"] as? Int ?? 0
-            
-            return (displayName, notificationEmail, privateKey, signature, usedSpace, maxSpace)
-        }
+    func userPublicKeyForUsername(username: String, completion: CompletionBlock?) {
+        let path = UserPath.base.stringByAppendingPathComponent("pubkey").stringByAppendingPathComponent(username)
         
-        return nil
+        request(method: .GET, path: path, parameters: nil, completion: completion)
+    }
+    
+    func userPublicKeysForEmails(emails: Array<String>, completion: CompletionBlock?) {
+        let emailsString = ",".join(emails)
+        
+        userPublicKeysForEmails(emailsString, completion: completion)
+    }
+    
+    func userPublicKeysForEmails(emails: String, completion: CompletionBlock?) {
+        if let base64Emails = emails.base64Encoded() {
+            let path = UserPath.base.stringByAppendingPathComponent("pubkeys")
+            
+            request(method: .GET, path: path, parameters: nil, completion: completion)
+        } else {
+            completion?(nil, nil, NSError.badParameter(emails))
+        }
+    }
+}
+
+// MARK: - UserInfo extension
+
+extension UserInfo {
+    
+    /// Initializes the UserInfo with the response data
+    convenience init(
+        response: Dictionary<String, AnyObject>,
+        displayNameResponseKey: String,
+        maxSpaceResponseKey: String,
+        notificationEmailResponseKey: String,
+        privateKeyResponseKey: String,
+        signatureResponseKey: String,
+        usedSpaceResponseKey: String) {
+            self.init(
+                displayName: response[displayNameResponseKey] as? String,
+                maxSpace: response[maxSpaceResponseKey] as? Int,
+                notificationEmail: response[notificationEmailResponseKey] as? String,
+                privateKey: response[privateKeyResponseKey] as? String,
+                signature: response[signatureResponseKey] as? String,
+                usedSpace: response[usedSpaceResponseKey] as? Int)
     }
 }
