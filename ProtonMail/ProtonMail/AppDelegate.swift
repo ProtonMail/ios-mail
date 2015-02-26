@@ -74,6 +74,13 @@ extension AppDelegate: UIApplicationDelegate {
     func applicationWillEnterForeground(application: UIApplication) {
         if sharedUserDataService.isSignedIn {
             sharedUserDataService.fetchUserInfo()
+            sharedContactDataService.fetchContacts({ (contacts, error) -> Void in
+                if error != nil {
+                    NSLog("\(error)")
+                } else {
+                    NSLog("Contacts count: \(contacts!.count)")
+                }
+            })
         }
     }
     

@@ -20,18 +20,40 @@ import Foundation
 let sharedContactDataService = ContactDataService()
 
 class ContactDataService {
-    typealias CompletionBlock = APIService.CompletionBlock
+    typealias ContactCompletionBlock = (([Contact]?, NSError?) -> Void)
     
-    func addContact(#name: String, email: String, completion: CompletionBlock?) {
-        sharedAPIService.contactAdd(name: name, email: email, completion: fetchContactsCompletionBlockForCompletion(completion))
+    func addContact(#name: String, email: String, completion: ContactCompletionBlock?) {
+        sharedAPIService.contactAdd(name: name, email: email, completion: completionBlockForContactCompletionBlock(completion))
+    }
+
+    /// Only call from the main thread
+    func allContacts() -> [Contact] {
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            return allContactsInManagedObjectContext(context)
+        }
+        
+        return []
+    }
+
+    func allContactsInManagedObjectContext(context: NSManagedObjectContext) -> [Contact] {
+        let fetchRequest = NSFetchRequest(entityName: Contact.Attributes.entityName)
+        
+        var error: NSError?
+        if let contacts = context.executeFetchRequest(fetchRequest, error: &error) as? [Contact] {
+            return contacts
+        }
+        
+        NSLog("\(__FUNCTION__) error: \(error)")
+        
+        return []
     }
     
-    func deleteContact(contact: Contact, completion: CompletionBlock?) {
-        sharedAPIService.contactDelete(contactID: contact.contactID, completion: fetchContactsCompletionBlockForCompletion(completion))
+    func deleteContact(contact: Contact, completion: ContactCompletionBlock?) {
+        sharedAPIService.contactDelete(contactID: contact.contactID, completion: completionBlockForContactCompletionBlock(completion))
     }
     
-    func fetchContacts(completion: CompletionBlock?) {
-        let completionWrapper: CompletionBlock = { task, response, error in
+    func fetchContacts(completion: ContactCompletionBlock?) {
+        let completionWrapper: APIService.CompletionBlock = { task, response, error in
             if let contactsArray = response?["Contacts"] as? [Dictionary<String, AnyObject>] {
                 let context = sharedCoreDataService.newManagedObjectContext()
                 
@@ -54,30 +76,33 @@ class ContactDataService {
                     }
                     
                     dispatch_async(dispatch_get_main_queue()) {
-                        completion?(task, response, error)
-                        return
+                        if error == nil {
+                            completion?(self.allContacts(), nil)
+                        } else {
+                            completion?(nil, error)
+                        }
                     }
                 }
             } else {
-                completion?(task, response, NSError.unableToParseResponse(response))
+                completion?(nil, NSError.unableToParseResponse(response))
             }
         }
         
         sharedAPIService.contactList(completionWrapper)
     }
     
-    func updateContact(#contactID: String, name: String, email: String, completion: CompletionBlock?) {
-        sharedAPIService.contactUpdate(contactID: contactID, name: name, email: email, completion: fetchContactsCompletionBlockForCompletion(completion))
+    func updateContact(#contactID: String, name: String, email: String, completion: ContactCompletionBlock?) {
+        sharedAPIService.contactUpdate(contactID: contactID, name: name, email: email, completion: completionBlockForContactCompletionBlock(completion))
     }
     
     // MARK: - Private methods
     
-    private func fetchContactsCompletionBlockForCompletion(completion: CompletionBlock?) -> CompletionBlock {
+    private func completionBlockForContactCompletionBlock(completion: ContactCompletionBlock?) -> APIService.CompletionBlock {
         return { task, response, error in
             if error == nil {
                 self.fetchContacts(completion)
             } else {
-                completion?(task, response, error)
+                completion?(nil, error)
             }
         }
     }
