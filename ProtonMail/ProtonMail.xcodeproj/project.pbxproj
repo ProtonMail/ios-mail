@@ -69,7 +69,10 @@
 		07FBA7A51A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FBA7A41A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift */; };
 		701704781A794C69000A90D2 /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701704771A794C69000A90D2 /* Roboto-MediumItalic.ttf */; };
 		7017047A1A794C9F000A90D2 /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701704791A794C9F000A90D2 /* Roboto-LightItalic.ttf */; };
+		701FFE611A9CBAD600380C2B /* CreateContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701FFE601A9CBAD600380C2B /* CreateContactViewController.swift */; };
 		7027B02B1A700F0200D28F52 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7027B02A1A700F0200D28F52 /* MenuTableViewCell.swift */; };
+		7048B9F41A9E385B00D45F57 /* ContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7048B9F21A9E385B00D45F57 /* ContactsTableViewCell.swift */; };
+		7048B9F51A9E385B00D45F57 /* ContactsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7048B9F31A9E385B00D45F57 /* ContactsTableViewCell.xib */; };
 		7061A3F31A6E8C6A0006D36C /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7061A3F21A6E8C6A0006D36C /* MenuViewController.swift */; };
 		7061A3F51A6E8C9D0006D36C /* Menu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7061A3F41A6E8C9D0006D36C /* Menu.storyboard */; };
 		706628211A715A0900164117 /* MailboxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706628201A715A0900164117 /* MailboxTableViewCell.swift */; };
@@ -84,7 +87,6 @@
 		70945E701A8135EC002B6837 /* UILabel+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70945E6F1A8135EC002B6837 /* UILabel+ProtonMail.swift */; };
 		709FE39D1A9643CF00034288 /* UIScrollViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709FE39C1A9643CF00034288 /* UIScrollViewExtension.swift */; };
 		709FE3A01A977C9000034288 /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709FE39F1A977C9000034288 /* ComposeViewController.swift */; };
-		70B28D081A9B7B4D002D9EC8 /* ContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B28D071A9B7B4D002D9EC8 /* ContactsTableViewCell.swift */; };
 		70B28D0A1A9BA0AC002D9EC8 /* AddressBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B28D091A9BA0AC002D9EC8 /* AddressBookService.swift */; };
 		70C6ABE41A72C1B7006EC400 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70FD2BCB1A6FDC9B0086ADC5 /* Roboto-Regular.ttf */; };
 		70C9133D1A6D83FA002CBE61 /* UIColor+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */; };
@@ -169,7 +171,10 @@
 		701704741A791856000A90D2 /* MessageDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDetailViewController.swift; sourceTree = "<group>"; };
 		701704771A794C69000A90D2 /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-MediumItalic.ttf"; sourceTree = "<group>"; };
 		701704791A794C9F000A90D2 /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
+		701FFE601A9CBAD600380C2B /* CreateContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateContactViewController.swift; sourceTree = "<group>"; };
 		7027B02A1A700F0200D28F52 /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
+		7048B9F21A9E385B00D45F57 /* ContactsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsTableViewCell.swift; sourceTree = "<group>"; };
+		7048B9F31A9E385B00D45F57 /* ContactsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactsTableViewCell.xib; sourceTree = "<group>"; };
 		7061A3F21A6E8C6A0006D36C /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		7061A3F41A6E8C9D0006D36C /* Menu.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Menu.storyboard; sourceTree = "<group>"; };
 		706628201A715A0900164117 /* MailboxTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxTableViewCell.swift; sourceTree = "<group>"; };
@@ -184,7 +189,6 @@
 		70945E6F1A8135EC002B6837 /* UILabel+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+ProtonMail.swift"; sourceTree = "<group>"; };
 		709FE39C1A9643CF00034288 /* UIScrollViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIScrollViewExtension.swift; sourceTree = "<group>"; };
 		709FE39F1A977C9000034288 /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
-		70B28D071A9B7B4D002D9EC8 /* ContactsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsTableViewCell.swift; sourceTree = "<group>"; };
 		70B28D091A9BA0AC002D9EC8 /* AddressBookService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBookService.swift; sourceTree = "<group>"; };
 		70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+ProtonMail.swift"; sourceTree = "<group>"; };
 		70F9C3201A7BA8F400A45DF3 /* MessageDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDetailView.swift; sourceTree = "<group>"; };
@@ -417,6 +421,15 @@
 			name = "Message Detail";
 			sourceTree = "<group>";
 		};
+		7048B9F61A9E3B1B00D45F57 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				7048B9F21A9E385B00D45F57 /* ContactsTableViewCell.swift */,
+				7048B9F31A9E385B00D45F57 /* ContactsTableViewCell.xib */,
+			);
+			name = Cell;
+			sourceTree = "<group>";
+		};
 		7061A3F11A6E8C4A0006D36C /* Menu */ = {
 			isa = PBXGroup;
 			children = (
@@ -453,8 +466,9 @@
 		706962031A713959001443B2 /* Contacts */ = {
 			isa = PBXGroup;
 			children = (
+				7048B9F61A9E3B1B00D45F57 /* Cell */,
 				706962061A71399D001443B2 /* ContactsViewController.swift */,
-				70B28D071A9B7B4D002D9EC8 /* ContactsTableViewCell.swift */,
+				701FFE601A9CBAD600380C2B /* CreateContactViewController.swift */,
 			);
 			name = Contacts;
 			sourceTree = "<group>";
@@ -583,6 +597,7 @@
 				7061A3F51A6E8C9D0006D36C /* Menu.storyboard in Resources */,
 				075E3DF91A5F4ECF00E001A7 /* LaunchScreen.xib in Resources */,
 				07009F131A684C1900129B07 /* Roboto-Light.ttf in Resources */,
+				7048B9F51A9E385B00D45F57 /* ContactsTableViewCell.xib in Resources */,
 				07009F141A684C1900129B07 /* Roboto-Thin.ttf in Resources */,
 				07CC996A1A705BA4000FD6F8 /* Settings.bundle in Resources */,
 				701704781A794C69000A90D2 /* Roboto-MediumItalic.ttf in Resources */,
@@ -681,11 +696,11 @@
 				706628211A715A0900164117 /* MailboxTableViewCell.swift in Sources */,
 				706961FF1A7136A0001443B2 /* ProtonMailViewController.swift in Sources */,
 				071323811A7846150043DB41 /* UIViewExtension.swift in Sources */,
+				701FFE611A9CBAD600380C2B /* CreateContactViewController.swift in Sources */,
 				07CFC9D41A81A2B0007A72B7 /* Attachment.swift in Sources */,
 				07B797C21A6EE50F00244532 /* APIService+AuthenticationExtension.swift in Sources */,
 				0713237F1A7844390043DB41 /* MailboxPasswordViewController.swift in Sources */,
 				073FE01D1A9561F600825980 /* Contact.swift in Sources */,
-				70B28D081A9B7B4D002D9EC8 /* ContactsTableViewCell.swift in Sources */,
 				073FE01F1A95620D00825980 /* ContactExtension.swift in Sources */,
 				70FC90DA1A9BC11F00498B42 /* StringExtension.swift in Sources */,
 				07CC996C1A717ABD000FD6F8 /* UIStoryboardExtension.swift in Sources */,
@@ -727,6 +742,7 @@
 				706932AB1A77BE3D00A75A93 /* SearchViewController.swift in Sources */,
 				071323A01A7C1AB10043DB41 /* NSTimeIntervalExtension.swift in Sources */,
 				07CFC9DA1A82D4CF007A72B7 /* NSSetExtension.swift in Sources */,
+				7048B9F41A9E385B00D45F57 /* ContactsTableViewCell.swift in Sources */,
 				7027B02B1A700F0200D28F52 /* MenuTableViewCell.swift in Sources */,
 				07DD68A11A96BCDD00ED130C /* NSUserDefaultsExtension.swift in Sources */,
 				70945E6C1A8133B8002B6837 /* MoreOptionsView.swift in Sources */,

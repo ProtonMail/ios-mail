@@ -15,16 +15,20 @@ import UIKit
 class ContactsViewController: ProtonMailViewController {
     
     private let kContactCellIdentifier: String = "ContactCell"
+    private let kProtonMailImage: UIImage = UIImage(named: "encrypted_main")!
+    private let kAddressBookImage: UIImage = UIImage(named: "addressbook_icon")!
     
     // temporary class, just to populate the tableview
     
     class Contact: NSObject {
         var name: String!
         var email: String!
+        var isProtonMailContact: Bool = false
         
-        init(name: String!, email: String!) {
+        init(name: String!, email: String!, isProtonMailContact: Bool) {
             self.name = name
             self.email = email
+            self.isProtonMailContact = isProtonMailContact
         }
     }
     
@@ -47,8 +51,52 @@ class ContactsViewController: ProtonMailViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.registerNib(UINib(nibName: "ContactsTableViewCell", bundle: NSBundle.mainBundle()), forCellReuseIdentifier: kContactCellIdentifier)
+        
+        self.searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ContactsTableViewCell", bundle: NSBundle.mainBundle()), forCellReuseIdentifier: kContactCellIdentifier)
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if (!isContactsLoaded()) {
+            ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
+            retrieveAddressBook()
+            retrieveServerContactList()
+            
+            self.contacts.sort { $0.name.lowercaseString < $1.name.lowercaseString }
+            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+        }
+        
+        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
+    }
+    
+    func filterContentForSearchText(searchText: String) {
+        searchResults = contacts.filter({ (contact: Contact) -> Bool in
+            let contactNameContainsFilteredText = contact.name.lowercaseString.rangeOfString(searchText.lowercaseString) != nil
+            let contactEmailContainsFilteredText = contact.email.lowercaseString.rangeOfString(searchText.lowercaseString) != nil
+            return contactNameContainsFilteredText || contactEmailContainsFilteredText
+        })
+    }
+    
+    
+    // MARK: - Private methods
+    
+    private func isContactsLoaded() -> Bool {
+        return self.contacts.count > 0
+    }
+    
+    private func retrieveAddressBook() {
+        var addressBookGroupQueue = dispatch_group_create()
+
+        dispatch_group_enter(addressBookGroupQueue)
+        
         if (sharedAddressBookService.hasAccessToAddressBook()) {
             self.hasAccessToAddressBook = true
+            dispatch_group_leave(addressBookGroupQueue)
         } else {
             sharedAddressBookService.requestAuthorizationWithCompletion({ (granted: Bool, error: NSError?) -> Void in
                 if (granted) {
@@ -62,8 +110,12 @@ class ContactsViewController: ProtonMailViewController {
                     self.presentViewController(alertController, animated: true, completion: nil)
                     println("Error trying to access Address Book = \(error.localizedDescription).")
                 }
+                
+                dispatch_group_leave(addressBookGroupQueue)
             })
         }
+        
+        dispatch_group_wait(addressBookGroupQueue, DISPATCH_TIME_FOREVER)
         
         if (self.hasAccessToAddressBook) {
             let addressBookContacts = sharedAddressBookService.contacts()
@@ -81,26 +133,19 @@ class ContactsViewController: ProtonMailViewController {
                             name = email
                         }
                         
-                        self.contacts.append(Contact(name: name, email: email))
+                        
+                        // temporary solution
+                        var isProtonMailContact = self.contacts.count % 2 == 0
+                        
+                        self.contacts.append(Contact(name: name, email: email, isProtonMailContact: isProtonMailContact))
                     }
                 }
             }
         }
-        
-        self.contacts.sort { $0.name.lowercaseString < $1.name.lowercaseString }
-        
-        tableView.registerClass(ContactsTableViewCell.self, forCellReuseIdentifier: kContactCellIdentifier)
-        self.searchDisplayController?.searchResultsTableView.registerClass(ContactsTableViewCell.self, forCellReuseIdentifier: kContactCellIdentifier)
-        tableView.dataSource = self
-        tableView.delegate = self
     }
     
-    func filterContentForSearchText(searchText: String) {
-        searchResults = contacts.filter({ (contact: Contact) -> Bool in
-            let contactNameContainsFilteredText = contact.name.lowercaseString.rangeOfString(searchText.lowercaseString) != nil
-            let contactEmailContainsFilteredText = contact.email.lowercaseString.rangeOfString(searchText.lowercaseString) != nil
-            return contactNameContainsFilteredText || contactEmailContainsFilteredText
-        })
+    private func retrieveServerContactList() {
+        var contacts: [Contact]
     }
 }
 
@@ -125,18 +170,24 @@ extension ContactsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: ContactsTableViewCell = tableView.dequeueReusableCellWithIdentifier(kContactCellIdentifier, forIndexPath: indexPath) as ContactsTableViewCell
         
-        var name: String
-        var email: String
-        if (tableView == self.searchDisplayController?.searchResultsTableView) {
-            name = searchResults[indexPath.row].name
-            email = searchResults[indexPath.row].email
-        } else {
-            name = contacts[indexPath.row].name
-            email = contacts[indexPath.row].email
-        }
+        var contact: Contact
         
-        cell.textLabel?.text = name
-        cell.detailTextLabel?.text = email
+        if (tableView == self.searchDisplayController?.searchResultsTableView) {
+            contact = searchResults[indexPath.row]
+        } else {
+            contact = contacts[indexPath.row]
+        }
+
+        cell.contactEmailLabel.text = contact.email
+        cell.contactNameLabel.text = contact.name
+
+        
+        // temporary solution to show the icon
+        if (contact.isProtonMailContact) {
+            cell.contactSourceImageView.image = kProtonMailImage
+        } else {
+            cell.contactSourceImageView.hidden = true
+        }
         
         return cell
     }
@@ -146,6 +197,38 @@ extension ContactsViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension ContactsViewController: UITableViewDelegate {
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 60.0
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if (tableView == self.tableView) {
+            
+            let contact = self.contacts[indexPath.row]
+            
+            if (!contact.isProtonMailContact) {
+                let description = NSLocalizedString("This contact belongs to your Address Book.")
+                let message = NSLocalizedString("Please, remove it in your phone.")
+                let alertController = UIAlertController(title: description, message: message, preferredStyle: .Alert)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
+                
+                self.presentViewController(alertController, animated: true, completion: nil)
+                return
+            }
+            
+            self.contacts.removeAtIndex(indexPath.row)
+            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+        }
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if (tableView == self.searchDisplayController?.searchResultsTableView) {
+            return false
+        }
+        
+        return true
+    }
 }
 
 
