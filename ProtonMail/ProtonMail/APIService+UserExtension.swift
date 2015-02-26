@@ -40,6 +40,7 @@ extension APIService {
                             maxSpaceResponseKey: "MaxSpace",
                             notificationEmailResponseKey: "NotificationEmail",
                             privateKeyResponseKey: "EncPrivateKey",
+                            publicKeyResponseKey: "PublicKey",
                             signatureResponseKey: "Signature",
                             usedSpaceResponseKey: "UsedSpace")
                         
@@ -90,6 +91,7 @@ extension UserInfo {
         maxSpaceResponseKey: String,
         notificationEmailResponseKey: String,
         privateKeyResponseKey: String,
+        publicKeyResponseKey: String,
         signatureResponseKey: String,
         usedSpaceResponseKey: String) {
             self.init(
@@ -97,6 +99,7 @@ extension UserInfo {
                 maxSpace: response[maxSpaceResponseKey] as? Int,
                 notificationEmail: response[notificationEmailResponseKey] as? String,
                 privateKey: response[privateKeyResponseKey] as? String,
+                publicKey: response[publicKeyResponseKey] as? String,
                 signature: response[signatureResponseKey] as? String,
                 usedSpace: response[usedSpaceResponseKey] as? Int)
     }

@@ -27,8 +27,7 @@ class MessageDetailViewController: ProtonMailViewController {
     @IBOutlet var messageDetailView: MessageDetailView!
     
     override func loadView() {
-        messageDetailView = MessageDetailView(message: message)
-        messageDetailView.delegate = self
+        messageDetailView = MessageDetailView(message: message, delegate: self)
         
         self.view = messageDetailView
     }
@@ -72,6 +71,15 @@ class MessageDetailViewController: ProtonMailViewController {
 }
 
 extension MessageDetailViewController: MessageDetailViewDelegate {
+    
+    func messageDetailView(messageDetailView: MessageDetailView, didFailDecodeWithError error: NSError) {
+        NSLog("\(__FUNCTION__) \(error)")
+        
+        let alertController = error.alertController()
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
+        
+        presentViewController(alertController, animated: true, completion: nil)
+    }
     
     func messageDetailViewDidTapForwardMessage(messageView: MessageDetailView, message: Message) {
         println("messageDetailViewDidTapForwardMessage: \(message.title)")

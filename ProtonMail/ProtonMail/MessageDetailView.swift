@@ -96,8 +96,9 @@ class MessageDetailView: UIView {
     
     // MARK: - Init methods
     
-    required init(message: Message) {
+    required init(message: Message, delegate: MessageDetailViewDelegate?) {
         self.message = message
+        self.delegate = delegate
         
         super.init(frame: CGRectZero)
         
@@ -126,7 +127,14 @@ class MessageDetailView: UIView {
     func updateEmailBodyView(animated: Bool) {
         let completion: ((Bool) -> Void) = { finished in
             if self.message.isDetailDownloaded {
-                self.emailBodyTextView.text = self.message.body
+                
+                var error: NSError?
+                self.emailBodyTextView.text = self.message.decryptBody(&error) ?? NSLocalizedString("Unable to decrypt message.")
+            
+                if let error = error {
+                    self.delegate?.messageDetailView(self, didFailDecodeWithError: error)
+                }
+            
             } else {
                 self.emailBodyTextView.text = NSLocalizedString("Loading...")
             }
@@ -691,6 +699,7 @@ class MessageDetailView: UIView {
 // MARK: - View Delegate
 
 protocol MessageDetailViewDelegate {
+    func messageDetailView(messageDetailView: MessageDetailView, didFailDecodeWithError: NSError)
     func messageDetailViewDidTapForwardMessage(messageDetailView: MessageDetailView, message: Message)
     func messageDetailViewDidTapReplyMessage(messageDetailView: MessageDetailView, message: Message)
     func messageDetailViewDidTapReplyAllMessage(messageDetailView: MessageDetailView, message: Message)

@@ -25,11 +25,11 @@ extension OpenPGP {
         case badProtonMailPGPMessage = 10006
     }
     
-    func checkPassphrase(passphrase: String, forPrivateKey privateKey: String, publicKey: String, error: NSErrorPointer) -> Bool {
+    func checkPassphrase(passphrase: String, forPrivateKey privateKey: String, publicKey: String, error: NSErrorPointer?) -> Bool {
         var anError: NSError?
         
         if !SetupKeys(privateKey, pubKey: publicKey, pass: passphrase, error: &anError) {
-            if error != nil {
+            if let error = error {
                 error.memory = anError
             }
             
@@ -44,17 +44,36 @@ extension OpenPGP {
 
 extension String {
     
-    func decryptWithPrivateKey(privateKey: String, passphrase: String, publicKey: String, error: NSErrorPointer) -> String? {
+    func decryptWithPrivateKey(privateKey: String, passphrase: String, publicKey: String, error: NSErrorPointer?) -> String? {
         let openPGP = OpenPGP()
         
         if !openPGP.checkPassphrase(passphrase, forPrivateKey: privateKey, publicKey: publicKey, error: error) {
             return nil
         }
         
-        return openPGP.decrypt_message(self, error: error)
+        var anError: NSError?
+        if let decrypt = openPGP.decrypt_message(self, error: &anError) {
+            return decrypt
+        }
+        
+        if let error = error {
+            error.memory = anError
+        }
+        
+        return nil
     }
     
-    func encryptWithPublicKey(publicKey: String, error: NSErrorPointer) -> String? {
-        return OpenPGP().encrypt_message(self, pub_key: publicKey, error: error)
+    func encryptWithPublicKey(publicKey: String, error: NSErrorPointer?) -> String? {
+        
+        var anError: NSError?
+        if let encrypt = OpenPGP().encrypt_message(self, pub_key: publicKey, error: &anError) {
+            return encrypt
+        }
+        
+        if let error = error {
+            error.memory = anError
+        }
+        
+        return nil
     }
 }

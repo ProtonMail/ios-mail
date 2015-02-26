@@ -39,10 +39,19 @@ class UserDataService {
         
     // MARK: - Private variables
     
+    /// Value is only stored in the keychain
     private(set) var userInfo: UserInfo? {
-        didSet {
-            NSUserDefaults.standardUserDefaults().setCustomValue(userInfo, forKey: Key.userInfo)
-            NSUserDefaults.standardUserDefaults().synchronize()
+        get {
+            let data = UICKeyChainStore.dataForKey(Key.userInfo)
+            return NSKeyedUnarchiver.unarchiveObjectWithData(data) as UserInfo?
+        }
+        set {
+            if let newValue = newValue {
+                let data = NSKeyedArchiver.archivedDataWithRootObject(newValue)
+                UICKeyChainStore.setData(data, forKey: Key.userInfo)
+            } else {
+                UICKeyChainStore.removeItemForKey(Key.userInfo)
+            }
         }
     }
     
@@ -248,6 +257,19 @@ class UserDataService {
             } else {
                 completion?(nil, error)
             }
+        }
+    }
+}
+
+// MARK: - Message extension
+
+extension Message {
+    
+    func decryptBody(error: NSErrorPointer?) -> String? {
+        if !isEncrypted {
+            return body
+        } else {
+            return body.decryptWithPrivateKey(sharedUserDataService.userInfo?.privateKey ?? "", passphrase: sharedUserDataService.mailboxPassword? ?? "", publicKey: sharedUserDataService.userInfo?.publicKey ?? "", error: error)
         }
     }
 }
