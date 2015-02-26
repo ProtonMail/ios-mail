@@ -35,6 +35,8 @@ class PersistentQueue {
                 let data = NSKeyedArchiver.archivedDataWithRootObject(self.queue)
                 if !data.writeToURL(self.queueURL, atomically: true) {
                     NSLog("\(__FUNCTION__) Unable to save queue: \(self.queue as NSArray)\n to \(self.queueURL.absoluteString)")
+                } else {
+                    self.queueURL.excludeFromBackup()
                 }
             }
         }
@@ -51,7 +53,6 @@ class PersistentQueue {
     init(queueName: String) {
         self.queueName = "\(Constant.queueIdentifer).\(queueName)"
         queueURL = NSFileManager.defaultManager().applicationSupportDirectoryURL.URLByAppendingPathComponent(self.queueName)
-        queueURL.excludeFromBackup()
         queue = NSMutableArray(contentsOfURL: queueURL) ?? []
     }
     
