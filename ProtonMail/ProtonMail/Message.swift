@@ -33,6 +33,7 @@ class Message: NSManagedObject {
     @NSManaged var isReplied: Bool
     @NSManaged var isRepliedAll: Bool
     @NSManaged var isStarred: Bool
+    @NSManaged var lastModified: NSDate?
     @NSManaged var locationNumber: NSNumber
     @NSManaged var messageID: String
     @NSManaged var recipientList: String

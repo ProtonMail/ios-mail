@@ -129,6 +129,104 @@ class MessageDataService {
         }
     }
     
+    func fetchMessageIncrementalUpdates(completion: CompletionBlock?) {
+        struct IncrementalUpdateType {
+            static let delete = "1"
+            static let insert = "0"
+            static let update = "2"
+        }
+        
+        struct ResponseKey {
+            static let code = "code"
+            static let message = "message"
+            static let messageID = "MessageID"
+            static let response = "response"
+            static let type = "type"
+        }
+        
+        let validResponse = 1000
+        
+        queue { () -> Void in
+            // TODO: find the most recent timestamp
+            let timestamp = 0 as NSTimeInterval
+            let completionWrapper: CompletionBlock = { task, response, error in
+                if error != nil {
+                    completion?(task, nil, error)
+                    return
+                }
+                
+                if let code = response?[ResponseKey.code] as? Int {
+                    if code == validResponse {
+                        if let response = response?[ResponseKey.response] as? Dictionary<String, AnyObject> {
+                            if let messages = response[ResponseKey.message] as? Array<Dictionary<String, AnyObject>> {
+                                if messages.isEmpty {
+                                    completion?(task, nil, nil)
+                                } else {
+                                    let context = sharedCoreDataService.newManagedObjectContext()
+                                    
+                                    context.performBlock { () -> Void in
+                                        for message in messages {
+                                            switch(message[ResponseKey.type] as? String) {
+                                            case .Some(IncrementalUpdateType.delete):
+                                                if let messageID = message[ResponseKey.messageID] as? String {
+                                                    if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                                                        context.deleteObject(message)
+                                                    }
+                                                }
+                                            case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update):
+                                                var error: NSError?
+                                                GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: message, inManagedObjectContext: context, error: &error)
+
+                                                if error != nil  {
+                                                    NSLog("\(__FUNCTION__) error: \(error)")
+                                                }
+                                            default:
+                                                NSLog("\(__FUNCTION__) unknown type in message: \(message)")
+                                            }
+                                        }
+                                        
+                                        var error: NSError?
+                                        error = context.saveUpstreamIfNeeded()
+                                        
+                                        if error != nil  {
+                                            NSLog("\(__FUNCTION__) error: \(error)")
+                                        }
+                                        
+                                        dispatch_async(dispatch_get_main_queue()) {
+                                            completion?(task, response, error)
+                                            return
+                                        }
+                                    }
+                                }
+                                
+                                return
+                            }
+                        }
+                    }
+                }
+                
+                completion?(task, nil, NSError.unableToParseResponse(response))
+            }
+            
+            sharedAPIService.messageCheck(timestamp: timestamp, completion: completionWrapper)
+        }
+    }
+    
+    func fetchMessageCountForLocation(location: Location, completion: CompletionBlock?) {
+        queue { () -> Void in
+            let completionWrapper: CompletionBlock = {task, response, error in
+                let countInfo: Dictionary<String, Int> = [
+                    "unread" : response?["UnRead"] as? Int ?? 0,
+                    "read" : response?["Read"] as? Int ?? 0,
+                    "total" : response?["Total"] as? Int ?? 0]
+                
+                completion?(task, countInfo, nil)
+            }
+            
+            sharedAPIService.messageCountForLocation(location.rawValue, completion: completionWrapper)
+        }
+    }
+    
     func fetchMessageDetailForMessage(message: Message, completion: CompletionBlock) {
         if !message.isDetailDownloaded {
             queue {
@@ -208,6 +306,43 @@ class MessageDataService {
         }
      
         return nil
+    }
+    
+    func search(query: String, page: Int, completion: CompletionBlock?) {
+        queue {
+            let completionWrapper: CompletionBlock = {task, response, error in
+                if error != nil {
+                    completion?(task, response, error)
+                }
+                
+                if let messagesArray = response?["Messages"] as? [Dictionary<String,AnyObject>] {
+                    
+                    let context = sharedCoreDataService.newManagedObjectContext()
+                    
+                    context.performBlock() {
+                        var error: NSError?
+                        var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
+                        
+                        if error == nil {
+                            error = context.saveUpstreamIfNeeded()
+                        }
+                        
+                        if error != nil  {
+                            NSLog("\(__FUNCTION__) error: \(error)")
+                        }
+                        
+                        dispatch_async(dispatch_get_main_queue()) {
+                            completion?(task, response, error)
+                            return
+                        }
+                    }
+                } else {
+                    completion?(task, response, NSError.unableToParseResponse(response))
+                }
+            }
+            
+            sharedAPIService.messageSearch(query, page: page, completion: completionWrapper)
+        }
     }
     
     // MARK: - Private methods
@@ -319,6 +454,10 @@ extension Message {
         let context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         context.parentContext = context
         context.deleteAll(Attributes.entityName)
+    }
+    
+    class func messageForMessageID(messageID: String, inManagedObjectContext context: NSManagedObjectContext) -> Message? {
+        return context.managedObjectWithEntityName(Message.Attributes.entityName, forKey: Message.Attributes.messageID, matchingValue: messageID) as? Message
     }
 }
 
