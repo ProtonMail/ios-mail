@@ -44,7 +44,6 @@ class MessageDetailView: UIView {
     private let kEmailBodyTextViewMarginLeft: CGFloat = 16.0
     private let kEmailBodyTextViewMarginRight: CGFloat = -16.0
     private let kEmailBodyTextViewMarginTop: CGFloat = 16.0
-    private let kEmailBodyLineSpacing: CGFloat = 8.0
     private let kButtonsViewHeight: CGFloat = 68.0
     private let kReplyButtonMarginLeft: CGFloat = 50.0
     private let kReplyButtonMarginTop: CGFloat = 10.0
@@ -80,7 +79,7 @@ class MessageDetailView: UIView {
     
     private var scrollView: UIScrollView!
     private var contentView: UIView!
-    private var emailBodyTextView: UILabel!
+    private var emailBodyView: UIWebView!
     
     
     // MARK: - Email footer views
@@ -126,38 +125,35 @@ class MessageDetailView: UIView {
     
     func updateEmailBodyView(animated: Bool) {
         let completion: ((Bool) -> Void) = { finished in
+            var bodyText = NSLocalizedString("Loading...")
+            
             if self.message.isDetailDownloaded {
-                
                 var error: NSError?
-                self.emailBodyTextView.text = self.message.decryptBody(&error) ?? NSLocalizedString("Unable to decrypt message.")
+                bodyText = self.message.decryptBody(&error) ?? NSLocalizedString("Unable to decrypt message.")
             
                 if let error = error {
                     self.delegate?.messageDetailView(self, didFailDecodeWithError: error)
                 }
-            
-            } else {
-                self.emailBodyTextView.text = NSLocalizedString("Loading...")
             }
             
-            let paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.lineSpacing = self.kEmailBodyLineSpacing
+            let font = UIFont.robotoLight(size: UIFont.Size.h5)
+            let cssColorString = UIColor.ProtonMail.Gray_383A3B.cssString
+            let htmlString = "<span style=\"font-family: \(font.fontName); font-size: \(font.pointSize); color: \(cssColorString)\">\(bodyText)</span>"
             
-            let attributedString = NSMutableAttributedString(string: self.emailBodyTextView.text!)
-            attributedString.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, countElements(self.emailBodyTextView.text!)))
+            //        self.emailBodyView.textColor = UIColor.ProtonMail.Gray_383A3B
             
-            self.emailBodyTextView.attributedText = attributedString
-            self.emailBodyTextView.sizeToFit()
+            self.emailBodyView.loadHTMLString(htmlString, baseURL: nil)
             
             if animated {
                 UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
-                    self.emailBodyTextView.alpha = 1.0
+                    self.emailBodyView.alpha = 1.0
                 })
             }
         }
         
         if animated {
             UIView.animateWithDuration(kAnimationDuration, animations: { () -> Void in
-                self.emailBodyTextView.alpha = 0
+                self.emailBodyView.alpha = 0
             }, completion: completion)
         } else {
             completion(true)
@@ -269,13 +265,9 @@ class MessageDetailView: UIView {
     }
     
     private func createEmailBodyView() {
-        self.emailBodyTextView = UILabel()
-        self.contentView.addSubview(emailBodyTextView)
-        self.emailBodyTextView.font = UIFont.robotoLight(size: UIFont.Size.h5)
-        self.emailBodyTextView.numberOfLines = 0
-        self.emailBodyTextView.textColor = UIColor.ProtonMail.Gray_383A3B
-        
-        updateEmailBodyView(false)
+        self.emailBodyView = UIWebView()
+        self.emailBodyView.delegate = self
+        self.contentView.addSubview(emailBodyView)
     }
 
     private func createFooterView() {
@@ -329,7 +321,7 @@ class MessageDetailView: UIView {
         var scrollWorkaroundView = UIView()
         self.scrollView.addSubview(scrollWorkaroundView)
         scrollWorkaroundView.mas_makeConstraints { (make) -> Void in
-            make.top.equalTo()(self.emailBodyTextView.mas_bottom)
+            make.top.equalTo()(self.emailBodyView.mas_bottom)
             make.bottom.equalTo()(self.contentView)
         }
     }
@@ -488,10 +480,11 @@ class MessageDetailView: UIView {
     }
     
     private func makeEmailBodyConstraints() {
-        emailBodyTextView.mas_makeConstraints { (make) -> Void in
+        emailBodyView.mas_makeConstraints { (make) -> Void in
             make.left.equalTo()(self.contentView).with().offset()(self.kEmailBodyTextViewMarginLeft)
             make.right.equalTo()(self.contentView).with().offset()(self.kEmailBodyTextViewMarginRight)
             make.top.equalTo()(self.separatorBetweenHeaderAndBodyView.mas_bottom).with().offset()(self.kEmailBodyTextViewMarginTop)
+            make.bottom.equalTo()(self.contentView)
         }
     }
     
@@ -693,6 +686,23 @@ class MessageDetailView: UIView {
         } else if object as NSObject == message && keyPath == Message.Attributes.isDetailDownloaded {
             updateEmailBodyView(true)
         }
+    }
+}
+
+// MARK: - UIWebViewDelegate
+
+extension MessageDetailView: UIWebViewDelegate {
+    
+    func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
+        NSLog("\(__FUNCTION__) \(error)")
+    }
+    
+    func webViewDidStartLoad(webView: UIWebView) {
+        NSLog("\(__FUNCTION__)")
+    }
+    
+    func webViewDidFinishLoad(webView: UIWebView) {
+        NSLog("\(__FUNCTION__)")
     }
 }
 

@@ -41,6 +41,11 @@ class MessageDetailViewController: ProtonMailViewController {
         return false
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        messageDetailView.updateEmailBodyView(animated)
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         message.isRead = true
