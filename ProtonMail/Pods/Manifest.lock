@@ -31,6 +31,7 @@ PODS:
   - RHAddressBook (1.1.1)
   - SWRevealViewController (2.3.0)
   - UICKeyChainStore (2.0.1)
+  - UIColor-Hex (0.1.1)
 
 DEPENDENCIES:
   - AFNetworking
@@ -43,6 +44,7 @@ DEPENDENCIES:
   - RHAddressBook (= 1.1.1)
   - SWRevealViewController (= 2.3.0)
   - UICKeyChainStore
+  - UIColor-Hex
 
 EXTERNAL SOURCES:
   OpenPGP:
@@ -60,5 +62,6 @@ SPEC CHECKSUMS:
   RHAddressBook: 0cad9d33b9494d1e28323b62e5c7afc109cc4294
   SWRevealViewController: f6d80638b8e12323e87ac79562345403a799cb77
   UICKeyChainStore: 779de9c089920a79d8755e7ba887e51c745819a8
+  UIColor-Hex: 658893617840e46ee5ac786e094b67786d9cb19d
 
 COCOAPODS: 0.35.0
