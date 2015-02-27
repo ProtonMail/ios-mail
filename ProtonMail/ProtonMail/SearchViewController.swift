@@ -15,20 +15,31 @@ import UIKit
 
 class SearchViewController: ProtonMailViewController {
     
+    var footerView: LoadingView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchTextField: UITextField!
     
     
     // MARK: - Private Constants
     
+    private let kAnimationDuration: NSTimeInterval = 0.3
     private let kSearchCellHeight: CGFloat = 64.0
     private let kCellIdentifier: String = "SearchedCell"
 
-    
     // MARK: - Private attributes
     
     private var fetchedResultsController: NSFetchedResultsController?
+    private var isMorePages = true
     private var managedObjectContext: NSManagedObjectContext?
+    private var nextPage = 1
+    private var query: String = "" {
+        didSet {
+            isMorePages = true
+            nextPage = 1
+            
+            handleQuery(query)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +47,8 @@ class SearchViewController: ProtonMailViewController {
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        
+        footerView = LoadingView.viewForOwner(self)
         
         searchTextField.autocapitalizationType = UITextAutocapitalizationType.None
         searchTextField.delegate = self
@@ -90,11 +103,69 @@ class SearchViewController: ProtonMailViewController {
         
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
     }
+    
+    func handleQuery(query: String) {
+        if !isMorePages {
+            return
+        }
+        
+        if let context = managedObjectContext {
+            if let fetchedResultsController = fetchedResultsController {
+                fetchedResultsController.fetchRequest.predicate = predicateForSearch(query)
+                fetchedResultsController.delegate = nil
+                
+                var error: NSError?
+                if !fetchedResultsController.performFetch(&error) {
+                    NSLog("\(__FUNCTION__) performFetch error: \(error!)")
+                }
+                
+                tableView.reloadData()
+                
+                fetchedResultsController.delegate = self
+            }
+            
+            if query.isEmpty {
+                return
+            }
+        
+            footerView.showForTableView(self.tableView)
+            
+            sharedMessageDataService.search(query: query, page: nextPage, managedObjectContext: context, completion: { (messages, error) -> Void in
+                
+                self.footerView.hide()
+                
+                if error != nil {
+                    NSLog("\(__FUNCTION__) search error: \(error)")
+                } else {
+                    if let messages = messages {
+                        self.isMorePages = messages.count != 0
+                    }
+                    
+                    self.nextPage++
+                }
+            })
+        }
+    }
 
     func predicateForSearch(query: String) -> NSPredicate? {
         return NSPredicate(format: "%K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@", Message.Attributes.title, query, Message.Attributes.senderName, query)
     }
     
+    func fetchMessagesIfNeededForIndexPath(indexPath: NSIndexPath) {
+        if !isMorePages {
+            return
+        }
+        
+        if let fetchedResultsController = fetchedResultsController {
+            if let last = fetchedResultsController.fetchedObjects?.last as? Message {
+                if let current = fetchedResultsController.objectAtIndexPath(indexPath) as? Message {
+                    if last == current {
+                        handleQuery(query)
+                    }
+                }
+            }
+        }
+    }
 
     // MARK: - Button Actions
     
@@ -181,6 +252,8 @@ extension SearchViewController: UITableViewDataSource {
         if (cell.respondsToSelector("setLayoutMargins:")) {
             cell.layoutMargins = UIEdgeInsetsZero
         }
+        
+        fetchMessagesIfNeededForIndexPath(indexPath)
     }
 }
 
@@ -200,35 +273,7 @@ extension SearchViewController: UITableViewDelegate {
 extension SearchViewController: UITextFieldDelegate {
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        
-        if let context = managedObjectContext {
-            let query = (textField.text as NSString).stringByReplacingCharactersInRange(range, withString: string)
-            
-            if let fetchedResultsController = fetchedResultsController {
-                fetchedResultsController.fetchRequest.predicate = predicateForSearch(query)
-                fetchedResultsController.delegate = nil
-                
-                var error: NSError?
-                if !fetchedResultsController.performFetch(&error) {
-                    NSLog("\(__FUNCTION__) performFetch error: \(error!)")
-                }
-                
-                tableView.reloadData()
-                
-                fetchedResultsController.delegate = self
-            }
-            
-            // TODO: start loading indicator
-            
-            sharedMessageDataService.search(query: query, page: 0, managedObjectContext: context, completion: { (messages, error) -> Void in
-                
-                // TODO: stop loading indicator
-                
-                if error != nil {
-                    NSLog("\(__FUNCTION__) search error: \(error)")
-                }
-            })
-        }
+        query = (textField.text as NSString).stringByReplacingCharactersInRange(range, withString: string)
         
         return true
     }
