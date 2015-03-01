@@ -29,14 +29,11 @@ class SearchViewController: ProtonMailViewController {
     // MARK: - Private attributes
     
     private var fetchedResultsController: NSFetchedResultsController?
-    private var isMorePages = true
     private var managedObjectContext: NSManagedObjectContext?
-    private var nextPage = 1
+    private var pagingManager = PagingManager()
     private var query: String = "" {
         didSet {
-            isMorePages = true
-            nextPage = 1
-            
+            pagingManager.reset()
             handleQuery(query)
         }
     }
@@ -47,6 +44,7 @@ class SearchViewController: ProtonMailViewController {
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.tableView.noSeparatorsBelowFooter()
         
         footerView = LoadingView.viewForOwner(self)
         
@@ -105,7 +103,7 @@ class SearchViewController: ProtonMailViewController {
     }
     
     func handleQuery(query: String) {
-        if !isMorePages {
+        if !pagingManager.isMorePages {
             return
         }
         
@@ -128,20 +126,16 @@ class SearchViewController: ProtonMailViewController {
                 return
             }
         
-            footerView.showForTableView(self.tableView)
+            tableView.showLoadingFooter()
             
-            sharedMessageDataService.search(query: query, page: nextPage, managedObjectContext: context, completion: { (messages, error) -> Void in
+            sharedMessageDataService.search(query: query, page: pagingManager.nextPage, managedObjectContext: context, completion: { (messages, error) -> Void in
                 
-                self.footerView.hide()
+                self.tableView.hideLoadingFooter()
                 
                 if error != nil {
                     NSLog("\(__FUNCTION__) search error: \(error)")
                 } else {
-                    if let messages = messages {
-                        self.isMorePages = messages.count != 0
-                    }
-                    
-                    self.nextPage++
+                    self.pagingManager.resultCount(messages?.count ?? 0)
                 }
             })
         }
@@ -152,7 +146,7 @@ class SearchViewController: ProtonMailViewController {
     }
     
     func fetchMessagesIfNeededForIndexPath(indexPath: NSIndexPath) {
-        if !isMorePages {
+        if !pagingManager.isMorePages {
             return
         }
         
