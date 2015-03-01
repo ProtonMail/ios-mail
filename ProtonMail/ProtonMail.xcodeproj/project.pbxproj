@@ -56,6 +56,7 @@
 		07CC99681A702368000FD6F8 /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC99671A702368000FD6F8 /* UIFontExtension.swift */; };
 		07CC996A1A705BA4000FD6F8 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 07CC99691A705BA4000FD6F8 /* Settings.bundle */; };
 		07CC996C1A717ABD000FD6F8 /* UIStoryboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC996B1A717ABD000FD6F8 /* UIStoryboardExtension.swift */; };
+		07CCCC2E1AA2BD8800ECA79E /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CCCC2D1AA2BD8800ECA79E /* Snapshot.swift */; };
 		07CF61921A8988F100ED38AE /* AttachmentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF61911A8988F100ED38AE /* AttachmentExtension.swift */; };
 		07CF61941A89895600ED38AE /* MessageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF61931A89895600ED38AE /* MessageExtension.swift */; };
 		07CF61981A8AE5AA00ED38AE /* MonitorSavesDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CF61971A8AE5AA00ED38AE /* MonitorSavesDataService.swift */; };
@@ -156,6 +157,7 @@
 		07CC99671A702368000FD6F8 /* UIFontExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
 		07CC99691A705BA4000FD6F8 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		07CC996B1A717ABD000FD6F8 /* UIStoryboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStoryboardExtension.swift; sourceTree = "<group>"; };
+		07CCCC2D1AA2BD8800ECA79E /* Snapshot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Snapshot.swift; sourceTree = "<group>"; };
 		07CF61911A8988F100ED38AE /* AttachmentExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentExtension.swift; sourceTree = "<group>"; };
 		07CF61931A89895600ED38AE /* MessageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MessageExtension.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		07CF61971A8AE5AA00ED38AE /* MonitorSavesDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonitorSavesDataService.swift; sourceTree = "<group>"; };
@@ -346,6 +348,7 @@
 				073FD92D1A71C33B00EB0CAF /* Models */,
 				07B797C31A6EE54600244532 /* Network */,
 				07CAB7FC1A880AF300C5E347 /* Queue */,
+				07CCCC2D1AA2BD8800ECA79E /* Snapshot.swift */,
 				075E3DE91A5F4ECF00E001A7 /* Supporting Files */,
 			);
 			path = ProtonMail;
@@ -682,6 +685,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07CCCC2E1AA2BD8800ECA79E /* Snapshot.swift in Sources */,
 				07CF61921A8988F100ED38AE /* AttachmentExtension.swift in Sources */,
 				071323901A79BD8F0043DB41 /* TextInsetTextField.swift in Sources */,
 				078FF4D01A92CE15008321D1 /* APIService+SettingsExtension.swift in Sources */,

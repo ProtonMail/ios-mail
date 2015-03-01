@@ -21,7 +21,6 @@ class AppDelegate: UIResponder {
     private let animationDuration: NSTimeInterval = 0.5
     
     var window: UIWindow?
-    var rootViewController: UIViewController?
     
     func instantiateRootViewController() -> UIViewController {
         let storyboard = UIStoryboard.Storyboard.signIn
@@ -33,43 +32,26 @@ class AppDelegate: UIResponder {
         window?.rootViewController = instantiateRootViewController()
         window?.makeKeyAndVisible()
     }
-    
-    // MARK: - Snapshot methods
-
-    func cleanUpAfterSnapshot() {
-        window?.rootViewController = rootViewController
-    }
-    
-    // create a view and overlay the screen
-    func prepareForSnapshot() {
-        rootViewController = window?.rootViewController
         
-        let viewController =  UIViewController()
-        viewController.view = NSBundle.mainBundle().loadNibNamed("LaunchScreen", owner: self, options: nil).first as? UIView ?? {
-            let view = UIView(frame: self.window!.bounds)
-            view.backgroundColor = UIColor.ProtonMail.Blue_85B1DE
-            
-            return view
-            }()
-        
-        window?.rootViewController = viewController
-        window?.snapshotViewAfterScreenUpdates(true)
-    }
-    
     // MARK: - Public methods
     
-    func switchTo(#storyboard: UIStoryboard.Storyboard) {
+    func switchTo(#storyboard: UIStoryboard.Storyboard, animated: Bool) {
         if let window = window {
             if let rootViewController = window.rootViewController {
                 if rootViewController.restorationIdentifier != storyboard.restorationIdentifier {
-                    UIView.transitionWithView(window, duration: animationDuration, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                    let animations: () -> Void = {
                         window.rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
-                        }, completion: nil)
+                    }
+                    
+                    if animated {
+                        UIView.transitionWithView(window, duration: animationDuration, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: animations, completion: nil)
+                    } else {
+                        animations()
+                    }
                 }
             }
         }
     }
-    
 }
 
 
@@ -90,13 +72,15 @@ extension AppDelegate: UIApplicationDelegate {
     }
     
     func applicationDidEnterBackground(application: UIApplication) {
-        prepareForSnapshot()
+        sharedUserDataService.didEnterBackground()
+        Snapshot().didEnterBackground(application)
     }
     
     func applicationWillEnterForeground(application: UIApplication) {
-        cleanUpAfterSnapshot()
+        Snapshot().willEnterForeground(application)
         
         if sharedUserDataService.isSignedIn {
+            
             sharedUserDataService.fetchUserInfo()
             sharedContactDataService.fetchContacts({ (contacts, error) -> Void in
                 if error != nil {
