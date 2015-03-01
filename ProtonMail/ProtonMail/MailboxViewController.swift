@@ -39,6 +39,7 @@ class MailboxViewController: ProtonMailViewController {
     private var fetchedResultsController: NSFetchedResultsController?
     private var moreOptionsView: MoreOptionsView!
     private var navigationTitleLabel = UILabel()
+    private var pagingManager = PagingManager()
     private var selectedMessages: NSMutableSet = NSMutableSet()
     private var isEditing: Bool = false
     private var isViewingMoreOptions: Bool = false
@@ -104,7 +105,7 @@ class MailboxViewController: ProtonMailViewController {
         self.tableView.addSubview(self.refreshControl)
         self.tableView.dataSource = self
         self.tableView.delegate = self
-        self.tableView.tableFooterView = UIView(frame: CGRectZero)
+        self.tableView.noSeparatorsBelowFooter()
         
         let longPressGestureRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: "handleLongPress:")
         longPressGestureRecognizer.minimumPressDuration = kLongPressDuration
@@ -232,11 +233,45 @@ class MailboxViewController: ProtonMailViewController {
         }
     }
     
+    func fetchMessagesIfNeededForIndexPath(indexPath: NSIndexPath) {
+        if !pagingManager.isMorePages {
+            return
+        }
+        
+        if let fetchedResultsController = fetchedResultsController {
+            if let last = fetchedResultsController.fetchedObjects?.last as? Message {
+                if let current = fetchedResultsController.objectAtIndexPath(indexPath) as? Message {
+                    if last == current {
+                        if !pagingManager.isMorePages {
+                            return
+                        }
+                        
+                        tableView.showLoadingFooter()
+                        
+                        sharedMessageDataService.fetchMessagesForLocation(mailboxLocation, page: pagingManager.nextPage, completion: { (task, messages, error) -> Void in
+                            self.tableView.hideLoadingFooter()
+                            
+                            if error != nil {
+                                NSLog("\(__FUNCTION__) search error: \(error)")
+                            } else {
+                                self.pagingManager.resultCount(messages?.count ?? 0)
+                            }
+                        })
+                    }
+                }
+            }
+        }
+    }
+    
     func getLatestMessages() {
-        sharedMessageDataService.fetchLatestMessagesForLocation(self.mailboxLocation) { _, _, error in
+        pagingManager.reset()
+        
+        sharedMessageDataService.fetchLatestMessagesForLocation(self.mailboxLocation) { _, messages, error in
             if let error = error {
                 NSLog("error: \(error)")
             }
+            
+            self.pagingManager.reset()
             self.refreshControl.endRefreshing()
         }
         
@@ -457,6 +492,8 @@ extension MailboxViewController: UITableViewDataSource {
         if (cell.respondsToSelector("setLayoutMargins:")) {
             cell.layoutMargins = UIEdgeInsetsZero
         }
+        
+        fetchMessagesIfNeededForIndexPath(indexPath)
     }
 }
 
