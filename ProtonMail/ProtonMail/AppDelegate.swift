@@ -21,6 +21,7 @@ class AppDelegate: UIResponder {
     private let animationDuration: NSTimeInterval = 0.5
     
     var window: UIWindow?
+    var rootViewController: UIViewController?
     
     func instantiateRootViewController() -> UIViewController {
         let storyboard = UIStoryboard.Storyboard.signIn
@@ -31,6 +32,28 @@ class AppDelegate: UIResponder {
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         window?.rootViewController = instantiateRootViewController()
         window?.makeKeyAndVisible()
+    }
+    
+    // MARK: - Snapshot methods
+
+    func cleanUpAfterSnapshot() {
+        window?.rootViewController = rootViewController
+    }
+    
+    // create a view and overlay the screen
+    func prepareForSnapshot() {
+        rootViewController = window?.rootViewController
+        
+        let viewController =  UIViewController()
+        viewController.view = NSBundle.mainBundle().loadNibNamed("LaunchScreen", owner: self, options: nil).first as? UIView ?? {
+            let view = UIView(frame: self.window!.bounds)
+            view.backgroundColor = UIColor.ProtonMail.Blue_85B1DE
+            
+            return view
+            }()
+        
+        window?.rootViewController = viewController
+        window?.snapshotViewAfterScreenUpdates(true)
     }
     
     // MARK: - Public methods
@@ -67,11 +90,12 @@ extension AppDelegate: UIApplicationDelegate {
     }
     
     func applicationDidEnterBackground(application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        prepareForSnapshot()
     }
     
     func applicationWillEnterForeground(application: UIApplication) {
+        cleanUpAfterSnapshot()
+        
         if sharedUserDataService.isSignedIn {
             sharedUserDataService.fetchUserInfo()
             sharedContactDataService.fetchContacts({ (contacts, error) -> Void in
