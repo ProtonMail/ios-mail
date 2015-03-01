@@ -15,7 +15,6 @@ import UIKit
 
 class SearchViewController: ProtonMailViewController {
     
-    var footerView: LoadingView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchTextField: UITextField!
     
@@ -45,8 +44,6 @@ class SearchViewController: ProtonMailViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.noSeparatorsBelowFooter()
-        
-        footerView = LoadingView.viewForOwner(self)
         
         searchTextField.autocapitalizationType = UITextAutocapitalizationType.None
         searchTextField.delegate = self
