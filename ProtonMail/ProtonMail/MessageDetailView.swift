@@ -79,7 +79,7 @@ class MessageDetailView: UIView {
     
     private var scrollView: UIScrollView!
     private var contentView: UIView!
-    private var emailBodyView: UIWebView!
+    private var emailBodyWebView: UIWebView!
     
     
     // MARK: - Email footer views
@@ -123,7 +123,7 @@ class MessageDetailView: UIView {
     
     // MARK: - Public methods
     
-    func updateEmailBodyView(animated: Bool) {
+    func updateEmailBodyWebView(animated: Bool) {
         let completion: ((Bool) -> Void) = { finished in
             var bodyText = NSLocalizedString("Loading...")
             
@@ -140,24 +140,23 @@ class MessageDetailView: UIView {
             let cssColorString = UIColor.ProtonMail.Gray_383A3B.cssString
             let htmlString = "<span style=\"font-family: \(font.fontName); font-size: \(font.pointSize); color: \(cssColorString)\">\(bodyText)</span>"
             
-            //        self.emailBodyView.textColor = UIColor.ProtonMail.Gray_383A3B
-            
-            self.emailBodyView.loadHTMLString(htmlString, baseURL: nil)
+            self.emailBodyWebView.loadHTMLString(htmlString, baseURL: nil)
             
             if animated {
                 UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
-                    self.emailBodyView.alpha = 1.0
+                    self.emailBodyWebView.alpha = 1.0
                 })
             }
         }
         
         if animated {
             UIView.animateWithDuration(kAnimationDuration, animations: { () -> Void in
-                self.emailBodyView.alpha = 0
-            }, completion: completion)
+                self.emailBodyWebView.alpha = 0
+                }, completion: completion)
         } else {
             completion(true)
         }
+
     }
     
     
@@ -172,7 +171,7 @@ class MessageDetailView: UIView {
         
         self.createHeaderView()
         self.createSeparator()
-        self.createEmailBodyView()
+        self.createEmailBodyWebView()
         self.createFooterView()
     }
     
@@ -264,10 +263,11 @@ class MessageDetailView: UIView {
         self.addSubview(separatorBetweenBodyViewAndFooter)
     }
     
-    private func createEmailBodyView() {
-        self.emailBodyView = UIWebView()
-        self.emailBodyView.delegate = self
-        self.contentView.addSubview(emailBodyView)
+    private func createEmailBodyWebView() {
+        self.emailBodyWebView = UIWebView()
+        self.emailBodyWebView.scrollView.scrollEnabled = false
+        self.emailBodyWebView.delegate = self
+        self.contentView.addSubview(emailBodyWebView)
     }
 
     private func createFooterView() {
@@ -319,9 +319,10 @@ class MessageDetailView: UIView {
         
         // to fix scroll view dynamic height
         var scrollWorkaroundView = UIView()
+        scrollWorkaroundView.backgroundColor = UIColor.greenColor()
         self.scrollView.addSubview(scrollWorkaroundView)
         scrollWorkaroundView.mas_makeConstraints { (make) -> Void in
-            make.top.equalTo()(self.emailBodyView.mas_bottom)
+            make.top.equalTo()(self.emailBodyWebView.mas_bottom)
             make.bottom.equalTo()(self.contentView)
         }
     }
@@ -340,12 +341,12 @@ class MessageDetailView: UIView {
         contentView.mas_makeConstraints { (make) -> Void in
             make.edges.equalTo()(self.scrollView)
             make.width.equalTo()(self.scrollView)
+            make.bottom.equalTo()(self.emailBodyWebView.scrollView)
         }
         
         self.makeHeaderConstraints()
         self.makeEmailBodyConstraints()
         self.makeFooterConstraints()
-        
         
         separatorBetweenHeaderAndBodyView.mas_makeConstraints { (make) -> Void in
             make.left.equalTo()(self.contentView)
@@ -480,7 +481,7 @@ class MessageDetailView: UIView {
     }
     
     private func makeEmailBodyConstraints() {
-        emailBodyView.mas_makeConstraints { (make) -> Void in
+        emailBodyWebView.mas_makeConstraints { (make) -> Void in
             make.left.equalTo()(self.contentView).with().offset()(self.kEmailBodyTextViewMarginLeft)
             make.right.equalTo()(self.contentView).with().offset()(self.kEmailBodyTextViewMarginRight)
             make.top.equalTo()(self.separatorBetweenHeaderAndBodyView.mas_bottom).with().offset()(self.kEmailBodyTextViewMarginTop)
@@ -684,7 +685,7 @@ class MessageDetailView: UIView {
         if context != &kKVOContext {
             super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
         } else if object as NSObject == message && keyPath == Message.Attributes.isDetailDownloaded {
-            updateEmailBodyView(true)
+            updateEmailBodyWebView(true)
         }
     }
 }
@@ -693,18 +694,28 @@ class MessageDetailView: UIView {
 
 extension MessageDetailView: UIWebViewDelegate {
     
-    func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
-        NSLog("\(__FUNCTION__) \(error)")
-    }
-    
-    func webViewDidStartLoad(webView: UIWebView) {
-        NSLog("\(__FUNCTION__)")
-    }
-    
     func webViewDidFinishLoad(webView: UIWebView) {
-        NSLog("\(__FUNCTION__)")
+        var frame = webView.frame
+        frame.size.height = 1
+        webView.frame = frame
+        let fittingSize: CGSize = webView.sizeThatFits(CGSizeZero)
+        frame.size = fittingSize
+        webView.frame = frame
+        
+        emailBodyWebView.mas_updateConstraints { (make) -> Void in
+            make.left.equalTo()(self.contentView).with().offset()(self.kEmailBodyTextViewMarginLeft)
+            make.right.equalTo()(self.contentView).with().offset()(self.kEmailBodyTextViewMarginRight)
+            make.top.equalTo()(self.separatorBetweenHeaderAndBodyView.mas_bottom).with().offset()(self.kEmailBodyTextViewMarginTop)
+            make.height.equalTo()(self.emailBodyWebView.frame.size.height)
+            make.bottom.equalTo()(self.contentView)
+        }
+        
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.layoutIfNeeded()
+        })
     }
 }
+
 
 // MARK: - View Delegate
 
