@@ -132,6 +132,12 @@ class UserDataService {
         username = NSUserDefaults.standardUserDefaults().stringForKey(Key.username)
     }
     
+    func didEnterBackground() {
+        if isSignedIn && !isRememberUser {
+            signOut(false)
+        }
+    }
+    
     func fetchUserInfo(completion: UserInfoBlock? = nil) {
         sharedAPIService.userInfo() { userInfo, error in
             if error == nil {
@@ -160,19 +166,19 @@ class UserDataService {
                 
                 self.fetchUserInfo(completion: completion)
             } else {
-                self.signOut()
+                self.signOut(true)
                 completion(nil, error)
             }
         }
     }
     
-    func signOut() {
+    func signOut(animated: Bool) {
         clearAll()
         clearAuthToken()
         
         NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignOut, object: self)
         
-        (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .signIn)
+        (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .signIn, animated: animated)
     }
     
     func updateDisplayName(displayName: String, completion: UserInfoBlock?) {
