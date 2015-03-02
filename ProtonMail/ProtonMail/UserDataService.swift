@@ -43,6 +43,8 @@ class UserDataService {
         didSet {
             NSUserDefaults.standardUserDefaults().setCustomValue(userInfo, forKey: Key.userInfo)
             NSUserDefaults.standardUserDefaults().synchronize()
+            
+            StorageLimit().checkSpace(usedSpace: usedSpace, maxSpace: maxSpace)
         }
     }
     
