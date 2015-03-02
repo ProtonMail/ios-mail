@@ -148,6 +148,22 @@ class UserDataService {
         }
     }
     
+    func isMailboxPasswordValid(password: String) -> Bool {
+        if let userInfo = userInfo {
+            var error: NSError?
+        
+            let result = OpenPGP().checkPassphrase(password, forPrivateKey: userInfo.privateKey, publicKey: userInfo.publicKey, error: &error)
+                
+            if error == nil {
+                return result
+            } else {
+                NSLog("\(__FUNCTION__) error: \(error!)")
+            }
+        }
+        
+        return false
+    }
+    
     func setMailboxPassword(password: String, isRemembered: Bool) {
         mailboxPassword = password
         isRememberMailboxPassword = isRemembered

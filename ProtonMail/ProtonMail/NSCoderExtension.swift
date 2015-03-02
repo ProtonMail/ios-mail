@@ -15,3 +15,10 @@
 //
 
 import Foundation
+
+extension NSCoder {
+    
+    func decodeStringForKey(key: String) -> String? {
+        return decodeObjectForKey(key) as? String
+    }
+}
