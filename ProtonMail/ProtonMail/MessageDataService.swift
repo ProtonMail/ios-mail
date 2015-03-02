@@ -275,8 +275,8 @@ class MessageDataService {
      
         return nil
     }
-    
-    func search(#query: String, page: Int, completion: (([Message]?, NSError?) -> Void)?) {
+        
+    func search(#query: String, page: Int, managedObjectContext context: NSManagedObjectContext, completion: (([Message]?, NSError?) -> Void)?) {
         queue {
             let completionWrapper: CompletionBlock = {task, response, error in
                 if error != nil {
@@ -285,30 +285,17 @@ class MessageDataService {
                 
                 if let messagesArray = response?["Messages"] as? [Dictionary<String,AnyObject>] {
                     
-                    let context = sharedCoreDataService.newManagedObjectContext()
-                    
                     context.performBlock() {
                         var error: NSError?
-                        var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
-                        
-                        if error == nil {
-                            error = context.saveUpstreamIfNeeded()
-                        }
-                        
+                        var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error) as [Message]
+                                                
                         if let completion = completion {
-                            let objectIDs = (messages as NSArray).valueForKey("objectID") as [NSManagedObjectID]
-
                             dispatch_async(dispatch_get_main_queue()) {
                                 if error != nil  {
                                     NSLog("\(__FUNCTION__) error: \(error)")
                                     completion(nil, error)
                                 } else {
-                                    if let context = sharedCoreDataService.mainManagedObjectContext {
-                                        let messages = Message.messagesForObjectIDs(objectIDs, inManagedObjectContext: context, error: &error)
-                                        completion(messages, error)
-                                    } else {
-                                        completion(nil, NSError.noManagedObjectContext())
-                                    }
+                                    completion(messages, error)
                                 }
                             }
                         }
