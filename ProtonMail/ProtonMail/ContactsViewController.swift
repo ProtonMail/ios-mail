@@ -18,14 +18,14 @@ class ContactsViewController: ProtonMailViewController {
     private let kProtonMailImage: UIImage = UIImage(named: "encrypted_main")!
     private let kAddressBookImage: UIImage = UIImage(named: "addressbook_icon")!
     
-    // temporary class, just to populate the tableview
-    
-    class Contact: NSObject {
-        var name: String!
-        var email: String!
-        var isProtonMailContact: Bool = false
+    struct ContactVO {
+        let contactId: String!
+        let name: String!
+        let email: String!
+        let isProtonMailContact: Bool = false
         
-        init(name: String!, email: String!, isProtonMailContact: Bool) {
+        init(id: String! = "", name: String!, email: String!, isProtonMailContact: Bool) {
+            self.contactId = id
             self.name = name
             self.email = email
             self.isProtonMailContact = isProtonMailContact
@@ -41,10 +41,10 @@ class ContactsViewController: ProtonMailViewController {
     
     // MARK: - Private attributes
     
-    private var contacts: [Contact] = [Contact]()
-    private var searchResults: [Contact] = [Contact]()
+    private var contacts: [ContactVO] = [ContactVO]()
+    private var searchResults: [ContactVO] = [ContactVO]()
     private var hasAccessToAddressBook: Bool = false
-    
+    private var contactsQueue = dispatch_queue_create("com.protonmail.contacts", nil)
     
     // MARK: - View Controller Lifecycle
     
@@ -62,20 +62,11 @@ class ContactsViewController: ProtonMailViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        if (!isContactsLoaded()) {
-            ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
-            retrieveAddressBook()
-            retrieveServerContactList()
-            
-            self.contacts.sort { $0.name.lowercaseString < $1.name.lowercaseString }
-            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-        }
-        
-        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
+        retrieveAllContacts()
     }
     
     func filterContentForSearchText(searchText: String) {
-        searchResults = contacts.filter({ (contact: Contact) -> Bool in
+        searchResults = contacts.filter({ (contact: ContactVO) -> Bool in
             let contactNameContainsFilteredText = contact.name.lowercaseString.rangeOfString(searchText.lowercaseString) != nil
             let contactEmailContainsFilteredText = contact.email.lowercaseString.rangeOfString(searchText.lowercaseString) != nil
             return contactNameContainsFilteredText || contactEmailContainsFilteredText
@@ -85,18 +76,27 @@ class ContactsViewController: ProtonMailViewController {
     
     // MARK: - Private methods
     
-    private func isContactsLoaded() -> Bool {
-        return self.contacts.count > 0
+    private func retrieveAllContacts() {
+        ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
+        
+        dispatch_async(contactsQueue, { () -> Void in
+            self.contacts.removeAll(keepCapacity: true)
+            self.retrieveAddressBook()
+            self.retrieveServerContactList({ () -> Void in
+                self.contacts.sort { $0.name.lowercaseString < $1.name.lowercaseString }
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
+                    ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                })
+            })
+        })
     }
     
     private func retrieveAddressBook() {
-        var addressBookGroupQueue = dispatch_group_create()
-
-        dispatch_group_enter(addressBookGroupQueue)
         
         if (sharedAddressBookService.hasAccessToAddressBook()) {
             self.hasAccessToAddressBook = true
-            dispatch_group_leave(addressBookGroupQueue)
         } else {
             sharedAddressBookService.requestAuthorizationWithCompletion({ (granted: Bool, error: NSError?) -> Void in
                 if (granted) {
@@ -110,12 +110,8 @@ class ContactsViewController: ProtonMailViewController {
                     self.presentViewController(alertController, animated: true, completion: nil)
                     println("Error trying to access Address Book = \(error.localizedDescription).")
                 }
-                
-                dispatch_group_leave(addressBookGroupQueue)
             })
         }
-        
-        dispatch_group_wait(addressBookGroupQueue, DISPATCH_TIME_FOREVER)
         
         if (self.hasAccessToAddressBook) {
             let addressBookContacts = sharedAddressBookService.contacts()
@@ -133,19 +129,28 @@ class ContactsViewController: ProtonMailViewController {
                             name = email
                         }
                         
-                        
-                        // temporary solution
-                        var isProtonMailContact = self.contacts.count % 2 == 0
-                        
-                        self.contacts.append(Contact(name: name, email: email, isProtonMailContact: isProtonMailContact))
+                        self.contacts.append(ContactVO(name: name, email: email, isProtonMailContact: false))
                     }
                 }
             }
         }
     }
     
-    private func retrieveServerContactList() {
-        var contacts: [Contact]
+    private func retrieveServerContactList(completion: () -> Void) {
+        sharedContactDataService.fetchContacts { (contacts: [Contact]?, error: NSError?) -> Void in
+            if error != nil {
+                NSLog("\(error)")
+                return
+            }
+            
+            if let contacts = contacts {
+                for contact in contacts {
+                    self.contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: contact.email, isProtonMailContact: true))
+                }
+            }
+            
+            completion()
+        }
     }
 }
 
@@ -170,7 +175,7 @@ extension ContactsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: ContactsTableViewCell = tableView.dequeueReusableCellWithIdentifier(kContactCellIdentifier, forIndexPath: indexPath) as ContactsTableViewCell
         
-        var contact: Contact
+        var contact: ContactVO
         
         if (tableView == self.searchDisplayController?.searchResultsTableView) {
             contact = searchResults[indexPath.row]
@@ -203,30 +208,42 @@ extension ContactsViewController: UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        var contact: ContactVO
         if (tableView == self.tableView) {
+            contact = self.contacts[indexPath.row]
+        } else {
+            contact = self.searchResults[indexPath.row]
+        }
+        
+        if (!contact.isProtonMailContact) {
+            let description = NSLocalizedString("This contact belongs to your Address Book.")
+            let message = NSLocalizedString("Please, remove it in your phone.")
+            let alertController = UIAlertController(title: description, message: message, preferredStyle: .Alert)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
             
-            let contact = self.contacts[indexPath.row]
-            
-            if (!contact.isProtonMailContact) {
-                let description = NSLocalizedString("This contact belongs to your Address Book.")
-                let message = NSLocalizedString("Please, remove it in your phone.")
-                let alertController = UIAlertController(title: description, message: message, preferredStyle: .Alert)
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
-                
-                self.presentViewController(alertController, animated: true, completion: nil)
-                return
-            }
-            
+            self.presentViewController(alertController, animated: true, completion: nil)
+            return
+        }
+        
+         if (countElements(contact.contactId) > 0) {
+            dispatch_async(contactsQueue, { () -> Void in
+                sharedContactDataService.deleteContact(contact.contactId, completion: { (contacts, error) -> Void in
+                    self.retrieveAllContacts()
+                })
+            })
+        }
+        
+        if (tableView == self.tableView) {
             self.contacts.removeAtIndex(indexPath.row)
             self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+        } else {
+            self.searchResults.removeAtIndex(indexPath.row)
+            self.searchDisplayController?.searchResultsTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+            self.searchDisplayController?.searchBar.resignFirstResponder()
         }
     }
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if (tableView == self.searchDisplayController?.searchResultsTableView) {
-            return false
-        }
-        
         return true
     }
 }

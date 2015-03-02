@@ -79,6 +79,12 @@ class CoreDataService {
     
     // MARK: - Public methods
     
+    func newMainManagedObjectContext() -> NSManagedObjectContext? {
+        let managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        managedObjectContext.parentContext = mainManagedObjectContext
+        return managedObjectContext
+    }
+    
     // This context will not automatically merge upstream context saves
     func newManagedObjectContext() -> NSManagedObjectContext {
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)

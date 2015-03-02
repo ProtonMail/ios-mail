@@ -33,18 +33,29 @@ class CreateContactViewController: ProtonMailViewController {
     }
     
     @IBAction func didTapSaveButton(sender: UIBarButtonItem) {
+        let name: String = nameTextField.text
+        let email: String = emailTextField.text
         
-        if (!emailTextField.text.isValidEmail()) {
-            emailTextField.layer.borderColor = UIColor.redColor().CGColor
-            emailTextField.layer.borderWidth = 0.5
-            emailTextField.shake(kInvalidEmailShakeTimes, offset: kInvalidEmailShakeOffset)
+        if (!email.isValidEmail()) {
+            showInvalidEmailError()
+        } else {
+            ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
+            
+            sharedContactDataService.addContact(name: name, email: email) { (contacts: [Contact]?, error: NSError?) in
+                ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+            }
         }
-        
-        println("Saving a new contact: Name: \(nameTextField.text) and email: \(emailTextField.text)")
     }
     
     override func shouldShowSideMenu() -> Bool {
         return false
+    }
+    
+    private func showInvalidEmailError() {
+        emailTextField.layer.borderColor = UIColor.redColor().CGColor
+        emailTextField.layer.borderWidth = 0.5
+        emailTextField.shake(kInvalidEmailShakeTimes, offset: kInvalidEmailShakeOffset)
     }
 }
 
