@@ -65,7 +65,7 @@ class APIService {
             }
             let success: AFNetworkingSuccessBlock = { task, responseObject in
                 if let responseDictionary = responseObject as? Dictionary<String, AnyObject> {
-                    if responseDictionary["code"] as? Int == 401 {
+                    if authenticated && responseDictionary["code"] as? Int == 401 {
                         AuthCredential.expireOrClear()
                         self.request(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)
                     } else {
@@ -122,7 +122,13 @@ class APIService {
             let username = sharedUserDataService.username ?? ""
             let password = sharedUserDataService.password ?? ""
             
-            authAuth(username: username, password: password, completion: completion)
+            let completionWrapper: AuthCredentialBlock = { authCredential, error in
+                if error != nil && error!.domain == APIServiceErrorDomain && error!.code == AuthErrorCode.credentialInvalid {
+                    sharedUserDataService.signOut(true)
+                }
+            }
+            
+            authAuth(username: username, password: password, completion: completionWrapper)
         }
     }
     
