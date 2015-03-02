@@ -58,14 +58,19 @@ class APIService {
         setupValueTransforms()
     }
 
-    internal func afNetworkingBlocksForCompletion(completion: CompletionBlock?) -> (AFNetworkingSuccessBlock?, AFNetworkingFailureBlock?) {
+    internal func afNetworkingBlocksForRequest(#method: HTTPMethod, path: String, parameters: AnyObject?, authenticated: Bool = true, completion: CompletionBlock?) -> (AFNetworkingSuccessBlock?, AFNetworkingFailureBlock?) {
         if let completion = completion {
             let failure: AFNetworkingFailureBlock = { task, error in
                 completion(task, nil, error)
             }
             let success: AFNetworkingSuccessBlock = { task, responseObject in
                 if let responseDictionary = responseObject as? Dictionary<String, AnyObject> {
-                    completion(task, responseDictionary, nil)
+                    if responseDictionary["code"] as? Int == 401 {
+                        AuthCredential.expireOrClear()
+                        self.request(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)
+                    } else {
+                        completion(task, responseDictionary, nil)
+                    }
                 } else if responseObject == nil {
                     completion(task, [:], nil)
                 } else {
@@ -104,12 +109,20 @@ class APIService {
                 NSLog("credential: \(credential)")
                 completion(credential, nil)
             } else {
-                // TODO: Replace with logic that will refresh the authToken.
-                completion(nil, NSError.authCredentialExpired())
+                authRefresh { (authCredential, error) -> Void in
+                    if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIService.AuthErrorCode.invalidGrant {
+                        AuthCredential.clearFromKeychain()
+                        self.fetchAuthCredential(completion: completion)
+                    } else {
+                        completion(authCredential, error)
+                    }
+                }
             }
         } else {
-            // TODO: Replace with logic that prompt for username and password, if needed.
-            completion(nil, NSError.authCredentialInvalid())
+            let username = sharedUserDataService.username ?? ""
+            let password = sharedUserDataService.password ?? ""
+            
+            authAuth(username: username, password: password, completion: completion)
         }
     }
     
@@ -117,6 +130,7 @@ class APIService {
     
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
     internal func download(#path: String, destinationDirectoryURL: NSURL, downloadTask: ((NSURLSessionDownloadTask) -> Void)?, completion: ((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
+        AuthCredential.expireOrClear()
         fetchAuthCredential() { _, error in
             if error == nil {
                 if let url = NSURL(string: path, relativeToURL: self.sessionManager.baseURL) {
@@ -144,7 +158,7 @@ class APIService {
     internal func request(#method: HTTPMethod, path: String, parameters: AnyObject?, authenticated: Bool = true, completion: CompletionBlock?) {
         let authBlock: AuthCredentialBlock = { _, error in
             if error == nil {
-                let (successBlock, failureBlock) = self.afNetworkingBlocksForCompletion(completion)
+                let (successBlock, failureBlock) = self.afNetworkingBlocksForRequest(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)
                 
                 switch(method) {
                 case .DELETE:
