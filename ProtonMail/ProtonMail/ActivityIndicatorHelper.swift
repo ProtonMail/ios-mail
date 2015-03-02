@@ -17,6 +17,7 @@ private let ACTIVITY_INDICATOR_FADE_ANIMATION_DURATION = 0.25
 class ActivityIndicatorHelper {
     
     class func showActivityIndicatorAtView(view: UIView, style: UIActivityIndicatorViewStyle) {
+        view.userInteractionEnabled = false
         let block = { () -> Void in
             var activityIndicator: UIActivityIndicatorView?
             for subview in view.subviews {
@@ -74,6 +75,7 @@ class ActivityIndicatorHelper {
                     activityIndicator!.alpha = 0
                     }, completion: { (finished) -> Void in
                         activityIndicator!.stopAnimating()
+                        view.userInteractionEnabled = true
                 })
             }
         })

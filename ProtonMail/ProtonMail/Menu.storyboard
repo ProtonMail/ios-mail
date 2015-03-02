@@ -1694,7 +1694,7 @@
                         <barButtonItem key="leftBarButtonItem" image="hamburger" id="G3m-Jr-Xhu"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="1TK-5y-hvZ">
                             <connections>
-                                <segue destination="d3P-H0-xNt" kind="presentation" id="5rJ-hC-fsT"/>
+                                <segue destination="d3P-H0-xNt" kind="presentation" identifier="toAddContact" id="5rJ-hC-fsT"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1703,6 +1703,7 @@
                         <outlet property="searchBar" destination="WSg-s3-RV4" id="OsS-kR-eKe"/>
                         <outlet property="searchDisplayController" destination="mKK-GV-NK5" id="yU5-XN-CG5"/>
                         <outlet property="tableView" destination="RIQ-6S-Rqf" id="ctQ-AU-tvT"/>
+                        <segue destination="d3P-H0-xNt" kind="presentation" identifier="toEditContact" id="Lm0-2L-Xlj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Rs-Sb-Nje" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1721,7 +1722,7 @@
         <!--Add Contact-->
         <scene sceneID="Lgo-jO-tY2">
             <objects>
-                <viewController id="ZBC-AC-6J6" customClass="CreateContactViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ZBC-AC-6J6" customClass="EditContactViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="KD2-Sj-q4k"/>
                         <viewControllerLayoutGuide type="bottom" id="vKm-1t-84q"/>
@@ -1857,13 +1858,13 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="emailTextField" destination="JnB-0D-abg" id="D4h-5l-GN8"/>
-                        <outlet property="nameTextField" destination="Wbh-mO-MsL" id="qba-rE-IVf"/>
+                        <outlet property="emailTextField" destination="JnB-0D-abg" id="pQb-Ms-6hp"/>
+                        <outlet property="nameTextField" destination="Wbh-mO-MsL" id="pHD-nR-YQ9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uqF-zP-yCE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3586.5" y="3068"/>
+            <point key="canvasLocation" x="3580.5" y="3061"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="bP7-XD-X6l">
@@ -3334,7 +3335,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nYN-hA-qJH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2818.5" y="3068"/>
+            <point key="canvasLocation" x="2848.5" y="3061"/>
         </scene>
     </scenes>
     <resources>
@@ -3365,6 +3366,7 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="Lm0-2L-Xlj"/>
         <segue reference="YW9-oL-Adg"/>
     </inferredMetricsTieBreakers>
 </document>

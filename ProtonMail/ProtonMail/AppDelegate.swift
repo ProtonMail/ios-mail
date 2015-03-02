@@ -32,21 +32,26 @@ class AppDelegate: UIResponder {
         window?.rootViewController = instantiateRootViewController()
         window?.makeKeyAndVisible()
     }
-    
+        
     // MARK: - Public methods
     
-    func switchTo(#storyboard: UIStoryboard.Storyboard) {
+    func switchTo(#storyboard: UIStoryboard.Storyboard, animated: Bool) {
         if let window = window {
             if let rootViewController = window.rootViewController {
                 if rootViewController.restorationIdentifier != storyboard.restorationIdentifier {
-                    UIView.transitionWithView(window, duration: animationDuration, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                    let animations: () -> Void = {
                         window.rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
-                        }, completion: nil)
+                    }
+                    
+                    if animated {
+                        UIView.transitionWithView(window, duration: animationDuration, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: animations, completion: nil)
+                    } else {
+                        animations()
+                    }
                 }
             }
         }
     }
-    
 }
 
 
@@ -67,12 +72,15 @@ extension AppDelegate: UIApplicationDelegate {
     }
     
     func applicationDidEnterBackground(application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        sharedUserDataService.didEnterBackground()
+        Snapshot().didEnterBackground(application)
     }
     
     func applicationWillEnterForeground(application: UIApplication) {
+        Snapshot().willEnterForeground(application)
+        
         if sharedUserDataService.isSignedIn {
+            
             sharedUserDataService.fetchUserInfo()
             sharedContactDataService.fetchContacts({ (contacts, error) -> Void in
                 if error != nil {

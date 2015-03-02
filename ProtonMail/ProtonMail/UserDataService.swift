@@ -39,19 +39,12 @@ class UserDataService {
         
     // MARK: - Private variables
     
-    /// Value is only stored in the keychain
     private(set) var userInfo: UserInfo? {
-        get {
-            let data = UICKeyChainStore.dataForKey(Key.userInfo)
-            return NSKeyedUnarchiver.unarchiveObjectWithData(data) as UserInfo?
-        }
-        set {
-            if let newValue = newValue {
-                let data = NSKeyedArchiver.archivedDataWithRootObject(newValue)
-                UICKeyChainStore.setData(data, forKey: Key.userInfo)
-            } else {
-                UICKeyChainStore.removeItemForKey(Key.userInfo)
-            }
+        didSet {
+            NSUserDefaults.standardUserDefaults().setCustomValue(userInfo, forKey: Key.userInfo)
+            NSUserDefaults.standardUserDefaults().synchronize()
+            
+            StorageLimit().checkSpace(usedSpace: usedSpace, maxSpace: maxSpace)
         }
     }
     
@@ -139,6 +132,12 @@ class UserDataService {
         username = NSUserDefaults.standardUserDefaults().stringForKey(Key.username)
     }
     
+    func didEnterBackground() {
+        if isSignedIn && !isRememberUser {
+            signOut(false)
+        }
+    }
+    
     func fetchUserInfo(completion: UserInfoBlock? = nil) {
         sharedAPIService.userInfo() { userInfo, error in
             if error == nil {
@@ -167,19 +166,19 @@ class UserDataService {
                 
                 self.fetchUserInfo(completion: completion)
             } else {
-                self.signOut()
+                self.signOut(true)
                 completion(nil, error)
             }
         }
     }
     
-    func signOut() {
+    func signOut(animated: Bool) {
         clearAll()
         clearAuthToken()
         
         NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignOut, object: self)
         
-        (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .signIn)
+        (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .signIn, animated: animated)
     }
     
     func updateDisplayName(displayName: String, completion: UserInfoBlock?) {

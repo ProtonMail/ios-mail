@@ -48,8 +48,12 @@ class ContactDataService {
         return []
     }
     
-    func deleteContact(contact: Contact, completion: ContactCompletionBlock?) {
-        sharedAPIService.contactDelete(contactID: contact.contactID, completion: completionBlockForContactCompletionBlock(completion))
+    func deleteContact(contactID: String!, completion: ContactCompletionBlock?) {
+        if (completion != nil) {
+            sharedAPIService.contactDelete(contactID: contactID, completion: completionBlockForContactCompletionBlock(completion))
+        } else {
+            sharedAPIService.contactDelete(contactID: contactID, completion: nil)
+        }
     }
     
     func fetchContacts(completion: ContactCompletionBlock?) {
@@ -71,16 +75,10 @@ class ContactDataService {
                     
                     if error != nil {
                         NSLog("\(__FUNCTION__) error: \(error)")
+                        completion?(nil, error)
                     } else {
                         NSLog("\(__FUNCTION__) updated \(contacts.count) contacts")
-                    }
-                    
-                    dispatch_async(dispatch_get_main_queue()) {
-                        if error == nil {
-                            completion?(self.allContacts(), nil)
-                        } else {
-                            completion?(nil, error)
-                        }
+                        completion?(self.allContacts(), nil)
                     }
                 }
             } else {
@@ -92,8 +90,13 @@ class ContactDataService {
     }
     
     func updateContact(#contactID: String, name: String, email: String, completion: ContactCompletionBlock?) {
-        sharedAPIService.contactUpdate(contactID: contactID, name: name, email: email, completion: completionBlockForContactCompletionBlock(completion))
+        if (completion != nil) {
+            sharedAPIService.contactUpdate(contactID: contactID, name: name, email: email, completion: completionBlockForContactCompletionBlock(completion))
+        } else {
+            sharedAPIService.contactUpdate(contactID: contactID, name: name, email: email, completion: nil)
+        }
     }
+    
     
     // MARK: - Private methods
     
