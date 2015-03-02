@@ -128,12 +128,6 @@ class UserDataService {
         launchCleanUp()
     }
 
-    func didEnterBackground() {
-        if isSignedIn && !isRememberUser {
-            signOut(false)
-        }
-    }
-
     func fetchUserInfo(completion: UserInfoBlock? = nil) {
         sharedAPIService.userInfo() { userInfo, error in
             if error == nil {
