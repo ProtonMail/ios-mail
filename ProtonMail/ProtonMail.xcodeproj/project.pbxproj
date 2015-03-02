@@ -75,7 +75,7 @@
 		07FBA7A51A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FBA7A41A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift */; };
 		701704781A794C69000A90D2 /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701704771A794C69000A90D2 /* Roboto-MediumItalic.ttf */; };
 		7017047A1A794C9F000A90D2 /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701704791A794C9F000A90D2 /* Roboto-LightItalic.ttf */; };
-		701FFE611A9CBAD600380C2B /* CreateContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701FFE601A9CBAD600380C2B /* CreateContactViewController.swift */; };
+		701FFE611A9CBAD600380C2B /* EditContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701FFE601A9CBAD600380C2B /* EditContactViewController.swift */; };
 		7027B02B1A700F0200D28F52 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7027B02A1A700F0200D28F52 /* MenuTableViewCell.swift */; };
 		7048B9F41A9E385B00D45F57 /* ContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7048B9F21A9E385B00D45F57 /* ContactsTableViewCell.swift */; };
 		7048B9F51A9E385B00D45F57 /* ContactsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7048B9F31A9E385B00D45F57 /* ContactsTableViewCell.xib */; };
@@ -183,7 +183,7 @@
 		701704741A791856000A90D2 /* MessageDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDetailViewController.swift; sourceTree = "<group>"; };
 		701704771A794C69000A90D2 /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-MediumItalic.ttf"; sourceTree = "<group>"; };
 		701704791A794C9F000A90D2 /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
-		701FFE601A9CBAD600380C2B /* CreateContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateContactViewController.swift; sourceTree = "<group>"; };
+		701FFE601A9CBAD600380C2B /* EditContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditContactViewController.swift; sourceTree = "<group>"; };
 		7027B02A1A700F0200D28F52 /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		7048B9F21A9E385B00D45F57 /* ContactsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsTableViewCell.swift; sourceTree = "<group>"; };
 		7048B9F31A9E385B00D45F57 /* ContactsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactsTableViewCell.xib; sourceTree = "<group>"; };
@@ -495,7 +495,7 @@
 			children = (
 				7048B9F61A9E3B1B00D45F57 /* Cell */,
 				706962061A71399D001443B2 /* ContactsViewController.swift */,
-				701FFE601A9CBAD600380C2B /* CreateContactViewController.swift */,
+				701FFE601A9CBAD600380C2B /* EditContactViewController.swift */,
 			);
 			name = Contacts;
 			sourceTree = "<group>";
@@ -724,7 +724,7 @@
 				706628211A715A0900164117 /* MailboxTableViewCell.swift in Sources */,
 				706961FF1A7136A0001443B2 /* ProtonMailViewController.swift in Sources */,
 				071323811A7846150043DB41 /* UIViewExtension.swift in Sources */,
-				701FFE611A9CBAD600380C2B /* CreateContactViewController.swift in Sources */,
+				701FFE611A9CBAD600380C2B /* EditContactViewController.swift in Sources */,
 				07CFC9D41A81A2B0007A72B7 /* Attachment.swift in Sources */,
 				07CCCC291AA28CF100ECA79E /* PagingManager.swift in Sources */,
 				07B797C21A6EE50F00244532 /* APIService+AuthenticationExtension.swift in Sources */,

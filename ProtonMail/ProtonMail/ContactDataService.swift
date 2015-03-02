@@ -90,8 +90,13 @@ class ContactDataService {
     }
     
     func updateContact(#contactID: String, name: String, email: String, completion: ContactCompletionBlock?) {
-        sharedAPIService.contactUpdate(contactID: contactID, name: name, email: email, completion: completionBlockForContactCompletionBlock(completion))
+        if (completion != nil) {
+            sharedAPIService.contactUpdate(contactID: contactID, name: name, email: email, completion: completionBlockForContactCompletionBlock(completion))
+        } else {
+            sharedAPIService.contactUpdate(contactID: contactID, name: name, email: email, completion: nil)
+        }
     }
+    
     
     // MARK: - Private methods
     
