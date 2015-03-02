@@ -21,11 +21,11 @@ class PagingManager {
         static let minPage = 1
     }
     
-    private(set) var isMorePages = true
+    private(set) var hasMorePages = true
     private(set) var nextPage = Constant.minPage
     
     func reset() {
-        isMorePages = true
+        hasMorePages = true
         nextPage = Constant.minPage
     }
     
@@ -33,7 +33,7 @@ class PagingManager {
         if count != 0 {
             nextPage++
         } else {
-            isMorePages = false
+            hasMorePages = false
         }
     }
 }

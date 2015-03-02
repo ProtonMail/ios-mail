@@ -234,7 +234,7 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     func fetchMessagesIfNeededForIndexPath(indexPath: NSIndexPath) {
-        if !pagingManager.isMorePages {
+        if !pagingManager.hasMorePages {
             return
         }
         
@@ -242,7 +242,7 @@ class MailboxViewController: ProtonMailViewController {
             if let last = fetchedResultsController.fetchedObjects?.last as? Message {
                 if let current = fetchedResultsController.objectAtIndexPath(indexPath) as? Message {
                     if last == current {
-                        if !pagingManager.isMorePages {
+                        if !pagingManager.hasMorePages {
                             return
                         }
                         

@@ -100,7 +100,7 @@ class SearchViewController: ProtonMailViewController {
     }
     
     func handleQuery(query: String) {
-        if !pagingManager.isMorePages {
+        if !pagingManager.hasMorePages {
             return
         }
         
@@ -143,7 +143,7 @@ class SearchViewController: ProtonMailViewController {
     }
     
     func fetchMessagesIfNeededForIndexPath(indexPath: NSIndexPath) {
-        if !pagingManager.isMorePages {
+        if !pagingManager.hasMorePages {
             return
         }
         
