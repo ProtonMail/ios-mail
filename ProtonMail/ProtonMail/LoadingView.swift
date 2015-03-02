@@ -18,13 +18,8 @@ import Foundation
 
 class LoadingView: UIView {
     
-    private let animationDuration: NSTimeInterval = 1
-    private var isShowing = false
-    
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var loadingLabel: UILabel!
-    
-    private weak var tableView: UITableView?
     
     class func viewForOwner(owner: AnyObject?) -> LoadingView {
         let objects = NSBundle.mainBundle().loadNibNamed("LoadingView", owner: owner, options: nil)
@@ -37,36 +32,4 @@ class LoadingView: UIView {
         assertionFailure("LoadingView did not load from nib!")
         return LoadingView()
     }
-    
-    func hide() {
-        UIView.animateWithDuration(animationDuration, animations: { () -> Void in
-            self.alpha = 0
-            }) { (finished) -> Void in
-                UIView.animateWithDuration(self.animationDuration, animations: { () -> Void in
-                    self.tableView?.tableFooterView = nil
-                    self.isShowing = false
-                })
-        }
-    }
-    
-    func showForTableView(tableView: UITableView) {
-        if isShowing {
-            return
-        }
-        
-        isShowing = true
-        
-        self.tableView = tableView
-        
-        UIView.animateWithDuration(animationDuration, animations: { () -> Void in
-            self.tableView?.tableFooterView = self
-            return
-            }) { (finished) -> Void in
-                UIView.animateWithDuration(self.animationDuration, animations: { () -> Void in
-                    self.alpha = 1.0
-                    })
-        }
-    }
-    
-
 }
