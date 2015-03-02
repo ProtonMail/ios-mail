@@ -25,7 +25,9 @@ extension Message {
         static let isRead = "isRead"
         static let isStarred = "isStarred"
         static let messageID = "messageID"
+        static let senderName = "senderName"
         static let time = "time"
+        static let title = "title"
     }
     
     typealias CompletionBlock = MessageDataService.CompletionBlock

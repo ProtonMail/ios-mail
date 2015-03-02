@@ -110,7 +110,7 @@ class MenuViewController: UIViewController {
     func handleSignOut() {
         let alertController = UIAlertController(title: NSLocalizedString("Confirm"), message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Sign Out"), style: .Destructive, handler: { (action) -> Void in
-            sharedUserDataService.signOut()
+            sharedUserDataService.signOut(true)
         }))
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
         

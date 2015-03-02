@@ -38,11 +38,9 @@ class CoreDataService {
         // Create the coordinator and store
         var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
         let url = NSFileManager.defaultManager().applicationSupportDirectoryURL.URLByAppendingPathComponent("ProtonMail.sqlite")
-        
-        NSLog("\(__FUNCTION__) path: \(url.absoluteString)")
-
         var error: NSError? = nil
         var failureReason = NSLocalizedString("There was an error creating or loading the application's saved data.")
+        
         if coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil, error: &error) == nil {
             coordinator = nil
             // Report any error we got.
@@ -80,6 +78,12 @@ class CoreDataService {
     
     
     // MARK: - Public methods
+    
+    func newMainManagedObjectContext() -> NSManagedObjectContext? {
+        let managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        managedObjectContext.parentContext = mainManagedObjectContext
+        return managedObjectContext
+    }
     
     // This context will not automatically merge upstream context saves
     func newManagedObjectContext() -> NSManagedObjectContext {
