@@ -158,7 +158,7 @@
                 <entry key="JSONKeyPath" value="Sender"/>
             </userInfo>
         </attribute>
-        <attribute name="senderName" attributeType="String" syncable="YES">
+        <attribute name="senderName" attributeType="String" indexed="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="SenderName"/>
             </userInfo>
@@ -180,7 +180,7 @@
                 <entry key="JSONTransformerName" value="DateTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="title" attributeType="String" syncable="YES">
+        <attribute name="title" attributeType="String" indexed="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="MessageTitle"/>
             </userInfo>

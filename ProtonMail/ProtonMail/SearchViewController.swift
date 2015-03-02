@@ -15,20 +15,31 @@ import UIKit
 
 class SearchViewController: ProtonMailViewController {
     
+    var footerView: LoadingView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchTextField: UITextField!
     
     
     // MARK: - Private Constants
     
+    private let kAnimationDuration: NSTimeInterval = 0.3
     private let kSearchCellHeight: CGFloat = 64.0
     private let kCellIdentifier: String = "SearchedCell"
 
-    
     // MARK: - Private attributes
     
     private var fetchedResultsController: NSFetchedResultsController?
-    private var filteredMessages: [Message] = []
+    private var isMorePages = true
+    private var managedObjectContext: NSManagedObjectContext?
+    private var nextPage = 1
+    private var query: String = "" {
+        didSet {
+            isMorePages = true
+            nextPage = 1
+            
+            handleQuery(query)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +47,8 @@ class SearchViewController: ProtonMailViewController {
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        
+        footerView = LoadingView.viewForOwner(self)
         
         searchTextField.autocapitalizationType = UITextAutocapitalizationType.None
         searchTextField.delegate = self
@@ -48,7 +61,24 @@ class SearchViewController: ProtonMailViewController {
                 NSFontAttributeName: UIFont.robotoLight(size: UIFont.Size.h3)
             ])
         
-        fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLocation(.inbox)
+        managedObjectContext = sharedCoreDataService.newMainManagedObjectContext()
+        
+        if let context = managedObjectContext {
+            fetchedResultsController = fetchedResultsControllerForSearch(managedObjectContext: context)
+            fetchedResultsController?.delegate = self
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if (self.tableView.respondsToSelector("setSeparatorInset:")) {
+            self.tableView.separatorInset = UIEdgeInsetsZero
+        }
+        
+        if (self.tableView.respondsToSelector("setLayoutMargins:")) {
+            self.tableView.layoutMargins = UIEdgeInsetsZero
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -67,7 +97,76 @@ class SearchViewController: ProtonMailViewController {
         self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Blue_5C7A99        
     }
     
+    func fetchedResultsControllerForSearch(managedObjectContext context: NSManagedObjectContext) -> NSFetchedResultsController? {
+        let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
+        
+        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+    }
     
+    func handleQuery(query: String) {
+        if !isMorePages {
+            return
+        }
+        
+        if let context = managedObjectContext {
+            if let fetchedResultsController = fetchedResultsController {
+                fetchedResultsController.fetchRequest.predicate = predicateForSearch(query)
+                fetchedResultsController.delegate = nil
+                
+                var error: NSError?
+                if !fetchedResultsController.performFetch(&error) {
+                    NSLog("\(__FUNCTION__) performFetch error: \(error!)")
+                }
+                
+                tableView.reloadData()
+                
+                fetchedResultsController.delegate = self
+            }
+            
+            if query.isEmpty {
+                return
+            }
+        
+            footerView.showForTableView(self.tableView)
+            
+            sharedMessageDataService.search(query: query, page: nextPage, managedObjectContext: context, completion: { (messages, error) -> Void in
+                
+                self.footerView.hide()
+                
+                if error != nil {
+                    NSLog("\(__FUNCTION__) search error: \(error)")
+                } else {
+                    if let messages = messages {
+                        self.isMorePages = messages.count != 0
+                    }
+                    
+                    self.nextPage++
+                }
+            })
+        }
+    }
+
+    func predicateForSearch(query: String) -> NSPredicate? {
+        return NSPredicate(format: "%K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@", Message.Attributes.title, query, Message.Attributes.senderName, query)
+    }
+    
+    func fetchMessagesIfNeededForIndexPath(indexPath: NSIndexPath) {
+        if !isMorePages {
+            return
+        }
+        
+        if let fetchedResultsController = fetchedResultsController {
+            if let last = fetchedResultsController.fetchedObjects?.last as? Message {
+                if let current = fetchedResultsController.objectAtIndexPath(indexPath) as? Message {
+                    if last == current {
+                        handleQuery(query)
+                    }
+                }
+            }
+        }
+    }
+
     // MARK: - Button Actions
     
     @IBAction func cancelButtonTapped(sender: UIButton) {
@@ -76,18 +175,71 @@ class SearchViewController: ProtonMailViewController {
 }
 
 
+// MARK: - NSFetchedResultsControllerDelegate
+
+extension SearchViewController: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        tableView.endUpdates()
+    }
+    
+    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+        tableView.beginUpdates()
+    }
+    
+    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+        switch(type) {
+        case .Delete:
+            tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+        case .Insert:
+            tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+        default:
+            return
+        }
+    }
+    
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+        switch(type) {
+        case .Delete:
+            if let indexPath = indexPath {
+                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+            }
+        case .Insert:
+            if let newIndexPath = newIndexPath {
+                tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+            }
+        case .Update:
+            if let indexPath = indexPath {
+                if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MailboxTableViewCell {
+                    if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+                        cell.configureCell(message)
+                    }
+                }
+            }
+        default:
+            return
+        }
+    }
+}
+
+
 // MARK: - UITableViewDataSource
 
 extension SearchViewController: UITableViewDataSource {
-    
+
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return fetchedResultsController?.numberOfSections() ?? 0
+    }
+
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.filteredMessages.count
+        return fetchedResultsController?.numberOfRowsInSection(section) ?? 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
-        var cell: MailboxTableViewCell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as MailboxTableViewCell
-        cell.configureCell(filteredMessages[indexPath.row])
+        var cell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as MailboxTableViewCell
+        if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+            cell.configureCell(message)
+        }
         
         return cell
     }
@@ -100,6 +252,8 @@ extension SearchViewController: UITableViewDataSource {
         if (cell.respondsToSelector("setLayoutMargins:")) {
             cell.layoutMargins = UIEdgeInsetsZero
         }
+        
+        fetchMessagesIfNeededForIndexPath(indexPath)
     }
 }
 
@@ -107,22 +261,6 @@ extension SearchViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension SearchViewController: UITableViewDelegate {
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        if (self.tableView.respondsToSelector("setSeparatorInset:")) {
-            self.tableView.separatorInset = UIEdgeInsetsZero
-        }
-        
-        if (self.tableView.respondsToSelector("setLayoutMargins:")) {
-            self.tableView.layoutMargins = UIEdgeInsetsZero
-        }
-    }
-    
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return kSearchCellHeight
@@ -135,19 +273,8 @@ extension SearchViewController: UITableViewDelegate {
 extension SearchViewController: UITextFieldDelegate {
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        self.filteredMessages.removeAll(keepCapacity: true)
-        fetchedResultsController?.performFetch(nil)
-        var filterText = textField.text
-        filterText = (filterText as NSString).stringByReplacingCharactersInRange(range, withString: string)
-        let messages = fetchedResultsController?.fetchedObjects as [Message]
-
-        for message in messages {
-            if (message.title.lowercaseString.rangeOfString(filterText.lowercaseString) != nil) {
-                filteredMessages.append(message)
-            }
-        }
+        query = (textField.text as NSString).stringByReplacingCharactersInRange(range, withString: string)
         
-        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
         return true
     }
 }
