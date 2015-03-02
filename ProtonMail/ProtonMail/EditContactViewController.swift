@@ -12,10 +12,12 @@
 
 import UIKit
 
-class CreateContactViewController: ProtonMailViewController {
+class EditContactViewController: ProtonMailViewController {
     
     @IBOutlet var nameTextField: UITextField!
     @IBOutlet var emailTextField: UITextField!
+    
+    var contact: ContactVO!
     
     private let kInvalidEmailShakeTimes: Float = 3.0
     private let kInvalidEmailShakeOffset: CGFloat = 10.0
@@ -26,6 +28,11 @@ class CreateContactViewController: ProtonMailViewController {
         
         nameTextField.delegate = self
         emailTextField.delegate = self
+        
+        if (contact != nil) {
+            nameTextField.text = contact.name
+            emailTextField.text = contact.email
+        }
     }
     
     @IBAction func didTapCancelButton(sender: UIBarButtonItem) {
@@ -41,9 +48,16 @@ class CreateContactViewController: ProtonMailViewController {
         } else {
             ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
             
-            sharedContactDataService.addContact(name: name, email: email) { (contacts: [Contact]?, error: NSError?) in
-                ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-                self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+            if (contact == nil) {
+                sharedContactDataService.addContact(name: name, email: email) { (contacts: [Contact]?, error: NSError?) in
+                    ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                }
+            } else {
+                sharedContactDataService.updateContact(contactID: contact.contactId, name: name, email: email, completion: { ( contacts: [Contact]?, error: NSError?) -> Void in
+                    ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                })
             }
         }
     }
@@ -59,7 +73,7 @@ class CreateContactViewController: ProtonMailViewController {
     }
 }
 
-extension CreateContactViewController: UITextFieldDelegate {
+extension EditContactViewController: UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         if (textField == nameTextField) {
             textField.resignFirstResponder()
