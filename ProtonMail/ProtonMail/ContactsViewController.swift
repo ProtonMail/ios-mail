@@ -214,12 +214,7 @@ extension ContactsViewController: UITableViewDelegate {
             self.selectedContact = contact
             
             if (!contact.isProtonMailContact) {
-                let description = NSLocalizedString("This contact belongs to your Address Book.")
-                let message = NSLocalizedString("Please, remove it in your phone.")
-                let alertController = UIAlertController(title: description, message: message, preferredStyle: .Alert)
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
-                
-                self.presentViewController(alertController, animated: true, completion: nil)
+                self.showContactBelongsToAddressBookError()
                 return
             }
             
@@ -250,6 +245,13 @@ extension ContactsViewController: UITableViewDelegate {
             }
             
             self.selectedContact = contact
+            
+            if (!contact.isProtonMailContact) {
+                self.showContactBelongsToAddressBookError()
+                return
+            }
+            
+            self.selectedContact = contact
             self.performSegueWithIdentifier("toEditContact", sender: self)
         }
         
@@ -269,6 +271,15 @@ extension ContactsViewController: UITableViewDelegate {
             editContactViewController.contact = self.selectedContact
             println("tableView.indexPathForSelectedRow() = \(tableView.indexPathForSelectedRow())")
         }
+    }
+    
+    private func showContactBelongsToAddressBookError() {
+        let description = NSLocalizedString("This contact belongs to your Address Book.")
+        let message = NSLocalizedString("Please, manage it in your phone.")
+        let alertController = UIAlertController(title: description, message: message, preferredStyle: .Alert)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
 }
 
