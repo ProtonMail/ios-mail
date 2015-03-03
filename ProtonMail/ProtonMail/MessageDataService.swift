@@ -313,9 +313,9 @@ class MessageDataService {
     
     private func fetchMessageIncrementalUpdates(#lastUpdated: NSDate, completion: CompletionBlock?) {
         struct IncrementalUpdateType {
-            static let delete = "1"
-            static let insert = "0"
-            static let update = "2"
+            static let delete = 1
+            static let insert = 0
+            static let update = 2
         }
         
         struct ResponseKey {
@@ -346,7 +346,7 @@ class MessageDataService {
                                     
                                     context.performBlock { () -> Void in
                                         for message in messages {
-                                            switch(message[ResponseKey.type] as? String) {
+                                            switch(message[ResponseKey.type] as? Int) {
                                             case .Some(IncrementalUpdateType.delete):
                                                 if let messageID = message[ResponseKey.messageID] as? String {
                                                     if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
