@@ -66,6 +66,7 @@ extension UserInfo: NSCoding {
         aCoder.encodeInteger(maxSpace, forKey: CoderKey.maxSpace)
         aCoder.encodeObject(notificationEmail, forKey: CoderKey.notificationEmail)
         aCoder.encodeObject(privateKey, forKey: CoderKey.privateKey)
+        aCoder.encodeObject(publicKey, forKey: CoderKey.publicKey)
         aCoder.encodeObject(signature, forKey: CoderKey.signature)
         aCoder.encodeInteger(usedSpace, forKey: CoderKey.usedSpace)
     }

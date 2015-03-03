@@ -266,13 +266,26 @@ class UserDataService {
     }
     
     private func launchCleanUp() {
-        if !isRememberUser {
+        if !self.isRememberUser {
             username = nil
             password = nil
         }
         
         if !isRememberMailboxPassword {
             mailboxPassword = nil
+        }
+    }
+}
+
+// MARK: - Message extension
+
+extension Message {
+    
+    func decryptBody(error: NSErrorPointer?) -> String? {
+        if !isEncrypted {
+            return body
+        } else {
+            return body.decryptWithPrivateKey(sharedUserDataService.userInfo?.privateKey ?? "", passphrase: sharedUserDataService.mailboxPassword? ?? "", publicKey: sharedUserDataService.userInfo?.publicKey ?? "", error: error)
         }
     }
 }

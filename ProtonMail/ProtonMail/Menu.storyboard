@@ -873,13 +873,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="wwg-Tx-xnK" secondAttribute="trailing" constant="-16" id="18o-NN-bAL"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="E7U-Dc-qS6" secondAttribute="trailing" constant="-16" id="Gw3-4A-qwH"/>
-                            <constraint firstItem="wwg-Tx-xnK" firstAttribute="leading" secondItem="zic-x0-v3T" secondAttribute="leadingMargin" constant="-16" id="RoQ-rs-GZG"/>
+                            <constraint firstAttribute="trailing" secondItem="wwg-Tx-xnK" secondAttribute="trailing" id="18o-NN-bAL"/>
+                            <constraint firstAttribute="trailing" secondItem="E7U-Dc-qS6" secondAttribute="trailing" id="Gw3-4A-qwH"/>
+                            <constraint firstItem="wwg-Tx-xnK" firstAttribute="leading" secondItem="zic-x0-v3T" secondAttribute="leading" id="RoQ-rs-GZG"/>
                             <constraint firstItem="wwg-Tx-xnK" firstAttribute="top" secondItem="E7U-Dc-qS6" secondAttribute="bottom" id="Vjf-0U-VT5"/>
                             <constraint firstItem="V9N-Gh-JaM" firstAttribute="top" secondItem="wwg-Tx-xnK" secondAttribute="bottom" id="ekx-cC-qeL"/>
                             <constraint firstItem="E7U-Dc-qS6" firstAttribute="top" secondItem="bkI-Kq-nXq" secondAttribute="bottom" constant="-20" id="qnk-Wm-BXe"/>
-                            <constraint firstItem="E7U-Dc-qS6" firstAttribute="leading" secondItem="zic-x0-v3T" secondAttribute="leadingMargin" constant="-16" id="xsV-U5-FKe"/>
+                            <constraint firstItem="E7U-Dc-qS6" firstAttribute="leading" secondItem="zic-x0-v3T" secondAttribute="leading" id="xsV-U5-FKe"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">

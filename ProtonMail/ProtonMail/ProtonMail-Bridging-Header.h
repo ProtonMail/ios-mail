@@ -28,5 +28,6 @@
 #import <SplunkMint-iOS/SplunkMint-iOS.h>
 #import <SWRevealViewController/SWRevealViewController.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
+#import <UIColor+Hex/UIColor+Hex.h>
 
 #endif

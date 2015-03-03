@@ -15,11 +15,14 @@ import UIKit
 class MessageDetailView: UIView {
     
     var delegate: MessageDetailViewDelegate?
-    private var message: Message!
+    let message: Message
     private var isShowingDetail: Bool = false
     
     // MARK: - Private constants
     
+    private let kAnimationDuration: NSTimeInterval = 0.3
+    private let kAnimationOption: UIViewAnimationOptions = .TransitionCrossDissolve
+    private var kKVOContext = 0
     private let kScrollViewDistanceToBottom: CGFloat = -69.0
     private let kSeparatorBetweenHeaderAndBodyMarginTop: CGFloat = 16.0
     private let kSeparatorBetweenHeaderAndBodyMarginHeight: CGFloat = 1.0
@@ -41,7 +44,6 @@ class MessageDetailView: UIView {
     private let kEmailBodyTextViewMarginLeft: CGFloat = 16.0
     private let kEmailBodyTextViewMarginRight: CGFloat = -16.0
     private let kEmailBodyTextViewMarginTop: CGFloat = 16.0
-    private let kEmailBodyLineSpacing: CGFloat = 8.0
     private let kButtonsViewHeight: CGFloat = 68.0
     private let kReplyButtonMarginLeft: CGFloat = 50.0
     private let kReplyButtonMarginTop: CGFloat = 10.0
@@ -77,7 +79,7 @@ class MessageDetailView: UIView {
     
     private var scrollView: UIScrollView!
     private var contentView: UIView!
-    private var emailBodyTextView: UILabel!
+    private var emailBodyWebView: UIWebView!
     
     
     // MARK: - Email footer views
@@ -93,9 +95,14 @@ class MessageDetailView: UIView {
     
     // MARK: - Init methods
     
-    init(message: Message) {
-        super.init()
+    required init(message: Message, delegate: MessageDetailViewDelegate?) {
         self.message = message
+        self.delegate = delegate
+        
+        super.init(frame: CGRectZero)
+        
+        message.addObserver(self, forKeyPath: Message.Attributes.isDetailDownloaded, options: .New, context: &kKVOContext)
+        
         self.backgroundColor = UIColor.whiteColor()
         self.addSubviews()
         self.makeConstraints()
@@ -110,8 +117,46 @@ class MessageDetailView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    deinit {
+        message.removeObserver(self, forKeyPath: Message.Attributes.isDetailDownloaded, context: &kKVOContext)
+    }
+    
+    // MARK: - Public methods
+    
+    func updateEmailBodyWebView(animated: Bool) {
+        let completion: ((Bool) -> Void) = { finished in
+            var bodyText = NSLocalizedString("Loading...")
+            
+            if self.message.isDetailDownloaded {
+                var error: NSError?
+                bodyText = self.message.decryptBody(&error) ?? NSLocalizedString("Unable to decrypt message.")
+            
+                if let error = error {
+                    self.delegate?.messageDetailView(self, didFailDecodeWithError: error)
+                }
+            }
+            
+            let font = UIFont.robotoLight(size: UIFont.Size.h5)
+            let cssColorString = UIColor.ProtonMail.Gray_383A3B.cssString
+            let htmlString = "<span style=\"font-family: \(font.fontName); font-size: \(font.pointSize); color: \(cssColorString)\">\(bodyText)</span>"
+            
+            self.emailBodyWebView.loadHTMLString(htmlString, baseURL: nil)
+            
+            if animated {
+                UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
+                    self.emailBodyWebView.alpha = 1.0
+                })
+            }
+        }
+        
+        if animated {
+            UIView.animateWithDuration(kAnimationDuration, animations: { () -> Void in
+                self.emailBodyWebView.alpha = 0
+                }, completion: completion)
+        } else {
+            completion(true)
+        }
+
     }
     
     
@@ -126,7 +171,7 @@ class MessageDetailView: UIView {
         
         self.createHeaderView()
         self.createSeparator()
-        self.createEmailBodyView()
+        self.createEmailBodyWebView()
         self.createFooterView()
     }
     
@@ -218,26 +263,11 @@ class MessageDetailView: UIView {
         self.addSubview(separatorBetweenBodyViewAndFooter)
     }
     
-    private func createEmailBodyView() {
-        self.emailBodyTextView = UILabel()
-        self.contentView.addSubview(emailBodyTextView)
-        self.emailBodyTextView.font = UIFont.robotoLight(size: UIFont.Size.h5)
-        self.emailBodyTextView.numberOfLines = 0
-        self.emailBodyTextView.textColor = UIColor.ProtonMail.Gray_383A3B
-        
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = kEmailBodyLineSpacing
-        
-        if message.body != "" {
-            self.emailBodyTextView.text = message.body
-        } else {
-            self.emailBodyTextView.text = "No body content."
-        }
-        
-        let attributedString = NSMutableAttributedString(string: self.emailBodyTextView.text!)
-        attributedString.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSMakeRange(0, countElements(self.emailBodyTextView.text!)))
-        self.emailBodyTextView.attributedText = attributedString
-        self.emailBodyTextView.sizeToFit()
+    private func createEmailBodyWebView() {
+        self.emailBodyWebView = UIWebView()
+        self.emailBodyWebView.scrollView.scrollEnabled = false
+        self.emailBodyWebView.delegate = self
+        self.contentView.addSubview(emailBodyWebView)
     }
 
     private func createFooterView() {
@@ -289,9 +319,10 @@ class MessageDetailView: UIView {
         
         // to fix scroll view dynamic height
         var scrollWorkaroundView = UIView()
+        scrollWorkaroundView.backgroundColor = UIColor.greenColor()
         self.scrollView.addSubview(scrollWorkaroundView)
         scrollWorkaroundView.mas_makeConstraints { (make) -> Void in
-            make.top.equalTo()(self.emailBodyTextView.mas_bottom)
+            make.top.equalTo()(self.emailBodyWebView.mas_bottom)
             make.bottom.equalTo()(self.contentView)
         }
     }
@@ -310,12 +341,12 @@ class MessageDetailView: UIView {
         contentView.mas_makeConstraints { (make) -> Void in
             make.edges.equalTo()(self.scrollView)
             make.width.equalTo()(self.scrollView)
+            make.bottom.equalTo()(self.emailBodyWebView.scrollView)
         }
         
         self.makeHeaderConstraints()
         self.makeEmailBodyConstraints()
         self.makeFooterConstraints()
-        
         
         separatorBetweenHeaderAndBodyView.mas_makeConstraints { (make) -> Void in
             make.left.equalTo()(self.contentView)
@@ -450,10 +481,11 @@ class MessageDetailView: UIView {
     }
     
     private func makeEmailBodyConstraints() {
-        emailBodyTextView.mas_makeConstraints { (make) -> Void in
+        emailBodyWebView.mas_makeConstraints { (make) -> Void in
             make.left.equalTo()(self.contentView).with().offset()(self.kEmailBodyTextViewMarginLeft)
             make.right.equalTo()(self.contentView).with().offset()(self.kEmailBodyTextViewMarginRight)
             make.top.equalTo()(self.separatorBetweenHeaderAndBodyView.mas_bottom).with().offset()(self.kEmailBodyTextViewMarginTop)
+            make.bottom.equalTo()(self.contentView)
         }
     }
     
@@ -509,7 +541,7 @@ class MessageDetailView: UIView {
         self.isShowingDetail = !self.isShowingDetail
 
         if (isShowingDetail) {
-            UIView.transitionWithView(self.emailRecipients, duration: 0.3, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+            UIView.transitionWithView(self.emailRecipients, duration: kAnimationDuration, options: kAnimationOption, animations: { () -> Void in
                 self.emailRecipients.text = self.message.sender
             }, completion: nil)
             
@@ -538,7 +570,7 @@ class MessageDetailView: UIView {
                 make.bottom.equalTo()(self.emailDetailDateLabel)
             })
         } else {
-            UIView.transitionWithView(self.emailRecipients, duration: 0.3, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+            UIView.transitionWithView(self.emailRecipients, duration: kAnimationDuration, options: kAnimationOption, animations: { () -> Void in
                 self.emailRecipients.text = "To \(self.message.recipientList)"
                 }, completion: nil)
             
@@ -569,7 +601,7 @@ class MessageDetailView: UIView {
             })
         }
         
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
+        UIView.animateWithDuration(kAnimationDuration, animations: { () -> Void in
             self.layoutIfNeeded()
         })
     }
@@ -646,12 +678,49 @@ class MessageDetailView: UIView {
         self.emailDetailDateContentLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailDateContentLabel)
     }
+    
+    // MARK: - KVO
+    
+    override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+        if context != &kKVOContext {
+            super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+        } else if object as NSObject == message && keyPath == Message.Attributes.isDetailDownloaded {
+            updateEmailBodyWebView(true)
+        }
+    }
+}
+
+// MARK: - UIWebViewDelegate
+
+extension MessageDetailView: UIWebViewDelegate {
+    
+    func webViewDidFinishLoad(webView: UIWebView) {
+        var frame = webView.frame
+        frame.size.height = 1
+        webView.frame = frame
+        let fittingSize: CGSize = webView.sizeThatFits(CGSizeZero)
+        frame.size = fittingSize
+        webView.frame = frame
+        
+        emailBodyWebView.mas_updateConstraints { (make) -> Void in
+            make.left.equalTo()(self.contentView).with().offset()(self.kEmailBodyTextViewMarginLeft)
+            make.right.equalTo()(self.contentView).with().offset()(self.kEmailBodyTextViewMarginRight)
+            make.top.equalTo()(self.separatorBetweenHeaderAndBodyView.mas_bottom).with().offset()(self.kEmailBodyTextViewMarginTop)
+            make.height.equalTo()(self.emailBodyWebView.frame.size.height)
+            make.bottom.equalTo()(self.contentView)
+        }
+        
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.layoutIfNeeded()
+        })
+    }
 }
 
 
 // MARK: - View Delegate
 
 protocol MessageDetailViewDelegate {
+    func messageDetailView(messageDetailView: MessageDetailView, didFailDecodeWithError: NSError)
     func messageDetailViewDidTapForwardMessage(messageDetailView: MessageDetailView, message: Message)
     func messageDetailViewDidTapReplyMessage(messageDetailView: MessageDetailView, message: Message)
     func messageDetailViewDidTapReplyAllMessage(messageDetailView: MessageDetailView, message: Message)

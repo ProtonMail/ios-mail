@@ -32,6 +32,10 @@ PODS:
   - SplunkMint-iOS (4.0.24)
   - SWRevealViewController (2.3.0)
   - UICKeyChainStore (2.0.1)
+  - UIColor+Hex (1.0.1):
+    - UIColor+Hex/NSColor (= 1.0.1)
+    - UIColor+Hex/UIColor (= 1.0.1)
+  - UIColor+Hex/UIColor (1.0.1)
 
 DEPENDENCIES:
   - AFNetworking
@@ -45,6 +49,7 @@ DEPENDENCIES:
   - SplunkMint-iOS
   - SWRevealViewController (= 2.3.0)
   - UICKeyChainStore
+  - UIColor+Hex
 
 EXTERNAL SOURCES:
   OpenPGP:
@@ -63,5 +68,6 @@ SPEC CHECKSUMS:
   SplunkMint-iOS: 528329b25dcadcb919b99e46f4a786d11c51c82c
   SWRevealViewController: f6d80638b8e12323e87ac79562345403a799cb77
   UICKeyChainStore: 779de9c089920a79d8755e7ba887e51c745819a8
+  UIColor+Hex: ac7e1ae4eeea4f522fe3f6eda35de4af69244432
 
 COCOAPODS: 0.35.0
