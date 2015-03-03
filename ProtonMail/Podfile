@@ -13,6 +13,7 @@ pod 'SWRevealViewController', '2.3.0'
 pod 'Masonry', '0.6.0'
 pod 'MBContactPicker', '0.1.6'
 pod 'RHAddressBook', '1.1.1'
+pod 'UIColor+Hex'
 
 post_install do | installer |
     require 'fileutils'

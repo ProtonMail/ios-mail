@@ -29,6 +29,8 @@
 
 #import <UICKeyChainStore/UICKeyChainStore.h>
 
+#import <UIColor+Hex/UIColor+Hex.h>
+
 #import <SWRevealViewController/SWRevealViewController.h>
 
 #import <Masonry/Masonry.h>
