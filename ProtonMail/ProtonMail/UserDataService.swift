@@ -264,6 +264,17 @@ class UserDataService {
             }
         }
     }
+    
+    private func launchCleanUp() {
+        if !self.isRememberUser {
+            username = nil
+            password = nil
+        }
+        
+        if !isRememberMailboxPassword {
+            mailboxPassword = nil
+        }
+    }
 }
 
 // MARK: - Message extension
@@ -275,18 +286,6 @@ extension Message {
             return body
         } else {
             return body.decryptWithPrivateKey(sharedUserDataService.userInfo?.privateKey ?? "", passphrase: sharedUserDataService.mailboxPassword? ?? "", publicKey: sharedUserDataService.userInfo?.publicKey ?? "", error: error)
-            
-        }
-    }
-    
-    private func launchCleanUp() {
-        if !isRememberUser {
-            username = nil
-            password = nil
-        }
-        
-        if !isRememberMailboxPassword {
-            mailboxPassword = nil
         }
     }
 }
