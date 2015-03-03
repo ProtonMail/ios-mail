@@ -50,14 +50,14 @@ extension APIService {
             "state" : "\(NSUUID().UUIDString)"]
         
         let completionWrapper: CompletionBlock = { task, response, error in
-            if let authInfo = self.authInfoForResponse(response) {
+            if self.isErrorResponse(response) {
+                completion?(nil, NSError.authInvalidGrant())
+            } else if let authInfo = self.authInfoForResponse(response) {
                 let credential = AuthCredential(authInfo: authInfo)
                 
                 credential.storeInKeychain()
                 
                 completion?(credential, nil)
-            } else if self.isErrorResponse(response) {
-                completion?(nil, NSError.authInvalidGrant())
             } else if error == nil {
                 completion?(nil, NSError.authUnableToParseToken())
             } else {
