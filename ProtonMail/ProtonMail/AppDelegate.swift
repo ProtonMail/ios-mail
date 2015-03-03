@@ -20,6 +20,9 @@ class AppDelegate: UIResponder {
     
     private let animationDuration: NSTimeInterval = 0.5
     
+    // FIXME: Before this code is shared publicly, inject the API key from the build command.
+    private let mintAPIKey = "2b423dec"
+    
     var window: UIWindow?
     
     func instantiateRootViewController() -> UIViewController {
@@ -60,6 +63,10 @@ class AppDelegate: UIResponder {
 extension AppDelegate: UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        Mint.sharedInstance().enableLogging(true)
+        Mint.sharedInstance().setLogging(8)
+        Mint.sharedInstance().initAndStartSession(mintAPIKey)
+        
         AFNetworkActivityIndicatorManager.sharedManager().enabled = true
         setupWindow()
         

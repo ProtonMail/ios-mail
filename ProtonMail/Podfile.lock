@@ -29,6 +29,7 @@ PODS:
     - OpenSSL
   - OpenSSL (1.0.200)
   - RHAddressBook (1.1.1)
+  - SplunkMint-iOS (4.0.24)
   - SWRevealViewController (2.3.0)
   - UICKeyChainStore (2.0.1)
 
@@ -41,6 +42,7 @@ DEPENDENCIES:
   - NSDate+Helper
   - OpenPGP (from `../OpenPGP`)
   - RHAddressBook (= 1.1.1)
+  - SplunkMint-iOS
   - SWRevealViewController (= 2.3.0)
   - UICKeyChainStore
 
@@ -58,6 +60,7 @@ SPEC CHECKSUMS:
   OpenPGP: 7474a5b555d034306a9985c5bce0bfacdd9ba762
   OpenSSL: 4c7be3eca71139f52984542d8c4c0752154d26c3
   RHAddressBook: 0cad9d33b9494d1e28323b62e5c7afc109cc4294
+  SplunkMint-iOS: 528329b25dcadcb919b99e46f4a786d11c51c82c
   SWRevealViewController: f6d80638b8e12323e87ac79562345403a799cb77
   UICKeyChainStore: 779de9c089920a79d8755e7ba887e51c745819a8
 

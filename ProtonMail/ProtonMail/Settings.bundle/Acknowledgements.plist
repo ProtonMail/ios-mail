@@ -375,6 +375,14 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		</dict>
 		<dict>
 			<key>FooterText</key>
+			<string>See https://mint.splunk.com/termsofuse</string>
+			<key>Title</key>
+			<string>SplunkMint-iOS</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
 			<string>The MIT License
 
 Copyright (c) 2011 kishikawa katsumi
