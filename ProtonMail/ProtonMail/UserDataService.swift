@@ -39,7 +39,7 @@ class UserDataService {
         
     // MARK: - Private variables
     
-    private(set) var userInfo: UserInfo? {
+    private(set) var userInfo: UserInfo? = NSUserDefaults.standardUserDefaults().customObjectForKey(Key.userInfo) as? UserInfo {
         didSet {
             NSUserDefaults.standardUserDefaults().setCustomValue(userInfo, forKey: Key.userInfo)
             NSUserDefaults.standardUserDefaults().synchronize()
@@ -48,7 +48,7 @@ class UserDataService {
         }
     }
     
-    private(set) var username: String? {
+    private(set) var username: String? = NSUserDefaults.standardUserDefaults().stringForKey(Key.username) {
         didSet {
             NSUserDefaults.standardUserDefaults().setValue(username, forKey: Key.username)
             NSUserDefaults.standardUserDefaults().synchronize()
@@ -69,14 +69,14 @@ class UserDataService {
         return mailboxPassword != nil
     }
     
-    var isRememberMailboxPassword: Bool = false {
+    var isRememberMailboxPassword: Bool = NSUserDefaults.standardUserDefaults().boolForKey(Key.isRememberMailboxPassword) {
         didSet {
             NSUserDefaults.standardUserDefaults().setBool(isRememberMailboxPassword, forKey: Key.isRememberMailboxPassword)
             NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
     
-    var isRememberUser: Bool = false {
+    var isRememberUser: Bool = NSUserDefaults.standardUserDefaults().boolForKey(Key.isRememberUser) {
         didSet {
             NSUserDefaults.standardUserDefaults().setBool(isRememberUser, forKey: Key.isRememberUser)
             NSUserDefaults.standardUserDefaults().synchronize()
@@ -125,19 +125,9 @@ class UserDataService {
     
     init() {
         cleanUpIfFirstRun()
-        
-        isRememberMailboxPassword = NSUserDefaults.standardUserDefaults().boolForKey(Key.isRememberMailboxPassword)
-        isRememberUser = NSUserDefaults.standardUserDefaults().boolForKey(Key.isRememberUser)
-        userInfo = NSUserDefaults.standardUserDefaults().customObjectForKey(Key.userInfo) as? UserInfo
-        username = NSUserDefaults.standardUserDefaults().stringForKey(Key.username)
+        launchCleanUp()
     }
-    
-    func didEnterBackground() {
-        if isSignedIn && !isRememberUser {
-            signOut(false)
-        }
-    }
-    
+
     func fetchUserInfo(completion: UserInfoBlock? = nil) {
         sharedAPIService.userInfo() { userInfo, error in
             if error == nil {
@@ -146,6 +136,22 @@ class UserDataService {
             
             completion?(userInfo, error)
         }
+    }
+    
+    func isMailboxPasswordValid(password: String) -> Bool {
+        if let userInfo = userInfo {
+            var error: NSError?
+        
+            let result = OpenPGP().checkPassphrase(password, forPrivateKey: userInfo.privateKey, publicKey: userInfo.publicKey, error: &error)
+                
+            if error == nil {
+                return result
+            } else {
+                NSLog("\(__FUNCTION__) error: \(error!)")
+            }
+        }
+        
+        return false
     }
     
     func setMailboxPassword(password: String, isRemembered: Bool) {
@@ -269,6 +275,18 @@ extension Message {
             return body
         } else {
             return body.decryptWithPrivateKey(sharedUserDataService.userInfo?.privateKey ?? "", passphrase: sharedUserDataService.mailboxPassword? ?? "", publicKey: sharedUserDataService.userInfo?.publicKey ?? "", error: error)
+            
+        }
+    }
+    
+    private func launchCleanUp() {
+        if !isRememberUser {
+            username = nil
+            password = nil
+        }
+        
+        if !isRememberMailboxPassword {
+            mailboxPassword = nil
         }
     }
 }

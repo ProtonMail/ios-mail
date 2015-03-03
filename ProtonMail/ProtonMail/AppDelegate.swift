@@ -72,7 +72,6 @@ extension AppDelegate: UIApplicationDelegate {
     }
     
     func applicationDidEnterBackground(application: UIApplication) {
-        sharedUserDataService.didEnterBackground()
         Snapshot().didEnterBackground(application)
     }
     

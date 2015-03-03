@@ -52,12 +52,12 @@ extension UserInfo: NSCoding {
     
     convenience init(coder aDecoder: NSCoder) {
         self.init(
-            displayName: aDecoder.decodeObjectForKey(CoderKey.displayName) as? String,
+            displayName: aDecoder.decodeStringForKey(CoderKey.displayName),
             maxSpace: aDecoder.decodeIntegerForKey(CoderKey.maxSpace),
-            notificationEmail: aDecoder.decodeObjectForKey(CoderKey.notificationEmail) as? String,
-            privateKey: aDecoder.decodeObjectForKey(CoderKey.privateKey) as? String,
-            publicKey: aDecoder.decodeObjectForKey(CoderKey.publicKey) as? String,
-            signature: aDecoder.decodeObjectForKey(CoderKey.signature) as? String,
+            notificationEmail: aDecoder.decodeStringForKey(CoderKey.notificationEmail),
+            privateKey: aDecoder.decodeStringForKey(CoderKey.privateKey),
+            publicKey: aDecoder.decodeStringForKey(CoderKey.publicKey),
+            signature: aDecoder.decodeStringForKey(CoderKey.signature),
             usedSpace: aDecoder.decodeIntegerForKey(CoderKey.usedSpace))
     }
     
