@@ -13,28 +13,30 @@
 import UIKit
 
 class MenuViewController: UIViewController {
-
-    enum MenuItem: String {
-        case inbox = "Inbox"
-        case drafts = "Drafts"
-        case sent = "Sent"
-        case trash = "Trash"
-        case spam = "Spam"
-        case contacts = "Contacts"
-        case settings = "Settings"
-        case signout = "Signout"
-        
-        var identifier: String { return rawValue }
-}
+    
+    
+    // MARK - Views Outlets
     
     @IBOutlet weak var displayNameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
+    
+    // MARK: - Private constants
+    
+    private let items = [MenuItem.inbox, MenuItem.starred, MenuItem.drafts, MenuItem.sent, MenuItem.trash, MenuItem.spam, MenuItem.contacts, MenuItem.settings, MenuItem.signout]
     private let kMenuCellHeight: CGFloat = 62.0
     private let kMenuOptionsWidth: CGFloat = 227.0
     
-    private let items = [MenuItem.inbox, MenuItem.drafts, MenuItem.sent, MenuItem.trash, MenuItem.spam, MenuItem.contacts, MenuItem.settings, MenuItem.signout]
+    private let kSegueToInbox: String = "toInbox"
+    private let kSegueToStarred: String = "toStarred"
+    private let kSegueToDrafts: String = "toDrafts"
+    private let kSegueToSent: String = "toSent"
+    private let kSegueToTrash: String = "toTrash"
+    private let kSegueToSpam: String = "toSpam"
+    
+    
+    // MARK: Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,9 +49,59 @@ class MenuViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.revealViewController().frontViewController.view.userInteractionEnabled = false
+        self.revealViewController().view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+
         updateEmailLabel()
         updateDisplayNameLabel()
     }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.revealViewController().frontViewController.view.userInteractionEnabled = true
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let navigationController = segue.destinationViewController as UINavigationController
+        
+        if let firstViewController: UIViewController = navigationController.viewControllers.first as? UIViewController {
+            if (firstViewController.isKindOfClass(MailboxViewController)) {
+                let mailboxViewController: MailboxViewController = navigationController.viewControllers.first as MailboxViewController
+                
+                switch(segue.identifier!) {
+                case kSegueToInbox:
+                    mailboxViewController.mailboxLocation = .inbox
+                    mailboxViewController.setNavigationTitleText("INBOX")
+                    
+                case kSegueToStarred:
+                    mailboxViewController.mailboxLocation = .starred
+                    mailboxViewController.setNavigationTitleText("STARRED")
+                    
+                case kSegueToDrafts:
+                    mailboxViewController.mailboxLocation = .draft
+                    mailboxViewController.setNavigationTitleText("DRAFTS")
+                    
+                case kSegueToSent:
+                    mailboxViewController.mailboxLocation = .outbox
+                    mailboxViewController.setNavigationTitleText("SENT")
+                    
+                case kSegueToTrash:
+                    mailboxViewController.mailboxLocation = .trash
+                    mailboxViewController.setNavigationTitleText("TRASH")
+                    
+                case kSegueToSpam:
+                    mailboxViewController.mailboxLocation = .spam
+                    mailboxViewController.setNavigationTitleText("SPAM")
+                default:
+                    mailboxViewController.mailboxLocation = .inbox
+                    mailboxViewController.setNavigationTitleText("INBOX")
+                }
+            }
+        }
+    }
+    
+    
+    // MARK: - Methods
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
@@ -58,7 +110,7 @@ class MenuViewController: UIViewController {
     func handleSignOut() {
         let alertController = UIAlertController(title: NSLocalizedString("Confirm"), message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Sign Out"), style: .Destructive, handler: { (action) -> Void in
-            sharedUserDataService.signOut()
+            sharedUserDataService.signOut(true)
         }))
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
         
@@ -70,11 +122,11 @@ class MenuViewController: UIViewController {
     }
     
     func updateDisplayNameLabel() {
-        if let displayName = sharedUserDataService.displayName {
-            if !displayName.isEmpty {
-                displayNameLabel.text = displayName
-                return
-            }
+        let displayName = sharedUserDataService.displayName
+        
+        if !displayName.isEmpty {
+            displayNameLabel.text = displayName
+            return
         }
 
         displayNameLabel.text = emailLabel.text
@@ -126,5 +178,21 @@ extension MenuViewController: UITableViewDataSource {
         
         cell.selectedBackgroundView = selectedBackgroundView
         return cell
+    }
+}
+
+extension MenuViewController {
+    enum MenuItem: String {
+        case inbox = "Inbox"
+        case starred = "Starred"
+        case drafts = "Drafts"
+        case sent = "Sent"
+        case trash = "Trash"
+        case spam = "Spam"
+        case contacts = "Contacts"
+        case settings = "Settings"
+        case signout = "Signout"
+        
+        var identifier: String { return rawValue }
     }
 }

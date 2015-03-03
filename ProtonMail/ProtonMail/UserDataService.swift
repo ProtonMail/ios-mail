@@ -20,28 +20,66 @@ let sharedUserDataService = UserDataService()
 
 /// Stores information related to the user
 class UserDataService {
-    private let displayNameKey = "displayNameKey"
-    private let isRememberMailboxPasswordKey = "isRememberMailboxPasswordKey"
-    private let isRememberUserKey = "isRememberUserKey"
-    private let mailboxPasswordKey = "mailboxPasswordKey"
-    private let usernameKey = "usernameKey"
-    private let passwordKey = "passwordKey"
     
-    let userDefaults = NSUserDefaults.standardUserDefaults()
+    typealias CompletionBlock = APIService.CompletionBlock
+    typealias UserInfoBlock = APIService.UserInfoBlock
+    
+    struct Key {
+        static let isRememberMailboxPassword = "isRememberMailboxPasswordKey"
+        static let isRememberUser = "isRememberUserKey"
+        static let mailboxPassword = "mailboxPasswordKey"
+        static let username = "usernameKey"
+        static let password = "passwordKey"
+        static let userInfo = "userInfoKey"
+    }
+    
+    struct Notification {
+        static let didSignOut = "UserDataServiceDidSignOutNotification"
+    }
+        
+    // MARK: - Private variables
+    
+    private(set) var userInfo: UserInfo? = NSUserDefaults.standardUserDefaults().customObjectForKey(Key.userInfo) as? UserInfo {
+        didSet {
+            NSUserDefaults.standardUserDefaults().setCustomValue(userInfo, forKey: Key.userInfo)
+            NSUserDefaults.standardUserDefaults().synchronize()
+            
+            StorageLimit().checkSpace(usedSpace: usedSpace, maxSpace: maxSpace)
+        }
+    }
+    
+    private(set) var username: String? = NSUserDefaults.standardUserDefaults().stringForKey(Key.username) {
+        didSet {
+            NSUserDefaults.standardUserDefaults().setValue(username, forKey: Key.username)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
+    var usedSpace: Int {
+        return userInfo?.usedSpace ?? 0
+    }
+    
+    // MARK: - Public variables
+    
+    var displayName: String {
+        return userInfo?.displayName ?? ""
+    }
     
     var isMailboxPasswordStored: Bool {
         return mailboxPassword != nil
     }
     
-    var isRememberMailboxPassword: Bool {
+    var isRememberMailboxPassword: Bool = NSUserDefaults.standardUserDefaults().boolForKey(Key.isRememberMailboxPassword) {
         didSet {
-            userDefaults.setBool(isRememberMailboxPassword, forKey: isRememberMailboxPasswordKey)
+            NSUserDefaults.standardUserDefaults().setBool(isRememberMailboxPassword, forKey: Key.isRememberMailboxPassword)
+            NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
     
-    var isRememberUser: Bool {
+    var isRememberUser: Bool = NSUserDefaults.standardUserDefaults().boolForKey(Key.isRememberUser) {
         didSet {
-            userDefaults.setBool(isRememberUser, forKey: isRememberUserKey)
+            NSUserDefaults.standardUserDefaults().setBool(isRememberUser, forKey: Key.isRememberUser)
+            NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
     
@@ -51,58 +89,69 @@ class UserDataService {
         return username != nil && password != nil
     }
     
-    private(set) var displayName: String? {
-        didSet {
-            userDefaults.setValue(displayName, forKey: displayNameKey)
-        }
-    }
-    
     /// Value is only stored in the keychain
     private(set) var mailboxPassword: String? {
         get {
-            return UICKeyChainStore.stringForKey(mailboxPasswordKey)
+            return UICKeyChainStore.stringForKey(Key.mailboxPassword)
         }
         set {
-            UICKeyChainStore.setString(newValue, forKey: mailboxPasswordKey)
+            UICKeyChainStore.setString(newValue, forKey: Key.mailboxPassword)
         }
+    }
+    
+    var maxSpace: Int {
+        return userInfo?.maxSpace ?? 0
+    }
+    
+    var notificationEmail: String {
+        return userInfo?.notificationEmail ?? ""
     }
     
     /// Value is only stored in the keychain
     private(set) var password: String? {
         get {
-            return UICKeyChainStore.stringForKey(passwordKey)
+            return UICKeyChainStore.stringForKey(Key.password)
         }
         set {
-            UICKeyChainStore.setString(newValue, forKey: passwordKey)
+            UICKeyChainStore.setString(newValue, forKey: Key.password)
         }
     }
     
-    private(set) var username: String? {
-        didSet {
-            userDefaults.setValue(username, forKey: usernameKey)
-        }
+    var signature: String {
+        return userInfo?.signature ?? ""
     }
+    
+    // MARK: - Public methods
     
     init() {
-        displayName = userDefaults.stringForKey(displayNameKey)
-        isRememberMailboxPassword = userDefaults.boolForKey(isRememberMailboxPasswordKey)
-        isRememberUser = userDefaults.boolForKey(isRememberUserKey)
-        username = userDefaults.stringForKey(usernameKey)
+        cleanUpIfFirstRun()
+        launchCleanUp()
     }
-    
-    func fetchUserInfo(completion: (NSError? -> Void)? = nil) {
-        sharedProtonMailAPIService.userInfo(success: { (displayName, privateKey) -> Void in
-            self.displayName = displayName
-            
-            if completion != nil {
-                completion!(nil)
+
+    func fetchUserInfo(completion: UserInfoBlock? = nil) {
+        sharedAPIService.userInfo() { userInfo, error in
+            if error == nil {
+                self.userInfo = userInfo
             }
             
-            }, failure: { error in
-                if completion != nil {
-                    completion!(error)
-                }
-        })
+            completion?(userInfo, error)
+        }
+    }
+    
+    func isMailboxPasswordValid(password: String) -> Bool {
+        if let userInfo = userInfo {
+            var error: NSError?
+        
+            let result = OpenPGP().checkPassphrase(password, forPrivateKey: userInfo.privateKey, publicKey: userInfo.publicKey, error: &error)
+                
+            if error == nil {
+                return result
+            } else {
+                NSLog("\(__FUNCTION__) error: \(error!)")
+            }
+        }
+        
+        return false
     }
     
     func setMailboxPassword(password: String, isRemembered: Bool) {
@@ -110,36 +159,120 @@ class UserDataService {
         isRememberMailboxPassword = isRemembered
     }
     
-    func signIn(username: String, password: String, isRemembered: Bool, completion: (NSError? -> Void)) {
-        sharedProtonMailAPIService.authAuth(username: username, password: password, success: { () in
-            self.isSignedIn = true
-            self.username = username
-
-            if isRemembered {
-                self.isRememberUser = isRemembered
-                self.password = password
+    func signIn(username: String, password: String, isRemembered: Bool, completion: UserInfoBlock) {
+        sharedAPIService.authAuth(username: username, password: password) { auth, error in
+            if error == nil {
+                self.isSignedIn = true
+                self.username = username
+                
+                if isRemembered {
+                    self.isRememberUser = isRemembered
+                    self.password = password
+                }
+                
+                self.fetchUserInfo(completion: completion)
+            } else {
+                self.signOut(true)
+                completion(nil, error)
             }
-            
-            sharedUserDataService.fetchUserInfo() { error in
-                completion(error)
-            }
-            
-            }) { error in
-                self.signOut()
-                completion(error)
         }
     }
     
-    func signOut() {
-        isRememberUser = false
+    func signOut(animated: Bool) {
+        clearAll()
+        clearAuthToken()
+        
+        NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignOut, object: self)
+        
+        (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .signIn, animated: animated)
+    }
+    
+    func updateDisplayName(displayName: String, completion: UserInfoBlock?) {
+        sharedAPIService.settingUpdateDisplayName(displayName, completion: completionForUserInfo(completion))
+    }
+    
+    func updateMailboxPassword(newMailboxPassword: String, completion: CompletionBlock) {
+        sharedAPIService.settingUpdateMailboxPassword(newMailboxPassword, completion: { task, response, error in
+            if error == nil {
+                self.mailboxPassword = newMailboxPassword
+            }
+            
+            completion(task, response, error)
+        })
+    }
+    
+    func updateNotificationEmail(newNotificationEmail: String, completion: UserInfoBlock?) {
+        sharedAPIService.settingUpdateNotificationEmail(newNotificationEmail, completion: completionForUserInfo(completion))
+    }
+    
+    func updatePassword(newPassword: String, completion: CompletionBlock) {
+        sharedAPIService.settingUpdatePassword(newPassword, completion: { task, responseDict, anError in
+            var error = anError
+            
+            if error == nil {
+                if let data = responseDict?["data"] as? Dictionary<String,AnyObject> {
+                    self.password = newPassword
+                } else {
+                    error = NSError.unableToParseResponse(responseDict)
+                }
+            }
+            
+            completion(task, responseDict, error)
+        })
+    }
+
+    func updateSignature(signature: String, completion: UserInfoBlock?) {
+        sharedAPIService.settingUpdateSignature(signature, completion: completionForUserInfo(completion))
+    }
+    
+    // MARK: - Private methods
+    
+    private func cleanUpIfFirstRun() {
+        let firstRunKey = "FirstRunKey"
+        
+        if NSUserDefaults.standardUserDefaults().objectForKey(firstRunKey) == nil {
+            clearAll()
+            
+            NSUserDefaults.standardUserDefaults().setObject(NSDate(), forKey: firstRunKey)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
+    private func clearAll() {
         isSignedIn = false
+        
+        isRememberUser = false
         password = nil
         username = nil
+        
+        isRememberMailboxPassword = false
+        mailboxPassword = nil
+        
+        userInfo = nil
+    }
+    
+    private func clearAuthToken() {
+        AuthCredential.clearFromKeychain()
+    }
+    
+    private func completionForUserInfo(completion: UserInfoBlock?) -> CompletionBlock {
+        return { task, response, error in
+            if error == nil {
+                self.fetchUserInfo(completion: completion)
+            } else {
+                completion?(nil, error)
+            }
+        }
+    }
+    
+    private func launchCleanUp() {
+        if !isRememberUser {
+            username = nil
+            password = nil
+        }
         
         if !isRememberMailboxPassword {
             mailboxPassword = nil
         }
-        
-        (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .signIn)
     }
 }

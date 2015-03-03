@@ -20,20 +20,6 @@
                ReferencedContainer = "container:ProtonMail.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "075E3DFD1A5F4ECF00E001A7"
-               BuildableName = "ProtonMailTests.xctest"
-               BlueprintName = "ProtonMailTests"
-               ReferencedContainer = "container:ProtonMail.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -90,7 +76,7 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable>
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "075E3DE51A5F4ECF00E001A7"
@@ -98,7 +84,7 @@
             BlueprintName = "ProtonMail"
             ReferencedContainer = "container:ProtonMail.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

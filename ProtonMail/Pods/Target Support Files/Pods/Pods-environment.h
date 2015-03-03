@@ -48,6 +48,18 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 5
 #define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 0
 
+// Groot
+#define COCOAPODS_POD_AVAILABLE_Groot
+#define COCOAPODS_VERSION_MAJOR_Groot 0
+#define COCOAPODS_VERSION_MINOR_Groot 2
+#define COCOAPODS_VERSION_PATCH_Groot 0
+
+// MBContactPicker
+#define COCOAPODS_POD_AVAILABLE_MBContactPicker
+#define COCOAPODS_VERSION_MAJOR_MBContactPicker 0
+#define COCOAPODS_VERSION_MINOR_MBContactPicker 1
+#define COCOAPODS_VERSION_PATCH_MBContactPicker 6
+
 // MBProgressHUD
 #define COCOAPODS_POD_AVAILABLE_MBProgressHUD
 #define COCOAPODS_VERSION_MAJOR_MBProgressHUD 0
@@ -60,12 +72,29 @@
 #define COCOAPODS_VERSION_MINOR_Masonry 6
 #define COCOAPODS_VERSION_PATCH_Masonry 0
 
-// OpenSSL-Universal
-#define COCOAPODS_POD_AVAILABLE_OpenSSL_Universal
-// This library does not follow semantic-versioning,
-// so we were not able to define version macros.
-// Please contact the author.
-// Version: 1.0.1.k.
+// NSDate+Helper
+#define COCOAPODS_POD_AVAILABLE_NSDate_Helper
+#define COCOAPODS_VERSION_MAJOR_NSDate_Helper 1
+#define COCOAPODS_VERSION_MINOR_NSDate_Helper 0
+#define COCOAPODS_VERSION_PATCH_NSDate_Helper 0
+
+// OpenPGP
+#define COCOAPODS_POD_AVAILABLE_OpenPGP
+#define COCOAPODS_VERSION_MAJOR_OpenPGP 0
+#define COCOAPODS_VERSION_MINOR_OpenPGP 0
+#define COCOAPODS_VERSION_PATCH_OpenPGP 1
+
+// OpenSSL
+#define COCOAPODS_POD_AVAILABLE_OpenSSL
+#define COCOAPODS_VERSION_MAJOR_OpenSSL 1
+#define COCOAPODS_VERSION_MINOR_OpenSSL 0
+#define COCOAPODS_VERSION_PATCH_OpenSSL 200
+
+// RHAddressBook
+#define COCOAPODS_POD_AVAILABLE_RHAddressBook
+#define COCOAPODS_VERSION_MAJOR_RHAddressBook 1
+#define COCOAPODS_VERSION_MINOR_RHAddressBook 1
+#define COCOAPODS_VERSION_PATCH_RHAddressBook 1
 
 // SWRevealViewController
 #define COCOAPODS_POD_AVAILABLE_SWRevealViewController
@@ -78,10 +107,4 @@
 #define COCOAPODS_VERSION_MAJOR_UICKeyChainStore 2
 #define COCOAPODS_VERSION_MINOR_UICKeyChainStore 0
 #define COCOAPODS_VERSION_PATCH_UICKeyChainStore 1
-
-// UNNetPGP
-#define COCOAPODS_POD_AVAILABLE_UNNetPGP
-#define COCOAPODS_VERSION_MAJOR_UNNetPGP 0
-#define COCOAPODS_VERSION_MINOR_UNNetPGP 8
-#define COCOAPODS_VERSION_PATCH_UNNetPGP 1
 

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iNi-o2-nXB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iNi-o2-nXB">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="Roboto-Light.ttf">
+            <string>Roboto-Light</string>
             <string>Roboto-Light</string>
             <string>Roboto-Light</string>
             <string>Roboto-Light</string>
@@ -53,20 +54,20 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="WWe-i8-Jtn">
-                                <rect key="frame" x="186" y="187" width="228" height="37"/>
+                                <rect key="frame" x="186" y="158" width="228" height="37"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="228" id="6Lc-n5-dpv"/>
                                     <constraint firstAttribute="height" constant="37" id="Ajb-2I-lem"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SIGN IN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fjY-z1-3LU">
-                                <rect key="frame" x="269" y="309" width="63" height="22"/>
+                                <rect key="frame" x="269" y="280" width="63" height="22"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="gnm-cH-vcp" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="161" y="425" width="278" height="44"/>
+                                <rect key="frame" x="161" y="396" width="278" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="MLH-6b-gXi"/>
@@ -79,19 +80,19 @@
                                 </connections>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oyG-Fo-wN1">
-                                <rect key="frame" x="161" y="484" width="157" height="12"/>
+                                <rect key="frame" x="161" y="455" width="203" height="27"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Z40-fI-qfm">
-                                        <rect key="frame" x="0.0" y="0.0" width="12" height="12"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="26" height="27"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="12" id="4Ar-eT-1Ac"/>
-                                            <constraint firstAttribute="width" constant="12" id="UWr-gO-5B1"/>
+                                            <constraint firstAttribute="height" constant="27" id="4Ar-eT-1Ac"/>
+                                            <constraint firstAttribute="width" constant="26" id="UWr-gO-5B1"/>
                                             <constraint firstAttribute="width" constant="272" id="rdf-OZ-QPU"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="12"/>
                                         <inset key="titleEdgeInsets" minX="11" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" image="unchecked"/>
-                                        <state key="selected" image="checked"/>
+                                        <state key="normal" image="unchecked_signin"/>
+                                        <state key="selected" image="checked_signin"/>
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="rdf-OZ-QPU"/>
@@ -103,9 +104,9 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remember me on this device." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VAX-s6-YBf">
-                                        <rect key="frame" x="20" y="0.0" width="129" height="12"/>
-                                        <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="10"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <rect key="frame" x="34" y="0.0" width="161" height="27"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="12.5"/>
+                                        <color key="textColor" red="0.30980392159999998" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -133,8 +134,12 @@
                                 </variation>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="72N-j7-s2R">
-                                <rect key="frame" x="189" y="519" width="223" height="30"/>
+                                <rect key="frame" x="189" y="505" width="223" height="44"/>
                                 <color key="backgroundColor" red="0.20784313725490194" green="0.29411764705882354" blue="0.36862745098039218" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="D2v-Iz-IHe"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="16"/>
                                 <state key="normal" title="Sign In">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -153,7 +158,7 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="User name" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="sKV-Mt-Vgi" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="161" y="370" width="278" height="44"/>
+                                <rect key="frame" x="161" y="341" width="278" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="MrK-Cj-2dW"/>
@@ -178,14 +183,12 @@
                             <constraint firstItem="gnm-cH-vcp" firstAttribute="width" secondItem="sKV-Mt-Vgi" secondAttribute="width" id="BdG-0a-KE8"/>
                             <constraint firstItem="72N-j7-s2R" firstAttribute="centerX" secondItem="fjY-z1-3LU" secondAttribute="centerX" id="F4A-gw-0zw"/>
                             <constraint firstAttribute="centerX" secondItem="sKV-Mt-Vgi" secondAttribute="centerX" id="FDj-Et-ovL"/>
-                            <constraint firstItem="WWe-i8-Jtn" firstAttribute="top" relation="greaterThanOrEqual" secondItem="PjX-cc-uu3" secondAttribute="bottom" priority="750" id="Jug-Ih-MM2"/>
                             <constraint firstItem="fjY-z1-3LU" firstAttribute="top" secondItem="WWe-i8-Jtn" secondAttribute="bottom" priority="747" constant="85" id="Klj-ga-6io"/>
                             <constraint firstItem="gnm-cH-vcp" firstAttribute="top" secondItem="sKV-Mt-Vgi" secondAttribute="bottom" constant="11" id="LMu-Fh-XNr"/>
                             <constraint firstItem="sKV-Mt-Vgi" firstAttribute="centerX" secondItem="fjY-z1-3LU" secondAttribute="centerX" id="Lfl-ej-UV5"/>
                             <constraint firstItem="gnm-cH-vcp" firstAttribute="top" secondItem="fjY-z1-3LU" secondAttribute="bottom" constant="95" id="NhO-ZC-DhT"/>
                             <constraint firstItem="WWe-i8-Jtn" firstAttribute="leading" secondItem="ZKK-VD-dsX" secondAttribute="trailing" constant="-420" id="Sgn-Nh-qFl"/>
                             <constraint firstItem="gnm-cH-vcp" firstAttribute="top" secondItem="oyG-Fo-wN1" secondAttribute="bottom" constant="412" id="T8Z-l6-8ii"/>
-                            <constraint firstItem="sKV-Mt-Vgi" firstAttribute="top" relation="greaterThanOrEqual" secondItem="fjY-z1-3LU" secondAttribute="bottom" constant="11" id="WvK-1q-PCX"/>
                             <constraint firstItem="Sfi-uH-1aX" firstAttribute="top" relation="greaterThanOrEqual" secondItem="72N-j7-s2R" secondAttribute="bottom" id="XkH-IR-RIB"/>
                             <constraint firstItem="oyG-Fo-wN1" firstAttribute="leading" secondItem="gnm-cH-vcp" secondAttribute="trailing" constant="-217" id="bs6-g0-wRu"/>
                             <constraint firstItem="sKV-Mt-Vgi" firstAttribute="top" secondItem="fjY-z1-3LU" secondAttribute="bottom" priority="747" constant="39" id="cgv-XF-pMT"/>
@@ -194,11 +197,13 @@
                             <constraint firstItem="AJu-1e-alo" firstAttribute="top" secondItem="72N-j7-s2R" secondAttribute="bottom" constant="12" id="hE8-cU-Pgu"/>
                             <constraint firstItem="72N-j7-s2R" firstAttribute="top" secondItem="oyG-Fo-wN1" secondAttribute="bottom" constant="23" id="hGb-Zq-tIN"/>
                             <constraint firstItem="gnm-cH-vcp" firstAttribute="width" secondItem="72N-j7-s2R" secondAttribute="width" constant="55" id="hMe-p6-dS5"/>
+                            <constraint firstItem="ZKK-VD-dsX" firstAttribute="top" secondItem="PjX-cc-uu3" secondAttribute="bottom" constant="-20" id="haL-z1-Qfx"/>
                             <constraint firstItem="Sfi-uH-1aX" firstAttribute="top" secondItem="ZKK-VD-dsX" secondAttribute="bottom" id="hjV-sr-O6k"/>
                             <constraint firstItem="AJu-1e-alo" firstAttribute="top" secondItem="fjY-z1-3LU" secondAttribute="bottom" constant="252" id="jV1-B4-Bqb"/>
                             <constraint firstItem="oyG-Fo-wN1" firstAttribute="leading" secondItem="gnm-cH-vcp" secondAttribute="leading" id="m3a-Cf-PLD"/>
                             <constraint firstItem="oyG-Fo-wN1" firstAttribute="top" secondItem="gnm-cH-vcp" secondAttribute="bottom" constant="15" id="m9E-f9-lXa"/>
                             <constraint firstItem="AJu-1e-alo" firstAttribute="centerX" secondItem="fjY-z1-3LU" secondAttribute="centerX" id="oXZ-Hm-twM"/>
+                            <constraint firstItem="fjY-z1-3LU" firstAttribute="top" relation="greaterThanOrEqual" secondItem="PjX-cc-uu3" secondAttribute="bottom" id="p3c-Cc-js1"/>
                             <constraint firstItem="ZKK-VD-dsX" firstAttribute="top" secondItem="Jgs-h6-fBb" secondAttribute="top" id="qnx-27-ZX6"/>
                             <constraint firstAttribute="centerX" secondItem="AJu-1e-alo" secondAttribute="centerX" id="u1c-jN-ViY"/>
                             <constraint firstItem="72N-j7-s2R" firstAttribute="top" secondItem="fjY-z1-3LU" secondAttribute="bottom" constant="196" id="uJw-SI-8HZ"/>
@@ -209,6 +214,7 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="haL-z1-Qfx"/>
                                 <exclude reference="4he-q0-BR5"/>
                                 <exclude reference="Sgn-Nh-qFl"/>
                                 <exclude reference="Lfl-ej-UV5"/>
@@ -261,16 +267,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="b63-Fw-RYH">
-                                <rect key="frame" x="186" y="189" width="228" height="37"/>
+                                <rect key="frame" x="186" y="184" width="228" height="37"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DECRYPT MAILBOX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jzp-6U-vEt">
-                                <rect key="frame" x="221" y="310" width="159" height="22"/>
+                                <rect key="frame" x="221" y="294" width="159" height="22"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Mailbox Password" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="16" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="aXn-9j-Mz5" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="164" y="370" width="272" height="44"/>
+                                <rect key="frame" x="164" y="354" width="272" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="Sv0-bR-hjk"/>
@@ -284,8 +290,11 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zUC-Hd-aMe">
-                                <rect key="frame" x="137" y="518" width="327" height="31"/>
+                                <rect key="frame" x="192" y="505" width="217" height="44"/>
                                 <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="BAm-rt-q1L"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="16"/>
                                 <state key="normal" title="Decrypt">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -295,19 +304,19 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZpN-rJ-f5g">
-                                <rect key="frame" x="222" y="424" width="157" height="12"/>
+                                <rect key="frame" x="199" y="408" width="203" height="27"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="tTZ-9P-EdG">
-                                        <rect key="frame" x="0.0" y="0.0" width="12" height="12"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="26" height="27"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="12" id="MTP-xv-mvf"/>
-                                            <constraint firstAttribute="width" constant="12" id="hi8-hd-0hm"/>
+                                            <constraint firstAttribute="height" constant="27" id="MTP-xv-mvf"/>
+                                            <constraint firstAttribute="width" constant="26" id="hi8-hd-0hm"/>
                                             <constraint firstAttribute="width" constant="272" id="mhK-Iv-o8E"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="12"/>
                                         <inset key="titleEdgeInsets" minX="11" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" image="unchecked"/>
-                                        <state key="selected" image="checked"/>
+                                        <state key="normal" image="unchecked_signin"/>
+                                        <state key="selected" image="checked_signin"/>
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="mhK-Iv-o8E"/>
@@ -318,8 +327,8 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remember me on this device." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FVo-0c-RsR">
-                                        <rect key="frame" x="20" y="0.0" width="129" height="12"/>
-                                        <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="10"/>
+                                        <rect key="frame" x="34" y="0.0" width="161" height="27"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="12.5"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -352,21 +361,23 @@
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="aXn-9j-Mz5" secondAttribute="centerX" id="63d-P7-z78"/>
-                            <constraint firstItem="zUC-Hd-aMe" firstAttribute="width" secondItem="aXn-9j-Mz5" secondAttribute="width" constant="55" id="6Nw-xH-AJM"/>
+                            <constraint firstItem="zUC-Hd-aMe" firstAttribute="width" secondItem="aXn-9j-Mz5" secondAttribute="width" constant="-55" id="6Nw-xH-AJM"/>
                             <constraint firstAttribute="centerX" secondItem="b63-Fw-RYH" secondAttribute="centerX" id="EDF-N9-RHO"/>
                             <constraint firstItem="pD8-Aw-owT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="zUC-Hd-aMe" secondAttribute="bottom" id="Q75-Oc-rVu"/>
                             <constraint firstItem="pD8-Aw-owT" firstAttribute="top" secondItem="zUC-Hd-aMe" secondAttribute="bottom" priority="750" constant="51" id="QPC-lh-xTc"/>
-                            <constraint firstItem="zUC-Hd-aMe" firstAttribute="top" secondItem="ZpN-rJ-f5g" secondAttribute="bottom" constant="82" id="U3e-Ev-cL1"/>
+                            <constraint firstItem="zUC-Hd-aMe" firstAttribute="top" secondItem="ZpN-rJ-f5g" secondAttribute="bottom" constant="70" id="U3e-Ev-cL1"/>
                             <constraint firstItem="aXn-9j-Mz5" firstAttribute="top" secondItem="Jzp-6U-vEt" secondAttribute="bottom" constant="38" id="WqS-7S-Yaw"/>
                             <constraint firstAttribute="centerX" secondItem="Jzp-6U-vEt" secondAttribute="centerX" id="Wx4-rr-ZaW"/>
-                            <constraint firstItem="Jzp-6U-vEt" firstAttribute="top" secondItem="b63-Fw-RYH" secondAttribute="bottom" constant="84" id="Zlc-SP-nlN"/>
+                            <constraint firstItem="Jzp-6U-vEt" firstAttribute="top" secondItem="b63-Fw-RYH" secondAttribute="bottom" constant="73" id="Zlc-SP-nlN"/>
                             <constraint firstItem="ZpN-rJ-f5g" firstAttribute="top" secondItem="aXn-9j-Mz5" secondAttribute="bottom" constant="10" id="cYb-cX-Xlx"/>
                             <constraint firstItem="ZpN-rJ-f5g" firstAttribute="width" secondItem="aXn-9j-Mz5" secondAttribute="width" id="ctN-VO-nrI"/>
                             <constraint firstAttribute="centerX" secondItem="ZpN-rJ-f5g" secondAttribute="centerX" id="lue-SG-9C1"/>
+                            <constraint firstItem="Jzp-6U-vEt" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Wmm-ES-Jna" secondAttribute="bottom" constant="11" id="nfv-cv-m8s"/>
                             <constraint firstAttribute="centerX" secondItem="zUC-Hd-aMe" secondAttribute="centerX" id="qGa-WE-cJH"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="nfv-cv-m8s"/>
                                 <exclude reference="ctN-VO-nrI"/>
                             </mask>
                         </variation>
@@ -374,6 +385,7 @@
                             <outletCollection property="gestureRecognizers" destination="Wpl-TL-83p" appends="YES" id="hE6-qB-oeF"/>
                         </connections>
                     </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="decryptButton" destination="zUC-Hd-aMe" id="VWe-xu-pNg"/>
                         <outlet property="keyboardPaddingConstraint" destination="Q75-Oc-rVu" id="Rov-E4-NzZ"/>
@@ -394,7 +406,7 @@
     <resources>
         <image name="Logo" width="228" height="37"/>
         <image name="SignIn" width="320" height="568"/>
-        <image name="checked" width="22" height="22"/>
-        <image name="unchecked" width="22" height="22"/>
+        <image name="checked_signin" width="26" height="27"/>
+        <image name="unchecked_signin" width="26" height="27"/>
     </resources>
 </document>

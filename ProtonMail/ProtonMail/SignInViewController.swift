@@ -20,6 +20,7 @@ class SignInViewController: UIViewController {
     private let animationDuration: NSTimeInterval = 0.5
     private let keyboardPadding: CGFloat = 12
     private let buttonDisabledAlpha: CGFloat = 0.5
+    private let mailboxSegue = "mailboxSegue"
     private let signUpURL = NSURL(string: "https://protonmail.ch/sign_up.php")!
     
     var isRemembered = false
@@ -47,23 +48,13 @@ class SignInViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: true)
         NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
-    }
-    
-    func segueToMailboxPasswordViewController() {
-        performSegueWithIdentifier(SignInViewController.mailboxSegue(), sender: self)
-        navigationController?.setNavigationBarHidden(false, animated: true)
-    }
-    
-    // MARK: - Class methods
-    
-    class func mailboxSegue() -> String {
-        return "mailboxSegue"
     }
     
     // MARK: - Private methods
@@ -96,7 +87,7 @@ class SignInViewController: UIViewController {
     func signIn() {
         MBProgressHUD.showHUDAddedTo(view, animated: true)
         
-        sharedUserDataService.signIn(usernameTextField.text, password: passwordTextField.text, isRemembered: isRemembered) {error in
+        sharedUserDataService.signIn(usernameTextField.text, password: passwordTextField.text, isRemembered: isRemembered) { _, error in
             MBProgressHUD.hideHUDForView(self.view, animated: true)
             
             if let error = error {
@@ -108,9 +99,9 @@ class SignInViewController: UIViewController {
                 self.presentViewController(alertController, animated: true, completion: nil)
             } else {
                 if sharedUserDataService.isMailboxPasswordStored {
-                    (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .inbox)
+                    (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .inbox, animated: true)
                 } else {
-                    self.segueToMailboxPasswordViewController()
+                    self.performSegueWithIdentifier(self.mailboxSegue, sender: self)
                 }
             }
         }
