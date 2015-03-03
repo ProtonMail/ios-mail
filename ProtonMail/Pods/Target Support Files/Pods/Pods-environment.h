@@ -102,6 +102,12 @@
 #define COCOAPODS_VERSION_MINOR_SWRevealViewController 3
 #define COCOAPODS_VERSION_PATCH_SWRevealViewController 0
 
+// SplunkMint-iOS
+#define COCOAPODS_POD_AVAILABLE_SplunkMint_iOS
+#define COCOAPODS_VERSION_MAJOR_SplunkMint_iOS 4
+#define COCOAPODS_VERSION_MINOR_SplunkMint_iOS 0
+#define COCOAPODS_VERSION_PATCH_SplunkMint_iOS 24
+
 // UICKeyChainStore
 #define COCOAPODS_POD_AVAILABLE_UICKeyChainStore
 #define COCOAPODS_VERSION_MAJOR_UICKeyChainStore 2
