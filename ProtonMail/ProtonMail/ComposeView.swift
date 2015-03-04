@@ -41,6 +41,10 @@ class ComposeView: UIView {
     @IBOutlet var encryptedButton: UIButton!
     @IBOutlet var expirationButton: UIButton!
     @IBOutlet var attachmentButton: UIButton!
+    @IBOutlet var passwordImageView: UIImageView!
+    @IBOutlet var passwordTextField: UITextField!
+    @IBOutlet var buttonActions: UIView!
+    @IBOutlet var buttonView: UIView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -58,14 +62,34 @@ class ComposeView: UIView {
         self.delegate?.composeViewDidTapSendButton(self)
     }
     
+    @IBAction func didTapEncryptedButton(sender: UIButton) {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.buttonActions.alpha = 1.0
+            self.buttonView.alpha = 0.0
+        })
+    }
+    
+    @IBAction func didTapEncryptedDismissButton(sender: UIButton) {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.buttonActions.alpha = 0.0
+            self.buttonView.alpha = 1.0
+        })
+    }
+    
+    internal func didTapNextButton() {
+        println("didTapNextButton")
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.configureContactPicketTemplate()
         self.includeButtonBorder(encryptedButton)
         self.includeButtonBorder(attachmentButton)
+        self.includeButtonBorder(passwordTextField)
         
         self.setNeedsLayout()
         self.layoutIfNeeded()
+        
         self.subject.addBorder(.Top, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         self.expirationButton.addBorder(.Top, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         self.expirationButton.addBorder(.Bottom, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
@@ -73,16 +97,18 @@ class ComposeView: UIView {
         self.contactPicker.datasource = self
         self.contactPicker.delegate = self
         
-        let subjectPaddingView = UIView(frame: CGRectMake(0, 0, 12, self.subject.frame.size.height))
-        subject.leftView = subjectPaddingView
+        let subjectLeftPaddingView = UIView(frame: CGRectMake(0, 0, 12, self.subject.frame.size.height))
+        subject.leftView = subjectLeftPaddingView
         subject.leftViewMode = UITextFieldViewMode.Always
+        
+        self.configurePasswordField()
     }
     
     // MARK: - Private Methods
     
-    private func includeButtonBorder(button: UIButton) {
-        button.layer.borderWidth = 1.0
-        button.layer.borderColor = UIColor.ProtonMail.Gray_C9CED4.CGColor
+    private func includeButtonBorder(view: UIView) {
+        view.layer.borderWidth = 1.0
+        view.layer.borderColor = UIColor.ProtonMail.Gray_C9CED4.CGColor
     }
     
     private func updateContactPickerHeight(newHeight: CGFloat) {
@@ -98,6 +124,22 @@ class ComposeView: UIView {
         MBContactCollectionViewContactCell.appearance().font = UIFont.robotoLight(size: UIFont.Size.h4)
         MBContactCollectionViewPromptCell.appearance().font = UIFont.robotoLight(size: UIFont.Size.h4)
         MBContactCollectionViewEntryCell.appearance().font = UIFont.robotoLight(size: UIFont.Size.h4)
+    }
+    
+    private func configurePasswordField() {
+        let passwordLeftPaddingView = UIView(frame: CGRectMake(0, 0, 12, self.passwordTextField.frame.size.height))
+        passwordTextField.leftView = passwordLeftPaddingView
+        passwordTextField.leftViewMode = UITextFieldViewMode.Always
+        
+        let nextButton = UIButton()
+        nextButton.addTarget(self, action: "didTapNextButton", forControlEvents: UIControlEvents.TouchUpInside)
+        nextButton.setImage(UIImage(named: "next"), forState: UIControlState.Normal)
+        nextButton.sizeToFit()
+        
+        let nextView = UIView(frame: CGRectMake(0, 0, nextButton.frame.size.width + 10, nextButton.frame.size.height))
+        nextView.addSubview(nextButton)
+        passwordTextField.rightView = nextView
+        passwordTextField.rightViewMode = UITextFieldViewMode.Always
     }
 }
 
