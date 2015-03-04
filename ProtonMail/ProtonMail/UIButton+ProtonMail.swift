@@ -17,7 +17,6 @@
 import Foundation
 
 extension UIButton {
-    
     class func buttonWithImage(image: UIImage) -> UIButton {
         let button = UIButton()
         button.setImage(image, forState: UIControlState.Normal)

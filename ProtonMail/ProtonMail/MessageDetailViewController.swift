@@ -88,13 +88,16 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
     
     func messageDetailViewDidTapForwardMessage(messageView: MessageDetailView, message: Message) {
         println("messageDetailViewDidTapForwardMessage: \(message.title)")
+        self.performSegueWithIdentifier("toCompose", sender: self)
     }
     
     func messageDetailViewDidTapReplyAllMessage(messageView: MessageDetailView, message: Message) {
         println("messageDetailViewDidTapReplyAllMessage: \(message.title)")
+        self.performSegueWithIdentifier("toCompose", sender: self)
     }
     
     func messageDetailViewDidTapReplyMessage(messageView: MessageDetailView, message: Message) {
         println("messageDetailViewDidTapReplyMessage: \(message.title)")
+        self.performSegueWithIdentifier("toCompose", sender: self)
     }
 }

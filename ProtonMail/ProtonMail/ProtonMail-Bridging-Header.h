@@ -20,7 +20,6 @@
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import <Groot/Groot.h>
 #import <Masonry/Masonry.h>
-#import <MBContactPicker/MBContactPicker.h>
 #import <MBProgressHUD/MBProgressHUD.h>
 #import <NSDate+Helper/NSDate+Helper.h>
 #import "OpenPGP.h"
@@ -29,5 +28,6 @@
 #import <SWRevealViewController/SWRevealViewController.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <UIColor+Hex/UIColor+Hex.h>
+#import "MBContactPicker.h"
 
 #endif

@@ -18,6 +18,10 @@ import Foundation
 
 extension UIView {
     
+    public enum UIBorderSide {
+        case Top, Bottom, Left, Right
+    }
+    
     func roundCorners() {
         layer.cornerRadius = 4.0
         clipsToBounds = true
@@ -34,5 +38,23 @@ extension UIView {
             
             self.layer.addAnimation(shakeAnimation, forKey: "position")
         })
+    }
+    
+    public func addBorder(side: UIBorderSide, color: UIColor, borderWidth: CGFloat) {
+        let border = CALayer()
+        border.backgroundColor = color.CGColor
+        
+        switch side {
+        case .Top:
+            border.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: borderWidth)
+        case .Bottom:
+            border.frame = CGRect(x: 0, y: self.frame.size.height - borderWidth, width: self.frame.size.width, height: borderWidth)
+        case .Left:
+            border.frame = CGRect(x: 0, y: 0, width: borderWidth, height: self.frame.size.height)
+        case .Right:
+            border.frame = CGRect(x: self.frame.size.width - borderWidth, y: 0, width: borderWidth, height: self.frame.size.height)
+        }
+        
+        self.layer.addSublayer(border)
     }
 }

@@ -16,7 +16,6 @@ class ContactsViewController: ProtonMailViewController {
     
     private let kContactCellIdentifier: String = "ContactCell"
     private let kProtonMailImage: UIImage = UIImage(named: "encrypted_main")!
-    private let kAddressBookImage: UIImage = UIImage(named: "addressbook_icon")!
     
     
     // MARK: - View Outlets
@@ -290,19 +289,5 @@ extension ContactsViewController: UISearchDisplayDelegate {
     func searchDisplayController(controller: UISearchDisplayController, shouldReloadTableForSearchString searchString: String!) -> Bool {
         self.filterContentForSearchText(searchString)
         return true
-    }
-}
-
-struct ContactVO {
-    let contactId: String!
-    let name: String!
-    let email: String!
-    let isProtonMailContact: Bool = false
-    
-    init(id: String! = "", name: String!, email: String!, isProtonMailContact: Bool) {
-        self.contactId = id
-        self.name = name
-        self.email = email
-        self.isProtonMailContact = isProtonMailContact
     }
 }
