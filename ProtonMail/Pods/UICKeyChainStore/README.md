@@ -17,18 +17,19 @@ Try [KeychainAccess](https://github.com/kishikawakatsumi/KeychainAccess).
 
 **`synchronize` method is deprecated. Calling this method is no longer required (Just ignored).**
 
-## :bulb: Features
+## Features
 
 - Simple interface
 - Support access group
 - [Support accessibility](#accessibility)
 - [Support iCloud sharing](#icloud_sharing)
 - **[Support TouchID and Keychain integration (iOS 8+)](#touch_id_integration)**
+- **[Support Shared Web Credentials (iOS 8+)](#shared_web_credentials)**
 - Works on both iOS & OS X
 
-## :book: Usage
+## Usage
 
-### :key: Basics
+### Basics
 
 #### Saving Application Password
 
@@ -45,7 +46,7 @@ UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithServer:[NSURL UR
 keychain[@"kishikawakatsumi"] = @"01234567-89ab-cdef-0123-456789abcdef";
 ```
 
-### :key: Instantiation
+### Instantiation
 
 #### Create Keychain for Application Password
 
@@ -71,7 +72,7 @@ UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithServer:[NSURL UR
                                                     authenticationType:UICKeyChainStoreAuthenticationTypeHTMLForm];
 ```
 
-### :key: Adding an item
+### Adding an item
 
 #### subscripting
 
@@ -101,7 +102,7 @@ if (error) {
 }
 ```
 
-### :key: Obtaining an item
+### Obtaining an item
 
 #### subscripting (automatically converts to string)
 
@@ -135,7 +136,7 @@ if (error) {
 }
 ```
 
-### :key: Removing an item
+### Removing an item
 
 #### subscripting
 
@@ -165,7 +166,7 @@ if (error) {
 }
 ```
 
-### :key: Label and Comment
+### Label and Comment
 
 ```objective-c
 UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithServer:[NSURL URLWithString:@"https://github.com"]
@@ -176,7 +177,7 @@ UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithServer:[NSURL UR
             comment:@"github access token"];
 ```
 
-### :key: Configuration (Accessibility, Sharing, iCould Sync)
+### Configuration (Accessibility, Sharing, iCould Sync)
 
 #### <a name="accessibility"> Accessibility
 
@@ -208,14 +209,14 @@ keychain.accessibility = UICKeyChainStoreAccessibilityWhenUnlocked;
 keychain[@"kishikawakatsumi"] = @"01234567-89ab-cdef-0123-456789abcdef"
 ```
 
-#### :couple: Sharing Keychain items
+#### Sharing Keychain items
 
 ```objective-c
 UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithService:@"kishikawakatsumi.git"
                                                             accessGroup:@"12ABCD3E4F.shared"];
 ```
 
-#### <a name="icloud_sharing"> :arrows_counterclockwise: Synchronizing Keychain items with iCloud
+#### <a name="icloud_sharing"> Synchronizing Keychain items with iCloud
 
 ###### Creating instance
 
@@ -226,12 +227,12 @@ keychain.synchronizable = YES;
 keychain[@"kishikawakatsumi"] = @"01234567-89ab-cdef-0123-456789abcdef"
 ```
 
-### <a name="touch_id_integration"> :fu: Touch ID integration
+### <a name="touch_id_integration"> Touch ID integration
 
 **Any Operation that require authentication must be run in the background thread.**  
 **If you run in the main thread, UI thread will lock for the system to try to display the authentication dialog.**
 
-#### :closed_lock_with_key: Adding a Touch ID protected item
+#### Adding a Touch ID protected item
 
 If you want to store the Touch ID protected Keychain item, specify `accessibility` and `authenticationPolicy` attributes.  
 
@@ -246,7 +247,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),
 });
 ```
 
-#### :closed_lock_with_key: Updating a Touch ID protected item
+#### Updating a Touch ID protected item
 
 The same way as when adding.  
 
@@ -268,7 +269,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),
 });
 ```
 
-#### :closed_lock_with_key: Obtaining a Touch ID protected item
+#### Obtaining a Touch ID protected item
 
 The same way as when you get a normal item. It will be displayed automatically Touch ID or passcode authentication If the item you try to get is protected.  
 If you want to show custom authentication prompt message, specify an `authenticationPrompt` attribute.
@@ -286,7 +287,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),
 });
 ```
 
-#### :closed_lock_with_key: Removing a Touch ID protected item
+#### Removing a Touch ID protected item
 
 The same way as when you remove a normal item.
 There is no way to show Touch ID or passcode authentication when removing Keychain items.
@@ -297,7 +298,74 @@ UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithService:@"com.ex
 keychain[@"kishikawakatsumi"] = nil;
 ```
 
-### :key: Debugging
+### <a name="shared_web_credentials"> Shared Web Credentials
+
+> Shared web credentials is a programming interface that enables native iOS apps to share credentials with their website counterparts. For example, a user may log in to a website in Safari, entering a user name and password, and save those credentials using the iCloud Keychain. Later, the user may run a native app from the same developer, and instead of the app requiring the user to reenter a user name and password, shared web credentials gives it access to the credentials that were entered earlier in Safari. The user can also create new accounts, update passwords, or delete her account from within the app. These changes are then saved and used by Safari.  
+<https://developer.apple.com/library/ios/documentation/Security/Reference/SharedWebCredentialsRef/>
+
+```objective-c
+UICKeyChainStore *keychain = [UICKeyChainStore keyChainStoreWithServer:[NSURL URLWithString:@"https://kishikawakatsumi.com"]
+protocolType:UICKeyChainStoreProtocolTypeHTTPS];
+NSString *username = @"kishikawakatsumi@mac.com";
+NSString *password = keychain[username];
+if (password) {
+    // If found password in the Keychain,
+    // then log into the server
+} else {
+    // If not found password in the Keychain,
+    // try to read from Shared Web Credentials
+    [keychain sharedPasswordForAccount:username completion:^(NSString *password, NSError *error) {
+        if (password) {
+            // If found password in the Shared Web Credentials,
+            // then log into the server
+            // and save the password to the Keychain
+
+            keychain[username] = password
+        } else {
+            // If not found password either in the Keychain also Shared Web Credentials,
+            // prompt for username and password
+
+            // Log into server
+
+            // If the login is successful,
+            // save the credentials to both the Keychain and the Shared Web Credentials.
+
+            keychain[username] = password
+            [keychain setSharedPassword:password forAccount:username completion:nil];
+        }
+    }];
+}
+```
+
+#### Request all associated domain's credentials
+
+```objective-c
+[UICKeyChainStore requestSharedWebCredentialWithCompletion:^(NSArray *credentials, NSError *error) {
+
+}];
+```
+
+#### Generate strong random password
+
+Generate strong random password that is in the same format used by Safari autofill (xxx-xxx-xxx-xxx).  
+
+```objective-c
+NSString *password = [UICKeyChainStore generatePassword];
+NSLog(@"%@", password); // => Nhu-GKm-s3n-pMx
+```
+
+#### How to set up Shared Web Credentials
+
+> 1. Add a com.apple.developer.associated-domains entitlement to your app. This entitlement must include all the domains with which you want to share credentials.
+
+> 2. Add an apple-app-site-association file to your website. This file must include application identifiers for all the apps with which the site wants to share credentials, and it must be properly signed.
+
+> 3. When the app is installed, the system downloads and verifies the site association file for each of its associated domains. If the verification is successful, the app is associated with the domain.
+
+**More details:**  
+<https://developer.apple.com/library/ios/documentation/Security/Reference/SharedWebCredentialsRef/>
+
+### Debugging
 
 #### Display all stored items if print keychain object
 

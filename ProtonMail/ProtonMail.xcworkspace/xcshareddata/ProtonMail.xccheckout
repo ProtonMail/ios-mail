@@ -5,13 +5,13 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>BFAB5DCD-A55E-43E2-93EE-1706CD489C61</string>
+	<string>96814A15-1A19-4949-9EEC-DCE8375BA5C7</string>
 	<key>IDESourceControlProjectName</key>
 	<string>ProtonMail</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>CD629764CEDB94871924A9A74AC6E767B78E3ADA</key>
-		<string>https://github.com/arctouch/protonmail_ios.git</string>
+		<string>https://github.com/arctouch/protonmail_ios</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>ProtonMail/ProtonMail.xcworkspace</string>
@@ -21,7 +21,7 @@
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/arctouch/protonmail_ios.git</string>
+	<string>https://github.com/arctouch/protonmail_ios</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
@@ -34,7 +34,7 @@
 			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>CD629764CEDB94871924A9A74AC6E767B78E3ADA</string>
 			<key>IDESourceControlWCCName</key>
-			<string>protonmail_ios</string>
+			<string>ProtonMail</string>
 		</dict>
 	</array>
 </dict>

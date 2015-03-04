@@ -1,6 +1,6 @@
 // AFURLSessionManager.h
 //
-// Copyright (c) 2013-2014 AFNetworking (http://afnetworking.com)
+// Copyright (c) 2013-2015 AFNetworking (http://afnetworking.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,14 @@
 #import "AFURLRequestSerialization.h"
 #import "AFSecurityPolicy.h"
 #import "AFNetworkReachabilityManager.h"
+
+#ifndef NS_DESIGNATED_INITIALIZER
+#if __has_attribute(objc_designated_initializer)
+#define NS_DESIGNATED_INITIALIZER __attribute__((objc_designated_initializer))
+#else
+#define NS_DESIGNATED_INITIALIZER
+#endif
+#endif
 
 /**
  `AFURLSessionManager` creates and manages an `NSURLSession` object based on a specified `NSURLSessionConfiguration` object, which conforms to `<NSURLSessionTaskDelegate>`, `<NSURLSessionDataDelegate>`, `<NSURLSessionDownloadDelegate>`, and `<NSURLSessionDelegate>`.
@@ -183,7 +191,7 @@
 
  @return A manager for a newly-created session.
  */
-- (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration;
+- (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration NS_DESIGNATED_INITIALIZER;
 
 /**
  Invalidates the managed session, optionally canceling pending tasks.
