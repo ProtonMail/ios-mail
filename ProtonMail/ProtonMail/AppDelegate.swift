@@ -70,6 +70,8 @@ extension AppDelegate: UIApplicationDelegate {
         AFNetworkActivityIndicatorManager.sharedManager().enabled = true
         setupWindow()
         
+        sharedPushNotificationService
+        
         if sharedUserDataService.isSignedIn {
             sharedPushNotificationService.registerForRemoteNotifications()
         }

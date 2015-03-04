@@ -172,7 +172,9 @@ class UserDataService {
                 }
                 
                 let completionWrapper: UserInfoBlock = { auth, error in
-                    NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignIn, object: self)
+                    if error == nil {
+                        NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignIn, object: self)
+                    }
                     
                     completion(auth, error)
                 }
