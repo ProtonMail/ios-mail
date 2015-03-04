@@ -23,6 +23,12 @@ class MessageDataService {
     typealias CompletionBlock = APIService.CompletionBlock
     typealias ReadBlock = (() -> Void)
     
+    struct Key {
+        static let read = "read"
+        static let total = "total"
+        static let unread = "unread"
+    }
+    
     enum Location: Int, Printable {
         case draft = 1
         case inbox = 0
@@ -174,15 +180,23 @@ class MessageDataService {
         }
     }
     
+    func fetchMessageCountForInbox() {
+        fetchMessageCountForLocation(.inbox, completion: { (task, response, error) -> Void in
+            if let unreadCount = response?[Key.unread] as? Int {
+                UIApplication.sharedApplication().applicationIconBadgeNumber = unreadCount
+            }
+        })
+    }
+    
     func fetchMessageCountForLocation(location: Location, completion: CompletionBlock?) {
         queue { () -> Void in
             let completionWrapper: CompletionBlock = {task, response, error in
                 let countInfo: Dictionary<String, Int> = [
-                    "unread" : response?["UnRead"] as? Int ?? 0,
-                    "read" : response?["Read"] as? Int ?? 0,
-                    "total" : response?["Total"] as? Int ?? 0]
+                    Key.unread : response?["UnRead"] as? Int ?? 0,
+                    Key.read : response?["Read"] as? Int ?? 0,
+                    Key.total : response?["Total"] as? Int ?? 0]
                 
-                completion?(task, countInfo, nil)
+                completion?(task, countInfo, error)
             }
             
             sharedAPIService.messageCountForLocation(location.rawValue, completion: completionWrapper)
@@ -251,6 +265,8 @@ class MessageDataService {
                             if page == self.firstPage {
                                 self.lastUpdatedStore[location.key] = lastUpdated
                             }
+                            
+                            self.fetchMessageCountForInbox()
                             
                             completion?(task, responseDict, error)
                         }
@@ -374,6 +390,7 @@ class MessageDataService {
                                         
                                         dispatch_async(dispatch_get_main_queue()) {
                                             completion?(task, response, error)
+                                            self.fetchMessageCountForInbox()
                                             return
                                         }
                                     }
@@ -408,6 +425,8 @@ class MessageDataService {
         
         lastUpdatedStore.clear()
         writeQueue.clear()
+        
+        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
     
     // MARK: Queue
