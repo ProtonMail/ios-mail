@@ -714,6 +714,15 @@ extension MessageDetailView: UIWebViewDelegate {
             self.layoutIfNeeded()
         })
     }
+
+    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        if navigationType == .LinkClicked {
+            UIApplication.sharedApplication().openURL(request.URL)
+            return false
+        }
+        
+        return true
+    }
 }
 
 
