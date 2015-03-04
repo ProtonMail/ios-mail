@@ -54,20 +54,20 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="WWe-i8-Jtn">
-                                <rect key="frame" x="186" y="158" width="228" height="37"/>
+                                <rect key="frame" x="186" y="137" width="228" height="37"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="228" id="6Lc-n5-dpv"/>
                                     <constraint firstAttribute="height" constant="37" id="Ajb-2I-lem"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SIGN IN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fjY-z1-3LU">
-                                <rect key="frame" x="269" y="280" width="63" height="22"/>
+                                <rect key="frame" x="269" y="259" width="63" height="22"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="gnm-cH-vcp" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="161" y="396" width="278" height="44"/>
+                                <rect key="frame" x="161" y="375" width="278" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="MLH-6b-gXi"/>
@@ -80,7 +80,7 @@
                                 </connections>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oyG-Fo-wN1">
-                                <rect key="frame" x="161" y="455" width="203" height="27"/>
+                                <rect key="frame" x="161" y="434" width="203" height="27"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Z40-fI-qfm">
                                         <rect key="frame" x="0.0" y="0.0" width="26" height="27"/>
@@ -134,7 +134,7 @@
                                 </variation>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="72N-j7-s2R">
-                                <rect key="frame" x="189" y="505" width="223" height="44"/>
+                                <rect key="frame" x="189" y="484" width="223" height="44"/>
                                 <color key="backgroundColor" red="0.20784313725490194" green="0.29411764705882354" blue="0.36862745098039218" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="D2v-Iz-IHe"/>
@@ -148,7 +148,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AJu-1e-alo">
-                                <rect key="frame" x="251" y="561" width="98" height="27"/>
+                                <rect key="frame" x="251" y="540" width="98" height="27"/>
                                 <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="12.5"/>
                                 <state key="normal" title="SIGN UP BUTTON">
                                     <color key="titleColor" red="0.078431372549019607" green="0.23137254901960785" blue="0.50980392156862742" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -158,7 +158,7 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="User name" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="sKV-Mt-Vgi" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="161" y="341" width="278" height="44"/>
+                                <rect key="frame" x="161" y="320" width="278" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="MrK-Cj-2dW"/>
@@ -178,9 +178,10 @@
                             <constraint firstAttribute="trailing" secondItem="ZKK-VD-dsX" secondAttribute="trailing" id="1Zh-Vm-Rhb"/>
                             <constraint firstItem="WWe-i8-Jtn" firstAttribute="centerX" secondItem="ZKK-VD-dsX" secondAttribute="centerX" id="4he-q0-BR5"/>
                             <constraint firstItem="gnm-cH-vcp" firstAttribute="centerX" secondItem="sKV-Mt-Vgi" secondAttribute="centerX" id="64B-hd-2vN"/>
-                            <constraint firstItem="Sfi-uH-1aX" firstAttribute="top" secondItem="AJu-1e-alo" secondAttribute="bottom" constant="12" id="9DW-G2-jky"/>
+                            <constraint firstItem="Sfi-uH-1aX" firstAttribute="top" relation="greaterThanOrEqual" secondItem="AJu-1e-alo" secondAttribute="bottom" constant="12" id="9DW-G2-jky"/>
                             <constraint firstAttribute="centerX" secondItem="oyG-Fo-wN1" secondAttribute="centerX" id="B9f-s1-bY2"/>
                             <constraint firstItem="gnm-cH-vcp" firstAttribute="width" secondItem="sKV-Mt-Vgi" secondAttribute="width" id="BdG-0a-KE8"/>
+                            <constraint firstAttribute="centerY" secondItem="fjY-z1-3LU" secondAttribute="centerY" priority="250" constant="30" id="EeN-kE-Oj7"/>
                             <constraint firstItem="72N-j7-s2R" firstAttribute="centerX" secondItem="fjY-z1-3LU" secondAttribute="centerX" id="F4A-gw-0zw"/>
                             <constraint firstAttribute="centerX" secondItem="sKV-Mt-Vgi" secondAttribute="centerX" id="FDj-Et-ovL"/>
                             <constraint firstItem="fjY-z1-3LU" firstAttribute="top" secondItem="WWe-i8-Jtn" secondAttribute="bottom" priority="747" constant="85" id="Klj-ga-6io"/>
@@ -225,9 +226,14 @@
                                 <exclude reference="bs6-g0-wRu"/>
                                 <exclude reference="F4A-gw-0zw"/>
                                 <exclude reference="uJw-SI-8HZ"/>
-                                <exclude reference="w9M-Ih-q9S"/>
                                 <exclude reference="jV1-B4-Bqb"/>
                                 <exclude reference="oXZ-Hm-twM"/>
+                                <exclude reference="w9M-Ih-q9S"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="constraints">
+                                <include reference="9DW-G2-jky"/>
                             </mask>
                         </variation>
                         <connections>
@@ -252,7 +258,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="132" y="262"/>
+            <point key="canvasLocation" x="68" y="253"/>
         </scene>
         <!--Mailbox Password View Controller-->
         <scene sceneID="pHR-Af-VAi">

@@ -24,7 +24,7 @@ class AuthCredential: NSObject, NSCoding {
     let accessToken: String!
     let refreshToken: String!
     let userID: String!
-    let expiration: NSDate!
+    var expiration: NSDate!
     
     override var description: String {
         return "\n  accessToken: \(accessToken)\n  refreshToken: \(refreshToken)\n  expiration: \(expiration)\n  userID: \(userID)"
@@ -43,6 +43,11 @@ class AuthCredential: NSObject, NSCoding {
         self.expiration = expiration
     }
     
+    private func expire() {
+        expiration = NSDate.distantPast() as NSDate
+        storeInKeychain()
+    }
+    
     func storeInKeychain() {
         UICKeyChainStore().setData(NSKeyedArchiver.archivedDataWithRootObject(self), forKey: Key.keychainStore)
     }
@@ -51,6 +56,16 @@ class AuthCredential: NSObject, NSCoding {
     
     class func clearFromKeychain() {
         UICKeyChainStore.removeItemForKey(Key.keychainStore)
+    }
+    
+    class func expireOrClear() {
+        if let credential = AuthCredential.fetchFromKeychain() {
+            if !credential.isExpired {
+                credential.expire()
+            } else {
+                AuthCredential.clearFromKeychain()
+            }
+        }
     }
     
     class func fetchFromKeychain() -> AuthCredential? {

@@ -302,6 +302,10 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  Early code inspired on a similar class by Philip Kluz (Philip.Kluz@zuui.org)
 
+## SplunkMint-iOS
+
+See https://mint.splunk.com/termsofuse
+
 ## UICKeyChainStore
 
 The MIT License
