@@ -40,7 +40,9 @@ class PushNotificationService {
     }
     
     func registerForRemoteNotifications() {
-        UIApplication.sharedApplication().registerForRemoteNotifications()
+        if sharedUserDataService.isSignedIn {
+            UIApplication.sharedApplication().registerForRemoteNotifications()
+        }
     }
     
     // MARK: - callback methods

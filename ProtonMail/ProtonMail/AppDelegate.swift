@@ -70,11 +70,7 @@ extension AppDelegate: UIApplicationDelegate {
         AFNetworkActivityIndicatorManager.sharedManager().enabled = true
         setupWindow()
         
-        sharedPushNotificationService
-        
-        if sharedUserDataService.isSignedIn {
-            sharedPushNotificationService.registerForRemoteNotifications()
-        }
+        sharedPushNotificationService.registerForRemoteNotifications()
         
         return true
     }
@@ -121,7 +117,7 @@ extension AppDelegate: UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-        sharedPushNotificationService
+        sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
     }
 
     func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
