@@ -1,1 +1,0 @@
-../../../MBContactPicker/MBContactPicker/MBContactCollectionViewEntryCell.h

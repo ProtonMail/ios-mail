@@ -7,10 +7,19 @@
 //
 
 #import "MBContactPicker.h"
+#import "ProtonMail-Swift.h"
+
+#define UIColorFromRGB(rgbValue) [UIColor \
+colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
+green:((float)((rgbValue & 0xFF00) >> 8))/255.0 \
+blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 CGFloat const kMaxVisibleRows = 2;
-NSString * const kMBPrompt = @"To:";
+NSString * const kMBPrompt = @"To";
+static NSString *const ContactsTableViewCellName = @"ContactsTableViewCell";
+static NSString *const ContactsTableViewCellIdentifier = @"ContactCell";
 CGFloat const kAnimationSpeed = .25;
+static CGFloat const ROW_HEIGHT = 64.0;
 
 @interface MBContactPicker()
 
@@ -36,6 +45,7 @@ CGFloat const kAnimationSpeed = .25;
     if (self) {
         [self setup];
     }
+    
     return self;
 }
 
@@ -94,8 +104,11 @@ CGFloat const kAnimationSpeed = .25;
     UITableView *searchTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, self.bounds.size.height, self.bounds.size.width, 0)];
     searchTableView.dataSource = self;
     searchTableView.delegate = self;
+    searchTableView.rowHeight = ROW_HEIGHT;
     searchTableView.translatesAutoresizingMaskIntoConstraints = NO;
     searchTableView.hidden = YES;
+    [searchTableView registerNib:[UINib nibWithNibName:ContactsTableViewCellName bundle:nil] forCellReuseIdentifier:ContactsTableViewCellIdentifier];
+
     [self addSubview:searchTableView];
     self.searchTableView = searchTableView;
     
@@ -227,35 +240,13 @@ CGFloat const kAnimationSpeed = .25;
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-    if (!cell)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
-                                      reuseIdentifier:@"Cell"];
-    }
+    ContactsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ContactsTableViewCellIdentifier forIndexPath:indexPath];
 
-    id<MBContactPickerModelProtocol> model = (id<MBContactPickerModelProtocol>)self.filteredContacts[indexPath.row];
+    ContactVO<MBContactPickerModelProtocol> *model = (id<MBContactPickerModelProtocol>)self.filteredContacts[indexPath.row];
 
-    cell.textLabel.text = model.contactTitle;
-    UIFont *font = [[self.class appearance] font];
-    if (font)
-    {
-        cell.textLabel.font = font;
-    }
+    cell.contactEmailLabel.text = model.contactSubtitle;
+    cell.contactNameLabel.text = model.contactTitle;
 
-    cell.detailTextLabel.text = nil;
-    cell.imageView.image = nil;
-    
-    if ([model respondsToSelector:@selector(contactSubtitle)])
-    {
-        cell.detailTextLabel.text = model.contactSubtitle;
-    }
-    
-    if ([model respondsToSelector:@selector(contactImage)])
-    {
-        cell.imageView.image = model.contactImage;
-    }
-    
     return cell;
 }
 

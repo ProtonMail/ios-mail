@@ -35,7 +35,7 @@
 
 #import <Masonry/Masonry.h>
 
-#import <MBContactPicker/MBContactPicker.h>
+#import "MBContactPicker.h"
 
 #import <RHAddressBook/AddressBook.h>
 

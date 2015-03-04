@@ -10,9 +10,10 @@
 // the license agreement.
 //
 
+import Foundation
 import UIKit
 
-class ContactsTableViewCell: UITableViewCell {
+public class ContactsTableViewCell: UITableViewCell {
 
     @IBOutlet var contactNameLabel: UILabel!
     @IBOutlet var contactEmailLabel: UILabel!

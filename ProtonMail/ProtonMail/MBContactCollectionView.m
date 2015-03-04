@@ -10,8 +10,12 @@
 #import "MBContactCollectionViewEntryCell.h"
 #import "MBContactCollectionViewPromptCell.h"
 #import "MBContactCollectionViewFlowLayout.h"
+#define UIColorFromRGB(rgbValue) [UIColor \
+colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
+green:((float)((rgbValue & 0xFF00) >> 8))/255.0 \
+blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
-NSInteger const kCellHeight = 31;
+NSInteger const kCellHeight = 36;
 NSString * const kPrompt = @"To:";
 NSString * const kDefaultEntryText = @" ";
 
@@ -127,7 +131,7 @@ typedef NS_ENUM(NSInteger, ContactCollectionViewSection) {
     
     self.allowsMultipleSelection = NO;
     self.allowsSelection = YES;
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = UIColorFromRGB(0xFCFEFF);
     
     [self registerClass:[MBContactCollectionViewContactCell class] forCellWithReuseIdentifier:@"ContactCell"];
     [self registerClass:[MBContactCollectionViewEntryCell class] forCellWithReuseIdentifier:@"ContactEntryCell"];

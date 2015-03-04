@@ -127,7 +127,7 @@ class MailboxViewController: ProtonMailViewController {
     // MARK: - Button Targets
     
     internal func composeButtonTapped() {
-        println("composeButtonTapped with \(self.selectedMessages.count) messages selected.")
+        self.performSegueWithIdentifier("toCompose", sender: self)
     }
     
     internal func searchButtonTapped() {

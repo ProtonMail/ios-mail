@@ -292,17 +292,3 @@ extension ContactsViewController: UISearchDisplayDelegate {
         return true
     }
 }
-
-struct ContactVO {
-    let contactId: String!
-    let name: String!
-    let email: String!
-    let isProtonMailContact: Bool = false
-    
-    init(id: String! = "", name: String!, email: String!, isProtonMailContact: Bool) {
-        self.contactId = id
-        self.name = name
-        self.email = email
-        self.isProtonMailContact = isProtonMailContact
-    }
-}

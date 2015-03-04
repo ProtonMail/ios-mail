@@ -54,7 +54,7 @@
 
 - (void)setup
 {
-    self.insets = UIEdgeInsetsMake(0, 5, 0, 5);
+    self.insets = UIEdgeInsetsMake(0, 0, 0, 0);
 #ifdef DEBUG_BORDERS
     self.layer.borderWidth = 1.0;
     self.layer.borderColor = [UIColor purpleColor].CGColor;
@@ -62,15 +62,18 @@
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:label];
+
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[label]|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(label)]];
+    
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[label]|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(label)]];
-    label.textAlignment = NSTextAlignmentCenter;
+    
+    label.textAlignment = NSTextAlignmentLeft;
     label.text = self.prompt;
     label.textColor = [UIColor blackColor];
     UIFont *font = [[self.class appearance] font];
@@ -91,16 +94,7 @@ static UILabel *templateLabel;
 
 + (CGFloat)widthWithPrompt:(NSString *)prompt
 {
-    if (!templateLabel)
-    {
-        templateLabel = [[UILabel alloc] init];
-    }
-    
-    CGRect frame = [prompt boundingRectWithSize:(CGSize){ .width = CGFLOAT_MAX, .height = CGFLOAT_MAX }
-                                        options:NSStringDrawingUsesLineFragmentOrigin
-                                     attributes:@{ NSFontAttributeName : templateLabel.font }
-                                        context:nil];
-    return ceilf(frame.size.width);
+    return 5.0;
 }
 
 @end

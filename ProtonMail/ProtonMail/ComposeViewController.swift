@@ -14,38 +14,11 @@ import UIKit
 
 class ComposeViewController: ProtonMailViewController {
 
-    @IBAction func cancelButtonTapped(sender: AnyObject) {
-        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    
-    @IBAction func sendButtonTapped(sender: AnyObject) {
-        println("send button tapped")
-    }
-    
-    
-    // Temporary class, just to bind the temporary array.
-    
-    class Contact: NSObject, MBContactPickerModelProtocol {
-        var contactTitle: String!
-        var contactSubtitle: String!
-        
-        init(name: String!, email: String!) {
-            self.contactTitle = name
-            self.contactSubtitle = email
-        }
-    }
-    
     
     // MARK: - Private attributes
     
-    private var contacts: [Contact]! = [Contact]()
-    
-    
-    // MARK: - View Outlets
-    
-    @IBOutlet var contactPickerHeightConstraint: NSLayoutConstraint!
-    @IBOutlet var contactPicker: MBContactPicker!
+    private var contacts: [ContactVO]! = [ContactVO]()
+    private var composeView: ComposeView!
     
     
     // MARK: - View Controller lifecycle
@@ -53,82 +26,55 @@ class ComposeViewController: ProtonMailViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.composeView = self.view as? ComposeView
+        
         let contactExample: [Dictionary<String, String>] = [
-            ["Name" : "Diego Santiviago", "Email" : "diego.santiviago@arctouch.com"],
-            ["Name" : "Eric Chamberlain", "Email" : "eric.chamberlain@arctouch.com"]
+            ["Id" : "1", "Name" : "Diego Santiviago", "Email" : "diego.santiviago@arctouch.com"],
+            ["Id" : "2", "Name" : "Diego Santiviago 1", "Email" : "diego1.santiviago@arctouch.com"],
+            ["Id" : "3", "Name" : "Diego Santiviago 2", "Email" : "diego2.santiviago@arctouch.com"],
+            ["Id" : "4", "Name" : "Diego Santiviago 3", "Email" : "diego3.santiviago@arctouch.com"],
+            ["Id" : "5", "Name" : "Diego Santiviago 4", "Email" : "diego4.santiviago@arctouch.com"],
+            ["Id" : "6", "Name" : "Diego Santiviago 5", "Email" : "diego5.santiviago@arctouch.com"],
+            ["Id" : "7", "Name" : "Eric Chamberlain", "Email" : "eric.chamberlain@arctouch.com"]
         ]
         
         for contact in contactExample {
+            let id = contact["Id"]
             let name = contact["Name"]
             let email = contact["Email"]
-            contacts.append(Contact(name: name, email: email))
+            let isProtonMailContact = false
+            
+            contacts.append(ContactVO(id: id, name: name, email: email, isProtonMailContact: isProtonMailContact))
         }
         
-        contactPicker.datasource = self
-        contactPicker.delegate = self
+        self.composeView.datasource = self
+        self.composeView.delegate = self
     }
     
     
-    // MARK: - Private Methods
+    // MARK: - ProtonMail View Controller
     
-    private func updateContactPickerHeight(newHeight: CGFloat) {
-        self.contactPickerHeightConstraint.constant = newHeight
-        
-        UIView.animateWithDuration(NSTimeInterval(contactPicker.animationSpeed), animations: { () -> Void in
-            self.view.layoutIfNeeded()
-        })
+    override func shouldShowSideMenu() -> Bool {
+        return false
     }
 }
 
-
-// MARK: - MBContactPickerDataSource
-
-extension ComposeViewController: MBContactPickerDataSource {
-    func contactModelsForContactPicker(contactPickerView: MBContactPicker!) -> [AnyObject]! {
-        return self.contacts
+extension ComposeViewController: ComposeViewDelegate {
+    func composeViewDidTapCancelButton(composeView: ComposeView) {
+        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func selectedContactModelsForContactPicker(contactPickerView: MBContactPicker!) -> [AnyObject]! {
+    func composeViewDidTapSendButton(composeView: ComposeView) {
+        println("Did tap send button")
+    }
+}
+
+extension ComposeViewController: ComposeViewDatasource {
+    func composeViewContactsModel(composeView: ComposeView) -> [AnyObject]! {
+        return contacts
+    }
+    
+    func composeViewSelectedContacts(composeView: ComposeView) ->  [AnyObject]! {
         return []
-    }
-}
-
-
-// MARK: - MBContactPickerDelegate
-
-extension ComposeViewController: MBContactPickerDelegate {
-    
-    func customFilterPredicate(searchString: String!) -> NSPredicate! {
-        return NSPredicate(format: "contactTitle CONTAINS[cd] %@ or contactSubtitle CONTAINS[cd] %@", argumentArray: [searchString, searchString])
-    }
-    
-    func contactCollectionView(contactCollectionView: MBContactCollectionView!, didSelectContact model: MBContactPickerModelProtocol!) {
-        
-    }
-    
-    func contactCollectionView(contactCollectionView: MBContactCollectionView!, didAddContact model: MBContactPickerModelProtocol!) {
-        
-    }
-    
-    func contactCollectionView(contactCollectionView: MBContactCollectionView!, didRemoveContact model: MBContactPickerModelProtocol!) {
-        
-    }
-    
-    func didShowFilteredContactsForContactPicker(contactPicker: MBContactPicker!) {
-        if (self.contactPickerHeightConstraint.constant <= contactPicker.currentContentHeight) {
-            let pickerRectInWindow = self.view.convertRect(contactPicker.frame, fromView: nil)
-            let newHeight = self.view.window!.bounds.size.height - pickerRectInWindow.origin.y - contactPicker.keyboardHeight
-            self.updateContactPickerHeight(newHeight)
-        }
-    }
-    
-    func didHideFilteredContactsForContactPicker(contactPicker: MBContactPicker!) {
-        if (self.contactPickerHeightConstraint.constant > contactPicker.currentContentHeight) {
-            self.updateContactPickerHeight(contactPicker.currentContentHeight)
-        }
-    }
-    
-    func contactPicker(contactPicker: MBContactPicker!, didUpdateContentHeightTo newHeight: CGFloat) {
-        self.updateContactPickerHeight(newHeight)
     }
 }

@@ -7,6 +7,12 @@
 //
 
 #import "MBContactCollectionViewContactCell.h"
+#import "ProtonMail-Swift.h"
+
+#define UIColorFromRGB(rgbValue) [UIColor \
+colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
+green:((float)((rgbValue & 0xFF00) >> 8))/255.0 \
+blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 @interface MBContactCollectionViewContactCell()
 
@@ -46,6 +52,10 @@
     contactLabel.textColor = [UIColor blueColor];
     contactLabel.textAlignment = NSTextAlignmentCenter;
     contactLabel.clipsToBounds = YES;
+    contactLabel.layer.cornerRadius = 13.0;
+    contactLabel.layer.borderColor = UIColorFromRGB(0x6789AB).CGColor;
+    contactLabel.layer.borderWidth = 1.0;
+    
     UIFont *font = [[self.class appearance] font];
     if (font)
     {
@@ -59,7 +69,7 @@
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(contactLabel)]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[contactLabel]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(2)-[contactLabel]-(2)-|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(contactLabel)]];
@@ -79,7 +89,7 @@
 {
     UIFont *font = self.contactTitleLabel.font;
     CGSize size = [model.contactTitle boundingRectWithSize:CGSizeMake(MAXFLOAT, MAXFLOAT) options:0 attributes:@{ NSFontAttributeName: font } context:nil].size;
-    return ceilf(size.width) + 10;
+    return ceilf(size.width) + 20;
 }
 
 - (void)setFocused:(BOOL)focused
@@ -90,7 +100,6 @@
     {
         self.contactTitleLabel.textColor = [UIColor whiteColor];
         self.contactTitleLabel.backgroundColor = self.tintColor;
-        self.contactTitleLabel.layer.cornerRadius = 3.0f;
     }
     else
     {
