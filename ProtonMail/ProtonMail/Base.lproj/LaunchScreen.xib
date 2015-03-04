@@ -25,9 +25,10 @@
             <constraints>
                 <constraint firstAttribute="centerX" secondItem="ylD-ti-cEi" secondAttribute="centerX" id="BpF-um-nWB"/>
                 <constraint firstAttribute="bottom" secondItem="VDi-Mg-ytx" secondAttribute="bottom" id="Elb-ce-FAg"/>
-                <constraint firstAttribute="bottom" secondItem="ylD-ti-cEi" secondAttribute="bottom" constant="404" id="GAf-TR-uOO"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="ylD-ti-cEi" secondAttribute="bottom" constant="404" id="GAf-TR-uOO"/>
                 <constraint firstAttribute="trailing" secondItem="VDi-Mg-ytx" secondAttribute="trailing" id="RqP-2g-Li2"/>
                 <constraint firstItem="ylD-ti-cEi" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" priority="750" constant="210" id="Uzb-cL-N9a"/>
+                <constraint firstAttribute="centerY" secondItem="ylD-ti-cEi" secondAttribute="centerY" priority="250" constant="145" id="gpg-S8-sKV"/>
                 <constraint firstItem="VDi-Mg-ytx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="u1K-Ry-Ox5"/>
                 <constraint firstItem="VDi-Mg-ytx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="xKS-AO-TK5"/>
             </constraints>
