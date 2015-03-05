@@ -1286,13 +1286,13 @@
                                         <exclude reference="7fJ-u1-N24"/>
                                     </mask>
                                     <mask key="constraints">
-                                        <exclude reference="4sf-nW-Dp3"/>
-                                        <exclude reference="isB-S4-APY"/>
-                                        <exclude reference="oCm-Yr-F4t"/>
                                         <exclude reference="W6H-Dj-qZm"/>
                                         <exclude reference="d6y-HX-GvV"/>
                                         <exclude reference="eQl-PY-gzp"/>
                                         <exclude reference="kuP-st-kjC"/>
+                                        <exclude reference="4sf-nW-Dp3"/>
+                                        <exclude reference="isB-S4-APY"/>
+                                        <exclude reference="oCm-Yr-F4t"/>
                                     </mask>
                                 </variation>
                                 <variation key="widthClass=compact">
@@ -1301,13 +1301,13 @@
                                         <include reference="7fJ-u1-N24"/>
                                     </mask>
                                     <mask key="constraints">
-                                        <include reference="4sf-nW-Dp3"/>
-                                        <include reference="isB-S4-APY"/>
-                                        <include reference="oCm-Yr-F4t"/>
                                         <include reference="W6H-Dj-qZm"/>
                                         <include reference="d6y-HX-GvV"/>
                                         <include reference="eQl-PY-gzp"/>
                                         <include reference="kuP-st-kjC"/>
+                                        <include reference="4sf-nW-Dp3"/>
+                                        <include reference="isB-S4-APY"/>
+                                        <include reference="oCm-Yr-F4t"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -1463,15 +1463,15 @@
                                 <exclude reference="7bA-PD-Vum"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="eWX-ob-QSA"/>
-                                <exclude reference="sTH-Fd-lEG"/>
-                                <exclude reference="u3R-Cz-UDD"/>
                                 <exclude reference="A2e-gg-bbp"/>
                                 <exclude reference="Eb5-md-fny"/>
                                 <exclude reference="HgT-bN-ScH"/>
                                 <exclude reference="OCo-Pw-C5e"/>
                                 <exclude reference="XxA-0X-VNP"/>
                                 <exclude reference="pRG-0X-Fyo"/>
+                                <exclude reference="eWX-ob-QSA"/>
+                                <exclude reference="sTH-Fd-lEG"/>
+                                <exclude reference="u3R-Cz-UDD"/>
                                 <exclude reference="HRC-G9-NoS"/>
                                 <exclude reference="cws-zA-hIj"/>
                                 <exclude reference="pc9-Tr-L6I"/>
@@ -1486,15 +1486,15 @@
                                 <include reference="7bA-PD-Vum"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="eWX-ob-QSA"/>
-                                <include reference="sTH-Fd-lEG"/>
-                                <include reference="u3R-Cz-UDD"/>
                                 <include reference="A2e-gg-bbp"/>
                                 <include reference="Eb5-md-fny"/>
                                 <include reference="HgT-bN-ScH"/>
                                 <include reference="OCo-Pw-C5e"/>
                                 <include reference="XxA-0X-VNP"/>
                                 <include reference="pRG-0X-Fyo"/>
+                                <include reference="eWX-ob-QSA"/>
+                                <include reference="sTH-Fd-lEG"/>
+                                <include reference="u3R-Cz-UDD"/>
                                 <include reference="HRC-G9-NoS"/>
                                 <include reference="cws-zA-hIj"/>
                                 <include reference="pc9-Tr-L6I"/>
@@ -1502,6 +1502,7 @@
                             </mask>
                         </variation>
                         <connections>
+                            <outlet property="actionButton" destination="7fJ-u1-N24" id="8fg-u0-kyO"/>
                             <outlet property="attachmentButton" destination="2Or-aZ-wTr" id="CkI-M5-eof"/>
                             <outlet property="buttonActions" destination="jOG-f0-Zf7" id="tV2-32-Q0m"/>
                             <outlet property="buttonView" destination="EuM-Xm-TCS" id="RSQ-ml-kSU"/>
@@ -3663,8 +3664,8 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="YW9-oL-Adg"/>
+        <segue reference="o3e-Jf-WEv"/>
+        <segue reference="BYG-C2-IMk"/>
         <segue reference="Lm0-2L-Xlj"/>
-        <segue reference="dZz-yt-xGj"/>
     </inferredMetricsTieBreakers>
 </document>

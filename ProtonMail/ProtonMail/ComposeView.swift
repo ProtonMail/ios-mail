@@ -16,6 +16,7 @@ import UIKit
 protocol ComposeViewDelegate {
     func composeViewDidTapCancelButton(composeView: ComposeView)
     func composeViewDidTapSendButton(composeView: ComposeView)
+    func composeViewDidTapNextButton(composeView: ComposeView)
 }
 
 protocol ComposeViewDatasource {
@@ -24,7 +25,7 @@ protocol ComposeViewDatasource {
 }
 
 class ComposeView: UIView {
-    
+
     
     // MARK: - Delegate and Datasource
     
@@ -41,9 +42,13 @@ class ComposeView: UIView {
     @IBOutlet var encryptedButton: UIButton!
     @IBOutlet var expirationButton: UIButton!
     @IBOutlet var attachmentButton: UIButton!
-    @IBOutlet var passwordImageView: UIImageView!
+    
+    
+    // MARK: - Encryption password
+    
     @IBOutlet var passwordTextField: UITextField!
     @IBOutlet var buttonActions: UIView!
+    @IBOutlet var actionButton: UIButton!
     @IBOutlet var buttonView: UIView!
     
     override init(frame: CGRect) {
@@ -64,6 +69,7 @@ class ComposeView: UIView {
     
     @IBAction func didTapEncryptedButton(sender: UIButton) {
         UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.encryptedButton.setImage(UIImage(named: "encrypted_compose"), forState: UIControlState.Normal)
             self.buttonActions.alpha = 1.0
             self.buttonView.alpha = 0.0
         })
@@ -71,13 +77,32 @@ class ComposeView: UIView {
     
     @IBAction func didTapEncryptedDismissButton(sender: UIButton) {
         UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.passwordTextField.text = ""
             self.buttonActions.alpha = 0.0
             self.buttonView.alpha = 1.0
         })
     }
     
     internal func didTapNextButton() {
-        println("didTapNextButton")
+        self.delegate?.composeViewDidTapNextButton(self)
+    }
+    
+    internal func showConfirmPasswordView() {
+        self.passwordTextField.placeholder = NSLocalizedString("Confirm Password")
+        self.passwordTextField.secureTextEntry = true
+        self.passwordTextField.text = ""
+    }
+    
+    internal func showPasswordHintView() {
+        self.passwordTextField.placeholder = NSLocalizedString("Define Hint")
+        self.passwordTextField.secureTextEntry = false
+        self.passwordTextField.text = ""
+    }
+    
+    internal func showEncryptionDone() {
+        didTapEncryptedDismissButton(encryptedButton)
+        self.passwordTextField.secureTextEntry = true
+        self.encryptedButton.setImage(UIImage(named: "encrypted_compose_checked"), forState: UIControlState.Normal)
     }
     
     override func awakeFromNib() {

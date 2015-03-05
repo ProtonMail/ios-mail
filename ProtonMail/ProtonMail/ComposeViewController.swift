@@ -14,12 +14,20 @@ import UIKit
 
 class ComposeViewController: ProtonMailViewController {
 
+    private struct EncryptionStep {
+        static let DefinePassword = "DefinePassword"
+        static let ConfirmPassword = "ConfirmPassword"
+        static let DefineHintPassword = "DefineHintPassword"
+    }
     
     // MARK: - Private attributes
     
     private var contacts: [ContactVO]! = [ContactVO]()
     private var composeView: ComposeView!
-    
+    private var actualEncryptionStep = EncryptionStep.DefinePassword
+    private var encryptionPassword: String!
+    private var encryptionConfirmPassword: String!
+    private var encryptionPasswordHint: String!
     
     // MARK: - View Controller lifecycle
     
@@ -66,6 +74,27 @@ extension ComposeViewController: ComposeViewDelegate {
     
     func composeViewDidTapSendButton(composeView: ComposeView) {
         println("Did tap send button")
+    }
+    
+    func composeViewDidTapNextButton(composeView: ComposeView) {
+        switch(actualEncryptionStep) {
+        case EncryptionStep.DefinePassword:
+            self.encryptionPassword = composeView.passwordTextField.text
+            self.actualEncryptionStep = EncryptionStep.ConfirmPassword
+            self.composeView.showConfirmPasswordView()
+            
+        case EncryptionStep.ConfirmPassword:
+            self.encryptionConfirmPassword = composeView.passwordTextField.text
+            self.actualEncryptionStep = EncryptionStep.DefineHintPassword
+            self.composeView.showPasswordHintView()
+            
+        case EncryptionStep.DefineHintPassword:
+            self.encryptionPasswordHint = composeView.passwordTextField.text
+            self.actualEncryptionStep = EncryptionStep.DefinePassword
+            self.composeView.showEncryptionDone()
+        default:
+            println("No step defined.")
+        }
     }
 }
 
