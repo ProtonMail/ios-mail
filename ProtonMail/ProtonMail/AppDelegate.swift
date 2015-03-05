@@ -70,6 +70,8 @@ extension AppDelegate: UIApplicationDelegate {
         AFNetworkActivityIndicatorManager.sharedManager().enabled = true
         setupWindow()
         
+        sharedPushNotificationService.registerForRemoteNotifications()
+        
         return true
     }
     
@@ -107,6 +109,23 @@ extension AppDelegate: UIApplicationDelegate {
         // Saves changes in the application's managed object context before the application terminates.
         sharedCoreDataService.mainManagedObjectContext?.saveUpstreamIfNeeded()
     }
+    
+    // MARK: Notification methods
+    
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        sharedPushNotificationService.didFailToRegisterForRemoteNotificationsWithError(error)
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+        sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
+    }
 
+    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
+        sharedPushNotificationService.didRegisterUserNotificationSettings(notificationSettings)
+    }
+    
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        sharedPushNotificationService.didRegisterForRemoteNotificationsWithDeviceToken(deviceToken)
+    }
 }
 
