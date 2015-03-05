@@ -109,6 +109,9 @@ class MessageDetailView: UIView {
         
         if !self.message.hasAttachments {
             self.emailHasAttachmentsImageView.hidden = true
+        }
+        
+        if !self.message.hasAttachments || !self.message.isDetailDownloaded {
             self.emailAttachmentsAmount.hidden = true
         }
     }
@@ -124,17 +127,12 @@ class MessageDetailView: UIView {
     // MARK: - Public methods
     
     func updateAttachments() {
-        if (message.hasAttachments) {
-            self.emailHasAttachmentsImageView.alpha = 0
+        if (message.hasAttachments && message.isDetailDownloaded) {
             self.emailAttachmentsAmount.alpha = 0
-            
             self.emailAttachmentsAmount.text = "\(self.message.attachments.count)"
             
             UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
-                self.emailHasAttachmentsImageView.hidden = false
                 self.emailAttachmentsAmount.hidden = false
-
-                self.emailHasAttachmentsImageView.alpha = 1.0
                 self.emailAttachmentsAmount.alpha = 1.0
             })
         }
