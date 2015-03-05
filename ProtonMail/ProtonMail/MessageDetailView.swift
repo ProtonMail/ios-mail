@@ -107,7 +107,7 @@ class MessageDetailView: UIView {
         self.addSubviews()
         self.makeConstraints()
         
-        if (!message.hasAttachments) {
+        if !self.message.hasAttachments {
             self.emailHasAttachmentsImageView.hidden = true
             self.emailAttachmentsAmount.hidden = true
         }
@@ -122,6 +122,23 @@ class MessageDetailView: UIView {
     }
     
     // MARK: - Public methods
+    
+    func updateAttachments() {
+        if (message.hasAttachments) {
+            self.emailHasAttachmentsImageView.alpha = 0
+            self.emailAttachmentsAmount.alpha = 0
+            
+            self.emailAttachmentsAmount.text = "\(self.message.attachments.count)"
+            
+            UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
+                self.emailHasAttachmentsImageView.hidden = false
+                self.emailAttachmentsAmount.hidden = false
+
+                self.emailHasAttachmentsImageView.alpha = 1.0
+                self.emailAttachmentsAmount.alpha = 1.0
+            })
+        }
+    }
     
     func updateEmailBodyWebView(animated: Bool) {
         let completion: ((Bool) -> Void) = { finished in
@@ -685,6 +702,7 @@ class MessageDetailView: UIView {
         if context != &kKVOContext {
             super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
         } else if object as NSObject == message && keyPath == Message.Attributes.isDetailDownloaded {
+            updateAttachments()
             updateEmailBodyWebView(true)
         }
     }

@@ -192,7 +192,11 @@
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
-        <relationship name="attachments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Attachment" inverseName="message" inverseEntity="Attachment" syncable="YES"/>
+        <relationship name="attachments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Attachment" inverseName="message" inverseEntity="Attachment" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="AttachmentIDList"/>
+            </userInfo>
+        </relationship>
         <userInfo>
             <entry key="identityAttribute" value="messageID"/>
         </userInfo>
@@ -200,6 +204,6 @@
     <elements>
         <element name="Attachment" positionX="-63" positionY="135" width="128" height="135"/>
         <element name="Contact" positionX="-54" positionY="135" width="128" height="88"/>
-        <element name="Message" positionX="-63" positionY="-18" width="128" height="465"/>
+        <element name="Message" positionX="-63" positionY="-18" width="128" height="463"/>
     </elements>
 </model>
