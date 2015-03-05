@@ -68,6 +68,7 @@ class ComposeView: UIView {
     }
     
     @IBAction func didTapEncryptedButton(sender: UIButton) {
+        
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.encryptedButton.setImage(UIImage(named: "encrypted_compose"), forState: UIControlState.Normal)
             self.buttonActions.alpha = 1.0
@@ -101,6 +102,7 @@ class ComposeView: UIView {
     
     internal func showEncryptionDone() {
         didTapEncryptedDismissButton(encryptedButton)
+        self.passwordTextField.placeholder = NSLocalizedString("Define Password")
         self.passwordTextField.secureTextEntry = true
         self.encryptedButton.setImage(UIImage(named: "encrypted_compose_checked"), forState: UIControlState.Normal)
     }
