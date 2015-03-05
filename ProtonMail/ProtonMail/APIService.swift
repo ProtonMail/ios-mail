@@ -191,6 +191,18 @@ class APIService {
     // MARK: - Private methods
     
     private func setupValueTransforms() {
+        let boolTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
+            if let bool = value as? NSString {
+                return bool.boolValue
+            } else if let bool = value as? Bool {
+                return bool
+            }
+            
+            return nil
+        }
+        
+        NSValueTransformer.setValueTransformer(boolTransformer, forName: "BoolTransformer")
+        
         let dateTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
             if let timeString = value as? NSString {
                 let time = timeString.doubleValue as NSTimeInterval

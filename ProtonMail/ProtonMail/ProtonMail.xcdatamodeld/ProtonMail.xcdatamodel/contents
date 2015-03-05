@@ -83,6 +83,7 @@
         <attribute name="hasAttachments" attributeType="Boolean" defaultValueString="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="HasAttachment"/>
+                <entry key="JSONTransformerName" value="BoolTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="header" attributeType="String" syncable="YES">
