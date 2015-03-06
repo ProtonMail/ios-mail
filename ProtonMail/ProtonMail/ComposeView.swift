@@ -16,6 +16,7 @@ import UIKit
 protocol ComposeViewDelegate {
     func composeViewDidTapCancelButton(composeView: ComposeView)
     func composeViewDidTapSendButton(composeView: ComposeView)
+    func composeViewDidTapNextButton(composeView: ComposeView)
 }
 
 protocol ComposeViewDatasource {
@@ -24,7 +25,7 @@ protocol ComposeViewDatasource {
 }
 
 class ComposeView: UIView {
-    
+
     
     // MARK: - Delegate and Datasource
     
@@ -42,6 +43,14 @@ class ComposeView: UIView {
     @IBOutlet var expirationButton: UIButton!
     @IBOutlet var attachmentButton: UIButton!
     
+    
+    // MARK: - Encryption password
+    
+    @IBOutlet var passwordTextField: UITextField!
+    @IBOutlet var buttonActions: UIView!
+    @IBOutlet var actionButton: UIButton!
+    @IBOutlet var buttonView: UIView!
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -58,14 +67,56 @@ class ComposeView: UIView {
         self.delegate?.composeViewDidTapSendButton(self)
     }
     
+    @IBAction func didTapEncryptedButton(sender: UIButton) {
+        
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.encryptedButton.setImage(UIImage(named: "encrypted_compose"), forState: UIControlState.Normal)
+            self.buttonActions.alpha = 1.0
+            self.buttonView.alpha = 0.0
+        })
+    }
+    
+    @IBAction func didTapEncryptedDismissButton(sender: UIButton) {
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.passwordTextField.text = ""
+            self.buttonActions.alpha = 0.0
+            self.buttonView.alpha = 1.0
+        })
+    }
+    
+    internal func didTapNextButton() {
+        self.delegate?.composeViewDidTapNextButton(self)
+    }
+    
+    internal func showConfirmPasswordView() {
+        self.passwordTextField.placeholder = NSLocalizedString("Confirm Password")
+        self.passwordTextField.secureTextEntry = true
+        self.passwordTextField.text = ""
+    }
+    
+    internal func showPasswordHintView() {
+        self.passwordTextField.placeholder = NSLocalizedString("Define Hint")
+        self.passwordTextField.secureTextEntry = false
+        self.passwordTextField.text = ""
+    }
+    
+    internal func showEncryptionDone() {
+        didTapEncryptedDismissButton(encryptedButton)
+        self.passwordTextField.placeholder = NSLocalizedString("Define Password")
+        self.passwordTextField.secureTextEntry = true
+        self.encryptedButton.setImage(UIImage(named: "encrypted_compose_checked"), forState: UIControlState.Normal)
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.configureContactPicketTemplate()
         self.includeButtonBorder(encryptedButton)
         self.includeButtonBorder(attachmentButton)
+        self.includeButtonBorder(passwordTextField)
         
         self.setNeedsLayout()
         self.layoutIfNeeded()
+        
         self.subject.addBorder(.Top, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         self.expirationButton.addBorder(.Top, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         self.expirationButton.addBorder(.Bottom, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
@@ -73,16 +124,18 @@ class ComposeView: UIView {
         self.contactPicker.datasource = self
         self.contactPicker.delegate = self
         
-        let subjectPaddingView = UIView(frame: CGRectMake(0, 0, 12, self.subject.frame.size.height))
-        subject.leftView = subjectPaddingView
+        let subjectLeftPaddingView = UIView(frame: CGRectMake(0, 0, 12, self.subject.frame.size.height))
+        subject.leftView = subjectLeftPaddingView
         subject.leftViewMode = UITextFieldViewMode.Always
+        
+        self.configurePasswordField()
     }
     
     // MARK: - Private Methods
     
-    private func includeButtonBorder(button: UIButton) {
-        button.layer.borderWidth = 1.0
-        button.layer.borderColor = UIColor.ProtonMail.Gray_C9CED4.CGColor
+    private func includeButtonBorder(view: UIView) {
+        view.layer.borderWidth = 1.0
+        view.layer.borderColor = UIColor.ProtonMail.Gray_C9CED4.CGColor
     }
     
     private func updateContactPickerHeight(newHeight: CGFloat) {
@@ -98,6 +151,22 @@ class ComposeView: UIView {
         MBContactCollectionViewContactCell.appearance().font = UIFont.robotoLight(size: UIFont.Size.h4)
         MBContactCollectionViewPromptCell.appearance().font = UIFont.robotoLight(size: UIFont.Size.h4)
         MBContactCollectionViewEntryCell.appearance().font = UIFont.robotoLight(size: UIFont.Size.h4)
+    }
+    
+    private func configurePasswordField() {
+        let passwordLeftPaddingView = UIView(frame: CGRectMake(0, 0, 12, self.passwordTextField.frame.size.height))
+        passwordTextField.leftView = passwordLeftPaddingView
+        passwordTextField.leftViewMode = UITextFieldViewMode.Always
+        
+        let nextButton = UIButton()
+        nextButton.addTarget(self, action: "didTapNextButton", forControlEvents: UIControlEvents.TouchUpInside)
+        nextButton.setImage(UIImage(named: "next"), forState: UIControlState.Normal)
+        nextButton.sizeToFit()
+        
+        let nextView = UIView(frame: CGRectMake(0, 0, nextButton.frame.size.width + 10, nextButton.frame.size.height))
+        nextView.addSubview(nextButton)
+        passwordTextField.rightView = nextView
+        passwordTextField.rightViewMode = UITextFieldViewMode.Always
     }
 }
 
