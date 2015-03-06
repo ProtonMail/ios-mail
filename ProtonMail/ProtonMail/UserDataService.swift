@@ -35,6 +35,7 @@ class UserDataService {
     
     struct Notification {
         static let didSignOut = "UserDataServiceDidSignOutNotification"
+        static let didSignIn = "UserDataServiceDidSignInNotification"
     }
         
     // MARK: - Private variables
@@ -170,7 +171,15 @@ class UserDataService {
                     self.password = password
                 }
                 
-                self.fetchUserInfo(completion: completion)
+                let completionWrapper: UserInfoBlock = { auth, error in
+                    if error == nil {
+                        NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignIn, object: self)
+                    }
+                    
+                    completion(auth, error)
+                }
+                
+                self.fetchUserInfo(completion: completionWrapper)
             } else {
                 self.signOut(true)
                 completion(nil, error)
