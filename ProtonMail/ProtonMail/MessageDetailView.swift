@@ -181,7 +181,6 @@ class MessageDetailView: UIView {
         } else {
             completion(true)
         }
-
     }
     
     
@@ -740,6 +739,55 @@ extension MessageDetailView: UITableViewDataSource {
 
 extension MessageDetailView: UITableViewDelegate {
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        let attachment = attachmentForIndexPath(indexPath)
+        
+        if !attachment.isDownloaded {
+            downloadAttachment(attachment, forIndexPath: indexPath)
+        } else if let localURL = attachment.localURL {
+            let cell = tableView.cellForRowAtIndexPath(indexPath)
+            openLocalURL(localURL, forCell: cell!)
+        }
+    }
+    
+    // MARK: Private methods
+    
+    private func downloadAttachment(attachment: Attachment, forIndexPath indexPath: NSIndexPath) {
+        sharedMessageDataService.fetchAttachmentForAttachment(attachment, downloadTask: { (task) -> Void in
+            if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? AttachmentTableViewCell {
+                cell.progressView.alpha = 1.0
+                cell.progressView.setProgressWithDownloadProgressOfTask(task, animated: true)
+            }
+            }, completion: { (_, url, error) -> Void in
+                if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? AttachmentTableViewCell {
+                    UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
+                        cell.progressView.hidden = true
+                    })
+                }
+        })
+    }
+    
+    private func openLocalURL(localURL: NSURL, forCell cell: UITableViewCell) {
+        let documentInteractionController = UIDocumentInteractionController(URL: localURL)
+        documentInteractionController.delegate = self
+        
+        if !documentInteractionController.presentOpenInMenuFromRect(cell.bounds, inView: cell, animated: true) {
+            let alert = UIAlertController(title: NSLocalizedString("Unsupported file type"), message: NSLocalizedString("There are no installed apps that can open this file type."), preferredStyle: .Alert)
+            alert.addAction((UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil)))
+            
+            if let viewController = delegate as? MessageDetailViewController {
+                viewController.presentViewController(alert, animated: true, completion: nil)
+            }
+        }
+    }
+}
+
+
+// MARK: - UIDocumentInteractionControllerDelegate
+
+extension MessageDetailView: UIDocumentInteractionControllerDelegate {
 }
 
 

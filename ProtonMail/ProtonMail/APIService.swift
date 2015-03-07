@@ -110,7 +110,9 @@ class APIService {
                 completion(credential, nil)
             } else {
                 authRefresh { (authCredential, error) -> Void in
-                    if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIService.AuthErrorCode.invalidGrant {
+                    if error == nil {
+                        self.fetchAuthCredential(completion: completion)
+                    } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIService.AuthErrorCode.invalidGrant {
                         AuthCredential.clearFromKeychain()
                         self.fetchAuthCredential(completion: completion)
                     } else {
@@ -140,17 +142,25 @@ class APIService {
         fetchAuthCredential() { _, error in
             if error == nil {
                 if let url = NSURL(string: path, relativeToURL: self.sessionManager.baseURL) {
-                    let request = NSURLRequest(URL: url)
+                    var serializeError: NSError?
                     
-                    if let sessionDownloadTask = self.sessionManager.downloadTaskWithRequest(
-                        request,
-                        progress: nil,
-                        destination: { (targetURL, response) -> NSURL! in
-                            return destinationDirectoryURL.URLByAppendingPathComponent(response.suggestedFilename!)
-                        },
-                        completionHandler: completion) {
-                            downloadTask?(sessionDownloadTask)
+                    if let request = self.sessionManager.requestSerializer.requestWithMethod("GET", URLString: url.absoluteString!, parameters: nil, error: &serializeError) {
+                        if let sessionDownloadTask = self.sessionManager.downloadTaskWithRequest(
+                            request,
+                            progress: nil,
+                            destination: { (targetURL, response) -> NSURL! in
+                                let fileName = response.suggestedFilename!
+                                return destinationDirectoryURL.URLByAppendingPathComponent(fileName)
+                            },
+                            completionHandler: completion) {
+                                downloadTask?(sessionDownloadTask)
+                                
+                                sessionDownloadTask.resume()
+                        }
+                    } else {
+                        completion?(nil, nil, serializeError)
                     }
+                    
                 } else {
                     completion?(nil, nil, NSError.badPath(path))
                     return

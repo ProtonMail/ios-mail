@@ -530,6 +530,15 @@ extension Message {
 extension NSFileManager {
     
     var attachmentDirectory: NSURL {
-        return applicationSupportDirectoryURL.URLByAppendingPathComponent("attachments", isDirectory: true)
+        let attachmentDirectory = applicationSupportDirectoryURL.URLByAppendingPathComponent("attachments", isDirectory: true)
+        
+        if !NSFileManager.defaultManager().fileExistsAtPath(attachmentDirectory.absoluteString!) {
+            var error: NSError?
+            if !NSFileManager.defaultManager().createDirectoryAtURL(attachmentDirectory, withIntermediateDirectories: true, attributes: nil, error: &error) {
+                NSLog("\(__FUNCTION__) Could not create \(attachmentDirectory.absoluteString!) with error: \(error)")
+            }
+        }
+
+        return attachmentDirectory
     }
 }
