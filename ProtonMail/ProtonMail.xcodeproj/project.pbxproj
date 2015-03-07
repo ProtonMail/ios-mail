@@ -13,6 +13,7 @@
 		07009F0B1A66E36500129B07 /* NSNotification+KeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07009F0A1A66E36500129B07 /* NSNotification+KeyboardExtension.swift */; };
 		07009F131A684C1900129B07 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07009F111A684C1900129B07 /* Roboto-Light.ttf */; };
 		07009F141A684C1900129B07 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 07009F121A684C1900129B07 /* Roboto-Thin.ttf */; };
+		071210E61AA91B4000B834F2 /* APIService+DeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071210E51AA91B4000B834F2 /* APIService+DeviceExtension.swift */; };
 		0713237F1A7844390043DB41 /* MailboxPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0713237E1A7844390043DB41 /* MailboxPasswordViewController.swift */; };
 		071323811A7846150043DB41 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071323801A7846150043DB41 /* UIViewExtension.swift */; };
 		071323901A79BD8F0043DB41 /* TextInsetTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0713238F1A79BD8F0043DB41 /* TextInsetTextField.swift */; };
@@ -131,6 +132,7 @@
 		07009F0C1A6700CF00129B07 /* Pods.distribution.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Pods.distribution.xcconfig; path = "Pods/Target Support Files/Pods/Pods.distribution.xcconfig"; sourceTree = "<group>"; };
 		07009F111A684C1900129B07 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
 		07009F121A684C1900129B07 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
+		071210E51AA91B4000B834F2 /* APIService+DeviceExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+DeviceExtension.swift"; sourceTree = "<group>"; };
 		0713237E1A7844390043DB41 /* MailboxPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxPasswordViewController.swift; sourceTree = "<group>"; };
 		071323801A7846150043DB41 /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		0713238F1A79BD8F0043DB41 /* TextInsetTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextInsetTextField.swift; sourceTree = "<group>"; };
@@ -433,6 +435,7 @@
 				07DD68A41A97DE9F00ED130C /* APIService+AttachmentExtension.swift */,
 				07B797C11A6EE50F00244532 /* APIService+AuthenticationExtension.swift */,
 				073FE01A1A955F4A00825980 /* APIService+ContactExtension.swift */,
+				071210E51AA91B4000B834F2 /* APIService+DeviceExtension.swift */,
 				071323911A7ADA590043DB41 /* APIService+MessagesExtension.swift */,
 				078FF4CF1A92CE15008321D1 /* APIService+SettingsExtension.swift */,
 				073FD92B1A719B7900EB0CAF /* APIService+UserExtension.swift */,
@@ -835,6 +838,7 @@
 				0713239A1A7C02AB0043DB41 /* Message.swift in Sources */,
 				0767587A1AA126E400F9AC9C /* StorageLimit.swift in Sources */,
 				072AB6A11A8EE50000AF45D6 /* ProtonMail-Bridging-Header.cpp in Sources */,
+				071210E61AA91B4000B834F2 /* APIService+DeviceExtension.swift in Sources */,
 				07B797C01A6EDFF400244532 /* APIService.swift in Sources */,
 				073FE01B1A955F4A00825980 /* APIService+ContactExtension.swift in Sources */,
 				073FD92C1A719B7900EB0CAF /* APIService+UserExtension.swift in Sources */,
