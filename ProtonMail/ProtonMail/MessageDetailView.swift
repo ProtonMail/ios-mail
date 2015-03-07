@@ -136,13 +136,9 @@ class MessageDetailView: UIView {
             self.emailAttachmentsAmount.alpha = 0
             self.emailAttachmentsAmount.text = "\(self.message.attachments.count)"
             
-            self.attachments = self.message.attachments.allObjects as [Attachment]
-            
             UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
                 self.emailAttachmentsAmount.hidden = false
                 self.emailAttachmentsAmount.alpha = 1.0
-
-                self.tableView.reloadData()
             })
         }
     }
@@ -165,13 +161,6 @@ class MessageDetailView: UIView {
             let htmlString = "<span style=\"font-family: \(font.fontName); font-size: \(font.pointSize); color: \(cssColorString)\">\(bodyText)</span>"
             
             self.emailBodyWebView.loadHTMLString(htmlString, baseURL: nil)
-            
-            if animated {
-                UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
-                    self.emailBodyWebView.alpha = 1.0
-                    self.layoutIfNeeded()
-                })
-            }
         }
         
         if animated {
@@ -192,9 +181,11 @@ class MessageDetailView: UIView {
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.tableView.registerNib(UINib(nibName: "AttachmentTableViewCell", bundle: nil), forCellReuseIdentifier: AttachmentTableViewCell.Constant.identifier)
+        self.tableView.separatorStyle = .None
         self.addSubview(tableView)
         
         self.contentView = UIView()
+        self.contentView.backgroundColor = UIColor.whiteColor()
         self.tableView.tableHeaderView = contentView
         self.tableView.tableFooterView = UIView()
         
@@ -730,7 +721,7 @@ extension MessageDetailView: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return message.attachments.count
+        return attachments.count
     }
 }
 
@@ -811,8 +802,12 @@ extension MessageDetailView: UIWebViewDelegate {
             make.bottom.equalTo()(self.contentView)
         }
         
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
+        UIView.animateWithDuration(kAnimationDuration, animations: { () -> Void in
+            self.emailBodyWebView.alpha = 1.0
             self.layoutIfNeeded()
+            }, completion: { finished in
+                self.attachments = self.message.attachments.allObjects as [Attachment]
+                self.tableView.reloadData()
         })
     }
 
