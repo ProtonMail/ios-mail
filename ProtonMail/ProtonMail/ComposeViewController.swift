@@ -76,6 +76,12 @@ extension ComposeViewController: ComposeViewDelegate {
         println("Did tap send button")
     }
     
+    func composeViewDidTapEncryptedButton(composeView: ComposeView) {
+        self.actualEncryptionStep = EncryptionStep.DefinePassword
+        self.composeView.showDefinePasswordView()
+        self.composeView.hidePasswordAndConfirmDoesntMatch()
+    }
+    
     func composeViewDidTapNextButton(composeView: ComposeView) {
         switch(actualEncryptionStep) {
         case EncryptionStep.DefinePassword:
@@ -85,8 +91,14 @@ extension ComposeViewController: ComposeViewDelegate {
             
         case EncryptionStep.ConfirmPassword:
             self.encryptionConfirmPassword = composeView.passwordTextField.text
-            self.actualEncryptionStep = EncryptionStep.DefineHintPassword
-            self.composeView.showPasswordHintView()
+            
+            if (self.encryptionPassword == self.encryptionConfirmPassword) {
+                self.actualEncryptionStep = EncryptionStep.DefineHintPassword
+                self.composeView.hidePasswordAndConfirmDoesntMatch()
+                self.composeView.showPasswordHintView()
+            } else {
+                self.composeView.showPasswordAndConfirmDoesntMatch()
+            }
             
         case EncryptionStep.DefineHintPassword:
             self.encryptionPasswordHint = composeView.passwordTextField.text

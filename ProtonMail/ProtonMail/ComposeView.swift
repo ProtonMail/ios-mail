@@ -17,6 +17,7 @@ protocol ComposeViewDelegate {
     func composeViewDidTapCancelButton(composeView: ComposeView)
     func composeViewDidTapSendButton(composeView: ComposeView)
     func composeViewDidTapNextButton(composeView: ComposeView)
+    func composeViewDidTapEncryptedButton(composeView: ComposeView)
 }
 
 protocol ComposeViewDatasource {
@@ -27,10 +28,20 @@ protocol ComposeViewDatasource {
 class ComposeView: UIView {
 
     
+    // MARK: - Constants
+    
+    private let kErrorMessageHeight: CGFloat = 48.0
+    
     // MARK: - Delegate and Datasource
     
     var datasource: ComposeViewDatasource?
     var delegate: ComposeViewDelegate?
+    
+    
+    // MARK: - Private atributes
+    
+    var errorView: UIView!
+    var errorTextView: UITextView!
     
     
     // MARK: - View Outlets
@@ -69,6 +80,8 @@ class ComposeView: UIView {
     
     @IBAction func didTapEncryptedButton(sender: UIButton) {
         
+        self.delegate?.composeViewDidTapEncryptedButton(self)
+        
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.encryptedButton.setImage(UIImage(named: "encrypted_compose"), forState: UIControlState.Normal)
             self.buttonActions.alpha = 1.0
@@ -77,6 +90,8 @@ class ComposeView: UIView {
     }
     
     @IBAction func didTapEncryptedDismissButton(sender: UIButton) {
+        self.delegate?.composeViewDidTapEncryptedButton(self)
+        
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.passwordTextField.text = ""
             self.buttonActions.alpha = 0.0
@@ -84,8 +99,10 @@ class ComposeView: UIView {
         })
     }
     
-    internal func didTapNextButton() {
-        self.delegate?.composeViewDidTapNextButton(self)
+    internal func showDefinePasswordView() {
+        self.passwordTextField.placeholder = NSLocalizedString("Define Password")
+        self.passwordTextField.secureTextEntry = true
+        self.passwordTextField.text = ""
     }
     
     internal func showConfirmPasswordView() {
@@ -105,6 +122,37 @@ class ComposeView: UIView {
         self.passwordTextField.placeholder = NSLocalizedString("Define Password")
         self.passwordTextField.secureTextEntry = true
         self.encryptedButton.setImage(UIImage(named: "encrypted_compose_checked"), forState: UIControlState.Normal)
+    }
+    
+    internal func showPasswordAndConfirmDoesntMatch() {
+        self.errorView.backgroundColor = UIColor.ProtonMail.Red_FF5959
+        self.errorView.mas_updateConstraints { (update) -> Void in
+            update.removeExisting = true
+            update.left.equalTo()(self)
+            update.right.equalTo()(self)
+            update.height.equalTo()(self.kErrorMessageHeight)
+            update.top.equalTo()(self.passwordTextField.mas_bottom)
+        }
+        
+        self.errorTextView.shake(3, offset: 10)
+        
+        UIView.animateWithDuration(0.1, animations: { () -> Void in
+            self.layoutIfNeeded()
+        })
+    }
+    
+    internal func hidePasswordAndConfirmDoesntMatch() {
+        self.errorView.mas_updateConstraints { (update) -> Void in
+            update.removeExisting = true
+            update.left.equalTo()(self)
+            update.right.equalTo()(self)
+            update.height.equalTo()(0)
+            update.top.equalTo()(self.passwordTextField.mas_bottom)
+        }
+        
+        UIView.animateWithDuration(0.1, animations: { () -> Void in
+            self.layoutIfNeeded()
+        })
     }
     
     override func awakeFromNib() {
@@ -129,6 +177,7 @@ class ComposeView: UIView {
         subject.leftViewMode = UITextFieldViewMode.Always
         
         self.configurePasswordField()
+        self.configureErrorMessage()
     }
     
     // MARK: - Private Methods
@@ -167,6 +216,40 @@ class ComposeView: UIView {
         nextView.addSubview(nextButton)
         passwordTextField.rightView = nextView
         passwordTextField.rightViewMode = UITextFieldViewMode.Always
+    }
+    
+    
+    internal func didTapNextButton() {
+        self.delegate?.composeViewDidTapNextButton(self)
+    }
+    
+    private func configureErrorMessage() {
+        self.errorView = UIView()
+        self.errorView.backgroundColor = UIColor.whiteColor()
+        
+        self.errorTextView = UITextView()
+        self.errorTextView.backgroundColor = UIColor.clearColor()
+        self.errorTextView.font = UIFont.robotoLight(size: UIFont.Size.h4)
+        self.errorTextView.text = NSLocalizedString("Message password doesn't match.")
+        self.errorTextView.textAlignment = NSTextAlignment.Center
+        self.errorTextView.textColor = UIColor.whiteColor()
+        self.errorTextView.sizeToFit()
+        self.addSubview(errorView)
+        errorView.addSubview(errorTextView)
+        
+        self.errorView.mas_makeConstraints { (make) -> Void in
+            make.left.equalTo()(self)
+            make.right.equalTo()(self)
+            make.height.equalTo()(0)
+            make.top.equalTo()(self.passwordTextField.mas_bottom)
+        }
+        
+        errorTextView.mas_makeConstraints { (make) -> Void in
+            make.left.equalTo()(self)
+            make.right.equalTo()(self)
+            make.height.equalTo()(self.errorTextView.frame.size.height)
+            make.top.equalTo()(self.errorView).with().offset()(8)
+        }
     }
 }
 
