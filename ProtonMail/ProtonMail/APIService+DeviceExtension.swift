@@ -40,7 +40,7 @@ extension APIService {
         request(method: .POST, path: DevicePath.basePath, parameters: parameters, completion: completion)
     }
     
-    func deviceUnregister(completion: CompletionBlock?) {
+    func deviceUnregister(completion: CompletionBlock? = nil) {
         if let deviceToken = deviceToken {
             let parameters = [
                 "device_uid": deviceID,
