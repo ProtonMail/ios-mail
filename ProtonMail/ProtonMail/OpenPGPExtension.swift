@@ -38,6 +38,35 @@ extension OpenPGP {
 
         return true
     }
+    
+    
+    func generateKey(passphrase: String, userName: String, error: NSErrorPointer?) -> NSMutableDictionary? {
+        var anError: NSError?
+        if let keys = generate_key(passphrase, username: userName, error: &anError) {
+            return keys
+        }
+        if let error = error {
+            error.memory = anError
+        }
+        return nil
+    }
+    
+    func updatePassphrase(privateKey: String, publicKey: String, old_pass: String, new_pass: String, error: NSErrorPointer?) -> String? {
+        var anError: NSError?
+        if !SetupKeys(privateKey, pubKey: publicKey, pass: old_pass, error: &anError) {
+            if let error = error {
+                error.memory = anError
+            }
+            return nil
+        }
+        if let new_privkey = update_key_password(old_pass, new_pwd: new_pass, error: &anError) {
+            return new_privkey
+        }
+        if let error = error {
+            error.memory = anError
+        }
+        return nil
+    }
 }
 
 // MARK: - OpenPGP String extension

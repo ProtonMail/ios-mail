@@ -62,6 +62,39 @@ class OpenPGPTests: XCTestCase {
         XCTAssertNotNil(encryptedText, "encryptWithPublicKey failed with error: \(error)")
     }
     
+    func testGenerateKeyPair()
+    {
+        var error: NSError?
+        let new_key_pairs = OpenPGP().generateKey("123", userName: "test_user_name", error: &error)
+        XCTAssertNotNil(new_key_pairs, "new key pair failed with error: \(error)")
+        let pub = new_key_pairs?.objectForKey("public") as? String;
+        XCTAssertNotNil(pub, "new key pair -- public key failed with error: \(error)")
+        let priv = new_key_pairs?.objectForKey("private") as? String;
+        XCTAssertNotNil(priv, "new key pair -- private key failed with error: \(error)")
+    }
+    
+    func testUpdateKeyPassphrase()
+    {
+        var error: NSError?
+        let new_passphrase : String = "321";
+        
+        let new_private_key = OpenPGP().updatePassphrase(privateKey, publicKey: publicKey, old_pass: passphrase, new_pass: new_passphrase, error: &error)
+        XCTAssertNotNil(new_private_key, "update key passphrase failed with error: \(error)")
+        
+        let badPassphrase = "123"
+        var result = OpenPGP().checkPassphrase(badPassphrase, forPrivateKey: new_private_key!, publicKey: publicKey, error: &error)
+        XCTAssertFalse(result, "badPassphrase should fail.")
+        XCTAssertEqual(error!.domain, OpenPGPErrorDomain, "bad error domain")
+        XCTAssertEqual(error!.code, OpenPGP.ErrorCode.badPassphrase.rawValue, "wrong error code")
+
+        result = OpenPGP().checkPassphrase(new_passphrase, forPrivateKey: new_private_key!, publicKey: publicKey, error: &error)
+        XCTAssertTrue(result, "badPassphrase should fail.")
+    }
+    
+    
+    
+    
+    
     // MARK: - Performance tests
     
     func testPerformanceEncryptMessage() {
