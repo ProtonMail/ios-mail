@@ -175,6 +175,6 @@ extension DraftViewController: UITableViewDelegate {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         NSLog("\(__FUNCTION__) \(indexPath)")
         
-        // TODO: connect to composition screen
+        // TODO: load composition view controller for this draft in the front view controller
     }
 }
