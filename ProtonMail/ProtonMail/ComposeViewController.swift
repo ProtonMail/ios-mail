@@ -111,10 +111,6 @@ extension ComposeViewController: ComposeViewDelegate {
     
     func composeViewDidTapAttachmentButton(composeView: ComposeView) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-        
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Choose from Files"), style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-            println("What should be shown here?")
-        }))
 
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Photo Library"), style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             let picker: UIImagePickerController = UIImagePickerController()
