@@ -80,7 +80,7 @@ class MessageDetailView: UIView {
     
     private var tableView: UITableView!
     private var contentView: UIView!
-    private var emailBodyWebView: UIWebView!
+    private var emailBodyWebView: FullHeightWebView!
     
     
     // MARK: - Email footer views
@@ -284,10 +284,9 @@ class MessageDetailView: UIView {
     }
     
     private func createEmailBodyWebView() {
-        self.emailBodyWebView = UIWebView()
-        self.emailBodyWebView.scrollView.scrollEnabled = false
+        self.emailBodyWebView = FullHeightWebView()
         self.emailBodyWebView.delegate = self
-        self.contentView.addSubview(emailBodyWebView)
+        self.contentView.addSubview(emailBodyWebView)        
     }
 
     private func createFooterView() {
@@ -343,7 +342,7 @@ class MessageDetailView: UIView {
         
         tableView.tableHeaderView = contentView
     }
-    
+        
     
     // MARK: - Subview constraints
     
@@ -358,7 +357,7 @@ class MessageDetailView: UIView {
         contentView.mas_makeConstraints { (make) -> Void in
             make.edges.equalTo()(self.tableView)
             make.width.equalTo()(self.tableView)
-            make.bottom.equalTo()(self.emailBodyWebView.scrollView)
+            make.bottom.equalTo()(self.emailBodyWebView)
         }
         
         self.makeHeaderConstraints()
@@ -787,24 +786,13 @@ extension MessageDetailView: UIDocumentInteractionControllerDelegate {
 extension MessageDetailView: UIWebViewDelegate {
     
     func webViewDidFinishLoad(webView: UIWebView) {
+        // triggers scrollView.contentSize update
         var frame = webView.frame
         frame.size.height = 1
         webView.frame = frame
-        let fittingSize: CGSize = webView.sizeThatFits(CGSizeZero)
-        frame.size = fittingSize
-        webView.frame = frame
-        
-        emailBodyWebView.mas_updateConstraints { (make) -> Void in
-            make.left.equalTo()(self.contentView).with().offset()(self.kEmailBodyTextViewMarginLeft)
-            make.right.equalTo()(self.contentView).with().offset()(self.kEmailBodyTextViewMarginRight)
-            make.top.equalTo()(self.separatorBetweenHeaderAndBodyView.mas_bottom).with().offset()(self.kEmailBodyTextViewMarginTop)
-            make.height.equalTo()(self.emailBodyWebView.frame.size.height)
-            make.bottom.equalTo()(self.contentView)
-        }
         
         UIView.animateWithDuration(kAnimationDuration, animations: { () -> Void in
             self.emailBodyWebView.alpha = 1.0
-            self.layoutIfNeeded()
             }, completion: { finished in
                 self.attachments = self.message.attachments.allObjects as [Attachment]
                 self.tableView.reloadData()
