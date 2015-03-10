@@ -45,6 +45,10 @@ class PushNotificationService {
         }
     }
     
+    func unregisterForRemoteNotifications() {
+        sharedAPIService.deviceUnregister()
+    }
+    
     // MARK: - callback methods
     
     func didFailToRegisterForRemoteNotificationsWithError(error: NSError) {
@@ -64,7 +68,11 @@ class PushNotificationService {
     }
     
     func didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: NSData) {
-        // TODO: post to server
+        sharedAPIService.deviceRegisterWithToken(deviceToken, completion: { (_, _, error) -> Void in
+            if let error = error {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
+        })
     }
     
     func didRegisterUserNotificationSettings(notificationSettings: UIUserNotificationSettings) {
@@ -79,6 +87,6 @@ class PushNotificationService {
     }
     
     @objc func didSignOutNotification(notification: NSNotification) {
-        // TODO: unregister remote token with server
+        unregisterForRemoteNotifications()
     }
 }

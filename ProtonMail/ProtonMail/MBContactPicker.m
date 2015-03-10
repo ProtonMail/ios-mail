@@ -242,7 +242,7 @@ static CGFloat const ROW_HEIGHT = 64.0;
 {
     ContactsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ContactsTableViewCellIdentifier forIndexPath:indexPath];
 
-    ContactVO<MBContactPickerModelProtocol> *model = (id<MBContactPickerModelProtocol>)self.filteredContacts[indexPath.row];
+    ContactVO<MBContactPickerModelProtocol> *model = self.filteredContacts[indexPath.row];
 
     cell.contactEmailLabel.text = model.contactSubtitle;
     cell.contactNameLabel.text = model.contactTitle;
