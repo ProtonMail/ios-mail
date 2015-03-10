@@ -8,21 +8,41 @@
 
 #import <Foundation/Foundation.h>
 
+
+
 @interface OpenPGP : NSObject
 
-/// self keys setup up for login user
-- (BOOL)SetupKeys:(NSString *)priv_key pubKey:(NSString *)pub_key pass:(NSString *)passphrase error:(NSError **)err;
+//issues:
+// The NSError doesn't work on swift
+//
 
-/// Encrypt for user self
-- (NSString *)encrypt_message:(NSString *)unencrypt_message error:(NSError **)err;
 
-/// Encrypt message use public key(other people's key)
-- (NSString *)encrypt_message:(NSString *)unencrypt_message pub_key:(NSString *)pub_key error:(NSError**) err;
+// self keys setup up for login user
+- (BOOL) SetupKeys:(NSString *)priv_key pubKey:(NSString *)pub_key pass:(NSString*) passphrase error:(NSError* *) err;
 
-/// Decrypt message user Private key
-- (NSString *)decrypt_message:(NSString*)encrypted_message error:(NSError **)err;
+//Encrypt for user self
+- (NSString *) encrypt_message:(NSString*) unencrypt_message error:(NSError**) err;
 
-/// print debug logs
-- (void)EnableDebug:(BOOL)isDebug;
+//Encrypt message use public key(other people's key)
+- (NSString *) encrypt_message:(NSString*) unencrypt_message pub_key:(NSString *)pub_key error:(NSError**) err;
+
+//Decrypt message user Private key
+- (NSString *) decrypt_message:(NSString*) encrypted_message error:(NSError**) err;
+
+//Update Private Key password
+- (NSString *) update_key_password:(NSString*)old_passphrase new_pwd:(NSString*) new_passphrase error:(NSError**) err;
+
+//Generate new key pair
+- (NSMutableDictionary*) generate_key:(NSString*)passphrase username:(NSString*)user_name error:(NSError**) err;
+
+
+
+
+// print debug logs
+- (void)EnableDebug:(BOOL) isDebug;
+
+
+- (void)Test_Privatekey:(NSString *)priv_key pass:(NSString*) passphrase;
 
 @end
+
