@@ -25,6 +25,10 @@ extension Attachment {
         static let attachmentID = "attachmentID"
     }
     
+    var isDownloaded: Bool {
+        return localURL != nil
+    }
+    
     convenience init(context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entityForName(Attributes.entityName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
     }

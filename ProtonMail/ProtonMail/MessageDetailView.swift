@@ -16,6 +16,7 @@ class MessageDetailView: UIView {
     
     var delegate: MessageDetailViewDelegate?
     let message: Message
+    private var attachments: [Attachment] = []
     private var isShowingDetail: Bool = false
     
     // MARK: - Private constants
@@ -77,9 +78,9 @@ class MessageDetailView: UIView {
     
     // MARK: - Email body views
     
-    private var scrollView: UIScrollView!
+    private var tableView: UITableView!
     private var contentView: UIView!
-    private var emailBodyWebView: UIWebView!
+    private var emailBodyWebView: FullHeightWebView!
     
     
     // MARK: - Email footer views
@@ -107,10 +108,7 @@ class MessageDetailView: UIView {
         self.addSubviews()
         self.makeConstraints()
         
-        if (!message.hasAttachments) {
-            self.emailHasAttachmentsImageView.hidden = true
-            self.emailAttachmentsAmount.hidden = true
-        }
+        updateAttachments()
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -122,6 +120,28 @@ class MessageDetailView: UIView {
     }
     
     // MARK: - Public methods
+    
+    func attachmentForIndexPath(indexPath: NSIndexPath) -> Attachment {
+        return self.attachments[indexPath.row]
+    }
+    
+    func updateAttachments() {
+        if !self.message.hasAttachments {
+            self.emailHasAttachmentsImageView.hidden = true
+        }
+        
+        if !self.message.hasAttachments || !self.message.isDetailDownloaded {
+            self.emailAttachmentsAmount.hidden = true
+        } else if (message.hasAttachments && message.isDetailDownloaded) {
+            self.emailAttachmentsAmount.alpha = 0
+            self.emailAttachmentsAmount.text = "\(self.message.attachments.count)"
+            
+            UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
+                self.emailAttachmentsAmount.hidden = false
+                self.emailAttachmentsAmount.alpha = 1.0
+            })
+        }
+    }
     
     func updateEmailBodyWebView(animated: Bool) {
         let completion: ((Bool) -> Void) = { finished in
@@ -141,12 +161,6 @@ class MessageDetailView: UIView {
             let htmlString = "<span style=\"font-family: \(font.fontName); font-size: \(font.pointSize); color: \(cssColorString)\">\(bodyText)</span>"
             
             self.emailBodyWebView.loadHTMLString(htmlString, baseURL: nil)
-            
-            if animated {
-                UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
-                    self.emailBodyWebView.alpha = 1.0
-                })
-            }
         }
         
         if animated {
@@ -156,18 +170,24 @@ class MessageDetailView: UIView {
         } else {
             completion(true)
         }
-
     }
     
     
     // MARK: - Subviews
     
     func addSubviews() {
-        self.scrollView = UIScrollView()
-        self.addSubview(scrollView)
+        self.tableView = UITableView()
+        self.tableView.alwaysBounceVertical = false
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
+        self.tableView.registerNib(UINib(nibName: "AttachmentTableViewCell", bundle: nil), forCellReuseIdentifier: AttachmentTableViewCell.Constant.identifier)
+        self.tableView.separatorStyle = .None
+        self.addSubview(tableView)
         
         self.contentView = UIView()
-        self.scrollView.addSubview(contentView)
+        self.contentView.backgroundColor = UIColor.whiteColor()
+        self.tableView.tableHeaderView = contentView
+        self.tableView.tableFooterView = UIView()
         
         self.createHeaderView()
         self.createSeparator()
@@ -264,10 +284,9 @@ class MessageDetailView: UIView {
     }
     
     private func createEmailBodyWebView() {
-        self.emailBodyWebView = UIWebView()
-        self.emailBodyWebView.scrollView.scrollEnabled = false
+        self.emailBodyWebView = FullHeightWebView()
         self.emailBodyWebView.delegate = self
-        self.contentView.addSubview(emailBodyWebView)
+        self.contentView.addSubview(emailBodyWebView)        
     }
 
     private func createFooterView() {
@@ -316,22 +335,19 @@ class MessageDetailView: UIView {
         self.forwardButtonLabel.textColor = UIColor.ProtonMail.Blue_6789AB
         self.forwardButtonLabel.sizeToFit()
         self.buttonsView.addSubview(forwardButtonLabel)
-        
-        // to fix scroll view dynamic height
-        var scrollWorkaroundView = UIView()
-        scrollWorkaroundView.backgroundColor = UIColor.greenColor()
-        self.scrollView.addSubview(scrollWorkaroundView)
-        scrollWorkaroundView.mas_makeConstraints { (make) -> Void in
-            make.top.equalTo()(self.emailBodyWebView.mas_bottom)
-            make.bottom.equalTo()(self.contentView)
-        }
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        tableView.tableHeaderView = contentView
+    }
+        
     
     // MARK: - Subview constraints
     
     func makeConstraints() {
-        scrollView.mas_makeConstraints { (make) -> Void in
+        tableView.mas_makeConstraints { (make) -> Void in
             make.top.equalTo()(self)
             make.left.equalTo()(self)
             make.right.equalTo()(self)
@@ -339,9 +355,9 @@ class MessageDetailView: UIView {
         }
         
         contentView.mas_makeConstraints { (make) -> Void in
-            make.edges.equalTo()(self.scrollView)
-            make.width.equalTo()(self.scrollView)
-            make.bottom.equalTo()(self.emailBodyWebView.scrollView)
+            make.edges.equalTo()(self.tableView)
+            make.width.equalTo()(self.tableView)
+            make.bottom.equalTo()(self.emailBodyWebView)
         }
         
         self.makeHeaderConstraints()
@@ -685,33 +701,101 @@ class MessageDetailView: UIView {
         if context != &kKVOContext {
             super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
         } else if object as NSObject == message && keyPath == Message.Attributes.isDetailDownloaded {
+            updateAttachments()
             updateEmailBodyWebView(true)
         }
     }
 }
+
+
+// MARK: - UITableViewDataSource
+
+extension MessageDetailView: UITableViewDataSource {
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let attachment = attachmentForIndexPath(indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(AttachmentTableViewCell.Constant.identifier, forIndexPath: indexPath) as AttachmentTableViewCell
+        cell.setFilename(attachment.fileName, fileSize: Int(attachment.fileSize))
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return attachments.count
+    }
+}
+
+
+// MARK: - UITableViewDelegate
+
+extension MessageDetailView: UITableViewDelegate {
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        let attachment = attachmentForIndexPath(indexPath)
+        
+        if !attachment.isDownloaded {
+            downloadAttachment(attachment, forIndexPath: indexPath)
+        } else if let localURL = attachment.localURL {
+            let cell = tableView.cellForRowAtIndexPath(indexPath)
+            openLocalURL(localURL, forCell: cell!)
+        }
+    }
+    
+    // MARK: Private methods
+    
+    private func downloadAttachment(attachment: Attachment, forIndexPath indexPath: NSIndexPath) {
+        sharedMessageDataService.fetchAttachmentForAttachment(attachment, downloadTask: { (task) -> Void in
+            if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? AttachmentTableViewCell {
+                cell.progressView.alpha = 1.0
+                cell.progressView.setProgressWithDownloadProgressOfTask(task, animated: true)
+            }
+            }, completion: { (_, url, error) -> Void in
+                if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? AttachmentTableViewCell {
+                    UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
+                        cell.progressView.hidden = true
+                    })
+                }
+        })
+    }
+    
+    private func openLocalURL(localURL: NSURL, forCell cell: UITableViewCell) {
+        let documentInteractionController = UIDocumentInteractionController(URL: localURL)
+        documentInteractionController.delegate = self
+        
+        if !documentInteractionController.presentOpenInMenuFromRect(cell.bounds, inView: cell, animated: true) {
+            let alert = UIAlertController(title: NSLocalizedString("Unsupported file type"), message: NSLocalizedString("There are no installed apps that can open this file type."), preferredStyle: .Alert)
+            alert.addAction((UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil)))
+            
+            if let viewController = delegate as? MessageDetailViewController {
+                viewController.presentViewController(alert, animated: true, completion: nil)
+            }
+        }
+    }
+}
+
+
+// MARK: - UIDocumentInteractionControllerDelegate
+
+extension MessageDetailView: UIDocumentInteractionControllerDelegate {
+}
+
 
 // MARK: - UIWebViewDelegate
 
 extension MessageDetailView: UIWebViewDelegate {
     
     func webViewDidFinishLoad(webView: UIWebView) {
+        // triggers scrollView.contentSize update
         var frame = webView.frame
         frame.size.height = 1
         webView.frame = frame
-        let fittingSize: CGSize = webView.sizeThatFits(CGSizeZero)
-        frame.size = fittingSize
-        webView.frame = frame
         
-        emailBodyWebView.mas_updateConstraints { (make) -> Void in
-            make.left.equalTo()(self.contentView).with().offset()(self.kEmailBodyTextViewMarginLeft)
-            make.right.equalTo()(self.contentView).with().offset()(self.kEmailBodyTextViewMarginRight)
-            make.top.equalTo()(self.separatorBetweenHeaderAndBodyView.mas_bottom).with().offset()(self.kEmailBodyTextViewMarginTop)
-            make.height.equalTo()(self.emailBodyWebView.frame.size.height)
-            make.bottom.equalTo()(self.contentView)
-        }
-        
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
-            self.layoutIfNeeded()
+        UIView.animateWithDuration(kAnimationDuration, animations: { () -> Void in
+            self.emailBodyWebView.alpha = 1.0
+            }, completion: { finished in
+                self.attachments = self.message.attachments.allObjects as [Attachment]
+                self.tableView.reloadData()
         })
     }
 

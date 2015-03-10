@@ -43,7 +43,8 @@ class MessageDetailViewController: ProtonMailViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        messageDetailView.updateEmailBodyWebView(animated)
+        messageDetailView.updateEmailBodyWebView(false)
+        messageDetailView.layoutIfNeeded()
     }
     
     override func viewDidAppear(animated: Bool) {
