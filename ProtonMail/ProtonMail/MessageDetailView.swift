@@ -201,7 +201,8 @@ class MessageDetailView: UIView {
         
         self.emailTitle = UILabel()
         self.emailTitle.font = UIFont.robotoLight(size: UIFont.Size.h1)
-        self.emailTitle.numberOfLines = 1
+        self.emailTitle.numberOfLines = 0
+        self.emailTitle.lineBreakMode = .ByWordWrapping
         self.emailTitle.text = self.message.title
         self.emailTitle.textColor = UIColor.ProtonMail.Gray_383A3B
         self.emailHeaderView.addSubview(emailTitle)
