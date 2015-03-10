@@ -1532,8 +1532,18 @@
                             </textField>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HXR-bA-dsP">
                                 <rect key="frame" x="0.0" y="-162" width="320" height="162"/>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="0.0" y="438" width="400" height="162"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="162" id="pIW-J6-o9O"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="pIW-J6-o9O"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="pIW-J6-o9O"/>
+                                    </mask>
                                 </variation>
                             </pickerView>
                         </subviews>
@@ -1542,14 +1552,17 @@
                             <constraint firstItem="jOG-f0-Zf7" firstAttribute="top" secondItem="xnE-EL-LUu" secondAttribute="top" id="0te-tH-QnQ"/>
                             <constraint firstItem="7bA-PD-Vum" firstAttribute="leading" secondItem="yDL-2A-REe" secondAttribute="leading" id="A2e-gg-bbp"/>
                             <constraint firstAttribute="trailing" secondItem="7bA-PD-Vum" secondAttribute="trailing" id="Eb5-md-fny"/>
-                            <constraint firstItem="xnE-EL-LUu" firstAttribute="leading" secondItem="yDL-2A-REe" secondAttribute="leadingMargin" constant="-16" id="GgV-Qi-Syk"/>
+                            <constraint firstItem="xnE-EL-LUu" firstAttribute="leading" secondItem="yDL-2A-REe" secondAttribute="leading" id="GgV-Qi-Syk"/>
                             <constraint firstItem="jOG-f0-Zf7" firstAttribute="top" secondItem="EuM-Xm-TCS" secondAttribute="top" id="HRC-G9-NoS"/>
                             <constraint firstItem="7bA-PD-Vum" firstAttribute="top" secondItem="GgC-GL-AO3" secondAttribute="bottom" id="HgT-bN-ScH"/>
+                            <constraint firstAttribute="trailing" secondItem="HXR-bA-dsP" secondAttribute="trailing" id="JbA-j3-h6Q"/>
                             <constraint firstAttribute="trailing" secondItem="EuM-Xm-TCS" secondAttribute="trailing" id="OCo-Pw-C5e"/>
+                            <constraint firstItem="dGY-HI-dvu" firstAttribute="top" secondItem="HXR-bA-dsP" secondAttribute="bottom" id="QRq-k5-5SK"/>
                             <constraint firstItem="EuM-Xm-TCS" firstAttribute="leading" secondItem="yDL-2A-REe" secondAttribute="leading" id="XxA-0X-VNP"/>
                             <constraint firstItem="jOG-f0-Zf7" firstAttribute="leading" secondItem="EuM-Xm-TCS" secondAttribute="leading" id="cws-zA-hIj"/>
                             <constraint firstAttribute="trailing" secondItem="GgC-GL-AO3" secondAttribute="trailing" id="eWX-ob-QSA"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="xnE-EL-LUu" secondAttribute="trailing" constant="-16" id="oa5-r7-ZMn"/>
+                            <constraint firstItem="HXR-bA-dsP" firstAttribute="leading" secondItem="yDL-2A-REe" secondAttribute="leading" id="hw4-zK-0WC"/>
+                            <constraint firstAttribute="trailing" secondItem="xnE-EL-LUu" secondAttribute="trailing" id="oa5-r7-ZMn"/>
                             <constraint firstItem="EuM-Xm-TCS" firstAttribute="top" secondItem="7bA-PD-Vum" secondAttribute="bottom" id="pRG-0X-Fyo"/>
                             <constraint firstItem="jOG-f0-Zf7" firstAttribute="trailing" secondItem="EuM-Xm-TCS" secondAttribute="trailing" id="pc9-Tr-L6I"/>
                             <constraint firstItem="jOG-f0-Zf7" firstAttribute="height" secondItem="EuM-Xm-TCS" secondAttribute="height" id="sHP-lx-GMb"/>
@@ -1569,6 +1582,9 @@
                                 <exclude reference="A2e-gg-bbp"/>
                                 <exclude reference="Eb5-md-fny"/>
                                 <exclude reference="HgT-bN-ScH"/>
+                                <exclude reference="JbA-j3-h6Q"/>
+                                <exclude reference="hw4-zK-0WC"/>
+                                <exclude reference="QRq-k5-5SK"/>
                                 <exclude reference="OCo-Pw-C5e"/>
                                 <exclude reference="XxA-0X-VNP"/>
                                 <exclude reference="pRG-0X-Fyo"/>
@@ -1597,6 +1613,9 @@
                                 <include reference="A2e-gg-bbp"/>
                                 <include reference="Eb5-md-fny"/>
                                 <include reference="HgT-bN-ScH"/>
+                                <include reference="JbA-j3-h6Q"/>
+                                <include reference="hw4-zK-0WC"/>
+                                <include reference="QRq-k5-5SK"/>
                                 <include reference="OCo-Pw-C5e"/>
                                 <include reference="XxA-0X-VNP"/>
                                 <include reference="pRG-0X-Fyo"/>
