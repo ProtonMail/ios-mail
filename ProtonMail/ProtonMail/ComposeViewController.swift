@@ -85,12 +85,12 @@ extension ComposeViewController: ComposeViewDelegate {
     func composeViewDidTapNextButton(composeView: ComposeView) {
         switch(actualEncryptionStep) {
         case EncryptionStep.DefinePassword:
-            self.encryptionPassword = composeView.passwordTextField.text
+            self.encryptionPassword = composeView.encryptedPasswordTextField.text
             self.actualEncryptionStep = EncryptionStep.ConfirmPassword
             self.composeView.showConfirmPasswordView()
             
         case EncryptionStep.ConfirmPassword:
-            self.encryptionConfirmPassword = composeView.passwordTextField.text
+            self.encryptionConfirmPassword = composeView.encryptedPasswordTextField.text
             
             if (self.encryptionPassword == self.encryptionConfirmPassword) {
                 self.actualEncryptionStep = EncryptionStep.DefineHintPassword
@@ -101,7 +101,7 @@ extension ComposeViewController: ComposeViewDelegate {
             }
             
         case EncryptionStep.DefineHintPassword:
-            self.encryptionPasswordHint = composeView.passwordTextField.text
+            self.encryptionPasswordHint = composeView.encryptedPasswordTextField.text
             self.actualEncryptionStep = EncryptionStep.DefinePassword
             self.composeView.showEncryptionDone()
         default:
