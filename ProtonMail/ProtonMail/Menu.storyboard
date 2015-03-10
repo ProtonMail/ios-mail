@@ -1246,6 +1246,9 @@
                                         <state key="normal" image="attached_compose">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="attachmentButtonTapped:" destination="yDL-2A-REe" eventType="touchUpInside" id="kTe-Zn-Zvd"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nRp-lc-aC5" userLabel="Encrypted Button">
                                         <rect key="frame" x="-23" y="-15" width="46" height="30"/>
@@ -1254,7 +1257,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="didTapEncryptedButton:" destination="yDL-2A-REe" eventType="touchUpInside" id="JPY-3U-R4Q"/>
+                                            <action selector="encryptedButtonTapped:" destination="yDL-2A-REe" eventType="touchUpInside" id="R3D-0K-CKu"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8uq-fO-UWz" userLabel="Expiration Button">
@@ -1264,7 +1267,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="didTapExpirationButton:" destination="yDL-2A-REe" eventType="touchUpInside" id="SDB-au-d9x"/>
+                                            <action selector="expirationButtonTapped:" destination="yDL-2A-REe" eventType="touchUpInside" id="xi6-VQ-bEr"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1628,12 +1631,12 @@
                     <navigationItem key="navigationItem" id="COu-G7-myI">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Z6h-cC-SLr">
                             <connections>
-                                <action selector="didTapCancelButton:" destination="yDL-2A-REe" id="ZAk-RA-Klw"/>
+                                <action selector="cancelButtonTapped:" destination="yDL-2A-REe" id="4zE-1W-nWm"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="sent_compose" id="3Wf-SX-Jxo" userLabel="Send">
                             <connections>
-                                <action selector="didTapSendButton:" destination="yDL-2A-REe" id="IHg-i9-GDr"/>
+                                <action selector="sendButtonTapped:" destination="yDL-2A-REe" id="KYp-pZ-eff"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

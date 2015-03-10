@@ -59,6 +59,7 @@ class MailboxPasswordViewController: UIViewController {
         decryptButton.roundCorners()
     }
     
+    
     // MARK: - private methods
     
     func configureNavigationBar() {
@@ -94,6 +95,7 @@ class MailboxPasswordViewController: UIViewController {
         })
     }
     
+    
     // MARK: - Actions
     
     @IBAction func decryptAction(sender: UIButton) {
@@ -110,7 +112,9 @@ class MailboxPasswordViewController: UIViewController {
     }
 }
 
+
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
+
 extension MailboxPasswordViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(notification: NSNotification) {
         let keyboardInfo = notification.keyboardInfo
@@ -133,7 +137,9 @@ extension MailboxPasswordViewController: NSNotificationCenterKeyboardObserverPro
     }
 }
 
+
 // MARK: - UITextFieldDelegate
+
 extension MailboxPasswordViewController: UITextFieldDelegate {
     func textFieldShouldClear(textField: UITextField) -> Bool {
         decryptButton.enabled = false

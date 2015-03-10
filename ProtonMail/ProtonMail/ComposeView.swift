@@ -18,6 +18,7 @@ protocol ComposeViewDelegate {
     func composeViewDidTapSendButton(composeView: ComposeView)
     func composeViewDidTapNextButton(composeView: ComposeView)
     func composeViewDidTapEncryptedButton(composeView: ComposeView)
+    func composeViewDidTapAttachmentButton(composeView: ComposeView)
 }
 
 protocol ComposeViewDatasource {
@@ -117,15 +118,15 @@ class ComposeView: UIView {
     }
     
     
-    @IBAction func didTapCancelButton(sender: AnyObject) {
+    @IBAction func cancelButtonTapped(sender: AnyObject) {
         self.delegate?.composeViewDidTapCancelButton(self)
     }
     
-    @IBAction func didTapSendButton(sender: AnyObject) {
+    @IBAction func sendButtonTapped(sender: AnyObject) {
         self.delegate?.composeViewDidTapSendButton(self)
     }
     
-    @IBAction func didTapEncryptedButton(sender: UIButton) {
+    @IBAction func encryptedButtonTapped(sender: UIButton) {
         self.delegate?.composeViewDidTapEncryptedButton(self)
         
         UIView.animateWithDuration(0.3, animations: { () -> Void in
@@ -145,10 +146,9 @@ class ComposeView: UIView {
         })
     }
     
-    @IBAction func didTapExpirationButton(sender: UIButton) {
+    @IBAction func expirationButtonTapped(sender: UIButton) {
 
         self.expirationButton.setImage(UIImage(named: "expiration_compose"), forState: UIControlState.Normal)
-
         
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.passwordView.alpha = 0.0
@@ -160,6 +160,10 @@ class ComposeView: UIView {
             
             self.showExpirationPicker()
         })
+    }
+    
+    @IBAction func attachmentButtonTapped(sender: UIButton) {
+        self.delegate?.composeViewDidTapAttachmentButton(self)
     }
     
     @IBAction func didTapExpirationDismissButton(sender: UIButton) {
