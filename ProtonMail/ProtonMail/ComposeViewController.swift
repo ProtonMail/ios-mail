@@ -108,6 +108,30 @@ extension ComposeViewController: ComposeViewDelegate {
             println("No step defined.")
         }
     }
+    
+    func composeViewDidTapAttachmentButton(composeView: ComposeView) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Photo Library"), style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+            let picker: UIImagePickerController = UIImagePickerController()
+            picker.delegate = self
+            picker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+            self.presentViewController(picker, animated: true, completion: nil)
+        }))
+        
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Take a Photo"), style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+            if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)) {
+                let picker: UIImagePickerController = UIImagePickerController()
+                picker.delegate = self
+                picker.sourceType = UIImagePickerControllerSourceType.Camera
+                self.presentViewController(picker, animated: true, completion: nil)
+            }
+        }))
+
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: UIAlertActionStyle.Cancel, handler: nil))
+        
+        presentViewController(alertController, animated: true, completion: nil)
+    }
 }
 
 extension ComposeViewController: ComposeViewDatasource {
@@ -117,5 +141,20 @@ extension ComposeViewController: ComposeViewDatasource {
     
     func composeViewSelectedContacts(composeView: ComposeView) ->  [AnyObject]! {
         return []
+    }
+}
+
+extension ComposeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+        println("UIImagePickerControllerDelegate didFinishPickingImage")
+        picker.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        picker.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
+        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: false)
     }
 }

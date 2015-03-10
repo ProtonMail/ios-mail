@@ -1321,6 +1321,9 @@
                                         <state key="normal" image="attached_compose">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="attachmentButtonTapped:" destination="yDL-2A-REe" eventType="touchUpInside" id="kTe-Zn-Zvd"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nRp-lc-aC5" userLabel="Encrypted Button">
                                         <rect key="frame" x="-23" y="-15" width="46" height="30"/>
@@ -1329,7 +1332,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="didTapEncryptedButton:" destination="yDL-2A-REe" eventType="touchUpInside" id="JPY-3U-R4Q"/>
+                                            <action selector="encryptedButtonTapped:" destination="yDL-2A-REe" eventType="touchUpInside" id="R3D-0K-CKu"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8uq-fO-UWz" userLabel="Expiration Button">
@@ -1339,7 +1342,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="didTapExpirationButton:" destination="yDL-2A-REe" eventType="touchUpInside" id="SDB-au-d9x"/>
+                                            <action selector="expirationButtonTapped:" destination="yDL-2A-REe" eventType="touchUpInside" id="xi6-VQ-bEr"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1604,8 +1607,18 @@
                             </textField>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HXR-bA-dsP">
                                 <rect key="frame" x="0.0" y="-162" width="320" height="162"/>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="0.0" y="438" width="400" height="162"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="162" id="pIW-J6-o9O"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="pIW-J6-o9O"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="pIW-J6-o9O"/>
+                                    </mask>
                                 </variation>
                             </pickerView>
                         </subviews>
@@ -1614,14 +1627,17 @@
                             <constraint firstItem="jOG-f0-Zf7" firstAttribute="top" secondItem="xnE-EL-LUu" secondAttribute="top" id="0te-tH-QnQ"/>
                             <constraint firstItem="7bA-PD-Vum" firstAttribute="leading" secondItem="yDL-2A-REe" secondAttribute="leading" id="A2e-gg-bbp"/>
                             <constraint firstAttribute="trailing" secondItem="7bA-PD-Vum" secondAttribute="trailing" id="Eb5-md-fny"/>
-                            <constraint firstItem="xnE-EL-LUu" firstAttribute="leading" secondItem="yDL-2A-REe" secondAttribute="leadingMargin" constant="-16" id="GgV-Qi-Syk"/>
+                            <constraint firstItem="xnE-EL-LUu" firstAttribute="leading" secondItem="yDL-2A-REe" secondAttribute="leading" id="GgV-Qi-Syk"/>
                             <constraint firstItem="jOG-f0-Zf7" firstAttribute="top" secondItem="EuM-Xm-TCS" secondAttribute="top" id="HRC-G9-NoS"/>
                             <constraint firstItem="7bA-PD-Vum" firstAttribute="top" secondItem="GgC-GL-AO3" secondAttribute="bottom" id="HgT-bN-ScH"/>
+                            <constraint firstAttribute="trailing" secondItem="HXR-bA-dsP" secondAttribute="trailing" id="JbA-j3-h6Q"/>
                             <constraint firstAttribute="trailing" secondItem="EuM-Xm-TCS" secondAttribute="trailing" id="OCo-Pw-C5e"/>
+                            <constraint firstItem="dGY-HI-dvu" firstAttribute="top" secondItem="HXR-bA-dsP" secondAttribute="bottom" id="QRq-k5-5SK"/>
                             <constraint firstItem="EuM-Xm-TCS" firstAttribute="leading" secondItem="yDL-2A-REe" secondAttribute="leading" id="XxA-0X-VNP"/>
                             <constraint firstItem="jOG-f0-Zf7" firstAttribute="leading" secondItem="EuM-Xm-TCS" secondAttribute="leading" id="cws-zA-hIj"/>
                             <constraint firstAttribute="trailing" secondItem="GgC-GL-AO3" secondAttribute="trailing" id="eWX-ob-QSA"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="xnE-EL-LUu" secondAttribute="trailing" constant="-16" id="oa5-r7-ZMn"/>
+                            <constraint firstItem="HXR-bA-dsP" firstAttribute="leading" secondItem="yDL-2A-REe" secondAttribute="leading" id="hw4-zK-0WC"/>
+                            <constraint firstAttribute="trailing" secondItem="xnE-EL-LUu" secondAttribute="trailing" id="oa5-r7-ZMn"/>
                             <constraint firstItem="EuM-Xm-TCS" firstAttribute="top" secondItem="7bA-PD-Vum" secondAttribute="bottom" id="pRG-0X-Fyo"/>
                             <constraint firstItem="jOG-f0-Zf7" firstAttribute="trailing" secondItem="EuM-Xm-TCS" secondAttribute="trailing" id="pc9-Tr-L6I"/>
                             <constraint firstItem="jOG-f0-Zf7" firstAttribute="height" secondItem="EuM-Xm-TCS" secondAttribute="height" id="sHP-lx-GMb"/>
@@ -1641,6 +1657,9 @@
                                 <exclude reference="A2e-gg-bbp"/>
                                 <exclude reference="Eb5-md-fny"/>
                                 <exclude reference="HgT-bN-ScH"/>
+                                <exclude reference="JbA-j3-h6Q"/>
+                                <exclude reference="hw4-zK-0WC"/>
+                                <exclude reference="QRq-k5-5SK"/>
                                 <exclude reference="OCo-Pw-C5e"/>
                                 <exclude reference="XxA-0X-VNP"/>
                                 <exclude reference="pRG-0X-Fyo"/>
@@ -1669,6 +1688,9 @@
                                 <include reference="A2e-gg-bbp"/>
                                 <include reference="Eb5-md-fny"/>
                                 <include reference="HgT-bN-ScH"/>
+                                <include reference="JbA-j3-h6Q"/>
+                                <include reference="hw4-zK-0WC"/>
+                                <include reference="QRq-k5-5SK"/>
                                 <include reference="OCo-Pw-C5e"/>
                                 <include reference="XxA-0X-VNP"/>
                                 <include reference="pRG-0X-Fyo"/>
@@ -1703,12 +1725,12 @@
                     <navigationItem key="navigationItem" id="COu-G7-myI">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Z6h-cC-SLr">
                             <connections>
-                                <action selector="didTapCancelButton:" destination="yDL-2A-REe" id="ZAk-RA-Klw"/>
+                                <action selector="cancelButtonTapped:" destination="yDL-2A-REe" id="4zE-1W-nWm"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="sent_compose" id="3Wf-SX-Jxo" userLabel="Send">
                             <connections>
-                                <action selector="didTapSendButton:" destination="yDL-2A-REe" id="IHg-i9-GDr"/>
+                                <action selector="sendButtonTapped:" destination="yDL-2A-REe" id="KYp-pZ-eff"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
