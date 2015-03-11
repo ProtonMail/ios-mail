@@ -21,7 +21,7 @@ import Foundation
 extension APIService {
     
     private struct DevicePath {
-        static let basePath = "/Device"
+        static let basePath = "/device"
     }
     
     func deviceRegisterWithToken(token: NSData, completion: CompletionBlock?) {
