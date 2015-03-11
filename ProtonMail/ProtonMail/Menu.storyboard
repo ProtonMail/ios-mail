@@ -58,6 +58,7 @@
             <string>Roboto-Regular</string>
             <string>Roboto-Regular</string>
             <string>Roboto-Regular</string>
+            <string>Roboto-Regular</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -1431,6 +1432,42 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GgC-GL-AO3" customClass="MBContactPicker">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" red="0.9882352941176471" green="0.99607843137254903" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="JqY-3L-3bq"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="JqY-3L-3bq"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="JqY-3L-3bq"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Subject" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7bA-PD-Vum">
+                                <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
+                                <color key="backgroundColor" red="0.9882352941176471" green="0.99607843137254903" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="U4g-0H-wUi"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="16"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="U4g-0H-wUi"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="U4g-0H-wUi"/>
+                                    </mask>
+                                </variation>
+                            </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EuM-Xm-TCS" userLabel="Buttons View">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <subviews>
@@ -1688,42 +1725,49 @@
                                     </mask>
                                 </variation>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GgC-GL-AO3" customClass="MBContactPicker">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="etf-d2-dUQ" userLabel="Body View">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" red="0.9882352941176471" green="0.99607843137254903" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="Hwa-Pj-mqY" userLabel="Body Text View">
+                                        <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        <variation key="widthClass=compact">
+                                            <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
+                                        </variation>
+                                    </textView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="48" id="JqY-3L-3bq"/>
+                                    <constraint firstAttribute="bottom" secondItem="Hwa-Pj-mqY" secondAttribute="bottom" id="hgW-gP-SKH"/>
+                                    <constraint firstItem="Hwa-Pj-mqY" firstAttribute="top" secondItem="etf-d2-dUQ" secondAttribute="top" id="oNY-5E-JTC"/>
+                                    <constraint firstItem="Hwa-Pj-mqY" firstAttribute="leading" secondItem="etf-d2-dUQ" secondAttribute="leading" constant="8" id="qlq-F8-nhz"/>
+                                    <constraint firstAttribute="trailing" secondItem="Hwa-Pj-mqY" secondAttribute="trailing" constant="8" id="s9n-Jh-p3z"/>
                                 </constraints>
                                 <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="Hwa-Pj-mqY"/>
+                                    </mask>
                                     <mask key="constraints">
-                                        <exclude reference="JqY-3L-3bq"/>
+                                        <exclude reference="hgW-gP-SKH"/>
+                                        <exclude reference="oNY-5E-JTC"/>
+                                        <exclude reference="qlq-F8-nhz"/>
+                                        <exclude reference="s9n-Jh-p3z"/>
                                     </mask>
                                 </variation>
                                 <variation key="widthClass=compact">
+                                    <mask key="subviews">
+                                        <include reference="Hwa-Pj-mqY"/>
+                                    </mask>
                                     <mask key="constraints">
-                                        <include reference="JqY-3L-3bq"/>
+                                        <include reference="hgW-gP-SKH"/>
+                                        <include reference="oNY-5E-JTC"/>
+                                        <include reference="qlq-F8-nhz"/>
+                                        <include reference="s9n-Jh-p3z"/>
                                     </mask>
                                 </variation>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Subject" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7bA-PD-Vum">
-                                <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
-                                <color key="backgroundColor" red="0.9882352941176471" green="0.99607843137254903" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="48" id="U4g-0H-wUi"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="16"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="U4g-0H-wUi"/>
-                                    </mask>
-                                </variation>
-                                <variation key="widthClass=compact">
-                                    <mask key="constraints">
-                                        <include reference="U4g-0H-wUi"/>
-                                    </mask>
-                                </variation>
-                            </textField>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HXR-bA-dsP">
                                 <rect key="frame" x="0.0" y="-162" width="320" height="162"/>
                                 <constraints>
@@ -1752,9 +1796,12 @@
                             <constraint firstAttribute="trailing" secondItem="HXR-bA-dsP" secondAttribute="trailing" id="JbA-j3-h6Q"/>
                             <constraint firstAttribute="trailing" secondItem="EuM-Xm-TCS" secondAttribute="trailing" id="OCo-Pw-C5e"/>
                             <constraint firstItem="dGY-HI-dvu" firstAttribute="top" secondItem="HXR-bA-dsP" secondAttribute="bottom" id="QRq-k5-5SK"/>
+                            <constraint firstItem="dGY-HI-dvu" firstAttribute="top" secondItem="etf-d2-dUQ" secondAttribute="bottom" id="Th4-dL-a4m"/>
                             <constraint firstItem="EuM-Xm-TCS" firstAttribute="leading" secondItem="yDL-2A-REe" secondAttribute="leading" id="XxA-0X-VNP"/>
+                            <constraint firstAttribute="trailing" secondItem="etf-d2-dUQ" secondAttribute="trailing" id="bxm-R8-L4N"/>
                             <constraint firstItem="jOG-f0-Zf7" firstAttribute="leading" secondItem="EuM-Xm-TCS" secondAttribute="leading" id="cws-zA-hIj"/>
                             <constraint firstAttribute="trailing" secondItem="GgC-GL-AO3" secondAttribute="trailing" id="eWX-ob-QSA"/>
+                            <constraint firstItem="etf-d2-dUQ" firstAttribute="top" secondItem="EuM-Xm-TCS" secondAttribute="bottom" id="fbX-eX-KTu"/>
                             <constraint firstItem="HXR-bA-dsP" firstAttribute="leading" secondItem="yDL-2A-REe" secondAttribute="leading" id="hw4-zK-0WC"/>
                             <constraint firstAttribute="trailing" secondItem="xnE-EL-LUu" secondAttribute="trailing" id="oa5-r7-ZMn"/>
                             <constraint firstItem="EuM-Xm-TCS" firstAttribute="top" secondItem="7bA-PD-Vum" secondAttribute="bottom" id="pRG-0X-Fyo"/>
@@ -1762,14 +1809,16 @@
                             <constraint firstItem="jOG-f0-Zf7" firstAttribute="height" secondItem="EuM-Xm-TCS" secondAttribute="height" id="sHP-lx-GMb"/>
                             <constraint firstItem="GgC-GL-AO3" firstAttribute="leading" secondItem="yDL-2A-REe" secondAttribute="leading" id="sTH-Fd-lEG"/>
                             <constraint firstItem="GgC-GL-AO3" firstAttribute="top" secondItem="dgW-MJ-Yt8" secondAttribute="bottom" constant="5" id="u3R-Cz-UDD" userLabel="IVertical Space - View - Top Layout Guide"/>
+                            <constraint firstItem="etf-d2-dUQ" firstAttribute="leading" secondItem="yDL-2A-REe" secondAttribute="leading" id="vJC-DF-lxh"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
+                                <exclude reference="GgC-GL-AO3"/>
+                                <exclude reference="7bA-PD-Vum"/>
                                 <exclude reference="EuM-Xm-TCS"/>
                                 <exclude reference="jOG-f0-Zf7"/>
                                 <exclude reference="xnE-EL-LUu"/>
-                                <exclude reference="GgC-GL-AO3"/>
-                                <exclude reference="7bA-PD-Vum"/>
+                                <exclude reference="etf-d2-dUQ"/>
                                 <exclude reference="HXR-bA-dsP"/>
                             </mask>
                             <mask key="constraints">
@@ -1779,12 +1828,16 @@
                                 <exclude reference="JbA-j3-h6Q"/>
                                 <exclude reference="hw4-zK-0WC"/>
                                 <exclude reference="QRq-k5-5SK"/>
+                                <exclude reference="Th4-dL-a4m"/>
                                 <exclude reference="OCo-Pw-C5e"/>
                                 <exclude reference="XxA-0X-VNP"/>
                                 <exclude reference="pRG-0X-Fyo"/>
                                 <exclude reference="eWX-ob-QSA"/>
                                 <exclude reference="sTH-Fd-lEG"/>
                                 <exclude reference="u3R-Cz-UDD"/>
+                                <exclude reference="bxm-R8-L4N"/>
+                                <exclude reference="fbX-eX-KTu"/>
+                                <exclude reference="vJC-DF-lxh"/>
                                 <exclude reference="0te-tH-QnQ"/>
                                 <exclude reference="HRC-G9-NoS"/>
                                 <exclude reference="cws-zA-hIj"/>
@@ -1796,11 +1849,12 @@
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
+                                <include reference="GgC-GL-AO3"/>
+                                <include reference="7bA-PD-Vum"/>
                                 <include reference="EuM-Xm-TCS"/>
                                 <include reference="jOG-f0-Zf7"/>
                                 <include reference="xnE-EL-LUu"/>
-                                <include reference="GgC-GL-AO3"/>
-                                <include reference="7bA-PD-Vum"/>
+                                <include reference="etf-d2-dUQ"/>
                                 <include reference="HXR-bA-dsP"/>
                             </mask>
                             <mask key="constraints">
@@ -1810,12 +1864,16 @@
                                 <include reference="JbA-j3-h6Q"/>
                                 <include reference="hw4-zK-0WC"/>
                                 <include reference="QRq-k5-5SK"/>
+                                <include reference="Th4-dL-a4m"/>
                                 <include reference="OCo-Pw-C5e"/>
                                 <include reference="XxA-0X-VNP"/>
                                 <include reference="pRG-0X-Fyo"/>
                                 <include reference="eWX-ob-QSA"/>
                                 <include reference="sTH-Fd-lEG"/>
                                 <include reference="u3R-Cz-UDD"/>
+                                <include reference="bxm-R8-L4N"/>
+                                <include reference="fbX-eX-KTu"/>
+                                <include reference="vJC-DF-lxh"/>
                                 <include reference="0te-tH-QnQ"/>
                                 <include reference="HRC-G9-NoS"/>
                                 <include reference="cws-zA-hIj"/>
@@ -1827,6 +1885,7 @@
                         </variation>
                         <connections>
                             <outlet property="attachmentButton" destination="2Or-aZ-wTr" id="CkI-M5-eof"/>
+                            <outlet property="bodyTextView" destination="Hwa-Pj-mqY" id="LPD-G8-uhf"/>
                             <outlet property="buttonView" destination="EuM-Xm-TCS" id="RSQ-ml-kSU"/>
                             <outlet property="contactPicker" destination="GgC-GL-AO3" id="cCL-BO-PRM"/>
                             <outlet property="contactPickerHeightConstraint" destination="JqY-3L-3bq" id="e0v-r2-5OE"/>
