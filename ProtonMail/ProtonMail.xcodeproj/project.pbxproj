@@ -60,6 +60,7 @@
 		07CB234C1AAE9FCB00699068 /* FullHeightWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CB234B1AAE9FCB00699068 /* FullHeightWebView.swift */; };
 		07CB23511AAF5F4B00699068 /* DraftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CB23501AAF5F4B00699068 /* DraftViewController.swift */; };
 		07CB23531AAF763500699068 /* DraftTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CB23521AAF763500699068 /* DraftTableViewCell.swift */; };
+		07CB23561AB0F24700699068 /* ReportBugsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CB23551AB0F24700699068 /* ReportBugsViewController.swift */; };
 		07CC3F931A941C7A0005E39F /* MessageQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC3F921A941C7A0005E39F /* MessageQueue.swift */; };
 		07CC99641A6F076A000FD6F8 /* NSErrorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC99631A6F076A000FD6F8 /* NSErrorExtension.swift */; };
 		07CC99661A6F1380000FD6F8 /* FoundationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC99651A6F1380000FD6F8 /* FoundationExtension.swift */; };
@@ -183,6 +184,7 @@
 		07CB234B1AAE9FCB00699068 /* FullHeightWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullHeightWebView.swift; sourceTree = "<group>"; };
 		07CB23501AAF5F4B00699068 /* DraftViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraftViewController.swift; sourceTree = "<group>"; };
 		07CB23521AAF763500699068 /* DraftTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraftTableViewCell.swift; sourceTree = "<group>"; };
+		07CB23551AB0F24700699068 /* ReportBugsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportBugsViewController.swift; sourceTree = "<group>"; };
 		07CC3F921A941C7A0005E39F /* MessageQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageQueue.swift; sourceTree = "<group>"; };
 		07CC99631A6F076A000FD6F8 /* NSErrorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSErrorExtension.swift; sourceTree = "<group>"; };
 		07CC99651A6F1380000FD6F8 /* FoundationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoundationExtension.swift; sourceTree = "<group>"; };
@@ -471,6 +473,14 @@
 			name = Draft;
 			sourceTree = "<group>";
 		};
+		07CB23541AB0F20F00699068 /* Bugs */ = {
+			isa = PBXGroup;
+			children = (
+				07CB23551AB0F24700699068 /* ReportBugsViewController.swift */,
+			);
+			name = Bugs;
+			sourceTree = "<group>";
+		};
 		07CCCC2C1AA2962200ECA79E /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -547,6 +557,7 @@
 		706628241A71681300164117 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				07CB23541AB0F20F00699068 /* Bugs */,
 				709FE39E1A977C8400034288 /* Compose */,
 				706962031A713959001443B2 /* Contacts */,
 				07CB234D1AAF5B4600699068 /* Draft */,
@@ -822,6 +833,7 @@
 				073FE01F1A95620D00825980 /* ContactExtension.swift in Sources */,
 				70FC90DA1A9BC11F00498B42 /* StringExtension.swift in Sources */,
 				07CC996C1A717ABD000FD6F8 /* UIStoryboardExtension.swift in Sources */,
+				07CB23561AB0F24700699068 /* ReportBugsViewController.swift in Sources */,
 				07A0E1AD1A9D3C64005FD04B /* UserInfo.swift in Sources */,
 				70762C3B1A94EC30006B9693 /* ActivityIndicatorHelper.swift in Sources */,
 				075E3DEF1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld in Sources */,
