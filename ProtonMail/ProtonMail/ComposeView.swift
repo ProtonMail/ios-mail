@@ -55,6 +55,7 @@ class ComposeView: UIView {
     
     @IBOutlet var contactPicker: MBContactPicker!
     @IBOutlet var subject: UITextField!
+    @IBOutlet var bodyTextView: UITextView!
     
     
     // MARK: - Action Buttons
@@ -111,24 +112,46 @@ class ComposeView: UIView {
         expirationPicker.alpha = 0.0
         expirationPicker.dataSource = self
         expirationPicker.delegate = self
-        
+
+        self.configureBodyTextField()
         self.configureEncryptionPasswordField()
         self.configureErrorMessage()
         self.configureExpirationField()
+       
+        self.registerForKeyboardNotifications()
     }
     
+    deinit {
+        unregisterForKeybardNotifications()
+    }
+    
+    func keyboardWasShown(notification: NSNotification) {
+        if (self.bodyTextView != nil) {
+            let info: NSDictionary = notification.userInfo!
+            let keyboardRect: CGRect = self.bodyTextView.convertRect(info[UIKeyboardFrameEndUserInfoKey]!.CGRectValue(), fromView:nil)
+            let keyboardSize: CGSize = keyboardRect.size;
+    
+            self.bodyTextView.contentInset = UIEdgeInsetsMake(0, 0, keyboardSize.height, 0)
+            self.bodyTextView.scrollIndicatorInsets = self.bodyTextView.contentInset
+        }
+    }
+    
+    func keyboardWillBeHidden(notification: NSNotification) {
+        self.bodyTextView.scrollIndicatorInsets = UIEdgeInsetsZero
+        self.bodyTextView.scrollIndicatorInsets = UIEdgeInsetsZero
+    }
     
     @IBAction func cancelButtonTapped(sender: AnyObject) {
         self.delegate?.composeViewDidTapCancelButton(self)
     }
-    
+
     @IBAction func sendButtonTapped(sender: AnyObject) {
         self.delegate?.composeViewDidTapSendButton(self)
     }
     
     @IBAction func encryptedButtonTapped(sender: UIButton) {
         self.delegate?.composeViewDidTapEncryptedButton(self)
-        
+        self.encryptedPasswordTextField.becomeFirstResponder()
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.encryptedButton.setImage(UIImage(named: "encrypted_compose"), forState: UIControlState.Normal)
             self.passwordView.alpha = 1.0
@@ -149,7 +172,8 @@ class ComposeView: UIView {
     @IBAction func expirationButtonTapped(sender: UIButton) {
 
         self.expirationButton.setImage(UIImage(named: "expiration_compose"), forState: UIControlState.Normal)
-        
+        self.endEditing(true)
+        self.expirationDateTextField.becomeFirstResponder()
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.passwordView.alpha = 0.0
             self.buttonView.alpha = 0.0
@@ -163,6 +187,7 @@ class ComposeView: UIView {
     }
     
     @IBAction func attachmentButtonTapped(sender: UIButton) {
+        self.endEditing(true)
         self.delegate?.composeViewDidTapAttachmentButton(self)
     }
     
@@ -264,6 +289,10 @@ class ComposeView: UIView {
         })
     }
     
+    private func configureBodyTextField() {
+
+    }
+    
     private func configureContactPicketTemplate() {
         MBContactCollectionViewContactCell.appearance().tintColor = UIColor.ProtonMail.Blue_6789AB
         MBContactCollectionViewContactCell.appearance().font = UIFont.robotoLight(size: UIFont.Size.h4)
@@ -304,6 +333,16 @@ class ComposeView: UIView {
         expirationDateTextField.delegate = self
     }
     
+    private func registerForKeyboardNotifications() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardDidShowNotification, object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillBeHidden:", name: UIKeyboardWillHideNotification, object:nil)
+    }
+    
+    private func unregisterForKeybardNotifications() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object:nil)
+    }
+    
     internal func didTapNextButton() {
         self.delegate?.composeViewDidTapNextButton(self)
     }
@@ -311,6 +350,7 @@ class ComposeView: UIView {
     private func configureErrorMessage() {
         self.errorView = UIView()
         self.errorView.backgroundColor = UIColor.whiteColor()
+        self.errorView.clipsToBounds = true
         
         self.errorTextView = UITextView()
         self.errorTextView.backgroundColor = UIColor.clearColor()
