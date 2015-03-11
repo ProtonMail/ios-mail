@@ -35,6 +35,8 @@ extension NSManagedObjectContext {
                 if let error = self.saveUpstreamIfNeeded() {
                     NSLog("\(__FUNCTION__) error: \(error)")
                 }
+            } else {
+                NSLog("\(__FUNCTION__) error: \(error)")
             }
         }
     }

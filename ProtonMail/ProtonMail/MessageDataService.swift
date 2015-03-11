@@ -515,8 +515,6 @@ extension Message {
     
     /// Removes all messages from the store.
     class func deleteAll(inContext context: NSManagedObjectContext) {
-        let context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-        context.parentContext = context
         context.deleteAll(Attributes.entityName)
     }
     
