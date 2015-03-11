@@ -22,6 +22,7 @@
             <string>Roboto-Light</string>
             <string>Roboto-Light</string>
             <string>Roboto-Light</string>
+            <string>Roboto-Light</string>
         </mutableArray>
         <mutableArray key="Roboto-Regular.ttf">
             <string>Roboto-Regular</string>
@@ -76,11 +77,85 @@
                     <connections>
                         <segue destination="N9H-or-xL9" kind="custom" identifier="sw_front" customClass="SWRevealViewControllerSegueSetController" id="YGe-pV-72F"/>
                         <segue destination="JMB-iY-fYD" kind="custom" identifier="sw_rear" customClass="SWRevealViewControllerSegueSetController" id="mhi-4S-eTV"/>
+                        <segue destination="MRz-Ys-30Z" kind="custom" identifier="sw_right" customClass="SWRevealViewControllerSegueSetController" id="Ybt-iB-oJ2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="92z-LV-j1w" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-483" y="1601"/>
+            <point key="canvasLocation" x="-593" y="1617"/>
+        </scene>
+        <!--Drafts-->
+        <scene sceneID="bn0-sH-v77">
+            <objects>
+                <tableViewController title="Drafts" useStoryboardIdentifierAsRestorationIdentifier="YES" id="IwD-wF-aCC" customClass="DraftViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="94" sectionHeaderHeight="22" sectionFooterHeight="22" id="L6B-bQ-3BA">
+                        <rect key="frame" x="0.0" y="0.0" width="100" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.40392156862745099" green="0.53725490196078429" blue="0.6705882352941176" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DraftTableViewCell" id="fy4-ZC-gVz" customClass="DraftTableViewCell" customModule="ProtonMail" customModuleProvider="target">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fy4-ZC-gVz" id="LAU-bi-L1X">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="draft" translatesAutoresizingMaskIntoConstraints="NO" id="Rrm-fW-TBp">
+                                            <rect key="frame" x="24" y="8" width="52" height="52"/>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" text="Subject" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kq9-Xc-uKF">
+                                            <rect key="frame" x="8" y="68" width="84" height="18"/>
+                                            <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="13"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstItem="Rrm-fW-TBp" firstAttribute="top" secondItem="LAU-bi-L1X" secondAttribute="topMargin" id="AuT-Zu-6YS"/>
+                                        <constraint firstItem="Kq9-Xc-uKF" firstAttribute="top" secondItem="Rrm-fW-TBp" secondAttribute="bottom" constant="8" id="EB9-BB-24s"/>
+                                        <constraint firstItem="Kq9-Xc-uKF" firstAttribute="trailing" secondItem="LAU-bi-L1X" secondAttribute="trailingMargin" id="QPa-fO-T8Q"/>
+                                        <constraint firstAttribute="centerX" secondItem="Rrm-fW-TBp" secondAttribute="centerX" id="Yja-wb-ftm"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Kq9-Xc-uKF" secondAttribute="bottom" id="e1l-cz-ndc"/>
+                                        <constraint firstItem="Kq9-Xc-uKF" firstAttribute="leading" secondItem="LAU-bi-L1X" secondAttribute="leadingMargin" id="t4w-yx-wSh"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="subjectLabel" destination="Kq9-Xc-uKF" id="3pS-uy-0rW"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="IwD-wF-aCC" id="azU-sP-iLo"/>
+                            <outlet property="delegate" destination="IwD-wF-aCC" id="MFn-BH-J5g"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="ULG-Jy-NAY"/>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="100" height="600"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Vxo-6e-4YM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="352" y="938"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="F6I-vi-xaw">
+            <objects>
+                <navigationController id="MRz-Ys-30Z" sceneMemberID="viewController">
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="100" height="600"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="IcP-80-Oox">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="IwD-wF-aCC" kind="relationship" relationship="rootViewController" id="d51-0x-0kl"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bc3-wk-ciV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="158" y="938"/>
         </scene>
         <!--Menu View Controller-->
         <scene sceneID="CA9-P3-QyV">
@@ -3798,8 +3873,8 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="BYG-C2-IMk"/>
         <segue reference="o3e-Jf-WEv"/>
         <segue reference="Lm0-2L-Xlj"/>
+        <segue reference="BYG-C2-IMk"/>
     </inferredMetricsTieBreakers>
 </document>
