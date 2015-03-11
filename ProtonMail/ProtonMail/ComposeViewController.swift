@@ -59,6 +59,11 @@ class ComposeViewController: ProtonMailViewController {
         self.composeView.delegate = self
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        self.composeView.contactPicker.becomeFirstResponder()
+    }
+    
     
     // MARK: - ProtonMail View Controller
     
