@@ -125,6 +125,10 @@ class ComposeView: UIView {
         unregisterForKeybardNotifications()
     }
     
+    func setMessage(message: Message) {
+        self.subject.text = "Re: \(message.title)"
+    }
+    
     func keyboardWasShown(notification: NSNotification) {
         if (self.bodyTextView != nil) {
             let info: NSDictionary = notification.userInfo!

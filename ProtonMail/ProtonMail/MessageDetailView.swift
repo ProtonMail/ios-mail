@@ -18,6 +18,7 @@ class MessageDetailView: UIView {
     let message: Message
     private var attachments: [Attachment] = []
     private var isShowingDetail: Bool = false
+    private var isViewingMoreOptions: Bool = false
     
     // MARK: - Private constants
     
@@ -52,6 +53,12 @@ class MessageDetailView: UIView {
     private let kReplyAllButtonLabelMarginTop: CGFloat = 4.0
     private let kForwardButtonMarginRight: CGFloat = -50.0
     private let kForwardButtonLabelMarginTop: CGFloat = 4.0
+    private let kMoreOptionsViewHeight: CGFloat = 123.0
+    
+    
+    // MARK: - Views
+    
+    private var moreOptionsView: MoreOptionsView!
     
     
     // MARK: - Email header views
@@ -119,7 +126,36 @@ class MessageDetailView: UIView {
         message.removeObserver(self, forKeyPath: Message.Attributes.isDetailDownloaded, context: &kKVOContext)
     }
     
+    
     // MARK: - Public methods
+    
+    func animateMoreViewOptions() {
+        self.bringSubviewToFront(self.moreOptionsView)
+        if (self.isViewingMoreOptions) {
+            self.moreOptionsView.mas_updateConstraints({ (make) -> Void in
+                make.removeExisting = true
+                make.left.equalTo()(self)
+                make.right.equalTo()(self)
+                make.height.equalTo()(self.kMoreOptionsViewHeight)
+                make.bottom.equalTo()(self.mas_top)
+            })
+        } else {
+            self.moreOptionsView.mas_updateConstraints({ (make) -> Void in
+                make.removeExisting = true
+                make.left.equalTo()(self)
+                make.right.equalTo()(self)
+                make.height.equalTo()(self.kMoreOptionsViewHeight)
+                
+                make.top.equalTo()(self.mas_top)
+            })
+        }
+        
+        self.isViewingMoreOptions = !self.isViewingMoreOptions
+        
+        UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
+            self.layoutIfNeeded()
+        }, completion: nil)
+    }
     
     func attachmentForIndexPath(indexPath: NSIndexPath) -> Attachment {
         return self.attachments[indexPath.row]
@@ -189,10 +225,16 @@ class MessageDetailView: UIView {
         self.tableView.tableHeaderView = contentView
         self.tableView.tableFooterView = UIView()
         
+        self.createMoreOptionsView()
         self.createHeaderView()
         self.createSeparator()
         self.createEmailBodyWebView()
         self.createFooterView()
+    }
+    
+    private func createMoreOptionsView() {
+        self.moreOptionsView = MoreOptionsView()
+        self.addSubview(moreOptionsView)
     }
     
     private func createHeaderView() {
@@ -352,6 +394,13 @@ class MessageDetailView: UIView {
             make.left.equalTo()(self)
             make.right.equalTo()(self)
             make.bottom.equalTo()(self).with().offset()(self.kScrollViewDistanceToBottom)
+        }
+        
+        moreOptionsView.mas_makeConstraints { (make) -> Void in
+            make.left.equalTo()(self)
+            make.right.equalTo()(self)
+            make.height.equalTo()(self.kMoreOptionsViewHeight)
+            make.bottom.equalTo()(self.mas_top)
         }
         
         contentView.mas_makeConstraints { (make) -> Void in
