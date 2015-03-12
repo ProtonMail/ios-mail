@@ -49,6 +49,7 @@ class SettingsViewController: ProtonMailViewController {
     @IBOutlet var confirmNewLoginPasswordTextField: UITextField!
     @IBOutlet var currentMailboxPasswordTextField: UITextField!
     @IBOutlet var newMailboxPasswordTextField: UITextField!
+    @IBOutlet weak var confirmNewMailboxPasswordTextField: UITextField!
     @IBOutlet var displayNameTextField: UITextField!
     @IBOutlet var signatureTextView: UITextView!
     
@@ -98,9 +99,7 @@ class SettingsViewController: ProtonMailViewController {
     }
     
     @IBAction func loginPasswordSaveButtonTapped(sender: UIButton) {
-        let currentPassword = currentLoginPasswordTextField.text ?? ""
-        
-        if sharedUserDataService.password != currentPassword {
+        if !sharedUserDataService.isPasswordValid(currentLoginPasswordTextField.text) {
             let alertController = UIAlertController(title: NSLocalizedString("Password Mismatch"), message: NSLocalizedString("The password you entered does not match the current password."), preferredStyle: .Alert)
             alertController.addOKAction()
             
@@ -111,50 +110,65 @@ class SettingsViewController: ProtonMailViewController {
             return
         }
         
-        let newPassword = newLoginPasswordTextField.text ?? ""
-        let confirmPassword = confirmNewLoginPasswordTextField.text ?? ""
-        
-        if newPassword.isEmpty || newPassword != confirmPassword {
-            let alertController = UIAlertController(title: NSLocalizedString("Password Mismatch"), message: NSLocalizedString("The passwords you entered do not match."), preferredStyle: .Alert)
-            alertController.addOKAction()
+        if validatePasswordTextField(newLoginPasswordTextField, matchesConfirmPasswordTextField: confirmNewLoginPasswordTextField) {
+            ActivityIndicatorHelper.showActivityIndicatorAtView(loginPasswordContainerView)
             
-            presentViewController(alertController, animated: true, completion: { () -> Void in
-                self.newLoginPasswordTextField.text = ""
-                self.confirmNewLoginPasswordTextField.text = ""
-            })
-            
-            return
-        }
-        
-        ActivityIndicatorHelper.showActivityIndicatorAtView(loginPasswordContainerView)
-        
-        sharedUserDataService.updatePassword(newLoginPasswordTextField.text) { _, _, error in
-            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.loginPasswordContainerView)
-            
-            if let error = error {
-                let alertController = error.alertController()
-                alertController.addOKAction()
+            sharedUserDataService.updatePassword(newLoginPasswordTextField.text) { _, _, error in
+                ActivityIndicatorHelper.hideActivityIndicatorAtView(self.loginPasswordContainerView)
                 
-                self.presentViewController(alertController, animated: true, completion: nil)
-            } else {
-                let alertController = UIAlertController(title: NSLocalizedString("Password Updated"), message: NSLocalizedString("Please use your new password when signing in."), preferredStyle: .Alert)
-                alertController.addOKAction()
-                
-                self.presentViewController(alertController, animated: true, completion: { () -> Void in
-                    self.currentLoginPasswordTextField.text = ""
-                    self.newLoginPasswordTextField.text = ""
-                    self.confirmNewLoginPasswordTextField.text = ""
-                })
+                if let error = error {
+                    let alertController = error.alertController()
+                    alertController.addOKAction()
+                    
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                } else {
+                    let alertController = UIAlertController(title: NSLocalizedString("Password Updated"), message: NSLocalizedString("Please use your new password when signing in."), preferredStyle: .Alert)
+                    alertController.addOKAction()
+                    
+                    self.presentViewController(alertController, animated: true, completion: { () -> Void in
+                        self.currentLoginPasswordTextField.text = ""
+                        self.newLoginPasswordTextField.text = ""
+                        self.confirmNewLoginPasswordTextField.text = ""
+                    })
+                }
             }
         }
     }
     
     @IBAction func mailboxSaveButtonTapped(sender: UIButton) {
+        if !sharedUserDataService.isMailboxPasswordValid(currentMailboxPasswordTextField.text) {
+            let alertController = UIAlertController(title: NSLocalizedString("Password Mismatch"), message: NSLocalizedString("The mailbox password you entered does not match the current mailbox password."), preferredStyle: .Alert)
+            alertController.addOKAction()
+            
+            presentViewController(alertController, animated: true, completion: { () -> Void in
+                self.currentMailboxPasswordTextField.text = ""
+            })
+            
+            return
+        }
         
-        ActivityIndicatorHelper.showActivityIndicatorAtView(mailboxPasswordContainerView)
-        
-        sharedUserDataService.updateMailboxPassword(newMailboxPasswordTextField.text) { error in
-            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.mailboxPasswordContainerView)
+        if validatePasswordTextField(newMailboxPasswordTextField, matchesConfirmPasswordTextField: confirmNewMailboxPasswordTextField) {
+            ActivityIndicatorHelper.showActivityIndicatorAtView(mailboxPasswordContainerView)
+            
+            sharedUserDataService.updateMailboxPassword(newMailboxPasswordTextField.text) { _, _, error in
+                ActivityIndicatorHelper.hideActivityIndicatorAtView(self.mailboxPasswordContainerView)
+                
+                if let error = error {
+                    let alertController = error.alertController()
+                    alertController.addOKAction()
+                    
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                } else {
+                    let alertController = UIAlertController(title: NSLocalizedString("Password Updated"), message: NSLocalizedString("Please use your new mailbox password when signing in."), preferredStyle: .Alert)
+                    alertController.addOKAction()
+                    
+                    self.presentViewController(alertController, animated: true, completion: { () -> Void in
+                        self.currentMailboxPasswordTextField.text = ""
+                        self.newMailboxPasswordTextField.text = ""
+                        self.confirmNewMailboxPasswordTextField.text = ""
+                    })
+                }
+            }
         }
     }
     
@@ -176,6 +190,22 @@ class SettingsViewController: ProtonMailViewController {
     
     
     // MARK: - Private methods
+    
+    private func validatePasswordTextField(passwordTextField: UITextField, matchesConfirmPasswordTextField confirmPasswordTextField: UITextField) -> Bool {
+        let result = !passwordTextField.text.isEmpty && passwordTextField.text == confirmPasswordTextField.text
+        
+        if !result {
+            let alertController = UIAlertController(title: NSLocalizedString("Password Mismatch"), message: NSLocalizedString("The passwords you entered do not match."), preferredStyle: .Alert)
+            alertController.addOKAction()
+            
+            presentViewController(alertController, animated: true, completion: { () -> Void in
+                passwordTextField.text = ""
+                confirmPasswordTextField.text = ""
+            })
+        }
+        
+        return result
+    }
     
     private func setupUserInfo() {
         storageProgressBar.progress = 0.0
