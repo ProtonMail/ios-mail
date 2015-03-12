@@ -68,15 +68,13 @@ class MailboxViewController: ProtonMailViewController {
         setupFetchedResultsController()
         addSubViews()
         addConstraints()
-        refreshControl.beginRefreshing()
-        getLatestMessages()
-        
         self.updateNavigationController(isEditing)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
+        updateMessages()
+
         let selectedItem: NSIndexPath? = self.tableView.indexPathForSelectedRow() as NSIndexPath?
         
         if let selectedItem = selectedItem {
@@ -233,7 +231,7 @@ class MailboxViewController: ProtonMailViewController {
         }
     }
     
-    func fetchMessagesIfNeededForIndexPath(indexPath: NSIndexPath) {
+    private func fetchMessagesIfNeededForIndexPath(indexPath: NSIndexPath) {
         if !pagingManager.hasMorePages {
             return
         }
@@ -263,7 +261,9 @@ class MailboxViewController: ProtonMailViewController {
         }
     }
     
-    func getLatestMessages() {
+    private func getLatestMessages() {
+        sharedMessageDataService.purgeOldMessages()
+
         pagingManager.reset()
         
         sharedMessageDataService.fetchLatestMessagesForLocation(self.mailboxLocation) { _, messages, error in
@@ -392,6 +392,11 @@ class MailboxViewController: ProtonMailViewController {
         } else {
             println("Long press on table view, but not on a row.")
         }
+    }
+    
+    private func updateMessages() {
+        refreshControl.beginRefreshing()
+        getLatestMessages()
     }
     
     private func updateNavigationController(editingMode: Bool) {
