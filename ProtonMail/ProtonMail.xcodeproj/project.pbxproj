@@ -37,6 +37,9 @@
 		075E3DEF1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 075E3DED1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld */; };
 		075E3DF61A5F4ECF00E001A7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 075E3DF51A5F4ECF00E001A7 /* Images.xcassets */; };
 		075E3DF91A5F4ECF00E001A7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 075E3DF71A5F4ECF00E001A7 /* LaunchScreen.xib */; };
+		07655BBD1AB1036200CD3883 /* BugDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07655BBC1AB1036200CD3883 /* BugDataService.swift */; };
+		07655BBF1AB1084700CD3883 /* APIService+BugExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07655BBE1AB1084700CD3883 /* APIService+BugExtension.swift */; };
+		07655BC11AB10D7100CD3883 /* NSBundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07655BC01AB10D7100CD3883 /* NSBundleExtension.swift */; };
 		076758761AA0E86400F9AC9C /* LoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 076758751AA0E86400F9AC9C /* LoadingView.xib */; };
 		076758781AA0EB6900F9AC9C /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076758771AA0EB6900F9AC9C /* LoadingView.swift */; };
 		0767587A1AA126E400F9AC9C /* StorageLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076758791AA126E400F9AC9C /* StorageLimit.swift */; };
@@ -60,6 +63,7 @@
 		07CB234C1AAE9FCB00699068 /* FullHeightWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CB234B1AAE9FCB00699068 /* FullHeightWebView.swift */; };
 		07CB23511AAF5F4B00699068 /* DraftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CB23501AAF5F4B00699068 /* DraftViewController.swift */; };
 		07CB23531AAF763500699068 /* DraftTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CB23521AAF763500699068 /* DraftTableViewCell.swift */; };
+		07CB23561AB0F24700699068 /* ReportBugsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CB23551AB0F24700699068 /* ReportBugsViewController.swift */; };
 		07CC3F931A941C7A0005E39F /* MessageQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC3F921A941C7A0005E39F /* MessageQueue.swift */; };
 		07CC99641A6F076A000FD6F8 /* NSErrorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC99631A6F076A000FD6F8 /* NSErrorExtension.swift */; };
 		07CC99661A6F1380000FD6F8 /* FoundationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC99651A6F1380000FD6F8 /* FoundationExtension.swift */; };
@@ -165,6 +169,9 @@
 		075E3DF81A5F4ECF00E001A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		075E3DFE1A5F4ECF00E001A7 /* ProtonMailTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProtonMailTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		075E3E031A5F4ECF00E001A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		07655BBC1AB1036200CD3883 /* BugDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugDataService.swift; sourceTree = "<group>"; };
+		07655BBE1AB1084700CD3883 /* APIService+BugExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+BugExtension.swift"; sourceTree = "<group>"; };
+		07655BC01AB10D7100CD3883 /* NSBundleExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBundleExtension.swift; sourceTree = "<group>"; };
 		076758751AA0E86400F9AC9C /* LoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
 		076758771AA0EB6900F9AC9C /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		076758791AA126E400F9AC9C /* StorageLimit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageLimit.swift; sourceTree = "<group>"; };
@@ -183,6 +190,7 @@
 		07CB234B1AAE9FCB00699068 /* FullHeightWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullHeightWebView.swift; sourceTree = "<group>"; };
 		07CB23501AAF5F4B00699068 /* DraftViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraftViewController.swift; sourceTree = "<group>"; };
 		07CB23521AAF763500699068 /* DraftTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraftTableViewCell.swift; sourceTree = "<group>"; };
+		07CB23551AB0F24700699068 /* ReportBugsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportBugsViewController.swift; sourceTree = "<group>"; };
 		07CC3F921A941C7A0005E39F /* MessageQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageQueue.swift; sourceTree = "<group>"; };
 		07CC99631A6F076A000FD6F8 /* NSErrorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSErrorExtension.swift; sourceTree = "<group>"; };
 		07CC99651A6F1380000FD6F8 /* FoundationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoundationExtension.swift; sourceTree = "<group>"; };
@@ -288,6 +296,7 @@
 				70762C3A1A94EC30006B9693 /* ActivityIndicatorHelper.swift */,
 				073FD9331A732C5F00EB0CAF /* AFHTTPRequestSerializerExtension.swift */,
 				07CC99651A6F1380000FD6F8 /* FoundationExtension.swift */,
+				07655BC01AB10D7100CD3883 /* NSBundleExtension.swift */,
 				07CCCC2F1AA4E26000ECA79E /* NSCoderExtension.swift */,
 				07CC99631A6F076A000FD6F8 /* NSErrorExtension.swift */,
 				07FBA7A41A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift */,
@@ -355,6 +364,7 @@
 			isa = PBXGroup;
 			children = (
 				70B28D091A9BA0AC002D9EC8 /* AddressBookService.swift */,
+				07655BBC1AB1036200CD3883 /* BugDataService.swift */,
 				073FE0181A955ED900825980 /* ContactDataService.swift */,
 				07CAB8051A894F8600C5E347 /* CoreDataService.swift */,
 				07DD68A21A96CFB800ED130C /* LastUpdatedStore.swift */,
@@ -442,6 +452,7 @@
 			isa = PBXGroup;
 			children = (
 				07B797BF1A6EDFF400244532 /* APIService.swift */,
+				07655BBE1AB1084700CD3883 /* APIService+BugExtension.swift */,
 				07DD68A41A97DE9F00ED130C /* APIService+AttachmentExtension.swift */,
 				07B797C11A6EE50F00244532 /* APIService+AuthenticationExtension.swift */,
 				073FE01A1A955F4A00825980 /* APIService+ContactExtension.swift */,
@@ -469,6 +480,14 @@
 				07CB23501AAF5F4B00699068 /* DraftViewController.swift */,
 			);
 			name = Draft;
+			sourceTree = "<group>";
+		};
+		07CB23541AB0F20F00699068 /* Bugs */ = {
+			isa = PBXGroup;
+			children = (
+				07CB23551AB0F24700699068 /* ReportBugsViewController.swift */,
+			);
+			name = Bugs;
 			sourceTree = "<group>";
 		};
 		07CCCC2C1AA2962200ECA79E /* Views */ = {
@@ -547,6 +566,7 @@
 		706628241A71681300164117 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				07CB23541AB0F20F00699068 /* Bugs */,
 				709FE39E1A977C8400034288 /* Compose */,
 				706962031A713959001443B2 /* Contacts */,
 				07CB234D1AAF5B4600699068 /* Draft */,
@@ -815,13 +835,16 @@
 				071323811A7846150043DB41 /* UIViewExtension.swift in Sources */,
 				701FFE611A9CBAD600380C2B /* EditContactViewController.swift in Sources */,
 				07CFC9D41A81A2B0007A72B7 /* Attachment.swift in Sources */,
+				07655BBF1AB1084700CD3883 /* APIService+BugExtension.swift in Sources */,
 				07CCCC291AA28CF100ECA79E /* PagingManager.swift in Sources */,
 				07B797C21A6EE50F00244532 /* APIService+AuthenticationExtension.swift in Sources */,
 				0713237F1A7844390043DB41 /* MailboxPasswordViewController.swift in Sources */,
 				073FE01D1A9561F600825980 /* Contact.swift in Sources */,
 				073FE01F1A95620D00825980 /* ContactExtension.swift in Sources */,
+				07655BBD1AB1036200CD3883 /* BugDataService.swift in Sources */,
 				70FC90DA1A9BC11F00498B42 /* StringExtension.swift in Sources */,
 				07CC996C1A717ABD000FD6F8 /* UIStoryboardExtension.swift in Sources */,
+				07CB23561AB0F24700699068 /* ReportBugsViewController.swift in Sources */,
 				07A0E1AD1A9D3C64005FD04B /* UserInfo.swift in Sources */,
 				70762C3B1A94EC30006B9693 /* ActivityIndicatorHelper.swift in Sources */,
 				075E3DEF1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld in Sources */,
@@ -843,6 +866,7 @@
 				07CAB8041A894A3B00C5E347 /* MessageDetailView.swift in Sources */,
 				07CAB8031A894A3B00C5E347 /* MessageDetailViewController.swift in Sources */,
 				701DDE951AA64DEB0038149C /* MBContactModel.m in Sources */,
+				07655BC11AB10D7100CD3883 /* NSBundleExtension.swift in Sources */,
 				07CAB8021A8815DF00C5E347 /* NSFileManagerExtension.swift in Sources */,
 				706962071A71399D001443B2 /* ContactsViewController.swift in Sources */,
 				07DD68A31A96CFB800ED130C /* LastUpdatedStore.swift in Sources */,
