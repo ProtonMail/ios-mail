@@ -68,9 +68,12 @@ extension APIService {
         request(method: .POST, path: path, parameters: parameters, authenticated: false, completion: completionWrapper)
     }
     
-    // TODO: make network call when API is finished
-//    func authRevoke(authCredential: AuthCredential, completion: CompletionBlock?) {
-//    }
+    func authRevoke(authCredential: AuthCredential, completion: CompletionBlock?) {
+        let path = "/auth/revoke"
+        let parameters = ["access_token" : authCredential.accessToken]
+        
+        request(method: .POST, path: path, parameters: parameters, completion: completion)
+    }
 
     func authRefresh(completion: AuthCredentialBlock?) {
         if let authCredential = AuthCredential.fetchFromKeychain() {
