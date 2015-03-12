@@ -68,11 +68,15 @@ extension APIService {
         request(method: .POST, path: path, parameters: parameters, authenticated: false, completion: completionWrapper)
     }
     
-    func authRevoke(authCredential: AuthCredential, completion: CompletionBlock?) {
-        let path = "/auth/revoke"
-        let parameters = ["access_token" : authCredential.accessToken]
+    func authRevoke(completion: CompletionBlock?) {
+        if let authCredential = AuthCredential.fetchFromKeychain() {
+            let path = "/auth/revoke"
+            let parameters = ["access_token" : authCredential.accessToken]
         
-        request(method: .POST, path: path, parameters: parameters, completion: completion)
+            request(method: .POST, path: path, parameters: parameters, completion: completion)
+        } else {
+            completion?(nil, nil, nil)
+        }
     }
 
     func authRefresh(completion: AuthCredentialBlock?) {
