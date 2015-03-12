@@ -83,7 +83,7 @@ class MailboxPasswordViewController: UIViewController {
             (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .inbox, animated: true)
         } else {
             let alert = UIAlertController(title: NSLocalizedString("Incorrect password"), message: NSLocalizedString("The mailbox password is incorrect."), preferredStyle: .Alert)
-            alert.addAction((UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil)))
+            alert.addAction((UIAlertAction.okAction()))
             
             presentViewController(alert, animated: true, completion: nil)
         }

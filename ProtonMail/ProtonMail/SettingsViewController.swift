@@ -102,7 +102,7 @@ class SettingsViewController: ProtonMailViewController {
         
         if sharedUserDataService.password != currentPassword {
             let alertController = UIAlertController(title: NSLocalizedString("Password Mismatch"), message: NSLocalizedString("The password you entered does not match the current password."), preferredStyle: .Alert)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
+            alertController.addOKAction()
             
             presentViewController(alertController, animated: true, completion: { () -> Void in
                 self.currentLoginPasswordTextField.text = ""
@@ -116,7 +116,7 @@ class SettingsViewController: ProtonMailViewController {
         
         if newPassword.isEmpty || newPassword != confirmPassword {
             let alertController = UIAlertController(title: NSLocalizedString("Password Mismatch"), message: NSLocalizedString("The passwords you entered do not match."), preferredStyle: .Alert)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
+            alertController.addOKAction()
             
             presentViewController(alertController, animated: true, completion: { () -> Void in
                 self.newLoginPasswordTextField.text = ""
@@ -133,12 +133,12 @@ class SettingsViewController: ProtonMailViewController {
             
             if let error = error {
                 let alertController = error.alertController()
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
+                alertController.addOKAction()
                 
                 self.presentViewController(alertController, animated: true, completion: nil)
             } else {
                 let alertController = UIAlertController(title: NSLocalizedString("Password Updated"), message: NSLocalizedString("Please use your new password when signing in."), preferredStyle: .Alert)
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
+                alertController.addOKAction()
                 
                 self.presentViewController(alertController, animated: true, completion: { () -> Void in
                     self.currentLoginPasswordTextField.text = ""

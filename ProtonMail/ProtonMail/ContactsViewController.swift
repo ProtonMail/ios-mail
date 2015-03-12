@@ -95,7 +95,7 @@ class ContactsViewController: ProtonMailViewController {
                 
                 if let error = error {
                     let alertController = error.alertController()
-                    alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
+                    alertController.addOKAction()
                     
                     self.presentViewController(alertController, animated: true, completion: nil)
                     println("Error trying to access Address Book = \(error.localizedDescription).")
@@ -276,7 +276,7 @@ extension ContactsViewController: UITableViewDelegate {
         let description = NSLocalizedString("This contact belongs to your Address Book.")
         let message = NSLocalizedString("Please, manage it in your phone.")
         let alertController = UIAlertController(title: description, message: message, preferredStyle: .Alert)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
+        alertController.addOKAction()
         
         self.presentViewController(alertController, animated: true, completion: nil)
     }

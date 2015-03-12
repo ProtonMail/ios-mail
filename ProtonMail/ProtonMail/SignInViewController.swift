@@ -94,7 +94,7 @@ class SignInViewController: UIViewController {
                 NSLog("\(__FUNCTION__) error: \(error)")
                 
                 let alertController = error.alertController()
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
+                alertController.addOKAction()
                 
                 self.presentViewController(alertController, animated: true, completion: nil)
             } else {
