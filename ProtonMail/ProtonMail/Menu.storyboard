@@ -24,6 +24,8 @@
             <string>Roboto-Light</string>
             <string>Roboto-Light</string>
             <string>Roboto-Light</string>
+            <string>Roboto-Light</string>
+            <string>Roboto-Light</string>
         </mutableArray>
         <mutableArray key="Roboto-Regular.ttf">
             <string>Roboto-Regular</string>
@@ -101,7 +103,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="draft" translatesAutoresizingMaskIntoConstraints="NO" id="Rrm-fW-TBp">
-                                            <rect key="frame" x="24" y="8" width="52" height="55"/>
+                                            <rect key="frame" x="24" y="8" width="52" height="54"/>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" text="Subject" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kq9-Xc-uKF">
                                             <rect key="frame" x="8" y="70" width="84" height="16"/>
@@ -186,13 +188,47 @@
                     <view key="view" contentMode="scaleToFill" id="5q1-fl-xFV">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bug Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K0q-PU-hIm">
+                                <rect key="frame" x="16" y="72" width="119" height="20"/>
+                                <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="17"/>
+                                <color key="textColor" red="0.2196078431372549" green="0.22745098039215686" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5sX-Zk-W85">
+                                <rect key="frame" x="16" y="100" width="568" height="480"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" red="0.21960784310000001" green="0.2274509804" blue="0.23137254900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <connections>
+                                    <outlet property="delegate" destination="jNg-ua-VGF" id="xr0-Hp-2ln"/>
+                                </connections>
+                            </textView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="nEw-IQ-Gzw" firstAttribute="top" secondItem="5sX-Zk-W85" secondAttribute="bottom" constant="20" id="F0r-BE-NrT"/>
+                            <constraint firstItem="K0q-PU-hIm" firstAttribute="top" secondItem="tPy-OC-Itx" secondAttribute="bottom" constant="8" id="XaW-5W-cEG"/>
+                            <constraint firstItem="5sX-Zk-W85" firstAttribute="leading" secondItem="5q1-fl-xFV" secondAttribute="leadingMargin" id="YoW-Sr-z5T"/>
+                            <constraint firstItem="5sX-Zk-W85" firstAttribute="trailing" secondItem="5q1-fl-xFV" secondAttribute="trailingMargin" id="uwk-bn-Ose"/>
+                            <constraint firstItem="5sX-Zk-W85" firstAttribute="top" secondItem="K0q-PU-hIm" secondAttribute="bottom" constant="8" id="v6W-Bb-gmP"/>
+                            <constraint firstItem="K0q-PU-hIm" firstAttribute="leading" secondItem="5q1-fl-xFV" secondAttribute="leadingMargin" id="vIB-SQ-Rz2"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="REPORT BUGS" id="V6k-R2-Ziv" userLabel="SETTINGS">
                         <barButtonItem key="leftBarButtonItem" image="hamburger" id="G3s-bn-rVj"/>
+                        <barButtonItem key="rightBarButtonItem" title="Send" id="YG8-Ca-0Bt">
+                            <connections>
+                                <action selector="sendAction:" destination="jNg-ua-VGF" id="w2V-5z-TrT"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="menuButton" destination="G3s-bn-rVj" id="dRo-vS-Pzj"/>
+                        <outlet property="sendButton" destination="YG8-Ca-0Bt" id="eqH-kQ-kgP"/>
+                        <outlet property="textView" destination="5sX-Zk-W85" id="CLI-h2-uS2"/>
+                        <outlet property="textViewBottomConstraint" destination="F0r-BE-NrT" id="sH4-Q9-Mwl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="trg-Ug-uZy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -964,10 +1000,10 @@
                                                     <exclude reference="49f-bC-Hh9"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="wQl-nW-3uR"/>
+                                                    <exclude reference="3r1-l0-DBH"/>
                                                     <exclude reference="ISs-UG-uYl"/>
                                                     <exclude reference="mSk-S1-QzW"/>
-                                                    <exclude reference="3r1-l0-DBH"/>
+                                                    <exclude reference="wQl-nW-3uR"/>
                                                     <exclude reference="BKt-Vv-mMG"/>
                                                     <exclude reference="Zf7-Xl-9hv"/>
                                                 </mask>
@@ -978,10 +1014,10 @@
                                                     <include reference="49f-bC-Hh9"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="wQl-nW-3uR"/>
+                                                    <include reference="3r1-l0-DBH"/>
                                                     <include reference="ISs-UG-uYl"/>
                                                     <include reference="mSk-S1-QzW"/>
-                                                    <include reference="3r1-l0-DBH"/>
+                                                    <include reference="wQl-nW-3uR"/>
                                                     <include reference="BKt-Vv-mMG"/>
                                                     <include reference="Zf7-Xl-9hv"/>
                                                 </mask>
