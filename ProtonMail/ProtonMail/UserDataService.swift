@@ -165,10 +165,10 @@ class UserDataService {
             if error == nil {
                 self.isSignedIn = true
                 self.username = username
+                self.password = password
                 
                 if isRemembered {
                     self.isRememberUser = isRemembered
-                    self.password = password
                 }
                 
                 let completionWrapper: UserInfoBlock = { auth, error in
