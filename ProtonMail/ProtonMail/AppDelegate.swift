@@ -69,7 +69,7 @@ extension AppDelegate: UIApplicationDelegate {
         
         AFNetworkActivityIndicatorManager.sharedManager().enabled = true
         setupWindow()
-        
+        sharedMessageDataService.launchCleanUpIfNeeded()
         sharedPushNotificationService.registerForRemoteNotifications()
         
         return true
