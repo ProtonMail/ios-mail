@@ -262,8 +262,6 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     private func getLatestMessages() {
-        sharedMessageDataService.purgeOldMessages()
-
         pagingManager.reset()
         
         sharedMessageDataService.fetchLatestMessagesForLocation(self.mailboxLocation) { _, messages, error in

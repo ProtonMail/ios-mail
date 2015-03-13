@@ -108,6 +108,7 @@ class MessageDataService {
 
     private let lastUpdatedMaximumTimeInterval: NSTimeInterval = 24 /*hours*/ * 3600
     private let lastUpdatedStore = LastUpdatedStore()
+    private let maximumCachedMessageCount = 500
     
     private var managedObjectContext: NSManagedObjectContext? {
         return sharedCoreDataService.mainManagedObjectContext
@@ -335,21 +336,31 @@ class MessageDataService {
         if let context = sharedCoreDataService.mainManagedObjectContext {
             let cutoffTimeInterval: NSTimeInterval = 3 * 86400 // days converted to seconds
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "%K < %@", Message.Attributes.time, NSDate(timeIntervalSinceNow: -cutoffTimeInterval))
-
+            
             var error: NSError?
-            if let oldMessages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
-                for message in oldMessages {
-                    context.deleteObject(message)
-                }
+            let count = context.countForFetchRequest(fetchRequest, error: &error)
                 
-                NSLog("\(__FUNCTION__) \(oldMessages.count) old messages purged.")
+            if error != nil {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            } else if count > maximumCachedMessageCount {
+                fetchRequest.predicate = NSPredicate(format: "%K < %@", Message.Attributes.time, NSDate(timeIntervalSinceNow: -cutoffTimeInterval))
                 
-                if let error = context.saveUpstreamIfNeeded() {
+                
+                if let oldMessages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
+                    for message in oldMessages {
+                        context.deleteObject(message)
+                    }
+                    
+                    NSLog("\(__FUNCTION__) \(oldMessages.count) old messages purged.")
+                    
+                    if let error = context.saveUpstreamIfNeeded() {
+                        NSLog("\(__FUNCTION__) error: \(error)")
+                    }
+                } else {
                     NSLog("\(__FUNCTION__) error: \(error)")
                 }
             } else {
-                NSLog("\(__FUNCTION__) error: \(error)")
+                NSLog("\(__FUNCTION__) cached message count: \(count)")
             }
         }
     }
