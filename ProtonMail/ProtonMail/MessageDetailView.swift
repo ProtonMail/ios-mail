@@ -844,7 +844,10 @@ extension MessageDetailView: UIWebViewDelegate {
         UIView.animateWithDuration(kAnimationDuration, animations: { () -> Void in
             self.emailBodyWebView.alpha = 1.0
             }, completion: { finished in
-                self.attachments = self.message.attachments.allObjects as [Attachment]
+                if (self.message.hasAttachments) {
+                    self.attachments = self.message.attachments.allObjects as [Attachment]
+                }
+
                 self.tableView.reloadData()
         })
     }
