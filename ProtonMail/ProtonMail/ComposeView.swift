@@ -19,6 +19,8 @@ protocol ComposeViewDelegate {
     func composeViewDidTapNextButton(composeView: ComposeView)
     func composeViewDidTapEncryptedButton(composeView: ComposeView)
     func composeViewDidTapAttachmentButton(composeView: ComposeView)
+    func composeViewDidAddContact(composeView: ComposeView, contact: ContactVO)
+    func composeViewDidRemoveContact(composeView: ComposeView, contact: ContactVO)
 }
 
 protocol ComposeViewDatasource {
@@ -27,7 +29,14 @@ protocol ComposeViewDatasource {
 }
 
 class ComposeView: UIView {
+    
+    struct ComposeMessageAction {
+        static let Reply = "Reply"
+        static let ReplyAll = "ReplyAll"
+        static let Forward = "Forward"
+    }
 
+    @IBOutlet var spinner: FSSyncSpinner!
     
     // MARK: - Constants
     
@@ -89,6 +98,7 @@ class ComposeView: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
         self.configureContactPicketTemplate()
         self.includeButtonBorder(encryptedButton)
         self.includeButtonBorder(attachmentButton)
@@ -119,14 +129,24 @@ class ComposeView: UIView {
         self.configureExpirationField()
        
         self.registerForKeyboardNotifications()
+        self.bringSubviewToFront(spinner)
+        self.spinner.startAnimating()
     }
     
     deinit {
         unregisterForKeybardNotifications()
     }
     
-    func setMessage(message: Message) {
-        self.subject.text = "Re: \(message.title)"
+    func setMessage(message: Message, action: String) {
+       if (action == ComposeView.ComposeMessageAction.Forward) {
+            self.subject.text = "Fwd: \(message.title)"
+       } else {
+            self.subject.text = "Re: \(message.title)"
+        }
+    }
+    
+    func finishRetrievingContacts() {
+        spinner.finish()
     }
     
     func keyboardWasShown(notification: NSNotification) {
@@ -141,7 +161,6 @@ class ComposeView: UIView {
     }
     
     func keyboardWillBeHidden(notification: NSNotification) {
-        self.bodyTextView.scrollIndicatorInsets = UIEdgeInsetsZero
         self.bodyTextView.scrollIndicatorInsets = UIEdgeInsetsZero
     }
     
@@ -405,15 +424,14 @@ extension ComposeView: MBContactPickerDelegate {
     }
     
     func contactCollectionView(contactCollectionView: MBContactCollectionView!, didSelectContact model: MBContactPickerModelProtocol!) {
-        
     }
     
     func contactCollectionView(contactCollectionView: MBContactCollectionView!, didAddContact model: MBContactPickerModelProtocol!) {
-        
+        self.delegate?.composeViewDidAddContact(self, contact: model as ContactVO)
     }
     
     func contactCollectionView(contactCollectionView: MBContactCollectionView!, didRemoveContact model: MBContactPickerModelProtocol!) {
-        
+        self.delegate?.composeViewDidRemoveContact(self, contact: model as ContactVO)
     }
     
     func didShowFilteredContactsForContactPicker(contactPicker: MBContactPicker!) {

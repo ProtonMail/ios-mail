@@ -23,6 +23,7 @@ class ComposeViewController: ProtonMailViewController {
     // MARK: - Private attributes
     
     var message: Message?
+    var action: String!
     var selectedContacts: [ContactVO]! = [ContactVO]()
     private var contacts: [ContactVO]! = [ContactVO]()
     private var composeView: ComposeView!
@@ -30,6 +31,8 @@ class ComposeViewController: ProtonMailViewController {
     private var encryptionPassword: String!
     private var encryptionConfirmPassword: String!
     private var encryptionPasswordHint: String!
+    private var hasAccessToAddressBook: Bool = false
+
     
     // MARK: - View Controller lifecycle
     
@@ -37,37 +40,37 @@ class ComposeViewController: ProtonMailViewController {
         super.viewDidLoad()
         
         self.composeView = self.view as? ComposeView
-        
-        let contactExample: [Dictionary<String, String>] = [
-            ["Id" : "1", "Name" : "Diego Santiviago", "Email" : "diego.santiviago@arctouch.com"],
-            ["Id" : "2", "Name" : "Diego Santiviago 1", "Email" : "diego1.santiviago@arctouch.com"],
-            ["Id" : "3", "Name" : "Diego Santiviago 2", "Email" : "diego2.santiviago@arctouch.com"],
-            ["Id" : "4", "Name" : "Diego Santiviago 3", "Email" : "diego3.santiviago@arctouch.com"],
-            ["Id" : "5", "Name" : "Diego Santiviago 4", "Email" : "diego4.santiviago@arctouch.com"],
-            ["Id" : "6", "Name" : "Diego Santiviago 5", "Email" : "diego5.santiviago@arctouch.com"],
-            ["Id" : "7", "Name" : "Eric Chamberlain", "Email" : "eric.chamberlain@arctouch.com"]
-        ]
-        
-        for contact in contactExample {
-            let id = contact["Id"]
-            let name = contact["Name"]
-            let email = contact["Email"]
-            let isProtonMailContact = false
-            
-            contacts.append(ContactVO(id: id, name: name, email: email, isProtonMailContact: isProtonMailContact))
-        }
-        
         self.composeView.datasource = self
         self.composeView.delegate = self
         
         if let message = message {
-            self.composeView.setMessage(message)
+            self.composeView.setMessage(message, action: action)
+            let recipientsName = split(message.recipientNameList) {$0 == ","}
+            let recipientsEmail = split(message.recipientList) {$0 == ","}
+            
+            for (var i = 0; i < countElements(recipientsName); i++) {
+                selectedContacts.append(ContactVO(id: "", name: recipientsName[i], email: recipientsEmail[i]))
+            }
+        }
+        
+        retrieveAddressBook()
+        retrieveServerContactList { () -> Void in
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.contacts.sort { $0.name.lowercaseString < $1.name.lowercaseString }
+                self.composeView.contactPicker.reloadData()
+                self.composeView.finishRetrievingContacts()
+            })
         }
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        self.composeView.contactPicker.becomeFirstResponder()
+        
+        if (selectedContacts.count == 0) {
+            self.composeView.contactPicker.becomeFirstResponder()
+        } else {
+            self.composeView.bodyTextView.becomeFirstResponder()
+        }
     }
     
     
@@ -120,6 +123,23 @@ extension ComposeViewController: ComposeViewDelegate {
         }
     }
     
+    func composeViewDidAddContact(composeView: ComposeView, contact: ContactVO) {
+        self.selectedContacts.append(contact)
+    }
+    
+    func composeViewDidRemoveContact(composeView: ComposeView, contact: ContactVO) {
+        var contactIndex = -1
+        for (index, selectedContact) in enumerate(selectedContacts) {
+            if (contact.email == selectedContact.email) {
+                contactIndex = index
+            }
+        }
+        
+        if (contactIndex >= 0) {
+            selectedContacts.removeAtIndex(contactIndex)
+        }
+    }
+    
     func composeViewDidTapAttachmentButton(composeView: ComposeView) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
 
@@ -167,5 +187,67 @@ extension ComposeViewController: UIImagePickerControllerDelegate, UINavigationCo
     
     func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: false)
+    }
+}
+
+extension ComposeViewController {
+    private func retrieveAddressBook() {
+        
+        if (sharedAddressBookService.hasAccessToAddressBook()) {
+            self.hasAccessToAddressBook = true
+        } else {
+            sharedAddressBookService.requestAuthorizationWithCompletion({ (granted: Bool, error: NSError?) -> Void in
+                if (granted) {
+                    self.hasAccessToAddressBook = true
+                }
+                
+                if let error = error {
+                    let alertController = error.alertController()
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
+                    
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                    println("Error trying to access Address Book = \(error.localizedDescription).")
+                }
+            })
+        }
+        
+        if (self.hasAccessToAddressBook) {
+            let addressBookContacts = sharedAddressBookService.contacts()
+            for contact: RHPerson in addressBookContacts as [RHPerson] {
+                var name: String? = contact.name
+                let emails: RHMultiStringValue = contact.emails
+                
+                for (var emailIndex: UInt = 0; Int(emailIndex) < Int(emails.count()); emailIndex++) {
+                    let emailAsString = emails.valueAtIndex(emailIndex) as String
+                    
+                    if (emailAsString.isValidEmail()) {
+                        let email = emailAsString
+                        
+                        if (name == nil) {
+                            name = email
+                        }
+                        
+                        self.contacts.append(ContactVO(name: name, email: email, isProtonMailContact: false))
+                    }
+                }
+            }
+        }
+    }
+    
+    private func retrieveServerContactList(completion: () -> Void) {
+        sharedContactDataService.fetchContacts { (contacts: [Contact]?, error: NSError?) -> Void in
+            if error != nil {
+                NSLog("\(error)")
+                return
+            }
+            
+            if let contacts = contacts {
+                for contact in contacts {
+                    self.contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: contact.email, isProtonMailContact: true))
+                }
+            }
+            
+            completion()
+        }
     }
 }

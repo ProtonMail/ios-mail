@@ -48,6 +48,12 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 5
 #define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 1
 
+// FSSyncSpinner
+#define COCOAPODS_POD_AVAILABLE_FSSyncSpinner
+#define COCOAPODS_VERSION_MAJOR_FSSyncSpinner 0
+#define COCOAPODS_VERSION_MINOR_FSSyncSpinner 0
+#define COCOAPODS_VERSION_PATCH_FSSyncSpinner 1
+
 // Groot
 #define COCOAPODS_POD_AVAILABLE_Groot
 #define COCOAPODS_VERSION_MAJOR_Groot 0

@@ -21,7 +21,7 @@ class ContactVO: NSObject, MBContactPickerModelProtocol {
     internal var email: String!
     internal var isProtonMailContact: Bool = false
     
-    init(id: String! = "", name: String!, email: String!, isProtonMailContact: Bool) {
+    init(id: String! = "", name: String!, email: String!, isProtonMailContact: Bool = false) {
         self.contactId = id
         self.name = name
         self.email = email
@@ -29,5 +29,9 @@ class ContactVO: NSObject, MBContactPickerModelProtocol {
         
         self.contactTitle = name
         self.contactSubtitle = email
+    }
+    
+    override var description: String {
+        return "\(name) \(email)"
     }
 }

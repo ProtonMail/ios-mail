@@ -24,6 +24,8 @@ class MessageDetailViewController: ProtonMailViewController {
         }
     }
     
+    private var actionTapped: String!
+    
     @IBOutlet var messageDetailView: MessageDetailView!
     
     override func loadView() {
@@ -88,17 +90,17 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
     }
     
     func messageDetailViewDidTapForwardMessage(messageView: MessageDetailView, message: Message) {
-        println("messageDetailViewDidTapForwardMessage: \(message.title)")
+        actionTapped = ComposeView.ComposeMessageAction.Forward
         self.performSegueWithIdentifier("toCompose", sender: self)
     }
     
     func messageDetailViewDidTapReplyAllMessage(messageView: MessageDetailView, message: Message) {
-        println("messageDetailViewDidTapReplyAllMessage: \(message.title)")
+        actionTapped = ComposeView.ComposeMessageAction.ReplyAll
         self.performSegueWithIdentifier("toCompose", sender: self)
     }
     
     func messageDetailViewDidTapReplyMessage(messageView: MessageDetailView, message: Message) {
-        println("messageDetailViewDidTapReplyMessage: \(message.title)")
+        actionTapped = ComposeView.ComposeMessageAction.Reply
         self.performSegueWithIdentifier("toCompose", sender: self)
     }
     
@@ -106,6 +108,7 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
         if (segue.identifier == "toCompose") {
             let composeViewController = segue.destinationViewController.viewControllers!.first as ComposeViewController
             composeViewController.message = message
+            composeViewController.action = self.actionTapped
         }
     }
 }
