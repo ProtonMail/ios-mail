@@ -301,4 +301,10 @@ extension SearchViewController: UITextFieldDelegate {
         
         return true
     }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        return true
+    }
 }
