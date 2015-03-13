@@ -194,6 +194,9 @@
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="17"/>
                                 <color key="textColor" red="0.2196078431372549" green="0.22745098039215686" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="16" y="72" width="123" height="20"/>
+                                </variation>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5sX-Zk-W85">
                                 <rect key="frame" x="16" y="100" width="568" height="480"/>
@@ -1109,10 +1112,10 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="wwg-Tx-xnK" secondAttribute="trailing" id="18o-NN-bAL"/>
                             <constraint firstAttribute="trailing" secondItem="E7U-Dc-qS6" secondAttribute="trailing" id="Gw3-4A-qwH"/>
+                            <constraint firstItem="E7U-Dc-qS6" firstAttribute="top" secondItem="bkI-Kq-nXq" secondAttribute="top" id="MZN-z5-pNe"/>
                             <constraint firstItem="wwg-Tx-xnK" firstAttribute="leading" secondItem="zic-x0-v3T" secondAttribute="leading" id="RoQ-rs-GZG"/>
                             <constraint firstItem="wwg-Tx-xnK" firstAttribute="top" secondItem="E7U-Dc-qS6" secondAttribute="bottom" id="Vjf-0U-VT5"/>
                             <constraint firstItem="V9N-Gh-JaM" firstAttribute="top" secondItem="wwg-Tx-xnK" secondAttribute="bottom" id="ekx-cC-qeL"/>
-                            <constraint firstItem="E7U-Dc-qS6" firstAttribute="top" secondItem="bkI-Kq-nXq" secondAttribute="bottom" constant="-20" id="qnk-Wm-BXe"/>
                             <constraint firstItem="E7U-Dc-qS6" firstAttribute="leading" secondItem="zic-x0-v3T" secondAttribute="leading" id="xsV-U5-FKe"/>
                         </constraints>
                         <variation key="default">
@@ -1123,7 +1126,7 @@
                             <mask key="constraints">
                                 <exclude reference="ekx-cC-qeL"/>
                                 <exclude reference="Gw3-4A-qwH"/>
-                                <exclude reference="qnk-Wm-BXe"/>
+                                <exclude reference="MZN-z5-pNe"/>
                                 <exclude reference="xsV-U5-FKe"/>
                                 <exclude reference="18o-NN-bAL"/>
                                 <exclude reference="RoQ-rs-GZG"/>
@@ -1138,7 +1141,7 @@
                             <mask key="constraints">
                                 <include reference="ekx-cC-qeL"/>
                                 <include reference="Gw3-4A-qwH"/>
-                                <include reference="qnk-Wm-BXe"/>
+                                <include reference="MZN-z5-pNe"/>
                                 <include reference="xsV-U5-FKe"/>
                                 <include reference="18o-NN-bAL"/>
                                 <include reference="RoQ-rs-GZG"/>
