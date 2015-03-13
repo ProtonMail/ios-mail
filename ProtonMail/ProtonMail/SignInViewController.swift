@@ -50,6 +50,8 @@ class SignInViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
         NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
+        
+        updateSignInButton()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -124,6 +126,12 @@ class SignInViewController: UIViewController {
         })
     }
     
+    func updateSignInButton() {
+        signInButton.enabled = !usernameTextField.text.isEmpty && !passwordTextField.text.isEmpty
+    
+        updateButton(signInButton)
+    }
+    
     // MARK: - Actions
     
     @IBAction func rememberButtonAction(sender: UIButton) {
@@ -174,7 +182,7 @@ extension SignInViewController: NSNotificationCenterKeyboardObserverProtocol {
 extension SignInViewController: UITextFieldDelegate {
     func textFieldShouldClear(textField: UITextField) -> Bool {
         signInButton.enabled = false
-        updateButton(signInButton)
+        updateSignInButton()
         return true
     }
 
