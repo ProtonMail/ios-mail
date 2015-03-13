@@ -46,6 +46,7 @@ class SearchViewController: ProtonMailViewController {
         self.tableView.noSeparatorsBelowFooter()
         
         searchTextField.autocapitalizationType = UITextAutocapitalizationType.None
+        searchTextField.returnKeyType = .Search
         searchTextField.delegate = self
         searchTextField.font = UIFont.robotoRegular(size: UIFont.Size.h4)
         searchTextField.textColor = UIColor.whiteColor()
