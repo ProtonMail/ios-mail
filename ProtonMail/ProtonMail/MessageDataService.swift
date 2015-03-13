@@ -291,7 +291,13 @@ class MessageDataService {
      
         return nil
     }
-        
+    
+    func launchCleanUpIfNeeded() {
+        if !sharedUserDataService.isUserCredentialStored {
+            cleanUp()
+        }
+    }
+    
     func search(#query: String, page: Int, managedObjectContext context: NSManagedObjectContext, completion: (([Message]?, NSError?) -> Void)?) {
         queue {
             let completionWrapper: CompletionBlock = {task, response, error in
@@ -326,6 +332,17 @@ class MessageDataService {
     }
     
     // MARK: - Private methods
+    
+    private func cleanUp() {
+        if let context = managedObjectContext {
+            Message.deleteAll(inContext: context)
+        }
+        
+        lastUpdatedStore.clear()
+        writeQueue.clear()
+        
+        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+    }
     
     private func fetchMessageIncrementalUpdates(#lastUpdated: NSDate, completion: CompletionBlock?) {
         struct IncrementalUpdateType {
@@ -419,14 +436,7 @@ class MessageDataService {
     }
     
     @objc private func didSignOutNotification(notification: NSNotification) {
-        if let context = managedObjectContext {
-            Message.deleteAll(inContext: context)
-        }
-        
-        lastUpdatedStore.clear()
-        writeQueue.clear()
-        
-        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        cleanUp()
     }
     
     // MARK: Queue

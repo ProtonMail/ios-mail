@@ -87,7 +87,7 @@ class UserDataService {
     private(set) var isSignedIn: Bool = false
     
     var isUserCredentialStored: Bool {
-        return username != nil && password != nil
+        return username != nil && password != nil && isRememberUser
     }
     
     /// Value is only stored in the keychain
