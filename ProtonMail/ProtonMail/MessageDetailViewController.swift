@@ -72,7 +72,7 @@ class MessageDetailViewController: ProtonMailViewController {
     }
     
     func moreButtonTapped() {
-        println("moreButtonTapped: \(message.title)")
+        self.messageDetailView.animateMoreViewOptions()
     }
 }
 
@@ -100,5 +100,12 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
     func messageDetailViewDidTapReplyMessage(messageView: MessageDetailView, message: Message) {
         println("messageDetailViewDidTapReplyMessage: \(message.title)")
         self.performSegueWithIdentifier("toCompose", sender: self)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == "toCompose") {
+            let composeViewController = segue.destinationViewController.viewControllers!.first as ComposeViewController
+            composeViewController.message = message
+        }
     }
 }

@@ -22,6 +22,8 @@ class ComposeViewController: ProtonMailViewController {
     
     // MARK: - Private attributes
     
+    var message: Message?
+    var selectedContacts: [ContactVO]! = [ContactVO]()
     private var contacts: [ContactVO]! = [ContactVO]()
     private var composeView: ComposeView!
     private var actualEncryptionStep = EncryptionStep.DefinePassword
@@ -57,6 +59,10 @@ class ComposeViewController: ProtonMailViewController {
         
         self.composeView.datasource = self
         self.composeView.delegate = self
+        
+        if let message = message {
+            self.composeView.setMessage(message)
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -145,7 +151,7 @@ extension ComposeViewController: ComposeViewDatasource {
     }
     
     func composeViewSelectedContacts(composeView: ComposeView) ->  [AnyObject]! {
-        return []
+        return selectedContacts
     }
 }
 
