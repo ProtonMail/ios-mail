@@ -49,7 +49,7 @@
     UITextField *textField = [[UITextField alloc] initWithFrame:self.bounds];
     textField.delegate = self.delegate;
     textField.text = @" ";
-    textField.autocorrectionType = UITextAutocorrectionTypeNo;
+    textField.autocorrectionType = UITextAutocorrectionTypeDefault;
     UIFont *font = [[self.class appearance] font];
     if (font)
     {
