@@ -44,6 +44,11 @@ class MailboxPasswordViewController: UIViewController {
         NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        passwordTextField.becomeFirstResponder()
+    }
+    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
