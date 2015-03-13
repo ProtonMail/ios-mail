@@ -91,8 +91,20 @@ class SettingsViewController: ProtonMailViewController {
         dismissKeyboard()
         ActivityIndicatorHelper.showActivityIndicatorAtView(view)
         
-        sharedUserDataService.updateNotificationEmail(recoveryEmailTextField.text) { error in
+        sharedUserDataService.updateNotificationEmail(recoveryEmailTextField.text) { _, error in
             ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+            
+            if let error = error {
+                let alertController = error.alertController()
+                alertController.addOKAction()
+                
+                self.presentViewController(alertController, animated: true, completion: nil)
+            } else {
+                let alertController = UIAlertController(title: NSLocalizedString("Recovery Email Updated"), message: NSLocalizedString("Recovery emails will now be sent to \(self.recoveryEmailTextField.text)."), preferredStyle: .Alert)
+                alertController.addOKAction()
+                
+                self.presentViewController(alertController, animated: true, completion: nil)
+            }
         }
     }
     
@@ -108,8 +120,20 @@ class SettingsViewController: ProtonMailViewController {
         dismissKeyboard()
         ActivityIndicatorHelper.showActivityIndicatorAtView(view)
         
-        sharedUserDataService.updateDisplayName(displayNameTextField.text) { error in
+        sharedUserDataService.updateDisplayName(displayNameTextField.text) { _, error in
             ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+            
+            if let error = error {
+                let alertController = error.alertController()
+                alertController.addOKAction()
+                
+                self.presentViewController(alertController, animated: true, completion: nil)
+            } else {
+                let alertController = UIAlertController(title: NSLocalizedString("Display Name Updated"), message: NSLocalizedString("The display name is now \(self.displayNameTextField.text)."), preferredStyle: .Alert)
+                alertController.addOKAction()
+                
+                self.presentViewController(alertController, animated: true, completion: nil)
+            }
         }
     }
     
@@ -117,8 +141,20 @@ class SettingsViewController: ProtonMailViewController {
         dismissKeyboard()
         ActivityIndicatorHelper.showActivityIndicatorAtView(view)
         
-        sharedUserDataService.updateSignature(signatureTextView.text) { error in
+        sharedUserDataService.updateSignature(signatureTextView.text) { _, error in
             ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+            
+            if let error = error {
+                let alertController = error.alertController()
+                alertController.addOKAction()
+                
+                self.presentViewController(alertController, animated: true, completion: nil)
+            } else {
+                let alertController = UIAlertController(title: NSLocalizedString("Signature Updated"), message: NSLocalizedString("Your signature has been updated."), preferredStyle: .Alert)
+                alertController.addOKAction()
+                
+                self.presentViewController(alertController, animated: true, completion: nil)
+            }
         }
     }
     
