@@ -82,6 +82,8 @@ extension AppDelegate: UIApplicationDelegate {
     
     func applicationDidEnterBackground(application: UIApplication) {
         Snapshot().didEnterBackground(application)
+        
+        sharedMessageDataService.purgeOldMessages()
     }
     
     func applicationWillEnterForeground(application: UIApplication) {
