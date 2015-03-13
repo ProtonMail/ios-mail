@@ -160,15 +160,19 @@ class UserDataService {
         isRememberMailboxPassword = isRemembered
     }
     
+    func isPasswordValid(password: String?) -> Bool {
+        return self.password == password
+    }
+    
     func signIn(username: String, password: String, isRemembered: Bool, completion: UserInfoBlock) {
         sharedAPIService.authAuth(username: username, password: password) { auth, error in
             if error == nil {
                 self.isSignedIn = true
                 self.username = username
+                self.password = password
                 
                 if isRemembered {
                     self.isRememberUser = isRemembered
-                    self.password = password
                 }
                 
                 let completionWrapper: UserInfoBlock = { auth, error in
@@ -200,14 +204,30 @@ class UserDataService {
         sharedAPIService.settingUpdateDisplayName(displayName, completion: completionForUserInfo(completion))
     }
     
-    func updateMailboxPassword(newMailboxPassword: String, completion: CompletionBlock) {
-        sharedAPIService.settingUpdateMailboxPassword(newMailboxPassword, completion: { task, response, error in
-            if error == nil {
-                self.mailboxPassword = newMailboxPassword
+    func updateMailboxPassword(newMailboxPassword: String, completion: CompletionBlock?) {
+        var error: NSError?
+        
+        if let userInfo = userInfo {
+            if let mailboxPassword = mailboxPassword {
+                if let newPrivateKey = OpenPGP().updatePassphrase(userInfo.privateKey, publicKey: userInfo.publicKey, old_pass: mailboxPassword, new_pass: newMailboxPassword, error: &error) {
+                    
+                    
+                    sharedAPIService.userUpdateKeypair(userInfo.publicKey, privateKey: newPrivateKey, completion: { task, response, error in
+                        if error == nil {
+                            self.mailboxPassword = newMailboxPassword
+                            
+                            let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: newPrivateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace)
+                            
+                            self.userInfo = userInfo
+                        }
+                        
+                        completion?(task, response, error)
+                    })
+                } else {
+                    completion?(nil, nil, error)
+                }
             }
-            
-            completion(task, response, error)
-        })
+        }
     }
     
     func updateNotificationEmail(newNotificationEmail: String, completion: UserInfoBlock?) {
@@ -219,11 +239,7 @@ class UserDataService {
             var error = anError
             
             if error == nil {
-                if let data = responseDict?["data"] as? Dictionary<String,AnyObject> {
-                    self.password = newPassword
-                } else {
-                    error = NSError.unableToParseResponse(responseDict)
-                }
+                self.password = newPassword
             }
             
             completion(task, responseDict, error)
