@@ -20,6 +20,7 @@ class SettingsViewController: ProtonMailViewController {
     private let kKeyboardOffsetHeight: CGFloat = 100.0
     private let kFieldsMarginLeft: CGFloat = 8.0
     private let kFieldsMarginTop: CGFloat = 50.0
+    private let resetMailboxPasswordMessage = NSLocalizedString("All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!")
     
     
     // MARK: - Private attributes
@@ -45,8 +46,10 @@ class SettingsViewController: ProtonMailViewController {
     @IBOutlet var recoveryEmailTextField: UITextField!
     @IBOutlet var currentLoginPasswordTextField: UITextField!
     @IBOutlet var newLoginPasswordTextField: UITextField!
+    @IBOutlet var confirmNewLoginPasswordTextField: UITextField!
     @IBOutlet var currentMailboxPasswordTextField: UITextField!
     @IBOutlet var newMailboxPasswordTextField: UITextField!
+    @IBOutlet weak var confirmNewMailboxPasswordTextField: UITextField!
     @IBOutlet var displayNameTextField: UITextField!
     @IBOutlet var signatureTextView: UITextView!
     
@@ -96,19 +99,11 @@ class SettingsViewController: ProtonMailViewController {
     }
     
     @IBAction func loginPasswordSaveButtonTapped(sender: UIButton) {
-        ActivityIndicatorHelper.showActivityIndicatorAtView(loginPasswordContainerView)
-        
-        sharedUserDataService.updatePassword(newLoginPasswordTextField.text) { error in
-            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.loginPasswordContainerView)
-        }
+        updatePassword()
     }
     
     @IBAction func mailboxSaveButtonTapped(sender: UIButton) {
-        ActivityIndicatorHelper.showActivityIndicatorAtView(mailboxPasswordContainerView)
-        
-        sharedUserDataService.updateMailboxPassword(newMailboxPasswordTextField.text) { error in
-            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.mailboxPasswordContainerView)
-        }
+        updateMailboxPassword()
     }
     
     @IBAction func displayNameSaveButtonTapped(sender: UIButton) {
@@ -129,6 +124,115 @@ class SettingsViewController: ProtonMailViewController {
     
     
     // MARK: - Private methods
+    
+    private func clearMailboxPasswordFields() {
+        self.currentMailboxPasswordTextField.text = ""
+        self.newMailboxPasswordTextField.text = ""
+        self.confirmNewMailboxPasswordTextField.text = ""
+    }
+    
+    private func updateMailboxPassword() {
+        if !sharedUserDataService.isMailboxPasswordValid(currentMailboxPasswordTextField.text) {
+            let alertController = UIAlertController(title: NSLocalizedString("Password Mismatch"), message: NSLocalizedString("The mailbox password you entered does not match the current mailbox password."), preferredStyle: .Alert)
+            alertController.addOKAction()
+            
+            presentViewController(alertController, animated: true, completion: { () -> Void in
+                self.currentMailboxPasswordTextField.text = ""
+            })
+            
+            return
+        }
+        
+        if validatePasswordTextField(newMailboxPasswordTextField, matchesConfirmPasswordTextField: confirmNewMailboxPasswordTextField) {
+            let alertController = UIAlertController(title: NSLocalizedString("Confirm mailbox password change"), message: resetMailboxPasswordMessage, preferredStyle: .ActionSheet)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: { (action) -> Void in
+                self.clearMailboxPasswordFields()
+            }))
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Change mailbox password"), style: .Destructive, handler: { (action) -> Void in
+                ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
+                
+                sharedUserDataService.updateMailboxPassword(self.newMailboxPasswordTextField.text) { _, _, error in
+                    ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                    
+                    if let error = error {
+                        let alertController = error.alertController()
+                        alertController.addOKAction()
+                        
+                        self.presentViewController(alertController, animated: true, completion: nil)
+                    } else {
+                        let alertController = UIAlertController(title: NSLocalizedString("Password Updated"), message: NSLocalizedString("Please use your new mailbox password when signing in."), preferredStyle: .Alert)
+                        alertController.addOKAction()
+                        
+                        self.presentViewController(alertController, animated: true, completion: { () -> Void in
+                            self.clearMailboxPasswordFields()
+                        })
+                    }
+                }
+            }))
+            
+            presentViewController(alertController, animated: true, completion: { () -> Void in
+                self.activeField?.resignFirstResponder()
+                return
+            })
+        }
+    }
+    
+    private func updatePassword() {
+        if !sharedUserDataService.isPasswordValid(currentLoginPasswordTextField.text) {
+            let alertController = UIAlertController(title: NSLocalizedString("Password Mismatch"), message: NSLocalizedString("The password you entered does not match the current password."), preferredStyle: .Alert)
+            alertController.addOKAction()
+            
+            presentViewController(alertController, animated: true, completion: { () -> Void in
+                self.currentLoginPasswordTextField.text = ""
+            })
+            
+            return
+        }
+        
+        if validatePasswordTextField(newLoginPasswordTextField, matchesConfirmPasswordTextField: confirmNewLoginPasswordTextField) {
+            activeField?.resignFirstResponder()
+            
+            ActivityIndicatorHelper.showActivityIndicatorAtView(view)
+            
+            sharedUserDataService.updatePassword(newLoginPasswordTextField.text) { _, _, error in
+                ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                
+                if let error = error {
+                    let alertController = error.alertController()
+                    alertController.addOKAction()
+                    
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                } else {
+                    
+                    
+                    let alertController = UIAlertController(title: NSLocalizedString("Password Updated"), message: NSLocalizedString("Please use your new password when signing in."), preferredStyle: .Alert)
+                    alertController.addOKAction()
+                    
+                    self.presentViewController(alertController, animated: true, completion: { () -> Void in
+                        self.currentLoginPasswordTextField.text = ""
+                        self.newLoginPasswordTextField.text = ""
+                        self.confirmNewLoginPasswordTextField.text = ""
+                    })
+                }
+            }
+        }
+    }
+    
+    private func validatePasswordTextField(passwordTextField: UITextField, matchesConfirmPasswordTextField confirmPasswordTextField: UITextField) -> Bool {
+        let result = !passwordTextField.text.isEmpty && passwordTextField.text == confirmPasswordTextField.text
+        
+        if !result {
+            let alertController = UIAlertController(title: NSLocalizedString("Password Mismatch"), message: NSLocalizedString("The passwords you entered do not match."), preferredStyle: .Alert)
+            alertController.addOKAction()
+            
+            presentViewController(alertController, animated: true, completion: { () -> Void in
+                passwordTextField.text = ""
+                confirmPasswordTextField.text = ""
+            })
+        }
+        
+        return result
+    }
     
     private func setupUserInfo() {
         storageProgressBar.progress = 0.0
@@ -164,6 +268,27 @@ extension SettingsViewController: UITextFieldDelegate {
     
     func textFieldDidEndEditing(textField: UITextField) {
         self.activeField = nil
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        switch(textField) {
+        case currentLoginPasswordTextField:
+            newLoginPasswordTextField.becomeFirstResponder()
+        case newLoginPasswordTextField:
+            confirmNewLoginPasswordTextField.becomeFirstResponder()
+        case confirmNewLoginPasswordTextField:
+            updatePassword()
+        case currentMailboxPasswordTextField:
+            newMailboxPasswordTextField.becomeFirstResponder()
+        case newMailboxPasswordTextField:
+            confirmNewMailboxPasswordTextField.becomeFirstResponder()
+        case confirmNewMailboxPasswordTextField:
+            updateMailboxPassword()
+        default:
+            textField.resignFirstResponder()
+        }
+        
+        return true
     }
 }
 

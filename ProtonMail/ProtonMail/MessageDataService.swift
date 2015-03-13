@@ -291,7 +291,13 @@ class MessageDataService {
      
         return nil
     }
-        
+    
+    func launchCleanUpIfNeeded() {
+        if !sharedUserDataService.isUserCredentialStored {
+            cleanUp()
+        }
+    }
+    
     func search(#query: String, page: Int, managedObjectContext context: NSManagedObjectContext, completion: (([Message]?, NSError?) -> Void)?) {
         queue {
             let completionWrapper: CompletionBlock = {task, response, error in
@@ -324,8 +330,42 @@ class MessageDataService {
             sharedAPIService.messageSearch(query, page: page, completion: completionWrapper)
         }
     }
+
+    func purgeOldMessages() {
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            let cutoffTimeInterval: NSTimeInterval = 3 * 86400 // days converted to seconds
+            let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
+            fetchRequest.predicate = NSPredicate(format: "%K < %@", Message.Attributes.time, NSDate(timeIntervalSinceNow: -cutoffTimeInterval))
+
+            var error: NSError?
+            if let oldMessages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
+                for message in oldMessages {
+                    context.deleteObject(message)
+                }
+                
+                NSLog("\(__FUNCTION__) \(oldMessages.count) old messages purged.")
+                
+                if let error = context.saveUpstreamIfNeeded() {
+                    NSLog("\(__FUNCTION__) error: \(error)")
+                }
+            } else {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
+        }
+    }
     
     // MARK: - Private methods
+    
+    private func cleanUp() {
+        if let context = managedObjectContext {
+            Message.deleteAll(inContext: context)
+        }
+        
+        lastUpdatedStore.clear()
+        writeQueue.clear()
+        
+        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+    }
     
     private func fetchMessageIncrementalUpdates(#lastUpdated: NSDate, completion: CompletionBlock?) {
         struct IncrementalUpdateType {
@@ -419,14 +459,7 @@ class MessageDataService {
     }
     
     @objc private func didSignOutNotification(notification: NSNotification) {
-        if let context = managedObjectContext {
-            Message.deleteAll(inContext: context)
-        }
-        
-        lastUpdatedStore.clear()
-        writeQueue.clear()
-        
-        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        cleanUp()
     }
     
     // MARK: Queue

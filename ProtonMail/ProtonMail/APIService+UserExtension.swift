@@ -78,6 +78,16 @@ extension APIService {
             completion?(nil, nil, NSError.badParameter(emails))
         }
     }
+    
+    func userUpdateKeypair(publicKey: String, privateKey: String, completion: CompletionBlock?) {
+        let path = UserPath.base.stringByAppendingPathComponent("key")
+        let parameters = [
+            "public" : publicKey,
+            "private" : privateKey
+        ]
+        
+        request(method: .POST, path: path, parameters: parameters, completion: completion)
+    }
 }
 
 // MARK: - UserInfo extension
