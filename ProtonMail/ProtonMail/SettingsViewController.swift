@@ -88,14 +88,12 @@ class SettingsViewController: ProtonMailViewController {
     // MARK: - Actions Outlets
     
     @IBAction func recoveryEmailSaveButtonTapped(sender: UIButton) {
-        ActivityIndicatorHelper.showActivityIndicatorAtView(notificationContainerView)
+        dismissKeyboard()
+        ActivityIndicatorHelper.showActivityIndicatorAtView(view)
         
         sharedUserDataService.updateNotificationEmail(recoveryEmailTextField.text) { error in
-            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.notificationContainerView)
+            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
         }
-    }
-    
-    @IBAction func recoveryEmailDeleteButtonTapped(sender: UIButton) {
     }
     
     @IBAction func loginPasswordSaveButtonTapped(sender: UIButton) {
@@ -107,18 +105,20 @@ class SettingsViewController: ProtonMailViewController {
     }
     
     @IBAction func displayNameSaveButtonTapped(sender: UIButton) {
-        ActivityIndicatorHelper.showActivityIndicatorAtView(displayNameContainerView)
+        dismissKeyboard()
+        ActivityIndicatorHelper.showActivityIndicatorAtView(view)
         
         sharedUserDataService.updateDisplayName(displayNameTextField.text) { error in
-            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.displayNameContainerView)
+            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
         }
     }
     
     @IBAction func signatureSaveButtonTapped(sender: UIButton) {
-        ActivityIndicatorHelper.showActivityIndicatorAtView(signatureContainerView)
+        dismissKeyboard()
+        ActivityIndicatorHelper.showActivityIndicatorAtView(view)
         
         sharedUserDataService.updateSignature(signatureTextView.text) { error in
-            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.signatureContainerView)
+            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
         }
     }
     
@@ -171,8 +171,7 @@ class SettingsViewController: ProtonMailViewController {
             }))
             
             presentViewController(alertController, animated: true, completion: { () -> Void in
-                self.activeField?.resignFirstResponder()
-                return
+                self.dismissKeyboard()
             })
         }
     }
@@ -190,7 +189,7 @@ class SettingsViewController: ProtonMailViewController {
         }
         
         if validatePasswordTextField(newLoginPasswordTextField, matchesConfirmPasswordTextField: confirmNewLoginPasswordTextField) {
-            activeField?.resignFirstResponder()
+            dismissKeyboard()
             
             ActivityIndicatorHelper.showActivityIndicatorAtView(view)
             
