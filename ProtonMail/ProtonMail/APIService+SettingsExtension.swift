@@ -30,14 +30,6 @@ extension APIService {
         request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
 
-    func settingUpdateMailboxPassword(newPassword: String, completion: CompletionBlock) {
-        let path = SettingPath.base.stringByAppendingPathComponent("keypwd")
-        // TODO: Add parameters for update mailbox password when defined in API
-        let parameters = [:]
-
-        request(method: .PUT, path: path, parameters: parameters, completion: completion)
-    }
-    
     func settingUpdateNotificationEmail(notificationEmail: String, completion: CompletionBlock) {
         let path = SettingPath.base.stringByAppendingPathComponent("noticeemail")
         let parameters = ["NotificationEmail" : notificationEmail]

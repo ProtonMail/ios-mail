@@ -243,7 +243,8 @@ class MessageDetailView: UIView {
         
         self.emailTitle = UILabel()
         self.emailTitle.font = UIFont.robotoLight(size: UIFont.Size.h1)
-        self.emailTitle.numberOfLines = 1
+        self.emailTitle.numberOfLines = 0
+        self.emailTitle.lineBreakMode = .ByWordWrapping
         self.emailTitle.text = self.message.title
         self.emailTitle.textColor = UIColor.ProtonMail.Gray_383A3B
         self.emailHeaderView.addSubview(emailTitle)
@@ -814,7 +815,7 @@ extension MessageDetailView: UITableViewDelegate {
         
         if !documentInteractionController.presentOpenInMenuFromRect(cell.bounds, inView: cell, animated: true) {
             let alert = UIAlertController(title: NSLocalizedString("Unsupported file type"), message: NSLocalizedString("There are no installed apps that can open this file type."), preferredStyle: .Alert)
-            alert.addAction((UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil)))
+            alert.addAction((UIAlertAction.okAction()))
             
             if let viewController = delegate as? MessageDetailViewController {
                 viewController.presentViewController(alert, animated: true, completion: nil)

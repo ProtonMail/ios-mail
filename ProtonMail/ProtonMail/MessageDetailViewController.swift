@@ -84,7 +84,7 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
         NSLog("\(__FUNCTION__) \(error)")
         
         let alertController = error.alertController()
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
+        alertController.addOKAction()
         
         presentViewController(alertController, animated: true, completion: nil)
     }

@@ -50,6 +50,8 @@ class SignInViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
         NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
+        
+        updateSignInButton(usernameText: usernameTextField.text, passwordText: passwordTextField.text)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -94,7 +96,7 @@ class SignInViewController: UIViewController {
                 NSLog("\(__FUNCTION__) error: \(error)")
                 
                 let alertController = error.alertController()
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
+                alertController.addOKAction()
                 
                 self.presentViewController(alertController, animated: true, completion: nil)
             } else {
@@ -118,9 +120,11 @@ class SignInViewController: UIViewController {
         }
     }
     
-    func updateButton(button: UIButton) {
+    func updateSignInButton(#usernameText: String, passwordText: String) {
+        signInButton.enabled = !usernameText.isEmpty && !passwordText.isEmpty
+    
         UIView.animateWithDuration(animationDuration, animations: { () -> Void in
-            button.alpha = button.enabled ? 1.0 : self.buttonDisabledAlpha
+            self.signInButton.alpha = self.signInButton.enabled ? 1.0 : self.buttonDisabledAlpha
         })
     }
     
@@ -173,8 +177,7 @@ extension SignInViewController: NSNotificationCenterKeyboardObserverProtocol {
 // MARK: - UITextFieldDelegate
 extension SignInViewController: UITextFieldDelegate {
     func textFieldShouldClear(textField: UITextField) -> Bool {
-        signInButton.enabled = false
-        updateButton(signInButton)
+        updateSignInButton(usernameText: "", passwordText: "")
         return true
     }
 
@@ -183,12 +186,10 @@ extension SignInViewController: UITextFieldDelegate {
         let changedText = text.stringByReplacingCharactersInRange(range, withString: string)
         
         if textField == usernameTextField {
-            signInButton.enabled = !changedText.isEmpty && !passwordTextField.text.isEmpty
+            updateSignInButton(usernameText: changedText, passwordText: passwordTextField.text)
         } else if textField == passwordTextField {
-            signInButton.enabled = !changedText.isEmpty && !usernameTextField.text.isEmpty
+            updateSignInButton(usernameText: usernameTextField.text, passwordText: changedText)
         }
-        
-        updateButton(signInButton)
         
         return true
     }

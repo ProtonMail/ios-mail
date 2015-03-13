@@ -24,10 +24,11 @@ class MenuViewController: UIViewController {
     
     // MARK: - Private constants
     
-    private let items = [MenuItem.inbox, MenuItem.starred, MenuItem.drafts, MenuItem.sent, MenuItem.trash, MenuItem.spam, MenuItem.contacts, MenuItem.settings, MenuItem.signout]
+    private let items = [MenuItem.inbox, MenuItem.starred, MenuItem.drafts, MenuItem.sent, MenuItem.trash, MenuItem.spam, MenuItem.contacts, MenuItem.settings, MenuItem.bugs, MenuItem.signout]
     private let kMenuCellHeight: CGFloat = 62.0
     private let kMenuOptionsWidth: CGFloat = 227.0
     
+    private let kSegueToBugs: String = "toBugs"
     private let kSegueToInbox: String = "toInbox"
     private let kSegueToStarred: String = "toStarred"
     private let kSegueToDrafts: String = "toDrafts"
@@ -183,6 +184,7 @@ extension MenuViewController: UITableViewDataSource {
 
 extension MenuViewController {
     enum MenuItem: String {
+        case bugs = "Bugs"
         case inbox = "Inbox"
         case starred = "Starred"
         case drafts = "Drafts"
