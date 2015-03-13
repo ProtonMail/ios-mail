@@ -270,6 +270,11 @@ extension ContactsViewController: UITableViewDelegate {
             editContactViewController.contact = self.selectedContact
             println("tableView.indexPathForSelectedRow() = \(tableView.indexPathForSelectedRow())")
         }
+        
+        if (segue.identifier == "toCompose") {
+            let composeViewController: ComposeViewController = segue.destinationViewController.viewControllers![0] as ComposeViewController
+            composeViewController.selectedContacts.append(self.selectedContact)
+        }
     }
     
     private func showContactBelongsToAddressBookError() {
@@ -279,6 +284,17 @@ extension ContactsViewController: UITableViewDelegate {
         alertController.addOKAction()
         
         self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var contact: ContactVO
+        if (tableView == self.tableView) {
+            self.selectedContact = self.contacts[indexPath.row]
+        } else {
+            self.selectedContact = self.searchResults[indexPath.row]
+        }
+        
+        self.performSegueWithIdentifier("toCompose", sender: self)
     }
 }
 
