@@ -23,7 +23,6 @@ static CGFloat const ROW_HEIGHT = 64.0;
 
 @interface MBContactPicker()
 
-@property (nonatomic, weak) MBContactCollectionView *contactCollectionView;
 @property (nonatomic, weak) UITableView *searchTableView;
 @property (nonatomic) NSArray *filteredContacts;
 @property (nonatomic) NSArray *contacts;

@@ -57,7 +57,7 @@ class ComposeViewController: ProtonMailViewController {
         retrieveServerContactList { () -> Void in
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self.contacts.sort { $0.name.lowercaseString < $1.name.lowercaseString }
-                self.composeView.contactPicker.reloadData()
+                self.composeView.toContactPicker.reloadData()
                 self.composeView.finishRetrievingContacts()
             })
         }
@@ -67,7 +67,7 @@ class ComposeViewController: ProtonMailViewController {
         super.viewDidAppear(animated)
         
         if (selectedContacts.count == 0) {
-            self.composeView.contactPicker.becomeFirstResponder()
+            self.composeView.toContactPicker.becomeFirstResponder()
         } else {
             self.composeView.bodyTextView.becomeFirstResponder()
         }
