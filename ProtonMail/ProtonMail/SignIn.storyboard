@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iNi-o2-nXB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14D87h" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iNi-o2-nXB">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="Roboto-Light.ttf">
@@ -10,8 +11,21 @@
             <string>Roboto-Light</string>
             <string>Roboto-Light</string>
             <string>Roboto-Light</string>
+            <string>Roboto-Light</string>
+            <string>Roboto-Light</string>
+            <string>Roboto-Light</string>
+        </mutableArray>
+        <mutableArray key="Roboto-Regular.ttf">
+            <string>Roboto-Regular</string>
         </mutableArray>
         <mutableArray key="Roboto-Thin.ttf">
+            <string>Roboto-Thin</string>
+            <string>Roboto-Thin</string>
+            <string>Roboto-Thin</string>
+            <string>Roboto-Thin</string>
+            <string>Roboto-Thin</string>
+            <string>Roboto-Thin</string>
+            <string>Roboto-Thin</string>
             <string>Roboto-Thin</string>
             <string>Roboto-Thin</string>
             <string>Roboto-Thin</string>
@@ -59,12 +73,18 @@
                                     <constraint firstAttribute="width" constant="228" id="6Lc-n5-dpv"/>
                                     <constraint firstAttribute="height" constant="37" id="Ajb-2I-lem"/>
                                 </constraints>
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="86" y="137" width="228" height="37"/>
+                                </variation>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SIGN IN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fjY-z1-3LU">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="SIGN IN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fjY-z1-3LU">
                                 <rect key="frame" x="269" y="259" width="63" height="22"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="167" y="260" width="66" height="21"/>
+                                </variation>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="gnm-cH-vcp" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
                                 <rect key="frame" x="161" y="375" width="278" height="44"/>
@@ -75,11 +95,14 @@
                                 <color key="textColor" red="0.30980392156862746" green="0.30980392156862746" blue="0.30980392156862746" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="61" y="374" width="278" height="44"/>
+                                </variation>
                                 <connections>
                                     <outlet property="delegate" destination="rb7-9h-TvB" id="WUW-bQ-gmz"/>
                                 </connections>
                             </textField>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oyG-Fo-wN1">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oyG-Fo-wN1">
                                 <rect key="frame" x="161" y="434" width="205" height="27"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Z40-fI-qfm">
@@ -103,11 +126,14 @@
                                             <action selector="rememberButtonAction:" destination="Zzb-6r-tlP" eventType="touchUpInside" id="wxg-fy-hAk"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remember me on this device." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VAX-s6-YBf">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Remember me on this device." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VAX-s6-YBf">
                                         <rect key="frame" x="34" y="0.0" width="163" height="27"/>
                                         <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="12.5"/>
                                         <color key="textColor" red="0.2196078431372549" green="0.22745098039215686" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
+                                        <variation key="widthClass=compact" misplaced="YES">
+                                            <rect key="frame" x="34" y="0.0" width="167" height="27"/>
+                                        </variation>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -132,29 +158,21 @@
                                         <exclude reference="3lf-Jl-0yv"/>
                                     </mask>
                                 </variation>
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="61" y="434" width="209" height="27"/>
+                                </variation>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="72N-j7-s2R">
-                                <rect key="frame" x="189" y="484" width="223" height="44"/>
-                                <color key="backgroundColor" red="0.20784313725490194" green="0.29411764705882354" blue="0.36862745098039218" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="D2v-Iz-IHe"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="16"/>
-                                <state key="normal" title="Sign In">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="signInAction:" destination="rb7-9h-TvB" eventType="touchUpInside" id="gIp-WA-1aM"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AJu-1e-alo">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AJu-1e-alo">
                                 <rect key="frame" x="251" y="540" width="98" height="27"/>
                                 <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="12.5"/>
                                 <state key="normal" title="SIGN UP BUTTON">
                                     <color key="titleColor" red="0.078431372549019607" green="0.23137254901960785" blue="0.50980392156862742" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="148" y="540" width="105" height="27"/>
+                                </variation>
                                 <connections>
-                                    <action selector="signUpAction:" destination="rb7-9h-TvB" eventType="touchUpInside" id="JDD-8i-cLP"/>
+                                    <segue destination="Oxb-Ai-gED" kind="push" id="MUM-GS-Uo9"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="User name" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="sKV-Mt-Vgi" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
@@ -167,10 +185,30 @@
                                 <color key="textColor" red="0.30980392156862746" green="0.30980392156862746" blue="0.30980392156862746" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="61" y="319" width="278" height="44"/>
+                                </variation>
                                 <connections>
                                     <outlet property="delegate" destination="rb7-9h-TvB" id="52c-9G-V7S"/>
                                 </connections>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="72N-j7-s2R">
+                                <rect key="frame" x="189" y="484" width="223" height="44"/>
+                                <color key="backgroundColor" red="0.20784313725490194" green="0.29411764705882354" blue="0.36862745098039218" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="D2v-Iz-IHe"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="16"/>
+                                <state key="normal" title="Sign In">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="89" y="483" width="223" height="44"/>
+                                </variation>
+                                <connections>
+                                    <action selector="signInAction:" destination="rb7-9h-TvB" eventType="touchUpInside" id="gIp-WA-1aM"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.13725490196078433" green="0.22745098039215686" blue="0.37254901960784315" alpha="1" colorSpace="calibratedRGB"/>
                         <gestureRecognizers/>
@@ -249,6 +287,7 @@
                         <outlet property="signUpButton" destination="AJu-1e-alo" id="qIr-He-zqh"/>
                         <outlet property="usernameTextField" destination="sKV-Mt-Vgi" id="fer-Ki-efM"/>
                         <segue destination="Zzb-6r-tlP" kind="show" identifier="mailboxSegue" id="xf0-Do-kI6"/>
+                        <segue destination="F7r-Ek-PBO" kind="show" identifier="signUpKeySegue" id="J5q-0Y-9RO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GLw-RM-bn5" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -258,7 +297,413 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="68" y="253"/>
+            <point key="canvasLocation" x="196.5" y="253"/>
+        </scene>
+        <!--Step 1 / 2-->
+        <scene sceneID="OWV-Zk-3XA">
+            <objects>
+                <viewController storyboardIdentifier="SignUpViewController" extendedLayoutIncludesOpaqueBars="YES" id="Oxb-Ai-gED" customClass="SignUpViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="XXT-zE-d3j"/>
+                        <viewControllerLayoutGuide type="bottom" id="WYy-cb-pu3"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="L4a-RF-dlW">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="SignIn" translatesAutoresizingMaskIntoConstraints="NO" id="KVe-MD-RVX">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hlk-SA-ixG" userLabel="CenterView">
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="bCM-Uy-1Vg">
+                                        <rect key="frame" x="186" y="184" width="228" height="37"/>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="29" y="22" width="228" height="37"/>
+                                        </variation>
+                                    </imageView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rEv-4I-fyG">
+                                        <rect key="frame" x="161" y="434" width="205" height="27"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="39" y="291" width="209" height="27"/>
+                                        </variation>
+                                    </view>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="WT8-cQ-yra" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
+                                        <rect key="frame" x="161" y="375" width="278" height="44"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="textColor" red="0.30980392159999998" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="4" y="175" width="278" height="44"/>
+                                        </variation>
+                                        <connections>
+                                            <outlet property="delegate" destination="Oxb-Ai-gED" id="c8p-Lg-Lrv"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Optional Notification Email" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="rqF-Gl-gky" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
+                                        <rect key="frame" x="161" y="375" width="278" height="44"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="textColor" red="0.30980392159999998" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="go" enablesReturnKeyAutomatically="YES"/>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="4" y="221" width="278" height="44"/>
+                                        </variation>
+                                        <connections>
+                                            <outlet property="delegate" destination="Oxb-Ai-gED" id="5ed-OE-wKN"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="6KX-16-q3y" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
+                                        <rect key="frame" x="161" y="320" width="278" height="44"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="textColor" red="0.30980392159999998" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="4" y="128" width="278" height="44"/>
+                                        </variation>
+                                        <connections>
+                                            <outlet property="delegate" destination="Oxb-Ai-gED" id="thf-I4-sOg"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="User name" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Z0p-Ex-OQb" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
+                                        <rect key="frame" x="161" y="320" width="278" height="44"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="textColor" red="0.30980392159999998" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="4" y="81" width="278" height="44"/>
+                                        </variation>
+                                        <connections>
+                                            <outlet property="delegate" destination="Oxb-Ai-gED" id="bq9-Wp-oFh"/>
+                                        </connections>
+                                    </textField>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bri-v1-HCI">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                        <subviews>
+                                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="RMg-OP-CqC">
+                                                <rect key="frame" x="-10" y="-10" width="20" height="20"/>
+                                                <variation key="widthClass=compact" fixedFrame="YES">
+                                                    <rect key="frame" x="12" y="12" width="20" height="20"/>
+                                                </variation>
+                                            </activityIndicatorView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cancel_compose" translatesAutoresizingMaskIntoConstraints="NO" id="vQU-Pc-ufL">
+                                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                                <variation key="widthClass=compact" fixedFrame="YES">
+                                                    <rect key="frame" x="12" y="12" width="22" height="22"/>
+                                                </variation>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <variation key="default">
+                                            <mask key="subviews">
+                                                <exclude reference="RMg-OP-CqC"/>
+                                                <exclude reference="vQU-Pc-ufL"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="238" y="81" width="44" height="44"/>
+                                            <mask key="subviews">
+                                                <include reference="RMg-OP-CqC"/>
+                                                <include reference="vQU-Pc-ufL"/>
+                                            </mask>
+                                        </variation>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="e3T-xB-Ed6">
+                                        <rect key="frame" x="0.0" y="0.0" width="26" height="27"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="12"/>
+                                        <inset key="titleEdgeInsets" minX="11" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" image="unchecked_signin"/>
+                                        <state key="selected" image="checked_signin"/>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="17" y="269" width="26" height="27"/>
+                                        </variation>
+                                        <connections>
+                                            <action selector="updateMeNewsAction:" destination="Oxb-Ai-gED" eventType="touchUpInside" id="tEf-xq-yyt"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Update me about new features." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hdU-rU-aR8">
+                                        <rect key="frame" x="34" y="0.0" width="163" height="27"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="13"/>
+                                        <color key="textColor" red="0.21960784310000001" green="0.2274509804" blue="0.23137254900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="50" y="269" width="237" height="27"/>
+                                        </variation>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DKx-tP-pCP">
+                                        <rect key="frame" x="189" y="484" width="223" height="44"/>
+                                        <color key="backgroundColor" red="0.20784313730000001" green="0.29411764709999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="16"/>
+                                        <state key="normal" title="Sign Up">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="32" y="311" width="223" height="44"/>
+                                        </variation>
+                                        <connections>
+                                            <action selector="signUpAction:" destination="Oxb-Ai-gED" eventType="touchUpInside" id="fCz-yu-eYQ"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="355" id="Xq6-0M-8s4"/>
+                                    <constraint firstAttribute="width" constant="287" id="Yrk-Qo-DV4"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="bCM-Uy-1Vg"/>
+                                        <exclude reference="rEv-4I-fyG"/>
+                                        <exclude reference="WT8-cQ-yra"/>
+                                        <exclude reference="rqF-Gl-gky"/>
+                                        <exclude reference="6KX-16-q3y"/>
+                                        <exclude reference="Z0p-Ex-OQb"/>
+                                        <exclude reference="Bri-v1-HCI"/>
+                                        <exclude reference="e3T-xB-Ed6"/>
+                                        <exclude reference="hdU-rU-aR8"/>
+                                        <exclude reference="DKx-tP-pCP"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <exclude reference="Xq6-0M-8s4"/>
+                                        <exclude reference="Yrk-Qo-DV4"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="subviews">
+                                        <include reference="bCM-Uy-1Vg"/>
+                                        <include reference="rEv-4I-fyG"/>
+                                        <include reference="WT8-cQ-yra"/>
+                                        <include reference="rqF-Gl-gky"/>
+                                        <include reference="6KX-16-q3y"/>
+                                        <include reference="Z0p-Ex-OQb"/>
+                                        <include reference="Bri-v1-HCI"/>
+                                        <include reference="e3T-xB-Ed6"/>
+                                        <include reference="hdU-rU-aR8"/>
+                                        <include reference="DKx-tP-pCP"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <include reference="Xq6-0M-8s4"/>
+                                        <include reference="Yrk-Qo-DV4"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" name="keyboardFocusIndicatorColor" catalog="System" colorSpace="catalog"/>
+                        <constraints>
+                            <constraint firstItem="KVe-MD-RVX" firstAttribute="centerX" secondItem="hlk-SA-ixG" secondAttribute="centerX" id="1m7-KL-dR1"/>
+                            <constraint firstItem="WYy-cb-pu3" firstAttribute="top" secondItem="KVe-MD-RVX" secondAttribute="bottom" id="BVF-Ge-UwQ"/>
+                            <constraint firstAttribute="centerY" relation="greaterThanOrEqual" secondItem="hlk-SA-ixG" secondAttribute="centerY" constant="10" id="DCs-v0-wKO"/>
+                            <constraint firstAttribute="centerX" secondItem="hlk-SA-ixG" secondAttribute="centerX" constant="-0.5" id="bp1-oM-OgA"/>
+                            <constraint firstItem="KVe-MD-RVX" firstAttribute="leading" secondItem="L4a-RF-dlW" secondAttribute="leading" id="rYe-N0-UH9"/>
+                            <constraint firstItem="KVe-MD-RVX" firstAttribute="top" secondItem="L4a-RF-dlW" secondAttribute="topMargin" id="spR-Ji-Dxc"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="1m7-KL-dR1"/>
+                                <exclude reference="rYe-N0-UH9"/>
+                                <exclude reference="spR-Ji-Dxc"/>
+                                <exclude reference="DCs-v0-wKO"/>
+                                <exclude reference="bp1-oM-OgA"/>
+                                <exclude reference="BVF-Ge-UwQ"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="KVe-MD-RVX"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="1m7-KL-dR1"/>
+                                <include reference="rYe-N0-UH9"/>
+                                <include reference="spR-Ji-Dxc"/>
+                                <include reference="DCs-v0-wKO"/>
+                                <include reference="bp1-oM-OgA"/>
+                                <include reference="BVF-Ge-UwQ"/>
+                            </mask>
+                        </variation>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="Hmc-nO-UBw" appends="YES" id="6Tz-gB-27Y"/>
+                        </connections>
+                    </view>
+                    <navigationItem key="navigationItem" title="Step 1 / 2" id="7yq-qt-GhL"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="checkImage" destination="vQU-Pc-ufL" id="gdV-hd-lCP"/>
+                        <outlet property="confirmInput" destination="WT8-cQ-yra" id="Spr-th-dpc"/>
+                        <outlet property="keyboardPaddingConstraint" destination="DCs-v0-wKO" id="Fe4-xh-xt7"/>
+                        <outlet property="loadingSpanerView" destination="RMg-OP-CqC" id="uZ3-H3-Vg0"/>
+                        <outlet property="loadingView" destination="Bri-v1-HCI" id="73L-sQ-YFz"/>
+                        <outlet property="notificationEmail" destination="rqF-Gl-gky" id="naR-2z-W2h"/>
+                        <outlet property="passwordInput" destination="6KX-16-q3y" id="e2N-WA-1Dd"/>
+                        <outlet property="signUpButton" destination="DKx-tP-pCP" id="nMf-FW-r7i"/>
+                        <outlet property="updateNewsButton" destination="e3T-xB-Ed6" id="VAe-09-NZj"/>
+                        <outlet property="userNameInput" destination="Z0p-Ex-OQb" id="27Z-Ic-0Xj"/>
+                        <segue destination="F7r-Ek-PBO" kind="show" identifier="signUpKeySegue" id="Vjc-UL-fXB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CTM-qX-4pb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="Hmc-nO-UBw">
+                    <connections>
+                        <action selector="tapAction:" destination="Oxb-Ai-gED" id="ovP-dC-Zdr"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="-222" y="1001"/>
+        </scene>
+        <!--Step 2 / 2-->
+        <scene sceneID="gfC-q2-gyr">
+            <objects>
+                <viewController storyboardIdentifier="SignUpKeyViewController" extendedLayoutIncludesOpaqueBars="YES" id="F7r-Ek-PBO" customClass="SignUpKeyViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="is7-JW-iqY"/>
+                        <viewControllerLayoutGuide type="bottom" id="Gbu-6B-qIJ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="No8-Rh-EYl">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="SignIn" translatesAutoresizingMaskIntoConstraints="NO" id="Srq-Aa-xd5">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Ip-37-mLq" userLabel="CenterView">
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="Ql8-un-zq2">
+                                        <rect key="frame" x="186" y="184" width="228" height="37"/>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="29" y="22" width="228" height="37"/>
+                                        </variation>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CREATE MAILBOX PASSWORD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eCV-43-Yre">
+                                        <rect key="frame" x="221" y="294" width="159" height="22"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="8" y="132" width="271" height="21"/>
+                                        </variation>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm Mail box password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Wab-0Y-SfU" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
+                                        <rect key="frame" x="161" y="375" width="278" height="44"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="textColor" red="0.30980392159999998" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="4" y="225" width="278" height="44"/>
+                                        </variation>
+                                        <connections>
+                                            <outlet property="delegate" destination="F7r-Ek-PBO" id="pNw-PL-mxh"/>
+                                        </connections>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q2I-Zj-1lz">
+                                        <rect key="frame" x="189" y="484" width="223" height="44"/>
+                                        <color key="backgroundColor" red="0.20784313730000001" green="0.29411764709999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="16"/>
+                                        <state key="normal" title="Generate Keypair">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="32" y="311" width="223" height="44"/>
+                                        </variation>
+                                        <connections>
+                                            <action selector="generateKeyAction:" destination="F7r-Ek-PBO" eventType="touchUpInside" id="eOC-rp-uRe"/>
+                                        </connections>
+                                    </button>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Mail box password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="4CM-v1-pmD" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
+                                        <rect key="frame" x="161" y="320" width="278" height="44"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="textColor" red="0.30980392159999998" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
+                                        <variation key="widthClass=compact" fixedFrame="YES">
+                                            <rect key="frame" x="4" y="173" width="278" height="44"/>
+                                        </variation>
+                                        <connections>
+                                            <outlet property="delegate" destination="F7r-Ek-PBO" id="vce-u3-t5t"/>
+                                        </connections>
+                                    </textField>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="287" id="b9k-zu-35a"/>
+                                    <constraint firstAttribute="height" constant="355" id="oQz-h6-qtL"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="Ql8-un-zq2"/>
+                                        <exclude reference="eCV-43-Yre"/>
+                                        <exclude reference="Wab-0Y-SfU"/>
+                                        <exclude reference="q2I-Zj-1lz"/>
+                                        <exclude reference="4CM-v1-pmD"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <exclude reference="b9k-zu-35a"/>
+                                        <exclude reference="oQz-h6-qtL"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="subviews">
+                                        <include reference="Ql8-un-zq2"/>
+                                        <include reference="eCV-43-Yre"/>
+                                        <include reference="Wab-0Y-SfU"/>
+                                        <include reference="q2I-Zj-1lz"/>
+                                        <include reference="4CM-v1-pmD"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <include reference="b9k-zu-35a"/>
+                                        <include reference="oQz-h6-qtL"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" name="keyboardFocusIndicatorColor" catalog="System" colorSpace="catalog"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="4Ip-37-mLq" secondAttribute="centerX" constant="-0.5" id="6H3-uf-epi"/>
+                            <constraint firstAttribute="centerY" secondItem="Srq-Aa-xd5" secondAttribute="centerY" id="8C5-Yb-1QP"/>
+                            <constraint firstAttribute="centerY" secondItem="4Ip-37-mLq" secondAttribute="centerY" constant="10" id="HqG-yU-eZy"/>
+                            <constraint firstAttribute="centerX" secondItem="Srq-Aa-xd5" secondAttribute="centerX" id="gHd-ar-AQC"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="8C5-Yb-1QP"/>
+                                <exclude reference="gHd-ar-AQC"/>
+                                <exclude reference="6H3-uf-epi"/>
+                                <exclude reference="HqG-yU-eZy"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="Srq-Aa-xd5"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="8C5-Yb-1QP"/>
+                                <include reference="gHd-ar-AQC"/>
+                                <include reference="6H3-uf-epi"/>
+                                <include reference="HqG-yU-eZy"/>
+                            </mask>
+                        </variation>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="rBx-vI-sEf" appends="YES" id="1w3-W2-0X3"/>
+                        </connections>
+                    </view>
+                    <navigationItem key="navigationItem" title="Step 2 / 2" id="ACG-be-t7f"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="confirmInput" destination="Wab-0Y-SfU" id="MJi-fP-Ct5"/>
+                        <outlet property="generateKeypairButton" destination="q2I-Zj-1lz" id="Pkh-gu-b5e"/>
+                        <outlet property="keyboardPaddingConstraint" destination="HqG-yU-eZy" id="PNG-yf-5zJ"/>
+                        <outlet property="passwordInput" destination="4CM-v1-pmD" id="jJt-0b-IWX"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OaF-Hx-zAV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="rBx-vI-sEf">
+                    <connections>
+                        <action selector="tapAction:" destination="F7r-Ek-PBO" id="42o-zk-U3a"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="597" y="1001"/>
         </scene>
         <!--Mailbox Password View Controller-->
         <scene sceneID="pHR-Af-VAi">
@@ -272,14 +717,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="b63-Fw-RYH">
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="b63-Fw-RYH">
                                 <rect key="frame" x="186" y="184" width="228" height="37"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DECRYPT MAILBOX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jzp-6U-vEt">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="DECRYPT MAILBOX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jzp-6U-vEt">
                                 <rect key="frame" x="221" y="294" width="159" height="22"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="117" y="295" width="167" height="21"/>
+                                </variation>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Mailbox Password" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="16" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="aXn-9j-Mz5" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
                                 <rect key="frame" x="164" y="354" width="272" height="44"/>
@@ -309,7 +757,7 @@
                                     <action selector="decryptAction:" destination="Zzb-6r-tlP" eventType="touchUpInside" id="frH-Jq-je5"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZpN-rJ-f5g">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZpN-rJ-f5g">
                                 <rect key="frame" x="199" y="408" width="203" height="27"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="tTZ-9P-EdG">
@@ -332,11 +780,14 @@
                                             <action selector="rememberButtonAction:" destination="Zzb-6r-tlP" eventType="touchUpInside" id="UfQ-H2-yMP"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remember me on this device." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FVo-0c-RsR">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Remember me on this device." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FVo-0c-RsR">
                                         <rect key="frame" x="34" y="0.0" width="161" height="27"/>
                                         <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="12.5"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
+                                        <variation key="widthClass=compact" misplaced="YES">
+                                            <rect key="frame" x="34" y="0.0" width="167" height="27"/>
+                                        </variation>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -361,9 +812,12 @@
                                         <exclude reference="bnv-5d-eBf"/>
                                     </mask>
                                 </variation>
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="96" y="408" width="209" height="27"/>
+                                </variation>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.20784313730000001" green="0.29411764709999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.15686274509803921" green="0.22745098039215686" blue="0.29803921568627451" alpha="1" colorSpace="calibratedRGB"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="aXn-9j-Mz5" secondAttribute="centerX" id="63d-P7-z78"/>
@@ -406,13 +860,17 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="757" y="253"/>
+            <point key="canvasLocation" x="1108.5" y="253"/>
         </scene>
     </scenes>
     <resources>
         <image name="Logo" width="228" height="37"/>
         <image name="SignIn" width="320" height="568"/>
+        <image name="cancel_compose" width="22" height="22"/>
         <image name="checked_signin" width="26" height="27"/>
         <image name="unchecked_signin" width="26" height="27"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="Vjc-UL-fXB"/>
+    </inferredMetricsTieBreakers>
 </document>

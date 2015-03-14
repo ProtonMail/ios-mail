@@ -68,6 +68,42 @@ extension APIService {
         request(method: .POST, path: path, parameters: parameters, authenticated: false, completion: completionWrapper)
     }
     
+    func userCreate(user_name: String, pwd: String, email: String, receive_news: Bool, completion: AuthCredentialBlock?) {
+        let path = "/users"
+        let parameters = [
+            "client_id" : Constants.clientID,
+            "client_secret" : Constants.clientSecret,
+            "response_type" : "token",
+            "grant_type" : "password",
+            "redirect_uri" : "https://protonmail.ch",
+            "state" : "\(NSUUID().UUIDString)",
+            
+            "username" : user_name,
+            "password" : pwd,
+            "email":email,
+            "news":receive_news
+        ]
+        
+        let completionWrapper: CompletionBlock = { task, response, error in
+            if self.isErrorResponse(response) {
+                completion?(nil, NSError.authInvalidGrant())
+            } else if let authInfo = self.authInfoForResponse(response) {
+                let credential = AuthCredential(authInfo: authInfo)
+                
+                credential.storeInKeychain()
+                
+                completion?(credential, nil)
+            } else if error == nil {
+                completion?(nil, NSError.authUnableToParseToken())
+            } else {
+                completion?(nil, NSError.unableToParseResponse(response))
+            }
+        }
+
+        
+        request(method: .POST, path: path, parameters: parameters, authenticated: false, completion: completionWrapper)
+    }
+    
     func authRevoke(completion: AuthCredentialBlock?) {
         if let authCredential = AuthCredential.fetchFromKeychain() {
             let path = "/auth/revoke"

@@ -21,6 +21,7 @@ class SignInViewController: UIViewController {
     private let keyboardPadding: CGFloat = 12
     private let buttonDisabledAlpha: CGFloat = 0.5
     private let mailboxSegue = "mailboxSegue"
+    private let signUpKeySegue = "signUpKeySegue"
     private let signUpURL = NSURL(string: "https://protonmail.ch/sign_up.php")!
     
     var isRemembered = false
@@ -103,7 +104,13 @@ class SignInViewController: UIViewController {
                 if sharedUserDataService.isMailboxPasswordStored {
                     (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .inbox, animated: true)
                 } else {
-                    self.performSegueWithIdentifier(self.mailboxSegue, sender: self)
+                    
+                    if sharedUserDataService.userInfo?.userStatus > 1 {
+                        self.performSegueWithIdentifier(self.mailboxSegue, sender: self)
+                    }
+                    else {
+                        self.performSegueWithIdentifier(self.signUpKeySegue, sender: self)
+                    }
                 }
             }
         }
@@ -141,10 +148,10 @@ class SignInViewController: UIViewController {
         signIn()
     }
     
-    @IBAction func signUpAction(sender: UIButton) {
-        dismissKeyboard()
-        UIApplication.sharedApplication().openURL(signUpURL)
-    }
+//    @IBAction func signUpAction(sender: UIButton) {
+//        dismissKeyboard()
+//        UIApplication.sharedApplication().openURL(signUpURL)
+//    }
     
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
         dismissKeyboard()

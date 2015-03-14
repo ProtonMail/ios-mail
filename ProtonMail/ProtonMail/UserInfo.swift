@@ -24,8 +24,9 @@ final class UserInfo: NSObject {
     let publicKey: String
     let signature: String
     let usedSpace: Int
+    let userStatus: Int
     
-    required init(displayName: String?, maxSpace: Int?, notificationEmail: String?, privateKey: String?, publicKey: String?, signature: String?, usedSpace: Int?) {
+    required init(displayName: String?, maxSpace: Int?, notificationEmail: String?, privateKey: String?, publicKey: String?, signature: String?, usedSpace: Int?, userStatus: Int?) {
         self.displayName = displayName ?? ""
         self.maxSpace = maxSpace ?? 0
         self.notificationEmail = notificationEmail ?? ""
@@ -33,6 +34,7 @@ final class UserInfo: NSObject {
         self.publicKey = publicKey ?? ""
         self.signature = signature ?? ""
         self.usedSpace = usedSpace ?? 0
+        self.userStatus = userStatus ?? 0
     }
 }
 
@@ -48,6 +50,7 @@ extension UserInfo: NSCoding {
         static let publicKey = "publicKey"
         static let signature = "signature"
         static let usedSpace = "usedSpace"
+        static let userStatus = "userStatus"
     }
     
     convenience init(coder aDecoder: NSCoder) {
@@ -58,7 +61,8 @@ extension UserInfo: NSCoding {
             privateKey: aDecoder.decodeStringForKey(CoderKey.privateKey),
             publicKey: aDecoder.decodeStringForKey(CoderKey.publicKey),
             signature: aDecoder.decodeStringForKey(CoderKey.signature),
-            usedSpace: aDecoder.decodeIntegerForKey(CoderKey.usedSpace))
+            usedSpace: aDecoder.decodeIntegerForKey(CoderKey.usedSpace),
+            userStatus: aDecoder.decodeIntegerForKey(CoderKey.userStatus))
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
@@ -69,5 +73,6 @@ extension UserInfo: NSCoding {
         aCoder.encodeObject(publicKey, forKey: CoderKey.publicKey)
         aCoder.encodeObject(signature, forKey: CoderKey.signature)
         aCoder.encodeInteger(usedSpace, forKey: CoderKey.usedSpace)
+        aCoder.encodeInteger(userStatus, forKey: CoderKey.userStatus)
     }
 }
