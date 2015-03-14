@@ -34,6 +34,8 @@ class MessageDetailView: UIView {
     private let kEmailHeaderViewMarginRight: CGFloat = -16.0
     private let kEmailHeaderViewHeight: CGFloat = 70.0
     private let kEmailTitleViewMarginRight: CGFloat = -8.0
+    private let kEmailFavoriteButtonHeight: CGFloat = 24.5
+    private let kEmailFavoriteButtonWidth: CGFloat = 26
     private let kEmailRecipientsViewMarginTop: CGFloat = 6.0
     private let kEmailTimeViewMarginTop: CGFloat = 6.0
     private let kEmailDetailToWidth: CGFloat = 40.0
@@ -286,14 +288,11 @@ class MessageDetailView: UIView {
         self.configureEmailDetailDateLabel()
         
         self.emailFavoriteButton = UIButton()
-        var favoriteImage: UIImage
-        if (self.message.isStarred) {
-            favoriteImage = UIImage(named: "favorite_selected")!
-        } else {
-            favoriteImage = UIImage(named: "favorite")!
-        }
-        
-        self.emailFavoriteButton.setImage(favoriteImage, forState: UIControlState.Normal)
+        self.emailFavoriteButton.addTarget(self, action: "emailFavoriteButtonTapped", forControlEvents: .TouchUpInside)
+        self.emailFavoriteButton.setImage(UIImage(named: "favorite_main")!, forState: .Normal)
+        self.emailFavoriteButton.setImage(UIImage(named: "favorite_main_selected")!, forState: .Selected)
+        self.emailFavoriteButton.selected = self.message.isStarred
+
         self.emailFavoriteButton.sizeToFit()
         self.emailHeaderView.addSubview(emailFavoriteButton)
         
@@ -515,8 +514,8 @@ class MessageDetailView: UIView {
         emailFavoriteButton.mas_makeConstraints { (make) -> Void in
             make.top.equalTo()(self.emailTitle)
             make.right.equalTo()(self.emailHeaderView)
-            make.height.equalTo()(self.emailFavoriteButton.frame.size.height)
-            make.width.equalTo()(self.emailFavoriteButton.frame.size.width)
+            make.height.equalTo()(self.kEmailFavoriteButtonHeight)
+            make.width.equalTo()(self.kEmailFavoriteButtonWidth)
         }
         
         emailAttachmentsAmount.mas_makeConstraints { (make) -> Void in
@@ -670,6 +669,16 @@ class MessageDetailView: UIView {
         UIView.animateWithDuration(kAnimationDuration, animations: { () -> Void in
             self.layoutIfNeeded()
         })
+    }
+    
+    internal func emailFavoriteButtonTapped() {
+        message.isStarred = !message.isStarred
+        
+        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
+            NSLog("\(__FUNCTION__) error: \(error)")
+        }
+
+        self.emailFavoriteButton.selected = self.message.isStarred
     }
     
     internal func replyButtonTapped() {
