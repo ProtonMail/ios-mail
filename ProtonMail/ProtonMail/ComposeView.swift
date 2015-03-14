@@ -118,7 +118,6 @@ class ComposeView: UIView {
         self.setNeedsLayout()
         self.layoutIfNeeded()
         
-        self.subject.addBorder(.Top, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         self.subject.addBorder(.Left, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         self.subject.addBorder(.Right, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
 
@@ -466,6 +465,7 @@ extension ComposeView: MBContactPickerDataSource {
             contactPickerView.prompt = NSLocalizedString("Bcc:")
         }
     
+        contactPickerView.contactCollectionView.addBorder(.Bottom, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         contactPickerView.contactCollectionView.addBorder(.Left, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         contactPickerView.contactCollectionView.addBorder(.Right, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         
