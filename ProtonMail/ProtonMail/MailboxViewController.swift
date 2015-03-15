@@ -43,7 +43,6 @@ class MailboxViewController: ProtonMailViewController {
     private var selectedMessages: NSMutableSet = NSMutableSet()
     private var isEditing: Bool = false
     private var isViewingMoreOptions: Bool = false
-    private var isUndoButtonTapped: Bool = false
     
     
     // MARK: - Right bar buttons
@@ -551,41 +550,6 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
 extension MailboxViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return kMailboxCellHeight
-    }
-    
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
-        let messageTrashed: UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Message Trashed") { (rowAction, indexPath) -> Void in
-            
-        }
-        
-        messageTrashed.backgroundColor = UIColor.ProtonMail.Red_D74B4B
-        
-        let undo: UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Undo") { (rowAction, indexPath) -> Void in
-            self.isUndoButtonTapped = true
-        }
-        
-        undo.backgroundColor = UIColor.ProtonMail.Gray_999DA1
-        
-        return [undo, messageTrashed]
-    }
-    
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        // just to allow tableview swipe-left
-    }
-    
-    func tableView(tableView: UITableView, willBeginEditingRowAtIndexPath indexPath: NSIndexPath) {
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) {
-            if (!self.isUndoButtonTapped) {
-                self.isUndoButtonTapped = false
-                
-                // TODO: delete message from server and Core Data
-                // self.messages.removeAtIndex(indexPath.row)
-                //self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
-            }
-            
-            self.tableView.editing = false
-        }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
