@@ -24,6 +24,7 @@ class SearchViewController: ProtonMailViewController {
     private let kAnimationDuration: NSTimeInterval = 0.3
     private let kSearchCellHeight: CGFloat = 64.0
     private let kCellIdentifier: String = "SearchedCell"
+    private let kSegueToMessageDetailController: String = "toMessageDetailViewController"
 
     // MARK: - Private attributes
     
@@ -77,6 +78,12 @@ class SearchViewController: ProtonMailViewController {
         }
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         searchTextField.becomeFirstResponder()
@@ -85,6 +92,7 @@ class SearchViewController: ProtonMailViewController {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         searchTextField.resignFirstResponder()
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     override func configureNavigationBar() {
@@ -163,6 +171,22 @@ class SearchViewController: ProtonMailViewController {
     
     @IBAction func cancelButtonTapped(sender: UIButton) {
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    // MARK: - Prepare for segue
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == kSegueToMessageDetailController) {
+            let messageDetailViewController: MessageDetailViewController = segue.destinationViewController as MessageDetailViewController
+            let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
+            if let indexPathForSelectedRow = indexPathForSelectedRow {
+                if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {
+                    messageDetailViewController.message = message
+                }
+            } else {
+                println("No selected row.")
+            }
+        }
     }
 }
 
@@ -253,6 +277,14 @@ extension SearchViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension SearchViewController: UITableViewDelegate {
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        NSLog("\(__FUNCTION__) \(indexPath)")
+        
+        if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+            self.performSegueWithIdentifier(kSegueToMessageDetailController, sender: self)
+        }
+    }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return kSearchCellHeight
