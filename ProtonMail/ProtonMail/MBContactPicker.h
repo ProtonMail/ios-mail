@@ -53,6 +53,7 @@ typedef void(^CompletionBlock)();
 @property (nonatomic) BOOL enabled;
 @property (nonatomic) BOOL showPrompt;
 @property (nonatomic, strong) UIFont *font UI_APPEARANCE_SELECTOR;
+@property (nonatomic, weak) MBContactCollectionView *contactCollectionView;
 
 - (void)reloadData;
 - (void)addToSelectedContacts:(id<MBContactPickerModelProtocol>)model;

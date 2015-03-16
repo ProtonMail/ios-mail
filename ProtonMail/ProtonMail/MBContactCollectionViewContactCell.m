@@ -47,6 +47,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 - (void)setup
 {
+    self.backgroundColor = UIColorFromRGB(0xFCFEFF);
     UILabel *contactLabel = [[UILabel alloc] initWithFrame:self.bounds];
     [self addSubview:contactLabel];
     contactLabel.textColor = [UIColor blueColor];
@@ -69,7 +70,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(contactLabel)]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(2)-[contactLabel]-(2)-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(2)-[contactLabel]-(8)-|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(contactLabel)]];
