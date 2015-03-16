@@ -70,6 +70,7 @@ class ComposeView: UIView {
     @IBOutlet var toContactPicker: MBContactPicker!
     @IBOutlet var ccContactPicker: MBContactPicker!
     @IBOutlet var bccContactPicker: MBContactPicker!
+    @IBOutlet var ccBccContainerView: UIView!
     
     @IBOutlet var subject: UITextField!
     @IBOutlet var bodyTextView: UITextView!
