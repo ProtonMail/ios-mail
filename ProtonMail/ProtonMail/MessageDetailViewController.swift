@@ -76,17 +76,12 @@ class MessageDetailViewController: ProtonMailViewController {
     
     func spamButtonTapped() {
         ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
-        
-        delay(1.5) {
-            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-            self.navigationController?.popViewControllerAnimated(true)
-        }
-        
-        /*
+
         sharedAPIService.messageID(message.messageID, updateWithAction: MessageDataService.MessageAction.spam.rawValue) { (task: NSURLSessionDataTask!, response: Dictionary<String, AnyObject>?, error: NSError?) -> Void in
             ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+
+            self.navigationController?.popViewControllerAnimated(true)
         }
-        */
     }
     
     func moreButtonTapped() {
