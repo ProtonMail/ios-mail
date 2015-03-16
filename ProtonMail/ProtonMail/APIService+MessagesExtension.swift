@@ -196,12 +196,13 @@ extension APIService {
 
         // FIXME: Remove this wrapper when action can be passed in directly
         if let action = MessageDataService.MessageAction(rawValue: action) {
-            let path = MessagePath.base.stringByAppendingPathComponent(messageID).stringByAppendingPathComponent(action.rawValue)
-
+            
             switch(action) {
             case .delete:
+                let path = MessagePath.base.stringByAppendingPathComponent(messageID)
                 request(method: .DELETE, path: path, parameters: nil, completion: completion)
             default:
+                let path = MessagePath.base.stringByAppendingPathComponent(messageID).stringByAppendingPathComponent(action.rawValue)
                 request(method: .PUT, path: path, parameters: nil, completion: completion)
             }
         }
