@@ -75,7 +75,7 @@ extension APIService {
             
             request(method: .GET, path: path, parameters: nil, completion: completion)
         } else {
-            completion?(nil, nil, NSError.badParameter(emails))
+            completion?(task: nil, response: nil, error: NSError.badParameter(emails))
         }
     }
     
