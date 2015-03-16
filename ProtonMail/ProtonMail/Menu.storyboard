@@ -1242,8 +1242,12 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aKV-ph-ziD" userLabel="Favorite">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="20" id="UC4-9n-KFZ"/>
-                                                        <constraint firstAttribute="height" constant="19" id="gUg-k3-MxK"/>
+                                                        <constraint firstAttribute="width" constant="20" id="UC4-9n-KFZ">
+                                                            <variation key="widthClass=compact" constant="28"/>
+                                                        </constraint>
+                                                        <constraint firstAttribute="height" constant="19" id="gUg-k3-MxK">
+                                                            <variation key="widthClass=compact" constant="27"/>
+                                                        </constraint>
                                                     </constraints>
                                                     <state key="normal" image="favorite_main">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -1309,9 +1313,16 @@
                                             </subviews>
                                             <color key="backgroundColor" red="0.9882352941176471" green="0.99607843137254903" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="aKV-ph-ziD" secondAttribute="trailing" constant="8" id="03t-bv-eif"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="aKV-ph-ziD" secondAttribute="trailing" constant="8" id="03t-bv-eif">
+                                                    <variation key="widthClass=compact" constant="4"/>
+                                                </constraint>
                                                 <constraint firstItem="pXj-OE-cWa" firstAttribute="bottom" secondItem="aKV-ph-ziD" secondAttribute="bottom" id="6Jp-ji-wfQ"/>
-                                                <constraint firstItem="aKV-ph-ziD" firstAttribute="leading" secondItem="pXj-OE-cWa" secondAttribute="trailing" constant="8" id="8sR-iy-xWi"/>
+                                                <constraint firstItem="aKV-ph-ziD" firstAttribute="centerY" secondItem="pXj-OE-cWa" secondAttribute="centerY" constant="0.5" id="7HQ-BW-Rc7">
+                                                    <variation key="widthClass=compact" constant="0.0"/>
+                                                </constraint>
+                                                <constraint firstItem="aKV-ph-ziD" firstAttribute="leading" secondItem="pXj-OE-cWa" secondAttribute="trailing" constant="8" id="8sR-iy-xWi">
+                                                    <variation key="widthClass=compact" constant="4"/>
+                                                </constraint>
                                                 <constraint firstAttribute="centerY" secondItem="CWu-xu-Rc3" secondAttribute="centerY" constant="-0.25" id="Bca-iX-Dj7"/>
                                                 <constraint firstItem="eZS-fQ-wdc" firstAttribute="leading" secondItem="7GD-28-QOt" secondAttribute="trailing" constant="8" id="HLa-0n-sbO"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="d4p-Fy-H08" secondAttribute="trailing" constant="8" id="LZX-6w-dBn"/>
@@ -1324,7 +1335,9 @@
                                                 <constraint firstItem="CWu-xu-Rc3" firstAttribute="leading" secondItem="ksF-aC-XEE" secondAttribute="leadingMargin" constant="8" id="seq-dn-5NO"/>
                                                 <constraint firstItem="20n-9z-aN4" firstAttribute="leading" secondItem="CWu-xu-Rc3" secondAttribute="trailing" id="tDt-AB-x8R" userLabel="Leading Alignment - Title - Checked"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="7GD-28-QOt" secondAttribute="bottom" constant="4" id="y8C-R6-X0v"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="aKV-ph-ziD" secondAttribute="bottom" constant="4" id="zhI-hY-CJ3"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="aKV-ph-ziD" secondAttribute="bottom" constant="4" id="zhI-hY-CJ3">
+                                                    <variation key="widthClass=compact" constant="0.0"/>
+                                                </constraint>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="subviews">
@@ -1347,6 +1360,7 @@
                                                     <exclude reference="Bca-iX-Dj7"/>
                                                     <exclude reference="seq-dn-5NO"/>
                                                     <exclude reference="03t-bv-eif"/>
+                                                    <exclude reference="7HQ-BW-Rc7"/>
                                                     <exclude reference="8sR-iy-xWi"/>
                                                     <exclude reference="zhI-hY-CJ3"/>
                                                     <exclude reference="HLa-0n-sbO"/>
@@ -1376,10 +1390,11 @@
                                                     <include reference="Bca-iX-Dj7"/>
                                                     <include reference="seq-dn-5NO"/>
                                                     <include reference="03t-bv-eif"/>
+                                                    <include reference="7HQ-BW-Rc7"/>
                                                     <include reference="8sR-iy-xWi"/>
                                                     <include reference="zhI-hY-CJ3"/>
                                                     <include reference="HLa-0n-sbO"/>
-                                                    <include reference="6Jp-ji-wfQ"/>
+                                                    <exclude reference="6Jp-ji-wfQ"/>
                                                     <include reference="Zad-Ot-Jcf"/>
                                                     <include reference="jad-eC-yGr"/>
                                                 </mask>
@@ -1445,7 +1460,7 @@
                     <connections>
                         <outlet property="menuButton" destination="MGt-Hd-KyR" id="g5E-fz-E2f"/>
                         <outlet property="tableView" destination="7Zx-Yy-VI3" id="xAI-ZE-pMC"/>
-                        <segue destination="tCC-l6-ucI" kind="presentation" identifier="toSearchViewController" id="6qA-ON-8KL"/>
+                        <segue destination="xBI-ex-VGk" kind="presentation" identifier="toSearchViewController" id="6qA-ON-8KL"/>
                         <segue destination="NZX-qa-4Ud" kind="show" identifier="toMessageDetailViewController" id="dxU-wZ-inN"/>
                         <segue destination="1qH-aE-Y3O" kind="presentation" identifier="toCompose" id="dZz-yt-xGj"/>
                     </connections>
@@ -2473,14 +2488,16 @@
                             </mask>
                         </variation>
                     </view>
+                    <navigationItem key="navigationItem" id="ra6-z6-Jk4"/>
                     <connections>
                         <outlet property="searchTextField" destination="osS-Tz-qFA" id="htt-nR-W0x"/>
                         <outlet property="tableView" destination="bZe-7F-cQr" id="Xyl-eG-V8M"/>
+                        <segue destination="NZX-qa-4Ud" kind="show" identifier="toMessageDetailViewController" id="KkU-lW-AKe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u4L-eI-FSG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2056.5" y="2342"/>
+            <point key="canvasLocation" x="2974.5" y="2342"/>
         </scene>
         <!--Message Detail View Controller-->
         <scene sceneID="RpF-e6-Us1">
@@ -3207,9 +3224,6 @@
                                                 <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="18"/>
                                                 <color key="textColor" red="0.59999999999999998" green="0.61568627450000002" blue="0.63137254899999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
-                                                <variation key="widthClass=compact" misplaced="YES">
-                                                    <rect key="frame" x="8" y="8" width="384" height="21"/>
-                                                </variation>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current MailBox Password" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ECZ-00-RDV" userLabel="Current MailBox Password Label">
                                                 <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
@@ -3224,8 +3238,7 @@
                                                         <exclude reference="YRo-Zr-wNY"/>
                                                     </mask>
                                                 </variation>
-                                                <variation key="widthClass=compact" misplaced="YES">
-                                                    <rect key="frame" x="8" y="37" width="384" height="21"/>
+                                                <variation key="widthClass=compact">
                                                     <mask key="constraints">
                                                         <include reference="YRo-Zr-wNY"/>
                                                     </mask>
@@ -3243,8 +3256,7 @@
                                                         <exclude reference="bSG-5Y-h65"/>
                                                     </mask>
                                                 </variation>
-                                                <variation key="widthClass=compact" misplaced="YES">
-                                                    <rect key="frame" x="8" y="66" width="384" height="30"/>
+                                                <variation key="widthClass=compact">
                                                     <mask key="constraints">
                                                         <include reference="bSG-5Y-h65"/>
                                                     </mask>
@@ -3266,8 +3278,7 @@
                                                         <exclude reference="MeS-Xt-z4c"/>
                                                     </mask>
                                                 </variation>
-                                                <variation key="widthClass=compact" misplaced="YES">
-                                                    <rect key="frame" x="8" y="104" width="384" height="21"/>
+                                                <variation key="widthClass=compact">
                                                     <mask key="constraints">
                                                         <include reference="MeS-Xt-z4c"/>
                                                     </mask>
@@ -3277,9 +3288,6 @@
                                                 <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
-                                                <variation key="widthClass=compact" misplaced="YES">
-                                                    <rect key="frame" x="8" y="133" width="384" height="30"/>
-                                                </variation>
                                                 <connections>
                                                     <outlet property="delegate" destination="xvt-qd-lEh" id="wUI-oS-XhA"/>
                                                 </connections>
@@ -3297,8 +3305,7 @@
                                                         <exclude reference="J47-hv-A01"/>
                                                     </mask>
                                                 </variation>
-                                                <variation key="widthClass=compact" misplaced="YES">
-                                                    <rect key="frame" x="8" y="171" width="384" height="21"/>
+                                                <variation key="widthClass=compact">
                                                     <mask key="constraints">
                                                         <include reference="J47-hv-A01"/>
                                                     </mask>
@@ -3308,9 +3315,6 @@
                                                 <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="send" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
-                                                <variation key="widthClass=compact" misplaced="YES">
-                                                    <rect key="frame" x="8" y="200" width="384" height="30"/>
-                                                </variation>
                                                 <connections>
                                                     <outlet property="delegate" destination="xvt-qd-lEh" id="AQT-zo-un5"/>
                                                 </connections>
@@ -3336,9 +3340,8 @@
                                                         <exclude reference="kcL-EF-r7y"/>
                                                     </mask>
                                                 </variation>
-                                                <variation key="widthClass=compact" misplaced="YES">
+                                                <variation key="widthClass=compact">
                                                     <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
-                                                    <rect key="frame" x="322" y="238" width="70" height="27"/>
                                                     <mask key="constraints">
                                                         <include reference="BGu-dw-y5i"/>
                                                         <include reference="kcL-EF-r7y"/>
@@ -3848,9 +3851,6 @@
                                                 <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="18"/>
                                                 <color key="textColor" red="0.59999999999999998" green="0.61568627450000002" blue="0.63137254899999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
-                                                <variation key="widthClass=compact" misplaced="YES">
-                                                    <rect key="frame" x="8" y="8" width="384" height="21"/>
-                                                </variation>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.5/500 MB" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ivA-MB-OVR">
                                                 <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
@@ -3865,8 +3865,7 @@
                                                         <exclude reference="RQZ-CI-DaI"/>
                                                     </mask>
                                                 </variation>
-                                                <variation key="widthClass=compact" misplaced="YES">
-                                                    <rect key="frame" x="318" y="12" width="74" height="19"/>
+                                                <variation key="widthClass=compact">
                                                     <mask key="constraints">
                                                         <include reference="RQZ-CI-DaI"/>
                                                     </mask>
@@ -3885,7 +3884,7 @@
                                                     </mask>
                                                 </variation>
                                                 <variation key="widthClass=compact" misplaced="YES">
-                                                    <rect key="frame" x="8" y="39" width="384" height="10"/>
+                                                    <rect key="frame" x="8" y="42" width="384" height="10"/>
                                                     <mask key="constraints">
                                                         <include reference="4gr-aO-7SO"/>
                                                     </mask>
@@ -4193,6 +4192,24 @@
             </objects>
             <point key="canvasLocation" x="3597" y="1601"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="arq-ry-cmQ">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xBI-ex-VGk" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="aTD-c0-dRX">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="tCC-l6-ucI" kind="relationship" relationship="rootViewController" id="6HP-m3-0sA"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iFf-Kh-A8Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2056.5" y="2342"/>
+        </scene>
     </scenes>
     <resources>
         <image name="attached_compose" width="19" height="21"/>
@@ -4234,5 +4251,6 @@
         <segue reference="o3e-Jf-WEv"/>
         <segue reference="D5R-VT-Dfw"/>
         <segue reference="Lm0-2L-Xlj"/>
+        <segue reference="KkU-lW-AKe"/>
     </inferredMetricsTieBreakers>
 </document>
