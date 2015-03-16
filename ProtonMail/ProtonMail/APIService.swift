@@ -221,6 +221,11 @@ class APIService {
                 }
             } else if let date = value as? NSDate {
                 return date.timeIntervalSince1970
+            } else if let dateNumber = value as? NSNumber {
+                let time = dateNumber.doubleValue as NSTimeInterval
+                if time != 0 {
+                    return time.asDate()
+                }
             }
             
             return nil
@@ -232,7 +237,7 @@ class APIService {
             if let number = value as? String {
                 return number.toInt() ?? 0 as NSNumber
             } else if let number = value as? NSNumber {
-                return number.stringValue
+                return number
             }
             
             return nil
