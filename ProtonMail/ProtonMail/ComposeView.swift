@@ -39,6 +39,7 @@ class ComposeView: UIView {
     
     // MARK: - Constants
     
+    private let kDefaultRecipientHeight: CGFloat = 48.0
     private let kErrorMessageHeight: CGFloat = 48.0
     private let kNumberOfColumnsInTimePicker: Int = 2
     private let kNumberOfDaysInTimePicker: Int = 30
@@ -61,20 +62,16 @@ class ComposeView: UIView {
     
     // MARK: - View Outlets
     
-    @IBOutlet var toContactPickerHeightConstraint: NSLayoutConstraint!
-    @IBOutlet var ccContactPickerHeightConstraint: NSLayoutConstraint!
-    @IBOutlet var bccContactPickerHeightConstraint: NSLayoutConstraint!
-    @IBOutlet var contactPlusButtonHorizontalConstraint: NSLayoutConstraint!
-    @IBOutlet var ccBccContainerViewHeight: NSLayoutConstraint!
+    var toContactPicker: MBContactPicker!
+    var ccContactPicker: MBContactPicker!
+    var bccContactPicker: MBContactPicker!
     
-    @IBOutlet var toContactPicker: MBContactPicker!
-    @IBOutlet var ccContactPicker: MBContactPicker!
-    @IBOutlet var bccContactPicker: MBContactPicker!
-    @IBOutlet var ccBccContainerView: UIView!
-    
+    @IBOutlet var fakeContactPickerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var subjectMarginTopConstraint: NSLayoutConstraint!
     @IBOutlet var subject: UITextField!
     @IBOutlet var bodyTextView: UITextView!
     @IBOutlet var spinner: FSSyncSpinner!
+    @IBOutlet var showCcBccButton: UIButton!
     
     
     // MARK: - Action Buttons
@@ -108,7 +105,6 @@ class ComposeView: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.ccBccContainerViewHeight.constant = 0.0
         
         self.configureContactPickerTemplate()
         self.includeButtonBorder(encryptedButton)
@@ -119,20 +115,17 @@ class ComposeView: UIView {
         self.setNeedsLayout()
         self.layoutIfNeeded()
         
+        self.configureToContactPicker()
+        self.configureCcContactPicker()
+        self.configureBccContactPicker()
+
+        self.bringSubviewToFront(showCcBccButton)
+        
         self.subject.addBorder(.Left, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         self.subject.addBorder(.Right, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
 
         self.expirationButton.addBorder(.Top, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         self.expirationButton.addBorder(.Bottom, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
-        
-        self.toContactPicker.datasource = self
-        self.toContactPicker.delegate = self
-        
-        self.ccContactPicker.datasource = self
-        self.ccContactPicker.delegate = self
-        
-        self.bccContactPicker.datasource = self
-        self.bccContactPicker.delegate = self
         
         let subjectLeftPaddingView = UIView(frame: CGRectMake(0, 0, 12, self.subject.frame.size.height))
         self.subject.leftView = subjectLeftPaddingView
@@ -149,6 +142,9 @@ class ComposeView: UIView {
        
         self.registerForKeyboardNotifications()
         self.bringSubviewToFront(spinner)
+        self.sendSubviewToBack(ccContactPicker)
+        self.sendSubviewToBack(bccContactPicker)
+        
         self.spinner.startAnimating()
     }
     
@@ -166,15 +162,6 @@ class ComposeView: UIView {
     
     func finishRetrievingContacts() {
         spinner.finish()
-
-        delay(2.10) {
-            self.spinner.hidden = true
-            self.contactPlusButtonHorizontalConstraint.constant = -16
-
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
-                self.layoutIfNeeded()
-            })
-        }
     }
     
     func keyboardWasShown(notification: NSNotification) {
@@ -249,9 +236,9 @@ class ComposeView: UIView {
     @IBAction func contactPlusButtonTapped(sender: UIButton) {
         
         if (isShowingCcBccView) {
-            ccBccContainerViewHeight.constant = 0
+            subjectMarginTopConstraint.constant = 0
         } else {
-            ccBccContainerViewHeight.constant = kCcBccContainerViewHeight
+            subjectMarginTopConstraint.constant = toContactPicker.currentContentHeight + ccContactPicker.currentContentHeight + bccContactPicker.currentContentHeight - kDefaultRecipientHeight
         }
         
         isShowingCcBccView = !isShowingCcBccView
@@ -350,18 +337,89 @@ class ComposeView: UIView {
     private func updateContactPickerHeight(contactPicker: MBContactPicker, newHeight: CGFloat) {
         
         if (contactPicker == self.toContactPicker) {
-            self.toContactPickerHeightConstraint.constant = newHeight
+            toContactPicker.mas_updateConstraints({ (make) -> Void in
+                make.removeExisting = true
+                make.top.equalTo()(self)
+                make.left.equalTo()(self)
+                make.right.equalTo()(self)
+                make.height.equalTo()(newHeight)
+            })
         } else if (contactPicker == self.ccContactPicker) {
-            self.ccContactPickerHeightConstraint.constant = newHeight
+            ccContactPicker.mas_updateConstraints({ (make) -> Void in
+                make.removeExisting = true
+                make.top.equalTo()(self.toContactPicker.mas_bottom)
+                make.left.equalTo()(self)
+                make.right.equalTo()(self)
+                make.height.equalTo()(newHeight)
+            })
         } else if (contactPicker == self.bccContactPicker) {
-            self.bccContactPickerHeightConstraint.constant = newHeight
+            bccContactPicker.mas_updateConstraints({ (make) -> Void in
+                make.removeExisting = true
+                make.top.equalTo()(self.ccContactPicker.mas_bottom)
+                make.left.equalTo()(self)
+                make.right.equalTo()(self)
+                make.height.equalTo()(newHeight)
+            })
         }
+        
+        if (isShowingCcBccView) {
+            subjectMarginTopConstraint.constant = toContactPicker.currentContentHeight + ccContactPicker.currentContentHeight + bccContactPicker.currentContentHeight - kDefaultRecipientHeight
+        } else {
+            subjectMarginTopConstraint.constant = 0
+        }
+
         
         UIView.animateWithDuration(NSTimeInterval(contactPicker.animationSpeed), animations: { () -> Void in
             self.layoutIfNeeded()
+            contactPicker.contactCollectionView.addBorder(.Bottom, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
             contactPicker.contactCollectionView.addBorder(.Left, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
             contactPicker.contactCollectionView.addBorder(.Right, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         })
+    }
+    
+    private func configureToContactPicker() {
+        toContactPicker = MBContactPicker()
+        toContactPicker.setTranslatesAutoresizingMaskIntoConstraints(true)
+        self.addSubview(toContactPicker)
+        toContactPicker.datasource = self
+        toContactPicker.delegate = self
+        
+        toContactPicker.mas_makeConstraints { (make) -> Void in
+            make.top.equalTo()(self).with().offset()(5)
+            make.left.equalTo()(self)
+            make.right.equalTo()(self)
+            make.height.equalTo()(self.kDefaultRecipientHeight)
+        }
+    }
+    
+    private func configureCcContactPicker() {
+        ccContactPicker = MBContactPicker()
+        self.addSubview(ccContactPicker)
+        
+        ccContactPicker.datasource = self
+        ccContactPicker.delegate = self
+        
+        ccContactPicker.mas_makeConstraints { (make) -> Void in
+            make.top.equalTo()(self.toContactPicker.mas_bottom)
+            make.left.equalTo()(self)
+            make.right.equalTo()(self)
+            make.height.equalTo()(self.toContactPicker)
+        }
+    }
+    
+    private func configureBccContactPicker() {
+        bccContactPicker = MBContactPicker()
+        self.addSubview(bccContactPicker)
+        
+        bccContactPicker.datasource = self
+        bccContactPicker.delegate = self
+        
+        bccContactPicker.mas_makeConstraints { (make) -> Void in
+            make.top.equalTo()(self.ccContactPicker.mas_bottom)
+            make.left.equalTo()(self)
+            make.right.equalTo()(self)
+            make.height.equalTo()(self.ccContactPicker)
+        }
     }
     
     private func configureBodyTextField() {
@@ -437,7 +495,7 @@ class ComposeView: UIView {
         self.addSubview(errorView)
         errorView.addSubview(errorTextView)
         
-        self.errorView.mas_makeConstraints { (make) -> Void in
+        errorView.mas_makeConstraints { (make) -> Void in
             make.left.equalTo()(self)
             make.right.equalTo()(self)
             make.height.equalTo()(0)
@@ -466,7 +524,6 @@ extension ComposeView: MBContactPickerDataSource {
             contactPickerView.prompt = NSLocalizedString("Bcc:")
         }
     
-        contactPickerView.contactCollectionView.addBorder(.Bottom, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         contactPickerView.contactCollectionView.addBorder(.Left, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         contactPickerView.contactCollectionView.addBorder(.Right, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         
@@ -499,18 +556,8 @@ extension ComposeView: MBContactPickerDelegate {
     }
     
     func didShowFilteredContactsForContactPicker(contactPicker: MBContactPicker!) {
-        
-        var heightConstraint: NSLayoutConstraint
-        
-        if (contactPicker == toContactPicker) {
-            heightConstraint = self.toContactPickerHeightConstraint
-        } else if (contactPicker == ccContactPicker) {
-            heightConstraint = self.ccContactPickerHeightConstraint
-        } else {
-            heightConstraint = self.bccContactPickerHeightConstraint
-        }
-        
-        if (heightConstraint.constant <= contactPicker.currentContentHeight) {
+        self.bringSubviewToFront(contactPicker)
+        if (contactPicker.frame.size.height <= contactPicker.currentContentHeight) {
             let pickerRectInWindow = self.convertRect(contactPicker.frame, fromView: nil)
             let newHeight = self.window!.bounds.size.height - pickerRectInWindow.origin.y - contactPicker.keyboardHeight
             self.updateContactPickerHeight(contactPicker, newHeight: newHeight)
@@ -518,17 +565,8 @@ extension ComposeView: MBContactPickerDelegate {
     }
     
     func didHideFilteredContactsForContactPicker(contactPicker: MBContactPicker!) {
-        var heightConstraint: NSLayoutConstraint
-        
-        if (contactPicker == toContactPicker) {
-            heightConstraint = self.toContactPickerHeightConstraint
-        } else if (contactPicker == ccContactPicker) {
-            heightConstraint = self.ccContactPickerHeightConstraint
-        } else {
-            heightConstraint = self.bccContactPickerHeightConstraint
-        }
-        
-        if (heightConstraint.constant > contactPicker.currentContentHeight) {
+        self.sendSubviewToBack(contactPicker)
+        if (contactPicker.frame.size.height > contactPicker.currentContentHeight) {
             self.updateContactPickerHeight(contactPicker, newHeight: contactPicker.currentContentHeight)
         }
     }

@@ -58,6 +58,8 @@ class ComposeViewController: ProtonMailViewController {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self.contacts.sort { $0.name.lowercaseString < $1.name.lowercaseString }
                 self.composeView.toContactPicker.reloadData()
+                self.composeView.ccContactPicker.reloadData()
+                self.composeView.bccContactPicker.reloadData()
                 self.composeView.finishRetrievingContacts()
             })
         }
