@@ -187,7 +187,7 @@ class SettingsViewController: ProtonMailViewController {
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Change mailbox password"), style: .Destructive, handler: { (action) -> Void in
                 ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
                 
-                sharedUserDataService.updateMailboxPassword(self.newMailboxPasswordTextField.text) { _, _, error in
+                sharedUserDataService.updateMailboxPassword(self.currentMailboxPasswordTextField.text, newMailboxPassword: self.newMailboxPasswordTextField.text) { _, _, error in
                     ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
                     
                     if let error = error {
@@ -229,7 +229,7 @@ class SettingsViewController: ProtonMailViewController {
             
             ActivityIndicatorHelper.showActivityIndicatorAtView(view)
             
-            sharedUserDataService.updatePassword(newLoginPasswordTextField.text) { _, _, error in
+            sharedUserDataService.updatePassword(currentLoginPasswordTextField.text, newPassword: newLoginPasswordTextField.text) { _, _, error in
                 ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
                 
                 if let error = error {

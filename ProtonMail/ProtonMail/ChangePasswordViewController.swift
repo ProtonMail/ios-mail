@@ -1,0 +1,155 @@
+//
+//  ChangePasswordViewController.swift
+//  ProtonMail
+//
+//  Created by Yanfeng Zhang on 3/17/15.
+//  Copyright (c) 2015 ProtonMail. All rights reserved.
+//
+
+import UIKit
+
+class ChangePasswordViewController: UIViewController {
+    
+    @IBOutlet weak var currentPwdEditor: UITextField!
+    @IBOutlet weak var newPwdEditor: UITextField!
+    @IBOutlet weak var confirmPwdEditor: UITextField!
+    
+    @IBOutlet weak var titleLable: UILabel!
+    @IBOutlet weak var labelOne: UILabel!
+    @IBOutlet weak var labelTwo: UILabel!
+    @IBOutlet weak var labelThree: UILabel!
+    
+    private var doneButton: UIBarButtonItem!
+    private var viewModel : ChangePWDViewModel!
+    func setViewModel(vm:ChangePWDViewModel) -> Void
+    {
+        self.viewModel = vm
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        doneButton = self.editButtonItem()
+        doneButton.target = self;
+        doneButton.action = "doneAction:"
+        doneButton.title = "Done"
+        
+        self.navigationItem.title = viewModel.getNavigationTitle()
+        self.titleLable.text = viewModel.getSectionTitle()
+        self.labelOne.text = viewModel.getLabelOne()
+        self.labelTwo.text = viewModel.getLabelTwo()
+        self.labelThree.text = viewModel.getLabelOne()
+        
+        focusFirstEmpty();
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    // MARK: privat methods
+    private func dismissKeyboard() {
+        if (self.currentPwdEditor != nil) {
+            self.currentPwdEditor.resignFirstResponder()
+        }
+        if (self.newPwdEditor != nil) {
+            self.newPwdEditor.resignFirstResponder()
+        }
+        if (self.confirmPwdEditor != nil) {
+            self.confirmPwdEditor.resignFirstResponder()
+        }
+    }
+    
+    private func isInputEmpty() -> Bool {
+        if !currentPwdEditor.text.isEmpty {
+            return false;
+        }
+        if !newPwdEditor.text.isEmpty {
+            return false;
+        }
+        if !confirmPwdEditor.text.isEmpty {
+            return false;
+        }
+        return true;
+    }
+    
+    private func focusFirstEmpty() -> Void {
+        if currentPwdEditor.text.isEmpty {
+            currentPwdEditor.becomeFirstResponder()
+        }
+        else if newPwdEditor.text.isEmpty {
+            newPwdEditor.becomeFirstResponder()
+        }
+        else if confirmPwdEditor.text.isEmpty {
+            confirmPwdEditor.becomeFirstResponder()
+        }
+    }
+    
+    private func startUpdatePwd () -> Void {
+        dismissKeyboard()
+        ActivityIndicatorHelper.showActivityIndicatorAtView(view)
+        viewModel.setNewPassword(currentPwdEditor.text, new_pwd: newPwdEditor.text, confirm_new_pwd: confirmPwdEditor.text, complete: { value, error in
+            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+            if let error = error {
+                if error.code == APIService.UserErrorCode.currentWrong {
+                    self.currentPwdEditor.becomeFirstResponder()
+                }
+                else if error.code == APIService.UserErrorCode.newNotMatch {
+                    self.newPwdEditor.becomeFirstResponder()
+                }
+                
+                let alertController = error.alertController()
+                alertController.addOKAction()
+                self.presentViewController(alertController, animated: true, completion: nil)
+            } else {
+                self.navigationController?.popToRootViewControllerAnimated(true)
+            }
+        });
+    }
+
+    // MARK: - Actions
+    @IBAction func doneAction(sender: AnyObject) {
+        startUpdatePwd()
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension ChangePasswordViewController: UITextFieldDelegate {
+    func textFieldShouldClear(textField: UITextField) -> Bool {
+        return true
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        if isInputEmpty() {
+            self.navigationItem.rightBarButtonItem = nil;
+        }
+        else {
+            self.navigationItem.rightBarButtonItem = doneButton
+        }
+    }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        return true
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        switch textField
+        {
+        case currentPwdEditor:
+            newPwdEditor.becomeFirstResponder()
+            break;
+        case newPwdEditor:
+            confirmPwdEditor.becomeFirstResponder()
+            break
+        default:
+            if !isInputEmpty() {
+                startUpdatePwd()
+            }
+            else {
+                focusFirstEmpty()
+            }
+            break
+        }
+        return true
+    }
+}

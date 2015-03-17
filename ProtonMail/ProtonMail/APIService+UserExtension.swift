@@ -26,6 +26,10 @@ extension APIService {
     struct UserErrorCode {
         static let userOK = 1000
         static let userNameExsit = 12011
+        static let currentWrong = 12021
+        static let newNotMatch = 12022
+        static let pwdUpdateFailed = 12023
+        static let pwdEmpty = 12024
     }
     
     private struct UserPath {
@@ -50,7 +54,8 @@ extension APIService {
                             publicKeyResponseKey: "PublicKey",
                             signatureResponseKey: "Signature",
                             usedSpaceResponseKey: "UsedSpace",
-                            userStatusResponseKey: "UserStatus")
+                            userStatusResponseKey: "UserStatus",
+                            userAddressResponseKey: "addresses")
                         
                         completion(userInfo, nil)
                     } else {
@@ -155,7 +160,23 @@ extension UserInfo {
         publicKeyResponseKey: String,
         signatureResponseKey: String,
         usedSpaceResponseKey: String,
-        userStatusResponseKey:String) {
+        userStatusResponseKey:String,
+        userAddressResponseKey:String) {
+            var addresses: [Address] = Array<Address>()
+            let address_response = response[userAddressResponseKey] as Array<Dictionary<String, AnyObject>>
+            for res in address_response
+            {
+                addresses.append(Address(
+                    addressid:(res["AddressID"] as? String)?.toInt(),
+                    email:res["Email"] as? String,
+                    send: (res["Send"] as? String)?.toInt(),
+                    receive: (res["Receive"] as? String)?.toInt(),
+                    mailbox: (res["Mailbox"] as? String)?.toInt(),
+                    display_name: res["DisplayName"] as? String,
+                    signature: res["Signature"] as? String))
+            }
+            
+            let check_value = response[maxSpaceResponseKey] as? Int
             self.init(
                 displayName: response[displayNameResponseKey] as? String,
                 maxSpace: response[maxSpaceResponseKey] as? Int,
@@ -164,7 +185,8 @@ extension UserInfo {
                 publicKey: response[publicKeyResponseKey] as? String,
                 signature: response[signatureResponseKey] as? String,
                 usedSpace: (response[usedSpaceResponseKey] as? String)?.toInt(),
-                userStatus: (response[userStatusResponseKey] as? String)?.toInt())
+                userStatus: (response[userStatusResponseKey] as? String)?.toInt(),
+                userAddresses: addresses)
     }
 }
 
@@ -177,5 +199,24 @@ extension NSError {
             localizedFailureReason: NSLocalizedString("The UserName have been taken."))
     }
     
+    class func currentPwdWrong() -> NSError {
+        return apiServiceError(
+            code: APIService.UserErrorCode.currentWrong,
+            localizedDescription: NSLocalizedString("Change Password"),
+            localizedFailureReason: NSLocalizedString("The Password is wrong."))
+    }
+    
+    class func newNotMatch() -> NSError {
+        return apiServiceError(
+            code: APIService.UserErrorCode.newNotMatch,
+            localizedDescription: NSLocalizedString("Change Password"),
+            localizedFailureReason: NSLocalizedString("The new password not match"))
+    }
+    
+    class func pwdCantEmpty() -> NSError {
+        return apiServiceError(
+            code: APIService.UserErrorCode.pwdEmpty,
+            localizedDescription: NSLocalizedString("Change Password"),
+            localizedFailureReason: NSLocalizedString("The new password can't empty"))
+    }
 }
-

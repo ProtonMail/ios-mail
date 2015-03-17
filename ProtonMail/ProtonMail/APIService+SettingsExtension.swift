@@ -29,22 +29,21 @@ extension APIService {
         
         request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
-
+    
     func settingUpdateNotificationEmail(notificationEmail: String, completion: CompletionBlock) {
         let path = SettingPath.base.stringByAppendingPathComponent("noticeemail")
         let parameters = ["NotificationEmail" : notificationEmail]
-
+        
         request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
     
-    func settingUpdatePassword(newPassword: String, completion: CompletionBlock) {
+    func settingUpdatePassword(oldPassword: String, newPassword: String, completion: CompletionBlock) {
         let path = SettingPath.base.stringByAppendingPathComponent("password")
         let parameters = [
-            "username" : sharedUserDataService.username ?? "",
-            "password" : newPassword,
-            "client_id" : "demoapp",
-            "response_type" : "password"]
-        
+            "old_pwd" : oldPassword,
+            "old_hashed_pwd" : "",
+            "new_pwd" : newPassword
+        ]
         request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
     
@@ -52,6 +51,12 @@ extension APIService {
         let path = SettingPath.base.stringByAppendingPathComponent("signature")
         let parameters = ["Signature" : signature]
         
+        request(method: .PUT, path: path, parameters: parameters, completion: completion)
+    }
+    
+    func settingUpdateDomainOrder(new_order: Array<Int>, completion: CompletionBlock) {
+        let path = SettingPath.base.stringByAppendingPathComponent("domainorder")
+        let parameters = ["order" : new_order]
         request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
 }
