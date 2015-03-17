@@ -174,7 +174,7 @@ class MessageDataService {
                     self.lastUpdatedStore[location.key] = lastUpdated
                 }
                 
-                completion?(task, response, error)
+                completion?(task: task, response: response, error: error)
             }
             
             fetchMessageIncrementalUpdates(lastUpdated: locationLastUpdated, completion: completionWrapper)
@@ -197,7 +197,7 @@ class MessageDataService {
                     Key.read : response?["Read"] as? Int ?? 0,
                     Key.total : response?["Total"] as? Int ?? 0]
                 
-                completion?(task, countInfo, error)
+                completion?(task: task, response: countInfo, error: error)
             }
             
             sharedAPIService.messageCountForLocation(location.rawValue, completion: completionWrapper)
@@ -225,7 +225,7 @@ class MessageDataService {
                         }
                         
                         dispatch_async(dispatch_get_main_queue()) {
-                            completion(task, response, error)
+                            completion(task: task, response: response, error: error)
                         }
                     }
                 }
@@ -233,7 +233,7 @@ class MessageDataService {
                 sharedAPIService.messageDetail(messageID: message.messageID, completion: completionWrapper)
             }
         } else {
-            completion(nil, nil, nil)
+            completion(task: nil, response: nil, error: nil)
         }
     }
     
@@ -269,11 +269,11 @@ class MessageDataService {
                             
                             self.fetchMessageCountForInbox()
                             
-                            completion?(task, responseDict, error)
+                            completion?(task: task, response: responseDict, error: error)
                         }
                     }
                 } else {
-                    completion?(task, responseDict, NSError.unableToParseResponse(responseDict))
+                    completion?(task: task, response: responseDict, error: NSError.unableToParseResponse(responseDict))
                 }
             }
 
@@ -398,7 +398,7 @@ class MessageDataService {
         queue { () -> Void in
             let completionWrapper: CompletionBlock = { task, response, error in
                 if error != nil {
-                    completion?(task, nil, error)
+                    completion?(task: task, response: nil, error: error)
                     return
                 }
                 
@@ -407,7 +407,7 @@ class MessageDataService {
                         if let response = response?[ResponseKey.response] as? Dictionary<String, AnyObject> {
                             if let messages = response[ResponseKey.message] as? Array<Dictionary<String, AnyObject>> {
                                 if messages.isEmpty {
-                                    completion?(task, nil, nil)
+                                    completion?(task: task, response: nil, error: nil)
                                 } else {
                                     let context = sharedCoreDataService.newManagedObjectContext()
                                     
@@ -422,8 +422,11 @@ class MessageDataService {
                                                 }
                                             case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update):
                                                 var error: NSError?
+                                                println("message = \(message)")
+                                                println("context = \(context)")
                                                 GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: message, inManagedObjectContext: context, error: &error)
                                                 
+                                                println("after merge")
                                                 if error != nil  {
                                                     NSLog("\(__FUNCTION__) error: \(error)")
                                                 }
@@ -440,7 +443,7 @@ class MessageDataService {
                                         }
                                         
                                         dispatch_async(dispatch_get_main_queue()) {
-                                            completion?(task, response, error)
+                                            completion?(task: task, response: response, error: error)
                                             self.fetchMessageCountForInbox()
                                             return
                                         }
@@ -453,7 +456,7 @@ class MessageDataService {
                     }
                 }
                 
-                completion?(task, nil, NSError.unableToParseResponse(response))
+                completion?(task: task, response: nil, error: NSError.unableToParseResponse(response))
             }
             
             sharedAPIService.messageCheck(timestamp: lastUpdated.timeIntervalSince1970, completion: completionWrapper)

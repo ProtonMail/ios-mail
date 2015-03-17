@@ -260,7 +260,7 @@ class MailboxViewController: ProtonMailViewController {
         }
     }
     
-    private func getLatestMessages() {
+    internal func getLatestMessages() {
         pagingManager.reset()
         
         sharedMessageDataService.fetchLatestMessagesForLocation(self.mailboxLocation) { _, messages, error in

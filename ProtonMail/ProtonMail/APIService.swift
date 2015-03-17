@@ -25,7 +25,7 @@ let sharedAPIService = APIService()
 
 class APIService {
 
-    typealias CompletionBlock = (NSURLSessionDataTask!, Dictionary<String,AnyObject>?, NSError?) -> Void
+    typealias CompletionBlock = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, error: NSError?) -> Void
 
     struct ErrorCode {
         static let badParameter = 1
@@ -61,7 +61,7 @@ class APIService {
     internal func afNetworkingBlocksForRequest(#method: HTTPMethod, path: String, parameters: AnyObject?, authenticated: Bool = true, completion: CompletionBlock?) -> (AFNetworkingSuccessBlock?, AFNetworkingFailureBlock?) {
         if let completion = completion {
             let failure: AFNetworkingFailureBlock = { task, error in
-                completion(task, nil, error)
+                completion(task: task, response: nil, error: error)
             }
             let success: AFNetworkingSuccessBlock = { task, responseObject in
                 if let responseDictionary = responseObject as? Dictionary<String, AnyObject> {
@@ -69,12 +69,12 @@ class APIService {
                         AuthCredential.expireOrClear()
                         self.request(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)
                     } else {
-                        completion(task, responseDictionary, nil)
+                        completion(task: task, response: responseDictionary, error: nil)
                     }
                 } else if responseObject == nil {
-                    completion(task, [:], nil)
+                    completion(task: task, response: [:], error: nil)
                 } else {
-                    completion(task, nil, NSError.unableToParseResponse(responseObject))
+                    completion(task: task, response: nil, error: NSError.unableToParseResponse(responseObject))
                 }
             }
             
@@ -91,12 +91,12 @@ class APIService {
         
         return { task, response, error in
             if error != nil {
-                completion?(task, nil, error)
+                completion?(task: task, response: nil, error: error)
             } else {
                 if let parsedResponse = response?[key] as? Dictionary<String, AnyObject> {
-                    completion?(task, parsedResponse, nil)
+                    completion?(task: task, response: parsedResponse, error: nil)
                 } else {
-                    completion?(task, nil, NSError.unableToParseResponse(response))
+                    completion?(task: task, response: nil, error: NSError.unableToParseResponse(response))
                 }
             }
         }
@@ -187,7 +187,7 @@ class APIService {
                     self.sessionManager.GET(path, parameters: parameters, success: successBlock, failure: failureBlock)
                 }
             } else {
-                completion?(nil, nil, error)
+                completion?(task: nil, response: nil, error: error)
             }
         }
 

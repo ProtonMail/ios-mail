@@ -66,11 +66,22 @@ class MessageDetailViewController: ProtonMailViewController {
     }
     
     func removeButtonTapped() {
-        println("removeButtonTapped: \(message.title)")
+        ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
+        sharedAPIService.messageID(message.messageID, updateWithAction: MessageDataService.MessageAction.delete.rawValue) { (task: NSURLSessionDataTask!, response: Dictionary<String, AnyObject>?, error: NSError?) -> Void in
+            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+            
+            self.navigationController?.popViewControllerAnimated(true)
+        }
     }
     
     func spamButtonTapped() {
-        println("spamButtonTapped: \(message.title)")
+        ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
+
+        sharedAPIService.messageID(message.messageID, updateWithAction: MessageDataService.MessageAction.spam.rawValue) { (task: NSURLSessionDataTask!, response: Dictionary<String, AnyObject>?, error: NSError?) -> Void in
+            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+
+            self.navigationController?.popViewControllerAnimated(true)
+        }
     }
     
     func moreButtonTapped() {
