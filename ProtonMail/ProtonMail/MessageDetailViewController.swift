@@ -102,31 +102,36 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
     
     func messageDetailView(messageDetailView: MessageDetailView, didTapMoveToForMessage message: Message) {
         let alertController = UIAlertController(title: NSLocalizedString("Move to..."), message: nil, preferredStyle: .ActionSheet)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: { (action) -> Void in
-            // TODO: add cancel action
-        }))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
         
         if message.location != .inbox {
             alertController.addAction(UIAlertAction(title: MessageDataService.Location.inbox.description, style: .Default, handler: { (action) -> Void in
-                // TODO: add move action
+                message.location = .inbox
+                
+                if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
+                    NSLog("\(__FUNCTION__) error: \(error)")
+                }
             }))
         }
         
         if message.location != .spam {
             alertController.addAction(UIAlertAction(title: MessageDataService.Location.spam.description, style: .Default, handler: { (action) -> Void in
-                // TODO: add move action
-            }))
-        }
-        
-        if message.location != .starred {
-            alertController.addAction(UIAlertAction(title: MessageDataService.Location.starred.description, style: .Default, handler: { (action) -> Void in
-                // TODO: add move action
+                message.location = .spam
+                
+                if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
+                    NSLog("\(__FUNCTION__) error: \(error)")
+                }
             }))
         }
         
         if message.location != .trash {
             alertController.addAction(UIAlertAction(title: MessageDataService.Location.trash.description, style: .Destructive, handler: { (action) -> Void in
-                // TODO: add move action
+                message.location = .trash
+                
+                if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
+                    NSLog("\(__FUNCTION__) error: \(error)")
+                }
+
             }))
         }
 
