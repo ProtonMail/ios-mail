@@ -236,6 +236,7 @@ class MessageDetailView: UIView {
     
     private func createMoreOptionsView() {
         self.moreOptionsView = MoreOptionsView()
+        self.moreOptionsView.delegate = self
         self.addSubview(moreOptionsView)
     }
     
@@ -763,6 +764,21 @@ class MessageDetailView: UIView {
             updateAttachments()
             updateEmailBodyWebView(true)
         }
+    }
+}
+
+
+// MARK: - MoreOptionsViewDelegate
+
+extension MessageDetailView: MoreOptionsViewDelegate {
+    func moreOptionsViewDidMarkAsUnread(moreOptionsView: MoreOptionsView) {
+        message.isRead = false
+        
+        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
+            NSLog("\(__FUNCTION__) error: \(error)")
+        }
+        
+        animateMoreViewOptions()
     }
 }
 

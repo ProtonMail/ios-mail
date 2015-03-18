@@ -124,7 +124,7 @@ class MoreOptionsView: UIView {
     
     // MARK: - Actions
     
-    private func markAction(sender: AnyObject) {
+    @objc private func markAction(sender: AnyObject) {
         delegate?.moreOptionsViewDidMarkAsUnread(self)
     }
     
