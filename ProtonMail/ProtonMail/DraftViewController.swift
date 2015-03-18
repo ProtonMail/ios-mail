@@ -36,8 +36,12 @@ class DraftViewController: UITableViewController {
         revealViewController().rightViewRevealOverdraw = 0
         
         setupRefreshControl()
-        
         setupFetchedResultsController()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        getLatestMessages()
     }
     
     // MARK: - Private methods
@@ -93,9 +97,9 @@ class DraftViewController: UITableViewController {
             }
             
             self.refreshControl!.endRefreshing()
+            
+            self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
         }
-        
-        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
     }
 }
 
