@@ -22,6 +22,7 @@ class ComposeViewController: ProtonMailViewController {
     
     // MARK: - Private attributes
     
+    var attachments: [AnyObject]?
     var message: Message?
     var action: String!
     var selectedContacts: [ContactVO]! = [ContactVO]()
@@ -80,6 +81,14 @@ class ComposeViewController: ProtonMailViewController {
         return false
     }
 }
+
+// MARK: - AttachmentsViewControllerDelegate
+extension ComposeViewController: AttachmentsViewControllerDelegate {
+    func attachmentsViewController(attachmentsViewController: AttachmentsViewController, didFinishPickingAttachments attachments: [AnyObject]) {
+        self.attachments = attachments
+    }
+}
+
 
 extension ComposeViewController: ComposeViewDelegate {
     func composeViewDidTapCancelButton(composeView: ComposeView) {
@@ -141,27 +150,17 @@ extension ComposeViewController: ComposeViewDelegate {
     }
     
     func composeViewDidTapAttachmentButton(composeView: ComposeView) {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Photo Library"), style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-            let picker: UIImagePickerController = UIImagePickerController()
-            picker.delegate = self
-            picker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-            self.presentViewController(picker, animated: true, completion: nil)
-        }))
-        
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Take a Photo"), style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-            if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)) {
-                let picker: UIImagePickerController = UIImagePickerController()
-                picker.delegate = self
-                picker.sourceType = UIImagePickerControllerSourceType.Camera
-                self.presentViewController(picker, animated: true, completion: nil)
+        if let viewController = UIStoryboard.instantiateInitialViewController(storyboard: .attachments) as? UINavigationController {
+            if let attachmentsViewController = viewController.viewControllers.first as? AttachmentsViewController {
+                attachmentsViewController.delegate = self
+                
+                if let attachments = attachments {
+                    attachmentsViewController.attachments = attachments
+                }
             }
-        }))
-
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: UIAlertActionStyle.Cancel, handler: nil))
-        
-        presentViewController(alertController, animated: true, completion: nil)
+            
+            presentViewController(viewController, animated: true, completion: nil)
+        }
     }
 }
 
@@ -172,21 +171,6 @@ extension ComposeViewController: ComposeViewDatasource {
     
     func composeViewSelectedContacts(composeView: ComposeView) ->  [AnyObject]! {
         return selectedContacts
-    }
-}
-
-extension ComposeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
-        println("UIImagePickerControllerDelegate didFinishPickingImage")
-        picker.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        picker.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
-        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: false)
     }
 }
 
