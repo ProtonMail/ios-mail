@@ -92,13 +92,14 @@ extension ComposeViewController: AttachmentsViewControllerDelegate {
 }
 
 
+// MARK: - ComposeViewDelegate
 extension ComposeViewController: ComposeViewDelegate {
     func composeViewDidTapCancelButton(composeView: ComposeView) {
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func composeViewDidTapSendButton(composeView: ComposeView) {
-        println("Did tap send button")
+        send()
     }
     
     func composeViewDidTapEncryptedButton(composeView: ComposeView) {
@@ -166,7 +167,9 @@ extension ComposeViewController: ComposeViewDelegate {
     }
 }
 
-extension ComposeViewController: ComposeViewDatasource {
+
+// MARK: - ComposeViewDataSource
+extension ComposeViewController: ComposeViewDataSource {
     func composeViewContactsModel(composeView: ComposeView) -> [AnyObject]! {
         return contacts
     }
@@ -176,6 +179,8 @@ extension ComposeViewController: ComposeViewDatasource {
     }
 }
 
+
+// MARK: - Address book
 extension ComposeViewController {
     private func retrieveAddressBook() {
         

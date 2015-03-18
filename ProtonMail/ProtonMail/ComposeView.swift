@@ -23,7 +23,7 @@ protocol ComposeViewDelegate {
     func composeViewDidRemoveContact(composeView: ComposeView, contact: ContactVO)
 }
 
-protocol ComposeViewDatasource {
+protocol ComposeViewDataSource {
     func composeViewContactsModel(composeView: ComposeView) -> [AnyObject]!
     func composeViewSelectedContacts(composeView: ComposeView) -> [AnyObject]!
 }
@@ -49,7 +49,7 @@ class ComposeView: UIView {
     
     // MARK: - Delegate and Datasource
     
-    var datasource: ComposeViewDatasource?
+    var datasource: ComposeViewDataSource?
     var delegate: ComposeViewDelegate?
     
     
@@ -63,8 +63,21 @@ class ComposeView: UIView {
     // MARK: - View Outlets
     
     var toContactPicker: MBContactPicker!
+    var toContacts: String {
+        return toContactPicker.contactList
+    }
     var ccContactPicker: MBContactPicker!
+    var ccContacts: String {
+        return ccContactPicker.contactList
+    }
     var bccContactPicker: MBContactPicker!
+    var bccContacts: String {
+        return bccContactPicker.contactList
+    }
+    
+    var subjectTitle: String {
+        return subject.text ?? ""
+    }
     
     @IBOutlet var fakeContactPickerHeightConstraint: NSLayoutConstraint!
     @IBOutlet var subjectMarginTopConstraint: NSLayoutConstraint!
@@ -580,6 +593,8 @@ extension ComposeView: MBContactPickerDelegate {
     }
 }
 
+
+// MARK: - UIPickerDataSource
 extension ComposeView: UIPickerViewDataSource {
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
@@ -596,6 +611,8 @@ extension ComposeView: UIPickerViewDataSource {
     }
 }
 
+
+// MARK: - UIPickerDelegate
 extension ComposeView: UIPickerViewDelegate {
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
         if (component == 0) {
@@ -616,6 +633,8 @@ extension ComposeView: UIPickerViewDelegate {
     }
 }
 
+
+// MARK: - UITextFieldDelegate
 extension ComposeView: UITextFieldDelegate {
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         if (textField == expirationDateTextField) {
@@ -623,5 +642,20 @@ extension ComposeView: UITextFieldDelegate {
         }
         
         return true
+    }
+}
+
+
+// MARK: - MBContactPicker extension
+extension MBContactPicker {
+    var contactList: String {
+        var contactList = ""
+        let contactsSelected = NSArray(array: self.contactsSelected)
+        
+        if let contacts = contactsSelected.valueForKey(ContactVO.Attributes.email) as? [String] {
+            contactList = ", ".join(contacts)
+        }
+        
+        return contactList
     }
 }
