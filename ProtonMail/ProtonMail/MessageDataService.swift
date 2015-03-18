@@ -557,7 +557,12 @@ extension Message {
     // MARK: - Public variables
     
     var location: MessageDataService.Location {
-        return MessageDataService.Location(rawValue: locationNumber.integerValue) ?? MessageDataService.Location.inbox
+        get {
+            return MessageDataService.Location(rawValue: locationNumber.integerValue) ?? MessageDataService.Location.inbox
+        }
+        set {
+            locationNumber = newValue.rawValue
+        }
     }
     
     /// Removes all messages from the store.

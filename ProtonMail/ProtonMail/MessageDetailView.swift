@@ -236,6 +236,7 @@ class MessageDetailView: UIView {
     
     private func createMoreOptionsView() {
         self.moreOptionsView = MoreOptionsView()
+        self.moreOptionsView.delegate = self
         self.addSubview(moreOptionsView)
     }
     
@@ -767,6 +768,27 @@ class MessageDetailView: UIView {
 }
 
 
+// MARK: - MoreOptionsViewDelegate
+
+extension MessageDetailView: MoreOptionsViewDelegate {
+    func moreOptionsViewDidMarkAsUnread(moreOptionsView: MoreOptionsView) {
+        message.isRead = false
+        
+        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
+            NSLog("\(__FUNCTION__) error: \(error)")
+        }
+        
+        animateMoreViewOptions()
+    }
+    
+    func moreOptionsViewDidSelectMoveTo(moreOptionsView: MoreOptionsView) {
+        delegate?.messageDetailView(self, didTapMoveToForMessage: message)
+        
+        animateMoreViewOptions()
+    }
+}
+
+
 // MARK: - UITableViewDataSource
 
 extension MessageDetailView: UITableViewDataSource {
@@ -876,6 +898,7 @@ extension MessageDetailView: UIWebViewDelegate {
 
 protocol MessageDetailViewDelegate {
     func messageDetailView(messageDetailView: MessageDetailView, didFailDecodeWithError: NSError)
+    func messageDetailView(messageDetailView: MessageDetailView, didTapMoveToForMessage message: Message)
     func messageDetailViewDidTapForwardMessage(messageDetailView: MessageDetailView, message: Message)
     func messageDetailViewDidTapReplyMessage(messageDetailView: MessageDetailView, message: Message)
     func messageDetailViewDidTapReplyAllMessage(messageDetailView: MessageDetailView, message: Message)

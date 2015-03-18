@@ -12,8 +12,14 @@
 
 import Foundation
 
+protocol MoreOptionsViewDelegate {
+    func moreOptionsViewDidMarkAsUnread(moreOptionsView: MoreOptionsView) -> Void
+    func moreOptionsViewDidSelectMoveTo(moreOptionsView: MoreOptionsView) -> Void
+}
+
 class MoreOptionsView: UIView {
     
+    var delegate: MoreOptionsViewDelegate?
     
     // MARK: - Private constants
     
@@ -24,8 +30,8 @@ class MoreOptionsView: UIView {
     
     // MARK: - Private attributes
     
-    private var tagButton: UIButton!
-    private var tagLabel: UILabel!
+//    private var tagButton: UIButton!
+//    private var tagLabel: UILabel!
     private var moveButton: UIButton!
     private var moveLabel: UILabel!
     private var markButton: UIButton!
@@ -55,22 +61,24 @@ class MoreOptionsView: UIView {
         let labelFont = UIFont.robotoRegular(size: UIFont.Size.h5)
         let labelColor = UIColor.ProtonMail.Gray_FCFEFF
         
-        self.tagButton = UIButton.buttonWithImage(UIImage(named: "tag")!)
-        self.addSubview(tagButton)
-        
-        self.tagLabel = UILabel.labelWith(labelFont, text: NSLocalizedString("Tag as..."), textColor: labelColor)
-        self.addSubview(tagLabel)
+//        self.tagButton = UIButton.buttonWithImage(UIImage(named: "tag")!)
+//        self.addSubview(tagButton)
+//        
+//        self.tagLabel = UILabel.labelWith(labelFont, text: NSLocalizedString("Tag as..."), textColor: labelColor)
+//        self.addSubview(tagLabel)
         
         self.moveButton = UIButton.buttonWithImage(UIImage(named: "move")!)
+        self.moveButton.addTarget(self, action: "moveAction:", forControlEvents: .TouchUpInside)
         self.addSubview(moveButton)
 
         self.moveLabel = UILabel.labelWith(labelFont, text: NSLocalizedString("Move to..."), textColor: labelColor)
         self.addSubview(moveLabel)
         
         self.markButton = UIButton.buttonWithImage(UIImage(named: "mark")!)
+        self.markButton.addTarget(self, action: "markAction:", forControlEvents: .TouchUpInside)
         self.addSubview(markButton)
         
-        self.markLabel = UILabel.labelWith(labelFont, text: NSLocalizedString("Mark as..."), textColor: labelColor)
+        self.markLabel = UILabel.labelWith(labelFont, text: NSLocalizedString("Mark as unread"), textColor: labelColor)
         self.addSubview(markLabel)
     }
     
@@ -91,17 +99,17 @@ class MoreOptionsView: UIView {
             make.top.equalTo()(self.moveButton.mas_bottom).with().offset()(self.kLabelMarginTop)
         }
         
-        tagButton.mas_makeConstraints { (make) -> Void in
-            make.centerY.equalTo()(self.moveButton)
-            make.left.equalTo()(self).with().offset()(self.kButtonsMarginLeftRight)
-            make.width.equalTo()(self.tagButton.frame.size.width)
-            make.height.equalTo()(self.tagButton.frame.size.height)
-        }
-        
-        tagLabel.mas_makeConstraints { (make) -> Void in
-            make.centerX.equalTo()(self.tagButton)
-            make.top.equalTo()(self.tagButton.mas_bottom).with().offset()(self.kLabelMarginTop)
-        }
+//        tagButton.mas_makeConstraints { (make) -> Void in
+//            make.centerY.equalTo()(self.moveButton)
+//            make.left.equalTo()(self).with().offset()(self.kButtonsMarginLeftRight)
+//            make.width.equalTo()(self.tagButton.frame.size.width)
+//            make.height.equalTo()(self.tagButton.frame.size.height)
+//        }
+//        
+//        tagLabel.mas_makeConstraints { (make) -> Void in
+//            make.centerX.equalTo()(self.tagButton)
+//            make.top.equalTo()(self.tagButton.mas_bottom).with().offset()(self.kLabelMarginTop)
+//        }
         
         markButton.mas_makeConstraints { (make) -> Void in
             make.centerY.equalTo()(self.moveButton)
@@ -115,4 +123,15 @@ class MoreOptionsView: UIView {
             make.top.equalTo()(self.markButton.mas_bottom).with().offset()(self.kLabelMarginTop)
         }
     }
+    
+    // MARK: - Actions
+    
+    @objc private func markAction(sender: AnyObject) {
+        delegate?.moreOptionsViewDidMarkAsUnread(self)
+    }
+    
+    @objc private func moveAction(sender: AnyObject) {
+        delegate?.moreOptionsViewDidSelectMoveTo(self)
+    }
+    
 }
