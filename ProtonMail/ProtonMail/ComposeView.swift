@@ -237,7 +237,11 @@ class ComposeView: UIView {
         
         if (isShowingCcBccView) {
             subjectMarginTopConstraint.constant = 0
+            ccContactPicker.alpha = 0.0
+            bccContactPicker.alpha = 0.0
         } else {
+            ccContactPicker.alpha = 1.0
+            bccContactPicker.alpha = 1.0
             subjectMarginTopConstraint.constant = toContactPicker.currentContentHeight + ccContactPicker.currentContentHeight + bccContactPicker.currentContentHeight - kDefaultRecipientHeight
         }
         
