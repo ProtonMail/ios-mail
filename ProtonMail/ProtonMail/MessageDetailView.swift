@@ -780,6 +780,12 @@ extension MessageDetailView: MoreOptionsViewDelegate {
         
         animateMoreViewOptions()
     }
+    
+    func moreOptionsViewDidSelectMoveTo(moreOptionsView: MoreOptionsView) {
+        delegate?.messageDetailView(self, didTapMoveToForMessage: message)
+        
+        animateMoreViewOptions()
+    }
 }
 
 
@@ -892,6 +898,7 @@ extension MessageDetailView: UIWebViewDelegate {
 
 protocol MessageDetailViewDelegate {
     func messageDetailView(messageDetailView: MessageDetailView, didFailDecodeWithError: NSError)
+    func messageDetailView(messageDetailView: MessageDetailView, didTapMoveToForMessage message: Message)
     func messageDetailViewDidTapForwardMessage(messageDetailView: MessageDetailView, message: Message)
     func messageDetailViewDidTapReplyMessage(messageDetailView: MessageDetailView, message: Message)
     func messageDetailViewDidTapReplyAllMessage(messageDetailView: MessageDetailView, message: Message)

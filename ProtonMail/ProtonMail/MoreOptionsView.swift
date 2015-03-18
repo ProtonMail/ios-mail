@@ -14,6 +14,7 @@ import Foundation
 
 protocol MoreOptionsViewDelegate {
     func moreOptionsViewDidMarkAsUnread(moreOptionsView: MoreOptionsView) -> Void
+    func moreOptionsViewDidSelectMoveTo(moreOptionsView: MoreOptionsView) -> Void
 }
 
 class MoreOptionsView: UIView {
@@ -67,6 +68,7 @@ class MoreOptionsView: UIView {
 //        self.addSubview(tagLabel)
         
         self.moveButton = UIButton.buttonWithImage(UIImage(named: "move")!)
+        self.moveButton.addTarget(self, action: "moveAction:", forControlEvents: .TouchUpInside)
         self.addSubview(moveButton)
 
         self.moveLabel = UILabel.labelWith(labelFont, text: NSLocalizedString("Move to..."), textColor: labelColor)
@@ -126,6 +128,10 @@ class MoreOptionsView: UIView {
     
     @objc private func markAction(sender: AnyObject) {
         delegate?.moreOptionsViewDidMarkAsUnread(self)
+    }
+    
+    @objc private func moveAction(sender: AnyObject) {
+        delegate?.moreOptionsViewDidSelectMoveTo(self)
     }
     
 }

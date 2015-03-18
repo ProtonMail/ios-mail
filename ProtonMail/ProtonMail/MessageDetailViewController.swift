@@ -100,6 +100,39 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
         presentViewController(alertController, animated: true, completion: nil)
     }
     
+    func messageDetailView(messageDetailView: MessageDetailView, didTapMoveToForMessage message: Message) {
+        let alertController = UIAlertController(title: NSLocalizedString("Move to..."), message: nil, preferredStyle: .ActionSheet)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: { (action) -> Void in
+            // TODO: add cancel action
+        }))
+        
+        if message.location != .inbox {
+            alertController.addAction(UIAlertAction(title: MessageDataService.Location.inbox.description, style: .Default, handler: { (action) -> Void in
+                // TODO: add move action
+            }))
+        }
+        
+        if message.location != .spam {
+            alertController.addAction(UIAlertAction(title: MessageDataService.Location.spam.description, style: .Default, handler: { (action) -> Void in
+                // TODO: add move action
+            }))
+        }
+        
+        if message.location != .starred {
+            alertController.addAction(UIAlertAction(title: MessageDataService.Location.starred.description, style: .Default, handler: { (action) -> Void in
+                // TODO: add move action
+            }))
+        }
+        
+        if message.location != .trash {
+            alertController.addAction(UIAlertAction(title: MessageDataService.Location.trash.description, style: .Destructive, handler: { (action) -> Void in
+                // TODO: add move action
+            }))
+        }
+
+        presentViewController(alertController, animated: true, completion: nil)
+    }
+    
     func messageDetailViewDidTapForwardMessage(messageView: MessageDetailView, message: Message) {
         actionTapped = ComposeView.ComposeMessageAction.Forward
         self.performSegueWithIdentifier("toCompose", sender: self)
