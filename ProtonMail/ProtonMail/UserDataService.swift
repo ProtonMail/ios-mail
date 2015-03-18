@@ -243,10 +243,10 @@ class UserDataService {
                         
                         self.userInfo = userInfo
                     }
-                    completion?(task, response, error)
+                    completion?(task: task, response: response, error: error)
                 })
             } else {
-                completion?(nil, nil, error)
+                completion?(task: nil, response: nil, error: error)
             }
         }
     }
