@@ -12,8 +12,13 @@
 
 import Foundation
 
+protocol MoreOptionsViewDelegate {
+    func moreOptionsViewDidMarkAsUnread(moreOptionsView: MoreOptionsView) -> Void
+}
+
 class MoreOptionsView: UIView {
     
+    var delegate: MoreOptionsViewDelegate?
     
     // MARK: - Private constants
     
@@ -68,6 +73,7 @@ class MoreOptionsView: UIView {
         self.addSubview(moveLabel)
         
         self.markButton = UIButton.buttonWithImage(UIImage(named: "mark")!)
+        self.markButton.addTarget(self, action: "markAction:", forControlEvents: .TouchUpInside)
         self.addSubview(markButton)
         
         self.markLabel = UILabel.labelWith(labelFont, text: NSLocalizedString("Mark as unread"), textColor: labelColor)
@@ -115,4 +121,11 @@ class MoreOptionsView: UIView {
             make.top.equalTo()(self.markButton.mas_bottom).with().offset()(self.kLabelMarginTop)
         }
     }
+    
+    // MARK: - Actions
+    
+    private func markAction(sender: AnyObject) {
+        delegate?.moreOptionsViewDidMarkAsUnread(self)
+    }
+    
 }
