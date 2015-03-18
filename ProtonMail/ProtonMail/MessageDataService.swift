@@ -331,6 +331,65 @@ class MessageDataService {
             sharedAPIService.messageSearch(query, page: page, completion: completionWrapper)
         }
     }
+    
+    func send(#recipientList: String, bccList: String, ccList: String, title: String, encryptionPassword: String, passwordHint: String, expirationTimeInterval: NSTimeInterval, body: String, attachments: [AnyObject]?) {
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            let sendMessage = Message(context: context)
+            sendMessage.messageID = "0"  //default is 0,  if you already have a draft ID pass here.
+            sendMessage.location = .outbox
+            sendMessage.recipientList = recipientList
+            sendMessage.bccList = bccList
+            sendMessage.ccList = ccList
+            sendMessage.title = title
+            sendMessage.passwordHint = passwordHint
+            
+            if expirationTimeInterval > 0 {
+                sendMessage.expirationTime = NSDate(timeIntervalSince1970: expirationTimeInterval)
+            }
+            
+            var messageBody: [String : String] = [:]
+            
+            if let publicKey = sharedUserDataService.userInfo?.publicKey {
+                var error: NSError?
+                if let encryptedBody = body.encryptWithPublicKey(publicKey, error: &error) {
+                    messageBody["self"] = encryptedBody
+                } else {
+                    NSLog("\(__FUNCTION__) error: \(error)")
+                }
+            }
+            
+            if !encryptionPassword.isEmpty {
+                sendMessage.isEncrypted = true
+                
+                // TODO: encrypt the body for outsiders
+                messageBody["outsiders"] = body
+            }
+            
+            if let attachments = attachments {
+                for (index, attachment) in enumerate(attachments) {
+                    if let image = attachment as? UIImage {
+                        if let imageData = UIImagePNGRepresentation(image) {
+                            let fileData = imageData.base64EncodedDataWithOptions(nil)
+                            let mimeType = "image/png"
+                            let fileName = "\(index).png"
+                            let fileSize = imageData.length
+                            
+                            // TODO: create attachment
+                            // TODO: add attachment to sendMessage
+                            continue
+                        }
+                    }
+                    
+                    let description = attachment.description ?? "unknown"
+                    NSLog("\(__FUNCTION__) unsupported attachment type \(description)")
+                }
+            }
+            
+            if let error = context.saveUpstreamIfNeeded() {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
+        }
+    }
 
     func purgeOldMessages() {
         if let context = sharedCoreDataService.mainManagedObjectContext {

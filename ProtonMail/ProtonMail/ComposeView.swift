@@ -75,6 +75,12 @@ class ComposeView: UIView {
         return bccContactPicker.contactList
     }
     
+    var body: String {
+        return bodyTextView.text ?? ""
+    }
+    
+    var expirationTimeInterval: NSTimeInterval = 0
+    
     var subjectTitle: String {
         return subject.text ?? ""
     }
@@ -623,13 +629,14 @@ extension ComposeView: UIPickerViewDelegate {
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        var selectedDay = pickerView.selectedRowInComponent(0)
-        var selectedHour = pickerView.selectedRowInComponent(1)
+        let selectedDay = pickerView.selectedRowInComponent(0)
+        let selectedHour = pickerView.selectedRowInComponent(1)
 
-        var day = "\(selectedDay) days"
-        var hour = "\(selectedHour) hours"
+        let day = "\(selectedDay) days"
+        let hour = "\(selectedHour) hours"
         
         self.expirationDateTextField.text = "\(day) \(hour)"
+        self.expirationTimeInterval = ((Double(selectedDay) * 24) + Double(selectedHour)) * 3600 // convert to seconds
     }
 }
 

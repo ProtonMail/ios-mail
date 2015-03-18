@@ -144,6 +144,7 @@
                 <entry key="JSONKeyPath" value="MessageID"/>
             </userInfo>
         </attribute>
+        <attribute name="passwordHint" attributeType="String" syncable="YES"/>
         <attribute name="recipientList" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="RecipientList"/>
@@ -204,6 +205,6 @@
     <elements>
         <element name="Attachment" positionX="-63" positionY="135" width="128" height="135"/>
         <element name="Contact" positionX="-54" positionY="135" width="128" height="88"/>
-        <element name="Message" positionX="-63" positionY="-18" width="128" height="463"/>
+        <element name="Message" positionX="-63" positionY="-18" width="128" height="480"/>
     </elements>
 </model>

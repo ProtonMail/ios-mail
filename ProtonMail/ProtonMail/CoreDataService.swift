@@ -49,14 +49,15 @@ class CoreDataService {
             dict[NSLocalizedFailureReasonErrorKey] = failureReason
             dict[NSUnderlyingErrorKey] = error
             error = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict)
-            // Replace this with code to handle the error appropriately.
-            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             NSLog("Unresolved error \(error), \(error!.userInfo)")
             
-            let alertController = error?.alertController()
-            let action = UIAlertAction(title: NSLocalizedString("Close"), style: .Default, handler: { (action) -> Void in
-                abort()
-            })
+            if let alertController = error?.alertController() {
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Close"), style: .Default, handler: { (action) -> Void in
+                    abort()
+                }))
+                
+                UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
+            }
         } else {
            url.excludeFromBackup()
         }

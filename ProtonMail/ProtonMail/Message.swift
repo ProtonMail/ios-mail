@@ -36,6 +36,7 @@ class Message: NSManagedObject {
     @NSManaged var lastModified: NSDate?
     @NSManaged var locationNumber: NSNumber
     @NSManaged var messageID: String
+    @NSManaged var passwordHint: String
     @NSManaged var recipientList: String
     @NSManaged var recipientNameList: String
     @NSManaged var sender: String
