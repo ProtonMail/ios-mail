@@ -23,6 +23,7 @@ class UserDataService {
     
     typealias CompletionBlock = APIService.CompletionBlock
     typealias UserInfoBlock = APIService.UserInfoBlock
+    typealias UserNameCheckBlock = APIService.UserNameCheckBlock
     
     struct Key {
         static let isRememberMailboxPassword = "isRememberMailboxPasswordKey"
@@ -210,13 +211,11 @@ class UserDataService {
         if let userInfo = userInfo {
             if let mailboxPassword = mailboxPassword {
                 if let newPrivateKey = OpenPGP().updatePassphrase(userInfo.privateKey, publicKey: userInfo.publicKey, old_pass: mailboxPassword, new_pass: newMailboxPassword, error: &error) {
-                    
-                    
                     sharedAPIService.userUpdateKeypair(userInfo.publicKey, privateKey: newPrivateKey, completion: { task, response, error in
                         if error == nil {
                             self.mailboxPassword = newMailboxPassword
                             
-                            let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: newPrivateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace)
+                            let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: newPrivateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus)
                             
                             self.userInfo = userInfo
                         }
@@ -230,6 +229,28 @@ class UserDataService {
         }
     }
     
+    func updateNewUserKeys(mbp:String, completion: CompletionBlock?) {
+        var error: NSError?
+        if let userInfo = userInfo {
+            if let newPrivateKey = OpenPGP().generateKey(mbp, userName: username!, error: &error) {
+                var pubkey = newPrivateKey["public"] as String
+                var privkey = newPrivateKey["private"] as String
+                sharedAPIService.userUpdateKeypair(pubkey, privateKey: privkey, completion: { task, response, error in
+                    if error == nil {
+                        self.mailboxPassword = mbp;
+                        
+                        let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: privkey, publicKey: pubkey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus)
+                        
+                        self.userInfo = userInfo
+                    }
+                    completion?(task, response, error)
+                })
+            } else {
+                completion?(nil, nil, error)
+            }
+        }
+    }
+
     func updateNotificationEmail(newNotificationEmail: String, completion: UserInfoBlock?) {
         sharedAPIService.settingUpdateNotificationEmail(newNotificationEmail, completion: completionForUserInfo(completion))
     }
@@ -249,6 +270,35 @@ class UserDataService {
     func updateSignature(signature: String, completion: UserInfoBlock?) {
         sharedAPIService.settingUpdateSignature(signature, completion: completionForUserInfo(completion))
     }
+    
+    func createNewUser(user_name: String, password: String, email: String, receive:Bool, completion: UserInfoBlock) {
+        sharedAPIService.userCreate(user_name, pwd: password, email: email, receive_news: receive){ auth, error in
+            if error == nil {
+                self.isSignedIn = true
+                self.username = user_name
+                self.password = password
+                self.isRememberUser = false
+                
+                let completionWrapper: UserInfoBlock = { auth, error in
+                    if error == nil {
+                        NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignIn, object: self)
+                    }
+                    
+                    completion(auth, error)
+                }
+                
+                self.fetchUserInfo(completion: completionWrapper)
+            } else {
+                self.signOut(true)
+                completion(nil, error)
+            }
+        }
+    }
+
+    func checkUserNameIsExsit(user_name: String, completion: UserNameCheckBlock) {
+        sharedAPIService.userCheckExist(user_name, completion: completion)
+    }
+    
     
     // MARK: - Private methods
     
