@@ -91,7 +91,33 @@ class OpenPGPTests: XCTestCase {
         XCTAssertTrue(result, "badPassphrase should fail.")
     }
     
-    
+    func testEncryptDecryptAES()
+    {
+        var error: NSError?
+        let test_password : String = "123";
+        let original_text :String = "<div>lajflkjasklfjlksdfkl</div><div><br></div><div>Sent from iPhone <a href=\"https://protonmail.ch\">ProtonMail</a>, encrypted email based in Switzerland.<br></div>"
+        let test_aes_str : String = "-----BEGIN PGP MESSAGE-----\nVersion: OpenPGP.js v0.10.1-IE\nComment: http://openpgpjs.org\n\nww0ECQMIina34sp8Nlpg0sAbAc/x6pR8h57OJv9pklLuEc/aH5lFT9OpWS+N\n7oPaJCGK1f3aQV7g5V5INlUvwICeDiSkDMo+hHGtFgDFEwgNiMDc7wAtod1U\nZ5PTHegr8KWWmBiDIYuPVFJH8mALVcQen9MI1xFSYO8RvSxM/P6dJPzrVZQK\noIRW98dxMjJqMWW9HgqWCej6TRDua65r/X7Ucco9tWpwzmQCnvJLqpcYYrEk\ngcGyXsp3RvISG6pWh8ZFemeO6yoqnphYmcAa/i4h4CiMqKDDJuOg4UdpW46U\nGoNSV+C4hz5ymRDj\n=hUe3\n-----END PGP MESSAGE-----"
+        let plain_text = test_aes_str.decryptWithPassphrase(test_password, error: &error)
+        XCTAssertNotNil(plain_text, "decryptWithPassphrase failed with error: \(error)")
+        XCTAssertEqual(plain_text!, original_text, "decryptedText does not match cleartext")
+        
+        
+        let new_enc_msg = original_text.encryptWithPassphrase(test_password, error: &error)
+        XCTAssertNotNil(new_enc_msg, "encryptWithPassphrase failed with error: \(error)")
+        
+        let new_dec_msg = new_enc_msg?.decryptWithPassphrase(test_password, error: &error)
+        XCTAssertNotNil(new_dec_msg, "decryptWithPassphrase failed with error: \(error)")
+        
+        XCTAssertEqual(new_dec_msg!, original_text, "decryptedText does not match cleartext")
+        
+        
+        let bad_msg = new_enc_msg?.decryptWithPassphrase("bad_pwd", error: &error)
+        XCTAssertTrue(bad_msg == nil, "decryptWithPassphrase badPassphrase should fail.")
+        XCTAssertEqual(error!.domain, OpenPGPErrorDomain, "bad error domain")
+        XCTAssertEqual(error!.code, OpenPGP.ErrorCode.badPassphrase.rawValue, "wrong error code")
+        
+    }
+
     
     
     

@@ -105,4 +105,32 @@ extension String {
         
         return nil
     }
+    
+    func encryptWithPassphrase(passphrase: String, error: NSErrorPointer?) -> String? {
+        
+        var anError: NSError?
+        if let encrypt = OpenPGP().encrypt_message_aes(self, pwd: passphrase, error: &anError) {
+            return encrypt
+        }
+        
+        if let error = error {
+            error.memory = anError
+        }
+        
+        return nil
+    }
+    
+    func decryptWithPassphrase(passphrase: String, error: NSErrorPointer?) -> String? {
+        
+        var anError: NSError?
+        if let encrypt = OpenPGP().decrypt_message_aes(self, pwd: passphrase, error: &anError) {
+            return encrypt
+        }
+        
+        if let error = error {
+            error.memory = anError
+        }
+        
+        return nil
+    }
 }
