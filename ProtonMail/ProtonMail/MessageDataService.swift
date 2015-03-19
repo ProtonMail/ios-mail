@@ -397,8 +397,7 @@ class MessageDataService {
             if error != nil {
                 NSLog("\(__FUNCTION__) error: \(error)")
             } else if count > maximumCachedMessageCount {
-                fetchRequest.predicate = NSPredicate(format: "%K < %@", Message.Attributes.time, NSDate(timeIntervalSinceNow: -cutoffTimeInterval))
-                
+                fetchRequest.predicate = NSPredicate(format: "%K != %@ AND %K < %@", Message.Attributes.locationNumber, Location.outbox.rawValue, Message.Attributes.time, NSDate(timeIntervalSinceNow: -cutoffTimeInterval))
                 
                 if let oldMessages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
                     for message in oldMessages {
