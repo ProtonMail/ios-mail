@@ -153,7 +153,7 @@ extension ComposeViewController: ComposeViewDelegate {
         }
     }
     
-    func composeViewDidAddContactToPicker(composeView: ComposeView, contact: ContactVO, picker: MBContactPicker) {
+    func composeView(composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: MBContactPicker) {
         var selectedContacts: [ContactVO] = [ContactVO]()
         
         if (picker == composeView.toContactPicker) {
@@ -167,7 +167,8 @@ extension ComposeViewController: ComposeViewDelegate {
         selectedContacts.append(contact)
     }
     
-    func composeViewDidRemoveContactFromPicker(composeView: ComposeView, contact: ContactVO, picker: MBContactPicker) {
+    func composeView(composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker) {
+
         var contactIndex = -1
         
         var selectedContacts: [ContactVO] = [ContactVO]()
