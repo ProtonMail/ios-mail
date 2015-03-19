@@ -6,6 +6,7 @@
                 <entry key="JSONKeyPath" value="AttachmentID"/>
             </userInfo>
         </attribute>
+        <attribute name="fileData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="fileName" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="FileName"/>
@@ -144,6 +145,7 @@
                 <entry key="JSONKeyPath" value="MessageID"/>
             </userInfo>
         </attribute>
+        <attribute name="passwordEncryptedBody" attributeType="String" syncable="YES"/>
         <attribute name="passwordHint" attributeType="String" syncable="YES"/>
         <attribute name="recipientList" attributeType="String" syncable="YES">
             <userInfo>
@@ -203,8 +205,8 @@
         </userInfo>
     </entity>
     <elements>
-        <element name="Attachment" positionX="-63" positionY="135" width="128" height="135"/>
+        <element name="Attachment" positionX="-63" positionY="135" width="128" height="148"/>
         <element name="Contact" positionX="-54" positionY="135" width="128" height="88"/>
-        <element name="Message" positionX="-63" positionY="-18" width="128" height="480"/>
+        <element name="Message" positionX="-63" positionY="-18" width="128" height="493"/>
     </elements>
 </model>

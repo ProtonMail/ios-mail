@@ -334,48 +334,43 @@ class MessageDataService {
     
     func send(#recipientList: String, bccList: String, ccList: String, title: String, encryptionPassword: String, passwordHint: String, expirationTimeInterval: NSTimeInterval, body: String, attachments: [AnyObject]?) {
         if let context = sharedCoreDataService.mainManagedObjectContext {
-            let sendMessage = Message(context: context)
-            sendMessage.messageID = "0"  //default is 0,  if you already have a draft ID pass here.
-            sendMessage.location = .outbox
-            sendMessage.recipientList = recipientList
-            sendMessage.bccList = bccList
-            sendMessage.ccList = ccList
-            sendMessage.title = title
-            sendMessage.passwordHint = passwordHint
+            let message = Message(context: context)
+            message.messageID = "0"  //default is 0,  if you already have a draft ID pass here.
+            message.location = .outbox
+            message.recipientList = recipientList
+            message.bccList = bccList
+            message.ccList = ccList
+            message.title = title
+            message.passwordHint = passwordHint
             
             if expirationTimeInterval > 0 {
-                sendMessage.expirationTime = NSDate(timeIntervalSince1970: expirationTimeInterval)
+                message.expirationTime = NSDate(timeIntervalSince1970: expirationTimeInterval)
             }
             
-            var messageBody: [String : String] = [:]
+            var error: NSError?
+            message.encryptBody(body, error: &error)
             
-            if let publicKey = sharedUserDataService.userInfo?.publicKey {
-                var error: NSError?
-                if let encryptedBody = body.encryptWithPublicKey(publicKey, error: &error) {
-                    messageBody["self"] = encryptedBody
-                } else {
-                    NSLog("\(__FUNCTION__) error: \(error)")
-                }
+            if error != nil {
+                NSLog("\(__FUNCTION__) error: \(error)")
             }
             
-            if !encryptionPassword.isEmpty {
-                sendMessage.isEncrypted = true
-                
-                // TODO: encrypt the body for outsiders
-                messageBody["outsiders"] = body
-            }
+//            if !encryptionPassword.isEmpty {
+//                message.isEncrypted = true
+//                
+//                // TODO: encrypt the body for outsiders
+//            }
             
             if let attachments = attachments {
                 for (index, attachment) in enumerate(attachments) {
                     if let image = attachment as? UIImage {
-                        if let imageData = UIImagePNGRepresentation(image) {
-                            let fileData = imageData.base64EncodedDataWithOptions(nil)
-                            let mimeType = "image/png"
-                            let fileName = "\(index).png"
-                            let fileSize = imageData.length
-                            
-                            // TODO: create attachment
-                            // TODO: add attachment to sendMessage
+                        if let fileData = UIImagePNGRepresentation(image) {
+                            let attachment = Attachment(context: context)
+                            attachment.attachmentID = "0"
+                            attachment.message = message
+                            attachment.fileName = "\(index).png"
+                            attachment.mimeType = "image/png"
+                            attachment.fileData = fileData
+                            attachment.fileSize = fileData.length
                             continue
                         }
                     }
