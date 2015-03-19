@@ -19,13 +19,13 @@ protocol ComposeViewDelegate {
     func composeViewDidTapNextButton(composeView: ComposeView)
     func composeViewDidTapEncryptedButton(composeView: ComposeView)
     func composeViewDidTapAttachmentButton(composeView: ComposeView)
-    func composeViewDidAddContact(composeView: ComposeView, contact: ContactVO)
-    func composeViewDidRemoveContact(composeView: ComposeView, contact: ContactVO)
+    func composeView(composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: MBContactPicker)
+    func composeView(composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker)
 }
 
 protocol ComposeViewDatasource {
-    func composeViewContactsModel(composeView: ComposeView) -> [AnyObject]!
-    func composeViewSelectedContacts(composeView: ComposeView) -> [AnyObject]!
+    func composeViewContactsModelForPicker(composeView: ComposeView, picker: MBContactPicker) -> [AnyObject]!
+    func composeViewSelectedContactsForPicker(composeView: ComposeView, picker: MBContactPicker) -> [AnyObject]!
 }
 
 class ComposeView: UIView {
@@ -67,7 +67,6 @@ class ComposeView: UIView {
     var bccContactPicker: MBContactPicker!
     
     @IBOutlet var fakeContactPickerHeightConstraint: NSLayoutConstraint!
-    @IBOutlet var subjectMarginTopConstraint: NSLayoutConstraint!
     @IBOutlet var subject: UITextField!
     @IBOutlet var bodyTextView: UITextView!
     @IBOutlet var spinner: FSSyncSpinner!
@@ -118,8 +117,6 @@ class ComposeView: UIView {
         self.configureToContactPicker()
         self.configureCcContactPicker()
         self.configureBccContactPicker()
-
-        self.bringSubviewToFront(showCcBccButton)
         
         self.subject.addBorder(.Left, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         self.subject.addBorder(.Right, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
@@ -142,22 +139,16 @@ class ComposeView: UIView {
        
         self.registerForKeyboardNotifications()
         self.bringSubviewToFront(spinner)
+        self.bringSubviewToFront(showCcBccButton)
         self.sendSubviewToBack(ccContactPicker)
         self.sendSubviewToBack(bccContactPicker)
         
         self.spinner.startAnimating()
     }
     
+    
     deinit {
         unregisterForKeybardNotifications()
-    }
-    
-    func setMessage(message: Message, action: String) {
-       if (action == ComposeView.ComposeMessageAction.Forward) {
-            self.subject.text = "Fwd: \(message.title)"
-       } else {
-            self.subject.text = "Re: \(message.title)"
-        }
     }
     
     func finishRetrievingContacts() {
@@ -236,13 +227,13 @@ class ComposeView: UIView {
     @IBAction func contactPlusButtonTapped(sender: UIButton) {
         
         if (isShowingCcBccView) {
-            subjectMarginTopConstraint.constant = 0
+            fakeContactPickerHeightConstraint.constant = toContactPicker.currentContentHeight
             ccContactPicker.alpha = 0.0
             bccContactPicker.alpha = 0.0
         } else {
             ccContactPicker.alpha = 1.0
             bccContactPicker.alpha = 1.0
-            subjectMarginTopConstraint.constant = toContactPicker.currentContentHeight + ccContactPicker.currentContentHeight + bccContactPicker.currentContentHeight - kDefaultRecipientHeight
+            fakeContactPickerHeightConstraint.constant = toContactPicker.currentContentHeight + ccContactPicker.currentContentHeight + bccContactPicker.currentContentHeight
         }
         
         isShowingCcBccView = !isShowingCcBccView
@@ -367,9 +358,9 @@ class ComposeView: UIView {
         }
         
         if (isShowingCcBccView) {
-            subjectMarginTopConstraint.constant = toContactPicker.currentContentHeight + ccContactPicker.currentContentHeight + bccContactPicker.currentContentHeight - kDefaultRecipientHeight
+            fakeContactPickerHeightConstraint.constant = toContactPicker.currentContentHeight + ccContactPicker.currentContentHeight + bccContactPicker.currentContentHeight
         } else {
-            subjectMarginTopConstraint.constant = 0
+            fakeContactPickerHeightConstraint.constant = toContactPicker.currentContentHeight
         }
 
         
@@ -531,11 +522,11 @@ extension ComposeView: MBContactPickerDataSource {
         contactPickerView.contactCollectionView.addBorder(.Left, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         contactPickerView.contactCollectionView.addBorder(.Right, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         
-        return self.datasource?.composeViewContactsModel(self)
+        return self.datasource?.composeViewContactsModelForPicker(self, picker: contactPickerView)
     }
     
     func selectedContactModelsForContactPicker(contactPickerView: MBContactPicker!) -> [AnyObject]! {
-        return self.datasource?.composeViewSelectedContacts(self)
+        return self.datasource?.composeViewSelectedContactsForPicker(self, picker: contactPickerView)
     }
 }
 
@@ -548,15 +539,33 @@ extension ComposeView: MBContactPickerDelegate {
         return NSPredicate(format: "contactTitle CONTAINS[cd] %@ or contactSubtitle CONTAINS[cd] %@", argumentArray: [searchString, searchString])
     }
     
-    func contactCollectionView(contactCollectionView: MBContactCollectionView!, didSelectContact model: MBContactPickerModelProtocol!) {
-    }
-    
     func contactCollectionView(contactCollectionView: MBContactCollectionView!, didAddContact model: MBContactPickerModelProtocol!) {
-        self.delegate?.composeViewDidAddContact(self, contact: model as ContactVO)
+        
+        var contactPicker: MBContactPicker = toContactPicker
+        
+        if (contactCollectionView == toContactPicker.contactCollectionView) {
+            contactPicker = toContactPicker
+        } else if (contactCollectionView == ccContactPicker.contactCollectionView) {
+            contactPicker = ccContactPicker
+        } else if (contactCollectionView == bccContactPicker.contactCollectionView) {
+            contactPicker = bccContactPicker
+        }
+        
+        self.delegate?.composeView(self, didAddContact: model as ContactVO, toPicker: contactPicker)
     }
     
     func contactCollectionView(contactCollectionView: MBContactCollectionView!, didRemoveContact model: MBContactPickerModelProtocol!) {
-        self.delegate?.composeViewDidRemoveContact(self, contact: model as ContactVO)
+        var contactPicker: MBContactPicker = toContactPicker
+        
+        if (contactCollectionView == toContactPicker.contactCollectionView) {
+            contactPicker = toContactPicker
+        } else if (contactCollectionView == ccContactPicker.contactCollectionView) {
+            contactPicker = ccContactPicker
+        } else if (contactCollectionView == bccContactPicker.contactCollectionView) {
+            contactPicker = bccContactPicker
+        }
+        
+        self.delegate?.composeView(self, didRemoveContact: model as ContactVO, fromPicker: contactPicker)
     }
     
     func didShowFilteredContactsForContactPicker(contactPicker: MBContactPicker!) {
