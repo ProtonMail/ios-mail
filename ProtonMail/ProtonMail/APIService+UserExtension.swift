@@ -79,7 +79,7 @@ extension APIService {
     
     func userPublicKeysForEmails(emails: String, completion: CompletionBlock?) {
         if let base64Emails = emails.base64Encoded() {
-            let path = UserPath.base.stringByAppendingPathComponent("pubkeys")
+            let path = UserPath.base.stringByAppendingPathComponent("pubkeys").stringByAppendingPathComponent(base64Emails)
             
             request(method: .GET, path: path, parameters: nil, completion: completion)
         } else {

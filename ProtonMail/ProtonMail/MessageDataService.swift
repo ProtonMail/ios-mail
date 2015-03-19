@@ -102,6 +102,9 @@ class MessageDataService {
         case inbox = "inbox"
         case spam = "spam"
         case trash = "trash"
+        
+        // Send
+        case send = "send"
     }
     
     private let firstPage = 1
@@ -382,10 +385,12 @@ class MessageDataService {
             
             if let error = context.saveUpstreamIfNeeded() {
                 NSLog("\(__FUNCTION__) error: \(error)")
+            } else {
+                queue(message: message, action: .send)
             }
         }
     }
-
+    
     func purgeOldMessages() {
         if let context = sharedCoreDataService.mainManagedObjectContext {
             let cutoffTimeInterval: NSTimeInterval = 3 * 86400 // days converted to seconds
@@ -516,6 +521,49 @@ class MessageDataService {
         }
     }
     
+    private func sendMessageID(messageID: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
+        if let context = managedObjectContext {
+            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                let emailAddresses = message.allEmailAddresses
+                
+                if !emailAddresses.isEmpty {
+                    sharedAPIService.userPublicKeysForEmails(emailAddresses, completion: { (task, response, error) -> Void in
+                        if let pubKeys = response as? [String : String] {
+                            // TODO: encrypt body with each public key
+                            
+                        }
+                        
+//                        let completionWrapper: CompletionBlock = { task, response, error in
+//                            // TODO: remove successful send from Core Data
+//                            
+//                            completion?(task: task, response: response, error: error)
+//                            return
+//                        }
+//                        
+//                        sharedAPIService.messageCreate(
+//                            messageID: message.messageID,
+//                            recipientList: message.recipientList,
+//                            bccList: message.bccList,
+//                            ccList: message.ccList,
+//                            title: message.title,
+//                            passwordHint: message.passwordHint,
+//                            expirationDate: message.expirationTime,
+//                            isEncrypted: message.isEncrypted,
+//                            body: [:],  // TODO: encrypt body for recipients
+//                            attachments: [], // TODO: format attachments
+//                            completion: completionWrapper)
+                    })
+                    
+                    return
+                }
+            }
+            
+            // nothing to send, dequeue request
+            self.writeQueue.remove(elementID: writeQueueUUID)
+            self.dequeueIfNeeded()
+        }
+    }
+    
     // MARK: Notifications
     
     private func setupNotifications() {
@@ -531,24 +579,31 @@ class MessageDataService {
     
     // MARK: Queue
     
+    private func writeQueueCompletionBlockForElementID(elementID: NSUUID) -> CompletionBlock {
+        return { task, response, error in
+            self.writeQueue.isInProgress = false
+            
+            if error == nil {
+                self.writeQueue.remove(elementID: elementID)
+                self.dequeueIfNeeded()
+            } else {
+                NSLog("\(__FUNCTION__) error: \(error)")
+                
+                // TODO: handle error
+            }
+        }
+    }
+    
     private func dequeueIfNeeded() {
         if let (uuid, messageID, actionString) = writeQueue.nextMessage() {
             if let action = MessageAction(rawValue: actionString) {
                 writeQueue.isInProgress = true
                 
-                sharedAPIService.messageID(messageID, updateWithAction: action.rawValue) { task, response, error in
-                    self.writeQueue.isInProgress = false
-
-                    if error == nil {
-                        self.writeQueue.remove(elementID: uuid)
-                        self.dequeueIfNeeded()
-                    } else {
-                        NSLog("\(__FUNCTION__) error: \(error)")
-
-                        // TODO: handle error
-                    }
+                if action == .send {
+                    sendMessageID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid))
+                } else {
+                    sharedAPIService.messageID(messageID, updateWithAction: action.rawValue, completion: writeQueueCompletionBlockForElementID(uuid))
                 }
-                
             } else {
                 NSLog("\(__FUNCTION__) Unsupported action \(actionString), removing from queue.")
                 writeQueue.remove(elementID: uuid)
@@ -608,6 +663,28 @@ extension Attachment {
 extension Message {
     
     // MARK: - Public variables
+    
+    var allEmailAddresses: String {
+        var lists: [String] = []
+        
+        if !recipientList.isEmpty {
+            lists.append(recipientList)
+        }
+        
+        if !ccList.isEmpty {
+            lists.append(ccList)
+        }
+        
+        if !bccList.isEmpty {
+            lists.append(bccList)
+        }
+        
+        if lists.isEmpty {
+            return ""
+        }
+        
+        return ",".join(lists)
+    }
     
     var location: MessageDataService.Location {
         get {
