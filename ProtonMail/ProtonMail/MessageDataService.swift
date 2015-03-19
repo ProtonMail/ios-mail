@@ -357,11 +357,14 @@ class MessageDataService {
                 NSLog("\(__FUNCTION__) error: \(error)")
             }
             
-//            if !encryptionPassword.isEmpty {
-//                message.isEncrypted = true
-//                
-//                // TODO: encrypt the body for outsiders
-//            }
+            if !encryptionPassword.isEmpty {
+                if let encryptedBody = body.encryptWithPassphrase(encryptionPassword, error: &error) {
+                    message.isEncrypted = true
+                    message.passwordEncryptedBody = encryptedBody
+                } else {
+                    NSLog("\(__FUNCTION__) encryption error: \(error)")
+                }
+            }
             
             if let attachments = attachments {
                 for (index, attachment) in enumerate(attachments) {
