@@ -524,51 +524,103 @@ class MessageDataService {
         }
     }
     
-    private func sendMessageID(messageID: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
-        if let context = managedObjectContext {
-            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                let emailAddresses = message.allEmailAddresses
+    private func attachmentsForMessage(message: Message) -> [APIService.Attachment] {
+        var attachments: [APIService.Attachment] = []
+        
+        for messageAttachment in message.attachments.allObjects as [Attachment] {
+            if let fileDataBase64Encoded = messageAttachment.fileData?.base64EncodedStringWithOptions(nil) {
+                let attachment = APIService.Attachment(fileName: messageAttachment.fileName, mimeType: messageAttachment.mimeType, fileData: ["self" : fileDataBase64Encoded], fileSize: messageAttachment.fileSize.integerValue)
                 
-                if !emailAddresses.isEmpty {
-                    sharedAPIService.userPublicKeysForEmails(emailAddresses, completion: { (task, response, error) -> Void in
-                        if let pubKeys = response as? [String : String] {
-                            // TODO: encrypt body with each public key
-                            
-                        }
-                        
-//                        let completionWrapper: CompletionBlock = { task, response, error in
-//                            // TODO: remove successful send from Core Data
-//                            
-//                            completion?(task: task, response: response, error: error)
-//                            return
-//                        }
-//                        
-//                        sharedAPIService.messageCreate(
-//                            messageID: message.messageID,
-//                            recipientList: message.recipientList,
-//                            bccList: message.bccList,
-//                            ccList: message.ccList,
-//                            title: message.title,
-//                            passwordHint: message.passwordHint,
-//                            expirationDate: message.expirationTime,
-//                            isEncrypted: message.isEncrypted,
-//                            body: [:],  // TODO: encrypt body for recipients
-//                            attachments: [], // TODO: format attachments
-//                            completion: completionWrapper)
-                    })
-                    
-                    return
-                }
+                attachments.append(attachment)
             }
-            
+        }
+        
+        return attachments
+    }
+    
+    private func messageBodyForMessage(message: Message, response: [String : AnyObject]?) -> [String : String] {
+        var messageBody: [String : String] = ["self" : message.body]
+        
+        if let pubKeys = response as? [String : String] {
+            var error: NSError?
+            if let body = message.decryptBody(&error) {
+                // encrypt body with each public key
+                for (email, publicKey) in pubKeys {
+                    if let encryptedBody = body.encryptWithPublicKey(publicKey, error: &error) {
+                        messageBody[email] = encryptedBody
+                    } else {
+                        NSLog("\(__FUNCTION__) did not add encrypted body for \(email) with error: \(error)")
+                    }
+                }
+                
+                messageBody["outsiders"] = message.passwordEncryptedBody.isEmpty ? body : message.passwordEncryptedBody
+            } else {
+                NSLog("\(__FUNCTION__) unable to decrypt \(message.body) with error: \(error)")
+            }
+        } else {
+            NSLog("\(__FUNCTION__) unable to parse response: \(response)")
+        }
+
+        return messageBody
+    }
+    
+    private func sendMessageID(messageID: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
+        let errorBlock: CompletionBlock = { task, response, error in
             // nothing to send, dequeue request
             self.writeQueue.remove(elementID: writeQueueUUID)
             self.dequeueIfNeeded()
+            
+            completion?(task: task, response: response, error: error)
         }
+        
+        if let context = managedObjectContext {
+            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                sharedAPIService.userPublicKeysForEmails(message.allEmailAddresses, completion: { (task, response, error) -> Void in
+                    if error != nil && error!.code == APIService.ErrorCode.badParameter {
+                        errorBlock(task: task, response: response, error: error)
+                        return
+                    }
+                    
+                    let messageBody = self.messageBodyForMessage(message, response: response)
+                    let attachments = self.attachmentsForMessage(message)
+                    
+                    let completionWrapper: CompletionBlock = { task, response, error in
+                        // remove successful send from Core Data
+                        if error == nil {
+                            context.deleteObject(message)
+                            
+                            if let error = context.saveUpstreamIfNeeded() {
+                                NSLog("\(__FUNCTION__) error: \(error)")
+                            }
+                        }
+                        
+                        completion?(task: task, response: response, error: error)
+                        return
+                    }
+                    
+                    sharedAPIService.messageCreate(
+                        messageID: message.messageID,
+                        recipientList: message.recipientList,
+                        bccList: message.bccList,
+                        ccList: message.ccList,
+                        title: message.title,
+                        passwordHint: message.passwordHint,
+                        expirationDate: message.expirationTime,
+                        isEncrypted: message.isEncrypted,
+                        body: messageBody,
+                        attachments: attachments,
+                        completion: completionWrapper)
+                })
+                
+                return
+            }
+        }
+    
+        errorBlock(task: nil, response: nil, error: NSError.badParameter(messageID))
     }
-    
+
     // MARK: Notifications
-    
+
     private func setupNotifications() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "didSignOutNotification:", name: UserDataService.Notification.didSignOut, object: nil)
         

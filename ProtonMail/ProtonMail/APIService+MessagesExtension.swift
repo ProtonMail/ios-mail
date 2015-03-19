@@ -90,11 +90,11 @@ extension APIService {
         passwordHint: String = "",
         expirationDate: NSDate? = nil,
         isEncrypted: Bool,
-        body: Dictionary<String,String>,
-        attachments: Array<Attachment>?,
+        body: [String : String],
+        attachments: [Attachment],
         completion: CompletionBlock?) {
             let path = "/messages"
-            var parameters: Dictionary<String,AnyObject> = [
+            var parameters: [String : AnyObject] = [
                 "MessageID" : messageID,
                 "RecipientList" : recipientList,
                 "BCCList" : bccList,
@@ -105,14 +105,14 @@ extension APIService {
                 "IsEncrypted" : isEncrypted,
                 "MessageBody" : body]
             
-            if let attachments = attachments {
-                var attachmentsJSON: Array<Dictionary<String,AnyObject>> = []
+            if !attachments.isEmpty {
+                var attachmentsArray: [[String : AnyObject]] = []
                 
                 for attachment in attachments {
-                    attachmentsJSON.append(attachment.asJSON())
+                    attachmentsArray.append(attachment.asJSON())
                 }
                 
-                parameters["Attachments"] = attachmentsJSON
+                parameters["Attachments"] = attachmentsArray
             }
             
             request(method: .POST, path: path, parameters: parameters, completion: completion)
