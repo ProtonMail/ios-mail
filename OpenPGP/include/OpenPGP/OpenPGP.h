@@ -25,9 +25,13 @@
 
 //Encrypt message use public key(other people's key)
 - (NSString *) encrypt_message:(NSString*) unencrypt_message pub_key:(NSString *)pub_key error:(NSError**) err;
-
 //Decrypt message user Private key
 - (NSString *) decrypt_message:(NSString*) encrypted_message error:(NSError**) err;
+
+//Encrypt message use aes with pwd
+- (NSString *) encrypt_message_aes:(NSString*) unencrypt_message pwd:(NSString *)password error:(NSError**) err;
+//Decrypt message use aes with pwd
+- (NSString *) decrypt_message_aes:(NSString*) encrypted_message pwd:(NSString *)password error:(NSError**) err;
 
 //Update Private Key password
 - (NSString *) update_key_password:(NSString*)old_passphrase new_pwd:(NSString*) new_passphrase error:(NSError**) err;
