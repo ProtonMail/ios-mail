@@ -43,6 +43,7 @@ class MailboxViewController: ProtonMailViewController {
     private var selectedMessages: NSMutableSet = NSMutableSet()
     private var isEditing: Bool = false
     private var isViewingMoreOptions: Bool = false
+    private var messageFromPushNotification: Message?
     
     
     // MARK: - Right bar buttons
@@ -121,6 +122,28 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     
+    // MARK: - Prepare for segue
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == kSegueToMessageDetailController) {
+            self.cancelButtonTapped()
+            let messageDetailViewController: MessageDetailViewController = segue.destinationViewController as MessageDetailViewController
+            let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
+            
+            if let message = self.messageFromPushNotification {
+                messageDetailViewController.message = message
+            }
+            
+            if let indexPathForSelectedRow = indexPathForSelectedRow {
+                if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {
+                    messageDetailViewController.message = message
+                }
+            } else {
+                println("No selected row.")
+            }
+        }
+    }
+    
     // MARK: - Button Targets
     
     internal func composeButtonTapped() {
@@ -184,24 +207,6 @@ class MailboxViewController: ProtonMailViewController {
     internal func handleLongPress(longPressGestureRecognizer: UILongPressGestureRecognizer) {
         showCheckOptions(longPressGestureRecognizer)
         updateNavigationController(isEditing)
-    }
-    
-    
-    // MARK: - Prepare for segue
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if (segue.identifier == kSegueToMessageDetailController) {
-            self.cancelButtonTapped()
-            let messageDetailViewController: MessageDetailViewController = segue.destinationViewController as MessageDetailViewController
-            let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
-            if let indexPathForSelectedRow = indexPathForSelectedRow {
-                if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {
-                    messageDetailViewController.message = message
-                }
-            } else {
-                println("No selected row.")
-            }
-        }
     }
     
     

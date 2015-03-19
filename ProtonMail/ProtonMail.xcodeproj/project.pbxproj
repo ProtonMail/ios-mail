@@ -326,6 +326,7 @@
 				0713239F1A7C1AB10043DB41 /* NSTimeIntervalExtension.swift */,
 				07DD68A61A9815DF00ED130C /* NSURLExtension.swift */,
 				07DD68A01A96BCDD00ED130C /* NSUserDefaultsExtension.swift */,
+				70FC90D91A9BC11F00498B42 /* StringExtension.swift */,
 				075675581AB135F500449905 /* UIAlertActionExtension.swift */,
 				0756755A1AB1369C00449905 /* UIAlertControllerExtension.swift */,
 				70945E6D1A813550002B6837 /* UIButton+ProtonMail.swift */,
@@ -336,7 +337,6 @@
 				07CC996B1A717ABD000FD6F8 /* UIStoryboardExtension.swift */,
 				07CCCC2A1AA292C200ECA79E /* UITableViewExtension.swift */,
 				071323801A7846150043DB41 /* UIViewExtension.swift */,
-				70FC90D91A9BC11F00498B42 /* StringExtension.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
