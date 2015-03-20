@@ -78,13 +78,27 @@ extension APIService {
     }
     
     func userPublicKeysForEmails(emails: String, completion: CompletionBlock?) {
-        if let base64Emails = emails.base64Encoded() {
-            let path = UserPath.base.stringByAppendingPathComponent("pubkeys")
-            
-            request(method: .GET, path: path, parameters: nil, completion: completion)
-        } else {
-            completion?(task: nil, response: nil, error: NSError.badParameter(emails))
+        if !emails.isEmpty {
+            if let base64Emails = emails.base64Encoded() {
+                let path = UserPath.base.stringByAppendingPathComponent("pubkeys").stringByAppendingPathComponent(base64Emails)
+                
+                request(method: .GET, path: path, parameters: nil, completion: { task, response, error in
+                    var error = error
+                    var response = response
+                    
+                    if self.isErrorResponse(response) {
+                        let errorCode = (response!["code"] as Int) ?? 0
+                        let description = (response!["error"] as NSDictionary).description ?? NSLocalizedString("Unknown error")
+                        error = NSError.protonMailError(code: errorCode, localizedDescription: description)
+                    }
+                    
+                    completion?(task: task, response: response, error: error)
+                })
+                return
+            }
         }
+        
+        completion?(task: nil, response: nil, error: NSError.badParameter(emails))
     }
     
     func userUpdateKeypair(publicKey: String, privateKey: String, completion: CompletionBlock?) {

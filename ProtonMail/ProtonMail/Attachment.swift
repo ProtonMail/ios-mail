@@ -19,6 +19,7 @@ import CoreData
 class Attachment: NSManagedObject {
     
     @NSManaged var attachmentID: String
+    @NSManaged var fileData: NSData?
     @NSManaged var fileName: String
     @NSManaged var fileSize: NSNumber
     @NSManaged var localURL: NSURL?

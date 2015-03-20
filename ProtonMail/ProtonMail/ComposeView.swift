@@ -23,7 +23,7 @@ protocol ComposeViewDelegate {
     func composeView(composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker)
 }
 
-protocol ComposeViewDatasource {
+protocol ComposeViewDataSource {
     func composeViewContactsModelForPicker(composeView: ComposeView, picker: MBContactPicker) -> [AnyObject]!
     func composeViewSelectedContactsForPicker(composeView: ComposeView, picker: MBContactPicker) -> [AnyObject]!
 }
@@ -49,7 +49,7 @@ class ComposeView: UIView {
     
     // MARK: - Delegate and Datasource
     
-    var datasource: ComposeViewDatasource?
+    var datasource: ComposeViewDataSource?
     var delegate: ComposeViewDelegate?
     
     
@@ -63,8 +63,27 @@ class ComposeView: UIView {
     // MARK: - View Outlets
     
     var toContactPicker: MBContactPicker!
+    var toContacts: String {
+        return toContactPicker.contactList
+    }
     var ccContactPicker: MBContactPicker!
+    var ccContacts: String {
+        return ccContactPicker.contactList
+    }
     var bccContactPicker: MBContactPicker!
+    var bccContacts: String {
+        return bccContactPicker.contactList
+    }
+    
+    var body: String {
+        return bodyTextView.text ?? ""
+    }
+    
+    var expirationTimeInterval: NSTimeInterval = 0
+    
+    var subjectTitle: String {
+        return subject.text ?? ""
+    }
     
     @IBOutlet var fakeContactPickerHeightConstraint: NSLayoutConstraint!
     @IBOutlet var subject: UITextField!
@@ -589,6 +608,8 @@ extension ComposeView: MBContactPickerDelegate {
     }
 }
 
+
+// MARK: - UIPickerViewDataSource
 extension ComposeView: UIPickerViewDataSource {
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
@@ -605,6 +626,8 @@ extension ComposeView: UIPickerViewDataSource {
     }
 }
 
+
+// MARK: - UIPickerViewDelegate
 extension ComposeView: UIPickerViewDelegate {
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
         if (component == 0) {
@@ -615,16 +638,19 @@ extension ComposeView: UIPickerViewDelegate {
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        var selectedDay = pickerView.selectedRowInComponent(0)
-        var selectedHour = pickerView.selectedRowInComponent(1)
+        let selectedDay = pickerView.selectedRowInComponent(0)
+        let selectedHour = pickerView.selectedRowInComponent(1)
 
-        var day = "\(selectedDay) days"
-        var hour = "\(selectedHour) hours"
+        let day = "\(selectedDay) days"
+        let hour = "\(selectedHour) hours"
         
         self.expirationDateTextField.text = "\(day) \(hour)"
+        self.expirationTimeInterval = ((Double(selectedDay) * 24) + Double(selectedHour)) * 3600 // convert to seconds
     }
 }
 
+
+// MARK: - UITextFieldDelegate
 extension ComposeView: UITextFieldDelegate {
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         if (textField == expirationDateTextField) {
@@ -632,5 +658,20 @@ extension ComposeView: UITextFieldDelegate {
         }
         
         return true
+    }
+}
+
+
+// MARK: - MBContactPicker extension
+extension MBContactPicker {
+    var contactList: String {
+        var contactList = ""
+        let contactsSelected = NSArray(array: self.contactsSelected)
+        
+        if let contacts = contactsSelected.valueForKey(ContactVO.Attributes.email) as? [String] {
+            contactList = ", ".join(contacts)
+        }
+        
+        return contactList
     }
 }

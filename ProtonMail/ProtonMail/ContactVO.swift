@@ -13,6 +13,9 @@
 import Foundation
 
 class ContactVO: NSObject, MBContactPickerModelProtocol {
+    struct Attributes {
+        static let email = "email"
+    }
 
     internal var contactTitle: String!
     internal var contactSubtitle: String!

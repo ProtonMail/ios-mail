@@ -32,9 +32,9 @@ class ComposeViewController: ProtonMailViewController {
     private var contacts: [ContactVO]! = [ContactVO]()
     private var composeView: ComposeView!
     private var actualEncryptionStep = EncryptionStep.DefinePassword
-    private var encryptionPassword: String!
-    private var encryptionConfirmPassword: String!
-    private var encryptionPasswordHint: String!
+    private var encryptionPassword: String = ""
+    private var encryptionConfirmPassword: String = ""
+    private var encryptionPasswordHint: String = ""
     private var hasAccessToAddressBook: Bool = false
 
     
@@ -96,12 +96,13 @@ class ComposeViewController: ProtonMailViewController {
     }
     
     
-    // MARK: - ProtonMail View Controller
+    // MARK: ProtonMail View Controller
     
     override func shouldShowSideMenu() -> Bool {
         return false
     }
 }
+
 
 // MARK: - AttachmentsViewControllerDelegate
 extension ComposeViewController: AttachmentsViewControllerDelegate {
@@ -111,15 +112,27 @@ extension ComposeViewController: AttachmentsViewControllerDelegate {
 }
 
 
+// MARK: - ComposeViewDelegate
 extension ComposeViewController: ComposeViewDelegate {
     func composeViewDidTapCancelButton(composeView: ComposeView) {
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func composeViewDidTapSendButton(composeView: ComposeView) {
-        println("Did tap send button")
+        sharedMessageDataService.send(
+            recipientList: composeView.toContacts,
+            bccList: composeView.bccContacts,
+            ccList: composeView.ccContacts,
+            title: composeView.subjectTitle,
+            encryptionPassword: encryptionPassword,
+            passwordHint: encryptionPasswordHint,
+            expirationTimeInterval: composeView.expirationTimeInterval,
+            body: composeView.body,
+            attachments: attachments)
+        
+        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
-    
+
     func composeViewDidTapEncryptedButton(composeView: ComposeView) {
         self.actualEncryptionStep = EncryptionStep.DefinePassword
         self.composeView.showDefinePasswordView()
@@ -129,12 +142,12 @@ extension ComposeViewController: ComposeViewDelegate {
     func composeViewDidTapNextButton(composeView: ComposeView) {
         switch(actualEncryptionStep) {
         case EncryptionStep.DefinePassword:
-            self.encryptionPassword = composeView.encryptedPasswordTextField.text
+            self.encryptionPassword = composeView.encryptedPasswordTextField.text ?? ""
             self.actualEncryptionStep = EncryptionStep.ConfirmPassword
             self.composeView.showConfirmPasswordView()
             
         case EncryptionStep.ConfirmPassword:
-            self.encryptionConfirmPassword = composeView.encryptedPasswordTextField.text
+            self.encryptionConfirmPassword = composeView.encryptedPasswordTextField.text ?? ""
             
             if (self.encryptionPassword == self.encryptionConfirmPassword) {
                 self.actualEncryptionStep = EncryptionStep.DefineHintPassword
@@ -145,7 +158,7 @@ extension ComposeViewController: ComposeViewDelegate {
             }
             
         case EncryptionStep.DefineHintPassword:
-            self.encryptionPasswordHint = composeView.encryptedPasswordTextField.text
+            self.encryptionPasswordHint = composeView.encryptedPasswordTextField.text ?? ""
             self.actualEncryptionStep = EncryptionStep.DefinePassword
             self.composeView.showEncryptionDone()
         default:
@@ -207,7 +220,8 @@ extension ComposeViewController: ComposeViewDelegate {
     }
 }
 
-extension ComposeViewController: ComposeViewDatasource {
+// MARK: - ComposeViewDataSource
+extension ComposeViewController: ComposeViewDataSource {
     func composeViewContactsModelForPicker(composeView: ComposeView, picker: MBContactPicker) -> [AnyObject]! {
         return contacts
     }
@@ -228,6 +242,8 @@ extension ComposeViewController: ComposeViewDatasource {
     }
 }
 
+
+// MARK: - Address book
 extension ComposeViewController {
     private func retrieveAddressBook() {
         

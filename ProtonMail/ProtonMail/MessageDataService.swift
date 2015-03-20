@@ -102,6 +102,9 @@ class MessageDataService {
         case inbox = "inbox"
         case spam = "spam"
         case trash = "trash"
+        
+        // Send
+        case send = "send"
     }
     
     private let firstPage = 1
@@ -212,12 +215,17 @@ class MessageDataService {
                     
                     context.performBlock() {
                         var error: NSError?
-                        let message = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: response, inManagedObjectContext: context, error: &error) as Message
                         
-                        if error == nil {
-                            message.isDetailDownloaded = true
+                        if response != nil {
+                            let message = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: response, inManagedObjectContext: context, error: &error) as Message
                             
-                            error = context.saveUpstreamIfNeeded()
+                            if error == nil {
+                                message.isDetailDownloaded = true
+                                
+                                error = context.saveUpstreamIfNeeded()
+                            }
+                        } else {
+                            error = NSError.unableToParseResponse(response)
                         }
                         
                         if error != nil  {
@@ -331,7 +339,66 @@ class MessageDataService {
             sharedAPIService.messageSearch(query, page: page, completion: completionWrapper)
         }
     }
-
+    
+    func send(#recipientList: String, bccList: String, ccList: String, title: String, encryptionPassword: String, passwordHint: String, expirationTimeInterval: NSTimeInterval, body: String, attachments: [AnyObject]?) {
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            let message = Message(context: context)
+            message.messageID = "0"  //default is 0,  if you already have a draft ID pass here.
+            message.location = .outbox
+            message.recipientList = recipientList
+            message.bccList = bccList
+            message.ccList = ccList
+            message.title = title
+            message.passwordHint = passwordHint
+            
+            if expirationTimeInterval > 0 {
+                message.expirationTime = NSDate(timeIntervalSince1970: expirationTimeInterval)
+            }
+            
+            var error: NSError?
+            message.encryptBody(body, error: &error)
+            
+            if error != nil {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
+            
+            if !encryptionPassword.isEmpty {
+                if let encryptedBody = body.encryptWithPassphrase(encryptionPassword, error: &error) {
+                    message.isEncrypted = true
+                    message.passwordEncryptedBody = encryptedBody
+                } else {
+                    NSLog("\(__FUNCTION__) encryption error: \(error)")
+                }
+            }
+            
+            if let attachments = attachments {
+                for (index, attachment) in enumerate(attachments) {
+                    if let image = attachment as? UIImage {
+                        if let fileData = UIImagePNGRepresentation(image) {
+                            let attachment = Attachment(context: context)
+                            attachment.attachmentID = "0"
+                            attachment.message = message
+                            attachment.fileName = "\(index).png"
+                            attachment.mimeType = "image/png"
+                            attachment.fileData = fileData
+                            attachment.fileSize = fileData.length
+                            continue
+                        }
+                    }
+                    
+                    let description = attachment.description ?? "unknown"
+                    NSLog("\(__FUNCTION__) unsupported attachment type \(description)")
+                }
+            }
+            
+            if let error = context.saveUpstreamIfNeeded() {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            } else {
+                queue(message: message, action: .send)
+            }
+        }
+    }
+    
     func purgeOldMessages() {
         if let context = sharedCoreDataService.mainManagedObjectContext {
             let cutoffTimeInterval: NSTimeInterval = 3 * 86400 // days converted to seconds
@@ -343,8 +410,7 @@ class MessageDataService {
             if error != nil {
                 NSLog("\(__FUNCTION__) error: \(error)")
             } else if count > maximumCachedMessageCount {
-                fetchRequest.predicate = NSPredicate(format: "%K < %@", Message.Attributes.time, NSDate(timeIntervalSinceNow: -cutoffTimeInterval))
-                
+                fetchRequest.predicate = NSPredicate(format: "%K != %@ AND %K < %@", Message.Attributes.locationNumber, Location.outbox.rawValue, Message.Attributes.time, NSDate(timeIntervalSinceNow: -cutoffTimeInterval))
                 
                 if let oldMessages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
                     for message in oldMessages {
@@ -463,8 +529,105 @@ class MessageDataService {
         }
     }
     
-    // MARK: Notifications
+    private func attachmentsForMessage(message: Message) -> [APIService.Attachment] {
+        var attachments: [APIService.Attachment] = []
+        
+        for messageAttachment in message.attachments.allObjects as [Attachment] {
+            if let fileDataBase64Encoded = messageAttachment.fileData?.base64EncodedStringWithOptions(nil) {
+                let attachment = APIService.Attachment(fileName: messageAttachment.fileName, mimeType: messageAttachment.mimeType, fileData: ["self" : fileDataBase64Encoded], fileSize: messageAttachment.fileSize.integerValue)
+                
+                attachments.append(attachment)
+            }
+        }
+        
+        return attachments
+    }
     
+    private func messageBodyForMessage(message: Message, response: [String : AnyObject]?) -> [String : String] {
+        var messageBody: [String : String] = ["self" : message.body]
+        
+        if let keys = response?["keys"] as? [[String : String]] {
+            var error: NSError?
+            if let body = message.decryptBody(&error) {
+                // encrypt body with each public key
+                for publicKeys in keys {
+                    for (email, publicKey) in publicKeys {
+                        if let encryptedBody = body.encryptWithPublicKey(publicKey, error: &error) {
+                            messageBody[email] = encryptedBody
+                        } else {
+                            NSLog("\(__FUNCTION__) did not add encrypted body for \(email) with error: \(error)")
+                        }
+                    }
+                }
+                
+                messageBody["outsiders"] = message.isEncrypted ? message.passwordEncryptedBody : body
+            } else {
+                NSLog("\(__FUNCTION__) unable to decrypt \(message.body) with error: \(error)")
+            }
+        } else {
+            NSLog("\(__FUNCTION__) unable to parse response: \(response)")
+        }
+
+        return messageBody
+    }
+    
+    private func sendMessageID(messageID: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
+        let errorBlock: CompletionBlock = { task, response, error in
+            // nothing to send, dequeue request
+            self.writeQueue.remove(elementID: writeQueueUUID)
+            self.dequeueIfNeeded()
+            
+            completion?(task: task, response: response, error: error)
+        }
+        
+        if let context = managedObjectContext {
+            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                sharedAPIService.userPublicKeysForEmails(message.allEmailAddresses, completion: { (task, response, error) -> Void in
+                    if error != nil && error!.code == APIService.ErrorCode.badParameter {
+                        errorBlock(task: task, response: response, error: error)
+                        return
+                    }
+                    
+                    let messageBody = self.messageBodyForMessage(message, response: response)
+                    let attachments = self.attachmentsForMessage(message)
+                    
+                    let completionWrapper: CompletionBlock = { task, response, error in
+                        // remove successful send from Core Data
+                        if error == nil {
+                            context.deleteObject(message)
+                            
+                            if let error = context.saveUpstreamIfNeeded() {
+                                NSLog("\(__FUNCTION__) error: \(error)")
+                            }
+                        }
+                        
+                        completion?(task: task, response: response, error: error)
+                        return
+                    }
+                    
+                    sharedAPIService.messageCreate(
+                        messageID: message.messageID,
+                        recipientList: message.recipientList,
+                        bccList: message.bccList,
+                        ccList: message.ccList,
+                        title: message.title,
+                        passwordHint: message.passwordHint,
+                        expirationDate: message.expirationTime,
+                        isEncrypted: message.isEncrypted,
+                        body: messageBody,
+                        attachments: attachments,
+                        completion: completionWrapper)
+                })
+                
+                return
+            }
+        }
+    
+        errorBlock(task: nil, response: nil, error: NSError.badParameter(messageID))
+    }
+
+    // MARK: Notifications
+
     private func setupNotifications() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "didSignOutNotification:", name: UserDataService.Notification.didSignOut, object: nil)
         
@@ -478,24 +641,31 @@ class MessageDataService {
     
     // MARK: Queue
     
+    private func writeQueueCompletionBlockForElementID(elementID: NSUUID) -> CompletionBlock {
+        return { task, response, error in
+            self.writeQueue.isInProgress = false
+            
+            if error == nil {
+                self.writeQueue.remove(elementID: elementID)
+                self.dequeueIfNeeded()
+            } else {
+                NSLog("\(__FUNCTION__) error: \(error)")
+                
+                // TODO: handle error
+            }
+        }
+    }
+    
     private func dequeueIfNeeded() {
         if let (uuid, messageID, actionString) = writeQueue.nextMessage() {
             if let action = MessageAction(rawValue: actionString) {
                 writeQueue.isInProgress = true
                 
-                sharedAPIService.messageID(messageID, updateWithAction: action.rawValue) { task, response, error in
-                    self.writeQueue.isInProgress = false
-
-                    if error == nil {
-                        self.writeQueue.remove(elementID: uuid)
-                        self.dequeueIfNeeded()
-                    } else {
-                        NSLog("\(__FUNCTION__) error: \(error)")
-
-                        // TODO: handle error
-                    }
+                if action == .send {
+                    sendMessageID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid))
+                } else {
+                    sharedAPIService.messageID(messageID, updateWithAction: action.rawValue, completion: writeQueueCompletionBlockForElementID(uuid))
                 }
-                
             } else {
                 NSLog("\(__FUNCTION__) Unsupported action \(actionString), removing from queue.")
                 writeQueue.remove(elementID: uuid)
@@ -555,6 +725,28 @@ extension Attachment {
 extension Message {
     
     // MARK: - Public variables
+    
+    var allEmailAddresses: String {
+        var lists: [String] = []
+        
+        if !recipientList.isEmpty {
+            lists.append(recipientList)
+        }
+        
+        if !ccList.isEmpty {
+            lists.append(ccList)
+        }
+        
+        if !bccList.isEmpty {
+            lists.append(bccList)
+        }
+        
+        if lists.isEmpty {
+            return ""
+        }
+        
+        return ",".join(lists)
+    }
     
     var location: MessageDataService.Location {
         get {
