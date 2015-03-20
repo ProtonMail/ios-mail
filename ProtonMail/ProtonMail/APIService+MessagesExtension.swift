@@ -217,6 +217,8 @@ extension APIService {
     func messageDetail(#messageID: String, completion: CompletionBlock) {
         let path = MessagePath.base.stringByAppendingPathComponent(messageID)
         
+        NSLog("\(__FUNCTION__) path: \(path)")
+        
         request(method: .GET, path: path, parameters: nil, completion: completion)
     }
     
