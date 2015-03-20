@@ -121,6 +121,24 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     
+    // MARK: - Prepare for segue
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == kSegueToMessageDetailController) {
+            self.cancelButtonTapped()
+            let messageDetailViewController: MessageDetailViewController = segue.destinationViewController as MessageDetailViewController
+            let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
+            
+            if let indexPathForSelectedRow = indexPathForSelectedRow {
+                if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {
+                    messageDetailViewController.message = message
+                }
+            } else {
+                println("No selected row.")
+            }
+        }
+    }
+    
     // MARK: - Button Targets
     
     internal func composeButtonTapped() {
@@ -184,24 +202,6 @@ class MailboxViewController: ProtonMailViewController {
     internal func handleLongPress(longPressGestureRecognizer: UILongPressGestureRecognizer) {
         showCheckOptions(longPressGestureRecognizer)
         updateNavigationController(isEditing)
-    }
-    
-    
-    // MARK: - Prepare for segue
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if (segue.identifier == kSegueToMessageDetailController) {
-            self.cancelButtonTapped()
-            let messageDetailViewController: MessageDetailViewController = segue.destinationViewController as MessageDetailViewController
-            let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
-            if let indexPathForSelectedRow = indexPathForSelectedRow {
-                if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {
-                    messageDetailViewController.message = message
-                }
-            } else {
-                println("No selected row.")
-            }
-        }
     }
     
     

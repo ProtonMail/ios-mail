@@ -30,6 +30,7 @@ class PushNotificationService {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
+    
     // MARK: - registration methods
     
     func registerUserNotificationSettings() {
@@ -48,6 +49,7 @@ class PushNotificationService {
     func unregisterForRemoteNotifications() {
         sharedAPIService.deviceUnregister()
     }
+    
     
     // MARK: - callback methods
     
@@ -78,6 +80,7 @@ class PushNotificationService {
     func didRegisterUserNotificationSettings(notificationSettings: UIUserNotificationSettings) {
         
     }
+    
     
     // MARK: - Notifications
     
