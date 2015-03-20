@@ -43,7 +43,6 @@ class MailboxViewController: ProtonMailViewController {
     private var selectedMessages: NSMutableSet = NSMutableSet()
     private var isEditing: Bool = false
     private var isViewingMoreOptions: Bool = false
-    private var messageFromPushNotification: Message?
     
     
     // MARK: - Right bar buttons
@@ -129,10 +128,6 @@ class MailboxViewController: ProtonMailViewController {
             self.cancelButtonTapped()
             let messageDetailViewController: MessageDetailViewController = segue.destinationViewController as MessageDetailViewController
             let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
-            
-            if let message = self.messageFromPushNotification {
-                messageDetailViewController.message = message
-            }
             
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {
