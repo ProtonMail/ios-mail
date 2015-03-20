@@ -94,16 +94,22 @@ extension APIService {
         attachments: [Attachment],
         completion: CompletionBlock?) {
             let path = "/messages"
-            var parameters: [String : AnyObject] = [
+            var parameterStrings: [String : String] = [
                 "MessageID" : messageID,
                 "RecipientList" : recipientList,
                 "BCCList" : bccList,
                 "CCList" : ccList,
                 "MessageTitle" : title,
-                "PasswordHint" : passwordHint,
-                "ExpirationTime" : expirationDate?.timeIntervalSince1970 ?? 0,
-                "IsEncrypted" : isEncrypted,
-                "MessageBody" : body]
+                "PasswordHint" : passwordHint]
+            
+            var parameters: [String : AnyObject] = filteredMessageStringParameters(parameterStrings)
+            
+            if expirationDate != nil {
+                parameters["ExpirationTime"] = Double(expirationDate?.timeIntervalSince1970 ?? 0)
+            }
+            
+            parameters["IsEncrypted"] = isEncrypted ? 1 : 0
+            parameters["MessageBody"] = body
             
             if !attachments.isEmpty {
                 var attachmentsArray: [[String : AnyObject]] = []
@@ -234,5 +240,19 @@ extension APIService {
             "page" : page]
         
         request(method: .GET, path: path, parameters: parameters, completion: completion)
+    }
+    
+    // MARK: - Private methods
+    
+    private func filteredMessageStringParameters(parameters: [String : String]) -> [String : String] {
+        var filteredParameters: [String : String] = [:]
+        
+        for (key, value) in parameters {
+            if !value.isEmpty {
+                filteredParameters[key] = value
+            }
+        }
+        
+        return filteredParameters
     }
 }

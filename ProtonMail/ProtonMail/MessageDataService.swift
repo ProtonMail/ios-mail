@@ -541,19 +541,21 @@ class MessageDataService {
     private func messageBodyForMessage(message: Message, response: [String : AnyObject]?) -> [String : String] {
         var messageBody: [String : String] = ["self" : message.body]
         
-        if let pubKeys = response as? [String : String] {
+        if let keys = response?["keys"] as? [[String : String]] {
             var error: NSError?
             if let body = message.decryptBody(&error) {
                 // encrypt body with each public key
-                for (email, publicKey) in pubKeys {
-                    if let encryptedBody = body.encryptWithPublicKey(publicKey, error: &error) {
-                        messageBody[email] = encryptedBody
-                    } else {
-                        NSLog("\(__FUNCTION__) did not add encrypted body for \(email) with error: \(error)")
+                for publicKeys in keys {
+                    for (email, publicKey) in publicKeys {
+                        if let encryptedBody = body.encryptWithPublicKey(publicKey, error: &error) {
+                            messageBody[email] = encryptedBody
+                        } else {
+                            NSLog("\(__FUNCTION__) did not add encrypted body for \(email) with error: \(error)")
+                        }
                     }
                 }
                 
-                messageBody["outsiders"] = message.passwordEncryptedBody.isEmpty ? body : message.passwordEncryptedBody
+                messageBody["outsiders"] = message.isEncrypted ? message.passwordEncryptedBody : body
             } else {
                 NSLog("\(__FUNCTION__) unable to decrypt \(message.body) with error: \(error)")
             }

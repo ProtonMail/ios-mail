@@ -84,6 +84,7 @@ extension APIService {
                 
                 request(method: .GET, path: path, parameters: nil, completion: { task, response, error in
                     var error = error
+                    var response = response
                     
                     if self.isErrorResponse(response) {
                         let errorCode = (response!["code"] as Int) ?? 0

@@ -373,10 +373,14 @@ extension Message {
     // MARK: Public methods
     
     func decryptBody(error: NSErrorPointer?) -> String? {
+        return body.decryptWithPrivateKey(privateKey, passphrase: passphrase, publicKey: publicKey, error: error)
+    }
+    
+    func decryptBodyIfNeeded(error: NSErrorPointer?) -> String? {
         if !isEncrypted {
             return body
         } else {
-            return body.decryptWithPrivateKey(privateKey, passphrase: passphrase, publicKey: publicKey, error: error)
+            return decryptBody(error)
         }
     }
     
