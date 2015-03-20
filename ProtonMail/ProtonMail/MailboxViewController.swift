@@ -218,6 +218,19 @@ class MailboxViewController: ProtonMailViewController {
         }
     }
     
+    private func deleteMessageForIndexPath(indexPath: NSIndexPath) {
+        if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+            if let context = message.managedObjectContext {
+                context.deleteObject(message)
+                
+                var error: NSError?
+                if let error = context.saveUpstreamIfNeeded() {
+                    NSLog("\(__FUNCTION__) error: \(error)")
+                }
+            }
+        }
+    }
+    
     private func setupFetchedResultsController() {
         self.fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLocation(self.mailboxLocation)
         self.fetchedResultsController?.delegate = self
@@ -482,6 +495,12 @@ extension MailboxViewController: UITableViewDataSource {
         return mailboxCell
     }
     
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if (editingStyle == .Delete) {
+            deleteMessageForIndexPath(indexPath)
+        }
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return fetchedResultsController?.numberOfRowsInSection(section) ?? 0
     }
@@ -550,6 +569,16 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
 extension MailboxViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return kMailboxCellHeight
+    }
+    
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+        let trashed: UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Trash") { (rowAction, indexPath) -> Void in
+            self.deleteMessageForIndexPath(indexPath)
+        }
+        
+        trashed.backgroundColor = UIColor.ProtonMail.Red_D74B4B
+        
+        return [trashed]
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
