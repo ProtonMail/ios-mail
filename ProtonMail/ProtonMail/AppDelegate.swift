@@ -119,6 +119,26 @@ extension AppDelegate: UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+        if application.applicationState == UIApplicationState.Inactive || application.applicationState == UIApplicationState.Background {
+            var messageArray = userInfo["message_id"] as? NSArray
+            var messageId = messageArray?.firstObject as? String
+            
+            if let messageId = messageId {
+                var message = Message.messageForMessageID(messageId, inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext!)
+                var detailViewController: MessageDetailViewController = MessageDetailViewController()
+                detailViewController.message = message
+                var windowRootViewController = self.window?.rootViewController
+                var revealViewController: SWRevealViewController = windowRootViewController as SWRevealViewController
+                var navigationController: UINavigationController = revealViewController.frontViewController as UINavigationController
+                var presentedViewController = navigationController.presentedViewController
+                
+                if let presentedViewController = presentedViewController {
+                    presentedViewController.dismissViewControllerAnimated(false, completion: nil)
+                }
+                navigationController.pushViewController(detailViewController, animated: true)
+            }
+        }
+
         sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
     }
 

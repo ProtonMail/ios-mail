@@ -25,7 +25,10 @@ class ComposeViewController: ProtonMailViewController {
     var attachments: [AnyObject]?
     var message: Message?
     var action: String!
-    var selectedContacts: [ContactVO]! = [ContactVO]()
+    
+    var toSelectedContacts: [ContactVO]! = [ContactVO]()
+    private var ccSelectedContacts: [ContactVO]! = [ContactVO]()
+    private var bccSelectedContacts: [ContactVO]! = [ContactVO]()
     private var contacts: [ContactVO]! = [ContactVO]()
     private var composeView: ComposeView!
     private var actualEncryptionStep = EncryptionStep.DefinePassword
@@ -45,12 +48,27 @@ class ComposeViewController: ProtonMailViewController {
         self.composeView.delegate = self
         
         if let message = message {
-            self.composeView.setMessage(message, action: action)
-            let recipientsName = split(message.recipientNameList) {$0 == ","}
-            let recipientsEmail = split(message.recipientList) {$0 == ","}
+            if (action == ComposeView.ComposeMessageAction.Reply) {
+                composeView.subject.text = "Re: \(message.title)"
+                toSelectedContacts.append(ContactVO(id: "", name: message.senderName, email: message.sender))
+            }
+
+            if (action == ComposeView.ComposeMessageAction.ReplyAll) {
+                composeView.subject.text = "Re: \(message.title)"
+                
+                toSelectedContacts.append(ContactVO(id: "", name: message.senderName, email: message.sender))
+                
+                let ccNames = split(message.ccNameList) {$0 == ","}
+                let ccEmails = split(message.ccList) {$0 == ","}
+                
+                for (var i = 0; i < countElements(ccEmails); i++) {
+                    ccSelectedContacts.append(ContactVO(id: "", name: ccNames[i], email: ccEmails[i]))
+                }
+            }
             
-            for (var i = 0; i < countElements(recipientsName); i++) {
-                selectedContacts.append(ContactVO(id: "", name: recipientsName[i], email: recipientsEmail[i]))
+            if (action == ComposeView.ComposeMessageAction.Forward) {
+                composeView.subject.text = "Fwd: \(message.title)"
+                composeView.bodyTextView.text = message.decryptBody(nil)
             }
         }
         
@@ -68,8 +86,9 @@ class ComposeViewController: ProtonMailViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        self.composeView.updateConstraintsIfNeeded()
         
-        if (selectedContacts.count == 0) {
+        if (toSelectedContacts.count == 0) {
             self.composeView.toContactPicker.becomeFirstResponder()
         } else {
             self.composeView.bodyTextView.becomeFirstResponder()
@@ -147,12 +166,34 @@ extension ComposeViewController: ComposeViewDelegate {
         }
     }
     
-    func composeViewDidAddContact(composeView: ComposeView, contact: ContactVO) {
-        self.selectedContacts.append(contact)
+    func composeView(composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: MBContactPicker) {
+        var selectedContacts: [ContactVO] = [ContactVO]()
+        
+        if (picker == composeView.toContactPicker) {
+            selectedContacts = toSelectedContacts
+        } else if (picker == composeView.ccContactPicker) {
+            selectedContacts = ccSelectedContacts
+        } else if (picker == composeView.bccContactPicker) {
+            selectedContacts = bccSelectedContacts
+        }
+
+        selectedContacts.append(contact)
     }
     
-    func composeViewDidRemoveContact(composeView: ComposeView, contact: ContactVO) {
+    func composeView(composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker) {
+
         var contactIndex = -1
+        
+        var selectedContacts: [ContactVO] = [ContactVO]()
+        
+        if (picker == composeView.toContactPicker) {
+            selectedContacts = toSelectedContacts
+        } else if (picker == composeView.ccContactPicker) {
+            selectedContacts = ccSelectedContacts
+        } else if (picker == composeView.bccContactPicker) {
+            selectedContacts = bccSelectedContacts
+        }
+        
         for (index, selectedContact) in enumerate(selectedContacts) {
             if (contact.email == selectedContact.email) {
                 contactIndex = index
@@ -179,14 +220,24 @@ extension ComposeViewController: ComposeViewDelegate {
     }
 }
 
-
 // MARK: - ComposeViewDataSource
 extension ComposeViewController: ComposeViewDataSource {
-    func composeViewContactsModel(composeView: ComposeView) -> [AnyObject]! {
+    func composeViewContactsModelForPicker(composeView: ComposeView, picker: MBContactPicker) -> [AnyObject]! {
         return contacts
     }
     
-    func composeViewSelectedContacts(composeView: ComposeView) ->  [AnyObject]! {
+    func composeViewSelectedContactsForPicker(composeView: ComposeView, picker: MBContactPicker) ->  [AnyObject]! {
+        
+        var selectedContacts: [ContactVO] = [ContactVO]()
+        
+        if (picker == composeView.toContactPicker) {
+            selectedContacts = toSelectedContacts
+        } else if (picker == composeView.ccContactPicker) {
+            selectedContacts = ccSelectedContacts
+        } else if (picker == composeView.bccContactPicker) {
+            selectedContacts = bccSelectedContacts
+        }
+        
         return selectedContacts
     }
 }

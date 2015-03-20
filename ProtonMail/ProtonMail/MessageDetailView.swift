@@ -290,8 +290,8 @@ class MessageDetailView: UIView {
         
         self.emailFavoriteButton = UIButton()
         self.emailFavoriteButton.addTarget(self, action: "emailFavoriteButtonTapped", forControlEvents: .TouchUpInside)
-        self.emailFavoriteButton.setImage(UIImage(named: "favorite_main")!, forState: .Normal)
-        self.emailFavoriteButton.setImage(UIImage(named: "favorite_main_selected")!, forState: .Selected)
+        self.emailFavoriteButton.setImage(UIImage(named: "favorite")!, forState: .Normal)
+        self.emailFavoriteButton.setImage(UIImage(named: "favorite_selected")!, forState: .Selected)
         self.emailFavoriteButton.selected = self.message.isStarred
 
         self.emailFavoriteButton.sizeToFit()
