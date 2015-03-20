@@ -215,12 +215,17 @@ class MessageDataService {
                     
                     context.performBlock() {
                         var error: NSError?
-                        let message = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: response, inManagedObjectContext: context, error: &error) as Message
                         
-                        if error == nil {
-                            message.isDetailDownloaded = true
+                        if response != nil {
+                            let message = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: response, inManagedObjectContext: context, error: &error) as Message
                             
-                            error = context.saveUpstreamIfNeeded()
+                            if error == nil {
+                                message.isDetailDownloaded = true
+                                
+                                error = context.saveUpstreamIfNeeded()
+                            }
+                        } else {
+                            error = NSError.unableToParseResponse(response)
                         }
                         
                         if error != nil  {
