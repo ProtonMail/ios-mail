@@ -19,8 +19,8 @@ protocol ComposeViewDelegate {
     func composeViewDidTapNextButton(composeView: ComposeView)
     func composeViewDidTapEncryptedButton(composeView: ComposeView)
     func composeViewDidTapAttachmentButton(composeView: ComposeView)
-    func composeViewDidAddContactToPicker(composeView: ComposeView, contact: ContactVO, picker: MBContactPicker)
-    func composeViewDidRemoveContactFromPicker(composeView: ComposeView, contact: ContactVO, picker: MBContactPicker)
+    func composeView(composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: MBContactPicker)
+    func composeView(composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker)
 }
 
 protocol ComposeViewDatasource {
@@ -551,7 +551,7 @@ extension ComposeView: MBContactPickerDelegate {
             contactPicker = bccContactPicker
         }
         
-        self.delegate?.composeViewDidAddContactToPicker(self, contact: model as ContactVO, picker: contactPicker)
+        self.delegate?.composeView(self, didAddContact: model as ContactVO, toPicker: contactPicker)
     }
     
     func contactCollectionView(contactCollectionView: MBContactCollectionView!, didRemoveContact model: MBContactPickerModelProtocol!) {
@@ -565,7 +565,7 @@ extension ComposeView: MBContactPickerDelegate {
             contactPicker = bccContactPicker
         }
         
-        self.delegate?.composeViewDidRemoveContactFromPicker(self, contact: model as ContactVO, picker: contactPicker)
+        self.delegate?.composeView(self, didRemoveContact: model as ContactVO, fromPicker: contactPicker)
     }
     
     func didShowFilteredContactsForContactPicker(contactPicker: MBContactPicker!) {
