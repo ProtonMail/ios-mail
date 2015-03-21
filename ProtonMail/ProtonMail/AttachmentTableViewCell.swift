@@ -25,6 +25,7 @@ class AttachmentTableViewCell: UITableViewCell {
     @IBOutlet weak var progressView: UIProgressView!
     
     func setFilename(filename: String, fileSize: Int) {
-        fileNameLabel.text = "\(filename) (\(fileSize))"
+        let byteCountFormatter = NSByteCountFormatter()
+        fileNameLabel.text = "\(filename) (\(byteCountFormatter.stringFromByteCount(Int64(fileSize))))"
     }
 }
