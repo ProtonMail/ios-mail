@@ -84,6 +84,7 @@ class MailboxViewController: ProtonMailViewController {
     
     private func addSubViews() {
         self.moreOptionsView = MoreOptionsView()
+        self.moreOptionsView.delegate = self
         self.view.addSubview(self.moreOptionsView)
         
         self.navigationTitleLabel.backgroundColor = UIColor.clearColor()
@@ -120,7 +121,6 @@ class MailboxViewController: ProtonMailViewController {
         }
     }
     
-    
     // MARK: - Prepare for segue
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -150,11 +150,11 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     internal func removeButtonTapped() {
-        println("removeButtonTapped with \(self.selectedMessages.count) messages selected.")
+        moveMessagesToLocation(.trash)
     }
     
     internal func favoriteButtonTapped() {
-        println("favoriteButtonTapped with \(self.selectedMessages.count) messages selected.")
+        selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isStarred)
     }
     
     internal func moreButtonTapped() {
@@ -286,6 +286,44 @@ class MailboxViewController: ProtonMailViewController {
         }
         
         self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
+    }
+    
+    private func moveMessagesToLocation(location: MessageDataService.Location) {
+        if let context = fetchedResultsController?.managedObjectContext {
+            let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
+            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selectedMessages)
+            
+            var error: NSError?
+            if let messages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
+                for message in messages {
+                    message.location = location
+                }
+                
+                error = context.saveUpstreamIfNeeded()
+            }
+            
+            if let error = error {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
+        }
+    }
+    
+    private func selectedMessagesSetValue(setValue value: AnyObject?, forKey key: String) {
+        if let context = fetchedResultsController?.managedObjectContext {
+            let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
+            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selectedMessages)
+            
+            var error: NSError?
+            if let messages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
+                NSArray(array: messages).setValue(value, forKey: key)
+                
+                error = context.saveUpstreamIfNeeded()
+            }
+            
+            if let error = error {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
+        }
     }
     
     private func setupLeftButtons(editingMode: Bool) {
@@ -437,7 +475,6 @@ class MailboxViewController: ProtonMailViewController {
 // MARK: - MailboxTableViewCellDelegate
 
 extension MailboxViewController: MailboxTableViewCellDelegate {
-    
     func mailboxTableViewCell(cell: MailboxTableViewCell, didChangeStarred isStarred: Bool) {
         if let indexPath = tableView.indexPathForCell(cell) {
             if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
@@ -465,10 +502,42 @@ extension MailboxViewController: MailboxTableViewCellDelegate {
 }
 
 
+// MARK: - MoreOptionsViewDelegate
+
+extension MailboxViewController: MoreOptionsViewDelegate {
+    private func hideMoreButtonIfNeeded() {
+        if isViewingMoreOptions {
+            moreButtonTapped()
+        }
+    }
+    
+    func moreOptionsViewDidMarkAsUnread(moreOptionsView: MoreOptionsView) {
+        selectedMessagesSetValue(setValue: false, forKey: Message.Attributes.isRead)
+        hideMoreButtonIfNeeded()
+    }
+    
+    func moreOptionsViewDidSelectMoveTo(moreOptionsView: MoreOptionsView) {
+        let alertController = UIAlertController(title: NSLocalizedString("Move to..."), message: nil, preferredStyle: .ActionSheet)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
+        
+        let locations: [MessageDataService.Location : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .trash : .Destructive]
+        
+        for (location, style) in locations {
+            if mailboxLocation != location {
+                alertController.addAction(UIAlertAction(title: location.description, style: style, handler: { (action) -> Void in
+                    self.moveMessagesToLocation(location)
+                }))
+            }
+        }
+        
+        presentViewController(alertController, animated: true, completion: nil)
+        hideMoreButtonIfNeeded()
+    }
+}
+
 // MARK: - UITableViewDataSource
 
 extension MailboxViewController: UITableViewDataSource {
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -607,4 +676,3 @@ extension MailboxViewController: UITableViewDelegate {
         }
     }
 }
-
