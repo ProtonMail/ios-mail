@@ -1388,6 +1388,7 @@
                         <segue destination="xBI-ex-VGk" kind="presentation" identifier="toSearchViewController" id="6qA-ON-8KL"/>
                         <segue destination="NZX-qa-4Ud" kind="show" identifier="toMessageDetailViewController" id="dxU-wZ-inN"/>
                         <segue destination="1qH-aE-Y3O" kind="presentation" identifier="toCompose" id="dZz-yt-xGj"/>
+                        <segue destination="Jph-O4-s2a" kind="show" identifier="toComposeShow" id="tjX-oW-rkl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v5f-i5-kem" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4078,7 +4079,8 @@
     <inferredMetricsTieBreakers>
         <segue reference="o3e-Jf-WEv"/>
         <segue reference="Lm0-2L-Xlj"/>
-        <segue reference="dxU-wZ-inN"/>
         <segue reference="dZz-yt-xGj"/>
+        <segue reference="tjX-oW-rkl"/>
+        <segue reference="dxU-wZ-inN"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -26,6 +26,8 @@ class MailboxViewController: ProtonMailViewController {
     private let kMailboxCellHeight: CGFloat = 64.0
     private let kCellIdentifier: String = "MailboxCell"
     private let kLongPressDuration: CFTimeInterval = 0.60 // seconds
+    private let kSegueToCompose = "toCompose"
+    private let kSegueToComposeShow = "toComposeShow"
     private let kSegueToSearchController: String = "toSearchViewController"
     private let kSegueToMessageDetailController: String = "toMessageDetailViewController"
     private let kMoreOptionsViewHeight: CGFloat = 123.0
@@ -126,6 +128,7 @@ class MailboxViewController: ProtonMailViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == kSegueToMessageDetailController) {
             self.cancelButtonTapped()
+            
             let messageDetailViewController: MessageDetailViewController = segue.destinationViewController as MessageDetailViewController
             let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
             
@@ -136,13 +139,27 @@ class MailboxViewController: ProtonMailViewController {
             } else {
                 println("No selected row.")
             }
+        } else if segue.identifier == kSegueToComposeShow {
+            self.cancelButtonTapped()
+
+            let composeViewController: ComposeViewController = segue.destinationViewController as ComposeViewController
+            let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
+            
+            if let indexPathForSelectedRow = indexPathForSelectedRow {
+                if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {
+                    composeViewController.message = message
+                    composeViewController.action = composeViewController.draftAction
+                }
+            } else {
+                println("No selected row.")
+            }
         }
     }
     
     // MARK: - Button Targets
     
     internal func composeButtonTapped() {
-        self.performSegueWithIdentifier("toCompose", sender: self)
+        self.performSegueWithIdentifier(kSegueToCompose, sender: self)
     }
     
     internal func searchButtonTapped() {
@@ -671,7 +688,11 @@ extension MailboxViewController: UITableViewDelegate {
             }
         } else {
             if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-                self.performSegueWithIdentifier(kSegueToMessageDetailController, sender: self)
+                if mailboxLocation == .draft {
+                    performSegueWithIdentifier(kSegueToComposeShow, sender: self)
+                } else {
+                    performSegueWithIdentifier(kSegueToMessageDetailController, sender: self)
+                }
             }
         }
     }

@@ -13,18 +13,21 @@
 import UIKit
 
 class ComposeViewController: ProtonMailViewController {
-
     private struct EncryptionStep {
         static let DefinePassword = "DefinePassword"
         static let ConfirmPassword = "ConfirmPassword"
         static let DefineHintPassword = "DefineHintPassword"
     }
+
+    let draftAction = "draft"
     
     // MARK: - Private attributes
     
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
+    
     var attachments: [AnyObject]?
     var message: Message?
-    var action: String!
+    var action: String?
     
     var toSelectedContacts: [ContactVO]! = [ContactVO]()
     private var ccSelectedContacts: [ContactVO]! = [ContactVO]()
@@ -47,30 +50,7 @@ class ComposeViewController: ProtonMailViewController {
         self.composeView.datasource = self
         self.composeView.delegate = self
         
-        if let message = message {
-            if (action == ComposeView.ComposeMessageAction.Reply) {
-                composeView.subject.text = "Re: \(message.title)"
-                toSelectedContacts.append(ContactVO(id: "", name: message.senderName, email: message.sender))
-            }
-
-            if (action == ComposeView.ComposeMessageAction.ReplyAll) {
-                composeView.subject.text = "Re: \(message.title)"
-                
-                toSelectedContacts.append(ContactVO(id: "", name: message.senderName, email: message.sender))
-                
-                let ccNames = split(message.ccNameList) {$0 == ","}
-                let ccEmails = split(message.ccList) {$0 == ","}
-                
-                for (var i = 0; i < countElements(ccEmails); i++) {
-                    ccSelectedContacts.append(ContactVO(id: "", name: ccNames[i], email: ccEmails[i]))
-                }
-            }
-            
-            if (action == ComposeView.ComposeMessageAction.Forward) {
-                composeView.subject.text = "Fwd: \(message.title)"
-                composeView.bodyTextView.text = message.decryptBody(nil)
-            }
-        }
+        handleMessage(message, action: action)
         
         retrieveAddressBook()
         retrieveServerContactList { () -> Void in
@@ -101,6 +81,70 @@ class ComposeViewController: ProtonMailViewController {
     override func shouldShowSideMenu() -> Bool {
         return false
     }
+    
+    // MARK: - Private methods
+    
+    private func handleMessage(message: Message?, action: String?) {
+        if let message = message {
+            if let action = action {
+                if action == ComposeView.ComposeMessageAction.Reply || action == ComposeView.ComposeMessageAction.ReplyAll {
+                    composeView.subject.text = "Re: \(message.title)"
+                    toSelectedContacts.append(ContactVO(id: "", name: message.senderName, email: message.sender))
+                    
+                    let replyMessage = NSLocalizedString("Reply message")
+                    
+                    composeView.bodyTextView.text = "\n\n---------- \(replyMessage) ----------\n\(message.decryptBody(nil))"
+
+                    if action == ComposeView.ComposeMessageAction.ReplyAll {
+                        updateSelectedContacts(&ccSelectedContacts, withNameList: message.ccNameList, emailList: message.ccList)
+                    }
+                } else if action == ComposeView.ComposeMessageAction.Forward {
+                    composeView.subject.text = "Fwd: \(message.title)"
+                    
+                    let forwardedMessage = NSLocalizedString("Forwarded message")
+                    
+                    composeView.bodyTextView.text = "\n\n---------- \(forwardedMessage) ----------\n\(message.decryptBody(nil))"
+                } else if action == draftAction {
+                    navigationItem.leftBarButtonItem = nil
+                    
+                    updateSelectedContacts(&toSelectedContacts, withNameList: message.recipientNameList, emailList: message.recipientList)
+                    updateSelectedContacts(&ccSelectedContacts, withNameList: message.ccNameList, emailList: message.ccList)
+                    updateSelectedContacts(&bccSelectedContacts, withNameList: message.bccNameList, emailList: message.bccList)
+                    
+                    composeView.subject.text = message.title
+                    
+                    if !message.attachments.isEmpty {
+                        attachments = []
+                    }
+                    
+                    for attachment in message.attachments.allObjects as [Attachment] {
+                        if let fileData = attachment.fileData {
+                            attachments?.append(fileData)
+                        }
+                    }
+                    
+                    var error: NSError?
+                    composeView.bodyTextView.text = message.decryptBody(&error)
+                    if error != nil {
+                        NSLog("\(__FUNCTION__) error: \(error)")
+                    }
+                }
+            }
+        }
+    }
+    
+    private func updateSelectedContacts(inout selectedContacts: [ContactVO]!, withNameList nameList: String, emailList: String) {
+        if selectedContacts == nil {
+            selectedContacts = []
+        }
+        
+        let names = nameList.asArray()
+        let emails = emailList.asArray()
+        
+        for var i = 0; i < countElements(emails); i++ {
+            selectedContacts.append(ContactVO(id: "", name: names[i], email: emails[i]))
+        }
+    }
 }
 
 
@@ -115,8 +159,12 @@ extension ComposeViewController: AttachmentsViewControllerDelegate {
 // MARK: - ComposeViewDelegate
 extension ComposeViewController: ComposeViewDelegate {
     func composeViewDidTapCancelButton(composeView: ComposeView) {
-        let dismiss = {
-            self.dismissViewControllerAnimated(true, completion: nil)
+        let dismiss: (() -> Void) = {
+            if self.action == self.draftAction {
+                self.navigationController?.popViewControllerAnimated(true)
+            } else {
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
         }
         
         if composeView.hasContent || ((attachments?.count ?? 0) > 0) {
@@ -331,5 +379,14 @@ extension ComposeViewController {
             
             completion()
         }
+    }
+}
+
+
+// MARK: - Message extension
+
+extension String {
+    private func asArray() -> [String] {
+        return split(self) {$0 == ","}
     }
 }
