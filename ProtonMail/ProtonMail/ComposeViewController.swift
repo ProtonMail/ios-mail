@@ -122,7 +122,16 @@ extension ComposeViewController: ComposeViewDelegate {
         if composeView.hasContent || ((attachments?.count ?? 0) > 0) {
             let alertController = UIAlertController(title: NSLocalizedString("Confirmation"), message: nil, preferredStyle: .ActionSheet)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Save draft"), style: .Default, handler: { (action) -> Void in
-                // TODO: Save draft
+                sharedMessageDataService.saveDraft(
+                    recipientList: composeView.toContacts,
+                    bccList: composeView.bccContacts,
+                    ccList: composeView.ccContacts,
+                    title: composeView.subjectTitle,
+                    encryptionPassword: self.encryptionPassword,
+                    passwordHint: self.encryptionPasswordHint,
+                    expirationTimeInterval: composeView.expirationTimeInterval,
+                    body: composeView.body,
+                    attachments: self.attachments)
                 
                 dismiss()
             }))

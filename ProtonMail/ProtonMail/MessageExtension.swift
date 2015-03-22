@@ -31,16 +31,56 @@ extension Message {
         static let title = "title"
     }
     
-    typealias CompletionBlock = MessageDataService.CompletionBlock
-    
     struct Constants {
         static let starredTag = "starred"
+    }
+    
+    // MARK: - Public variables
+    
+    var allEmailAddresses: String {
+        var lists: [String] = []
+        
+        if !recipientList.isEmpty {
+            lists.append(recipientList)
+        }
+        
+        if !ccList.isEmpty {
+            lists.append(ccList)
+        }
+        
+        if !bccList.isEmpty {
+            lists.append(bccList)
+        }
+        
+        if lists.isEmpty {
+            return ""
+        }
+        
+        return ",".join(lists)
+    }
+    
+    var location: MessageLocation {
+        get {
+            return MessageLocation(rawValue: locationNumber.integerValue) ?? .inbox
+        }
+        set {
+            locationNumber = newValue.rawValue
+        }
     }
     
     // MARK: - Public methods
     
     convenience init(context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entityForName(Attributes.entityName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
+    }
+        
+    /// Removes all messages from the store.
+    class func deleteAll(inContext context: NSManagedObjectContext) {
+        context.deleteAll(Attributes.entityName)
+    }
+    
+    class func messageForMessageID(messageID: String, inManagedObjectContext context: NSManagedObjectContext) -> Message? {
+        return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.messageID, matchingValue: messageID) as? Message
     }
     
     class func messagesForObjectIDs(objectIDs: [NSManagedObjectID], inManagedObjectContext context: NSManagedObjectContext, error: NSErrorPointer) -> [Message]? {
@@ -51,11 +91,7 @@ extension Message {
         super.awakeFromInsert()
         replaceNilStringAttributesWithEmptyString()
     }
-    
-    func fetchDetailIfNeeded(completion: CompletionBlock) {
-        sharedMessageDataService.fetchMessageDetailForMessage(self, completion: completion)
-    }
-    
+        
     func updateTag(tag: String) {
         self.tag = tag
         isStarred = tag.rangeOfString(Constants.starredTag) != nil

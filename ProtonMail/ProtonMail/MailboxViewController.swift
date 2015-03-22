@@ -34,7 +34,7 @@ class MailboxViewController: ProtonMailViewController {
     // MARK: - Private attributes
     
     internal var refreshControl: UIRefreshControl!
-    internal var mailboxLocation: MessageDataService.Location! = .inbox
+    internal var mailboxLocation: MessageLocation! = .inbox
     
     private var fetchedResultsController: NSFetchedResultsController?
     private var moreOptionsView: MoreOptionsView!
@@ -288,7 +288,7 @@ class MailboxViewController: ProtonMailViewController {
         self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
     }
     
-    private func moveMessagesToLocation(location: MessageDataService.Location) {
+    private func moveMessagesToLocation(location: MessageLocation) {
         if let context = fetchedResultsController?.managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
             fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selectedMessages)
@@ -520,7 +520,7 @@ extension MailboxViewController: MoreOptionsViewDelegate {
         let alertController = UIAlertController(title: NSLocalizedString("Move to..."), message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
         
-        let locations: [MessageDataService.Location : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .trash : .Destructive]
+        let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .trash : .Destructive]
         
         for (location, style) in locations {
             if mailboxLocation != location {

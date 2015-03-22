@@ -195,22 +195,15 @@ extension APIService {
             
             request(method: .POST, path: path, parameters: parameters, completion: completion)
     }
-
     
-    // FIXME: Pass in MessageDataService.MessageAction, instead of a String.  Xcode 6.1.1 generates a segmentation fault 11, try it again when a newer version is released.
-    func messageID(messageID: String, updateWithAction action: String, completion: CompletionBlock) {
-
-        // FIXME: Remove this wrapper when action can be passed in directly
-        if let action = MessageDataService.MessageAction(rawValue: action) {
-            
-            switch(action) {
-            case .delete:
-                let path = MessagePath.base.stringByAppendingPathComponent(messageID)
-                request(method: .DELETE, path: path, parameters: nil, completion: completion)
-            default:
-                let path = MessagePath.base.stringByAppendingPathComponent(messageID).stringByAppendingPathComponent(action.rawValue)
-                request(method: .PUT, path: path, parameters: nil, completion: completion)
-            }
+    func messageID(messageID: String, updateWithAction action: MessageAction, completion: CompletionBlock) {
+        switch(action) {
+        case .delete:
+            let path = MessagePath.base.stringByAppendingPathComponent(messageID)
+            request(method: .DELETE, path: path, parameters: nil, completion: completion)
+        default:
+            let path = MessagePath.base.stringByAppendingPathComponent(messageID).stringByAppendingPathComponent(action.rawValue)
+            request(method: .PUT, path: path, parameters: nil, completion: completion)
         }
     }
     

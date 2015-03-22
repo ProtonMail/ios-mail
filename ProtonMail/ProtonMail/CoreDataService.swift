@@ -80,6 +80,14 @@ class CoreDataService {
     
     // MARK: - Public methods
     
+    func managedObjectIDForURIRepresentation(urlString: String) -> NSManagedObjectID? {
+        if let url = NSURL(string: urlString) {
+            return persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url)
+        }
+        
+        return nil
+    }
+    
     func newMainManagedObjectContext() -> NSManagedObjectContext? {
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
         managedObjectContext.parentContext = mainManagedObjectContext

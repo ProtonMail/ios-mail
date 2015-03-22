@@ -28,8 +28,8 @@ class MessageQueue: PersistentQueue {
     var isBlocked: Bool = false
     var isInProgress: Bool = false
 
-    func addMessage(messageID: String, action: String) -> NSUUID {
-        let element = [Key.id : messageID, Key.action : action]
+    func addMessage(messageID: String, action: MessageAction) -> NSUUID {
+        let element = [Key.id : messageID, Key.action : action.rawValue]
         
         return add(element)
     }
