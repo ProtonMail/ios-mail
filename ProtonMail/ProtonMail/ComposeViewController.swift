@@ -115,7 +115,26 @@ extension ComposeViewController: AttachmentsViewControllerDelegate {
 // MARK: - ComposeViewDelegate
 extension ComposeViewController: ComposeViewDelegate {
     func composeViewDidTapCancelButton(composeView: ComposeView) {
-        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+        let dismiss = {
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
+        
+        if composeView.hasContent || ((attachments?.count ?? 0) > 0) {
+            let alertController = UIAlertController(title: NSLocalizedString("Confirmation"), message: nil, preferredStyle: .ActionSheet)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Save draft"), style: .Default, handler: { (action) -> Void in
+                // TODO: Save draft
+                
+                dismiss()
+            }))
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Discard draft"), style: .Destructive, handler: { (action) -> Void in
+                dismiss()
+            }))
+            
+            presentViewController(alertController, animated: true, completion: nil)
+        } else {
+            dismiss()
+        }
     }
     
     func composeViewDidTapSendButton(composeView: ComposeView) {
