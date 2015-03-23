@@ -81,6 +81,10 @@ class ComposeView: UIView {
     
     var expirationTimeInterval: NSTimeInterval = 0
     
+    var hasContent: Bool {
+        return !toContacts.isEmpty || !ccContacts.isEmpty || !bccContacts.isEmpty || !body.isEmpty || !subjectTitle.isEmpty
+    }
+    
     var subjectTitle: String {
         return subject.text ?? ""
     }

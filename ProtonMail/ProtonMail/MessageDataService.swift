@@ -28,85 +28,7 @@ class MessageDataService {
         static let total = "total"
         static let unread = "unread"
     }
-    
-    enum Location: Int, Printable {
-        case draft = 1
-        case inbox = 0
-        case outbox = 2
-        case spam = 4
-        case starred = 5
-        case trash = 3
         
-        var description : String {
-            get {
-                switch(self) {
-                case inbox:
-                    return NSLocalizedString("Inbox")
-                case draft:
-                    return NSLocalizedString("Draft")
-                case outbox:
-                    return NSLocalizedString("Outbox")
-                case spam:
-                    return NSLocalizedString("Spam")
-                case starred:
-                    return NSLocalizedString("Starred")
-                case trash:
-                    return NSLocalizedString("Trash")
-                }
-            }
-        }
-        
-        var key: String {
-            switch(self) {
-            case inbox:
-                return "Inbox"
-            case draft:
-                return "Draft"
-            case outbox:
-                return "Outbox"
-            case spam:
-                return "Spam"
-            case starred:
-                return "Starred"
-            case trash:
-                return "Trash"
-            }
-        }
-        
-        var moveAction: MessageAction? {
-            switch(self) {
-            case .inbox:
-                return .inbox
-            case .spam:
-                return .spam
-            case .trash:
-                return .trash
-            default:
-                return nil
-            }
-        }
-    }
-    
-    enum MessageAction: String {
-        
-        // Read/unread
-        case read = "read"
-        case unread = "unread"
-        
-        // Star/unstar
-        case star = "star"
-        case unstar = "unstar"
-        
-        // Move mailbox
-        case delete = "delete"
-        case inbox = "inbox"
-        case spam = "spam"
-        case trash = "trash"
-        
-        // Send
-        case send = "send"
-    }
-    
     private let firstPage = 1
 
     private let lastUpdatedMaximumTimeInterval: NSTimeInterval = 24 /*hours*/ * 3600
@@ -159,7 +81,7 @@ class MessageDataService {
         }
     }
     
-    func fetchLatestMessagesForLocation(location: Location, completion: CompletionBlock?) {
+    func fetchLatestMessagesForLocation(location: MessageLocation, completion: CompletionBlock?) {
         let locationLastUpdated = lastUpdatedStore[location.key]
         let lastUpdatedCuttoff = NSDate(timeIntervalSinceNow: -lastUpdatedMaximumTimeInterval)
         
@@ -192,7 +114,7 @@ class MessageDataService {
         })
     }
     
-    func fetchMessageCountForLocation(location: Location, completion: CompletionBlock?) {
+    func fetchMessageCountForLocation(location: MessageLocation, completion: CompletionBlock?) {
         queue { () -> Void in
             let completionWrapper: CompletionBlock = {task, response, error in
                 let countInfo: Dictionary<String, Int> = [
@@ -245,7 +167,7 @@ class MessageDataService {
         }
     }
     
-    func fetchMessagesForLocation(location: Location, page: Int, completion: CompletionBlock?) {
+    func fetchMessagesForLocation(location: MessageLocation, page: Int, completion: CompletionBlock?) {
         queue {
             let lastUpdated = NSDate()
             
@@ -289,8 +211,7 @@ class MessageDataService {
         }
     }
     
-    func fetchedResultsControllerForLocation(location: Location) -> NSFetchedResultsController? {
-        
+    func fetchedResultsControllerForLocation(location: MessageLocation) -> NSFetchedResultsController? {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
             fetchRequest.predicate = NSPredicate(format: "%K == %i", Message.Attributes.locationNumber, location.rawValue)
@@ -340,56 +261,41 @@ class MessageDataService {
         }
     }
     
+    func saveDraft(#recipientList: String, bccList: String, ccList: String, title: String, encryptionPassword: String, passwordHint: String, expirationTimeInterval: NSTimeInterval, body: String, attachments: [AnyObject]?) {
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            let message = messageWithLocation(.draft,
+                recipientList: recipientList,
+                bccList: bccList,
+                ccList: ccList,
+                title: title,
+                encryptionPassword: encryptionPassword,
+                passwordHint: passwordHint,
+                expirationTimeInterval: expirationTimeInterval,
+                body: body,
+                attachments: attachments,
+                inManagedObjectContext: context)
+            
+            if let error = context.saveUpstreamIfNeeded() {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            } else {
+                queue(message: message, action: .saveDraft)
+            }
+        }
+    }
+    
     func send(#recipientList: String, bccList: String, ccList: String, title: String, encryptionPassword: String, passwordHint: String, expirationTimeInterval: NSTimeInterval, body: String, attachments: [AnyObject]?) {
         if let context = sharedCoreDataService.mainManagedObjectContext {
-            let message = Message(context: context)
-            message.messageID = "0"  //default is 0,  if you already have a draft ID pass here.
-            message.location = .outbox
-            message.recipientList = recipientList
-            message.bccList = bccList
-            message.ccList = ccList
-            message.title = title
-            message.passwordHint = passwordHint
-            
-            if expirationTimeInterval > 0 {
-                message.expirationTime = NSDate(timeIntervalSince1970: expirationTimeInterval)
-            }
-            
-            var error: NSError?
-            message.encryptBody(body, error: &error)
-            
-            if error != nil {
-                NSLog("\(__FUNCTION__) error: \(error)")
-            }
-            
-            if !encryptionPassword.isEmpty {
-                if let encryptedBody = body.encryptWithPassphrase(encryptionPassword, error: &error) {
-                    message.isEncrypted = true
-                    message.passwordEncryptedBody = encryptedBody
-                } else {
-                    NSLog("\(__FUNCTION__) encryption error: \(error)")
-                }
-            }
-            
-            if let attachments = attachments {
-                for (index, attachment) in enumerate(attachments) {
-                    if let image = attachment as? UIImage {
-                        if let fileData = UIImagePNGRepresentation(image) {
-                            let attachment = Attachment(context: context)
-                            attachment.attachmentID = "0"
-                            attachment.message = message
-                            attachment.fileName = "\(index).png"
-                            attachment.mimeType = "image/png"
-                            attachment.fileData = fileData
-                            attachment.fileSize = fileData.length
-                            continue
-                        }
-                    }
-                    
-                    let description = attachment.description ?? "unknown"
-                    NSLog("\(__FUNCTION__) unsupported attachment type \(description)")
-                }
-            }
+            let message = messageWithLocation(.outbox,
+                recipientList: recipientList,
+                bccList: bccList,
+                ccList: ccList,
+                title: title,
+                encryptionPassword: encryptionPassword,
+                passwordHint: passwordHint,
+                expirationTimeInterval: expirationTimeInterval,
+                body: body,
+                attachments: attachments,
+                inManagedObjectContext: context)
             
             if let error = context.saveUpstreamIfNeeded() {
                 NSLog("\(__FUNCTION__) error: \(error)")
@@ -410,7 +316,7 @@ class MessageDataService {
             if error != nil {
                 NSLog("\(__FUNCTION__) error: \(error)")
             } else if count > maximumCachedMessageCount {
-                fetchRequest.predicate = NSPredicate(format: "%K != %@ AND %K < %@", Message.Attributes.locationNumber, Location.outbox.rawValue, Message.Attributes.time, NSDate(timeIntervalSinceNow: -cutoffTimeInterval))
+                fetchRequest.predicate = NSPredicate(format: "%K != %@ AND %K < %@", Message.Attributes.locationNumber, MessageLocation.outbox.rawValue, Message.Attributes.time, NSDate(timeIntervalSinceNow: -cutoffTimeInterval))
                 
                 if let oldMessages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
                     for message in oldMessages {
@@ -571,6 +477,114 @@ class MessageDataService {
         return messageBody
     }
     
+    // FIXME: Tried moving to Message extension, but caused a segmentation fault 11 in Xcode 6.1.1
+    private func messageWithLocation(
+        location: MessageLocation,
+        recipientList: String,
+        bccList: String,
+        ccList: String,
+        title: String,
+        encryptionPassword: String,
+        passwordHint: String,
+        expirationTimeInterval: NSTimeInterval,
+        body: String,
+        attachments: [AnyObject]?,
+        inManagedObjectContext context: NSManagedObjectContext) -> Message {
+            let message = Message(context: context)
+            message.messageID = "0"  //default is 0,  if you already have a draft ID pass here.
+            message.location = location
+            message.recipientList = recipientList
+            message.bccList = bccList
+            message.ccList = ccList
+            message.title = title
+            message.passwordHint = passwordHint
+            
+            if expirationTimeInterval > 0 {
+                message.expirationTime = NSDate(timeIntervalSince1970: expirationTimeInterval)
+            }
+            
+            var error: NSError?
+            message.encryptBody(body, error: &error)
+            
+            if error != nil {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
+            
+            if !encryptionPassword.isEmpty {
+                if let encryptedBody = body.encryptWithPassphrase(encryptionPassword, error: &error) {
+                    message.isEncrypted = true
+                    message.passwordEncryptedBody = encryptedBody
+                } else {
+                    NSLog("\(__FUNCTION__) encryption error: \(error)")
+                }
+            }
+            
+            if let attachments = attachments {
+                for (index, attachment) in enumerate(attachments) {
+                    if let image = attachment as? UIImage {
+                        if let fileData = UIImagePNGRepresentation(image) {
+                            let attachment = Attachment(context: context)
+                            attachment.attachmentID = "0"
+                            attachment.message = message
+                            attachment.fileName = "\(index).png"
+                            attachment.mimeType = "image/png"
+                            attachment.fileData = fileData
+                            attachment.fileSize = fileData.length
+                            continue
+                        }
+                    }
+                    
+                    let description = attachment.description ?? "unknown"
+                    NSLog("\(__FUNCTION__) unsupported attachment type \(description)")
+                }
+            }
+            
+            return message
+    }
+    
+    private func saveDraftWithMessageID(messageID: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
+        if let context = managedObjectContext {
+            var error: NSError?
+            if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID) {
+                if let message = context.existingObjectWithID(objectID, error: &error) as? Message {
+                    let attachments = self.attachmentsForMessage(message)
+                    
+                    let completionWrapper: CompletionBlock = { task, response, error in
+                        if let messageID = response?["MessageID"] as? String {
+                            message.messageID = messageID
+                            
+                            if let error = context.saveUpstreamIfNeeded() {
+                                NSLog("\(__FUNCTION__) error: \(error)")
+                            }
+                        }
+                        
+                        completion?(task: task, response: response, error: error)
+                    }
+                    
+                    sharedAPIService.messageDraft(
+                        recipientList: message.recipientList,
+                        bccList: message.bccList,
+                        ccList: message.ccList,
+                        title: message.title,
+                        passwordHint: message.passwordHint,
+                        expirationDate: message.expirationTime,
+                        isEncrypted: message.isEncrypted,
+                        body: ["self" : message.body],
+                        attachments: attachments,
+                        completion: completionWrapper)
+                    
+                    return
+                }
+            }
+        }
+        
+        // nothing to send, dequeue request
+        self.writeQueue.remove(elementID: writeQueueUUID)
+        self.dequeueIfNeeded()
+        
+        completion?(task: nil, response: nil, error: NSError.badParameter(messageID))
+    }
+    
     private func sendMessageID(messageID: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
         let errorBlock: CompletionBlock = { task, response, error in
             // nothing to send, dequeue request
@@ -661,10 +675,13 @@ class MessageDataService {
             if let action = MessageAction(rawValue: actionString) {
                 writeQueue.isInProgress = true
                 
-                if action == .send {
+                switch action {
+                case .saveDraft:
+                    saveDraftWithMessageID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid))
+                case .send:
                     sendMessageID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid))
-                } else {
-                    sharedAPIService.messageID(messageID, updateWithAction: action.rawValue, completion: writeQueueCompletionBlockForElementID(uuid))
+                default:
+                    sharedAPIService.messageID(messageID, updateWithAction: action, completion: writeQueueCompletionBlockForElementID(uuid))
                 }
             } else {
                 NSLog("\(__FUNCTION__) Unsupported action \(actionString), removing from queue.")
@@ -676,7 +693,11 @@ class MessageDataService {
     }
         
     private func queue(#message: Message, action: MessageAction) {
-        writeQueue.addMessage(message.messageID, action: action.rawValue)
+        if action == .saveDraft {
+            writeQueue.addMessage(message.objectID.URIRepresentation().absoluteString!, action: action)
+        } else {
+            writeQueue.addMessage(message.messageID, action: action)
+        }
         
         dequeueIfNeeded()
     }
@@ -711,6 +732,7 @@ class MessageDataService {
     }
 }
 
+
 // MARK: - Attachment extension
 
 extension Attachment {
@@ -720,52 +742,15 @@ extension Attachment {
     }
 }
 
+
 // MARK: - Message extension
 
 extension Message {
-    
-    // MARK: - Public variables
-    
-    var allEmailAddresses: String {
-        var lists: [String] = []
-        
-        if !recipientList.isEmpty {
-            lists.append(recipientList)
-        }
-        
-        if !ccList.isEmpty {
-            lists.append(ccList)
-        }
-        
-        if !bccList.isEmpty {
-            lists.append(bccList)
-        }
-        
-        if lists.isEmpty {
-            return ""
-        }
-        
-        return ",".join(lists)
-    }
-    
-    var location: MessageDataService.Location {
-        get {
-            return MessageDataService.Location(rawValue: locationNumber.integerValue) ?? MessageDataService.Location.inbox
-        }
-        set {
-            locationNumber = newValue.rawValue
-        }
-    }
-    
-    /// Removes all messages from the store.
-    class func deleteAll(inContext context: NSManagedObjectContext) {
-        context.deleteAll(Attributes.entityName)
-    }
-    
-    class func messageForMessageID(messageID: String, inManagedObjectContext context: NSManagedObjectContext) -> Message? {
-        return context.managedObjectWithEntityName(Message.Attributes.entityName, forKey: Message.Attributes.messageID, matchingValue: messageID) as? Message
+    func fetchDetailIfNeeded(completion: MessageDataService.CompletionBlock) {
+        sharedMessageDataService.fetchMessageDetailForMessage(self, completion: completion)
     }
 }
+
 
 // MARK: - NSFileManager extension
 

@@ -26,6 +26,8 @@ class MailboxViewController: ProtonMailViewController {
     private let kMailboxCellHeight: CGFloat = 64.0
     private let kCellIdentifier: String = "MailboxCell"
     private let kLongPressDuration: CFTimeInterval = 0.60 // seconds
+    private let kSegueToCompose = "toCompose"
+    private let kSegueToComposeShow = "toComposeShow"
     private let kSegueToSearchController: String = "toSearchViewController"
     private let kSegueToMessageDetailController: String = "toMessageDetailViewController"
     private let kMoreOptionsViewHeight: CGFloat = 123.0
@@ -34,7 +36,7 @@ class MailboxViewController: ProtonMailViewController {
     // MARK: - Private attributes
     
     internal var refreshControl: UIRefreshControl!
-    internal var mailboxLocation: MessageDataService.Location! = .inbox
+    internal var mailboxLocation: MessageLocation! = .inbox
     
     private var fetchedResultsController: NSFetchedResultsController?
     private var moreOptionsView: MoreOptionsView!
@@ -126,6 +128,7 @@ class MailboxViewController: ProtonMailViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == kSegueToMessageDetailController) {
             self.cancelButtonTapped()
+            
             let messageDetailViewController: MessageDetailViewController = segue.destinationViewController as MessageDetailViewController
             let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
             
@@ -136,13 +139,27 @@ class MailboxViewController: ProtonMailViewController {
             } else {
                 println("No selected row.")
             }
+        } else if segue.identifier == kSegueToComposeShow {
+            self.cancelButtonTapped()
+
+            let composeViewController: ComposeViewController = segue.destinationViewController as ComposeViewController
+            let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
+            
+            if let indexPathForSelectedRow = indexPathForSelectedRow {
+                if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {
+                    composeViewController.message = message
+                    composeViewController.action = composeViewController.draftAction
+                }
+            } else {
+                println("No selected row.")
+            }
         }
     }
     
     // MARK: - Button Targets
     
     internal func composeButtonTapped() {
-        self.performSegueWithIdentifier("toCompose", sender: self)
+        self.performSegueWithIdentifier(kSegueToCompose, sender: self)
     }
     
     internal func searchButtonTapped() {
@@ -288,7 +305,7 @@ class MailboxViewController: ProtonMailViewController {
         self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
     }
     
-    private func moveMessagesToLocation(location: MessageDataService.Location) {
+    private func moveMessagesToLocation(location: MessageLocation) {
         if let context = fetchedResultsController?.managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
             fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selectedMessages)
@@ -520,7 +537,7 @@ extension MailboxViewController: MoreOptionsViewDelegate {
         let alertController = UIAlertController(title: NSLocalizedString("Move to..."), message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
         
-        let locations: [MessageDataService.Location : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .trash : .Destructive]
+        let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .trash : .Destructive]
         
         for (location, style) in locations {
             if mailboxLocation != location {
@@ -671,7 +688,11 @@ extension MailboxViewController: UITableViewDelegate {
             }
         } else {
             if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-                self.performSegueWithIdentifier(kSegueToMessageDetailController, sender: self)
+                if mailboxLocation == .draft {
+                    performSegueWithIdentifier(kSegueToComposeShow, sender: self)
+                } else {
+                    performSegueWithIdentifier(kSegueToMessageDetailController, sender: self)
+                }
             }
         }
     }

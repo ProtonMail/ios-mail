@@ -67,7 +67,7 @@ class MessageDetailViewController: ProtonMailViewController {
     
     func removeButtonTapped() {
         ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
-        sharedAPIService.messageID(message.messageID, updateWithAction: MessageDataService.MessageAction.delete.rawValue) { (task: NSURLSessionDataTask!, response: Dictionary<String, AnyObject>?, error: NSError?) -> Void in
+        sharedAPIService.messageID(message.messageID, updateWithAction: .delete) { (task: NSURLSessionDataTask!, response: Dictionary<String, AnyObject>?, error: NSError?) -> Void in
             ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
             
             self.navigationController?.popViewControllerAnimated(true)
@@ -77,7 +77,7 @@ class MessageDetailViewController: ProtonMailViewController {
     func spamButtonTapped() {
         ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
 
-        sharedAPIService.messageID(message.messageID, updateWithAction: MessageDataService.MessageAction.spam.rawValue) { (task: NSURLSessionDataTask!, response: Dictionary<String, AnyObject>?, error: NSError?) -> Void in
+        sharedAPIService.messageID(message.messageID, updateWithAction: .spam) { (task: NSURLSessionDataTask!, response: Dictionary<String, AnyObject>?, error: NSError?) -> Void in
             ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
 
             self.navigationController?.popViewControllerAnimated(true)
@@ -105,7 +105,7 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
         
         if message.location != .inbox {
-            alertController.addAction(UIAlertAction(title: MessageDataService.Location.inbox.description, style: .Default, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: MessageLocation.inbox.description, style: .Default, handler: { (action) -> Void in
                 message.location = .inbox
                 
                 if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
@@ -115,7 +115,7 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
         }
         
         if message.location != .spam {
-            alertController.addAction(UIAlertAction(title: MessageDataService.Location.spam.description, style: .Default, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: MessageLocation.spam.description, style: .Default, handler: { (action) -> Void in
                 message.location = .spam
                 
                 if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
@@ -125,7 +125,7 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
         }
         
         if message.location != .trash {
-            alertController.addAction(UIAlertAction(title: MessageDataService.Location.trash.description, style: .Destructive, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: MessageLocation.trash.description, style: .Destructive, handler: { (action) -> Void in
                 message.location = .trash
                 
                 if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
