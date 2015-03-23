@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14D87h" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iNi-o2-nXB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14D87h" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iNi-o2-nXB">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <development version="6100" identifier="xcode"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -77,7 +78,7 @@
                                     <rect key="frame" x="86" y="137" width="228" height="37"/>
                                 </variation>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="SIGN IN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fjY-z1-3LU">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SIGN IN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fjY-z1-3LU">
                                 <rect key="frame" x="269" y="259" width="63" height="22"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -102,7 +103,7 @@
                                     <outlet property="delegate" destination="rb7-9h-TvB" id="WUW-bQ-gmz"/>
                                 </connections>
                             </textField>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oyG-Fo-wN1">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oyG-Fo-wN1">
                                 <rect key="frame" x="161" y="434" width="205" height="27"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Z40-fI-qfm">
@@ -126,7 +127,7 @@
                                             <action selector="rememberButtonAction:" destination="Zzb-6r-tlP" eventType="touchUpInside" id="wxg-fy-hAk"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Remember me on this device." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VAX-s6-YBf">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remember me on this device." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VAX-s6-YBf">
                                         <rect key="frame" x="34" y="0.0" width="163" height="27"/>
                                         <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="12.5"/>
                                         <color key="textColor" red="0.2196078431372549" green="0.22745098039215686" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -162,7 +163,7 @@
                                     <rect key="frame" x="61" y="434" width="209" height="27"/>
                                 </variation>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AJu-1e-alo">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AJu-1e-alo">
                                 <rect key="frame" x="251" y="540" width="98" height="27"/>
                                 <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="12.5"/>
                                 <state key="normal" title="SIGN UP BUTTON">
@@ -311,7 +312,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="SignIn" translatesAutoresizingMaskIntoConstraints="NO" id="KVe-MD-RVX">
+                            <imageView userInteractionEnabled="NO" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="SignIn" translatesAutoresizingMaskIntoConstraints="NO" id="KVe-MD-RVX">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hlk-SA-ixG" userLabel="CenterView">
@@ -450,8 +451,8 @@
                                     </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="355" id="Xq6-0M-8s4"/>
-                                    <constraint firstAttribute="width" constant="287" id="Yrk-Qo-DV4"/>
+                                    <constraint firstAttribute="height" constant="355" id="Rqe-Wo-3J4"/>
+                                    <constraint firstAttribute="width" constant="287" id="tip-KG-g9O"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="subviews">
@@ -467,8 +468,8 @@
                                         <exclude reference="DKx-tP-pCP"/>
                                     </mask>
                                     <mask key="constraints">
-                                        <exclude reference="Xq6-0M-8s4"/>
-                                        <exclude reference="Yrk-Qo-DV4"/>
+                                        <exclude reference="Rqe-Wo-3J4"/>
+                                        <exclude reference="tip-KG-g9O"/>
                                     </mask>
                                 </variation>
                                 <variation key="widthClass=compact">
@@ -485,29 +486,29 @@
                                         <include reference="DKx-tP-pCP"/>
                                     </mask>
                                     <mask key="constraints">
-                                        <include reference="Xq6-0M-8s4"/>
-                                        <include reference="Yrk-Qo-DV4"/>
+                                        <include reference="Rqe-Wo-3J4"/>
+                                        <include reference="tip-KG-g9O"/>
                                     </mask>
                                 </variation>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" name="keyboardFocusIndicatorColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" red="0.13725490200000001" green="0.2274509804" blue="0.37254901959999998" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="KVe-MD-RVX" firstAttribute="centerX" secondItem="hlk-SA-ixG" secondAttribute="centerX" id="1m7-KL-dR1"/>
-                            <constraint firstItem="WYy-cb-pu3" firstAttribute="top" secondItem="KVe-MD-RVX" secondAttribute="bottom" id="BVF-Ge-UwQ"/>
-                            <constraint firstAttribute="centerY" relation="greaterThanOrEqual" secondItem="hlk-SA-ixG" secondAttribute="centerY" constant="10" id="DCs-v0-wKO"/>
-                            <constraint firstAttribute="centerX" secondItem="hlk-SA-ixG" secondAttribute="centerX" constant="-0.5" id="bp1-oM-OgA"/>
-                            <constraint firstItem="KVe-MD-RVX" firstAttribute="leading" secondItem="L4a-RF-dlW" secondAttribute="leading" id="rYe-N0-UH9"/>
-                            <constraint firstItem="KVe-MD-RVX" firstAttribute="top" secondItem="L4a-RF-dlW" secondAttribute="topMargin" id="spR-Ji-Dxc"/>
+                            <constraint firstAttribute="centerY" secondItem="hlk-SA-ixG" secondAttribute="centerY" constant="10.5" id="Ahb-WF-ulT"/>
+                            <constraint firstItem="WYy-cb-pu3" firstAttribute="top" secondItem="KVe-MD-RVX" secondAttribute="bottom" constant="-16" id="EpN-yc-33g"/>
+                            <constraint firstItem="KVe-MD-RVX" firstAttribute="top" secondItem="XXT-zE-d3j" secondAttribute="bottom" constant="-48" id="KuP-6W-SFl"/>
+                            <constraint firstAttribute="centerX" secondItem="hlk-SA-ixG" secondAttribute="centerX" constant="-0.5" id="hr3-BQ-4Ob"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="KVe-MD-RVX" secondAttribute="trailing" constant="-16" id="i3c-tH-eXx"/>
+                            <constraint firstItem="KVe-MD-RVX" firstAttribute="leading" secondItem="L4a-RF-dlW" secondAttribute="leadingMargin" constant="-16" id="p2e-3i-Hbc"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="1m7-KL-dR1"/>
-                                <exclude reference="rYe-N0-UH9"/>
-                                <exclude reference="spR-Ji-Dxc"/>
-                                <exclude reference="DCs-v0-wKO"/>
-                                <exclude reference="bp1-oM-OgA"/>
-                                <exclude reference="BVF-Ge-UwQ"/>
+                                <exclude reference="KuP-6W-SFl"/>
+                                <exclude reference="i3c-tH-eXx"/>
+                                <exclude reference="p2e-3i-Hbc"/>
+                                <exclude reference="Ahb-WF-ulT"/>
+                                <exclude reference="hr3-BQ-4Ob"/>
+                                <exclude reference="EpN-yc-33g"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -515,12 +516,12 @@
                                 <include reference="KVe-MD-RVX"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="1m7-KL-dR1"/>
-                                <include reference="rYe-N0-UH9"/>
-                                <include reference="spR-Ji-Dxc"/>
-                                <include reference="DCs-v0-wKO"/>
-                                <include reference="bp1-oM-OgA"/>
-                                <include reference="BVF-Ge-UwQ"/>
+                                <include reference="KuP-6W-SFl"/>
+                                <include reference="i3c-tH-eXx"/>
+                                <include reference="p2e-3i-Hbc"/>
+                                <include reference="Ahb-WF-ulT"/>
+                                <include reference="hr3-BQ-4Ob"/>
+                                <include reference="EpN-yc-33g"/>
                             </mask>
                         </variation>
                         <connections>
@@ -532,7 +533,7 @@
                     <connections>
                         <outlet property="checkImage" destination="vQU-Pc-ufL" id="gdV-hd-lCP"/>
                         <outlet property="confirmInput" destination="WT8-cQ-yra" id="Spr-th-dpc"/>
-                        <outlet property="keyboardPaddingConstraint" destination="DCs-v0-wKO" id="Fe4-xh-xt7"/>
+                        <outlet property="keyboardPaddingConstraint" destination="Ahb-WF-ulT" id="XFw-hp-XIr"/>
                         <outlet property="loadingSpanerView" destination="RMg-OP-CqC" id="uZ3-H3-Vg0"/>
                         <outlet property="loadingView" destination="Bri-v1-HCI" id="73L-sQ-YFz"/>
                         <outlet property="notificationEmail" destination="rqF-Gl-gky" id="naR-2z-W2h"/>
@@ -564,7 +565,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="SignIn" translatesAutoresizingMaskIntoConstraints="NO" id="Srq-Aa-xd5">
+                            <imageView userInteractionEnabled="NO" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="SignIn" translatesAutoresizingMaskIntoConstraints="NO" id="Srq-Aa-xd5">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Ip-37-mLq" userLabel="CenterView">
@@ -657,7 +658,7 @@
                                 </variation>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" name="keyboardFocusIndicatorColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" red="0.13725490200000001" green="0.2274509804" blue="0.37254901959999998" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="4Ip-37-mLq" secondAttribute="centerX" constant="-0.5" id="6H3-uf-epi"/>
                             <constraint firstAttribute="centerY" secondItem="Srq-Aa-xd5" secondAttribute="centerY" id="8C5-Yb-1QP"/>
@@ -666,10 +667,10 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="8C5-Yb-1QP"/>
-                                <exclude reference="gHd-ar-AQC"/>
                                 <exclude reference="6H3-uf-epi"/>
                                 <exclude reference="HqG-yU-eZy"/>
+                                <exclude reference="8C5-Yb-1QP"/>
+                                <exclude reference="gHd-ar-AQC"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -677,10 +678,10 @@
                                 <include reference="Srq-Aa-xd5"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="8C5-Yb-1QP"/>
-                                <include reference="gHd-ar-AQC"/>
                                 <include reference="6H3-uf-epi"/>
                                 <include reference="HqG-yU-eZy"/>
+                                <include reference="8C5-Yb-1QP"/>
+                                <include reference="gHd-ar-AQC"/>
                             </mask>
                         </variation>
                         <connections>
@@ -717,10 +718,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="b63-Fw-RYH">
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="b63-Fw-RYH">
                                 <rect key="frame" x="186" y="184" width="228" height="37"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="DECRYPT MAILBOX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jzp-6U-vEt">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DECRYPT MAILBOX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jzp-6U-vEt">
                                 <rect key="frame" x="221" y="294" width="159" height="22"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -757,7 +758,7 @@
                                     <action selector="decryptAction:" destination="Zzb-6r-tlP" eventType="touchUpInside" id="frH-Jq-je5"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZpN-rJ-f5g">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZpN-rJ-f5g">
                                 <rect key="frame" x="199" y="408" width="203" height="27"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="tTZ-9P-EdG">
@@ -780,7 +781,7 @@
                                             <action selector="rememberButtonAction:" destination="Zzb-6r-tlP" eventType="touchUpInside" id="UfQ-H2-yMP"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Remember me on this device." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FVo-0c-RsR">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remember me on this device." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FVo-0c-RsR">
                                         <rect key="frame" x="34" y="0.0" width="161" height="27"/>
                                         <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="12.5"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
