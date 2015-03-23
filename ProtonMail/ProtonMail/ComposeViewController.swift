@@ -138,8 +138,8 @@ class ComposeViewController: ProtonMailViewController {
             selectedContacts = []
         }
         
-        let names = nameList.asArray()
-        let emails = emailList.asArray()
+        let names = nameList.splitByComma()
+        let emails = emailList.splitByComma()
         
         for var i = 0; i < countElements(emails); i++ {
             selectedContacts.append(ContactVO(id: "", name: names[i], email: emails[i]))
@@ -386,7 +386,7 @@ extension ComposeViewController {
 // MARK: - Message extension
 
 extension String {
-    private func asArray() -> [String] {
+    private func splitByComma() -> [String] {
         return split(self) {$0 == ","}
     }
 }
