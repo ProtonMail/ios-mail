@@ -475,7 +475,7 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     private func isDrafts() -> Bool {
-        return self.title == NSLocalizedString("DRAFTS")
+        return self.mailboxLocation == MessageLocation.draft
     }
     
     
