@@ -557,38 +557,26 @@ extension ComposeView: MBContactPickerDataSource {
 // MARK: - MBContactPickerDelegate
 
 extension ComposeView: MBContactPickerDelegate {
-    
-    func customFilterPredicate(searchString: String!) -> NSPredicate! {
-        return NSPredicate(format: "contactTitle CONTAINS[cd] %@ or contactSubtitle CONTAINS[cd] %@", argumentArray: [searchString, searchString])
-    }
-    
     func contactCollectionView(contactCollectionView: MBContactCollectionView!, didAddContact model: MBContactPickerModelProtocol!) {
-        
-        var contactPicker: MBContactPicker = toContactPicker
-        
-        if (contactCollectionView == toContactPicker.contactCollectionView) {
-            contactPicker = toContactPicker
-        } else if (contactCollectionView == ccContactPicker.contactCollectionView) {
-            contactPicker = ccContactPicker
-        } else if (contactCollectionView == bccContactPicker.contactCollectionView) {
-            contactPicker = bccContactPicker
-        }
+        let contactPicker = contactPickerForContactCollectionView(contactCollectionView)
         
         self.delegate?.composeView(self, didAddContact: model as ContactVO, toPicker: contactPicker)
     }
     
     func contactCollectionView(contactCollectionView: MBContactCollectionView!, didRemoveContact model: MBContactPickerModelProtocol!) {
-        var contactPicker: MBContactPicker = toContactPicker
-        
-        if (contactCollectionView == toContactPicker.contactCollectionView) {
-            contactPicker = toContactPicker
-        } else if (contactCollectionView == ccContactPicker.contactCollectionView) {
-            contactPicker = ccContactPicker
-        } else if (contactCollectionView == bccContactPicker.contactCollectionView) {
-            contactPicker = bccContactPicker
-        }
+        let contactPicker = contactPickerForContactCollectionView(contactCollectionView)
         
         self.delegate?.composeView(self, didRemoveContact: model as ContactVO, fromPicker: contactPicker)
+    }
+    
+    func contactPicker(contactPicker: MBContactPicker!, didEnterCustomText text: String!) {
+        let customContact = ContactVO(id: "", name: text, email: text)
+        
+        contactPicker.addToSelectedContacts(customContact)
+    }
+    
+    func contactPicker(contactPicker: MBContactPicker!, didUpdateContentHeightTo newHeight: CGFloat) {
+        self.updateContactPickerHeight(contactPicker, newHeight: newHeight)
     }
     
     func didShowFilteredContactsForContactPicker(contactPicker: MBContactPicker!) {
@@ -607,8 +595,24 @@ extension ComposeView: MBContactPickerDelegate {
         }
     }
     
-    func contactPicker(contactPicker: MBContactPicker!, didUpdateContentHeightTo newHeight: CGFloat) {
-        self.updateContactPickerHeight(contactPicker, newHeight: newHeight)
+    // MARK: Private delegate helper methods
+    
+    private func contactPickerForContactCollectionView(contactCollectionView: MBContactCollectionView) -> MBContactPicker {
+        var contactPicker: MBContactPicker = toContactPicker
+        
+        if (contactCollectionView == toContactPicker.contactCollectionView) {
+            contactPicker = toContactPicker
+        } else if (contactCollectionView == ccContactPicker.contactCollectionView) {
+            contactPicker = ccContactPicker
+        } else if (contactCollectionView == bccContactPicker.contactCollectionView) {
+            contactPicker = bccContactPicker
+        }
+        
+        return contactPicker
+    }
+    
+    private func customFilterPredicate(searchString: String!) -> NSPredicate! {
+        return NSPredicate(format: "contactTitle CONTAINS[cd] %@ or contactSubtitle CONTAINS[cd] %@", argumentArray: [searchString, searchString])
     }
 }
 
