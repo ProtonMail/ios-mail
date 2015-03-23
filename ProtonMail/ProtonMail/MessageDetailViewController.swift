@@ -55,13 +55,18 @@ class MessageDetailViewController: ProtonMailViewController {
     }
     
     private func setupRightButtons() {
-        var rightButtons: [UIBarButtonItem]
+        var rightButtons: [UIBarButtonItem] = []
         
-        let removeBarButtonItem = UIBarButtonItem(image: UIImage(named: "trash_selected"), style: UIBarButtonItemStyle.Plain, target: self, action: "removeButtonTapped")
-        let spamBarButtonItem = UIBarButtonItem(image: UIImage(named: "spam_selected"), style: UIBarButtonItemStyle.Plain, target: self, action: "spamButtonTapped")
-        let moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "arrow_down"), style: UIBarButtonItemStyle.Plain, target: self, action: "moreButtonTapped")
+        rightButtons.append(UIBarButtonItem(image: UIImage(named: "arrow_down"), style: UIBarButtonItemStyle.Plain, target: self, action: "moreButtonTapped"))
+
+        if message.location != .spam {
+            rightButtons.append(UIBarButtonItem(image: UIImage(named: "spam_selected"), style: UIBarButtonItemStyle.Plain, target: self, action: "spamButtonTapped"))
+        }
+
+        if message.location != .trash {
+            rightButtons.append(UIBarButtonItem(image: UIImage(named: "trash_selected"), style: UIBarButtonItemStyle.Plain, target: self, action: "removeButtonTapped"))
+        }
         
-        rightButtons = [moreBarButtonItem, spamBarButtonItem, removeBarButtonItem]
         self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
     }
     
