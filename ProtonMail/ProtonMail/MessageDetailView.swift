@@ -488,14 +488,14 @@ class MessageDetailView: UIView {
             make.left.equalTo()(self.emailDetailToLabel)
             make.top.equalTo()(self.emailDetailToLabel.mas_bottom).with().offset()(self.kEmailDetailCCLabelMarginTop)
             make.width.equalTo()(self.emailDetailToLabel)
-            make.height.equalTo()(self.emailDetailCCLabel.frame.size.height)
+            make.height.equalTo()(!self.message.ccList.isEmpty ? self.emailDetailCCLabel.frame.size.height : 0)
         }
         
         emailDetailCCContentLabel.mas_makeConstraints { (make) -> Void in
             make.centerY.equalTo()(self.emailDetailCCLabel)
             make.left.equalTo()(self.emailDetailCCLabel.mas_right)
             make.right.equalTo()(self.emailDetailView)
-            make.height.equalTo()(self.emailDetailCCContentLabel.frame.size.height)
+            make.height.equalTo()(!self.message.ccList.isEmpty ? self.emailDetailCCContentLabel.frame.size.height : 0)
         }
         
         emailDetailDateLabel.mas_makeConstraints { (make) -> Void in
