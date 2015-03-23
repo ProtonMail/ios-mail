@@ -611,7 +611,7 @@ extension ComposeView: MBContactPickerDelegate {
         return contactPicker
     }
     
-    private func customFilterPredicate(searchString: String!) -> NSPredicate! {
+    internal func customFilterPredicate(searchString: String!) -> NSPredicate! {
         return NSPredicate(format: "contactTitle CONTAINS[cd] %@ or contactSubtitle CONTAINS[cd] %@", argumentArray: [searchString, searchString])
     }
 }
