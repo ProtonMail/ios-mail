@@ -67,6 +67,8 @@ extension AppDelegate: UIApplicationDelegate {
         Mint.sharedInstance().setLogging(8)
         Mint.sharedInstance().initAndStartSession(mintAPIKey)
         
+        shareViewModelFactoy = ViewModelFactoryProduction()
+        
         AFNetworkActivityIndicatorManager.sharedManager().enabled = true
         setupWindow()
         sharedMessageDataService.launchCleanUpIfNeeded()

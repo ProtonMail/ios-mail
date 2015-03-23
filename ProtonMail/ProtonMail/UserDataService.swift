@@ -38,9 +38,8 @@ class UserDataService {
         static let didSignOut = "UserDataServiceDidSignOutNotification"
         static let didSignIn = "UserDataServiceDidSignInNotification"
     }
-        
-    // MARK: - Private variables
     
+    // MARK: - Private variables
     private(set) var userInfo: UserInfo? = NSUserDefaults.standardUserDefaults().customObjectForKey(Key.userInfo) as? UserInfo {
         didSet {
             NSUserDefaults.standardUserDefaults().setCustomValue(userInfo, forKey: Key.userInfo)
@@ -61,7 +60,12 @@ class UserDataService {
         return userInfo?.usedSpace ?? 0
     }
     
+    
     // MARK: - Public variables
+    
+    var userAddresses: Array<Address> { //never be null
+        return userInfo?.userAddresses ?? Array<Address>()
+    }
     
     var displayName: String {
         return userInfo?.displayName ?? ""
@@ -202,10 +206,11 @@ class UserDataService {
     }
     
     func updateDisplayName(displayName: String, completion: UserInfoBlock?) {
-        sharedAPIService.settingUpdateDisplayName(displayName, completion: completionForUserInfo(completion))
+        let new_displayName = displayName.trim()
+        sharedAPIService.settingUpdateDisplayName(new_displayName, completion: completionForUserInfo(completion))
     }
     
-    func updateMailboxPassword(newMailboxPassword: String, completion: CompletionBlock?) {
+    func updateMailboxPassword(old_mbp: String, newMailboxPassword: String, completion: CompletionBlock?) {
         var error: NSError?
         
         if let userInfo = userInfo {
@@ -215,7 +220,7 @@ class UserDataService {
                         if error == nil {
                             self.mailboxPassword = newMailboxPassword
                             
-                            let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: newPrivateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus)
+                            let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: newPrivateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses)
                             
                             self.userInfo = userInfo
                         }
@@ -239,7 +244,7 @@ class UserDataService {
                     if error == nil {
                         self.mailboxPassword = mbp;
                         
-                        let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: privkey, publicKey: pubkey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus)
+                        let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: privkey, publicKey: pubkey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses)
                         
                         self.userInfo = userInfo
                     }
@@ -250,19 +255,35 @@ class UserDataService {
             }
         }
     }
+    
+    
+    func updateUserDomiansOrder(email_domains: Array<Address>, completion: CompletionBlock) {
+        sharedAPIService.settingUpdateDomainOrder([email_domains[0].address_id, email_domains[1].address_id], completion: { task, responseDict, anError in
+            var error = anError
+            if error == nil {
+                if let userInfo = self.userInfo {
+                    let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:email_domains)
+                    
+                    self.userInfo = userInfo
+                }
+            }
+            completion(task: task, response: responseDict, error: error)
+        })
+
+    }
+    
 
     func updateNotificationEmail(newNotificationEmail: String, completion: UserInfoBlock?) {
         sharedAPIService.settingUpdateNotificationEmail(newNotificationEmail, completion: completionForUserInfo(completion))
     }
     
-    func updatePassword(newPassword: String, completion: CompletionBlock) {
-        sharedAPIService.settingUpdatePassword(newPassword, completion: { task, responseDict, anError in
+    func updatePassword(old_pwd: String, newPassword: String, completion: CompletionBlock) {
+        sharedAPIService.settingUpdatePassword(old_pwd, newPassword: newPassword, completion: { task, responseDict, anError in
             var error = anError
             
             if error == nil {
                 self.password = newPassword
-            }
-            
+            }            
             completion(task: task, response: responseDict, error: error)
         })
     }

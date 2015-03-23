@@ -1,0 +1,68 @@
+//
+//  File.swift
+//  ProtonMail
+//
+//  Created by Yanfeng Zhang on 3/19/15.
+//  Copyright (c) 2015 ArcTouch. All rights reserved.
+//
+
+import Foundation
+
+var shareViewModelFactoy: ViewModelFactory!
+
+// need supprot dev factory live factory
+class ViewModelFactory {
+    func getChangeLoginPassword() -> ChangePWDViewModel {
+        fatalError("This method must be overridden")
+    }
+    
+    func getChangeMailboxPassword() -> ChangePWDViewModel {
+        fatalError("This method must be overridden")
+    }
+    
+    func getChangeDisplayName() -> SettingDetailsViewModel {
+        fatalError("This method must be overridden")
+    }
+    
+    func getChangeNotificationEmail() -> SettingDetailsViewModel {
+        fatalError("This method must be overridden")
+    }
+    
+    func getChangeSignature() -> SettingDetailsViewModel {
+        fatalError("This method must be overridden")
+    }
+}
+
+class ViewModelFactoryTest : ViewModelFactory {
+    override func getChangeLoginPassword() -> ChangePWDViewModel {
+        return ChangePWDViewModelTest()
+    }
+    
+    override func getChangeMailboxPassword() -> ChangePWDViewModel {
+        return ChangePWDViewModelTest()
+    }
+}
+
+
+class ViewModelFactoryProduction : ViewModelFactory {
+    override func getChangeLoginPassword() -> ChangePWDViewModel {
+        return ChangeLoginPWDViewModel()
+    }
+    
+    override func getChangeMailboxPassword() -> ChangePWDViewModel {
+        return ChangeMailboxPWDViewModel()
+    }
+    
+    override func getChangeDisplayName() -> SettingDetailsViewModel {
+        return ChangeDisplayNameViewModel()
+    }
+    
+    override func getChangeNotificationEmail() -> SettingDetailsViewModel {
+        return ChangeNotificationEmailViewModel()
+    }
+    
+    override func getChangeSignature() -> SettingDetailsViewModel {
+        return ChangeSignatureViewModel()
+    }
+
+}
