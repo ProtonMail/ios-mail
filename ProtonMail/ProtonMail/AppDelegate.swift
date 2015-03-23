@@ -21,7 +21,9 @@ class AppDelegate: UIResponder {
     private let animationDuration: NSTimeInterval = 0.5
     
     // FIXME: Before this code is shared publicly, inject the API key from the build command.
+    
     private let mintAPIKey = "2b423dec"
+    private var notificationMessage: Message?
     
     var window: UIWindow?
     
@@ -44,6 +46,9 @@ class AppDelegate: UIResponder {
                 if rootViewController.restorationIdentifier != storyboard.restorationIdentifier {
                     let animations: () -> Void = {
                         window.rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
+                        if let message = self.notificationMessage {
+                            self.handleNotificationMessage()
+                        }
                     }
                     
                     if animated {
@@ -52,6 +57,30 @@ class AppDelegate: UIResponder {
                         animations()
                     }
                 }
+            }
+        }
+    }
+    
+    private func handleNotificationMessage() {
+        var detailViewController: MessageDetailViewController = UIStoryboard.Storyboard.inbox.storyboard.instantiateViewControllerWithIdentifier("MessageDetailViewController") as MessageDetailViewController
+        detailViewController.message = self.notificationMessage
+        
+        let windowRootViewController = window?.rootViewController
+        var revealViewController: SWRevealViewController? = windowRootViewController as? SWRevealViewController
+        if let revealViewController = revealViewController {
+            var navigationController: UINavigationController? = revealViewController.frontViewController as? UINavigationController
+            if let navigationController = navigationController {
+                
+                var presentedViewController: UIViewController? = navigationController.presentedViewController
+                
+                if let presentedViewController = presentedViewController {
+                    presentedViewController.dismissViewControllerAnimated(false, completion: nil)
+                }
+                
+                while (navigationController.viewControllers?.count > 1) {
+                    navigationController.popViewControllerAnimated(false)
+                }
+                navigationController.pushViewController(detailViewController, animated: true)
             }
         }
     }
@@ -127,17 +156,10 @@ extension AppDelegate: UIApplicationDelegate {
             
             if let messageId = messageId {
                 var message = Message.messageForMessageID(messageId, inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext!)
-                var detailViewController: MessageDetailViewController = MessageDetailViewController()
-                detailViewController.message = message
-                var windowRootViewController = self.window?.rootViewController
-                var revealViewController: SWRevealViewController = windowRootViewController as SWRevealViewController
-                var navigationController: UINavigationController = revealViewController.frontViewController as UINavigationController
-                var presentedViewController = navigationController.presentedViewController
-                
-                if let presentedViewController = presentedViewController {
-                    presentedViewController.dismissViewControllerAnimated(false, completion: nil)
+                if let message = message {
+                    self.notificationMessage = message
+                    handleNotificationMessage()
                 }
-                navigationController.pushViewController(detailViewController, animated: true)
             }
         }
 

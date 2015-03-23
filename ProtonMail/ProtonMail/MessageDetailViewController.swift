@@ -143,8 +143,10 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
         presentViewController(alertController, animated: true, completion: nil)
     }
     
-    func messageDetailViewDidTapForwardMessage(messageView: MessageDetailView, message: Message) {
-        actionTapped = ComposeView.ComposeMessageAction.Forward
+    
+    
+    func messageDetailViewDidTapReplyMessage(messageView: MessageDetailView, message: Message) {
+        actionTapped = ComposeView.ComposeMessageAction.Reply
         self.performSegueWithIdentifier("toCompose", sender: self)
     }
     
@@ -153,8 +155,8 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
         self.performSegueWithIdentifier("toCompose", sender: self)
     }
     
-    func messageDetailViewDidTapReplyMessage(messageView: MessageDetailView, message: Message) {
-        actionTapped = ComposeView.ComposeMessageAction.Reply
+    func messageDetailViewDidTapForwardMessage(messageView: MessageDetailView, message: Message) {
+        actionTapped = ComposeView.ComposeMessageAction.Forward
         self.performSegueWithIdentifier("toCompose", sender: self)
     }
     
