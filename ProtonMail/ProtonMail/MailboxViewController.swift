@@ -398,6 +398,10 @@ class MailboxViewController: ProtonMailViewController {
             }
             
             rightButtons = [self.moreBarButtonItem, self.favoriteBarButtonItem, self.removeBarButtonItem]
+            
+            if (isDrafts()) {
+                rightButtons = [self.removeBarButtonItem]
+            }
         }
         
         self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
@@ -470,8 +474,14 @@ class MailboxViewController: ProtonMailViewController {
         self.setupRightButtons(editingMode)
     }
     
+    private func isDrafts() -> Bool {
+        return self.title == NSLocalizedString("DRAFTS")
+    }
+    
     
     // MARK: - Public methods
+    
+    
     
     func setNavigationTitleText(text: String?) {
         let animation = CATransition()
