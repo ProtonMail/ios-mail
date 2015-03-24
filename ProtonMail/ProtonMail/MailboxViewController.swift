@@ -490,8 +490,6 @@ class MailboxViewController: ProtonMailViewController {
     
     // MARK: - Public methods
     
-    
-    
     func setNavigationTitleText(text: String?) {
         let animation = CATransition()
         animation.duration = 0.25

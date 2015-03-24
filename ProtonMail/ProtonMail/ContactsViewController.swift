@@ -268,6 +268,7 @@ extension ContactsViewController: UITableViewDelegate {
         if (segue.identifier == "toEditContact") {
             let editContactViewController: EditContactViewController = segue.destinationViewController.viewControllers![0] as EditContactViewController
             editContactViewController.contact = self.selectedContact
+            
             println("tableView.indexPathForSelectedRow() = \(tableView.indexPathForSelectedRow())")
         }
         
