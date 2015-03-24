@@ -59,6 +59,12 @@ class ComposeViewController: ProtonMailViewController {
                 self.composeView.toContactPicker.reloadData()
                 self.composeView.ccContactPicker.reloadData()
                 self.composeView.bccContactPicker.reloadData()
+                
+                if (self.toSelectedContacts.count == 0) {
+                    self.composeView.toContactPicker.becomeFirstResponder()
+                } else {
+                    self.composeView.bodyTextView.becomeFirstResponder()
+                }
             })
         }
     }
