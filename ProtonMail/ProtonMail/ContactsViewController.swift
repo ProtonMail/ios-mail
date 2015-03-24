@@ -31,6 +31,8 @@ class ContactsViewController: ProtonMailViewController {
     private var hasAccessToAddressBook: Bool = false
     private var contactsQueue = dispatch_queue_create("com.protonmail.contacts", nil)
     private var selectedContact: ContactVO!
+    private var refreshControl: UIRefreshControl!
+
     
     // MARK: - View Controller Lifecycle
     
@@ -41,6 +43,11 @@ class ContactsViewController: ProtonMailViewController {
         
         self.searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ContactsTableViewCell", bundle: NSBundle.mainBundle()), forCellReuseIdentifier: kContactCellIdentifier)
         
+        refreshControl = UIRefreshControl()
+        refreshControl.backgroundColor = UIColor.ProtonMail.Blue_475F77
+        refreshControl.addTarget(self, action: "retrieveAllContacts", forControlEvents: UIControlEvents.ValueChanged)
+        
+        tableView.addSubview(self.refreshControl)
         tableView.dataSource = self
         tableView.delegate = self
     }
@@ -51,6 +58,9 @@ class ContactsViewController: ProtonMailViewController {
         self.tableView.setEditing(false, animated: true)
         self.searchDisplayController?.searchResultsTableView.setEditing(false, animated: true)
         self.searchDisplayController?.setActive(false, animated: true)
+        
+        refreshControl.tintColor = UIColor.whiteColor()
+        refreshControl.tintColorDidChange()
         
         retrieveAllContacts()
     }
@@ -66,9 +76,7 @@ class ContactsViewController: ProtonMailViewController {
     
     // MARK: - Private methods
     
-    private func retrieveAllContacts() {
-        ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
-        
+    internal func retrieveAllContacts() {
         dispatch_async(contactsQueue, { () -> Void in
             self.contacts.removeAll(keepCapacity: true)
             self.retrieveAddressBook()
@@ -76,8 +84,8 @@ class ContactsViewController: ProtonMailViewController {
                 self.contacts.sort { $0.name.lowercaseString < $1.name.lowercaseString }
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.refreshControl.endRefreshing()
                     self.tableView.reloadData()
-                    ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
                 })
             })
         })
@@ -127,19 +135,33 @@ class ContactsViewController: ProtonMailViewController {
     }
     
     private func retrieveServerContactList(completion: () -> Void) {
+        updateDataServiceContacts()
+        
+        dispatch_async(dispatch_get_main_queue(), {
+            self.tableView.reloadData()
+        })
+        
         sharedContactDataService.fetchContacts { (contacts: [Contact]?, error: NSError?) -> Void in
             if error != nil {
                 NSLog("\(error)")
                 return
             }
             
-            if let contacts = contacts {
-                for contact in contacts {
-                    self.contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: contact.email, isProtonMailContact: true))
-                }
-            }
+            self.updateDataServiceContacts()
             
             completion()
+        }
+    }
+    
+    private func updateDataServiceContacts() {
+        let filteredContacts = self.contacts.filter { (contact) -> Bool in
+            return contact.contactId == ""
+        }
+        
+        self.contacts = filteredContacts
+        
+        for contact in sharedContactDataService.allContacts() {
+            self.contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: contact.email, isProtonMailContact: true))
         }
     }
 }
