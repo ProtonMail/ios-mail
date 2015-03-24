@@ -93,7 +93,6 @@ class ComposeView: UIView {
     @IBOutlet var fakeContactPickerHeightConstraint: NSLayoutConstraint!
     @IBOutlet var subject: UITextField!
     @IBOutlet var bodyTextView: UITextView!
-    @IBOutlet var spinner: FSSyncSpinner!
     @IBOutlet var showCcBccButton: UIButton!
     
     
@@ -163,21 +162,14 @@ class ComposeView: UIView {
         self.configureExpirationField()
        
         self.registerForKeyboardNotifications()
-        self.bringSubviewToFront(spinner)
         self.bringSubviewToFront(showCcBccButton)
         self.sendSubviewToBack(ccContactPicker)
         self.sendSubviewToBack(bccContactPicker)
-        
-        self.spinner.startAnimating()
     }
     
     
     deinit {
         unregisterForKeybardNotifications()
-    }
-    
-    func finishRetrievingContacts() {
-        spinner.finish()
     }
     
     func keyboardWasShown(notification: NSNotification) {

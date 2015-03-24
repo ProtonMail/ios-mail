@@ -59,7 +59,12 @@ class ComposeViewController: ProtonMailViewController {
                 self.composeView.toContactPicker.reloadData()
                 self.composeView.ccContactPicker.reloadData()
                 self.composeView.bccContactPicker.reloadData()
-                self.composeView.finishRetrievingContacts()
+                
+                if (self.toSelectedContacts.count == 0) {
+                    self.composeView.toContactPicker.becomeFirstResponder()
+                } else {
+                    self.composeView.bodyTextView.becomeFirstResponder()
+                }
             })
         }
     }
@@ -67,12 +72,6 @@ class ComposeViewController: ProtonMailViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.composeView.updateConstraintsIfNeeded()
-        
-        if (toSelectedContacts.count == 0) {
-            self.composeView.toContactPicker.becomeFirstResponder()
-        } else {
-            self.composeView.bodyTextView.becomeFirstResponder()
-        }
     }
     
     
@@ -366,17 +365,7 @@ extension ComposeViewController {
     
     private func retrieveServerContactList(completion: () -> Void) {
         updateDataServiceContacts()
-        
-        sharedContactDataService.fetchContacts { (contacts: [Contact]?, error: NSError?) -> Void in
-            if error != nil {
-                NSLog("\(error)")
-                return
-            }
-            
-            self.updateDataServiceContacts()
-            
-            completion()
-        }
+        completion()
     }
     
     private func updateDataServiceContacts() {
