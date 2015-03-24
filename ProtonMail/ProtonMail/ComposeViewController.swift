@@ -59,7 +59,6 @@ class ComposeViewController: ProtonMailViewController {
                 self.composeView.toContactPicker.reloadData()
                 self.composeView.ccContactPicker.reloadData()
                 self.composeView.bccContactPicker.reloadData()
-                self.composeView.finishRetrievingContacts()
             })
         }
     }
@@ -67,12 +66,6 @@ class ComposeViewController: ProtonMailViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.composeView.updateConstraintsIfNeeded()
-        
-        if (toSelectedContacts.count == 0) {
-            self.composeView.toContactPicker.becomeFirstResponder()
-        } else {
-            self.composeView.bodyTextView.becomeFirstResponder()
-        }
     }
     
     
