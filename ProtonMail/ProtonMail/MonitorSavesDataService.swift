@@ -38,10 +38,16 @@ class MonitorSavesDataService {
     // MARK: - Public methods
     
     func registerEntityName(entityName: String, attribute: String, handler: HandlerBlock) {
-        var attributeHandler = handlers[entityName] ?? [:]
-        attributeHandler[attribute] = handler
+
+        var attributeHandler: [String : HandlerBlock]? = handlers[entityName]
         
-        handlers[entityName] = attributeHandler
+        if (attributeHandler == nil) {
+            attributeHandler = [String: HandlerBlock]()
+        }
+        
+        attributeHandler![attribute] = handler
+        
+        handlers[entityName] = attributeHandler!
     }
     
     // MARK: - Private methods
