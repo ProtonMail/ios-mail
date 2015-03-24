@@ -44,17 +44,25 @@ class AppDelegate: UIResponder {
         if let window = window {
             if let rootViewController = window.rootViewController {
                 if rootViewController.restorationIdentifier != storyboard.restorationIdentifier {
-                    let animations: () -> Void = {
+                    if !animated {
                         window.rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
+            
                         if let message = self.notificationMessage {
                             self.handleNotificationMessage()
                         }
-                    }
-                    
-                    if animated {
-                        UIView.transitionWithView(window, duration: animationDuration, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: animations, completion: nil)
                     } else {
-                        animations()
+                        UIView.animateWithDuration(animationDuration/2, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+                            rootViewController.view.alpha = 0
+                        }, completion: { (finished) -> Void in
+                            let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
+                            viewController.view.alpha = 0
+                            
+                            window.rootViewController = viewController
+                            
+                            UIView.animateWithDuration(self.animationDuration/2, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+                                viewController.view.alpha = 1.0
+                            }, completion: nil)
+                        })
                     }
                 }
             }
