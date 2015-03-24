@@ -359,17 +359,7 @@ extension ComposeViewController {
     
     private func retrieveServerContactList(completion: () -> Void) {
         updateDataServiceContacts()
-        
-        sharedContactDataService.fetchContacts { (contacts: [Contact]?, error: NSError?) -> Void in
-            if error != nil {
-                NSLog("\(error)")
-                return
-            }
-            
-            self.updateDataServiceContacts()
-            
-            completion()
-        }
+        completion()
     }
     
     private func updateDataServiceContacts() {
