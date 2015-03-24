@@ -358,19 +358,29 @@ extension ComposeViewController {
     }
     
     private func retrieveServerContactList(completion: () -> Void) {
+        updateDataServiceContacts()
+        
         sharedContactDataService.fetchContacts { (contacts: [Contact]?, error: NSError?) -> Void in
             if error != nil {
                 NSLog("\(error)")
                 return
             }
             
-            if let contacts = contacts {
-                for contact in contacts {
-                    self.contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: contact.email, isProtonMailContact: true))
-                }
-            }
+            self.updateDataServiceContacts()
             
             completion()
+        }
+    }
+    
+    private func updateDataServiceContacts() {
+        let filteredContacts = self.contacts.filter { (contact) -> Bool in
+            return contact.contactId == ""
+        }
+        
+        self.contacts = filteredContacts
+        
+        for contact in sharedContactDataService.allContacts() {
+            self.contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: contact.email, isProtonMailContact: true))
         }
     }
 }
