@@ -74,14 +74,22 @@ class MailboxViewController: ProtonMailViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        updateMessages()
-
+        
         let selectedItem: NSIndexPath? = self.tableView.indexPathForSelectedRow() as NSIndexPath?
         
         if let selectedItem = selectedItem {
             self.tableView.reloadRowsAtIndexPaths([selectedItem], withRowAnimation: UITableViewRowAnimation.Fade)
             self.tableView.deselectRowAtIndexPath(selectedItem, animated: true)
         }
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.refreshControl.tintColor = UIColor.whiteColor()
+        self.refreshControl.tintColorDidChange()
+        
+        updateMessages()
     }
     
     private func addSubViews() {
@@ -99,7 +107,6 @@ class MailboxViewController: ProtonMailViewController {
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl.backgroundColor = UIColor.ProtonMail.Blue_475F77
-        self.refreshControl.tintColor = UIColor.whiteColor()
         self.refreshControl.addTarget(self, action: "getLatestMessages", forControlEvents: UIControlEvents.ValueChanged)
         
         self.tableView.addSubview(self.refreshControl)
@@ -299,10 +306,12 @@ class MailboxViewController: ProtonMailViewController {
             }
             
             self.pagingManager.reset()
-            self.refreshControl.endRefreshing()
+            
+            delay(1.0, {
+                self.refreshControl.endRefreshing()
+                self.tableView.reloadData()
+            })
         }
-        
-        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
     }
     
     private func moveMessagesToLocation(location: MessageLocation) {
