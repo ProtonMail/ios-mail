@@ -58,6 +58,7 @@ class ComposeView: UIView {
     private var errorView: UIView!
     private var errorTextView: UITextView!
     private var isShowingCcBccView: Bool = false
+    private var hasExpirationSchedule: Bool = false
     
     
     // MARK: - View Outlets
@@ -102,6 +103,7 @@ class ComposeView: UIView {
     @IBOutlet var expirationButton: UIButton!
     @IBOutlet var attachmentButton: UIButton!
     
+    private var confirmExpirationButton: UIButton!
     
     // MARK: - Encryption password
     
@@ -214,8 +216,6 @@ class ComposeView: UIView {
     }
     
     @IBAction func expirationButtonTapped(sender: UIButton) {
-
-        self.expirationButton.setImage(UIImage(named: "expiration_compose"), forState: UIControlState.Normal)
         self.endEditing(true)
         self.expirationDateTextField.becomeFirstResponder()
         UIView.animateWithDuration(0.3, animations: { () -> Void in
@@ -224,6 +224,8 @@ class ComposeView: UIView {
             self.expirationView.alpha = 1.0
             
             self.toContactPicker.userInteractionEnabled = false
+            self.ccContactPicker.userInteractionEnabled = false
+            self.bccContactPicker.userInteractionEnabled = false
             self.subject.userInteractionEnabled = false
             
             self.showExpirationPicker()
@@ -258,9 +260,27 @@ class ComposeView: UIView {
         })
     }
     
-    internal func didTapConfirmButton() {
-        self.expirationButton.setImage(UIImage(named: "expiration_compose_checked"), forState: UIControlState.Normal)
-        self.hideExpirationPicker()
+    internal func didTapConfirmExpirationButton() {
+        let selectedDay = expirationPicker.selectedRowInComponent(0)
+        let selectedHour = expirationPicker.selectedRowInComponent(1)
+        
+        if (selectedDay == 0 && selectedHour == 0) {
+            self.expirationDateTextField.shake(3, offset: 10.0)
+        } else {
+            if (!hasExpirationSchedule) {
+                self.expirationButton.setImage(UIImage(named: "expiration_compose_checked"), forState: UIControlState.Normal)
+                self.confirmExpirationButton.setImage(UIImage(named: "cancel_compose"), forState: UIControlState.Normal)
+            } else {
+                self.expirationDateTextField.text = ""
+                self.expirationPicker.selectRow(0, inComponent: 0, animated: true)
+                self.expirationPicker.selectRow(0, inComponent: 1, animated: true)
+                self.expirationButton.setImage(UIImage(named: "expiration_compose"), forState: UIControlState.Normal)
+                self.confirmExpirationButton.setImage(UIImage(named: "confirm_compose"), forState: UIControlState.Normal)
+            }
+            
+            hasExpirationSchedule = !hasExpirationSchedule
+            self.hideExpirationPicker()
+        }
     }
     
     internal func showDefinePasswordView() {
@@ -296,6 +316,8 @@ class ComposeView: UIView {
     
     internal func hideExpirationPicker() {
         self.toContactPicker.userInteractionEnabled = true
+        self.ccContactPicker.userInteractionEnabled = true
+        self.bccContactPicker.userInteractionEnabled = true
         self.subject.userInteractionEnabled = true
 
         UIView.animateWithDuration(0.3, animations: { () -> Void in
@@ -464,13 +486,13 @@ class ComposeView: UIView {
         expirationDateTextField.leftView = expirationLeftPaddingView
         expirationDateTextField.leftViewMode = UITextFieldViewMode.Always
         
-        let confirmButton = UIButton()
-        confirmButton.addTarget(self, action: "didTapConfirmButton", forControlEvents: UIControlEvents.TouchUpInside)
-        confirmButton.setImage(UIImage(named: "confirm_compose"), forState: UIControlState.Normal)
-        confirmButton.sizeToFit()
+        self.confirmExpirationButton = UIButton()
+        confirmExpirationButton.addTarget(self, action: "didTapConfirmExpirationButton", forControlEvents: UIControlEvents.TouchUpInside)
+        confirmExpirationButton.setImage(UIImage(named: "confirm_compose"), forState: UIControlState.Normal)
+        confirmExpirationButton.sizeToFit()
         
-        let confirmView = UIView(frame: CGRectMake(0, 0, confirmButton.frame.size.width + 10, confirmButton.frame.size.height))
-        confirmView.addSubview(confirmButton)
+        let confirmView = UIView(frame: CGRectMake(0, 0, confirmExpirationButton.frame.size.width + 10, confirmExpirationButton.frame.size.height))
+        confirmView.addSubview(confirmExpirationButton)
         expirationDateTextField.rightView = confirmView
         expirationDateTextField.rightViewMode = UITextFieldViewMode.Always
         expirationDateTextField.delegate = self
