@@ -1,0 +1,68 @@
+//
+//  EncryptTypes.swift
+//  ProtonMail
+//
+//  Created by Yanfeng Zhang on 3/26/15.
+//  Copyright (c) 2015 ArcTouch. All rights reserved.
+//
+
+import Foundation
+
+enum EncryptTypes: Int, Printable {
+    case Plain = 0          //Plain text
+    case Internal = 1       // ProtonMail encrypted emails
+    case External = 2       // Encrypted from outside
+    case OutEnc = 3         // Encrypted for outside
+    case OutPlain = 4       // Send plain but stored enc
+    case DraftStoreEnc = 5  // Draft
+    case OutEncReply = 6    // Encrypted for outside reply
+    
+    var description : String {
+        get {
+            switch(self){
+            case Plain:
+                return NSLocalizedString("Plain text")
+            case Internal:
+                return NSLocalizedString("ProtonMail encrypted emails")
+            case External:
+                return NSLocalizedString("Encrypted from outside")
+            case OutEnc:
+                return NSLocalizedString("Encrypted for outside")
+            case OutPlain:
+                return NSLocalizedString("Send plain but stored enc")
+            case DraftStoreEnc:
+                return NSLocalizedString("Draft")
+            case OutEncReply:
+                return NSLocalizedString("Encrypted for outside reply")
+            }
+        }
+    }
+    
+    var isEncrypt: Bool! {
+        var isEncrypt = true
+        switch(self){
+        case Plain:
+            isEncrypt = false;
+            break;
+        case Internal:
+            break
+        case External:
+            break;
+        case OutEnc:
+            break;
+        case OutPlain:
+            break;
+        case DraftStoreEnc:
+            break;
+        case OutEncReply:
+            break;
+        default:
+            break
+        }
+        return isEncrypt
+    }
+    
+    func isEncrypt(v : Int) -> Bool! {
+        return EncryptTypes(rawValue: v)?.isEncrypt
+    }
+}
