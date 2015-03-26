@@ -91,7 +91,7 @@ class MailboxTableViewCell: UITableViewCell {
         self.title.text = message.title
         self.sender.text = message.sender
         self.time.text = message.time != nil ? NSDate.stringForDisplayFromDate(message.time) : ""
-        self.encryptedImage.hidden = !message.isEncrypted
+        self.encryptedImage.hidden = !message.checkIsEncrypted()
         self.attachImage.hidden = !message.hasAttachments
         self.checkboxButton.layer.cornerRadius = kCheckboxButtonCornerRadius
         self.checkboxButton.layer.masksToBounds = true

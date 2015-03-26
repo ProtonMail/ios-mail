@@ -38,7 +38,7 @@ enum EncryptTypes: Int, Printable {
         }
     }
     
-    var isEncrypt: Bool! {
+    var isEncrypted: Bool! {
         var isEncrypt = true
         switch(self){
         case Plain:
@@ -56,13 +56,19 @@ enum EncryptTypes: Int, Printable {
             break;
         case OutEncReply:
             break;
-        default:
-            break
         }
         return isEncrypt
     }
+}
+
+
+extension NSNumber {
     
-    func isEncrypt(v : Int) -> Bool! {
-        return EncryptTypes(rawValue: v)?.isEncrypt
+    func isEncrypted() -> Bool {
+        let enc_type = EncryptTypes(rawValue: self.integerValue) ?? EncryptTypes.Internal
+        let checkIsEncrypted:Bool = enc_type.isEncrypted
+
+        return checkIsEncrypted
     }
+    
 }
