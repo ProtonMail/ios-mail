@@ -167,16 +167,14 @@ extension UserInfo {
             for res in address_response
             {
                 addresses.append(Address(
-                    addressid:(res["AddressID"] as? String)?.toInt(),
+                    addressid: res["AddressID"] as? Int,
                     email:res["Email"] as? String,
-                    send: (res["Send"] as? String)?.toInt(),
-                    receive: (res["Receive"] as? String)?.toInt(),
-                    mailbox: (res["Mailbox"] as? String)?.toInt(),
+                    send: res["Send"] as? Int,
+                    receive: res["Receive"] as? Int,
+                    mailbox: res["Mailbox"] as? Int,
                     display_name: res["DisplayName"] as? String,
                     signature: res["Signature"] as? String))
             }
-            
-            let check_value = response[maxSpaceResponseKey] as? Int
             self.init(
                 displayName: response[displayNameResponseKey] as? String,
                 maxSpace: response[maxSpaceResponseKey] as? Int,
@@ -184,8 +182,8 @@ extension UserInfo {
                 privateKey: response[privateKeyResponseKey] as? String,
                 publicKey: response[publicKeyResponseKey] as? String,
                 signature: response[signatureResponseKey] as? String,
-                usedSpace: (response[usedSpaceResponseKey] as? String)?.toInt(),
-                userStatus: (response[userStatusResponseKey] as? String)?.toInt(),
+                usedSpace: response[usedSpaceResponseKey] as? Int,
+                userStatus: response[userStatusResponseKey] as? Int,
                 userAddresses: addresses)
     }
 }
