@@ -27,7 +27,7 @@ class Message: NSManagedObject {
     @NSManaged var hasAttachments: Bool
     @NSManaged var header: String
     @NSManaged var isDetailDownloaded: Bool
-    @NSManaged var isEncrypted: Bool
+    @NSManaged var isEncrypted: NSNumber
     @NSManaged var isForwarded: Bool
     @NSManaged var isRead: Bool
     @NSManaged var isReplied: Bool

@@ -89,7 +89,7 @@ extension APIService {
         title: String = "",
         passwordHint: String = "",
         expirationDate: NSDate? = nil,
-        isEncrypted: Bool,
+        isEncrypted: NSNumber,
         body: [String : String],
         attachments: [Attachment],
         completion: CompletionBlock?) {
@@ -108,7 +108,7 @@ extension APIService {
                 parameters["ExpirationTime"] = Double(expirationDate?.timeIntervalSince1970 ?? 0)
             }
             
-            parameters["IsEncrypted"] = isEncrypted ? 1 : 0
+            parameters["IsEncrypted"] =  isEncrypted.isEncrypted() ? 1 : 0
             parameters["MessageBody"] = body
             
             if !attachments.isEmpty {
@@ -131,7 +131,7 @@ extension APIService {
         title: String = "",
         passwordHint: String = "",
         expirationDate: NSDate? = nil,
-        isEncrypted: Bool,
+        isEncrypted: NSNumber,
         body: Dictionary<String,String>,
         attachments: Array<Attachment>?,
         completion: CompletionBlock?) {
@@ -167,7 +167,7 @@ extension APIService {
         title: String = "",
         passwordHint: String = "",
         expirationDate: NSDate? = nil,
-        isEncrypted: Bool,
+        isEncrypted: NSNumber,
         body: Dictionary<String,String>,
         attachments: Array<Attachment>?,
         completion: CompletionBlock?) {

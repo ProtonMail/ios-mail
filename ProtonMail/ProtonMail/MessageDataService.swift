@@ -465,8 +465,7 @@ class MessageDataService {
                         }
                     }
                 }
-                
-                messageBody["outsiders"] = message.isEncrypted ? message.passwordEncryptedBody : body
+                messageBody["outsiders"] = (message.checkIsEncrypted() == true ? message.passwordEncryptedBody : body)
             } else {
                 NSLog("\(__FUNCTION__) unable to decrypt \(message.body) with error: \(error)")
             }

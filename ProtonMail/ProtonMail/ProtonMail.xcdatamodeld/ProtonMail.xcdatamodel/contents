@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14C109" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6751" systemVersion="14D87h" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Attachment" representedClassName="ProtonMail.Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" syncable="YES">
             <userInfo>
@@ -93,7 +93,7 @@
             </userInfo>
         </attribute>
         <attribute name="isDetailDownloaded" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isEncrypted" attributeType="Boolean" defaultValueString="NO" syncable="YES">
+        <attribute name="isEncrypted" attributeType="Integer 16" defaultValueString="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="IsEncrypted"/>
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
@@ -207,6 +207,6 @@
     <elements>
         <element name="Attachment" positionX="-63" positionY="135" width="128" height="148"/>
         <element name="Contact" positionX="-54" positionY="135" width="128" height="88"/>
-        <element name="Message" positionX="-63" positionY="-18" width="128" height="493"/>
+        <element name="Message" positionX="-63" positionY="-18" width="128" height="495"/>
     </elements>
 </model>

@@ -398,7 +398,9 @@ extension Message {
     }
     
     func decryptBodyIfNeeded(error: NSErrorPointer?) -> String? {
-        if !isEncrypted {
+       
+        
+        if !checkIsEncrypted() {
             return body
         } else {
             return decryptBody(error)
@@ -407,5 +409,13 @@ extension Message {
     
     func encryptBody(body: String, error: NSErrorPointer?) {
         self.body = body.encryptWithPublicKey(publicKey, error: error) ?? ""
+    }
+    
+    func checkIsEncrypted() -> Bool!
+    {
+        let enc_type = EncryptTypes(rawValue: isEncrypted.integerValue) ?? EncryptTypes.Internal
+        let checkIsEncrypted:Bool = enc_type.isEncrypted
+        
+        return checkIsEncrypted
     }
 }
