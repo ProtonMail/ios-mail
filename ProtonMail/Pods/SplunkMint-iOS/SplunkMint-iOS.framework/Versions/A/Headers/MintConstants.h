@@ -18,5 +18,5 @@ extern NSString* const CrashTypeUnhandled;
 extern NSString* const TransactionCompletedStatusSuccess;
 extern NSString* const TransactionCompletedStatusFail;
 extern NSString* const TransactionCompletedStatusCancelled;
-
+extern NSString* const AppRunningState;
 @end

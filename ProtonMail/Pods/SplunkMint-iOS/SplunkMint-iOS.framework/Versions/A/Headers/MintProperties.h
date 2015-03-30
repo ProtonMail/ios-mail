@@ -25,7 +25,8 @@ extern BOOL IsSplunkPlugin;
 @property (nonatomic, strong) NSString* apiKey;
 @property (nonatomic, assign) BOOL proxyEnabled;
 @property (nonatomic, strong) NSString* debugTestUrl;
-@property (nonatomic, strong) NSString* uid;@property (nonatomic, strong) NSString* carrier;
+@property (nonatomic, strong) NSString* uid;
+@property (nonatomic, strong) NSString* carrier;
 @property (nonatomic, strong) NSString* appName;
 @property (nonatomic, assign) BOOL rooted;
 @property (nonatomic, strong) NSString* userIdentifier;
@@ -46,6 +47,7 @@ extern BOOL IsSplunkPlugin;
 @property (nonatomic, strong) NSString* userAgent;
 @property (nonatomic, assign) NSUInteger totalCrashes;
 @property (nonatomic, strong) NSString* appVersion;
+@property (nonatomic, strong) NSString* appVersionCode;
 @property (nonatomic, strong) NSString* tag;
 @property (nonatomic, strong) NSString* osVersion;
 @property (nonatomic, strong) NSString* phoneModel;
@@ -69,5 +71,6 @@ extern BOOL IsSplunkPlugin;
 @property (nonatomic, assign) BOOL isCrashReportingEnabled;
 @property (nonatomic, strong) NSString* xamarinArchitecture;
 @property (nonatomic, strong) NSString* xamarinVersion;
-
+@property (nonatomic, assign) BOOL enableFlushOnlyOverWiFi;
+@property (nonatomic, assign) BOOL setUserOptOut;
 @end

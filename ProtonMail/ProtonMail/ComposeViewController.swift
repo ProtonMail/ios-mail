@@ -40,6 +40,7 @@ class ComposeViewController: ProtonMailViewController {
     private var encryptionPasswordHint: String = ""
     private var hasAccessToAddressBook: Bool = false
 
+    private var htmlEditor: HtmlEditorViewController!
     
     // MARK: - View Controller lifecycle
     
@@ -55,7 +56,8 @@ class ComposeViewController: ProtonMailViewController {
         if (self.toSelectedContacts.count == 0) {
             self.composeView.toContactPicker.becomeFirstResponder()
         } else {
-            self.composeView.bodyTextView.becomeFirstResponder()
+            self.htmlEditor.focusTextEditor();
+            //self.composeView.bodyTextView.becomeFirstResponder()
         }
         
         sharedContactDataService.fetchContactVOs { (contacts, error) -> Void in
@@ -81,8 +83,16 @@ class ComposeViewController: ProtonMailViewController {
         self.composeView.updateConstraintsIfNeeded()
     }
     
-    // MARK: ProtonMail View Controller
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+
+        if (segue.identifier == "toHtmlEditor") {
+            htmlEditor = segue.destinationViewController as? HtmlEditorViewController;
+        }
+    }
+
     
+    
+    // MARK: ProtonMail View Controller
     override func shouldShowSideMenu() -> Bool {
         return false
     }
@@ -91,7 +101,8 @@ class ComposeViewController: ProtonMailViewController {
     
     private func handleMessage(message: Message?, action: String?) {
         let signature = !sharedUserDataService.signature.isEmpty ? "\n\n\(sharedUserDataService.signature)" : ""
-        composeView.bodyTextView.text = signature
+        let htmlString = "<br><br><br><br>\(signature)<br><br>";
+        htmlEditor.setHTML(htmlString);
         
         if let message = message {
             if let action = action {
@@ -100,9 +111,11 @@ class ComposeViewController: ProtonMailViewController {
                     toSelectedContacts.append(ContactVO(id: "", name: message.senderName, email: message.sender))
                     
                     let replyMessage = NSLocalizedString("Reply message")
-                    let body = message.decryptBody(nil) ?? ""
+                    let body = message.decryptBodyIfNeeded(nil) ?? ""
                     
-                    composeView.bodyTextView.text = "\(signature)\n\n---------- \(replyMessage) ----------\n\(body)"
+                    let sp = "<div>here need change to time!, <incoming@email.com> wrote:</div><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\"><tbody><tr><td align=\"center\" valign=\"top\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:transparent;border-bottom:0;border-bottom:solid 1px #00929f\" width=\"600\"> "
+                    
+                    htmlEditor.setHTML("\(htmlString) \(sp) \(body)</blockquote>")
 
                     if action == ComposeView.ComposeMessageAction.ReplyAll {
                         updateSelectedContacts(&ccSelectedContacts, withNameList: message.ccNameList, emailList: message.ccList)
@@ -188,7 +201,7 @@ extension ComposeViewController: ComposeViewDelegate {
                     encryptionPassword: self.encryptionPassword,
                     passwordHint: self.encryptionPasswordHint,
                     expirationTimeInterval: composeView.expirationTimeInterval,
-                    body: composeView.body,
+                    body: self.htmlEditor.getHTML(),
                     attachments: self.attachments)
                 
                 dismiss()
@@ -213,7 +226,7 @@ extension ComposeViewController: ComposeViewDelegate {
             encryptionPassword: encryptionPassword,
             passwordHint: encryptionPasswordHint,
             expirationTimeInterval: composeView.expirationTimeInterval,
-            body: composeView.body,
+            body: self.htmlEditor.getHTML(),
             attachments: attachments)
         
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)

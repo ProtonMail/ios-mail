@@ -23,7 +23,7 @@
 @property (nonatomic, assign) NSUInteger maxCount;
 
 /**
- *  Returns the count of ExtraData instances in the list.
+ *  The count of ExtraData instances in the list.
  */
 @property (nonatomic, assign) NSUInteger count;
 
@@ -34,6 +34,8 @@
 
 
 + (void) addExtraDataToDataFixture:(DataFixture*)dataFixture;
+
+
 
 /**
  *  A singleton instance for the global extra data attached to the crash.
@@ -108,5 +110,7 @@
  *  @return A Boolean that indicates whether the ExtraData instance exists.
  */
 - (BOOL) contains:(ExtraData*)extraData;
+
+- (void)addPrivateExtraDataToDataFixture:(DataFixture*)dataFixture;
 
 @end

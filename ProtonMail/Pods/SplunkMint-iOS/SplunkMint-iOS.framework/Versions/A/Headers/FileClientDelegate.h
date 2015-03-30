@@ -26,5 +26,6 @@
     - (BOOL) saveRemoteSettings:(RemoteSettingsData*)remoteSettingsData;
     - (NSArray*) readLoggedStartedTransactions;
     - (NSArray*) readLoggedStoppedTransactions;
+    - (BOOL)isFileSizeLimitExceeded:(NSString*)filePath;
 
 @end

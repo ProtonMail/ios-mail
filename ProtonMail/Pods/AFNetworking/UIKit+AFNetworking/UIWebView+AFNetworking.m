@@ -136,6 +136,11 @@
 #pragma clang diagnostic ignored "-Wgnu"
         __strong __typeof(weakSelf) strongSelf = weakSelf;
         [strongSelf loadData:data MIMEType:(MIMEType ?: [operation.response MIMEType]) textEncodingName:(textEncodingName ?: [operation.response textEncodingName]) baseURL:[operation.response URL]];
+
+        if ([strongSelf.delegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
+            [strongSelf.delegate webViewDidFinishLoad:strongSelf];
+        }
+        
 #pragma clang diagnostic pop
     } failure:^(AFHTTPRequestOperation * __unused operation, NSError *error) {
         if (failure) {
@@ -144,6 +149,10 @@
     }];
 
     [self.af_HTTPRequestOperation start];
+
+    if ([self.delegate respondsToSelector:@selector(webViewDidStartLoad:)]) {
+        [self.delegate webViewDidStartLoad:self];
+    }
 }
 
 @end

@@ -32,6 +32,7 @@
 - (void) appendResponseInfo:(NSURLResponse*)response;
 - (void) appendResponseData:(NSData*)data;
 - (void) appendResponseDataSize:(NSUInteger)dataSize;
+- (void) appendWithURL:(NSURL*)theURL;
 - (void) appendWithError:(NSError*)error;
 - (void) appendGlobalExtraData;
 - (void) debugPrint;

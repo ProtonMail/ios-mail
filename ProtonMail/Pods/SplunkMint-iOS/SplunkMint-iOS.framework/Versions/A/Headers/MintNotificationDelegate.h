@@ -10,6 +10,7 @@
 #import "UnhandledCrashReportArgs.h"
 #import "LoggedRequestEventArgs.h"
 #import "NetworkDataFixture.h"
+#import "ScreenDataFixture.h"
 
 /**
  *  A protocol to conform and be notified when certain actions occur.
@@ -32,4 +33,9 @@
      */
     - (void) networkDataLogged: (NetworkDataFixture*)networkData;
 
+    /**
+     * Notifies you when the screen changes.
+     * @param screenData The ScreenDataFixture instance.
+     */
+    - (void) screenDataLogged: (ScreenDataFixture*)screenData;
 @end

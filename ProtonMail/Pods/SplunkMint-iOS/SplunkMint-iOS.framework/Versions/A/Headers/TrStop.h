@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SPLTransaction.h"
 #import "MintAppEnvironment.h"
+#import "LimitedExtraDataList.h"
 
 @interface TrStop : SPLTransaction
 
@@ -41,8 +42,9 @@
  *  @param aReason          The reason the transaction stopped, was cancelled, or failed.
  *  @param aCompletedStatus The completion status of the transaction.
  *
- *  @return A TrStop instance reference
+ *  @return A TrStop instance reference.
  */
 + (TrStop*) getInstanceWithTransactionId:(NSString*)transactionId transactionName:(NSString*)transactionName appEnvironment:(MintAppEnvironment*)anAppEnvironment duration:(NSNumber*)aDuration reason:(NSString*)aReason andCompletedStatus:(NSString*)aCompletedStatus;
 
++ (TrStop*) getInstanceWithTransactionId:(NSString*)transactionId transactionName:(NSString*)transactionName limittedExtraData:(LimitedExtraDataList*)extraList appEnvironment:(MintAppEnvironment*)anAppEnvironment duration:(NSNumber*)aDuration reason:(NSString*)aReason andCompletedStatus:(NSString*)aCompletedStatus;
 @end

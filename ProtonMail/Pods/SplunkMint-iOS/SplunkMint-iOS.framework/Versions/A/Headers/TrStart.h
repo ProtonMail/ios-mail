@@ -10,6 +10,7 @@
 #import "SPLTransaction.h"
 #import "MintAppEnvironment.h"
 #import "MintPerformance.h"
+#import "LimitedExtraDataList.h"
 
 @interface TrStart : SPLTransaction
 
@@ -27,6 +28,8 @@
  *  @return A reference to the TrStart instance.
  */
 + (TrStart*) getInstanceWithTransactionName:(NSString*)transactionName appEnvironment:(MintAppEnvironment*)anAppEnvironment andPerformance:(MintPerformance*)aPerformance;
+
++ (TrStart*) getInstanceWithTransactionName:(NSString*)transactionName limitedExtraDataList:(LimitedExtraDataList*)extraDataList appEnvironment:(MintAppEnvironment*)anAppEnvironment andPerformance:(MintPerformance*)aPerformance;
 
 + (BOOL) isJSONTrStart:(NSString*)json;
 

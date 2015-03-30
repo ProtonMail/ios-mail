@@ -10,7 +10,7 @@
 // the license agreement.
 //
 
-
+import Foundation
 import UIKit
 
 protocol ComposeViewDelegate {
@@ -75,15 +75,11 @@ class ComposeView: UIView {
     var bccContacts: String {
         return bccContactPicker.contactList
     }
-    
-    var body: String {
-        return bodyTextView.text ?? ""
-    }
-    
+
     var expirationTimeInterval: NSTimeInterval = 0
     
-    var hasContent: Bool {
-        return !toContacts.isEmpty || !ccContacts.isEmpty || !bccContacts.isEmpty || !body.isEmpty || !subjectTitle.isEmpty
+    var hasContent: Bool {//need check body also here 
+        return !toContacts.isEmpty || !ccContacts.isEmpty || !bccContacts.isEmpty || !subjectTitle.isEmpty
     }
     
     var subjectTitle: String {
@@ -165,6 +161,7 @@ class ComposeView: UIView {
         self.bringSubviewToFront(showCcBccButton)
         self.sendSubviewToBack(ccContactPicker)
         self.sendSubviewToBack(bccContactPicker)
+        
     }
     
     
@@ -184,7 +181,7 @@ class ComposeView: UIView {
     }
     
     func keyboardWillBeHidden(notification: NSNotification) {
-        self.bodyTextView.scrollIndicatorInsets = UIEdgeInsetsZero
+        //self.bodyTextView.scrollIndicatorInsets = UIEdgeInsetsZero
     }
     
     @IBAction func cancelButtonTapped(sender: AnyObject) {
