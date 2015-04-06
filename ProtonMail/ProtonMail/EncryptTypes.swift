@@ -18,46 +18,31 @@ enum EncryptTypes: Int, Printable {
     case OutEncReply = 6    // Encrypted for outside reply
     
     var description : String {
-        get {
-            switch(self){
-            case Plain:
-                return NSLocalizedString("Plain text")
-            case Internal:
-                return NSLocalizedString("ProtonMail encrypted emails")
-            case External:
-                return NSLocalizedString("Encrypted from outside")
-            case OutEnc:
-                return NSLocalizedString("Encrypted for outside")
-            case OutPlain:
-                return NSLocalizedString("Send plain but stored enc")
-            case DraftStoreEnc:
-                return NSLocalizedString("Draft")
-            case OutEncReply:
-                return NSLocalizedString("Encrypted for outside reply")
-            }
+        switch(self){
+        case Plain:
+            return NSLocalizedString("Plain text")
+        case Internal:
+            return NSLocalizedString("ProtonMail encrypted emails")
+        case External:
+            return NSLocalizedString("Encrypted from outside")
+        case OutEnc:
+            return NSLocalizedString("Encrypted for outside")
+        case OutPlain:
+            return NSLocalizedString("Send plain but stored enc")
+        case DraftStoreEnc:
+            return NSLocalizedString("Draft")
+        case OutEncReply:
+            return NSLocalizedString("Encrypted for outside reply")
         }
     }
     
-    var isEncrypted: Bool! {
-        var isEncrypt = true
-        switch(self){
+    var isEncrypted: Bool {
+        switch(self) {
         case Plain:
-            isEncrypt = false;
-            break;
-        case Internal:
-            break
-        case External:
-            break;
-        case OutEnc:
-            break;
-        case OutPlain:
-            break;
-        case DraftStoreEnc:
-            break;
-        case OutEncReply:
-            break;
+            return false
+        default:
+            return true
         }
-        return isEncrypt
     }
 }
 
