@@ -29,22 +29,10 @@ class AddressBookService {
     }
     
     func requestAuthorizationWithCompletion(completion: AuthorizationCompletionBlock) {
-        let description = NSLocalizedString("Permission to Contacts not allowed")
-        let recoverySuggestion = NSLocalizedString("Allow access on Settings > Privacy > Contacts > ProtonMail")
-        let notGrantedError = NSError.protonMailError(code: 400, localizedDescription: description, localizedFailureReason: nil, localizedRecoverySuggestion: recoverySuggestion)
-        
-        if (addressBook == nil) {
-            completion(granted: false, error: notGrantedError)
-            return
-        }
-        
-        addressBook.requestAuthorizationWithCompletion { (granted, error) -> Void in
-            if (!granted) {
-                completion(granted: granted, error: notGrantedError)
-                return
-            }
-            
-            completion(granted: granted, error: error)
+        if let addressBook = addressBook {
+            addressBook.requestAuthorizationWithCompletion(completion)
+        } else {
+            completion(granted: false, error: nil)
         }
     }
     
