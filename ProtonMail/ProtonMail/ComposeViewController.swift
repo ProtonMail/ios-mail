@@ -84,6 +84,9 @@ class ComposeViewController: ProtonMailViewController {
     // MARK: - Private methods
     
     private func handleMessage(message: Message?, action: String?) {
+        let signature = !sharedUserDataService.signature.isEmpty ? "\n\n\(sharedUserDataService.signature)" : ""
+        composeView.bodyTextView.text = signature
+        
         if let message = message {
             if let action = action {
                 if action == ComposeView.ComposeMessageAction.Reply || action == ComposeView.ComposeMessageAction.ReplyAll {
@@ -91,8 +94,9 @@ class ComposeViewController: ProtonMailViewController {
                     toSelectedContacts.append(ContactVO(id: "", name: message.senderName, email: message.sender))
                     
                     let replyMessage = NSLocalizedString("Reply message")
+                    let body = message.decryptBody(nil) ?? ""
                     
-                    composeView.bodyTextView.text = "\n\n---------- \(replyMessage) ----------\n\(message.decryptBody(nil))"
+                    composeView.bodyTextView.text = "\(signature)\n\n---------- \(replyMessage) ----------\n\(body)"
 
                     if action == ComposeView.ComposeMessageAction.ReplyAll {
                         updateSelectedContacts(&ccSelectedContacts, withNameList: message.ccNameList, emailList: message.ccList)
@@ -101,8 +105,9 @@ class ComposeViewController: ProtonMailViewController {
                     composeView.subject.text = "Fwd: \(message.title)"
                     
                     let forwardedMessage = NSLocalizedString("Forwarded message")
+                    let body = message.decryptBody(nil) ?? ""
                     
-                    composeView.bodyTextView.text = "\n\n---------- \(forwardedMessage) ----------\n\(message.decryptBody(nil))"
+                    composeView.bodyTextView.text = "\(signature)\n\n---------- \(forwardedMessage) ----------\n\(body)"
                 } else if action == draftAction {
                     navigationItem.leftBarButtonItem = nil
                     
@@ -123,7 +128,7 @@ class ComposeViewController: ProtonMailViewController {
                     }
                     
                     var error: NSError?
-                    composeView.bodyTextView.text = message.decryptBody(&error)
+                    composeView.bodyTextView.text = message.decryptBody(&error) ?? ""
                     if error != nil {
                         NSLog("\(__FUNCTION__) error: \(error)")
                     }
