@@ -28,42 +28,13 @@ class CoreDataService {
     }
     
     private lazy var managedObjectModel: NSManagedObjectModel = {
-        // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
         let modelURL = NSBundle.mainBundle().URLForResource("ProtonMail", withExtension: "momd")!
         return NSManagedObjectModel(contentsOfURL: modelURL)!
         }()
     
     private lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator? = {
-        // The persistent store coordinator for the application. This implementation creates and return a coordinator, having added the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
-        // Create the coordinator and store
-        var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-        let url = NSFileManager.defaultManager().applicationSupportDirectoryURL.URLByAppendingPathComponent("ProtonMail.sqlite")
-        var error: NSError? = nil
-        var failureReason = NSLocalizedString("There was an error creating or loading the application's saved data.")
-        
-        if coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil, error: &error) == nil {
-            coordinator = nil
-            // Report any error we got.
-            let dict = NSMutableDictionary()
-            dict[NSLocalizedDescriptionKey] = NSLocalizedString("Failed to initialize the application's saved data")
-            dict[NSLocalizedFailureReasonErrorKey] = failureReason
-            dict[NSUnderlyingErrorKey] = error
-            error = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict)
-            NSLog("Unresolved error \(error), \(error!.userInfo)")
-            
-            if let alertController = error?.alertController() {
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("Close"), style: .Default, handler: { (action) -> Void in
-                    abort()
-                }))
-                
-                UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
-            }
-        } else {
-           url.excludeFromBackup()
-        }
-        
-        return coordinator
-        }()
+        return self.newPersistentStoreCoordinator(self.managedObjectModel)
+    }()
     
     // MARK: - Public variables
     
@@ -101,6 +72,40 @@ class CoreDataService {
         return managedObjectContext
     }
     
+    func newPersistentStoreCoordinator(managedObjectModel: NSManagedObjectModel) -> NSPersistentStoreCoordinator? {
+        var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
+        let url = NSFileManager.defaultManager().applicationSupportDirectoryURL.URLByAppendingPathComponent("ProtonMail.sqlite")
+        var error: NSError? = nil
+        
+        if coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil, error: &error) != nil {
+            url.excludeFromBackup()
+        } else {
+            if error?.domain == "NSCocoaErrorDomain" && error?.code == 134100 && NSFileManager.defaultManager().removeItemAtURL(url, error: &error) {
+                NSLog("\(__FUNCTION__) Removed old persistent store.  Error: \(error)")
+                coordinator = newPersistentStoreCoordinator(managedObjectModel)
+            } else {
+                coordinator = nil
+                
+                // Report any error we got.
+                let dict = NSMutableDictionary()
+                dict[NSLocalizedDescriptionKey] = NSLocalizedString("Failed to initialize the application's saved data")
+                dict[NSLocalizedFailureReasonErrorKey] = NSLocalizedString("There was an error creating or loading the application's saved data.")
+                dict[NSUnderlyingErrorKey] = error
+                error = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict)
+                NSLog("Unresolved error \(error), \(error!.userInfo)")
+                
+                if let alertController = error?.alertController() {
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("Close"), style: .Default, handler: { (action) -> Void in
+                        abort()
+                    }))
+                    
+                    UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
+                }
+            }
+        }
+        
+        return coordinator
+    }
 }
 
 // MARK: - NSError Core Data extensions
