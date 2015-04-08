@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6751" systemVersion="14D87h" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6751" systemVersion="14C1514" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Attachment" representedClassName="ProtonMail.Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" syncable="YES">
             <userInfo>
@@ -122,7 +122,7 @@
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="isStarred" attributeType="Boolean" defaultValueString="NO" syncable="YES">
+        <attribute name="isStarred" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Tag"/>
                 <entry key="JSONTransformerName" value="TagTransformer"/>

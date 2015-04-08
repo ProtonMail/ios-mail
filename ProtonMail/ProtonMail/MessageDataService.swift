@@ -39,11 +39,7 @@ class MessageDataService {
         return sharedCoreDataService.mainManagedObjectContext
     }
     
-    private var readQueue: [ReadBlock] = [] {
-        didSet {
-            NSLog("\(__FUNCTION__) readQueue.count: \(readQueue.count)")
-        }
-    }
+    private var readQueue: [ReadBlock] = []
     private let writeQueue = MessageQueue(queueName: "writeQueue")
     
     init() {
@@ -182,7 +178,12 @@ class MessageDataService {
                         
                         if error == nil {
                             for message in messages as [Message] {
-                                message.locationNumber = location.rawValue
+                                // PRO-157 - The issue for inbox <--> starred page switch
+                                // only change the location if the message is new or not starred
+                                // this prevents starred messages from disappearing out of the inbox until the next refresh
+                                if message.inserted || location != .starred {
+                                    message.locationNumber = location.rawValue
+                                }
                             }
                             
                             error = context.saveUpstreamIfNeeded()
@@ -214,7 +215,13 @@ class MessageDataService {
     func fetchedResultsControllerForLocation(location: MessageLocation) -> NSFetchedResultsController? {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "%K == %i", Message.Attributes.locationNumber, location.rawValue)
+            
+            if location == .starred {
+                fetchRequest.predicate = NSPredicate(format: "%K == true", Message.Attributes.isStarred)
+            } else {
+                fetchRequest.predicate = NSPredicate(format: "%K == %i", Message.Attributes.locationNumber, location.rawValue)
+            }
+            
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         }

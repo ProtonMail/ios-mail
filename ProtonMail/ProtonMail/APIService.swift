@@ -106,7 +106,11 @@ class APIService {
         if let credential = AuthCredential.fetchFromKeychain() {
             if !credential.isExpired {
                 self.sessionManager.requestSerializer.setAuthorizationHeaderFieldWithCredential(credential)
-                NSLog("credential: \(credential)")
+                
+                #if DEBUG
+                    NSLog("credential: \(credential)")
+                #endif
+                
                 completion(credential, nil)
             } else {
                 authRefresh { (authCredential, error) -> Void in
