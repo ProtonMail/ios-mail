@@ -39,11 +39,7 @@ class MessageDataService {
         return sharedCoreDataService.mainManagedObjectContext
     }
     
-    private var readQueue: [ReadBlock] = [] {
-        didSet {
-            NSLog("\(__FUNCTION__) readQueue.count: \(readQueue.count)")
-        }
-    }
+    private var readQueue: [ReadBlock] = []
     private let writeQueue = MessageQueue(queueName: "writeQueue")
     
     init() {
@@ -688,6 +684,7 @@ class MessageDataService {
             }
         } else if !writeQueue.isBlocked && writeQueue.count == 0 && readQueue.count > 0 {
             readQueue.removeAtIndex(0)()
+            dequeueIfNeeded()
         }
     }
         
