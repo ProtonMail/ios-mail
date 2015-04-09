@@ -81,6 +81,8 @@ class MailboxViewController: ProtonMailViewController {
             self.tableView.reloadRowsAtIndexPaths([selectedItem], withRowAnimation: UITableViewRowAnimation.Fade)
             self.tableView.deselectRowAtIndexPath(selectedItem, animated: true)
         }
+        
+        getLatestMessages()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -88,8 +90,6 @@ class MailboxViewController: ProtonMailViewController {
         
         self.refreshControl.tintColor = UIColor.whiteColor()
         self.refreshControl.tintColorDidChange()
-        
-        updateMessages()
     }
     
     private func addSubViews() {
@@ -470,11 +470,6 @@ class MailboxViewController: ProtonMailViewController {
         } else {
             println("Long press on table view, but not on a row.")
         }
-    }
-    
-    private func updateMessages() {
-        refreshControl.beginRefreshing()
-        getLatestMessages()
     }
     
     private func updateNavigationController(editingMode: Bool) {
