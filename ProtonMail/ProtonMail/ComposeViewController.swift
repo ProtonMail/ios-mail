@@ -52,26 +52,37 @@ class ComposeViewController: ProtonMailViewController {
         
         handleMessage(message, action: action)
         
-        retrieveAddressBook()
-        retrieveServerContactList { () -> Void in
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                self.contacts.sort { $0.name.lowercaseString < $1.name.lowercaseString }
-                self.composeView.toContactPicker.reloadData()
-                self.composeView.ccContactPicker.reloadData()
-                self.composeView.bccContactPicker.reloadData()
-                
-                if (self.toSelectedContacts.count == 0) {
-                    self.composeView.toContactPicker.becomeFirstResponder()
-                } else {
-                    self.composeView.bodyTextView.becomeFirstResponder()
-                }
-            })
+        if (self.toSelectedContacts.count == 0) {
+            self.composeView.toContactPicker.becomeFirstResponder()
+        } else {
+            self.composeView.bodyTextView.becomeFirstResponder()
         }
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.composeView.updateConstraintsIfNeeded()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        sharedContactDataService.fetchContactVOs { (contacts, error) -> Void in
+            if let error = error {
+                NSLog("\(__FUNCTION__) error: \(error)")
+                
+                let alertController = error.alertController()
+                alertController.addOKAction()
+                
+                self.presentViewController(alertController, animated: true, completion: nil)
+            }
+            
+            self.contacts = contacts
+            
+            self.composeView.toContactPicker.reloadData()
+            self.composeView.ccContactPicker.reloadData()
+            self.composeView.bccContactPicker.reloadData()
+        }
     }
     
     
@@ -319,70 +330,6 @@ extension ComposeViewController: ComposeViewDataSource {
         }
         
         return selectedContacts
-    }
-}
-
-
-// MARK: - Address book
-extension ComposeViewController {
-    private func retrieveAddressBook() {
-        
-        if (sharedAddressBookService.hasAccessToAddressBook()) {
-            self.hasAccessToAddressBook = true
-        } else {
-            sharedAddressBookService.requestAuthorizationWithCompletion({ (granted: Bool, error: NSError?) -> Void in
-                if (granted) {
-                    self.hasAccessToAddressBook = true
-                }
-                
-                if let error = error {
-                    let alertController = error.alertController()
-                    alertController.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
-                    
-                    self.presentViewController(alertController, animated: true, completion: nil)
-                    println("Error trying to access Address Book = \(error.localizedDescription).")
-                }
-            })
-        }
-        
-        if (self.hasAccessToAddressBook) {
-            let addressBookContacts = sharedAddressBookService.contacts()
-            for contact: RHPerson in addressBookContacts as [RHPerson] {
-                var name: String? = contact.name
-                let emails: RHMultiStringValue = contact.emails
-                
-                for (var emailIndex: UInt = 0; Int(emailIndex) < Int(emails.count()); emailIndex++) {
-                    let emailAsString = emails.valueAtIndex(emailIndex) as String
-                    
-                    if (emailAsString.isValidEmail()) {
-                        let email = emailAsString
-                        
-                        if (name == nil) {
-                            name = email
-                        }
-                        
-                        self.contacts.append(ContactVO(name: name, email: email, isProtonMailContact: false))
-                    }
-                }
-            }
-        }
-    }
-    
-    private func retrieveServerContactList(completion: () -> Void) {
-        updateDataServiceContacts()
-        completion()
-    }
-    
-    private func updateDataServiceContacts() {
-        let filteredContacts = self.contacts.filter { (contact) -> Bool in
-            return contact.contactId == ""
-        }
-        
-        self.contacts = filteredContacts
-        
-        for contact in sharedContactDataService.allContacts() {
-            self.contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: contact.email, isProtonMailContact: true))
-        }
     }
 }
 
