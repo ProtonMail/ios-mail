@@ -61,8 +61,8 @@ class ContactsViewController: ProtonMailViewController {
         refreshControl.tintColor = UIColor.whiteColor()
         refreshControl.tintColorDidChange()
         
-        self.contacts = sharedContactDataService.allContactVOs()
-        self.tableView.reloadData()
+        contacts = sharedContactDataService.allContactVOs()
+        tableView.reloadData()
         
         retrieveAllContacts()
     }
