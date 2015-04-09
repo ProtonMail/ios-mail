@@ -34,7 +34,7 @@ class ContactDataService {
         
         return []
     }
-
+    
     func allContactsInManagedObjectContext(context: NSManagedObjectContext) -> [Contact] {
         let fetchRequest = NSFetchRequest(entityName: Contact.Attributes.entityName)
         
@@ -121,6 +121,66 @@ class ContactDataService {
         if let deletedObjects = context.executeFetchRequest(fetchRequest, error: error) {
             for deletedObject in deletedObjects as [NSManagedObject] {
                 context.deleteObject(deletedObject)
+            }
+        }
+    }
+}
+
+
+// MARK: AddressBook contact extension
+
+extension ContactDataService {
+    typealias ContactVOCompletionBlock = ((contacts: [ContactVO], error: NSError?) -> Void)
+    
+    func allContactVOs() -> [ContactVO] {
+        var contacts: [ContactVO] = []
+        
+        for contact in sharedContactDataService.allContacts() {
+            contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: contact.email, isProtonMailContact: true))
+        }
+        
+        return contacts
+    }
+    
+    func fetchContactVOs(completion: ContactVOCompletionBlock) {
+        // fetch latest contacts from server
+        fetchContacts { (_, error) -> Void in
+            self.requestAccessToAddressBookIfNeeded(lastError: error, completion: completion)
+            self.processContacts(addressBookAccessGranted: sharedAddressBookService.hasAccessToAddressBook(), lastError: error, completion: completion)
+        }
+    }
+    
+    private func requestAccessToAddressBookIfNeeded(var #lastError: NSError?, completion: ContactVOCompletionBlock) {
+        if !sharedAddressBookService.hasAccessToAddressBook() {
+            sharedAddressBookService.requestAuthorizationWithCompletion({ (granted: Bool, error: NSError?) -> Void in
+                if error != nil {
+                    lastError = error
+                }
+                
+                self.processContacts(addressBookAccessGranted: granted, lastError: lastError, completion: completion)
+            })
+        }
+    }
+    
+    private func processContacts(addressBookAccessGranted granted: Bool, var lastError: NSError?, completion: ContactVOCompletionBlock) {
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_UTILITY, 0)) {
+            var contacts: [ContactVO] = []
+            
+            if granted {
+                // get contacts from address book
+                contacts = sharedAddressBookService.contacts()
+            }
+            
+            // merge address book and core data contacts
+            let context = sharedCoreDataService.newManagedObjectContext()
+            for contact in sharedContactDataService.allContactsInManagedObjectContext(context) {
+                contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: contact.email, isProtonMailContact: true))
+            }
+
+            contacts.sort { $0.name.lowercaseString < $1.name.lowercaseString }
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                completion(contacts: contacts, error: lastError)
             }
         }
     }

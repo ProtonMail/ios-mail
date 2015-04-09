@@ -28,8 +28,6 @@ class ContactsViewController: ProtonMailViewController {
     
     private var contacts: [ContactVO] = [ContactVO]()
     private var searchResults: [ContactVO] = [ContactVO]()
-    private var hasAccessToAddressBook: Bool = false
-    private var contactsQueue = dispatch_queue_create("com.protonmail.contacts", nil)
     private var selectedContact: ContactVO!
     private var refreshControl: UIRefreshControl!
 
@@ -41,7 +39,7 @@ class ContactsViewController: ProtonMailViewController {
         
         tableView.registerNib(UINib(nibName: "ContactsTableViewCell", bundle: NSBundle.mainBundle()), forCellReuseIdentifier: kContactCellIdentifier)
         
-        self.searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ContactsTableViewCell", bundle: NSBundle.mainBundle()), forCellReuseIdentifier: kContactCellIdentifier)
+        searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ContactsTableViewCell", bundle: NSBundle.mainBundle()), forCellReuseIdentifier: kContactCellIdentifier)
         
         refreshControl = UIRefreshControl()
         refreshControl.backgroundColor = UIColor.ProtonMail.Blue_475F77
@@ -55,12 +53,16 @@ class ContactsViewController: ProtonMailViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.tableView.setEditing(false, animated: true)
-        self.searchDisplayController?.searchResultsTableView.setEditing(false, animated: true)
-        self.searchDisplayController?.setActive(false, animated: true)
+        tableView.setEditing(false, animated: true)
+        
+        searchDisplayController?.searchResultsTableView.setEditing(false, animated: true)
+        searchDisplayController?.setActive(false, animated: true)
         
         refreshControl.tintColor = UIColor.whiteColor()
         refreshControl.tintColorDidChange()
+        
+        self.contacts = sharedContactDataService.allContactVOs()
+        self.tableView.reloadData()
         
         retrieveAllContacts()
     }
@@ -77,91 +79,20 @@ class ContactsViewController: ProtonMailViewController {
     // MARK: - Private methods
     
     internal func retrieveAllContacts() {
-        dispatch_async(contactsQueue, { () -> Void in
-            self.contacts.removeAll(keepCapacity: true)
-            self.retrieveAddressBook()
-            self.retrieveServerContactList({ () -> Void in
-                self.contacts.sort { $0.name.lowercaseString < $1.name.lowercaseString }
+        sharedContactDataService.fetchContactVOs { (contacts, error) -> Void in
+            if let error = error {
+                NSLog("\(__FUNCTION__) error: \(error)")
                 
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.refreshControl.endRefreshing()
-                    self.tableView.reloadData()
-                })
-            })
-        })
-    }
-    
-    private func retrieveAddressBook() {
-        
-        if (sharedAddressBookService.hasAccessToAddressBook()) {
-            self.hasAccessToAddressBook = true
-        } else {
-            sharedAddressBookService.requestAuthorizationWithCompletion({ (granted: Bool, error: NSError?) -> Void in
-                if (granted) {
-                    self.hasAccessToAddressBook = true
-                }
+                let alertController = error.alertController()
+                alertController.addOKAction()
                 
-                if let error = error {
-                    let alertController = error.alertController()
-                    alertController.addOKAction()
-                    
-                    self.presentViewController(alertController, animated: true, completion: nil)
-                    println("Error trying to access Address Book = \(error.localizedDescription).")
-                }
-            })
-        }
-        
-        if (self.hasAccessToAddressBook) {
-            let addressBookContacts = sharedAddressBookService.contacts()
-            for contact: RHPerson in addressBookContacts as [RHPerson] {
-                var name: String? = contact.name
-                let emails: RHMultiStringValue = contact.emails
-                
-                for (var emailIndex: UInt = 0; Int(emailIndex) < Int(emails.count()); emailIndex++) {
-                    let emailAsString = emails.valueAtIndex(emailIndex) as String
-                    
-                    if (emailAsString.isValidEmail()) {
-                        let email = emailAsString
-                        
-                        if (name == nil) {
-                            name = email
-                        }
-                        
-                        self.contacts.append(ContactVO(name: name, email: email, isProtonMailContact: false))
-                    }
-                }
+                self.presentViewController(alertController, animated: true, completion: nil)
             }
-        }
-    }
-    
-    private func retrieveServerContactList(completion: () -> Void) {
-        updateDataServiceContacts()
-        
-        dispatch_async(dispatch_get_main_queue(), {
+            
+            self.contacts = contacts
+
+            self.refreshControl.endRefreshing()
             self.tableView.reloadData()
-        })
-        
-        sharedContactDataService.fetchContacts { (contacts: [Contact]?, error: NSError?) -> Void in
-            if error != nil {
-                NSLog("\(error)")
-                return
-            }
-            
-            self.updateDataServiceContacts()
-            
-            completion()
-        }
-    }
-    
-    private func updateDataServiceContacts() {
-        let filteredContacts = self.contacts.filter { (contact) -> Bool in
-            return contact.contactId == ""
-        }
-        
-        self.contacts = filteredContacts
-        
-        for contact in sharedContactDataService.allContacts() {
-            self.contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: contact.email, isProtonMailContact: true))
         }
     }
 }
@@ -240,10 +171,8 @@ extension ContactsViewController: UITableViewDelegate {
             }
             
             if (countElements(contact.contactId) > 0) {
-                dispatch_async(self.contactsQueue, { () -> Void in
-                    sharedContactDataService.deleteContact(contact.contactId, completion: { (contacts, error) -> Void in
-                        self.retrieveAllContacts()
-                    })
+                sharedContactDataService.deleteContact(contact.contactId, completion: { (contacts, error) -> Void in
+                    self.retrieveAllContacts()
                 })
             }
             
