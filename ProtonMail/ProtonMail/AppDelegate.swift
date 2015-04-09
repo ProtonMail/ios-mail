@@ -14,6 +14,8 @@
 //
 
 import UIKit
+import Fabric
+import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
@@ -71,9 +73,11 @@ class AppDelegate: UIResponder {
 extension AppDelegate: UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        Mint.sharedInstance().enableLogging(true)
-        Mint.sharedInstance().setLogging(8)
-        Mint.sharedInstance().initAndStartSession(mintAPIKey)
+//        Mint.sharedInstance().enableLogging(true)
+//        Mint.sharedInstance().setLogging(8)
+//        Mint.sharedInstance().initAndStartSession(mintAPIKey)
+        
+        Fabric.with([Crashlytics()])
         
         shareViewModelFactoy = ViewModelFactoryProduction()
         
@@ -81,7 +85,7 @@ extension AppDelegate: UIApplicationDelegate {
         setupWindow()
         sharedMessageDataService.launchCleanUpIfNeeded()
         sharedPushNotificationService.registerForRemoteNotifications()
-        
+
         return true
     }
     

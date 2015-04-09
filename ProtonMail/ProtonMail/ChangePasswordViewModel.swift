@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import Crashlytics
 
 protocol ChangePWDViewModel {
     
@@ -23,6 +23,7 @@ protocol ChangePWDViewModel {
 class ChangeLoginPWDViewModel : ChangePWDViewModel{
     
     func getNavigationTitle() -> String {
+        
         return "PASSWORD"
     }
     
