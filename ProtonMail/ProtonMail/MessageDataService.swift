@@ -695,6 +695,7 @@ class MessageDataService {
             }
         } else if !writeQueue.isBlocked && writeQueue.count == 0 && readQueue.count > 0 {
             readQueue.removeAtIndex(0)()
+            dequeueIfNeeded()
         }
     }
         
