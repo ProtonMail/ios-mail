@@ -57,15 +57,6 @@ class ComposeViewController: ProtonMailViewController {
         } else {
             self.composeView.bodyTextView.becomeFirstResponder()
         }
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        self.composeView.updateConstraintsIfNeeded()
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
         
         sharedContactDataService.fetchContactVOs { (contacts, error) -> Void in
             if let error = error {
@@ -85,6 +76,10 @@ class ComposeViewController: ProtonMailViewController {
         }
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        self.composeView.updateConstraintsIfNeeded()
+    }
     
     // MARK: ProtonMail View Controller
     
