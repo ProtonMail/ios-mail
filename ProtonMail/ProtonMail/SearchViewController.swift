@@ -148,7 +148,7 @@ class SearchViewController: ProtonMailViewController {
     }
 
     func predicateForSearch(query: String) -> NSPredicate? {
-        return NSPredicate(format: "%K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@", Message.Attributes.title, query, Message.Attributes.senderName, query)
+        return NSPredicate(format: "%K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@", Message.Attributes.title, query, Message.Attributes.senderName, query, Message.Attributes.recipientList, query)
     }
     
     func fetchMessagesIfNeededForIndexPath(indexPath: NSIndexPath) {
