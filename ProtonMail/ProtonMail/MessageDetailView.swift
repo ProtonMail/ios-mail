@@ -749,7 +749,7 @@ class MessageDetailView: UIView {
         self.emailDetailDateContentLabel = UILabel()
         self.emailDetailDateContentLabel.font = UIFont.robotoRegular(size: UIFont.Size.h5)
         self.emailDetailDateContentLabel.numberOfLines = 1
-        self.emailDetailDateContentLabel.text = message.time!.stringWithFormat(kEmailTimeLongFormat)
+        self.emailDetailDateContentLabel.text = message.time?.stringWithFormat(kEmailTimeLongFormat)
         self.emailDetailDateContentLabel.textColor = UIColor.ProtonMail.Gray_383A3B
         self.emailDetailDateContentLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailDateContentLabel)
