@@ -10,7 +10,7 @@ import UIKit
 
 class SettingTableViewController: ProtonMailViewController {
     
-    var headers = ["General Settings","Multiple Domains", "Storage"]
+    var headers = ["General Settings","Multiple Domains", "Storage", ""]
     var setting_section = [SettingItem.notify_email, SettingItem.display_name, SettingItem.signature, SettingItem.login_pwd, SettingItem.mbp]
     var multi_domains: Array<Address>!
     var userInfo = sharedUserDataService.userInfo
@@ -98,7 +98,7 @@ class SettingTableViewController: ProtonMailViewController {
     
     // MARK: - Table view data source
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 3
+        return 4
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -110,6 +110,9 @@ class SettingTableViewController: ProtonMailViewController {
         }
         else if section == 2 {
             return 1
+        }
+        else if section == 3 {
+            return 0
         }
         return 1
     }
@@ -154,12 +157,14 @@ class SettingTableViewController: ProtonMailViewController {
             return cell
         }
         else if indexPath.section == 2 {
+            
             let cell = tableView.dequeueReusableCellWithIdentifier("setting_storage_cell", forIndexPath: indexPath) as StorageViewCell
             let usedSpace = sharedUserDataService.usedSpace
             let maxSpace = sharedUserDataService.maxSpace
             cell.setValue(usedSpace, maxSpace: maxSpace)
             cell.selectionStyle = UITableViewCellSelectionStyle.None
             return cell
+            
         }
         else
         {
@@ -182,9 +187,18 @@ class SettingTableViewController: ProtonMailViewController {
         case 2:
             headerCell.headerText.text = headers[2]
             break
+        case 3:
+            if let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String {
+                headerCell.headerText.text = "Version " + version
+            }
+            else
+            {
+                headerCell.headerText.text = "Unkonw Version"
+            }
+            break
         default:
-            headerCell.headerText.text = headers[2]
-            break;
+            headerCell.headerText.text = headers[3]
+            break
         }
         
         return headerCell
