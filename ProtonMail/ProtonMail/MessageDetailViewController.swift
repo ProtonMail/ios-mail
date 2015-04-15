@@ -105,6 +105,16 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
         presentViewController(alertController, animated: true, completion: nil)
     }
     
+    func messageDetailView(messageDetailView: MessageDetailView, didTapMarkAsUnreadForMessage message: Message) {
+        message.isRead = false
+        
+        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
+            NSLog("\(__FUNCTION__) error: \(error)")
+        }
+        
+        navigationController?.popViewControllerAnimated(true)
+    }
+    
     func messageDetailView(messageDetailView: MessageDetailView, didTapMoveToForMessage message: Message) {
         let alertController = UIAlertController(title: NSLocalizedString("Move to..."), message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
