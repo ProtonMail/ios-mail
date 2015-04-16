@@ -772,11 +772,7 @@ class MessageDetailView: UIView {
 
 extension MessageDetailView: MoreOptionsViewDelegate {
     func moreOptionsViewDidMarkAsUnread(moreOptionsView: MoreOptionsView) {
-        message.isRead = false
-        
-        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
-            NSLog("\(__FUNCTION__) error: \(error)")
-        }
+        delegate?.messageDetailView(self, didTapMarkAsUnreadForMessage: message)
         
         animateMoreViewOptions()
     }
@@ -898,6 +894,7 @@ extension MessageDetailView: UIWebViewDelegate {
 
 protocol MessageDetailViewDelegate {
     func messageDetailView(messageDetailView: MessageDetailView, didFailDecodeWithError: NSError)
+    func messageDetailView(messageDetailView: MessageDetailView, didTapMarkAsUnreadForMessage message: Message)
     func messageDetailView(messageDetailView: MessageDetailView, didTapMoveToForMessage message: Message)
     func messageDetailViewDidTapForwardMessage(messageDetailView: MessageDetailView, message: Message)
     func messageDetailViewDidTapReplyMessage(messageDetailView: MessageDetailView, message: Message)
