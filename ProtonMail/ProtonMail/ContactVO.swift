@@ -30,7 +30,7 @@ class ContactVO: NSObject, MBContactPickerModelProtocol {
         self.email = email
         self.isProtonMailContact = isProtonMailContact
         
-        self.contactTitle = !name.isEmpty || name == " " ? name : email
+        self.contactTitle = !name.isEmpty && name != " " ? name : email
         self.contactSubtitle = email
     }
     
