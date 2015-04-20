@@ -244,13 +244,10 @@ class MailboxViewController: ProtonMailViewController {
     
     private func deleteMessageForIndexPath(indexPath: NSIndexPath) {
         if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-            if let context = message.managedObjectContext {
-                context.deleteObject(message)
-                
-                var error: NSError?
-                if let error = context.saveUpstreamIfNeeded() {
-                    NSLog("\(__FUNCTION__) error: \(error)")
-                }
+            message.location = .trash
+            
+            if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
+                NSLog("\(__FUNCTION__) error: \(error)")
             }
         }
     }

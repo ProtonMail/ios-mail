@@ -71,22 +71,23 @@ class MessageDetailViewController: ProtonMailViewController {
     }
     
     func removeButtonTapped() {
-        ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
-        sharedAPIService.messageID(message.messageID, updateWithAction: .delete) { (task: NSURLSessionDataTask!, response: Dictionary<String, AnyObject>?, error: NSError?) -> Void in
-            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-            
-            self.navigationController?.popViewControllerAnimated(true)
+        message.location = .trash
+        
+        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
+            NSLog("\(__FUNCTION__) error: \(error)")
         }
+
+        self.navigationController?.popViewControllerAnimated(true)
     }
     
     func spamButtonTapped() {
-        ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
-
-        sharedAPIService.messageID(message.messageID, updateWithAction: .spam) { (task: NSURLSessionDataTask!, response: Dictionary<String, AnyObject>?, error: NSError?) -> Void in
-            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-
-            self.navigationController?.popViewControllerAnimated(true)
+        message.location = .spam
+        
+        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
+            NSLog("\(__FUNCTION__) error: \(error)")
         }
+        
+        self.navigationController?.popViewControllerAnimated(true)
     }
     
     func moreButtonTapped() {
@@ -146,7 +147,6 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
                 if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
                     NSLog("\(__FUNCTION__) error: \(error)")
                 }
-
             }))
         }
 
