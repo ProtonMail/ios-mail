@@ -530,7 +530,6 @@ class MessageDataService {
                             }
                         }
                     case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update):
-                        NSLog("\(__FUNCTION__) message = \(message)")
                         if let messageObject = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: message, inManagedObjectContext: context, error: &error) as? NSManagedObject {
                         } else {
                             NSLog("\(__FUNCTION__) error: \(error)")
