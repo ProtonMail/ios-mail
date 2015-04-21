@@ -58,6 +58,22 @@ class PushNotificationService {
     }
     
     func didReceiveRemoteNotification(userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+        let application = UIApplication.sharedApplication()
+        
+        // if the app is in the background, then switch to the inbox and load the message detail
+        if application.applicationState == UIApplicationState.Inactive || application.applicationState == UIApplicationState.Background {
+            if let revealViewController = application.keyWindow?.rootViewController as? SWRevealViewController {
+                if let navigationController = revealViewController.storyboard?.instantiateViewControllerWithIdentifier("MailboxNavigationController") as? UINavigationController {
+                    revealViewController.frontViewController = navigationController
+                    
+                    if let mailboxViewController = navigationController.topViewController as? MailboxViewController {
+                        mailboxViewController.mailboxLocation = .inbox
+                        mailboxViewController.messageID = messageIDForUserInfo(userInfo)
+                    }
+                }
+            }
+        }
+        
         sharedMessageDataService.fetchLatestMessagesForLocation(.inbox, completion: { (task, messages, error) -> Void in
             if error != nil {
                 completionHandler(.Failed)
@@ -91,5 +107,13 @@ class PushNotificationService {
     
     @objc func didSignOutNotification(notification: NSNotification) {
         unregisterForRemoteNotifications()
+    }
+    
+    
+    // MARK: - Private methods
+    
+    private func messageIDForUserInfo(userInfo: [NSObject : AnyObject]) -> String? {
+        let messageArray = userInfo["message_id"] as? NSArray
+        return messageArray?.firstObject as? String
     }
 }

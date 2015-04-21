@@ -30,7 +30,7 @@ class MessageDataService {
     }
         
     private let firstPage = 1
-
+    private let incrementalUpdateQueue = dispatch_queue_create("ch.protonmail.incrementalUpdateQueue", DISPATCH_QUEUE_SERIAL)
     private let lastUpdatedMaximumTimeInterval: NSTimeInterval = 24 /*hours*/ * 3600
     private let lastUpdatedStore = LastUpdatedStore()
     private let maximumCachedMessageCount = 500
@@ -358,18 +358,10 @@ class MessageDataService {
     }
     
     private func fetchMessageIncrementalUpdates(#lastUpdated: NSDate, completion: CompletionBlock?) {
-        struct IncrementalUpdateType {
-            static let delete = 1
-            static let insert = 0
-            static let update = 2
-        }
-        
         struct ResponseKey {
             static let code = "code"
             static let message = "message"
-            static let messageID = "MessageID"
             static let response = "response"
-            static let type = "type"
         }
         
         let validResponse = 1000
@@ -388,45 +380,7 @@ class MessageDataService {
                                 if messages.isEmpty {
                                     completion?(task: task, response: nil, error: nil)
                                 } else {
-                                    let context = sharedCoreDataService.newManagedObjectContext()
-                                    
-                                    context.performBlock { () -> Void in
-                                        for message in messages {
-                                            switch(message[ResponseKey.type] as? Int) {
-                                            case .Some(IncrementalUpdateType.delete):
-                                                if let messageID = message[ResponseKey.messageID] as? String {
-                                                    if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                                                        context.deleteObject(message)
-                                                    }
-                                                }
-                                            case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update):
-                                                var error: NSError?
-                                                println("message = \(message)")
-                                                println("context = \(context)")
-                                                GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: message, inManagedObjectContext: context, error: &error)
-                                                
-                                                println("after merge")
-                                                if error != nil  {
-                                                    NSLog("\(__FUNCTION__) error: \(error)")
-                                                }
-                                            default:
-                                                NSLog("\(__FUNCTION__) unknown type in message: \(message)")
-                                            }
-                                        }
-                                        
-                                        var error: NSError?
-                                        error = context.saveUpstreamIfNeeded()
-                                        
-                                        if error != nil  {
-                                            NSLog("\(__FUNCTION__) error: \(error)")
-                                        }
-                                        
-                                        dispatch_async(dispatch_get_main_queue()) {
-                                            completion?(task: task, response: response, error: error)
-                                            self.fetchMessageCountForInbox()
-                                            return
-                                        }
-                                    }
+                                    self.processIncrementalUpdateMessages(messages, task: task, response: response, completion: completion)
                                 }
                                 
                                 return
@@ -546,6 +500,59 @@ class MessageDataService {
             }
             
             return message
+    }
+    
+    private func processIncrementalUpdateMessages(messages: Array<Dictionary<String, AnyObject>>, task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, completion: CompletionBlock?) {
+        struct IncrementalUpdateType {
+            static let delete = 1
+            static let insert = 0
+            static let update = 2
+        }
+        
+        struct ResponseKey {
+            static let messageID = "MessageID"
+            static let type = "type"
+        }
+        
+        // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
+        dispatch_sync(self.incrementalUpdateQueue) {
+            let context = sharedCoreDataService.newManagedObjectContext()
+            
+            context.performBlockAndWait { () -> Void in
+                var error: NSError?
+                
+                for message in messages {
+                    switch(message[ResponseKey.type] as? Int) {
+                    case .Some(IncrementalUpdateType.delete):
+                        if let messageID = message[ResponseKey.messageID] as? String {
+                            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                                context.deleteObject(message)
+                            }
+                        }
+                    case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update):
+                        NSLog("\(__FUNCTION__) message = \(message)")
+                        if let messageObject = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: message, inManagedObjectContext: context, error: &error) as? NSManagedObject {
+                        } else {
+                            NSLog("\(__FUNCTION__) error: \(error)")
+                        }
+                    default:
+                        NSLog("\(__FUNCTION__) unknown type in message: \(message)")
+                    }
+                }
+                
+                error = context.saveUpstreamIfNeeded()
+                
+                if error != nil  {
+                    NSLog("\(__FUNCTION__) error: \(error)")
+                }
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    completion?(task: task, response: response, error: error)
+                    self.fetchMessageCountForInbox()
+                    return
+                }
+            }
+        }
     }
     
     private func saveDraftWithMessageID(messageID: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {

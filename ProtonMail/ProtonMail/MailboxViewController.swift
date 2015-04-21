@@ -37,6 +37,7 @@ class MailboxViewController: ProtonMailViewController {
     
     internal var refreshControl: UIRefreshControl!
     internal var mailboxLocation: MessageLocation! = .inbox
+    internal var messageID: String?
     
     private var fetchedResultsController: NSFetchedResultsController?
     private var moreOptionsView: MoreOptionsView!
@@ -331,6 +332,28 @@ class MailboxViewController: ProtonMailViewController {
         }
     }
     
+    private func performSegueForMessage(message: Message) {
+        if isDrafts() {
+            performSegueWithIdentifier(kSegueToComposeShow, sender: self)
+        } else {
+            performSegueWithIdentifier(kSegueToMessageDetailController, sender: self)
+        }
+    }
+    
+    private func selectMessageIDIfNeeded() {
+        if messageID != nil {
+            if let messages = fetchedResultsController?.fetchedObjects as? [Message] {
+                if let message = messages.filter({ $0.messageID == self.messageID }).first {
+                    let indexPath = fetchedResultsController?.indexPathForObject(message)
+                    tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Top)
+                    performSegueForMessage(message)
+                    
+                    messageID = nil
+                }
+            }
+        }
+    }
+    
     private func selectedMessagesSetValue(setValue value: AnyObject?, forKey key: String) {
         if let context = fetchedResultsController?.managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
@@ -619,6 +642,8 @@ extension MailboxViewController: UITableViewDataSource {
 extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
+        
+        selectMessageIDIfNeeded()
     }
     
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
@@ -697,11 +722,7 @@ extension MailboxViewController: UITableViewDelegate {
             }
         } else {
             if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-                if mailboxLocation == .draft {
-                    performSegueWithIdentifier(kSegueToComposeShow, sender: self)
-                } else {
-                    performSegueWithIdentifier(kSegueToMessageDetailController, sender: self)
-                }
+                performSegueForMessage(message)
             }
         }
     }
