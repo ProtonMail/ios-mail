@@ -17,6 +17,7 @@
 import Foundation
 
 enum MessageLocation: Int, Printable {
+    case deleted = -1
     case draft = 1
     case inbox = 0
     case outbox = 2
@@ -27,6 +28,8 @@ enum MessageLocation: Int, Printable {
     var description : String {
         get {
             switch(self) {
+            case deleted:
+                return NSLocalizedString("Deleted")
             case inbox:
                 return NSLocalizedString("Inbox")
             case draft:
@@ -45,6 +48,8 @@ enum MessageLocation: Int, Printable {
     
     var key: String {
         switch(self) {
+        case deleted:
+            return "Deleted"
         case inbox:
             return "Inbox"
         case draft:
@@ -62,6 +67,8 @@ enum MessageLocation: Int, Printable {
     
     var moveAction: MessageAction? {
         switch(self) {
+        case .deleted:
+            return .delete
         case .inbox:
             return .inbox
         case .spam:

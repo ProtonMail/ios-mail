@@ -196,7 +196,7 @@ extension APIService {
             request(method: .POST, path: path, parameters: parameters, completion: completion)
     }
     
-    func messageID(messageID: String, updateWithAction action: MessageAction, completion: CompletionBlock) {
+    func messageID(messageID: String, updateWithAction action: MessageAction, completion: CompletionBlock?) {
         switch(action) {
         case .delete:
             let path = MessagePath.base.stringByAppendingPathComponent(messageID)
