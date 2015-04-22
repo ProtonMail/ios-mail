@@ -6,20 +6,13 @@
 //  Copyright (c) 2014 SLK. All rights reserved.
 //
 
-#import <SplunkMint-iOS/BugSenseBase.h>
 #import <SplunkMint-iOS/MintBase.h>
-
 #import <SplunkMint-iOS/TypeBlocks.h>
-
-#import <SplunkMint-iOS/NSDate+DateExtensions.h>
 #import <SplunkMint-iOS/NSString+Extensions.h>
-
-#import <SplunkMint-iOS/BugSense.h>
 #import <SplunkMint-iOS/Mint.h>
-
 #import <SplunkMint-iOS/EnumStringHelper.h>
 #import <SplunkMint-iOS/BugSenseEventFactory.h>
-
+#import <SplunkMint-iOS/MintUIWebView.h>
 #import <SplunkMint-iOS/UnhandledCrashExtra.h>
 #import <SplunkMint-iOS/ExtraData.h>
 #import <SplunkMint-iOS/CrashOnLastRun.h>
@@ -60,7 +53,6 @@
 #import <SplunkMint-iOS/TrStop.h>
 #import <SplunkMint-iOS/UnhandledCrashReportArgs.h>
 #import <SplunkMint-iOS/XamarinHelper.h>
-
 #import <SplunkMint-iOS/SPLJSONValueTransformer.h>
 #import <SplunkMint-iOS/SPLJSONKeyMapper.h>
 #import <SplunkMint-iOS/SPLJSONModelError.h>
@@ -70,7 +62,6 @@
 #import <SplunkMint-iOS/SPLJSONModelArray.h>
 
 #import <SplunkMint-iOS/MintLogger.h>
-
 #import <SplunkMint-iOS/ContentTypeDelegate.h>
 #import <SplunkMint-iOS/DeviceInfoDelegate.h>
 #import <SplunkMint-iOS/ExceptionManagerDelegate.h>
@@ -80,3 +71,4 @@
 #import <SplunkMint-iOS/RequestWorkerFacadeDelegate.h>
 #import <SplunkMint-iOS/ServiceClientDelegate.h>
 #import <SplunkMint-iOS/MintNotificationDelegate.h>
+#import <splunkMint-iOS/MintWKWebView.h>

@@ -7,11 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SPLJSONModel.h"
+#import "DataFixture.h"
 
-@interface ScreenDataFixture : SPLJSONModel
+@interface ScreenDataFixture : DataFixture
 
-@property (nonatomic, strong) NSString* name;
-@property (nonatomic, strong) NSMutableDictionary<SPLOptional>* ExtraData;
+@property (nonatomic, strong) NSString *current;
+@property (nonatomic, strong) NSString *previous;
+@property (nonatomic, strong) NSString *domainLookupTime;
+@property (nonatomic, strong) NSString *domProcessingTime;
+@property (nonatomic, strong) NSString *serverTime;
+@property (nonatomic, strong) NSString *host;
+@property (nonatomic, strong) NSString *elapsedTime;
+@property (nonatomic, strong) NSString *loadTime;
 
 @end

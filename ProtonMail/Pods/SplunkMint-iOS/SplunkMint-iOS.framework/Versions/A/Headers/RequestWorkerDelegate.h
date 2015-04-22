@@ -10,6 +10,7 @@
 #import "MintResponseResult.h"
 #import "LoggedRequestEventArgs.h"
 #import "NetworkDataFixture.h"
+#import "ScreenDataFixture.h"
 
 @protocol RequestWorkerDelegate <NSObject>
 
@@ -17,5 +18,5 @@
     - (void) loggedRequestHandledWithEventArgs: (LoggedRequestEventArgs*)args;
     - (void) pingEventCompletedWithResponse: (MintResponseResult*)splunkResponseResult;
     - (void) networkDataLogged: (NetworkDataFixture*)networkData;
-
+    - (void) screenDataLogged: (ScreenDataFixture*)screenData;
 @end
