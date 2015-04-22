@@ -575,6 +575,8 @@ extension MailboxViewController: MoreOptionsViewDelegate {
             if mailboxLocation != location {
                 alertController.addAction(UIAlertAction(title: location.description, style: style, handler: { (action) -> Void in
                     self.moveMessagesToLocation(location)
+                    
+                    self.navigationController?.popViewControllerAnimated(true)
                 }))
             }
         }

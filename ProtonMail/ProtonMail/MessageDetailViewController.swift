@@ -127,6 +127,8 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
                 if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
                     NSLog("\(__FUNCTION__) error: \(error)")
                 }
+                
+                self.navigationController?.popViewControllerAnimated(true)
             }))
         }
         
@@ -137,6 +139,8 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
                 if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
                     NSLog("\(__FUNCTION__) error: \(error)")
                 }
+                
+                self.navigationController?.popViewControllerAnimated(true)
             }))
         }
         
@@ -147,6 +151,8 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
                 if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
                     NSLog("\(__FUNCTION__) error: \(error)")
                 }
+                
+                self.navigationController?.popViewControllerAnimated(true)
             }))
         }
 
