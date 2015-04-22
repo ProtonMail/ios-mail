@@ -38,7 +38,7 @@ class ChangePasswordViewController: UIViewController {
         self.titleLable.text = viewModel.getSectionTitle()
         self.labelOne.text = viewModel.getLabelOne()
         self.labelTwo.text = viewModel.getLabelTwo()
-        self.labelThree.text = viewModel.getLabelOne()
+        self.labelThree.text = viewModel.getLabelThree()
         
         focusFirstEmpty();
     }
