@@ -63,16 +63,19 @@ class MessageDetailViewController: ProtonMailViewController {
             rightButtons.append(UIBarButtonItem(image: UIImage(named: "spam_selected"), style: UIBarButtonItemStyle.Plain, target: self, action: "spamButtonTapped"))
         }
 
-        if message.location != .trash {
-            rightButtons.append(UIBarButtonItem(image: UIImage(named: "trash_selected"), style: UIBarButtonItemStyle.Plain, target: self, action: "removeButtonTapped"))
-        }
+        rightButtons.append(UIBarButtonItem(image: UIImage(named: "trash_selected"), style: UIBarButtonItemStyle.Plain, target: self, action: "removeButtonTapped"))
         
         self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
     }
     
     func removeButtonTapped() {
-        message.location = .trash
-        
+        switch(message.location) {
+        case .trash, .spam:
+            message.location = .deleted
+        default:
+            message.location = .trash
+        }
+
         if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
             NSLog("\(__FUNCTION__) error: \(error)")
         }
