@@ -134,6 +134,7 @@
 		7565998F1AC4809B00C187E4 /* EncryptTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7565998E1AC4809B00C187E4 /* EncryptTypes.swift */; };
 		759339C01ABB45C700535F1B /* ViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339BF1ABB45C700535F1B /* ViewModelFactory.swift */; };
 		759339C41ABB5EA900535F1B /* SettingDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */; };
+		75B047B31AE708CC005C6D1A /* HtmlEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B047B21AE708CC005C6D1A /* HtmlEditorViewController.swift */; };
 		75DF17A91AB8FAB8008A032B /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DF17A81AB8FAB8008A032B /* ArrayExtension.swift */; };
 		75DF17AB1AB9051F008A032B /* StorageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DF17AA1AB9051F008A032B /* StorageViewCell.swift */; };
 		75ECC2381AB9F28100B8FC78 /* ChangePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECC2371AB9F28100B8FC78 /* ChangePasswordViewModel.swift */; };
@@ -290,6 +291,7 @@
 		7565998E1AC4809B00C187E4 /* EncryptTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptTypes.swift; sourceTree = "<group>"; };
 		759339BF1ABB45C700535F1B /* ViewModelFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelFactory.swift; sourceTree = "<group>"; };
 		759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDetailsViewModel.swift; sourceTree = "<group>"; };
+		75B047B21AE708CC005C6D1A /* HtmlEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlEditorViewController.swift; sourceTree = "<group>"; };
 		75DF17A81AB8FAB8008A032B /* ArrayExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		75DF17AA1AB9051F008A032B /* StorageViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageViewCell.swift; sourceTree = "<group>"; };
 		75ECC2371AB9F28100B8FC78 /* ChangePasswordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewModel.swift; sourceTree = "<group>"; };
@@ -674,6 +676,7 @@
 			children = (
 				70AF78BE1AA767A300BD9BAD /* ComposeView.swift */,
 				709FE39F1A977C9000034288 /* ComposeViewController.swift */,
+				75B047B21AE708CC005C6D1A /* HtmlEditorViewController.swift */,
 			);
 			name = Compose;
 			sourceTree = "<group>";
@@ -981,6 +984,7 @@
 				073FD92C1A719B7900EB0CAF /* APIService+UserExtension.swift in Sources */,
 				07CC3F931A941C7A0005E39F /* MessageQueue.swift in Sources */,
 				07CB234C1AAE9FCB00699068 /* FullHeightWebView.swift in Sources */,
+				75B047B31AE708CC005C6D1A /* HtmlEditorViewController.swift in Sources */,
 				07DD68A71A9815DF00ED130C /* NSURLExtension.swift in Sources */,
 				706932AB1A77BE3D00A75A93 /* SearchViewController.swift in Sources */,
 				071323A01A7C1AB10043DB41 /* NSTimeIntervalExtension.swift in Sources */,

@@ -18,6 +18,8 @@
 @property (nonatomic, strong) NSString<SPLOptional>* sessionId;
 
 + (EventDataFixture*) getInstanceForEventTag:(NSString*)eventTag andAppEnvironment:(MintAppEnvironment*)anAppEnvironment;
++ (EventDataFixture*) getInstanceForEventTag:(NSString*)eventTag limittedExtraData:(LimitedExtraDataList*)extraDataList andAppEnvironment:(MintAppEnvironment*)anAppEnvironment;
 + (EventDataFixture*) getInstanceForName:(NSString *)name withLogLevel:(MintLogLevel)logLevel andAppEnvironment:(MintAppEnvironment *)anAppEnvironment;
++ (EventDataFixture*) getInstanceForName:(NSString *)name limittedExtraData:(LimitedExtraDataList*)extraDataList withLogLevel:(MintLogLevel)logLevel andAppEnvironment:(MintAppEnvironment *)anAppEnvironment;
 
 @end

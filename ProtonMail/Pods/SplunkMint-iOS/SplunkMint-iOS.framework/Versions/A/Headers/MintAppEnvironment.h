@@ -18,6 +18,7 @@
 @property (nonatomic, strong) NSString* manufacturer;
 @property (nonatomic, strong) NSString* internalVersion;
 @property (nonatomic, strong) NSString* appVersion;
+@property (nonatomic, strong) NSString* appVersionCode;
 @property (nonatomic, strong) NSString* brand;
 @property (nonatomic, strong) NSString* appName;
 @property (nonatomic, strong) NSString* osVersion;

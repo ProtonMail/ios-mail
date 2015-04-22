@@ -27,7 +27,7 @@ typedef enum
     ErrorResultState,
     
     /**
-     *  The request state is undefined
+     *  The request state is undefined.
      */
     UndefinedResultState
     } MintResultState;
@@ -87,7 +87,8 @@ typedef enum
     TransactionStopFileNameType,
     NetworkFileNameType,
     PerformanceFileNameType,
-    ScreenFileNameType
+    ScreenFileNameType,
+    TransactionListFileNameType
     } FileNameType;
 
 typedef enum

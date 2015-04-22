@@ -1,43 +1,46 @@
 PODS:
-  - AFNetworking (2.5.1):
-    - AFNetworking/NSURLConnection (= 2.5.1)
-    - AFNetworking/NSURLSession (= 2.5.1)
-    - AFNetworking/Reachability (= 2.5.1)
-    - AFNetworking/Security (= 2.5.1)
-    - AFNetworking/Serialization (= 2.5.1)
-    - AFNetworking/UIKit (= 2.5.1)
-  - AFNetworking/NSURLConnection (2.5.1):
+  - AFNetworking (2.5.3):
+    - AFNetworking/NSURLConnection (= 2.5.3)
+    - AFNetworking/NSURLSession (= 2.5.3)
+    - AFNetworking/Reachability (= 2.5.3)
+    - AFNetworking/Security (= 2.5.3)
+    - AFNetworking/Serialization (= 2.5.3)
+    - AFNetworking/UIKit (= 2.5.3)
+  - AFNetworking/NSURLConnection (2.5.3):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.5.1):
+  - AFNetworking/NSURLSession (2.5.3):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.5.1)
-  - AFNetworking/Security (2.5.1)
-  - AFNetworking/Serialization (2.5.1)
-  - AFNetworking/UIKit (2.5.1):
+  - AFNetworking/Reachability (2.5.3)
+  - AFNetworking/Security (2.5.3)
+  - AFNetworking/Serialization (2.5.3)
+  - AFNetworking/UIKit (2.5.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - FSSyncSpinner (0.0.1)
   - Groot (0.2)
   - Masonry (0.6.0)
-  - MBProgressHUD (0.9)
+  - MBProgressHUD (0.9.1)
   - NSDate+Helper (1.0.0)
   - OpenPGP (0.0.1):
     - OpenSSL
-  - OpenSSL (1.0.200)
+  - OpenSSL (1.0.201)
   - RHAddressBook (1.1.1)
-  - SplunkMint-iOS (4.0.24)
+  - SplunkMint-iOS (4.2)
   - SWRevealViewController (2.3.0)
   - UICKeyChainStore (2.0.4)
   - UIColor+Hex (1.0.1):
     - UIColor+Hex/NSColor (= 1.0.1)
     - UIColor+Hex/UIColor (= 1.0.1)
   - UIColor+Hex/UIColor (1.0.1)
+  - ZSSRichTextEditor (0.5.2.1)
 
 DEPENDENCIES:
   - AFNetworking
+  - FSSyncSpinner
   - Groot
   - Masonry (= 0.6.0)
   - MBProgressHUD
@@ -48,23 +51,28 @@ DEPENDENCIES:
   - SWRevealViewController (= 2.3.0)
   - UICKeyChainStore
   - UIColor+Hex
+  - ZSSRichTextEditor (from `../ZSSRichTextEditor`)
 
 EXTERNAL SOURCES:
   OpenPGP:
-    :path: ../OpenPGP
+    :path: "../OpenPGP"
+  ZSSRichTextEditor:
+    :path: "../ZSSRichTextEditor"
 
 SPEC CHECKSUMS:
-  AFNetworking: 8bee59492a6ff15d69130efa4d0dc67e0094a52a
-  Groot: a0b9670711aaa88420cfbb4b4bc8e0ec7950780b
-  Masonry: 0bc111d6902e3a55ff8423bcbdf7155261806547
-  MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
-  NSDate+Helper: ebde22e90dc7ae5e9b49179a0c32e550f7a9cd57
-  OpenPGP: 7474a5b555d034306a9985c5bce0bfacdd9ba762
-  OpenSSL: 4c7be3eca71139f52984542d8c4c0752154d26c3
-  RHAddressBook: 0cad9d33b9494d1e28323b62e5c7afc109cc4294
-  SplunkMint-iOS: 528329b25dcadcb919b99e46f4a786d11c51c82c
-  SWRevealViewController: f6d80638b8e12323e87ac79562345403a799cb77
-  UICKeyChainStore: 2399076d0950e20fe859b8f817548cf6ca542dd7
-  UIColor+Hex: ac7e1ae4eeea4f522fe3f6eda35de4af69244432
+  AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
+  FSSyncSpinner: b75c88af18a5f6ac6237a9cffdd16c026d9e5b2b
+  Groot: feb95bd5ece64f6786df281a9353a572444d834a
+  Masonry: 695dcee5cf90504cc83d85c40e0bd3f4376ed583
+  MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
+  NSDate+Helper: 38676f1c2bd50fcebcebf8fc281276e1f18df18c
+  OpenPGP: 170a702b56a2c867eefba45fcc8f763134dea08a
+  OpenSSL: 4e990d04b14015c49c800c400b86ae44a4818a5c
+  RHAddressBook: 870e9e0b34cb917b9c4c600fc3b7d5b530b23b13
+  SplunkMint-iOS: 058e5297f7cc8d335aea3dcaa8111eeb0f657371
+  SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
+  UICKeyChainStore: 69eb0c3a6f669bccf16ba88de3b9069b71501361
+  UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
+  ZSSRichTextEditor: 56ed060d6d7a98fb6be9fceb8074ced22160349b
 
-COCOAPODS: 0.35.0
+COCOAPODS: 0.36.1

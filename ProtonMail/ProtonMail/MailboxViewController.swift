@@ -317,7 +317,7 @@ class MailboxViewController: ProtonMailViewController {
             })
         }
     }
-    
+     
     private func moveMessagesToLocation(location: MessageLocation) {
         if let context = fetchedResultsController?.managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)

@@ -15,6 +15,6 @@
 @property (nonatomic, strong) NSNumber* elapsed;
 @property (nonatomic, strong) TrStart* transactionStart;
 @property (nonatomic, strong) TrStop* transactionStop;
-
+@property (nonatomic, strong) NSDate* transactionStartedAt;
 
 @end
