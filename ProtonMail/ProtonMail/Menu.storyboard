@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="14k-5d-srV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="14k-5d-srV">
     <dependencies>
         <development version="6100" identifier="xcode"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
@@ -176,7 +176,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Bug Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K0q-PU-hIm">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bug Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K0q-PU-hIm">
                                 <rect key="frame" x="16" y="72" width="119" height="20"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="17"/>
                                 <color key="textColor" red="0.2196078431372549" green="0.22745098039215686" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -498,6 +498,9 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="84" y="5" width="236" height="52"/>
+                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -888,6 +891,9 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="84" y="5" width="236" height="52"/>
+                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1196,18 +1202,27 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
                                                     <color key="textColor" red="0.2196078431372549" green="0.22745098039215686" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="16" y="12" width="215" height="22"/>
+                                                    </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7GD-28-QOt">
                                                     <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
                                                     <color key="textColor" red="0.50196078431372548" green="0.51764705882352946" blue="0.52941176470588236" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="16" y="35" width="215" height="16"/>
+                                                    </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7:36pm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d4p-Fy-H08">
                                                     <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
                                                     <color key="textColor" red="0.50196078430000002" green="0.51764705879999995" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="263" y="10" width="41" height="16"/>
+                                                    </variation>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="encrypted_main" translatesAutoresizingMaskIntoConstraints="NO" id="pXj-OE-cWa">
                                                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
@@ -1221,7 +1236,8 @@
                                                             <exclude reference="jLv-ti-OFL"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="widthClass=compact">
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="261" y="32" width="15" height="20"/>
                                                         <mask key="constraints">
                                                             <include reference="IIn-wL-zsd"/>
                                                             <include reference="jLv-ti-OFL"/>
@@ -1248,7 +1264,8 @@
                                                             <exclude reference="gUg-k3-MxK"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="widthClass=compact">
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="280" y="28" width="28" height="27"/>
                                                         <mask key="constraints">
                                                             <include reference="UC4-9n-KFZ"/>
                                                             <include reference="gUg-k3-MxK"/>
@@ -1270,7 +1287,8 @@
                                                             <exclude reference="gHL-Pl-38E"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="widthClass=compact">
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="239" y="36" width="14" height="16"/>
                                                         <mask key="constraints">
                                                             <include reference="EtL-jI-Rnw"/>
                                                             <include reference="gHL-Pl-38E"/>
@@ -2160,6 +2178,7 @@
                                                     <state key="normal" image="favorite_main">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
+                                                    <state key="selected" image="favorite_main_selected"/>
                                                     <variation key="default">
                                                         <mask key="constraints">
                                                             <exclude reference="Coz-cj-ZUi"/>
