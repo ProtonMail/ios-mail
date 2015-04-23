@@ -283,7 +283,9 @@ class MessageDataService {
         }
     }
     
-    func send(#recipientList: String, bccList: String, ccList: String, title: String, encryptionPassword: String, passwordHint: String, expirationTimeInterval: NSTimeInterval, body: String, attachments: [AnyObject]?) {
+    func send(#recipientList: String, bccList: String, ccList: String, title: String, encryptionPassword: String, passwordHint: String, expirationTimeInterval: NSTimeInterval, body: String, attachments: [AnyObject]?, completion: CompletionBlock?) {
+        var error: NSError?
+        
         if let context = sharedCoreDataService.mainManagedObjectContext {
             let message = messageWithLocation(.outbox,
                 recipientList: recipientList,
@@ -297,12 +299,18 @@ class MessageDataService {
                 attachments: attachments,
                 inManagedObjectContext: context)
             
-            if let error = context.saveUpstreamIfNeeded() {
+            error = context.saveUpstreamIfNeeded()
+            
+            if error != nil {
                 NSLog("\(__FUNCTION__) error: \(error)")
             } else {
                 queue(message: message, action: .send)
             }
+        } else {
+            error = NSError.protonMailError(code: 500, localizedDescription: NSLocalizedString("No managedObjectContext"), localizedFailureReason: nil, localizedRecoverySuggestion: nil)
         }
+        
+        completion?(task: nil, response: nil, error: error)
     }
     
     func purgeOldMessages() {

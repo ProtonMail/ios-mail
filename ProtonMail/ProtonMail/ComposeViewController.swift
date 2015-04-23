@@ -236,8 +236,23 @@ extension ComposeViewController: ComposeViewDelegate {
             expirationTimeInterval: composeView.expirationTimeInterval,
             body: self.htmlEditor.getHTML(),
             attachments: attachments)
+            completion: {_, _, error in
+                if error == nil {
+                    if let message = self.message {
+                        message.location = .trash
+                        
+                        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
+                            NSLog("\(__FUNCTION__) error: \(error)")
+                        }
+                    }
+                }
+        })
         
-        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+        if presentingViewController != nil {
+            dismissViewControllerAnimated(true, completion: nil)
+        } else {
+            navigationController?.popViewControllerAnimated(true)
+        }
     }
 
     func composeViewDidTapEncryptedButton(composeView: ComposeView) {
