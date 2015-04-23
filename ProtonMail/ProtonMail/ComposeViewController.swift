@@ -161,8 +161,13 @@ class ComposeViewController: ProtonMailViewController {
             selectedContacts = []
         }
         
-        let names = nameList.splitByComma()
         let emails = emailList.splitByComma()
+        var names = nameList.splitByComma()
+        
+        // this prevents a crash if there are less names than emails
+        if countElements(names) != countElements(emails) {
+            names = emails
+        }
         
         let count = names.count;
         
