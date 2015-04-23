@@ -126,7 +126,7 @@ class ComposeViewController: ProtonMailViewController {
                     let forwardedMessage = NSLocalizedString("Forwarded message")
                     let body = message.decryptBody(nil) ?? ""
                     
-                    composeView.bodyTextView.text = "\(signature)\n\n---------- \(forwardedMessage) ----------\n\(body)"
+                    htmlEditor.setHTML("\(signature)\n\n---------- \(forwardedMessage) ----------\n\(body)")
                 } else if action == draftAction {
                     navigationItem.leftBarButtonItem = nil
                     
@@ -147,7 +147,7 @@ class ComposeViewController: ProtonMailViewController {
                     }
                     
                     var error: NSError?
-                    composeView.bodyTextView.text = message.decryptBody(&error) ?? ""
+                    htmlEditor.setHTML(message.decryptBodyIfNeeded(&error) ?? "")
                     if error != nil {
                         NSLog("\(__FUNCTION__) error: \(error)")
                     }
@@ -164,8 +164,10 @@ class ComposeViewController: ProtonMailViewController {
         let names = nameList.splitByComma()
         let emails = emailList.splitByComma()
         
+        let count = names.count;
+        
         for var i = 0; i < countElements(emails); i++ {
-            selectedContacts.append(ContactVO(id: "", name: names[i], email: emails[i]))
+            selectedContacts.append(ContactVO(id: "", name: ((i>=0 && i<count) ? names[i] : ""), email: emails[i]))
         }
     }
 }
