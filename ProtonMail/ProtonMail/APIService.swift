@@ -176,6 +176,11 @@ class APIService {
         }
     }
     
+    internal func setApiVesion(apiVersion:Int, appVersion:Int)
+    {
+        self.sessionManager.requestSerializer.setVersionHeader(apiVersion, appVersion: appVersion)
+    }
+    
     internal func request(#method: HTTPMethod, path: String, parameters: AnyObject?, authenticated: Bool = true, completion: CompletionBlock?) {
         let authBlock: AuthCredentialBlock = { _, error in
             if error == nil {

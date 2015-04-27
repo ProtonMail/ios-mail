@@ -22,4 +22,8 @@ extension AFHTTPRequestSerializer {
         setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         setValue(credential.userID, forHTTPHeaderField: "x-pm-uid")
     }
+    
+    func setVersionHeader (apiVersion: Int, appVersion:Int) {
+        setValue("application/vnd.protonmail.api+json;apiversion=\(apiVersion);appversion=\(appVersion)", forHTTPHeaderField: "Accept")
+    }
 }

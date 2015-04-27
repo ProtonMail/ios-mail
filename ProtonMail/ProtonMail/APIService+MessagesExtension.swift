@@ -64,6 +64,11 @@ extension APIService {
         case subject = "Subject"
     }
     
+    enum MessageAPIV : Int
+    {
+        case SendMessage = 2
+    }
+    
     // MARK: - Public methods
     
     func messageCheck(#timestamp: NSTimeInterval, completion: CompletionBlock?) {
@@ -121,6 +126,8 @@ extension APIService {
                 parameters["Attachments"] = attachmentsArray
             }
             
+            
+            setApiVesion(2, appVersion: 1)
             request(method: .POST, path: path, parameters: parameters, completion: completion)
     }
     
