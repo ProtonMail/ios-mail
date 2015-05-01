@@ -714,7 +714,6 @@ class MessageDataService {
     }
     
     // MARK: Setup
-    
     private func setupMessageMonitoring() {
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.locationNumber, handler: { message in
             if let action = message.location.moveAction {

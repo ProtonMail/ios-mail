@@ -91,6 +91,10 @@ class MailboxViewController: ProtonMailViewController {
         
         self.refreshControl.tintColor = UIColor.whiteColor()
         self.refreshControl.tintColorDidChange()
+    
+        let usedStorageSpace = sharedUserDataService.userInfo!.usedSpace
+        let maxStorageSpace = sharedUserDataService.userInfo!.maxSpace
+        StorageLimit().checkSpace(usedSpace: usedStorageSpace, maxSpace: maxStorageSpace)
     }
     
     private func addSubViews() {
