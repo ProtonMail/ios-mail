@@ -5,13 +5,27 @@ With Groot you can convert JSON dictionaries and arrays to and from Core Data ma
 Groot supports OS X 10.8+ and iOS 6.0+.
 
 ## Installation
-Add the following to your `Podfile` and run `$ pod install`.
+### Cocoapods
+Add the following to your `Podfile`:
 
 ``` ruby
 pod 'Groot'
 ```
 
+Then run `$ pod install`.
+
 If you don't have CocoaPods installed or integrated into your project, you can learn how to do so [here](http://cocoapods.org).
+
+### Carthage
+Add the following to your `Cartfile`:
+
+```
+github “gonzalezreal/Groot”
+```
+
+Then run `$ carthage update`.
+
+Follow the instructions in [Carthage’s README](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application]) to add the framework to your project.
 
 ## Usage
 Suppose we would like to convert the JSON returned by a Comic Database web service into our own model objects. The JSON could look something like this:

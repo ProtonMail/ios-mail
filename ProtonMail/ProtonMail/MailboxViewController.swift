@@ -263,6 +263,8 @@ class MailboxViewController: ProtonMailViewController {
         self.fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLocation(self.mailboxLocation)
         self.fetchedResultsController?.delegate = self
         
+        NSLog("\(__FUNCTION__) INFO: \(fetchedResultsController?.sections)")
+        
         if let fetchedResultsController = fetchedResultsController {
             var error: NSError?
             if !fetchedResultsController.performFetch(&error) {
@@ -628,7 +630,8 @@ extension MailboxViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultsController?.numberOfRowsInSection(section) ?? 0
+        let count = fetchedResultsController?.numberOfRowsInSection(section) ?? 0
+        return count
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
