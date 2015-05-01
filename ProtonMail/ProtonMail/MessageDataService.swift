@@ -169,10 +169,8 @@ class MessageDataService {
             
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 if let messagesArray = responseDict?["Messages"] as? [Dictionary<String,AnyObject>] {
-                    
                     let context = sharedCoreDataService.newManagedObjectContext()
-                    
-                    context.performBlock() {
+                    context.performBlockAndWait() {
                         var error: NSError?
                         var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
                         
@@ -185,21 +183,16 @@ class MessageDataService {
                                     message.locationNumber = location.rawValue
                                 }
                             }
-                            
                             error = context.saveUpstreamIfNeeded()
                         }
-                        
                         if error != nil  {
                             NSLog("\(__FUNCTION__) error: \(error)")
                         }
-                        
                         dispatch_async(dispatch_get_main_queue()) {
                             if page == self.firstPage {
                                 self.lastUpdatedStore[location.key] = lastUpdated
                             }
-                            
                             self.fetchMessageCountForInbox()
-                            
                             completion?(task: task, response: responseDict, error: error)
                         }
                     }
@@ -721,7 +714,6 @@ class MessageDataService {
     }
     
     // MARK: Setup
-    
     private func setupMessageMonitoring() {
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.locationNumber, handler: { message in
             if let action = message.location.moveAction {

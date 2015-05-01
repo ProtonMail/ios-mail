@@ -63,14 +63,17 @@ class PushNotificationService {
         // if the app is in the background, then switch to the inbox and load the message detail
         if application.applicationState == UIApplicationState.Inactive || application.applicationState == UIApplicationState.Background {
             if let revealViewController = application.keyWindow?.rootViewController as? SWRevealViewController {
-                if let navigationController = revealViewController.storyboard?.instantiateViewControllerWithIdentifier("MailboxNavigationController") as? UINavigationController {
-                    revealViewController.frontViewController = navigationController
-                    
-                    if let mailboxViewController = navigationController.topViewController as? MailboxViewController {
-                        mailboxViewController.mailboxLocation = .inbox
-                        mailboxViewController.messageID = messageIDForUserInfo(userInfo)
-                    }
-                }
+                
+                //revealViewController
+                
+//                if let navigationController = revealViewController.storyboard?.instantiateViewControllerWithIdentifier("MailboxNavigationController") as? UINavigationController {
+//                    revealViewController.frontViewController = navigationController
+//                    
+//                    if let mailboxViewController = navigationController.topViewController as? MailboxViewController {
+//                        mailboxViewController.mailboxLocation = .inbox
+//                        mailboxViewController.messageID = messageIDForUserInfo(userInfo)
+//                    }
+//                }
             }
         }
         

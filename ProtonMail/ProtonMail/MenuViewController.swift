@@ -52,7 +52,7 @@ class MenuViewController: UIViewController {
         
         self.revealViewController().frontViewController.view.userInteractionEnabled = false
         self.revealViewController().view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-
+        
         updateEmailLabel()
         updateDisplayNameLabel()
     }
@@ -112,6 +112,7 @@ class MenuViewController: UIViewController {
         let alertController = UIAlertController(title: NSLocalizedString("Confirm"), message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Sign Out"), style: .Destructive, handler: { (action) -> Void in
             sharedUserDataService.signOut(true)
+            StorageLimit().signOut();
         }))
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
         
@@ -129,7 +130,7 @@ class MenuViewController: UIViewController {
             displayNameLabel.text = displayName
             return
         }
-
+        
         displayNameLabel.text = emailLabel.text
     }
     

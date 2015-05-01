@@ -91,6 +91,10 @@ class MailboxViewController: ProtonMailViewController {
         
         self.refreshControl.tintColor = UIColor.whiteColor()
         self.refreshControl.tintColorDidChange()
+    
+        let usedStorageSpace = sharedUserDataService.userInfo!.usedSpace
+        let maxStorageSpace = sharedUserDataService.userInfo!.maxSpace
+        StorageLimit().checkSpace(usedSpace: usedStorageSpace, maxSpace: maxStorageSpace)
     }
     
     private func addSubViews() {
@@ -262,6 +266,8 @@ class MailboxViewController: ProtonMailViewController {
     private func setupFetchedResultsController() {
         self.fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLocation(self.mailboxLocation)
         self.fetchedResultsController?.delegate = self
+        
+        NSLog("\(__FUNCTION__) INFO: \(fetchedResultsController?.sections)")
         
         if let fetchedResultsController = fetchedResultsController {
             var error: NSError?
@@ -628,7 +634,8 @@ extension MailboxViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultsController?.numberOfRowsInSection(section) ?? 0
+        let count = fetchedResultsController?.numberOfRowsInSection(section) ?? 0
+        return count
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {

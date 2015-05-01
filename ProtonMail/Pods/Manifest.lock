@@ -41,7 +41,7 @@ PODS:
 DEPENDENCIES:
   - AFNetworking
   - FSSyncSpinner
-  - Groot
+  - Groot (from `https://github.com/zhj4478/Groot.git`)
   - Masonry (= 0.6.0)
   - MBProgressHUD
   - NSDate+Helper
@@ -54,10 +54,17 @@ DEPENDENCIES:
   - ZSSRichTextEditor (from `../ZSSRichTextEditor`)
 
 EXTERNAL SOURCES:
+  Groot:
+    :git: https://github.com/zhj4478/Groot.git
   OpenPGP:
     :path: "../OpenPGP"
   ZSSRichTextEditor:
     :path: "../ZSSRichTextEditor"
+
+CHECKOUT OPTIONS:
+  Groot:
+    :commit: 88057305e4ccb9ab47066951b04f11f0a471987e
+    :git: https://github.com/zhj4478/Groot.git
 
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe

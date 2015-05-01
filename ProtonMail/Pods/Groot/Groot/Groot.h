@@ -20,6 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import <UIKit/UIKit.h>
+
+//! Project version number for Groot.
+FOUNDATION_EXPORT double GrootVersionNumber;
+
+//! Project version string for Groot.
+FOUNDATION_EXPORT const unsigned char GrootVersionString[];
+
 #import <Groot/GRTManagedStore.h>
 #import <Groot/GRTValueTransformer.h>
 #import <Groot/GRTJSONSerialization.h>

@@ -136,6 +136,7 @@
 		759339C01ABB45C700535F1B /* ViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339BF1ABB45C700535F1B /* ViewModelFactory.swift */; };
 		759339C41ABB5EA900535F1B /* SettingDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */; };
 		75B047B31AE708CC005C6D1A /* HtmlEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B047B21AE708CC005C6D1A /* HtmlEditorViewController.swift */; };
+		75B470061AF43DA80076CC54 /* SharedStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B470051AF43DA80076CC54 /* SharedStorage.swift */; };
 		75DF17A91AB8FAB8008A032B /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DF17A81AB8FAB8008A032B /* ArrayExtension.swift */; };
 		75DF17AB1AB9051F008A032B /* StorageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DF17AA1AB9051F008A032B /* StorageViewCell.swift */; };
 		75ECC2381AB9F28100B8FC78 /* ChangePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECC2371AB9F28100B8FC78 /* ChangePasswordViewModel.swift */; };
@@ -294,6 +295,7 @@
 		759339BF1ABB45C700535F1B /* ViewModelFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelFactory.swift; sourceTree = "<group>"; };
 		759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDetailsViewModel.swift; sourceTree = "<group>"; };
 		75B047B21AE708CC005C6D1A /* HtmlEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlEditorViewController.swift; sourceTree = "<group>"; };
+		75B470051AF43DA80076CC54 /* SharedStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedStorage.swift; sourceTree = "<group>"; };
 		75DF17A81AB8FAB8008A032B /* ArrayExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		75DF17AA1AB9051F008A032B /* StorageViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageViewCell.swift; sourceTree = "<group>"; };
 		75ECC2371AB9F28100B8FC78 /* ChangePasswordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewModel.swift; sourceTree = "<group>"; };
@@ -407,6 +409,7 @@
 				7565998E1AC4809B00C187E4 /* EncryptTypes.swift */,
 				075E3DED1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld */,
 				07A0E1AC1A9D3C64005FD04B /* UserInfo.swift */,
+				75B470051AF43DA80076CC54 /* SharedStorage.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -951,6 +954,7 @@
 				078A3A4C1A7FF4DC002C5FF3 /* MessageDataService.swift in Sources */,
 				076758781AA0EB6900F9AC9C /* LoadingView.swift in Sources */,
 				701DDE901AA64DEB0038149C /* MBContactCollectionView.m in Sources */,
+				75B470061AF43DA80076CC54 /* SharedStorage.swift in Sources */,
 				709FE3A01A977C9000034288 /* ComposeViewController.swift in Sources */,
 				07CAB8041A894A3B00C5E347 /* MessageDetailView.swift in Sources */,
 				07CAB8031A894A3B00C5E347 /* MessageDetailViewController.swift in Sources */,
