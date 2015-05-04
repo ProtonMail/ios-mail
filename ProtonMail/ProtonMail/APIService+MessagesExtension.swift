@@ -64,6 +64,13 @@ extension APIService {
         case subject = "Subject"
     }
     
+    struct MessageErrorCode {
+        static let credentialExpired = 10
+        static let credentialInvalid = 20
+        static let invalidGrant = 30
+        static let unableToParseToken = 40
+    }
+    
     enum MessageAPIV : Int
     {
         case SendMessage = 2
@@ -235,6 +242,16 @@ extension APIService {
         request(method: .GET, path: path, parameters: parameters, completion: completion)
     }
     
+    func fetchPageMessageList(location: Int, time: Int, messageID: String, completion: CompletionBlock) {
+        let path = MessagePath.base + "/fetch"
+        let parameters = [
+            "Location" : location,
+            "Time" : time,
+            "MessageID" : messageID]
+        
+        request(method: .GET, path: path, parameters: parameters, completion: completion)
+    }
+    
     func messageSearch(query: String, page: Int, completion: CompletionBlock?) {
         let path = "/messages/search"
         let parameters = [
@@ -244,8 +261,8 @@ extension APIService {
         request(method: .GET, path: path, parameters: parameters, completion: completion)
     }
     
-    // MARK: - Private methods
     
+    // MARK: - Private methods
     private func filteredMessageStringParameters(parameters: [String : String]) -> [String : String] {
         var filteredParameters: [String : String] = [:]
         
