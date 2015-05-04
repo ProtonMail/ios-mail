@@ -177,7 +177,7 @@ class SearchViewController: ProtonMailViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == kSegueToMessageDetailController) {
-            let messageDetailViewController: MessageDetailViewController = segue.destinationViewController as MessageDetailViewController
+            let messageDetailViewController: MessageDetailViewController = segue.destinationViewController as! MessageDetailViewController
             let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {
@@ -252,7 +252,7 @@ extension SearchViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
-        var cell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as MailboxTableViewCell
+        var cell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as! MailboxTableViewCell
         if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
             cell.configureCell(message)
         }

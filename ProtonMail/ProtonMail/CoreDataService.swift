@@ -91,7 +91,8 @@ class CoreDataService {
                 dict[NSLocalizedDescriptionKey] = NSLocalizedString("Failed to initialize the application's saved data")
                 dict[NSLocalizedFailureReasonErrorKey] = NSLocalizedString("There was an error creating or loading the application's saved data.")
                 dict[NSUnderlyingErrorKey] = error
-                error = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict)
+                //TODO:: need monitor
+                error = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict as [NSObject : AnyObject])
                 NSLog("Unresolved error \(error), \(error!.userInfo)")
                 
                 if let alertController = error?.alertController() {

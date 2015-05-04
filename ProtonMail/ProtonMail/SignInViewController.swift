@@ -102,7 +102,7 @@ class SignInViewController: UIViewController {
                 self.presentViewController(alertController, animated: true, completion: nil)
             } else {
                 if sharedUserDataService.isMailboxPasswordStored {
-                    (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .inbox, animated: true)
+                    (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
                 } else {
                     
                     if sharedUserDataService.userInfo?.userStatus > 1 {

@@ -146,7 +146,7 @@ class MailboxTableViewCell: UITableViewCell {
         }
     }
     
-    func isSelected() -> Bool {
+    func isCheckBoxSelected() -> Bool {
         return self.isChecked
     }
 }

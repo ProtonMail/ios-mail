@@ -19,8 +19,8 @@ import Foundation
 extension NSString {
     
     func base64Decoded() -> String? {
-        if let data = NSData(base64EncodedString: self, options: nil) {
-            return NSString(data: data, encoding: NSUTF8StringEncoding)
+        if let data = NSData(base64EncodedString: self as! String, options: nil) {
+            return NSString(data: data, encoding: NSUTF8StringEncoding) as! String ?? ""
         }
         
         return nil

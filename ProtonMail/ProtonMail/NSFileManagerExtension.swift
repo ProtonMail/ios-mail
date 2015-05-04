@@ -19,7 +19,7 @@ import Foundation
 extension NSFileManager {
     
     var applicationSupportDirectoryURL: NSURL {
-        let urls = URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask) as [NSURL]
+        let urls = URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask) as! [NSURL]
         let applicationSupportDirectoryURL = urls.first!
         
         if !NSFileManager.defaultManager().fileExistsAtPath(applicationSupportDirectoryURL.absoluteString!) {
@@ -33,7 +33,7 @@ extension NSFileManager {
     }
     
     var cachesDirectoryURL: NSURL {
-        let urls = URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask) as [NSURL]
+        let urls = URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask) as! [NSURL]
         return urls.first!
     }
     

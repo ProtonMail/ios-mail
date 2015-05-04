@@ -135,7 +135,7 @@ class MessageDataService {
                         var error: NSError?
                         
                         if response != nil {
-                            let message = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: response, inManagedObjectContext: context, error: &error) as Message
+                            let message = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: response, inManagedObjectContext: context, error: &error) as! Message
                             
                             if error == nil {
                                 message.isDetailDownloaded = true
@@ -175,7 +175,7 @@ class MessageDataService {
                         var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
                         
                         if error == nil {
-                            for message in messages as [Message] {
+                            for message in messages as! [Message] {
                                 // PRO-157 - The issue for inbox <--> starred page switch
                                 // only change the location if the message is new or not starred
                                 // this prevents starred messages from disappearing out of the inbox until the next refresh
@@ -239,7 +239,7 @@ class MessageDataService {
                     
                     context.performBlock() {
                         var error: NSError?
-                        var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error) as [Message]
+                        var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error) as! [Message]
                                                 
                         if let completion = completion {
                             dispatch_async(dispatch_get_main_queue()) {
@@ -400,7 +400,7 @@ class MessageDataService {
     private func attachmentsForMessage(message: Message) -> [APIService.Attachment] {
         var attachments: [APIService.Attachment] = []
         
-        for messageAttachment in message.attachments.allObjects as [Attachment] {
+        for messageAttachment in message.attachments.allObjects as! [Attachment] {
             if let fileDataBase64Encoded = messageAttachment.fileData?.base64EncodedStringWithOptions(nil) {
                 let attachment = APIService.Attachment(fileName: messageAttachment.fileName, mimeType: messageAttachment.mimeType, fileData: ["self" : fileDataBase64Encoded], fileSize: messageAttachment.fileSize.integerValue)
                 

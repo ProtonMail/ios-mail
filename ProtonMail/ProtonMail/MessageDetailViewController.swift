@@ -181,7 +181,7 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "toCompose") {
-            let composeViewController = segue.destinationViewController.viewControllers!.first as ComposeViewController
+            let composeViewController = segue.destinationViewController.viewControllers!.first as! ComposeViewController
             composeViewController.message = message
             composeViewController.action = self.actionTapped
         }

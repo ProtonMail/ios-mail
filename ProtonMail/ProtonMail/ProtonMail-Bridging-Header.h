@@ -26,6 +26,7 @@
 #import <NSDate+Helper/NSDate+Helper.h>
 #import "OpenPGP.h"
 #import <RHAddressBook/AddressBook.h>
+#import <RHAddressBook/RHMultiValue.h>
 #import <SplunkMint-iOS/SplunkMint-iOS.h>
 #import <SWRevealViewController/SWRevealViewController.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>

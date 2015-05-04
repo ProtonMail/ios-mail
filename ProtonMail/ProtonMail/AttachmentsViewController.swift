@@ -98,7 +98,7 @@ class AttachmentsViewController: UICollectionViewController {
     // MARK: - UICollectionViewDataSource
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(attachmentCellIdentifier, forIndexPath: indexPath) as AttachmentCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(attachmentCellIdentifier, forIndexPath: indexPath) as! AttachmentCollectionViewCell
         
         if let attachment = attachmentForIndexPath(indexPath) as? UIImage {
             cell.imageView.image = attachment
@@ -133,7 +133,7 @@ class AttachmentsViewController: UICollectionViewController {
 
 // MARK: - UIImagePickerControllerDelegate
 extension AttachmentsViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
         attachments.append(image)
         picker.dismissViewControllerAnimated(true, completion: nil)
     }

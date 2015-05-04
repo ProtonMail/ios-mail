@@ -21,10 +21,10 @@ class FullHeightWebView: UIWebView {
     private var kvoContext = 0
     private let scrollViewContentSizeKeyPath = "scrollView.contentSize"
 
-    override init() {
-        super.init()
-    }
-    
+//    override init() {
+//        super.init()
+//    }
+//    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -56,7 +56,7 @@ class FullHeightWebView: UIWebView {
     override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
         if context != &kvoContext {
             super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
-        } else if object as FullHeightWebView == self && keyPath == scrollViewContentSizeKeyPath && frame.height != scrollView.contentSize.height {
+        } else if object as! FullHeightWebView == self && keyPath == scrollViewContentSizeKeyPath && frame.height != scrollView.contentSize.height {
             setNeedsUpdateConstraints()
             layoutIfNeeded()
         }

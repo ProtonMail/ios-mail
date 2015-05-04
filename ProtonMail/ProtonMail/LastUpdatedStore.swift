@@ -48,7 +48,7 @@ class LastUpdatedStore {
     }
     
     func lastUpdatedForKey(key: String) -> NSDate {
-        return lastUpdateds[key] ?? (NSDate.distantPast() as NSDate)
+        return lastUpdateds[key] ?? (NSDate.distantPast() as! NSDate)
     }
     
     func setLastUpdated(date: NSDate, forKey key: String) {

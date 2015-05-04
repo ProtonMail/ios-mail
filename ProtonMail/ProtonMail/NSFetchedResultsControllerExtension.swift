@@ -19,7 +19,7 @@ import Foundation
 
 extension NSFetchedResultsController {
     func numberOfRowsInSection(section: Int) -> Int {
-        let sectionInfo = sections?[section] as NSFetchedResultsSectionInfo
+        let sectionInfo = sections?[section] as! NSFetchedResultsSectionInfo
         return sectionInfo.numberOfObjects ?? 0
     }
     

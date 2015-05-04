@@ -33,7 +33,7 @@ class StorageLimit {
         }
     }
     
-    public func signOut()
+    func signOut()
     {
         NSUserDefaults.standardUserDefaults().removeObjectForKey(Key.isCheckSpaceDisabled);
     }

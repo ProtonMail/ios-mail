@@ -85,7 +85,7 @@ class MailboxPasswordViewController: UIViewController {
         
         if sharedUserDataService.isMailboxPasswordValid(password) {
             sharedUserDataService.setMailboxPassword(password, isRemembered: isRemembered)
-            (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .inbox, animated: true)
+            (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
         } else {
             let alert = UIAlertController(title: NSLocalizedString("Incorrect password"), message: NSLocalizedString("The mailbox password is incorrect."), preferredStyle: .Alert)
             alert.addAction((UIAlertAction.okAction()))

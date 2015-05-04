@@ -79,7 +79,7 @@ class MonitorSavesDataService {
     }
     
     private func filterUpdatedObjects(updatedObjects: NSSet, forEntityName entityName: String) -> NSSet? {
-        if let predicate = NSPredicate(format: "entity.name == %@", entityName) {
+        if let predicate = NSPredicate(format: "entity.name == %@", entityName) as NSPredicate?{
             let filteredObjects = updatedObjects.filteredSetUsingPredicate(predicate)
             
             return filteredObjects
@@ -110,7 +110,7 @@ class MonitorSavesDataService {
                         
                         for (attribute, handler) in attributeHandlerDictionary {
                             if changedValues[attribute] != nil {
-                                addMonitorQueueHandler(handler, forManagedObject: managedObject as NSManagedObject)
+                                addMonitorQueueHandler(handler, forManagedObject: managedObject as! NSManagedObject)
                             }
                         }
                     }

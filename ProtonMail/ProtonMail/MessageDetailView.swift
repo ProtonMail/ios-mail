@@ -760,7 +760,7 @@ class MessageDetailView: UIView {
     override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
         if context != &kKVOContext {
             super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
-        } else if object as NSObject == message && keyPath == Message.Attributes.isDetailDownloaded {
+        } else if object as! NSObject == message && keyPath == Message.Attributes.isDetailDownloaded {
             updateAttachments()
             updateEmailBodyWebView(true)
         }
@@ -791,7 +791,7 @@ extension MessageDetailView: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let attachment = attachmentForIndexPath(indexPath)
-        let cell = tableView.dequeueReusableCellWithIdentifier(AttachmentTableViewCell.Constant.identifier, forIndexPath: indexPath) as AttachmentTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(AttachmentTableViewCell.Constant.identifier, forIndexPath: indexPath) as! AttachmentTableViewCell
         cell.setFilename(attachment.fileName, fileSize: Int(attachment.fileSize))
         return cell
     }
@@ -872,7 +872,7 @@ extension MessageDetailView: UIWebViewDelegate {
             self.emailBodyWebView.alpha = 1.0
             }, completion: { finished in
                 if (self.message.hasAttachments) {
-                    self.attachments = self.message.attachments.allObjects as [Attachment]
+                    self.attachments = self.message.attachments.allObjects as! [Attachment]
                 }
 
                 self.tableView.reloadData()
@@ -881,7 +881,7 @@ extension MessageDetailView: UIWebViewDelegate {
 
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         if navigationType == .LinkClicked {
-            UIApplication.sharedApplication().openURL(request.URL)
+            UIApplication.sharedApplication().openURL(request.URL!)
             return false
         }
         

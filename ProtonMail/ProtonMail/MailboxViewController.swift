@@ -141,7 +141,7 @@ class MailboxViewController: ProtonMailViewController {
         if (segue.identifier == kSegueToMessageDetailController) {
             self.cancelButtonTapped()
             
-            let messageDetailViewController: MessageDetailViewController = segue.destinationViewController as MessageDetailViewController
+            let messageDetailViewController: MessageDetailViewController = segue.destinationViewController as! MessageDetailViewController
             let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
             
             if let indexPathForSelectedRow = indexPathForSelectedRow {
@@ -154,7 +154,7 @@ class MailboxViewController: ProtonMailViewController {
         } else if segue.identifier == kSegueToComposeShow {
             self.cancelButtonTapped()
 
-            let composeViewController: ComposeViewController = segue.destinationViewController as ComposeViewController
+            let composeViewController: ComposeViewController = segue.destinationViewController as! ComposeViewController
             let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
             
             if let indexPathForSelectedRow = indexPathForSelectedRow {
@@ -188,7 +188,8 @@ class MailboxViewController: ProtonMailViewController {
     
     internal func moreButtonTapped() {
         self.view.bringSubviewToFront(self.moreOptionsView)
-        let topLayoutGuide: UIView = self.topLayoutGuide as AnyObject! as UIView
+        //TODO:: need monitor here
+        let topLayoutGuide: UIView = self.topLayoutGuide as! UIView
         if (self.isViewingMoreOptions) {
             self.moreOptionsView.mas_updateConstraints({ (make) -> Void in
                 make.removeExisting = true
@@ -456,7 +457,7 @@ class MailboxViewController: ProtonMailViewController {
         
         if let indexPathsForVisibleRows = indexPathsForVisibleRows {
             for indexPath in indexPathsForVisibleRows {
-                let mailboxTableViewCell: MailboxTableViewCell = self.tableView.cellForRowAtIndexPath(indexPath) as MailboxTableViewCell
+                let mailboxTableViewCell: MailboxTableViewCell = self.tableView.cellForRowAtIndexPath(indexPath) as! MailboxTableViewCell
                 mailboxTableViewCell.setCellIsChecked(false)
                 mailboxTableViewCell.hideCheckboxOnLeftSide()
                 
@@ -480,7 +481,7 @@ class MailboxViewController: ProtonMailViewController {
                 if let indexPathsForVisibleRows = indexPathsForVisibleRows {
                     for visibleIndexPath in indexPathsForVisibleRows {
                         
-                        let mailboxTableViewCell: MailboxTableViewCell = self.tableView.cellForRowAtIndexPath(visibleIndexPath) as MailboxTableViewCell
+                        let mailboxTableViewCell: MailboxTableViewCell = self.tableView.cellForRowAtIndexPath(visibleIndexPath) as! MailboxTableViewCell
                         mailboxTableViewCell.showCheckboxOnLeftSide()
                         
                         // set selected row to checked
@@ -526,7 +527,7 @@ class MailboxViewController: ProtonMailViewController {
 
         self.navigationTitleLabel.text = text
         
-        if (text != nil && countElements(text!) > 0) {
+        if (text != nil && count(text!) > 0) {
             self.title = text
         }
     }
@@ -619,7 +620,7 @@ extension MailboxViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var mailboxCell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as MailboxTableViewCell
+        var mailboxCell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as! MailboxTableViewCell
         mailboxCell.delegate = self
         
         configureCell(mailboxCell, atIndexPath: indexPath)

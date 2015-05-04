@@ -63,11 +63,11 @@ class MenuViewController: UIViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let navigationController = segue.destinationViewController as UINavigationController
+        let navigationController = segue.destinationViewController as! UINavigationController
         
         if let firstViewController: UIViewController = navigationController.viewControllers.first as? UIViewController {
             if (firstViewController.isKindOfClass(MailboxViewController)) {
-                let mailboxViewController: MailboxViewController = navigationController.viewControllers.first as MailboxViewController
+                let mailboxViewController: MailboxViewController = navigationController.viewControllers.first as! MailboxViewController
                 
                 switch(segue.identifier!) {
                 case kSegueToInbox:
@@ -173,7 +173,7 @@ extension MenuViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: MenuTableViewCell = tableView.dequeueReusableCellWithIdentifier(itemForIndexPath(indexPath).identifier, forIndexPath: indexPath) as MenuTableViewCell
+        var cell: MenuTableViewCell = tableView.dequeueReusableCellWithIdentifier(itemForIndexPath(indexPath).identifier, forIndexPath: indexPath) as! MenuTableViewCell
         
         let selectedBackgroundView = UIView(frame: CGRectZero)
         selectedBackgroundView.backgroundColor = UIColor.ProtonMail.Blue_5C7A99

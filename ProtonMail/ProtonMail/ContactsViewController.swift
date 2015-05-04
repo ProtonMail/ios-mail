@@ -116,7 +116,7 @@ extension ContactsViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: ContactsTableViewCell = tableView.dequeueReusableCellWithIdentifier(kContactCellIdentifier, forIndexPath: indexPath) as ContactsTableViewCell
+        var cell: ContactsTableViewCell = tableView.dequeueReusableCellWithIdentifier(kContactCellIdentifier, forIndexPath: indexPath) as! ContactsTableViewCell
         
         var contact: ContactVO
         
@@ -170,7 +170,7 @@ extension ContactsViewController: UITableViewDelegate {
                 return
             }
             
-            if (countElements(contact.contactId) > 0) {
+            if (count(contact.contactId) > 0) {
                 sharedContactDataService.deleteContact(contact.contactId, completion: { (contacts, error) -> Void in
                     self.retrieveAllContacts()
                 })
@@ -217,14 +217,14 @@ extension ContactsViewController: UITableViewDelegate {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "toEditContact") {
-            let editContactViewController: EditContactViewController = segue.destinationViewController.viewControllers![0] as EditContactViewController
+            let editContactViewController: EditContactViewController = segue.destinationViewController.viewControllers![0] as! EditContactViewController
             editContactViewController.contact = self.selectedContact
             
             println("tableView.indexPathForSelectedRow() = \(tableView.indexPathForSelectedRow())")
         }
         
         if (segue.identifier == "toCompose") {
-            let composeViewController: ComposeViewController = segue.destinationViewController.viewControllers![0] as ComposeViewController
+            let composeViewController: ComposeViewController = segue.destinationViewController.viewControllers![0] as! ComposeViewController
             composeViewController.toSelectedContacts.append(self.selectedContact)
         }
     }

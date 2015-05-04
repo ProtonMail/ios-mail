@@ -42,17 +42,22 @@ class MoreOptionsView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        //TODO:: need monitor
+        self.backgroundColor = UIColor.ProtonMail.Blue_6789AB
+        addSubviews()
+        makeConstraints()
     }
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    override init() {
-        super.init()
-        self.backgroundColor = UIColor.ProtonMail.Blue_6789AB
-        addSubviews()
-        makeConstraints()
-    }
+//    init() {
+//        super.init()
+//        self.backgroundColor = UIColor.ProtonMail.Blue_6789AB
+//        addSubviews()
+//        makeConstraints()
+//    }
     
     
     // MARK: - Subviews

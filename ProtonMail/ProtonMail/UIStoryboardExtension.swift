@@ -32,7 +32,7 @@ extension UIStoryboard {
         }
         
         func instantiateInitialViewController() -> UIViewController {
-            return storyboard.instantiateInitialViewController() as UIViewController
+            return storyboard.instantiateInitialViewController() as! UIViewController
         }
     }
     

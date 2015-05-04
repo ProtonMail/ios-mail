@@ -48,23 +48,23 @@ class SettingTableViewController: ProtonMailViewController {
         switch segueID
         {
         case loginpwdSegue:
-            let changeLoginPwdView = segue.destinationViewController as ChangePasswordViewController;
+            let changeLoginPwdView = segue.destinationViewController as! ChangePasswordViewController;
             changeLoginPwdView.setViewModel(shareViewModelFactoy.getChangeLoginPassword())
             break
         case mailboxpwdSegue:
-            let changeMBPView = segue.destinationViewController as ChangePasswordViewController;
+            let changeMBPView = segue.destinationViewController as! ChangePasswordViewController;
             changeMBPView.setViewModel(shareViewModelFactoy.getChangeMailboxPassword())
             break
         case notificationSegue:
-            let changeMBPView = segue.destinationViewController as SettingDetailViewController;
+            let changeMBPView = segue.destinationViewController as! SettingDetailViewController;
             changeMBPView.setViewModel(shareViewModelFactoy.getChangeNotificationEmail())
             break
         case displaynameSegue:
-            let changeMBPView = segue.destinationViewController as SettingDetailViewController;
+            let changeMBPView = segue.destinationViewController as! SettingDetailViewController;
             changeMBPView.setViewModel(shareViewModelFactoy.getChangeDisplayName())
             break
         case signatureSegue:
-            let changeMBPView = segue.destinationViewController as SettingDetailViewController;
+            let changeMBPView = segue.destinationViewController as! SettingDetailViewController;
             changeMBPView.setViewModel(shareViewModelFactoy.getChangeSignature())
             break
         default:
@@ -119,7 +119,7 @@ class SettingTableViewController: ProtonMailViewController {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("setting_general", forIndexPath: indexPath) as GeneralSettingViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("setting_general", forIndexPath: indexPath) as! GeneralSettingViewCell
             let itme: SettingItem = setting_section[indexPath.row];
             cell.LeftText.text = itme.identifier;
             
@@ -143,7 +143,7 @@ class SettingTableViewController: ProtonMailViewController {
             return cell
         }
         else if indexPath.section == 1 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("setting_domains", forIndexPath: indexPath) as DomainsTableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("setting_domains", forIndexPath: indexPath) as! DomainsTableViewCell
             cell.domainText.text = multi_domains[indexPath.row].email
             if indexPath.row == 0
             {
@@ -158,7 +158,7 @@ class SettingTableViewController: ProtonMailViewController {
         }
         else if indexPath.section == 2 {
             
-            let cell = tableView.dequeueReusableCellWithIdentifier("setting_storage_cell", forIndexPath: indexPath) as StorageViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("setting_storage_cell", forIndexPath: indexPath) as! StorageViewCell
             let usedSpace = sharedUserDataService.usedSpace
             let maxSpace = sharedUserDataService.maxSpace
             cell.setValue(usedSpace, maxSpace: maxSpace)
@@ -168,14 +168,14 @@ class SettingTableViewController: ProtonMailViewController {
         }
         else
         {
-            let cell = tableView.dequeueReusableCellWithIdentifier("setting_storage_cell", forIndexPath: indexPath) as UITableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("setting_storage_cell", forIndexPath: indexPath) as! UITableViewCell
             cell.selectionStyle = UITableViewCellSelectionStyle.None
             return cell
         }
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let  headerCell = tableView.dequeueReusableCellWithIdentifier("header_cell") as CustomHeaderView
+        let  headerCell = tableView.dequeueReusableCellWithIdentifier("header_cell") as! CustomHeaderView
         
         switch (section) {
         case 0:

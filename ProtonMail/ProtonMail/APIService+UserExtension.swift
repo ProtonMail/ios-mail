@@ -92,8 +92,8 @@ extension APIService {
                     var response = response
                     
                     if self.isErrorResponse(response) {
-                        let errorCode = (response!["code"] as Int) ?? 0
-                        let description = (response!["error"] as NSDictionary).description ?? NSLocalizedString("Unknown error")
+                        let errorCode = (response!["code"] as! Int) ?? 0
+                        let description = (response!["error"] as! NSDictionary).description ?? NSLocalizedString("Unknown error")
                         error = NSError.protonMailError(code: errorCode, localizedDescription: description)
                     }
                     
@@ -163,7 +163,7 @@ extension UserInfo {
         userStatusResponseKey:String,
         userAddressResponseKey:String) {
             var addresses: [Address] = Array<Address>()
-            let address_response = response[userAddressResponseKey] as Array<Dictionary<String, AnyObject>>
+            let address_response = response[userAddressResponseKey] as! Array<Dictionary<String, AnyObject>>
             for res in address_response
             {
                 addresses.append(Address(

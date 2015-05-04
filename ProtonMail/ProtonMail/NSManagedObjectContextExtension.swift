@@ -26,7 +26,7 @@ extension NSManagedObjectContext {
         performBlock { () -> Void in
             var error: NSError?
             if let objects = self.executeFetchRequest(fetchRequest, error: &error) {
-                for object in objects as [NSManagedObject] {
+                for object in objects as! [NSManagedObject] {
                     self.deleteObject(object)
                 }
                 

@@ -51,15 +51,15 @@ class AddressBookService {
     }
     
     func contacts() -> [ContactVO] {
-        let contacts = addressBook.peopleOrderedByUsersPreference() as [RHPerson]
+        let contacts = addressBook.peopleOrderedByUsersPreference() as! [RHPerson]
         var contactVOs: [ContactVO] = []
         
         for contact: RHPerson in contacts {
             var name: String? = contact.name
-            let emails: RHMultiStringValue = contact.emails
+            let emails: RHMultiValue = contact.emails
             
             for (var emailIndex: UInt = 0; Int(emailIndex) < Int(emails.count()); emailIndex++) {
-                let emailAsString = emails.valueAtIndex(emailIndex) as String
+                let emailAsString = emails.valueAtIndex(emailIndex) as! String
                 
                 if (emailAsString.isValidEmail()) {
                     let email = emailAsString

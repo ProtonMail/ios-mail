@@ -571,13 +571,13 @@ extension ComposeView: MBContactPickerDelegate {
     func contactCollectionView(contactCollectionView: MBContactCollectionView!, didAddContact model: MBContactPickerModelProtocol!) {
         let contactPicker = contactPickerForContactCollectionView(contactCollectionView)
         
-        self.delegate?.composeView(self, didAddContact: model as ContactVO, toPicker: contactPicker)
+        self.delegate?.composeView(self, didAddContact: model as! ContactVO, toPicker: contactPicker)
     }
     
     func contactCollectionView(contactCollectionView: MBContactCollectionView!, didRemoveContact model: MBContactPickerModelProtocol!) {
         let contactPicker = contactPickerForContactCollectionView(contactCollectionView)
         
-        self.delegate?.composeView(self, didRemoveContact: model as ContactVO, fromPicker: contactPicker)
+        self.delegate?.composeView(self, didRemoveContact: model as! ContactVO, fromPicker: contactPicker)
     }
     
     func contactPicker(contactPicker: MBContactPicker!, didEnterCustomText text: String!) {

@@ -141,7 +141,7 @@ class ComposeViewController: ProtonMailViewController {
                         attachments = []
                     }
                     
-                    for attachment in message.attachments.allObjects as [Attachment] {
+                    for attachment in message.attachments.allObjects as! [Attachment] {
                         if let fileData = attachment.fileData {
                             attachments?.append(fileData)
                         }
@@ -166,14 +166,14 @@ class ComposeViewController: ProtonMailViewController {
         var names = nameList.splitByComma()
         
         // this prevents a crash if there are less names than emails
-        if countElements(names) != countElements(emails) {
+        if count(names) != count(emails) {
             names = emails
         }
         
-        let count = names.count;
+        let nameCount = names.count;
         
-        for var i = 0; i < countElements(emails); i++ {
-            selectedContacts.append(ContactVO(id: "", name: ((i>=0 && i<count) ? names[i] : ""), email: emails[i]))
+        for var i = 0; i < count(emails); i++ {
+            selectedContacts.append(ContactVO(id: "", name: ((i>=0 && i<nameCount) ? names[i] : ""), email: emails[i]))
         }
     }
 }

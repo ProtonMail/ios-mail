@@ -53,7 +53,8 @@ class PersistentQueue {
     init(queueName: String) {
         self.queueName = "\(Constant.queueIdentifer).\(queueName)"
         queueURL = NSFileManager.defaultManager().applicationSupportDirectoryURL.URLByAppendingPathComponent(self.queueName)
-        queue = NSMutableArray(contentsOfURL: queueURL) ?? []
+        queue = (NSMutableArray(contentsOfURL: queueURL) ?? []) as [AnyObject]
+        //TODO: need monitor
     }
     
     /// Adds an object to the persistent queue.
@@ -74,7 +75,7 @@ class PersistentQueue {
     /// Returns the next item in the persistent queue or nil, if the queue is empty.
     func next() -> (elementID: NSUUID, object: AnyObject)? {
         if let element = queue.first as? [String : AnyObject] {
-            return (element[Key.elementID] as NSUUID, element[Key.object]!)
+            return (element[Key.elementID] as! NSUUID, element[Key.object]!)
         }
         
         return nil
@@ -83,7 +84,7 @@ class PersistentQueue {
     /// Removes an element from the persistent queue
     func remove(#elementID: NSUUID) -> Bool {
         for (index, element) in enumerate(queue) {
-            if element[Key.elementID] as NSUUID == elementID {
+            if element[Key.elementID] as! NSUUID == elementID {
                 queue.removeAtIndex(index)
                 return true
             }

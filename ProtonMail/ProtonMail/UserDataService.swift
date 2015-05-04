@@ -200,7 +200,7 @@ class UserDataService {
         
         NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignOut, object: self)
         
-        (UIApplication.sharedApplication().delegate as AppDelegate).switchTo(storyboard: .signIn, animated: animated)
+        (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: animated)
     }
     
     func updateDisplayName(displayName: String, completion: UserInfoBlock?) {
@@ -236,8 +236,8 @@ class UserDataService {
         var error: NSError?
         if let userInfo = userInfo {
             if let newPrivateKey = OpenPGP().generateKey(mbp, userName: username!, error: &error) {
-                var pubkey = newPrivateKey["public"] as String
-                var privkey = newPrivateKey["private"] as String
+                var pubkey = newPrivateKey["public"] as! String
+                var privkey = newPrivateKey["private"] as! String
                 sharedAPIService.userUpdateKeypair(pubkey, privateKey: privkey, completion: { task, response, error in
                     if error == nil {
                         self.mailboxPassword = mbp;
@@ -378,7 +378,7 @@ extension Message {
     // MARK: Private variables
     
     private var passphrase: String {
-        return sharedUserDataService.mailboxPassword? ?? ""
+        return sharedUserDataService.mailboxPassword ?? ""
     }
     
     private var privateKey: String {

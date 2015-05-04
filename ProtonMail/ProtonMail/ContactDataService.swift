@@ -66,7 +66,7 @@ class ContactDataService {
                     var contacts = GRTJSONSerialization.mergeObjectsForEntityName(Contact.Attributes.entityName, fromJSONArray: contactsArray, inManagedObjectContext: context, error: &error)
                     
                     if error == nil {
-                        self.removeContacts(contacts as [Contact], notInContext: context, error: &error)
+                        self.removeContacts(contacts as! [Contact], notInContext: context, error: &error)
                         
                         if error == nil {
                             error = context.saveUpstreamIfNeeded()
@@ -119,7 +119,7 @@ class ContactDataService {
         fetchRequest.predicate = NSPredicate(format: "NOT (SELF IN %@)", contacts)
         
         if let deletedObjects = context.executeFetchRequest(fetchRequest, error: error) {
-            for deletedObject in deletedObjects as [NSManagedObject] {
+            for deletedObject in deletedObjects as! [NSManagedObject] {
                 context.deleteObject(deletedObject)
             }
         }

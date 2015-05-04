@@ -33,18 +33,36 @@ class AuthCredential: NSObject, NSCoding {
     var isExpired: Bool {
         return expiration == nil || NSDate().compare(expiration) != .OrderedAscending
     }
+    
 
     required init(accessToken: String!, refreshToken: String!, userID: String!, expiration: NSDate!) {
-        super.init()
+        
         
         self.accessToken = accessToken
         self.refreshToken = refreshToken
         self.userID = userID
         self.expiration = expiration
+        
+        super.init()
     }
     
+    
+    convenience required init(coder aDecoder: NSCoder) {
+        self.init(accessToken: aDecoder.decodeObjectForKey(CoderKey.accessToken) as? String,
+            refreshToken: aDecoder.decodeObjectForKey(CoderKey.refreshToken) as? String,
+            userID: aDecoder.decodeObjectForKey(CoderKey.userID) as? String,
+            expiration: aDecoder.decodeObjectForKey(CoderKey.expiration) as? NSDate);
+        
+        //        self.init(
+        //        accessToken = aDecoder.decodeObjectForKey(CoderKey.accessToken) as? String
+        //        refreshToken = aDecoder.decodeObjectForKey(CoderKey.refreshToken) as? String
+        //        userID = aDecoder.decodeObjectForKey(CoderKey.userID) as? String
+        //        expiration = aDecoder.decodeObjectForKey(CoderKey.expiration) as? NSDate
+    }
+    
+    
     private func expire() {
-        expiration = NSDate.distantPast() as NSDate
+        expiration = NSDate.distantPast() as! NSDate
         storeInKeychain()
     }
     
@@ -86,16 +104,7 @@ class AuthCredential: NSObject, NSCoding {
         static let userID = "userIDCoderKey"
         static let expiration = "expirationCoderKey"
     }
-    
-    required init(coder aDecoder: NSCoder) {
-        super.init()
-        
-        accessToken = aDecoder.decodeObjectForKey(CoderKey.accessToken) as? String
-        refreshToken = aDecoder.decodeObjectForKey(CoderKey.refreshToken) as? String
-        userID = aDecoder.decodeObjectForKey(CoderKey.userID) as? String
-        expiration = aDecoder.decodeObjectForKey(CoderKey.expiration) as? NSDate
-    }
-    
+
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(accessToken, forKey: CoderKey.accessToken)
         aCoder.encodeObject(refreshToken, forKey: CoderKey.refreshToken)
