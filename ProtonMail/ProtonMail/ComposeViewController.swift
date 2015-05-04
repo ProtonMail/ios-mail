@@ -235,7 +235,7 @@ extension ComposeViewController: ComposeViewDelegate {
             passwordHint: encryptionPasswordHint,
             expirationTimeInterval: composeView.expirationTimeInterval,
             body: self.htmlEditor.getHTML(),
-            attachments: attachments)
+            attachments: attachments,
             completion: {_, _, error in
                 if error == nil {
                     if let message = self.message {
