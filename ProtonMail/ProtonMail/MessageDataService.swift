@@ -84,7 +84,8 @@ class MessageDataService {
         if locationLastUpdated.compare(lastUpdatedCuttoff) == .OrderedAscending {
             NSLog("\(__FUNCTION__) lastUpdated: \(locationLastUpdated), paging update")
             // use paging
-            fetchMessagesForLocation(location, page: firstPage, completion: completion)
+            fetchMessagesForLocation(location, MessageID: "0", Time: 0, completion: completion)
+            //fetchMessagesForLocation(location, page: firstPage, completion: completion)
         } else {
             // use incremental
             NSLog("\(__FUNCTION__) lastUpdated: \(locationLastUpdated), incremental update")
@@ -163,7 +164,7 @@ class MessageDataService {
         }
     }
     
-    func fetchMessagesForLocation(location: MessageLocation, page: Int, completion: CompletionBlock?) {
+    func fetchMessagesForLocation(location: MessageLocation, MessageID : String, Time: Int, completion: CompletionBlock?) {
         queue {
             let lastUpdated = NSDate()
             
@@ -189,10 +190,10 @@ class MessageDataService {
                             NSLog("\(__FUNCTION__) error: \(error)")
                         }
                         dispatch_async(dispatch_get_main_queue()) {
-                            if page == self.firstPage {
-                                self.lastUpdatedStore[location.key] = lastUpdated
-                            }
-                            self.fetchMessageCountForInbox()
+//                            if page == self.firstPage {
+//                                self.lastUpdatedStore[location.key] = lastUpdated
+//                            }
+                            //self.fetchMessageCountForInbox()
                             completion?(task: task, response: responseDict, error: error)
                         }
                     }
@@ -200,8 +201,7 @@ class MessageDataService {
                     completion?(task: task, response: responseDict, error: NSError.unableToParseResponse(responseDict))
                 }
             }
-
-            sharedAPIService.messageList(location.rawValue, page: page, sortedColumn: .date, order: .descending, filter: .noFilter, completion: completionWrapper)
+            sharedAPIService.fetchPageMessageList(location.rawValue, time: Time, messageID: MessageID, completion: completionWrapper)
         }
     }
     

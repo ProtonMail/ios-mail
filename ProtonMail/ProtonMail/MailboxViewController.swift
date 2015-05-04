@@ -293,14 +293,15 @@ class MailboxViewController: ProtonMailViewController {
                         
                         tableView.showLoadingFooter()
                         
-                        sharedMessageDataService.fetchMessagesForLocation(mailboxLocation, page: pagingManager.nextPage, completion: { (task, messages, error) -> Void in
-                            self.tableView.hideLoadingFooter()
-                            
-                            if error != nil {
-                                NSLog("\(__FUNCTION__) search error: \(error)")
-                            } else {
-                                self.pagingManager.resultCount(messages?.count ?? 0)
-                            }
+                        sharedMessageDataService.fetchMessagesForLocation(mailboxLocation, MessageID: last.messageID ?? "0", Time:Int( last.time?.timeIntervalSince1970 ?? 0), completion:
+                            { (task, messages, error) -> Void in
+                                self.tableView.hideLoadingFooter()
+                                
+                                if error != nil {
+                                    NSLog("\(__FUNCTION__) search error: \(error)")
+                                } else {
+                                    self.pagingManager.resultCount(messages?.count ?? 0)
+                                }
                         })
                     }
                 }

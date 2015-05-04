@@ -136,13 +136,15 @@ class APIService {
             let completionWrapper: AuthCredentialBlock = { authCredential, error in
                 if error != nil && error!.domain == APIServiceErrorDomain && error!.code == AuthErrorCode.credentialInvalid {
                     sharedUserDataService.signOut(true)
+                    localCacheStatus.signOut();
+                    storageLimit.signOut();
                 }
             }
             
             authAuth(username: username, password: password, completion: completionWrapper)
         }
     }
-    
+
     // MARK: - Request methods
     
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking

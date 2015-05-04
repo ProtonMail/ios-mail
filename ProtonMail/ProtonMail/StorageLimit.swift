@@ -16,6 +16,8 @@
 
 import Foundation
 
+let storageLimit = StorageLimit()
+
 class StorageLimit {
     
     struct Key {
