@@ -4,6 +4,7 @@ inhibit_all_warnings!
 
 link_with 'ProtonMail', 'ProtonMailTests'
 pod 'AFNetworking'
+pod 'AFNetworkActivityLogger'
 pod 'Groot', :git => 'https://github.com/zhj4478/Groot.git'
 pod 'MBProgressHUD'
 pod 'NSDate+Helper'

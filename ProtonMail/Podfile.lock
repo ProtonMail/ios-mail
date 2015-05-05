@@ -1,4 +1,7 @@
 PODS:
+  - AFNetworkActivityLogger (2.0.4):
+    - AFNetworking/NSURLConnection (~> 2.0)
+    - AFNetworking/NSURLSession (~> 2.0)
   - AFNetworking (2.5.3):
     - AFNetworking/NSURLConnection (= 2.5.3)
     - AFNetworking/NSURLSession (= 2.5.3)
@@ -39,6 +42,7 @@ PODS:
   - ZSSRichTextEditor (0.5.2.1)
 
 DEPENDENCIES:
+  - AFNetworkActivityLogger
   - AFNetworking
   - FSSyncSpinner
   - Groot (from `https://github.com/zhj4478/Groot.git`)
@@ -67,6 +71,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/zhj4478/Groot.git
 
 SPEC CHECKSUMS:
+  AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
   FSSyncSpinner: b75c88af18a5f6ac6237a9cffdd16c026d9e5b2b
   Groot: feb95bd5ece64f6786df281a9353a572444d834a

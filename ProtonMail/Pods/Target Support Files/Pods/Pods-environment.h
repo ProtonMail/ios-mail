@@ -6,6 +6,12 @@
 // project.
 
 
+// AFNetworkActivityLogger
+#define COCOAPODS_POD_AVAILABLE_AFNetworkActivityLogger
+#define COCOAPODS_VERSION_MAJOR_AFNetworkActivityLogger 2
+#define COCOAPODS_VERSION_MINOR_AFNetworkActivityLogger 0
+#define COCOAPODS_VERSION_PATCH_AFNetworkActivityLogger 4
+
 // AFNetworking
 #define COCOAPODS_POD_AVAILABLE_AFNetworking
 #define COCOAPODS_VERSION_MAJOR_AFNetworking 2

@@ -82,6 +82,10 @@ extension AppDelegate: UIApplicationDelegate {
         shareViewModelFactoy = ViewModelFactoryProduction()
         
         AFNetworkActivityIndicatorManager.sharedManager().enabled = true
+        
+        AFNetworkActivityLogger.sharedLogger().startLogging()
+        AFNetworkActivityLogger.sharedLogger().level = AFHTTPRequestLoggerLevel.AFLoggerLevelDebug
+        
         setupWindow()
         sharedMessageDataService.launchCleanUpIfNeeded()
         sharedPushNotificationService.registerForRemoteNotifications()

@@ -66,12 +66,12 @@ class APIService {
     internal func afNetworkingBlocksForRequest(#method: HTTPMethod, path: String, parameters: AnyObject?, authenticated: Bool = true, completion: CompletionBlock?) -> (AFNetworkingSuccessBlock?, AFNetworkingFailureBlock?) {
         if let completion = completion {
             let failure: AFNetworkingFailureBlock = { task, error in
-                PMLog("\(__FUNCTION__) Error: \(error)")
+                //PMLog("\(__FUNCTION__) Error: \(error)")
                 completion(task: task, response: nil, error: error)
             }
             let success: AFNetworkingSuccessBlock = { task, responseObject in
                 
-                PMLog("\(__FUNCTION__) Response: \(responseObject)")
+                //PMLog("\(__FUNCTION__) Response: \(responseObject)")
 
                 if let responseDictionary = responseObject as? Dictionary<String, AnyObject> {
                     if authenticated && responseDictionary["code"] as? Int == 401 {

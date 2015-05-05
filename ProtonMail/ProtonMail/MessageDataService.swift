@@ -190,9 +190,9 @@ class MessageDataService {
                             NSLog("\(__FUNCTION__) error: \(error)")
                         }
                         dispatch_async(dispatch_get_main_queue()) {
-//                            if page == self.firstPage {
-//                                self.lastUpdatedStore[location.key] = lastUpdated
-//                            }
+                            if MessageID == "0" && Time == 0 {
+                                self.lastUpdatedStore[location.key] = lastUpdated
+                            }
                             //self.fetchMessageCountForInbox()
                             completion?(task: task, response: responseDict, error: error)
                         }
@@ -548,7 +548,7 @@ class MessageDataService {
                 
                 dispatch_async(dispatch_get_main_queue()) {
                     completion?(task: task, response: response, error: error)
-                    self.fetchMessageCountForInbox()
+                    //self.fetchMessageCountForInbox()
                     return
                 }
             }

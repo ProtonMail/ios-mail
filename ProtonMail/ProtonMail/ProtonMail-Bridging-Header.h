@@ -18,6 +18,7 @@
 
 #import <AFNetworking/AFNetworking.h>
 #import <AFNetworking/UIKit+AFNetworking.h>
+#import <AFNetworkActivityLogger.h>
 #import <FSSyncSpinner/FSSyncSpinner.h>
 #import <Groot/Groot.h>
 #import <Masonry/Masonry.h>
