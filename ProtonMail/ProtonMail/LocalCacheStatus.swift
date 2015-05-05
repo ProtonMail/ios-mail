@@ -17,6 +17,7 @@ class CacheStatus {
         static let lastFetchMessageID = "last_fetch_message_id"
         static let lastFetchMessageTime = "last_fetch_message_time"
         static let lastUpdateTime = "last_update_time"
+        static let historyTimeStamp = "history_timestamp"
     }
     
     private var getLastFetchMessageID: String {
