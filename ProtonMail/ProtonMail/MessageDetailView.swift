@@ -473,7 +473,7 @@ class MessageDetailView: UIView {
         emailDetailToLabel.mas_makeConstraints { (make) -> Void in
             make.top.equalTo()(self.emailDetailView)
             make.left.equalTo()(self.emailDetailView)
-            make.width.equalTo()(self.kEmailDetailToWidth)
+            make.width.equalTo()(self.emailDetailView)
             make.height.equalTo()(self.emailDetailToLabel.frame.size.height)
         }
         
@@ -609,6 +609,8 @@ class MessageDetailView: UIView {
         if (isShowingDetail) {
             UIView.transitionWithView(self.emailRecipients, duration: kAnimationDuration, options: kAnimationOption, animations: { () -> Void in
                 self.emailRecipients.text = "From: \(self.message.sender)"
+                self.emailDetailToLabel.text = "To: \(self.message.recipientList)"
+                self.emailDetailToLabel.sizeToFit()
             }, completion: nil)
             
             self.emailDetailButton.setTitle(NSLocalizedString("Hide Details"), forState: UIControlState.Normal)
@@ -705,7 +707,7 @@ class MessageDetailView: UIView {
         self.emailDetailToLabel = UILabel()
         self.emailDetailToLabel.font = UIFont.robotoLight(size: UIFont.Size.h5)
         self.emailDetailToLabel.numberOfLines = 1
-        self.emailDetailToLabel.text = "To:"
+        self.emailDetailToLabel.text = "To: \(self.message.recipientList)"
         self.emailDetailToLabel.textColor = UIColor.ProtonMail.Gray_999DA1
         self.emailDetailToLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailToLabel)
