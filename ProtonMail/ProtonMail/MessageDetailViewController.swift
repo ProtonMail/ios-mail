@@ -56,7 +56,6 @@ class MessageDetailViewController: ProtonMailViewController {
         if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
             NSLog("\(__FUNCTION__) error: \(error)")
         }
-
     }
     
     private func setupRightButtons() {

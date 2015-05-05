@@ -76,6 +76,11 @@ class ComposeViewController: ProtonMailViewController {
             self.composeView.ccContactPicker.reloadData()
             self.composeView.bccContactPicker.reloadData()
         }
+        
+        message?.isRead = true;
+        if let error = message!.managedObjectContext?.saveUpstreamIfNeeded() {
+            NSLog("\(__FUNCTION__) error: \(error)")
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
