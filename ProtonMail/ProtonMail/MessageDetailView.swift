@@ -608,7 +608,7 @@ class MessageDetailView: UIView {
 
         if (isShowingDetail) {
             UIView.transitionWithView(self.emailRecipients, duration: kAnimationDuration, options: kAnimationOption, animations: { () -> Void in
-                self.emailRecipients.text = self.message.sender
+                self.emailRecipients.text = "From: \(self.message.sender)"
             }, completion: nil)
             
             self.emailDetailButton.setTitle(NSLocalizedString("Hide Details"), forState: UIControlState.Normal)
