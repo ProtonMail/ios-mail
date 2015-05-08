@@ -8,10 +8,10 @@
     <customFonts key="customFonts">
         <mutableArray key="Roboto-Light.ttf">
             <string>Roboto-Light</string>
-            <string>Roboto-Light</string>
-            <string>Roboto-Light</string>
         </mutableArray>
         <mutableArray key="Roboto-Regular.ttf">
+            <string>Roboto-Regular</string>
+            <string>Roboto-Regular</string>
             <string>Roboto-Regular</string>
             <string>Roboto-Regular</string>
             <string>Roboto-Regular</string>
@@ -75,12 +75,6 @@
                                     <constraint firstAttribute="height" constant="37" id="Ajb-2I-lem"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SIGN IN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fjY-z1-3LU">
-                                <rect key="frame" x="269" y="259" width="63" height="22"/>
-                                <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="gnm-cH-vcp" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
                                 <rect key="frame" x="161" y="375" width="278" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -101,11 +95,23 @@
                                         <rect key="frame" x="0.0" y="0.0" width="26" height="27"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="27" id="4Ar-eT-1Ac"/>
+                                            <constraint firstAttribute="width" constant="26" id="UWr-gO-5B1"/>
+                                            <constraint firstAttribute="width" constant="272" id="rdf-OZ-QPU"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="12"/>
                                         <inset key="titleEdgeInsets" minX="11" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" image="unchecked_signin"/>
                                         <state key="selected" image="checked_signin"/>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="rdf-OZ-QPU"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="widthClass=compact">
+                                            <mask key="constraints">
+                                                <exclude reference="UWr-gO-5B1"/>
+                                            </mask>
+                                        </variation>
                                         <connections>
                                             <action selector="rememberButtonAction:" destination="rb7-9h-TvB" eventType="touchUpInside" id="HRC-Pe-wVj"/>
                                             <action selector="rememberButtonAction:" destination="Zzb-6r-tlP" eventType="touchUpInside" id="wxg-fy-hAk"/>
@@ -206,6 +212,32 @@
                                     <action selector="signInAction:" destination="rb7-9h-TvB" eventType="touchUpInside" id="gIp-WA-1aM"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SIGN IN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fjY-z1-3LU">
+                                <rect key="frame" x="269" y="259" width="63" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="63" id="9xZ-Pd-fEc">
+                                        <variation key="widthClass=compact" constant="68"/>
+                                    </constraint>
+                                    <constraint firstAttribute="height" constant="22" id="N2W-AT-Rbb">
+                                        <variation key="widthClass=compact" constant="24"/>
+                                    </constraint>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="18"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="9xZ-Pd-fEc"/>
+                                        <exclude reference="N2W-AT-Rbb"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="9xZ-Pd-fEc"/>
+                                        <include reference="N2W-AT-Rbb"/>
+                                    </mask>
+                                </variation>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.13725490196078433" green="0.22745098039215686" blue="0.37254901960784315" alpha="1" colorSpace="calibratedRGB"/>
                         <gestureRecognizers/>
@@ -213,6 +245,7 @@
                             <constraint firstAttribute="trailing" secondItem="ZKK-VD-dsX" secondAttribute="trailing" id="1Zh-Vm-Rhb"/>
                             <constraint firstItem="Sfi-uH-1aX" firstAttribute="top" relation="greaterThanOrEqual" secondItem="AJu-1e-alo" secondAttribute="bottom" constant="12" id="9DW-G2-jky"/>
                             <constraint firstItem="gnm-cH-vcp" firstAttribute="width" secondItem="sKV-Mt-Vgi" secondAttribute="width" id="BdG-0a-KE8"/>
+                            <constraint firstItem="72N-j7-s2R" firstAttribute="width" secondItem="AJu-1e-alo" secondAttribute="width" id="ETA-79-d8Z"/>
                             <constraint firstAttribute="centerY" secondItem="fjY-z1-3LU" secondAttribute="centerY" priority="250" constant="30" id="EeN-kE-Oj7"/>
                             <constraint firstAttribute="centerX" secondItem="sKV-Mt-Vgi" secondAttribute="centerX" id="FDj-Et-ovL"/>
                             <constraint firstItem="oyG-Fo-wN1" firstAttribute="width" secondItem="gnm-cH-vcp" secondAttribute="width" id="IG2-GD-D6O"/>
@@ -240,12 +273,14 @@
                             <mask key="constraints">
                                 <exclude reference="LHo-5u-fR2"/>
                                 <exclude reference="IG2-GD-D6O"/>
+                                <exclude reference="ETA-79-d8Z"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="constraints">
                                 <include reference="LHo-5u-fR2"/>
                                 <include reference="IG2-GD-D6O"/>
+                                <exclude reference="ETA-79-d8Z"/>
                                 <include reference="9DW-G2-jky"/>
                             </mask>
                         </variation>
@@ -697,9 +732,29 @@
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DECRYPT MAILBOX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jzp-6U-vEt">
                                 <rect key="frame" x="221" y="294" width="159" height="22"/>
-                                <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="22" id="3hY-nO-GAW">
+                                        <variation key="widthClass=compact" constant="24"/>
+                                    </constraint>
+                                    <constraint firstAttribute="width" constant="159" id="dvK-ku-L3n">
+                                        <variation key="widthClass=compact" constant="163"/>
+                                    </constraint>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="3hY-nO-GAW"/>
+                                        <exclude reference="dvK-ku-L3n"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="3hY-nO-GAW"/>
+                                        <include reference="dvK-ku-L3n"/>
+                                    </mask>
+                                </variation>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Mailbox Password" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="16" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="aXn-9j-Mz5" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
                                 <rect key="frame" x="164" y="354" width="272" height="44"/>
@@ -736,24 +791,11 @@
                                         <rect key="frame" x="0.0" y="0.0" width="26" height="27"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="27" id="MTP-xv-mvf"/>
-                                            <constraint firstAttribute="width" constant="26" id="hi8-hd-0hm"/>
-                                            <constraint firstAttribute="width" constant="272" id="mhK-Iv-o8E"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="12"/>
                                         <inset key="titleEdgeInsets" minX="11" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" image="unchecked_signin"/>
                                         <state key="selected" image="checked_signin"/>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="mhK-Iv-o8E"/>
-                                            </mask>
-                                        </variation>
-                                        <variation key="widthClass=compact" misplaced="YES">
-                                            <rect key="frame" x="0.0" y="0.0" width="203" height="27"/>
-                                            <mask key="constraints">
-                                                <exclude reference="hi8-hd-0hm"/>
-                                            </mask>
-                                        </variation>
                                         <connections>
                                             <action selector="rememberButtonAction:" destination="Zzb-6r-tlP" eventType="touchUpInside" id="UfQ-H2-yMP"/>
                                         </connections>
@@ -768,35 +810,32 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="FVo-0c-RsR" firstAttribute="top" secondItem="ZpN-rJ-f5g" secondAttribute="top" id="0P2-94-6Mf"/>
+                                    <constraint firstAttribute="width" constant="203" id="0u5-KN-Ncx"/>
                                     <constraint firstItem="tTZ-9P-EdG" firstAttribute="leading" secondItem="ZpN-rJ-f5g" secondAttribute="leading" id="4Cs-w5-ug7"/>
                                     <constraint firstItem="tTZ-9P-EdG" firstAttribute="top" secondItem="ZpN-rJ-f5g" secondAttribute="top" id="4sN-Zf-SZF"/>
                                     <constraint firstAttribute="trailing" secondItem="tTZ-9P-EdG" secondAttribute="trailing" id="BWK-Uc-z8y"/>
                                     <constraint firstAttribute="bottom" secondItem="tTZ-9P-EdG" secondAttribute="bottom" id="WR3-PK-9Pn"/>
                                     <constraint firstItem="FVo-0c-RsR" firstAttribute="leading" secondItem="ZpN-rJ-f5g" secondAttribute="leading" constant="34" id="Y3y-ch-lHn"/>
-                                    <constraint firstAttribute="centerY" secondItem="FVo-0c-RsR" secondAttribute="centerY" id="bnv-5d-eBf"/>
-                                    <constraint firstAttribute="centerY" secondItem="tTZ-9P-EdG" secondAttribute="centerY" id="cG7-av-Ueo"/>
-                                    <constraint firstAttribute="height" constant="44" id="h1f-Ot-SMG"/>
-                                    <constraint firstAttribute="trailing" secondItem="FVo-0c-RsR" secondAttribute="trailing" constant="8" id="l4U-QX-GIV"/>
-                                    <constraint firstItem="FVo-0c-RsR" firstAttribute="leading" secondItem="tTZ-9P-EdG" secondAttribute="trailing" constant="8" id="mSr-N7-Z6N"/>
+                                    <constraint firstAttribute="trailing" secondItem="FVo-0c-RsR" secondAttribute="trailing" constant="8" id="l4U-QX-GIV">
+                                        <variation key="widthClass=compact" constant="0.0"/>
+                                    </constraint>
                                     <constraint firstAttribute="bottom" secondItem="FVo-0c-RsR" secondAttribute="bottom" id="w6C-lL-hUQ"/>
-                                    <constraint firstItem="tTZ-9P-EdG" firstAttribute="centerY" secondItem="FVo-0c-RsR" secondAttribute="centerY" id="wnV-f9-cx5"/>
+                                    <constraint firstAttribute="height" constant="27" id="xoM-WK-mtn"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
-                                        <exclude reference="h1f-Ot-SMG"/>
+                                        <exclude reference="0u5-KN-Ncx"/>
+                                        <exclude reference="xoM-WK-mtn"/>
                                         <exclude reference="BWK-Uc-z8y"/>
-                                        <exclude reference="cG7-av-Ueo"/>
-                                        <exclude reference="wnV-f9-cx5"/>
                                         <exclude reference="Y3y-ch-lHn"/>
-                                        <exclude reference="bnv-5d-eBf"/>
                                     </mask>
                                 </variation>
-                                <variation key="widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="99" y="408" width="203" height="27"/>
+                                <variation key="widthClass=compact">
                                     <mask key="constraints">
+                                        <include reference="0u5-KN-Ncx"/>
+                                        <include reference="xoM-WK-mtn"/>
                                         <include reference="BWK-Uc-z8y"/>
                                         <include reference="Y3y-ch-lHn"/>
-                                        <exclude reference="mSr-N7-Z6N"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -814,17 +853,9 @@
                             <constraint firstAttribute="centerX" secondItem="Jzp-6U-vEt" secondAttribute="centerX" id="Wx4-rr-ZaW"/>
                             <constraint firstItem="Jzp-6U-vEt" firstAttribute="top" secondItem="b63-Fw-RYH" secondAttribute="bottom" constant="40" id="Zlc-SP-nlN"/>
                             <constraint firstItem="ZpN-rJ-f5g" firstAttribute="top" secondItem="aXn-9j-Mz5" secondAttribute="bottom" constant="10" id="cYb-cX-Xlx"/>
-                            <constraint firstItem="ZpN-rJ-f5g" firstAttribute="width" secondItem="aXn-9j-Mz5" secondAttribute="width" id="ctN-VO-nrI"/>
                             <constraint firstAttribute="centerX" secondItem="ZpN-rJ-f5g" secondAttribute="centerX" id="lue-SG-9C1"/>
-                            <constraint firstItem="Jzp-6U-vEt" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Wmm-ES-Jna" secondAttribute="bottom" constant="11" id="nfv-cv-m8s"/>
                             <constraint firstAttribute="centerX" secondItem="zUC-Hd-aMe" secondAttribute="centerX" id="qGa-WE-cJH"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="nfv-cv-m8s"/>
-                                <exclude reference="ctN-VO-nrI"/>
-                            </mask>
-                        </variation>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="Wpl-TL-83p" appends="YES" id="hE6-qB-oeF"/>
                         </connections>
