@@ -199,7 +199,7 @@ class SignUpViewController: UIViewController {
     
     @IBAction func signUpAction(sender: UIButton) {
         checkUserExsit();
-        //  signUpUser()
+        signUpUser()
     }
     
     @IBAction func updateMeNewsAction(sender: UIButton) {

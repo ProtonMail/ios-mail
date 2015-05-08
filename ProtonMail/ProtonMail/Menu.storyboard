@@ -88,10 +88,10 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fy4-ZC-gVz" id="LAU-bi-L1X">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="draft" translatesAutoresizingMaskIntoConstraints="NO" id="Rrm-fW-TBp">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="draft" translatesAutoresizingMaskIntoConstraints="NO" id="Rrm-fW-TBp">
                                             <rect key="frame" x="24" y="8" width="52" height="54"/>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" text="Subject" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kq9-Xc-uKF">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" text="Subject" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kq9-Xc-uKF">
                                             <rect key="frame" x="8" y="70" width="84" height="16"/>
                                             <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="13"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -180,9 +180,6 @@
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="17"/>
                                 <color key="textColor" red="0.2196078431372549" green="0.22745098039215686" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
-                                <variation key="widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="16" y="72" width="123" height="20"/>
-                                </variation>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5sX-Zk-W85">
                                 <rect key="frame" x="16" y="100" width="568" height="480"/>
@@ -1266,9 +1263,6 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
                                                     <color key="textColor" red="0.50196078430000002" green="0.51764705879999995" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
-                                                    <variation key="widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="343" y="10" width="41" height="14"/>
-                                                    </variation>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="encrypted_main" translatesAutoresizingMaskIntoConstraints="NO" id="pXj-OE-cWa">
                                                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
@@ -1441,11 +1435,17 @@
                                                 <mask key="constraints">
                                                     <exclude reference="hse-Mw-wEK"/>
                                                     <exclude reference="tDt-AB-x8R"/>
-                                                    <exclude reference="Bca-iX-Dj7"/>
-                                                    <exclude reference="seq-dn-5NO"/>
                                                     <exclude reference="gBQ-2T-x9M"/>
                                                     <exclude reference="hAv-2g-kQj"/>
                                                     <exclude reference="y8C-R6-X0v"/>
+                                                    <exclude reference="LZX-6w-dBn"/>
+                                                    <exclude reference="UpI-bo-3Sn"/>
+                                                    <exclude reference="Bca-iX-Dj7"/>
+                                                    <exclude reference="seq-dn-5NO"/>
+                                                    <exclude reference="7HQ-BW-Rc7"/>
+                                                    <exclude reference="MFP-JU-wZY"/>
+                                                    <exclude reference="mN4-3M-AYU"/>
+                                                    <exclude reference="zhI-hY-CJ3"/>
                                                     <exclude reference="4Z6-av-Gla"/>
                                                     <exclude reference="8Vv-gi-y3r"/>
                                                     <exclude reference="90z-GL-YN5"/>
@@ -1460,8 +1460,6 @@
                                                     <exclude reference="4uS-pI-cIE"/>
                                                     <exclude reference="HLa-0n-sbO"/>
                                                     <exclude reference="nIy-GM-D6N"/>
-                                                    <exclude reference="LZX-6w-dBn"/>
-                                                    <exclude reference="UpI-bo-3Sn"/>
                                                     <exclude reference="6Jp-ji-wfQ"/>
                                                     <exclude reference="AEC-7T-pYX"/>
                                                     <exclude reference="Csk-vU-KVK"/>
@@ -1469,10 +1467,6 @@
                                                     <exclude reference="J8r-MV-iux"/>
                                                     <exclude reference="Zad-Ot-Jcf"/>
                                                     <exclude reference="jad-eC-yGr"/>
-                                                    <exclude reference="7HQ-BW-Rc7"/>
-                                                    <exclude reference="MFP-JU-wZY"/>
-                                                    <exclude reference="mN4-3M-AYU"/>
-                                                    <exclude reference="zhI-hY-CJ3"/>
                                                 </mask>
                                             </variation>
                                             <variation key="widthClass=compact">
@@ -1489,11 +1483,17 @@
                                                 <mask key="constraints">
                                                     <include reference="hse-Mw-wEK"/>
                                                     <include reference="tDt-AB-x8R"/>
-                                                    <include reference="Bca-iX-Dj7"/>
-                                                    <include reference="seq-dn-5NO"/>
                                                     <include reference="gBQ-2T-x9M"/>
                                                     <exclude reference="hAv-2g-kQj"/>
                                                     <include reference="y8C-R6-X0v"/>
+                                                    <include reference="LZX-6w-dBn"/>
+                                                    <include reference="UpI-bo-3Sn"/>
+                                                    <include reference="Bca-iX-Dj7"/>
+                                                    <include reference="seq-dn-5NO"/>
+                                                    <exclude reference="7HQ-BW-Rc7"/>
+                                                    <include reference="MFP-JU-wZY"/>
+                                                    <exclude reference="mN4-3M-AYU"/>
+                                                    <exclude reference="zhI-hY-CJ3"/>
                                                     <exclude reference="4Z6-av-Gla"/>
                                                     <include reference="8Vv-gi-y3r"/>
                                                     <include reference="90z-GL-YN5"/>
@@ -1508,8 +1508,6 @@
                                                     <exclude reference="4uS-pI-cIE"/>
                                                     <exclude reference="HLa-0n-sbO"/>
                                                     <include reference="nIy-GM-D6N"/>
-                                                    <include reference="LZX-6w-dBn"/>
-                                                    <include reference="UpI-bo-3Sn"/>
                                                     <exclude reference="6Jp-ji-wfQ"/>
                                                     <exclude reference="AEC-7T-pYX"/>
                                                     <include reference="Csk-vU-KVK"/>
@@ -1517,10 +1515,6 @@
                                                     <include reference="J8r-MV-iux"/>
                                                     <exclude reference="Zad-Ot-Jcf"/>
                                                     <exclude reference="jad-eC-yGr"/>
-                                                    <exclude reference="7HQ-BW-Rc7"/>
-                                                    <include reference="MFP-JU-wZY"/>
-                                                    <exclude reference="mN4-3M-AYU"/>
-                                                    <exclude reference="zhI-hY-CJ3"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>

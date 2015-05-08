@@ -75,7 +75,7 @@ class SignInViewController: UIViewController {
     // FIXME: Work around for http://stackoverflow.com/questions/25925914/attributed-string-with-custom-fonts-in-storyboard-does-not-load-correctly <http://openradar.appspot.com/18425809>
     func setupSignUpButton() {
         let needAnAccount = NSLocalizedString("Need an account? ", comment: "Need an account? ")
-        let signUp = NSLocalizedString("SignUp.", comment: "SignUp.")
+        let signUp = NSLocalizedString("Sign Up.", comment: "Sign Up.")
         
         let title = NSMutableAttributedString(string: needAnAccount, attributes: [NSUnderlineStyleAttributeName : NSUnderlineStyle.StyleNone.rawValue])
         let signUpAttributed = NSAttributedString(string: signUp, attributes: [NSUnderlineStyleAttributeName : NSUnderlineStyle.StyleSingle.rawValue])
