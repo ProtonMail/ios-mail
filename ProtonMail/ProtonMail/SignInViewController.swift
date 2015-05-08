@@ -55,6 +55,16 @@ class SignInViewController: UIViewController {
         updateSignInButton(usernameText: usernameTextField.text, passwordText: passwordTextField.text)
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if(UIDevice.currentDevice().isLargeScreen())
+        {
+            usernameTextField.becomeFirstResponder()
+        }
+    }
+
+    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)

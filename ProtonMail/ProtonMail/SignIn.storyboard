@@ -173,6 +173,9 @@
                                 <variation key="widthClass=compact" misplaced="YES">
                                     <rect key="frame" x="148" y="540" width="105" height="27"/>
                                 </variation>
+                                <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="152" y="640" width="98" height="27"/>
+                                </variation>
                                 <connections>
                                     <segue destination="Oxb-Ai-gED" kind="push" id="MUM-GS-Uo9"/>
                                 </connections>

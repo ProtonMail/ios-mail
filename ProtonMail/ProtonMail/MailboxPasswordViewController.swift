@@ -46,7 +46,11 @@ class MailboxPasswordViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        passwordTextField.becomeFirstResponder()
+        
+        if(UIDevice.currentDevice().isLargeScreen())
+        {
+            passwordTextField.becomeFirstResponder()
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
