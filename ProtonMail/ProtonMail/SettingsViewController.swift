@@ -284,7 +284,7 @@ class SettingsViewController: ProtonMailViewController {
         
         let progress: Float = Float(usedSpace) / Float(maxSpace)
         
-        storageProgressBar.setProgress(progress, animated: true)
+        storageProgressBar.setProgress(progress, animated: false)
         storageUsageDescriptionLabel.text = "\(formattedUsedSpace)/\(formattedMaxSpace)"
     }
     

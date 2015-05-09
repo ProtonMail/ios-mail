@@ -31,7 +31,7 @@ class StorageViewCell: UITableViewCell {
         
         let progress: Float = Float(usedSpace) / Float(maxSpace)
         
-        storageProgressBar.setProgress(progress, animated: true)
+        storageProgressBar.setProgress(progress, animated: false)
         storageUsageDescriptionLable.text = "\(formattedUsedSpace)/\(formattedMaxSpace)"
     }
 }
