@@ -743,7 +743,12 @@ class MessageDetailView: UIView {
         self.emailDetailDateLabel = UILabel()
         self.emailDetailDateLabel.font = UIFont.robotoLight(size: UIFont.Size.h5)
         self.emailDetailDateLabel.numberOfLines = 1
-        self.emailDetailDateLabel.text = "Date:"
+        if let messageTime = self.message.time {
+            let tm = messageTime.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? "";
+            self.emailDetailDateLabel.text = "Date: \(tm)"
+        } else {
+            self.emailDetailDateLabel.text = "Date: "
+        }
         self.emailDetailDateLabel.textColor = UIColor.ProtonMail.Gray_999DA1
         self.emailDetailDateLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailDateLabel)
