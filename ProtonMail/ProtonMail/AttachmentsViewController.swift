@@ -134,7 +134,8 @@ class AttachmentsViewController: UICollectionViewController {
 // MARK: - UIImagePickerControllerDelegate
 extension AttachmentsViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
-        attachments.append(image)
+        let img_jpg = UIImage(data:UIImageJPEGRepresentation(image, 1.0))!
+        attachments.append(img_jpg)
         picker.dismissViewControllerAnimated(true, completion: nil)
     }
     

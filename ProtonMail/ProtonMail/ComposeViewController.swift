@@ -133,10 +133,22 @@ class ComposeViewController: ProtonMailViewController {
                 } else if action == ComposeView.ComposeMessageAction.Forward {
                     composeView.subject.text = "Fwd: \(message.title)"
                     
-                    let forwardedMessage = NSLocalizedString("Forwarded message")
-                    let body = message.decryptBody(nil) ?? ""
+                    let time = message.time?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
+
+                    var forwardHeader = "<br><br><br>---------- Forwarded message ----------<br>From: \(message.senderName)<br>Date: \(time)<br>Subject: \(message.title)"
+                    if message.recipientList != "" {
+                        forwardHeader += "<br>To: \(message.recipientList)<br>"
+                    }
+                    if message.ccList != "" {
+                        forwardHeader += "<br>To: \(message.ccList)<br>"
+                    }
+                    forwardHeader += "<br><br><br>"
+
                     
-                    htmlEditor.setHTML("\(signature)\n\n---------- \(forwardedMessage) ----------\n\(body)")
+                    let body = message.decryptBodyIfNeeded(nil) ?? ""
+                    
+                    htmlEditor.setHTML("<br><br><br>\(signature) \(forwardHeader) \(body)")
+                    
                 } else if action == draftAction {
                     navigationItem.leftBarButtonItem = nil
                     
