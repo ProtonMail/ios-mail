@@ -248,8 +248,12 @@ extension ComposeViewController: ComposeViewDelegate {
             completion: {_, _, error in
                 if error == nil {
                     if let message = self.message {
-                        message.location = .trash
-                        
+                        println("MessageID after send:\(message.messageID)")
+                        println("Message Location : \(message.location )")
+                        if(message.messageID != "0" && message.location == MessageLocation.draft)
+                        {
+                            message.location = .trash
+                        }
                         if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
                             NSLog("\(__FUNCTION__) error: \(error)")
                         }
