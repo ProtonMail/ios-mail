@@ -133,6 +133,8 @@
 		754CD4881AB809D60084C54A /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754CD4871AB809D60084C54A /* SettingTableViewController.swift */; };
 		754CD48B1AB80D770084C54A /* CustomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754CD48A1AB80D770084C54A /* CustomHeaderView.swift */; };
 		7565998F1AC4809B00C187E4 /* EncryptTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7565998E1AC4809B00C187E4 /* EncryptTypes.swift */; };
+		7582E2F21B015DE400FEA38B /* MessageDetailBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582E2F11B015DE400FEA38B /* MessageDetailBottomView.swift */; };
+		7582E2F41B015DF100FEA38B /* MessageDetailBottomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */; };
 		759339C01ABB45C700535F1B /* ViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339BF1ABB45C700535F1B /* ViewModelFactory.swift */; };
 		759339C41ABB5EA900535F1B /* SettingDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */; };
 		75B047B31AE708CC005C6D1A /* HtmlEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B047B21AE708CC005C6D1A /* HtmlEditorViewController.swift */; };
@@ -297,6 +299,8 @@
 		754CD4871AB809D60084C54A /* SettingTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
 		754CD48A1AB80D770084C54A /* CustomHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomHeaderView.swift; sourceTree = "<group>"; };
 		7565998E1AC4809B00C187E4 /* EncryptTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptTypes.swift; sourceTree = "<group>"; };
+		7582E2F11B015DE400FEA38B /* MessageDetailBottomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDetailBottomView.swift; sourceTree = "<group>"; };
+		7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageDetailBottomView.xib; sourceTree = "<group>"; };
 		759339BF1ABB45C700535F1B /* ViewModelFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelFactory.swift; sourceTree = "<group>"; };
 		759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDetailsViewModel.swift; sourceTree = "<group>"; };
 		75B047B21AE708CC005C6D1A /* HtmlEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlEditorViewController.swift; sourceTree = "<group>"; };
@@ -588,6 +592,8 @@
 				07CB234B1AAE9FCB00699068 /* FullHeightWebView.swift */,
 				70F9C3201A7BA8F400A45DF3 /* MessageDetailView.swift */,
 				701704741A791856000A90D2 /* MessageDetailViewController.swift */,
+				7582E2F11B015DE400FEA38B /* MessageDetailBottomView.swift */,
+				7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */,
 			);
 			name = "Message Detail";
 			sourceTree = "<group>";
@@ -841,6 +847,7 @@
 				7048B9F51A9E385B00D45F57 /* ContactsTableViewCell.xib in Resources */,
 				07B123781AB8CD90006EA38C /* Attachments.storyboard in Resources */,
 				07009F141A684C1900129B07 /* Roboto-Thin.ttf in Resources */,
+				7582E2F41B015DF100FEA38B /* MessageDetailBottomView.xib in Resources */,
 				07CC996A1A705BA4000FD6F8 /* Settings.bundle in Resources */,
 				076758761AA0E86400F9AC9C /* LoadingView.xib in Resources */,
 				701704781A794C69000A90D2 /* Roboto-MediumItalic.ttf in Resources */,
@@ -1051,6 +1058,7 @@
 				7565998F1AC4809B00C187E4 /* EncryptTypes.swift in Sources */,
 				07CC99681A702368000FD6F8 /* UIFontExtension.swift in Sources */,
 				7510AE7E1AB8D69B00EF3C41 /* ChangePasswordViewController.swift in Sources */,
+				7582E2F21B015DE400FEA38B /* MessageDetailBottomView.swift in Sources */,
 				07CAB8061A894F8600C5E347 /* CoreDataService.swift in Sources */,
 				750254DA1AB8157800050B12 /* GeneralSettingViewCell.swift in Sources */,
 				75DF17AB1AB9051F008A032B /* StorageViewCell.swift in Sources */,

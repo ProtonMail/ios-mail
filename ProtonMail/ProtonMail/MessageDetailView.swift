@@ -12,7 +12,7 @@
 
 import UIKit
 
-class MessageDetailView: UIView {
+class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
     
     var delegate: MessageDetailViewDelegate?
     let message: Message
@@ -49,12 +49,6 @@ class MessageDetailView: UIView {
     private let kEmailBodyTextViewMarginRight: CGFloat = -16.0
     private let kEmailBodyTextViewMarginTop: CGFloat = 16.0
     private let kButtonsViewHeight: CGFloat = 68.0
-    private let kReplyButtonMarginLeft: CGFloat = 50.0
-    private let kReplyButtonMarginTop: CGFloat = 10.0
-    private let kReplyButtonLabelMarginTop: CGFloat = 4.0
-    private let kReplyAllButtonLabelMarginTop: CGFloat = 4.0
-    private let kForwardButtonMarginRight: CGFloat = -50.0
-    private let kForwardButtonLabelMarginTop: CGFloat = 4.0
     private let kMoreOptionsViewHeight: CGFloat = 123.0
     
     
@@ -93,14 +87,8 @@ class MessageDetailView: UIView {
     
     
     // MARK: - Email footer views
-    
-    private var buttonsView: UIView!
-    private var replyButton: UIButton!
-    private var replyButtonLabel: UILabel!
-    private var replyAllButton: UIButton!
-    private var replyAllButtonLabel: UILabel!
-    private var forwardButton: UIButton!
-    private var forwardButtonLabel: UILabel!
+    private var buttonsView: MessageDetailBottomView!
+
 
     
     // MARK: - Init methods
@@ -333,51 +321,11 @@ class MessageDetailView: UIView {
     }
 
     private func createFooterView() {
-        self.buttonsView = UIView()
+        var v = NSBundle.mainBundle().loadNibNamed("MessageDetailBottomView", owner: 0, options: nil)[0] as? UIView
+        self.buttonsView = v as! MessageDetailBottomView
+        self.buttonsView.delegate = self
         self.buttonsView.backgroundColor = UIColor.ProtonMail.Gray_E8EBED
         self.addSubview(buttonsView)
-        
-        self.replyButton = UIButton()
-        self.replyButton.addTarget(self, action: "replyButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-        self.replyButton.setImage(UIImage(named: "reply"), forState: UIControlState.Normal)
-        self.replyButton.sizeToFit()
-        self.buttonsView.addSubview(replyButton)
-        
-        self.replyButtonLabel = UILabel()
-        self.replyButtonLabel.font = UIFont.robotoLight(size: UIFont.Size.h6)
-        self.replyButtonLabel.numberOfLines = 1
-        self.replyButtonLabel.text = NSLocalizedString("Reply")
-        self.replyButtonLabel.textColor = UIColor.ProtonMail.Blue_6789AB
-        self.replyButtonLabel.sizeToFit()
-        self.buttonsView.addSubview(replyButtonLabel)
-        
-        self.replyAllButton = UIButton()
-        self.replyAllButton.addTarget(self, action: "replyAllButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-        self.replyAllButton.setImage(UIImage(named: "replyall"), forState: UIControlState.Normal)
-        self.replyAllButton.sizeToFit()
-        self.buttonsView.addSubview(replyAllButton)
-        
-        self.replyAllButtonLabel = UILabel()
-        self.replyAllButtonLabel.font = UIFont.robotoLight(size: UIFont.Size.h6)
-        self.replyAllButtonLabel.numberOfLines = 1
-        self.replyAllButtonLabel.text = NSLocalizedString("Reply All")
-        self.replyAllButtonLabel.textColor = UIColor.ProtonMail.Blue_6789AB
-        self.replyAllButtonLabel.sizeToFit()
-        self.buttonsView.addSubview(replyAllButtonLabel)
-        
-        self.forwardButton = UIButton()
-        self.forwardButton.addTarget(self, action: "forwardButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-        self.forwardButton.setImage(UIImage(named: "forward"), forState: UIControlState.Normal)
-        self.forwardButton.sizeToFit()
-        self.buttonsView.addSubview(forwardButton)
-        
-        self.forwardButtonLabel = UILabel()
-        self.forwardButtonLabel.font = UIFont.robotoLight(size: UIFont.Size.h6)
-        self.forwardButtonLabel.numberOfLines = 1
-        self.forwardButtonLabel.text = NSLocalizedString("Forward")
-        self.forwardButtonLabel.textColor = UIColor.ProtonMail.Blue_6789AB
-        self.forwardButtonLabel.sizeToFit()
-        self.buttonsView.addSubview(forwardButtonLabel)
     }
     
     override func layoutSubviews() {
@@ -562,42 +510,6 @@ class MessageDetailView: UIView {
             make.right.equalTo()(self)
             make.height.equalTo()(self.kButtonsViewHeight)
         }
-        
-        replyButton.mas_makeConstraints { (make) -> Void in
-            make.left.equalTo()(self.buttonsView).with().offset()(self.kReplyButtonMarginLeft)
-            make.top.equalTo()(self.buttonsView).with().offset()(self.kReplyButtonMarginTop)
-            make.height.equalTo()(self.replyButton.frame.size.height)
-            make.width.equalTo()(self.replyButton.frame.size.width)
-        }
-        
-        replyButtonLabel.mas_makeConstraints { (make) -> Void in
-            make.centerX.equalTo()(self.replyButton)
-            make.top.equalTo()(self.replyButton.mas_bottom).with().offset()(self.kReplyButtonLabelMarginTop)
-        }
-        
-        replyAllButton.mas_makeConstraints { (make) -> Void in
-            make.centerX.equalTo()(self)
-            make.top.equalTo()(self.replyButton)
-            make.height.equalTo()(self.replyAllButton.frame.size.height)
-            make.width.equalTo()(self.replyAllButton.frame.size.width)
-        }
-        
-        replyAllButtonLabel.mas_makeConstraints { (make) -> Void in
-            make.centerX.equalTo()(self.replyAllButton)
-            make.top.equalTo()(self.replyAllButton.mas_bottom).with().offset()(self.kReplyAllButtonLabelMarginTop)
-        }
-        
-        forwardButton.mas_makeConstraints { (make) -> Void in
-            make.right.equalTo()(self.buttonsView).with().offset()(self.kForwardButtonMarginRight)
-            make.top.equalTo()(self.replyButton)
-            make.height.equalTo()(self.forwardButton.frame.size.height)
-            make.width.equalTo()(self.forwardButton.frame.size.width)
-        }
-        
-        forwardButtonLabel.mas_makeConstraints { (make) -> Void in
-            make.centerX.equalTo()(self.forwardButton)
-            make.top.equalTo()(self.forwardButton.mas_bottom).with().offset()(self.kForwardButtonLabelMarginTop)
-        }
     }
     
     
@@ -684,18 +596,18 @@ class MessageDetailView: UIView {
         self.emailFavoriteButton.selected = self.message.isStarred
     }
     
-    internal func replyButtonTapped() {
+    func replyClicked()
+    {
         self.delegate?.messageDetailViewDidTapReplyMessage(self, message: message)
     }
-    
-    internal func replyAllButtonTapped() {
+    func replyAllClicked()
+    {
         self.delegate?.messageDetailViewDidTapReplyAllMessage(self, message: message)
     }
-    
-    internal func forwardButtonTapped() {
+    func forwardClicked()
+    {
         self.delegate?.messageDetailViewDidTapForwardMessage(self, message: message)
     }
-    
     
     // MARK: - Private methods
     

@@ -29,6 +29,9 @@
             <string>Roboto-Light</string>
             <string>Roboto-Light</string>
             <string>Roboto-Light</string>
+            <string>Roboto-Light</string>
+            <string>Roboto-Light</string>
+            <string>Roboto-Light</string>
         </mutableArray>
         <mutableArray key="Roboto-Regular.ttf">
             <string>Roboto-Regular</string>
@@ -88,10 +91,10 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fy4-ZC-gVz" id="LAU-bi-L1X">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="draft" translatesAutoresizingMaskIntoConstraints="NO" id="Rrm-fW-TBp">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="draft" translatesAutoresizingMaskIntoConstraints="NO" id="Rrm-fW-TBp">
                                             <rect key="frame" x="24" y="8" width="52" height="54"/>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" text="Subject" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kq9-Xc-uKF">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" text="Subject" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kq9-Xc-uKF">
                                             <rect key="frame" x="8" y="70" width="84" height="16"/>
                                             <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="13"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2485,7 +2488,184 @@
                     <view key="view" contentMode="scaleToFill" id="xpP-qB-Kil" customClass="MessageDetailView" customModule="ProtonMail" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CiU-gh-wWq">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9GA-TJ-THl">
+                                        <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="64" id="hbk-Y6-Ey3"/>
+                                            <constraint firstAttribute="width" constant="83" id="vwY-fV-BO6"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="12"/>
+                                        <inset key="titleEdgeInsets" minX="-34" minY="0.0" maxX="0.0" maxY="-30"/>
+                                        <inset key="imageEdgeInsets" minX="22" minY="-20" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" title="Reply All" image="replyall">
+                                            <color key="titleColor" red="0.40392156862745099" green="0.53725490196078429" blue="0.6705882352941176" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="hbk-Y6-Ey3"/>
+                                                <exclude reference="vwY-fV-BO6"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="widthClass=compact">
+                                            <mask key="constraints">
+                                                <include reference="hbk-Y6-Ey3"/>
+                                                <include reference="vwY-fV-BO6"/>
+                                            </mask>
+                                        </variation>
+                                        <connections>
+                                            <action selector="replyAllClicked:" destination="xpP-qB-Kil" eventType="touchUpInside" id="rRW-mK-81A"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R9b-vS-96E">
+                                        <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="83" id="fGS-X2-1Tb"/>
+                                            <constraint firstAttribute="height" constant="64" id="pwF-kC-tDF"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="12"/>
+                                        <inset key="titleEdgeInsets" minX="-34" minY="0.0" maxX="0.0" maxY="-30"/>
+                                        <inset key="imageEdgeInsets" minX="22" minY="-20" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" title="Forward" image="forward">
+                                            <color key="titleColor" red="0.40392156862745099" green="0.53725490196078429" blue="0.6705882352941176" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="fGS-X2-1Tb"/>
+                                                <exclude reference="pwF-kC-tDF"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="widthClass=compact">
+                                            <mask key="constraints">
+                                                <include reference="fGS-X2-1Tb"/>
+                                                <include reference="pwF-kC-tDF"/>
+                                            </mask>
+                                        </variation>
+                                        <connections>
+                                            <action selector="forwardClicked:" destination="xpP-qB-Kil" eventType="touchUpInside" id="wJc-MW-mhJ"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FpL-2T-h9Y">
+                                        <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="83" id="Icf-cZ-twI"/>
+                                            <constraint firstAttribute="height" constant="64" id="J96-hX-Mtj"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="12"/>
+                                        <inset key="titleEdgeInsets" minX="-34" minY="0.0" maxX="0.0" maxY="-30"/>
+                                        <inset key="imageEdgeInsets" minX="22" minY="-20" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" title="Reply" image="reply">
+                                            <color key="titleColor" red="0.40392156862745099" green="0.53725490196078429" blue="0.6705882352941176" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="Icf-cZ-twI"/>
+                                                <exclude reference="J96-hX-Mtj"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="widthClass=compact">
+                                            <mask key="constraints">
+                                                <include reference="Icf-cZ-twI"/>
+                                                <include reference="J96-hX-Mtj"/>
+                                            </mask>
+                                        </variation>
+                                        <connections>
+                                            <action selector="replyClicked:" destination="xpP-qB-Kil" eventType="touchUpInside" id="AUb-GR-f8P"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.90980392156862744" green="0.92156862745098034" blue="0.92941176470588238" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="FpL-2T-h9Y" secondAttribute="bottom" id="05v-x8-4dK"/>
+                                    <constraint firstItem="FpL-2T-h9Y" firstAttribute="top" secondItem="CiU-gh-wWq" secondAttribute="top" id="3jY-2s-Nih"/>
+                                    <constraint firstItem="9GA-TJ-THl" firstAttribute="top" secondItem="CiU-gh-wWq" secondAttribute="top" id="9ab-mT-QzW"/>
+                                    <constraint firstAttribute="bottom" secondItem="9GA-TJ-THl" secondAttribute="bottom" id="AAZ-UF-SgN"/>
+                                    <constraint firstAttribute="centerX" secondItem="9GA-TJ-THl" secondAttribute="centerX" id="E3b-d1-EXG"/>
+                                    <constraint firstAttribute="trailing" secondItem="R9b-vS-96E" secondAttribute="trailing" constant="38" id="Ud9-lr-aiP">
+                                        <variation key="widthClass=compact" constant="40"/>
+                                    </constraint>
+                                    <constraint firstItem="FpL-2T-h9Y" firstAttribute="leading" secondItem="CiU-gh-wWq" secondAttribute="leading" constant="41" id="f34-6v-1Pu">
+                                        <variation key="widthClass=compact" constant="40"/>
+                                    </constraint>
+                                    <constraint firstItem="R9b-vS-96E" firstAttribute="top" secondItem="CiU-gh-wWq" secondAttribute="top" id="gw6-QB-2L9"/>
+                                    <constraint firstAttribute="height" constant="64" id="oqP-s3-MXW"/>
+                                    <constraint firstAttribute="bottom" secondItem="R9b-vS-96E" secondAttribute="bottom" id="qDh-Go-PC0"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="9GA-TJ-THl"/>
+                                        <exclude reference="R9b-vS-96E"/>
+                                        <exclude reference="FpL-2T-h9Y"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <exclude reference="oqP-s3-MXW"/>
+                                        <exclude reference="05v-x8-4dK"/>
+                                        <exclude reference="3jY-2s-Nih"/>
+                                        <exclude reference="f34-6v-1Pu"/>
+                                        <exclude reference="9ab-mT-QzW"/>
+                                        <exclude reference="AAZ-UF-SgN"/>
+                                        <exclude reference="E3b-d1-EXG"/>
+                                        <exclude reference="Ud9-lr-aiP"/>
+                                        <exclude reference="gw6-QB-2L9"/>
+                                        <exclude reference="qDh-Go-PC0"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="subviews">
+                                        <include reference="9GA-TJ-THl"/>
+                                        <include reference="R9b-vS-96E"/>
+                                        <include reference="FpL-2T-h9Y"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <include reference="oqP-s3-MXW"/>
+                                        <include reference="05v-x8-4dK"/>
+                                        <include reference="3jY-2s-Nih"/>
+                                        <include reference="f34-6v-1Pu"/>
+                                        <include reference="9ab-mT-QzW"/>
+                                        <include reference="AAZ-UF-SgN"/>
+                                        <include reference="E3b-d1-EXG"/>
+                                        <include reference="Ud9-lr-aiP"/>
+                                        <include reference="gw6-QB-2L9"/>
+                                        <include reference="qDh-Go-PC0"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="CiU-gh-wWq" secondAttribute="trailing" constant="-16" id="Ehj-cJ-AVS"/>
+                            <constraint firstItem="fG8-2r-ucJ" firstAttribute="top" secondItem="CiU-gh-wWq" secondAttribute="bottom" id="TOy-MW-xAY"/>
+                            <constraint firstItem="CiU-gh-wWq" firstAttribute="leading" secondItem="xpP-qB-Kil" secondAttribute="leadingMargin" constant="-16" id="nA0-0p-cbP"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="CiU-gh-wWq"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="Ehj-cJ-AVS"/>
+                                <exclude reference="nA0-0p-cbP"/>
+                                <exclude reference="TOy-MW-xAY"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="CiU-gh-wWq"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="Ehj-cJ-AVS"/>
+                                <include reference="nA0-0p-cbP"/>
+                                <include reference="TOy-MW-xAY"/>
+                            </mask>
+                        </variation>
+                        <connections>
+                            <outlet property="bottomView" destination="CiU-gh-wWq" id="8pq-Mc-igo"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="messageDetailView" destination="xpP-qB-Kil" id="luO-7e-utp"/>
@@ -3860,10 +4040,13 @@
         <image name="expiration_compose_white" width="22" height="22"/>
         <image name="favorite_main" width="19" height="19"/>
         <image name="favorite_main_selected" width="19" height="19"/>
+        <image name="forward" width="28" height="23"/>
         <image name="hamburger" width="20" height="16"/>
         <image name="inbox" width="52" height="52"/>
         <image name="inbox_selected" width="24" height="16"/>
         <image name="plus_compose" width="22" height="22"/>
+        <image name="reply" width="28" height="23"/>
+        <image name="replyall" width="31" height="24"/>
         <image name="search" width="22" height="22"/>
         <image name="sent" width="52" height="52"/>
         <image name="sent_compose" width="26" height="22"/>
@@ -3881,12 +4064,12 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="A7E-cY-hB0"/>
         <segue reference="YGe-pV-72F"/>
         <segue reference="tjX-oW-rkl"/>
-        <segue reference="dZz-yt-xGj"/>
         <segue reference="dxU-wZ-inN"/>
-        <segue reference="A7E-cY-hB0"/>
-        <segue reference="V9t-nA-fhw"/>
+        <segue reference="BYG-C2-IMk"/>
         <segue reference="5rJ-hC-fsT"/>
+        <segue reference="V9t-nA-fhw"/>
     </inferredMetricsTieBreakers>
 </document>
