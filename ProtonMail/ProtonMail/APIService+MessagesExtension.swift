@@ -252,6 +252,16 @@ extension APIService {
         request(method: .GET, path: path, parameters: parameters, completion: completion)
     }
     
+    func fetchLatestMessageList(location: Int, time: Int, messageID: String, completion: CompletionBlock) {
+        let path = MessagePath.base + "/latest"
+        let parameters = [
+            "Location" : location,
+            "Time" : time,
+            "MessageID" : messageID]
+        
+        request(method: .GET, path: path, parameters: parameters, completion: completion)
+    }
+    
     func messageSearch(query: String, page: Int, completion: CompletionBlock?) {
         let path = "/messages/search"
         let parameters = [

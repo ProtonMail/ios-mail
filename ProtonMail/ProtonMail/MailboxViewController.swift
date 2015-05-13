@@ -318,14 +318,33 @@ class MailboxViewController: ProtonMailViewController {
             }
             
             self.pagingManager.reset()
-            
             delay(1.0, {
                 self.refreshControl.endRefreshing()
                 self.tableView.reloadData()
             })
         }
+        
+        if let fetchedResultsController = fetchedResultsController {
+            if let first = fetchedResultsController.fetchedObjects?.first as? Message {
+                sharedMessageDataService.fetchNewMessagesForLocation(mailboxLocation, MessageID: first.messageID ?? "0", Time:Int( first.time?.timeIntervalSince1970 ?? 0), completion:
+                    { (task, messages, error) -> Void in
+                        if let error = error {
+                            NSLog("error: \(error)")
+                        }
+                        
+                        self.pagingManager.reset()
+                        delay(1.0, {
+                            self.refreshControl.endRefreshing()
+                            self.tableView.reloadData()
+                        })
+                })
+                
+                
+                
+            }
+        }
     }
-     
+    
     private func moveMessagesToLocation(location: MessageLocation) {
         if let context = fetchedResultsController?.managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)

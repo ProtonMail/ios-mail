@@ -205,6 +205,44 @@ class MessageDataService {
         }
     }
     
+    
+    func fetchNewMessagesForLocation(location: MessageLocation, MessageID : String, Time: Int, completion: CompletionBlock?) {
+        queue {
+            let completionWrapper: CompletionBlock = { task, responseDict, error in
+                if let messagesArray = responseDict?["Messages"] as? [Dictionary<String,AnyObject>] {
+                    let context = sharedCoreDataService.newManagedObjectContext()
+                    context.performBlockAndWait() {
+                        var error: NSError?
+                        var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
+                        
+                        if error == nil {
+                            for message in messages as! [Message] {
+                                // PRO-157 - The issue for inbox <--> starred page switch
+                                // only change the location if the message is new or not starred
+                                // this prevents starred messages from disappearing out of the inbox until the next refresh
+                                if message.inserted || location != .starred {
+                                    message.locationNumber = location.rawValue
+                                }
+                            }
+                            error = context.saveUpstreamIfNeeded()
+                        }
+                        if error != nil  {
+                            NSLog("\(__FUNCTION__) error: \(error)")
+                        }
+                        dispatch_async(dispatch_get_main_queue()) {
+                            completion?(task: task, response: responseDict, error: error)
+                        }
+                    }
+                } else {
+                    completion?(task: task, response: responseDict, error: NSError.unableToParseResponse(responseDict))
+                }
+            }
+            sharedAPIService.fetchLatestMessageList(location.rawValue, time: Time, messageID: MessageID, completion: completionWrapper)
+        }
+    }
+    
+    
+    
     func fetchedResultsControllerForLocation(location: MessageLocation) -> NSFetchedResultsController? {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
