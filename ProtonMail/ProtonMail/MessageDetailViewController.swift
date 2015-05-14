@@ -16,15 +16,47 @@ class MessageDetailViewController: ProtonMailViewController {
     
     var message: Message! {
         didSet {
-            message.fetchDetailIfNeeded() { _, _, error in
+            message.fetchDetailIfNeeded() { _, _, msg, error in
+                println(self.message.isDetailDownloaded)
+                
                 if error != nil {
                     NSLog("\(__FUNCTION__) error: \(error)")
                 }
+                else
+                {
+                    if !self.message.isDetailDownloaded
+                    {
+                        // println(msg?.isDetailDownloaded)
+                        if let fetchedMessageController = self.fetchedMessageController {
+                            println( fetchedMessageController.fetchedObjects?.count)
+                            if let last = fetchedMessageController.fetchedObjects?.last as? Message {
+                                println(last.isDetailDownloaded)
+                                self.message = last
+                                self.messageDetailView.message = self.message
+                            }
+                            else
+                            {
+                                self.setupFetchedResultsController(self.message.messageID)
+                                if let fetchedMessageController = self.fetchedMessageController {
+                                    println( fetchedMessageController.fetchedObjects?.count)
+                                    if let last = fetchedMessageController.fetchedObjects?.last as? Message {
+                                        println(last.isDetailDownloaded)
+                                        self.message = last
+                                        self.messageDetailView.message = self.message
+                                    }
+                                }
+                                
+                            }
+                        }
+                    }
+                }
             }
+            self.messageDetailView?.updateEmailBodyWebView(true)
         }
     }
     
     private var actionTapped: String!
+    private var fetchedMessageController: NSFetchedResultsController?
     
     @IBOutlet var messageDetailView: MessageDetailView!
     
@@ -37,7 +69,24 @@ class MessageDetailViewController: ProtonMailViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupRightButtons()
+        setupFetchedResultsController(message.messageID)
     }
+    
+    private func setupFetchedResultsController(msg_id:String) {
+        
+        println(msg_id);
+        self.fetchedMessageController = sharedMessageDataService.fetchedMessageControllerForID(msg_id)
+        
+        NSLog("\(__FUNCTION__) INFO: \(fetchedMessageController?.sections)")
+        
+        if let fetchedMessageController = fetchedMessageController {
+            var error: NSError?
+            if !fetchedMessageController.performFetch(&error) {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
+        }
+    }
+
     
     override func shouldShowSideMenu() -> Bool {
         return false

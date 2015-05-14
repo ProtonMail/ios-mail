@@ -15,7 +15,7 @@ import UIKit
 class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
     
     var delegate: MessageDetailViewDelegate?
-    let message: Message
+    var message: Message
     private var attachments: [Attachment] = []
     private var isShowingDetail: Bool = false
     private var isViewingMoreOptions: Bool = false
@@ -176,7 +176,8 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
             if self.message.isDetailDownloaded {
                 var error: NSError?
                 bodyText = self.message.decryptBodyIfNeeded(&error) ?? NSLocalizedString("Unable to decrypt message.")
-            
+                            println(bodyText)
+
                 if let error = error {
                     self.delegate?.messageDetailView(self, didFailDecodeWithError: error)
                 }

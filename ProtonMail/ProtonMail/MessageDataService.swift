@@ -21,6 +21,7 @@ let sharedMessageDataService = MessageDataService()
 
 class MessageDataService {
     typealias CompletionBlock = APIService.CompletionBlock
+    typealias CompletionFetchDetail = APIService.CompletionFetchDetail
     typealias ReadBlock = (() -> Void)
     
     struct Key {
@@ -28,7 +29,7 @@ class MessageDataService {
         static let total = "total"
         static let unread = "unread"
     }
-        
+    
     private let firstPage = 1
     private let incrementalUpdateQueue = dispatch_queue_create("ch.protonmail.incrementalUpdateQueue", DISPATCH_QUEUE_SERIAL)
     private let lastUpdatedMaximumTimeInterval: NSTimeInterval = 24 /*hours*/ * 3600
@@ -59,7 +60,7 @@ class MessageDataService {
         }
         
         // TODO: check for existing download tasks and return that task rather than start a new download
-
+        
         queue { () -> Void in
             sharedAPIService.attachmentForAttachmentID(attachment.attachmentID, destinationDirectoryURL: NSFileManager.defaultManager().attachmentDirectory, downloadTask: downloadTask, completion: { task, fileURL, error in
                 var error = error
@@ -126,7 +127,7 @@ class MessageDataService {
         }
     }
     
-    func fetchMessageDetailForMessage(message: Message, completion: CompletionBlock) {
+    func fetchMessageDetailForMessage(message: Message, completion: CompletionFetchDetail) {
         if !message.isDetailDownloaded {
             queue {
                 let completionWrapper: CompletionBlock = { task, response, error in
@@ -136,31 +137,35 @@ class MessageDataService {
                         var error: NSError?
                         
                         if response != nil {
-                            let message = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: response, inManagedObjectContext: context, error: &error) as! Message
+                            let message_n = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: response, inManagedObjectContext: context, error: &error) as! Message
                             
                             if error == nil {
-                                message.isDetailDownloaded = true
+                                message_n.isDetailDownloaded = true
                                 
                                 error = context.saveUpstreamIfNeeded()
+                                
+                                println(message_n.isDetailDownloaded)
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    
+                                    println(message_n.isDetailDownloaded)
+                                    completion(task: task, response: response, message: message_n, error: error)
+                                }
                             }
                         } else {
                             error = NSError.unableToParseResponse(response)
+                            dispatch_async(dispatch_get_main_queue()) {
+                                completion(task: task, response: response, message:nil, error: error)
+                            }
                         }
-                        
                         if error != nil  {
                             NSLog("\(__FUNCTION__) error: \(error)")
                         }
-                        
-                        dispatch_async(dispatch_get_main_queue()) {
-                            completion(task: task, response: response, error: error)
-                        }
                     }
                 }
-
                 sharedAPIService.messageDetail(messageID: message.messageID, completion: completionWrapper)
             }
         } else {
-            completion(task: nil, response: nil, error: nil)
+            completion(task: nil, response: nil, message:nil, error: nil)
         }
     }
     
@@ -256,7 +261,20 @@ class MessageDataService {
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         }
-     
+        
+        return nil
+    }
+    
+    func fetchedMessageControllerForID(messageID: String) -> NSFetchedResultsController? {
+        if let moc = managedObjectContext {
+            let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
+            
+            
+            fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.messageID, messageID)
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
+            return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+        }
+        
         return nil
     }
     
@@ -275,10 +293,10 @@ class MessageDataService {
                 
                 if let messagesArray = response?["Messages"] as? [Dictionary<String,AnyObject>] {
                     
-                    context.performBlock() {
+                    context.performBlockAndWait() {
                         var error: NSError?
                         var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error) as! [Message]
-                                                
+                        
                         if let completion = completion {
                             dispatch_async(dispatch_get_main_queue()) {
                                 if error != nil  {
@@ -358,7 +376,7 @@ class MessageDataService {
             
             var error: NSError?
             let count = context.countForFetchRequest(fetchRequest, error: &error)
-                
+            
             if error != nil {
                 NSLog("\(__FUNCTION__) error: \(error)")
             } else if count > maximumCachedMessageCount {
@@ -472,7 +490,7 @@ class MessageDataService {
         } else {
             NSLog("\(__FUNCTION__) unable to parse response: \(response)")
         }
-
+        
         return messageBody
     }
     
@@ -687,12 +705,12 @@ class MessageDataService {
                 return
             }
         }
-    
+        
         errorBlock(task: nil, response: nil, error: NSError.badParameter(messageID))
     }
-
+    
     // MARK: Notifications
-
+    
     private func setupNotifications() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "didSignOutNotification:", name: UserDataService.Notification.didSignOut, object: nil)
         
@@ -743,7 +761,7 @@ class MessageDataService {
             dequeueIfNeeded()
         }
     }
-        
+    
     private func queue(#message: Message, action: MessageAction) {
         if action == .saveDraft {
             writeQueue.addMessage(message.objectID.URIRepresentation().absoluteString!, action: action)
@@ -797,7 +815,7 @@ extension Attachment {
 // MARK: - Message extension
 
 extension Message {
-    func fetchDetailIfNeeded(completion: MessageDataService.CompletionBlock) {
+    func fetchDetailIfNeeded(completion: MessageDataService.CompletionFetchDetail) {
         sharedMessageDataService.fetchMessageDetailForMessage(self, completion: completion)
     }
 }
@@ -816,7 +834,7 @@ extension NSFileManager {
                 NSLog("\(__FUNCTION__) Could not create \(attachmentDirectory.absoluteString!) with error: \(error)")
             }
         }
-
+        
         return attachmentDirectory
     }
 }

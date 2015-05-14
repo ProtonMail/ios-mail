@@ -18,10 +18,10 @@ import CoreData
 import Foundation
 
 
-private let BaseURLString = "http://protonmail.xyz"
+//private let BaseURLString = "http://protonmail.xyz"
 //private let BaseURLString = "http://feng.api.com"
 
-//private let BaseURLString = "https://dev-api.protonmail.ch"
+private let BaseURLString = "https://dev-api.protonmail.ch"
 
 
 let APIServiceErrorDomain = NSError.protonMailErrorDomain(subdomain: "APIService")
@@ -31,6 +31,8 @@ let sharedAPIService = APIService()
 class APIService {
 
     typealias CompletionBlock = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, error: NSError?) -> Void
+    
+    typealias CompletionFetchDetail = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, message:Message?, error: NSError?) -> Void
 
     struct ErrorCode {
         static let badParameter = 1
