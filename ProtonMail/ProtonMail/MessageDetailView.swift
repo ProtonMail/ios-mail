@@ -22,7 +22,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
     
     // MARK: - Private constants
     
-    private let kAnimationDuration: NSTimeInterval = 0.3
+    private let kAnimationDuration: NSTimeInterval = 0.1
     private let kAnimationOption: UIViewAnimationOptions = .TransitionCrossDissolve
     private var kKVOContext = 0
     private let kScrollViewDistanceToBottom: CGFloat = -69.0
@@ -183,7 +183,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
                 }
             }
             
-            let font = UIFont.robotoLight(size: UIFont.Size.h5)
+            let font = UIFont.robotoLight(size: UIFont.Size.h6)
             let cssColorString = UIColor.ProtonMail.Gray_383A3B.cssString
             let htmlString = "<span style=\"font-family: \(font.fontName); font-size: \(font.pointSize); color: \(cssColorString)\">\(bodyText)</span>"
             
@@ -318,6 +318,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
     private func createEmailBodyWebView() {
         self.emailBodyWebView = FullHeightWebView()
         self.emailBodyWebView.delegate = self
+        self.emailBodyWebView.scrollView.delegate = self
         self.contentView.addSubview(emailBodyWebView)        
     }
 
@@ -681,8 +682,8 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
         if context != &kKVOContext {
             super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
         } else if object as! NSObject == message && keyPath == Message.Attributes.isDetailDownloaded {
-            updateAttachments()
             updateEmailBodyWebView(true)
+            updateAttachments()
         }
     }
 }
@@ -778,24 +779,58 @@ extension MessageDetailView: UIDocumentInteractionControllerDelegate {
 }
 
 
+
+extension MessageDetailView : UIScrollViewDelegate
+{
+    func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView!, atScale scale: CGFloat)
+    {
+//        var frame = self.emailBodyWebView.frame
+//        frame.size.height = self.emailBodyWebView.scrollView.contentSize.height
+//        self.emailBodyWebView.frame = frame
+//        
+//        self.emailBodyWebView.updateConstraints();
+//        self.emailBodyWebView.layoutIfNeeded();
+//        self.layoutIfNeeded();
+//        self.updateConstraints();
+    }
+    
+}
+
 // MARK: - UIWebViewDelegate
 
 extension MessageDetailView: UIWebViewDelegate {
     
     func webViewDidFinishLoad(webView: UIWebView) {
         // triggers scrollView.contentSize update
+        let jsForTextSize = "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '\(100)%'";
+        webView.stringByEvaluatingJavaScriptFromString(jsForTextSize)
+        
         var frame = webView.frame
-        frame.size.height = 1
+        frame.size.height = 1;
         webView.frame = frame
+        
         
         UIView.animateWithDuration(kAnimationDuration, animations: { () -> Void in
             self.emailBodyWebView.alpha = 1.0
+            
             }, completion: { finished in
+                
+                var frame = self.emailBodyWebView.frame
+                frame.size.height = self.emailBodyWebView.scrollView.contentSize.height
+                self.emailBodyWebView.frame = frame
+                
+                self.emailBodyWebView.updateConstraints();
+                self.emailBodyWebView.layoutIfNeeded();
+                self.layoutIfNeeded();
+                self.updateConstraints();
+
                 if (self.message.hasAttachments) {
                     self.attachments = self.message.attachments.allObjects as! [Attachment]
                 }
-
+                
                 self.tableView.reloadData()
+                self.tableView.tableHeaderView = self.contentView
+
         })
     }
 

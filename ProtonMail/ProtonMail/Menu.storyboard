@@ -93,6 +93,9 @@
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="draft" translatesAutoresizingMaskIntoConstraints="NO" id="Rrm-fW-TBp">
                                             <rect key="frame" x="24" y="8" width="52" height="54"/>
+                                            <variation key="widthClass=compact" misplaced="YES">
+                                                <rect key="frame" x="41" y="8" width="19" height="54"/>
+                                            </variation>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" text="Subject" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kq9-Xc-uKF">
                                             <rect key="frame" x="8" y="70" width="84" height="16"/>
@@ -4070,12 +4073,12 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="A7E-cY-hB0"/>
         <segue reference="YGe-pV-72F"/>
-        <segue reference="tjX-oW-rkl"/>
-        <segue reference="dxU-wZ-inN"/>
-        <segue reference="BYG-C2-IMk"/>
-        <segue reference="5rJ-hC-fsT"/>
+        <segue reference="A7E-cY-hB0"/>
         <segue reference="V9t-nA-fhw"/>
+        <segue reference="5rJ-hC-fsT"/>
+        <segue reference="dxU-wZ-inN"/>
+        <segue reference="tjX-oW-rkl"/>
+        <segue reference="BYG-C2-IMk"/>
     </inferredMetricsTieBreakers>
 </document>

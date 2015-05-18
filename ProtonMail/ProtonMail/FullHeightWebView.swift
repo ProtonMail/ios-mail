@@ -30,8 +30,11 @@ class FullHeightWebView: UIWebView {
         
         scrollView.scrollEnabled = true
         scrollView.alwaysBounceVertical = true
-        
-        addObserver(self, forKeyPath: scrollViewContentSizeKeyPath, options: .New, context: &kvoContext)
+        scrollView.userInteractionEnabled = true
+        //self.scrollView.showsVerticalScrollIndicator = false
+        scrollView.bounces = false;
+        //self.scalesPageToFit = true;
+        //addObserver(self, forKeyPath: scrollViewContentSizeKeyPath, options: .New, context: &kvoContext)
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -39,19 +42,19 @@ class FullHeightWebView: UIWebView {
     }
     
     deinit {
-        removeObserver(self, forKeyPath: scrollViewContentSizeKeyPath, context: &kvoContext)
+        //removeObserver(self, forKeyPath: scrollViewContentSizeKeyPath, context: &kvoContext)
     }
 
     override func updateConstraints() {
-        if self.scrollView.contentSize.height < 5000
-        {
+        //if self.scrollView.contentSize.height < 5000
+        //{
             mas_updateConstraints { (make) -> Void in
                 println("height: \(self.scrollView.contentSize.height)")
                 make.height.equalTo()(self.scrollView.contentSize.height)
                 return
             }
 
-        }
+        //}
         
         super.updateConstraints()
     }
