@@ -294,7 +294,11 @@ class MailboxViewController: ProtonMailViewController {
                             return
                         }
                         
-                        tableView.showLoadingFooter()
+                        let sectionCount = fetchedResultsController.numberOfRowsInSection(0) ?? 0
+                        if(sectionCount > 8)
+                        {
+                            tableView.showLoadingFooter()
+                        }
                         
                         sharedMessageDataService.fetchMessagesForLocation(mailboxLocation, MessageID: last.messageID ?? "0", Time:Int( last.time?.timeIntervalSince1970 ?? 0), completion:
                             { (task, messages, error) -> Void in
