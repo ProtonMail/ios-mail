@@ -141,13 +141,11 @@ class MessageDataService {
                             
                             if error == nil {
                                 message_n.isDetailDownloaded = true
-                                
                                 error = context.saveUpstreamIfNeeded()
-                                
-                                println(message_n.isDetailDownloaded)
+                                //println(message_n.isDetailDownloaded)
                                 dispatch_async(dispatch_get_main_queue()) {
                                     
-                                    println(message_n.isDetailDownloaded)
+                                    //println(message_n.isDetailDownloaded)
                                     completion(task: task, response: response, message: message_n, error: error)
                                 }
                             }
