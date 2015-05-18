@@ -113,6 +113,9 @@ class MailboxViewController: ProtonMailViewController {
         self.refreshControl = UIRefreshControl()
         self.refreshControl.backgroundColor = UIColor.ProtonMail.Blue_475F77
         self.refreshControl.addTarget(self, action: "getLatestMessages", forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl.tintColor = UIColor.whiteColor()
+        self.refreshControl.tintColorDidChange()
+
         
         self.tableView.addSubview(self.refreshControl)
         self.tableView.dataSource = self
@@ -311,6 +314,8 @@ class MailboxViewController: ProtonMailViewController {
     
     internal func getLatestMessages() {
         pagingManager.reset()
+        
+        self.refreshControl.beginRefreshing()
         
         sharedMessageDataService.fetchLatestMessagesForLocation(self.mailboxLocation) { _, messages, error in
             if let error = error {
