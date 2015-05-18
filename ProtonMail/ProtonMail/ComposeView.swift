@@ -244,10 +244,12 @@ class ComposeView: UIView {
             fakeContactPickerHeightConstraint.constant = toContactPicker.currentContentHeight
             ccContactPicker.alpha = 0.0
             bccContactPicker.alpha = 0.0
+            sender.setImage(UIImage(named: "plus_compose"), forState:UIControlState.Normal )
         } else {
             ccContactPicker.alpha = 1.0
             bccContactPicker.alpha = 1.0
             fakeContactPickerHeightConstraint.constant = toContactPicker.currentContentHeight + ccContactPicker.currentContentHeight + bccContactPicker.currentContentHeight
+            sender.setImage(UIImage(named: "minus_compose"), forState:UIControlState.Normal )
         }
         
         isShowingCcBccView = !isShowingCcBccView
