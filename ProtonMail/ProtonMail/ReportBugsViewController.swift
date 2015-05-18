@@ -65,6 +65,7 @@ class ReportBugsViewController: ProtonMailViewController {
                         
                         self.presentViewController(alert, animated: true, completion: {
                             self.reset()
+                            NSNotificationCenter.defaultCenter().postNotificationName(MenuViewController.ObserverSwitchView, object: nil)
                         })
                     }
                 })

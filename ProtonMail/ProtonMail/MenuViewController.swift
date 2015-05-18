@@ -13,7 +13,7 @@
 import UIKit
 
 class MenuViewController: UIViewController {
-    
+    public static let ObserverSwitchView:String = "Push_Switch_View"
     
     // MARK - Views Outlets
     
@@ -37,14 +37,34 @@ class MenuViewController: UIViewController {
     private let kSegueToSpam: String = "toSpam"
     
     
-    // MARK: Lifecycle
+    private var kLastSegue: String = "toInbox"
     
+//    override init(frame: CGRect) {
+//        super.init(frame: frame)
+//    }
+//    required init(coder aDecoder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+//    deinit{
+//        NSNotificationCenter.defaultCenter().removeObserver(self, name: MenuViewController.ObserverSwitchView, object: nil)
+//    }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.revealViewController().rearViewRevealWidth = kMenuOptionsWidth
         
         tableView.dataSource = self
         tableView.delegate = self
+        
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: "performLastSegue:",
+            name: MenuViewController.ObserverSwitchView,
+            object: nil)
+    }
+    
+    func performLastSegue(notification: NSNotification)
+    {
+        self.performSegueWithIdentifier(kLastSegue, sender: self)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -69,6 +89,7 @@ class MenuViewController: UIViewController {
             if (firstViewController.isKindOfClass(MailboxViewController)) {
                 let mailboxViewController: MailboxViewController = navigationController.viewControllers.first as! MailboxViewController
                 
+                kLastSegue = segue.identifier!
                 switch(segue.identifier!) {
                 case kSegueToInbox:
                     mailboxViewController.mailboxLocation = .inbox
