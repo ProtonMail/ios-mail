@@ -239,7 +239,7 @@ FAB_START_NONNULL
 @end
 
 /**
- *  `CrashlyticsKit` can be used as a parameter to `[Fabric with:@[CrashlyticsKit]];` in Objective-C. In Swift, simply use `Crashlytics()`
+ *  `CrashlyticsKit` can be used as a parameter to `[Fabric with:@[CrashlyticsKit]];` in Objective-C. In Swift, use Crashlytics.sharedInstance()
  */
 #define CrashlyticsKit [Crashlytics sharedInstance]
 
