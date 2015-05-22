@@ -48,5 +48,14 @@
 
 - (void)Test_Privatekey:(NSString *)priv_key pass:(NSString*) passphrase;
 
+- (NSString* ) TestEncryptPwd:(NSString *)plain pass:(NSString*) slat;
+- (NSString* ) TestDecryptPwd:(NSString *)plain pass:(NSString*) slat;
+
+
+
+
+
+
+
 @end
 
