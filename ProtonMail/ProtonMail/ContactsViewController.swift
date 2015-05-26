@@ -48,23 +48,21 @@ class ContactsViewController: ProtonMailViewController {
         tableView.addSubview(self.refreshControl)
         tableView.dataSource = self
         tableView.delegate = self
+        
+        refreshControl.tintColor = UIColor.whiteColor()
+        refreshControl.tintColorDidChange()
+
+        contacts = sharedContactDataService.allContactVOs()
+        tableView.reloadData()
+        retrieveAllContacts()
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
         tableView.setEditing(false, animated: true)
         
         searchDisplayController?.searchResultsTableView.setEditing(false, animated: true)
         searchDisplayController?.setActive(false, animated: true)
-        
-        refreshControl.tintColor = UIColor.whiteColor()
-        refreshControl.tintColorDidChange()
-        
-        contacts = sharedContactDataService.allContactVOs()
-        tableView.reloadData()
-        
-        retrieveAllContacts()
     }
     
     func filterContentForSearchText(searchText: String) {

@@ -37,7 +37,6 @@ class ContactDataService {
     
     func allContactsInManagedObjectContext(context: NSManagedObjectContext) -> [Contact] {
         let fetchRequest = NSFetchRequest(entityName: Contact.Attributes.entityName)
-        
         var error: NSError?
         if let contacts = context.executeFetchRequest(fetchRequest, error: &error) as? [Contact] {
             return contacts
@@ -178,8 +177,7 @@ extension ContactDataService {
                     contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: contact.email, isProtonMailContact: true))
                 }
             }
-            
-            contacts.sort { $0.name.lowercaseString < $1.name.lowercaseString }
+            contacts.sort { $0.name.lowercaseString == $1.name.lowercaseString ?  $0.email.lowercaseString < $1.email.lowercaseString : $0.name.lowercaseString < $1.name.lowercaseString}
             
             dispatch_async(dispatch_get_main_queue()) {
                 completion(contacts: contacts, error: lastError)
