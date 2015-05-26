@@ -84,12 +84,18 @@ class ComposeViewController: ProtonMailViewController {
                 NSLog("\(__FUNCTION__) error: \(error)")
             }
         }
-
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.composeView.updateConstraintsIfNeeded()
+        if ccSelectedContacts.count > 0 {
+            composeView.plusButtonHandle()
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -191,9 +197,9 @@ class ComposeViewController: ProtonMailViewController {
             names = emails
         }
         
-        let nameCount = names.count;
-        
-        for var i = 0; i < count(emails); i++ {
+        let nameCount = names.count
+        let emailCount = count(emails)
+        for var i = 0; i < emailCount; i++ {
             selectedContacts.append(ContactVO(id: "", name: ((i>=0 && i<nameCount) ? names[i] : ""), email: emails[i]))
         }
     }
