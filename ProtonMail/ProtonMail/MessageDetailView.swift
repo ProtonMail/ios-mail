@@ -630,6 +630,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
         self.emailDetailToContentLabel.font = UIFont.robotoRegular(size: UIFont.Size.h5)
         self.emailDetailToContentLabel.numberOfLines = 1
         self.emailDetailToContentLabel.text = "\(message.recipientNameList)"
+        println("\(message.recipientNameList)")
         self.emailDetailToContentLabel.textColor = UIColor.ProtonMail.Blue_85B1DE
         self.emailDetailToContentLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailToContentLabel)
@@ -639,7 +640,8 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
         self.emailDetailCCLabel = UILabel()
         self.emailDetailCCLabel.font = UIFont.robotoLight(size: UIFont.Size.h5)
         self.emailDetailCCLabel.numberOfLines = 1
-        self.emailDetailCCLabel.text = "Cc:"
+        self.emailDetailCCLabel.text = "Cc: \(self.message.ccList)"
+        println("\(self.message.ccList)")
         self.emailDetailCCLabel.textColor = UIColor.ProtonMail.Gray_999DA1
         self.emailDetailCCLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailCCLabel)

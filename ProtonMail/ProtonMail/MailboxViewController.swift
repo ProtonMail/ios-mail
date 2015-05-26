@@ -248,6 +248,10 @@ class MailboxViewController: ProtonMailViewController {
             if (self.isEditing) {
                 mailboxCell.showCheckboxOnLeftSide()
             }
+            else
+            {
+                mailboxCell.hideCheckboxOnLeftSide()
+            }
         }
     }
     
