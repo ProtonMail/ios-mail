@@ -50,13 +50,15 @@ class ComposeViewController: ProtonMailViewController {
         self.composeView = self.view as? ComposeView
         self.composeView.datasource = self
         self.composeView.delegate = self
+    
         
         handleMessage(message, action: action)
         
         if (self.toSelectedContacts.count == 0) {
             self.composeView.toContactPicker.becomeFirstResponder()
         } else {
-            self.htmlEditor.focusTextEditor();
+
+           // self.htmlEditor.focusTextEditor();
             //self.composeView.bodyTextView.becomeFirstResponder()
         }
         
