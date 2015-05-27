@@ -32,6 +32,8 @@ class SignInViewController: UIViewController {
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var usernameTextField: UITextField!
+    @IBOutlet weak var rememberView: UIView!
+    @IBOutlet weak var signInLabel: UILabel!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -45,6 +47,15 @@ class SignInViewController: UIViewController {
         setupSignInButton()
         setupSignUpButton()
         signInIfRememberedCredentials()
+        
+        if(isRemembered)
+        {
+            HideLoginViews();
+        }
+        else
+        {
+            ShowLoginViews();
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -58,7 +69,7 @@ class SignInViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        if(UIDevice.currentDevice().isLargeScreen())
+        if(UIDevice.currentDevice().isLargeScreen() && !isRemembered)
         {
             usernameTextField.becomeFirstResponder()
         }
@@ -71,6 +82,31 @@ class SignInViewController: UIViewController {
     }
     
     // MARK: - Private methods
+    
+    private func HideLoginViews()
+    {
+        self.passwordTextField.hidden = true
+        self.rememberView.hidden = true
+        self.signInButton.hidden = true
+        self.signUpButton.hidden = true
+        self.usernameTextField.hidden = true
+        self.signInLabel.hidden = true
+    }
+    
+    private func ShowLoginViews()
+    {
+        UIView.animateWithDuration(1.0, animations: { () -> Void in
+            self.passwordTextField.hidden = false
+            self.rememberView.hidden = false
+            self.signInButton.hidden = false
+            self.signUpButton.hidden = false
+            self.usernameTextField.hidden = false
+            self.signInLabel.hidden = false
+            
+            }, completion: { finished in
+        })
+
+    }
     
     func dismissKeyboard() {
         usernameTextField.resignFirstResponder()
@@ -105,7 +141,7 @@ class SignInViewController: UIViewController {
             
             if let error = error {
                 NSLog("\(__FUNCTION__) error: \(error)")
-                
+                self.ShowLoginViews();
                 let alertController = error.alertController()
                 alertController.addOKAction()
                 

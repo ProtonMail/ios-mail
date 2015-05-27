@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iNi-o2-nXB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iNi-o2-nXB">
     <dependencies>
         <development version="6100" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -68,7 +68,7 @@
                             <imageView userInteractionEnabled="NO" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SignIn" translatesAutoresizingMaskIntoConstraints="NO" id="ZKK-VD-dsX">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="WWe-i8-Jtn">
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="WWe-i8-Jtn">
                                 <rect key="frame" x="186" y="137" width="228" height="37"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="228" id="6Lc-n5-dpv"/>
@@ -293,7 +293,9 @@
                         <outlet property="keyboardPaddingConstraint" destination="XkH-IR-RIB" id="hYK-A9-mUp"/>
                         <outlet property="passwordTextField" destination="gnm-cH-vcp" id="1D6-sA-0j4"/>
                         <outlet property="rememberButton" destination="Z40-fI-qfm" id="Du0-rq-U5A"/>
+                        <outlet property="rememberView" destination="oyG-Fo-wN1" id="zLb-1z-ta8"/>
                         <outlet property="signInButton" destination="72N-j7-s2R" id="910-jm-k2J"/>
+                        <outlet property="signInLabel" destination="fjY-z1-3LU" id="NNK-6P-vYc"/>
                         <outlet property="signUpButton" destination="AJu-1e-alo" id="qIr-He-zqh"/>
                         <outlet property="usernameTextField" destination="sKV-Mt-Vgi" id="fer-Ki-efM"/>
                         <segue destination="Zzb-6r-tlP" kind="show" identifier="mailboxSegue" id="xf0-Do-kI6"/>
