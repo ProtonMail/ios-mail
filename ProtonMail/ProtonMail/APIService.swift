@@ -18,9 +18,9 @@ import CoreData
 import Foundation
 
 
-private let BaseURLString = "http://protonmail.xyz"
+//private let BaseURLString = "http://protonmail.xyz"
 //private let BaseURLString = "http://feng.api.com"
-//private let BaseURLString = "https://dev-api.protonmail.ch"
+private let BaseURLString = "https://dev-api.protonmail.ch"
 
 
 let APIServiceErrorDomain = NSError.protonMailErrorDomain(subdomain: "APIService")
@@ -67,7 +67,7 @@ class APIService {
     internal func afNetworkingBlocksForRequest(#method: HTTPMethod, path: String, parameters: AnyObject?, authenticated: Bool = true, completion: CompletionBlock?) -> (AFNetworkingSuccessBlock?, AFNetworkingFailureBlock?) {
         if let completion = completion {
             let failure: AFNetworkingFailureBlock = { task, error in
-                //PMLog("\(__FUNCTION__) Error: \(error)")
+                PMLog("\(__FUNCTION__) Error: \(error)")
                 completion(task: task, response: nil, error: error)
             }
             let success: AFNetworkingSuccessBlock = { task, responseObject in
