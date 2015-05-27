@@ -559,7 +559,7 @@ extension ComposeView: MBContactPickerDataSource {
         } else if (contactPickerView == bccContactPicker) {
             contactPickerView.prompt = NSLocalizedString("Bcc:")
         }
-    
+        
         contactPickerView.contactCollectionView.addBorder(.Left, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         contactPickerView.contactCollectionView.addBorder(.Right, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         
@@ -604,6 +604,11 @@ extension ComposeView: MBContactPickerDelegate {
             let newHeight = self.window!.bounds.size.height - pickerRectInWindow.origin.y - contactPicker.keyboardHeight
             self.updateContactPickerHeight(contactPicker, newHeight: newHeight)
         }
+        
+        if !contactPicker.hidden {
+            
+        }
+        
     }
     
     func didHideFilteredContactsForContactPicker(contactPicker: MBContactPicker!) {

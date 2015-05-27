@@ -49,7 +49,10 @@
     UITextField *textField = [[UITextField alloc] initWithFrame:self.bounds];
     textField.delegate = self.delegate;
     textField.text = @" ";
+    textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     textField.autocorrectionType = UITextAutocorrectionTypeDefault;
+    textField.keyboardType =UIKeyboardTypeEmailAddress;
+    
     UIFont *font = [[self.class appearance] font];
     if (font)
     {
