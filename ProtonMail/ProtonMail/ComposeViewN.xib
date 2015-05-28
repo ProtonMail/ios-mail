@@ -16,6 +16,7 @@
             <connections>
                 <outlet property="fakeContactPickerHeightConstraint" destination="sdc-Ad-iWb" id="j2p-Du-il9"/>
                 <outlet property="showCcBccButton" destination="chC-fW-E4g" id="nEi-tN-jKt"/>
+                <outlet property="subject" destination="6W7-2D-2Lf" id="IHs-QH-LuQ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

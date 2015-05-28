@@ -2973,7 +2973,7 @@
                                             </variation>
                                         </label>
                                     </subviews>
-                                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                    <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstItem="Yxl-Es-CLX" firstAttribute="top" secondItem="nqq-dQ-73h" secondAttribute="topMargin" constant="-5" id="WTP-6b-4eF"/>
                                         <constraint firstItem="HCt-6S-bCJ" firstAttribute="top" secondItem="Yxl-Es-CLX" secondAttribute="bottom" constant="8" symbolic="YES" id="bm4-ql-jN7"/>

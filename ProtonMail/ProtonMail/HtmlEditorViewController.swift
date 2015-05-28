@@ -21,6 +21,7 @@ class HtmlEditorViewController: ZSSRichTextEditor {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        self.baseURL = NSURL( fileURLWithPath: "https://protonmail.ch")
     }
 
     override func didReceiveMemoryWarning() {
@@ -29,6 +30,7 @@ class HtmlEditorViewController: ZSSRichTextEditor {
     }
     
     override func editorDidScrollWithPosition(position: Int) {
+        super.editorDidScrollWithPosition(position)
         self.delegate?.editorSizeChanged(self.getContentSize())
     }
 

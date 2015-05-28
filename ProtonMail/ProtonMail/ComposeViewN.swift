@@ -5,10 +5,12 @@
 //  Created by Yanfeng Zhang on 5/27/15.
 //  Copyright (c) 2015 ArcTouch. All rights reserved.
 //
-
+import Foundation
 import UIKit
 
 protocol ComposeViewNDelegate {
+    
+
     func composeViewDidTapCancelButton(composeView: ComposeViewN)
     func composeViewDidTapSendButton(composeView: ComposeViewN)
     func composeViewDidTapNextButton(composeView: ComposeViewN)
@@ -16,6 +18,8 @@ protocol ComposeViewNDelegate {
     func composeViewDidTapAttachmentButton(composeView: ComposeViewN)
     func composeView(composeView: ComposeViewN, didAddContact contact: ContactVO, toPicker picker: MBContactPicker)
     func composeView(composeView: ComposeViewN, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker)
+    func composeViewDidSizeChanged(composeView: ComposeViewN, size: CGSize)
+    
 }
 
 protocol ComposeViewNDataSource {
@@ -90,6 +94,7 @@ class ComposeViewN: UIViewController {
         self.configureBccContactPicker()
 
         self.view.bringSubviewToFront(showCcBccButton)
+        self.view.bringSubviewToFront(subject);
         self.view.sendSubviewToBack(ccContactPicker)
         self.view.sendSubviewToBack(bccContactPicker)
     }
@@ -219,6 +224,8 @@ class ComposeViewN: UIViewController {
             contactPicker.contactCollectionView.addBorder(.Left, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
             contactPicker.contactCollectionView.addBorder(.Right, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         })
+        
+        self.delegate?.composeViewDidSizeChanged(self, size: CGSize(width: self.view.frame.width, height: newHeight + 100))
     }
 }
 

@@ -196,4 +196,6 @@ static NSString * const ZSSRichTextEditorToolbarNone = @"com.zedsaid.toolbaritem
 
 - (CGSize)getContentSize;
 
+- (void)setFrame:(CGRect)frame;
+
 @end
