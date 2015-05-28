@@ -32,7 +32,7 @@ class ComposeViewControllerN: UIViewController {
 
         composeView.view.frame = scrollView.frame
         
-        htmlEditor.view.frame = CGRect(x: 0, y: f.height, width: f.width, height: 500)
+        htmlEditor.view.frame = CGRect(x: 0, y: f.height, width: f.width, height: 400)
         
         
 //        htmlEditor.view.mas_updateConstraints{ (make) -> Void in
@@ -52,7 +52,7 @@ class ComposeViewControllerN: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        scrollView.contentSize = CGSize(width: scrollView.frame.width, height: 1000)
+        scrollView.contentSize = CGSize(width: scrollView.frame.width, height: 2000)
         let frame = scrollView.contentSize;
     }
     

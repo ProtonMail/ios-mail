@@ -186,6 +186,9 @@
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="17"/>
                                 <color key="textColor" red="0.2196078431372549" green="0.22745098039215686" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="16" y="72" width="122.5" height="20"/>
+                                </variation>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5sX-Zk-W85">
                                 <rect key="frame" x="16" y="100" width="568" height="480"/>
@@ -1997,14 +2000,21 @@
                                 <exclude reference="GgC-GL-AO3"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="eWX-ob-QSA"/>
-                                <exclude reference="sTH-Fd-lEG"/>
                                 <exclude reference="4Re-dX-fBR"/>
                                 <exclude reference="A2e-gg-bbp"/>
                                 <exclude reference="Eb5-md-fny"/>
+                                <exclude reference="JbA-j3-h6Q"/>
+                                <exclude reference="hw4-zK-0WC"/>
+                                <exclude reference="OR2-gs-5IT"/>
+                                <exclude reference="rB9-Ee-BMn"/>
+                                <exclude reference="Yvu-RG-68G"/>
+                                <exclude reference="gVt-Re-ebA"/>
+                                <exclude reference="uGx-2K-jGH"/>
                                 <exclude reference="OCo-Pw-C5e"/>
                                 <exclude reference="XxA-0X-VNP"/>
                                 <exclude reference="pRG-0X-Fyo"/>
+                                <exclude reference="eWX-ob-QSA"/>
+                                <exclude reference="sTH-Fd-lEG"/>
                                 <exclude reference="0te-tH-QnQ"/>
                                 <exclude reference="HRC-G9-NoS"/>
                                 <exclude reference="cws-zA-hIj"/>
@@ -2012,13 +2022,6 @@
                                 <exclude reference="sHP-lx-GMb"/>
                                 <exclude reference="GgV-Qi-Syk"/>
                                 <exclude reference="oa5-r7-ZMn"/>
-                                <exclude reference="Yvu-RG-68G"/>
-                                <exclude reference="gVt-Re-ebA"/>
-                                <exclude reference="uGx-2K-jGH"/>
-                                <exclude reference="OR2-gs-5IT"/>
-                                <exclude reference="rB9-Ee-BMn"/>
-                                <exclude reference="JbA-j3-h6Q"/>
-                                <exclude reference="hw4-zK-0WC"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -2033,14 +2036,21 @@
                                 <include reference="GgC-GL-AO3"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="eWX-ob-QSA"/>
-                                <include reference="sTH-Fd-lEG"/>
                                 <include reference="4Re-dX-fBR"/>
                                 <include reference="A2e-gg-bbp"/>
                                 <include reference="Eb5-md-fny"/>
+                                <include reference="JbA-j3-h6Q"/>
+                                <include reference="hw4-zK-0WC"/>
+                                <include reference="OR2-gs-5IT"/>
+                                <include reference="rB9-Ee-BMn"/>
+                                <include reference="Yvu-RG-68G"/>
+                                <include reference="gVt-Re-ebA"/>
+                                <include reference="uGx-2K-jGH"/>
                                 <include reference="OCo-Pw-C5e"/>
                                 <include reference="XxA-0X-VNP"/>
                                 <include reference="pRG-0X-Fyo"/>
+                                <include reference="eWX-ob-QSA"/>
+                                <include reference="sTH-Fd-lEG"/>
                                 <include reference="0te-tH-QnQ"/>
                                 <include reference="HRC-G9-NoS"/>
                                 <include reference="cws-zA-hIj"/>
@@ -2048,13 +2058,6 @@
                                 <include reference="sHP-lx-GMb"/>
                                 <include reference="GgV-Qi-Syk"/>
                                 <include reference="oa5-r7-ZMn"/>
-                                <include reference="Yvu-RG-68G"/>
-                                <include reference="gVt-Re-ebA"/>
-                                <include reference="uGx-2K-jGH"/>
-                                <include reference="OR2-gs-5IT"/>
-                                <include reference="rB9-Ee-BMn"/>
-                                <include reference="JbA-j3-h6Q"/>
-                                <include reference="hw4-zK-0WC"/>
                             </mask>
                         </variation>
                         <connections>
@@ -2099,6 +2102,7 @@
                         <viewControllerLayoutGuide type="bottom" id="EYc-2f-OGy"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="mVi-ND-ZzN">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jFq-VP-I1i">
@@ -2117,10 +2121,10 @@
                                 <exclude reference="jFq-VP-I1i"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="2yn-aP-ZZ8"/>
                                 <exclude reference="D1u-LY-aD4"/>
                                 <exclude reference="IzC-jx-cbO"/>
                                 <exclude reference="K3Z-rR-71d"/>
-                                <exclude reference="2yn-aP-ZZ8"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -2128,10 +2132,10 @@
                                 <include reference="jFq-VP-I1i"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="2yn-aP-ZZ8"/>
                                 <include reference="D1u-LY-aD4"/>
                                 <include reference="IzC-jx-cbO"/>
                                 <include reference="K3Z-rR-71d"/>
-                                <include reference="2yn-aP-ZZ8"/>
                             </mask>
                         </variation>
                     </view>

@@ -137,7 +137,8 @@ static Class hackishFixClass = Nil;
     self.editorView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     self.editorView.dataDetectorTypes = UIDataDetectorTypeNone;
     self.editorView.scrollView.bounces = NO;
-    self.editorView.backgroundColor = [UIColor whiteColor];
+    self.editorView.backgroundColor = [UIColor greenColor];
+    self.editorView.scrollView.scrollEnabled = NO;
     [self.view addSubview:self.editorView];
     
     // Scrolling View
@@ -925,6 +926,11 @@ static Class hackishFixClass = Nil;
     [self.customZSSBarButtonItems addObject:item];
     
     [self buildToolbar];
+}
+
+-(CGSize)getContentSize
+{
+    return self.editorView.scrollView.contentSize;
 }
 
 
