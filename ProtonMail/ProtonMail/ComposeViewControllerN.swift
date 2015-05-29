@@ -10,14 +10,33 @@ import UIKit
 
 class ComposeViewControllerN : ProtonMailViewController {
     
-    @IBOutlet weak var scrollView: UIScrollView!
+    private struct EncryptionStep {
+        static let DefinePassword = "DefinePassword"
+        static let ConfirmPassword = "ConfirmPassword"
+        static let DefineHintPassword = "DefineHintPassword"
+    }
     
+    let draftAction = "draft"
+    
+    // MARK : - Views
+    @IBOutlet weak var scrollView: UIScrollView!
     private var composeView : ComposeViewN!
     private var htmlEditor : HtmlEditorViewController!
     
-    //
+    // MARK : - Private attributes
     private var composeSize : CGSize!
     private var editorSize : CGSize!
+    
+    
+    private var toSelectedContacts: [ContactVO]! = [ContactVO]()
+    private var ccSelectedContacts: [ContactVO]! = [ContactVO]()
+    private var bccSelectedContacts: [ContactVO]! = [ContactVO]()
+    private var contacts: [ContactVO]! = [ContactVO]()
+    private var actualEncryptionStep = EncryptionStep.DefinePassword
+    private var encryptionPassword: String = ""
+    private var encryptionConfirmPassword: String = ""
+    private var encryptionPasswordHint: String = ""
+    private var hasAccessToAddressBook: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,6 +86,40 @@ extension ComposeViewControllerN : ComposeViewNDelegate {
         self.composeSize = size
         self.updateViewSize()
     }
+    
+    func composeViewDidTapNextButton(composeView: ComposeViewN) {
+        switch(actualEncryptionStep) {
+        case EncryptionStep.DefinePassword:
+            self.encryptionPassword = composeView.encryptedPasswordTextField.text ?? ""
+            self.actualEncryptionStep = EncryptionStep.ConfirmPassword
+            self.composeView.showConfirmPasswordView()
+            
+        case EncryptionStep.ConfirmPassword:
+            self.encryptionConfirmPassword = composeView.encryptedPasswordTextField.text ?? ""
+            
+            if (self.encryptionPassword == self.encryptionConfirmPassword) {
+                self.actualEncryptionStep = EncryptionStep.DefineHintPassword
+                self.composeView.hidePasswordAndConfirmDoesntMatch()
+                self.composeView.showPasswordHintView()
+            } else {
+                self.composeView.showPasswordAndConfirmDoesntMatch()
+            }
+            
+        case EncryptionStep.DefineHintPassword:
+            self.encryptionPasswordHint = composeView.encryptedPasswordTextField.text ?? ""
+            self.actualEncryptionStep = EncryptionStep.DefinePassword
+            self.composeView.showEncryptionDone()
+        default:
+            println("No step defined.")
+        }
+    }
+    
+    func composeViewDidTapEncryptedButton(composeView: ComposeViewN) {
+         self.actualEncryptionStep = EncryptionStep.DefinePassword
+         self.composeView.showDefinePasswordView()
+         self.composeView.hidePasswordAndConfirmDoesntMatch()
+    }
+
 }
 
 extension ComposeViewControllerN : HtmlEditorViewControllerDelegate {
@@ -158,38 +211,8 @@ extension ComposeViewControllerN : HtmlEditorViewControllerDelegate {
 ////        }
 //    }
 //    
-//    func composeViewDidTapEncryptedButton(composeView: ComposeView) {
-//       // self.actualEncryptionStep = EncryptionStep.DefinePassword
-//       // self.composeView.showDefinePasswordView()
-//       // self.composeView.hidePasswordAndConfirmDoesntMatch()
-//    }
-//    
-//    func composeViewDidTapNextButton(composeView: ComposeView) {
-////        switch(actualEncryptionStep) {
-////        case EncryptionStep.DefinePassword:
-////            self.encryptionPassword = composeView.encryptedPasswordTextField.text ?? ""
-////            self.actualEncryptionStep = EncryptionStep.ConfirmPassword
-////            self.composeView.showConfirmPasswordView()
-////            
-////        case EncryptionStep.ConfirmPassword:
-////            self.encryptionConfirmPassword = composeView.encryptedPasswordTextField.text ?? ""
-////            
-////            if (self.encryptionPassword == self.encryptionConfirmPassword) {
-////                self.actualEncryptionStep = EncryptionStep.DefineHintPassword
-////                self.composeView.hidePasswordAndConfirmDoesntMatch()
-////                self.composeView.showPasswordHintView()
-////            } else {
-////                self.composeView.showPasswordAndConfirmDoesntMatch()
-////            }
-////            
-////        case EncryptionStep.DefineHintPassword:
-////            self.encryptionPasswordHint = composeView.encryptedPasswordTextField.text ?? ""
-////            self.actualEncryptionStep = EncryptionStep.DefinePassword
-////            self.composeView.showEncryptionDone()
-////        default:
-////            println("No step defined.")
-////        }
-//    }
+//
+
 //    
 //    func composeView(composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: MBContactPicker) {
 ////        var selectedContacts: [ContactVO] = [ContactVO]()

@@ -8,22 +8,20 @@
 import Foundation
 import UIKit
 
-//protocol ComposeViewNDelegate {
-//    
-//    func composeViewDidSizeChanged(composeView: ComposeViewN, size: CGSize)
-//    func composeViewDidTapCancelButton(composeView: ComposeViewN)
-//    func composeViewDidTapSendButton(composeView: ComposeViewN)
-//    func composeViewDidTapNextButton(composeView: ComposeViewN)
-//    func composeViewDidTapEncryptedButton(composeView: ComposeViewN)
-//    func composeViewDidTapAttachmentButton(composeView: ComposeViewN)
-//    func composeView(composeView: ComposeViewN, didAddContact contact: ContactVO, toPicker picker: MBContactPicker)
-//    func composeView(composeView: ComposeViewN, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker)
-//    
-//}
 
-@objc protocol ComposeViewNDelegate {
+
+protocol ComposeViewNDelegate {
+    func ComposeViewNDidSizeChanged(size: CGSize)
+    func composeViewDidTapNextButton(composeView: ComposeViewN)
+    func composeViewDidTapEncryptedButton(composeView: ComposeViewN)
+//        func composeViewDidSizeChanged(composeView: ComposeViewN, size: CGSize)
+//        func composeViewDidTapCancelButton(composeView: ComposeViewN)
+//        func composeViewDidTapSendButton(composeView: ComposeViewN)
     
-    optional func ComposeViewNDidSizeChanged(size: CGSize)
+//
+//        func composeViewDidTapAttachmentButton(composeView: ComposeViewN)
+//        func composeView(composeView: ComposeViewN, didAddContact contact: ContactVO, toPicker picker: MBContactPicker)
+//        func composeView(composeView: ComposeViewN, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker)
 
 }
 
@@ -83,7 +81,6 @@ class ComposeViewN: UIViewController {
     @IBOutlet var expirationDateTextField: UITextField!
     //@IBOutlet var expirationPicker: UIPickerView!
 
-    
     
     // MARK: - Delegate and Datasource
     var datasource: ComposeViewNDataSource?
@@ -159,7 +156,7 @@ class ComposeViewN: UIViewController {
     
     @IBAction func attachmentButtonTapped(sender: UIButton) {
         //self.endEditing(true)
-       // self.delegate?.composeViewDidTapAttachmentButton(self)
+        //self.delegate?.composeViewDidTapAttachmentButton(self)
     }
     
     @IBAction func expirationButtonTapped(sender: UIButton) {
@@ -175,24 +172,23 @@ class ComposeViewN: UIViewController {
             self.bccContactPicker.userInteractionEnabled = false
             self.subject.userInteractionEnabled = false
             
-          //  self.showExpirationPicker()
+          //self.showExpirationPicker()
         })
     }
 
     @IBAction func encryptedButtonTapped(sender: UIButton) {
-       // self.delegate?.composeViewDidTapEncryptedButton(self)
-       // self.encryptedPasswordTextField.becomeFirstResponder()
+        self.delegate?.composeViewDidTapEncryptedButton(self)
+        self.encryptedPasswordTextField.becomeFirstResponder()
         UIView.animateWithDuration(0.3, animations: { () -> Void in
-           // self.encryptedButton.setImage(UIImage(named: "encrypted_compose"), forState: UIControlState.Normal)
+            self.encryptedButton.setImage(UIImage(named: "encrypted_compose"), forState: UIControlState.Normal)
             self.passwordView.alpha = 1.0
             self.buttonView.alpha = 0.0
         })
     }
     @IBAction func didTapEncryptedDismissButton(sender: UIButton) {
-        //self.delegate?.composeViewDidTapEncryptedButton(self)
-        
+        self.delegate?.composeViewDidTapEncryptedButton(self)
         UIView.animateWithDuration(0.3, animations: { () -> Void in
-          //  self.encryptedPasswordTextField.text = ""
+            self.encryptedPasswordTextField.text = ""
             self.passwordView.alpha = 0.0
             self.buttonView.alpha = 1.0
         })
@@ -250,7 +246,7 @@ class ComposeViewN: UIViewController {
         self.errorTextView.textAlignment = NSTextAlignment.Center
         self.errorTextView.textColor = UIColor.whiteColor()
         self.errorTextView.sizeToFit()
-        //self.view.addSubview(errorView)
+        self.view.addSubview(errorView)
         errorView.addSubview(errorTextView)
         
 //        errorView.mas_makeConstraints { (make) -> Void in
@@ -277,7 +273,7 @@ class ComposeViewN: UIViewController {
             println("\(self.expirationView.frame)")
             println("\(self.passwordView.frame)")
             let size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height)
-            self.delegate?.ComposeViewNDidSizeChanged?(size)
+            self.delegate?.ComposeViewNDidSizeChanged(size)
         }, completion: nil)
     }
     
@@ -311,7 +307,109 @@ class ComposeViewN: UIViewController {
         })
         
     }
+    
+    internal func didTapConfirmExpirationButton() {
+//        let selectedDay = expirationPicker.selectedRowInComponent(0)
+//        let selectedHour = expirationPicker.selectedRowInComponent(1)
+//        
+//        if (selectedDay == 0 && selectedHour == 0) {
+//            self.expirationDateTextField.shake(3, offset: 10.0)
+//        } else {
+//            if (!hasExpirationSchedule) {
+//                self.expirationButton.setImage(UIImage(named: "expiration_compose_checked"), forState: UIControlState.Normal)
+//                self.confirmExpirationButton.setImage(UIImage(named: "cancel_compose"), forState: UIControlState.Normal)
+//            } else {
+//                self.expirationDateTextField.text = ""
+//                self.expirationPicker.selectRow(0, inComponent: 0, animated: true)
+//                self.expirationPicker.selectRow(0, inComponent: 1, animated: true)
+//                self.expirationButton.setImage(UIImage(named: "expiration_compose"), forState: UIControlState.Normal)
+//                self.confirmExpirationButton.setImage(UIImage(named: "confirm_compose"), forState: UIControlState.Normal)
+//            }
+//            
+//            hasExpirationSchedule = !hasExpirationSchedule
+//            self.hideExpirationPicker()
+//        }
+    }
+    
+    internal func didTapNextButton() {
+        self.delegate?.composeViewDidTapNextButton(self)
+    }
+    
+    internal func showDefinePasswordView() {
+        self.encryptedPasswordTextField.placeholder = NSLocalizedString("Define Password")
+        self.encryptedPasswordTextField.secureTextEntry = true
+        self.encryptedPasswordTextField.text = ""
+    }
+    
+    internal func showConfirmPasswordView() {
+        self.encryptedPasswordTextField.placeholder = NSLocalizedString("Confirm Password")
+        self.encryptedPasswordTextField.secureTextEntry = true
+        self.encryptedPasswordTextField.text = ""
+    }
+    
+    internal func showPasswordHintView() {
+        self.encryptedPasswordTextField.placeholder = NSLocalizedString("Define Hint")
+        self.encryptedPasswordTextField.secureTextEntry = false
+        self.encryptedPasswordTextField.text = ""
+    }
+    
+    internal func showEncryptionDone() {
+        didTapEncryptedDismissButton(encryptedButton)
+        self.encryptedPasswordTextField.placeholder = NSLocalizedString("Define Password")
+        self.encryptedPasswordTextField.secureTextEntry = true
+        self.encryptedButton.setImage(UIImage(named: "encrypted_compose_checked"), forState: UIControlState.Normal)
+    }
+    
+    internal func showExpirationPicker() {
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+           // self.expirationPicker.alpha = 1.0
+        })
+    }
 
+    internal func hideExpirationPicker() {
+        self.toContactPicker.userInteractionEnabled = true
+        self.ccContactPicker.userInteractionEnabled = true
+        self.bccContactPicker.userInteractionEnabled = true
+        self.subject.userInteractionEnabled = true
+        
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.expirationView.alpha = 0.0
+            self.buttonView.alpha = 1.0
+            //self.expirationPicker.alpha = 0.0
+        })
+    }
+    
+    internal func showPasswordAndConfirmDoesntMatch() {
+        self.errorView.backgroundColor = UIColor.ProtonMail.Red_FF5959
+        self.errorView.mas_updateConstraints { (update) -> Void in
+            update.removeExisting = true
+            update.left.equalTo()(self)
+            update.right.equalTo()(self)
+            update.height.equalTo()(self.kErrorMessageHeight)
+            update.top.equalTo()(self.encryptedPasswordTextField.mas_bottom)
+        }
+        
+        self.errorTextView.shake(3, offset: 10)
+        
+        UIView.animateWithDuration(0.1, animations: { () -> Void in
+            //self.layoutIfNeeded()
+        })
+    }
+    
+    internal func hidePasswordAndConfirmDoesntMatch() {
+        self.errorView.mas_updateConstraints { (update) -> Void in
+            update.removeExisting = true
+            update.left.equalTo()(self.view)
+            update.right.equalTo()(self.view)
+            update.height.equalTo()(0)
+            update.top.equalTo()(self.encryptedPasswordTextField.mas_bottom)
+        }
+        
+        UIView.animateWithDuration(0.1, animations: { () -> Void in
+            //self.layoutIfNeeded()
+        })
+    }
+    
     private func configureToContactPicker() {
         toContactPicker = MBContactPicker()
         toContactPicker.setTranslatesAutoresizingMaskIntoConstraints(true)
@@ -437,13 +535,13 @@ extension ComposeViewN: MBContactPickerDelegate {
     func contactCollectionView(contactCollectionView: MBContactCollectionView!, didAddContact model: MBContactPickerModelProtocol!) {
         let contactPicker = contactPickerForContactCollectionView(contactCollectionView)
         
-       // self.delegate?.composeView(self, didAddContact: model as! ContactVO, toPicker: contactPicker)
+        //self.delegate?.composeView(self, didAddContact: model as! ContactVO, toPicker: contactPicker)
     }
     
     func contactCollectionView(contactCollectionView: MBContactCollectionView!, didRemoveContact model: MBContactPickerModelProtocol!) {
         let contactPicker = contactPickerForContactCollectionView(contactCollectionView)
         
-       // self.delegate?.composeView(self, didRemoveContact: model as! ContactVO, fromPicker: contactPicker)
+        //self.delegate?.composeView(self, didRemoveContact: model as! ContactVO, fromPicker: contactPicker)
     }
     
     func contactPicker(contactPicker: MBContactPicker!, didEnterCustomText text: String!) {
