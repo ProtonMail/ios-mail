@@ -186,9 +186,6 @@
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="17"/>
                                 <color key="textColor" red="0.2196078431372549" green="0.22745098039215686" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
-                                <variation key="widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="16" y="72" width="123" height="20"/>
-                                </variation>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5sX-Zk-W85">
                                 <rect key="frame" x="16" y="100" width="568" height="480"/>
@@ -1599,7 +1596,8 @@
                         <segue destination="xBI-ex-VGk" kind="presentation" identifier="toSearchViewController" id="6qA-ON-8KL"/>
                         <segue destination="NZX-qa-4Ud" kind="show" identifier="toMessageDetailViewController" id="dxU-wZ-inN"/>
                         <segue destination="1qH-aE-Y3O" kind="presentation" identifier="toCompose" id="dZz-yt-xGj"/>
-                        <segue destination="Jph-O4-s2a" kind="show" identifier="toComposeShow" id="tjX-oW-rkl"/>
+                        <segue destination="zEJ-rK-fGr" kind="show" identifier="toComposeShow" id="rFr-1z-1Q8"/>
+                        <segue destination="Jph-O4-s2a" kind="show" id="4Ow-cV-Yls"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v5f-i5-kem" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1692,7 +1690,8 @@
                                         <exclude reference="mf0-wi-yH5"/>
                                     </mask>
                                 </variation>
-                                <variation key="widthClass=compact">
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="0.0" y="160" width="400" height="48"/>
                                     <mask key="subviews">
                                         <include reference="2Or-aZ-wTr"/>
                                         <include reference="nRp-lc-aC5"/>
@@ -1774,7 +1773,8 @@
                                         <exclude reference="oCm-Yr-F4t"/>
                                     </mask>
                                 </variation>
-                                <variation key="widthClass=compact">
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="0.0" y="160" width="400" height="48"/>
                                     <mask key="subviews">
                                         <include reference="bsr-oA-zb4"/>
                                         <include reference="7fJ-u1-N24"/>
@@ -1860,7 +1860,8 @@
                                         <exclude reference="Su0-6o-Hqa"/>
                                     </mask>
                                 </variation>
-                                <variation key="widthClass=compact">
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="0.0" y="160" width="400" height="48"/>
                                     <mask key="subviews">
                                         <include reference="I6c-t1-F3T"/>
                                         <include reference="9cm-JU-5Z9"/>
@@ -1875,12 +1876,6 @@
                                     </mask>
                                 </variation>
                             </view>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eIF-NZ-RV4">
-                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                                <connections>
-                                    <segue destination="w3Q-bJ-o87" kind="embed" identifier="toHtmlEditor" id="fti-5W-JjP"/>
-                                </connections>
-                            </containerView>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HXR-bA-dsP">
                                 <rect key="frame" x="0.0" y="-162" width="320" height="162"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -1911,7 +1906,8 @@
                                         <exclude reference="U4g-0H-wUi"/>
                                     </mask>
                                 </variation>
-                                <variation key="widthClass=compact">
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="0.0" y="112" width="400" height="48"/>
                                     <mask key="constraints">
                                         <include reference="U4g-0H-wUi"/>
                                     </mask>
@@ -1932,7 +1928,8 @@
                                         <exclude reference="sCI-Kr-46k"/>
                                     </mask>
                                 </variation>
-                                <variation key="widthClass=compact">
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="368" y="76" width="22" height="22"/>
                                     <mask key="constraints">
                                         <include reference="ek5-IR-gxj"/>
                                         <include reference="sCI-Kr-46k"/>
@@ -1953,12 +1950,22 @@
                                         <exclude reference="JqY-3L-3bq"/>
                                     </mask>
                                 </variation>
-                                <variation key="widthClass=compact">
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="0.0" y="64" width="400" height="48"/>
                                     <mask key="constraints">
                                         <include reference="JqY-3L-3bq"/>
                                     </mask>
                                 </variation>
                             </view>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eIF-NZ-RV4">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="0.0" y="208" width="400" height="392"/>
+                                </variation>
+                                <connections>
+                                    <segue destination="w3Q-bJ-o87" kind="embed" identifier="toHtmlEditor" id="fti-5W-JjP"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -1993,11 +2000,11 @@
                                 <exclude reference="EuM-Xm-TCS"/>
                                 <exclude reference="jOG-f0-Zf7"/>
                                 <exclude reference="xnE-EL-LUu"/>
-                                <exclude reference="eIF-NZ-RV4"/>
                                 <exclude reference="HXR-bA-dsP"/>
                                 <exclude reference="7bA-PD-Vum"/>
                                 <exclude reference="z6j-oj-e5z"/>
                                 <exclude reference="GgC-GL-AO3"/>
+                                <exclude reference="eIF-NZ-RV4"/>
                             </mask>
                             <mask key="constraints">
                                 <exclude reference="4Re-dX-fBR"/>
@@ -2029,11 +2036,11 @@
                                 <include reference="EuM-Xm-TCS"/>
                                 <include reference="jOG-f0-Zf7"/>
                                 <include reference="xnE-EL-LUu"/>
-                                <include reference="eIF-NZ-RV4"/>
                                 <include reference="HXR-bA-dsP"/>
                                 <include reference="7bA-PD-Vum"/>
                                 <include reference="z6j-oj-e5z"/>
                                 <include reference="GgC-GL-AO3"/>
+                                <include reference="eIF-NZ-RV4"/>
                             </mask>
                             <mask key="constraints">
                                 <include reference="4Re-dX-fBR"/>
@@ -2082,16 +2089,12 @@
                                 <action selector="cancelButtonTapped:" destination="yDL-2A-REe" id="4zE-1W-nWm"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="sent_compose" id="3Wf-SX-Jxo" userLabel="Send">
-                            <connections>
-                                <segue destination="zEJ-rK-fGr" kind="show" id="wbx-ef-TmY"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="sent_compose" id="3Wf-SX-Jxo" userLabel="Send"/>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f6C-eJ-O5v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4471.5" y="1617"/>
+            <point key="canvasLocation" x="5233.5" y="1586"/>
         </scene>
         <!--Compose View ControllerN-->
         <scene sceneID="Z0f-UA-BQc">
@@ -2139,13 +2142,25 @@
                             </mask>
                         </variation>
                     </view>
+                    <navigationItem key="navigationItem" id="3Fm-vg-0IB">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="tXB-Cu-mz6">
+                            <connections>
+                                <action selector="cancelClicked:" destination="zEJ-rK-fGr" id="hE9-dx-zBg"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="sent_compose" id="z0d-q0-MMH">
+                            <connections>
+                                <action selector="sendClicked:" destination="zEJ-rK-fGr" id="gja-xg-rEX"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="scrollView" destination="jFq-VP-I1i" id="IsW-gs-1Qt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MCU-sn-dLY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5295" y="1540"/>
+            <point key="canvasLocation" x="4567.5" y="1603"/>
         </scene>
         <!--Search View Controller-->
         <scene sceneID="z3E-8M-2ks">
@@ -4035,7 +4050,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="Jph-O4-s2a" kind="relationship" relationship="rootViewController" id="HQn-bQ-std"/>
+                        <segue destination="zEJ-rK-fGr" kind="relationship" relationship="rootViewController" id="frl-1S-Qi1"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IzY-yD-sjO" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4074,10 +4089,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="ylI-bc-84q"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tMD-2T-NjF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4471.5" y="2259"/>
+            <point key="canvasLocation" x="5191.5" y="2271"/>
         </scene>
     </scenes>
     <resources>
@@ -4122,11 +4138,11 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="YGe-pV-72F"/>
-        <segue reference="A7E-cY-hB0"/>
         <segue reference="V9t-nA-fhw"/>
+        <segue reference="A7E-cY-hB0"/>
         <segue reference="5rJ-hC-fsT"/>
+        <segue reference="rFr-1z-1Q8"/>
+        <segue reference="dZz-yt-xGj"/>
         <segue reference="dxU-wZ-inN"/>
-        <segue reference="tjX-oW-rkl"/>
-        <segue reference="BYG-C2-IMk"/>
     </inferredMetricsTieBreakers>
 </document>
