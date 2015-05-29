@@ -11,25 +11,35 @@ import UIKit
 class ComposeViewControllerN : ProtonMailViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
+    
     private var composeView : ComposeViewN!
     private var htmlEditor : HtmlEditorViewController!
+    
+    //
+    private var composeSize : CGSize!
+    private var editorSize : CGSize!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.composeSize  = CGSize.zeroSize
+        self.editorSize = CGSize.zeroSize
+        
         self.composeView = ComposeViewN(nibName: "ComposeViewN", bundle: nil)
-        //self.composeView.delegate = self
+        self.composeView.delegate = self
 
+        self.htmlEditor = HtmlEditorViewController()
+        self.htmlEditor.delegate = self
         
-        htmlEditor = HtmlEditorViewController()
-        htmlEditor.delegate = self
-        
-        scrollView.addSubview(composeView.view);
-        scrollView.addSubview(htmlEditor.view);
+        self.scrollView.addSubview(composeView.view);
+        self.scrollView.addSubview(htmlEditor.view);
         
         let f = scrollView.frame
-        composeView.view.frame = CGRect(x: 0, y: 0, width: f.width, height: 250)
-        htmlEditor.view.frame = CGRect(x: 0, y: f.height, width: f.width, height: 100)
+        composeView.view.frame = f
+        htmlEditor.view.frame = f
+        
+        
+        htmlEditor.setHTML("<div><br></div><div><br></div><div>Sent from iPhone <a href=\"https://protonmail.ch\">ProtonMail</a>, encrypted email based in Switzerland.<br></div>")
     }
     
     override func didReceiveMemoryWarning() {
@@ -44,33 +54,25 @@ class ComposeViewControllerN : ProtonMailViewController {
     
     private func updateViewSize()
     {
-        
+        self.htmlEditor.view.frame = CGRect(x: 0, y: composeSize.height, width: editorSize.width, height: editorSize.height)
+        self.scrollView.contentSize = CGSize(width: scrollView.frame.width, height: composeSize.height + htmlEditor.view.frame.height)
+        self.htmlEditor.setFrame(CGRect(x: 0, y: 0, width: editorSize.width, height: editorSize.height))
     }
 }
 
 
+extension ComposeViewControllerN : ComposeViewNDelegate {
+    
+    func ComposeViewNDidSizeChanged(size: CGSize) {
+        self.composeSize = size
+        self.updateViewSize()
+    }
+}
+
 extension ComposeViewControllerN : HtmlEditorViewControllerDelegate {
     func editorSizeChanged(size: CGSize) {
-    
-        println("EditorSize:\(size)")
-        
-        htmlEditor.view.mas_updateConstraints{ (make) -> Void in
-            make.top.equalTo()(200)
-            make.left.equalTo()(self.scrollView)
-            make.right.equalTo()(self.scrollView)
-            make.height.equalTo()(size.height)
-        }
-        let s = composeView.view.frame.height;
-       // self.htmlEditor.view.frame = CGRect(x: 0, y: 200, width: size.width, height: size.height)
-        
-        self.scrollView.contentSize = CGSize(width: scrollView.frame.width, height: 200 + htmlEditor.view.frame.height)
-        
-        self.htmlEditor.setFrame(CGRect(x: 0, y: 10, width: size.width, height: size.height))
-        
-        println("EditorFrame:\( self.htmlEditor.view.frame)")
-        //println("EditorScrollView:\( self.htmlEditor)")
-        println("scrollViewSize:\( self.scrollView.contentSize)")
-
+        self.editorSize = size
+        self.updateViewSize()
     }
 }
 
@@ -247,8 +249,4 @@ extension ComposeViewControllerN : HtmlEditorViewControllerDelegate {
 
 
 ///
-extension ComposeViewControllerN : ComposeViewNDelegate{
-    //
-}
-
 
