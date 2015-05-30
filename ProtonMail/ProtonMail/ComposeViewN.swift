@@ -425,17 +425,16 @@ class ComposeViewN: UIViewController {
             if (!hasExpirationSchedule) {
                 self.expirationButton.setImage(UIImage(named: "expiration_compose_checked"), forState: UIControlState.Normal)
                 self.confirmExpirationButton.setImage(UIImage(named: "cancel_compose"), forState: UIControlState.Normal)
-                
-                self.hideExpirationPicker()
             } else {
                 self.expirationDateTextField.text = ""
                 self.expirationTimeInterval  = 0;
                 self.expirationButton.setImage(UIImage(named: "expiration_compose"), forState: UIControlState.Normal)
-                self.confirmExpirationButton.setImage(UIImage(named: "confirm_compose"), forState: UIControlState.Normal)
+                self.confirmExpirationButton.setImage(UIImage(named: "next"), forState: UIControlState.Normal)
+                self.delegate?.composeViewCancelExpirationData(self)
+                
             }
-            
             hasExpirationSchedule = !hasExpirationSchedule
-            
+            self.hideExpirationPicker()
             return true
         }
     }
