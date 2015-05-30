@@ -24,7 +24,7 @@ class SignInViewController: UIViewController {
     private let signUpKeySegue = "signUpKeySegue"
     private let signUpURL = NSURL(string: "https://protonmail.ch/sign_up.php")!
     
-    private var isComeBackFromMailbox = false
+    static var isComeBackFromMailbox = false
     
     var isRemembered = false
         
@@ -62,7 +62,11 @@ class SignInViewController: UIViewController {
     
     override func didMoveToParentViewController(parent: UIViewController?) {
         if (!(parent?.isEqual(self.parentViewController) ?? false)) {
-            self.isComeBackFromMailbox = true;
+        }
+        
+        if(SignInViewController.isComeBackFromMailbox)
+        {
+            ShowLoginViews();
         }
     }
     
@@ -72,12 +76,7 @@ class SignInViewController: UIViewController {
         NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
         
         updateSignInButton(usernameText: usernameTextField.text, passwordText: passwordTextField.text)
-        
-        
-        if(self.isComeBackFromMailbox)
-        {
-            ShowLoginViews();
-        }
+
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -99,25 +98,25 @@ class SignInViewController: UIViewController {
     
     private func HideLoginViews()
     {
-        self.passwordTextField.hidden = true
-        self.rememberView.hidden = true
-        self.signInButton.hidden = true
-        self.signUpButton.hidden = true
-        self.usernameTextField.hidden = true
-        self.signInLabel.hidden = true
+        self.passwordTextField.alpha = 0.0
+        self.rememberView.alpha = 0.0
+        self.signInButton.alpha = 0.0
+        self.signUpButton.alpha = 0.0
+        self.usernameTextField.alpha = 0.0
+        self.signInLabel.alpha = 0.0
     }
     
     private func ShowLoginViews()
     {
         UIView.animateWithDuration(1.0, animations: { () -> Void in
-            self.passwordTextField.hidden = false
-            self.rememberView.hidden = false
-            self.signInButton.hidden = false
-            self.signUpButton.hidden = false
-            self.usernameTextField.hidden = false
-            self.signInLabel.hidden = false
-            
+            self.passwordTextField.alpha = 1.0
+            self.rememberView.alpha = 1.0
+            self.signInButton.alpha = 1.0
+            self.signUpButton.alpha = 1.0
+            self.usernameTextField.alpha = 1.0
+            self.signInLabel.alpha = 1.0
             }, completion: { finished in
+                
         })
 
     }
@@ -148,7 +147,7 @@ class SignInViewController: UIViewController {
     }
     
     func signIn() {
-        self.isComeBackFromMailbox = false
+        SignInViewController.isComeBackFromMailbox = false
         MBProgressHUD.showHUDAddedTo(view, animated: true)
         
         sharedUserDataService.signIn(usernameTextField.text, password: passwordTextField.text, isRemembered: isRemembered) { _, error in
@@ -192,7 +191,10 @@ class SignInViewController: UIViewController {
         signInButton.enabled = !usernameText.isEmpty && !passwordText.isEmpty
     
         UIView.animateWithDuration(animationDuration, animations: { () -> Void in
-            self.signInButton.alpha = self.signInButton.enabled ? 1.0 : self.buttonDisabledAlpha
+            
+            if (self.signInButton.alpha != 0.0) {
+                self.signInButton.alpha = self.signInButton.enabled ? 1.0 : self.buttonDisabledAlpha
+            }
         })
     }
     
