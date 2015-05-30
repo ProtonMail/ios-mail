@@ -24,6 +24,8 @@ class SignInViewController: UIViewController {
     private let signUpKeySegue = "signUpKeySegue"
     private let signUpURL = NSURL(string: "https://protonmail.ch/sign_up.php")!
     
+    private var isComeBackFromMailbox = false
+    
     var isRemembered = false
         
     @IBOutlet weak var keyboardPaddingConstraint: NSLayoutConstraint!
@@ -58,12 +60,24 @@ class SignInViewController: UIViewController {
         }
     }
     
+    override func didMoveToParentViewController(parent: UIViewController?) {
+        if (!(parent?.isEqual(self.parentViewController) ?? false)) {
+            self.isComeBackFromMailbox = true;
+        }
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
         NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
         
         updateSignInButton(usernameText: usernameTextField.text, passwordText: passwordTextField.text)
+        
+        
+        if(self.isComeBackFromMailbox)
+        {
+            ShowLoginViews();
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -134,6 +148,7 @@ class SignInViewController: UIViewController {
     }
     
     func signIn() {
+        self.isComeBackFromMailbox = false
         MBProgressHUD.showHUDAddedTo(view, animated: true)
         
         sharedUserDataService.signIn(usernameTextField.text, password: passwordTextField.text, isRemembered: isRemembered) { _, error in

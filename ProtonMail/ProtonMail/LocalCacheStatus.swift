@@ -56,6 +56,8 @@ class CacheStatus {
     }
     
     
+    
+    
     // MARK: - Public methods
     
 //    func checkSpace(#usedSpace: Int, maxSpace: Int) {
