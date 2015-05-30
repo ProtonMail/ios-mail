@@ -233,6 +233,9 @@
                                     <include reference="IpN-S8-Y9f"/>
                                 </mask>
                             </variation>
+                            <connections>
+                                <action selector="didTapExpirationDismissButton:" destination="-1" eventType="touchUpInside" id="I6s-jv-onC"/>
+                            </connections>
                         </button>
                     </subviews>
                     <constraints>

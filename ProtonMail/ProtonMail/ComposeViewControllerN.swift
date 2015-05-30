@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ComposeViewControllerN : ProtonMailViewController {
+class ComposeViewController : ProtonMailViewController {
     
     private struct EncryptionStep {
         static let DefinePassword = "DefinePassword"
@@ -20,8 +20,16 @@ class ComposeViewControllerN : ProtonMailViewController {
     
     // MARK : - Views
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var cancelButton: UIBarButtonItem!
+    @IBOutlet weak var expirationPicker: UIPickerView!
+    
     private var composeView : ComposeViewN!
+    
+    
+    //
+    private let kNumberOfColumnsInTimePicker: Int = 2
+    private let kNumberOfDaysInTimePicker: Int = 30
+    private let kNumberOfHoursInTimePicker: Int = 24
+    
     
     // MARK : - Private attributes
     private var composeSize : CGSize!
@@ -30,7 +38,7 @@ class ComposeViewControllerN : ProtonMailViewController {
     var message: Message?
     var action: String?
     
-    private var toSelectedContacts: [ContactVO]! = [ContactVO]()
+    var toSelectedContacts: [ContactVO]! = [ContactVO]()
     private var ccSelectedContacts: [ContactVO]! = [ContactVO]()
     private var bccSelectedContacts: [ContactVO]! = [ContactVO]()
     private var contacts: [ContactVO]! = [ContactVO]()
@@ -43,6 +51,11 @@ class ComposeViewControllerN : ProtonMailViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.composeSize  = CGSize.zeroSize
+        
+        
+        self.expirationPicker.alpha = 0.0
+        self.expirationPicker.dataSource = self
+        self.expirationPicker.delegate = self
         
         self.composeView = ComposeViewN(nibName: "ComposeViewN", bundle: nil)
         self.composeView.delegate = self
@@ -180,7 +193,7 @@ class ComposeViewControllerN : ProtonMailViewController {
     private func handleMessage(message: Message?, action: String?) {
         let signature = !sharedUserDataService.signature.isEmpty ? "\n\n\(sharedUserDataService.signature)" : ""
         let htmlString = "<br><br><br><br>\(signature)<br><br>";
-       // htmlEditor.setHTML(htmlString);
+        self.composeView.htmlEditor.setHTML(htmlString);
         
         if let message = message {
             if let action = action {
@@ -194,7 +207,7 @@ class ComposeViewControllerN : ProtonMailViewController {
                     let replyHeader = time + ", " + message.senderName + " <'\(message.sender)'>"
                     let sp = "<div>\(replyHeader) wrote:</div><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\"><tbody><tr><td align=\"center\" valign=\"top\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:transparent;border-bottom:0;border-bottom:solid 1px #00929f\" width=\"600\"> "
                     
-                    //htmlEditor.setHTML("\(htmlString) \(sp) \(body)</blockquote>")
+                    self.composeView.htmlEditor.setHTML("\(htmlString) \(sp) \(body)</blockquote>")
                     
                     if action == ComposeView.ComposeMessageAction.ReplyAll {
                         updateSelectedContacts(&ccSelectedContacts, withNameList: message.ccNameList, emailList: message.ccList)
@@ -216,7 +229,7 @@ class ComposeViewControllerN : ProtonMailViewController {
                     
                     let body = message.decryptBodyIfNeeded(nil) ?? ""
                     
-                    //htmlEditor.setHTML("<br><br><br>\(signature) \(forwardHeader) \(body)")
+                    self.composeView.htmlEditor.setHTML("<br><br><br>\(signature) \(forwardHeader) \(body)")
                     
                 } else if action == draftAction {
                     navigationItem.leftBarButtonItem = nil
@@ -238,7 +251,7 @@ class ComposeViewControllerN : ProtonMailViewController {
                     }
                     
                     var error: NSError?
-                    //htmlEditor.setHTML(message.decryptBodyIfNeeded(&error) ?? "")
+                    self.composeView.htmlEditor.setHTML(message.decryptBodyIfNeeded(&error) ?? "")
                     if error != nil {
                         NSLog("\(__FUNCTION__) error: \(error)")
                     }
@@ -268,7 +281,7 @@ class ComposeViewControllerN : ProtonMailViewController {
     }
 }
 
-extension ComposeViewControllerN : ComposeViewNDelegate {
+extension ComposeViewController : ComposeViewNDelegate {
     
     func ComposeViewNDidSizeChanged(size: CGSize) {
         self.composeSize = size
@@ -307,11 +320,91 @@ extension ComposeViewControllerN : ComposeViewNDelegate {
          self.composeView.showDefinePasswordView()
          self.composeView.hidePasswordAndConfirmDoesntMatch()
     }
+    
+    func composeViewDidTapAttachmentButton(composeView: ComposeViewN) {
+        if let viewController = UIStoryboard.instantiateInitialViewController(storyboard: .attachments) as? UINavigationController {
+            if let attachmentsViewController = viewController.viewControllers.first as? AttachmentsViewController {
+                attachmentsViewController.delegate = self
+                
+                if let attachments = attachments {
+                    attachmentsViewController.attachments = attachments
+                }
+            }
+            
+            presentViewController(viewController, animated: true, completion: nil)
+        }
+
+    }
+    
+    func composeViewDidTapExpirationButton(composeView: ComposeViewN)
+    {
+        self.expirationPicker.alpha = 1;
+    }
+    
+    func composeViewHideExpirationView(composeView: ComposeViewN)
+    {
+         self.expirationPicker.alpha = 0;
+    }
+    
+    func composeViewCancelExpirationData(composeView: ComposeViewN)
+    {
+        self.expirationPicker.selectRow(0, inComponent: 0, animated: true)
+        self.expirationPicker.selectRow(0, inComponent: 1, animated: true)
+    }
+    
+    func composeViewCollectExpirationData(composeView: ComposeViewN)
+    {
+        let selectedDay = expirationPicker.selectedRowInComponent(0)
+        let selectedHour = expirationPicker.selectedRowInComponent(1)
+        if self.composeView.setExpirationValue(selectedDay, hour: selectedHour)
+        {
+            self.expirationPicker.alpha = 0;
+        }
+    }
+    
+    func composeView(composeView: ComposeViewN, didAddContact contact: ContactVO, toPicker picker: MBContactPicker)
+    {
+        var selectedContacts: [ContactVO] = [ContactVO]()
+        
+        if (picker == composeView.toContactPicker) {
+            selectedContacts = toSelectedContacts
+        } else if (picker == composeView.ccContactPicker) {
+            selectedContacts = ccSelectedContacts
+        } else if (picker == composeView.bccContactPicker) {
+            selectedContacts = bccSelectedContacts
+        }
+        
+        selectedContacts.append(contact)
+
+    }
+    func composeView(composeView: ComposeViewN, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker)
+    {
+        var contactIndex = -1
+        
+        var selectedContacts: [ContactVO] = [ContactVO]()
+        
+        if (picker == composeView.toContactPicker) {
+            selectedContacts = toSelectedContacts
+        } else if (picker == composeView.ccContactPicker) {
+            selectedContacts = ccSelectedContacts
+        } else if (picker == composeView.bccContactPicker) {
+            selectedContacts = bccSelectedContacts
+        }
+        
+        for (index, selectedContact) in enumerate(selectedContacts) {
+            if (contact.email == selectedContact.email) {
+                contactIndex = index
+            }
+        }
+        
+        if (contactIndex >= 0) {
+            selectedContacts.removeAtIndex(contactIndex)
+        }
+    }
 }
 
 
-
-extension ComposeViewControllerN : ComposeViewNDataSource {
+extension ComposeViewController : ComposeViewNDataSource {
     func composeViewContactsModelForPicker(composeView: ComposeViewN, picker: MBContactPicker) -> [AnyObject]! {
         return contacts
     }
@@ -333,6 +426,52 @@ extension ComposeViewControllerN : ComposeViewNDataSource {
     
 }
 
+// MARK: - AttachmentsViewControllerDelegate
+extension ComposeViewController: AttachmentsViewControllerDelegate {
+    func attachmentsViewController(attachmentsViewController: AttachmentsViewController, didFinishPickingAttachments attachments: [AnyObject]) {
+        self.attachments = attachments
+    }
+}
+
+
+
+// MARK: - UIPickerViewDataSource
+extension ComposeViewController: UIPickerViewDataSource {
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return kNumberOfColumnsInTimePicker
+    }
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if (component == 0) {
+            return kNumberOfDaysInTimePicker
+        } else {
+            return kNumberOfHoursInTimePicker
+        }
+    }
+}
+
+
+// MARK: - UIPickerViewDelegate
+extension ComposeViewController: UIPickerViewDelegate {
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+        if (component == 0) {
+            return "\(row) days"
+        } else {
+            return "\(row) hours"
+        }
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let selectedDay = pickerView.selectedRowInComponent(0)
+        let selectedHour = pickerView.selectedRowInComponent(1)
+        
+        let day = "\(selectedDay) days"
+        let hour = "\(selectedHour) hours"
+        
+        self.composeView.updateExpirationValue(((Double(selectedDay) * 24) + Double(selectedHour)) * 3600, text: "\(day) \(hour)")
+    }
+}
+
+
 // MARK: - Message extension
 
 extension String {
@@ -340,144 +479,6 @@ extension String {
         return split(self) {$0 == ","}
     }
 }
-
-//
-//
-//extension ComposeViewControllerN : ComposeViewNDelegate {
-//    
-//    func composeViewDidSizeChanged(composeView: ComposeViewN, size: CGSize) {
-//        
-//    }
-//    
-//    func composeViewDidTapCancelButton(composeView: ComposeView) {
-////        let dismiss: (() -> Void) = {
-////            if self.action == self.draftAction {
-////                self.navigationController?.popViewControllerAnimated(true)
-////            } else {
-////                self.dismissViewControllerAnimated(true, completion: nil)
-////            }
-////        }
-////        
-////        if composeView.hasContent || ((attachments?.count ?? 0) > 0) {
-////            let alertController = UIAlertController(title: NSLocalizedString("Confirmation"), message: nil, preferredStyle: .ActionSheet)
-////            alertController.addAction(UIAlertAction(title: NSLocalizedString("Save draft"), style: .Default, handler: { (action) -> Void in
-////                sharedMessageDataService.saveDraft(
-////                    recipientList: composeView.toContacts,
-////                    bccList: composeView.bccContacts,
-////                    ccList: composeView.ccContacts,
-////                    title: composeView.subjectTitle,
-////                    encryptionPassword: self.encryptionPassword,
-////                    passwordHint: self.encryptionPasswordHint,
-////                    expirationTimeInterval: composeView.expirationTimeInterval,
-////                    body: self.htmlEditor.getHTML(),
-////                    attachments: self.attachments)
-////                
-////                dismiss()
-////            }))
-////            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
-////            alertController.addAction(UIAlertAction(title: NSLocalizedString("Discard draft"), style: .Destructive, handler: { (action) -> Void in
-////                dismiss()
-////            }))
-////            
-////            presentViewController(alertController, animated: true, completion: nil)
-////        } else {
-////            dismiss()
-////        }
-//    }
-//    
-//    func composeViewDidTapSendButton(composeView: ComposeView) {
-////        sharedMessageDataService.send(
-////            recipientList: composeView.toContacts,
-////            bccList: composeView.bccContacts,
-////            ccList: composeView.ccContacts,
-////            title: composeView.subjectTitle,
-////            encryptionPassword: encryptionPassword,
-////            passwordHint: encryptionPasswordHint,
-////            expirationTimeInterval: composeView.expirationTimeInterval,
-////            body: self.htmlEditor.getHTML(),
-////            attachments: attachments,
-////            completion: {_, _, error in
-////                if error == nil {
-////                    if let message = self.message {
-////                        println("MessageID after send:\(message.messageID)")
-////                        println("Message Location : \(message.location )")
-////                        if(message.messageID != "0" && message.location == MessageLocation.draft)
-////                        {
-////                            message.location = .trash
-////                        }
-////                        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
-////                            NSLog("\(__FUNCTION__) error: \(error)")
-////                        }
-////                    }
-////                }
-////        })
-////        
-////        if presentingViewController != nil {
-////            dismissViewControllerAnimated(true, completion: nil)
-////        } else {
-////            navigationController?.popViewControllerAnimated(true)
-////        }
-//    }
-//    
-//
-
-//    
-//    func composeView(composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: MBContactPicker) {
-////        var selectedContacts: [ContactVO] = [ContactVO]()
-////        
-////        if (picker == composeView.toContactPicker) {
-////            selectedContacts = toSelectedContacts
-////        } else if (picker == composeView.ccContactPicker) {
-////            selectedContacts = ccSelectedContacts
-////        } else if (picker == composeView.bccContactPicker) {
-////            selectedContacts = bccSelectedContacts
-////        }
-////        
-////        selectedContacts.append(contact)
-//    }
-//    
-//    func composeView(composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker) {
-//        
-////        var contactIndex = -1
-////        
-////        var selectedContacts: [ContactVO] = [ContactVO]()
-////        
-////        if (picker == composeView.toContactPicker) {
-////            selectedContacts = toSelectedContacts
-////        } else if (picker == composeView.ccContactPicker) {
-////            selectedContacts = ccSelectedContacts
-////        } else if (picker == composeView.bccContactPicker) {
-////            selectedContacts = bccSelectedContacts
-////        }
-////        
-////        for (index, selectedContact) in enumerate(selectedContacts) {
-////            if (contact.email == selectedContact.email) {
-////                contactIndex = index
-////            }
-////        }
-////        
-////        if (contactIndex >= 0) {
-////            selectedContacts.removeAtIndex(contactIndex)
-////        }
-//    }
-//    
-//    func composeViewDidTapAttachmentButton(composeView: ComposeView) {
-////        if let viewController = UIStoryboard.instantiateInitialViewController(storyboard: .attachments) as? UINavigationController {
-////            if let attachmentsViewController = viewController.viewControllers.first as? AttachmentsViewController {
-////                attachmentsViewController.delegate = self
-////                
-////                if let attachments = attachments {
-////                    attachmentsViewController.attachments = attachments
-////                }
-////            }
-////            
-////            presentViewController(viewController, animated: true, completion: nil)
-////        }
-//    }
-//
-//}
-//
-
 
 ///
 

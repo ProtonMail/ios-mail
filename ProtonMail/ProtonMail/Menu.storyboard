@@ -186,6 +186,9 @@
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="17"/>
                                 <color key="textColor" red="0.2196078431372549" green="0.22745098039215686" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="widthClass=compact" misplaced="YES">
+                                    <rect key="frame" x="16" y="72" width="122.5" height="20"/>
+                                </variation>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5sX-Zk-W85">
                                 <rect key="frame" x="16" y="100" width="568" height="480"/>
@@ -1690,8 +1693,7 @@
                                         <exclude reference="mf0-wi-yH5"/>
                                     </mask>
                                 </variation>
-                                <variation key="widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="0.0" y="160" width="400" height="48"/>
+                                <variation key="widthClass=compact">
                                     <mask key="subviews">
                                         <include reference="2Or-aZ-wTr"/>
                                         <include reference="nRp-lc-aC5"/>
@@ -1773,8 +1775,7 @@
                                         <exclude reference="oCm-Yr-F4t"/>
                                     </mask>
                                 </variation>
-                                <variation key="widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="0.0" y="160" width="400" height="48"/>
+                                <variation key="widthClass=compact">
                                     <mask key="subviews">
                                         <include reference="bsr-oA-zb4"/>
                                         <include reference="7fJ-u1-N24"/>
@@ -1860,8 +1861,7 @@
                                         <exclude reference="Su0-6o-Hqa"/>
                                     </mask>
                                 </variation>
-                                <variation key="widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="0.0" y="160" width="400" height="48"/>
+                                <variation key="widthClass=compact">
                                     <mask key="subviews">
                                         <include reference="I6c-t1-F3T"/>
                                         <include reference="9cm-JU-5Z9"/>
@@ -1906,8 +1906,7 @@
                                         <exclude reference="U4g-0H-wUi"/>
                                     </mask>
                                 </variation>
-                                <variation key="widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="0.0" y="112" width="400" height="48"/>
+                                <variation key="widthClass=compact">
                                     <mask key="constraints">
                                         <include reference="U4g-0H-wUi"/>
                                     </mask>
@@ -1928,8 +1927,7 @@
                                         <exclude reference="sCI-Kr-46k"/>
                                     </mask>
                                 </variation>
-                                <variation key="widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="368" y="76" width="22" height="22"/>
+                                <variation key="widthClass=compact">
                                     <mask key="constraints">
                                         <include reference="ek5-IR-gxj"/>
                                         <include reference="sCI-Kr-46k"/>
@@ -1950,8 +1948,7 @@
                                         <exclude reference="JqY-3L-3bq"/>
                                     </mask>
                                 </variation>
-                                <variation key="widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="0.0" y="64" width="400" height="48"/>
+                                <variation key="widthClass=compact">
                                     <mask key="constraints">
                                         <include reference="JqY-3L-3bq"/>
                                     </mask>
@@ -1959,9 +1956,6 @@
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eIF-NZ-RV4">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                                <variation key="widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="0.0" y="208" width="400" height="392"/>
-                                </variation>
                                 <connections>
                                     <segue destination="w3Q-bJ-o87" kind="embed" identifier="toHtmlEditor" id="fti-5W-JjP"/>
                                 </connections>
@@ -2096,10 +2090,10 @@
             </objects>
             <point key="canvasLocation" x="5233.5" y="1586"/>
         </scene>
-        <!--Compose View ControllerN-->
+        <!--Compose View Controller-->
         <scene sceneID="Z0f-UA-BQc">
             <objects>
-                <viewController id="zEJ-rK-fGr" customClass="ComposeViewControllerN" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="zEJ-rK-fGr" customClass="ComposeViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="2yQ-rB-HM9"/>
                         <viewControllerLayoutGuide type="bottom" id="EYc-2f-OGy"/>
@@ -2111,34 +2105,69 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jFq-VP-I1i">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                             </scrollView>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aWI-Mb-7Ao">
+                                <rect key="frame" x="0.0" y="-162" width="320" height="162"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="162" id="eJo-ya-3FS"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="162" id="vPq-LM-OPP"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="eJo-ya-3FS"/>
+                                        <exclude reference="vPq-LM-OPP"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="eJo-ya-3FS"/>
+                                        <include reference="vPq-LM-OPP"/>
+                                    </mask>
+                                </variation>
+                            </pickerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="aWI-Mb-7Ao" firstAttribute="leading" secondItem="mVi-ND-ZzN" secondAttribute="leadingMargin" constant="-16" id="1DR-HJ-vwg"/>
                             <constraint firstItem="EYc-2f-OGy" firstAttribute="top" secondItem="jFq-VP-I1i" secondAttribute="bottom" id="2yn-aP-ZZ8"/>
-                            <constraint firstItem="jFq-VP-I1i" firstAttribute="leading" secondItem="mVi-ND-ZzN" secondAttribute="leadingMargin" constant="-16" id="D1u-LY-aD4"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="jFq-VP-I1i" secondAttribute="trailing" constant="-16" id="IzC-jx-cbO"/>
+                            <constraint firstItem="jFq-VP-I1i" firstAttribute="leading" secondItem="mVi-ND-ZzN" secondAttribute="leadingMargin" constant="-16" id="D1u-LY-aD4">
+                                <variation key="widthClass=compact" constant="-20"/>
+                            </constraint>
+                            <constraint firstItem="EYc-2f-OGy" firstAttribute="top" secondItem="aWI-Mb-7Ao" secondAttribute="bottom" id="FEN-6J-MFr"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="jFq-VP-I1i" secondAttribute="trailing" constant="-16" id="IzC-jx-cbO">
+                                <variation key="widthClass=compact" constant="-20"/>
+                            </constraint>
                             <constraint firstItem="jFq-VP-I1i" firstAttribute="top" secondItem="mVi-ND-ZzN" secondAttribute="topMargin" id="K3Z-rR-71d"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="aWI-Mb-7Ao" secondAttribute="trailing" constant="-16" id="cog-j8-3Ml"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="jFq-VP-I1i"/>
+                                <exclude reference="aWI-Mb-7Ao"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="2yn-aP-ZZ8"/>
                                 <exclude reference="D1u-LY-aD4"/>
                                 <exclude reference="IzC-jx-cbO"/>
                                 <exclude reference="K3Z-rR-71d"/>
+                                <exclude reference="1DR-HJ-vwg"/>
+                                <exclude reference="cog-j8-3Ml"/>
+                                <exclude reference="2yn-aP-ZZ8"/>
+                                <exclude reference="FEN-6J-MFr"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
                                 <include reference="jFq-VP-I1i"/>
+                                <include reference="aWI-Mb-7Ao"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="2yn-aP-ZZ8"/>
                                 <include reference="D1u-LY-aD4"/>
                                 <include reference="IzC-jx-cbO"/>
                                 <include reference="K3Z-rR-71d"/>
+                                <include reference="1DR-HJ-vwg"/>
+                                <include reference="cog-j8-3Ml"/>
+                                <include reference="2yn-aP-ZZ8"/>
+                                <include reference="FEN-6J-MFr"/>
                             </mask>
                         </variation>
                     </view>
@@ -2155,6 +2184,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="expirationPicker" destination="aWI-Mb-7Ao" id="Hy1-OJ-VZC"/>
                         <outlet property="scrollView" destination="jFq-VP-I1i" id="IsW-gs-1Qt"/>
                     </connections>
                 </viewController>

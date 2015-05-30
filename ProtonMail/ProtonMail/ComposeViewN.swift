@@ -14,10 +14,15 @@ protocol ComposeViewNDelegate {
     func ComposeViewNDidSizeChanged(size: CGSize)
     func composeViewDidTapNextButton(composeView: ComposeViewN)
     func composeViewDidTapEncryptedButton(composeView: ComposeViewN)
+    func composeViewDidTapAttachmentButton(composeView: ComposeViewN)
     
-//        func composeViewDidTapAttachmentButton(composeView: ComposeViewN)
-//        func composeView(composeView: ComposeViewN, didAddContact contact: ContactVO, toPicker picker: MBContactPicker)
-//        func composeView(composeView: ComposeViewN, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker)
+    func composeView(composeView: ComposeViewN, didAddContact contact: ContactVO, toPicker picker: MBContactPicker)
+    func composeView(composeView: ComposeViewN, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker)
+    
+    func composeViewHideExpirationView(composeView: ComposeViewN)
+    func composeViewCancelExpirationData(composeView: ComposeViewN)
+    func composeViewDidTapExpirationButton(composeView: ComposeViewN)
+    func composeViewCollectExpirationData(composeView: ComposeViewN)
 
 }
 
@@ -55,7 +60,7 @@ class ComposeViewN: UIViewController {
     }
     
     // MARK : - HtmlEditor
-    public var htmlEditor : HtmlEditorViewController!
+    var htmlEditor : HtmlEditorViewController!
     private var screenSize : CGRect!
     private var editorSize : CGSize!
     
@@ -80,7 +85,6 @@ class ComposeViewN: UIViewController {
     // MARK: - Expiration Date
     @IBOutlet var expirationView: UIView!
     @IBOutlet var expirationDateTextField: UITextField!
-    //@IBOutlet var expirationPicker: UIPickerView!
 
     
     // MARK: - Delegate and Datasource
@@ -111,7 +115,7 @@ class ComposeViewN: UIViewController {
         self.selfView = self.view;
         self.screenSize = UIScreen.mainScreen().bounds
         
-        //self.configureContactPickerTemplate()
+        self.configureContactPickerTemplate()
         self.includeButtonBorder(encryptedButton)
         self.includeButtonBorder(expirationButton)
         self.includeButtonBorder(attachmentButton)
@@ -133,17 +137,25 @@ class ComposeViewN: UIViewController {
         self.view.sendSubviewToBack(ccContactPicker)
         self.view.sendSubviewToBack(bccContactPicker)
         
-//        self.expirationPicker.alpha = 0.0
-//        self.expirationPicker.dataSource = self
-//        self.expirationPicker.delegate = self
-        
-//        self.registerForKeyboardNotifications()
-        
-        
     }
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.notifyViewSize( false )
+        
+        
+        errorView.mas_makeConstraints { (make) -> Void in
+            make.left.equalTo()(self.selfView)
+            make.right.equalTo()(self.selfView)
+            make.height.equalTo()(0)
+            make.top.equalTo()(self.passwordView.mas_bottom)
+        }
+        
+        errorTextView.mas_makeConstraints { (make) -> Void in
+            make.left.equalTo()(self.selfView)
+            make.right.equalTo()(self.selfView)
+            make.height.equalTo()(self.errorTextView.frame.size.height)
+            make.top.equalTo()(self.errorView).with().offset()(8)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -157,13 +169,13 @@ class ComposeViewN: UIViewController {
     }
     
     @IBAction func attachmentButtonTapped(sender: UIButton) {
-        //self.endEditing(true)
-        //self.delegate?.composeViewDidTapAttachmentButton(self)
+        self.view.endEditing(true)
+        self.delegate?.composeViewDidTapAttachmentButton(self)
     }
     
     @IBAction func expirationButtonTapped(sender: UIButton) {
-        //self.endEditing(true)
-        //self.expirationDateTextField.becomeFirstResponder()
+        self.view.endEditing(true)
+        self.toContactPicker.becomeFirstResponder()
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.passwordView.alpha = 0.0
             self.buttonView.alpha = 0.0
@@ -173,8 +185,10 @@ class ComposeViewN: UIViewController {
             self.ccContactPicker.userInteractionEnabled = false
             self.bccContactPicker.userInteractionEnabled = false
             self.subject.userInteractionEnabled = false
+            self.htmlEditor.view.userInteractionEnabled = false
             
-          //self.showExpirationPicker()
+            self.showExpirationPicker()
+            self.toContactPicker.resignFirstResponder()
         })
     }
 
@@ -187,6 +201,11 @@ class ComposeViewN: UIViewController {
             self.buttonView.alpha = 0.0
         })
     }
+    
+    @IBAction func didTapExpirationDismissButton(sender: UIButton) {
+        self.hideExpirationPicker()
+    }
+    
     @IBAction func didTapEncryptedDismissButton(sender: UIButton) {
         self.delegate?.composeViewDidTapEncryptedButton(self)
         UIView.animateWithDuration(0.3, animations: { () -> Void in
@@ -226,14 +245,14 @@ class ComposeViewN: UIViewController {
         
         self.confirmExpirationButton = UIButton()
         confirmExpirationButton.addTarget(self, action: "didTapConfirmExpirationButton", forControlEvents: UIControlEvents.TouchUpInside)
-        confirmExpirationButton.setImage(UIImage(named: "confirm_compose"), forState: UIControlState.Normal)
+        confirmExpirationButton.setImage(UIImage(named: "next"), forState: UIControlState.Normal)
         confirmExpirationButton.sizeToFit()
         
         let confirmView = UIView(frame: CGRectMake(0, 0, confirmExpirationButton.frame.size.width + 10, confirmExpirationButton.frame.size.height))
         confirmView.addSubview(confirmExpirationButton)
         expirationDateTextField.rightView = confirmView
         expirationDateTextField.rightViewMode = UITextFieldViewMode.Always
-        //expirationDateTextField.delegate = self
+        expirationDateTextField.delegate = self
     }
     
     private func configureErrorMessage() {
@@ -250,20 +269,13 @@ class ComposeViewN: UIViewController {
         self.errorTextView.sizeToFit()
         self.view.addSubview(errorView)
         errorView.addSubview(errorTextView)
-        
-//        errorView.mas_makeConstraints { (make) -> Void in
-//            make.left.equalTo()(self.selfView)
-//            make.right.equalTo()(self.selfView)
-//            make.height.equalTo()(0)
-//            make.top.equalTo()(self.passwordView.mas_bottom)
-//        }
-        
-//        errorTextView.mas_makeConstraints { (make) -> Void in
-//            make.left.equalTo()(self.selfView)
-//            make.right.equalTo()(self.selfView)
-//            make.height.equalTo()(self.errorTextView.frame.size.height)
-//            make.top.equalTo()(self.errorView).with().offset()(8)
-//        }
+    }
+    
+    private func configureContactPickerTemplate() {
+        MBContactCollectionViewContactCell.appearance().tintColor = UIColor.ProtonMail.Blue_6789AB
+        MBContactCollectionViewContactCell.appearance().font = UIFont.robotoLight(size: UIFont.Size.h4)
+        MBContactCollectionViewPromptCell.appearance().font = UIFont.robotoLight(size: UIFont.Size.h4)
+        MBContactCollectionViewEntryCell.appearance().font = UIFont.robotoLight(size: UIFont.Size.h4)
     }
     
     ///
@@ -313,26 +325,7 @@ class ComposeViewN: UIViewController {
     }
     
     internal func didTapConfirmExpirationButton() {
-//        let selectedDay = expirationPicker.selectedRowInComponent(0)
-//        let selectedHour = expirationPicker.selectedRowInComponent(1)
-//        
-//        if (selectedDay == 0 && selectedHour == 0) {
-//            self.expirationDateTextField.shake(3, offset: 10.0)
-//        } else {
-//            if (!hasExpirationSchedule) {
-//                self.expirationButton.setImage(UIImage(named: "expiration_compose_checked"), forState: UIControlState.Normal)
-//                self.confirmExpirationButton.setImage(UIImage(named: "cancel_compose"), forState: UIControlState.Normal)
-//            } else {
-//                self.expirationDateTextField.text = ""
-//                self.expirationPicker.selectRow(0, inComponent: 0, animated: true)
-//                self.expirationPicker.selectRow(0, inComponent: 1, animated: true)
-//                self.expirationButton.setImage(UIImage(named: "expiration_compose"), forState: UIControlState.Normal)
-//                self.confirmExpirationButton.setImage(UIImage(named: "confirm_compose"), forState: UIControlState.Normal)
-//            }
-//            
-//            hasExpirationSchedule = !hasExpirationSchedule
-//            self.hideExpirationPicker()
-//        }
+        self.delegate?.composeViewCollectExpirationData(self)
     }
     
     internal func didTapNextButton() {
@@ -366,20 +359,21 @@ class ComposeViewN: UIViewController {
     
     internal func showExpirationPicker() {
         UIView.animateWithDuration(0.2, animations: { () -> Void in
-           // self.expirationPicker.alpha = 1.0
+            self.delegate?.composeViewDidTapExpirationButton(self)
         })
     }
-
+    
     internal func hideExpirationPicker() {
         self.toContactPicker.userInteractionEnabled = true
         self.ccContactPicker.userInteractionEnabled = true
         self.bccContactPicker.userInteractionEnabled = true
         self.subject.userInteractionEnabled = true
+        self.htmlEditor.view.userInteractionEnabled = true
         
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.expirationView.alpha = 0.0
             self.buttonView.alpha = 1.0
-            //self.expirationPicker.alpha = 0.0
+            self.delegate?.composeViewHideExpirationView(self)
         })
     }
     
@@ -387,8 +381,8 @@ class ComposeViewN: UIViewController {
         self.errorView.backgroundColor = UIColor.ProtonMail.Red_FF5959
         self.errorView.mas_updateConstraints { (update) -> Void in
             update.removeExisting = true
-            update.left.equalTo()(self)
-            update.right.equalTo()(self)
+            update.left.equalTo()(self.selfView)
+            update.right.equalTo()(self.selfView)
             update.height.equalTo()(self.kErrorMessageHeight)
             update.top.equalTo()(self.encryptedPasswordTextField.mas_bottom)
         }
@@ -414,6 +408,38 @@ class ComposeViewN: UIViewController {
         })
     }
     
+    func updateExpirationValue(intagerV : NSTimeInterval, text : String)
+    {
+        self.expirationDateTextField.text = text
+        self.expirationTimeInterval = intagerV
+    }
+    
+    func setExpirationValue (day : Int, hour : Int) -> Bool
+    {
+        if (day == 0 && hour == 0) {
+            self.expirationDateTextField.shake(3, offset: 10.0)
+            
+            return false
+            
+        } else {
+            if (!hasExpirationSchedule) {
+                self.expirationButton.setImage(UIImage(named: "expiration_compose_checked"), forState: UIControlState.Normal)
+                self.confirmExpirationButton.setImage(UIImage(named: "cancel_compose"), forState: UIControlState.Normal)
+                
+                self.hideExpirationPicker()
+            } else {
+                self.expirationDateTextField.text = ""
+                self.expirationTimeInterval  = 0;
+                self.expirationButton.setImage(UIImage(named: "expiration_compose"), forState: UIControlState.Normal)
+                self.confirmExpirationButton.setImage(UIImage(named: "confirm_compose"), forState: UIControlState.Normal)
+            }
+            
+            hasExpirationSchedule = !hasExpirationSchedule
+            
+            return true
+        }
+    }
+    
     private func configureHtmlEditor(){
         
         self.editorSize = CGSize.zeroSize
@@ -423,8 +449,6 @@ class ComposeViewN: UIViewController {
         let size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height)
         self.htmlEditor.view.frame = CGRect(x: 0, y: size.height, width: screenSize.width, height: 1000)
         self.htmlEditor.setFrame(CGRect(x: 0, y: 0, width: screenSize.width, height: 1000))
-
-        htmlEditor.setHTML("<div><br></div><div><br></div><div>Sent from iPhone <a href=\"https://protonmail.ch\">ProtonMail</a>, encrypted email based in Switzerland.<br></div>")
     }
     
     private func updateViewSize()
@@ -563,13 +587,13 @@ extension ComposeViewN: MBContactPickerDelegate {
     func contactCollectionView(contactCollectionView: MBContactCollectionView!, didAddContact model: MBContactPickerModelProtocol!) {
         let contactPicker = contactPickerForContactCollectionView(contactCollectionView)
         
-        //self.delegate?.composeView(self, didAddContact: model as! ContactVO, toPicker: contactPicker)
+        self.delegate?.composeView(self, didAddContact: model as! ContactVO, toPicker: contactPicker)
     }
     
     func contactCollectionView(contactCollectionView: MBContactCollectionView!, didRemoveContact model: MBContactPickerModelProtocol!) {
         let contactPicker = contactPickerForContactCollectionView(contactCollectionView)
         
-        //self.delegate?.composeView(self, didRemoveContact: model as! ContactVO, fromPicker: contactPicker)
+        self.delegate?.composeView(self, didRemoveContact: model as! ContactVO, fromPicker: contactPicker)
     }
     
     func contactPicker(contactPicker: MBContactPicker!, didEnterCustomText text: String!) {
@@ -624,4 +648,18 @@ extension ComposeViewN: MBContactPickerDelegate {
         return NSPredicate(format: "contactTitle CONTAINS[cd] %@ or contactSubtitle CONTAINS[cd] %@", argumentArray: [searchString, searchString])
     }
 }
+
+
+
+// MARK: - UITextFieldDelegate
+extension ComposeViewN: UITextFieldDelegate {
+    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+        if (textField == expirationDateTextField) {
+            return false
+        }
+        
+        return true
+    }
+}
+
 
