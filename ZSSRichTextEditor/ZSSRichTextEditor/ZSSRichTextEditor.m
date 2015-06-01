@@ -110,7 +110,7 @@ static Class hackishFixClass = Nil;
     [super viewDidLoad];
     
     self.editorLoaded = NO;
-    self.shouldShowKeyboard = YES;
+    self.shouldShowKeyboard = NO;
     self.formatHTML = YES;
     
     
@@ -132,12 +132,13 @@ static Class hackishFixClass = Nil;
     self.editorView = [[UIWebView alloc] initWithFrame:frame];
     self.editorView.delegate = self;
     self.editorView.hidesInputAccessoryView = YES;
-    self.editorView.keyboardDisplayRequiresUserAction = NO;
+    self.editorView.keyboardDisplayRequiresUserAction = YES;
     self.editorView.scalesPageToFit = YES;
     self.editorView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     self.editorView.dataDetectorTypes = UIDataDetectorTypeNone;
     self.editorView.scrollView.bounces = NO;
     self.editorView.backgroundColor = [UIColor whiteColor];
+    self.editorView.scrollView.scrollEnabled = NO;
     [self.view addSubview:self.editorView];
     
     // Scrolling View
@@ -527,8 +528,8 @@ static Class hackishFixClass = Nil;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowOrHide:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowOrHide:) name:UIKeyboardWillHideNotification object:nil];
+   // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowOrHide:) name:UIKeyboardWillShowNotification object:nil];
+   // [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowOrHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -548,8 +549,8 @@ static Class hackishFixClass = Nil;
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+   // [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+   // [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 
@@ -927,6 +928,17 @@ static Class hackishFixClass = Nil;
     [self buildToolbar];
 }
 
+-(CGSize)getContentSize
+{
+    return self.editorView.scrollView.contentSize;
+}
+
+- (void)setFrame:(CGRect)frame
+{    
+    self.editorView.frame = frame;
+}
+
+
 
 - (void)removeLink {
     [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.unlink();"];
@@ -1151,6 +1163,16 @@ static Class hackishFixClass = Nil;
 - (void)editorDidScrollWithPosition:(NSInteger)position {
     
     
+    NSLog(@"x:%.2f", self.editorView.scrollView.frame.origin.y);
+    
+    NSLog(@"x:%.2f", self.editorView.scrollView.contentOffset.y);
+    
+    NSLog(@"x:%.2f", self.editorView.scrollView.contentInset.top);
+    
+    NSLog(@"x:%.2f", self.editorView.frame.origin.y);
+     self.editorView.scrollView.contentOffset = CGPointMake(0, 0);
+    
+
 }
 
 

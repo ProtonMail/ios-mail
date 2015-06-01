@@ -53,6 +53,12 @@ class MailboxPasswordViewController: UIViewController {
         }
     }
     
+    override func didMoveToParentViewController(parent: UIViewController?) {
+        if (parent == nil) {
+            SignInViewController.isComeBackFromMailbox = true
+        }
+    }
+    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
