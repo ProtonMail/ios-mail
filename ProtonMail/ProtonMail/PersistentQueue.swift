@@ -18,9 +18,9 @@ import Foundation
 
 class PersistentQueue {
     
-    struct Constant {
-        static let queueIdentifer = "com.protonmail.persistentQueue"
-    }
+//    struct Constant {
+//        static let queueIdentifer = "com.protonmail.persistentQueue"
+//    }
     
     struct Key {
         static let elementID = "elementID"
@@ -51,7 +51,7 @@ class PersistentQueue {
     }
     
     init(queueName: String) {
-        self.queueName = "\(Constant.queueIdentifer).\(queueName)"
+        self.queueName = "\(QueueConstant.queueIdentifer).\(queueName)"
         queueURL = NSFileManager.defaultManager().applicationSupportDirectoryURL.URLByAppendingPathComponent(self.queueName)
         queue = (NSMutableArray(contentsOfURL: queueURL) ?? []) as [AnyObject]
         //TODO: need monitor

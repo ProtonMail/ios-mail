@@ -35,7 +35,6 @@ class ComposeView: UIView {
         static let ReplyAll = "ReplyAll"
         static let Forward = "Forward"
     }
-
     
     // MARK: - Constants
     
@@ -48,7 +47,6 @@ class ComposeView: UIView {
 
     
     // MARK: - Delegate and Datasource
-    
     var datasource: ComposeViewDataSource?
     var delegate: ComposeViewDelegate?
     
