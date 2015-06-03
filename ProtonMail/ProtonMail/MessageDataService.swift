@@ -41,7 +41,6 @@ class MessageDataService {
     }
     
     private var readQueue: [ReadBlock] = []
-    //private let writeQueue = MessageQueue(queueName: "writeQueue")
     
     init() {
         setupMessageMonitoring()
@@ -60,7 +59,6 @@ class MessageDataService {
         }
         
         // TODO: check for existing download tasks and return that task rather than start a new download
-        
         queue { () -> Void in
             sharedAPIService.attachmentForAttachmentID(attachment.attachmentID, destinationDirectoryURL: NSFileManager.defaultManager().attachmentDirectory, downloadTask: downloadTask, completion: { task, fileURL, error in
                 var error = error
@@ -72,7 +70,6 @@ class MessageDataService {
                         NSLog("\(__FUNCTION__) error: \(error)")
                     }
                 }
-                
                 completion?(task, fileURL, error)
             })
         }
@@ -311,7 +308,6 @@ class MessageDataService {
                     completion?(nil, NSError.unableToParseResponse(response))
                 }
             }
-            
             sharedAPIService.messageSearch(query, page: page, completion: completionWrapper)
         }
     }
@@ -726,14 +722,21 @@ class MessageDataService {
     private func writeQueueCompletionBlockForElementID(elementID: NSUUID) -> CompletionBlock {
         return { task, response, error in
             sharedMessageQueue.isInProgress = false
-            
             if error == nil {
                 sharedMessageQueue.remove(elementID: elementID)
                 self.dequeueIfNeeded()
             } else {
-                NSLog("\(__FUNCTION__) error: \(error)")
-                
-                // TODO: handle error
+//                if )
+//                {
+                    NSLog("\(__FUNCTION__) error: \(error)")
+                    if  let (uuid, object: AnyObject) = sharedMessageQueue.next() {
+                        if let element = object as? [String : String] {
+                            sharedFailedQueue.add(uuid, object: element)
+                            sharedMessageQueue.remove(elementID: elementID)
+                        }
+                    }
+                    self.dequeueIfNeeded()
+               // }
             }
         }
     }
@@ -787,13 +790,11 @@ class MessageDataService {
         
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isRead, handler: { message in
             let action: MessageAction = message.isRead ? .read : .unread
-            
             self.queue(message: message, action: action)
         })
         
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isStarred, handler: { message in
             let action: MessageAction = message.isStarred ? .star : .unstar
-            
             self.queue(message: message, action: action)
         })
     }
@@ -803,7 +804,6 @@ class MessageDataService {
 // MARK: - Attachment extension
 
 extension Attachment {
-    
     func fetchAttachment(downloadTask: ((NSURLSessionDownloadTask) -> Void)?, completion:((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
         sharedMessageDataService.fetchAttachmentForAttachment(self, downloadTask: downloadTask, completion: completion)
     }
@@ -825,14 +825,12 @@ extension NSFileManager {
     
     var attachmentDirectory: NSURL {
         let attachmentDirectory = applicationSupportDirectoryURL.URLByAppendingPathComponent("attachments", isDirectory: true)
-        
         if !NSFileManager.defaultManager().fileExistsAtPath(attachmentDirectory.absoluteString!) {
             var error: NSError?
             if !NSFileManager.defaultManager().createDirectoryAtURL(attachmentDirectory, withIntermediateDirectories: true, attributes: nil, error: &error) {
                 NSLog("\(__FUNCTION__) Could not create \(attachmentDirectory.absoluteString!) with error: \(error)")
             }
         }
-        
         return attachmentDirectory
     }
 }

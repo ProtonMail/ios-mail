@@ -17,21 +17,24 @@
 import Foundation
 
 let sharedMessageQueue = MessageQueue(queueName: "writeQueue")
+let sharedFailedQueue = MessageQueue(queueName: "failedQueue")
 
 class MessageQueue: PersistentQueue {
     
     private struct Key {
         static let id = "id"
         static let action = "action"
+        static let time = "time"
     }
     
     // MARK: - Public variables
-    
     var isBlocked: Bool = false
     var isInProgress: Bool = false
     
+    //TODO::here need input the time of action when local cache changed.
     func addMessage(messageID: String, action: MessageAction) -> NSUUID {
-        let element = [Key.id : messageID, Key.action : action.rawValue]
+        let time = NSDate().timeIntervalSince1970
+        let element = [Key.id : messageID, Key.action : action.rawValue, Key.time : "\(time)"]
         return add(element)
     }
     

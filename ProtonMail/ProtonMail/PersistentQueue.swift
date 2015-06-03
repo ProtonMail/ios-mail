@@ -63,12 +63,17 @@ class PersistentQueue {
         PMLog.D(self.queue)
     }
     
+    func add (uuid: NSUUID, object: NSCoding) -> NSUUID {
+        let element = [Key.elementID : uuid, Key.object : object]
+        PMLog.D(element)
+        self.queue.append(element)
+        return uuid
+    }
+    
     /// Adds an object to the persistent queue.
     func add(object: NSCoding) -> NSUUID {
         let uuid = NSUUID()
-        let element = [Key.elementID : uuid, Key.object : object]
-        self.queue.append(element)
-        return uuid
+        return self.add(uuid, object: object)
     }
     
     /// Clears the persistent queue.
