@@ -187,7 +187,7 @@
                                 <color key="textColor" red="0.2196078431372549" green="0.22745098039215686" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="16" y="72" width="123" height="20"/>
+                                    <rect key="frame" x="16" y="72" width="122.5" height="20"/>
                                 </variation>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5sX-Zk-W85">
@@ -3415,15 +3415,15 @@
             </objects>
             <point key="canvasLocation" x="157.5" y="4774"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Setting Debug View Controller-->
         <scene sceneID="LVh-aS-EOZ">
             <objects>
-                <tableViewController id="SWZ-VZ-9Rg" sceneMemberID="viewController">
+                <tableViewController id="SWZ-VZ-9Rg" customClass="SettingDebugViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Ut2-mT-NeI">
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="z2r-PK-H0z">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="setting_debug_cell" id="z2r-PK-H0z">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="z2r-PK-H0z" id="UAB-LI-xE0">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -4194,11 +4194,11 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="YGe-pV-72F"/>
-        <segue reference="V9t-nA-fhw"/>
-        <segue reference="A7E-cY-hB0"/>
-        <segue reference="5rJ-hC-fsT"/>
-        <segue reference="rFr-1z-1Q8"/>
         <segue reference="dZz-yt-xGj"/>
+        <segue reference="rFr-1z-1Q8"/>
         <segue reference="dxU-wZ-inN"/>
+        <segue reference="V9t-nA-fhw"/>
+        <segue reference="3FM-PP-oeV"/>
+        <segue reference="5rJ-hC-fsT"/>
     </inferredMetricsTieBreakers>
 </document>

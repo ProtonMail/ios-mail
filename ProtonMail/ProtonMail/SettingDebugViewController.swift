@@ -9,7 +9,7 @@
 import Foundation
 
 
-class SettingDebugViewController: ProtonMailViewController {
+class SettingDebugViewController: UITableViewController {
 
     //
     let CellHeight : CGFloat = 30.0
@@ -35,59 +35,70 @@ class SettingDebugViewController: ProtonMailViewController {
     }
     
     // MARK: - Table view data source
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 0
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-       return 1
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let count = sharedMessageQueue.count
+        return count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("", forIndexPath: indexPath) as! UITableViewCell
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("setting_debug_cell", forIndexPath: indexPath) as! UITableViewCell
         cell.selectionStyle = UITableViewCellSelectionStyle.None
+        
+        let element = sharedMessageQueue.getQueue()[indexPath.row] as? [String : AnyObject]
+        
+//        let k = element["elementID"]  as! NSUUID
+//        
+        cell.textLabel!.text = "queue message"
+//        
+//        let obje = element["object"]! // AnyObject
+        println("\(element)")
+        
         return cell
     }
     
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let  headerCell = tableView.dequeueReusableCellWithIdentifier("") as! CustomHeaderView
-        
-        return headerCell
-    }
+//    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        let  headerCell = tableView.dequeueReusableCellWithIdentifier("") as! CustomHeaderView
+//        
+//        return headerCell
+//    }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
     {
         return CellHeight;
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
        
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     // Override to support conditional editing of the table view.
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
             return true
     }
     
     // Override to support conditional rearranging of the table view.
-    func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return false
     }
     
     // Override to support editing the table view.
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
     }
     
-    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+    override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
         return UITableViewCellEditingStyle.None;
     }
     
-    func tableView(tableView: UITableView, shouldIndentWhileEditingRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(tableView: UITableView, shouldIndentWhileEditingRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return false
     }
     
-    func tableView(tableView: UITableView, targetIndexPathForMoveFromRowAtIndexPath sourceIndexPath: NSIndexPath, toProposedIndexPath proposedDestinationIndexPath: NSIndexPath) -> NSIndexPath {
+    override func tableView(tableView: UITableView, targetIndexPathForMoveFromRowAtIndexPath sourceIndexPath: NSIndexPath, toProposedIndexPath proposedDestinationIndexPath: NSIndexPath) -> NSIndexPath {
         if sourceIndexPath.section != proposedDestinationIndexPath.section {
             return sourceIndexPath;
         }
@@ -97,7 +108,7 @@ class SettingDebugViewController: ProtonMailViewController {
     }
     
     // Override to support rearranging the table view.
-    func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
+    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
 
     }
 

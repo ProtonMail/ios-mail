@@ -67,7 +67,7 @@ class APIService {
     internal func afNetworkingBlocksForRequest(#method: HTTPMethod, path: String, parameters: AnyObject?, authenticated: Bool = true, completion: CompletionBlock?) -> (AFNetworkingSuccessBlock?, AFNetworkingFailureBlock?) {
         if let completion = completion {
             let failure: AFNetworkingFailureBlock = { task, error in
-                PMLog("\(__FUNCTION__) Error: \(error)")
+                PMLog.D("\(__FUNCTION__) Error: \(error)")
                 completion(task: task, response: nil, error: error)
             }
             let success: AFNetworkingSuccessBlock = { task, responseObject in

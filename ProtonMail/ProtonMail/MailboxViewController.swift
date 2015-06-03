@@ -86,6 +86,11 @@ class MailboxViewController: ProtonMailViewController {
         getLatestMessages()
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
+    
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         

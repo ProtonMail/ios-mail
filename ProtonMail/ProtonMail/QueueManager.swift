@@ -8,8 +8,7 @@
 
 import Foundation
 
-let sharedQueue = QueueManager()
-
+// not in use 
 class QueueManager {
 
     
@@ -17,19 +16,22 @@ class QueueManager {
     // later doing the parallels requests
     
     // read queue not necessary
-    var messageQueue : MessageQueue!
-    var readQueue : [AnyObject]!
-    var retryQueue : [AnyObject]!
     
-    init() {
-    }
-    deinit{
-    }
-    
-    
-    func addQueue()
-    {
-        
-    }
+    // message write queue
+//    private let writemessageQueue = MessageQueue(queueName: "writeQueue")
+//
+//    var readQueue : [AnyObject]!
+//    var retryQueue : [AnyObject]!
+//    
+//    init() {
+//    }
+//    deinit{
+//    }
+//    
+//    
+//    func addQueue()
+//    {
+//        
+//    }
     
 }

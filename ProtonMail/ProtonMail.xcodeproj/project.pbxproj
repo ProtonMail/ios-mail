@@ -1242,6 +1242,7 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "";
+				"OTHER_SWIFT_FLAGS[arch=*]" = "-DDEBUG";
 				PRODUCT_MODULE_NAME = ProtonMail;
 				PRODUCT_NAME = ProtonMail;
 				PROVISIONING_PROFILE = "";

@@ -41,7 +41,7 @@ class MessageDataService {
     }
     
     private var readQueue: [ReadBlock] = []
-    private let writeQueue = MessageQueue(queueName: "writeQueue")
+    //private let writeQueue = MessageQueue(queueName: "writeQueue")
     
     init() {
         setupMessageMonitoring()
@@ -408,7 +408,7 @@ class MessageDataService {
         }
         
         lastUpdatedStore.clear()
-        writeQueue.clear()
+        sharedMessageQueue.clear()
         
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
@@ -647,7 +647,7 @@ class MessageDataService {
         }
         
         // nothing to send, dequeue request
-        self.writeQueue.remove(elementID: writeQueueUUID)
+        sharedMessageQueue.remove(elementID: writeQueueUUID)
         self.dequeueIfNeeded()
         
         completion?(task: nil, response: nil, error: NSError.badParameter(messageID))
@@ -656,7 +656,7 @@ class MessageDataService {
     private func sendMessageID(messageID: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
         let errorBlock: CompletionBlock = { task, response, error in
             // nothing to send, dequeue request
-            self.writeQueue.remove(elementID: writeQueueUUID)
+            sharedMessageQueue.remove(elementID: writeQueueUUID)
             self.dequeueIfNeeded()
             
             completion?(task: task, response: response, error: error)
@@ -725,10 +725,10 @@ class MessageDataService {
     
     private func writeQueueCompletionBlockForElementID(elementID: NSUUID) -> CompletionBlock {
         return { task, response, error in
-            self.writeQueue.isInProgress = false
+            sharedMessageQueue.isInProgress = false
             
             if error == nil {
-                self.writeQueue.remove(elementID: elementID)
+                sharedMessageQueue.remove(elementID: elementID)
                 self.dequeueIfNeeded()
             } else {
                 NSLog("\(__FUNCTION__) error: \(error)")
@@ -739,10 +739,10 @@ class MessageDataService {
     }
     
     private func dequeueIfNeeded() {
-        if let (uuid, messageID, actionString) = writeQueue.nextMessage() {
+        //return
+        if let (uuid, messageID, actionString) = sharedMessageQueue.nextMessage() {
             if let action = MessageAction(rawValue: actionString) {
-                writeQueue.isInProgress = true
-                
+                sharedMessageQueue.isInProgress = true
                 switch action {
                 case .saveDraft:
                     saveDraftWithMessageID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid))
@@ -753,9 +753,9 @@ class MessageDataService {
                 }
             } else {
                 NSLog("\(__FUNCTION__) Unsupported action \(actionString), removing from queue.")
-                writeQueue.remove(elementID: uuid)
+                sharedMessageQueue.remove(elementID: uuid)
             }
-        } else if !writeQueue.isBlocked && writeQueue.count == 0 && readQueue.count > 0 {
+        } else if !sharedMessageQueue.isBlocked && sharedMessageQueue.count == 0 && readQueue.count > 0 {
             readQueue.removeAtIndex(0)()
             dequeueIfNeeded()
         }
@@ -763,11 +763,10 @@ class MessageDataService {
     
     private func queue(#message: Message, action: MessageAction) {
         if action == .saveDraft {
-            writeQueue.addMessage(message.objectID.URIRepresentation().absoluteString!, action: action)
+            sharedMessageQueue.addMessage(message.objectID.URIRepresentation().absoluteString!, action: action)
         } else {
-            writeQueue.addMessage(message.messageID, action: action)
+            sharedMessageQueue.addMessage(message.messageID, action: action)
         }
-        
         dequeueIfNeeded()
     }
     

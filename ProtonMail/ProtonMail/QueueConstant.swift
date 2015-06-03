@@ -16,7 +16,4 @@ struct QueueConstant {
     enum QueueTypes{
         
     }
-    //    typealias CompletionBlock = APIService.CompletionBlock
-    //    typealias CompletionFetchDetail = APIService.CompletionFetchDetail
-    //    typealias ReadBlock = (() -> Void)
 }

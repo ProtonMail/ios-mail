@@ -9,24 +9,50 @@
 import Foundation
 
 
-func PMLog(message: String, file: String = __FUNCTION__, function: String = __FILE__, line: Int = __LINE__, column: Int = __COLUMN__)
-{
-    //#if DEBUG
-        
-        println("\(file) : \(function) : \(line) : \(column) - \(message)")
-        //NSLog("credential: \(credential)")
-    //#endif
-
+class PMLog {
     
+    static func D(message: String, file: String = __FUNCTION__, function: String = __FILE__, line: Int = __LINE__, column: Int = __COLUMN__)
+    {
+        
+        #if DEBUG
+            
+            println("\(file) : \(function) : \(line) : \(column) - \(message)")
+            
+        #endif
+        
+    }
+    
+    static func D(message: AnyObject, file: String = __FUNCTION__, function: String = __FILE__, line: Int = __LINE__, column: Int = __COLUMN__)
+    {
+        
+        #if DEBUG
+            
+            println("\(file) : \(function) : \(line) : \(column) - \(message)")
+            
+        #endif
+        
+    }
 }
 
-//extension NSLog{
+//func PMLog(message: String, file: String = __FUNCTION__, function: String = __FILE__, line: Int = __LINE__, column: Int = __COLUMN__)
+//{
 //    
+//    //#if DEBUG
+//    
+//    println("\(file) : \(function) : \(line) : \(column) - \(message)")
+//    //NSLog("credential: \(credential)")
+//    //#endif
+//    //NSLog("", "")
+//    
+//}
+
+//extension NSLog{
+//
 //    func Log()
 //    {
-//        
+//
 //    }
-//    
+//
 ////    func DLog(message: String, file: String = __FUNCTION__, function: String = __FILE__, line: Int = __LINE__, column: Int = __COLUMN__) {
 ////        println("\(file) : \(function) : \(line) : \(column) - \(message)")
 ////    }

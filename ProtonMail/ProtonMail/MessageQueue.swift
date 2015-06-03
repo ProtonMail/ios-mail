@@ -16,8 +16,10 @@
 
 import Foundation
 
+let sharedMessageQueue = MessageQueue(queueName: "writeQueue")
+
 class MessageQueue: PersistentQueue {
- 
+    
     private struct Key {
         static let id = "id"
         static let action = "action"
@@ -27,10 +29,9 @@ class MessageQueue: PersistentQueue {
     
     var isBlocked: Bool = false
     var isInProgress: Bool = false
-
+    
     func addMessage(messageID: String, action: MessageAction) -> NSUUID {
         let element = [Key.id : messageID, Key.action : action.rawValue]
-        
         return add(element)
     }
     
@@ -47,8 +48,7 @@ class MessageQueue: PersistentQueue {
                     }
                 }
             }
-            
-            NSLog("\(__FUNCTION__) Removing invalid networkElement: \(object) from the queue.")
+            PMLog.D(" Removing invalid networkElement: \(object) from the queue.")
             remove(elementID: uuid)
         }
         
