@@ -405,6 +405,7 @@ class MessageDataService {
         
         lastUpdatedStore.clear()
         sharedMessageQueue.clear()
+        sharedFailedQueue.clear()
         
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
@@ -726,17 +727,35 @@ class MessageDataService {
                 sharedMessageQueue.remove(elementID: elementID)
                 self.dequeueIfNeeded()
             } else {
-//                if )
-//                {
-                    NSLog("\(__FUNCTION__) error: \(error)")
+                NSLog("\(__FUNCTION__) error: \(error)")
+                
+                var statusCode = 200;
+                var isInternetIssue = false
+                if let errorUserInfo = error?.userInfo {
+                    if let detail = errorUserInfo["com.alamofire.serialization.response.error.response"] as? NSHTTPURLResponse {
+                        statusCode = detail.statusCode
+                    }
+                    else {
+//                        if(error?.code == -1001) {
+//                            // request timed out
+//                        }
+                        if error?.code == -1009 || error?.code == -1004 || error?.code == -1001 { //internet issue
+                            isInternetIssue = true
+                        }
+                    }
+                }
+                
+                //need add try times and check internet status
+                if statusCode == 500 && !isInternetIssue {
                     if  let (uuid, object: AnyObject) = sharedMessageQueue.next() {
                         if let element = object as? [String : String] {
+                            let count = element["count"]
                             sharedFailedQueue.add(uuid, object: element)
                             sharedMessageQueue.remove(elementID: elementID)
                         }
                     }
-                    self.dequeueIfNeeded()
-               // }
+                }
+                self.dequeueIfNeeded()
             }
         }
     }

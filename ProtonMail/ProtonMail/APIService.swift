@@ -71,9 +71,7 @@ class APIService {
                 completion(task: task, response: nil, error: error)
             }
             let success: AFNetworkingSuccessBlock = { task, responseObject in
-                
                 //PMLog("\(__FUNCTION__) Response: \(responseObject)")
-
                 if let responseDictionary = responseObject as? Dictionary<String, AnyObject> {
                     if authenticated && responseDictionary["code"] as? Int == 401 {
                         AuthCredential.expireOrClear()
@@ -116,11 +114,7 @@ class APIService {
         if let credential = AuthCredential.fetchFromKeychain() {
             if !credential.isExpired {
                 self.sessionManager.requestSerializer.setAuthorizationHeaderFieldWithCredential(credential)
-                
-                #if DEBUG
-                    NSLog("credential: \(credential)")
-                #endif
-                
+                PMLog.D("credential: \(credential)")
                 completion(credential, nil)
             } else {
                 authRefresh { (authCredential, error) -> Void in
@@ -220,7 +214,6 @@ class APIService {
     }
     
     // MARK: - Private methods
-    
     private func setupValueTransforms() {
         let boolTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
             if let bool = value as? NSString {

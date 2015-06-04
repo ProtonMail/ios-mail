@@ -25,6 +25,7 @@ class MessageQueue: PersistentQueue {
         static let id = "id"
         static let action = "action"
         static let time = "time"
+        static let count = "count"
     }
     
     // MARK: - Public variables
@@ -34,7 +35,7 @@ class MessageQueue: PersistentQueue {
     //TODO::here need input the time of action when local cache changed.
     func addMessage(messageID: String, action: MessageAction) -> NSUUID {
         let time = NSDate().timeIntervalSince1970
-        let element = [Key.id : messageID, Key.action : action.rawValue, Key.time : "\(time)"]
+        let element = [Key.id : messageID, Key.action : action.rawValue, Key.time : "\(time)", Key.count : "0"]
         return add(element)
     }
     
