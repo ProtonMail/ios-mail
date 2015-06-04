@@ -18,6 +18,7 @@ class CacheStatus {
         static let lastFetchMessageTime = "last_fetch_message_time"
         static let lastUpdateTime = "last_update_time"
         static let historyTimeStamp = "history_timestamp"
+        static let lastCacheVersion = "last_cache_version"
     }
     
     private var getLastFetchMessageID: String {
@@ -26,6 +27,7 @@ class CacheStatus {
         }
         set {
             NSUserDefaults.standardUserDefaults().setValue(newValue, forKey: Key.lastFetchMessageID)
+            NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
     
@@ -35,6 +37,7 @@ class CacheStatus {
         }
         set {
             NSUserDefaults.standardUserDefaults().setFloat(newValue, forKey: Key.lastFetchMessageTime)
+            NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
     
@@ -44,7 +47,18 @@ class CacheStatus {
         }
         set {
             NSUserDefaults.standardUserDefaults().setFloat(newValue, forKey: Key.lastUpdateTime)
+            NSUserDefaults.standardUserDefaults().synchronize()
         }
+    }
+    
+    func isCacheOk() -> Bool {
+        let cachedVersion = NSUserDefaults.standardUserDefaults().integerForKey(Key.lastCacheVersion)
+        return cachedVersion == AppConstants.CacheVersion
+    }
+    
+    func resetCache() -> Void {
+        NSUserDefaults.standardUserDefaults().setInteger(AppConstants.CacheVersion, forKey: Key.lastCacheVersion)
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
 
     
@@ -53,44 +67,9 @@ class CacheStatus {
         NSUserDefaults.standardUserDefaults().removeObjectForKey(Key.lastFetchMessageID);
         NSUserDefaults.standardUserDefaults().removeObjectForKey(Key.lastFetchMessageTime);
         NSUserDefaults.standardUserDefaults().removeObjectForKey(Key.lastUpdateTime);
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(Key.historyTimeStamp);
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(Key.lastCacheVersion);
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
     
-    
-    
-    
-    // MARK: - Public methods
-    
-//    func checkSpace(#usedSpace: Int, maxSpace: Int) {
-//        if isCheckSpaceDisabled {
-//            return
-//        }
-//        
-//        let maxSpace = Double(maxSpace)
-//        let usedSpace = Double(usedSpace)
-//        let threshold = spaceWarningThreshold/100.0 * maxSpace
-//        
-//        if maxSpace == 0 || usedSpace < threshold {
-//            return
-//        }
-//        
-//        let formattedMaxSpace = NSByteCountFormatter.stringFromByteCount(Int64(maxSpace), countStyle: NSByteCountFormatterCountStyle.File)
-//        var message = ""
-//        
-//        if usedSpace >= maxSpace {
-//            message = NSLocalizedString("You have used up all of your storage space (\(formattedMaxSpace)).")
-//        } else {
-//            message = NSLocalizedString("You have used \(spaceWarningThreshold)% of your storage space (\(formattedMaxSpace)).")
-//        }
-//        
-//        let alertController = UIAlertController(
-//            title: NSLocalizedString("Space Warning"),
-//            message: message,
-//            preferredStyle: .Alert)
-//        alertController.addOKAction()
-//        alertController.addAction(UIAlertAction(title: NSLocalizedString("Hide"), style: .Destructive, handler: { action in
-//            self.isCheckSpaceDisabled = true
-//        }))
-//        
-//        UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
-//    }
 }

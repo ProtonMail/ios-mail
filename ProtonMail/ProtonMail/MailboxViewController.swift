@@ -90,7 +90,6 @@ class MailboxViewController: ProtonMailViewController {
         super.viewWillDisappear(animated)
     }
     
-    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -244,6 +243,15 @@ class MailboxViewController: ProtonMailViewController {
     
     
     // MARK: - Private methods
+    private func startAutoFetch()
+    {
+        
+    }
+    
+    private func stopAutoFetch()
+    {
+        
+    }
     
     private func configureCell(mailboxCell: MailboxTableViewCell, atIndexPath indexPath: NSIndexPath) {
         if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {

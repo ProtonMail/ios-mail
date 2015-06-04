@@ -137,6 +137,7 @@
 		755405B31B1648D2003BFC0A /* ComposeViewN.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755405B11B1648D2003BFC0A /* ComposeViewN.xib */; };
 		755405B51B164A99003BFC0A /* ComposeViewControllerN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755405B41B164A99003BFC0A /* ComposeViewControllerN.swift */; };
 		7565998F1AC4809B00C187E4 /* EncryptTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7565998E1AC4809B00C187E4 /* EncryptTypes.swift */; };
+		756A35151B20D9B80033BC7C /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A35141B20D9B80033BC7C /* AppConstants.swift */; };
 		7582E2F21B015DE400FEA38B /* MessageDetailBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582E2F11B015DE400FEA38B /* MessageDetailBottomView.swift */; };
 		7582E2F41B015DF100FEA38B /* MessageDetailBottomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */; };
 		759339C01ABB45C700535F1B /* ViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339BF1ABB45C700535F1B /* ViewModelFactory.swift */; };
@@ -310,6 +311,7 @@
 		755405B11B1648D2003BFC0A /* ComposeViewN.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComposeViewN.xib; sourceTree = "<group>"; };
 		755405B41B164A99003BFC0A /* ComposeViewControllerN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewControllerN.swift; sourceTree = "<group>"; };
 		7565998E1AC4809B00C187E4 /* EncryptTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptTypes.swift; sourceTree = "<group>"; };
+		756A35141B20D9B80033BC7C /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		7582E2F11B015DE400FEA38B /* MessageDetailBottomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDetailBottomView.swift; sourceTree = "<group>"; };
 		7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageDetailBottomView.xib; sourceTree = "<group>"; };
 		759339BF1ABB45C700535F1B /* ViewModelFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelFactory.swift; sourceTree = "<group>"; };
@@ -490,6 +492,7 @@
 			isa = PBXGroup;
 			children = (
 				075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */,
+				756A35141B20D9B80033BC7C /* AppConstants.swift */,
 				706628241A71681300164117 /* Controller */,
 				072AB6A71A8FB0AB00AF45D6 /* Encryption */,
 				07009F071A65E3C600129B07 /* Extensions */,
@@ -1077,6 +1080,7 @@
 				701DDE941AA64DEB0038149C /* MBContactCollectionViewPromptCell.m in Sources */,
 				75150ED11B1E74A20013B476 /* SettingDebugTableViewController.swift in Sources */,
 				07CFC9DA1A82D4CF007A72B7 /* NSSetExtension.swift in Sources */,
+				756A35151B20D9B80033BC7C /* AppConstants.swift in Sources */,
 				7048B9F41A9E385B00D45F57 /* ContactsTableViewCell.swift in Sources */,
 				7027B02B1A700F0200D28F52 /* MenuTableViewCell.swift in Sources */,
 				075675591AB135F500449905 /* UIAlertActionExtension.swift in Sources */,

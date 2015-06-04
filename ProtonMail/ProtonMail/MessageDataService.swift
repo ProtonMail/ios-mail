@@ -275,8 +275,10 @@ class MessageDataService {
     }
     
     func launchCleanUpIfNeeded() {
-        if !sharedUserDataService.isUserCredentialStored {
+        if !sharedUserDataService.isUserCredentialStored || !localCacheStatus.isCacheOk() {
             cleanUp()
+            localCacheStatus.resetCache()
+            //need add not clean the important infomation here.
         }
     }
     
@@ -676,12 +678,10 @@ class MessageDataService {
                         // remove successful send from Core Data
                         if error == nil {
                             context.deleteObject(message)
-                            
                             if let error = context.saveUpstreamIfNeeded() {
                                 NSLog("\(__FUNCTION__) error: \(error)")
                             }
                         }
-                        
                         completion?(task: task, response: response, error: error)
                         return
                     }
