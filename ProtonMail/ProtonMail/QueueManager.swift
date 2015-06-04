@@ -8,10 +8,9 @@
 
 import Foundation
 
-// not in use 
-class QueueManager {
 
-    
+class ReadQueue {
+
     //right not doing the sigal operation once, 
     // later doing the parallels requests
     

@@ -350,6 +350,8 @@ class MessageDataService {
                 attachments: attachments,
                 inManagedObjectContext: context)
             
+            var uuid = NSUUID().UUIDString
+            message.messageID = uuid
             error = context.saveUpstreamIfNeeded()
             
             if error != nil {
@@ -719,7 +721,6 @@ class MessageDataService {
     }
     
     // MARK: Queue
-    
     private func writeQueueCompletionBlockForElementID(elementID: NSUUID) -> CompletionBlock {
         return { task, response, error in
             sharedMessageQueue.isInProgress = false
@@ -777,11 +778,13 @@ class MessageDataService {
                 NSLog("\(__FUNCTION__) Unsupported action \(actionString), removing from queue.")
                 sharedMessageQueue.remove(elementID: uuid)
             }
-        } else if !sharedMessageQueue.isBlocked && sharedMessageQueue.count == 0 && readQueue.count > 0 {
+        } else if !sharedMessageQueue.isBlocked && readQueue.count > 0 { //sharedMessageQueue.count == 0 &&
             readQueue.removeAtIndex(0)()
             dequeueIfNeeded()
         }
     }
+    
+    
     
     private func queue(#message: Message, action: MessageAction) {
         if action == .saveDraft {

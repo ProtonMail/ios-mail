@@ -60,7 +60,8 @@ class APIService {
     init() {
         sessionManager = AFHTTPSessionManager(baseURL: NSURL(string: BaseURLString)!)
         sessionManager.requestSerializer = AFJSONRequestSerializer() as AFHTTPRequestSerializer
-        
+       //NSOperationQueueDefaultMaxConcurrentOperationCount sessionManager.operationQueue.maxConcurrentOperationCount
+       // let defaultV = NSOperationQueueDefaultMaxConcurrentOperationCount;
         setupValueTransforms()
     }
 
