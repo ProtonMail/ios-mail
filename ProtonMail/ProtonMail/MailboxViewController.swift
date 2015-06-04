@@ -46,6 +46,7 @@ class MailboxViewController: ProtonMailViewController {
     private var selectedMessages: NSMutableSet = NSMutableSet()
     private var isEditing: Bool = false
     private var isViewingMoreOptions: Bool = false
+    private var timer : NSTimer!
     
     
     // MARK: - Right bar buttons
@@ -83,11 +84,12 @@ class MailboxViewController: ProtonMailViewController {
             self.tableView.deselectRowAtIndexPath(selectedItem, animated: true)
         }
         
-        getLatestMessages()
+        self.startAutoFetch()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        self.stopAutoFetch()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -245,12 +247,19 @@ class MailboxViewController: ProtonMailViewController {
     // MARK: - Private methods
     private func startAutoFetch()
     {
-        
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(120, target: self, selector: "refreshPage", userInfo: nil, repeats: true)
+        self.timer.fire()
     }
     
     private func stopAutoFetch()
     {
-        
+        self.timer.invalidate()
+        self.timer = nil
+    }
+    
+    func refreshPage()
+    {
+        getLatestMessages()
     }
     
     private func configureCell(mailboxCell: MailboxTableViewCell, atIndexPath indexPath: NSIndexPath) {
