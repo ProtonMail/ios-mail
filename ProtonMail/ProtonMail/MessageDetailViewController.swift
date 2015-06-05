@@ -219,17 +219,17 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
     
     
     func messageDetailViewDidTapReplyMessage(messageView: MessageDetailView, message: Message) {
-        actionTapped = ComposeView.ComposeMessageAction.Reply
+        actionTapped = ComposeViewN.ComposeMessageAction.Reply
         self.performSegueWithIdentifier("toCompose", sender: self)
     }
     
     func messageDetailViewDidTapReplyAllMessage(messageView: MessageDetailView, message: Message) {
-        actionTapped = ComposeView.ComposeMessageAction.ReplyAll
+        actionTapped = ComposeViewN.ComposeMessageAction.ReplyAll
         self.performSegueWithIdentifier("toCompose", sender: self)
     }
     
     func messageDetailViewDidTapForwardMessage(messageView: MessageDetailView, message: Message) {
-        actionTapped = ComposeView.ComposeMessageAction.Forward
+        actionTapped = ComposeViewN.ComposeMessageAction.Forward
         self.performSegueWithIdentifier("toCompose", sender: self)
     }
     

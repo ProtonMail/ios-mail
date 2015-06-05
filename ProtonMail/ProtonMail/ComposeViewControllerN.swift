@@ -15,7 +15,7 @@ class ComposeViewController : ProtonMailViewController {
         static let ConfirmPassword = "ConfirmPassword"
         static let DefineHintPassword = "DefineHintPassword"
     }
-    
+
     let draftAction = "draft"
     
     // MARK : - Views
@@ -24,8 +24,7 @@ class ComposeViewController : ProtonMailViewController {
     
     private var composeView : ComposeViewN!
     
-    
-    //
+    // MARK : const values
     private let kNumberOfColumnsInTimePicker: Int = 2
     private let kNumberOfDaysInTimePicker: Int = 30
     private let kNumberOfHoursInTimePicker: Int = 24
@@ -48,6 +47,10 @@ class ComposeViewController : ProtonMailViewController {
     private var encryptionPasswordHint: String = ""
     private var hasAccessToAddressBook: Bool = false
     
+    // MARK : - Data provider
+    private var fetchedResultsController: NSFetchedResultsController?
+    
+    // MARK : - overrid view functions
     override func viewDidLoad() {
         super.viewDidLoad()
         self.composeSize  = CGSize.zeroSize
@@ -65,32 +68,38 @@ class ComposeViewController : ProtonMailViewController {
         self.composeView.view.frame = scrollView.frame
         
         self.handleMessage(message, action: action)
-               
-        sharedContactDataService.fetchContactVOs { (contacts, error) -> Void in
-            if let error = error {
-                NSLog("\(__FUNCTION__) error: \(error)")
-                
-                let alertController = error.alertController()
-                alertController.addOKAction()
-                
-                self.presentViewController(alertController, animated: true, completion: nil)
-            }
-            
-            self.contacts = contacts
-            
-            self.composeView.toContactPicker.reloadData()
-            self.composeView.ccContactPicker.reloadData()
-            self.composeView.bccContactPicker.reloadData()
-            
-        }
         
-        if message != nil
-        {
-            message?.isRead = true;
-            if let error = message!.managedObjectContext?.saveUpstreamIfNeeded() {
-                NSLog("\(__FUNCTION__) error: \(error)")
-            }
-        }
+        self.contacts = sharedContactDataService.allContactVOs()
+        self.composeView.toContactPicker.reloadData()
+        self.composeView.ccContactPicker.reloadData()
+        self.composeView.bccContactPicker.reloadData()
+        
+        
+        // need remove from here
+//        sharedContactDataService.fetchContactVOs { (contacts, error) -> Void in
+//            if let error = error {
+//                NSLog("\(__FUNCTION__) error: \(error)")
+//                
+//                let alertController = error.alertController()
+//                alertController.addOKAction()
+//                
+//                self.presentViewController(alertController, animated: true, completion: nil)
+//            }
+//            
+//            self.contacts = contacts
+//            
+//            self.composeView.toContactPicker.reloadData()
+//            self.composeView.ccContactPicker.reloadData()
+//            self.composeView.bccContactPicker.reloadData()
+//        }
+//        
+//        if message != nil
+//        {
+//            message?.isRead = true;
+//            if let error = message!.managedObjectContext?.saveUpstreamIfNeeded() {
+//                NSLog("\(__FUNCTION__) error: \(error)")
+//            }
+//        }
         
         
         self.composeView.toContactPicker.becomeFirstResponder()
@@ -108,8 +117,7 @@ class ComposeViewController : ProtonMailViewController {
         }
     }
     
-    ///
-    
+    // MARK : - View actions
     @IBAction func cancelClicked(sender: AnyObject) {
         let dismiss: (() -> Void) = {
             if self.action == self.draftAction {
@@ -180,18 +188,16 @@ class ComposeViewController : ProtonMailViewController {
         }
     }
     
-    ///
-    
-    private func updateViewSize()
-    {
-        self.scrollView.contentSize = CGSize(width: composeSize.width, height: composeSize.height)
-    }
-    
     override func shouldShowSideMenu() -> Bool {
         return false
     }
     
     // MARK: - Private methods
+    private func updateViewSize()
+    {
+        self.scrollView.contentSize = CGSize(width: composeSize.width, height: composeSize.height)
+    }
+
     private func handleMessage(message: Message?, action: String?) {
         let signature = !sharedUserDataService.signature.isEmpty ? "\n\n\(sharedUserDataService.signature)" : ""
         let htmlString = "<br><br><br><br>\(signature)<br><br>";
@@ -199,7 +205,7 @@ class ComposeViewController : ProtonMailViewController {
         
         if let message = message {
             if let action = action {
-                if action == ComposeView.ComposeMessageAction.Reply || action == ComposeView.ComposeMessageAction.ReplyAll {
+                if action == ComposeViewN.ComposeMessageAction.Reply || action == ComposeViewN.ComposeMessageAction.ReplyAll {
                     composeView.subject.text = "Re: \(message.title)"
                     toSelectedContacts.append(ContactVO(id: "", name: message.senderName, email: message.sender))
                     
@@ -211,10 +217,10 @@ class ComposeViewController : ProtonMailViewController {
                     
                     self.composeView.htmlEditor.setHTML("\(htmlString) \(sp) \(body)</blockquote>")
                     
-                    if action == ComposeView.ComposeMessageAction.ReplyAll {
+                    if action == ComposeViewN.ComposeMessageAction.ReplyAll {
                         updateSelectedContacts(&ccSelectedContacts, withNameList: message.ccNameList, emailList: message.ccList)
                     }
-                } else if action == ComposeView.ComposeMessageAction.Forward {
+                } else if action == ComposeViewN.ComposeMessageAction.Forward {
                     composeView.subject.text = "Fwd: \(message.title)"
                     
                     let time = message.time?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
@@ -283,6 +289,9 @@ class ComposeViewController : ProtonMailViewController {
     }
 }
 
+
+
+// MARK : - view extensions
 extension ComposeViewController : ComposeViewNDelegate {
     
     func ComposeViewNDidSizeChanged(size: CGSize) {

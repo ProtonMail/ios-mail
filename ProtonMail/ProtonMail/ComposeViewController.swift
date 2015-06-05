@@ -61,24 +61,7 @@ import UIKit
 //           // self.htmlEditor.focusTextEditor();
 //            //self.composeView.bodyTextView.becomeFirstResponder()
 //        }
-//        
-//        sharedContactDataService.fetchContactVOs { (contacts, error) -> Void in
-//            if let error = error {
-//                NSLog("\(__FUNCTION__) error: \(error)")
-//                
-//                let alertController = error.alertController()
-//                alertController.addOKAction()
-//                
-//                self.presentViewController(alertController, animated: true, completion: nil)
-//            }
-//            
-//            self.contacts = contacts
-//            
-//            self.composeView.toContactPicker.reloadData()
-//            self.composeView.ccContactPicker.reloadData()
-//            self.composeView.bccContactPicker.reloadData()
-//        }
-//        
+
 //        if message != nil
 //        {
 //            message?.isRead = true;

@@ -21,7 +21,6 @@ extension Attachment {
 
     struct Attributes {
         static let entityName = "Attachment"
-        
         static let attachmentID = "attachmentID"
     }
     
@@ -35,7 +34,6 @@ extension Attachment {
     
     override func prepareForDeletion() {
         super.prepareForDeletion()
-        
         if let localURL = localURL {
             var error: NSError? = nil
             if !NSFileManager.defaultManager().removeItemAtURL(localURL, error: &error) {

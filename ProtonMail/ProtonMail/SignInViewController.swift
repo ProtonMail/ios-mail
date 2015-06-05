@@ -149,7 +149,6 @@ class SignInViewController: UIViewController {
     func signIn() {
         SignInViewController.isComeBackFromMailbox = false
         MBProgressHUD.showHUDAddedTo(view, animated: true)
-        
         sharedUserDataService.signIn(usernameTextField.text, password: passwordTextField.text, isRemembered: isRemembered) { _, error in
             MBProgressHUD.hideHUDForView(self.view, animated: true)
             
@@ -161,6 +160,7 @@ class SignInViewController: UIViewController {
                 
                 self.presentViewController(alertController, animated: true, completion: nil)
             } else {
+                self.loadContactsAfterInstall()
                 if sharedUserDataService.isMailboxPasswordStored {
                     (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
                 } else {
@@ -174,6 +174,17 @@ class SignInViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    func loadContactsAfterInstall()
+    {
+        sharedContactDataService.fetchContacts({ (contacts, error) -> Void in
+            if error != nil {
+                NSLog("\(error)")
+            } else {
+                NSLog("Contacts count: \(contacts!.count)")
+            }
+        })
     }
     
     func signInIfRememberedCredentials() {

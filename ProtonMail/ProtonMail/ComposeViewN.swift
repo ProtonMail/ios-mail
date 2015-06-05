@@ -35,6 +35,12 @@ protocol ComposeViewNDataSource {
 
 class ComposeViewN: UIViewController {
     
+    struct ComposeMessageAction {
+        static let Reply = "Reply"
+        static let ReplyAll = "ReplyAll"
+        static let Forward = "Forward"
+    }
+    
     var toContactPicker: MBContactPicker!
     var toContacts: String {
         return toContactPicker.contactList
@@ -648,8 +654,6 @@ extension ComposeViewN: MBContactPickerDelegate {
     }
 }
 
-
-
 // MARK: - UITextFieldDelegate
 extension ComposeViewN: UITextFieldDelegate {
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
@@ -661,4 +665,16 @@ extension ComposeViewN: UITextFieldDelegate {
     }
 }
 
+// MARK: - MBContactPicker extension
+extension MBContactPicker {
+    var contactList: String {
+        var contactList = ""
+        let contactsSelected = NSArray(array: self.contactsSelected)
+        
+        if let contacts = contactsSelected.valueForKey(ContactVO.Attributes.email) as? [String] {
+            contactList = ", ".join(contacts)
+        }
+        return contactList
+    }
+}
 

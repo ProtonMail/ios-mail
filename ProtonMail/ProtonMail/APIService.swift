@@ -136,8 +136,7 @@ class APIService {
             let completionWrapper: AuthCredentialBlock = { authCredential, error in
                 if error != nil && error!.domain == APIServiceErrorDomain && error!.code == AuthErrorCode.credentialInvalid {
                     sharedUserDataService.signOut(true)
-                    localCacheStatus.signOut();
-                    storageLimit.signOut();
+                    userCachedStatus.signOut()
                 }
             }
             

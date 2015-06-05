@@ -108,15 +108,7 @@ extension AppDelegate: UIApplicationDelegate {
         Snapshot().willEnterForeground(application)
         
         if sharedUserDataService.isSignedIn {
-            
             sharedUserDataService.fetchUserInfo()
-            sharedContactDataService.fetchContacts({ (contacts, error) -> Void in
-                if error != nil {
-                    NSLog("\(error)")
-                } else {
-                    NSLog("Contacts count: \(contacts!.count)")
-                }
-            })
         }
     }
     

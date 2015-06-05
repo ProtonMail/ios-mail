@@ -92,7 +92,6 @@ class AuthCredential: NSObject, NSCoding {
                 return authCredential
             }
         }
-        
         return nil
     }
     

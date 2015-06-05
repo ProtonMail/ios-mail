@@ -13,7 +13,7 @@
 import UIKit
 
 class MenuViewController: UIViewController {
-    public static let ObserverSwitchView:String = "Push_Switch_View"
+    internal static let ObserverSwitchView:String = "Push_Switch_View"
     
     // MARK - Views Outlets
     
@@ -39,15 +39,14 @@ class MenuViewController: UIViewController {
     
     private var kLastSegue: String = "toInbox"
     
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//    }
-//    required init(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//    deinit{
-//        NSNotificationCenter.defaultCenter().removeObserver(self, name: MenuViewController.ObserverSwitchView, object: nil)
-//    }
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    deinit{
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: MenuViewController.ObserverSwitchView, object: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.revealViewController().rearViewRevealWidth = kMenuOptionsWidth
@@ -133,7 +132,7 @@ class MenuViewController: UIViewController {
         let alertController = UIAlertController(title: NSLocalizedString("Confirm"), message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Sign Out"), style: .Destructive, handler: { (action) -> Void in
             sharedUserDataService.signOut(true)
-            StorageLimit().signOut();
+            userCachedStatus.signOut()
         }))
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
         

@@ -20,39 +20,17 @@ let storageLimit = StorageLimit()
 
 class StorageLimit {
     
-    struct Key {
-        static let isCheckSpaceDisabled = "isCheckSpaceDisabledKey"
-    }
-
-    private let spaceWarningThreshold: Double = 80 // percentage
-
-    private var isCheckSpaceDisabled: Bool {
-        get {
-            return NSUserDefaults.standardUserDefaults().boolForKey(Key.isCheckSpaceDisabled)
-        }
-        set {
-            NSUserDefaults.standardUserDefaults().setBool(newValue, forKey: Key.isCheckSpaceDisabled)
-            NSUserDefaults.standardUserDefaults().synchronize()
-        }
-    }
-    
-    func signOut()
-    {
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(Key.isCheckSpaceDisabled);
-        NSUserDefaults.standardUserDefaults().synchronize()
-    }
-    
-
     // MARK: - Public methods
     
     func checkSpace(#usedSpace: Int, maxSpace: Int) {
-        if isCheckSpaceDisabled {
+        
+        if userCachedStatus.isCheckSpaceDisabled {
             return
         }
         
         let maxSpace = Double(maxSpace)
         let usedSpace = Double(usedSpace)
-        let threshold = spaceWarningThreshold/100.0 * maxSpace
+        let threshold = AppConstants.SpaceWarningThreshold/100.0 * maxSpace
         
         if maxSpace == 0 || usedSpace < threshold {
             return
@@ -64,7 +42,7 @@ class StorageLimit {
         if usedSpace >= maxSpace {
             message = NSLocalizedString("You have used up all of your storage space (\(formattedMaxSpace)).")
         } else {
-            message = NSLocalizedString("You have used \(spaceWarningThreshold)% of your storage space (\(formattedMaxSpace)).")
+            message = NSLocalizedString("You have used \(AppConstants.SpaceWarningThreshold)% of your storage space (\(formattedMaxSpace)).")
         }
         
         let alertController = UIAlertController(
@@ -73,7 +51,7 @@ class StorageLimit {
             preferredStyle: .Alert)
         alertController.addOKAction()
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Hide"), style: .Destructive, handler: { action in
-            self.isCheckSpaceDisabled = true
+            userCachedStatus.isCheckSpaceDisabled = true
         }))
         
         UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)

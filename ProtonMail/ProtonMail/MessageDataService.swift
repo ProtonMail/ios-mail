@@ -275,9 +275,9 @@ class MessageDataService {
     }
     
     func launchCleanUpIfNeeded() {
-        if !sharedUserDataService.isUserCredentialStored || !localCacheStatus.isCacheOk() {
+        if !sharedUserDataService.isUserCredentialStored || !userCachedStatus.isCacheOk() {
             cleanUp()
-            localCacheStatus.resetCache()
+            userCachedStatus.resetCache()
             //need add not clean the important infomation here.
         }
     }
