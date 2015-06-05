@@ -91,7 +91,7 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fy4-ZC-gVz" id="LAU-bi-L1X">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="draft" translatesAutoresizingMaskIntoConstraints="NO" id="Rrm-fW-TBp">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="draft" translatesAutoresizingMaskIntoConstraints="NO" id="Rrm-fW-TBp">
                                             <rect key="frame" x="24" y="8" width="52" height="54"/>
                                             <variation key="widthClass=compact" misplaced="YES">
                                                 <rect key="frame" x="41" y="8" width="19" height="54"/>
@@ -187,7 +187,7 @@
                                 <color key="textColor" red="0.2196078431372549" green="0.22745098039215686" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="16" y="72" width="123" height="20"/>
+                                    <rect key="frame" x="16" y="72" width="122.5" height="20"/>
                                 </variation>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5sX-Zk-W85">
@@ -2782,7 +2782,7 @@
         <scene sceneID="qpL-sf-AfB">
             <objects>
                 <tableViewController id="Htd-jh-FjZ" userLabel="Settings Table View" customClass="SettingTableViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="grouped" rowHeight="44" sectionHeaderHeight="30" sectionFooterHeight="10" id="ERU-k3-Enh">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="44" sectionHeaderHeight="30" sectionFooterHeight="10" id="ERU-k3-Enh">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.90980392156862744" green="0.92156862745098034" blue="0.92941176470588238" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -3453,6 +3453,7 @@
                         <viewControllerLayoutGuide type="bottom" id="yxL-bQ-HWZ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="T1B-ef-ONm">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Axa-vf-Sg3">
