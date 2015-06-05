@@ -127,6 +127,7 @@
 		7510AE761AB8989E00EF3C41 /* DomainsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7510AE751AB8989E00EF3C41 /* DomainsTableViewCell.swift */; };
 		7510AE7C1AB8D68B00EF3C41 /* SettingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7510AE7B1AB8D68B00EF3C41 /* SettingDetailViewController.swift */; };
 		7510AE7E1AB8D69B00EF3C41 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7510AE7D1AB8D69B00EF3C41 /* ChangePasswordViewController.swift */; };
+		75150ED11B1E74A20013B476 /* SettingDebugTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75150ED01B1E74A20013B476 /* SettingDebugTableViewController.swift */; };
 		754387D91AB35EB40003B0AC /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754387D81AB35EB40003B0AC /* SignUpViewController.swift */; };
 		754387DB1AB3A54E0003B0AC /* SignUpKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754387DA1AB3A54E0003B0AC /* SignUpKeyViewController.swift */; };
 		75484B8B1AF29EBF00B97472 /* NSDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */; };
@@ -136,10 +137,13 @@
 		755405B31B1648D2003BFC0A /* ComposeViewN.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755405B11B1648D2003BFC0A /* ComposeViewN.xib */; };
 		755405B51B164A99003BFC0A /* ComposeViewControllerN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755405B41B164A99003BFC0A /* ComposeViewControllerN.swift */; };
 		7565998F1AC4809B00C187E4 /* EncryptTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7565998E1AC4809B00C187E4 /* EncryptTypes.swift */; };
+		756A35151B20D9B80033BC7C /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A35141B20D9B80033BC7C /* AppConstants.swift */; };
 		7582E2F21B015DE400FEA38B /* MessageDetailBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582E2F11B015DE400FEA38B /* MessageDetailBottomView.swift */; };
 		7582E2F41B015DF100FEA38B /* MessageDetailBottomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */; };
 		759339C01ABB45C700535F1B /* ViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339BF1ABB45C700535F1B /* ViewModelFactory.swift */; };
 		759339C41ABB5EA900535F1B /* SettingDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */; };
+		75A4321B1B1D040A00D046B3 /* QueueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A4321A1B1D040A00D046B3 /* QueueManager.swift */; };
+		75A4321D1B1D042C00D046B3 /* QueueConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A4321C1B1D042C00D046B3 /* QueueConstant.swift */; };
 		75B047B31AE708CC005C6D1A /* HtmlEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B047B21AE708CC005C6D1A /* HtmlEditorViewController.swift */; };
 		75B470061AF43DA80076CC54 /* SharedStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B470051AF43DA80076CC54 /* SharedStorage.swift */; };
 		75C2175A1AD6F1B800978579 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C217581AD6F1B800978579 /* Crashlytics.framework */; };
@@ -149,6 +153,7 @@
 		75ECC2381AB9F28100B8FC78 /* ChangePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECC2371AB9F28100B8FC78 /* ChangePasswordViewModel.swift */; };
 		75F1697E1AF7F43A00BE6E79 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F1697D1AF7F43A00BE6E79 /* Logger.swift */; };
 		75F169811AF80B5900BE6E79 /* LocalCacheStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F169801AF80B5900BE6E79 /* LocalCacheStatus.swift */; };
+		75F906101B1FBECA00107509 /* DebugDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F9060F1B1FBECA00107509 /* DebugDetailsViewController.swift */; };
 		75F9A1121AFD705B007229C7 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F9A1111AFD705B007229C7 /* UIDeviceExtension.swift */; };
 		EAF4B9D23FDBAA4F2F237B3A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7171A1EF5F60DDA876FD139 /* libPods.a */; };
 		F77B8F0DFAD04EC03F166E0A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7171A1EF5F60DDA876FD139 /* libPods.a */; };
@@ -296,6 +301,7 @@
 		7510AE751AB8989E00EF3C41 /* DomainsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsTableViewCell.swift; sourceTree = "<group>"; };
 		7510AE7B1AB8D68B00EF3C41 /* SettingDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDetailViewController.swift; sourceTree = "<group>"; };
 		7510AE7D1AB8D69B00EF3C41 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
+		75150ED01B1E74A20013B476 /* SettingDebugTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDebugTableViewController.swift; sourceTree = "<group>"; };
 		754387D81AB35EB40003B0AC /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		754387DA1AB3A54E0003B0AC /* SignUpKeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpKeyViewController.swift; sourceTree = "<group>"; };
 		75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateExtension.swift; sourceTree = "<group>"; };
@@ -305,10 +311,13 @@
 		755405B11B1648D2003BFC0A /* ComposeViewN.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComposeViewN.xib; sourceTree = "<group>"; };
 		755405B41B164A99003BFC0A /* ComposeViewControllerN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewControllerN.swift; sourceTree = "<group>"; };
 		7565998E1AC4809B00C187E4 /* EncryptTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptTypes.swift; sourceTree = "<group>"; };
+		756A35141B20D9B80033BC7C /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		7582E2F11B015DE400FEA38B /* MessageDetailBottomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDetailBottomView.swift; sourceTree = "<group>"; };
 		7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageDetailBottomView.xib; sourceTree = "<group>"; };
 		759339BF1ABB45C700535F1B /* ViewModelFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelFactory.swift; sourceTree = "<group>"; };
 		759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDetailsViewModel.swift; sourceTree = "<group>"; };
+		75A4321A1B1D040A00D046B3 /* QueueManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueManager.swift; sourceTree = "<group>"; };
+		75A4321C1B1D042C00D046B3 /* QueueConstant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueConstant.swift; sourceTree = "<group>"; };
 		75B047B21AE708CC005C6D1A /* HtmlEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlEditorViewController.swift; sourceTree = "<group>"; };
 		75B470051AF43DA80076CC54 /* SharedStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedStorage.swift; sourceTree = "<group>"; };
 		75C217581AD6F1B800978579 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
@@ -318,6 +327,7 @@
 		75ECC2371AB9F28100B8FC78 /* ChangePasswordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewModel.swift; sourceTree = "<group>"; };
 		75F1697D1AF7F43A00BE6E79 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		75F169801AF80B5900BE6E79 /* LocalCacheStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalCacheStatus.swift; sourceTree = "<group>"; };
+		75F9060F1B1FBECA00107509 /* DebugDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugDetailsViewController.swift; sourceTree = "<group>"; };
 		75F9A1111AFD705B007229C7 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
 		AF1532103B091E2244D6CFE4 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E7171A1EF5F60DDA876FD139 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -482,6 +492,7 @@
 			isa = PBXGroup;
 			children = (
 				075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */,
+				756A35141B20D9B80033BC7C /* AppConstants.swift */,
 				706628241A71681300164117 /* Controller */,
 				072AB6A71A8FB0AB00AF45D6 /* Encryption */,
 				07009F071A65E3C600129B07 /* Extensions */,
@@ -559,6 +570,8 @@
 			children = (
 				07CC3F921A941C7A0005E39F /* MessageQueue.swift */,
 				07CAB7FD1A880B1200C5E347 /* PersistentQueue.swift */,
+				75A4321A1B1D040A00D046B3 /* QueueManager.swift */,
+				75A4321C1B1D042C00D046B3 /* QueueConstant.swift */,
 			);
 			name = Queue;
 			sourceTree = "<group>";
@@ -687,10 +700,12 @@
 			isa = PBXGroup;
 			children = (
 				754CD4891AB80D580084C54A /* Cells */,
-				7069620A1A7139C8001443B2 /* SettingsViewController.swift */,
 				754CD4871AB809D60084C54A /* SettingTableViewController.swift */,
+				7069620A1A7139C8001443B2 /* SettingsViewController.swift */,
 				7510AE7B1AB8D68B00EF3C41 /* SettingDetailViewController.swift */,
 				7510AE7D1AB8D69B00EF3C41 /* ChangePasswordViewController.swift */,
+				75150ED01B1E74A20013B476 /* SettingDebugTableViewController.swift */,
+				75F9060F1B1FBECA00107509 /* DebugDetailsViewController.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -1005,6 +1020,7 @@
 				70AF78BF1AA767A300BD9BAD /* ComposeView.swift in Sources */,
 				07E6C8281A9CF36400D4C8D4 /* NSManagedObjectExtension.swift in Sources */,
 				754387DB1AB3A54E0003B0AC /* SignUpKeyViewController.swift in Sources */,
+				75A4321B1B1D040A00D046B3 /* QueueManager.swift in Sources */,
 				7061A3F31A6E8C6A0006D36C /* MenuViewController.swift in Sources */,
 				70945E6E1A813550002B6837 /* UIButton+ProtonMail.swift in Sources */,
 				07B797C51A6EE5FF00244532 /* AuthCredential.swift in Sources */,
@@ -1019,6 +1035,7 @@
 				07CAB8031A894A3B00C5E347 /* MessageDetailViewController.swift in Sources */,
 				701DDE951AA64DEB0038149C /* MBContactModel.m in Sources */,
 				07655BC11AB10D7100CD3883 /* NSBundleExtension.swift in Sources */,
+				75A4321D1B1D042C00D046B3 /* QueueConstant.swift in Sources */,
 				75ECC2381AB9F28100B8FC78 /* ChangePasswordViewModel.swift in Sources */,
 				07CAB8021A8815DF00C5E347 /* NSFileManagerExtension.swift in Sources */,
 				706962071A71399D001443B2 /* ContactsViewController.swift in Sources */,
@@ -1051,6 +1068,7 @@
 				073FE01B1A955F4A00825980 /* APIService+ContactExtension.swift in Sources */,
 				073FD92C1A719B7900EB0CAF /* APIService+UserExtension.swift in Sources */,
 				07CC3F931A941C7A0005E39F /* MessageQueue.swift in Sources */,
+				75F906101B1FBECA00107509 /* DebugDetailsViewController.swift in Sources */,
 				07CB234C1AAE9FCB00699068 /* FullHeightWebView.swift in Sources */,
 				75B047B31AE708CC005C6D1A /* HtmlEditorViewController.swift in Sources */,
 				07DD68A71A9815DF00ED130C /* NSURLExtension.swift in Sources */,
@@ -1060,7 +1078,9 @@
 				755405B21B1648D2003BFC0A /* ComposeViewN.swift in Sources */,
 				75484B8B1AF29EBF00B97472 /* NSDateExtension.swift in Sources */,
 				701DDE941AA64DEB0038149C /* MBContactCollectionViewPromptCell.m in Sources */,
+				75150ED11B1E74A20013B476 /* SettingDebugTableViewController.swift in Sources */,
 				07CFC9DA1A82D4CF007A72B7 /* NSSetExtension.swift in Sources */,
+				756A35151B20D9B80033BC7C /* AppConstants.swift in Sources */,
 				7048B9F41A9E385B00D45F57 /* ContactsTableViewCell.swift in Sources */,
 				7027B02B1A700F0200D28F52 /* MenuTableViewCell.swift in Sources */,
 				075675591AB135F500449905 /* UIAlertActionExtension.swift in Sources */,
@@ -1222,6 +1242,7 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "";
+				"OTHER_SWIFT_FLAGS[arch=*]" = "-DDEBUG";
 				PRODUCT_MODULE_NAME = ProtonMail;
 				PRODUCT_NAME = ProtonMail;
 				PROVISIONING_PROFILE = "";

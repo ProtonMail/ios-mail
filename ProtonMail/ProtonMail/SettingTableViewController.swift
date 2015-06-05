@@ -10,15 +10,32 @@ import UIKit
 
 class SettingTableViewController: ProtonMailViewController {
     
-    var headers = ["General Settings","Multiple Domains", "Storage", ""]
-    var setting_section = [SettingItem.notify_email, SettingItem.display_name, SettingItem.signature, SettingItem.login_pwd, SettingItem.mbp]
+    var setting_headers = [SettingSections.Debug, SettingSections.General, SettingSections.MultiDomain, SettingSections.Storage, SettingSections.Version]
+    var setting_general_items = [SGItems.NotifyEmail, SGItems.DisplayName, SGItems.Signature, SGItems.LoginPWD, SGItems.MBP]
+    var setting_debug_items = [SDebugItem.Queue, SDebugItem.ErrorLogs]
+    
     var multi_domains: Array<Address>!
     var userInfo = sharedUserDataService.userInfo
-    let notificationSegue:String = "setting_notification"
-    let displaynameSegue:String = "setting_displayname"
-    let signatureSegue:String = "setting_signature"
-    let loginpwdSegue:String = "setting_login_pwd"
-    let mailboxpwdSegue:String = "setting_mailbox_pwd"
+    
+    
+    /// segues
+    let NotificationSegue:String = "setting_notification"
+    let DisplayNameSegue:String = "setting_displayname"
+    let SignatureSegue:String = "setting_signature"
+    let LoginpwdSegue:String = "setting_login_pwd"
+    let MailboxpwdSegue:String = "setting_mailbox_pwd"
+    
+    let DebugQueueSegue : String = "setting_debug_queue_segue"
+    
+    
+    /// cells
+    let SettingGeneralCell = "setting_general"
+    let SettingDomainsCell = "setting_domains"
+    let SettingStorageCell = "setting_storage_cell"
+    let HeaderCell = "header_cell"
+    
+    //
+    let CellHeight : CGFloat = 30.0
     
     //
     @IBOutlet weak var editBarButton: UIBarButtonItem!
@@ -43,27 +60,26 @@ class SettingTableViewController: ProtonMailViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
         let segueID:String! = segue.identifier
         switch segueID
         {
-        case loginpwdSegue:
+        case LoginpwdSegue:
             let changeLoginPwdView = segue.destinationViewController as! ChangePasswordViewController;
             changeLoginPwdView.setViewModel(shareViewModelFactoy.getChangeLoginPassword())
             break
-        case mailboxpwdSegue:
+        case MailboxpwdSegue:
             let changeMBPView = segue.destinationViewController as! ChangePasswordViewController;
             changeMBPView.setViewModel(shareViewModelFactoy.getChangeMailboxPassword())
             break
-        case notificationSegue:
+        case NotificationSegue:
             let changeMBPView = segue.destinationViewController as! SettingDetailViewController;
             changeMBPView.setViewModel(shareViewModelFactoy.getChangeNotificationEmail())
             break
-        case displaynameSegue:
+        case DisplayNameSegue:
             let changeMBPView = segue.destinationViewController as! SettingDetailViewController;
             changeMBPView.setViewModel(shareViewModelFactoy.getChangeDisplayName())
             break
-        case signatureSegue:
+        case SignatureSegue:
             let changeMBPView = segue.destinationViewController as! SettingDetailViewController;
             changeMBPView.setViewModel(shareViewModelFactoy.getChangeSignature())
             break
@@ -71,26 +87,22 @@ class SettingTableViewController: ProtonMailViewController {
             break
         }
     }
-
-
+    
     // MARK: - button acitons
     @IBAction func editAction(sender: AnyObject) {
         settingTableView.setEditing(!settingTableView.editing, animated: true)
         if settingTableView.editing
         {
-            editBarButton.title = "Done"
+            editBarButton.title = NSLocalizedString("Done")
         }
         else
         {
             ActivityIndicatorHelper.showActivityIndicatorAtView(view)
-            editBarButton.title = "Edit"
-            
+            editBarButton.title = NSLocalizedString("Edit")
             sharedUserDataService.updateUserDomiansOrder(multi_domains) { _, _, error in
                 ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
                 if let error = error {
-                    
                 } else {
-                    
                 }
             }
         }
@@ -98,56 +110,55 @@ class SettingTableViewController: ProtonMailViewController {
     
     // MARK: - Table view data source
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 4
+        return setting_headers.count
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return setting_section.count
-        }
-        else if section == 1 {
+        switch(setting_headers[section])
+        {
+        case SettingSections.Debug:
+            return setting_debug_items.count
+        case SettingSections.General:
+            return setting_general_items.count
+        case SettingSections.MultiDomain:
             return multi_domains.count
-        }
-        else if section == 2 {
+        case SettingSections.Storage:
             return 1
-        }
-        else if section == 3 {
+        case SettingSections.Version:
             return 0
         }
-        return 1
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("setting_general", forIndexPath: indexPath) as! GeneralSettingViewCell
-            let itme: SettingItem = setting_section[indexPath.row];
-            cell.LeftText.text = itme.identifier;
-            
+        if setting_headers[indexPath.section] == SettingSections.General {
+            let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! GeneralSettingViewCell
+            let itme: SGItems = setting_general_items[indexPath.row];
+            cell.LeftText.text = itme.description;
             switch itme {
-            case SettingItem.notify_email:
+            case SGItems.NotifyEmail:
                 cell.RightText.text = userInfo?.notificationEmail;
                 break;
-            case SettingItem.display_name:
+            case SGItems.DisplayName:
                 cell.RightText.text = userInfo?.displayName;
                 break;
-            case SettingItem.signature:
+            case SGItems.Signature:
                 cell.RightText.text = userInfo?.signature;
                 break;
-            case SettingItem.login_pwd:
+            case SGItems.LoginPWD:
                 cell.RightText.text = "**********"
                 break;
-            case SettingItem.mbp:
+            case SGItems.MBP:
                 cell.RightText.text = "**********"
                 break;
             }
             return cell
         }
-        else if indexPath.section == 1 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("setting_domains", forIndexPath: indexPath) as! DomainsTableViewCell
+        else if setting_headers[indexPath.section] == SettingSections.MultiDomain {
+            let cell = tableView.dequeueReusableCellWithIdentifier(SettingDomainsCell, forIndexPath: indexPath) as! DomainsTableViewCell
             cell.domainText.text = multi_domains[indexPath.row].email
             if indexPath.row == 0
             {
-                cell.defaultMark.text = "Default"
+                cell.defaultMark.text = NSLocalizedString("Default")
             }
             else
             {
@@ -156,78 +167,80 @@ class SettingTableViewController: ProtonMailViewController {
             cell.selectionStyle = UITableViewCellSelectionStyle.None
             return cell
         }
-        else if indexPath.section == 2 {
-            
-            let cell = tableView.dequeueReusableCellWithIdentifier("setting_storage_cell", forIndexPath: indexPath) as! StorageViewCell
+        else if setting_headers[indexPath.section] == SettingSections.Storage {
+            let cell = tableView.dequeueReusableCellWithIdentifier(SettingStorageCell, forIndexPath: indexPath) as! StorageViewCell
             let usedSpace = sharedUserDataService.usedSpace
             let maxSpace = sharedUserDataService.maxSpace
             cell.setValue(usedSpace, maxSpace: maxSpace)
             cell.selectionStyle = UITableViewCellSelectionStyle.None
             return cell
-            
+        }
+        else if setting_headers[indexPath.section] == SettingSections.Debug {
+            let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! GeneralSettingViewCell
+            let itme: SDebugItem = setting_debug_items[indexPath.row]
+            cell.LeftText.text = itme.description
+            cell.RightText.text  = ""
+            return cell
         }
         else
         {
-            let cell = tableView.dequeueReusableCellWithIdentifier("setting_storage_cell", forIndexPath: indexPath) as! UITableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier(SettingStorageCell, forIndexPath: indexPath) as! UITableViewCell
             cell.selectionStyle = UITableViewCellSelectionStyle.None
             return cell
         }
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let  headerCell = tableView.dequeueReusableCellWithIdentifier("header_cell") as! CustomHeaderView
-        
-        switch (section) {
-        case 0:
-            headerCell.headerText.text = headers[0]
-            break
-        case 1:
-            headerCell.headerText.text = headers[1]
-            break
-        case 2:
-            headerCell.headerText.text = headers[2]
-            break
-        case 3:
+        let  headerCell = tableView.dequeueReusableCellWithIdentifier(HeaderCell) as! CustomHeaderView
+        if(setting_headers[section] == SettingSections.Version){
             if let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String {
-                headerCell.headerText.text = "Version " + version
+                headerCell.headerText.text = NSLocalizedString("Version ") + version
             }
             else
             {
-                headerCell.headerText.text = "Unkonw Version"
+                headerCell.headerText.text = NSLocalizedString("Unkonw Version")
             }
-            break
-        default:
-            headerCell.headerText.text = headers[3]
-            break
         }
-        
+        else
+        {
+            headerCell.headerText.text = setting_headers[section].description
+        }
         return headerCell
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
     {
-        return 30;
+        return CellHeight;
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-        if indexPath.section == 0 {
-            let itme: SettingItem = setting_section[indexPath.row];
+        if setting_headers[indexPath.section] == SettingSections.General {
+            let itme: SGItems = setting_general_items[indexPath.row];
             switch itme {
-            case SettingItem.notify_email:
-                self.performSegueWithIdentifier("setting_notification", sender: self)
+            case SGItems.NotifyEmail:
+                self.performSegueWithIdentifier(NotificationSegue, sender: self)
                 break;
-            case SettingItem.display_name:
-                self.performSegueWithIdentifier("setting_displayname", sender: self)
+            case SGItems.DisplayName:
+                self.performSegueWithIdentifier(DisplayNameSegue, sender: self)
                 break;
-            case SettingItem.signature:
-                self.performSegueWithIdentifier("setting_signature", sender: self)
+            case SGItems.Signature:
+                self.performSegueWithIdentifier(SignatureSegue, sender: self)
                 break;
-            case SettingItem.login_pwd:
-                self.performSegueWithIdentifier("setting_login_pwd", sender: self)
+            case SGItems.LoginPWD:
+                self.performSegueWithIdentifier(LoginpwdSegue, sender: self)
                 break;
-            case SettingItem.mbp:
-                self.performSegueWithIdentifier("setting_mailbox_pwd", sender: self)
+            case SGItems.MBP:
+                self.performSegueWithIdentifier(MailboxpwdSegue, sender: self)
+                break;
+            }
+        }
+        else if setting_headers[indexPath.section] == SettingSections.Debug {
+            let itme: SDebugItem = setting_debug_items[indexPath.row];
+            switch itme {
+            case SDebugItem.Queue:
+                self.performSegueWithIdentifier(DebugQueueSegue, sender: self)
+                break;
+            case SDebugItem.ErrorLogs:
                 break;
             }
         }
@@ -236,7 +249,15 @@ class SettingTableViewController: ProtonMailViewController {
     
     // Override to support conditional editing of the table view.
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if indexPath.section == 1 {
+        if setting_headers[indexPath.section] == SettingSections.MultiDomain {
+            return true
+        }
+        return false
+    }
+    
+    // Override to support conditional rearranging of the table view.
+    func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if setting_headers[indexPath.section] == SettingSections.MultiDomain {
             return true
         }
         return false
@@ -256,18 +277,16 @@ class SettingTableViewController: ProtonMailViewController {
     
     func tableView(tableView: UITableView, targetIndexPathForMoveFromRowAtIndexPath sourceIndexPath: NSIndexPath, toProposedIndexPath proposedDestinationIndexPath: NSIndexPath) -> NSIndexPath {
         if sourceIndexPath.section != proposedDestinationIndexPath.section {
-            
             return sourceIndexPath;
         }
         else {
-            
             return proposedDestinationIndexPath;
         }
     }
     
     // Override to support rearranging the table view.
     func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-        if fromIndexPath.section == 1 {
+        if setting_headers[fromIndexPath.section] == SettingSections.MultiDomain {
             let val = self.multi_domains.removeAtIndex(fromIndexPath.row)
             self.multi_domains.insert(val, atIndex: toIndexPath.row)
             let indexSet = NSIndexSet(index:fromIndexPath.section)
@@ -275,23 +294,64 @@ class SettingTableViewController: ProtonMailViewController {
         }
     }
     
-    // Override to support conditional rearranging of the table view.
-    func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if indexPath.section == 1 {
-            return true
-        }
-        return false
-    }
 }
 
 extension SettingTableViewController {
-    enum SettingItem: String {
-        case notify_email = "Notification Email"
-        case display_name = "Display Name"
-        case signature = "Signature"
-        case login_pwd = "Login Passowrd"
-        case mbp = "Mailbox Passowrd"
-        
-        var identifier: String { return rawValue }
+    
+    enum SDebugItem: Int, Printable {
+        case Queue = 0
+        case ErrorLogs = 1
+        var description : String {
+            switch(self){
+            case Queue:
+                return NSLocalizedString("Message Queue")
+            case ErrorLogs:
+                return NSLocalizedString("Error Logs")
+            }
+        }
+    }
+    
+    enum SGItems: Int, Printable {
+        case NotifyEmail = 0
+        case DisplayName = 1
+        case Signature = 2
+        case LoginPWD = 3
+        case MBP = 4
+        var description : String {
+            switch(self){
+            case NotifyEmail:
+                return NSLocalizedString("Notification Email")
+            case DisplayName:
+                return NSLocalizedString("Display Name")
+            case Signature:
+                return NSLocalizedString("Signature")
+            case LoginPWD:
+                return NSLocalizedString("Login Passowrd")
+            case MBP:
+                return NSLocalizedString("Mailbox Passowrd")
+            }
+        }
+    }
+    
+    enum SettingSections: Int, Printable {
+        case Debug = 0
+        case General = 1
+        case MultiDomain = 2
+        case Storage = 3
+        case Version = 4
+        var description : String {
+            switch(self){
+            case Debug:
+                return NSLocalizedString("Debug")
+            case General:
+                return NSLocalizedString("General Settings")
+            case MultiDomain:
+                return NSLocalizedString("Multiple Domains")
+            case Storage:
+                return NSLocalizedString("Storage")
+            case Version:
+                return NSLocalizedString("")
+            }
+        }
     }
 }

@@ -31,7 +31,6 @@ class ContactDataService {
         if let context = sharedCoreDataService.mainManagedObjectContext {
             return allContactsInManagedObjectContext(context)
         }
-        
         return []
     }
     

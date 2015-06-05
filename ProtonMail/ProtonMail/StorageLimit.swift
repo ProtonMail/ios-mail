@@ -32,12 +32,14 @@ class StorageLimit {
         }
         set {
             NSUserDefaults.standardUserDefaults().setBool(newValue, forKey: Key.isCheckSpaceDisabled)
+            NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
     
     func signOut()
     {
         NSUserDefaults.standardUserDefaults().removeObjectForKey(Key.isCheckSpaceDisabled);
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
     
 

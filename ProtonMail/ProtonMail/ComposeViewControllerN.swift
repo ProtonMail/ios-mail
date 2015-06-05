@@ -82,7 +82,6 @@ class ComposeViewController : ProtonMailViewController {
             self.composeView.ccContactPicker.reloadData()
             self.composeView.bccContactPicker.reloadData()
             
-            self.composeView.toContactPicker.becomeFirstResponder()
         }
         
         if message != nil
@@ -92,6 +91,9 @@ class ComposeViewController : ProtonMailViewController {
                 NSLog("\(__FUNCTION__) error: \(error)")
             }
         }
+        
+        
+        self.composeView.toContactPicker.becomeFirstResponder()
     }
     
     override func didReceiveMemoryWarning() {

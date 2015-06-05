@@ -91,7 +91,7 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fy4-ZC-gVz" id="LAU-bi-L1X">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="draft" translatesAutoresizingMaskIntoConstraints="NO" id="Rrm-fW-TBp">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="draft" translatesAutoresizingMaskIntoConstraints="NO" id="Rrm-fW-TBp">
                                             <rect key="frame" x="24" y="8" width="52" height="54"/>
                                             <variation key="widthClass=compact" misplaced="YES">
                                                 <rect key="frame" x="41" y="8" width="19" height="54"/>
@@ -181,7 +181,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bug Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K0q-PU-hIm">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Bug Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K0q-PU-hIm">
                                 <rect key="frame" x="16" y="72" width="119" height="20"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="17"/>
                                 <color key="textColor" red="0.2196078431372549" green="0.22745098039215686" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2146,13 +2146,13 @@
                                 <exclude reference="aWI-Mb-7Ao"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="2yn-aP-ZZ8"/>
+                                <exclude reference="FEN-6J-MFr"/>
+                                <exclude reference="1DR-HJ-vwg"/>
+                                <exclude reference="cog-j8-3Ml"/>
                                 <exclude reference="D1u-LY-aD4"/>
                                 <exclude reference="IzC-jx-cbO"/>
                                 <exclude reference="K3Z-rR-71d"/>
-                                <exclude reference="1DR-HJ-vwg"/>
-                                <exclude reference="cog-j8-3Ml"/>
-                                <exclude reference="2yn-aP-ZZ8"/>
-                                <exclude reference="FEN-6J-MFr"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -2161,13 +2161,13 @@
                                 <include reference="aWI-Mb-7Ao"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="2yn-aP-ZZ8"/>
+                                <include reference="FEN-6J-MFr"/>
+                                <include reference="1DR-HJ-vwg"/>
+                                <include reference="cog-j8-3Ml"/>
                                 <include reference="D1u-LY-aD4"/>
                                 <include reference="IzC-jx-cbO"/>
                                 <include reference="K3Z-rR-71d"/>
-                                <include reference="1DR-HJ-vwg"/>
-                                <include reference="cog-j8-3Ml"/>
-                                <include reference="2yn-aP-ZZ8"/>
-                                <include reference="FEN-6J-MFr"/>
                             </mask>
                         </variation>
                     </view>
@@ -2782,7 +2782,7 @@
         <scene sceneID="qpL-sf-AfB">
             <objects>
                 <tableViewController id="Htd-jh-FjZ" userLabel="Settings Table View" customClass="SettingTableViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="grouped" rowHeight="44" sectionHeaderHeight="30" sectionFooterHeight="10" id="ERU-k3-Enh">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="44" sectionHeaderHeight="30" sectionFooterHeight="10" id="ERU-k3-Enh">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.90980392156862744" green="0.92156862745098034" blue="0.92941176470588238" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -3092,6 +3092,7 @@
                         <segue destination="MwW-sL-ahJ" kind="show" identifier="setting_mailbox_pwd" id="pf5-Mm-LDI"/>
                         <segue destination="OCS-Qd-wj6" kind="show" identifier="setting_notification" id="sPN-i9-NSa"/>
                         <segue destination="OCS-Qd-wj6" kind="push" identifier="setting_signature" id="A7E-cY-hB0"/>
+                        <segue destination="SWZ-VZ-9Rg" kind="show" identifier="setting_debug_queue_segue" id="XyN-LC-jTe"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7xM-0a-IOr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3413,6 +3414,92 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7FU-gH-cCp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="157.5" y="4774"/>
+        </scene>
+        <!--Setting Debug View Controller-->
+        <scene sceneID="LVh-aS-EOZ">
+            <objects>
+                <tableViewController id="SWZ-VZ-9Rg" customClass="SettingDebugViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="Ut2-mT-NeI">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="setting_debug_cell" id="z2r-PK-H0z">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="z2r-PK-H0z" id="UAB-LI-xE0">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="SWZ-VZ-9Rg" id="O75-wt-PUu"/>
+                            <outlet property="delegate" destination="SWZ-VZ-9Rg" id="HdU-kq-IzI"/>
+                        </connections>
+                    </tableView>
+                    <connections>
+                        <segue destination="CIe-jW-ts4" kind="show" identifier="queue_debug_details" id="eM5-BS-nib"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LLU-Vu-67f" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1146" y="4622"/>
+        </scene>
+        <!--Debug Detail View Controller-->
+        <scene sceneID="vu3-hY-YbZ">
+            <objects>
+                <viewController id="CIe-jW-ts4" customClass="DebugDetailViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Ecp-Yb-aSv"/>
+                        <viewControllerLayoutGuide type="bottom" id="yxL-bQ-HWZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="T1B-ef-ONm">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Axa-vf-Sg3">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Axa-vf-Sg3" firstAttribute="leading" secondItem="T1B-ef-ONm" secondAttribute="leadingMargin" constant="-16" id="16C-yD-GPL"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Axa-vf-Sg3" secondAttribute="trailing" constant="-16" id="HB1-Zt-Cla"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="Axa-vf-Sg3" secondAttribute="bottom" constant="-64" id="Sao-NH-Cdv"/>
+                            <constraint firstItem="Axa-vf-Sg3" firstAttribute="top" secondItem="Ecp-Yb-aSv" secondAttribute="bottom" id="aO5-0S-rgY"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="Axa-vf-Sg3"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="16C-yD-GPL"/>
+                                <exclude reference="HB1-Zt-Cla"/>
+                                <exclude reference="Sao-NH-Cdv"/>
+                                <exclude reference="aO5-0S-rgY"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="Axa-vf-Sg3"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="16C-yD-GPL"/>
+                                <include reference="HB1-Zt-Cla"/>
+                                <include reference="Sao-NH-Cdv"/>
+                                <include reference="aO5-0S-rgY"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="debugDetail" destination="Axa-vf-Sg3" id="Mvy-gA-PLa"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Rcr-wm-K7p" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1977" y="4622"/>
         </scene>
         <!--PASSWORD-->
         <scene sceneID="1wX-Ya-NJd">
@@ -3768,7 +3855,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bed-5V-aMj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1146" y="4026"/>
+            <point key="canvasLocation" x="1146" y="3922"/>
         </scene>
         <!--Contacts View Controller-->
         <scene sceneID="4eW-b9-zGJ">
@@ -4028,7 +4115,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pqM-EV-O7S" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1146" y="3264"/>
+            <point key="canvasLocation" x="1146" y="3204"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ueG-Jo-XMf">
@@ -4168,11 +4255,11 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="YGe-pV-72F"/>
-        <segue reference="V9t-nA-fhw"/>
-        <segue reference="A7E-cY-hB0"/>
-        <segue reference="5rJ-hC-fsT"/>
-        <segue reference="rFr-1z-1Q8"/>
         <segue reference="dZz-yt-xGj"/>
+        <segue reference="rFr-1z-1Q8"/>
         <segue reference="dxU-wZ-inN"/>
+        <segue reference="V9t-nA-fhw"/>
+        <segue reference="3FM-PP-oeV"/>
+        <segue reference="5rJ-hC-fsT"/>
     </inferredMetricsTieBreakers>
 </document>

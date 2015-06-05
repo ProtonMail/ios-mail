@@ -55,7 +55,6 @@ class CoreDataService {
         if let url = NSURL(string: urlString) {
             return persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url)
         }
-        
         return nil
     }
     

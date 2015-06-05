@@ -41,7 +41,6 @@ class MessageDataService {
     }
     
     private var readQueue: [ReadBlock] = []
-    private let writeQueue = MessageQueue(queueName: "writeQueue")
     
     init() {
         setupMessageMonitoring()
@@ -60,7 +59,6 @@ class MessageDataService {
         }
         
         // TODO: check for existing download tasks and return that task rather than start a new download
-        
         queue { () -> Void in
             sharedAPIService.attachmentForAttachmentID(attachment.attachmentID, destinationDirectoryURL: NSFileManager.defaultManager().attachmentDirectory, downloadTask: downloadTask, completion: { task, fileURL, error in
                 var error = error
@@ -72,7 +70,6 @@ class MessageDataService {
                         NSLog("\(__FUNCTION__) error: \(error)")
                     }
                 }
-                
                 completion?(task, fileURL, error)
             })
         }
@@ -278,8 +275,10 @@ class MessageDataService {
     }
     
     func launchCleanUpIfNeeded() {
-        if !sharedUserDataService.isUserCredentialStored {
+        if !sharedUserDataService.isUserCredentialStored || !localCacheStatus.isCacheOk() {
             cleanUp()
+            localCacheStatus.resetCache()
+            //need add not clean the important infomation here.
         }
     }
     
@@ -311,7 +310,6 @@ class MessageDataService {
                     completion?(nil, NSError.unableToParseResponse(response))
                 }
             }
-            
             sharedAPIService.messageSearch(query, page: page, completion: completionWrapper)
         }
     }
@@ -354,6 +352,8 @@ class MessageDataService {
                 attachments: attachments,
                 inManagedObjectContext: context)
             
+            var uuid = NSUUID().UUIDString
+            message.messageID = uuid
             error = context.saveUpstreamIfNeeded()
             
             if error != nil {
@@ -408,7 +408,8 @@ class MessageDataService {
         }
         
         lastUpdatedStore.clear()
-        writeQueue.clear()
+        sharedMessageQueue.clear()
+        sharedFailedQueue.clear()
         
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
@@ -647,7 +648,7 @@ class MessageDataService {
         }
         
         // nothing to send, dequeue request
-        self.writeQueue.remove(elementID: writeQueueUUID)
+        sharedMessageQueue.remove(elementID: writeQueueUUID)
         self.dequeueIfNeeded()
         
         completion?(task: nil, response: nil, error: NSError.badParameter(messageID))
@@ -656,7 +657,7 @@ class MessageDataService {
     private func sendMessageID(messageID: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
         let errorBlock: CompletionBlock = { task, response, error in
             // nothing to send, dequeue request
-            self.writeQueue.remove(elementID: writeQueueUUID)
+            sharedMessageQueue.remove(elementID: writeQueueUUID)
             self.dequeueIfNeeded()
             
             completion?(task: task, response: response, error: error)
@@ -677,12 +678,10 @@ class MessageDataService {
                         // remove successful send from Core Data
                         if error == nil {
                             context.deleteObject(message)
-                            
                             if let error = context.saveUpstreamIfNeeded() {
                                 NSLog("\(__FUNCTION__) error: \(error)")
                             }
                         }
-                        
                         completion?(task: task, response: response, error: error)
                         return
                     }
@@ -722,27 +721,51 @@ class MessageDataService {
     }
     
     // MARK: Queue
-    
     private func writeQueueCompletionBlockForElementID(elementID: NSUUID) -> CompletionBlock {
         return { task, response, error in
-            self.writeQueue.isInProgress = false
-            
+            sharedMessageQueue.isInProgress = false
             if error == nil {
-                self.writeQueue.remove(elementID: elementID)
+                sharedMessageQueue.remove(elementID: elementID)
                 self.dequeueIfNeeded()
             } else {
                 NSLog("\(__FUNCTION__) error: \(error)")
                 
-                // TODO: handle error
+                var statusCode = 200;
+                var isInternetIssue = false
+                if let errorUserInfo = error?.userInfo {
+                    if let detail = errorUserInfo["com.alamofire.serialization.response.error.response"] as? NSHTTPURLResponse {
+                        statusCode = detail.statusCode
+                    }
+                    else {
+//                        if(error?.code == -1001) {
+//                            // request timed out
+//                        }
+                        if error?.code == -1009 || error?.code == -1004 || error?.code == -1001 { //internet issue
+                            isInternetIssue = true
+                        }
+                    }
+                }
+                
+                //need add try times and check internet status
+                if statusCode == 500 && !isInternetIssue {
+                    if  let (uuid, object: AnyObject) = sharedMessageQueue.next() {
+                        if let element = object as? [String : String] {
+                            let count = element["count"]
+                            sharedFailedQueue.add(uuid, object: element)
+                            sharedMessageQueue.remove(elementID: elementID)
+                        }
+                    }
+                }
+                self.dequeueIfNeeded()
             }
         }
     }
     
     private func dequeueIfNeeded() {
-        if let (uuid, messageID, actionString) = writeQueue.nextMessage() {
+        //return
+        if let (uuid, messageID, actionString) = sharedMessageQueue.nextMessage() {
             if let action = MessageAction(rawValue: actionString) {
-                writeQueue.isInProgress = true
-                
+                sharedMessageQueue.isInProgress = true
                 switch action {
                 case .saveDraft:
                     saveDraftWithMessageID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid))
@@ -753,21 +776,22 @@ class MessageDataService {
                 }
             } else {
                 NSLog("\(__FUNCTION__) Unsupported action \(actionString), removing from queue.")
-                writeQueue.remove(elementID: uuid)
+                sharedMessageQueue.remove(elementID: uuid)
             }
-        } else if !writeQueue.isBlocked && writeQueue.count == 0 && readQueue.count > 0 {
+        } else if !sharedMessageQueue.isBlocked && readQueue.count > 0 { //sharedMessageQueue.count == 0 &&
             readQueue.removeAtIndex(0)()
             dequeueIfNeeded()
         }
     }
     
+    
+    
     private func queue(#message: Message, action: MessageAction) {
         if action == .saveDraft {
-            writeQueue.addMessage(message.objectID.URIRepresentation().absoluteString!, action: action)
+            sharedMessageQueue.addMessage(message.objectID.URIRepresentation().absoluteString!, action: action)
         } else {
-            writeQueue.addMessage(message.messageID, action: action)
+            sharedMessageQueue.addMessage(message.messageID, action: action)
         }
-        
         dequeueIfNeeded()
     }
     
@@ -788,13 +812,11 @@ class MessageDataService {
         
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isRead, handler: { message in
             let action: MessageAction = message.isRead ? .read : .unread
-            
             self.queue(message: message, action: action)
         })
         
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isStarred, handler: { message in
             let action: MessageAction = message.isStarred ? .star : .unstar
-            
             self.queue(message: message, action: action)
         })
     }
@@ -804,7 +826,6 @@ class MessageDataService {
 // MARK: - Attachment extension
 
 extension Attachment {
-    
     func fetchAttachment(downloadTask: ((NSURLSessionDownloadTask) -> Void)?, completion:((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
         sharedMessageDataService.fetchAttachmentForAttachment(self, downloadTask: downloadTask, completion: completion)
     }
@@ -826,14 +847,12 @@ extension NSFileManager {
     
     var attachmentDirectory: NSURL {
         let attachmentDirectory = applicationSupportDirectoryURL.URLByAppendingPathComponent("attachments", isDirectory: true)
-        
         if !NSFileManager.defaultManager().fileExistsAtPath(attachmentDirectory.absoluteString!) {
             var error: NSError?
             if !NSFileManager.defaultManager().createDirectoryAtURL(attachmentDirectory, withIntermediateDirectories: true, attributes: nil, error: &error) {
                 NSLog("\(__FUNCTION__) Could not create \(attachmentDirectory.absoluteString!) with error: \(error)")
             }
         }
-        
         return attachmentDirectory
     }
 }
