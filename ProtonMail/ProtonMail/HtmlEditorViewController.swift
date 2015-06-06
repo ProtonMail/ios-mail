@@ -34,8 +34,6 @@ class HtmlEditorViewController: ZSSRichTextEditor {
         
         let new_position = self.getCaretPosition().toInt() ?? 0
         
-        println ("offset - \(new_position)")
-        
         self.delegate?.editorSizeChanged(self.getContentSize())
         
         self.delegate?.editorCaretPosition(new_position)

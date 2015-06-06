@@ -22,6 +22,8 @@ class ComposeViewController : ProtonMailViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var expirationPicker: UIPickerView!
     
+    private var draggin : Bool! = false
+    
     private var composeView : ComposeViewN!
     
     // MARK : const values
@@ -66,6 +68,7 @@ class ComposeViewController : ProtonMailViewController {
         self.scrollView.addSubview(composeView.view);
         self.composeView.view.frame = scrollView.frame
         
+        self.scrollView.delegate = self
         self.handleMessage(message, action: action)
         
         self.contacts = sharedContactDataService.allContactVOs()
@@ -171,6 +174,11 @@ class ComposeViewController : ProtonMailViewController {
     }
     
     // MARK: - Private methods
+    private func updateViewSizeForKeyboard(offset : Int)
+    {
+        
+    }
+    
     private func updateViewSize()
     {
         self.scrollView.contentSize = CGSize(width: composeSize.width, height: composeSize.height)
@@ -178,7 +186,7 @@ class ComposeViewController : ProtonMailViewController {
 
     private func handleMessage(message: Message?, action: String?) {
         let signature = !sharedUserDataService.signature.isEmpty ? "\n\n\(sharedUserDataService.signature)" : ""
-        let htmlString = "<br></br>\(signature)";
+        let htmlString = "<div><br></div><div><br></div><div><br></div><div><br></div><\(signature)";
         self.composeView.htmlEditor.setHTML(htmlString);
         
         if let message = message {
@@ -274,7 +282,22 @@ extension ComposeViewController : ComposeViewNDelegate {
     
     func ComposeViewNDidSizeChanged(size: CGSize) {
         self.composeSize = size
+     
         self.updateViewSize()
+    }
+    
+    func ComposeViewNDidOffsetChanged(offset: CGPoint){
+        
+        let currentOffsetY = self.scrollView.contentOffset.y;
+        
+        let h : CGFloat = 258;
+        
+        if !self.draggin {
+            
+            if ((offset.y + h - currentOffsetY) > self.scrollView.frame.height ) {
+                self.scrollView.contentOffset = CGPoint(x: 0, y: self.scrollView.frame.height - currentOffsetY + 20)
+            }
+        }
     }
     
     func composeViewDidTapNextButton(composeView: ComposeViewN) {
@@ -460,6 +483,17 @@ extension ComposeViewController: UIPickerViewDelegate {
     }
 }
 
+
+extension ComposeViewController : UIScrollViewDelegate {
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        self.draggin = true;
+        println("drig")
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        self.draggin = false
+    }
+}
 
 // MARK: - Message extension
 
