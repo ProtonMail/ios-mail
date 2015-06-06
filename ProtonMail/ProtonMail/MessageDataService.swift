@@ -411,6 +411,9 @@ class MessageDataService {
         sharedMessageQueue.clear()
         sharedFailedQueue.clear()
         
+        //tempary easy fix
+        sharedContactDataService.cleanUp()
+        
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
     

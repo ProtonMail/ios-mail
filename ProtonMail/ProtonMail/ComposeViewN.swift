@@ -170,7 +170,7 @@ class ComposeViewN: UIViewController {
     
     @IBAction func contactPlusButtonTapped(sender: UIButton) {
         self.plusButtonHandle();
-        
+
         self.notifyViewSize(true)
     }
     
@@ -214,6 +214,7 @@ class ComposeViewN: UIViewController {
     
     @IBAction func didTapEncryptedDismissButton(sender: UIButton) {
         self.delegate?.composeViewDidTapEncryptedButton(self)
+        self.encryptedPasswordTextField.resignFirstResponder()
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.encryptedPasswordTextField.text = ""
             self.passwordView.alpha = 0.0
@@ -560,6 +561,10 @@ extension ComposeViewN : HtmlEditorViewControllerDelegate {
     func editorSizeChanged(size: CGSize) {
         self.editorSize = size
         self.notifyViewSize(false)
+    }
+    
+    func editorCaretPosition(position: Int) {
+        
     }
 }
 

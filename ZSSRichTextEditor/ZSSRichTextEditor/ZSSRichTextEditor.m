@@ -593,6 +593,12 @@ static Class hackishFixClass = Nil;
     
 }
 
+- (NSString *)getCaretPosition
+{
+    NSString *js = [NSString stringWithFormat:@"zss_editor.getCaretYPosition();"];
+    return  [self.editorView stringByEvaluatingJavaScriptFromString:js];
+}
+
 - (NSString *)getHTML {
     NSString *html = [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.getHTML();"];
     html = [self removeQuotesFromHTML:html];

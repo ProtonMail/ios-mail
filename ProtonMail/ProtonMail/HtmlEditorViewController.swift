@@ -10,7 +10,7 @@ import UIKit
 
 protocol HtmlEditorViewControllerDelegate {
     func editorSizeChanged(size: CGSize)
-    
+    func editorCaretPosition ( position : Int)
 }
 
 class HtmlEditorViewController: ZSSRichTextEditor {
@@ -31,7 +31,14 @@ class HtmlEditorViewController: ZSSRichTextEditor {
     
     override func editorDidScrollWithPosition(position: Int) {
         super.editorDidScrollWithPosition(position)
+        
+        let new_position = self.getCaretPosition().toInt() ?? 0
+        
+        println ("offset - \(new_position)")
+        
         self.delegate?.editorSizeChanged(self.getContentSize())
+        
+        self.delegate?.editorCaretPosition(new_position)
     }
 
 }

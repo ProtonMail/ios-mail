@@ -104,6 +104,10 @@ static NSString * const ZSSRichTextEditorToolbarNone = @"com.zedsaid.toolbaritem
  */
 - (NSString *)getHTML;
 
+
+- (NSString *)getCaretPosition;
+
+
 /**
  *  Returns the plain text from the Rich Text Editor
  *

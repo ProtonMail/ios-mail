@@ -25,6 +25,17 @@ class ContactDataService {
     func addContact(#name: String, email: String, completion: ContactCompletionBlock?) {
         sharedAPIService.contactAdd(name: name, email: email, completion: completionBlockForContactCompletionBlock(completion))
     }
+    
+    private var managedObjectContext: NSManagedObjectContext? {
+        return sharedCoreDataService.mainManagedObjectContext
+    }
+    
+    func cleanUp()
+    {
+        if let context = managedObjectContext {
+            Contact.deleteAll(inContext: context)
+        }
+    }
 
     /// Only call from the main thread
     func allContacts() -> [Contact] {

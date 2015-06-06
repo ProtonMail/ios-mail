@@ -55,7 +55,6 @@ class ComposeViewController : ProtonMailViewController {
         super.viewDidLoad()
         self.composeSize  = CGSize.zeroSize
         
-        
         self.expirationPicker.alpha = 0.0
         self.expirationPicker.dataSource = self
         self.expirationPicker.delegate = self
@@ -73,36 +72,15 @@ class ComposeViewController : ProtonMailViewController {
         self.composeView.toContactPicker.reloadData()
         self.composeView.ccContactPicker.reloadData()
         self.composeView.bccContactPicker.reloadData()
-        
-        
-        // need remove from here
-//        sharedContactDataService.fetchContactVOs { (contacts, error) -> Void in
-//            if let error = error {
-//                NSLog("\(__FUNCTION__) error: \(error)")
-//                
-//                let alertController = error.alertController()
-//                alertController.addOKAction()
-//                
-//                self.presentViewController(alertController, animated: true, completion: nil)
-//            }
-//            
-//            self.contacts = contacts
-//            
-//            self.composeView.toContactPicker.reloadData()
-//            self.composeView.ccContactPicker.reloadData()
-//            self.composeView.bccContactPicker.reloadData()
-//        }
-//        
-//        if message != nil
-//        {
-//            message?.isRead = true;
-//            if let error = message!.managedObjectContext?.saveUpstreamIfNeeded() {
-//                NSLog("\(__FUNCTION__) error: \(error)")
-//            }
-//        }
-        
-        
         self.composeView.toContactPicker.becomeFirstResponder()
+        
+        if message != nil {
+            message?.isRead = true;
+            if let error = message!.managedObjectContext?.saveUpstreamIfNeeded() {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
+        }
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -111,9 +89,9 @@ class ComposeViewController : ProtonMailViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
         if ccSelectedContacts.count > 0 {
             composeView.plusButtonHandle()
+            composeView.notifyViewSize(true)
         }
     }
     
@@ -200,7 +178,7 @@ class ComposeViewController : ProtonMailViewController {
 
     private func handleMessage(message: Message?, action: String?) {
         let signature = !sharedUserDataService.signature.isEmpty ? "\n\n\(sharedUserDataService.signature)" : ""
-        let htmlString = "<br><br><br><br>\(signature)<br><br>";
+        let htmlString = "<br></br>\(signature)";
         self.composeView.htmlEditor.setHTML(htmlString);
         
         if let message = message {

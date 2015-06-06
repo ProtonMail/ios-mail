@@ -36,4 +36,9 @@ extension Contact {
         super.awakeFromInsert()
         replaceNilStringAttributesWithEmptyString()
     }
+    
+    /// Removes all messages from the store.
+    class func deleteAll(inContext context: NSManagedObjectContext) {
+        context.deleteAll(Attributes.entityName)
+    }
 }
