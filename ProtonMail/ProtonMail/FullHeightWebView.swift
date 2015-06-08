@@ -31,6 +31,7 @@ class FullHeightWebView: UIWebView {
         scrollView.scrollEnabled = true
         scrollView.alwaysBounceVertical = true
         scrollView.userInteractionEnabled = true
+        scrollView.delegate = self
         //self.scrollView.showsVerticalScrollIndicator = false
         scrollView.bounces = false;
         //self.scalesPageToFit = true;
@@ -44,21 +45,16 @@ class FullHeightWebView: UIWebView {
     deinit {
         //removeObserver(self, forKeyPath: scrollViewContentSizeKeyPath, context: &kvoContext)
     }
-
+    
     override func updateConstraints() {
-        //if self.scrollView.contentSize.height < 5000
-        //{
-            mas_updateConstraints { (make) -> Void in
-                println("height: \(self.scrollView.contentSize.height)")
-                make.height.equalTo()(self.scrollView.contentSize.height)
-                return
-            }
-
-        //}
-        
+        mas_updateConstraints { (make) -> Void in
+            println("height: \(self.scrollView.contentSize.height)")
+            make.height.equalTo()(self.scrollView.contentSize.height)
+            return
+        }
         super.updateConstraints()
     }
-
+    
     // MARK: - KVO
     
     override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
@@ -70,3 +66,34 @@ class FullHeightWebView: UIWebView {
         }
     }
 }
+
+
+
+extension FullHeightWebView : UIScrollViewDelegate
+{
+    override func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView!, atScale scale: CGFloat)
+    {
+        //        var frame = self.emailBodyWebView.frame
+        //        frame.size.height = self.emailBodyWebView.scrollView.contentSize.height
+        //        self.emailBodyWebView.frame = frame
+        //
+        //        self.emailBodyWebView.updateConstraints();
+        //        self.emailBodyWebView.layoutIfNeeded();
+        //        self.layoutIfNeeded();
+        //        self.updateConstraints();
+    }
+    
+    override func scrollViewDidScroll(scrollView: UIScrollView) {
+        if (scrollView.contentOffset.y != 0) {
+            var offset = scrollView.contentOffset;
+            offset.y = 0.0;
+            scrollView.contentOffset = offset;
+            
+  
+
+        }
+        
+    }
+    
+}
+

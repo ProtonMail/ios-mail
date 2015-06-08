@@ -181,6 +181,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
                 if let error = error {
                     self.delegate?.messageDetailView(self, didFailDecodeWithError: error)
                 }
+                self.updateFromToField()
             }
             
             let font = UIFont.robotoLight(size: UIFont.Size.h6)
@@ -197,6 +198,18 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
         } else {
             completion(true)
         }
+    }
+    
+    func updateFromToField()
+    {
+        self.emailDetailToLabel.text = "To: \(self.message.recipientList)"
+        self.emailDetailToContentLabel.text = "\(message.recipientNameList)"
+        
+        self.emailDetailCCLabel.text = "Cc: \(self.message.ccList)"
+        self.emailDetailCCLabel.sizeToFit()
+        self.emailDetailCCContentLabel.text = message.ccNameList
+
+        self.makeConstraints()
     }
     
     
@@ -318,7 +331,6 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
     private func createEmailBodyWebView() {
         self.emailBodyWebView = FullHeightWebView()
         self.emailBodyWebView.delegate = self
-        self.emailBodyWebView.scrollView.delegate = self
         self.contentView.addSubview(emailBodyWebView)        
     }
 
@@ -412,14 +424,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
             make.top.equalTo()(self.emailTime)
             make.width.equalTo()(self.emailDetailButton)
         }
-        
-        emailDetailView.mas_makeConstraints { (make) -> Void in
-            make.left.equalTo()(self.emailTitle)
-            make.right.equalTo()(self.emailHeaderView)
-            make.top.equalTo()(self.emailDetailButton.mas_bottom)
-            make.height.equalTo()(0)
-        }
-        
+
         emailDetailToLabel.mas_makeConstraints { (make) -> Void in
             make.top.equalTo()(self.emailDetailView)
             make.left.equalTo()(self.emailDetailView)
@@ -433,19 +438,31 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
             make.right.equalTo()(self.emailDetailView)
             make.height.equalTo()(self.emailDetailToContentLabel.frame.size.height)
         }
-        
+        println(self.emailDetailCCLabel.frame.size.height )
+        println(self.message.ccList)
+        let ccHeight = !self.message.ccList.isEmpty ? self.emailDetailCCLabel.frame.size.height : 0
         emailDetailCCLabel.mas_makeConstraints { (make) -> Void in
             make.left.equalTo()(self.emailDetailToLabel)
             make.top.equalTo()(self.emailDetailToLabel.mas_bottom).with().offset()(self.kEmailDetailCCLabelMarginTop)
             make.width.equalTo()(self.emailDetailToLabel)
-            make.height.equalTo()(!self.message.ccList.isEmpty ? self.emailDetailCCLabel.frame.size.height : 0)
+            make.height.equalTo()(ccHeight)
+        }//
+        
+        println(emailDetailCCLabel.frame.height)
+        
+        emailDetailView.mas_makeConstraints { (make) -> Void in
+            make.left.equalTo()(self.emailTitle)
+            make.right.equalTo()(self.emailHeaderView)
+            make.top.equalTo()(self.emailDetailButton.mas_bottom)
+            make.height.equalTo()(0)
         }
+        
         
         emailDetailCCContentLabel.mas_makeConstraints { (make) -> Void in
             make.centerY.equalTo()(self.emailDetailCCLabel)
             make.left.equalTo()(self.emailDetailCCLabel.mas_right)
             make.right.equalTo()(self.emailDetailView)
-            make.height.equalTo()(!self.message.ccList.isEmpty ? self.emailDetailCCContentLabel.frame.size.height : 0)
+            make.height.equalTo()(ccHeight)//!self.message.ccList.isEmpty ? self.emailDetailCCContentLabel.frame.size.height : 0)
         }
         
         emailDetailDateLabel.mas_makeConstraints { (make) -> Void in
@@ -519,12 +536,13 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
     
     internal func detailsButtonTapped() {
         self.isShowingDetail = !self.isShowingDetail
-
         if (isShowingDetail) {
             UIView.transitionWithView(self.emailRecipients, duration: kAnimationDuration, options: kAnimationOption, animations: { () -> Void in
                 self.emailRecipients.text = "From: \(self.message.sender)"
                 self.emailDetailToLabel.text = "To: \(self.message.recipientList)"
+                self.emailDetailCCLabel.text = "To: \(self.message.ccList)"
                 self.emailDetailToLabel.sizeToFit()
+                self.emailDetailCCLabel.sizeToFit()
             }, completion: nil)
             
             self.emailDetailButton.setTitle(NSLocalizedString("Hide Details"), forState: UIControlState.Normal)
@@ -781,23 +799,6 @@ extension MessageDetailView: UIDocumentInteractionControllerDelegate {
 }
 
 
-
-extension MessageDetailView : UIScrollViewDelegate
-{
-    func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView!, atScale scale: CGFloat)
-    {
-//        var frame = self.emailBodyWebView.frame
-//        frame.size.height = self.emailBodyWebView.scrollView.contentSize.height
-//        self.emailBodyWebView.frame = frame
-//        
-//        self.emailBodyWebView.updateConstraints();
-//        self.emailBodyWebView.layoutIfNeeded();
-//        self.layoutIfNeeded();
-//        self.updateConstraints();
-    }
-    
-}
-
 // MARK: - UIWebViewDelegate
 
 extension MessageDetailView: UIWebViewDelegate {
@@ -810,7 +811,6 @@ extension MessageDetailView: UIWebViewDelegate {
         var frame = webView.frame
         frame.size.height = 1;
         webView.frame = frame
-        
         
         UIView.animateWithDuration(kAnimationDuration, animations: { () -> Void in
             self.emailBodyWebView.alpha = 1.0
@@ -832,7 +832,10 @@ extension MessageDetailView: UIWebViewDelegate {
                 
                 self.tableView.reloadData()
                 self.tableView.tableHeaderView = self.contentView
-
+                
+                var webframe = self.emailBodyWebView.scrollView.frame;
+                webframe.size = CGSize(width: webframe.width,  height: self.emailBodyWebView.scrollView.contentSize.height)
+                self.emailBodyWebView.scrollView.frame = webframe;
         })
     }
 
