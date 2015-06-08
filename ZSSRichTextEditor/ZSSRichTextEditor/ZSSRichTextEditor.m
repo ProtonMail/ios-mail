@@ -126,7 +126,7 @@ static Class hackishFixClass = Nil;
     self.sourceView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.sourceView.autoresizesSubviews = YES;
     self.sourceView.delegate = self;
-    [self.view addSubview:self.sourceView];
+    //[self.view addSubview:self.sourceView];
     
     // Editor View
     self.editorView = [[UIWebView alloc] initWithFrame:frame];
@@ -150,7 +150,7 @@ static Class hackishFixClass = Nil;
     self.toolbar = [[UIToolbar alloc] initWithFrame:CGRectZero];
     self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.toolbar.backgroundColor = [UIColor clearColor];
-   // [self.toolBarScroll addSubview:self.toolbar];
+    //[self.toolBarScroll addSubview:self.toolbar];
     self.toolBarScroll.autoresizingMask = self.toolbar.autoresizingMask;
     
     // Background Toolbar
@@ -939,9 +939,11 @@ static Class hackishFixClass = Nil;
     return self.editorView.scrollView.contentSize;
 }
 
-- (void)setFrame:(CGRect)frame
-{    
+- (void)setFrame:(CGRect)frame 
+{
+    self.editorViewFrame = frame;
     self.editorView.frame = frame;
+    [self setContentHeight: self.editorView.scrollView.contentSize.height];
 }
 
 

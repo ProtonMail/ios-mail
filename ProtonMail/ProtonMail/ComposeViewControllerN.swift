@@ -34,6 +34,8 @@ class ComposeViewController : ProtonMailViewController {
     
     // MARK : - Private attributes
     private var composeSize : CGSize!
+    private var currentKeyboradHeight : CGFloat! = 20.0
+    private var cousorOffset : CGFloat! = 0.0
     
     var attachments: [AnyObject]?
     var message: Message?
@@ -96,6 +98,18 @@ class ComposeViewController : ProtonMailViewController {
             composeView.plusButtonHandle()
             composeView.notifyViewSize(true)
         }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardDidShowNotification, object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object:nil)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object:nil)
     }
     
     // MARK : - View actions
@@ -174,9 +188,40 @@ class ComposeViewController : ProtonMailViewController {
     }
     
     // MARK: - Private methods
-    private func updateViewSizeForKeyboard(offset : Int)
+    func keyboardWillShow(sender: NSNotification) {
+        let info: NSDictionary = sender.userInfo!
+        if let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
+            println("test size: \(keyboardSize)")
+            self.currentKeyboradHeight = keyboardSize.height + 20
+            updateAutoScroll()
+        }
+    }
+    
+    func keyboardWillHide(sender: NSNotification) {
+        self.currentKeyboradHeight = 20
+        updateAutoScroll()
+    }
+    
+    private func updateAutoScroll()
     {
-        
+        let currentOffsetY = self.scrollView.contentOffset.y;
+        if !self.draggin {
+            
+            println("ScrollY : \(currentOffsetY)")
+            println("CousorY : \(self.cousorOffset)")
+            println("KeyH : \(self.currentKeyboradHeight)")
+            println("ViewH : \(self.scrollView.frame.height )")
+            
+            
+            println("Check: \(self.cousorOffset - currentOffsetY - (self.scrollView.frame.height - self.currentKeyboradHeight) )")
+            
+            let check = self.cousorOffset - currentOffsetY - (self.scrollView.frame.height - self.currentKeyboradHeight)
+            
+            if (check > 0 ) {
+               
+                self.scrollView.contentOffset = CGPoint(x: 0, y:  check + currentOffsetY + 30)
+            }
+        }
     }
     
     private func updateViewSize()
@@ -282,21 +327,14 @@ extension ComposeViewController : ComposeViewNDelegate {
     
     func ComposeViewNDidSizeChanged(size: CGSize) {
         self.composeSize = size
-     
         self.updateViewSize()
     }
     
     func ComposeViewNDidOffsetChanged(offset: CGPoint){
-        
-        let currentOffsetY = self.scrollView.contentOffset.y;
-        
-        let h : CGFloat = 258;
-        
-        if !self.draggin {
-            
-            if ((offset.y + h - currentOffsetY) > self.scrollView.frame.height ) {
-                self.scrollView.contentOffset = CGPoint(x: 0, y: self.scrollView.frame.height - currentOffsetY + 20)
-            }
+        if ( self.cousorOffset  != offset.y)
+        {
+            self.cousorOffset = offset.y
+            self.updateAutoScroll()
         }
     }
     
@@ -337,12 +375,10 @@ extension ComposeViewController : ComposeViewNDelegate {
         if let viewController = UIStoryboard.instantiateInitialViewController(storyboard: .attachments) as? UINavigationController {
             if let attachmentsViewController = viewController.viewControllers.first as? AttachmentsViewController {
                 attachmentsViewController.delegate = self
-                
                 if let attachments = attachments {
                     attachmentsViewController.attachments = attachments
                 }
             }
-            
             presentViewController(viewController, animated: true, completion: nil)
         }
 
@@ -389,6 +425,7 @@ extension ComposeViewController : ComposeViewNDelegate {
         selectedContacts.append(contact)
 
     }
+    
     func composeView(composeView: ComposeViewN, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker)
     {
         var contactIndex = -1
@@ -422,9 +459,7 @@ extension ComposeViewController : ComposeViewNDataSource {
     }
     
     func composeViewSelectedContactsForPicker(composeView: ComposeViewN, picker: MBContactPicker) ->  [AnyObject]! {
-        
         var selectedContacts: [ContactVO] = [ContactVO]()
-        
         if (picker == composeView.toContactPicker) {
             selectedContacts = toSelectedContacts
         } else if (picker == composeView.ccContactPicker) {
@@ -432,10 +467,8 @@ extension ComposeViewController : ComposeViewNDataSource {
         } else if (picker == composeView.bccContactPicker) {
             selectedContacts = bccSelectedContacts
         }
-        
         return selectedContacts
     }
-    
 }
 
 // MARK: - AttachmentsViewControllerDelegate
@@ -444,8 +477,6 @@ extension ComposeViewController: AttachmentsViewControllerDelegate {
         self.attachments = attachments
     }
 }
-
-
 
 // MARK: - UIPickerViewDataSource
 extension ComposeViewController: UIPickerViewDataSource {
@@ -460,7 +491,6 @@ extension ComposeViewController: UIPickerViewDataSource {
         }
     }
 }
-
 
 // MARK: - UIPickerViewDelegate
 extension ComposeViewController: UIPickerViewDelegate {
@@ -478,11 +508,9 @@ extension ComposeViewController: UIPickerViewDelegate {
         
         let day = "\(selectedDay) days"
         let hour = "\(selectedHour) hours"
-        
         self.composeView.updateExpirationValue(((Double(selectedDay) * 24) + Double(selectedHour)) * 3600, text: "\(day) \(hour)")
     }
 }
-
 
 extension ComposeViewController : UIScrollViewDelegate {
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
@@ -496,7 +524,6 @@ extension ComposeViewController : UIScrollViewDelegate {
 }
 
 // MARK: - Message extension
-
 extension String {
     private func splitByComma() -> [String] {
         return split(self) {$0 == ","}

@@ -564,9 +564,7 @@ extension ComposeViewN : HtmlEditorViewControllerDelegate {
     }
     
     func editorCaretPosition(position: Int) {
-        
         let x = self.htmlEditor.view.frame.origin.y
-        
         println("x: \(x) -- top : \(position)")
         let offset = CGPoint(x: 0,y: x + CGFloat(position))
         self.delegate?.ComposeViewNDidOffsetChanged(offset)
