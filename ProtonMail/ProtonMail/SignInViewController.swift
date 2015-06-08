@@ -67,6 +67,7 @@ class SignInViewController: UIViewController {
         if(SignInViewController.isComeBackFromMailbox)
         {
             ShowLoginViews();
+            clean();
         }
     }
     
@@ -196,7 +197,20 @@ class SignInViewController: UIViewController {
             
             signIn()
         }
+        else
+        {
+            clean()
+        }
     }
+    
+    
+    func clean()
+    {
+        sharedUserDataService.signOut(true)
+        userCachedStatus.signOut()
+        sharedMessageDataService.launchCleanUpIfNeeded();
+    }
+    
     
     func updateSignInButton(#usernameText: String, passwordText: String) {
         signInButton.enabled = !usernameText.isEmpty && !passwordText.isEmpty
