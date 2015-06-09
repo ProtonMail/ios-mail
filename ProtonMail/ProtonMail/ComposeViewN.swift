@@ -559,8 +559,11 @@ class ComposeViewN: UIViewController {
 //html editor delegate
 extension ComposeViewN : HtmlEditorViewControllerDelegate {
     func editorSizeChanged(size: CGSize) {
-        self.editorSize = size
-        self.notifyViewSize(false)
+        if( self.editorSize != size)
+        {
+            self.editorSize = size
+            self.notifyViewSize(false)
+        }
     }
     
     func editorCaretPosition(position: Int) {

@@ -34,7 +34,7 @@ class FullHeightWebView: UIWebView {
         scrollView.delegate = self
         //self.scrollView.showsVerticalScrollIndicator = false
         scrollView.bounces = false;
-        //self.scalesPageToFit = true;
+        self.scalesPageToFit = true;
         //addObserver(self, forKeyPath: scrollViewContentSizeKeyPath, options: .New, context: &kvoContext)
     }
 
