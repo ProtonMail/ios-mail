@@ -791,6 +791,7 @@ extension MailboxViewController: UITableViewDelegate {
                     mailboxCell.setCellIsChecked(!messageAlreadySelected)
                 }
             }
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
         } else {
             if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
                 performSegueForMessage(message)
