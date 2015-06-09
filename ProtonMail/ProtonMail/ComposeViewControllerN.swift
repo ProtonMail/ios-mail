@@ -21,6 +21,7 @@ class ComposeViewController : ProtonMailViewController {
     // MARK : - Views
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var expirationPicker: UIPickerView!
+    @IBOutlet weak var keyboradToolbar: UIToolbar!
     
     private var draggin : Bool! = false
     
@@ -30,6 +31,7 @@ class ComposeViewController : ProtonMailViewController {
     private let kNumberOfColumnsInTimePicker: Int = 2
     private let kNumberOfDaysInTimePicker: Int = 30
     private let kNumberOfHoursInTimePicker: Int = 24
+    var kKeyboardOffset : CGFloat! = 44.0
     
     
     // MARK : - Private attributes
@@ -57,6 +59,7 @@ class ComposeViewController : ProtonMailViewController {
     // MARK : - overrid view functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        keyboradToolbar.alpha = 0.0
         self.composeSize  = CGSize.zeroSize
         
         self.expirationPicker.alpha = 0.0
@@ -85,7 +88,6 @@ class ComposeViewController : ProtonMailViewController {
                 NSLog("\(__FUNCTION__) error: \(error)")
             }
         }
-
     }
     
     override func didReceiveMemoryWarning() {
@@ -183,22 +185,41 @@ class ComposeViewController : ProtonMailViewController {
         }
     }
     
+    @IBAction func toolbarDoneClicked(sender: AnyObject) {
+        self.composeView.subject.becomeFirstResponder()
+        self.composeView.subject.resignFirstResponder()
+    }
+    
     override func shouldShowSideMenu() -> Bool {
         return false
     }
     
     // MARK: - Private methods
     func keyboardWillShow(sender: NSNotification) {
+        self.kKeyboardOffset = 44.0;
         let info: NSDictionary = sender.userInfo!
-        if let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
+        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
             println("test size: \(keyboardSize)")
-            self.currentKeyboradHeight = keyboardSize.height + 20
+            self.currentKeyboradHeight = keyboardSize.height + 20.0 + self.kKeyboardOffset
             updateAutoScroll()
+            
+           // println(info)
+           // println(keyboardSize)
+            
+            let fr = keyboradToolbar.frame
+            println(keyboradToolbar.frame)
+            keyboradToolbar.frame = CGRect(x: 0,y:keyboardSize.origin.y - 108, width:fr.width,height: 44)
+            println(keyboradToolbar.frame)
+            
+            
+            keyboradToolbar.alpha = 1.0
         }
     }
     
     func keyboardWillHide(sender: NSNotification) {
-        self.currentKeyboradHeight = 20
+        kKeyboardOffset = 0
+        self.currentKeyboradHeight = 20 + kKeyboardOffset
+        keyboradToolbar.alpha = 0.0
         updateAutoScroll()
     }
     
@@ -207,18 +228,13 @@ class ComposeViewController : ProtonMailViewController {
         let currentOffsetY = self.scrollView.contentOffset.y;
         if !self.draggin {
             
-            println("ScrollY : \(currentOffsetY)")
-            println("CousorY : \(self.cousorOffset)")
-            println("KeyH : \(self.currentKeyboradHeight)")
-            println("ViewH : \(self.scrollView.frame.height )")
-            
-            
-            println("Check: \(self.cousorOffset - currentOffsetY - (self.scrollView.frame.height - self.currentKeyboradHeight) )")
-            
+//            println("ScrollY : \(currentOffsetY)")
+//            println("CousorY : \(self.cousorOffset)")
+//            println("KeyH : \(self.currentKeyboradHeight)")
+//            println("ViewH : \(self.scrollView.frame.height )")
+//            println("Check: \(self.cousorOffset - currentOffsetY - (self.scrollView.frame.height - self.currentKeyboradHeight) )")
             let check = self.cousorOffset - currentOffsetY - (self.scrollView.frame.height - self.currentKeyboradHeight)
-            
             if (check > 0 ) {
-               
                 self.scrollView.contentOffset = CGPoint(x: 0, y:  check + currentOffsetY + 30)
             }
         }

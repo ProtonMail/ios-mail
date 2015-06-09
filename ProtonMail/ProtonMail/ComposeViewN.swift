@@ -143,8 +143,8 @@ class ComposeViewN: UIViewController {
         self.view.bringSubviewToFront(subject);
         self.view.sendSubviewToBack(ccContactPicker)
         self.view.sendSubviewToBack(bccContactPicker)
-        
     }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.notifyViewSize( false )

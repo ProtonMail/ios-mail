@@ -923,6 +923,10 @@ static Class hackishFixClass = Nil;
     [self buildToolbar];
 }
 
+- (void)setInputAccessoryView:(UIView*)frame
+{
+}
+
 - (void)addCustomToolbarItem:(ZSSBarButtonItem *)item {
     
     if(self.customZSSBarButtonItems == nil)

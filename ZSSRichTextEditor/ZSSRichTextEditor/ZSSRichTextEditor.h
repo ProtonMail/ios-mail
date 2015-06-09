@@ -202,4 +202,6 @@ static NSString * const ZSSRichTextEditorToolbarNone = @"com.zedsaid.toolbaritem
 
 - (void)setFrame:(CGRect)frame;
 
+- (void)setInputAccessoryView:(UIView*)frame;
+
 @end
