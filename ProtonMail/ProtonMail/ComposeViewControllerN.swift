@@ -74,6 +74,7 @@ class ComposeViewController : ProtonMailViewController {
         self.composeView.view.frame = scrollView.frame
         
         self.scrollView.delegate = self
+        println (message)
         self.handleMessage(message, action: action)
         
         self.contacts = sharedContactDataService.allContactVOs()
@@ -288,6 +289,8 @@ class ComposeViewController : ProtonMailViewController {
                     
                 } else if action == draftAction {
                     navigationItem.leftBarButtonItem = nil
+                    println(message.recipientNameList ?? "");
+                    println(message.recipientList ?? "");
                     
                     updateSelectedContacts(&toSelectedContacts, withNameList: message.recipientNameList, emailList: message.recipientList)
                     updateSelectedContacts(&ccSelectedContacts, withNameList: message.ccNameList, emailList: message.ccList)

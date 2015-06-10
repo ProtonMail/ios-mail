@@ -49,6 +49,10 @@ class MailboxViewController: ProtonMailViewController {
     private var timer : NSTimer!
     
     
+    private var selectedDraft : Message!
+    private var indexPathForSelectedRow : NSIndexPath!
+    
+    
     // MARK: - Right bar buttons
     
     private var composeBarButtonItem: UIBarButtonItem!
@@ -164,12 +168,16 @@ class MailboxViewController: ProtonMailViewController {
             self.cancelButtonTapped()
 
             let composeViewController: ComposeViewController = segue.destinationViewController as! ComposeViewController
-            let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
+            //let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
             
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {
                     composeViewController.message = message
                     composeViewController.action = composeViewController.draftAction
+                }
+                else
+                {
+                    println("No selected row.")
                 }
             } else {
                 println("No selected row.")
@@ -390,7 +398,6 @@ class MailboxViewController: ProtonMailViewController {
                 for message in messages {
                     message.location = location
                 }
-                
                 error = context.saveUpstreamIfNeeded()
             }
             
@@ -402,7 +409,58 @@ class MailboxViewController: ProtonMailViewController {
     
     private func performSegueForMessage(message: Message) {
         if isDrafts() {
-            performSegueWithIdentifier(kSegueToComposeShow, sender: self)
+            sharedMessageDataService.fetchMessageDetailForMessage(message) {_, _, msg, error in
+                if error != nil {
+                    NSLog("\(__FUNCTION__) error: \(error)")
+                }
+                else
+                {
+                    self.selectedDraft = msg
+                   // delay(1.0, {
+                       self.performSegueWithIdentifier(self.kSegueToComposeShow, sender: self)
+                  //  })
+                    
+                }
+            }
+            //message.fetchDetailIfNeeded()
+//            message.fetchDetailIfNeeded() { _, _, msg, error in
+//                println(self.message.isDetailDownloaded)
+//                
+//                if error != nil {
+//                    NSLog("\(__FUNCTION__) error: \(error)")
+//                }
+//                else
+//                {
+//                    if !self.message.isDetailDownloaded
+//                    {
+//                        // println(msg?.isDetailDownloaded)
+//                        if let fetchedMessageController = self.fetchedMessageController {
+//                            println( fetchedMessageController.fetchedObjects?.count)
+//                            if let last = fetchedMessageController.fetchedObjects?.last as? Message {
+//                                println(last.isDetailDownloaded)
+//                                self.message = last
+//                                self.messageDetailView.message = self.message
+//                            }
+//                            else
+//                            {
+//                                self.setupFetchedResultsController(self.message.messageID)
+//                                if let fetchedMessageController = self.fetchedMessageController {
+//                                    println( fetchedMessageController.fetchedObjects?.count)
+//                                    if let last = fetchedMessageController.fetchedObjects?.last as? Message {
+//                                        println(last.isDetailDownloaded)
+//                                        self.message = last
+//                                        self.messageDetailView.message = self.message
+//                                    }
+//                                }
+//                                
+//                            }
+//                        }
+//                    }
+//                }
+
+            
+            
+            
         } else {
             performSegueWithIdentifier(kSegueToMessageDetailController, sender: self)
         }
@@ -794,6 +852,7 @@ extension MailboxViewController: UITableViewDelegate {
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
         } else {
             if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+                self.indexPathForSelectedRow = indexPath
                 performSegueForMessage(message)
             }
         }
