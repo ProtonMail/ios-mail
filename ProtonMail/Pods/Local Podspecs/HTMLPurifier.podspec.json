@@ -1,0 +1,15 @@
+{
+  "name": "HTMLPurifier",
+  "version": "0.0.1",
+  "summary": "HTMLPurifier iOS library for ProtonMail.",
+  "description": "The HTMLPurifier iOS library for the ProtonMail app.",
+  "homepage": "http://protonmail.ch",
+  "license": "ProtonMail",
+  "authors": "Yanfeng Zhang",
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "HTMLPurifier/HTMLPurifier.h",
+  "public_header_files": "HTMLPurifier/HTMLPurifier.h",
+  "header_dir": "HTMLPurifier"
+}
