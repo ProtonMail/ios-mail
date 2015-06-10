@@ -142,6 +142,7 @@
 		7582E2F41B015DF100FEA38B /* MessageDetailBottomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */; };
 		759339C01ABB45C700535F1B /* ViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339BF1ABB45C700535F1B /* ViewModelFactory.swift */; };
 		759339C41ABB5EA900535F1B /* SettingDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */; };
+		75978BDB1B28F63100D07501 /* editor.css in Resources */ = {isa = PBXBuildFile; fileRef = 75978BDA1B28F63100D07501 /* editor.css */; };
 		75A4321B1B1D040A00D046B3 /* QueueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A4321A1B1D040A00D046B3 /* QueueManager.swift */; };
 		75A4321D1B1D042C00D046B3 /* QueueConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A4321C1B1D042C00D046B3 /* QueueConstant.swift */; };
 		75B047B31AE708CC005C6D1A /* HtmlEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B047B21AE708CC005C6D1A /* HtmlEditorViewController.swift */; };
@@ -316,6 +317,7 @@
 		7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageDetailBottomView.xib; sourceTree = "<group>"; };
 		759339BF1ABB45C700535F1B /* ViewModelFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelFactory.swift; sourceTree = "<group>"; };
 		759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDetailsViewModel.swift; sourceTree = "<group>"; };
+		75978BDA1B28F63100D07501 /* editor.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = editor.css; sourceTree = "<group>"; };
 		75A4321A1B1D040A00D046B3 /* QueueManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueManager.swift; sourceTree = "<group>"; };
 		75A4321C1B1D042C00D046B3 /* QueueConstant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueConstant.swift; sourceTree = "<group>"; };
 		75B047B21AE708CC005C6D1A /* HtmlEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlEditorViewController.swift; sourceTree = "<group>"; };
@@ -506,6 +508,7 @@
 				07CCCC2D1AA2BD8800ECA79E /* Snapshot.swift */,
 				075E3DE91A5F4ECF00E001A7 /* Supporting Files */,
 				07CCCC2C1AA2962200ECA79E /* Views */,
+				75978BD91B28F5F800D07501 /* Resource */,
 			);
 			path = ProtonMail;
 			sourceTree = "<group>";
@@ -742,6 +745,14 @@
 			name = Cells;
 			sourceTree = "<group>";
 		};
+		75978BD91B28F5F800D07501 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				75978BDA1B28F63100D07501 /* editor.css */,
+			);
+			name = Resource;
+			sourceTree = "<group>";
+		};
 		75CFA2701B22544F006E4465 /* Defined */ = {
 			isa = PBXGroup;
 			children = (
@@ -870,6 +881,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75978BDB1B28F63100D07501 /* editor.css in Resources */,
 				755405B31B1648D2003BFC0A /* ComposeViewN.xib in Resources */,
 				70C6ABE41A72C1B7006EC400 /* Roboto-Regular.ttf in Resources */,
 				07009EFF1A659AD400129B07 /* SignIn.storyboard in Resources */,

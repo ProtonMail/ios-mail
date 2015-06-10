@@ -1173,18 +1173,14 @@ static Class hackishFixClass = Nil;
 
 // Blank implementation
 - (void)editorDidScrollWithPosition:(NSInteger)position {
-    
-    
-    NSLog(@"x:%.2f", self.editorView.scrollView.frame.origin.y);
-    
-    NSLog(@"x:%.2f", self.editorView.scrollView.contentOffset.y);
-    
-    NSLog(@"x:%.2f", self.editorView.scrollView.contentInset.top);
-    
-    NSLog(@"x:%.2f", self.editorView.frame.origin.y);
-     self.editorView.scrollView.contentOffset = CGPointMake(0, 0);
-    
-
+//    NSLog(@"x:%.2f", self.editorView.scrollView.frame.origin.y);
+//    
+//    NSLog(@"x:%.2f", self.editorView.scrollView.contentOffset.y);
+//    
+//    NSLog(@"x:%.2f", self.editorView.scrollView.contentInset.top);
+//    
+//    NSLog(@"x:%.2f", self.editorView.frame.origin.y);
+     //self.editorView.scrollView.contentOffset = CGPointMake(0, 0);
 }
 
 
