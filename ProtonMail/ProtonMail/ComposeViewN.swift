@@ -24,7 +24,6 @@ protocol ComposeViewNDelegate {
     func composeViewCancelExpirationData(composeView: ComposeViewN)
     func composeViewDidTapExpirationButton(composeView: ComposeViewN)
     func composeViewCollectExpirationData(composeView: ComposeViewN)
-    
 }
 
 protocol ComposeViewNDataSource {

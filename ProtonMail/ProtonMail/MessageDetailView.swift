@@ -45,8 +45,8 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
     private let kEmailDetailButtonMarginLeft: CGFloat = 5.0
     private let kEmailHasAttachmentsImageViewMarginRight: CGFloat = -4.0
     private let kEmailIsEncryptedImageViewMarginRight: CGFloat = -8.0
-    private let kEmailBodyTextViewMarginLeft: CGFloat = 16.0
-    private let kEmailBodyTextViewMarginRight: CGFloat = -16.0
+    private let kEmailBodyTextViewMarginLeft: CGFloat = 0//-16.0
+    private let kEmailBodyTextViewMarginRight: CGFloat = 0//-16.0
     private let kEmailBodyTextViewMarginTop: CGFloat = 16.0
     private let kButtonsViewHeight: CGFloat = 68.0
     private let kMoreOptionsViewHeight: CGFloat = 123.0
@@ -340,7 +340,9 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
     }
     
     private func createEmailBodyWebView() {
-        self.emailBodyWebView = FullHeightWebView(frame: CGRect(x: 0,y: 0,width: 375,height: 5))
+        let screenSize: CGRect = UIScreen.mainScreen().bounds
+        
+        self.emailBodyWebView = FullHeightWebView(frame: CGRect(x: 0,y: 0,width: screenSize.width ,height: screenSize.height/2))
         self.emailBodyWebView.delegate = self
         self.contentView.addSubview(emailBodyWebView)        
     }
