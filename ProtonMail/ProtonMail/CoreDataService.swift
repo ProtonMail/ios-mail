@@ -84,7 +84,6 @@ class CoreDataService {
                 coordinator = newPersistentStoreCoordinator(managedObjectModel)
             } else {
                 coordinator = nil
-                
                 // Report any error we got.
                 let dict = NSMutableDictionary()
                 dict[NSLocalizedDescriptionKey] = NSLocalizedString("Failed to initialize the application's saved data")
@@ -98,7 +97,6 @@ class CoreDataService {
                     alertController.addAction(UIAlertAction(title: NSLocalizedString("Close"), style: .Default, handler: { (action) -> Void in
                         abort()
                     }))
-                    
                     UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
                 }
             }

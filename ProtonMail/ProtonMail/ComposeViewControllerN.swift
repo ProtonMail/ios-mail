@@ -52,6 +52,7 @@ class ComposeViewController : ProtonMailViewController {
     private var encryptionConfirmPassword: String = ""
     private var encryptionPasswordHint: String = ""
     private var hasAccessToAddressBook: Bool = false
+    private var userAddress : Array<Address>!
     
     // MARK : - Data provider
     private var fetchedResultsController: NSFetchedResultsController?
@@ -59,6 +60,11 @@ class ComposeViewController : ProtonMailViewController {
     // MARK : - overrid view functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //prepare data
+        userAddress = sharedUserDataService.userAddresses
+        
+        
         keyboradToolbar.alpha = 0.0
         self.composeSize  = CGSize.zeroSize
         
@@ -76,6 +82,7 @@ class ComposeViewController : ProtonMailViewController {
         self.scrollView.delegate = self
         println (message)
         self.handleMessage(message, action: action)
+        
         
         self.contacts = sharedContactDataService.allContactVOs()
         self.composeView.toContactPicker.reloadData()
@@ -272,13 +279,13 @@ class ComposeViewController : ProtonMailViewController {
     private func handleMessage(message: Message?, action: String?) {
         let signature = !sharedUserDataService.signature.isEmpty ? "\n\n\(sharedUserDataService.signature)" : ""
         let htmlString = "<div><br></div><div><br></div><div><br></div><div><br></div>\(signature)";
-        self.composeView.htmlEditor.setHTML(htmlString);
+       // self.composeView.htmlEditor.setHTML(htmlString);
         
         if let message = message {
             if let action = action {
                 if action == ComposeViewN.ComposeMessageAction.Reply || action == ComposeViewN.ComposeMessageAction.ReplyAll {
                     composeView.subject.text = "Re: \(message.title)"
-                    toSelectedContacts.append(ContactVO(id: "", name: message.senderName, email: message.sender))
+                    
                     
                     let replyMessage = NSLocalizedString("Reply message")
                     let body = message.decryptBodyIfNeeded(nil) ?? ""
@@ -289,8 +296,15 @@ class ComposeViewController : ProtonMailViewController {
                     self.composeView.htmlEditor.setHTML("\(htmlString) \(sp) \(body)</blockquote>")
                     
                     if action == ComposeViewN.ComposeMessageAction.ReplyAll {
+                        updateSelectedContacts(&toSelectedContacts, withNameList: message.senderName, emailList: message.sender)
+                        updateSelectedContacts(&toSelectedContacts, withNameList: message.recipientNameList, emailList: message.recipientList)
                         updateSelectedContacts(&ccSelectedContacts, withNameList: message.ccNameList, emailList: message.ccList)
                     }
+                    
+                    if toSelectedContacts.count <= 0 {
+                        toSelectedContacts.append(ContactVO(id: "", name: message.senderName, email: message.sender))
+                    }
+                    
                 } else if action == ComposeViewN.ComposeMessageAction.Forward {
                     composeView.subject.text = "Fwd: \(message.title)"
                     
@@ -357,7 +371,10 @@ class ComposeViewController : ProtonMailViewController {
         let nameCount = names.count
         let emailCount = count(emails)
         for var i = 0; i < emailCount; i++ {
-            selectedContacts.append(ContactVO(id: "", name: ((i>=0 && i<nameCount) ? names[i] : ""), email: emails[i]))
+            var contact = ContactVO(id: "", name: ((i>=0 && i<nameCount) ? names[i] : ""), email: emails[i])
+            if !contact.isDuplicated(self.userAddress) {
+                selectedContacts.append(contact)
+            }
         }
     }
 }
@@ -569,6 +586,17 @@ extension ComposeViewController : UIScrollViewDelegate {
 extension String {
     private func splitByComma() -> [String] {
         return split(self) {$0 == ","}
+    }
+}
+
+extension ContactVO {
+    
+    func isDuplicated(addresses : Array<Address>) -> Bool
+    {
+        if let found = find(addresses.map({ $0.email }), self.email) {
+            return true
+        }
+        return false
     }
 }
 

@@ -216,14 +216,14 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
     
     func updateFromToField()
     {
-        self.emailDetailToLabel.text = "To: \(self.message.recipientList)"
-        self.emailDetailToContentLabel.text = "\(message.recipientNameList)"
-        
-        self.emailDetailCCLabel.text = "Cc: \(self.message.ccList)"
-        self.emailDetailCCLabel.sizeToFit()
-        self.emailDetailCCContentLabel.text = message.ccNameList
-
-        self.makeConstraints()
+//        self.emailDetailToLabel.text = "To: \(self.message.recipientList)"
+//        self.emailDetailToContentLabel.text = "\(message.recipientNameList)"
+//        
+//        self.emailDetailCCLabel.text = "Cc: \(self.message.ccList)"
+//        self.emailDetailCCLabel.sizeToFit()
+//        self.emailDetailCCContentLabel.text = message.ccNameList
+//
+//        self.makeConstraints()
     }
     
     
@@ -556,7 +556,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
             UIView.transitionWithView(self.emailRecipients, duration: kAnimationDuration, options: kAnimationOption, animations: { () -> Void in
                 self.emailRecipients.text = "From: \(self.message.sender)"
                 self.emailDetailToLabel.text = "To: \(self.message.recipientList)"
-                self.emailDetailCCLabel.text = "To: \(self.message.ccList)"
+                self.emailDetailCCLabel.text = "CC: \(self.message.ccList)"
                 self.emailDetailToLabel.sizeToFit()
                 self.emailDetailCCLabel.sizeToFit()
             }, completion: nil)
