@@ -22,7 +22,7 @@ class ComposeViewController : ProtonMailViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var expirationPicker: UIPickerView!
     @IBOutlet weak var keyboradToolbar: UIToolbar!
-    
+    private var timer : NSTimer!
     private var draggin : Bool! = false
     
     private var composeView : ComposeViewN!
@@ -107,13 +107,36 @@ class ComposeViewController : ProtonMailViewController {
         super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardDidShowNotification, object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object:nil)
+        
+        setupAutoSave()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object:nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object:nil)
+        
+        stopAutoSave()
     }
+    
+    // MARK: - Private methods
+    private func setupAutoSave()
+    {
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(120, target: self, selector: "autoSaveTimer", userInfo: nil, repeats: true)
+        self.timer.fire()
+    }
+    
+    private func stopAutoSave()
+    {
+        self.timer.invalidate()
+        self.timer = nil
+    }
+    
+    func autoSaveTimer()
+    {
+        
+    }
+
     
     // MARK : - View actions
     @IBAction func cancelClicked(sender: AnyObject) {
