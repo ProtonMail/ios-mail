@@ -22,10 +22,11 @@ class StorageViewCell: UITableViewCell {
     }
     
     
-    func setValue(usedSpace:Int, maxSpace:Int)
+    func setValue(usedSpace:Int64, maxSpace:Int64)
     {
         storageProgressBar.progress = 0.0
-        
+        let used = Int64(usedSpace)
+        let max = Int64(maxSpace)
         let formattedUsedSpace = NSByteCountFormatter.stringFromByteCount(Int64(usedSpace), countStyle: NSByteCountFormatterCountStyle.Binary)
         let formattedMaxSpace = NSByteCountFormatter.stringFromByteCount(Int64(maxSpace), countStyle: NSByteCountFormatterCountStyle.Binary)
         

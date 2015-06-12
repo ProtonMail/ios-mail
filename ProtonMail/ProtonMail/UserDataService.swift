@@ -54,7 +54,7 @@ class UserDataService {
         }
     }
     
-    var usedSpace: Int {
+    var usedSpace: Int64 {
         return userInfo?.usedSpace ?? 0
     }
     
@@ -103,7 +103,7 @@ class UserDataService {
         }
     }
     
-    var maxSpace: Int {
+    var maxSpace: Int64 {
         return userInfo?.maxSpace ?? 0
     }
     

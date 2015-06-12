@@ -18,16 +18,16 @@ import Foundation
 
 final class UserInfo: NSObject {
     let displayName: String
-    let maxSpace: Int
+    let maxSpace: Int64
     let notificationEmail: String
     let privateKey: String
     let publicKey: String
     let signature: String
-    let usedSpace: Int
+    let usedSpace: Int64
     let userStatus: Int
     let userAddresses: Array<Address>
     
-    required init(displayName: String?, maxSpace: Int?, notificationEmail: String?, privateKey: String?, publicKey: String?, signature: String?, usedSpace: Int?, userStatus: Int?, userAddresses: Array<Address>?) {
+    required init(displayName: String?, maxSpace: Int64?, notificationEmail: String?, privateKey: String?, publicKey: String?, signature: String?, usedSpace: Int64?, userStatus: Int?, userAddresses: Array<Address>?) {
         self.displayName = displayName ?? ""
         self.maxSpace = maxSpace ?? 0
         self.notificationEmail = notificationEmail ?? ""
@@ -80,24 +80,24 @@ extension UserInfo: NSCoding {
     convenience init(coder aDecoder: NSCoder) {
         self.init(
             displayName: aDecoder.decodeStringForKey(CoderKey.displayName),
-            maxSpace: aDecoder.decodeIntegerForKey(CoderKey.maxSpace),
+            maxSpace: aDecoder.decodeInt64ForKey(CoderKey.maxSpace),
             notificationEmail: aDecoder.decodeStringForKey(CoderKey.notificationEmail),
             privateKey: aDecoder.decodeStringForKey(CoderKey.privateKey),
             publicKey: aDecoder.decodeStringForKey(CoderKey.publicKey),
             signature: aDecoder.decodeStringForKey(CoderKey.signature),
-            usedSpace: aDecoder.decodeIntegerForKey(CoderKey.usedSpace),
+            usedSpace: aDecoder.decodeInt64ForKey(CoderKey.usedSpace),
             userStatus: aDecoder.decodeIntegerForKey(CoderKey.userStatus),
             userAddresses: aDecoder.decodeObjectForKey(CoderKey.userAddress) as? Array<Address>)
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(displayName, forKey: CoderKey.displayName)
-        aCoder.encodeInteger(maxSpace, forKey: CoderKey.maxSpace)
+        aCoder.encodeInt64(maxSpace, forKey: CoderKey.maxSpace)
         aCoder.encodeObject(notificationEmail, forKey: CoderKey.notificationEmail)
         aCoder.encodeObject(privateKey, forKey: CoderKey.privateKey)
         aCoder.encodeObject(publicKey, forKey: CoderKey.publicKey)
         aCoder.encodeObject(signature, forKey: CoderKey.signature)
-        aCoder.encodeInteger(usedSpace, forKey: CoderKey.usedSpace)
+        aCoder.encodeInt64(usedSpace, forKey: CoderKey.usedSpace)
         aCoder.encodeInteger(userStatus, forKey: CoderKey.userStatus)
         aCoder.encodeObject(userAddresses, forKey: CoderKey.userAddress)
     }

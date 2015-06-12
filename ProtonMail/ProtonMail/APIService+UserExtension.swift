@@ -45,6 +45,7 @@ extension APIService {
                     if error != nil {
                         completion(nil, error)
                     } else if let response = response {
+                        println("\(response)")
                         let userInfo = UserInfo(
                             response: response,
                             displayNameResponseKey: "DisplayName",
@@ -175,14 +176,17 @@ extension UserInfo {
                     display_name: res["DisplayName"] as? String,
                     signature: res["Signature"] as? String))
             }
+
+            let usedS = response[usedSpaceResponseKey] as? NSNumber
+            let maxS = response[maxSpaceResponseKey] as? NSNumber
             self.init(
                 displayName: response[displayNameResponseKey] as? String,
-                maxSpace: response[maxSpaceResponseKey] as? Int,
+                maxSpace: maxS?.longLongValue,
                 notificationEmail: response[notificationEmailResponseKey] as? String,
                 privateKey: response[privateKeyResponseKey] as? String,
                 publicKey: response[publicKeyResponseKey] as? String,
                 signature: response[signatureResponseKey] as? String,
-                usedSpace: response[usedSpaceResponseKey] as? Int,
+                usedSpace: usedS?.longLongValue,
                 userStatus: response[userStatusResponseKey] as? Int,
                 userAddresses: addresses)
     }
