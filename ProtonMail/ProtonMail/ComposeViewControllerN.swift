@@ -144,7 +144,6 @@ class ComposeViewController : ProtonMailViewController {
         
     }
 
-    
     // MARK : - View actions
     @IBAction func cancelClicked(sender: AnyObject) {
         let dismiss: (() -> Void) = {
@@ -183,6 +182,13 @@ class ComposeViewController : ProtonMailViewController {
     }
     
     @IBAction func sendClicked(sender: AnyObject) {
+
+        if self.composeView.expirationTimeInterval > 0 {
+            if self.composeView.hasOutSideEmails && count(self.encryptionPassword) <= 0 {
+                self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kExpirationNeedsPWDError)
+                return;
+            }
+        }
         sharedMessageDataService.send(
             recipientList: self.composeView.toContacts,
             bccList: self.composeView.bccContacts,
@@ -412,7 +418,7 @@ extension ComposeViewController : ComposeViewNDelegate {
                 self.composeView.hidePasswordAndConfirmDoesntMatch()
                 self.composeView.showPasswordHintView()
             } else {
-                self.composeView.showPasswordAndConfirmDoesntMatch()
+                self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kConfirmError)
             }
             
         case EncryptionStep.DefineHintPassword:

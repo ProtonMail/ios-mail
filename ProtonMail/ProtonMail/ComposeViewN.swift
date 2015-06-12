@@ -41,9 +41,31 @@ class ComposeViewN: UIViewController {
         static let Forward = "Forward"
     }
     
+    let kConfirmError : String = NSLocalizedString( "Message password doesn't match.")
+    let kExpirationNeedsPWDError : String = NSLocalizedString("Expiration email for outside required PWD.")
+    
     var toContactPicker: MBContactPicker!
     var toContacts: String {
         return toContactPicker.contactList
+    }
+    
+    var hasOutSideEmails : Bool {
+        let toHas = toContactPicker.hasOutsideEmails
+        if (toHas) {
+            return true;
+        }
+        
+        let ccHas = ccContactPicker.hasOutsideEmails
+        if (ccHas) {
+            return true;
+        }
+        
+        let bccHas = bccContactPicker.hasOutsideEmails
+        if (bccHas) {
+            return true;
+        }
+        
+        return false
     }
     var ccContactPicker: MBContactPicker!
     var ccContacts: String {
@@ -269,7 +291,6 @@ class ComposeViewN: UIViewController {
         self.errorTextView = UITextView()
         self.errorTextView.backgroundColor = UIColor.clearColor()
         self.errorTextView.font = UIFont.robotoLight(size: UIFont.Size.h4)
-        self.errorTextView.text = NSLocalizedString("Message password doesn't match.")
         self.errorTextView.textAlignment = NSTextAlignment.Center
         self.errorTextView.textColor = UIColor.whiteColor()
         self.errorTextView.sizeToFit()
@@ -383,8 +404,9 @@ class ComposeViewN: UIViewController {
         })
     }
     
-    internal func showPasswordAndConfirmDoesntMatch() {
+    internal func showPasswordAndConfirmDoesntMatch(error : String) {
         self.errorView.backgroundColor = UIColor.ProtonMail.Red_FF5959
+        self.errorTextView.text = error
         self.errorView.mas_updateConstraints { (update) -> Void in
             update.removeExisting = true
             update.left.equalTo()(self.selfView)
@@ -680,6 +702,20 @@ extension MBContactPicker {
             contactList = ", ".join(contacts)
         }
         return contactList
+    }
+}
+
+extension MBContactPicker {
+    var hasOutsideEmails: Bool {
+        let contactsSelected = NSArray(array: self.contactsSelected)
+        if let contacts = contactsSelected.valueForKey(ContactVO.Attributes.email) as? [String] {
+            for contact in contacts {
+                if contact.lowercaseString.rangeOfString("@protonmail.ch") == nil && contact.lowercaseString.rangeOfString("@protonmail.com") == nil {
+                    return true
+                }
+            }
+        }
+        return false
     }
 }
 
