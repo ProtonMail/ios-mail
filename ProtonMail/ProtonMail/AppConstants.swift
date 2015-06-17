@@ -14,4 +14,11 @@ class AppConstants {
     static let CacheVersion : Int = 6
     static let SpaceWarningThreshold: Double = 80
     
+    
+    
+    static let BaseURLString : String = "https://test-api.protonmail.ch"
+    //private let BaseURLString = "http://protonmail.xyz"
+    //private let BaseURLString = "http://feng.api.com"
+    //private let BaseURLString = "https://dev-api.protonmail.ch"
+    
 }

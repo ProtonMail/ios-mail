@@ -53,7 +53,6 @@
 		078FF4CA1A91232D008321D1 /* OpenPGPExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4C91A91232D008321D1 /* OpenPGPExtension.swift */; };
 		078FF4CB1A91232D008321D1 /* OpenPGPExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4C91A91232D008321D1 /* OpenPGPExtension.swift */; };
 		078FF4D01A92CE15008321D1 /* APIService+SettingsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078FF4CF1A92CE15008321D1 /* APIService+SettingsExtension.swift */; };
-		078FF4D31A92D06B008321D1 /* AuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B797C41A6EE5FF00244532 /* AuthCredential.swift */; };
 		07A0E1AB1A9D2D1D005FD04B /* NSStringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A0E1AA1A9D2D1D005FD04B /* NSStringExtension.swift */; };
 		07A0E1AD1A9D3C64005FD04B /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A0E1AC1A9D3C64005FD04B /* UserInfo.swift */; };
 		07B123781AB8CD90006EA38C /* Attachments.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07B123771AB8CD90006EA38C /* Attachments.storyboard */; };
@@ -152,6 +151,9 @@
 		75DF17A91AB8FAB8008A032B /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DF17A81AB8FAB8008A032B /* ArrayExtension.swift */; };
 		75DF17AB1AB9051F008A032B /* StorageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DF17AA1AB9051F008A032B /* StorageViewCell.swift */; };
 		75ECC2381AB9F28100B8FC78 /* ChangePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECC2371AB9F28100B8FC78 /* ChangePasswordViewModel.swift */; };
+		75ECCDFE1B31F01000A8C800 /* APIServiceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECCDFD1B31F01000A8C800 /* APIServiceRequest.swift */; };
+		75ECCE021B31F44600A8C800 /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECCE011B31F44600A8C800 /* AuthAPI.swift */; };
+		75ECCE041B31F5F600A8C800 /* AuthAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECCE031B31F5F600A8C800 /* AuthAPITests.swift */; };
 		75F1697E1AF7F43A00BE6E79 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F1697D1AF7F43A00BE6E79 /* Logger.swift */; };
 		75F169811AF80B5900BE6E79 /* UserCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F169801AF80B5900BE6E79 /* UserCachedStatus.swift */; };
 		75F906101B1FBECA00107509 /* DebugDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F9060F1B1FBECA00107509 /* DebugDetailsViewController.swift */; };
@@ -327,6 +329,9 @@
 		75DF17A81AB8FAB8008A032B /* ArrayExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		75DF17AA1AB9051F008A032B /* StorageViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageViewCell.swift; sourceTree = "<group>"; };
 		75ECC2371AB9F28100B8FC78 /* ChangePasswordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewModel.swift; sourceTree = "<group>"; };
+		75ECCDFD1B31F01000A8C800 /* APIServiceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIServiceRequest.swift; sourceTree = "<group>"; };
+		75ECCE011B31F44600A8C800 /* AuthAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthAPI.swift; sourceTree = "<group>"; };
+		75ECCE031B31F5F600A8C800 /* AuthAPITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthAPITests.swift; sourceTree = "<group>"; };
 		75F1697D1AF7F43A00BE6E79 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		75F169801AF80B5900BE6E79 /* UserCachedStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCachedStatus.swift; sourceTree = "<group>"; };
 		75F9060F1B1FBECA00107509 /* DebugDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugDetailsViewController.swift; sourceTree = "<group>"; };
@@ -373,6 +378,7 @@
 		07009F071A65E3C600129B07 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				75ECCDFB1B31EEFC00A8C800 /* APIService */,
 				70762C3A1A94EC30006B9693 /* ActivityIndicatorHelper.swift */,
 				073FD9331A732C5F00EB0CAF /* AFHTTPRequestSerializerExtension.swift */,
 				07CC99651A6F1380000FD6F8 /* FoundationExtension.swift */,
@@ -432,9 +438,9 @@
 		073FD92D1A71C33B00EB0CAF /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				75ECCDFC1B31EF3600A8C800 /* APIService */,
 				07CFC9D31A81A2B0007A72B7 /* Attachment.swift */,
 				07CF61911A8988F100ED38AE /* AttachmentExtension.swift */,
-				07B797C41A6EE5FF00244532 /* AuthCredential.swift */,
 				073FE01C1A9561F600825980 /* Contact.swift */,
 				073FE01E1A95620D00825980 /* ContactExtension.swift */,
 				071323991A7C02AB0043DB41 /* Message.swift */,
@@ -493,7 +499,6 @@
 			isa = PBXGroup;
 			children = (
 				075E3DEB1A5F4ECF00E001A7 /* AppDelegate.swift */,
-				75CFA2701B22544F006E4465 /* Defined */,
 				706628241A71681300164117 /* Controller */,
 				072AB6A71A8FB0AB00AF45D6 /* Encryption */,
 				07009F071A65E3C600129B07 /* Extensions */,
@@ -501,6 +506,7 @@
 				7061A3F11A6E8C4A0006D36C /* Menu */,
 				073FD92D1A71C33B00EB0CAF /* Models */,
 				75F1697F1AF7F49B00BE6E79 /* Utilities */,
+				75CFA2701B22544F006E4465 /* Defined */,
 				75ECC2361AB9F10600B8FC78 /* ViewModels */,
 				073FD9301A71C5F000EB0CAF /* DataServices */,
 				07B797C31A6EE54600244532 /* Network */,
@@ -528,6 +534,7 @@
 			isa = PBXGroup;
 			children = (
 				078FF4C11A91032C008321D1 /* OpenPGPTests.swift */,
+				75ECCE031B31F5F600A8C800 /* AuthAPITests.swift */,
 				075E3E021A5F4ECF00E001A7 /* Supporting Files */,
 			);
 			path = ProtonMailTests;
@@ -757,6 +764,7 @@
 			isa = PBXGroup;
 			children = (
 				756A35141B20D9B80033BC7C /* AppConstants.swift */,
+				75ECCDFD1B31F01000A8C800 /* APIServiceRequest.swift */,
 			);
 			name = Defined;
 			sourceTree = "<group>";
@@ -769,6 +777,22 @@
 				759339BF1ABB45C700535F1B /* ViewModelFactory.swift */,
 			);
 			name = ViewModels;
+			sourceTree = "<group>";
+		};
+		75ECCDFB1B31EEFC00A8C800 /* APIService */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = APIService;
+			sourceTree = "<group>";
+		};
+		75ECCDFC1B31EF3600A8C800 /* APIService */ = {
+			isa = PBXGroup;
+			children = (
+				07B797C41A6EE5FF00244532 /* AuthCredential.swift */,
+				75ECCE011B31F44600A8C800 /* AuthAPI.swift */,
+			);
+			name = APIService;
 			sourceTree = "<group>";
 		};
 		75F1697F1AF7F49B00BE6E79 /* Utilities */ = {
@@ -1039,6 +1063,7 @@
 				7510AE7C1AB8D68B00EF3C41 /* SettingDetailViewController.swift in Sources */,
 				70AF78BF1AA767A300BD9BAD /* ComposeView.swift in Sources */,
 				07E6C8281A9CF36400D4C8D4 /* NSManagedObjectExtension.swift in Sources */,
+				75ECCDFE1B31F01000A8C800 /* APIServiceRequest.swift in Sources */,
 				754387DB1AB3A54E0003B0AC /* SignUpKeyViewController.swift in Sources */,
 				75A4321B1B1D040A00D046B3 /* QueueManager.swift in Sources */,
 				7061A3F31A6E8C6A0006D36C /* MenuViewController.swift in Sources */,
@@ -1074,6 +1099,7 @@
 				701DDE8E1AA64DEB0038149C /* MBContactPicker.m in Sources */,
 				07CC99641A6F076A000FD6F8 /* NSErrorExtension.swift in Sources */,
 				075F0A521ABF5DB500E6B9AE /* MessageLocation.swift in Sources */,
+				75ECCE021B31F44600A8C800 /* AuthAPI.swift in Sources */,
 				755405B51B164A99003BFC0A /* ComposeViewControllerN.swift in Sources */,
 				07CC99661A6F1380000FD6F8 /* FoundationExtension.swift in Sources */,
 				073FE0191A955ED900825980 /* ContactDataService.swift in Sources */,
@@ -1126,8 +1152,8 @@
 			files = (
 				078FF4C21A91032C008321D1 /* OpenPGPTests.swift in Sources */,
 				078FF4C51A9106A3008321D1 /* ProtonMail-Bridging-Header.cpp in Sources */,
-				078FF4D31A92D06B008321D1 /* AuthCredential.swift in Sources */,
 				078FF4CB1A91232D008321D1 /* OpenPGPExtension.swift in Sources */,
+				75ECCE041B31F5F600A8C800 /* AuthAPITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1306,6 +1332,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -1327,6 +1354,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = ProtonMailTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1412,6 +1440,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = ProtonMailTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

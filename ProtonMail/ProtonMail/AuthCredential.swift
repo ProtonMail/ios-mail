@@ -52,12 +52,6 @@ class AuthCredential: NSObject, NSCoding {
             refreshToken: aDecoder.decodeObjectForKey(CoderKey.refreshToken) as? String,
             userID: aDecoder.decodeObjectForKey(CoderKey.userID) as? String,
             expiration: aDecoder.decodeObjectForKey(CoderKey.expiration) as? NSDate);
-        
-        //        self.init(
-        //        accessToken = aDecoder.decodeObjectForKey(CoderKey.accessToken) as? String
-        //        refreshToken = aDecoder.decodeObjectForKey(CoderKey.refreshToken) as? String
-        //        userID = aDecoder.decodeObjectForKey(CoderKey.userID) as? String
-        //        expiration = aDecoder.decodeObjectForKey(CoderKey.expiration) as? NSDate
     }
     
     

@@ -166,7 +166,7 @@ class SignInViewController: UIViewController {
                     (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
                 } else {
                     
-                    if sharedUserDataService.userInfo?.userStatus > 1 {
+                    if count(sharedUserDataService.userInfo!.privateKey.trim()) > 10 {
                         self.performSegueWithIdentifier(self.mailboxSegue, sender: self)
                     }
                     else {

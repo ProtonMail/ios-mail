@@ -28,35 +28,57 @@ extension APIService {
         static let unableToParseToken = 40
     }
     
+    struct APIServicePath
+    {
+        //need path and version
+    }
+    
     struct Constants {
         // FIXME: These values would be obtainable by inspecting the binary code, but to make thins a little more difficult, we probably don't want to these values visible when the source code is distributed.  We will probably want to come up with a way to pass in these values as pre-compiler macros.  Swift doesn't support pre-compiler macros, but we have Objective-C and can still use them.  The values would be passed in by the build scripts at build time.  Or, these values could be cleared before publishing the code.
         static let clientID = "demoapp"
         static let clientSecret = "demopass"
+        static let rediectURL = "https://protonmail.ch"
     }
+    
+    struct GeneralResponse {
+        static let errorCode = "Code"
+        static let errorMsg = "Error"
+        static let errorDesc = "ErrorDescription"
+    }
+    
+    //TODO:: need refacotr the api request structures
+    struct AuthRequest {
+        static let clientID = "ClientID"
+        static let clientSecret = "ClientSecret"
+        static let responseType = "ResponseType"
+        static let userName = "Username"
+        static let password = "Password"
+        static let hashedPassword = "HashedPassword"
+        static let grantType = "GrantType"
+        static let redirectUrl = "RedirectURI"
+        static let state = "State"
+    }
+    
     
     func authAuth(#username: String, password: String, completion: AuthCredentialBlock?) {
         let path = "/auth/"
-        
-        
         let parameters = [
-            "ClientID" : Constants.clientID,
-            "ClientSecret" : Constants.clientSecret,
-            "ResponseType" : "token",
-            "Username" : username,
-            "Password" : password,
-            "HashedPassword" : "",
-            "GrantType" : "password",
-            "RedirectURI" : "http://protonmail.ch",
-            "State" : "\(NSUUID().UUIDString)"]
+            AuthRequest.clientID : Constants.clientID,
+            AuthRequest.clientSecret : Constants.clientSecret,
+            AuthRequest.responseType : "token",
+            AuthRequest.userName : username,
+            AuthRequest.password : password,
+            AuthRequest.hashedPassword : "",
+            AuthRequest.grantType : "password",
+            AuthRequest.redirectUrl : Constants.rediectURL,
+            AuthRequest.state : "\(NSUUID().UUIDString)"]
         
         let completionWrapper: CompletionBlock = { task, response, error in
             if self.isErrorResponse(response) {
                 completion?(nil, NSError.authInvalidGrant())
             } else if let authInfo = self.authInfoForResponse(response) {
                 let credential = AuthCredential(authInfo: authInfo)
-                
                 credential.storeInKeychain()
-                
                 completion?(credential, nil)
             } else if error == nil {
                 completion?(nil, NSError.authUnableToParseToken())
@@ -64,40 +86,7 @@ extension APIService {
                 completion?(nil, NSError.unableToParseResponse(response))
             }
         }
-        
         request(method: .POST, path: path, parameters: parameters, authenticated: false, completion: completionWrapper)
-    }
-    
-    func revokeAuth(#username: String, password: String, completion: AuthCredentialBlock?) {
-        let path = "/auth/revoke"
-//        let parameters = [
-//            "client_id" : Constants.clientID,
-//            "client_secret" : Constants.clientSecret,
-//            "response_type" : "token",
-//            "username" : username,
-//            "password" : password,
-//            "hashedpassword" : "",
-//            "grant_type" : "password",
-//            "redirect_uri" : "https://protonmail.ch",
-//            "state" : "\(NSUUID().UUIDString)"]
-//        
-//        let completionWrapper: CompletionBlock = { task, response, error in
-//            if self.isErrorResponse(response) {
-//                completion?(nil, NSError.authInvalidGrant())
-//            } else if let authInfo = self.authInfoForResponse(response) {
-//                let credential = AuthCredential(authInfo: authInfo)
-//                
-//                credential.storeInKeychain()
-//                
-//                completion?(credential, nil)
-//            } else if error == nil {
-//                completion?(nil, NSError.authUnableToParseToken())
-//            } else {
-//                completion?(nil, NSError.unableToParseResponse(response))
-//            }
-//        }
-//        
-//        request(method: .POST, path: path, parameters: parameters, authenticated: false, completion: completionWrapper)
     }
     
     func userCreate(user_name: String, pwd: String, email: String, receive_news: Bool, completion: AuthCredentialBlock?) {
@@ -144,7 +133,6 @@ extension APIService {
                 completion?(nil, error)
                 return
             }
-        
             request(method: .POST, path: path, parameters: parameters, completion: completionWrapper)
         } else {
             completion?(nil, nil)
@@ -156,11 +144,11 @@ extension APIService {
             let path = "/auth/refresh"
             
             let parameters = [
-                "client_id": Constants.clientID,
-                "response_type": "token",
+                "ClientID": Constants.clientID,
+                "ResponseType": "token",
                 "access_token": authCredential.accessToken,
-                "refresh_token": authCredential.refreshToken,
-                "grant_type": "refresh_token"]
+                "RefreshToken": authCredential.refreshToken,
+                "GrantType": "refresh_token"]
             
             let completionWrapper: CompletionBlock = { task, response, error in
                 if let authInfo = self.authInfoForResponse(response) {
@@ -188,22 +176,20 @@ extension APIService {
     
     private func isErrorResponse(response: AnyObject!) -> Bool {
         if let dict = response as? NSDictionary {
-            return dict["error"] != nil
+            //TODO:: check Code == 1000 or now
+            return dict[GeneralResponse.errorMsg] != nil
         }
-        
         return false
     }
     
     private func authInfoForResponse(response: AnyObject!) -> AuthInfo? {
         if let response = response as? Dictionary<String,AnyObject> {
-            let accessToken = response["access_token"] as? String
-            let expiresIn = response["expires_in"] as? NSTimeInterval
-            let refreshToken = response["refresh_token"] as? String
-            let userID = response["uid"] as? String
-
+            let accessToken = response["AccessToken"] as? String
+            let expiresIn = response["ExpiresIn"] as? NSTimeInterval
+            let refreshToken = response["RefreshToken"] as? String
+            let userID = response["Uid"] as? String
             return (accessToken, expiresIn, refreshToken, userID)
         }
-        
         return nil
     }
 }
@@ -215,6 +201,7 @@ extension AuthCredential {
         self.init(accessToken: authInfo.accessToken, refreshToken: authInfo.refreshToken, userID: authInfo.userID, expiration: expiration)
     }
 }
+
 
 extension NSError {
     
