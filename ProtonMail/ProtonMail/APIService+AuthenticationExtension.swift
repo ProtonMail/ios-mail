@@ -35,19 +35,19 @@ extension APIService {
     }
     
     func authAuth(#username: String, password: String, completion: AuthCredentialBlock?) {
-        let path = "/auth/auth"
+        let path = "/auth/"
         
         
         let parameters = [
-            "client_id" : Constants.clientID,
-            "client_secret" : Constants.clientSecret,
-            "response_type" : "token",
-            "username" : username,
-            "password" : password,
-            "hashedpassword" : "",
-            "grant_type" : "password",
-            "redirect_uri" : "https://protonmail.ch",
-            "state" : "\(NSUUID().UUIDString)"]
+            "ClientID" : Constants.clientID,
+            "ClientSecret" : Constants.clientSecret,
+            "ResponseType" : "token",
+            "Username" : username,
+            "Password" : password,
+            "HashedPassword" : "",
+            "GrantType" : "password",
+            "RedirectURI" : "http://protonmail.ch",
+            "State" : "\(NSUUID().UUIDString)"]
         
         let completionWrapper: CompletionBlock = { task, response, error in
             if self.isErrorResponse(response) {

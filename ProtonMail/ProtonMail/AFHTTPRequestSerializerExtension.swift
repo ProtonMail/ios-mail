@@ -24,6 +24,6 @@ extension AFHTTPRequestSerializer {
     }
     
     func setVersionHeader (apiVersion: Int, appVersion:Int) {
-        setValue("application/vnd.protonmail.api+json;apiversion=\(apiVersion);appversion=\(appVersion)", forHTTPHeaderField: "Accept")
+        //setValue("application/vnd.protonmail.api+json;apiversion=\(apiVersion);appversion=\(appVersion)", forHTTPHeaderField: "Accept")
     }
 }

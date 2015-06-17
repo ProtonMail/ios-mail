@@ -20,8 +20,8 @@ import Foundation
 
 //private let BaseURLString = "http://protonmail.xyz"
 //private let BaseURLString = "http://feng.api.com"
-private let BaseURLString = "https://dev-api.protonmail.ch"
-
+//private let BaseURLString = "https://dev-api.protonmail.ch"
+private let BaseURLString = "https://test-api.protonmail.ch"
 
 let APIServiceErrorDomain = NSError.protonMailErrorDomain(subdomain: "APIService")
 
