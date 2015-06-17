@@ -749,6 +749,16 @@ class MessageDataService {
                     }
                 }
                 
+                if (statusCode == 404)
+                {
+                    if  let (uuid, object: AnyObject) = sharedMessageQueue.next() {
+                        if let element = object as? [String : String] {
+                            let count = element["count"]
+                            sharedMessageQueue.remove(elementID: elementID)
+                        }
+                    }
+                }
+                
                 //need add try times and check internet status
                 if statusCode == 500 && !isInternetIssue {
                     if  let (uuid, object: AnyObject) = sharedMessageQueue.next() {
