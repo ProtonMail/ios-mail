@@ -32,17 +32,17 @@
     <entity name="Contact" representedClassName="ProtonMail.Contact" syncable="YES">
         <attribute name="contactID" attributeType="String" indexed="YES" syncable="YES">
             <userInfo>
-                <entry key="JSONKeyPath" value="ContactID"/>
+                <entry key="JSONKeyPath" value="ID"/>
             </userInfo>
         </attribute>
         <attribute name="email" attributeType="String" indexed="YES" syncable="YES">
             <userInfo>
-                <entry key="JSONKeyPath" value="ContactEmail"/>
+                <entry key="JSONKeyPath" value="Email"/>
             </userInfo>
         </attribute>
         <attribute name="name" attributeType="String" indexed="YES" syncable="YES">
             <userInfo>
-                <entry key="JSONKeyPath" value="ContactName"/>
+                <entry key="JSONKeyPath" value="Name"/>
             </userInfo>
         </attribute>
         <userInfo>
@@ -218,8 +218,8 @@
     </entity>
     <elements>
         <element name="Attachment" positionX="-128" positionY="-22" width="128" height="148"/>
-        <element name="Contact" positionX="54" positionY="-25" width="128" height="88"/>
-        <element name="Message" positionX="-344" positionY="-216" width="128" height="508"/>
+        <element name="Contact" positionX="54" positionY="-25" width="128" height="90"/>
         <element name="Label" positionX="-126" positionY="-162" width="128" height="118"/>
+        <element name="Message" positionX="-344" positionY="-216" width="128" height="508"/>
     </elements>
 </model>
