@@ -65,6 +65,7 @@
         <attribute name="bccList" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="BCCList"/>
+                <entry key="JSONTransformerName" value="JsonStringTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="bccNameList" attributeType="String" syncable="YES">
@@ -74,12 +75,13 @@
         </attribute>
         <attribute name="body" attributeType="String" syncable="YES">
             <userInfo>
-                <entry key="JSONKeyPath" value="MessageBody"/>
+                <entry key="JSONKeyPath" value="Body"/>
             </userInfo>
         </attribute>
         <attribute name="ccList" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="CCList"/>
+                <entry key="JSONTransformerName" value="JsonStringTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="ccNameList" attributeType="String" syncable="YES">
@@ -220,6 +222,6 @@
         <element name="Attachment" positionX="-128" positionY="-22" width="128" height="148"/>
         <element name="Contact" positionX="54" positionY="-25" width="128" height="90"/>
         <element name="Label" positionX="-126" positionY="-162" width="128" height="118"/>
-        <element name="Message" positionX="-344" positionY="-216" width="128" height="508"/>
+        <element name="Message" positionX="-344" positionY="-216" width="128" height="510"/>
     </elements>
 </model>

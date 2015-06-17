@@ -134,16 +134,14 @@ class MessageDataService {
                         var error: NSError?
                         
                         if response != nil {
-                            let message_n = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: response, inManagedObjectContext: context, error: &error) as! Message
-                            
+                            //TODO need check the respons code
+                            let msg = response?["Message"] as! Dictionary<String,AnyObject>
+                            let message_n = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg, inManagedObjectContext: context, error: &error) as! Message
                             if error == nil {
                                 message_n.isDetailDownloaded = true
                                 message_n.isRead = true
                                 error = context.saveUpstreamIfNeeded()
-                                //println(message_n.isDetailDownloaded)
                                 dispatch_async(dispatch_get_main_queue()) {
-                                    
-                                    //println(message_n.isDetailDownloaded)
                                     completion(task: task, response: response, message: message_n, error: error)
                                 }
                             }

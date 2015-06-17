@@ -24,35 +24,37 @@ class MessageDetailViewController: ProtonMailViewController {
                 }
                 else
                 {
-                    if !self.message.isDetailDownloaded
-                    {
-                        // println(msg?.isDetailDownloaded)
-                        if let fetchedMessageController = self.fetchedMessageController {
-                            println( fetchedMessageController.fetchedObjects?.count)
-                            if let last = fetchedMessageController.fetchedObjects?.last as? Message {
-                                println(last.isDetailDownloaded)
-                                self.message = last
-                                self.messageDetailView.message = self.message
-                            }
-                            else
-                            {
-                                self.setupFetchedResultsController(self.message.messageID)
-                                if let fetchedMessageController = self.fetchedMessageController {
-                                    println( fetchedMessageController.fetchedObjects?.count)
-                                    if let last = fetchedMessageController.fetchedObjects?.last as? Message {
-                                        println(last.isDetailDownloaded)
-                                        self.message = last
-                                        self.messageDetailView.message = self.message
-                                    }
-                                }
-                                
-                            }
-                        }
-                    }
+                    
+                    self.messageDetailView?.updateEmailBodyWebView(true)
+                    self.messageDetailView?.layoutIfNeeded()
+//                    
+//                    if !self.message.isDetailDownloaded
+//                    {
+//                        // println(msg?.isDetailDownloaded)
+//                        if let fetchedMessageController = self.fetchedMessageController {
+//                            println( fetchedMessageController.fetchedObjects?.count)
+//                            if let last = fetchedMessageController.fetchedObjects?.last as? Message {
+//                                println(last.isDetailDownloaded)
+//                                self.message = last
+//                                self.messageDetailView.message = self.message
+//                            }
+//                            else
+//                            {
+//                                self.setupFetchedResultsController(self.message.messageID)
+//                                if let fetchedMessageController = self.fetchedMessageController {
+//                                    println( fetchedMessageController.fetchedObjects?.count)
+//                                    if let last = fetchedMessageController.fetchedObjects?.last as? Message {
+//                                        println(last.isDetailDownloaded)
+//                                        self.message = last
+//                                        self.messageDetailView.message = self.message
+//                                    }
+//                                }
+//                                
+//                            }
+//                        }
+//                    }
                 }
             }
-            self.messageDetailView?.updateEmailBodyWebView(true)
-            self.messageDetailView?.layoutIfNeeded()
         }
     }
     
