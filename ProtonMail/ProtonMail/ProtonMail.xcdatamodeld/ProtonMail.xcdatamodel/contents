@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6751" systemVersion="14C1514" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14D136" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Attachment" representedClassName="ProtonMail.Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" syncable="YES">
             <userInfo>
@@ -49,7 +49,19 @@
             <entry key="identityAttribute" value="contactID"/>
         </userInfo>
     </entity>
+    <entity name="Label" syncable="YES">
+        <attribute name="color" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isDisplay" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="labelID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+    </entity>
     <entity name="Message" representedClassName="ProtonMail.Message" syncable="YES">
+        <attribute name="addressID" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="AddressID"/>
+            </userInfo>
+        </attribute>
         <attribute name="bccList" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="BCCList"/>
@@ -124,8 +136,7 @@
         </attribute>
         <attribute name="isStarred" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES">
             <userInfo>
-                <entry key="JSONKeyPath" value="Tag"/>
-                <entry key="JSONTransformerName" value="TagTransformer"/>
+                <entry key="JSONKeyPath" value="Starred"/>
             </userInfo>
         </attribute>
         <attribute name="lastModified" optional="YES" attributeType="Date" indexed="YES" syncable="YES">
@@ -142,14 +153,15 @@
         </attribute>
         <attribute name="messageID" attributeType="String" indexed="YES" syncable="YES">
             <userInfo>
-                <entry key="JSONKeyPath" value="MessageID"/>
+                <entry key="JSONKeyPath" value="ID"/>
             </userInfo>
         </attribute>
         <attribute name="passwordEncryptedBody" attributeType="String" syncable="YES"/>
         <attribute name="passwordHint" attributeType="String" syncable="YES"/>
         <attribute name="recipientList" attributeType="String" syncable="YES">
             <userInfo>
-                <entry key="JSONKeyPath" value="RecipientList"/>
+                <entry key="JSONKeyPath" value="ToList"/>
+                <entry key="JSONTransformerName" value="JsonStringTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="recipientNameList" attributeType="String" syncable="YES">
@@ -159,7 +171,7 @@
         </attribute>
         <attribute name="sender" attributeType="String" syncable="YES">
             <userInfo>
-                <entry key="JSONKeyPath" value="Sender"/>
+                <entry key="JSONKeyPath" value="SenderAddress"/>
             </userInfo>
         </attribute>
         <attribute name="senderName" attributeType="String" indexed="YES" syncable="YES">
@@ -186,7 +198,7 @@
         </attribute>
         <attribute name="title" attributeType="String" indexed="YES" syncable="YES">
             <userInfo>
-                <entry key="JSONKeyPath" value="MessageTitle"/>
+                <entry key="JSONKeyPath" value="Subject"/>
             </userInfo>
         </attribute>
         <attribute name="totalSize" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
@@ -205,8 +217,9 @@
         </userInfo>
     </entity>
     <elements>
-        <element name="Attachment" positionX="-63" positionY="135" width="128" height="148"/>
-        <element name="Contact" positionX="-54" positionY="135" width="128" height="88"/>
-        <element name="Message" positionX="-63" positionY="-18" width="128" height="495"/>
+        <element name="Attachment" positionX="-128" positionY="-22" width="128" height="148"/>
+        <element name="Contact" positionX="54" positionY="-25" width="128" height="88"/>
+        <element name="Message" positionX="-344" positionY="-216" width="128" height="508"/>
+        <element name="Label" positionX="-126" positionY="-162" width="128" height="118"/>
     </elements>
 </model>

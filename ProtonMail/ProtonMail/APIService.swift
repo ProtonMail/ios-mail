@@ -79,10 +79,8 @@ let sharedAPIService = APIService()
                     completion(task: task, response: nil, error: NSError.unableToParseResponse(responseObject))
                 }
             }
-            
             return (success, failure)
         }
-        
         return (nil, nil)
     }
     
@@ -260,7 +258,16 @@ let sharedAPIService = APIService()
             return nil
         }
         
-        NSValueTransformer.setValueTransformer(tagTransformer, forName: "TagTransformer")
+        
+        let JsonStringTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
+            println(value)
+            let tag = "\(value)"
+
+            return tag
+        }
+
+        
+        NSValueTransformer.setValueTransformer(JsonStringTransformer, forName: "JsonStringTransformer")
     }
 }
 

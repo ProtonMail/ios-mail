@@ -243,11 +243,21 @@ extension APIService {
     }
     
     func fetchPageMessageList(location: Int, time: Int, messageID: String, completion: CompletionBlock) {
-        let path = MessagePath.base + "/fetch"
-        let parameters = [
+        let path = MessagePath.base
+        var parameters : [String : AnyObject] = [
             "Location" : location,
-            "Time" : time,
-            "MessageID" : messageID]
+            "Sort" : "Time"]
+        
+        if(time != 0)
+        {
+            let newTime = time - 1
+            parameters["End"] = newTime
+        }
+        
+        
+        //
+        //"Time" : time,
+        //"MessageID" : messageID
         
         request(method: .GET, path: path, parameters: parameters, completion: completion)
     }
