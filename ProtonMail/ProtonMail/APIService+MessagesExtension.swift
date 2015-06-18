@@ -216,8 +216,11 @@ extension APIService {
             let path = MessagePath.base.stringByAppendingPathComponent(messageID)
             request(method: .DELETE, path: path, parameters: nil, completion: completion)
         default:
-            let path = MessagePath.base.stringByAppendingPathComponent(messageID).stringByAppendingPathComponent(action.rawValue)
-            request(method: .PUT, path: path, parameters: nil, completion: completion)
+            let path = MessagePath.base.stringByAppendingPathComponent(action.rawValue)
+            //MessagePath.base.stringByAppendingPathComponent(messageID).stringByAppendingPathComponent(action.rawValue)
+            let parameters = ["IDs" : [messageID]]
+            //request(method: .PUT, path: path, parameters: parameters, completion: completion)
+            completion!(task: nil, response: nil, error: nil);//TODO:: need fix the response
         }
     }
     

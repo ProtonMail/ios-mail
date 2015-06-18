@@ -381,9 +381,6 @@ class MailboxViewController: ProtonMailViewController {
                             self.tableView.reloadData()
                         })
                 })
-                
-                
-                
             }
         }
     }
