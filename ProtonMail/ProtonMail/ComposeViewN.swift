@@ -34,12 +34,7 @@ protocol ComposeViewNDataSource {
 
 
 class ComposeViewN: UIViewController {
-    
-    struct ComposeMessageAction {
-        static let Reply = "Reply"
-        static let ReplyAll = "ReplyAll"
-        static let Forward = "Forward"
-    }
+
     
     let kConfirmError : String = NSLocalizedString( "Message password doesn't match.")
     let kExpirationNeedsPWDError : String = NSLocalizedString("Expiration email for outside required PWD.")
@@ -703,9 +698,7 @@ extension MBContactPicker {
         }
         return contactList
     }
-}
 
-extension MBContactPicker {
     var hasOutsideEmails: Bool {
         let contactsSelected = NSArray(array: self.contactsSelected)
         if let contacts = contactsSelected.valueForKey(ContactVO.Attributes.email) as? [String] {

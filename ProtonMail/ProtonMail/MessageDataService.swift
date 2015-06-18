@@ -454,12 +454,12 @@ class MessageDataService {
         }
     }
     
-    private func attachmentsForMessage(message: Message) -> [APIService.Attachment] {
-        var attachments: [APIService.Attachment] = []
+    private func attachmentsForMessage(message: Message) -> [MessageAPI.Attachment] {
+        var attachments: [MessageAPI.Attachment] = []
         
         for messageAttachment in message.attachments.allObjects as! [Attachment] {
             if let fileDataBase64Encoded = messageAttachment.fileData?.base64EncodedStringWithOptions(nil) {
-                let attachment = APIService.Attachment(fileName: messageAttachment.fileName, mimeType: messageAttachment.mimeType, fileData: ["self" : fileDataBase64Encoded], fileSize: messageAttachment.fileSize.integerValue)
+                let attachment = MessageAPI.Attachment(fileName: messageAttachment.fileName, mimeType: messageAttachment.mimeType, fileData: ["self" : fileDataBase64Encoded], fileSize: messageAttachment.fileSize.integerValue)
                 
                 attachments.append(attachment)
             }
@@ -630,20 +630,19 @@ class MessageDataService {
                         
                         completion?(task: task, response: response, error: error)
                     }
+//                    sharedAPIService.messageDraft(
+//                        recipientList: message.recipientList,
+//                        bccList: message.bccList,
+//                        ccList: message.ccList,
+//                        title: message.title,
+//                        passwordHint: message.passwordHint,
+//                        expirationDate: message.expirationTime,
+//                        isEncrypted: message.isEncrypted,
+//                        body: ["self" : message.body],
+//                        attachments: attachments,
+//                        completion: completionWrapper)
                     
-                    sharedAPIService.messageDraft(
-                        recipientList: message.recipientList,
-                        bccList: message.bccList,
-                        ccList: message.ccList,
-                        title: message.title,
-                        passwordHint: message.passwordHint,
-                        expirationDate: message.expirationTime,
-                        isEncrypted: message.isEncrypted,
-                        body: ["self" : message.body],
-                        attachments: attachments,
-                        completion: completionWrapper)
-                    
-                    return
+                    return;
                 }
             }
         }

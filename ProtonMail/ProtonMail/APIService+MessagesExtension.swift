@@ -16,40 +16,18 @@
 
 import Foundation
 
-
+//TODO :: all the request post put ... all could abstract a body layer, after change the request only need the url and request object.
 /// Messages extension
 extension APIService {
     
-    struct Attachment {
-        let fileName: String
-        let mimeType: String
-        let fileData: Dictionary<String,String>
-        let fileSize: Int
-        
-        init(fileName: String, mimeType: String, fileData: Dictionary<String,String>, fileSize: Int) {
-            self.fileName = fileName
-            self.mimeType = mimeType
-            self.fileData = fileData
-            self.fileSize = fileSize
-        }
-        
-        func asJSON() -> Dictionary<String,AnyObject> {
-            return [
-                "FileName" : fileName,
-                "MIMEType" : mimeType,
-                "FileData" : fileData,
-                "FileSize" : String(fileSize)]
-        }
+    private struct MessagePath {
+        static let base = "/messages"
     }
-    
+   
     enum Filter: Int {
         case noFilter = -2
         case read = 0
         case unRead = 1
-    }
-    
-    private struct MessagePath {
-        static let base = "/messages"
     }
     
     enum Order: Int {
@@ -71,10 +49,19 @@ extension APIService {
         static let unableToParseToken = 40
     }
     
-    enum MessageAPIV : Int
-    {
-        case SendMessage = 2
+    
+    
+    //new way to do the new work calls
+    func messagePost ( apiRequest : ApiRequest!, completion: CompletionBlock?) {
+        var parameterStrings = apiRequest.toJSON()
+        setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
+        request(method: .POST, path: apiRequest.getRequestPath(), parameters: nil, completion: completion)
     }
+    
+    
+    
+    
+    
     
     // MARK: - Public methods
     
@@ -103,7 +90,7 @@ extension APIService {
         expirationDate: NSDate? = nil,
         isEncrypted: NSNumber,
         body: [String : String],
-        attachments: [Attachment],
+        attachments: [MessageAPI.Attachment],
         completion: CompletionBlock?) {
             let path = "/messages"
             var parameterStrings: [String : String] = [
@@ -147,7 +134,7 @@ extension APIService {
         expirationDate: NSDate? = nil,
         isEncrypted: NSNumber,
         body: Dictionary<String,String>,
-        attachments: Array<Attachment>?,
+        attachments: Array<MessageAPI.Attachment>?,
         completion: CompletionBlock?) {
             let path = "/messages/draft"
             var parameters: Dictionary<String,AnyObject> = [
@@ -183,7 +170,7 @@ extension APIService {
         expirationDate: NSDate? = nil,
         isEncrypted: NSNumber,
         body: Dictionary<String,String>,
-        attachments: Array<Attachment>?,
+        attachments: Array<MessageAPI.Attachment>?,
         completion: CompletionBlock?) {
             let path = "/messages/\(messageID)/draft"
             var parameters: Dictionary<String,AnyObject> = [
@@ -219,7 +206,7 @@ extension APIService {
             let path = MessagePath.base.stringByAppendingPathComponent(action.rawValue)
             //MessagePath.base.stringByAppendingPathComponent(messageID).stringByAppendingPathComponent(action.rawValue)
             let parameters = ["IDs" : [messageID]]
-            //request(method: .PUT, path: path, parameters: parameters, completion: completion)
+            request(method: .PUT, path: path, parameters: parameters, completion: nil)
             completion!(task: nil, response: nil, error: nil);//TODO:: need fix the response
         }
     }
