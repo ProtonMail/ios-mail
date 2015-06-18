@@ -102,6 +102,8 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
         message.addObserver(self, forKeyPath: Message.Attributes.isDetailDownloaded, options: .New, context: &kKVOContext)
         
         self.backgroundColor = UIColor.whiteColor()
+        
+        self.generateData()
         self.addSubviews()
         self.makeConstraints()
         
@@ -646,6 +648,20 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
     }
     
     // MARK: - Private methods
+    
+    private func generateData()
+    {
+        var receipientlist = "";
+        var receipientnamelist = "";
+        let recipients : [[String : String]] = message.recipientList.parseJson()!
+        for dict:[String : String] in recipients {
+            let name = dict["Name"] ?? ""
+            let email = dict["Address"] ?? ""
+            println(dict)
+            //receipientlist += dict["Address"] ?? ""
+            //receipientnamelist += dict["Name"] ?? ""
+        }
+    }
     
     private func configureEmailDetailToLabel() {
         self.emailDetailView = UIView()

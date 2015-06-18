@@ -260,10 +260,13 @@ let sharedAPIService = APIService()
         
         
         let JsonStringTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
-            println(value)
-            let tag = "\(value)"
-
-            return tag
+            if let tag = value as? NSArray {
+                let bytes : NSData = NSJSONSerialization.dataWithJSONObject(tag, options: NSJSONWritingOptions.allZeros, error: nil)!
+                let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
+                return strJson
+            }
+    
+            return "";
         }
 
         
