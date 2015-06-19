@@ -23,6 +23,41 @@ public class MessageAPI {
         }
         
         public override func toJSON() -> Dictionary<String,AnyObject> {
+            
+            let address_id : String = sharedUserDataService.userAddresses.first?.address_id ?? "1000";
+            
+            var messsageDict : [String : AnyObject] = [ "AddressID" : address_id,
+                "Body" : message.body,
+                "Subject" : message.title]
+            messsageDict["ToList"] = message.recipientList.parseJson()
+            messsageDict["CCList"] = message.ccList.parseJson()
+            messsageDict["BCCList"] = message.bccList.parseJson()
+            
+            let out = ["Message" : messsageDict]
+            
+            println(self.JSONStringify(out, prettyPrinted: true))
+            
+            return out
+        }
+        
+        override public func getRequestPath() -> String {
+            return MessageAPIPath + "/draft"
+        }
+        
+        override public func getVersion() -> Int {
+            return MessageAPIVersion
+        }
+    }
+    
+    
+    public class MessageUpdateDraftRequest : ApiRequest {
+        let message : Message!;
+        
+        init(message: Message!) {
+            self.message = message
+        }
+        
+        public override func toJSON() -> Dictionary<String,AnyObject> {
             var messsageDict : [String : AnyObject] = [ "AddressID" : "0",
                 "Body" : message.body,
                 "Subject" : message.title]

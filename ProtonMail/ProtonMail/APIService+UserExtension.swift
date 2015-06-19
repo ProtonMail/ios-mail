@@ -181,7 +181,7 @@ extension UserInfo {
             for res in address_response
             {
                 addresses.append(Address(
-                    addressid: res["AddressID"] as? Int,
+                    addressid: res["ID"] as? String,
                     email:res["Email"] as? String,
                     send: res["Send"] as? Int,
                     receive: res["Receive"] as? Int,
@@ -189,7 +189,6 @@ extension UserInfo {
                     display_name: res["DisplayName"] as? String,
                     signature: res["Signature"] as? String))
             }
-
             let usedS = response[usedSpaceResponseKey] as? NSNumber
             let maxS = response[maxSpaceResponseKey] as? NSNumber
             self.init(

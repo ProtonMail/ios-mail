@@ -53,6 +53,11 @@ let sharedAPIService = APIService()
     init() {
         sessionManager = AFHTTPSessionManager(baseURL: NSURL(string: AppConstants.BaseURLString)!)
         sessionManager.requestSerializer = AFJSONRequestSerializer() as AFHTTPRequestSerializer
+        
+        #if DEBUG
+            sessionManager.securityPolicy.allowInvalidCertificates = true
+        #endif
+
         //NSOperationQueueDefaultMaxConcurrentOperationCount sessionManager.operationQueue.maxConcurrentOperationCount
         //let defaultV = NSOperationQueueDefaultMaxConcurrentOperationCount;
         setupValueTransforms()

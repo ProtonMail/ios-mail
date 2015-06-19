@@ -55,7 +55,7 @@ extension APIService {
     func messagePost ( apiRequest : ApiRequest!, completion: CompletionBlock?) {
         var parameterStrings = apiRequest.toJSON()
         setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
-        request(method: .POST, path: apiRequest.getRequestPath(), parameters: nil, completion: completion)
+        request(method: .POST, path: apiRequest.getRequestPath(), parameters: parameterStrings, completion: completion)
     }
     
     

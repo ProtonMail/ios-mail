@@ -21,7 +21,8 @@ enum ComposeMessageAction: Int, Printable {
     case Reply = 0
     case ReplyAll = 1
     case Forward = 2
-    case Draft = 3
+    case NewDraft = 3
+    case OpenDraft = 4
     
     var description : String {
         get {
@@ -32,8 +33,10 @@ enum ComposeMessageAction: Int, Printable {
                 return NSLocalizedString("ReplyAll")
             case Forward:
                 return NSLocalizedString("Forward")
-            case Draft:
+            case NewDraft:
                 return NSLocalizedString("Draft")
+            case OpenDraft:
+                return NSLocalizedString("OpenDraft")
             }
         }
     }

@@ -68,7 +68,7 @@ class ComposeViewController : ProtonMailViewController {
         
         self.scrollView.delegate = self
         
-        self.handleMessage()
+        self.updateMessageView()
         
         self.contacts = sharedContactDataService.allContactVOs()
         self.composeView.toContactPicker.reloadData()
@@ -129,7 +129,7 @@ class ComposeViewController : ProtonMailViewController {
     // MARK : - View actions
     @IBAction func cancelClicked(sender: AnyObject) {
         let dismiss: (() -> Void) = {
-            if self.viewModel.isDraftAction() {
+            if self.viewModel.messageAction == ComposeMessageAction.OpenDraft {
                 self.navigationController?.popViewControllerAnimated(true)
             } else {
                  self.dismissViewControllerAnimated(true, completion: nil)
@@ -144,7 +144,7 @@ class ComposeViewController : ProtonMailViewController {
             }))
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Discard draft"), style: .Destructive, handler: { (action) -> Void in
-                self.viewModel.updateDraft()
+                self.viewModel.deleteDraft()
                 dismiss()
             }))
             
@@ -228,10 +228,11 @@ class ComposeViewController : ProtonMailViewController {
         self.scrollView.contentSize = CGSize(width: composeSize.width, height: composeSize.height)
     }
 
-    private func handleMessage() {
-//        let signature = !sharedUserDataService.signature.isEmpty ? "\n\n\(sharedUserDataService.signature)" : ""
-//        let htmlString = "<div><br></div><div><br></div><div><br></div><div><br></div>\(signature)";
-//       // self.composeView.htmlEditor.setHTML(htmlString);
+    private func updateMessageView() {
+        
+        self.composeView.subject.text = self.viewModel.getSubject();
+        self.composeView.htmlEditor.setHTML(self.viewModel.getHtmlBody())
+        
 //        
 //        if let action = action {
 //            if action == ComposeMessageAction.Reply || action == ComposeMessageAction.ReplyAll {
@@ -275,13 +276,13 @@ class ComposeViewController : ProtonMailViewController {
 ////                self.composeView.htmlEditor.setHTML("<br><br><br>\(signature) \(forwardHeader) \(body)")
 //                
 //            } else if action == ComposeMessageAction.Draft {
-//                navigationItem.leftBarButtonItem = nil
+//               // navigationItem.leftBarButtonItem = nil
 //
 ////                
-////                updateSelectedContacts(&self.viewModel.toSelectedContacts, withNameList: message.recipientNameList, emailList: message.recipientList)
-////                updateSelectedContacts(&self.viewModel.ccSelectedContacts, withNameList: message.ccNameList, emailList: message.ccList)
-////                updateSelectedContacts(&self.viewModel.bccSelectedContacts, withNameList: message.bccNameList, emailList: message.bccList)
-////                
+//                updateSelectedContacts(&self.viewModel.toSelectedContacts, withNameList: message.recipientNameList, emailList: message.recipientList)
+//                updateSelectedContacts(&self.viewModel.ccSelectedContacts, withNameList: message.ccNameList, emailList: message.ccList)
+//                updateSelectedContacts(&self.viewModel.bccSelectedContacts, withNameList: message.bccNameList, emailList: message.bccList)
+////
 ////                composeView.subject.text = message.title
 ////                
 ////                if !message.attachments.isEmpty {
@@ -301,7 +302,7 @@ class ComposeViewController : ProtonMailViewController {
 ////                }
 //            }
 //        }
-//        
+        
     }
     
     private func updateSelectedContacts(inout selectedContacts: [ContactVO]!, withNameList nameList: String, emailList: String) {

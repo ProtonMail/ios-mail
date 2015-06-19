@@ -35,8 +35,8 @@ public class ComposeViewModel {
         toSelectedContacts.append(contacts)
     }
     
-    public func isDraftAction() -> Bool {
-        return messageAction == ComposeMessageAction.Draft
+    func getActionType() -> ComposeMessageAction {
+        return messageAction
     }
     
     ///
@@ -187,6 +187,26 @@ public class ComposeViewModelImpl : ComposeViewModel {
                 NSLog("\(__FUNCTION__) error: \(error)")
             }
         }
+    }
+    
+    override public func getHtmlBody() -> String {
+        let signature = !sharedUserDataService.signature.isEmpty ? "\n\n\(sharedUserDataService.signature)" : ""
+        let htmlString = "<div><br></div><div><br></div><div><br></div><div><br></div>\(signature)";
+//        case ComposeMessageAction.Reply = 0
+//        case ComposeMessageAction.ReplyAll = 1
+//        case ComposeMessageAction.Forward = 2
+//        case ComposeMessageAction.OpenDraft = 4
+        switch messageAction!
+        {
+        case ComposeMessageAction.NewDraft:
+            return htmlString
+        case ComposeMessageAction.OpenDraft:
+            return htmlString
+        default:
+            return htmlString
+            
+        }
+        
     }
     
 }

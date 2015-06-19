@@ -171,7 +171,7 @@ class MailboxViewController: ProtonMailViewController {
             //let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {
-                    composeViewController.viewModel = ComposeViewModelImpl(msg: message, action : ComposeMessageAction.Draft)
+                    composeViewController.viewModel = ComposeViewModelImpl(msg: message, action : ComposeMessageAction.OpenDraft)
                 }
                 else
                 {
@@ -182,7 +182,7 @@ class MailboxViewController: ProtonMailViewController {
             }
         } else if segue.identifier == kSegueToCompose {
             let composeViewController: ComposeViewController = segue.destinationViewController.viewControllers![0] as! ComposeViewController
-            composeViewController.viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.Draft)
+            composeViewController.viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.NewDraft)
         }
     }
     

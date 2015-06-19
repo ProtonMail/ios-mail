@@ -61,7 +61,7 @@ extension APIService {
     
     
     func authAuth(#username: String, password: String, completion: AuthCredentialBlock?) {
-        let path = "/auth/"
+        let path = "/auth" + AppConstants.getDebugOption
         let parameters = [
             AuthRequest.clientID : Constants.clientID,
             AuthRequest.clientSecret : Constants.clientSecret,
@@ -90,7 +90,7 @@ extension APIService {
     }
     
     func userCreate(user_name: String, pwd: String, email: String, receive_news: Bool, completion: AuthCredentialBlock?) {
-        let path = "/users"
+        let path = "/users" + AppConstants.getDebugOption
         let parameters = [
             "client_id" : Constants.clientID,
             "client_secret" : Constants.clientSecret,
