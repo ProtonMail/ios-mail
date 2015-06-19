@@ -142,6 +142,7 @@
 		7567B0751B3383F900A72A1E /* MessageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0741B3383F900A72A1E /* MessageAPI.swift */; };
 		7567B0771B3387F700A72A1E /* APIServiceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0761B3387F700A72A1E /* APIServiceRequest.swift */; };
 		7567B0791B33880500A72A1E /* APIServiceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0781B33880500A72A1E /* APIServiceResponse.swift */; };
+		7567B07B1B338EB900A72A1E /* MessageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B07A1B338EB900A72A1E /* MessageHelper.swift */; };
 		756A35151B20D9B80033BC7C /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A35141B20D9B80033BC7C /* AppConstants.swift */; };
 		7582E2F21B015DE400FEA38B /* MessageDetailBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582E2F11B015DE400FEA38B /* MessageDetailBottomView.swift */; };
 		7582E2F41B015DF100FEA38B /* MessageDetailBottomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */; };
@@ -326,6 +327,7 @@
 		7567B0741B3383F900A72A1E /* MessageAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageAPI.swift; sourceTree = "<group>"; };
 		7567B0761B3387F700A72A1E /* APIServiceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIServiceRequest.swift; sourceTree = "<group>"; };
 		7567B0781B33880500A72A1E /* APIServiceResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIServiceResponse.swift; sourceTree = "<group>"; };
+		7567B07A1B338EB900A72A1E /* MessageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageHelper.swift; sourceTree = "<group>"; };
 		756A35141B20D9B80033BC7C /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		7582E2F11B015DE400FEA38B /* MessageDetailBottomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDetailBottomView.swift; sourceTree = "<group>"; };
 		7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageDetailBottomView.xib; sourceTree = "<group>"; };
@@ -456,9 +458,10 @@
 				073FE01C1A9561F600825980 /* Contact.swift */,
 				073FE01E1A95620D00825980 /* ContactExtension.swift */,
 				071323991A7C02AB0043DB41 /* Message.swift */,
-				075F0A531ABF5E3E00E6B9AE /* MessageAction.swift */,
 				07CF61931A89895600ED38AE /* MessageExtension.swift */,
+				075F0A531ABF5E3E00E6B9AE /* MessageAction.swift */,
 				075F0A511ABF5DB500E6B9AE /* MessageLocation.swift */,
+				7567B07A1B338EB900A72A1E /* MessageHelper.swift */,
 				7565998E1AC4809B00C187E4 /* EncryptTypes.swift */,
 				075E3DED1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld */,
 				07A0E1AC1A9D3C64005FD04B /* UserInfo.swift */,
@@ -1074,6 +1077,7 @@
 				07CAB7FE1A880B1200C5E347 /* PersistentQueue.swift in Sources */,
 				7567B0771B3387F700A72A1E /* APIServiceRequest.swift in Sources */,
 				075E3DEC1A5F4ECF00E001A7 /* AppDelegate.swift in Sources */,
+				7567B07B1B338EB900A72A1E /* MessageHelper.swift in Sources */,
 				759339C01ABB45C700535F1B /* ViewModelFactory.swift in Sources */,
 				75F9A1121AFD705B007229C7 /* UIDeviceExtension.swift in Sources */,
 				07B1237A1AB8CE6A006EA38C /* AttachmentsViewController.swift in Sources */,

@@ -69,7 +69,7 @@ public class ComposeViewModel {
         return ""
     }
     
-    internal func collectDraft(to: [ContactVO], cc:[ContactVO], bcc: [ContactVO], title:String, body:String ) -> Void {
+    func collectDraft(to: [ContactVO], cc:[ContactVO], bcc: [ContactVO], title:String, body:String ) -> Void {
          NSException(name:"name", reason:"reason", userInfo:nil).raise()
     }
 }
@@ -87,11 +87,13 @@ public class ComposeViewModelImpl : ComposeViewModel {
 //  }
     
     public override func sendMessage() {
-        if hasDraft {
+        if hasDraft && message == nil {
             //send;
         }
         else {
-            //save 
+            //save
+//            MessageHelper.messageWithLocation(<#location: MessageLocation#>, recipientList: <#String#>, bccList: <#String#>, ccList: <#String#>, title: <#String#>, encryptionPassword: <#String#>, passwordHint: <#String#>, expirationTimeInterval: <#NSTimeInterval#>, body: <#String#>, attachments: <#[AnyObject]?#>, inManagedObjectContext: <#NSManagedObjectContext#>)
+//            
 //            sharedMessageDataService.saveDraft(recipientList: <#String#>, bccList: <#String#>, ccList: <#String#>, title: <#String#>, encryptionPassword: <#String#>, passwordHint: <#String#>, expirationTimeInterval: <#NSTimeInterval#>, body: <#String#>, attachments: <#[AnyObject]?#>)
             
             //send
@@ -126,8 +128,33 @@ public class ComposeViewModelImpl : ComposeViewModel {
         //        })
     }
     
+    override func collectDraft(to: [ContactVO], cc: [ContactVO], bcc: [ContactVO], title: String, body: String) {
+        
+    }
+    
     public override func updateDraft()
     {
+        if hasDraft && message == nil {
+            //send;
+        }
+        else {
+            //save
+            
+            self.message = MessageHelper.messageWithLocation(MessageLocation.draft,
+                recipientList: "[{\"Name\": \"Feng\", \"Address\" : \"zhj4478@protonmail.ch\"}]",
+                bccList: "[]",
+                ccList: "[]",
+                title: "this is a test draft",
+                encryptionPassword: "",
+                passwordHint: "",
+                expirationTimeInterval: 0,
+                body: "",
+                attachments: nil,
+                inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext!)
+            
+            sharedMessageDataService.saveDraft(self.message);
+            
+        }
         //        sharedMessageDataService.saveDraft(
         //            recipientList: self.composeView.toContacts,
         //            bccList: self.composeView.bccContacts,

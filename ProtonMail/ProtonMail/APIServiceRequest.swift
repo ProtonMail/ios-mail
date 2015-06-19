@@ -25,4 +25,17 @@ public class ApiRequest {
         NSException(name:"name", reason:"reason", userInfo:nil).raise()
         return "";
     }
+    
+    func JSONStringify(value: AnyObject, prettyPrinted: Bool = false) -> String {
+        var options = prettyPrinted ? NSJSONWritingOptions.PrettyPrinted : nil
+        if NSJSONSerialization.isValidJSONObject(value) {
+            if let data = NSJSONSerialization.dataWithJSONObject(value, options: options, error: nil) {
+                if let string = NSString(data: data, encoding: NSUTF8StringEncoding) {
+                    return string as String
+                }
+            }
+        }
+        return ""
+    }
+
 }

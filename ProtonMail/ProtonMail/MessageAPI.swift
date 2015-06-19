@@ -12,49 +12,38 @@ import Foundation
 public class MessageAPI {
     static let MessageAPIVersion : Int = 1
     
+    static let MessageAPIPath = "/messages"
     
-    public class MessageDraftRequest {
+    
+    public class MessageDraftRequest : ApiRequest {
         let message : Message!;
         
         init(message: Message!) {
             self.message = message
         }
         
-        func toJSON() -> Dictionary<String,AnyObject> {
-            return [
-                "Name" : ""]
+        public override func toJSON() -> Dictionary<String,AnyObject> {
+            var messsageDict : [String : AnyObject] = [ "AddressID" : "0",
+                "Body" : message.body,
+                "Subject" : message.title]
+            messsageDict["ToList"] = message.recipientList.parseJson()
+            messsageDict["CCList"] = message.ccList.parseJson()
+            messsageDict["BCCList"] = message.bccList.parseJson()
             
-            //            var parameterStrings: [String : String] = [
-            //                "MessageID" : messageID,
-            //                "RecipientList" : recipientList,
-            //                "BCCList" : bccList,
-            //                "CCList" : ccList,
-            //                "MessageTitle" : title,
-            //                "PasswordHint" : passwordHint]
-            //
-            //            var parameters: [String : AnyObject] = filteredMessageStringParameters(parameterStrings)
-            //
-            //            if expirationDate != nil {
-            //                parameters["ExpirationTime"] = Double(expirationDate?.timeIntervalSince1970 ?? 0)
-            //            }
-            //
-            //            parameters["IsEncrypted"] =  isEncrypted.isEncrypted() ? 1 : 0
-            //            parameters["MessageBody"] = body
-            //
-            //            if !attachments.isEmpty {
-            //                var attachmentsArray: [[String : AnyObject]] = []
-            //
-            //                for attachment in attachments {
-            //                    attachmentsArray.append(attachment.asJSON())
-            //                }
-            //                
-            //                parameters["Attachments"] = attachmentsArray
-            //            }
-            //            
+            let out = ["Message" : messsageDict]
             
+            println(self.JSONStringify(out, prettyPrinted: true))
+            
+            return out
         }
         
+        override public func getRequestPath() -> String {
+            return MessageAPIPath + "/draft"
+        }
         
+        override public func getVersion() -> Int {
+            return MessageAPIVersion
+        }
     }
     
     
