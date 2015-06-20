@@ -34,7 +34,6 @@ class AuthCredential: NSObject, NSCoding {
         return expiration == nil || NSDate().compare(expiration) != .OrderedAscending
     }
     
-
     required init(accessToken: String!, refreshToken: String!, userID: String!, expiration: NSDate!) {
         
         
@@ -46,20 +45,12 @@ class AuthCredential: NSObject, NSCoding {
         super.init()
     }
     
-    
     convenience required init(coder aDecoder: NSCoder) {
         self.init(accessToken: aDecoder.decodeObjectForKey(CoderKey.accessToken) as? String,
             refreshToken: aDecoder.decodeObjectForKey(CoderKey.refreshToken) as? String,
             userID: aDecoder.decodeObjectForKey(CoderKey.userID) as? String,
             expiration: aDecoder.decodeObjectForKey(CoderKey.expiration) as? NSDate);
-        
-        //        self.init(
-        //        accessToken = aDecoder.decodeObjectForKey(CoderKey.accessToken) as? String
-        //        refreshToken = aDecoder.decodeObjectForKey(CoderKey.refreshToken) as? String
-        //        userID = aDecoder.decodeObjectForKey(CoderKey.userID) as? String
-        //        expiration = aDecoder.decodeObjectForKey(CoderKey.expiration) as? NSDate
     }
-    
     
     private func expire() {
         expiration = NSDate.distantPast() as! NSDate
@@ -71,7 +62,6 @@ class AuthCredential: NSObject, NSCoding {
     }
     
     // MARK - Class methods
-    
     class func clearFromKeychain() {
         UICKeyChainStore.removeItemForKey(Key.keychainStore)
     }
@@ -103,7 +93,7 @@ class AuthCredential: NSObject, NSCoding {
         static let userID = "userIDCoderKey"
         static let expiration = "expirationCoderKey"
     }
-
+    
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(accessToken, forKey: CoderKey.accessToken)
         aCoder.encodeObject(refreshToken, forKey: CoderKey.refreshToken)

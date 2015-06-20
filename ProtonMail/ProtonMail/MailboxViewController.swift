@@ -169,11 +169,9 @@ class MailboxViewController: ProtonMailViewController {
 
             let composeViewController: ComposeViewController = segue.destinationViewController as! ComposeViewController
             //let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
-            
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {
-                    composeViewController.message = message
-                    composeViewController.action = composeViewController.draftAction
+                    composeViewController.viewModel = ComposeViewModelImpl(msg: message, action : ComposeMessageAction.OpenDraft)
                 }
                 else
                 {
@@ -182,6 +180,9 @@ class MailboxViewController: ProtonMailViewController {
             } else {
                 println("No selected row.")
             }
+        } else if segue.identifier == kSegueToCompose {
+            let composeViewController: ComposeViewController = segue.destinationViewController.viewControllers![0] as! ComposeViewController
+            composeViewController.viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.NewDraft)
         }
     }
     
@@ -381,9 +382,6 @@ class MailboxViewController: ProtonMailViewController {
                             self.tableView.reloadData()
                         })
                 })
-                
-                
-                
             }
         }
     }

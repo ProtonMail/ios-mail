@@ -20,7 +20,6 @@ let sharedMessageQueue = MessageQueue(queueName: "writeQueue")
 let sharedFailedQueue = MessageQueue(queueName: "failedQueue")
 
 class MessageQueue: PersistentQueue {
-    
     private struct Key {
         static let id = "id"
         static let action = "action"

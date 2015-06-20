@@ -31,7 +31,7 @@ class OpenPGPTests: XCTestCase {
         var error: NSError?
         let result = OpenPGP().checkPassphrase(passphrase, forPrivateKey: privateKey, publicKey: publicKey, error: &error)
         
-        XCTAssertTrue(result, "checkPassphrase failed with error: \(error?)")
+        XCTAssertTrue(result, "checkPassphrase failed with error: \(error)")
     }
     
     func testCheckPassphraseBad() {

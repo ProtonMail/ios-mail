@@ -23,4 +23,12 @@ extension String {
         return self.stringByTrimmingCharactersInSet(.whitespaceAndNewlineCharacterSet())
     }
     
+    func parseJson() -> [[String:String]]? {
+        var error: NSError?
+        let data : NSData! = self.dataUsingEncoding(NSUTF8StringEncoding)
+        let decoded = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error:  &error) as! [[String:String]]
+        return decoded
+    }
+    
 }
+

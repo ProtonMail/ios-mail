@@ -18,19 +18,12 @@ import CoreData
 import Foundation
 
 
-//private let BaseURLString = "http://protonmail.xyz"
-//private let BaseURLString = "http://feng.api.com"
-private let BaseURLString = "https://dev-api.protonmail.ch"
-
-
 let APIServiceErrorDomain = NSError.protonMailErrorDomain(subdomain: "APIService")
 
 let sharedAPIService = APIService()
-
-class APIService {
+ class APIService {
 
     typealias CompletionBlock = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, error: NSError?) -> Void
-    
     typealias CompletionFetchDetail = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, message:Message?, error: NSError?) -> Void
 
     struct ErrorCode {
@@ -58,10 +51,15 @@ class APIService {
     // MARK: - Internal methods
     
     init() {
-        sessionManager = AFHTTPSessionManager(baseURL: NSURL(string: BaseURLString)!)
+        sessionManager = AFHTTPSessionManager(baseURL: NSURL(string: AppConstants.BaseURLString)!)
         sessionManager.requestSerializer = AFJSONRequestSerializer() as AFHTTPRequestSerializer
-       //NSOperationQueueDefaultMaxConcurrentOperationCount sessionManager.operationQueue.maxConcurrentOperationCount
-       // let defaultV = NSOperationQueueDefaultMaxConcurrentOperationCount;
+        
+        #if DEBUG
+            sessionManager.securityPolicy.allowInvalidCertificates = true
+        #endif
+
+        //NSOperationQueueDefaultMaxConcurrentOperationCount sessionManager.operationQueue.maxConcurrentOperationCount
+        //let defaultV = NSOperationQueueDefaultMaxConcurrentOperationCount;
         setupValueTransforms()
     }
 
@@ -86,10 +84,8 @@ class APIService {
                     completion(task: task, response: nil, error: NSError.unableToParseResponse(responseObject))
                 }
             }
-            
             return (success, failure)
         }
-        
         return (nil, nil)
     }
     
@@ -267,7 +263,19 @@ class APIService {
             return nil
         }
         
-        NSValueTransformer.setValueTransformer(tagTransformer, forName: "TagTransformer")
+        
+        let JsonStringTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
+            if let tag = value as? NSArray {
+                let bytes : NSData = NSJSONSerialization.dataWithJSONObject(tag, options: NSJSONWritingOptions.allZeros, error: nil)!
+                let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
+                return strJson
+            }
+    
+            return "";
+        }
+
+        
+        NSValueTransformer.setValueTransformer(JsonStringTransformer, forName: "JsonStringTransformer")
     }
 }
 

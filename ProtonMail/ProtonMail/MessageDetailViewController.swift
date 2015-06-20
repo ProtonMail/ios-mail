@@ -24,39 +24,14 @@ class MessageDetailViewController: ProtonMailViewController {
                 }
                 else
                 {
-                    if !self.message.isDetailDownloaded
-                    {
-                        // println(msg?.isDetailDownloaded)
-                        if let fetchedMessageController = self.fetchedMessageController {
-                            println( fetchedMessageController.fetchedObjects?.count)
-                            if let last = fetchedMessageController.fetchedObjects?.last as? Message {
-                                println(last.isDetailDownloaded)
-                                self.message = last
-                                self.messageDetailView.message = self.message
-                            }
-                            else
-                            {
-                                self.setupFetchedResultsController(self.message.messageID)
-                                if let fetchedMessageController = self.fetchedMessageController {
-                                    println( fetchedMessageController.fetchedObjects?.count)
-                                    if let last = fetchedMessageController.fetchedObjects?.last as? Message {
-                                        println(last.isDetailDownloaded)
-                                        self.message = last
-                                        self.messageDetailView.message = self.message
-                                    }
-                                }
-                                
-                            }
-                        }
-                    }
+                    self.messageDetailView?.updateEmailBodyWebView(true)
+                    self.messageDetailView?.layoutIfNeeded()
                 }
             }
-            self.messageDetailView?.updateEmailBodyWebView(true)
-            self.messageDetailView?.layoutIfNeeded()
         }
     }
     
-    private var actionTapped: String!
+    private var actionTapped: ComposeMessageAction!
     private var fetchedMessageController: NSFetchedResultsController?
     
     @IBOutlet var messageDetailView: MessageDetailView!
@@ -219,25 +194,24 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
     
     
     func messageDetailViewDidTapReplyMessage(messageView: MessageDetailView, message: Message) {
-        actionTapped = ComposeViewN.ComposeMessageAction.Reply
+        actionTapped = ComposeMessageAction.Reply
         self.performSegueWithIdentifier("toCompose", sender: self)
     }
     
     func messageDetailViewDidTapReplyAllMessage(messageView: MessageDetailView, message: Message) {
-        actionTapped = ComposeViewN.ComposeMessageAction.ReplyAll
+        actionTapped = ComposeMessageAction.ReplyAll
         self.performSegueWithIdentifier("toCompose", sender: self)
     }
     
     func messageDetailViewDidTapForwardMessage(messageView: MessageDetailView, message: Message) {
-        actionTapped = ComposeViewN.ComposeMessageAction.Forward
+        actionTapped = ComposeMessageAction.Forward
         self.performSegueWithIdentifier("toCompose", sender: self)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "toCompose") {
             let composeViewController = segue.destinationViewController.viewControllers!.first as! ComposeViewController
-            composeViewController.message = message
-            composeViewController.action = self.actionTapped
+            composeViewController.viewModel = ComposeViewModelImpl(msg: message, action: self.actionTapped)
         }
     }
 }

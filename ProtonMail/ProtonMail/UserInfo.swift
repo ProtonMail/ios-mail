@@ -41,7 +41,7 @@ final class UserInfo: NSObject {
 }
 
 final class Address: NSObject {
-    let address_id: Int
+    let address_id: String
     let email: String
     let send: Int
     let receive: Int
@@ -49,8 +49,8 @@ final class Address: NSObject {
     let display_name: String
     let signature: String
     
-    required init(addressid: Int?, email: String?, send: Int?, receive: Int?, mailbox: Int?, display_name: String?, signature: String?) {
-        self.address_id = addressid ?? 0
+    required init(addressid: String?, email: String?, send: Int?, receive: Int?, mailbox: Int?, display_name: String?, signature: String?) {
+        self.address_id = addressid ?? ""
         self.email = email ?? ""
         self.send = send ?? 0
         self.receive = receive ?? 0
@@ -118,7 +118,7 @@ extension Address: NSCoding {
     
     convenience init(coder aDecoder: NSCoder) {
         self.init(
-            addressid: aDecoder.decodeIntegerForKey(CoderKey.displayName),
+            addressid: aDecoder.decodeStringForKey(CoderKey.displayName),
             email: aDecoder.decodeStringForKey(CoderKey.maxSpace),
             send: aDecoder.decodeIntegerForKey(CoderKey.notificationEmail),
             receive: aDecoder.decodeIntegerForKey(CoderKey.privateKey),
@@ -128,7 +128,7 @@ extension Address: NSCoding {
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeInteger(address_id, forKey: CoderKey.displayName)
+        aCoder.encodeObject(address_id, forKey: CoderKey.displayName)
         aCoder.encodeObject(email, forKey: CoderKey.maxSpace)
         aCoder.encodeInteger(send, forKey: CoderKey.notificationEmail)
         aCoder.encodeInteger(receive, forKey: CoderKey.privateKey)

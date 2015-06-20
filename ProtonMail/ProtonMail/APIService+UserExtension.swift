@@ -39,28 +39,32 @@ extension APIService {
     func userInfo(completion: UserInfoBlock) {
         fetchAuthCredential() { authCredential, error in
             if let authCredential = authCredential {
-                let path = UserPath.base.stringByAppendingPathComponent(authCredential.userID)
+                let path = UserPath.base;//.stringByAppendingPathComponent(authCredential.userID)
                 
                 let completionWrapper: CompletionBlock = { task, response, error in
                     if error != nil {
                         completion(nil, error)
                     } else if let response = response {
-                        println("\(response)")
-                        let userInfo = UserInfo(
-                            response: response,
-                            displayNameResponseKey: "DisplayName",
-                            maxSpaceResponseKey: "MaxSpace",
-                            notificationEmailResponseKey: "NotificationEmail",
-                            privateKeyResponseKey: "EncPrivateKey",
-                            publicKeyResponseKey: "PublicKey",
-                            signatureResponseKey: "Signature",
-                            usedSpaceResponseKey: "UsedSpace",
-                            userStatusResponseKey: "UserStatus",
-                            userAddressResponseKey: "addresses")
-                        
-                        completion(userInfo, nil)
+                        if let errorres = self.isErrorResponse(response) {
+                            completion(nil, errorres)
+                        }else {
+                            println("\(response)")
+                            let userInfo = UserInfo(
+                                response: response["User"] as! Dictionary<String, AnyObject>,
+                                displayNameResponseKey: "DisplayName",
+                                maxSpaceResponseKey: "MaxSpace",
+                                notificationEmailResponseKey: "NotificationEmail",
+                                privateKeyResponseKey: "EncPrivateKey",
+                                publicKeyResponseKey: "PublicKey",
+                                signatureResponseKey: "Signature",
+                                usedSpaceResponseKey: "UsedSpace",
+                                userStatusResponseKey: "UserStatus",
+                                userAddressResponseKey: "Addresses")
+                            
+                            completion(userInfo, nil)
+                        }
                     } else {
-                       completion(nil, NSError.unableToParseResponse(response))
+                        completion(nil, NSError.unableToParseResponse(response))
                     }
                 }
                 
@@ -92,7 +96,7 @@ extension APIService {
                     var error = error
                     var response = response
                     
-                    if self.isErrorResponse(response) {
+                    if (self.isErrorResponse(response) != nil) {
                         let errorCode = (response!["code"] as! Int) ?? 0
                         let description = (response!["error"] as! NSDictionary).description ?? NSLocalizedString("Unknown error")
                         error = NSError.protonMailError(code: errorCode, localizedDescription: description)
@@ -122,7 +126,7 @@ extension APIService {
         request(method: .GET, path: path, parameters: nil, authenticated: false, completion:{ task, response, error in
             
             if error == nil {
-                if self.isErrorResponse(response) {
+                if (self.isErrorResponse(response) != nil) {
                     completion(false, NSError.userNameTaken())
                 }
                 else {
@@ -136,14 +140,23 @@ extension APIService {
         })
     }
     
-    
     // MARK: private mothods
-    private func isErrorResponse(response: AnyObject!) -> Bool {
+    private func isErrorResponse(response: AnyObject!) -> NSError? {
         if let dict = response as? NSDictionary {
-            return dict["error"] != nil
+            let code = dict["Code"] as! Int
+            if (code != 1000)
+            {
+                let error = dict["Error"] as! String;
+                let desc = dict["ErrorDescription"] as! String;
+                return NSError.apiServiceError(code: code, localizedDescription: error, localizedFailureReason: desc, localizedRecoverySuggestion: "")
+            }
+            else
+            {
+                return nil
+            }
         }
         
-        return false
+        return  NSError.unableToParseResponse(response)
     }
 }
 
@@ -168,7 +181,7 @@ extension UserInfo {
             for res in address_response
             {
                 addresses.append(Address(
-                    addressid: res["AddressID"] as? Int,
+                    addressid: res["ID"] as? String,
                     email:res["Email"] as? String,
                     send: res["Send"] as? Int,
                     receive: res["Receive"] as? Int,
@@ -176,7 +189,6 @@ extension UserInfo {
                     display_name: res["DisplayName"] as? String,
                     signature: res["Signature"] as? String))
             }
-
             let usedS = response[usedSpaceResponseKey] as? NSNumber
             let maxS = response[maxSpaceResponseKey] as? NSNumber
             self.init(

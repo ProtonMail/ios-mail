@@ -40,16 +40,25 @@
 - (NSMutableDictionary*) generate_key:(NSString*)passphrase username:(NSString*)user_name error:(NSError**) err;
 
 
+//encrypt mailbox pwd
+- (NSString* ) encrypt_mailbox_pwd:(NSString *)plain slat:(NSString*) value;
+- (NSString* ) decrypt_mailbox_pwd:(NSString *)encrypt_text slat:(NSString*) value;
 
+
+//encrypt decrypt attachment
+- (NSMutableDictionary*) encrypt_attachment:(NSData *) unencrypt_att pub_key:(NSString *)pub_key error:(NSError**) err;
+- (NSMutableDictionary*) encrypt_attachments:(NSData *) unencrypt_att pub_keys:(NSMutableDictionary*)pub_keys error:(NSError**) err;
+
+//binary attachment
+- (NSData *) decrypt_attachment:(NSData*) keyPackage data:(NSData*) dataPackage error:(NSError**) err;
+//armored attachment packages
+- (NSData *) decrypt_attachment_armored:(NSString*) keyPackage data:(NSString*) dataPackage error:(NSError**) err;
 
 // print debug logs
 - (void)EnableDebug:(BOOL) isDebug;
-
-
 - (void)Test_Privatekey:(NSString *)priv_key pass:(NSString*) passphrase;
+- (NSData *) Test_Attachment:(NSString*) package data:(NSString*) datapackage;
 
-- (NSString* ) TestEncryptPwd:(NSString *)plain pass:(NSString*) slat;
-- (NSString* ) TestDecryptPwd:(NSString *)plain pass:(NSString*) slat;
 
 
 

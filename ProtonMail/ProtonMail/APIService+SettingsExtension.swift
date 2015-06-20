@@ -54,9 +54,11 @@ extension APIService {
         request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
     
-    func settingUpdateDomainOrder(new_order: Array<Int>, completion: CompletionBlock) {
+    func settingUpdateDomainOrder(new_order: Array<String>, completion: CompletionBlock) {
         let path = SettingPath.base.stringByAppendingPathComponent("domainorder")
         let parameters = ["order" : new_order]
         request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
 }
+
+

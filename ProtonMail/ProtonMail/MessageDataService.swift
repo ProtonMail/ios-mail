@@ -51,6 +51,12 @@ class MessageDataService {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
+    
+    
+    /// 
+    
+    
+    
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
     func fetchAttachmentForAttachment(attachment: Attachment, downloadTask: ((NSURLSessionDownloadTask) -> Void)?, completion:((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
         if let localURL = attachment.localURL {
@@ -134,16 +140,14 @@ class MessageDataService {
                         var error: NSError?
                         
                         if response != nil {
-                            let message_n = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: response, inManagedObjectContext: context, error: &error) as! Message
-                            
+                            //TODO need check the respons code
+                            let msg = response?["Message"] as! Dictionary<String,AnyObject>
+                            let message_n = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg, inManagedObjectContext: context, error: &error) as! Message
                             if error == nil {
                                 message_n.isDetailDownloaded = true
                                 message_n.isRead = true
                                 error = context.saveUpstreamIfNeeded()
-                                //println(message_n.isDetailDownloaded)
                                 dispatch_async(dispatch_get_main_queue()) {
-                                    
-                                    //println(message_n.isDetailDownloaded)
                                     completion(task: task, response: response, message: message_n, error: error)
                                 }
                             }
@@ -177,14 +181,14 @@ class MessageDataService {
                         var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
                         
                         if error == nil {
-                            for message in messages as! [Message] {
-                                // PRO-157 - The issue for inbox <--> starred page switch
-                                // only change the location if the message is new or not starred
-                                // this prevents starred messages from disappearing out of the inbox until the next refresh
-                                if message.inserted || location != .starred {
-                                    message.locationNumber = location.rawValue
-                                }
-                            }
+//                            for message in messages as! [Message] {
+//                                // PRO-157 - The issue for inbox <--> starred page switch
+//                                // only change the location if the message is new or not starred
+//                                // this prevents starred messages from disappearing out of the inbox until the next refresh
+//                                if message.inserted || location != .starred {
+//                                    message.locationNumber = location.rawValue
+//                                }
+//                            }
                             error = context.saveUpstreamIfNeeded()
                         }
                         if error != nil  {
@@ -217,14 +221,14 @@ class MessageDataService {
                         var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
                         
                         if error == nil {
-                            for message in messages as! [Message] {
-                                // PRO-157 - The issue for inbox <--> starred page switch
-                                // only change the location if the message is new or not starred
-                                // this prevents starred messages from disappearing out of the inbox until the next refresh
-                                if message.inserted || location != .starred {
-                                    message.locationNumber = location.rawValue
-                                }
-                            }
+//                            for message in messages as! [Message] {
+//                                // PRO-157 - The issue for inbox <--> starred page switch
+//                                // only change the location if the message is new or not starred
+//                                // this prevents starred messages from disappearing out of the inbox until the next refresh
+//                                if message.inserted || location != .starred {
+//                                    message.locationNumber = location.rawValue
+//                                }
+//                            }
                             error = context.saveUpstreamIfNeeded()
                         }
                         if error != nil  {
@@ -274,6 +278,24 @@ class MessageDataService {
         return nil
     }
     
+    
+    ////
+    
+    func deleteMessage(messageID : String) {
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            
+            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                context.deleteObject(message)
+            }
+            if let error = context.saveUpstreamIfNeeded() {
+                NSLog("\(__FUNCTION__) error: \(error)")
+
+            }
+        }
+    }
+    
+    ///
+    
     func launchCleanUpIfNeeded() {
         if !sharedUserDataService.isUserCredentialStored || !userCachedStatus.isCacheOk() {
             cleanUp()
@@ -314,20 +336,8 @@ class MessageDataService {
         }
     }
     
-    func saveDraft(#recipientList: String, bccList: String, ccList: String, title: String, encryptionPassword: String, passwordHint: String, expirationTimeInterval: NSTimeInterval, body: String, attachments: [AnyObject]?) {
+    func saveDraft(message : Message!) {
         if let context = sharedCoreDataService.mainManagedObjectContext {
-            let message = messageWithLocation(.draft,
-                recipientList: recipientList,
-                bccList: bccList,
-                ccList: ccList,
-                title: title,
-                encryptionPassword: encryptionPassword,
-                passwordHint: passwordHint,
-                expirationTimeInterval: expirationTimeInterval,
-                body: body,
-                attachments: attachments,
-                inManagedObjectContext: context)
-            
             if let error = context.saveUpstreamIfNeeded() {
                 NSLog("\(__FUNCTION__) error: \(error)")
             } else {
@@ -336,11 +346,22 @@ class MessageDataService {
         }
     }
     
+    func deleteDraft (message : Message!)
+    {
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            if let error = context.saveUpstreamIfNeeded() {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            } else {
+                queue(message: message, action: .delete)
+            }
+        }
+    }
+    
     func send(#recipientList: String, bccList: String, ccList: String, title: String, encryptionPassword: String, passwordHint: String, expirationTimeInterval: NSTimeInterval, body: String, attachments: [AnyObject]?, completion: CompletionBlock?) {
         var error: NSError?
         
         if let context = sharedCoreDataService.mainManagedObjectContext {
-            let message = messageWithLocation(.outbox,
+            let message = MessageHelper.messageWithLocation(.outbox,
                 recipientList: recipientList,
                 bccList: bccList,
                 ccList: ccList,
@@ -456,12 +477,12 @@ class MessageDataService {
         }
     }
     
-    private func attachmentsForMessage(message: Message) -> [APIService.Attachment] {
-        var attachments: [APIService.Attachment] = []
+    private func attachmentsForMessage(message: Message) -> [MessageAPI.Attachment] {
+        var attachments: [MessageAPI.Attachment] = []
         
         for messageAttachment in message.attachments.allObjects as! [Attachment] {
             if let fileDataBase64Encoded = messageAttachment.fileData?.base64EncodedStringWithOptions(nil) {
-                let attachment = APIService.Attachment(fileName: messageAttachment.fileName, mimeType: messageAttachment.mimeType, fileData: ["self" : fileDataBase64Encoded], fileSize: messageAttachment.fileSize.integerValue)
+                let attachment = MessageAPI.Attachment(fileName: messageAttachment.fileName, mimeType: messageAttachment.mimeType, fileData: ["self" : fileDataBase64Encoded], fileSize: messageAttachment.fileSize.integerValue)
                 
                 attachments.append(attachment)
             }
@@ -495,71 +516,6 @@ class MessageDataService {
         }
         
         return messageBody
-    }
-    
-    // FIXME: Tried moving to Message extension, but caused a segmentation fault 11 in Xcode 6.1.1
-    private func messageWithLocation(
-        location: MessageLocation,
-        recipientList: String,
-        bccList: String,
-        ccList: String,
-        title: String,
-        encryptionPassword: String,
-        passwordHint: String,
-        expirationTimeInterval: NSTimeInterval,
-        body: String,
-        attachments: [AnyObject]?,
-        inManagedObjectContext context: NSManagedObjectContext) -> Message {
-            let message = Message(context: context)
-            message.messageID = "0"  //default is 0,  if you already have a draft ID pass here.
-            message.location = location
-            message.recipientList = recipientList
-            message.bccList = bccList
-            message.ccList = ccList
-            message.title = title
-            message.passwordHint = passwordHint
-            
-            if expirationTimeInterval > 0 {
-                message.expirationTime = NSDate(timeIntervalSince1970: expirationTimeInterval)
-            }
-            
-            var error: NSError?
-            message.encryptBody(body, error: &error)
-            
-            if error != nil {
-                NSLog("\(__FUNCTION__) error: \(error)")
-            }
-            
-            if !encryptionPassword.isEmpty {
-                if let encryptedBody = body.encryptWithPassphrase(encryptionPassword, error: &error) {
-                    message.isEncrypted = true
-                    message.passwordEncryptedBody = encryptedBody
-                } else {
-                    NSLog("\(__FUNCTION__) encryption error: \(error)")
-                }
-            }
-            
-            if let attachments = attachments {
-                for (index, attachment) in enumerate(attachments) {
-                    if let image = attachment as? UIImage {
-                        if let fileData = UIImagePNGRepresentation(image) {
-                            let attachment = Attachment(context: context)
-                            attachment.attachmentID = "0"
-                            attachment.message = message
-                            attachment.fileName = "\(index).png"
-                            attachment.mimeType = "image/png"
-                            attachment.fileData = fileData
-                            attachment.fileSize = fileData.length
-                            continue
-                        }
-                    }
-                    
-                    let description = attachment.description ?? "unknown"
-                    NSLog("\(__FUNCTION__) unsupported attachment type \(description)")
-                }
-            }
-            
-            return message
     }
     
     private func processIncrementalUpdateMessages(messages: Array<Dictionary<String, AnyObject>>, task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, completion: CompletionBlock?) {
@@ -622,30 +578,25 @@ class MessageDataService {
                     let attachments = self.attachmentsForMessage(message)
                     
                     let completionWrapper: CompletionBlock = { task, response, error in
-                        if let messageID = response?["MessageID"] as? String {
-                            message.messageID = messageID
-                            
-                            if let error = context.saveUpstreamIfNeeded() {
-                                NSLog("\(__FUNCTION__) error: \(error)")
+                        
+                        if let mess = response?["Message"] as? Dictionary<String, AnyObject> {
+                            if let messageID = mess["ID"] as? String {
+                                message.messageID = messageID
+                                message.isDetailDownloaded = true
+                                if let error = context.saveUpstreamIfNeeded() {
+                                    NSLog("\(__FUNCTION__) error: \(error)")
+                                }
                             }
                         }
-                        
                         completion?(task: task, response: response, error: error)
                     }
                     
-                    sharedAPIService.messageDraft(
-                        recipientList: message.recipientList,
-                        bccList: message.bccList,
-                        ccList: message.ccList,
-                        title: message.title,
-                        passwordHint: message.passwordHint,
-                        expirationDate: message.expirationTime,
-                        isEncrypted: message.isEncrypted,
-                        body: ["self" : message.body],
-                        attachments: attachments,
-                        completion: completionWrapper)
-                    
-                    return
+                    if message.isDetailDownloaded && message.messageID != "0" {
+                        sharedAPIService.messagePUT(MessageAPI.MessageUpdateDraftRequest(message:message), completion: completionWrapper)
+                    } else {
+                        sharedAPIService.messagePOST( MessageAPI.MessageDraftRequest(message:message), completion: completionWrapper)
+                    }
+                    return;
                 }
             }
         }
@@ -724,10 +675,15 @@ class MessageDataService {
     }
     
     // MARK: Queue
-    private func writeQueueCompletionBlockForElementID(elementID: NSUUID) -> CompletionBlock {
+    private func writeQueueCompletionBlockForElementID(elementID: NSUUID, messageID : String, actionString : String) -> CompletionBlock {
         return { task, response, error in
             sharedMessageQueue.isInProgress = false
             if error == nil {
+                if let action = MessageAction(rawValue: actionString) {
+                    if action == MessageAction.delete {
+                        self.deleteMessage(messageID)
+                    }
+                }
                 sharedMessageQueue.remove(elementID: elementID)
                 self.dequeueIfNeeded()
             } else {
@@ -745,6 +701,16 @@ class MessageDataService {
 //                        }
                         if error?.code == -1009 || error?.code == -1004 || error?.code == -1001 { //internet issue
                             isInternetIssue = true
+                        }
+                    }
+                }
+                
+                if (statusCode == 404)
+                {
+                    if  let (uuid, object: AnyObject) = sharedMessageQueue.next() {
+                        if let element = object as? [String : String] {
+                            let count = element["count"]
+                            sharedMessageQueue.remove(elementID: elementID)
                         }
                     }
                 }
@@ -771,11 +737,11 @@ class MessageDataService {
                 sharedMessageQueue.isInProgress = true
                 switch action {
                 case .saveDraft:
-                    saveDraftWithMessageID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid))
+                    saveDraftWithMessageID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .send:
-                    sendMessageID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid))
+                    sendMessageID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 default:
-                    sharedAPIService.messageID(messageID, updateWithAction: action, completion: writeQueueCompletionBlockForElementID(uuid))
+                    sharedAPIService.messagePUT(MessageAPI.MessageActionRequest(action: actionString, ids: [messageID]), completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 }
             } else {
                 NSLog("\(__FUNCTION__) Unsupported action \(actionString), removing from queue.")

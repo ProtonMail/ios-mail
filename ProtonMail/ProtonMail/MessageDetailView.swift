@@ -19,6 +19,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
     private var attachments: [Attachment] = []
     private var isShowingDetail: Bool = false
     private var isViewingMoreOptions: Bool = false
+    private var receipientlist : String = "";
     
     // MARK: - Private constants
     
@@ -102,6 +103,8 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
         message.addObserver(self, forKeyPath: Message.Attributes.isDetailDownloaded, options: .New, context: &kKVOContext)
         
         self.backgroundColor = UIColor.whiteColor()
+        
+        self.generateData()
         self.addSubviews()
         self.makeConstraints()
         
@@ -216,7 +219,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
     
     func updateFromToField()
     {
-//        self.emailDetailToLabel.text = "To: \(self.message.recipientList)"
+//        self.emailDetailToLabel.text = "To: \(receipientlist)"
 //        self.emailDetailToContentLabel.text = "\(message.recipientNameList)"
 //        
 //        self.emailDetailCCLabel.text = "Cc: \(self.message.ccList)"
@@ -271,7 +274,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
         self.emailRecipients = UILabel()
         self.emailRecipients.font = UIFont.robotoRegular(size: UIFont.Size.h6)
         self.emailRecipients.numberOfLines = 1
-        self.emailRecipients.text = "To \(self.message.recipientList)"
+        self.emailRecipients.text = "To \(self.receipientlist)"
         self.emailRecipients.textColor = UIColor.ProtonMail.Gray_999DA1
         self.emailHeaderView.addSubview(emailRecipients)
         
@@ -555,7 +558,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
         if (isShowingDetail) {
             UIView.transitionWithView(self.emailRecipients, duration: kAnimationDuration, options: kAnimationOption, animations: { () -> Void in
                 self.emailRecipients.text = "From: \(self.message.sender)"
-                self.emailDetailToLabel.text = "To: \(self.message.recipientList)"
+                self.emailDetailToLabel.text = "To: \(self.receipientlist)"
                 self.emailDetailCCLabel.text = "CC: \(self.message.ccList)"
                 self.emailDetailToLabel.sizeToFit()
                 self.emailDetailCCLabel.sizeToFit()
@@ -587,7 +590,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
             })
         } else {
             UIView.transitionWithView(self.emailRecipients, duration: kAnimationDuration, options: kAnimationOption, animations: { () -> Void in
-                self.emailRecipients.text = "To \(self.message.recipientList)"
+                self.emailRecipients.text = "To \(self.receipientlist)"
                 }, completion: nil)
             
             self.emailDetailButton.setTitle(NSLocalizedString("Details"), forState: UIControlState.Normal)
@@ -647,6 +650,20 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
     
     // MARK: - Private methods
     
+    private func generateData()
+    {
+        //var receipientnamelist = "";
+        let recipients : [[String : String]] = message.recipientList.parseJson()!
+        for dict:[String : String] in recipients {
+            if(receipientlist.isEmpty) {
+                receipientlist = dict.getDisplayName()
+            }
+            else{
+                receipientlist = receipientlist + "," + dict.getDisplayName()
+            }
+        }
+    }
+    
     private func configureEmailDetailToLabel() {
         self.emailDetailView = UIView()
         self.emailDetailView.clipsToBounds = true
@@ -655,7 +672,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
         self.emailDetailToLabel = UILabel()
         self.emailDetailToLabel.font = UIFont.robotoLight(size: UIFont.Size.h5)
         self.emailDetailToLabel.numberOfLines = 1
-        self.emailDetailToLabel.text = "To: \(self.message.recipientList)"
+        self.emailDetailToLabel.text = "To: \(self.receipientlist)"
         self.emailDetailToLabel.textColor = UIColor.ProtonMail.Gray_999DA1
         self.emailDetailToLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailToLabel)
