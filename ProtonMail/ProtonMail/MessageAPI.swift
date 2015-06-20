@@ -14,7 +14,6 @@ public class MessageAPI {
     
     static let MessageAPIPath = "/messages"
     
-    
     public class MessageDraftRequest : ApiRequest {
         let message : Message!;
         
@@ -78,7 +77,6 @@ public class MessageAPI {
                     ids.append(message.messageID)
                 }
             }
-
         }
         
         init(action:String, ids : [String]!) {
@@ -96,7 +94,7 @@ public class MessageAPI {
         }
         
         override public func getRequestPath() -> String {
-             return MessageAPIPath + "/" + self.action + AppConstants.getDebugOption
+            return MessageAPIPath + "/" + self.action + AppConstants.getDebugOption
         }
         
         override public func getVersion() -> Int {
@@ -105,8 +103,88 @@ public class MessageAPI {
     }
     
     
-    
+    ///
+    public class MessageSendRequest : ApiRequest {
+        let message : Message! //
+        //
+        let AttPackets : [MessageAttKeyPackage]! // for optside encrypt att.
+        let clearBody : String! //optional for out side user
+        let sendPackage : MessageSendPackage! //required internal
+        
+        init(message: Message!) {
+            self.message = message
+        }
+        
+        public override func toJSON() -> Dictionary<String,AnyObject> {
+            let address_id : String = sharedUserDataService.userAddresses.first?.address_id ?? "1000";
+            var messsageDict : [String : AnyObject] = [ "AddressID" : address_id,
+                "Body" : message.body,
+                "Subject" : message.title]
+            messsageDict["ToList"] = message.recipientList.parseJson()
+            messsageDict["CCList"] = message.ccList.parseJson()
+            messsageDict["BCCList"] = message.bccList.parseJson()
+            
+            let out = ["Message" : messsageDict]
+            
+            println(self.JSONStringify(out, prettyPrinted: true))
+            
+            return out
+        }
+        
+        override public func getRequestPath() -> String {
+            
+            return MessageAPIPath + "/draft"
+        }
+        
+        override public func getVersion() -> Int {
+            return MessageAPIVersion
+        }
+    }
 
+    public class MessageSendPackage : ApiRequest {
+        let address : String!
+        let type : Int!
+        let body : String!
+        let token : String! //optional for outside
+        let encToken : String! //optional for outside
+        let AttPackets : [MessageAttKeyPackage]! // internal
+        
+        init(action:String) {
+
+        }
+        
+        public override func toJSON() -> Dictionary<String,AnyObject> {
+            let out = ["IDs" : ""]
+            
+            //println(self.JSONStringify(out, prettyPrinted: true))
+            
+            return out
+        }
+    }
+
+    public class MessageAttKeyPackage : ApiRequest {
+        let ID : String!
+        let key : String!
+        let Algo : String!
+        init(action:String) {
+            
+        }
+        
+        public override func toJSON() -> Dictionary<String,AnyObject> {
+            let out = ["IDs" : ""]
+            
+            //println(self.JSONStringify(out, prettyPrinted: true
+            return out
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     public struct Contacts {
         let email: String
         let name: String

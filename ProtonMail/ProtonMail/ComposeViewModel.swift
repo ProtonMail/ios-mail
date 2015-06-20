@@ -137,8 +137,8 @@ public class ComposeViewModelImpl : ComposeViewModel {
             self.message?.ccList = toJsonString(self.ccSelectedContacts)
             self.message?.bccList = toJsonString(self.bccSelectedContacts)
             self.message?.title = title
-            self.message?.body = body
             self.message?.time = NSDate()
+            MessageHelper.updateMessage(self.message!, expirationTimeInterval: 0, body: body, attachments: nil)
             if let error = message!.managedObjectContext?.saveUpstreamIfNeeded() {
                 NSLog("\(__FUNCTION__) error: \(error)")
             }
@@ -178,9 +178,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
             return body
         default:
             return htmlString
-            
         }
-        
     }
     
 }

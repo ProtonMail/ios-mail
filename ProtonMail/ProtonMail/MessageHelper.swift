@@ -78,4 +78,50 @@ public class MessageHelper {
             
             return message
     }
+    
+    static func updateMessage (message: Message ,
+        expirationTimeInterval: NSTimeInterval,
+        body: String,
+        attachments: [AnyObject]?)
+    {
+        if expirationTimeInterval > 0 {
+            message.expirationTime = NSDate(timeIntervalSince1970: expirationTimeInterval)
+        }
+        
+        var error: NSError?
+        message.encryptBody(body, error: &error)
+        
+        if error != nil {
+            NSLog("\(__FUNCTION__) error: \(error)")
+        }
+        
+//        if !encryptionPassword.isEmpty {
+//            if let encryptedBody = body.encryptWithPassphrase(encryptionPassword, error: &error) {
+//                message.isEncrypted = true
+//                message.passwordEncryptedBody = encryptedBody
+//            } else {
+//                NSLog("\(__FUNCTION__) encryption error: \(error)")
+//            }
+//        }
+//        
+//        if let attachments = attachments {
+//            for (index, attachment) in enumerate(attachments) {
+//                if let image = attachment as? UIImage {
+//                    if let fileData = UIImagePNGRepresentation(image) {
+//                        let attachment = Attachment(context: context)
+//                        attachment.attachmentID = "0"
+//                        attachment.message = message
+//                        attachment.fileName = "\(index).png"
+//                        attachment.mimeType = "image/png"
+//                        attachment.fileData = fileData
+//                        attachment.fileSize = fileData.length
+//                        continue
+//                    }
+//                }
+//                
+//                let description = attachment.description ?? "unknown"
+//                NSLog("\(__FUNCTION__) unsupported attachment type \(description)")
+//            }
+//        }
+    }
 }

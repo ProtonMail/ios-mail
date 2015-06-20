@@ -139,13 +139,8 @@ class ComposeViewController : ProtonMailViewController {
         if self.viewModel.hasDraft || composeView.hasContent || ((attachments?.count ?? 0) > 0) {
             let alertController = UIAlertController(title: NSLocalizedString("Confirmation"), message: nil, preferredStyle: .ActionSheet)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Save draft"), style: .Default, handler: { (action) -> Void in
-                self.viewModel.collectDraft(
-                    self.composeView.toContactPicker.contactsSelected as! [ContactVO],
-                    cc: self.composeView.ccContactPicker.contactsSelected as! [ContactVO],
-                    bcc: self.composeView.bccContactPicker.contactsSelected as! [ContactVO],
-                    title: self.composeView.subject.text,
-                    body: self.composeView.htmlEditor.getHTML())
                 
+                self.collectDraft()
                 self.viewModel.updateDraft()
                 dismiss()
             }))
@@ -161,6 +156,16 @@ class ComposeViewController : ProtonMailViewController {
         }
     }
     
+    private func collectDraft()
+    {
+        self.viewModel.collectDraft(
+            self.composeView.toContactPicker.contactsSelected as! [ContactVO],
+            cc: self.composeView.ccContactPicker.contactsSelected as! [ContactVO],
+            bcc: self.composeView.bccContactPicker.contactsSelected as! [ContactVO],
+            title: self.composeView.subject.text,
+            body: self.composeView.htmlEditor.getHTML())
+    }
+    
     @IBAction func sendClicked(sender: AnyObject) {
         if self.composeView.expirationTimeInterval > 0 {
             if self.composeView.hasOutSideEmails && count(self.encryptionPassword) <= 0 {
@@ -169,12 +174,9 @@ class ComposeViewController : ProtonMailViewController {
             }
         }
         
-        self.viewModel.collectDraft(
-            self.composeView.toContactPicker.contactsSelected as! [ContactVO],
-            cc: self.composeView.toContactPicker.contactsSelected as! [ContactVO],
-            bcc: self.composeView.toContactPicker.contactsSelected as! [ContactVO],
-            title: "", body: "")
-
+        self.collectDraft()
+        self.viewModel.sendMessage()
+        
 //        if presentingViewController != nil {
 //            dismissViewControllerAnimated(true, completion: nil)
 //        } else {
