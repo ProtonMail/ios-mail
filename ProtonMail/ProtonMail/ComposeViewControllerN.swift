@@ -136,9 +136,16 @@ class ComposeViewController : ProtonMailViewController {
             }
         }
 
-        if composeView.hasContent || ((attachments?.count ?? 0) > 0) {
+        if self.viewModel.hasDraft || composeView.hasContent || ((attachments?.count ?? 0) > 0) {
             let alertController = UIAlertController(title: NSLocalizedString("Confirmation"), message: nil, preferredStyle: .ActionSheet)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Save draft"), style: .Default, handler: { (action) -> Void in
+                self.viewModel.collectDraft(
+                    self.composeView.toContactPicker.contactsSelected as! [ContactVO],
+                    cc: self.composeView.ccContactPicker.contactsSelected as! [ContactVO],
+                    bcc: self.composeView.bccContactPicker.contactsSelected as! [ContactVO],
+                    title: self.composeView.subject.text,
+                    body: self.composeView.htmlEditor.getHTML())
+                
                 self.viewModel.updateDraft()
                 dismiss()
             }))
@@ -167,12 +174,7 @@ class ComposeViewController : ProtonMailViewController {
             cc: self.composeView.toContactPicker.contactsSelected as! [ContactVO],
             bcc: self.composeView.toContactPicker.contactsSelected as! [ContactVO],
             title: "", body: "")
-        
-        
-        self.viewModel.updateDraft()
-        
-        
-        
+
 //        if presentingViewController != nil {
 //            dismissViewControllerAnimated(true, completion: nil)
 //        } else {
@@ -188,7 +190,6 @@ class ComposeViewController : ProtonMailViewController {
     override func shouldShowSideMenu() -> Bool {
         return false
     }
-    
     
     // MARK: - Private methods
     private func keyboardWillShow(sender: NSNotification) {
@@ -282,9 +283,7 @@ class ComposeViewController : ProtonMailViewController {
 //                updateSelectedContacts(&self.viewModel.toSelectedContacts, withNameList: message.recipientNameList, emailList: message.recipientList)
 //                updateSelectedContacts(&self.viewModel.ccSelectedContacts, withNameList: message.ccNameList, emailList: message.ccList)
 //                updateSelectedContacts(&self.viewModel.bccSelectedContacts, withNameList: message.bccNameList, emailList: message.bccList)
-////
-////                composeView.subject.text = message.title
-////                
+
 ////                if !message.attachments.isEmpty {
 ////                    attachments = []
 ////                }

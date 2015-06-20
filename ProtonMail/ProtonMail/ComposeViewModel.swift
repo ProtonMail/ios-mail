@@ -18,7 +18,17 @@ public class ComposeViewModel {
     var bccSelectedContacts: [ContactVO]! = [ContactVO]()
     var contacts: [ContactVO]! = [ContactVO]()
     
-    var hasDraft : Bool = false;
+    var hasDraft : Bool {
+        get{
+            return message?.isDetailDownloaded ?? false
+        }
+    }
+    var needsUpdate : Bool {
+        get{
+            return toChanged || ccChanged || bccChanged || titleChanged || bodyChanged
+        }
+    }
+    
     var toChanged : Bool = false;
     var ccChanged : Bool = false;
     var bccChanged : Bool = false;
@@ -80,11 +90,18 @@ public class ComposeViewModelImpl : ComposeViewModel {
         super.init()
         self.message = msg
         self.messageAction = action
+        
+        self.updateContacts()
     }
     
-//  public override func collectDraft(to: [ContactVO], cc:[ContactVO], bcc: [ContactVO], title:String, body:String ) -> Void {
-//        
-//  }
+    private func updateContacts()
+    {
+        if message != nil {
+            self.toSelectedContacts = toContacts(self.message!.recipientList)
+            self.ccSelectedContacts = toContacts(self.message!.ccList)
+            self.bccSelectedContacts = toContacts(self.message!.bccList)
+        }
+    }
     
     public override func sendMessage() {
         if hasDraft && message == nil {
@@ -92,92 +109,48 @@ public class ComposeViewModelImpl : ComposeViewModel {
         }
         else {
             //save
-//            MessageHelper.messageWithLocation(<#location: MessageLocation#>, recipientList: <#String#>, bccList: <#String#>, ccList: <#String#>, title: <#String#>, encryptionPassword: <#String#>, passwordHint: <#String#>, expirationTimeInterval: <#NSTimeInterval#>, body: <#String#>, attachments: <#[AnyObject]?#>, inManagedObjectContext: <#NSManagedObjectContext#>)
-//            
-//            sharedMessageDataService.saveDraft(recipientList: <#String#>, bccList: <#String#>, ccList: <#String#>, title: <#String#>, encryptionPassword: <#String#>, passwordHint: <#String#>, expirationTimeInterval: <#NSTimeInterval#>, body: <#String#>, attachments: <#[AnyObject]?#>)
-            
+
             //send
         }
-
-        
-        
-        //        sharedMessageDataService.send(
-        //            recipientList: self.composeView.toContacts,
-        //            bccList: self.composeView.bccContacts,
-        //            ccList: self.composeView.ccContacts,
-        //            title: self.composeView.subjectTitle,
-        //            encryptionPassword: self.encryptionPassword,
-        //            passwordHint: self.encryptionPasswordHint,
-        //            expirationTimeInterval: self.composeView.expirationTimeInterval,
-        //            body: self.composeView.htmlEditor.getHTML(),
-        //            attachments: self.attachments,
-        //            completion: {_, _, error in
-        //                if error == nil {
-        //                    if let message = self.message {
-        //                        println("MessageID after send:\(message.messageID)")
-        //                        println("Message Location : \(message.location )")
-        //                        if(message.messageID != "0" && message.location == MessageLocation.draft)
-        //                        {
-        //                            message.location = .trash
-        //                        }
-        //                        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
-        //                            NSLog("\(__FUNCTION__) error: \(error)")
-        //                        }
-        //                    }
-        //                }
-        //        })
     }
     
     override func collectDraft(to: [ContactVO], cc: [ContactVO], bcc: [ContactVO], title: String, body: String) {
         
-    }
-    
-    public override func updateDraft()
-    {
-        if hasDraft && message == nil {
-            //send;
-        }
-        else {
-            //save
-            
+        self.toSelectedContacts = to
+        self.ccSelectedContacts = cc
+        self.bccSelectedContacts = bcc
+        
+        if message == nil {
             self.message = MessageHelper.messageWithLocation(MessageLocation.draft,
-                recipientList: "[{\"Name\": \"Feng\", \"Address\" : \"zhj4478@protonmail.ch\"}]",
-                bccList: "[]",
-                ccList: "[]",
-                title: "this is a test draft",
+                recipientList: toJsonString(self.toSelectedContacts),
+                bccList: toJsonString(self.bccSelectedContacts),
+                ccList: toJsonString(self.ccSelectedContacts),
+                title: title,
                 encryptionPassword: "",
                 passwordHint: "",
                 expirationTimeInterval: 0,
-                body: "",
+                body: body,
                 attachments: nil,
                 inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext!)
-            
-            sharedMessageDataService.saveDraft(self.message);
-            
+        } else {
+            self.message?.recipientList = toJsonString(self.toSelectedContacts)
+            self.message?.ccList = toJsonString(self.ccSelectedContacts)
+            self.message?.bccList = toJsonString(self.bccSelectedContacts)
+            self.message?.title = title
+            self.message?.body = body
+            self.message?.time = NSDate()
+            if let error = message!.managedObjectContext?.saveUpstreamIfNeeded() {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
         }
-        //        sharedMessageDataService.saveDraft(
-        //            recipientList: self.composeView.toContacts,
-        //            bccList: self.composeView.bccContacts,
-        //            ccList: self.composeView.ccContacts,
-        //            title: self.composeView.subjectTitle,
-        //            encryptionPassword: self.encryptionPassword,
-        //            passwordHint: self.encryptionPasswordHint,
-        //            expirationTimeInterval: self.composeView.expirationTimeInterval,
-        //            body: self.composeView.htmlEditor.getHTML(),
-        //            attachments: self.attachments)
+    }
+    
+    public override func updateDraft() {
+        sharedMessageDataService.saveDraft(self.message);
     }
     
     override public func deleteDraft() {
-        //        sharedMessageDataService.saveDraft(
-        //            recipientList: self.composeView.toContacts,
-        //            bccList: self.composeView.bccContacts,
-        //            ccList: self.composeView.ccContacts,
-        //            title: self.composeView.subjectTitle,
-        //            encryptionPassword: self.encryptionPassword,
-        //            passwordHint: self.encryptionPasswordHint,
-        //            expirationTimeInterval: self.composeView.expirationTimeInterval,
-        //            body: self.composeView.htmlEditor.getHTML(),
-        //            attachments: self.attachments)
+        sharedMessageDataService.deleteDraft(self.message);
     }
     
     public override func markAsRead() {
@@ -201,7 +174,8 @@ public class ComposeViewModelImpl : ComposeViewModel {
         case ComposeMessageAction.NewDraft:
             return htmlString
         case ComposeMessageAction.OpenDraft:
-            return htmlString
+            let body = message!.decryptBodyIfNeeded(nil) ?? ""
+            return body
         default:
             return htmlString
             
@@ -209,4 +183,32 @@ public class ComposeViewModelImpl : ComposeViewModel {
         
     }
     
+}
+
+
+
+
+extension ComposeViewModelImpl {
+    func toJsonString(contacts : [ContactVO]) -> String {
+        
+        var out : [[String : String]] = [[String : String]]();
+        for contact in contacts {
+            let to : [String : String] = ["Name" : contact.name ?? "", "Address" : contact.email ?? ""]
+            out.append(to)
+        }
+        
+        let bytes : NSData = NSJSONSerialization.dataWithJSONObject(out, options: NSJSONWritingOptions.allZeros, error: nil)!
+        let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
+        
+        return strJson
+    }
+    func toContacts(json : String) -> [ContactVO] {
+        
+        var out : [ContactVO] = [ContactVO]();
+        let recipients : [[String : String]] = json.parseJson()!
+        for dict:[String : String] in recipients {
+            out.append(ContactVO(id: "", name: dict["Name"], email: dict["Address"]))
+        }
+        return out
+    }
 }

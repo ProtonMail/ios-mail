@@ -51,6 +51,12 @@ class MessageDataService {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
+    
+    
+    /// 
+    
+    
+    
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
     func fetchAttachmentForAttachment(attachment: Attachment, downloadTask: ((NSURLSessionDownloadTask) -> Void)?, completion:((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
         if let localURL = attachment.localURL {
@@ -175,14 +181,14 @@ class MessageDataService {
                         var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
                         
                         if error == nil {
-                            for message in messages as! [Message] {
-                                // PRO-157 - The issue for inbox <--> starred page switch
-                                // only change the location if the message is new or not starred
-                                // this prevents starred messages from disappearing out of the inbox until the next refresh
-                                if message.inserted || location != .starred {
-                                    message.locationNumber = location.rawValue
-                                }
-                            }
+//                            for message in messages as! [Message] {
+//                                // PRO-157 - The issue for inbox <--> starred page switch
+//                                // only change the location if the message is new or not starred
+//                                // this prevents starred messages from disappearing out of the inbox until the next refresh
+//                                if message.inserted || location != .starred {
+//                                    message.locationNumber = location.rawValue
+//                                }
+//                            }
                             error = context.saveUpstreamIfNeeded()
                         }
                         if error != nil  {
@@ -215,14 +221,14 @@ class MessageDataService {
                         var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
                         
                         if error == nil {
-                            for message in messages as! [Message] {
-                                // PRO-157 - The issue for inbox <--> starred page switch
-                                // only change the location if the message is new or not starred
-                                // this prevents starred messages from disappearing out of the inbox until the next refresh
-                                if message.inserted || location != .starred {
-                                    message.locationNumber = location.rawValue
-                                }
-                            }
+//                            for message in messages as! [Message] {
+//                                // PRO-157 - The issue for inbox <--> starred page switch
+//                                // only change the location if the message is new or not starred
+//                                // this prevents starred messages from disappearing out of the inbox until the next refresh
+//                                if message.inserted || location != .starred {
+//                                    message.locationNumber = location.rawValue
+//                                }
+//                            }
                             error = context.saveUpstreamIfNeeded()
                         }
                         if error != nil  {
@@ -272,6 +278,24 @@ class MessageDataService {
         return nil
     }
     
+    
+    ////
+    
+    func deleteMessage(messageID : String) {
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            
+            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                context.deleteObject(message)
+            }
+            if let error = context.saveUpstreamIfNeeded() {
+                NSLog("\(__FUNCTION__) error: \(error)")
+
+            }
+        }
+    }
+    
+    ///
+    
     func launchCleanUpIfNeeded() {
         if !sharedUserDataService.isUserCredentialStored || !userCachedStatus.isCacheOk() {
             cleanUp()
@@ -318,6 +342,17 @@ class MessageDataService {
                 NSLog("\(__FUNCTION__) error: \(error)")
             } else {
                 queue(message: message, action: .saveDraft)
+            }
+        }
+    }
+    
+    func deleteDraft (message : Message!)
+    {
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            if let error = context.saveUpstreamIfNeeded() {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            } else {
+                queue(message: message, action: .delete)
             }
         }
     }
@@ -543,18 +578,26 @@ class MessageDataService {
                     let attachments = self.attachmentsForMessage(message)
                     
                     let completionWrapper: CompletionBlock = { task, response, error in
-                        if let messageID = response?["MessageID"] as? String {
-                            message.messageID = messageID
-                            
-                            if let error = context.saveUpstreamIfNeeded() {
-                                NSLog("\(__FUNCTION__) error: \(error)")
+                        
+                        if let mess = response?["Message"] as? Dictionary<String, AnyObject> {
+                            if let messageID = mess["ID"] as? String {
+                                message.messageID = messageID
+                                message.isDetailDownloaded = true
+                                if let error = context.saveUpstreamIfNeeded() {
+                                    NSLog("\(__FUNCTION__) error: \(error)")
+                                }
                             }
+
                         }
                         
                         completion?(task: task, response: response, error: error)
                     }
                     
-                    sharedAPIService.messagePost( MessageAPI.MessageDraftRequest(message:message), completion: completionWrapper)
+                    if message.isDetailDownloaded && message.messageID != "0" {
+                        sharedAPIService.messagePUT(MessageAPI.MessageUpdateDraftRequest(message:message), completion: completionWrapper)
+                    } else {
+                        sharedAPIService.messagePOST( MessageAPI.MessageDraftRequest(message:message), completion: completionWrapper)
+                    }
                     return;
                 }
             }
@@ -634,10 +677,15 @@ class MessageDataService {
     }
     
     // MARK: Queue
-    private func writeQueueCompletionBlockForElementID(elementID: NSUUID) -> CompletionBlock {
+    private func writeQueueCompletionBlockForElementID(elementID: NSUUID, messageID : String, actionString : String) -> CompletionBlock {
         return { task, response, error in
             sharedMessageQueue.isInProgress = false
             if error == nil {
+                if let action = MessageAction(rawValue: actionString) {
+                    if action == MessageAction.delete {
+                        self.deleteMessage(messageID)
+                    }
+                }
                 sharedMessageQueue.remove(elementID: elementID)
                 self.dequeueIfNeeded()
             } else {
@@ -691,11 +739,11 @@ class MessageDataService {
                 sharedMessageQueue.isInProgress = true
                 switch action {
                 case .saveDraft:
-                    saveDraftWithMessageID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid))
+                    saveDraftWithMessageID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .send:
-                    sendMessageID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid))
+                    sendMessageID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 default:
-                    sharedAPIService.messageID(messageID, updateWithAction: action, completion: writeQueueCompletionBlockForElementID(uuid))
+                    sharedAPIService.messagePUT(MessageAPI.MessageActionRequest(action: actionString, ids: [messageID]), completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 }
             } else {
                 NSLog("\(__FUNCTION__) Unsupported action \(actionString), removing from queue.")

@@ -31,11 +31,8 @@ protocol ComposeViewNDataSource {
     func composeViewSelectedContactsForPicker(composeView: ComposeViewN, picker: MBContactPicker) -> [AnyObject]!
 }
 
-
-
 class ComposeViewN: UIViewController {
 
-    
     let kConfirmError : String = NSLocalizedString( "Message password doesn't match.")
     let kExpirationNeedsPWDError : String = NSLocalizedString("Expiration email for outside required PWD.")
     

@@ -47,6 +47,7 @@ class Message: NSManagedObject {
     @NSManaged var time: NSDate?
     @NSManaged var title: String
     @NSManaged var totalSize: NSNumber
+    @NSManaged var latestUpdateType : NSNumber
     
     @NSManaged var attachments: NSSet
 }

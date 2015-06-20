@@ -52,13 +52,42 @@ extension APIService {
     
     
     //new way to do the new work calls
-    func messagePost ( apiRequest : ApiRequest!, completion: CompletionBlock?) {
+    func messagePOST ( apiRequest : ApiRequest!, completion: CompletionBlock?) {
         var parameterStrings = apiRequest.toJSON()
         setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
         request(method: .POST, path: apiRequest.getRequestPath(), parameters: parameterStrings, completion: completion)
     }
     
+    func messagePUT ( apiRequest : ApiRequest!, completion: CompletionBlock?) {
+        var parameterStrings = apiRequest.toJSON()
+        setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
+        request(method: .PUT, path: apiRequest.getRequestPath(), parameters: parameterStrings, completion: nil)
+        completion!(task: nil, response: nil, error: nil)
+    }
     
+    
+    // func messageID(messageID: String, updateWithAction action: MessageAction, completion: CompletionBlock?) {
+    
+    
+    
+    
+    //            let parameters = ["IDs" : [messageID]]
+    //            request(method: .PUT, path: path, parameters: parameters, completion: nil)
+    //            completion!(task: nil, response: nil, error: nil);//TODO:: need fix the response
+    
+    //        switch(action) {
+    //        case .delete:
+    //            let path = MessagePath.base.stringByAppendingPathComponent(messageID)
+    //            request(method: .DELETE, path: path, parameters: nil, completion: completion)
+    //        default:
+    //            let path = MessagePath.base.stringByAppendingPathComponent(action.rawValue)
+    //            //MessagePath.base.stringByAppendingPathComponent(messageID).stringByAppendingPathComponent(action.rawValue)
+    //            let parameters = ["IDs" : [messageID]]
+    //            request(method: .PUT, path: path, parameters: parameters, completion: nil)
+    //            completion!(task: nil, response: nil, error: nil);//TODO:: need fix the response
+    //        }
+//}
+
     
     
     
@@ -197,19 +226,6 @@ extension APIService {
             request(method: .POST, path: path, parameters: parameters, completion: completion)
     }
     
-    func messageID(messageID: String, updateWithAction action: MessageAction, completion: CompletionBlock?) {
-        switch(action) {
-        case .delete:
-            let path = MessagePath.base.stringByAppendingPathComponent(messageID)
-            request(method: .DELETE, path: path, parameters: nil, completion: completion)
-        default:
-            let path = MessagePath.base.stringByAppendingPathComponent(action.rawValue)
-            //MessagePath.base.stringByAppendingPathComponent(messageID).stringByAppendingPathComponent(action.rawValue)
-            let parameters = ["IDs" : [messageID]]
-            request(method: .PUT, path: path, parameters: parameters, completion: nil)
-            completion!(task: nil, response: nil, error: nil);//TODO:: need fix the response
-        }
-    }
     
     func messageDetail(#messageID: String, completion: CompletionBlock) {
         let path = MessagePath.base.stringByAppendingPathComponent(messageID)

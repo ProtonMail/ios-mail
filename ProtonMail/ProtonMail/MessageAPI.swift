@@ -41,6 +41,7 @@ public class MessageAPI {
         }
         
         override public func getRequestPath() -> String {
+            
             return MessageAPIPath + "/draft"
         }
         
@@ -50,22 +51,44 @@ public class MessageAPI {
     }
     
     
-    public class MessageUpdateDraftRequest : ApiRequest {
-        let message : Message!;
+    public class MessageUpdateDraftRequest : MessageDraftRequest {
         
-        init(message: Message!) {
-            self.message = message
+        override public func getRequestPath() -> String {
+            return MessageAPIPath + "/draft/" + message.messageID + AppConstants.getDebugOption
+        }
+        
+        override public func getVersion() -> Int {
+            return MessageAPIVersion
+        }
+    }
+    
+    
+    public class MessageActionRequest : ApiRequest {
+        let messages : [Message]!
+        let action : String!
+        
+        var ids : [String] = [String] ()
+        
+        init(action:String, messages: [Message]!) {
+            self.messages = messages
+            self.action = action
+            for message in messages {
+                if (message.isDetailDownloaded)
+                {
+                    ids.append(message.messageID)
+                }
+            }
+
+        }
+        
+        init(action:String, ids : [String]!) {
+            self.action = action
+            self.ids = ids
+            self.messages = [Message]()
         }
         
         public override func toJSON() -> Dictionary<String,AnyObject> {
-            var messsageDict : [String : AnyObject] = [ "AddressID" : "0",
-                "Body" : message.body,
-                "Subject" : message.title]
-            messsageDict["ToList"] = message.recipientList.parseJson()
-            messsageDict["CCList"] = message.ccList.parseJson()
-            messsageDict["BCCList"] = message.bccList.parseJson()
-            
-            let out = ["Message" : messsageDict]
+            let out = ["IDs" : self.ids]
             
             println(self.JSONStringify(out, prettyPrinted: true))
             
@@ -73,7 +96,7 @@ public class MessageAPI {
         }
         
         override public func getRequestPath() -> String {
-            return MessageAPIPath + "/draft"
+             return MessageAPIPath + "/" + self.action + AppConstants.getDebugOption
         }
         
         override public func getVersion() -> Int {
@@ -82,6 +105,8 @@ public class MessageAPI {
     }
     
     
+    
+
     public struct Contacts {
         let email: String
         let name: String

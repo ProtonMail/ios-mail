@@ -26,13 +26,15 @@ public class MessageHelper {
         attachments: [AnyObject]?,
         inManagedObjectContext context: NSManagedObjectContext) -> Message {
             let message = Message(context: context)
-            message.messageID = "0"  //default is 0,  if you already have a draft ID pass here.
+            message.messageID = NSUUID().UUIDString
             message.location = location
             message.recipientList = recipientList
             message.bccList = bccList
             message.ccList = ccList
             message.title = title
             message.passwordHint = passwordHint
+            message.time = NSDate()
+            message.isEncrypted = 1
             
             if expirationTimeInterval > 0 {
                 message.expirationTime = NSDate(timeIntervalSince1970: expirationTimeInterval)
