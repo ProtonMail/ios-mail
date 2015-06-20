@@ -3,36 +3,41 @@
 //  ProtonMail
 //
 //  Created by Yanfeng Zhang on 6/18/15.
-//  Copyright (c) 2015 ArcTouch. All rights reserved.
+//  Copyright (c) 2015 Proton Reserch. All rights reserved.
 //
 
 import Foundation
 
 
+/// Message api request class
 public class MessageAPI {
-    static let MessageAPIVersion : Int = 1
     
-    static let MessageAPIPath = "/messages"
+    /// current message api version
+    static let MessageAPIVersion : Int      = 1
+    /// base message api path
+    static let MessageAPIPath :String       = "/messages"
     
+    /// create draft message request class
     public class MessageDraftRequest : ApiRequest {
+        
         let message : Message!;
         
         init(message: Message!) {
             self.message = message
         }
         
-        public override func toJSON() -> Dictionary<String,AnyObject> {
+        public override func toDictionary() -> Dictionary<String,AnyObject> {
             
-            let address_id : String = sharedUserDataService.userAddresses.first?.address_id ?? "1000";
+            let address_id : String                 = sharedUserDataService.userAddresses.first?.address_id ?? "1000";
             
             var messsageDict : [String : AnyObject] = [ "AddressID" : address_id,
                 "Body" : message.body,
                 "Subject" : message.title]
-            messsageDict["ToList"] = message.recipientList.parseJson()
-            messsageDict["CCList"] = message.ccList.parseJson()
-            messsageDict["BCCList"] = message.bccList.parseJson()
+            messsageDict["ToList"]                  = message.recipientList.parseJson()
+            messsageDict["CCList"]                  = message.ccList.parseJson()
+            messsageDict["BCCList"]                 = message.bccList.parseJson()
             
-            let out = ["Message" : messsageDict]
+            let out                                 = ["Message" : messsageDict]
             
             println(self.JSONStringify(out, prettyPrinted: true))
             
@@ -66,11 +71,11 @@ public class MessageAPI {
         let messages : [Message]!
         let action : String!
         
-        var ids : [String] = [String] ()
+        var ids : [String]                      = [String] ()
         
         init(action:String, messages: [Message]!) {
-            self.messages = messages
-            self.action = action
+            self.messages                           = messages
+            self.action                             = action
             for message in messages {
                 if (message.isDetailDownloaded)
                 {
@@ -80,13 +85,12 @@ public class MessageAPI {
         }
         
         init(action:String, ids : [String]!) {
-            self.action = action
-            self.ids = ids
-            self.messages = [Message]()
+            self.action                             = action
+            self.ids                                = ids
+            self.messages                           = [Message]()
         }
-        
-        public override func toJSON() -> Dictionary<String,AnyObject> {
-            let out = ["IDs" : self.ids]
+        public override func toDictionary() -> Dictionary<String,AnyObject> {
+            let out                                 = ["IDs" : self.ids]
             
             println(self.JSONStringify(out, prettyPrinted: true))
             
@@ -103,28 +107,28 @@ public class MessageAPI {
     }
     
     
-    ///
+    
     public class MessageSendRequest : ApiRequest {
         let message : Message! //
         //
-        let AttPackets : [MessageAttKeyPackage]! // for optside encrypt att.
-        let clearBody : String! //optional for out side user
-        let sendPackage : MessageSendPackage! //required internal
+        //        let AttPackets : [MessageAttKeyPackage]! // for optside encrypt att.
+        //        let clearBody : String! //optional for out side user
+        //        let sendPackage : MessageSendPackage! //required internal
         
         init(message: Message!) {
-            self.message = message
+            self.message                            = message
         }
         
-        public override func toJSON() -> Dictionary<String,AnyObject> {
-            let address_id : String = sharedUserDataService.userAddresses.first?.address_id ?? "1000";
+        public override func toDictionary() -> Dictionary<String,AnyObject> {
+            let address_id : String                 = sharedUserDataService.userAddresses.first?.address_id ?? "1000";
             var messsageDict : [String : AnyObject] = [ "AddressID" : address_id,
                 "Body" : message.body,
                 "Subject" : message.title]
-            messsageDict["ToList"] = message.recipientList.parseJson()
-            messsageDict["CCList"] = message.ccList.parseJson()
-            messsageDict["BCCList"] = message.bccList.parseJson()
+            messsageDict["ToList"]                  = message.recipientList.parseJson()
+            messsageDict["CCList"]                  = message.ccList.parseJson()
+            messsageDict["BCCList"]                 = message.bccList.parseJson()
             
-            let out = ["Message" : messsageDict]
+            let out                                 = ["Message" : messsageDict]
             
             println(self.JSONStringify(out, prettyPrinted: true))
             
@@ -140,38 +144,38 @@ public class MessageAPI {
             return MessageAPIVersion
         }
     }
-
+    
     public class MessageSendPackage : ApiRequest {
-        let address : String!
-        let type : Int!
-        let body : String!
-        let token : String! //optional for outside
-        let encToken : String! //optional for outside
-        let AttPackets : [MessageAttKeyPackage]! // internal
-        
+        //        let address : String!
+        //        let type : Int!
+        //        let body : String!
+        //        let token : String! //optional for outside
+        //        let encToken : String! //optional for outside
+        //        let AttPackets : [MessageAttKeyPackage]! // internal
+        //
         init(action:String) {
-
+            
         }
         
-        public override func toJSON() -> Dictionary<String,AnyObject> {
-            let out = ["IDs" : ""]
+        public override func toDictionary() -> Dictionary<String,AnyObject> {
+            let out                                 = ["IDs" : ""]
             
             //println(self.JSONStringify(out, prettyPrinted: true))
             
             return out
         }
     }
-
+    
     public class MessageAttKeyPackage : ApiRequest {
-        let ID : String!
-        let key : String!
-        let Algo : String!
+        //        let ID : String!
+        //        let key : String!
+        //        let Algo : String!
         init(action:String) {
             
         }
         
-        public override func toJSON() -> Dictionary<String,AnyObject> {
-            let out = ["IDs" : ""]
+        public override func toDictionary() -> Dictionary<String,AnyObject> {
+            let out                                 = ["IDs" : ""]
             
             //println(self.JSONStringify(out, prettyPrinted: true
             return out
@@ -190,8 +194,8 @@ public class MessageAPI {
         let name: String
         
         init(email: String, name: String) {
-            self.name = name
-            self.email = email
+            self.name                               = name
+            self.email                              = email
         }
         
         func asJSON() -> Dictionary<String,AnyObject> {
@@ -208,10 +212,10 @@ public class MessageAPI {
         let fileSize: Int
         
         init(fileName: String, mimeType: String, fileData: Dictionary<String,String>, fileSize: Int) {
-            self.fileName = fileName
-            self.mimeType = mimeType
-            self.fileData = fileData
-            self.fileSize = fileSize
+            self.fileName                           = fileName
+            self.mimeType                           = mimeType
+            self.fileData                           = fileData
+            self.fileSize                           = fileSize
         }
         
         func asJSON() -> Dictionary<String,AnyObject> {
