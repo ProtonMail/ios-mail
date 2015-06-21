@@ -52,6 +52,112 @@ class MessageDataService {
     }
     
     
+    // MAKR : upload attachment
+    
+    func uploadAttachment()
+    {
+//        ----WebKitFormBoundary7MA4YWxkTrZu0gW
+//        Content-Disposition: form-data; name="Filename"
+//        
+//        test.txt
+//        ----WebKitFormBoundary7MA4YWxkTrZu0gW
+//        Content-Disposition: form-data; name="MessageID"
+//        
+//        ASDkjhasdSAJhasdasdASD==
+//        ----WebKitFormBoundary7MA4YWxkTrZu0gW
+//        Content-Disposition: form-data; name="MIMEType"
+//        
+//        text/plain
+//        ----WebKitFormBoundary7MA4YWxkTrZu0gW
+//        Content-Disposition: form-data; name="KeyPackets"; filename="temp1"
+//        Content-Type: doesnot/matter
+//        
+//        {binary key packet(s)}
+//        
+//        ----WebKitFormBoundary7MA4YWxkTrZu0gW
+//        Content-Disposition: form-data; name="DataPacket"; filename="temp2"
+//        Content-Type: doesnot/matter
+//        
+//        {encrypted data packet}
+//        
+//        ----WebKitFormBoundary7MA4YWxkTrZu0g
+        
+        var params = [
+            "Filename":"test.txt",
+            "MessageID" : "18670667",
+            "MIMEType" : "the name/title",
+            "KeyPackets":"asdfsdfsadfasdfasf",
+            "DataPacket" : "fasfasdfsadf"
+        ]
+        
+        sharedAPIService.upload(params)
+    }
+//    func uploadAttachmentForAttachment(attachment: Attachment, uploadTask: (( NSURLSessionUploadTask) -> Void)?, completion:((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
+//        if let localURL = attachment.localURL {
+//            completion?(nil, localURL, nil)
+//            return
+//        }
+//        
+//        // TODO: check for existing download tasks and return that task rather than start a new download
+//        queue { () -> Void in
+//            if(fileInfo.count > 0)
+//            {
+//                for file in fileInfo
+//                {
+//                    var fileData    = file.valueForKey("fileData") as NSData
+//                    var name        = file.valueForKey("filenameData") as String
+//                    var fileName    = file.valueForKey("fileName") as String
+//                    var mimeType    = file.valueForKey("mimeType") as String
+//                    
+//                    formData.appendPartWithFileData(fileData, name: name, fileName: fileName, mimeType: mimeType)
+//                }
+//            }
+//            
+//            
+//        }, error: nil)
+//        
+//        let conf : NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
+//        
+//        let manager : AFURLSessionManager = AFURLSessionManager(sessionConfiguration: conf)
+//        
+//        var progress : NSProgress? = nil
+//        
+//        var uploadTask:NSURLSessionUploadTask = manager.uploadTaskWithStreamedRequest(request, progress: nil) { (response, responseObject, error) -> Void in
+//            completionHandler(response:response,responseObject:responseObject,error:error)
+//            
+//        }
+//        
+//        uploadTask.resume()
+//            NSString *urlString = [[NSURL URLWithString:kPhotoUploadPath relativeToURL:self.baseURL] absoluteString];
+//            NSMutableURLRequest *request = [self.requestSerializer multipartFormRequestWithMethod:@"POST" URLString:urlString parameters:params constructingBodyWithBlock:^(id <AFMultipartFormData> formData) {
+//                [formData appendPartWithFileData:photo.data name:@"photo" fileName:@"photo.jpg" mimeType:@"image/jpeg"];
+//            }];
+//            
+//            NSURLSessionUploadTask *task = [self uploadTaskWithStreamedRequest:request progress:progress completionHandler:^(NSURLResponse * __unused response, id responseObject, NSError *error) {
+//            if (error) {
+//            if (failure) failure(error);
+//            } else {
+//            if (success) success(responseObject);
+//            }
+//            }];
+//            [task resume];
+////            sharedAPIService.attachmentForAttachmentID(attachment.attachmentID, destinationDirectoryURL: NSFileManager.defaultManager().attachmentDirectory, downloadTask: downloadTask, completion: { task, fileURL, error in
+////                var error = error
+////                if let fileURL = fileURL {
+////                    attachment.localURL = fileURL
+////                    
+////                    error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
+////                    if error != nil  {
+////                        NSLog("\(__FUNCTION__) error: \(error)")
+////                    }
+////                }
+////                completion?(task, fileURL, error)
+////            })
+//        }
+//    }
+//
+    
+    
     // MARK : fetch functions
     
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking

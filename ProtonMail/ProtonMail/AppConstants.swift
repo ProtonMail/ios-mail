@@ -18,14 +18,14 @@ class AppConstants {
     static let BaseURLString : String = "https://api.protonmail.ch"
     //static let BaseURLString : String = "https://test-api.protonmail.ch"
     //private let BaseURLString = "http://protonmail.xyz"
-   // static let BaseURLString : String = "http://feng.api.com"
+    //static let BaseURLString : String = "http://feng.api.com"
     //private let BaseURLString = "https://dev-api.protonmail.ch"
     
     
     static var getDebugOption : String {
         get {
             #if DEBUG
-                return "?XDEBUG_SESSION_START=\(13913)"
+                return "?XDEBUG_SESSION_START=\(13502)"
             #else
                 return ""
             #endif
