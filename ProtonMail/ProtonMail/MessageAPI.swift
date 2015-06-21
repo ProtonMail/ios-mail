@@ -112,11 +112,13 @@ public class MessageAPI {
     
     /// send message reuqest
     public class MessageSendRequest : ApiRequest {
-        let messagePackage : [MessagePackages]!     // message package
-        let attPackets : [AttachmentKeyPackage]!    //  for optside encrypt att.
-        let clearBody : String!                     //  optional for out side user
+        var messagePackage : [MessagePackage]!     // message package
+        var attPackets : [AttachmentKeyPackage]!    //  for optside encrypt att.
+        var clearBody : String!                     //  optional for out side user
+        let messageID : String!
         
-        init(messagePackage: [MessagePackages]!, clearBody : String! = "", attPackages:[AttachmentKeyPackage]! = nil) {
+        init(messageID : String!, messagePackage: [MessagePackage]!, clearBody : String! = "", attPackages:[AttachmentKeyPackage]! = nil) {
+            self.messageID = messageID
             self.messagePackage = messagePackage
             self.clearBody = clearBody
             self.attPackets = attPackages
@@ -152,7 +154,7 @@ public class MessageAPI {
         
         override public func getRequestPath() -> String {
             
-            return MessageAPIPath + "/draft"
+            return MessageAPIPath + "/send/" + self.messageID + AppConstants.getDebugOption
         }
         
         override public func getVersion() -> Int {
@@ -161,9 +163,9 @@ public class MessageAPI {
     }
     
     /// message packages
-    public class MessagePackages : ApiRequest {
+    public class MessagePackage : ApiRequest {
         
-        /// default sender address id
+        /// default sender email address
         let address : String!
         /** send encrypt message package type
         *   1 internal

@@ -177,11 +177,11 @@ class ComposeViewController : ProtonMailViewController {
         self.collectDraft()
         self.viewModel.sendMessage()
         
-//        if presentingViewController != nil {
-//            dismissViewControllerAnimated(true, completion: nil)
-//        } else {
-//            navigationController?.popViewControllerAnimated(true)
-//        }
+        if presentingViewController != nil {
+            dismissViewControllerAnimated(true, completion: nil)
+        } else {
+            navigationController?.popViewControllerAnimated(true)
+        }
     }
     
     @IBAction func toolbarDoneClicked(sender: AnyObject) {

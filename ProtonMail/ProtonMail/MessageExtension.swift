@@ -42,15 +42,24 @@ extension Message {
         var lists: [String] = []
         
         if !recipientList.isEmpty {
-            lists.append(recipientList)
+            let to = MessageHelper.contactsToAddresses(recipientList)
+            if !to.isEmpty  {
+                lists.append(to)
+            }
         }
         
         if !ccList.isEmpty {
-            lists.append(ccList)
+            let cc = MessageHelper.contactsToAddresses(ccList)
+            if !cc.isEmpty  {
+                lists.append(cc)
+            }
         }
         
         if !bccList.isEmpty {
-            lists.append(bccList)
+            let bcc = MessageHelper.contactsToAddresses(bccList)
+            if !bcc.isEmpty  {
+                lists.append(bcc)
+            }
         }
         
         if lists.isEmpty {

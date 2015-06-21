@@ -282,7 +282,7 @@ class MessageDataService {
         var error: NSError?
         if let context = sharedCoreDataService.mainManagedObjectContext {
             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                message.location = .outbox
+                //message.location = .outbox
                 error = context.saveUpstreamIfNeeded()
                 if error != nil {
                     NSLog("\(__FUNCTION__) error: \(error)")
@@ -447,22 +447,97 @@ class MessageDataService {
         }
     }
     
+    
+    
     // MARK: - Private methods
     
+    
+    /**
+    clean all the local cache data. 
+     when use this :
+        1. logout
+        2. local cache version changed
+        3. hacked action detacted 
+        4. use wraped manully.
+    */
     private func cleanUp() {
         if let context = managedObjectContext {
             Message.deleteAll(inContext: context)
         }
+        //TODO : need check is attachments cleaned .
         
         lastUpdatedStore.clear()
         sharedMessageQueue.clear()
         sharedFailedQueue.clear()
         
-        //tempary easy fix
+        //tempary for clean contact cache
         sharedContactDataService.cleanUp()
         
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
+    
+    
+    private func generatMessagePackage (message: Message!, keys : [String : AnyObject]?, encrptOutside : Bool) -> MessageAPI.MessageSendRequest! {
+        
+       // let defaultAddressID = sharedUserDataService.userAddresses.first?.address_id ?? "1000";
+
+        var out : [MessageAPI.MessagePackage] = []
+        var needsPlainText : Bool = false
+        let outRequest : MessageAPI.MessageSendRequest = MessageAPI.MessageSendRequest(messageID: message.messageID, messagePackage: nil, clearBody: "", attPackages: nil)
+        
+        var error: NSError?
+        if let body = message.decryptBody(&error) {
+            
+            for (key, v) in keys! {
+                
+                if key == "Code" {
+                    continue
+                }
+                
+                let publicKey = v as! String
+                
+                let isOutsideUser = publicKey.isEmpty
+                
+                let password = "123"
+                
+                
+                if isOutsideUser {
+                    if encrptOutside {
+                        //create outside encrypt packet
+                        var pack = MessageAPI.MessagePackage(address: key, type: 2, body: "", token: "", encToken: "", passwordHint: "")
+                        out.append(pack)
+                    }
+                    else {
+                        needsPlainText = true
+                    }
+                }
+                else {
+                    //create inside packet
+                    if let encryptedBody = body.encryptWithPublicKey(publicKey, error: &error) {
+                        var pack = MessageAPI.MessagePackage(address: key, type: 1, body: encryptedBody)
+                        out.append(pack)
+                    } else {
+                        NSLog("\(__FUNCTION__) can't encrypt body for \(body) with error: \(error)")
+                    }
+                }
+            }
+            
+            outRequest.messagePackage = out
+            
+            if needsPlainText {
+                outRequest.clearBody = body
+            }
+            
+        } else {
+            NSLog("\(__FUNCTION__) unable to decrypt \(message.body) with error: \(error)")
+        }
+        
+        return outRequest
+    }
+    
+    
+    
+    // MARK : old functions
     
     private func fetchMessageIncrementalUpdates(#lastUpdated: NSDate, completion: CompletionBlock?) {
         struct ResponseKey {
@@ -639,48 +714,55 @@ class MessageDataService {
             // nothing to send, dequeue request
             sharedMessageQueue.remove(elementID: writeQueueUUID)
             self.dequeueIfNeeded()
-            
             completion?(task: task, response: response, error: error)
         }
         
         if let context = managedObjectContext {
-            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                sharedAPIService.userPublicKeysForEmails(message.allEmailAddresses, completion: { (task, response, error) -> Void in
-                    if error != nil && error!.code == APIService.ErrorCode.badParameter {
-                        errorBlock(task: task, response: response, error: error)
-                        return
-                    }
-                    
-                    let messageBody = self.messageBodyForMessage(message, response: response)
+            var error: NSError?
+            if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID) {
+                if let message = context.existingObjectWithID(objectID, error: &error) as? Message {
                     let attachments = self.attachmentsForMessage(message)
-                    
-                    let completionWrapper: CompletionBlock = { task, response, error in
-                        // remove successful send from Core Data
-                        if error == nil {
-                            context.deleteObject(message)
-                            if let error = context.saveUpstreamIfNeeded() {
-                                NSLog("\(__FUNCTION__) error: \(error)")
-                            }
+
+                    sharedAPIService.userPublicKeysForEmails(message.allEmailAddresses, completion: { (task, response, error) -> Void in
+                        if error != nil && error!.code == APIService.ErrorCode.badParameter {
+                            errorBlock(task: task, response: response, error: error)
+                            return
                         }
-                        completion?(task: task, response: response, error: error)
-                        return
-                    }
+                        
+                        let isEncryptOutside = !message.passwordEncryptedBody.isEmpty
+                        
+                        // create package for internal
+                        let sendMessage = self.generatMessagePackage(message, keys: response, encrptOutside: isEncryptOutside)
+                        
+                        // parse the response for keys
+                        //let messageBody = self.messageBodyForMessage(message, response: response)
+                        
+                        
+                        // build the encrypt bodys
+                        
+                        
+                        // build clear output
+                        
+                        //let attachments = self.attachmentsForMessage(message)
+                        
+                        let completionWrapper: CompletionBlock = { task, response, error in
+                            // remove successful send from Core Data
+                            if error == nil {
+                                //TODO : here need to handle the response have the error code
+                                context.deleteObject(message)
+                                if let error = context.saveUpstreamIfNeeded() {
+                                    NSLog("\(__FUNCTION__) error: \(error)")
+                                }
+                            }
+                            completion?(task: task, response: response, error: error)
+                            return
+                        }
+                        
+                        sharedAPIService.messagePOST(sendMessage, completion: completionWrapper)
+                    })
                     
-                    sharedAPIService.messageCreate(
-                        messageID: message.messageID,
-                        recipientList: message.recipientList,
-                        bccList: message.bccList,
-                        ccList: message.ccList,
-                        title: message.title,
-                        passwordHint: message.passwordHint,
-                        expirationDate: message.expirationTime,
-                        isEncrypted: message.isEncrypted,
-                        body: messageBody,
-                        attachments: attachments,
-                        completion: completionWrapper)
-                })
-                
-                return
+                    return
+                }
             }
         }
         
@@ -782,7 +864,7 @@ class MessageDataService {
     
     
     private func queue(#message: Message, action: MessageAction) {
-        if action == .saveDraft {
+        if action == .saveDraft || action == .send {
             sharedMessageQueue.addMessage(message.objectID.URIRepresentation().absoluteString!, action: action)
         } else {
             sharedMessageQueue.addMessage(message.messageID, action: action)
@@ -816,6 +898,7 @@ class MessageDataService {
         })
     }
 }
+
 
 
 // MARK: - Attachment extension

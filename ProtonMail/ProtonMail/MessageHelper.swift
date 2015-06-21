@@ -124,4 +124,19 @@ public class MessageHelper {
 //            }
 //        }
     }
+    
+    
+    static func contactsToAddresses (contacts : String!) -> String
+    {
+        var lists: [String] = []
+        let recipients : [[String : String]] = contacts.parseJson()!
+        for dict:[String : String] in recipients {
+            
+            let to = dict.getAddress()
+            if !to.isEmpty  {
+                lists.append(to)
+            }
+        }
+        return ",".join(lists)
+    }
 }
