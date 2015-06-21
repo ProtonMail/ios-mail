@@ -21,17 +21,17 @@ import Foundation
 let APIServiceErrorDomain = NSError.protonMailErrorDomain(subdomain: "APIService")
 
 let sharedAPIService = APIService()
- class APIService {
-
+class APIService {
+    
     typealias CompletionBlock = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, error: NSError?) -> Void
     typealias CompletionFetchDetail = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, message:Message?, error: NSError?) -> Void
-
+    
     struct ErrorCode {
         static let badParameter = 1
         static let badPath = 2
         static let unableToParseResponse = 3
     }
-
+    
     enum HTTPMethod {
         case DELETE
         case GET
@@ -57,12 +57,12 @@ let sharedAPIService = APIService()
         #if DEBUG
             sessionManager.securityPolicy.allowInvalidCertificates = true
         #endif
-
+        
         //NSOperationQueueDefaultMaxConcurrentOperationCount sessionManager.operationQueue.maxConcurrentOperationCount
         //let defaultV = NSOperationQueueDefaultMaxConcurrentOperationCount;
         setupValueTransforms()
     }
-
+    
     internal func afNetworkingBlocksForRequest(#method: HTTPMethod, path: String, parameters: AnyObject?, authenticated: Bool = true, completion: CompletionBlock?) -> (AFNetworkingSuccessBlock?, AFNetworkingFailureBlock?) {
         if let completion = completion {
             let failure: AFNetworkingFailureBlock = { task, error in
@@ -139,7 +139,7 @@ let sharedAPIService = APIService()
             authAuth(username: username, password: password, completion: completionWrapper)
         }
     }
-
+    
     // MARK: - Request methods
     
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
@@ -182,6 +182,51 @@ let sharedAPIService = APIService()
         self.sessionManager.requestSerializer.setVersionHeader(apiVersion, appVersion: appVersion)
     }
     
+    internal func upload (parameters: AnyObject?) {
+        var serializeError: NSError?
+        if let request = sessionManager.requestSerializer.multipartFormRequestWithMethod("POST", URLString: AppConstants.BaseURLString + "/attachments/upload", parameters: parameters as! [String:String], constructingBodyWithBlock: { formData in
+            let data: AFMultipartFormData = formData
+            let data_1 = "daasdfasfasfasdfasdfta_1".dataUsingEncoding(NSUTF8StringEncoding)
+            let data_2 = "dataasdfsdafljasdfj_2".dataUsingEncoding(NSUTF8StringEncoding)
+            
+            data.appendPartWithFileData(data_1, name: "KeyPackets", fileName: "KeyPackets.txt", mimeType: "text/plain" )
+            data.appendPartWithFileData(data_2, name: "DataPacket", fileName: "DataPacket.txt", mimeType: "text/plain" )
+            
+            }, error: &serializeError) {
+                
+                let uploadTask = self.sessionManager.uploadTaskWithStreamedRequest(request, progress: nil) { (response, responseObject, error) -> Void in
+                    
+                    println("");
+                    
+                }
+                
+                uploadTask.resume()
+        }
+        
+        
+        //        let a = sessionManager.requestSerializer.multipartFormRequestWithMethod("POST", URLString: AppConstants.BaseURLString + "/attachments/upload", parameters: parameters, constructingBodyWithBlock:  { formData in
+        //                        let data: AFMultipartFormData = formData
+        //                       // data.appendPartWithFileURL(fileURL, name: "file", error: nil)
+        //                        }, error: serializeError)
+        
+        
+        //        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        
+        
+        
+        //  /attachments/upload
+        //        var serializeError: NSError?
+        //        if let request = self.sessionManager.requestSerializer.requestWithMethod("POST", URLString:AppConstants.BaseURLString + "/attachments/upload",  parameters: parameters, error: &serializeError) {
+        //            let uploadTask = self.sessionManager.uploadTaskWithStreamedRequest(request, progress: nil) { (response, responseObject, error) -> Void in
+        //
+        //                println("");
+        //
+        //            }
+        //
+        //            uploadTask.resume()
+        //        }
+    }
+    
     internal func request(#method: HTTPMethod, path: String, parameters: AnyObject?, authenticated: Bool = true, completion: CompletionBlock?) {
         let authBlock: AuthCredentialBlock = { _, error in
             if error == nil {
@@ -201,7 +246,7 @@ let sharedAPIService = APIService()
                 completion?(task: nil, response: nil, error: error)
             }
         }
-
+        
         if authenticated {
             fetchAuthCredential(completion: authBlock)
         } else {
@@ -242,7 +287,7 @@ let sharedAPIService = APIService()
         }
         
         NSValueTransformer.setValueTransformer(dateTransformer, forName: "DateTransformer")
-
+        
         let numberTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
             if let number = value as? String {
                 return number.toInt() ?? 0 as NSNumber
@@ -254,7 +299,7 @@ let sharedAPIService = APIService()
         }
         
         NSValueTransformer.setValueTransformer(numberTransformer, forName: "NumberTransformer")
-
+        
         let tagTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
             if let tag = value as? String {
                 return tag.rangeOfString(Message.Constants.starredTag) != nil
@@ -270,10 +315,10 @@ let sharedAPIService = APIService()
                 let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
                 return strJson
             }
-    
+            
             return "";
         }
-
+        
         
         NSValueTransformer.setValueTransformer(JsonStringTransformer, forName: "JsonStringTransformer")
     }

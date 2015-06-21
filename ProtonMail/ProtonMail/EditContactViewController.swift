@@ -80,11 +80,9 @@ extension EditContactViewController: UITextFieldDelegate {
             textField.resignFirstResponder()
             emailTextField.becomeFirstResponder()
         }
-        
         if (textField == emailTextField) {
             emailTextField.resignFirstResponder()
         }
-        
         return true
     }
 }

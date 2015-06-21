@@ -88,6 +88,8 @@ class MailboxViewController: ProtonMailViewController {
             self.tableView.deselectRowAtIndexPath(selectedItem, animated: true)
         }
         
+        sharedMessageDataService.uploadAttachment()
+        
         self.startAutoFetch()
     }
     

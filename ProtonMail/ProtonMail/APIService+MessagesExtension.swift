@@ -53,13 +53,13 @@ extension APIService {
     
     //new way to do the new work calls
     func messagePOST ( apiRequest : ApiRequest!, completion: CompletionBlock?) {
-        var parameterStrings = apiRequest.toJSON()
+        var parameterStrings = apiRequest.toDictionary()
         setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
         request(method: .POST, path: apiRequest.getRequestPath(), parameters: parameterStrings, completion: completion)
     }
     
     func messagePUT ( apiRequest : ApiRequest!, completion: CompletionBlock?) {
-        var parameterStrings = apiRequest.toJSON()
+        var parameterStrings = apiRequest.toDictionary()
         setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
         request(method: .PUT, path: apiRequest.getRequestPath(), parameters: parameterStrings, completion: nil)
         completion!(task: nil, response: nil, error: nil)

@@ -31,4 +31,11 @@ extension Dictionary { //email name
         }
         return ""
     }
+    
+    func getAddress() -> String {    //this function only for the To CC BCC list parsing
+        if let key = "Address" as? Key {
+            return self[key] as? String ?? ""
+        }
+        return ""
+    }
 }
