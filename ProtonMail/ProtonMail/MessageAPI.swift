@@ -32,24 +32,21 @@ public class MessageAPI {
         public override func toDictionary() -> Dictionary<String,AnyObject> {
             
             let address_id : String                 = sharedUserDataService.userAddresses.first?.address_id ?? "1000";
-            
-            var messsageDict : [String : AnyObject] = [ "AddressID" : address_id,
+            var messsageDict : [String : AnyObject] = [
+                "AddressID" : address_id,
                 "Body" : message.body,
                 "Subject" : message.title]
-            
             messsageDict["ToList"]                  = message.recipientList.parseJson()
             messsageDict["CCList"]                  = message.ccList.parseJson()
             messsageDict["BCCList"]                 = message.bccList.parseJson()
             
             let out                                 = ["Message" : messsageDict]
             
-            println(self.JSONStringify(out, prettyPrinted: true))
-            
+            PMLog.D(self.JSONStringify(out, prettyPrinted: true))
             return out
         }
         
         override public func getRequestPath() -> String {
-            
             return MessageAPIPath + "/draft"
         }
         
@@ -73,35 +70,31 @@ public class MessageAPI {
     
     // MARK : Message actions part
     
-    
     /// mesaage action request PUT method
     public class MessageActionRequest : ApiRequest {
         let messages : [Message]!
         let action : String!
-        
-        var ids : [String]                      = [String] ()
+        var ids : [String] = [String] ()
         
         init(action:String, messages: [Message]!) {
-            self.messages                           = messages
-            self.action                             = action
+            self.messages = messages
+            self.action = action
             for message in messages {
-                if (message.isDetailDownloaded)
-                {
+                if message.isDetailDownloaded {
                     ids.append(message.messageID)
                 }
             }
         }
         
         init(action:String, ids : [String]!) {
-            self.action                             = action
-            self.ids                                = ids
-            self.messages                           = [Message]()
+            self.action = action
+            self.ids = ids
+            self.messages = [Message]()
         }
         public override func toDictionary() -> Dictionary<String,AnyObject> {
-            let out                                 = ["IDs" : self.ids]
+            let out = ["IDs" : self.ids]
             
-            println(self.JSONStringify(out, prettyPrinted: true))
-            
+            PMLog.D(self.JSONStringify(out, prettyPrinted: true))
             return out
         }
         
@@ -153,7 +146,7 @@ public class MessageAPI {
             }
             out["Packages"] = package
             
-            println(self.JSONStringify(out, prettyPrinted: true))
+            PMLog.D(self.JSONStringify(out, prettyPrinted: true))
             return out
         }
         
@@ -235,7 +228,6 @@ public class MessageAPI {
                 out["PasswordHint"] = self.passwordHint
             }
             
-            //println(self.JSONStringify(out, prettyPrinted: true))
             return out
         }
     }
@@ -260,7 +252,6 @@ public class MessageAPI {
                 out["Algo"] = self.algo
             }
             
-            //println(self.JSONStringify(out, prettyPrinted: true
             return out
         }
     }

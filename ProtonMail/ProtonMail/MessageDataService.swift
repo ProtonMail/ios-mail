@@ -52,10 +52,7 @@ class MessageDataService {
     }
     
     
-    
-    /// 
-    
-    
+    // MARK : fetch functions
     
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
     func fetchAttachmentForAttachment(attachment: Attachment, downloadTask: ((NSURLSessionDownloadTask) -> Void)?, completion:((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
@@ -279,7 +276,32 @@ class MessageDataService {
     }
     
     
-    ////
+    // MARK : Send message 
+    
+    func send(messageID : String!, completion: CompletionBlock?) {
+        var error: NSError?
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                message.location = .outbox
+                error = context.saveUpstreamIfNeeded()
+                if error != nil {
+                    NSLog("\(__FUNCTION__) error: \(error)")
+                } else {
+                    queue(message: message, action: .send)
+                }
+            } else {
+                //TODO:: handle can't find the message error.
+            }
+            
+        } else {
+            error = NSError.protonMailError(code: 500, localizedDescription: NSLocalizedString("No managedObjectContext"), localizedFailureReason: nil, localizedRecoverySuggestion: nil)
+        }
+        completion?(task: nil, response: nil, error: error)
+    }
+    
+    
+    
+    // MARK : Private functions
     
     func deleteMessage(messageID : String) {
         if let context = sharedCoreDataService.mainManagedObjectContext {
@@ -357,37 +379,41 @@ class MessageDataService {
         }
     }
     
-    func send(#recipientList: String, bccList: String, ccList: String, title: String, encryptionPassword: String, passwordHint: String, expirationTimeInterval: NSTimeInterval, body: String, attachments: [AnyObject]?, completion: CompletionBlock?) {
-        var error: NSError?
-        
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            let message = MessageHelper.messageWithLocation(.outbox,
-                recipientList: recipientList,
-                bccList: bccList,
-                ccList: ccList,
-                title: title,
-                encryptionPassword: encryptionPassword,
-                passwordHint: passwordHint,
-                expirationTimeInterval: expirationTimeInterval,
-                body: body,
-                attachments: attachments,
-                inManagedObjectContext: context)
-            
-            var uuid = NSUUID().UUIDString
-            message.messageID = uuid
-            error = context.saveUpstreamIfNeeded()
-            
-            if error != nil {
-                NSLog("\(__FUNCTION__) error: \(error)")
-            } else {
-                queue(message: message, action: .send)
-            }
-        } else {
-            error = NSError.protonMailError(code: 500, localizedDescription: NSLocalizedString("No managedObjectContext"), localizedFailureReason: nil, localizedRecoverySuggestion: nil)
-        }
-        
-        completion?(task: nil, response: nil, error: error)
-    }
+//    func send(#recipientList: String, bccList: String, ccList: String, title: String, encryptionPassword: String, passwordHint: String, expirationTimeInterval: NSTimeInterval, body: String, attachments: [AnyObject]?, completion: CompletionBlock?) {
+//        var error: NSError?
+//        
+//        if let context = sharedCoreDataService.mainManagedObjectContext {
+//            
+//            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+//                
+//            }
+////            let message = MessageHelper.messageWithLocation(.outbox,
+////                recipientList: recipientList,
+////                bccList: bccList,
+////                ccList: ccList,
+////                title: title,
+////                encryptionPassword: encryptionPassword,
+////                passwordHint: passwordHint,
+////                expirationTimeInterval: expirationTimeInterval,
+////                body: body,
+////                attachments: attachments,
+////                inManagedObjectContext: context)
+////            
+////            var uuid = NSUUID().UUIDString
+////            message.messageID = uuid
+////            error = context.saveUpstreamIfNeeded()
+//            
+//            if error != nil {
+//                NSLog("\(__FUNCTION__) error: \(error)")
+//            } else {
+//                queue(message: message, action: .send)
+//            }
+//        } else {
+//            error = NSError.protonMailError(code: 500, localizedDescription: NSLocalizedString("No managedObjectContext"), localizedFailureReason: nil, localizedRecoverySuggestion: nil)
+//        }
+//        
+//        completion?(task: nil, response: nil, error: error)
+//    }
     
     func purgeOldMessages() {
         if let context = sharedCoreDataService.mainManagedObjectContext {

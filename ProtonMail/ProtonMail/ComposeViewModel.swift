@@ -104,7 +104,9 @@ public class ComposeViewModelImpl : ComposeViewModel {
     }
     
     public override func sendMessage() {
-        if hasDraft && message == nil {
+        if hasDraft && message != nil {
+            
+            sharedMessageDataService.send(self.message?.messageID, completion: nil)
             //send;
         }
         else {
