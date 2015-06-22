@@ -202,7 +202,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
             
            // let htmlString = "<span style=\"font-family: \(font.fontName); font-size: \(font.pointSize); color: \(cssColorString)\">\(bodyText)</span>"
             
-            let htmlString = "<style>\(css)</style><meta name=\"viewport\" content=\"width=375\">\n<div class='inbox-body'>\(bodyText.ln2br())</div>"
+            let htmlString = "<style>\(css)</style><meta name=\"viewport\" content=\"width=375\">\n<div class='inbox-body'>\(bodyText)</div>"
             
             self.emailBodyWebView.loadHTMLString(htmlString, baseURL: nil)
         }
