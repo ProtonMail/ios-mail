@@ -282,27 +282,27 @@ public class MessageAPI {
         }
     }
     
-    public struct Attachment {
-        let fileName: String
-        let mimeType: String
-        let fileData: Dictionary<String,String>
-        let fileSize: Int
-        
-        init(fileName: String, mimeType: String, fileData: Dictionary<String,String>, fileSize: Int) {
-            self.fileName                           = fileName
-            self.mimeType                           = mimeType
-            self.fileData                           = fileData
-            self.fileSize                           = fileSize
-        }
-        
-        func asJSON() -> Dictionary<String,AnyObject> {
-            return [
-                "FileName" : fileName,
-                "MIMEType" : mimeType,
-                "FileData" : fileData,
-                "FileSize" : String(fileSize)]
-        }
-    }
+//    public struct Attachment {
+//        let fileName: String
+//        let mimeType: String
+//        let fileData: Dictionary<String,String>
+//        let fileSize: Int
+//        
+//        init(fileName: String, mimeType: String, fileData: Dictionary<String,String>, fileSize: Int) {
+//            self.fileName                           = fileName
+//            self.mimeType                           = mimeType
+//            self.fileData                           = fileData
+//            self.fileSize                           = fileSize
+//        }
+//        
+//        func asJSON() -> Dictionary<String,AnyObject> {
+//            return [
+//                "FileName" : fileName,
+//                "MIMEType" : mimeType,
+//                "FileData" : fileData,
+//                "FileSize" : String(fileSize)]
+//        }
+//    }
     
 }
 

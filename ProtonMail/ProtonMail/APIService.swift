@@ -191,7 +191,7 @@ class APIService {
     :param: keyPackets encrypt attachment key package
     :param: dataPacket encrypt attachment data package
     */
-    internal func upload (url: String, parameters: AnyObject?, keyPackets : NSData!, dataPacket : NSData!) { //TODO / RUSH : need add respons handling, progress bar later
+    internal func upload (url: String, parameters: AnyObject?, keyPackets : NSData!, dataPacket : NSData!, completion: CompletionBlock?) { //TODO / RUSH : need add respons handling, progress bar later
         var serializeError: NSError?
         if let request = sessionManager.requestSerializer.multipartFormRequestWithMethod("POST", URLString: url, parameters: parameters as! [String:String], constructingBodyWithBlock: { formData in
             let data: AFMultipartFormData = formData
@@ -200,7 +200,8 @@ class APIService {
             
             }, error: &serializeError) {
                 let uploadTask = self.sessionManager.uploadTaskWithStreamedRequest(request, progress: nil) { (response, responseObject, error) -> Void in
-                    println("");
+                    println("")
+                    completion?(task: nil, response: responseObject as? Dictionary<String,AnyObject>, error: error)
                 }
                 uploadTask.resume()
         }
@@ -244,7 +245,6 @@ class APIService {
             
             return nil
         }
-        
         NSValueTransformer.setValueTransformer(boolTransformer, forName: "BoolTransformer")
         
         let dateTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
@@ -264,7 +264,6 @@ class APIService {
             
             return nil
         }
-        
         NSValueTransformer.setValueTransformer(dateTransformer, forName: "DateTransformer")
         
         let numberTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
@@ -276,7 +275,6 @@ class APIService {
             
             return nil
         }
-        
         NSValueTransformer.setValueTransformer(numberTransformer, forName: "NumberTransformer")
         
         let tagTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
@@ -287,19 +285,25 @@ class APIService {
             return nil
         }
         
-        
         let JsonStringTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
             if let tag = value as? NSArray {
                 let bytes : NSData = NSJSONSerialization.dataWithJSONObject(tag, options: NSJSONWritingOptions.allZeros, error: nil)!
                 let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
                 return strJson
             }
-            
             return "";
         }
-        
-        
         NSValueTransformer.setValueTransformer(JsonStringTransformer, forName: "JsonStringTransformer")
+        
+        let encodedDataTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> NSData! in
+            if let tag = value as? String {
+                if let data: NSData = NSData(base64EncodedString: tag, options: NSDataBase64DecodingOptions(rawValue: 0)) {
+                    return data
+                }
+            }
+            return nil;
+        }
+        NSValueTransformer.setValueTransformer(JsonStringTransformer, forName: "EncodedDataTransformer")
     }
 }
 

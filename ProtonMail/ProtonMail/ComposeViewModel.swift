@@ -95,6 +95,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func uploadAtt(att: Attachment!) {
+        self.updateDraft()
         sharedMessageDataService.uploadAttachment(att)
     }
     

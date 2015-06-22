@@ -458,9 +458,11 @@ class MessageDataService {
     }
     
     
-    private func generatMessagePackage (message: Message!, keys : [String : AnyObject]?, encrptOutside : Bool) -> MessageAPI.MessageSendRequest! {
+    private func generatMessagePackage (message: Message!, keys : [String : AnyObject]?, atts : [Attachment], encrptOutside : Bool) -> MessageAPI.MessageSendRequest! {
         
-       // let defaultAddressID = sharedUserDataService.userAddresses.first?.address_id ?? "1000";
+        for att in atts {
+            println("\(att)")
+        }
 
         var out : [MessageAPI.MessagePackage] = []
         var needsPlainText : Bool = false
@@ -476,17 +478,16 @@ class MessageDataService {
                 }
                 
                 let publicKey = v as! String
-                
                 let isOutsideUser = publicKey.isEmpty
-                
                 let password = "123"
-                
                 
                 if isOutsideUser {
                     if encrptOutside {
                         //create outside encrypt packet
                         var pack = MessageAPI.MessagePackage(address: key, type: 2, body: "", token: "", encToken: "", passwordHint: "")
                         out.append(pack)
+                        
+                        // encrypt keys use pwd .
                     }
                     else {
                         needsPlainText = true
@@ -500,6 +501,8 @@ class MessageDataService {
                     } else {
                         NSLog("\(__FUNCTION__) can't encrypt body for \(body) with error: \(error)")
                     }
+                    
+                    // encrypt keys use public key
                 }
             }
             
@@ -507,7 +510,13 @@ class MessageDataService {
             
             if needsPlainText {
                 outRequest.clearBody = body
+                
+                
+                
             }
+            
+            
+            //TODO::add attachment package
             
         } else {
             NSLog("\(__FUNCTION__) unable to decrypt \(message.body) with error: \(error)")
@@ -559,18 +568,19 @@ class MessageDataService {
         }
     }
     
-    private func attachmentsForMessage(message: Message) -> [MessageAPI.Attachment] {
-        var attachments: [MessageAPI.Attachment] = []
-        
-        for messageAttachment in message.attachments.allObjects as! [Attachment] {
-            if let fileDataBase64Encoded = messageAttachment.fileData?.base64EncodedStringWithOptions(nil) {
-                let attachment = MessageAPI.Attachment(fileName: messageAttachment.fileName, mimeType: messageAttachment.mimeType, fileData: ["self" : fileDataBase64Encoded], fileSize: messageAttachment.fileSize.integerValue)
-                
-                attachments.append(attachment)
-            }
-        }
-        
-        return attachments
+    private func attachmentsForMessage(message: Message) -> [Attachment] {
+        return message.attachments.allObjects as! [Attachment]
+//        var attachments: [MessageAPI.Attachment] = []
+//        
+//        for messageAttachment in message.attachments.allObjects as! [Attachment] {
+//            if let fileDataBase64Encoded = messageAttachment.fileData?.base64EncodedStringWithOptions(nil) {
+//                let attachment = MessageAPI.Attachment(fileName: messageAttachment.fileName, mimeType: messageAttachment.mimeType, fileData: ["self" : fileDataBase64Encoded], fileSize: messageAttachment.fileSize.integerValue)
+//                
+//                attachments.append(attachment)
+//            }
+//        }
+//        
+//        return attachments
     }
     
     private func messageBodyForMessage(message: Message, response: [String : AnyObject]?) -> [String : String] {
@@ -698,10 +708,10 @@ class MessageDataService {
                     
                     let completionWrapper: CompletionBlock = { task, response, error in
                         
-                        if let mess = response?["Message"] as? Dictionary<String, AnyObject> {
-                            if let messageID = mess["ID"] as? String {
-                               // message.messageID = messageID
-                               // message.isDetailDownloaded = true
+                        if error != nil {
+                            if let messageID = response?["AttachmentID"] as? String {
+                                attachment.attachmentID = messageID
+                                // message.isDetailDownloaded = true
                                 if let error = context.saveUpstreamIfNeeded() {
                                     NSLog("\(__FUNCTION__) error: \(error)")
                                 }
@@ -720,7 +730,7 @@ class MessageDataService {
                     let keyPacket = encrypt_data!["self"] as! NSData
                     let dataPacket = encrypt_data!["DataPacket"] as! NSData
                     
-                    sharedAPIService.upload( AppConstants.BaseURLString + "/attachments/upload", parameters: params, keyPackets: keyPacket, dataPacket: dataPacket)
+                    sharedAPIService.upload( AppConstants.BaseURLString + "/attachments/upload", parameters: params, keyPackets: keyPacket, dataPacket: dataPacket, completion: completionWrapper)
                     
                     return
                 }
@@ -756,8 +766,10 @@ class MessageDataService {
                         
                         let isEncryptOutside = !message.passwordEncryptedBody.isEmpty
                         
+                        let attachments = self.attachmentsForMessage(message)
+                        
                         // create package for internal
-                        let sendMessage = self.generatMessagePackage(message, keys: response, encrptOutside: isEncryptOutside)
+                        let sendMessage = self.generatMessagePackage(message, keys: response, atts:attachments, encrptOutside: isEncryptOutside)
                         
                         // parse the response for keys
                         //let messageBody = self.messageBodyForMessage(message, response: response)
@@ -767,8 +779,6 @@ class MessageDataService {
                         
                         
                         // build clear output
-                        
-                        //let attachments = self.attachmentsForMessage(message)
                         
                         let completionWrapper: CompletionBlock = { task, response, error in
                             // remove successful send from Core Data

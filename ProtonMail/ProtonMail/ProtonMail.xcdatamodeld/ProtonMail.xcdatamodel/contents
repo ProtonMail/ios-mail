@@ -18,6 +18,11 @@
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
+        <attribute name="keyPacket" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="KeyPackets"/>
+            </userInfo>
+        </attribute>
         <attribute name="localURL" optional="YES" attributeType="Transformable" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="mimeType" attributeType="String" syncable="YES">
             <userInfo>
@@ -224,7 +229,7 @@
         </userInfo>
     </entity>
     <elements>
-        <element name="Attachment" positionX="-128" positionY="-22" width="128" height="150"/>
+        <element name="Attachment" positionX="-128" positionY="-22" width="128" height="165"/>
         <element name="Contact" positionX="54" positionY="-25" width="128" height="90"/>
         <element name="Label" positionX="-126" positionY="-162" width="128" height="118"/>
         <element name="Message" positionX="-344" positionY="-216" width="128" height="525"/>

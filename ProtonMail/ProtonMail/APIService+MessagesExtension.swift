@@ -119,7 +119,7 @@ extension APIService {
         expirationDate: NSDate? = nil,
         isEncrypted: NSNumber,
         body: [String : String],
-        attachments: [MessageAPI.Attachment],
+        attachments: [Attachment],
         completion: CompletionBlock?) {
             let path = "/messages"
             var parameterStrings: [String : String] = [
@@ -140,13 +140,13 @@ extension APIService {
             parameters["MessageBody"] = body
             
             if !attachments.isEmpty {
-                var attachmentsArray: [[String : AnyObject]] = []
-                
-                for attachment in attachments {
-                    attachmentsArray.append(attachment.asJSON())
-                }
-                
-                parameters["Attachments"] = attachmentsArray
+//                var attachmentsArray: [[String : AnyObject]] = []
+//                
+//                for attachment in attachments {
+//                    attachmentsArray.append(attachment.asJSON())
+//                }
+//                
+//                parameters["Attachments"] = attachmentsArray
             }
             
             
@@ -163,7 +163,7 @@ extension APIService {
         expirationDate: NSDate? = nil,
         isEncrypted: NSNumber,
         body: Dictionary<String,String>,
-        attachments: Array<MessageAPI.Attachment>?,
+        attachments: Array<Attachment>?,
         completion: CompletionBlock?) {
             let path = "/messages/draft"
             var parameters: Dictionary<String,AnyObject> = [
@@ -177,13 +177,13 @@ extension APIService {
                 "MessageBody" : body]
             
             if let attachments = attachments {
-                var attachmentsJSON: Array<Dictionary<String,AnyObject>> = []
-                
-                for attachment in attachments {
-                    attachmentsJSON.append(attachment.asJSON())
-                }
-                
-                parameters["Attachments"] = attachmentsJSON
+//                var attachmentsJSON: Array<Dictionary<String,AnyObject>> = []
+//                
+//                for attachment in attachments {
+//                    attachmentsJSON.append(attachment.asJSON())
+//                }
+//                
+//                parameters["Attachments"] = attachmentsJSON
             }
             
             request(method: .POST, path: path, parameters: parameters, completion: completion)
@@ -199,7 +199,7 @@ extension APIService {
         expirationDate: NSDate? = nil,
         isEncrypted: NSNumber,
         body: Dictionary<String,String>,
-        attachments: Array<MessageAPI.Attachment>?,
+        attachments: Array<Attachment>?,
         completion: CompletionBlock?) {
             let path = "/messages/\(messageID)/draft"
             var parameters: Dictionary<String,AnyObject> = [
@@ -214,13 +214,13 @@ extension APIService {
                 "MessageBody" : body]
             
             if let attachments = attachments {
-                var attachmentsJSON: Array<Dictionary<String,AnyObject>> = []
-                
-                for attachment in attachments {
-                    attachmentsJSON.append(attachment.asJSON())
-                }
-                
-                parameters["Attachments"] = attachmentsJSON
+//                var attachmentsJSON: Array<Dictionary<String,AnyObject>> = []
+//                
+//                for attachment in attachments {
+//                    attachmentsJSON.append(attachment.asJSON())
+//                }
+//                
+//                parameters["Attachments"] = attachmentsJSON
             }
             
             request(method: .POST, path: path, parameters: parameters, completion: completion)

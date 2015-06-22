@@ -95,7 +95,7 @@ class ComposeViewController : ProtonMailViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardDidShowNotification, object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShowOne:", name: UIKeyboardDidShowNotification, object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object:nil)
         
         setupAutoSave()
@@ -194,7 +194,7 @@ class ComposeViewController : ProtonMailViewController {
     }
     
     // MARK: - Private methods
-    private func keyboardWillShow(sender: NSNotification) {
+    func keyboardWillShowOne(sender: NSNotification) {
         self.kKeyboardOffset = 44.0;
         let info: NSDictionary = sender.userInfo!
         if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
@@ -208,7 +208,7 @@ class ComposeViewController : ProtonMailViewController {
         }
     }
     
-    private func keyboardWillHide(sender: NSNotification) {
+    func keyboardWillHide(sender: NSNotification) {
         kKeyboardOffset = 0
         self.currentKeyboradHeight = 20 + kKeyboardOffset
         keyboradToolbar.alpha = 0.0
@@ -496,6 +496,7 @@ extension ComposeViewController: AttachmentsViewControllerDelegate {
     }
     
     func attachmentsViewController(attachmentsViewController: AttachmentsViewController, didPickedAttachment: UIImage) -> Void {
+        self.collectDraft()
         let attachment = didPickedAttachment.toAttachment(self.viewModel.message!)
         self.viewModel.uploadAtt(attachment)
         
