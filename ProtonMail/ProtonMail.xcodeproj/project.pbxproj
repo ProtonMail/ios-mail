@@ -133,6 +133,7 @@
 		755405B21B1648D2003BFC0A /* ComposeViewN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755405B01B1648D2003BFC0A /* ComposeViewN.swift */; };
 		755405B31B1648D2003BFC0A /* ComposeViewN.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755405B11B1648D2003BFC0A /* ComposeViewN.xib */; };
 		755405B51B164A99003BFC0A /* ComposeViewControllerN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755405B41B164A99003BFC0A /* ComposeViewControllerN.swift */; };
+		755B6A701B38C0B800745872 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755B6A6F1B38C0B800745872 /* Label.swift */; };
 		7565998F1AC4809B00C187E4 /* EncryptTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7565998E1AC4809B00C187E4 /* EncryptTypes.swift */; };
 		7567B06B1B334AF200A72A1E /* ComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B06A1B334AF200A72A1E /* ComposeViewModel.swift */; };
 		7567B06D1B334FA400A72A1E /* ViewModelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B06C1B334FA400A72A1E /* ViewModelService.swift */; };
@@ -320,6 +321,7 @@
 		755405B01B1648D2003BFC0A /* ComposeViewN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewN.swift; sourceTree = "<group>"; };
 		755405B11B1648D2003BFC0A /* ComposeViewN.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComposeViewN.xib; sourceTree = "<group>"; };
 		755405B41B164A99003BFC0A /* ComposeViewControllerN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewControllerN.swift; sourceTree = "<group>"; };
+		755B6A6F1B38C0B800745872 /* Label.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
 		7565998E1AC4809B00C187E4 /* EncryptTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptTypes.swift; sourceTree = "<group>"; };
 		7567B06A1B334AF200A72A1E /* ComposeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModel.swift; sourceTree = "<group>"; };
 		7567B06C1B334FA400A72A1E /* ViewModelService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelService.swift; sourceTree = "<group>"; };
@@ -470,6 +472,7 @@
 				7565998E1AC4809B00C187E4 /* EncryptTypes.swift */,
 				075E3DED1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld */,
 				07A0E1AC1A9D3C64005FD04B /* UserInfo.swift */,
+				755B6A6F1B38C0B800745872 /* Label.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1160,6 +1163,7 @@
 				072AB6A11A8EE50000AF45D6 /* ProtonMail-Bridging-Header.cpp in Sources */,
 				071210E61AA91B4000B834F2 /* APIService+DeviceExtension.swift in Sources */,
 				07B797C01A6EDFF400244532 /* APIService.swift in Sources */,
+				755B6A701B38C0B800745872 /* Label.swift in Sources */,
 				073FE01B1A955F4A00825980 /* APIService+ContactExtension.swift in Sources */,
 				073FD92C1A719B7900EB0CAF /* APIService+UserExtension.swift in Sources */,
 				07CC3F931A941C7A0005E39F /* MessageQueue.swift in Sources */,

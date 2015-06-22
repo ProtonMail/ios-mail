@@ -60,5 +60,12 @@ extension String {
     func splitByComma() -> [String] {
         return split(self) {$0 == ","}
     }
+    
+    
+    
+    func ln2br() -> String {
+        return  self.stringByReplacingOccurrencesOfString("\n", withString:  "<br>") 
+    }
+    
 }
 

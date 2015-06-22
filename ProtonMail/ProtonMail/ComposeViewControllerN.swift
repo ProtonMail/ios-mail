@@ -237,7 +237,6 @@ class ComposeViewController : ProtonMailViewController {
         self.composeView.subject.text = self.viewModel.getSubject();
         self.composeView.htmlEditor.setHTML(self.viewModel.getHtmlBody())
         
-//        
 //        if let action = action {
 //            if action == ComposeMessageAction.Reply || action == ComposeMessageAction.ReplyAll {
 //                composeView.subject.text = "Re: " + viewModel.getSubject()

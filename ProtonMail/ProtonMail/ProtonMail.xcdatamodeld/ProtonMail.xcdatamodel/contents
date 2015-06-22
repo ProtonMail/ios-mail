@@ -54,12 +54,13 @@
             <entry key="identityAttribute" value="contactID"/>
         </userInfo>
     </entity>
-    <entity name="Label" syncable="YES">
+    <entity name="Label" representedClassName="ProtonMail.Label" syncable="YES">
         <attribute name="color" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isDisplay" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="labelID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="labels" inverseEntity="Message" syncable="YES"/>
     </entity>
     <entity name="Message" representedClassName="ProtonMail.Message" syncable="YES">
         <attribute name="addressID" optional="YES" attributeType="String" syncable="YES">
@@ -224,14 +225,15 @@
                 <entry key="JSONKeyPath" value="Attachments"/>
             </userInfo>
         </relationship>
+        <relationship name="labels" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Label" inverseName="message" inverseEntity="Label" syncable="YES"/>
         <userInfo>
             <entry key="identityAttribute" value="messageID"/>
         </userInfo>
     </entity>
     <elements>
-        <element name="Attachment" positionX="-128" positionY="-22" width="128" height="165"/>
-        <element name="Contact" positionX="54" positionY="-25" width="128" height="90"/>
-        <element name="Label" positionX="-126" positionY="-162" width="128" height="118"/>
-        <element name="Message" positionX="-344" positionY="-216" width="128" height="525"/>
+        <element name="Attachment" positionX="1989" positionY="-3666" width="128" height="165"/>
+        <element name="Contact" positionX="2149" positionY="-3600" width="128" height="90"/>
+        <element name="Label" positionX="1989" positionY="-3465" width="128" height="133"/>
+        <element name="Message" positionX="1771" positionY="-3870" width="128" height="540"/>
     </elements>
 </model>
