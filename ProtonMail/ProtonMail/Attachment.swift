@@ -20,7 +20,7 @@ class Attachment: NSManagedObject {
     
     @NSManaged var attachmentID: String
     @NSManaged var fileData: NSData?
-    @NSManaged var keyPacket: NSData?
+    @NSManaged var keyPacket: String?
     @NSManaged var fileName: String
     @NSManaged var fileSize: NSNumber
     @NSManaged var localURL: NSURL?

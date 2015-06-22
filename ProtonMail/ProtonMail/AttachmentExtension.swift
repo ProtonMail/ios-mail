@@ -56,15 +56,34 @@ extension Attachment {
         return sharedUserDataService.userInfo?.publicKey ?? ""
     }
     
+    // Mark : public functions
     
     func encryptAttachment(error: NSErrorPointer?) -> NSMutableDictionary? {
         let out = fileData?.encryptWithPublicKeys(["self" : publicKey], error: error)
         if out == nil {
             return nil
         }
-        //"KeyPacket" : out["self"], "DataPacket" : out["DataPacket"]
         return out
     }
+    
+    func getSessionKey(error: NSErrorPointer?) -> NSData? {
+        if self.keyPacket == nil {
+            return nil
+        }
+        
+        let data: NSData = NSData(base64EncodedString: self.keyPacket!, options: NSDataBase64DecodingOptions(rawValue: 0))!
+        
+        let sessionKey = data.getSessionKeyFromPubKeyPackage(privateKey, passphrase: passphrase, publicKey:publicKey, error: error) ?? nil
+        
+        return sessionKey
+    }
+    
+//    func getNewSessionKeyPackage(publicKey: String!, error: NSErrorPointer?) -> NSData? {
+//        let key = self.getSessionKey(nil)
+//        
+//        key?.getSessionKeyPackage(publicKey, error: nil)
+//        
+//    }
 
 }
 

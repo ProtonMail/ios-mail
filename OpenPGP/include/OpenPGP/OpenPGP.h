@@ -44,10 +44,17 @@
 - (NSString* ) encrypt_mailbox_pwd:(NSString *)plain slat:(NSString*) value;
 - (NSString* ) decrypt_mailbox_pwd:(NSString *)encrypt_text slat:(NSString*) value;
 
-
 //encrypt decrypt attachment
 - (NSMutableDictionary*) encrypt_attachment:(NSData *) unencrypt_att pub_key:(NSString *)pub_key error:(NSError**) err;
 - (NSMutableDictionary*) encrypt_attachments:(NSData *) unencrypt_att pub_keys:(NSMutableDictionary*)pub_keys error:(NSError**) err;
+
+//
+- (NSData*) getNewPublicKeyPackage:(NSData *) sessionKey pub_key:(NSString *)pub_key error:(NSError**) err;
+- (NSData*) getNewSymmetricKeyPackage:(NSData *) sessionKey password:(NSString*)pwd error:(NSError**) err;
+//
+- (NSData*) getPublicKeySessionKey:(NSData *) keyPackage error:(NSError**) err;
+- (NSData*) getSymmetricSessionKey:(NSData *) keyPackage password:(NSString*)pwd error:(NSError**) err;
+
 
 //binary attachment
 - (NSData *) decrypt_attachment:(NSData*) keyPackage data:(NSData*) dataPackage error:(NSError**) err;

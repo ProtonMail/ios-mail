@@ -195,7 +195,7 @@ public class MessageAPI {
         
         :returns: self
         */
-        init(address:String, type : Int, body :String!, token : String! = "", encToken : String! = "", passwordHint : String! = "", attPackets:[AttachmentKeyPackage]=[AttachmentKeyPackage]()) {
+        init(address:String, type : Int, body :String!, attPackets:[AttachmentKeyPackage]=[AttachmentKeyPackage](), token : String! = "", encToken : String! = "", passwordHint : String! = "") {
             
             self.address = address
             self.type = type
@@ -258,6 +258,20 @@ public class MessageAPI {
         }
     }
     
+    
+    /**
+    *  temporary table for formating the message send package
+    */
+    public class TempAttachment {
+        let ID : String!
+        let Key : NSData!
+        
+        public init(id: String, key: NSData) {
+            self.ID = id
+            self.Key = key
+        }
+
+    }
     
     /**
     * MARK : down all the old code

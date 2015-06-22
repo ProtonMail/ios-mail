@@ -139,28 +139,6 @@ extension String {
 
 extension NSData {
     
-//    func decryptWithPrivateKey(privateKey: String, passphrase: String, publicKey: String, error: NSErrorPointer?) -> String? {
-//        let openPGP = OpenPGP()
-//        
-//        if !openPGP.checkPassphrase(passphrase, forPrivateKey: privateKey, publicKey: publicKey, error: error) {
-//            return nil
-//        }
-//        
-//        //- (NSMutableDictionary*) encrypt_attachment:(NSData *) unencrypt_att pub_key:(NSString *)pub_key error:(NSError**) err;
-//        
-//        
-//        var anError: NSError?
-////        if let decrypt = openPGP.decrypt_message(self, error: &anError) {
-////            return decrypt
-////        }
-//        
-//        if let error = error {
-//            error.memory = anError
-//        }
-//        
-//        return nil
-//    }
-    
     func encryptWithPublicKey(publicKey: String, error: NSErrorPointer?) -> NSMutableDictionary? {
         
         var anError: NSError?
@@ -189,18 +167,54 @@ extension NSData {
         
         return nil
     }
-//
-//    func decryptWithPassphrase(passphrase: String, error: NSErrorPointer?) -> String? {
-//        
-//        var anError: NSError?
-////        if let encrypt = OpenPGP().decrypt_message_aes(self, pwd: passphrase, error: &anError) {
-////            return encrypt
-////        }
-//        
-//        if let error = error {
-//            error.memory = anError
-//        }
-//        
-//        return nil
-//    }
+
+    func getSessionKeyFromPubKeyPackage(privateKey: String, passphrase: String, publicKey: String, error: NSErrorPointer?) -> NSData? {
+        
+        var anError: NSError?
+        let openPGP = OpenPGP()
+        
+        if !openPGP.checkPassphrase(passphrase, forPrivateKey: privateKey, publicKey: publicKey, error: error) {
+            return nil
+        }
+
+        if let encrypt = openPGP.getPublicKeySessionKey(self, error: &anError) {
+            return encrypt
+        }
+        
+        if let error = error {
+            error.memory = anError
+        }
+        
+        return nil
+    }
+    
+    func getSessionKeyPackage(publicKey: String, error: NSErrorPointer?) -> NSData? {
+        
+        var anError: NSError?
+        let openPGP = OpenPGP()
+
+        if let encrypt = openPGP.getNewPublicKeyPackage(self, pub_key: publicKey, error: &anError) {
+            return encrypt
+        }
+        
+        if let error = error {
+            error.memory = anError
+        }
+        
+        return nil
+    }
+    
+    func getSymlPackage(passphrase: String, error: NSErrorPointer?) -> String? {
+        
+        var anError: NSError?
+        //        if let encrypt = OpenPGP().decrypt_message_aes(self, pwd: passphrase, error: &anError) {
+        //            return encrypt
+        //        }
+        
+        if let error = error {
+            error.memory = anError
+        }
+        
+        return nil
+    }
 }
