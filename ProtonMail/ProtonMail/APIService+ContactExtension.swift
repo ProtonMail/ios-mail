@@ -54,7 +54,7 @@ extension APIService {
     
     private func parametersForName(name: String, email: String) -> NSDictionary {
         return [
-            "ContactName" : name,
-            "ContactEmail" :email]
+            "Name" : name,
+            "Email" :email]
     }
 }
