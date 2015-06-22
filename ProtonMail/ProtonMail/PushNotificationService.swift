@@ -47,6 +47,7 @@ class PushNotificationService {
     }
     
     func unregisterForRemoteNotifications() {
+        UIApplication.sharedApplication().unregisterForRemoteNotifications()
         sharedAPIService.deviceUnregister()
     }
     

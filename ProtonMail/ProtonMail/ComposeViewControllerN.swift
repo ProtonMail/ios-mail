@@ -123,7 +123,8 @@ class ComposeViewController : ProtonMailViewController {
     
     func autoSaveTimer()
     {
-        
+//        self.collectDraft()
+//        self.viewModel.updateDraft()
     }
 
     // MARK : - View actions
@@ -173,7 +174,7 @@ class ComposeViewController : ProtonMailViewController {
                 return;
             }
         }
-        
+        stopAutoSave()
         self.collectDraft()
         self.viewModel.sendMessage()
         
