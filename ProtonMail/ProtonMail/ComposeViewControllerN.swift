@@ -95,7 +95,7 @@ class ComposeViewController : ProtonMailViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardDidShowNotification, object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShowOne:", name: UIKeyboardDidShowNotification, object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object:nil)
         
         setupAutoSave()
@@ -194,7 +194,7 @@ class ComposeViewController : ProtonMailViewController {
     }
     
     // MARK: - Private methods
-    private func keyboardWillShow(sender: NSNotification) {
+    func keyboardWillShowOne(sender: NSNotification) {
         self.kKeyboardOffset = 44.0;
         let info: NSDictionary = sender.userInfo!
         if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
@@ -208,7 +208,7 @@ class ComposeViewController : ProtonMailViewController {
         }
     }
     
-    private func keyboardWillHide(sender: NSNotification) {
+    func keyboardWillHide(sender: NSNotification) {
         kKeyboardOffset = 0
         self.currentKeyboradHeight = 20 + kKeyboardOffset
         keyboradToolbar.alpha = 0.0
@@ -285,17 +285,17 @@ class ComposeViewController : ProtonMailViewController {
 //                updateSelectedContacts(&self.viewModel.toSelectedContacts, withNameList: message.recipientNameList, emailList: message.recipientList)
 //                updateSelectedContacts(&self.viewModel.ccSelectedContacts, withNameList: message.ccNameList, emailList: message.ccList)
 //                updateSelectedContacts(&self.viewModel.bccSelectedContacts, withNameList: message.bccNameList, emailList: message.bccList)
-
-////                if !message.attachments.isEmpty {
-////                    attachments = []
-////                }
-////                
-////                for attachment in message.attachments.allObjects as! [Attachment] {
-////                    if let fileData = attachment.fileData {
-////                        attachments?.append(fileData)
-////                    }
-////                }
-////                
+//
+//                if !self.viewModel.message!.attachments.isEmpty {
+//                    //attachments = []
+//                }
+////
+//                for attachment in message.attachments.allObjects as! [Attachment] {
+//                    if let fileData = attachment.fileData {
+//                        attachments?.append(fileData)
+//                    }
+//                }
+////
 ////                var error: NSError?
 ////                self.composeView.htmlEditor.setHTML(message.decryptBodyIfNeeded(&error) ?? "")
 ////                if error != nil {
@@ -387,6 +387,7 @@ extension ComposeViewController : ComposeViewNDelegate {
                 attachmentsViewController.delegate = self
                 if let attachments = attachments {
                     attachmentsViewController.attachments = attachments
+                    
                 }
             }
             presentViewController(viewController, animated: true, completion: nil)
@@ -485,10 +486,25 @@ extension ComposeViewController : ComposeViewNDataSource {
 extension ComposeViewController: AttachmentsViewControllerDelegate {
     func attachmentsViewController(attachmentsViewController: AttachmentsViewController, didFinishPickingAttachments attachments: [AnyObject]) {
         self.attachments = attachments
+//        for att in attachments {
+//            let attachment =  (att as! UIImage).toAttachment(self.viewModel.message!)
+//        }
+        //self.viewModel
+        //upload attachments.
+        //uploadAttachment
+        //sharedMessageDataService.uploadAttachment()
+    }
+    
+    func attachmentsViewController(attachmentsViewController: AttachmentsViewController, didPickedAttachment: UIImage) -> Void {
+        self.collectDraft()
+        let attachment = didPickedAttachment.toAttachment(self.viewModel.message!)
+        self.viewModel.uploadAtt(attachment)
+        
     }
 }
 
 // MARK: - UIPickerViewDataSource
+
 extension ComposeViewController: UIPickerViewDataSource {
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return kNumberOfColumnsInTimePicker
@@ -503,6 +519,7 @@ extension ComposeViewController: UIPickerViewDataSource {
 }
 
 // MARK: - UIPickerViewDelegate
+
 extension ComposeViewController: UIPickerViewDelegate {
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
         if (component == 0) {
@@ -532,24 +549,4 @@ extension ComposeViewController : UIScrollViewDelegate {
         self.draggin = false
     }
 }
-
-// MARK: - Message extension
-extension String {
-    private func splitByComma() -> [String] {
-        return split(self) {$0 == ","}
-    }
-}
-
-extension ContactVO {
-    
-    func isDuplicated(addresses : Array<Address>) -> Bool
-    {
-        if let found = find(addresses.map({ $0.email }), self.email) {
-            return true
-        }
-        return false
-    }
-}
-
-///
 

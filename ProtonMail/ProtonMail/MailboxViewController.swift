@@ -88,8 +88,6 @@ class MailboxViewController: ProtonMailViewController {
             self.tableView.deselectRowAtIndexPath(selectedItem, animated: true)
         }
         
-        sharedMessageDataService.uploadAttachment()
-        
         self.startAutoFetch()
     }
     
@@ -161,7 +159,7 @@ class MailboxViewController: ProtonMailViewController {
             
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {
-                    messageDetailViewController.message = message
+                    messageDetailViewController.message = message    
                 }
             } else {
                 println("No selected row.")
@@ -170,7 +168,6 @@ class MailboxViewController: ProtonMailViewController {
             self.cancelButtonTapped()
 
             let composeViewController: ComposeViewController = segue.destinationViewController as! ComposeViewController
-            //let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {
                     composeViewController.viewModel = ComposeViewModelImpl(msg: message, action : ComposeMessageAction.OpenDraft)

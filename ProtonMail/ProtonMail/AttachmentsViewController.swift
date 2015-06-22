@@ -18,6 +18,8 @@ import Foundation
 
 protocol AttachmentsViewControllerDelegate {
     func attachmentsViewController(attachmentsViewController: AttachmentsViewController, didFinishPickingAttachments: [AnyObject]) -> Void
+    
+    func attachmentsViewController(attachmentsViewController: AttachmentsViewController, didPickedAttachment: UIImage) -> Void
 }
 
 
@@ -134,8 +136,10 @@ class AttachmentsViewController: UICollectionViewController {
 // MARK: - UIImagePickerControllerDelegate
 extension AttachmentsViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
-        let img_jpg = UIImage(data:UIImageJPEGRepresentation(image, 1.0))!
-        attachments.append(img_jpg)
+        //let img_jpg = UIImage(data:UIImageJPEGRepresentation(image, 1.0))!
+        attachments.append(image)
+        delegate?.attachmentsViewController(self, didPickedAttachment: image)
+        //delegate?.attachmentsViewController(self, didFinishPickingAttachments: attachments)
         picker.dismissViewControllerAnimated(true, completion: nil)
     }
     

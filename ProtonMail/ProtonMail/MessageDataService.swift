@@ -54,108 +54,19 @@ class MessageDataService {
     
     // MAKR : upload attachment
     
-    func uploadAttachment()
+    func uploadAttachment(att: Attachment!)
     {
-//        ----WebKitFormBoundary7MA4YWxkTrZu0gW
-//        Content-Disposition: form-data; name="Filename"
-//        
-//        test.txt
-//        ----WebKitFormBoundary7MA4YWxkTrZu0gW
-//        Content-Disposition: form-data; name="MessageID"
-//        
-//        ASDkjhasdSAJhasdasdASD==
-//        ----WebKitFormBoundary7MA4YWxkTrZu0gW
-//        Content-Disposition: form-data; name="MIMEType"
-//        
-//        text/plain
-//        ----WebKitFormBoundary7MA4YWxkTrZu0gW
-//        Content-Disposition: form-data; name="KeyPackets"; filename="temp1"
-//        Content-Type: doesnot/matter
-//        
-//        {binary key packet(s)}
-//        
-//        ----WebKitFormBoundary7MA4YWxkTrZu0gW
-//        Content-Disposition: form-data; name="DataPacket"; filename="temp2"
-//        Content-Type: doesnot/matter
-//        
-//        {encrypted data packet}
-//        
-//        ----WebKitFormBoundary7MA4YWxkTrZu0g
-        
-        var params = [
-            "Filename":"test.txt",
-            "MessageID" : "18670667",
-            "MIMEType" : "the name/title",
-            "KeyPackets":"asdfsdfsadfasdfasf",
-            "DataPacket" : "fasfasdfsadf"
-        ]
-        
-        sharedAPIService.upload(params)
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            if let error = context.saveUpstreamIfNeeded() {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            } else {
+                queue(att: att, action: .uploadAtt)
+            }
+        }
+
+        dequeueIfNeeded()
     }
-//    func uploadAttachmentForAttachment(attachment: Attachment, uploadTask: (( NSURLSessionUploadTask) -> Void)?, completion:((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
-//        if let localURL = attachment.localURL {
-//            completion?(nil, localURL, nil)
-//            return
-//        }
-//        
-//        // TODO: check for existing download tasks and return that task rather than start a new download
-//        queue { () -> Void in
-//            if(fileInfo.count > 0)
-//            {
-//                for file in fileInfo
-//                {
-//                    var fileData    = file.valueForKey("fileData") as NSData
-//                    var name        = file.valueForKey("filenameData") as String
-//                    var fileName    = file.valueForKey("fileName") as String
-//                    var mimeType    = file.valueForKey("mimeType") as String
-//                    
-//                    formData.appendPartWithFileData(fileData, name: name, fileName: fileName, mimeType: mimeType)
-//                }
-//            }
-//            
-//            
-//        }, error: nil)
-//        
-//        let conf : NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
-//        
-//        let manager : AFURLSessionManager = AFURLSessionManager(sessionConfiguration: conf)
-//        
-//        var progress : NSProgress? = nil
-//        
-//        var uploadTask:NSURLSessionUploadTask = manager.uploadTaskWithStreamedRequest(request, progress: nil) { (response, responseObject, error) -> Void in
-//            completionHandler(response:response,responseObject:responseObject,error:error)
-//            
-//        }
-//        
-//        uploadTask.resume()
-//            NSString *urlString = [[NSURL URLWithString:kPhotoUploadPath relativeToURL:self.baseURL] absoluteString];
-//            NSMutableURLRequest *request = [self.requestSerializer multipartFormRequestWithMethod:@"POST" URLString:urlString parameters:params constructingBodyWithBlock:^(id <AFMultipartFormData> formData) {
-//                [formData appendPartWithFileData:photo.data name:@"photo" fileName:@"photo.jpg" mimeType:@"image/jpeg"];
-//            }];
-//            
-//            NSURLSessionUploadTask *task = [self uploadTaskWithStreamedRequest:request progress:progress completionHandler:^(NSURLResponse * __unused response, id responseObject, NSError *error) {
-//            if (error) {
-//            if (failure) failure(error);
-//            } else {
-//            if (success) success(responseObject);
-//            }
-//            }];
-//            [task resume];
-////            sharedAPIService.attachmentForAttachmentID(attachment.attachmentID, destinationDirectoryURL: NSFileManager.defaultManager().attachmentDirectory, downloadTask: downloadTask, completion: { task, fileURL, error in
-////                var error = error
-////                if let fileURL = fileURL {
-////                    attachment.localURL = fileURL
-////                    
-////                    error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
-////                    if error != nil  {
-////                        NSLog("\(__FUNCTION__) error: \(error)")
-////                    }
-////                }
-////                completion?(task, fileURL, error)
-////            })
-//        }
-//    }
-//
+
     
     
     // MARK : fetch functions
@@ -485,42 +396,6 @@ class MessageDataService {
         }
     }
     
-//    func send(#recipientList: String, bccList: String, ccList: String, title: String, encryptionPassword: String, passwordHint: String, expirationTimeInterval: NSTimeInterval, body: String, attachments: [AnyObject]?, completion: CompletionBlock?) {
-//        var error: NSError?
-//        
-//        if let context = sharedCoreDataService.mainManagedObjectContext {
-//            
-//            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-//                
-//            }
-////            let message = MessageHelper.messageWithLocation(.outbox,
-////                recipientList: recipientList,
-////                bccList: bccList,
-////                ccList: ccList,
-////                title: title,
-////                encryptionPassword: encryptionPassword,
-////                passwordHint: passwordHint,
-////                expirationTimeInterval: expirationTimeInterval,
-////                body: body,
-////                attachments: attachments,
-////                inManagedObjectContext: context)
-////            
-////            var uuid = NSUUID().UUIDString
-////            message.messageID = uuid
-////            error = context.saveUpstreamIfNeeded()
-//            
-//            if error != nil {
-//                NSLog("\(__FUNCTION__) error: \(error)")
-//            } else {
-//                queue(message: message, action: .send)
-//            }
-//        } else {
-//            error = NSError.protonMailError(code: 500, localizedDescription: NSLocalizedString("No managedObjectContext"), localizedFailureReason: nil, localizedRecoverySuggestion: nil)
-//        }
-//        
-//        completion?(task: nil, response: nil, error: error)
-//    }
-    
     func purgeOldMessages() {
         if let context = sharedCoreDataService.mainManagedObjectContext {
             let cutoffTimeInterval: NSTimeInterval = 3 * 86400 // days converted to seconds
@@ -583,9 +458,11 @@ class MessageDataService {
     }
     
     
-    private func generatMessagePackage (message: Message!, keys : [String : AnyObject]?, encrptOutside : Bool) -> MessageAPI.MessageSendRequest! {
+    private func generatMessagePackage (message: Message!, keys : [String : AnyObject]?, atts : [Attachment], encrptOutside : Bool) -> MessageAPI.MessageSendRequest! {
         
-       // let defaultAddressID = sharedUserDataService.userAddresses.first?.address_id ?? "1000";
+        for att in atts {
+            println("\(att)")
+        }
 
         var out : [MessageAPI.MessagePackage] = []
         var needsPlainText : Bool = false
@@ -601,17 +478,16 @@ class MessageDataService {
                 }
                 
                 let publicKey = v as! String
-                
                 let isOutsideUser = publicKey.isEmpty
-                
                 let password = "123"
-                
                 
                 if isOutsideUser {
                     if encrptOutside {
                         //create outside encrypt packet
                         var pack = MessageAPI.MessagePackage(address: key, type: 2, body: "", token: "", encToken: "", passwordHint: "")
                         out.append(pack)
+                        
+                        // encrypt keys use pwd .
                     }
                     else {
                         needsPlainText = true
@@ -625,6 +501,8 @@ class MessageDataService {
                     } else {
                         NSLog("\(__FUNCTION__) can't encrypt body for \(body) with error: \(error)")
                     }
+                    
+                    // encrypt keys use public key
                 }
             }
             
@@ -632,7 +510,13 @@ class MessageDataService {
             
             if needsPlainText {
                 outRequest.clearBody = body
+                
+                
+                
             }
+            
+            
+            //TODO::add attachment package
             
         } else {
             NSLog("\(__FUNCTION__) unable to decrypt \(message.body) with error: \(error)")
@@ -684,18 +568,19 @@ class MessageDataService {
         }
     }
     
-    private func attachmentsForMessage(message: Message) -> [MessageAPI.Attachment] {
-        var attachments: [MessageAPI.Attachment] = []
-        
-        for messageAttachment in message.attachments.allObjects as! [Attachment] {
-            if let fileDataBase64Encoded = messageAttachment.fileData?.base64EncodedStringWithOptions(nil) {
-                let attachment = MessageAPI.Attachment(fileName: messageAttachment.fileName, mimeType: messageAttachment.mimeType, fileData: ["self" : fileDataBase64Encoded], fileSize: messageAttachment.fileSize.integerValue)
-                
-                attachments.append(attachment)
-            }
-        }
-        
-        return attachments
+    private func attachmentsForMessage(message: Message) -> [Attachment] {
+        return message.attachments.allObjects as! [Attachment]
+//        var attachments: [MessageAPI.Attachment] = []
+//        
+//        for messageAttachment in message.attachments.allObjects as! [Attachment] {
+//            if let fileDataBase64Encoded = messageAttachment.fileData?.base64EncodedStringWithOptions(nil) {
+//                let attachment = MessageAPI.Attachment(fileName: messageAttachment.fileName, mimeType: messageAttachment.mimeType, fileData: ["self" : fileDataBase64Encoded], fileSize: messageAttachment.fileSize.integerValue)
+//                
+//                attachments.append(attachment)
+//            }
+//        }
+//        
+//        return attachments
     }
     
     private func messageBodyForMessage(message: Message, response: [String : AnyObject]?) -> [String : String] {
@@ -815,6 +700,50 @@ class MessageDataService {
         completion?(task: nil, response: nil, error: NSError.badParameter(messageID))
     }
     
+    private func uploadAttachmentWithAttachmentID (addressID: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
+        if let context = managedObjectContext {
+            var error: NSError?
+            if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(addressID) {
+                if let attachment = context.existingObjectWithID(objectID, error: &error) as? Attachment {
+                    
+                    let completionWrapper: CompletionBlock = { task, response, error in
+                        
+                        if error != nil {
+                            if let messageID = response?["AttachmentID"] as? String {
+                                attachment.attachmentID = messageID
+                                // message.isDetailDownloaded = true
+                                if let error = context.saveUpstreamIfNeeded() {
+                                    NSLog("\(__FUNCTION__) error: \(error)")
+                                }
+                            }
+                        }
+                        completion?(task: task, response: response, error: error)
+                    }
+                    
+                    var params = [
+                        "Filename":attachment.fileName,
+                        "MessageID" : attachment.message.messageID,
+                        "MIMEType" : attachment.mimeType,
+                    ]
+
+                    let encrypt_data = attachment.encryptAttachment(nil)
+                    let keyPacket = encrypt_data!["self"] as! NSData
+                    let dataPacket = encrypt_data!["DataPacket"] as! NSData
+                    
+                    sharedAPIService.upload( AppConstants.BaseURLString + "/attachments/upload", parameters: params, keyPackets: keyPacket, dataPacket: dataPacket, completion: completionWrapper)
+                    
+                    return
+                }
+            }
+        }
+        
+        // nothing to send, dequeue request
+        sharedMessageQueue.remove(elementID: writeQueueUUID)
+        self.dequeueIfNeeded()
+        
+        completion?(task: nil, response: nil, error: NSError.badParameter(addressID))
+    }
+    
     private func sendMessageID(messageID: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
         let errorBlock: CompletionBlock = { task, response, error in
             // nothing to send, dequeue request
@@ -837,8 +766,10 @@ class MessageDataService {
                         
                         let isEncryptOutside = !message.passwordEncryptedBody.isEmpty
                         
+                        let attachments = self.attachmentsForMessage(message)
+                        
                         // create package for internal
-                        let sendMessage = self.generatMessagePackage(message, keys: response, encrptOutside: isEncryptOutside)
+                        let sendMessage = self.generatMessagePackage(message, keys: response, atts:attachments, encrptOutside: isEncryptOutside)
                         
                         // parse the response for keys
                         //let messageBody = self.messageBodyForMessage(message, response: response)
@@ -848,8 +779,6 @@ class MessageDataService {
                         
                         
                         // build clear output
-                        
-                        //let attachments = self.attachmentsForMessage(message)
                         
                         let completionWrapper: CompletionBlock = { task, response, error in
                             // remove successful send from Core Data
@@ -954,6 +883,8 @@ class MessageDataService {
                     saveDraftWithMessageID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .send:
                     sendMessageID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                case .uploadAtt:
+                    uploadAttachmentWithAttachmentID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 default:
                     sharedAPIService.messagePUT(MessageAPI.MessageActionRequest(action: actionString, ids: [messageID]), completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 }
@@ -977,6 +908,12 @@ class MessageDataService {
         }
         dequeueIfNeeded()
     }
+    
+    private func queue(#att: Attachment, action: MessageAction) {
+        sharedMessageQueue.addMessage(att.objectID.URIRepresentation().absoluteString!, action: action)
+        dequeueIfNeeded()
+    }
+    
     
     private func queue(#readBlock: ReadBlock) {
         readQueue.append(readBlock)

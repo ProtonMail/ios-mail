@@ -41,4 +41,58 @@ extension Attachment {
             }
         }
     }
+    
+    // MARK: - This is private functions
+
+    private var passphrase: String {
+        return sharedUserDataService.mailboxPassword ?? ""
+    }
+    
+    private var privateKey: String {
+        return sharedUserDataService.userInfo?.privateKey ?? ""
+    }
+    
+    private var publicKey: String {
+        return sharedUserDataService.userInfo?.publicKey ?? ""
+    }
+    
+    
+    func encryptAttachment(error: NSErrorPointer?) -> NSMutableDictionary? {
+        let out = fileData?.encryptWithPublicKeys(["self" : publicKey], error: error)
+        if out == nil {
+            return nil
+        }
+        //"KeyPacket" : out["self"], "DataPacket" : out["DataPacket"]
+        return out
+    }
+
+}
+
+
+extension Attachment {
+//    func toImage -> UIImage {
+//        return UIImage();
+    //    }
+}
+
+extension UIImage {
+    func toAttachment (message:Message) -> Attachment? {
+        if let fileData = UIImageJPEGRepresentation(self, 0) {
+            let attachment = Attachment(context: message.managedObjectContext!)
+            attachment.attachmentID = "0"
+            attachment.message = message
+            attachment.fileName = "test.jpg"
+            attachment.mimeType = "image/jpg"
+            attachment.fileData = fileData
+            attachment.fileSize = fileData.length
+            var error: NSError? = nil
+            error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
+            if error != nil {
+                 NSLog("\(__FUNCTION__) toAttachment () with error: \(error)")
+            }
+            return attachment
+        }
+        
+        return nil
+    }
 }

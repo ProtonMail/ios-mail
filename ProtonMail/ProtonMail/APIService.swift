@@ -182,49 +182,29 @@ class APIService {
         self.sessionManager.requestSerializer.setVersionHeader(apiVersion, appVersion: appVersion)
     }
     
-    internal func upload (parameters: AnyObject?) {
+    
+    /**
+    this function only for upload attachments for now.
+    
+    :param: url        The content accept endpoint
+    :param: parameters the request body
+    :param: keyPackets encrypt attachment key package
+    :param: dataPacket encrypt attachment data package
+    */
+    internal func upload (url: String, parameters: AnyObject?, keyPackets : NSData!, dataPacket : NSData!, completion: CompletionBlock?) { //TODO / RUSH : need add respons handling, progress bar later
         var serializeError: NSError?
-        if let request = sessionManager.requestSerializer.multipartFormRequestWithMethod("POST", URLString: AppConstants.BaseURLString + "/attachments/upload", parameters: parameters as! [String:String], constructingBodyWithBlock: { formData in
+        if let request = sessionManager.requestSerializer.multipartFormRequestWithMethod("POST", URLString: url, parameters: parameters as! [String:String], constructingBodyWithBlock: { formData in
             let data: AFMultipartFormData = formData
-            let data_1 = "daasdfasfasfasdfasdfta_1".dataUsingEncoding(NSUTF8StringEncoding)
-            let data_2 = "dataasdfsdafljasdfj_2".dataUsingEncoding(NSUTF8StringEncoding)
-            
-            data.appendPartWithFileData(data_1, name: "KeyPackets", fileName: "KeyPackets.txt", mimeType: "text/plain" )
-            data.appendPartWithFileData(data_2, name: "DataPacket", fileName: "DataPacket.txt", mimeType: "text/plain" )
+            data.appendPartWithFileData(keyPackets, name: "KeyPackets", fileName: "KeyPackets.txt", mimeType: "" )
+            data.appendPartWithFileData(dataPacket, name: "DataPacket", fileName: "DataPacket.txt", mimeType: "" )
             
             }, error: &serializeError) {
-                
                 let uploadTask = self.sessionManager.uploadTaskWithStreamedRequest(request, progress: nil) { (response, responseObject, error) -> Void in
-                    
-                    println("");
-                    
+                    println("")
+                    completion?(task: nil, response: responseObject as? Dictionary<String,AnyObject>, error: error)
                 }
-                
                 uploadTask.resume()
         }
-        
-        
-        //        let a = sessionManager.requestSerializer.multipartFormRequestWithMethod("POST", URLString: AppConstants.BaseURLString + "/attachments/upload", parameters: parameters, constructingBodyWithBlock:  { formData in
-        //                        let data: AFMultipartFormData = formData
-        //                       // data.appendPartWithFileURL(fileURL, name: "file", error: nil)
-        //                        }, error: serializeError)
-        
-        
-        //        request.setValue("application/json", forHTTPHeaderField: "Accept")
-        
-        
-        
-        //  /attachments/upload
-        //        var serializeError: NSError?
-        //        if let request = self.sessionManager.requestSerializer.requestWithMethod("POST", URLString:AppConstants.BaseURLString + "/attachments/upload",  parameters: parameters, error: &serializeError) {
-        //            let uploadTask = self.sessionManager.uploadTaskWithStreamedRequest(request, progress: nil) { (response, responseObject, error) -> Void in
-        //
-        //                println("");
-        //
-        //            }
-        //
-        //            uploadTask.resume()
-        //        }
     }
     
     internal func request(#method: HTTPMethod, path: String, parameters: AnyObject?, authenticated: Bool = true, completion: CompletionBlock?) {
@@ -265,7 +245,6 @@ class APIService {
             
             return nil
         }
-        
         NSValueTransformer.setValueTransformer(boolTransformer, forName: "BoolTransformer")
         
         let dateTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
@@ -285,7 +264,6 @@ class APIService {
             
             return nil
         }
-        
         NSValueTransformer.setValueTransformer(dateTransformer, forName: "DateTransformer")
         
         let numberTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
@@ -297,7 +275,6 @@ class APIService {
             
             return nil
         }
-        
         NSValueTransformer.setValueTransformer(numberTransformer, forName: "NumberTransformer")
         
         let tagTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
@@ -308,19 +285,25 @@ class APIService {
             return nil
         }
         
-        
         let JsonStringTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
             if let tag = value as? NSArray {
                 let bytes : NSData = NSJSONSerialization.dataWithJSONObject(tag, options: NSJSONWritingOptions.allZeros, error: nil)!
                 let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
                 return strJson
             }
-            
             return "";
         }
-        
-        
         NSValueTransformer.setValueTransformer(JsonStringTransformer, forName: "JsonStringTransformer")
+        
+        let encodedDataTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> NSData! in
+            if let tag = value as? String {
+                if let data: NSData = NSData(base64EncodedString: tag, options: NSDataBase64DecodingOptions(rawValue: 0)) {
+                    return data
+                }
+            }
+            return nil;
+        }
+        NSValueTransformer.setValueTransformer(JsonStringTransformer, forName: "EncodedDataTransformer")
     }
 }
 
