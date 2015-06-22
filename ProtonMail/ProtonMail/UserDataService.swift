@@ -375,45 +375,5 @@ class UserDataService {
 
 extension Message {
     
-    // MARK: Private variables
-    
-    private var passphrase: String {
-        return sharedUserDataService.mailboxPassword ?? ""
-    }
-    
-    private var privateKey: String {
-        return sharedUserDataService.userInfo?.privateKey ?? ""
-    }
-    
-    private var publicKey: String {
-        return sharedUserDataService.userInfo?.publicKey ?? ""
-    }
-    
-    // MARK: Public methods
-    
-    func decryptBody(error: NSErrorPointer?) -> String? {
-        return body.decryptWithPrivateKey(privateKey, passphrase: passphrase, publicKey: publicKey, error: error)
-    }
-    
-    func decryptBodyIfNeeded(error: NSErrorPointer?) -> String? {
-       
-        
-        if !checkIsEncrypted() {
-            return body
-        } else {
-            return decryptBody(error)
-        }
-    }
-    
-    func encryptBody(body: String, error: NSErrorPointer?) {
-        self.body = body.encryptWithPublicKey(publicKey, error: error) ?? ""
-    }
-    
-    func checkIsEncrypted() -> Bool!
-    {
-        let enc_type = EncryptTypes(rawValue: isEncrypted.integerValue) ?? EncryptTypes.Internal
-        let checkIsEncrypted:Bool = enc_type.isEncrypted
-        
-        return checkIsEncrypted
-    }
+
 }

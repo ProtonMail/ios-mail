@@ -3,18 +3,18 @@
     <entity name="Attachment" representedClassName="ProtonMail.Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" syncable="YES">
             <userInfo>
-                <entry key="JSONKeyPath" value="AttachmentID"/>
+                <entry key="JSONKeyPath" value="ID"/>
             </userInfo>
         </attribute>
         <attribute name="fileData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="fileName" attributeType="String" syncable="YES">
             <userInfo>
-                <entry key="JSONKeyPath" value="FileName"/>
+                <entry key="JSONKeyPath" value="Name"/>
             </userInfo>
         </attribute>
         <attribute name="fileSize" attributeType="Integer 64" defaultValueString="0" syncable="YES">
             <userInfo>
-                <entry key="JSONKeyPath" value="FileSize"/>
+                <entry key="JSONKeyPath" value="Size"/>
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
@@ -216,7 +216,7 @@
         </attribute>
         <relationship name="attachments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Attachment" inverseName="message" inverseEntity="Attachment" syncable="YES">
             <userInfo>
-                <entry key="JSONKeyPath" value="AttachmentIDList"/>
+                <entry key="JSONKeyPath" value="Attachments"/>
             </userInfo>
         </relationship>
         <userInfo>
@@ -224,7 +224,7 @@
         </userInfo>
     </entity>
     <elements>
-        <element name="Attachment" positionX="-128" positionY="-22" width="128" height="148"/>
+        <element name="Attachment" positionX="-128" positionY="-22" width="128" height="150"/>
         <element name="Contact" positionX="54" positionY="-25" width="128" height="90"/>
         <element name="Label" positionX="-126" positionY="-162" width="128" height="118"/>
         <element name="Message" positionX="-344" positionY="-216" width="128" height="525"/>

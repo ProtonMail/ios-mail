@@ -21,6 +21,9 @@ enum MessageAction: String {
     // Draft
     case saveDraft = "saveDraft"
     
+    // Attachment
+    case uploadAtt = "uploadAtt"
+    
     // Read/unread
     case read = "read"
     case unread = "unread"

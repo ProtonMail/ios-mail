@@ -120,8 +120,6 @@ extension APIService {
                 completion?(nil, NSError.unableToParseResponse(response))
             }
         }
-
-        
         request(method: .POST, path: path, parameters: parameters, authenticated: false, completion: completionWrapper)
     }
     

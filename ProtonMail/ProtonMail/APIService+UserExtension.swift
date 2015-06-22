@@ -107,7 +107,6 @@ extension APIService {
                 return
             }
         }
-        
         completion?(task: nil, response: nil, error: NSError.badParameter(emails))
     }
     

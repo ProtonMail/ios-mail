@@ -119,7 +119,6 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
         message.removeObserver(self, forKeyPath: Message.Attributes.isDetailDownloaded, context: &kKVOContext)
     }
     
-    
     // MARK: - Public methods
     
     func animateMoreViewOptions() {

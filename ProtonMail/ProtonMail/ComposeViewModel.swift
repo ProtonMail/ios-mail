@@ -62,7 +62,7 @@ public class ComposeViewModel {
         NSException(name:"name", reason:"reason", userInfo:nil).raise()
     }
     
-    public func uploadDraft() {
+    func uploadAtt(att : Attachment!) {
         NSException(name:"name", reason:"reason", userInfo:nil).raise()
     }
     
@@ -92,6 +92,10 @@ public class ComposeViewModelImpl : ComposeViewModel {
         self.messageAction = action
         
         self.updateContacts()
+    }
+    
+    override func uploadAtt(att: Attachment!) {
+        sharedMessageDataService.uploadAttachment(att)
     }
     
     private func updateContacts()
