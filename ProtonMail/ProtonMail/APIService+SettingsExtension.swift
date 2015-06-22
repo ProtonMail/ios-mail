@@ -20,7 +20,7 @@ import Foundation
 extension APIService {
     
     private struct SettingPath {
-        static let base = "/setting"
+        static let base = "/settings"
     }
     
     func settingUpdateDisplayName(displayName: String, completion: CompletionBlock) {
@@ -40,9 +40,9 @@ extension APIService {
     func settingUpdatePassword(oldPassword: String, newPassword: String, completion: CompletionBlock) {
         let path = SettingPath.base.stringByAppendingPathComponent("password")
         let parameters = [
-            "old_pwd" : oldPassword,
-            "old_hashed_pwd" : "",
-            "new_pwd" : newPassword
+            "OldPassword" : oldPassword,
+            "OldHashedPassword" : "",
+            "NewPassword" : newPassword
         ]
         request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
@@ -55,8 +55,8 @@ extension APIService {
     }
     
     func settingUpdateDomainOrder(new_order: Array<String>, completion: CompletionBlock) {
-        let path = SettingPath.base.stringByAppendingPathComponent("domainorder")
-        let parameters = ["order" : new_order]
+        let path = SettingPath.base.stringByAppendingPathComponent("addressorder")
+        let parameters = ["Order" : new_order]
         request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
 }

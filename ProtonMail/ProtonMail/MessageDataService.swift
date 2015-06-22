@@ -460,8 +460,12 @@ class MessageDataService {
     
     private func generatMessagePackage (message: Message!, keys : [String : AnyObject]?, atts : [Attachment], encrptOutside : Bool) -> MessageAPI.MessageSendRequest! {
         
+        var tempAtts : [MessageAPI.TempAttachment]! = []
         for att in atts {
-            println("\(att)")
+
+            let sessionKey = att.getSessionKey(nil)
+            
+            tempAtts.append(MessageAPI.TempAttachment(id: att.attachmentID, key: sessionKey!))
         }
 
         var out : [MessageAPI.MessagePackage] = []
@@ -484,7 +488,7 @@ class MessageDataService {
                 if isOutsideUser {
                     if encrptOutside {
                         //create outside encrypt packet
-                        var pack = MessageAPI.MessagePackage(address: key, type: 2, body: "", token: "", encToken: "", passwordHint: "")
+                        var pack = MessageAPI.MessagePackage(address: key, type: 2,  body: "", token: "", encToken: "", passwordHint: "")
                         out.append(pack)
                         
                         // encrypt keys use pwd .
@@ -494,15 +498,23 @@ class MessageDataService {
                     }
                 }
                 else {
+                    
+                    // encrypt keys use public key
+                    var attPack : [MessageAPI.AttachmentKeyPackage] = []
+                    for att in tempAtts {
+                        //attID:String!, attKey:String!, Algo : String! = ""
+                        let newKeyPack = att.Key.getSessionKeyPackage(publicKey, error: nil)?.base64EncodedStringWithOptions(nil)
+                        let attPacket = MessageAPI.AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack)
+                        attPack.append(attPacket)
+                    }
+                    
                     //create inside packet
                     if let encryptedBody = body.encryptWithPublicKey(publicKey, error: &error) {
-                        var pack = MessageAPI.MessagePackage(address: key, type: 1, body: encryptedBody)
+                        var pack = MessageAPI.MessagePackage(address: key, type: 1, body: encryptedBody, attPackets: attPack)
                         out.append(pack)
                     } else {
                         NSLog("\(__FUNCTION__) can't encrypt body for \(body) with error: \(error)")
                     }
-                    
-                    // encrypt keys use public key
                 }
             }
             
@@ -512,11 +524,18 @@ class MessageDataService {
                 outRequest.clearBody = body
                 
                 
+                //add attachment package
+                var attPack : [MessageAPI.AttachmentKeyPackage] = []
+                for att in tempAtts {
+                    //attID:String!, attKey:String!, Algo : String! = ""
+                    let newKeyPack = att.Key.base64EncodedStringWithOptions(nil)
+                    let attPacket = MessageAPI.AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack, Algo: "aes256")
+                    attPack.append(attPacket)
+                }
+                
+                outRequest.attPackets = attPack
                 
             }
-            
-            
-            //TODO::add attachment package
             
         } else {
             NSLog("\(__FUNCTION__) unable to decrypt \(message.body) with error: \(error)")
@@ -706,12 +725,23 @@ class MessageDataService {
             if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(addressID) {
                 if let attachment = context.existingObjectWithID(objectID, error: &error) as? Attachment {
                     
+                    var params = [
+                        "Filename":attachment.fileName,
+                        "MessageID" : attachment.message.messageID,
+                        "MIMEType" : attachment.mimeType,
+                    ]
+                    
+                    let encrypt_data = attachment.encryptAttachment(nil)
+                    let keyPacket = encrypt_data!["self"] as! NSData
+                    let dataPacket = encrypt_data!["DataPacket"] as! NSData
+                    
                     let completionWrapper: CompletionBlock = { task, response, error in
                         
-                        if error != nil {
+                        if error == nil {
                             if let messageID = response?["AttachmentID"] as? String {
                                 attachment.attachmentID = messageID
-                                // message.isDetailDownloaded = true
+                                attachment.keyPacket = keyPacket.base64EncodedStringWithOptions(nil)
+
                                 if let error = context.saveUpstreamIfNeeded() {
                                     NSLog("\(__FUNCTION__) error: \(error)")
                                 }
@@ -719,16 +749,6 @@ class MessageDataService {
                         }
                         completion?(task: task, response: response, error: error)
                     }
-                    
-                    var params = [
-                        "Filename":attachment.fileName,
-                        "MessageID" : attachment.message.messageID,
-                        "MIMEType" : attachment.mimeType,
-                    ]
-
-                    let encrypt_data = attachment.encryptAttachment(nil)
-                    let keyPacket = encrypt_data!["self"] as! NSData
-                    let dataPacket = encrypt_data!["DataPacket"] as! NSData
                     
                     sharedAPIService.upload( AppConstants.BaseURLString + "/attachments/upload", parameters: params, keyPackets: keyPacket, dataPacket: dataPacket, completion: completionWrapper)
                     
