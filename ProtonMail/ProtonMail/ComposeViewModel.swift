@@ -159,7 +159,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override public func deleteDraft() {
-        sharedMessageDataService.deleteDraft(self.message);
+       // sharedMessageDataService.deleteDraft(self.message);
     }
     
     public override func markAsRead() {
@@ -180,11 +180,34 @@ public class ComposeViewModelImpl : ComposeViewModel {
 //        case ComposeMessageAction.OpenDraft = 4
         switch messageAction!
         {
-        case ComposeMessageAction.NewDraft:
-            return htmlString
-        case ComposeMessageAction.OpenDraft:
+        case .OpenDraft:
             let body = message!.decryptBodyIfNeeded(nil) ?? ""
             return body
+        case .Reply, .ReplyAll:
+            // composeView.subject.text = "Re: " + viewModel.getSubject()
+            let replyMessage = NSLocalizedString("Reply message")
+            let body = message!.decryptBodyIfNeeded(nil) ?? ""
+            let time = message!.time?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
+            let replyHeader = time + ", " + message!.senderName + " <'\(message!.sender)'>"
+            let sp = "<div>\(replyHeader) wrote:</div><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\"><tbody><tr><td align=\"center\" valign=\"top\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:transparent;border-bottom:0;border-bottom:solid 1px #00929f\" width=\"600\"> "
+            return "\(htmlString) \(sp) \(body)</blockquote>"
+        case .Forward:
+            //composeView.subject.text = "Fwd: \(message.title)"
+            
+            let time = message!.time?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
+            var forwardHeader = "<br><br><br>---------- Forwarded message ----------<br>From: \(message!.senderName)<br>Date: \(time)<br>Subject: \(message!.title)"
+            if message!.recipientList != "" {
+                forwardHeader += "<br>To: \(message!.recipientList)<br>"
+            }
+            if message!.ccList != "" {
+                forwardHeader += "<br>To: \(message!.ccList)<br>"
+            }
+            forwardHeader += "<br><br><br>"
+            let body = message!.decryptBodyIfNeeded(nil) ?? ""
+            
+            return "<br><br><br>\(signature) \(forwardHeader) \(body)"
+        case .NewDraft:
+            return htmlString
         default:
             return htmlString
         }

@@ -117,8 +117,10 @@ class ComposeViewController : ProtonMailViewController {
     
     private func stopAutoSave()
     {
-        self.timer.invalidate()
-        self.timer = nil
+        if  self.timer == nil {
+            self.timer.invalidate()
+            self.timer = nil
+        }
     }
     
     func autoSaveTimer()
@@ -237,74 +239,7 @@ class ComposeViewController : ProtonMailViewController {
         
         self.composeView.subject.text = self.viewModel.getSubject();
         self.composeView.htmlEditor.setHTML(self.viewModel.getHtmlBody())
-        
-        //        if let action = action {
-        //            if action == ComposeMessageAction.Reply || action == ComposeMessageAction.ReplyAll {
-        //                composeView.subject.text = "Re: " + viewModel.getSubject()
-        //
-        ////                let replyMessage = NSLocalizedString("Reply message")
-        ////                let body = message.decryptBodyIfNeeded(nil) ?? ""
-        ////                let time = message.time?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
-        ////                let replyHeader = time + ", " + message.senderName + " <'\(message.sender)'>"
-        ////                let sp = "<div>\(replyHeader) wrote:</div><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\"><tbody><tr><td align=\"center\" valign=\"top\"> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:transparent;border-bottom:0;border-bottom:solid 1px #00929f\" width=\"600\"> "
-        ////
-        ////                self.composeView.htmlEditor.setHTML("\(htmlString) \(sp) \(body)</blockquote>")
-        ////
-        ////                if action == ComposeViewN.ComposeMessageAction.ReplyAll {
-        ////                    updateSelectedContacts(&self.viewModel.toSelectedContacts, withNameList: message.senderName, emailList: message.sender)
-        ////                    updateSelectedContacts(&self.viewModel.toSelectedContacts, withNameList: message.recipientNameList, emailList: message.recipientList)
-        ////                    updateSelectedContacts(&self.viewModel.ccSelectedContacts, withNameList: message.ccNameList, emailList: message.ccList)
-        ////                }
-        ////
-        ////                if self.viewModel.toSelectedContacts.count <= 0 {
-        ////                    self.viewModel.addToContacts(ContactVO(id: "", name: message.senderName, email: message.sender))
-        ////                }
-        //
-        //            } else if action == ComposeMessageAction.Forward {
-        ////                composeView.subject.text = "Fwd: \(message.title)"
-        ////
-        ////                let time = message.time?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
-        ////
-        ////                var forwardHeader = "<br><br><br>---------- Forwarded message ----------<br>From: \(message.senderName)<br>Date: \(time)<br>Subject: \(message.title)"
-        ////                if message.recipientList != "" {
-        ////                    forwardHeader += "<br>To: \(message.recipientList)<br>"
-        ////                }
-        ////                if message.ccList != "" {
-        ////                    forwardHeader += "<br>To: \(message.ccList)<br>"
-        ////                }
-        ////                forwardHeader += "<br><br><br>"
-        ////
-        ////
-        ////                let body = message.decryptBodyIfNeeded(nil) ?? ""
-        ////
-        ////                self.composeView.htmlEditor.setHTML("<br><br><br>\(signature) \(forwardHeader) \(body)")
-        //
-        //            } else if action == ComposeMessageAction.Draft {
-        //               // navigationItem.leftBarButtonItem = nil
-        //
-        ////
-        //                updateSelectedContacts(&self.viewModel.toSelectedContacts, withNameList: message.recipientNameList, emailList: message.recipientList)
-        //                updateSelectedContacts(&self.viewModel.ccSelectedContacts, withNameList: message.ccNameList, emailList: message.ccList)
-        //                updateSelectedContacts(&self.viewModel.bccSelectedContacts, withNameList: message.bccNameList, emailList: message.bccList)
-        //
-        //                if !self.viewModel.message!.attachments.isEmpty {
-        //                    //attachments = []
-        //                }
-        ////
-        //                for attachment in message.attachments.allObjects as! [Attachment] {
-        //                    if let fileData = attachment.fileData {
-        //                        attachments?.append(fileData)
-        //                    }
-        //                }
-        ////
-        ////                var error: NSError?
-        ////                self.composeView.htmlEditor.setHTML(message.decryptBodyIfNeeded(&error) ?? "")
-        ////                if error != nil {
-        ////                    NSLog("\(__FUNCTION__) error: \(error)")
-        ////                }
-        //            }
-        //        }
-        
+
     }
     
     private func updateSelectedContacts(inout selectedContacts: [ContactVO]!, withNameList nameList: String, emailList: String) {
