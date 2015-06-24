@@ -24,7 +24,7 @@ class ComposeViewModelTests: XCTestCase {
 
     func testExample() {
         // This is an example of a functional test case.
-        let compose = ComposeViewModelImpl()
+       // let compose = ComposeViewModelImpl()
     
         
         //try compose.uploadDraft()
@@ -33,7 +33,7 @@ class ComposeViewModelTests: XCTestCase {
 //        } catch {
 //            print("Something went wrong!")
 //        }
-        compose.creatDraft()
+        //compose.creatDraft()
         
         XCTAssert(true, "Pass")
     }

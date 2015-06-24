@@ -9,7 +9,7 @@
 import Foundation
 
 
-class  SharedCacheBase {
+public class  SharedCacheBase {
     
     private var userDefaults : NSUserDefaults!
     
@@ -17,7 +17,7 @@ class  SharedCacheBase {
         return self.userDefaults
     }
         
-    init (shared : NSUserDefaults) {
+    public init (shared : NSUserDefaults) {
         self.userDefaults = shared
     }
     

@@ -16,7 +16,7 @@
 
 import Foundation
 
-enum MessageLocation: Int, Printable {
+public enum MessageLocation: Int, Printable {
     case deleted = -1
     case draft = 1
     case inbox = 0
@@ -25,7 +25,7 @@ enum MessageLocation: Int, Printable {
     case starred = 5
     case trash = 3
     
-    var description : String {
+    public var description : String {
         get {
             switch(self) {
             case deleted:
@@ -46,7 +46,7 @@ enum MessageLocation: Int, Printable {
         }
     }
     
-    var key: String {
+    public var key: String {
         switch(self) {
         case deleted:
             return "Deleted"

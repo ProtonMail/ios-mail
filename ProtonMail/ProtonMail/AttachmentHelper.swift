@@ -17,8 +17,7 @@ public class AttachmentHelper {
         
     }
 }
-//
-//
+
 //if let attachments = attachments {
 //    for (index, attachment) in enumerate(attachments) {
 //        if let image = attachment as? UIImage {

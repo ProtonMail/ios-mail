@@ -42,33 +42,6 @@ class UserCachedStatus : SharedCacheBase {
         setValue(AppConstants.CacheVersion, forKey: Key.lastCacheVersion)
     }
     
-    //    private var getLastFetchMessageID: String! {
-    //        get {
-    //            return getShared().stringForKey(Key.lastFetchMessageID) ?? "0"
-    //        }
-    //        set {
-    //            setValue(newValue, forKey: Key.lastFetchMessageID)
-    //        }
-    //    }
-    //
-    //    private var getLastFetchMessageTime: Float {
-    //        get {
-    //            return getShared().floatForKey(Key.lastFetchMessageTime)
-    //        }
-    //        set {
-    //            setValue(newValue, forKey: Key.lastFetchMessageTime)
-    //        }
-    //    }
-    //
-    //    private var getLastUpdateTime: Float {
-    //        get {
-    //            return getShared().floatForKey(Key.lastUpdateTime)
-    //        }
-    //        set {
-    //            setValue(newValue, forKey: Key.lastUpdateTime)
-    //        }
-    //    }
-    
     func signOut()
     {
         getShared().removeObjectForKey(Key.lastFetchMessageID);
