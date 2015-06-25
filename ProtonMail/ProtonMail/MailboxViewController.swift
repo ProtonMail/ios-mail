@@ -42,11 +42,12 @@ class MailboxViewController: ProtonMailViewController {
     private var fetchedResultsController: NSFetchedResultsController?
     private var moreOptionsView: MoreOptionsView!
     private var navigationTitleLabel = UILabel()
-    private var pagingManager = PagingManager()
     private var selectedMessages: NSMutableSet = NSMutableSet()
     private var isEditing: Bool = false
     private var isViewingMoreOptions: Bool = false
     private var timer : NSTimer!
+    
+    private var fetching : Bool = false
     
     
     private var selectedDraft : Message!
@@ -316,32 +317,34 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     private func fetchMessagesIfNeededForIndexPath(indexPath: NSIndexPath) {
-        if !pagingManager.hasMorePages {
-            return
-        }
-        
+
         if let fetchedResultsController = fetchedResultsController {
             if let last = fetchedResultsController.fetchedObjects?.last as? Message {
                 if let current = fetchedResultsController.objectAtIndexPath(indexPath) as? Message {
-                    if last == current {
-                        if !pagingManager.hasMorePages {
-                            return
-                        }
+                    
+                    let updateTime = lastUpdatedStore.inboxLastForKey(self.mailboxLocation)
+                    
+                    
+                    let isOlderMessage = updateTime.end.compare(current.time!) != NSComparisonResult.OrderedAscending
+                    let isLastMessage = last == current
+                    if  (isOlderMessage || isLastMessage) && !fetching {
                         
+                        self.fetching = true
                         let sectionCount = fetchedResultsController.numberOfRowsInSection(0) ?? 0
                         if(sectionCount > 8)
                         {
                             tableView.showLoadingFooter()
                         }
                         
-                        sharedMessageDataService.fetchMessagesForLocation(mailboxLocation, MessageID: last.messageID ?? "0", Time:Int( last.time?.timeIntervalSince1970 ?? 0), completion:
+                        let updateTime = lastUpdatedStore.inboxLastForKey(self.mailboxLocation)
+                        sharedMessageDataService.fetchMessagesForLocation(mailboxLocation, MessageID: last.messageID ?? "0", Time:Int(updateTime.end.timeIntervalSince1970), completion:
                             { (task, messages, error) -> Void in
                                 self.tableView.hideLoadingFooter()
-                                
+                                self.fetching = false
                                 if error != nil {
                                     NSLog("\(__FUNCTION__) search error: \(error)")
                                 } else {
-                                    self.pagingManager.resultCount(messages?.count ?? 0)
+                                    
                                 }
                         })
                     }
@@ -351,39 +354,32 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     internal func getLatestMessages() {
-        pagingManager.reset()
         
         self.refreshControl.beginRefreshing()
-        
-        sharedMessageDataService.fetchLatestMessagesForLocation(self.mailboxLocation) { _, messages, error in
+        let updateTime = lastUpdatedStore.inboxLastForKey(self.mailboxLocation)
+        var complete : APIService.CompletionBlock = { (task, messages, error) -> Void in
             if let error = error {
                 NSLog("error: \(error)")
             }
             
-            self.pagingManager.reset()
             delay(1.0, {
                 self.refreshControl.endRefreshing()
                 self.tableView.reloadData()
             })
         }
         
-        if let fetchedResultsController = fetchedResultsController {
-            if let first = fetchedResultsController.fetchedObjects?.first as? Message {
-                sharedMessageDataService.fetchNewMessagesForLocation(mailboxLocation, MessageID: first.messageID ?? "0", Time:Int( first.time?.timeIntervalSince1970 ?? 0), completion:
-                    { (task, messages, error) -> Void in
-                        if let error = error {
-                            NSLog("error: \(error)")
-                        }
-                        
-                        self.pagingManager.reset()
-                        delay(1.0, {
-                            self.refreshControl.endRefreshing()
-                            self.tableView.reloadData()
-                        })
-                })
-            }
+        if (updateTime.isNew) {
+            //this is new
+            //call fetch down
+            sharedMessageDataService.fetchMessagesForLocation(self.mailboxLocation, MessageID: "", Time: 0, completion: complete)
+        } else {
+            //fetch
+            sharedMessageDataService.fetchNewMessagesForLocation(self.mailboxLocation, Time: Int(updateTime.start.timeIntervalSince1970), completion: complete)
         }
     }
+    
+    
+    
     
     private func moveMessagesToLocation(location: MessageLocation) {
         if let context = fetchedResultsController?.managedObjectContext {

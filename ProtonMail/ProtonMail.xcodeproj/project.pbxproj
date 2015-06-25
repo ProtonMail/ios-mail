@@ -74,7 +74,6 @@
 		07CC99681A702368000FD6F8 /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC99671A702368000FD6F8 /* UIFontExtension.swift */; };
 		07CC996A1A705BA4000FD6F8 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 07CC99691A705BA4000FD6F8 /* Settings.bundle */; };
 		07CC996C1A717ABD000FD6F8 /* UIStoryboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC996B1A717ABD000FD6F8 /* UIStoryboardExtension.swift */; };
-		07CCCC291AA28CF100ECA79E /* PagingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CCCC281AA28CF100ECA79E /* PagingManager.swift */; };
 		07CCCC2B1AA292C200ECA79E /* UITableViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CCCC2A1AA292C200ECA79E /* UITableViewExtension.swift */; };
 		07CCCC2E1AA2BD8800ECA79E /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CCCC2D1AA2BD8800ECA79E /* Snapshot.swift */; };
 		07CCCC301AA4E26000ECA79E /* NSCoderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CCCC2F1AA4E26000ECA79E /* NSCoderExtension.swift */; };
@@ -253,7 +252,6 @@
 		07CC99671A702368000FD6F8 /* UIFontExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
 		07CC99691A705BA4000FD6F8 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		07CC996B1A717ABD000FD6F8 /* UIStoryboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStoryboardExtension.swift; sourceTree = "<group>"; };
-		07CCCC281AA28CF100ECA79E /* PagingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PagingManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		07CCCC2A1AA292C200ECA79E /* UITableViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewExtension.swift; sourceTree = "<group>"; };
 		07CCCC2D1AA2BD8800ECA79E /* Snapshot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Snapshot.swift; sourceTree = "<group>"; };
 		07CCCC2F1AA4E26000ECA79E /* NSCoderExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSCoderExtension.swift; sourceTree = "<group>"; };
@@ -699,7 +697,6 @@
 				706962031A713959001443B2 /* Contacts */,
 				70945E681A80F331002B6837 /* Mailbox */,
 				701704761A79185D000A90D2 /* Message Detail */,
-				07CCCC281AA28CF100ECA79E /* PagingManager.swift */,
 				706961FE1A7136A0001443B2 /* ProtonMailViewController.swift */,
 				706932A91A77BE2900A75A93 /* Search */,
 				706962041A713960001443B2 /* Settings */,
@@ -1097,7 +1094,6 @@
 				07655BBF1AB1084700CD3883 /* APIService+BugExtension.swift in Sources */,
 				075F0A541ABF5E3E00E6B9AE /* MessageAction.swift in Sources */,
 				7567B06B1B334AF200A72A1E /* ComposeViewModel.swift in Sources */,
-				07CCCC291AA28CF100ECA79E /* PagingManager.swift in Sources */,
 				07B797C21A6EE50F00244532 /* APIService+AuthenticationExtension.swift in Sources */,
 				0713237F1A7844390043DB41 /* MailboxPasswordViewController.swift in Sources */,
 				073FE01D1A9561F600825980 /* Contact.swift in Sources */,

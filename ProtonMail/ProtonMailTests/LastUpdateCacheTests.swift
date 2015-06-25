@@ -44,11 +44,12 @@ class LastUpdateCacheTests: XCTestCase {
         XCTAssert(time.start == NSDate.distantPast() as! NSDate, "The initial data incorrect should be default data before start test")
         
         // update update time
-        let newUpdateTime : LastUpdatedStore.UpdateTime =  LastUpdatedStore.UpdateTime(start: NSDate(), end: NSDate())
+        let newUpdateTime : LastUpdatedStore.UpdateTime =  LastUpdatedStore.UpdateTime(start: NSDate(), end: NSDate(), update: NSDate())
         lastUpdatedStore.updateInboxForKey(MessageLocation.inbox, updateTime: newUpdateTime)
         let updatedTime = lastUpdatedStore.inboxLastForKey(MessageLocation.inbox) as LastUpdatedStore.UpdateTime
         XCTAssert(updatedTime.start == newUpdateTime.start, "The start time should save after update")
-        XCTAssert(updatedTime.end == newUpdateTime.end, "The start time should save after update")
+        XCTAssert(updatedTime.end == newUpdateTime.end, "The end time should save after update")
+        XCTAssert(updatedTime.update == newUpdateTime.update, "The update time should save after update")
         
         // test clean
         lastUpdatedStore.clear()

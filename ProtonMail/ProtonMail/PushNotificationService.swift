@@ -74,16 +74,18 @@ class PushNotificationService {
 //                }
             }
         }
+
         
-        sharedMessageDataService.fetchLatestMessagesForLocation(.inbox, completion: { (task, messages, error) -> Void in
-            if error != nil {
-                completionHandler(.Failed)
-            } else if messages != nil && messages!.isEmpty {
-                completionHandler(.NoData)
-            } else {
-                completionHandler(.NewData)
-            }
-        })
+        //TODO :: fix the notification fetch part
+//        sharedMessageDataService.fetchLatestMessagesForLocation(.inbox, completion: { (task, messages, error) -> Void in
+//            if error != nil {
+//                completionHandler(.Failed)
+//            } else if messages != nil && messages!.isEmpty {
+//                completionHandler(.NoData)
+//            } else {
+//                completionHandler(.NewData)
+//            }
+//        })
     }
     
     func didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: NSData) {

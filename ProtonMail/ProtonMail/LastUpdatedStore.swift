@@ -35,30 +35,40 @@ public class LastUpdatedStore : SharedCacheBase {
         private struct CoderKey {
             static let startCode = "start"
             static let endCode = "end"
+            static let updateCode = "update"
         }
         
-        required public init (start: NSDate!, end : NSDate){
+        required public init (start: NSDate!, end : NSDate, update : NSDate){
             self.start = start
             self.end = end
+            self.update = update
+        }
+        
+        public var isNew : Bool {
+            get{
+                return  self.start == self.end && self.start == self.update
+            }
         }
         
         public convenience required init(coder aDecoder: NSCoder) {
             self.init(
                 start: aDecoder.decodeObjectForKey(CoderKey.startCode) as! NSDate,
-                end: aDecoder.decodeObjectForKey(CoderKey.endCode) as! NSDate)
+                end: aDecoder.decodeObjectForKey(CoderKey.endCode) as! NSDate,
+                update: aDecoder.decodeObjectForKey(CoderKey.updateCode) as! NSDate)
         }
         
         public func encodeWithCoder(aCoder: NSCoder) {
             aCoder.encodeObject(self.start, forKey: CoderKey.startCode)
             aCoder.encodeObject(self.end, forKey: CoderKey.endCode)
+            aCoder.encodeObject(self.update, forKey: CoderKey.updateCode)
         }
-        
         
         public var start : NSDate
         public var end : NSDate
+        public var update : NSDate
         
         static public func distantPast() -> UpdateTime {
-            return UpdateTime(start: NSDate.distantPast() as! NSDate, end: NSDate.distantPast() as! NSDate)
+            return UpdateTime(start: NSDate.distantPast() as! NSDate, end: NSDate.distantPast() as! NSDate, update: NSDate.distantPast() as! NSDate)
         }
     }
     

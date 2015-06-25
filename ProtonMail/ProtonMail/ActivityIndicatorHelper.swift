@@ -54,6 +54,7 @@ class ActivityIndicatorHelper {
         }
     }
     
+    
     class func showActivityIndicatorAtView(view: UIView) {
         showActivityIndicatorAtView(view, style: UIActivityIndicatorViewStyle.WhiteLarge)
     }

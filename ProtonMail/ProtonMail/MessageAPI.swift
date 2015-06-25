@@ -18,6 +18,47 @@ public class MessageAPI {
     static let MessageAPIPath :String       = "/messages"
     
     
+    
+    
+    // MARK : Get messages part
+    public class MessageFetchRequest : ApiRequest {
+        let location : MessageLocation!
+        let startTime : Int?
+        let endTime : Int
+        
+        init(location:MessageLocation, endTime : Int = 0) {
+            self.location = location
+            self.endTime = endTime
+            self.startTime = 0
+           
+        }
+        
+        public override func toDictionary() -> Dictionary<String,AnyObject> {
+            var out : [String : AnyObject] = [
+                "Location" : self.location.rawValue,
+                "Sort" : "Time"]
+            
+            if(self.endTime != 0)
+            {
+                let newTime = self.endTime - 1
+                out["End"] = newTime
+            }
+            
+            PMLog.D(self.JSONStringify(out, prettyPrinted: true))
+            return out
+        }
+        
+        override public func getRequestPath() -> String {
+            return MessageAPIPath + AppConstants.getDebugOption
+        }
+        
+        override public func getVersion() -> Int {
+            return MessageAPIVersion
+        }
+    }
+    
+    
+    
     // MARK : Create/Update Draft Part
     
     /// create draft message request class

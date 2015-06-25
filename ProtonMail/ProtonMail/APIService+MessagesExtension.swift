@@ -52,17 +52,37 @@ extension APIService {
     
     
     //new way to do the new work calls
-    func messagePOST ( apiRequest : ApiRequest!, completion: CompletionBlock?) {
+    func POST ( apiRequest : ApiRequest!, completion: CompletionBlock?) {
         var parameterStrings = apiRequest.toDictionary()
         setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
         request(method: .POST, path: apiRequest.getRequestPath(), parameters: parameterStrings, completion: completion)
     }
     
-    func messagePUT ( apiRequest : ApiRequest!, completion: CompletionBlock?) {
+    func PUT ( apiRequest : ApiRequest!, completion: CompletionBlock?) {
         var parameterStrings = apiRequest.toDictionary()
         setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
         request(method: .PUT, path: apiRequest.getRequestPath(), parameters: parameterStrings, completion: nil)
         completion!(task: nil, response: nil, error: nil)
+    }
+
+    func GET ( apiRequest : ApiRequest!, completion: CompletionBlock?) {
+        var parameterStrings = apiRequest.toDictionary()
+        setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
+        request(method: .GET, path: apiRequest.getRequestPath(), parameters: parameterStrings, completion: completion)
+    }
+    
+    func Delete ( apiRequest : ApiRequest!, completion: CompletionBlock?) {
+        var parameterStrings = apiRequest.toDictionary()
+        setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
+        request(method: .DELETE, path: apiRequest.getRequestPath(), parameters: parameterStrings, completion: completion)
+    }
+    
+    
+    // MARK : Need change soon
+    func fetchLatestMessageList(time: Int, completion: CompletionBlock) {
+        let path = MessagePath.base + "/latest/\(time)"
+        
+        request(method: .GET, path: path, parameters: nil, completion: completion)
     }
     
     
@@ -86,7 +106,7 @@ extension APIService {
     //            request(method: .PUT, path: path, parameters: parameters, completion: nil)
     //            completion!(task: nil, response: nil, error: nil);//TODO:: need fix the response
     //        }
-//}
+    //}
 
     
     
@@ -248,35 +268,6 @@ extension APIService {
         request(method: .GET, path: path, parameters: parameters, completion: completion)
     }
     
-    func fetchPageMessageList(location: Int, time: Int, messageID: String, completion: CompletionBlock) {
-        let path = MessagePath.base
-        var parameters : [String : AnyObject] = [
-            "Location" : location,
-            "Sort" : "Time"]
-        
-        if(time != 0)
-        {
-            let newTime = time - 1
-            parameters["End"] = newTime
-        }
-        
-        
-        //
-        //"Time" : time,
-        //"MessageID" : messageID
-        
-        request(method: .GET, path: path, parameters: parameters, completion: completion)
-    }
-    
-    func fetchLatestMessageList(location: Int, time: Int, messageID: String, completion: CompletionBlock) {
-        let path = MessagePath.base + "/latest/\(time)"
-//        let parameters = [
-//            "Location" : location,
-//            "Time" : time,
-//            "MessageID" : messageID]
-        
-        request(method: .GET, path: path, parameters: nil, completion: completion)
-    }
     
     func messageSearch(query: String, page: Int, completion: CompletionBlock?) {
         let path = "/messages/search"

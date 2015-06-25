@@ -30,10 +30,9 @@ class SearchViewController: ProtonMailViewController {
     
     private var fetchedResultsController: NSFetchedResultsController?
     private var managedObjectContext: NSManagedObjectContext?
-    private var pagingManager = PagingManager()
+
     private var query: String = "" {
         didSet {
-            pagingManager.reset()
             handleQuery(query)
         }
     }
@@ -109,9 +108,6 @@ class SearchViewController: ProtonMailViewController {
     }
     
     func handleQuery(query: String) {
-        if !pagingManager.hasMorePages {
-            return
-        }
         
         if let context = managedObjectContext {
             if let fetchedResultsController = fetchedResultsController {
@@ -134,14 +130,14 @@ class SearchViewController: ProtonMailViewController {
         
             tableView.showLoadingFooter()
             
-            sharedMessageDataService.search(query: query, page: pagingManager.nextPage, managedObjectContext: context, completion: { (messages, error) -> Void in
+            sharedMessageDataService.search(query: query, page: 0, managedObjectContext: context, completion: { (messages, error) -> Void in
                 
                 self.tableView.hideLoadingFooter()
                 
                 if error != nil {
                     NSLog("\(__FUNCTION__) search error: \(error)")
                 } else {
-                    self.pagingManager.resultCount(messages?.count ?? 0)
+                    
                 }
             })
         }
@@ -152,9 +148,7 @@ class SearchViewController: ProtonMailViewController {
     }
     
     func fetchMessagesIfNeededForIndexPath(indexPath: NSIndexPath) {
-        if !pagingManager.hasMorePages {
-            return
-        }
+
         
         if let fetchedResultsController = fetchedResultsController {
             if let last = fetchedResultsController.fetchedObjects?.last as? Message {

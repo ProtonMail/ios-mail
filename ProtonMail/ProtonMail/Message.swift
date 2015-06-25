@@ -51,3 +51,4 @@ class Message: NSManagedObject {
     
     @NSManaged var attachments: NSSet
 }
+
