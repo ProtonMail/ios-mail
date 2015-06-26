@@ -19,9 +19,8 @@ public class ApiRequest {
     
     :returns: request dictionary
     */
-    public func toDictionary() -> Dictionary<String,AnyObject> {
-        NSException(name:"name", reason:"reason", userInfo:nil).raise()
-        return Dictionary<String,AnyObject>()
+    public func toDictionary() -> Dictionary<String,AnyObject>? {
+        return nil
     }
     
     /**
@@ -64,5 +63,13 @@ public class ApiRequest {
         }
         return ""
     }
+    
+    func call<T : ApiResponse>() -> T{
+        
+        //TODO :: 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
+        
+        return T()
+    }
+    
     
 }

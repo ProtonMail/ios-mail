@@ -23,7 +23,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
     
     // MARK: - Private constants
     
-    private let kAnimationDuration: NSTimeInterval = 0.1
+    private let kAnimationDuration: NSTimeInterval = 0.3
     private let kAnimationOption: UIViewAnimationOptions = .TransitionCrossDissolve
     private var kKVOContext = 0
     private let kScrollViewDistanceToBottom: CGFloat = -69.0
@@ -346,8 +346,8 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
     
     private func createEmailBodyWebView() {
         let screenSize: CGRect = UIScreen.mainScreen().bounds
-        
-        self.emailBodyWebView = FullHeightWebView(frame: CGRect(x: 0,y: 0,width: screenSize.width ,height: screenSize.height/2))
+        let f = emailHeaderView.frame
+        self.emailBodyWebView = FullHeightWebView(frame: CGRect(x: 0,y: 0,width: screenSize.width ,height: screenSize.height ))
         self.emailBodyWebView.delegate = self
         self.contentView.addSubview(emailBodyWebView)        
     }
@@ -840,34 +840,32 @@ extension MessageDetailView: UIWebViewDelegate {
         //let jsForTextSize = "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '\(100)%'";
         //webView.stringByEvaluatingJavaScriptFromString(jsForTextSize)
         
-//        var frame = webView.frame
-//        frame.size.height = 1;
-//        webView.frame = frame
+        var frame = webView.frame
+        frame.size.height = 1;
+        webView.frame = frame
+        
+        if (self.message.hasAttachments) {
+            self.attachments = self.message.attachments.allObjects as! [Attachment]
+        }
+        
+        var webframe = self.emailBodyWebView.scrollView.frame;
+        webframe.size = CGSize(width: webframe.width,  height: self.emailBodyWebView.scrollView.contentSize.height)
+        self.emailBodyWebView.scrollView.frame = webframe;
+        
+        var frameB = self.emailBodyWebView.frame
+        frameB.size.height = self.emailBodyWebView.scrollView.contentSize.height
+        self.emailBodyWebView.frame = frameB
         
         UIView.animateWithDuration(kAnimationDuration, animations: { () -> Void in
             self.emailBodyWebView.alpha = 1.0
-            
             }, completion: { finished in
-                
-                var frame = self.emailBodyWebView.frame
-                frame.size.height = self.emailBodyWebView.scrollView.contentSize.height
-                self.emailBodyWebView.frame = frame
                 
                 self.emailBodyWebView.updateConstraints();
                 self.emailBodyWebView.layoutIfNeeded();
                 self.layoutIfNeeded();
                 self.updateConstraints();
-
-                if (self.message.hasAttachments) {
-                    self.attachments = self.message.attachments.allObjects as! [Attachment]
-                }
-                
                 self.tableView.reloadData()
                 self.tableView.tableHeaderView = self.contentView
-                
-                var webframe = self.emailBodyWebView.scrollView.frame;
-                webframe.size = CGSize(width: webframe.width,  height: self.emailBodyWebView.scrollView.contentSize.height)
-                self.emailBodyWebView.scrollView.frame = webframe;
         })
     }
 

@@ -7,3 +7,13 @@
 //
 
 import Foundation
+
+
+class ApiResponse {
+    
+    public let checkString = "";
+    
+    init () {
+        
+    }
+}
