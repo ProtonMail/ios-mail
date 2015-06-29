@@ -11,3 +11,34 @@ import Foundation
 
 
 
+
+public struct MessageAPI {
+    /// base message api path
+    static let Path :String       = "/messages"
+    
+    
+    /// fetch message request version
+    static let V_MessageFetchRequest : Int      = 1
+    
+    static let V_MessageDraftRequest : Int = 1
+    
+    static let V_MessageUpdateDraftRequest : Int = 1
+    
+    
+    static let V_MessageActionRequest : Int = 1
+    
+    static let V_MessageSendRequest : Int = 1
+    
+}
+
+
+public struct EventAPI {
+    /// base message api path
+    public static let Path :String       = "/events"
+    
+    
+    
+    /// current message api version
+    public static let V_EventCheckRequest : Int      = 1
+
+}

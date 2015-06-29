@@ -36,7 +36,6 @@ class AuthCredential: NSObject, NSCoding {
     
     required init(accessToken: String!, refreshToken: String!, userID: String!, expiration: NSDate!) {
         
-        
         self.accessToken = accessToken
         self.refreshToken = refreshToken
         self.userID = userID

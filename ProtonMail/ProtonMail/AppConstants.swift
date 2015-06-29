@@ -25,7 +25,7 @@ class AppConstants {
     static var getDebugOption : String {
         get {
             #if DEBUG
-                return "?XDEBUG_SESSION_START=\(13502)"
+                return "?XDEBUG_SESSION_START=\(18073)"
             #else
                 return ""
             #endif

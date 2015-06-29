@@ -186,6 +186,11 @@ extension APIService {
             let expiresIn = response["ExpiresIn"] as? NSTimeInterval
             let refreshToken = response["RefreshToken"] as? String
             let userID = response["Uid"] as? String
+            
+            let eventID = response["EventID"] as! String
+            
+            lastUpdatedStore.lastEventID = eventID
+            
             return (accessToken, expiresIn, refreshToken, userID)
         }
         return nil

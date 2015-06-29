@@ -27,6 +27,7 @@ public class LastUpdatedStore : SharedCacheBase {
         static let lastInboxesUpdated = "LastInboxesUpdated"
         static let lastLabelsUpdated = "LastLabelsUpdated"
         static let lastCantactsUpdated = "LastCantactsUpdated"
+        static let lastEventID = "lastEventID"
     }
     
     
@@ -81,6 +82,16 @@ public class LastUpdatedStore : SharedCacheBase {
             NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
+    
+    public var lastEventID: String {
+        get {
+            return NSUserDefaults.standardUserDefaults().stringForKey(Key.lastEventID)!
+        }
+        set {
+            NSUserDefaults.standardUserDefaults().setValue(newValue, forKey: Key.lastEventID)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
 
 //    public func getInboxesLastUpdate(key: String) -> UpdateTime {
 //        return UpdateTime(start: NSDate.distantPast() as! NSDate, end: NSDate.distantPast() as! NSDate)
@@ -102,6 +113,7 @@ public class LastUpdatedStore : SharedCacheBase {
         NSUserDefaults.standardUserDefaults().removeObjectForKey(Key.lastCantactsUpdated)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(Key.lastLabelsUpdated)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(Key.lastInboxesUpdated)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(Key.lastEventID)
         NSUserDefaults.standardUserDefaults().synchronize()
     }
     

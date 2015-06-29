@@ -49,29 +49,27 @@ extension APIService {
         static let unableToParseToken = 40
     }
     
-    
-    
     //new way to do the new work calls
-    func POST ( apiRequest : ApiRequest!, completion: CompletionBlock?) {
+    func POST<T: ApiResponse> ( apiRequest : ApiRequest<T>!, completion: CompletionBlock?) {
         var parameterStrings = apiRequest.toDictionary()
         setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
         request(method: .POST, path: apiRequest.getRequestPath(), parameters: parameterStrings, completion: completion)
     }
     
-    func PUT ( apiRequest : ApiRequest!, completion: CompletionBlock?) {
+    func PUT<T: ApiResponse>  ( apiRequest : ApiRequest<T>!, completion: CompletionBlock?) {
         var parameterStrings = apiRequest.toDictionary()
         setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
         request(method: .PUT, path: apiRequest.getRequestPath(), parameters: parameterStrings, completion: nil)
         completion!(task: nil, response: nil, error: nil)
     }
 
-    func GET ( apiRequest : ApiRequest!, completion: CompletionBlock?) {
+    func GET<T: ApiResponse>  ( apiRequest : ApiRequest<T>!, completion: CompletionBlock?) {
         var parameterStrings = apiRequest.toDictionary()
         setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
         request(method: .GET, path: apiRequest.getRequestPath(), parameters: parameterStrings, completion: completion)
     }
     
-    func Delete ( apiRequest : ApiRequest!, completion: CompletionBlock?) {
+    func Delete<T: ApiResponse>  ( apiRequest : ApiRequest<T>!, completion: CompletionBlock?) {
         var parameterStrings = apiRequest.toDictionary()
         setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
         request(method: .DELETE, path: apiRequest.getRequestPath(), parameters: parameterStrings, completion: completion)

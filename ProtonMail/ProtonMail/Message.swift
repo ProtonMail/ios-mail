@@ -16,7 +16,7 @@
 import Foundation
 import CoreData
 
-class Message: NSManagedObject {
+public class Message: NSManagedObject {
 
     @NSManaged var bccList: String
     @NSManaged var bccNameList: String

@@ -9,11 +9,10 @@
 import Foundation
 
 
-class ApiResponse {
+public class ApiResponse {
     
-    public let checkString = "";
+
+    public init() {}
     
-    init () {
-        
-    }
+    
 }

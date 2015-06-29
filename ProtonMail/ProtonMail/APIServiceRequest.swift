@@ -9,17 +9,30 @@
 import Foundation
 
 
-//abstract api request base class
-public class ApiRequest {
-    init () { }
+
+protocol Package {
     
-    
+
     /**
     conver requset object to dictionary
     
     :returns: request dictionary
     */
-    public func toDictionary() -> Dictionary<String,AnyObject>? {
+    func toDictionary() -> Dictionary<String, AnyObject>?
+}
+
+
+
+
+//abstract api request base class
+public class ApiRequest<T : ApiResponse> : Package {
+ 
+    public init () { }
+
+    //add error response
+    typealias ResponseCompletionBlock = (task: NSURLSessionDataTask!, response: T) -> Void
+    
+    func toDictionary() -> Dictionary<String, AnyObject>? {
         return nil
     }
     
@@ -32,17 +45,15 @@ public class ApiRequest {
         return 1
     }
     
-    
     /**
     get request path
     
     :returns: String value
     */
     public func getRequestPath () -> String {
-        NSException(name:"Not Implement", reason:"The class didn't implement yet", userInfo:nil).raise()
+        fatalError("Not Implement, you need override the function")
         return "";
     }
-    
     
     /**
     base class for convert anyobject to a json string
@@ -64,12 +75,27 @@ public class ApiRequest {
         return ""
     }
     
-    func call<T : ApiResponse>() -> T{
-        
-        //TODO :: 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
-        
-        return T()
+    
+    func getAPIMethod() -> APIService.HTTPMethod  {
+        return .GET
     }
     
-    
+    func call(complete: ResponseCompletionBlock?){
+        //TODO :: 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
+        let completionWrapper:  APIService.CompletionBlock = { task, res, error in
+            
+            var r = T()
+            complete?(task:task, response:r)
+        }
+        sharedAPIService.request(method: self.getAPIMethod(), path: self.getRequestPath(), parameters: self.toDictionary(), completion:completionWrapper)
+    }
 }
+
+
+
+
+
+
+
+
+

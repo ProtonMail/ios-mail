@@ -8,348 +8,340 @@
 
 import Foundation
 
+// MARK : Get messages part
+public class MessageFetchRequest<T : ApiResponse> : ApiRequest<T> {
+    let location : MessageLocation!
+    let startTime : Int?
+    let endTime : Int
+    
+    init(location:MessageLocation, endTime : Int = 0) {
+        self.location = location
+        self.endTime = endTime
+        self.startTime = 0
+    }
 
-/// Message api request class
-public class MessageAPI {
-    
-    /// current message api version
-    static let MessageAPIVersion : Int      = 1
-    /// base message api path
-    static let MessageAPIPath :String       = "/messages"
-    
-    
-    
-    
-    // MARK : Get messages part
-    public class MessageFetchRequest : ApiRequest {
-        let location : MessageLocation!
-        let startTime : Int?
-        let endTime : Int
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+        var out : [String : AnyObject] = [
+            "Location" : self.location.rawValue,
+            "Sort" : "Time"]
         
-        init(location:MessageLocation, endTime : Int = 0) {
-            self.location = location
-            self.endTime = endTime
-            self.startTime = 0
-           
+        if(self.endTime != 0)
+        {
+            let newTime = self.endTime - 1
+            out["End"] = newTime
         }
         
-        public override func toDictionary() -> Dictionary<String,AnyObject> {
-            var out : [String : AnyObject] = [
-                "Location" : self.location.rawValue,
-                "Sort" : "Time"]
-            
-            if(self.endTime != 0)
-            {
-                let newTime = self.endTime - 1
-                out["End"] = newTime
-            }
-            
-            PMLog.D(self.JSONStringify(out, prettyPrinted: true))
-            return out
-        }
+        PMLog.D(self.JSONStringify(out, prettyPrinted: true))
+        return out
+    }
         
-        override public func getRequestPath() -> String {
-            return MessageAPIPath + AppConstants.getDebugOption
-        }
-        
-        override public func getVersion() -> Int {
-            return MessageAPIVersion
-        }
+    override public func getRequestPath() -> String {
+        return MessageAPI.Path + AppConstants.getDebugOption
     }
     
-    
-    
-    // MARK : Create/Update Draft Part
-    
-    /// create draft message request class
-    public class MessageDraftRequest : ApiRequest {
-        
-        let message : Message!;
-        
-        init(message: Message!) {
-            self.message = message
-        }
-        
-        public override func toDictionary() -> Dictionary<String,AnyObject> {
-            
-            let address_id : String                 = sharedUserDataService.userAddresses.first?.address_id ?? "1000";
-            var messsageDict : [String : AnyObject] = [
-                "AddressID" : address_id,
-                "Body" : message.body,
-                "Subject" : message.title]
-            messsageDict["ToList"]                  = message.recipientList.parseJson()
-            messsageDict["CCList"]                  = message.ccList.parseJson()
-            messsageDict["BCCList"]                 = message.bccList.parseJson()
-            
-            let out                                 = ["Message" : messsageDict]
-            
-            PMLog.D(self.JSONStringify(out, prettyPrinted: true))
-            return out
-        }
-        
-        override public func getRequestPath() -> String {
-            return MessageAPIPath + "/draft"
-        }
-        
-        override public func getVersion() -> Int {
-            return MessageAPIVersion
-        }
+    override public func getVersion() -> Int {
+        return MessageAPI.V_MessageFetchRequest
     }
-    
-    /// message update draft api request
-    public class MessageUpdateDraftRequest : MessageDraftRequest {
-        
-        override public func getRequestPath() -> String {
-            return MessageAPIPath + "/draft/" + message.messageID + AppConstants.getDebugOption
-        }
-        
-        override public func getVersion() -> Int {
-            return MessageAPIVersion
-        }
-    }
-    
-    
-    // MARK : Message actions part
-    
-    /// mesaage action request PUT method
-    public class MessageActionRequest : ApiRequest {
-        let messages : [Message]!
-        let action : String!
-        var ids : [String] = [String] ()
-        
-        init(action:String, messages: [Message]!) {
-            self.messages = messages
-            self.action = action
-            for message in messages {
-                if message.isDetailDownloaded {
-                    ids.append(message.messageID)
-                }
-            }
-        }
-        
-        init(action:String, ids : [String]!) {
-            self.action = action
-            self.ids = ids
-            self.messages = [Message]()
-        }
-        public override func toDictionary() -> Dictionary<String,AnyObject> {
-            let out = ["IDs" : self.ids]
-            
-            PMLog.D(self.JSONStringify(out, prettyPrinted: true))
-            return out
-        }
-        
-        override public func getRequestPath() -> String {
-            return MessageAPIPath + "/" + self.action + AppConstants.getDebugOption
-        }
-        
-        override public func getVersion() -> Int {
-            return MessageAPIVersion
-        }
-    }
-    
-    
-    // MARK : Message Send part
-    
-    /// send message reuqest
-    public class MessageSendRequest : ApiRequest {
-        var messagePackage : [MessagePackage]!     // message package
-        var attPackets : [AttachmentKeyPackage]!    //  for optside encrypt att.
-        var clearBody : String!                     //  optional for out side user
-        let messageID : String!
-        
-        init(messageID : String!, messagePackage: [MessagePackage]!, clearBody : String! = "", attPackages:[AttachmentKeyPackage]! = nil) {
-            self.messageID = messageID
-            self.messagePackage = messagePackage
-            self.clearBody = clearBody
-            self.attPackets = attPackages
-        }
-        
-        public override func toDictionary() -> Dictionary<String,AnyObject> {
-            
-            var out : [String : AnyObject] = [String : AnyObject]()
-            
-            if !self.clearBody.isEmpty {
-                out["ClearBody"] = self.clearBody
-            }
-            
-            if self.attPackets != nil {
-                var attPack : [AnyObject] = [AnyObject]()
-                for pack in self.attPackets {
-                    attPack.append(pack.toDictionary())
-                }
-                out["AttachmentKeys"] = attPack
-            }
-            
-            var package : [AnyObject] = [AnyObject]()
-            if self.messagePackage != nil {
-                for pack in self.messagePackage {
-                    package.append(pack.toDictionary())
-                }
-            }
-            out["Packages"] = package
-            
-            PMLog.D(self.JSONStringify(out, prettyPrinted: true))
-            return out
-        }
-        
-        override public func getRequestPath() -> String {
-            
-            return MessageAPIPath + "/send/" + self.messageID + AppConstants.getDebugOption
-        }
-        
-        override public func getVersion() -> Int {
-            return MessageAPIVersion
-        }
-    }
-    
-    /// message packages
-    public class MessagePackage : ApiRequest {
-        
-        /// default sender email address
-        let address : String!
-        /** send encrypt message package type
-        *   1 internal
-        *   2 external
-        */
-        let type : Int!
-        /// encrypt message body
-        let body : String!
-        /// optional for outside
-        let token : String!
-        /// optional for outside
-        let encToken : String!
-        /// optional encrypt password hint
-        let passwordHint : String!
-        /// optional attachment package
-        let attPackets : [AttachmentKeyPackage]
-        
-        /**
-        message packages
-        
-        :param: address    addresses
-        :param: type       package type
-        :param: body       package encrypt body
-        :param: token      eo token optional only for encrypt outside
-        :param: encToken   eo encToken optional only for encrypt outside
-        :param: attPackets attachment package
-        
-        :returns: self
-        */
-        init(address:String, type : Int, body :String!, attPackets:[AttachmentKeyPackage]=[AttachmentKeyPackage](), token : String! = "", encToken : String! = "", passwordHint : String! = "") {
-            
-            self.address = address
-            self.type = type
-            self.body = body
-            self.token = token
-            self.encToken = encToken
-            self.passwordHint = passwordHint
-            self.attPackets = attPackets
-        }
-        
-        // Mark : override class functions
-        public override func toDictionary() -> Dictionary<String,AnyObject> {
-            var atts : [AnyObject] = [AnyObject]()
-            for attPacket in attPackets {
-                atts.append(attPacket.toDictionary())
-            }
-            var out : Dictionary<String, AnyObject> = [
-                "Address" : self.address,
-                "Type" : self.type,
-                "Body" : self.body,
-                "KeyPackets" : atts]
+}
 
-            if !self.token!.isEmpty {
-                out["Token"] = self.token
-            }
-            
-            if !self.encToken.isEmpty {
-                out["EncToken"] = self.encToken
-            }
-            
-            if !self.passwordHint.isEmpty {
-                out["PasswordHint"] = self.passwordHint
-            }
-            
-            return out
-        }
+
+// MARK : Create/Update Draft Part
+
+/// create draft message request class
+public class MessageDraftRequest<T: ApiResponse>  : ApiRequest<T> {
+    
+    let message : Message!;
+    
+    init(message: Message!) {
+        self.message = message
     }
     
-    /// message attachment key package
-    public class AttachmentKeyPackage : ApiRequest {
-        let ID : String!
-        let keyPacket : String!
-        let algo : String!
-        init(attID:String!, attKey:String!, Algo : String! = "") {
-            self.ID = attID
-            self.keyPacket = attKey
-            self.algo = Algo
-        }
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+        let address_id : String                 = sharedUserDataService.userAddresses.first?.address_id ?? "1000";
+        var messsageDict : [String : AnyObject] = [
+            "AddressID" : address_id,
+            "Body" : message.body,
+            "Subject" : message.title]
+        messsageDict["ToList"]                  = message.recipientList.parseJson()
+        messsageDict["CCList"]                  = message.ccList.parseJson()
+        messsageDict["BCCList"]                 = message.bccList.parseJson()
         
-        public override func toDictionary() -> Dictionary<String,AnyObject> {
-            var out = [
-                "ID" : self.ID,
-                "KeyPackets" : self.keyPacket]
-            
-            if !self.algo.isEmpty {
-                out["Algo"] = self.algo
-            }
-            
-            return out
-        }
-    }
-    
-    
-    /**
-    *  temporary table for formating the message send package
-    */
-    public class TempAttachment {
-        let ID : String!
-        let Key : NSData!
+        let out                                 = ["Message" : messsageDict]
         
-        public init(id: String, key: NSData) {
-            self.ID = id
-            self.Key = key
-        }
+        PMLog.D(self.JSONStringify(out, prettyPrinted: true))
+        return out
 
     }
     
-    /**
-    * MARK : down all the old code
-    */
+    override public func getRequestPath() -> String {
+        return MessageAPI.Path + "/draft"
+    }
     
-    /**
-    *  contact
-    */
-    public struct Contacts {
-        let email: String
-        let name: String
-        
-        init(email: String, name: String) {
-            self.name                               = name
-            self.email                              = email
-        }
-        
-        func asJSON() -> Dictionary<String,AnyObject> {
-            return [
-                "Name" : self.name,
-                "Email" : self.email]
+    override public func getVersion() -> Int {
+        return MessageAPI.V_MessageDraftRequest
+    }
+}
+
+/// message update draft api request
+public class MessageUpdateDraftRequest<T: ApiResponse> : MessageDraftRequest<T> {
+    override init(message: Message!) {
+        super.init(message: message)
+    }
+    
+    override public func getRequestPath() -> String {
+        return MessageAPI.Path + "/draft/" + message.messageID + AppConstants.getDebugOption
+    }
+    
+    override public func getVersion() -> Int {
+        return MessageAPI.V_MessageUpdateDraftRequest
+    }
+}
+
+
+// MARK : Message actions part
+
+/// mesaage action request PUT method
+public class MessageActionRequest<T : ApiResponse>  : ApiRequest <T> {
+    let messages : [Message]!
+    let action : String!
+    var ids : [String] = [String] ()
+    
+    
+    public init(action:String, messages: [Message]!) {
+        self.messages = messages
+        self.action = action
+        for message in messages {
+            if message.isDetailDownloaded {
+                ids.append(message.messageID)
+            }
         }
     }
     
+    public init(action:String, ids : [String]!) {
+        self.action = action
+        self.ids = ids
+        self.messages = [Message]()
+    }
+    
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+        let out = ["IDs" : self.ids]
+        // PMLog.D(self.JSONStringify(out, prettyPrinted: true))
+        return out
+    }
+    
+    override public func getRequestPath() -> String {
+        return MessageAPI.Path + "/" + self.action + AppConstants.getDebugOption
+    }
+    
+    override public func getVersion() -> Int {
+        return MessageAPI.V_MessageActionRequest
+    }
+    
+}
+
+
+// MARK : Message Send part
+
+/// send message reuqest
+public class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
+    var messagePackage : [MessagePackage]!     // message package
+    var attPackets : [AttachmentKeyPackage]!    //  for optside encrypt att.
+    var clearBody : String!                     //  optional for out side user
+    let messageID : String!
+    
+    init(messageID : String!, messagePackage: [MessagePackage]!, clearBody : String! = "", attPackages:[AttachmentKeyPackage]! = nil) {
+        self.messageID = messageID
+        self.messagePackage = messagePackage
+        self.clearBody = clearBody
+        self.attPackets = attPackages
+    }
+    
+    override func toDictionary() -> Dictionary<String,AnyObject>? {
+        
+        var out : [String : AnyObject] = [String : AnyObject]()
+        
+        if !self.clearBody.isEmpty {
+            out["ClearBody"] = self.clearBody
+        }
+        
+        if self.attPackets != nil {
+            var attPack : [AnyObject] = [AnyObject]()
+            for pack in self.attPackets {
+                attPack.append(pack.toDictionary()!)
+            }
+            out["AttachmentKeys"] = attPack
+        }
+        
+        var package : [AnyObject] = [AnyObject]()
+        if self.messagePackage != nil {
+            for pack in self.messagePackage {
+                package.append(pack.toDictionary()!)
+            }
+        }
+        out["Packages"] = package
+        
+        PMLog.D(self.JSONStringify(out, prettyPrinted: true))
+        return out
+    }
+    
+    override public func getRequestPath() -> String {
+        return MessageAPI.Path + "/send/" + self.messageID + AppConstants.getDebugOption
+    }
+    
+    override public func getVersion() -> Int {
+        return MessageAPI.V_MessageSendRequest
+    }
+}
+
+/// message packages
+public class MessagePackage : Package {
+    
+    /// default sender email address
+    let address : String!
+    /** send encrypt message package type
+    *   1 internal
+    *   2 external
+    */
+    let type : Int!
+    /// encrypt message body
+    let body : String!
+    /// optional for outside
+    let token : String!
+    /// optional for outside
+    let encToken : String!
+    /// optional encrypt password hint
+    let passwordHint : String!
+    /// optional attachment package
+    let attPackets : [AttachmentKeyPackage]
+    
+    /**
+    message packages
+    
+    :param: address    addresses
+    :param: type       package type
+    :param: body       package encrypt body
+    :param: token      eo token optional only for encrypt outside
+    :param: encToken   eo encToken optional only for encrypt outside
+    :param: attPackets attachment package
+    
+    :returns: self
+    */
+    init(address:String, type : Int, body :String!, attPackets:[AttachmentKeyPackage]=[AttachmentKeyPackage](), token : String! = "", encToken : String! = "", passwordHint : String! = "") {
+        
+        self.address = address
+        self.type = type
+        self.body = body
+        self.token = token
+        self.encToken = encToken
+        self.passwordHint = passwordHint
+        self.attPackets = attPackets
+    }
+    
+    // Mark : override class functions
+    func toDictionary() -> Dictionary<String,AnyObject>? {
+        var atts : [AnyObject] = [AnyObject]()
+        for attPacket in attPackets {
+            atts.append(attPacket.toDictionary()!)
+        }
+        var out : Dictionary<String, AnyObject> = [
+            "Address" : self.address,
+            "Type" : self.type,
+            "Body" : self.body,
+            "KeyPackets" : atts]
+        
+        if !self.token!.isEmpty {
+            out["Token"] = self.token
+        }
+        
+        if !self.encToken.isEmpty {
+            out["EncToken"] = self.encToken
+        }
+        
+        if !self.passwordHint.isEmpty {
+            out["PasswordHint"] = self.passwordHint
+        }
+        
+        return out
+    }
+}
+
+
+// message attachment key package
+public class AttachmentKeyPackage : Package {
+    let ID : String!
+    let keyPacket : String!
+    let algo : String!
+    init(attID:String!, attKey:String!, Algo : String! = "") {
+        self.ID = attID
+        self.keyPacket = attKey
+        self.algo = Algo
+    }
+    
+    public func toDictionary() -> Dictionary<String,AnyObject>? {
+        var out = [
+            "ID" : self.ID,
+            "KeyPackets" : self.keyPacket]
+        
+        if !self.algo.isEmpty {
+            out["Algo"] = self.algo
+        }
+        
+        return out
+    }
+}
+
+
+/**
+*  temporary table for formating the message send package
+*/
+public class TempAttachment {
+    let ID : String!
+    let Key : NSData!
+    
+    public init(id: String, key: NSData) {
+        self.ID = id
+        self.Key = key
+    }
+}
+
+
+
+/**
+* MARK : down all the old code
+*/
+
+/**
+*  contact
+*/
+public struct Contacts {
+    let email: String
+    let name: String
+    
+    init(email: String, name: String) {
+        self.name                               = name
+        self.email                              = email
+    }
+    
+    func asJSON() -> Dictionary<String,AnyObject> {
+        return [
+            "Name" : self.name,
+            "Email" : self.email]
+    }
+}
+
 //    public struct Attachment {
 //        let fileName: String
 //        let mimeType: String
 //        let fileData: Dictionary<String,String>
 //        let fileSize: Int
-//        
+//
 //        init(fileName: String, mimeType: String, fileData: Dictionary<String,String>, fileSize: Int) {
 //            self.fileName                           = fileName
 //            self.mimeType                           = mimeType
 //            self.fileData                           = fileData
 //            self.fileSize                           = fileSize
 //        }
-//        
+//
 //        func asJSON() -> Dictionary<String,AnyObject> {
 //            return [
 //                "FileName" : fileName,
@@ -358,8 +350,8 @@ public class MessageAPI {
 //                "FileSize" : String(fileSize)]
 //        }
 //    }
-    
-}
+
+
 
 
 

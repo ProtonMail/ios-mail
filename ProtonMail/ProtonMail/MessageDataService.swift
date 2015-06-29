@@ -131,8 +131,8 @@ class MessageDataService {
                 }
             }
             
-            let request = MessageAPI.MessageFetchRequest(location: location, endTime: Time);
-            sharedAPIService.GET(request, completion: completionWrapper)
+           // let request = MessageFetchRequest(location: location, endTime: Time);
+           // sharedAPIService.GET(request, completion: completionWrapper)
         }
     }
     
@@ -145,6 +145,9 @@ class MessageDataService {
     
     func fetchNewMessagesForLocation(location: MessageLocation, Time: Int, completion: CompletionBlock?) {
         queue {
+            
+            
+            
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 if let messagesArray = responseDict?["Messages"] as? [Dictionary<String,AnyObject>] {
                     let context = sharedCoreDataService.newManagedObjectContext()
@@ -186,7 +189,16 @@ class MessageDataService {
                     completion?(task: task, response: responseDict, error: NSError.unableToParseResponse(responseDict))
                 }
             }
-            sharedAPIService.fetchLatestMessageList(Time, completion: completionWrapper)
+            
+            let eventAPI = EventCheckRequest(eventID: lastUpdatedStore.lastEventID)
+            
+            eventAPI.call(nil)
+            
+            
+          //  let returnValue = eventAPI.call<EventAPI.EventCheckResponse>()
+            
+            
+            //sharedAPIService.fetchLatestMessageList(Time, completion: completionWrapper)
         }
     }
     
@@ -551,20 +563,19 @@ class MessageDataService {
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
     
-    
-    private func generatMessagePackage (message: Message!, keys : [String : AnyObject]?, atts : [Attachment], encrptOutside : Bool) -> MessageAPI.MessageSendRequest! {
+    private func generatMessagePackage<T : ApiResponse> (message: Message!, keys : [String : AnyObject]?, atts : [Attachment], encrptOutside : Bool) -> MessageSendRequest<T>! {
         
-        var tempAtts : [MessageAPI.TempAttachment]! = []
+        var tempAtts : [TempAttachment]! = []
         for att in atts {
             
             let sessionKey = att.getSessionKey(nil)
             
-            tempAtts.append(MessageAPI.TempAttachment(id: att.attachmentID, key: sessionKey!))
+            tempAtts.append(TempAttachment(id: att.attachmentID, key: sessionKey!))
         }
         
-        var out : [MessageAPI.MessagePackage] = []
+        var out : [MessagePackage] = []
         var needsPlainText : Bool = false
-        let outRequest : MessageAPI.MessageSendRequest = MessageAPI.MessageSendRequest(messageID: message.messageID, messagePackage: nil, clearBody: "", attPackages: nil)
+        let outRequest : MessageSendRequest = MessageSendRequest<T>(messageID: message.messageID, messagePackage: nil, clearBody: "", attPackages: nil)
         
         var error: NSError?
         if let body = message.decryptBody(&error) {
@@ -582,7 +593,7 @@ class MessageDataService {
                 if isOutsideUser {
                     if encrptOutside {
                         //create outside encrypt packet
-                        var pack = MessageAPI.MessagePackage(address: key, type: 2,  body: "", token: "", encToken: "", passwordHint: "")
+                        var pack = MessagePackage(address: key, type: 2,  body: "", token: "", encToken: "", passwordHint: "")
                         out.append(pack)
                         
                         // encrypt keys use pwd .
@@ -594,17 +605,17 @@ class MessageDataService {
                 else {
                     
                     // encrypt keys use public key
-                    var attPack : [MessageAPI.AttachmentKeyPackage] = []
+                    var attPack : [AttachmentKeyPackage] = []
                     for att in tempAtts {
                         //attID:String!, attKey:String!, Algo : String! = ""
                         let newKeyPack = att.Key.getSessionKeyPackage(publicKey, error: nil)?.base64EncodedStringWithOptions(nil)
-                        let attPacket = MessageAPI.AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack)
+                        let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack)
                         attPack.append(attPacket)
                     }
                     
                     //create inside packet
                     if let encryptedBody = body.encryptWithPublicKey(publicKey, error: &error) {
-                        var pack = MessageAPI.MessagePackage(address: key, type: 1, body: encryptedBody, attPackets: attPack)
+                        var pack = MessagePackage(address: key, type: 1, body: encryptedBody, attPackets: attPack)
                         out.append(pack)
                     } else {
                         NSLog("\(__FUNCTION__) can't encrypt body for \(body) with error: \(error)")
@@ -619,11 +630,11 @@ class MessageDataService {
                 
                 
                 //add attachment package
-                var attPack : [MessageAPI.AttachmentKeyPackage] = []
+                var attPack : [AttachmentKeyPackage] = []
                 for att in tempAtts {
                     //attID:String!, attKey:String!, Algo : String! = ""
                     let newKeyPack = att.Key.base64EncodedStringWithOptions(nil)
-                    let attPacket = MessageAPI.AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack, Algo: "aes256")
+                    let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack, Algo: "aes256")
                     attPack.append(attPacket)
                 }
                 
@@ -759,9 +770,9 @@ class MessageDataService {
                     }
                     
                     if message.isDetailDownloaded && message.messageID != "0" {
-                        sharedAPIService.PUT(MessageAPI.MessageUpdateDraftRequest(message:message), completion: completionWrapper)
+                       sharedAPIService.PUT(MessageUpdateDraftRequest<ApiResponse>(message:message), completion: completionWrapper)
                     } else {
-                        sharedAPIService.POST( MessageAPI.MessageDraftRequest(message:message), completion: completionWrapper)
+                       sharedAPIService.POST(MessageDraftRequest<ApiResponse>(message:message), completion: completionWrapper)
                     }
                     return;
                 }
@@ -848,7 +859,7 @@ class MessageDataService {
                         let sendMessage = self.generatMessagePackage(message, keys: response, atts:attachments, encrptOutside: isEncryptOutside)
                         
                         // parse the response for keys
-                        //let messageBody = self.messageBodyForMessage(message, response: response)
+                        let messageBody = self.messageBodyForMessage(message, response: response)
                         
                         
                         // build the encrypt bodys
@@ -962,7 +973,7 @@ class MessageDataService {
                 case .uploadAtt:
                     uploadAttachmentWithAttachmentID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 default:
-                    sharedAPIService.PUT(MessageAPI.MessageActionRequest(action: actionString, ids: [messageID]), completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                    sharedAPIService.PUT(MessageActionRequest<ApiResponse>(action: actionString, ids: [messageID]), completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 }
             } else {
                 NSLog("\(__FUNCTION__) Unsupported action \(actionString), removing from queue.")
