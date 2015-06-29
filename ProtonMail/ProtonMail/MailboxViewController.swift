@@ -256,7 +256,7 @@ class MailboxViewController: ProtonMailViewController {
     // MARK: - Private methods
     private func startAutoFetch()
     {
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(120, target: self, selector: "refreshPage", userInfo: nil, repeats: true)
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "refreshPage", userInfo: nil, repeats: true)
         self.timer.fire()
     }
     
