@@ -117,7 +117,7 @@ class ComposeViewController : ProtonMailViewController {
     
     private func stopAutoSave()
     {
-        if  self.timer == nil {
+        if self.timer != nil {
             self.timer.invalidate()
             self.timer = nil
         }
