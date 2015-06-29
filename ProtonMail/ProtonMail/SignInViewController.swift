@@ -134,6 +134,7 @@ class SignInViewController: UIViewController {
     
     // FIXME: Work around for http://stackoverflow.com/questions/25925914/attributed-string-with-custom-fonts-in-storyboard-does-not-load-correctly <http://openradar.appspot.com/18425809>
     func setupSignUpButton() {
+        
         let needAnAccount = NSLocalizedString("Need an account? ", comment: "Need an account? ")
         let signUp = NSLocalizedString("Sign Up.", comment: "Sign Up.")
         
@@ -161,18 +162,21 @@ class SignInViewController: UIViewController {
                 
                 self.presentViewController(alertController, animated: true, completion: nil)
             } else {
-                self.loadContactsAfterInstall()
-                if sharedUserDataService.isMailboxPasswordStored {
-                    (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
-                } else {
-                    
-                    if count(sharedUserDataService.userInfo!.privateKey.trim()) > 10 {
-                        self.performSegueWithIdentifier(self.mailboxSegue, sender: self)
-                    }
-                    else {
-                        self.performSegueWithIdentifier(self.signUpKeySegue, sender: self)
-                    }
-                }
+                self.loadUser()
+            }
+        }
+    }
+    
+    private func loadUser() {
+        self.loadContactsAfterInstall()
+        if sharedUserDataService.isMailboxPasswordStored {
+            (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
+        } else {
+            if count(sharedUserDataService.userInfo!.privateKey.trim()) > 10 {
+                self.performSegueWithIdentifier(self.mailboxSegue, sender: self)
+            }
+            else {
+                self.performSegueWithIdentifier(self.signUpKeySegue, sender: self)
             }
         }
     }
@@ -195,7 +199,7 @@ class SignInViewController: UIViewController {
             usernameTextField.text = sharedUserDataService.username
             passwordTextField.text = sharedUserDataService.password
             
-            signIn()
+            self.loadUser()
         }
         else
         {

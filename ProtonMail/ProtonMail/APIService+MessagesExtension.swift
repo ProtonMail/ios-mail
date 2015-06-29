@@ -76,36 +76,12 @@ extension APIService {
     }
     
     
-    // MARK : Need change soon
+    // MARK : Need change soon tempry for no outside incoming emails
     func fetchLatestMessageList(time: Int, completion: CompletionBlock) {
         let path = MessagePath.base + "/latest/\(time)"
         
         request(method: .GET, path: path, parameters: nil, completion: completion)
     }
-    
-    
-    // func messageID(messageID: String, updateWithAction action: MessageAction, completion: CompletionBlock?) {
-    
-    
-    
-    
-    //            let parameters = ["IDs" : [messageID]]
-    //            request(method: .PUT, path: path, parameters: parameters, completion: nil)
-    //            completion!(task: nil, response: nil, error: nil);//TODO:: need fix the response
-    
-    //        switch(action) {
-    //        case .delete:
-    //            let path = MessagePath.base.stringByAppendingPathComponent(messageID)
-    //            request(method: .DELETE, path: path, parameters: nil, completion: completion)
-    //        default:
-    //            let path = MessagePath.base.stringByAppendingPathComponent(action.rawValue)
-    //            //MessagePath.base.stringByAppendingPathComponent(messageID).stringByAppendingPathComponent(action.rawValue)
-    //            let parameters = ["IDs" : [messageID]]
-    //            request(method: .PUT, path: path, parameters: parameters, completion: nil)
-    //            completion!(task: nil, response: nil, error: nil);//TODO:: need fix the response
-    //        }
-    //}
-
     
     
     

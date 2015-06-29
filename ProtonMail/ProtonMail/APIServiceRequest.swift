@@ -30,7 +30,7 @@ public class ApiRequest<T : ApiResponse> : Package {
     public init () { }
 
     //add error response
-    typealias ResponseCompletionBlock = (task: NSURLSessionDataTask!, response: T) -> Void
+    public typealias ResponseCompletionBlock = (task: NSURLSessionDataTask!, response: T) -> Void
     
     func toDictionary() -> Dictionary<String, AnyObject>? {
         return nil
@@ -83,9 +83,11 @@ public class ApiRequest<T : ApiResponse> : Package {
     func call(complete: ResponseCompletionBlock?){
         //TODO :: 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
         let completionWrapper:  APIService.CompletionBlock = { task, res, error in
-            
-            var r = T()
-            complete?(task:task, response:r)
+            let realType = T.self
+            var apiRes = realType()
+            apiRes.ParseResponseError(res!)
+            apiRes.ParseResponse(res!)
+            complete?(task:task, response:apiRes)
         }
         sharedAPIService.request(method: self.getAPIMethod(), path: self.getRequestPath(), parameters: self.toDictionary(), completion:completionWrapper)
     }

@@ -190,7 +190,6 @@ extension APIService {
             let eventID = response["EventID"] as! String
             
             lastUpdatedStore.lastEventID = eventID
-            
             return (accessToken, expiresIn, refreshToken, userID)
         }
         return nil

@@ -205,7 +205,6 @@ class SettingsViewController: ProtonMailViewController {
                     }
                 }
             }))
-            
             presentViewController(alertController, animated: true, completion: { () -> Void in
                 self.dismissKeyboard()
             })

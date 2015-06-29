@@ -17,7 +17,6 @@ class ContactsViewController: ProtonMailViewController {
     private let kContactCellIdentifier: String = "ContactCell"
     private let kProtonMailImage: UIImage = UIImage(named: "encrypted_main")!
     
-    
     // MARK: - View Outlets
     
     @IBOutlet var tableView: UITableView!

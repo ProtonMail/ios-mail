@@ -182,7 +182,6 @@ class UserDataService {
                     if error == nil {
                         NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignIn, object: self)
                     }
-                    
                     completion(auth, error)
                 }
                 

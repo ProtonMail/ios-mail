@@ -29,6 +29,43 @@ public class EventCheckRequest<T : ApiResponse> : ApiRequest<T>{
 }
 
 public class EventCheckResponse : ApiResponse {
-    let eventID : String = ""
+    var eventID : String = ""
+    var isRefresh : Bool?;
+    
+    var messages : [Dictionary<String,AnyObject>]?
+    var contacts : [Dictionary<String,AnyObject>]?
+    var unreads : Dictionary<String,AnyObject>?
+    var usedSpace : String?
+    
+    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
+        
+        self.eventID = response["EventID"] as! String
+        self.messages =  response["Messages"] as? [Dictionary<String,AnyObject>]
+        
+        self.isRefresh = response["Refresh"] as? Bool
+        
+        self.unreads = response["Unread"] as? Dictionary<String,AnyObject>
+
+        self.usedSpace = response["UsedSpace"] as? String
+        
+        return true
+    }
 }
+
+
+public class MessageEvent {
+    
+    var Action : Int!
+    var ID : String!;
+    var message : Dictionary<String,AnyObject>?
+    
+    init(event: Dictionary<String,AnyObject>!) {
+        self.Action = event["Action"] as! Int
+        self.message =  event["Message"] as? Dictionary<String,AnyObject>
+        self.ID =  event["ID"] as! String
+        self.message?["ID"] = self.ID
+    }
+}
+
+
 

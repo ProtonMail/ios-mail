@@ -15,7 +15,6 @@ protocol ChangePWDViewModel {
     func getLabelOne() -> String;
     func getLabelTwo() -> String;
     func getLabelThree() -> String;
-    
     func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, complete:(Bool, NSError?) -> Void)
 }
 
