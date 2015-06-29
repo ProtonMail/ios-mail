@@ -20,6 +20,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
     private var isShowingDetail: Bool = false
     private var isViewingMoreOptions: Bool = false
     private var receipientlist : String = "";
+    private var ccList : String = "";
     
     // MARK: - Private constants
     
@@ -458,7 +459,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
         }
         println(self.emailDetailCCLabel.frame.size.height )
         println(self.message.ccList)
-        let ccHeight = !self.message.ccList.isEmpty ? self.emailDetailCCLabel.frame.size.height : 0
+        let ccHeight = !self.ccList.isEmpty ? self.emailDetailCCLabel.frame.size.height : 0
         emailDetailCCLabel.mas_makeConstraints { (make) -> Void in
             make.left.equalTo()(self.emailDetailToLabel)
             make.top.equalTo()(self.emailDetailToLabel.mas_bottom).with().offset()(self.kEmailDetailCCLabelMarginTop)
@@ -480,7 +481,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
             make.centerY.equalTo()(self.emailDetailCCLabel)
             make.left.equalTo()(self.emailDetailCCLabel.mas_right)
             make.right.equalTo()(self.emailDetailView)
-            make.height.equalTo()(ccHeight)//!self.message.ccList.isEmpty ? self.emailDetailCCContentLabel.frame.size.height : 0)
+            make.height.equalTo()(!self.ccList.isEmpty ? self.emailDetailCCContentLabel.frame.size.height : 0)
         }
         
         emailDetailDateLabel.mas_makeConstraints { (make) -> Void in
@@ -558,7 +559,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
             UIView.transitionWithView(self.emailRecipients, duration: kAnimationDuration, options: kAnimationOption, animations: { () -> Void in
                 self.emailRecipients.text = "From: \(self.message.sender)"
                 self.emailDetailToLabel.text = "To: \(self.receipientlist)"
-                self.emailDetailCCLabel.text = "CC: \(self.message.ccList)"
+                self.emailDetailCCLabel.text = "CC: \(self.ccList)"
                 self.emailDetailToLabel.sizeToFit()
                 self.emailDetailCCLabel.sizeToFit()
             }, completion: nil)
@@ -661,6 +662,17 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
                 receipientlist = receipientlist + "," + dict.getDisplayName()
             }
         }
+        
+        
+        let cc : [[String : String]] = message.ccList.parseJson()!
+        for dict:[String : String] in cc {
+            if(ccList.isEmpty) {
+                ccList = dict.getDisplayName()
+            }
+            else{
+                ccList = ccList + "," + dict.getDisplayName()
+            }
+        }
     }
     
     private func configureEmailDetailToLabel() {
@@ -690,8 +702,8 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
         self.emailDetailCCLabel = UILabel()
         self.emailDetailCCLabel.font = UIFont.robotoLight(size: UIFont.Size.h5)
         self.emailDetailCCLabel.numberOfLines = 1
-        self.emailDetailCCLabel.text = "Cc: \(self.message.ccList)"
-        println("\(self.message.ccList)")
+        self.emailDetailCCLabel.text = "Cc: \(self.ccList)"
+        println("\(self.ccList)")
         self.emailDetailCCLabel.textColor = UIColor.ProtonMail.Gray_999DA1
         self.emailDetailCCLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailCCLabel)
