@@ -173,6 +173,12 @@ class MessageDataService {
         queue {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
             eventAPI.call() { task, response in
+                
+                if response.isRefresh {
+                    // TODO : Add function to clean cache and reload from api
+                }
+                
+                
                 if response.messages != nil {
                     self.processIncrementalUpdateMessages(response.messages!, task: task) { task, res, error in
                         if error == nil {
@@ -185,7 +191,9 @@ class MessageDataService {
                     }
                 }
                 else {
-                    lastUpdatedStore.lastEventID = response.eventID
+                    if response.code == 1000 {
+                        lastUpdatedStore.lastEventID = response.eventID
+                    }
                     completion?(task: task, response:nil, error: nil)
                 }
             }

@@ -75,21 +75,21 @@ public class LastUpdatedStore : SharedCacheBase {
     
     private var lastInboxesUpdateds: Dictionary<String, UpdateTime> {
         get {
-            return (NSUserDefaults.standardUserDefaults().customObjectForKey(Key.lastInboxesUpdated) as? Dictionary<String, UpdateTime>) ?? [:]
+            return (getShared().customObjectForKey(Key.lastInboxesUpdated) as? Dictionary<String, UpdateTime>) ?? [:]
         }
         set {
-            NSUserDefaults.standardUserDefaults().setCustomValue(newValue, forKey: Key.lastInboxesUpdated)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            getShared().setCustomValue(newValue, forKey: Key.lastInboxesUpdated)
+            getShared().synchronize()
         }
     }
     
-    public var lastEventID: String {
+    public var lastEventID: String! {
         get {
-            return NSUserDefaults.standardUserDefaults().stringForKey(Key.lastEventID)!
+            return getShared().stringForKey(Key.lastEventID) ?? "0"
         }
         set {
-            NSUserDefaults.standardUserDefaults().setValue(newValue, forKey: Key.lastEventID)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            getShared().setValue(newValue, forKey: Key.lastEventID)
+            getShared().synchronize()
         }
     }
 
@@ -110,11 +110,11 @@ public class LastUpdatedStore : SharedCacheBase {
     clear the last update time cache
     */
     public func clear() {
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(Key.lastCantactsUpdated)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(Key.lastLabelsUpdated)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(Key.lastInboxesUpdated)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(Key.lastEventID)
-        NSUserDefaults.standardUserDefaults().synchronize()
+        getShared().removeObjectForKey(Key.lastCantactsUpdated)
+        getShared().removeObjectForKey(Key.lastLabelsUpdated)
+        getShared().removeObjectForKey(Key.lastInboxesUpdated)
+        getShared().removeObjectForKey(Key.lastEventID)
+        getShared().synchronize()
     }
     
     

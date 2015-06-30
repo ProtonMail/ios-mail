@@ -1,4 +1,4 @@
-//
+ //
 //  APIServiceResponse.swift
 //  ProtonMail
 //
@@ -14,7 +14,7 @@ public class ApiResponse {
 
     public required init() {}
     
-    public var code : String? = "1000"
+    public var code : Int! = 1000
     public var error : String?
     
     func CheckHttpStatus() -> Bool {
@@ -25,9 +25,9 @@ public class ApiResponse {
         return true
     }
     
-    func ParseResponseError (response: Dictionary<String,AnyObject>?) -> Bool {
-        code = response?["Code"] as? String
-        error = response?["Error"] as? String
+    func ParseResponseError (response: Dictionary<String,AnyObject>!) -> Bool {
+        code = response["Code"] as? Int
+        error = response["Error"] as? String
         
         return true
     }

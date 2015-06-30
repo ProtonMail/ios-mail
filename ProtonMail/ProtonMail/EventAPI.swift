@@ -30,7 +30,7 @@ public class EventCheckRequest<T : ApiResponse> : ApiRequest<T>{
 
 public class EventCheckResponse : ApiResponse {
     var eventID : String = ""
-    var isRefresh : Bool?;
+    var isRefresh : Bool = false
     
     var messages : [Dictionary<String,AnyObject>]?
     var contacts : [Dictionary<String,AnyObject>]?
@@ -42,7 +42,7 @@ public class EventCheckResponse : ApiResponse {
         self.eventID = response["EventID"] as! String
         self.messages =  response["Messages"] as? [Dictionary<String,AnyObject>]
         
-        self.isRefresh = response["Refresh"] as? Bool
+        self.isRefresh = response["Refresh"] as! Bool
         
         self.unreads = response["Unread"] as? Dictionary<String,AnyObject>
 
