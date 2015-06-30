@@ -88,7 +88,15 @@ public class ComposeViewModelImpl : ComposeViewModel {
 
     init(msg: Message?, action : ComposeMessageAction!) {
         super.init()
-        self.message = msg
+        
+        if msg == nil || msg?.location == MessageLocation.draft {
+             self.message = msg
+        }
+        else
+        {
+           self.message = msg?.copyMessage()
+        }
+        
         self.messageAction = action
         
         self.updateContacts()
