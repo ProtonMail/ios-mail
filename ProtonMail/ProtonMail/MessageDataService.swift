@@ -142,8 +142,6 @@ class MessageDataService {
                             lastUpdatedStore.updateInboxForKey(location, updateTime: updateTime)
                         }
                         
-                        
-                        
                         dispatch_async(dispatch_get_main_queue()) {
                             if MessageID == "0" && Time == 0 {
                                 //TODO : fix the last update
@@ -172,17 +170,24 @@ class MessageDataService {
     func fetchNewMessagesForLocation(location: MessageLocation, Time: Int, completion: CompletionBlock?) {
         queue {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
-            eventAPI.call() { task, response in
+            eventAPI.call() { task, response, hasError in
                 
-                if response.isRefresh {
-                    // TODO : Add function to clean cache and reload from api
+                if response == nil || response!.isRefresh || (hasError && response!.code == 18001) {
+                    
+                    let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
+                    getLatestEventID.call() { task, response, hasError in
+                        if response != nil && !hasError && !response!.eventID.isEmpty {
+                            lastUpdatedStore.lastEventID = response!.eventID
+                            self.cleanMessage()
+                            self.fetchMessagesForLocation(location, MessageID: "", Time: 0, completion: completion)
+                        }
+                    }
+                    completion?(task: task, response:nil, error: nil)
                 }
-                
-                
-                if response.messages != nil {
-                    self.processIncrementalUpdateMessages(response.messages!, task: task) { task, res, error in
+                else if response!.messages != nil {
+                    self.processIncrementalUpdateMessages(response!.messages!, task: task) { task, res, error in
                         if error == nil {
-                            lastUpdatedStore.lastEventID = response.eventID
+                            lastUpdatedStore.lastEventID = response!.eventID
                             completion?(task: task, response:nil, error: nil)
                         }
                         else {
@@ -191,8 +196,8 @@ class MessageDataService {
                     }
                 }
                 else {
-                    if response.code == 1000 {
-                        lastUpdatedStore.lastEventID = response.eventID
+                    if response!.code == 1000 {
+                        lastUpdatedStore.lastEventID = response!.eventID
                     }
                     completion?(task: task, response:nil, error: nil)
                 }
@@ -570,6 +575,13 @@ class MessageDataService {
         sharedContactDataService.cleanUp()
         
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+    }
+    
+    private func cleanMessage() {
+        if let context = managedObjectContext {
+            Message.deleteAll(inContext: context)
+        }
+         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
     
     

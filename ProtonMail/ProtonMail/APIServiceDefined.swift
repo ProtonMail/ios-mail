@@ -38,7 +38,8 @@ public struct EventAPI {
     
     
     
-    /// current message api version
+    /// current event api version
     public static let V_EventCheckRequest : Int      = 1
+    public static let V_LatestEventRequest : Int      = 1
 
 }

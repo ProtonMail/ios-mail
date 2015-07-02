@@ -12,7 +12,7 @@ import Foundation
 
 protocol Package {
     
-
+    
     /**
     conver requset object to dictionary
     
@@ -26,11 +26,11 @@ protocol Package {
 
 //abstract api request base class
 public class ApiRequest<T : ApiResponse> : Package {
- 
+    
     public init () { }
-
+    
     //add error response
-    public typealias ResponseCompletionBlock = (task: NSURLSessionDataTask!, response: T) -> Void
+    public typealias ResponseCompletionBlock = (task: NSURLSessionDataTask!, response: T?, hasError : Bool) -> Void
     
     func toDictionary() -> Dictionary<String, AnyObject>? {
         return nil
@@ -85,9 +85,25 @@ public class ApiRequest<T : ApiResponse> : Package {
         let completionWrapper:  APIService.CompletionBlock = { task, res, error in
             let realType = T.self
             var apiRes = realType()
-            apiRes.ParseResponseError(res!)
-            apiRes.ParseResponse(res!)
-            complete?(task:task, response:apiRes)
+            
+            if error != nil {
+                //TODO check error
+                complete?(task:task, response:nil, hasError: true)
+                return
+            }
+            
+            if res == nil {
+                // TODO check res
+                complete?(task:task, response:nil, hasError: true)
+                return
+            }
+            
+            var hasError = apiRes.ParseResponseError(res!)
+            if !hasError {
+                hasError = !apiRes.ParseResponse(res!)
+            }
+            
+            complete?(task:task, response:apiRes, hasError: hasError)
         }
         sharedAPIService.request(method: self.getAPIMethod(), path: self.getRequestPath(), parameters: self.toDictionary(), completion:completionWrapper)
     }

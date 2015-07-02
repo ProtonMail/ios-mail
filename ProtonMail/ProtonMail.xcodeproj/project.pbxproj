@@ -169,6 +169,7 @@
 		75F54C651B3B552200290F73 /* LastUpdateCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F54C641B3B552200290F73 /* LastUpdateCacheTests.swift */; };
 		75F906101B1FBECA00107509 /* DebugDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F9060F1B1FBECA00107509 /* DebugDetailsViewController.swift */; };
 		75F9A1121AFD705B007229C7 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F9A1111AFD705B007229C7 /* UIDeviceExtension.swift */; };
+		75FFC65F1B45C549007FB75A /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FFC65E1B45C549007FB75A /* DictionaryExtension.swift */; };
 		EAF4B9D23FDBAA4F2F237B3A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7171A1EF5F60DDA876FD139 /* libPods.a */; };
 		F77B8F0DFAD04EC03F166E0A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7171A1EF5F60DDA876FD139 /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -358,6 +359,7 @@
 		75F54C641B3B552200290F73 /* LastUpdateCacheTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastUpdateCacheTests.swift; sourceTree = "<group>"; };
 		75F9060F1B1FBECA00107509 /* DebugDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugDetailsViewController.swift; sourceTree = "<group>"; };
 		75F9A1111AFD705B007229C7 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
+		75FFC65E1B45C549007FB75A /* DictionaryExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
 		AF1532103B091E2244D6CFE4 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E7171A1EF5F60DDA876FD139 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -788,6 +790,7 @@
 				07A0E1AA1A9D2D1D005FD04B /* NSStringExtension.swift */,
 				70FC90D91A9BC11F00498B42 /* StringExtension.swift */,
 				75DF17A81AB8FAB8008A032B /* ArrayExtension.swift */,
+				75FFC65E1B45C549007FB75A /* DictionaryExtension.swift */,
 			);
 			name = General;
 			sourceTree = "<group>";
@@ -1195,6 +1198,7 @@
 				7048B9F41A9E385B00D45F57 /* ContactsTableViewCell.swift in Sources */,
 				7027B02B1A700F0200D28F52 /* MenuTableViewCell.swift in Sources */,
 				075675591AB135F500449905 /* UIAlertActionExtension.swift in Sources */,
+				75FFC65F1B45C549007FB75A /* DictionaryExtension.swift in Sources */,
 				07DD68A11A96BCDD00ED130C /* NSUserDefaultsExtension.swift in Sources */,
 				70945E6C1A8133B8002B6837 /* MoreOptionsView.swift in Sources */,
 				07FBA7A51A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift in Sources */,

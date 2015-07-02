@@ -25,8 +25,32 @@ public class EventCheckRequest<T : ApiResponse> : ApiRequest<T>{
     override public func getVersion() -> Int {
         return EventAPI.V_EventCheckRequest
     }
-    
 }
+
+
+public class EventLatestIDRequest<T : ApiResponse> : ApiRequest<T>{
+
+    override public func getRequestPath() -> String {
+        return EventAPI.Path.stringByAppendingPathComponent("latest") + AppConstants.getDebugOption
+    }
+    
+    override public func getVersion() -> Int {
+        return EventAPI.V_LatestEventRequest
+    }
+}
+
+public class EventLatestIDResponse : ApiResponse {
+    var eventID : String = ""
+
+    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
+        
+        PMLog.D(response.JSONStringify(prettyPrinted: true))
+        self.eventID = response["EventID"] as? String ?? ""
+
+        return true
+    }
+}
+
 
 public class EventCheckResponse : ApiResponse {
     var eventID : String = ""
@@ -38,8 +62,11 @@ public class EventCheckResponse : ApiResponse {
     var usedSpace : String?
     
     override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
+
+        PMLog.D(response.JSONStringify(prettyPrinted: true))
+        //PMLog("\(response)")
         
-        self.eventID = response["EventID"] as! String
+        self.eventID = response["EventID"] as? String ?? ""
         self.messages =  response["Messages"] as? [Dictionary<String,AnyObject>]
         
         self.isRefresh = response["Refresh"] as! Bool
