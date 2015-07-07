@@ -26,6 +26,7 @@ extension APIService {
         static let credentialInvalid = 20
         static let invalidGrant = 30
         static let unableToParseToken = 40
+        static let localCacheBad = 50
     }
     
     struct APIServicePath
@@ -164,7 +165,14 @@ extension APIService {
                 }
             }
             
-            request(method: .POST, path: path, parameters: parameters, authenticated: false, completion: completionWrapper)
+            if authCredential.accessToken == nil || authCredential.refreshToken == nil {
+                completion?(nil, NSError.authCacheBad())
+            }
+            else
+            {
+                
+                request(method: .POST, path: path, parameters: parameters, authenticated: false, completion: completionWrapper)
+            }
         } else {
             completion?(nil, NSError.authCredentialInvalid())
         }
@@ -187,7 +195,7 @@ extension APIService {
             let refreshToken = response["RefreshToken"] as? String
             let userID = response["Uid"] as? String
             
-            let eventID = response["EventID"] as! String
+            let eventID = response["EventID"] as? String ?? ""
             
             lastUpdatedStore.lastEventID = eventID
             return (accessToken, expiresIn, refreshToken, userID)
@@ -231,6 +239,13 @@ extension NSError {
     class func authUnableToParseToken() -> NSError {
         return apiServiceError(
             code: APIService.AuthErrorCode.unableToParseToken,
+            localizedDescription: NSLocalizedString("Unable to parse token"),
+            localizedFailureReason: NSLocalizedString("Unable to parse authentication token!"))
+    }
+    
+    class func authCacheBad() -> NSError {
+        return apiServiceError(
+            code: APIService.AuthErrorCode.localCacheBad,
             localizedDescription: NSLocalizedString("Unable to parse token"),
             localizedFailureReason: NSLocalizedString("Unable to parse authentication token!"))
     }

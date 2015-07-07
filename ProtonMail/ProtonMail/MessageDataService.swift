@@ -1072,21 +1072,27 @@ class MessageDataService {
     // MARK: Setup
     private func setupMessageMonitoring() {
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.locationNumber, handler: { message in
-            if let action = message.location.moveAction {
-                self.queue(message: message, action: action)
-            } else {
-                NSLog("\(__FUNCTION__) \(message.messageID) move to \(message.location) was not a user initiated move.")
+            if message.needsUpdate {
+                if let action = message.location.moveAction {
+                    self.queue(message: message, action: action)
+                } else {
+                    NSLog("\(__FUNCTION__) \(message.messageID) move to \(message.location) was not a user initiated move.")
+                }
             }
         })
         
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isRead, handler: { message in
-            let action: MessageAction = message.isRead ? .read : .unread
-            self.queue(message: message, action: action)
+            if message.needsUpdate {
+                let action: MessageAction = message.isRead ? .read : .unread
+                self.queue(message: message, action: action)
+            }
         })
         
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isStarred, handler: { message in
-            let action: MessageAction = message.isStarred ? .star : .unstar
-            self.queue(message: message, action: action)
+            if message.needsUpdate {
+                let action: MessageAction = message.isStarred ? .star : .unstar
+                self.queue(message: message, action: action)
+            }
         })
     }
 }

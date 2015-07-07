@@ -256,7 +256,7 @@ class MailboxViewController: ProtonMailViewController {
     // MARK: - Private methods
     private func startAutoFetch()
     {
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "refreshPage", userInfo: nil, repeats: true)
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "refreshPage", userInfo: nil, repeats: true)
         self.timer.fire()
     }
     
@@ -379,8 +379,6 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     
-    
-    
     private func moveMessagesToLocation(location: MessageLocation) {
         if let context = fetchedResultsController?.managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
@@ -390,6 +388,7 @@ class MailboxViewController: ProtonMailViewController {
             if let messages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
                 for message in messages {
                     message.location = location
+                    message.needsUpdate = true
                 }
                 error = context.saveUpstreamIfNeeded()
             }
@@ -481,7 +480,7 @@ class MailboxViewController: ProtonMailViewController {
             var error: NSError?
             if let messages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
                 NSArray(array: messages).setValue(value, forKey: key)
-                
+                NSArray(array: messages).setValue(true, forKey: "needsUpdate")
                 error = context.saveUpstreamIfNeeded()
             }
             
@@ -647,7 +646,7 @@ extension MailboxViewController: MailboxTableViewCellDelegate {
         if let indexPath = tableView.indexPathForCell(cell) {
             if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
                 message.isStarred = isStarred
-                
+                message.needsUpdate = true
                 if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
                     NSLog("\(__FUNCTION__) error: \(error)")
                 }

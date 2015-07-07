@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14D136" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14E46" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Attachment" representedClassName="ProtonMail.Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" syncable="YES">
             <userInfo>
@@ -169,6 +169,11 @@
                 <entry key="JSONKeyPath" value="ID"/>
             </userInfo>
         </attribute>
+        <attribute name="needsUpdate" attributeType="Boolean" defaultValueString="NO" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="needsUpdate"/>
+            </userInfo>
+        </attribute>
         <attribute name="passwordEncryptedBody" attributeType="String" syncable="YES"/>
         <attribute name="passwordHint" attributeType="String" syncable="YES"/>
         <attribute name="recipientList" attributeType="String" syncable="YES">
@@ -234,6 +239,6 @@
         <element name="Attachment" positionX="1989" positionY="-3666" width="128" height="165"/>
         <element name="Contact" positionX="2149" positionY="-3600" width="128" height="90"/>
         <element name="Label" positionX="1989" positionY="-3465" width="128" height="133"/>
-        <element name="Message" positionX="1771" positionY="-3870" width="128" height="540"/>
+        <element name="Message" positionX="1771" positionY="-3870" width="128" height="555"/>
     </elements>
 </model>

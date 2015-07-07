@@ -48,6 +48,7 @@ public class Message: NSManagedObject {
     @NSManaged var title: String
     @NSManaged var totalSize: NSNumber
     @NSManaged var latestUpdateType : NSNumber
+    @NSManaged var needsUpdate : Bool
     
     @NSManaged var attachments: NSSet
 }

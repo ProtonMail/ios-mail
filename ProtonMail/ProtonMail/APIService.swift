@@ -120,6 +120,10 @@ class APIService {
                     } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIService.AuthErrorCode.invalidGrant {
                         AuthCredential.clearFromKeychain()
                         self.fetchAuthCredential(completion: completion)
+                    } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIService.AuthErrorCode.localCacheBad {
+                        
+                        sharedUserDataService.signOut(false)
+                        
                     } else {
                         completion(authCredential, error)
                     }

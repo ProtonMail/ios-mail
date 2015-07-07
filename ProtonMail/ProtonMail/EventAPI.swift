@@ -91,6 +91,7 @@ public class MessageEvent {
         self.message =  event["Message"] as? Dictionary<String,AnyObject>
         self.ID =  event["ID"] as! String
         self.message?["ID"] = self.ID
+        self.message?["needsUpdate"] = false
     }
 }
 

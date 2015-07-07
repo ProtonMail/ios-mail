@@ -76,6 +76,7 @@ class MessageDetailViewController: ProtonMailViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         message.isRead = true
+        message.needsUpdate = true
         if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
             NSLog("\(__FUNCTION__) error: \(error)")
         }
@@ -102,6 +103,7 @@ class MessageDetailViewController: ProtonMailViewController {
         default:
             message.location = .trash
         }
+        message.needsUpdate = true
 
         if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
             NSLog("\(__FUNCTION__) error: \(error)")
@@ -112,7 +114,7 @@ class MessageDetailViewController: ProtonMailViewController {
     
     func spamButtonTapped() {
         message.location = .spam
-        
+        message.needsUpdate = true
         if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
             NSLog("\(__FUNCTION__) error: \(error)")
         }
@@ -138,7 +140,7 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
     
     func messageDetailView(messageDetailView: MessageDetailView, didTapMarkAsUnreadForMessage message: Message) {
         message.isRead = false
-        
+        message.needsUpdate = true
         if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
             NSLog("\(__FUNCTION__) error: \(error)")
         }
@@ -153,7 +155,7 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
         if message.location != .inbox {
             alertController.addAction(UIAlertAction(title: MessageLocation.inbox.description, style: .Default, handler: { (action) -> Void in
                 message.location = .inbox
-                
+                message.needsUpdate = true
                 if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
                     NSLog("\(__FUNCTION__) error: \(error)")
                 }
@@ -165,7 +167,7 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
         if message.location != .spam {
             alertController.addAction(UIAlertAction(title: MessageLocation.spam.description, style: .Default, handler: { (action) -> Void in
                 message.location = .spam
-                
+                message.needsUpdate = true
                 if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
                     NSLog("\(__FUNCTION__) error: \(error)")
                 }
@@ -177,7 +179,7 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
         if message.location != .trash {
             alertController.addAction(UIAlertAction(title: MessageLocation.trash.description, style: .Destructive, handler: { (action) -> Void in
                 message.location = .trash
-                
+                message.needsUpdate = true
                 if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
                     NSLog("\(__FUNCTION__) error: \(error)")
                 }
