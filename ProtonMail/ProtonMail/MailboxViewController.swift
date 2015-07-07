@@ -295,6 +295,7 @@ class MailboxViewController: ProtonMailViewController {
             default:
                 message.location = .trash
             }
+            message.needsUpdate = true
             
             if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
                 NSLog("\(__FUNCTION__) error: \(error)")
@@ -813,7 +814,15 @@ extension MailboxViewController: UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
-        let trashed: UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Trash") { (rowAction, indexPath) -> Void in
+        
+        var title : String = "Trash"
+        switch(mailboxLocation!) {
+        case .trash, .spam:
+            title = "Trash"
+        default:
+            title = "Delete"
+        }
+        let trashed: UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: title) { (rowAction, indexPath) -> Void in
             self.deleteMessageForIndexPath(indexPath)
         }
         

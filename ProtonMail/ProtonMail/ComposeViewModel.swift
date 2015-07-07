@@ -34,6 +34,9 @@ public class ComposeViewModel {
     var bccChanged : Bool = false;
     var titleChanged : Bool = false;
     var bodyChanged : Bool = false;
+    var userAddress : Array<Address>!
+
+        
     
     public init() { }
     
@@ -89,6 +92,8 @@ public class ComposeViewModelImpl : ComposeViewModel {
     init(msg: Message?, action : ComposeMessageAction!) {
         super.init()
         
+        userAddress = sharedUserDataService.userAddresses
+        
         if msg == nil || msg?.location == MessageLocation.draft {
              self.message = msg
         }
@@ -110,9 +115,48 @@ public class ComposeViewModelImpl : ComposeViewModel {
     private func updateContacts()
     {
         if message != nil {
-            self.toSelectedContacts = toContacts(self.message!.recipientList)
-            self.ccSelectedContacts = toContacts(self.message!.ccList)
-            self.bccSelectedContacts = toContacts(self.message!.bccList)
+            switch messageAction!
+            {
+            case .OpenDraft, .NewDraft, .Forward:
+                break;
+            case .Reply:
+                let sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.sender)
+                self.toSelectedContacts.append(sender)
+                break;
+            case .ReplyAll:
+                let sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.sender)
+                
+                if  !sender.isDuplicated(userAddress) {
+                    self.toSelectedContacts.append(sender)
+                }
+                
+                let toContacts = self.toContacts(self.message!.recipientList)
+                for cont in toContacts {
+                    if  !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
+                        self.toSelectedContacts.append(cont)
+                    }
+                }
+                
+                if self.toSelectedContacts.count <= 0 {
+                    self.toSelectedContacts.append(sender)
+                }
+                
+                let senderContacts = self.toContacts(self.message!.ccList)
+                for cont in senderContacts {
+                    if  !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
+                        self.ccSelectedContacts.append(cont)
+                    }
+                }
+                
+                break;
+            default:
+                break;
+            }
+
+            
+            
+            
+            //self.bccSelectedContacts = toContacts(self.message!.bccList)
         }
     }
     
@@ -167,7 +211,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override public func deleteDraft() {
-       // sharedMessageDataService.deleteDraft(self.message);
+        sharedMessageDataService.deleteDraft(self.message);
     }
     
     public override func markAsRead() {

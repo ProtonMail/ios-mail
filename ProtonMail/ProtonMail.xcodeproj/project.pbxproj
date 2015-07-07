@@ -430,7 +430,6 @@
 				071323801A7846150043DB41 /* UIViewExtension.swift */,
 				75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */,
 				75F9A1111AFD705B007229C7 /* UIDeviceExtension.swift */,
-				75B1794F1B377748006044D4 /* ContactVOExtension.swift */,
 				75B1794E1B3775E1006044D4 /* UI */,
 				75ECCDFB1B31EEFC00A8C800 /* APIService */,
 				75B1794D1B3775BA006044D4 /* General */,
@@ -787,6 +786,7 @@
 		75B1794D1B3775BA006044D4 /* General */ = {
 			isa = PBXGroup;
 			children = (
+				75B1794F1B377748006044D4 /* ContactVOExtension.swift */,
 				07A0E1AA1A9D2D1D005FD04B /* NSStringExtension.swift */,
 				70FC90D91A9BC11F00498B42 /* StringExtension.swift */,
 				75DF17A81AB8FAB8008A032B /* ArrayExtension.swift */,

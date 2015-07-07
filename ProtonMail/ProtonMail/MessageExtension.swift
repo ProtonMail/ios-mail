@@ -159,7 +159,7 @@ extension Message {
         let message = self
         let newMessage = Message(context: message.managedObjectContext!)
         
-        newMessage.location = message.location
+        newMessage.location = MessageLocation.draft
         newMessage.recipientList = message.recipientList
         newMessage.bccList = message.bccList
         newMessage.ccList = message.ccList
@@ -167,6 +167,8 @@ extension Message {
         newMessage.time = NSDate()
         newMessage.body = message.body
         newMessage.isEncrypted = message.isEncrypted
+        newMessage.sender = message.sender
+        newMessage.senderName = message.senderName
         //            if let attachments = message.attachments {
         //                for (index, attachment) in enumerate(attachments) {
         //                    if let image = attachment as? UIImage {
