@@ -74,9 +74,8 @@ class ComposeViewController : ProtonMailViewController {
         self.composeView.toContactPicker.reloadData()
         self.composeView.ccContactPicker.reloadData()
         self.composeView.bccContactPicker.reloadData()
-        self.composeView.toContactPicker.becomeFirstResponder()
         
-        
+                
         self.viewModel.markAsRead();
         
     }
@@ -91,6 +90,21 @@ class ComposeViewController : ProtonMailViewController {
             composeView.plusButtonHandle()
             composeView.notifyViewSize(true)
         }
+        
+        
+        
+        switch viewModel.messageAction!
+        {
+        case .Reply, .ReplyAll:
+            self.composeView.htmlEditor.focusTextEditor()
+            break
+        default:
+            self.composeView.toContactPicker.becomeFirstResponder()
+            break
+        }
+        
+        
+
     }
     
     override func viewWillAppear(animated: Bool) {
