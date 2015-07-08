@@ -21,13 +21,15 @@ public class MessageFetchRequest<T : ApiResponse> : ApiRequest<T> {
     }
 
     override func toDictionary() -> Dictionary<String, AnyObject>? {
-        var out : [String : AnyObject] = [
-            "Location" : self.location.rawValue,
-            "Sort" : "Time"]
-        
-        if(self.endTime != 0)
+        var out : [String : AnyObject] = ["Sort" : "Time"]
+        if self.location == MessageLocation.starred {
+            out["Starred"] = 1
+        } else {
+            out["Location"] = self.location.rawValue
+        }
+        if(self.endTime > 0)
         {
-            let newTime = self.endTime - 1
+            var newTime = self.endTime - 1
             out["End"] = newTime
         }
         

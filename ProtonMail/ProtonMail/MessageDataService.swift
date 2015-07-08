@@ -177,6 +177,7 @@ class MessageDataService {
                     let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
                     getLatestEventID.call() { task, response, hasError in
                         if response != nil && !hasError && !response!.eventID.isEmpty {
+                            lastUpdatedStore.clear();
                             lastUpdatedStore.lastEventID = response!.eventID
                             self.cleanMessage()
                             self.fetchMessagesForLocation(location, MessageID: "", Time: 0, completion: completion)
