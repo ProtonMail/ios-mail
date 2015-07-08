@@ -41,7 +41,7 @@ public class ComposeViewModel {
     public init() { }
     
     public func getSubject() -> String {
-        return self.message?.title ?? ""
+        return self.message?.subject ?? ""
     }
     
     internal func addToContacts(contacts: ContactVO! ) {
@@ -226,10 +226,6 @@ public class ComposeViewModelImpl : ComposeViewModel {
     override public func getHtmlBody() -> String {
         let signature = !sharedUserDataService.signature.isEmpty ? "\n\n\(sharedUserDataService.signature)" : ""
         let htmlString = "<div><br></div><div><br></div><div><br></div><div><br></div>\(signature)<div><br></div><div><br></div>";
-//        case ComposeMessageAction.Reply = 0
-//        case ComposeMessageAction.ReplyAll = 1
-//        case ComposeMessageAction.Forward = 2
-//        case ComposeMessageAction.OpenDraft = 4
         switch messageAction!
         {
         case .OpenDraft:
