@@ -72,7 +72,11 @@ extension String {
     }
     
     
+    /**
+    String extension formating the Json format contact for forwarding email.
     
+    :returns: String
+    */
     func formatJsonContact() -> String {
         var lists: [String] = []
         
@@ -80,10 +84,41 @@ extension String {
         for dict:[String : String] in recipients {
             let name = dict.getName()
             
-            lists.append(dict.getName() + "\"\(dict.getAddress())\"")
+            lists.append(dict.getName() + "&lt;\(dict.getAddress())&gt;")
         }
         return ",".join(lists)
     }
     
+    /**
+    String extension decode some encoded htme tags
+    
+    :returns: String
+    */
+    func decodeHtml() -> String {
+        var result = self.stringByReplacingOccurrencesOfString("&amp;", withString: "&", options: nil, range: nil)
+        result = result.stringByReplacingOccurrencesOfString("&quot;", withString: "\"", options: nil, range: nil)
+        result = result.stringByReplacingOccurrencesOfString("&#039;", withString: "'", options: nil, range: nil)
+        result = result.stringByReplacingOccurrencesOfString("&#39;", withString: "'", options: nil, range: nil)
+        result = result.stringByReplacingOccurrencesOfString("&lt;", withString: "<", options: nil, range: nil)
+        result = result.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
+        return result
+//        let encodedData = self.dataUsingEncoding(NSUTF8StringEncoding)!
+//        let attributedOptions : [String: AnyObject] = [
+//            NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
+//            NSCharacterEncodingDocumentAttribute: NSUTF8StringEncoding
+//        ]
+//        let attributedString = NSAttributedString(data: encodedData, options: attributedOptions, documentAttributes: nil, error: nil)!
+//        return attributedString.string
+    }
+    
+    func encodeHtml() -> String {
+        var result = self.stringByReplacingOccurrencesOfString("&", withString: "&amp;", options: nil, range: nil)
+        result = result.stringByReplacingOccurrencesOfString("\"", withString: "&quot;", options: nil, range: nil)
+        result = result.stringByReplacingOccurrencesOfString("'", withString: "&#039;", options: nil, range: nil)
+        result = result.stringByReplacingOccurrencesOfString("<", withString: "&lt;", options: nil, range: nil)
+        result = result.stringByReplacingOccurrencesOfString(">", withString: "&gt;", options: nil, range: nil)
+        return result
+        
+    }
 }
 

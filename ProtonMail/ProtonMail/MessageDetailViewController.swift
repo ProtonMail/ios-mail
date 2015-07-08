@@ -75,6 +75,7 @@ class MessageDetailViewController: ProtonMailViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        //TODO :: all the changes for message need check is the message deleted
         message.isRead = true
         message.needsUpdate = true
         if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {

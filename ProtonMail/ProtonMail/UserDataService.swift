@@ -66,7 +66,7 @@ class UserDataService {
     }
     
     var displayName: String {
-        return userInfo?.displayName ?? ""
+        return (userInfo?.displayName ?? "").decodeHtml()
     }
     
     var isMailboxPasswordStored: Bool {

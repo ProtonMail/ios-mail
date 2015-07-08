@@ -136,10 +136,10 @@ class SettingTableViewController: ProtonMailViewController {
             cell.LeftText.text = itme.description;
             switch itme {
             case SGItems.NotifyEmail:
-                cell.RightText.text = userInfo?.notificationEmail;
+                cell.RightText.text = userInfo?.notificationEmail
                 break;
             case SGItems.DisplayName:
-                cell.RightText.text = userInfo?.displayName;
+                cell.RightText.text = sharedUserDataService.displayName
                 break;
             case SGItems.Signature:
                 cell.RightText.text = userInfo?.signature;

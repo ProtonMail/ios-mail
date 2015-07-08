@@ -818,9 +818,9 @@ extension MailboxViewController: UITableViewDelegate {
         var title : String = "Trash"
         switch(mailboxLocation!) {
         case .trash, .spam:
-            title = "Trash"
-        default:
             title = "Delete"
+        default:
+            title = "Trash"
         }
         let trashed: UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: title) { (rowAction, indexPath) -> Void in
             self.deleteMessageForIndexPath(indexPath)

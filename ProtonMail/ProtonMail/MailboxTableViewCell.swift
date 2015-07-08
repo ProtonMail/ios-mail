@@ -88,7 +88,7 @@ class MailboxTableViewCell: UITableViewCell {
     // MARK: - Cell configuration
     
     func configureCell(message: Message) {
-        self.title.text = message.title
+        self.title.text = message.subject
         self.sender.text = message.sender
         self.time.text = message.time != nil ? NSDate.stringForDisplayFromDate(message.time) : ""
         self.encryptedImage.hidden = !message.checkIsEncrypted()
