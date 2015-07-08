@@ -247,12 +247,13 @@ public class ComposeViewModelImpl : ComposeViewModel {
             //composeView.subject.text = "Fwd: \(message.title)"
             
             let time = message!.time?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
-            var forwardHeader = "<br><br><br>---------- Forwarded message ----------<br>From: \(message!.senderName)<br>Date: \(time)<br>Subject: \(message!.title)"
+            var forwardHeader = "<br><br><br>---------- Forwarded message ----------<br>From: \(message!.senderName)<br>Date: \(time)<br>Subject: \(message!.title)<br>"
             if message!.recipientList != "" {
-                forwardHeader += "<br>To: \(message!.recipientList)<br>"
+                forwardHeader += "To: \(message!.recipientList.formatJsonContact())<br>"
             }
+            
             if message!.ccList != "" {
-                forwardHeader += "<br>To: \(message!.ccList)<br>"
+                forwardHeader += "CC: \(message!.ccList.formatJsonContact())<br>"
             }
             forwardHeader += "<br><br><br>"
             let body = message!.decryptBodyIfNeeded(nil) ?? ""

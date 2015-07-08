@@ -71,5 +71,19 @@ extension String {
         return  self.stringByReplacingOccurrencesOfString("\n", withString:  "<br>") 
     }
     
+    
+    
+    func formatJsonContact() -> String {
+        var lists: [String] = []
+        
+        let recipients : [[String : String]] = self.parseJson()!
+        for dict:[String : String] in recipients {
+            let name = dict.getName()
+            
+            lists.append(dict.getName() + "\"\(dict.getAddress())\"")
+        }
+        return ",".join(lists)
+    }
+    
 }
 

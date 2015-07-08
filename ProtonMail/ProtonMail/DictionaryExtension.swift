@@ -33,6 +33,13 @@ extension Dictionary { //email name
         return ""
     }
     
+    func getName() -> String {    //this function only for the To CC BCC list parsing
+        if let key = "Name" as? Key {
+            return self[key] as? String ?? ""
+        }
+        return ""
+    }
+    
     
     /**
     base class for convert anyobject to a json string
