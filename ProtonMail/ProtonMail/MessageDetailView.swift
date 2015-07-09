@@ -796,11 +796,14 @@ extension MessageDetailView: UITableViewDelegate {
         
         let attachment = attachmentForIndexPath(indexPath)
         
-        if !attachment.isDownloaded {
+        if !attachment.isDownloaded { //TODO need change also check is the file exist
             downloadAttachment(attachment, forIndexPath: indexPath)
         } else if let localURL = attachment.localURL {
             let cell = tableView.cellForRowAtIndexPath(indexPath)
-            openLocalURL(localURL, forCell: cell!)
+            
+            let data: NSData = NSData(base64EncodedString: attachment.keyPacket!, options: NSDataBase64DecodingOptions(rawValue: 0))!
+            
+            openLocalURL(localURL, keyPackage: data, fileName: attachment.fileName, forCell: cell!)
         }
     }
     
@@ -821,8 +824,24 @@ extension MessageDetailView: UITableViewDelegate {
         })
     }
     
-    private func openLocalURL(localURL: NSURL, forCell cell: UITableViewCell) {
-        let documentInteractionController = UIDocumentInteractionController(URL: localURL)
+    private func openLocalURL(localURL: NSURL, keyPackage:NSData, fileName:String, forCell cell: UITableViewCell) {
+        
+        let data : NSData = NSData(contentsOfURL: localURL)!
+        
+        let tempFile = NSFileManager.defaultManager().attachmentDirectory.URLByAppendingPathComponent(fileName);
+        
+
+         //   return sharedUserDataService.mailboxPassword ?? ""
+         //   return sharedUserDataService.userInfo?.privateKey ?? ""
+         //   return sharedUserDataService.userInfo?.publicKey ?? ""
+
+        
+        let decryptData = data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!, publicKey: sharedUserDataService.userInfo!.publicKey, privateKey: sharedUserDataService.userInfo!.privateKey, error: nil)
+        
+        
+        decryptData!.writeToURL(tempFile, atomically: true)
+        
+        let documentInteractionController = UIDocumentInteractionController(URL: tempFile)
         documentInteractionController.delegate = self
         
         if !documentInteractionController.presentOpenInMenuFromRect(cell.bounds, inView: cell, animated: true) {

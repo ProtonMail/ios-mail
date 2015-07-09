@@ -148,9 +148,9 @@ class APIService {
     
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
     internal func download(#path: String, destinationDirectoryURL: NSURL, downloadTask: ((NSURLSessionDownloadTask) -> Void)?, completion: ((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
-        AuthCredential.expireOrClear()
-        fetchAuthCredential() { _, error in
-            if error == nil {
+        //AuthCredential.expireOrClear()
+//        fetchAuthCredential() { _, error in
+//            if error == nil {
                 if let url = NSURL(string: path, relativeToURL: self.sessionManager.baseURL) {
                     var serializeError: NSError?
                     
@@ -159,8 +159,8 @@ class APIService {
                             request,
                             progress: nil,
                             destination: { (targetURL, response) -> NSURL! in
-                                let fileName = response.suggestedFilename!
-                                return destinationDirectoryURL.URLByAppendingPathComponent(fileName)
+                                //let fileName = response.suggestedFilename!
+                                return destinationDirectoryURL//.URLByAppendingPathComponent(fileName)
                             },
                             completionHandler: completion) {
                                 downloadTask?(sessionDownloadTask)
@@ -175,10 +175,10 @@ class APIService {
                     completion?(nil, nil, NSError.badPath(path))
                     return
                 }
-            } else {
-                completion?(nil, nil, error)
-            }
-        }
+//            } else {
+//                completion?(nil, nil, error)
+//            }
+//        }
     }
     
     internal func setApiVesion(apiVersion:Int, appVersion:Int)

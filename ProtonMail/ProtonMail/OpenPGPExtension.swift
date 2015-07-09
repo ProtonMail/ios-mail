@@ -204,12 +204,18 @@ extension NSData {
         return nil
     }
     
-    func getSymlPackage(passphrase: String, error: NSErrorPointer?) -> String? {
+    func decryptAttachment(keyPackage:NSData!, passphrase: String, publicKey: String, privateKey: String, error: NSErrorPointer?) -> NSData? {
         
         var anError: NSError?
-        //        if let encrypt = OpenPGP().decrypt_message_aes(self, pwd: passphrase, error: &anError) {
-        //            return encrypt
-        //        }
+        let openPGP = OpenPGP()
+        
+        if !openPGP.checkPassphrase(passphrase, forPrivateKey: privateKey, publicKey: publicKey, error: error) {
+            return nil
+        }
+        
+        if let encrypt = openPGP.decrypt_attachment(keyPackage, data: self, error: &anError) {
+            return encrypt
+        }
         
         if let error = error {
             error.memory = anError

@@ -11,6 +11,7 @@
 #import "CLSLogging.h"
 #import "CLSReport.h"
 #import "CLSStackFrame.h"
+#import "Answers.h"
 
 #define CLS_DEPRECATED(x)  __attribute__ ((deprecated(x)))
 
@@ -132,46 +133,11 @@ FAB_START_NONNULL
 
 
 
-/**
- * In Beta. Sign up at http://answers.io/labs to get on the list!
- *
- * @brief Log an event to be sent to Answers.
- * @param eventName The event name as it will be shown in the dashboard.
- * @discussion Example usage:
- * @code [CrashlyticsKit logEvent:@"Tweet Viewed"];
- *
- */
-- (void)logEvent:(NSString *)eventName;
 
-/**
- * In Beta. Sign up at http://answers.io/labs to get on the list!
- *
- * @brief Log an event to be sent to Answers, optionally providing a dictionary of attributes. Attribute keys
- *        must be <code>NSString</code> and and values must be <code>NSNumber</code> or <code>NSString</code>.
- * @param eventName  The event name as it will be shown in the dashboard.
- * @param attributes An NSDictionary with keys of type <code>NSString</code>, and values of type <code>NSNumber</code>
- *                   or <code>NSString</code>. There may be at most 20 attributes for a particular event.
- * @discussion How we treat <code>NSNumber</code>:
- *             We will provide information about the distribution of values over time.
- *
- *             How we treat <code>NSStrings</code>:
- *             NSStrings are used as categorical data, allowing comparison across different category values.
- *             Strings are limited to a maximum length of 100 characters, attributes over this length will be
- *             truncated.
- *
- *             When tracking the Tweet views to better understand user engagement, sending the tweet's length
- *             and the type of media present in the tweet allows you to track how tweet length and the type of media influence
- *             engagement.
- *             Example usage:
- * @code [CrashlyticsKit logEvent:@"Tweet Viewed" attributes:@{
- *       @"Media Type": @"Image",
- *       @"Length": @120
- * }];
- */
-- (void)logEvent:(NSString *)eventName attributes:(NSDictionary * FAB_NULLABLE) attributes;
-
-+ (void)logEvent:(NSString *)eventName CLS_DEPRECATED("Please refer to -logEvent:");
-+ (void)logEvent:(NSString *)eventName attributes:(NSDictionary * FAB_NULLABLE) attributes CLS_DEPRECATED("Please refer to -logEvent:attributes:");
+- (void)logEvent:(NSString *)eventName CLS_DEPRECATED("Please refer to Answers +logCustomEventWithName:");
+- (void)logEvent:(NSString *)eventName attributes:(NSDictionary * FAB_NULLABLE) attributes CLS_DEPRECATED("Please refer to Answers +logCustomEventWithName:");
++ (void)logEvent:(NSString *)eventName CLS_DEPRECATED("Please refer to Answers +logCustomEventWithName:");
++ (void)logEvent:(NSString *)eventName attributes:(NSDictionary * FAB_NULLABLE) attributes CLS_DEPRECATED("Please refer to Answers +logCustomEventWithName:");
 @end
 
 /**

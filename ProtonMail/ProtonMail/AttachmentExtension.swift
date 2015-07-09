@@ -84,6 +84,13 @@ extension Attachment {
 //        key?.getSessionKeyPackage(publicKey, error: nil)
 //        
 //    }
+    
+//    func decryptAttachment(keyPackage:NSData!, error: NSErrorPointer?) -> NSData? {
+//    
+//        self.keyPacket
+//    
+//        return nil
+//    }
 
 }
 

@@ -923,6 +923,7 @@
 		075E3DDE1A5F4ECF00E001A7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = ArcTouch;
 				TargetAttributes = {
