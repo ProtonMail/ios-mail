@@ -11,8 +11,9 @@
 //
 
 import UIKit
+import QuickLook
 
-class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
+class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
     
     var delegate: MessageDetailViewDelegate?
     var message: Message
@@ -21,6 +22,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol {
     private var isViewingMoreOptions: Bool = false
     private var receipientlist : String = "";
     private var ccList : String = "";
+    private var tempFileUri : NSURL?
     
     // MARK: - Private constants
     
@@ -793,17 +795,23 @@ extension MessageDetailView: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        
         let attachment = attachmentForIndexPath(indexPath)
-        
-        if !attachment.isDownloaded { //TODO need change also check is the file exist
+        if !attachment.isDownloaded {
             downloadAttachment(attachment, forIndexPath: indexPath)
         } else if let localURL = attachment.localURL {
-            let cell = tableView.cellForRowAtIndexPath(indexPath)
-            
-            let data: NSData = NSData(base64EncodedString: attachment.keyPacket!, options: NSDataBase64DecodingOptions(rawValue: 0))!
-            
-            openLocalURL(localURL, keyPackage: data, fileName: attachment.fileName, forCell: cell!)
+            if NSFileManager.defaultManager().fileExistsAtPath(attachment.localURL!.path!, isDirectory: nil) {
+                let cell = tableView.cellForRowAtIndexPath(indexPath)
+                let data: NSData = NSData(base64EncodedString: attachment.keyPacket!, options: NSDataBase64DecodingOptions(rawValue: 0))!
+                openLocalURL(localURL, keyPackage: data, fileName: attachment.fileName, forCell: cell!)
+            } else {
+                attachment.localURL = nil
+                let error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
+                if error != nil  {
+                    NSLog("\(__FUNCTION__) error: \(error)")
+                }
+
+                downloadAttachment(attachment, forIndexPath: indexPath)
+            }
         }
     }
     
@@ -819,6 +827,13 @@ extension MessageDetailView: UITableViewDelegate {
                 if let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? AttachmentTableViewCell {
                     UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
                         cell.progressView.hidden = true
+                        if let localURL = attachment.localURL {
+                            if NSFileManager.defaultManager().fileExistsAtPath(attachment.localURL!.path!, isDirectory: nil) {
+                                let cell = self.tableView.cellForRowAtIndexPath(indexPath)
+                                let data: NSData = NSData(base64EncodedString: attachment.keyPacket!, options: NSDataBase64DecodingOptions(rawValue: 0))!
+                                self.openLocalURL(localURL, keyPackage: data, fileName: attachment.fileName, forCell: cell!)
+                            }
+                        }
                     })
                 }
         })
@@ -826,32 +841,47 @@ extension MessageDetailView: UITableViewDelegate {
     
     private func openLocalURL(localURL: NSURL, keyPackage:NSData, fileName:String, forCell cell: UITableViewCell) {
         
-        let data : NSData = NSData(contentsOfURL: localURL)!
-        
-        let tempFile = NSFileManager.defaultManager().attachmentDirectory.URLByAppendingPathComponent(fileName);
-        
-
-         //   return sharedUserDataService.mailboxPassword ?? ""
-         //   return sharedUserDataService.userInfo?.privateKey ?? ""
-         //   return sharedUserDataService.userInfo?.publicKey ?? ""
-
-        
-        let decryptData = data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!, publicKey: sharedUserDataService.userInfo!.publicKey, privateKey: sharedUserDataService.userInfo!.privateKey, error: nil)
-        
-        
-        decryptData!.writeToURL(tempFile, atomically: true)
-        
-        let documentInteractionController = UIDocumentInteractionController(URL: tempFile)
-        documentInteractionController.delegate = self
-        
-        if !documentInteractionController.presentOpenInMenuFromRect(cell.bounds, inView: cell, animated: true) {
-            let alert = UIAlertController(title: NSLocalizedString("Unsupported file type"), message: NSLocalizedString("There are no installed apps that can open this file type."), preferredStyle: .Alert)
-            alert.addAction((UIAlertAction.okAction()))
+        if let data : NSData = NSData(contentsOfURL: localURL) {
+            tempFileUri = NSFileManager.defaultManager().attachmentDirectory.URLByAppendingPathComponent(fileName);
             
+            
+            //   return sharedUserDataService.mailboxPassword ?? ""
+            //   return sharedUserDataService.userInfo?.privateKey ?? ""
+            //   return sharedUserDataService.userInfo?.publicKey ?? ""
+            
+            
+            let decryptData = data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!, publicKey: sharedUserDataService.userInfo!.publicKey, privateKey: sharedUserDataService.userInfo!.privateKey, error: nil)
+            
+            
+            decryptData!.writeToURL(tempFileUri!, atomically: true)
+            
+            let previewQL = QLPreviewController()
+            previewQL.dataSource = self
             if let viewController = delegate as? MessageDetailViewController {
-                viewController.presentViewController(alert, animated: true, completion: nil)
+                viewController.presentViewController(previewQL, animated: true, completion: nil)
             }
+            
+            
+            //previewQL.currentPreviewItemIndex = indexPath.row
+            // viewController.navigationController?.pushViewController(previewQL, animated: true) //4
+            
+            //        let documentInteractionController = UIDocumentInteractionController(URL: tempFile)
+            //        documentInteractionController.delegate = self
+            //
+            //        if !documentInteractionController.presentOpenInMenuFromRect(cell.bounds, inView: cell, animated: true) {
+            //            let alert = UIAlertController(title: NSLocalizedString("Unsupported file type"), message: NSLocalizedString("There are no installed apps that can open this file type."), preferredStyle: .Alert)
+            //            alert.addAction((UIAlertAction.okAction()))
+            //
+            //            if let viewController = delegate as? MessageDetailViewController {
+            //                viewController.presentViewController(alert, animated: true, completion: nil)
+            //            }
+            //        }
         }
+        else{
+            
+        }
+        
+       
     }
 }
 
@@ -861,6 +891,20 @@ extension MessageDetailView: UITableViewDelegate {
 extension MessageDetailView: UIDocumentInteractionControllerDelegate {
 }
 
+
+extension MessageDetailView : QLPreviewControllerDataSource {
+    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController!) -> Int {
+        return 1
+    }
+    
+    func previewController(controller: QLPreviewController!, previewItemAtIndex index: Int) -> QLPreviewItem! {
+        let fileURL : NSURL
+//        if let filePath = urlList[index].lastPathComponent {
+//            fileURL = NSBundle.mainBundle().URLForResource(filePath, withExtension:nil)
+//        }
+        return tempFileUri // 6
+    }
+}
 
 // MARK: - UIWebViewDelegate
 
