@@ -31,13 +31,15 @@ class MailboxTableViewCell: UITableViewCell {
     @IBOutlet weak var encryptedImage: UIImageView!
     @IBOutlet weak var attachImage: UIImageView!
     @IBOutlet weak var checkboxButton: UIButton!
+    @IBOutlet weak var replyImage: UIImageView!
     
     
     // MARK: - Constraint Outlets
     
     @IBOutlet weak var checkboxWidth: NSLayoutConstraint!
     @IBOutlet var titleLeadingConstraint: NSLayoutConstraint!
-    
+    @IBOutlet weak var replyWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var titleHorSpaceConstraint: NSLayoutConstraint!
     
     // MARK: - Private constants
     
@@ -46,6 +48,7 @@ class MailboxTableViewCell: UITableViewCell {
     private let kCheckboxUncheckedImage: UIImage = UIImage(named: "unchecked")!
     private let kCheckboxCheckedImage: UIImage = UIImage(named: "checked")!
     private let kTitleMarginLeft: CGFloat = 16.0
+    private let kReplyImageWidth : CGFloat = 27.0
     
     
     // MARK: - Private attributes
@@ -101,6 +104,48 @@ class MailboxTableViewCell: UITableViewCell {
             changeStyleToReadDesign()
         } else {
             changeStyleToUnreadDesign()
+        }
+        
+        
+        if  message.isRepliedAll {
+            showReplyAll()
+        }
+        else if message.isReplied {
+            showReply()
+        }
+        else {
+            hideReply()
+        }
+    }
+    
+    func showReply() {
+        self.replyWidthConstraint.constant = 20
+        self.titleHorSpaceConstraint.constant = 6
+        self.replyImage.image = UIImage(named: "reply")
+        self.setNeedsUpdateConstraints()
+    }
+    
+    func showReplyAll() {
+        self.replyWidthConstraint.constant = 20
+        self.titleHorSpaceConstraint.constant = 6
+        self.replyImage.image = UIImage(named: "replyall")
+        self.setNeedsUpdateConstraints()
+    }
+    
+    func hideReply() {
+        self.replyWidthConstraint.constant = 0.0
+        self.titleHorSpaceConstraint.constant = 0.0
+        self.setNeedsUpdateConstraints()
+    }
+    
+    func showImage(isShow: Bool){
+        if isShow {
+            self.titleLeadingConstraint.constant = kReplyImageWidth
+            self.replyImage.hidden = false
+        }
+        else {
+            self.titleLeadingConstraint.constant = 0
+            self.replyImage.hidden = true
         }
     }
     
