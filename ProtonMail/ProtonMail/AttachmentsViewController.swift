@@ -15,11 +15,12 @@
 //
 
 import Foundation
+import AssetsLibrary
 
 protocol AttachmentsViewControllerDelegate {
     func attachmentsViewController(attachmentsViewController: AttachmentsViewController, didFinishPickingAttachments: [AnyObject]) -> Void
     
-    func attachmentsViewController(attachmentsViewController: AttachmentsViewController, didPickedAttachment: UIImage) -> Void
+    func attachmentsViewController(attachmentsViewController: AttachmentsViewController, didPickedAttachment: UIImage, fileName:String, type:String) -> Void
 }
 
 
@@ -135,13 +136,41 @@ class AttachmentsViewController: UICollectionViewController {
 
 // MARK: - UIImagePickerControllerDelegate
 extension AttachmentsViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
-        //let img_jpg = UIImage(data:UIImageJPEGRepresentation(image, 1.0))!
-        attachments.append(image)
-        delegate?.attachmentsViewController(self, didPickedAttachment: image)
-        //delegate?.attachmentsViewController(self, didFinishPickingAttachments: attachments)
-        picker.dismissViewControllerAnimated(true, completion: nil)
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+        
+        let tempImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        let type = info[UIImagePickerControllerMediaType] as! String
+        let url = info[UIImagePickerControllerReferenceURL] as! NSURL
+        let img_jpg = UIImage(data:UIImageJPEGRepresentation(tempImage, 1.0))!
+        
+        let library = ALAssetsLibrary()
+        library.assetForURL(url, resultBlock:
+            { (asset: ALAsset!) -> Void in
+                var fileName = asset.defaultRepresentation().filename()
+                let mimeType = asset.defaultRepresentation().UTI()
+                self.attachments.append(img_jpg)
+                self.delegate?.attachmentsViewController(self, didPickedAttachment: img_jpg, fileName: fileName, type: mimeType)
+                picker.dismissViewControllerAnimated(true, completion: nil)
+                
+                
+            })  { (error:NSError!) -> Void in
+                var fileName = "default.jpg"
+                let mimeType = "image/jpg"
+                self.attachments.append(img_jpg)
+                self.delegate?.attachmentsViewController(self, didPickedAttachment: img_jpg, fileName: fileName, type: mimeType)
+                picker.dismissViewControllerAnimated(true, completion: nil)
+        }
     }
+    
+    
+//    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+//        //let img_jpg = UIImage(data:UIImageJPEGRepresentation(image, 1.0))!
+//        attachments.append(image)
+//        delegate?.attachmentsViewController(self, didPickedAttachment: image)
+//        //delegate?.attachmentsViewController(self, didFinishPickingAttachments: attachments)
+//        picker.dismissViewControllerAnimated(true, completion: nil)
+//    }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         picker.dismissViewControllerAnimated(true, completion: nil)

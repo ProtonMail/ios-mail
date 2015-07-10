@@ -92,13 +92,14 @@ extension APIService {
             if let base64Emails = emails.base64Encoded() {
                 let path = UserPath.base.stringByAppendingPathComponent("pubkeys").stringByAppendingPathComponent(base64Emails)
                 
+                setApiVesion(2, appVersion: 1)
                 request(method: .GET, path: path, parameters: nil, completion: { task, response, error in
                     var error = error
                     var response = response
                     
                     if (self.isErrorResponse(response) != nil) {
-                        let errorCode = (response!["code"] as! Int) ?? 0
-                        let description = (response!["error"] as! NSDictionary).description ?? NSLocalizedString("Unknown error")
+                        let errorCode = (response!["Code"] as! Int) ?? 0
+                        let description = (response!["Error"] as! NSDictionary).description ?? NSLocalizedString("Unknown error")
                         error = NSError.protonMailError(code: errorCode, localizedDescription: description)
                     }
                     

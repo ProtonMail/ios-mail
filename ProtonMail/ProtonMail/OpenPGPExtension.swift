@@ -139,10 +139,10 @@ extension String {
 
 extension NSData {
     
-    func encryptWithPublicKey(publicKey: String, error: NSErrorPointer?) -> NSMutableDictionary? {
+    func encryptWithPublicKey(publicKey: String, fileName:String, error: NSErrorPointer?) -> NSMutableDictionary? {
         
         var anError: NSError?
-        if let encrypt = OpenPGP().encrypt_attachment(self, pub_key: publicKey, error: &anError) {
+        if let encrypt = OpenPGP().encrypt_attachment(self, fileNam: fileName, pub_key: publicKey, error: &anError) {
             return encrypt
         }
         
@@ -153,11 +153,11 @@ extension NSData {
         return nil
     }
     
-    func encryptWithPublicKeys(publicKeys: NSMutableDictionary, error: NSErrorPointer?) -> NSMutableDictionary? {
+    func encryptWithPublicKeys(publicKeys: NSMutableDictionary, fileName:String, error: NSErrorPointer?) -> NSMutableDictionary? {
         
         var anError: NSError?
 
-        if let encrypt = OpenPGP().encrypt_attachments(self, pub_keys: publicKeys, error: &anError) {
+        if let encrypt = OpenPGP().encrypt_attachments(self,fileNam:fileName,  pub_keys: publicKeys, error: &anError) {
             return encrypt
         }
         

@@ -45,8 +45,8 @@
 - (NSString* ) decrypt_mailbox_pwd:(NSString *)encrypt_text slat:(NSString*) value;
 
 //encrypt decrypt attachment
-- (NSMutableDictionary*) encrypt_attachment:(NSData *) unencrypt_att pub_key:(NSString *)pub_key error:(NSError**) err;
-- (NSMutableDictionary*) encrypt_attachments:(NSData *) unencrypt_att pub_keys:(NSMutableDictionary*)pub_keys error:(NSError**) err;
+- (NSMutableDictionary*) encrypt_attachment:(NSData *) unencrypt_att fileNam:(NSString*)name pub_key:(NSString *)pub_key error:(NSError**) err;
+- (NSMutableDictionary*) encrypt_attachments:(NSData *) unencrypt_att fileNam:(NSString*)name pub_keys:(NSMutableDictionary*)pub_keys error:(NSError**) err;
 
 //
 - (NSData*) getNewPublicKeyPackage:(NSData *) sessionKey pub_key:(NSString *)pub_key error:(NSError**) err;
@@ -60,6 +60,9 @@
 - (NSData *) decrypt_attachment:(NSData*) keyPackage data:(NSData*) dataPackage error:(NSError**) err;
 //armored attachment packages
 - (NSData *) decrypt_attachment_armored:(NSString*) keyPackage data:(NSString*) dataPackage error:(NSError**) err;
+
+//binary attachment
+- (NSData *) decrypt_message_aes:(NSData*) keyPackage data:(NSData*) dataPackage pwd:(NSString *)password error:(NSError**) err;
 
 // print debug logs
 - (void)EnableDebug:(BOOL) isDebug;

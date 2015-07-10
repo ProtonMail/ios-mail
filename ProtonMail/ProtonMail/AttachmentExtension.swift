@@ -59,7 +59,7 @@ extension Attachment {
     // Mark : public functions
     
     func encryptAttachment(error: NSErrorPointer?) -> NSMutableDictionary? {
-        let out = fileData?.encryptWithPublicKeys(["self" : publicKey], error: error)
+        let out = fileData?.encryptWithPublicKeys(["self" : publicKey], fileName: self.fileName, error: error)
         if out == nil {
             return nil
         }
@@ -102,12 +102,12 @@ extension Attachment {
 }
 
 extension UIImage {
-    func toAttachment (message:Message) -> Attachment? {
+    func toAttachment (message:Message, fileName : String, type:String) -> Attachment? {
         if let fileData = UIImageJPEGRepresentation(self, 0) {
             let attachment = Attachment(context: message.managedObjectContext!)
             attachment.attachmentID = "0"
             attachment.message = message
-            attachment.fileName = "test.jpg"
+            attachment.fileName = fileName
             attachment.mimeType = "image/jpg"
             attachment.fileData = fileData
             attachment.fileSize = fileData.length

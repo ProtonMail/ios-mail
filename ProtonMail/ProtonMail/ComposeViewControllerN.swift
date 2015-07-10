@@ -445,9 +445,9 @@ extension ComposeViewController: AttachmentsViewControllerDelegate {
         //sharedMessageDataService.uploadAttachment()
     }
     
-    func attachmentsViewController(attachmentsViewController: AttachmentsViewController, didPickedAttachment: UIImage) -> Void {
+    func attachmentsViewController(attachmentsViewController: AttachmentsViewController, didPickedAttachment: UIImage, fileName:String, type:String) -> Void {
         self.collectDraft()
-        let attachment = didPickedAttachment.toAttachment(self.viewModel.message!)
+        let attachment = didPickedAttachment.toAttachment(self.viewModel.message!, fileName: fileName, type: type)
         self.viewModel.uploadAtt(attachment)
         
     }

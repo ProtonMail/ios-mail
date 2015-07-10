@@ -281,11 +281,13 @@ public class AttachmentKeyPackage : Package {
     
     public func toDictionary() -> Dictionary<String,AnyObject>? {
         var out = [
-            "ID" : self.ID,
-            "KeyPackets" : self.keyPacket]
+            "ID" : self.ID]
         
         if !self.algo.isEmpty {
             out["Algo"] = self.algo
+            out["Key"] = self.keyPacket
+        } else {
+            out["KeyPackets"] = self.keyPacket
         }
         
         return out
