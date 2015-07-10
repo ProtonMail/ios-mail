@@ -87,6 +87,7 @@ extension APIService {
                 completion?(nil, NSError.unableToParseResponse(response))
             }
         }
+        setApiVesion(2, appVersion: 1)
         request(method: .POST, path: path, parameters: parameters, authenticated: false, completion: completionWrapper)
     }
     

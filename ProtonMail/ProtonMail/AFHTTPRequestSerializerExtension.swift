@@ -24,7 +24,7 @@ extension AFHTTPRequestSerializer {
     }
     
     func setVersionHeader (apiVersion: Int, appVersion:Int) {
-        setValue("application/vnd.protonmail.api+json;apiversion=\(apiVersion);appversion=\(appVersion)", forHTTPHeaderField: "Accept")
+        //setValue("application/vnd.protonmail.api+json;apiversion=\(apiVersion);appversion=\(appVersion)", forHTTPHeaderField: "Accept")
         setValue("iOS_0.4.1", forHTTPHeaderField: "x-pm-appversion")//TODO :: need chagne to get from build info
         setValue("1", forHTTPHeaderField: "x-pm-apiversion")
     }

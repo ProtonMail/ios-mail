@@ -80,7 +80,7 @@ extension Message {
     
     /// TODO should not do decode every time. should move this into data model part when receive data from API.
     var subject : String {
-        return title.decodeHtml()
+        return title //.decodeHtml()
     }
     
     // MARK: - Public methods
