@@ -181,7 +181,11 @@ class ComposeViewController : ProtonMailViewController {
             cc: self.composeView.ccContactPicker.contactsSelected as! [ContactVO],
             bcc: self.composeView.bccContactPicker.contactsSelected as! [ContactVO],
             title: self.composeView.subject.text,
-            body: self.composeView.htmlEditor.getHTML())
+            body: self.composeView.htmlEditor.getHTML(),
+            expir: self.composeView.expirationTimeInterval,
+            pwd:self.encryptionPassword,
+            pwdHit:self.encryptionPasswordHint
+        )
     }
     
     @IBAction func sendClicked(sender: AnyObject) {

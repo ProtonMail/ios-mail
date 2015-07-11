@@ -706,8 +706,12 @@ class MessageDataService {
                 
                 if isOutsideUser {
                     if encrptOutside {
+                        
+                        let encryptedBody = body.encryptWithPassphrase(message.password, error: &error)
                         //create outside encrypt packet
-                        var pack = MessagePackage(address: key, type: 2,  body: "", token: "", encToken: "", passwordHint: "")
+                        let token = String.randomString(32)
+                        let encryptedToken = token.encryptWithPassphrase(message.password, error: &error)
+                        var pack = MessagePackage(address: key, type: 2,  body: encryptedBody, token: token.encodeBase64(), encToken: encryptedToken, passwordHint: message.passwordHint)
                         out.append(pack)
                         
                         // encrypt keys use pwd .
@@ -914,7 +918,7 @@ class MessageDataService {
                             return
                         }
                         
-                        let isEncryptOutside = !message.passwordEncryptedBody.isEmpty
+                        let isEncryptOutside = !message.password.isEmpty
                         
                         let attachments = self.attachmentsForMessage(message)
                         

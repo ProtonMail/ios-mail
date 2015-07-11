@@ -37,6 +37,7 @@ public class Message: NSManagedObject {
     @NSManaged var locationNumber: NSNumber
     @NSManaged var messageID: String
     @NSManaged var passwordEncryptedBody: String
+    @NSManaged var password: String
     @NSManaged var passwordHint: String
     @NSManaged var recipientList: String
     @NSManaged var recipientNameList: String

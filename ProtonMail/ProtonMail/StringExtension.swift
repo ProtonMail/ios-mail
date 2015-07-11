@@ -120,5 +120,31 @@ extension String {
         return result
         
     }
+    
+    static func randomString(len:Int) -> String {
+        let charSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        var c = Array(charSet)
+        var s:String = ""
+        for n in (1...10) {
+            s.append(c[Int(arc4random()) % c.count])
+        }
+        return s
+    }
+    
+    func encodeBase64() -> String {
+        
+        //let utf8str: NSData = self.dataUsingEncoding(NSUTF8StringEncoding)
+        let utf8str = self.dataUsingEncoding(NSUTF8StringEncoding)
+        
+        //let base64Encoded:NSString = utf8str.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.fromRaw(0)!)
+        let base64Encoded = utf8str!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+        
+        return base64Encoded
+//        let data: NSData = NSData(base64EncodedString: base64Encoded, options: NSDataBase64DecodingOptions.fromRaw(0)!)
+//        let data = NSData(base64EncodedString: base64Encoded, options: NSDataBase64DecodingOptions.fromRaw(0)!)
+//        
+//        let base64Decoded: NSString = NSString(data: data, encoding: NSUTF8StringEncoding)
+//        let base64Decoded = NSString(data: data, encoding: NSUTF8StringEncoding)
+    }
 }
 

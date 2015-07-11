@@ -82,7 +82,7 @@ public class ComposeViewModel {
         return ""
     }
     
-    func collectDraft(to: [ContactVO], cc:[ContactVO], bcc: [ContactVO], title:String, body:String ) -> Void {
+    func collectDraft(to: [ContactVO], cc:[ContactVO], bcc: [ContactVO], title:String, body:String, expir:NSTimeInterval, pwd:String, pwdHit:String) -> Void {
          NSException(name:"name", reason:"reason", userInfo:nil).raise()
     }
 }
@@ -175,7 +175,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
 //        }
     }
     
-    override func collectDraft(to: [ContactVO], cc: [ContactVO], bcc: [ContactVO], title: String, body: String) {
+    override func collectDraft(to: [ContactVO], cc: [ContactVO], bcc: [ContactVO], title: String, body: String, expir:NSTimeInterval, pwd:String, pwdHit:String) {
         
         self.toSelectedContacts = to
         self.ccSelectedContacts = cc
@@ -199,6 +199,8 @@ public class ComposeViewModelImpl : ComposeViewModel {
             self.message?.bccList = toJsonString(self.bccSelectedContacts)
             self.message?.title = title
             self.message?.time = NSDate()
+            self.message?.password = pwd
+            self.message?.passwordHint = pwdHit
             MessageHelper.updateMessage(self.message!, expirationTimeInterval: 0, body: body, attachments: nil)
             if let error = message!.managedObjectContext?.saveUpstreamIfNeeded() {
                 NSLog("\(__FUNCTION__) error: \(error)")
