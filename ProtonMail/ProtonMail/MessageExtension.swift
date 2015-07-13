@@ -122,7 +122,6 @@ extension Message {
     
     func decryptBodyIfNeeded(error: NSErrorPointer?) -> String? {
         
-        
         if !checkIsEncrypted() {
             return body
         } else {

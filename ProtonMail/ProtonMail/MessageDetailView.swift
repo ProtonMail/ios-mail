@@ -181,8 +181,6 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
             if self.message.isDetailDownloaded {
                 var error: NSError?
                 bodyText = self.message.decryptBodyIfNeeded(&error) ?? NSLocalizedString("Unable to decrypt message.")
-                            println(bodyText)
-
                 if let error = error {
                     self.delegate?.messageDetailView(self, didFailDecodeWithError: error)
                 }
