@@ -255,20 +255,19 @@ class UserDataService {
     
     
     func updateUserDomiansOrder(email_domains: Array<Address>, completion: CompletionBlock) {
-        sharedAPIService.settingUpdateDomainOrder([email_domains[0].address_id, email_domains[1].address_id], completion: { task, responseDict, anError in
-            var error = anError
-            if error == nil {
+        
+        let domainSetting = UpdateDomainOrder<ApiResponse>(adds: email_domains)
+        domainSetting.call() { task, response, hasError in
+            if !hasError {
                 if let userInfo = self.userInfo {
                     let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:email_domains)
                     
                     self.userInfo = userInfo
                 }
             }
-            completion(task: task, response: responseDict, error: error)
-        })
-
+            completion(task: task, response: nil, error: nil)
+        }
     }
-    
 
     func updateNotificationEmail(newNotificationEmail: String, completion: UserInfoBlock?) {
         sharedAPIService.settingUpdateNotificationEmail(newNotificationEmail, completion: completionForUserInfo(completion))

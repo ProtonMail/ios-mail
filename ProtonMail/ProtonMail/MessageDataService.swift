@@ -109,7 +109,7 @@ class MessageDataService {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 // TODO :: need abstract the respons error checking
                 if let messagesArray = responseDict?["Messages"] as? [Dictionary<String,AnyObject>] {
-                    let context = sharedCoreDataService.newManagedObjectContext()
+                    let context = sharedCoreDataService.newMainManagedObjectContext()
                     context.performBlockAndWait() {
                         var error: NSError?
                         var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
@@ -224,7 +224,7 @@ class MessageDataService {
         
         // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
         dispatch_sync(self.incrementalUpdateQueue) {
-            let context = sharedCoreDataService.newManagedObjectContext()
+            let context = sharedCoreDataService.newMainManagedObjectContext()
             
             context.performBlockAndWait { () -> Void in
                 var error: NSError?
@@ -434,9 +434,9 @@ class MessageDataService {
         if !message.isDetailDownloaded {
             queue {
                 let completionWrapper: CompletionBlock = { task, response, error in
-                    let context = sharedCoreDataService.newManagedObjectContext()
+                    let context = sharedCoreDataService.newMainManagedObjectContext()
                     
-                    context.performBlock() {
+                    context.performBlockAndWait() {
                         var error: NSError?
                         
                         if response != nil {
@@ -711,7 +711,27 @@ class MessageDataService {
                         //create outside encrypt packet
                         let token = String.randomString(32)
                         let encryptedToken = token.encryptWithPassphrase(message.password, error: &error)
-                        var pack = MessagePackage(address: key, type: 2,  body: encryptedBody, token: token.encodeBase64(), encToken: encryptedToken, passwordHint: message.passwordHint)
+                        
+                        
+                        // encrypt keys use public key
+                        var attPack : [AttachmentKeyPackage] = []
+                        for att in tempAtts {
+                            //attID:String!, attKey:String!, Algo : String! = ""
+                            
+//                            let keyAol : NSData = NSData(bytes: [0x09] as [UInt8], length: 1)
+//                            var newKeydata = NSMutableData()
+//                            newKeydata.appendData(keyAol)
+//                            newKeydata.appendData(att.Key)
+//                            
+//                            let sessionKey : NSData = newKeydata.copy() as! NSData
+//                            
+//                            
+                            let newKeyPack = att.Key.getSymmetricSessionKeyPackage(message.password, error: nil)?.base64EncodedStringWithOptions(nil)
+                            let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack)
+                            attPack.append(attPacket)
+                        }
+                        
+                        var pack = MessagePackage(address: key, type: 2,  body: encryptedBody, attPackets:attPack, token: token.encodeBase64(), encToken: encryptedToken, passwordHint: message.passwordHint)
                         out.append(pack)
                         
                         // encrypt keys use pwd .
@@ -726,7 +746,7 @@ class MessageDataService {
                     var attPack : [AttachmentKeyPackage] = []
                     for att in tempAtts {
                         //attID:String!, attKey:String!, Algo : String! = ""
-                        let newKeyPack = att.Key.getSessionKeyPackage(publicKey, error: nil)?.base64EncodedStringWithOptions(nil)
+                        let newKeyPack = att.Key.getPublicSessionKeyPackage(publicKey, error: nil)?.base64EncodedStringWithOptions(nil)
                         let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack)
                         attPack.append(attPacket)
                     }

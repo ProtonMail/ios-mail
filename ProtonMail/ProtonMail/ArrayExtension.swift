@@ -15,3 +15,15 @@ extension Array {
     }
 }
 
+
+
+extension Array {
+    func getAddressOrder () -> Array<String> {
+     
+        let ids = self.map { ($0 as! Address).address_id }
+
+        return ids;
+    }
+    
+}
+

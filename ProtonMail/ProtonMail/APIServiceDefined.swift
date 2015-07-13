@@ -31,6 +31,18 @@ public struct MessageAPI {
     
 }
 
+public struct SettingsAPI {
+    /// base message api path
+    static let Path :String       = "/settings"
+    
+    
+    /// fetch message request version
+    static let V_SettingsUpdateDomainRequest : Int      = 1
+    
+
+    
+}
+
 
 public struct EventAPI {
     /// base message api path

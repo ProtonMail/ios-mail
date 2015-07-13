@@ -60,6 +60,7 @@
 - (NSData *) decrypt_attachment:(NSData*) keyPackage data:(NSData*) dataPackage error:(NSError**) err;
 //armored attachment packages
 - (NSData *) decrypt_attachment_armored:(NSString*) keyPackage data:(NSString*) dataPackage error:(NSError**) err;
+- (NSData *) decrypt_attachment_password:(NSData*) keyPackage data:(NSData*) dataPackage password:(NSString*)pwd error:(NSError**) err;
 
 //binary attachment
 - (NSData *) decrypt_message_aes:(NSData*) keyPackage data:(NSData*) dataPackage pwd:(NSString *)password error:(NSError**) err;

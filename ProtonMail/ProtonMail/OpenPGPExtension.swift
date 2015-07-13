@@ -188,12 +188,28 @@ extension NSData {
         return nil
     }
     
-    func getSessionKeyPackage(publicKey: String, error: NSErrorPointer?) -> NSData? {
+    func getPublicSessionKeyPackage(publicKey: String, error: NSErrorPointer?) -> NSData? {
         
         var anError: NSError?
         let openPGP = OpenPGP()
 
         if let encrypt = openPGP.getNewPublicKeyPackage(self, pub_key: publicKey, error: &anError) {
+            return encrypt
+        }
+        
+        if let error = error {
+            error.memory = anError
+        }
+        
+        return nil
+    }
+    
+    func getSymmetricSessionKeyPackage(pwd: String, error: NSErrorPointer?) -> NSData? {
+        
+        var anError: NSError?
+        let openPGP = OpenPGP()
+        
+        if let encrypt = openPGP.getNewSymmetricKeyPackage(self, password: pwd, error: &anError) {
             return encrypt
         }
         

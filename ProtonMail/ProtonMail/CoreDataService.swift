@@ -58,7 +58,7 @@ class CoreDataService {
         return nil
     }
     
-    func newMainManagedObjectContext() -> NSManagedObjectContext? {
+    func newMainManagedObjectContext() -> NSManagedObjectContext {
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
         managedObjectContext.parentContext = mainManagedObjectContext
         return managedObjectContext
