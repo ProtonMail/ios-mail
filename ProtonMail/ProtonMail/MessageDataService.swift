@@ -720,20 +720,9 @@ class MessageDataService {
                         let token = String.randomString(32)
                         let encryptedToken = token.encryptWithPassphrase(message.password, error: &error)
                         
-                        
                         // encrypt keys use public key
                         var attPack : [AttachmentKeyPackage] = []
                         for att in tempAtts {
-                            //attID:String!, attKey:String!, Algo : String! = ""
-                            
-//                            let keyAol : NSData = NSData(bytes: [0x09] as [UInt8], length: 1)
-//                            var newKeydata = NSMutableData()
-//                            newKeydata.appendData(keyAol)
-//                            newKeydata.appendData(att.Key)
-//                            
-//                            let sessionKey : NSData = newKeydata.copy() as! NSData
-//                            
-//                            
                             let newKeyPack = att.Key.getSymmetricSessionKeyPackage(message.password, error: nil)?.base64EncodedStringWithOptions(nil)
                             let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack)
                             attPack.append(attPacket)

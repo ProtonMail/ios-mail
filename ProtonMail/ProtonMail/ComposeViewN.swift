@@ -34,7 +34,7 @@ protocol ComposeViewNDataSource {
 class ComposeViewN: UIViewController {
 
     let kConfirmError : String = NSLocalizedString( "Message password doesn't match.")
-    let kExpirationNeedsPWDError : String = NSLocalizedString("Expiration email for outside required PWD.")
+    let kExpirationNeedsPWDError : String = NSLocalizedString("Expiration email for None-PM User required PWD.")
     
     var toContactPicker: MBContactPicker!
     var toContacts: String {
