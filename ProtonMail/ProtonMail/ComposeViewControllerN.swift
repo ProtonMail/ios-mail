@@ -198,7 +198,7 @@ class ComposeViewController : ProtonMailViewController {
         stopAutoSave()
         self.collectDraft()
         self.viewModel.sendMessage()
-        
+
         if presentingViewController != nil {
             dismissViewControllerAnimated(true, completion: nil)
         } else {

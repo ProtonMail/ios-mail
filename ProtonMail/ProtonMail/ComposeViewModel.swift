@@ -161,18 +161,18 @@ public class ComposeViewModelImpl : ComposeViewModel {
     }
     
     public override func sendMessage() {
-        
 
         self.updateDraft()
-        sharedMessageDataService.send(self.message?.messageID, completion: nil)
-        
-//        if hasDraft && message != nil {
-//            //send;
-//        }
-//        else {
-//            //save
-//            //send
-//        }
+        sharedMessageDataService.send(self.message?.messageID)  { task, response, error in
+
+        }
+        //        if hasDraft && message != nil {
+        //            //send;
+        //        }
+        //        else {
+        //            //save
+        //            //send
+        //        }
     }
     
     override func collectDraft(to: [ContactVO], cc: [ContactVO], bcc: [ContactVO], title: String, body: String, expir:NSTimeInterval, pwd:String, pwdHit:String) {
