@@ -338,7 +338,7 @@ class MailboxViewController: ProtonMailViewController {
                         }
                         
                         let updateTime = lastUpdatedStore.inboxLastForKey(self.mailboxLocation)
-                        sharedMessageDataService.fetchMessagesForLocation(mailboxLocation, MessageID: last.messageID ?? "0", Time:Int(updateTime.end.timeIntervalSince1970), completion:
+                        sharedMessageDataService.fetchMessagesForLocation(mailboxLocation, MessageID: last.messageID ?? "0", Time:Int(updateTime.end.timeIntervalSince1970), foucsClean: false, completion:
                             { (task, messages, error) -> Void in
                                 self.tableView.hideLoadingFooter()
                                 self.fetching = false
@@ -372,7 +372,7 @@ class MailboxViewController: ProtonMailViewController {
         if (updateTime.isNew) {
             //this is new
             //call fetch down
-            sharedMessageDataService.fetchMessagesForLocation(self.mailboxLocation, MessageID: "", Time: 0, completion: complete)
+            sharedMessageDataService.fetchMessagesForLocation(self.mailboxLocation, MessageID: "", Time: 0, foucsClean: false, completion: complete)
         } else {
             //fetch
             sharedMessageDataService.fetchNewMessagesForLocation(self.mailboxLocation, Time: Int(updateTime.start.timeIntervalSince1970), completion: complete)

@@ -104,7 +104,7 @@ class MessageDataService {
     :param: Time       the latest update time
     :param: completion aync complete handler
     */
-    func fetchMessagesForLocation(location: MessageLocation, MessageID : String, Time: Int, completion: CompletionBlock?) {
+    func fetchMessagesForLocation(location: MessageLocation, MessageID : String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
         queue {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 // TODO :: need abstract the respons error checking
@@ -112,6 +112,9 @@ class MessageDataService {
                     let context = sharedCoreDataService.newMainManagedObjectContext()
                     context.performBlockAndWait() {
                         var error: NSError?
+                        if foucsClean {
+                            self.cleanMessage()
+                        }
                         var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
                         if error == nil {
                             //                            for message in messages as! [Message] {
@@ -177,10 +180,15 @@ class MessageDataService {
                     let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
                     getLatestEventID.call() { task, response, hasError in
                         if response != nil && !hasError && !response!.eventID.isEmpty {
-                            lastUpdatedStore.clear();
-                            lastUpdatedStore.lastEventID = response!.eventID
-                            self.cleanMessage()
-                            self.fetchMessagesForLocation(location, MessageID: "", Time: 0, completion: completion)
+                            let completionWrapper: CompletionBlock = { task, responseDict, error in
+                                if error == nil {
+                                    lastUpdatedStore.clear();
+                                    lastUpdatedStore.lastEventID = response!.eventID
+                                    
+                                }
+                                completion?(task: task, response:nil, error: error)
+                            }
+                            self.fetchMessagesForLocation(location, MessageID: "", Time: 0, foucsClean: true, completion: completionWrapper)
                         }
                     }
                     completion?(task: task, response:nil, error: nil)
