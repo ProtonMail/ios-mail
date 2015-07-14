@@ -646,7 +646,6 @@ extension ComposeViewN: MBContactPickerDelegate {
         if !contactPicker.hidden {
             
         }
-        
     }
     
     func didHideFilteredContactsForContactPicker(contactPicker: MBContactPicker!) {

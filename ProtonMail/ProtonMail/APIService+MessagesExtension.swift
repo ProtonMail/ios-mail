@@ -244,10 +244,10 @@ extension APIService {
     
     
     func messageSearch(query: String, page: Int, completion: CompletionBlock?) {
-        let path = "/messages/search"
+        let path = MessagePath.base
         let parameters = [
-            "query" : query,
-            "page" : page]
+            "Keyword" : query,
+            "Page" : page]
         
         request(method: .GET, path: path, parameters: parameters, completion: completion)
     }

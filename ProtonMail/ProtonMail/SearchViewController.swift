@@ -33,7 +33,7 @@ class SearchViewController: ProtonMailViewController {
 
     private var query: String = "" {
         didSet {
-            handleQuery(query)
+            handleFromLocal(query)
         }
     }
     
@@ -107,8 +107,7 @@ class SearchViewController: ProtonMailViewController {
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
     }
     
-    func handleQuery(query: String) {
-        
+    func handleFromLocal(query: String) {
         if let context = managedObjectContext {
             if let fetchedResultsController = fetchedResultsController {
                 fetchedResultsController.fetchRequest.predicate = predicateForSearch(query)
@@ -127,34 +126,56 @@ class SearchViewController: ProtonMailViewController {
             if query.isEmpty {
                 return
             }
-        
-            tableView.showLoadingFooter()
-            
-            sharedMessageDataService.search(query: query, page: 0, managedObjectContext: context, completion: { (messages, error) -> Void in
-                
-                self.tableView.hideLoadingFooter()
-                
-                if error != nil {
-                    NSLog("\(__FUNCTION__) search error: \(error)")
-                } else {
-                    
-                }
-            })
         }
     }
+    
+    func handleQuery(query: String) {
+        let context = sharedCoreDataService.newMainManagedObjectContext()
+//        if let fetchedResultsController = fetchedResultsController {
+//            fetchedResultsController.fetchRequest.predicate = predicateForSearch(query)
+//            fetchedResultsController.delegate = nil
+//            
+//            var error: NSError?
+//            if !fetchedResultsController.performFetch(&error) {
+//                NSLog("\(__FUNCTION__) performFetch error: \(error!)")
+//            }
+//            
+//            tableView.reloadData()
+//            
+//            fetchedResultsController.delegate = self
+//        }
+        
+        if query.isEmpty {
+            return
+        }
+        
+        tableView.showLoadingFooter()
+        
+        sharedMessageDataService.search(query: query, page: 0, managedObjectContext: context, completion: { (messages, error) -> Void in
+            
+            self.tableView.hideLoadingFooter()
+            
+            if error != nil {
+                NSLog("\(__FUNCTION__) search error: \(error)")
+            } else {
+                
+            }
+        })
+        
+    }
+    
+    
 
     func predicateForSearch(query: String) -> NSPredicate? {
         return NSPredicate(format: "%K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@", Message.Attributes.title, query, Message.Attributes.senderName, query, Message.Attributes.recipientList, query)
     }
     
     func fetchMessagesIfNeededForIndexPath(indexPath: NSIndexPath) {
-
-        
         if let fetchedResultsController = fetchedResultsController {
             if let last = fetchedResultsController.fetchedObjects?.last as? Message {
                 if let current = fetchedResultsController.objectAtIndexPath(indexPath) as? Message {
                     if last == current {
-                        handleQuery(query)
+                        //handleQuery(query)
                     }
                 }
             }
@@ -298,6 +319,8 @@ extension SearchViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        
+        handleQuery(query)
         
         return true
     }

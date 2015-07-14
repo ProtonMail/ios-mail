@@ -452,8 +452,11 @@ class MessageDataService {
                             let msg = response?["Message"] as! Dictionary<String,AnyObject>
                             let message_n = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg, inManagedObjectContext: context, error: &error) as! Message
                             if error == nil {
+                                message.isDetailDownloaded = true
                                 message_n.isDetailDownloaded = true
+                                message.isRead = true
                                 message_n.isRead = true
+                                message.managedObjectContext?.saveUpstreamIfNeeded()
                                 error = context.saveUpstreamIfNeeded()
                                 dispatch_async(dispatch_get_main_queue()) {
                                     completion(task: task, response: response, message: message_n, error: error)
@@ -517,7 +520,6 @@ class MessageDataService {
     func fetchedMessageControllerForID(messageID: String) -> NSFetchedResultsController? {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
-            
             
             fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.messageID, messageID)
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
@@ -787,8 +789,7 @@ class MessageDataService {
     
     
     // MARK : old functions
-    
-    
+
     private func attachmentsForMessage(message: Message) -> [Attachment] {
         return message.attachments.allObjects as! [Attachment]
         //        var attachments: [MessageAPI.Attachment] = []
