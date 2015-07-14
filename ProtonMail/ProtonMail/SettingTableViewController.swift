@@ -326,9 +326,9 @@ extension SettingTableViewController {
             case Signature:
                 return NSLocalizedString("Signature")
             case LoginPWD:
-                return NSLocalizedString("Login Passowrd")
+                return NSLocalizedString("Login Password")
             case MBP:
-                return NSLocalizedString("Mailbox Passowrd")
+                return NSLocalizedString("Mailbox Password")
             }
         }
     }
