@@ -18,7 +18,7 @@ class MessageDetailViewController: ProtonMailViewController {
         didSet {
             message.fetchDetailIfNeeded() { _, _, msg, error in
                 println(self.message.isDetailDownloaded)
-                
+                println(self.message.body)
                 if error != nil {
                     NSLog("\(__FUNCTION__) error: \(error)")
                 }

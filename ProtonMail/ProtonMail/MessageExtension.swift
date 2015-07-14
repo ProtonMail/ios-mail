@@ -122,6 +122,8 @@ extension Message {
     
     func decryptBodyIfNeeded(error: NSErrorPointer?) -> String? {
         
+        PMLog.D("\(body)")
+        
         if !checkIsEncrypted() {
             return body
         } else {
