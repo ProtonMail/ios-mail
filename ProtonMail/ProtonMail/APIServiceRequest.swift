@@ -88,7 +88,8 @@ public class ApiRequest<T : ApiResponse> : Package {
             
             if error != nil {
                 //TODO check error
-                complete?(task:task, response:nil, hasError: true)
+                apiRes.ParseHttpError(error!)
+                complete?(task:task, response:apiRes, hasError: true)
                 return
             }
             

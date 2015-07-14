@@ -15,13 +15,14 @@ public class ApiResponse {
     public var code : Int! = 1000
     public var error : String?
     public var errorDetails : String?
+    public var internetCode : Int? //only use when error happend.
     
     func CheckHttpStatus() -> Bool {
-        return true
+        return code == 200 || code == 1000
     }
     
     func CheckBodyStatus () -> Bool {
-        return true
+        return code == 1000
     }
     
     func ParseResponseError (response: Dictionary<String,AnyObject>!) -> Bool {
@@ -29,6 +30,22 @@ public class ApiResponse {
         error = response["Error"] as? String
         errorDetails = response["ErrorDescription"] as? String
         return code != 1000
+    }
+    
+    func ParseHttpError (error: NSError) {
+        self.code = 404
+        if let errorUserInfo = error.userInfo {
+            if let detail = errorUserInfo["com.alamofire.serialization.response.error.response"] as? NSHTTPURLResponse {
+                self.code = detail.statusCode
+               
+            }
+            else {
+                internetCode = error.code
+            }
+            
+            self.error = error.description
+            self.errorDetails = error.debugDescription
+        }
     }
     
     func ParseResponse (response: Dictionary<String,AnyObject>!) -> Bool {
