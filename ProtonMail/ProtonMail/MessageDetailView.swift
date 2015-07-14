@@ -841,15 +841,7 @@ extension MessageDetailView: UITableViewDelegate {
         
         if let data : NSData = NSData(contentsOfURL: localURL) {
             tempFileUri = NSFileManager.defaultManager().attachmentDirectory.URLByAppendingPathComponent(fileName);
-            
-            
-            //   return sharedUserDataService.mailboxPassword ?? ""
-            //   return sharedUserDataService.userInfo?.privateKey ?? ""
-            //   return sharedUserDataService.userInfo?.publicKey ?? ""
-            
-            
             let decryptData = data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!, publicKey: sharedUserDataService.userInfo!.publicKey, privateKey: sharedUserDataService.userInfo!.privateKey, error: nil)
-            
             
             decryptData!.writeToURL(tempFileUri!, atomically: true)
             
@@ -858,28 +850,10 @@ extension MessageDetailView: UITableViewDelegate {
             if let viewController = delegate as? MessageDetailViewController {
                 viewController.presentViewController(previewQL, animated: true, completion: nil)
             }
-            
-            
-            //previewQL.currentPreviewItemIndex = indexPath.row
-            // viewController.navigationController?.pushViewController(previewQL, animated: true) //4
-            
-            //        let documentInteractionController = UIDocumentInteractionController(URL: tempFile)
-            //        documentInteractionController.delegate = self
-            //
-            //        if !documentInteractionController.presentOpenInMenuFromRect(cell.bounds, inView: cell, animated: true) {
-            //            let alert = UIAlertController(title: NSLocalizedString("Unsupported file type"), message: NSLocalizedString("There are no installed apps that can open this file type."), preferredStyle: .Alert)
-            //            alert.addAction((UIAlertAction.okAction()))
-            //
-            //            if let viewController = delegate as? MessageDetailViewController {
-            //                viewController.presentViewController(alert, animated: true, completion: nil)
-            //            }
-            //        }
         }
         else{
             
         }
-        
-       
     }
 }
 

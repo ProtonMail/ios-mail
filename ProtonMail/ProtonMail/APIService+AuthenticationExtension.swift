@@ -213,7 +213,6 @@ extension AuthCredential {
     }
 }
 
-
 extension NSError {
     
     class func authCredentialExpired() -> NSError {

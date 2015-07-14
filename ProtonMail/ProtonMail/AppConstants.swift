@@ -21,7 +21,6 @@ class AppConstants {
     //static let BaseURLString : String = "http://feng.api.com"
     //private let BaseURLString = "https://dev-api.protonmail.ch"
     
-    
     static var getDebugOption : String {
         get {
             #if DEBUG

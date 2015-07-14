@@ -67,6 +67,8 @@ class MailboxViewController: ProtonMailViewController {
     
     private var cancelBarButtonItem: UIBarButtonItem!
     private var menuBarButtonItem: UIBarButtonItem!
+    private var fetchingMessage : Bool! = false
+    private var fetchingStopped : Bool! = true
     
     
     // MARK: - UIViewController Lifecycle
@@ -257,18 +259,24 @@ class MailboxViewController: ProtonMailViewController {
     private func startAutoFetch()
     {
         self.timer = NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "refreshPage", userInfo: nil, repeats: true)
+        fetchingStopped = false
         self.timer.fire()
+        
     }
     
     private func stopAutoFetch()
     {
+        fetchingStopped = true
+
         self.timer.invalidate()
         self.timer = nil
     }
     
     func refreshPage()
     {
-        getLatestMessages()
+        if !fetchingStopped {
+            getLatestMessages()
+        }
     }
     
     private func configureCell(mailboxCell: MailboxTableViewCell, atIndexPath indexPath: NSIndexPath) {
@@ -325,7 +333,7 @@ class MailboxViewController: ProtonMailViewController {
                     
                     let updateTime = lastUpdatedStore.inboxLastForKey(self.mailboxLocation)
                     
-                    
+                   
                     let isOlderMessage = updateTime.end.compare(current.time!) != NSComparisonResult.OrderedAscending
                     let isLastMessage = last == current
                     if  (isOlderMessage || isLastMessage) && !fetching {
@@ -356,26 +364,31 @@ class MailboxViewController: ProtonMailViewController {
     
     internal func getLatestMessages() {
         
-        self.refreshControl.beginRefreshing()
-        let updateTime = lastUpdatedStore.inboxLastForKey(self.mailboxLocation)
-        var complete : APIService.CompletionBlock = { (task, messages, error) -> Void in
-            if let error = error {
-                NSLog("error: \(error)")
+        if !fetchingMessage {
+            fetchingMessage = true
+            
+            self.refreshControl.beginRefreshing()
+            let updateTime = lastUpdatedStore.inboxLastForKey(self.mailboxLocation)
+            var complete : APIService.CompletionBlock = { (task, messages, error) -> Void in
+                self.fetchingMessage = false
+                if let error = error {
+                    NSLog("error: \(error)")
+                }
+                
+                delay(1.0, {
+                    self.refreshControl.endRefreshing()
+                    self.tableView.reloadData()
+                })
             }
             
-            delay(1.0, {
-                self.refreshControl.endRefreshing()
-                self.tableView.reloadData()
-            })
-        }
-        
-        if (updateTime.isNew) {
-            //this is new
-            //call fetch down
-            sharedMessageDataService.fetchMessagesForLocation(self.mailboxLocation, MessageID: "", Time: 0, foucsClean: false, completion: complete)
-        } else {
-            //fetch
-            sharedMessageDataService.fetchNewMessagesForLocation(self.mailboxLocation, Time: Int(updateTime.start.timeIntervalSince1970), completion: complete)
+            if (updateTime.isNew) {
+                //this is new
+                //call fetch down
+                sharedMessageDataService.fetchMessagesForLocation(self.mailboxLocation, MessageID: "", Time: 0, foucsClean: false, completion: complete)
+            } else {
+                //fetch
+                sharedMessageDataService.fetchNewMessagesForLocation(self.mailboxLocation, Time: Int(updateTime.start.timeIntervalSince1970), completion: complete)
+            }
         }
     }
     

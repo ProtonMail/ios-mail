@@ -174,8 +174,9 @@ class MessageDataService {
         queue {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
             eventAPI.call() { task, response, hasError in
-                
-                if response == nil || response!.isRefresh || (hasError && response!.code == 18001) {
+                if response == nil {
+                    completion?(task: task, response:nil, error: nil)
+                } else if response!.isRefresh || (hasError && response!.code == 18001) {
                     
                     let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
                     getLatestEventID.call() { task, response, hasError in
@@ -184,7 +185,6 @@ class MessageDataService {
                                 if error == nil {
                                     lastUpdatedStore.clear();
                                     lastUpdatedStore.lastEventID = response!.eventID
-                                    
                                 }
                                 completion?(task: task, response:nil, error: error)
                             }
