@@ -863,14 +863,21 @@ class MessageDataService {
             var error: NSError?
             if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID) {
                 if let message = context.existingObjectWithID(objectID, error: &error) as? Message {
-                    let attachments = self.attachmentsForMessage(message)
                     
+                    let attachments = self.attachmentsForMessage(message)
                     let completionWrapper: CompletionBlock = { task, response, error in
-                        
                         if let mess = response?["Message"] as? Dictionary<String, AnyObject> {
                             if let messageID = mess["ID"] as? String {
                                 message.messageID = messageID
                                 message.isDetailDownloaded = true
+                                if let error = context.saveUpstreamIfNeeded() {
+                                    NSLog("\(__FUNCTION__) error: \(error)")
+                                }
+                                var checkError: NSError?
+                                GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: mess, inManagedObjectContext: message.managedObjectContext!, error: &checkError)
+                                if checkError == nil {
+                                }
+                                
                                 if let error = context.saveUpstreamIfNeeded() {
                                     NSLog("\(__FUNCTION__) error: \(error)")
                                 }
