@@ -98,9 +98,9 @@ extension APIService {
                     var response = response
                     
                     if (self.isErrorResponse(response) != nil) {
-                        let errorCode = (response!["Code"] as! Int) ?? 0
-                        let description = (response!["Error"] as! NSDictionary).description ?? NSLocalizedString("Unknown error")
-                        error = NSError.protonMailError(code: errorCode, localizedDescription: description)
+//                        let errorCode = (response!["Code"] as! Int) ?? 0
+//                        let description = (response!["Error"] as! NSDictionary).description ?? NSLocalizedString("Unknown error")
+//                        error = NSError.protonMailError(code: errorCode, localizedDescription: description)
                     }
                     
                     completion?(task: task, response: response, error: error)
