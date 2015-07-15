@@ -175,6 +175,9 @@ extension Message {
         newMessage.isEncrypted = message.isEncrypted
         newMessage.sender = message.sender
         newMessage.senderName = message.senderName
+        
+        newMessage.orginalTime = message.time
+        newMessage.orginalMessageID = message.messageID
         //            if let attachments = message.attachments {
         //                for (index, attachment) in enumerate(attachments) {
         //                    if let image = attachment as? UIImage {

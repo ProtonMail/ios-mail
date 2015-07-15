@@ -50,6 +50,8 @@ public class Message: NSManagedObject {
     @NSManaged var totalSize: NSNumber
     @NSManaged var latestUpdateType : NSNumber
     @NSManaged var needsUpdate : Bool
+    @NSManaged var orginalMessageID: String?
+    @NSManaged var orginalTime: NSDate?
     
     @NSManaged var attachments: NSSet
 }

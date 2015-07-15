@@ -68,7 +68,12 @@ public class MessageDraftRequest<T: ApiResponse>  : ApiRequest<T> {
         messsageDict["CCList"]                  = message.ccList.parseJson()
         messsageDict["BCCList"]                 = message.bccList.parseJson()
         
-        let out                                 = ["Message" : messsageDict]
+        var out : [String : AnyObject] = ["Message" : messsageDict]
+        
+        if message.orginalMessageID != nil {
+            out["ParentID"] = message.orginalMessageID
+        }
+        
         
         PMLog.D(self.JSONStringify(out, prettyPrinted: true))
         return out
