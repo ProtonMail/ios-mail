@@ -25,9 +25,12 @@ public class LastUpdatedStore : SharedCacheBase {
     
     private struct Key {
         static let lastInboxesUpdated = "LastInboxesUpdated"
+        static let lastEventID = "lastEventID"
+        static let unreadMessageCount = "unreadMessageCount"
+        
         static let lastLabelsUpdated = "LastLabelsUpdated"
         static let lastCantactsUpdated = "LastCantactsUpdated"
-        static let lastEventID = "lastEventID"
+
     }
     
     
@@ -37,12 +40,16 @@ public class LastUpdatedStore : SharedCacheBase {
             static let startCode = "start"
             static let endCode = "end"
             static let updateCode = "update"
+            static let unread = "unread"
+            static let total = "total"
         }
         
-        required public init (start: NSDate!, end : NSDate, update : NSDate){
+        required public init (start: NSDate!, end : NSDate, update : NSDate, total : Int32, unread: Int32){
             self.start = start
             self.end = end
             self.update = update
+            self.unread = unread
+            self.total = total
         }
         
         public var isNew : Bool {
@@ -55,21 +62,27 @@ public class LastUpdatedStore : SharedCacheBase {
             self.init(
                 start: aDecoder.decodeObjectForKey(CoderKey.startCode) as! NSDate,
                 end: aDecoder.decodeObjectForKey(CoderKey.endCode) as! NSDate,
-                update: aDecoder.decodeObjectForKey(CoderKey.updateCode) as! NSDate)
+                update: aDecoder.decodeObjectForKey(CoderKey.updateCode) as! NSDate,
+                total: aDecoder.decodeInt32ForKey(CoderKey.total),
+                unread: aDecoder.decodeInt32ForKey(CoderKey.unread))
         }
         
         public func encodeWithCoder(aCoder: NSCoder) {
             aCoder.encodeObject(self.start, forKey: CoderKey.startCode)
             aCoder.encodeObject(self.end, forKey: CoderKey.endCode)
             aCoder.encodeObject(self.update, forKey: CoderKey.updateCode)
+            aCoder.encodeInt32(self.total, forKey: CoderKey.total)
+            aCoder.encodeInt32(self.unread, forKey: CoderKey.unread)
         }
         
         public var start : NSDate
         public var end : NSDate
         public var update : NSDate
+        public var total : Int32
+        public var unread : Int32
         
         static public func distantPast() -> UpdateTime {
-            return UpdateTime(start: NSDate.distantPast() as! NSDate, end: NSDate.distantPast() as! NSDate, update: NSDate.distantPast() as! NSDate)
+            return UpdateTime(start: NSDate.distantPast() as! NSDate, end: NSDate.distantPast() as! NSDate, update: NSDate.distantPast() as! NSDate, total: 0, unread: 0)
         }
     }
     
@@ -89,6 +102,16 @@ public class LastUpdatedStore : SharedCacheBase {
         }
         set {
             getShared().setValue(newValue, forKey: Key.lastEventID)
+            getShared().synchronize()
+        }
+    }
+    
+    public var totalUnread: Int! {
+        get {
+            return getShared().integerForKey(Key.unreadMessageCount) ?? 0
+        }
+        set {
+            getShared().setValue(newValue, forKey: Key.unreadMessageCount)
             getShared().synchronize()
         }
     }
@@ -114,6 +137,7 @@ public class LastUpdatedStore : SharedCacheBase {
         getShared().removeObjectForKey(Key.lastLabelsUpdated)
         getShared().removeObjectForKey(Key.lastInboxesUpdated)
         getShared().removeObjectForKey(Key.lastEventID)
+        getShared().removeObjectForKey(Key.unreadMessageCount)
         getShared().synchronize()
     }
     

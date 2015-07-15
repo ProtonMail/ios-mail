@@ -381,9 +381,12 @@ class MailboxViewController: ProtonMailViewController {
             }
             
             if (updateTime.isNew) {
-                //this is new
-                //call fetch down
-                sharedMessageDataService.fetchMessagesForLocation(self.mailboxLocation, MessageID: "", Time: 0, foucsClean: false, completion: complete)
+                if lastUpdatedStore.lastEventID == "0" {
+                    sharedMessageDataService.fetchMessagesForLocationWithEventReset(self.mailboxLocation, MessageID: "", Time: 0, completion: complete)
+                }
+                else {
+                    sharedMessageDataService.fetchMessagesForLocation(self.mailboxLocation, MessageID: "", Time: 0, foucsClean: false, completion: complete)
+                }
             } else {
                 //fetch
                 sharedMessageDataService.fetchNewMessagesForLocation(self.mailboxLocation, Time: Int(updateTime.start.timeIntervalSince1970), completion: complete)

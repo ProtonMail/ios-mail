@@ -109,6 +109,8 @@ class MessageDataService {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 // TODO :: need abstract the respons error checking
                 if let messagesArray = responseDict?["Messages"] as? [Dictionary<String,AnyObject>] {
+                    let messcount = responseDict?["Total"] as? Int ?? 0
+                    
                     let context = sharedCoreDataService.newMainManagedObjectContext()
                     context.performBlockAndWait() {
                         var error: NSError?
@@ -132,7 +134,6 @@ class MessageDataService {
                             NSLog("\(__FUNCTION__) error: \(error)")
                         }
                         
-                        
                         if (messages != nil && messages.last != nil && messages.first != nil) {
                             var updateTime = lastUpdatedStore.inboxLastForKey(location)
                             
@@ -143,6 +144,7 @@ class MessageDataService {
                             let ml = messages.last as! Message
                             updateTime.end = ml.time!
                             updateTime.update = NSDate()
+                            updateTime.total = Int32(messcount)
                             lastUpdatedStore.updateInboxForKey(location, updateTime: updateTime)
                         }
                         
@@ -163,6 +165,25 @@ class MessageDataService {
             sharedAPIService.GET(request, completion: completionWrapper)
         }
     }
+    
+    func fetchMessagesForLocationWithEventReset(location: MessageLocation, MessageID : String, Time: Int, completion: CompletionBlock?) {
+        queue {
+            let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
+            getLatestEventID.call() { task, response, hasError in
+                if response != nil && !hasError && !response!.eventID.isEmpty {
+                    let completionWrapper: CompletionBlock = { task, responseDict, error in
+                        if error == nil {
+                            lastUpdatedStore.lastEventID = response!.eventID
+                        }
+                        completion?(task: task, response:nil, error: error)
+                    }
+                    self.cleanMessage()
+                    self.fetchMessagesForLocation(location, MessageID: MessageID, Time: Time, foucsClean: false, completion: completionWrapper)
+                }
+            }
+        }
+    }
+    
     
     /**
     fetch the new messages use the events log
