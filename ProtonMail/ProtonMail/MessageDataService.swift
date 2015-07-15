@@ -114,6 +114,7 @@ class MessageDataService {
                         var error: NSError?
                         if foucsClean {
                             self.cleanMessage()
+                            context.saveUpstreamIfNeeded()
                         }
                         var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
                         if error == nil {
@@ -188,7 +189,8 @@ class MessageDataService {
                                 }
                                 completion?(task: task, response:nil, error: error)
                             }
-                            self.fetchMessagesForLocation(location, MessageID: "", Time: 0, foucsClean: true, completion: completionWrapper)
+                            self.cleanMessage()
+                            self.fetchMessagesForLocation(location, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
                         }
                     }
                     completion?(task: task, response:nil, error: nil)
@@ -210,6 +212,29 @@ class MessageDataService {
                     }
                     completion?(task: task, response:nil, error: nil)
                 }
+            }
+        }
+    }
+    
+    func cleanLocalMessageCache(completion: CompletionBlock?) {
+        let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
+        getLatestEventID.call() { task, response, hasError in
+            if response != nil && !hasError && !response!.eventID.isEmpty {
+                let completionWrapper: CompletionBlock = { task, responseDict, error in
+                    if error == nil {
+                        lastUpdatedStore.clear();
+                        lastUpdatedStore.lastEventID = response!.eventID
+                        
+                    }
+                    completion?(task: task, response:nil, error: error)
+                }
+                
+                //if foucsClean {
+                    self.cleanMessage()
+                //}
+
+                
+                self.fetchMessagesForLocation(MessageLocation.inbox, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
             }
         }
     }

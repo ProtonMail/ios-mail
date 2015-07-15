@@ -12,7 +12,7 @@ class SettingTableViewController: ProtonMailViewController {
     
     var setting_headers = [SettingSections.Debug, SettingSections.General, SettingSections.MultiDomain, SettingSections.Storage, SettingSections.Version]
     var setting_general_items = [SGItems.NotifyEmail, SGItems.DisplayName, SGItems.Signature, SGItems.LoginPWD, SGItems.MBP]
-    var setting_debug_items = [SDebugItem.Queue, SDebugItem.ErrorLogs]
+    var setting_debug_items = [SDebugItem.Queue, SDebugItem.ErrorLogs, SDebugItem.CleanCache]
     
     var multi_domains: Array<Address>!
     var userInfo = sharedUserDataService.userInfo
@@ -36,6 +36,8 @@ class SettingTableViewController: ProtonMailViewController {
     
     //
     let CellHeight : CGFloat = 30.0
+    
+    var cleaning : Bool = false
     
     //
     @IBOutlet weak var editBarButton: UIBarButtonItem!
@@ -242,6 +244,27 @@ class SettingTableViewController: ProtonMailViewController {
                 break;
             case SDebugItem.ErrorLogs:
                 break;
+            case SDebugItem.CleanCache:
+                if !cleaning {
+                    cleaning = true;
+                    
+                    let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
+                    var  hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+                    hud.labelText = "Reseting message cache ..."
+                    hud.removeFromSuperViewOnHide = true
+                    //                hud.margin = 10
+                    //                hud.yOffset = 150
+                    sharedMessageDataService.cleanLocalMessageCache() { task, res, error in
+                        hud.mode = MBProgressHUDMode.Text
+                        hud.labelText = "Done"
+                        hud.hide(true, afterDelay: 1)
+                        self.cleaning = false
+                    }
+
+                }
+                
+                
+                break;
             }
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -301,12 +324,15 @@ extension SettingTableViewController {
     enum SDebugItem: Int, Printable {
         case Queue = 0
         case ErrorLogs = 1
+        case CleanCache = 2
         var description : String {
             switch(self){
             case Queue:
                 return NSLocalizedString("Message Queue")
             case ErrorLogs:
                 return NSLocalizedString("Error Logs")
+            case .CleanCache:
+                return NSLocalizedString("Clena Local Cache")
             }
         }
     }

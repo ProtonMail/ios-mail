@@ -58,6 +58,7 @@ public class EventCheckResponse : ApiResponse {
     
     var messages : [Dictionary<String,AnyObject>]?
     var contacts : [Dictionary<String,AnyObject>]?
+    var userinfo : [Dictionary<String,AnyObject>]?
     var unreads : Dictionary<String,AnyObject>?
     var usedSpace : String?
     
