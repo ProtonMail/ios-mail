@@ -260,10 +260,7 @@ class SettingTableViewController: ProtonMailViewController {
                         hud.hide(true, afterDelay: 1)
                         self.cleaning = false
                     }
-
                 }
-                
-                
                 break;
             }
         }
@@ -332,7 +329,7 @@ extension SettingTableViewController {
             case ErrorLogs:
                 return NSLocalizedString("Error Logs")
             case .CleanCache:
-                return NSLocalizedString("Clena Local Cache")
+                return NSLocalizedString("Clean Local Cache")
             }
         }
     }
