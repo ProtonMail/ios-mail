@@ -52,6 +52,7 @@ public class Message: NSManagedObject {
     @NSManaged var needsUpdate : Bool
     @NSManaged var orginalMessageID: String?
     @NSManaged var orginalTime: NSDate?
+    @NSManaged var action: NSNumber?
     
     @NSManaged var attachments: NSSet
 }

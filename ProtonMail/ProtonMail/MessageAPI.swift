@@ -72,6 +72,7 @@ public class MessageDraftRequest<T: ApiResponse>  : ApiRequest<T> {
         
         if message.orginalMessageID != nil {
             out["ParentID"] = message.orginalMessageID
+            out["Action"] = message.action ?? "0"   //{0|1|2} // Optional, reply = 0, reply all = 1, forward = 2
         }
         
         

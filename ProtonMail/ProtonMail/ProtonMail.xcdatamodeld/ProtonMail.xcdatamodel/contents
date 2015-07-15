@@ -63,6 +63,7 @@
         <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="labels" inverseEntity="Message" syncable="YES"/>
     </entity>
     <entity name="Message" representedClassName="ProtonMail.Message" syncable="YES">
+        <attribute name="action" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="addressID" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="AddressID"/>
@@ -242,6 +243,6 @@
         <element name="Attachment" positionX="1989" positionY="-3666" width="128" height="165"/>
         <element name="Contact" positionX="2149" positionY="-3600" width="128" height="90"/>
         <element name="Label" positionX="1989" positionY="-3465" width="128" height="133"/>
-        <element name="Message" positionX="1771" positionY="-3870" width="128" height="600"/>
+        <element name="Message" positionX="1771" positionY="-3870" width="128" height="615"/>
     </elements>
 </model>

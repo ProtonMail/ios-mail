@@ -95,11 +95,13 @@ public class ComposeViewModelImpl : ComposeViewModel {
         userAddress = sharedUserDataService.userAddresses
         
         if msg == nil || msg?.location == MessageLocation.draft {
-             self.message = msg
+            self.message = msg
         }
         else
         {
-           self.message = msg?.copyMessage()
+            self.message = msg?.copyMessage()
+            
+            self.message?.action = action.rawValue
         }
         
         self.messageAction = action
