@@ -333,7 +333,6 @@ class MailboxViewController: ProtonMailViewController {
                     
                     let updateTime = lastUpdatedStore.inboxLastForKey(self.mailboxLocation)
                     
-                   
                     let isOlderMessage = updateTime.end.compare(current.time!) != NSComparisonResult.OrderedAscending
                     let isLastMessage = last == current
                     if  (isOlderMessage || isLastMessage) && !fetching {
