@@ -126,7 +126,10 @@ extension String {
         var c = Array(charSet)
         var s:String = ""
         for n in (1...10) {
-            s.append(c[Int(arc4random()) % c.count])
+            
+            let index : Int = Int(UInt32(arc4random()) % UInt32(c.count))
+            
+            s.append(c[index])
         }
         return s
     }
