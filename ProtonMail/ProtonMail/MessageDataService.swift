@@ -140,11 +140,12 @@ class MessageDataService {
                             if (updateTime.isNew) {
                                 let mf = messages.first as! Message
                                 updateTime.start = mf.time!
+                                updateTime.total = Int32(messcount)
                             }
                             let ml = messages.last as! Message
                             updateTime.end = ml.time!
                             updateTime.update = NSDate()
-                            updateTime.total = Int32(messcount)
+                            
                             lastUpdatedStore.updateInboxForKey(location, updateTime: updateTime)
                         }
                         
@@ -228,17 +229,44 @@ class MessageDataService {
                     }
                     
                     self.processIncrementalUpdateUnread(response!.unreads)
+                    self.processIncrementalUpdateTotal(response!.total)
                 }
                 else {
                     if response!.code == 1000 {
                         lastUpdatedStore.lastEventID = response!.eventID
                         self.processIncrementalUpdateUnread(response!.unreads)
+                        self.processIncrementalUpdateTotal(response!.total)
                     }
                     completion?(task: task, response:nil, error: nil)
                 }
             }
         }
     }
+    
+    func processIncrementalUpdateTotal(totals: Dictionary<String, AnyObject>?) {
+        
+        if let star = totals?["Starred"] as? Int {
+            var updateTime = lastUpdatedStore.inboxLastForKey(MessageLocation.starred)
+            updateTime.total = Int32(star)
+            lastUpdatedStore.updateInboxForKey(MessageLocation.starred, updateTime: updateTime)
+        }
+
+        if let locations = totals?["Locations"] as? [Dictionary<String,AnyObject>] {
+            for location:[String : AnyObject] in locations {
+                if let l = location["Location"] as? Int {
+                    if let c = location["Count"] as? Int {
+                        if let lo = MessageLocation(rawValue: l) {
+                            var updateTime = lastUpdatedStore.inboxLastForKey(lo)
+                            updateTime.total = Int32(c)
+                            lastUpdatedStore.updateInboxForKey(lo, updateTime: updateTime)
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+    
     
     func processIncrementalUpdateUnread(unreads: Dictionary<String, AnyObject>?) {
         
@@ -284,8 +312,6 @@ class MessageDataService {
                     }
                 }
             }
-            
-            
         }
         
         //MessageLocation

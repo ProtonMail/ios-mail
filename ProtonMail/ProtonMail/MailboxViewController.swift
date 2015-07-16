@@ -336,31 +336,52 @@ class MailboxViewController: ProtonMailViewController {
                     let isOlderMessage = updateTime.end.compare(current.time!) != NSComparisonResult.OrderedAscending
                     let isLastMessage = last == current
                     if  (isOlderMessage || isLastMessage) && !fetching {
-                        
-                        self.fetching = true
                         let sectionCount = fetchedResultsController.numberOfRowsInSection(0) ?? 0
-                        if(sectionCount > 8)
-                        {
+                        let recordedCount = Int(updateTime.total)
+                        if updateTime.isNew || recordedCount > sectionCount { //here need add a counter to check if tried too many times make one real call in case count not right
+                            self.fetching = true
                             tableView.showLoadingFooter()
+                            let updateTime = lastUpdatedStore.inboxLastForKey(self.mailboxLocation)
+                            sharedMessageDataService.fetchMessagesForLocation(mailboxLocation, MessageID: last.messageID ?? "0", Time:Int(updateTime.end.timeIntervalSince1970), foucsClean: false, completion:
+                                { (task, messages, error) -> Void in
+                                    self.tableView.hideLoadingFooter()
+                                    self.fetching = false
+                                    if error != nil {
+                                        NSLog("\(__FUNCTION__) search error: \(error)")
+                                    } else {
+                                        
+                                    }
+                            })
                         }
-                        
-                        let updateTime = lastUpdatedStore.inboxLastForKey(self.mailboxLocation)
-                        sharedMessageDataService.fetchMessagesForLocation(mailboxLocation, MessageID: last.messageID ?? "0", Time:Int(updateTime.end.timeIntervalSince1970), foucsClean: false, completion:
-                            { (task, messages, error) -> Void in
-                                self.tableView.hideLoadingFooter()
-                                self.fetching = false
-                                if error != nil {
-                                    NSLog("\(__FUNCTION__) search error: \(error)")
-                                } else {
-                                    
-                                }
-                        })
                     }
                 }
             }
         }
     }
     
+    private func checkEmptyMailbox () {
+        if let fetchedResultsController = fetchedResultsController {
+            let sectionCount = fetchedResultsController.numberOfRowsInSection(0) ?? 0
+            if sectionCount == 0 {
+                let updateTime = lastUpdatedStore.inboxLastForKey(self.mailboxLocation)
+                let recordedCount = Int(updateTime.total)
+                if updateTime.isNew || recordedCount > sectionCount {
+                    self.fetching = true
+                    let updateTime = lastUpdatedStore.inboxLastForKey(self.mailboxLocation)
+                    sharedMessageDataService.fetchMessagesForLocation(mailboxLocation, MessageID: "", Time: 0, foucsClean: false, completion:
+                        { (task, messages, error) -> Void in
+                            self.fetching = false
+                            if error != nil {
+                                NSLog("\(__FUNCTION__) search error: \(error)")
+                            } else {
+                                
+                            }
+                    })
+                }
+            }
+        }
+    }
+
     internal func getLatestMessages() {
         
         if !fetchingMessage {
@@ -372,6 +393,10 @@ class MailboxViewController: ProtonMailViewController {
                 self.fetchingMessage = false
                 if let error = error {
                     NSLog("error: \(error)")
+                }
+                
+                if error == nil {
+                    self.checkEmptyMailbox()
                 }
                 
                 delay(1.0, {
@@ -390,6 +415,7 @@ class MailboxViewController: ProtonMailViewController {
             } else {
                 //fetch
                 sharedMessageDataService.fetchNewMessagesForLocation(self.mailboxLocation, Time: Int(updateTime.start.timeIntervalSince1970), completion: complete)
+                self.checkEmptyMailbox()
             }
         }
     }
