@@ -226,16 +226,103 @@ class MessageDataService {
                             completion?(task: task, response:nil, error: error)
                         }
                     }
+                    
+                    self.processIncrementalUpdateUnread(response!.unreads)
                 }
                 else {
                     if response!.code == 1000 {
                         lastUpdatedStore.lastEventID = response!.eventID
+                        self.processIncrementalUpdateUnread(response!.unreads)
                     }
                     completion?(task: task, response:nil, error: nil)
                 }
             }
         }
     }
+    
+    func processIncrementalUpdateUnread(unreads: Dictionary<String, AnyObject>?) {
+        
+        var inboxCount : Int = 0;
+        var draftCount : Int = 0;
+        var sendCount : Int = 0;
+        var spamCount : Int = 0;
+        var starCount : Int = 0;
+        var trashCount : Int = 0;
+        
+        
+        if let star = unreads?["Starred"] as? Int {
+            starCount = star;
+        }
+
+        if let locations = unreads?["Locations"] as? [Dictionary<String,AnyObject>] {
+            
+            for location:[String : AnyObject] in locations {
+                
+                if let l = location["Location"] as? Int {
+                    if let c = location["Count"] as? Int {
+                        if let lo = MessageLocation(rawValue: l) {
+                            switch lo {
+                            case .inbox:
+                                inboxCount = c;
+                                break;
+                            case .draft:
+                                draftCount = c
+                                break;
+                            case .outbox:
+                                sendCount = c
+                                break;
+                            case .spam:
+                                spamCount = c
+                                break;
+                            case .trash:
+                                trashCount = c
+                                break;
+                            default:
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            
+        }
+        
+        //MessageLocation
+        var badgeNumber = inboxCount + draftCount + sendCount + spamCount + starCount + trashCount;
+        if  badgeNumber < 0 {
+            badgeNumber = 0
+        }
+        UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
+        
+    }
+    
+    
+//    "Labels" : [
+//    {
+//      "LabelID" : "696K_VfDK6NesvPdX84iEuQ8jNQrWlmytEOThe57MrIDzs8QmBnzhzgMYxrb1V0vUMR7C_81IJ-dh7w-EwBEsw==",
+//      "Count" : 2
+//    }
+//    ],
+//      "Starred" : 0,
+//      "Locations" : [
+//    {
+//      "Count" : 245,
+//      "Location" : 0
+//    },
+//    {
+//      "Count" : 43,
+//      "Location" : 1
+//    },
+//    {
+//      "Count" : 323,
+//      "Location" : 3
+//    },
+//    {
+//      "Count" : 19,
+//      "Location" : 4
+//    }
+//    ]
     
     func cleanLocalMessageCache(completion: CompletionBlock?) {
         let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
