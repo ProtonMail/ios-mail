@@ -58,6 +58,7 @@ extension APIService {
         static let grantType = "GrantType"
         static let redirectUrl = "RedirectURI"
         static let state = "State"
+        static let scope = "Scope"
     }
     
     
@@ -72,9 +73,13 @@ extension APIService {
             AuthRequest.hashedPassword : "",
             AuthRequest.grantType : "password",
             AuthRequest.redirectUrl : Constants.rediectURL,
-            AuthRequest.state : "\(NSUUID().UUIDString)"]
+            AuthRequest.state : "\(NSUUID().UUIDString)",
+            AuthRequest.scope : "test"]
         
         let completionWrapper: CompletionBlock = { task, response, error in
+            
+            PMLog.D("\(response)")
+            
             if self.isErrorResponse(response) {
                 completion?(nil, NSError.authInvalidGrant())
             } else if let authInfo = self.authInfoForResponse(response) {
@@ -195,7 +200,6 @@ extension APIService {
             let expiresIn = response["ExpiresIn"] as? NSTimeInterval
             let refreshToken = response["RefreshToken"] as? String
             let userID = response["Uid"] as? String
-            
             let eventID = response["EventID"] as? String ?? ""
             
             lastUpdatedStore.lastEventID = eventID

@@ -88,6 +88,7 @@ class UserDataService {
     }
     
     private(set) var isSignedIn: Bool = false
+    private(set) var isMailboxPWDOk: Bool = false
     
     var isUserCredentialStored: Bool {
         return username != nil && password != nil && isRememberUser
@@ -137,7 +138,6 @@ class UserDataService {
             if error == nil {
                 self.userInfo = userInfo
             }
-            
             completion?(userInfo, error)
         }
     }
@@ -184,7 +184,6 @@ class UserDataService {
                     }
                     completion(auth, error)
                 }
-                
                 self.fetchUserInfo(completion: completionWrapper)
             } else {
                 self.signOut(true)

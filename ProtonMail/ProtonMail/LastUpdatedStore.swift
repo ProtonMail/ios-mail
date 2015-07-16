@@ -28,11 +28,11 @@ public class LastUpdatedStore : SharedCacheBase {
         static let lastEventID = "lastEventID"
         static let unreadMessageCount = "unreadMessageCount"
         
+        //
         static let lastLabelsUpdated = "LastLabelsUpdated"
         static let lastCantactsUpdated = "LastCantactsUpdated"
 
     }
-    
     
     public class UpdateTime : NSObject, NSCoding {
         

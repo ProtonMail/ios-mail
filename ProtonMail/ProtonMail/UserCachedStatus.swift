@@ -10,6 +10,8 @@ import Foundation
 
 let userCachedStatus = UserCachedStatus(shared: NSUserDefaults.standardUserDefaults())
 
+//the data in there store longer.
+
 class UserCachedStatus : SharedCacheBase {
     
     struct Key {
@@ -40,6 +42,10 @@ class UserCachedStatus : SharedCacheBase {
     
     func resetCache() -> Void {
         setValue(AppConstants.CacheVersion, forKey: Key.lastCacheVersion)
+    }
+    
+    func resetTempValue() {
+        
     }
     
     func signOut()

@@ -107,7 +107,7 @@ extension AppDelegate: UIApplicationDelegate {
     func applicationWillEnterForeground(application: UIApplication) {
         Snapshot().willEnterForeground(application)
         
-        if sharedUserDataService.isSignedIn {
+        if sharedUserDataService.isSignedIn && sharedUserDataService.isMailboxPWDOk {
             sharedUserDataService.fetchUserInfo()
         }
     }
