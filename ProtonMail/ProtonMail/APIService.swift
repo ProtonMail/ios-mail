@@ -74,10 +74,15 @@ class APIService {
             let success: AFNetworkingSuccessBlock = { task, responseObject in
                 //PMLog("\(__FUNCTION__) Response: \(responseObject)")
                 if let responseDictionary = responseObject as? Dictionary<String, AnyObject> {
-                    if authenticated && responseDictionary["code"] as? Int == 401 {
+                    if authenticated && responseDictionary["Code"] as? Int == 401 {
                         AuthCredential.expireOrClear()
                         self.request(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)
-                    } else {
+                    } else if responseDictionary["Code"] as? Int == 5002 {
+                        NSError.alertUpdatedToast()
+                        completion(task: task, response: responseDictionary, error: nil)
+                        sharedUserDataService.signOut(false);
+                    }
+                    else {
                         completion(task: task, response: responseDictionary, error: nil)
                     }
                 } else if responseObject == nil {
