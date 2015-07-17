@@ -216,7 +216,7 @@ extension NSData {
         var anError: NSError?
         let openPGP = OpenPGP()
         
-        if !openPGP.checkPassphrase(passphrase, forPrivateKey: privateKey, error: error) {
+        if !openPGP.SetupKeys(privateKey, pubKey: publicKey, pass: passphrase, error: &anError) {
             return nil
         }
 
@@ -268,7 +268,7 @@ extension NSData {
         var anError: NSError?
         let openPGP = OpenPGP()
         
-        if !openPGP.checkPassphrase(passphrase, forPrivateKey: privateKey, error: error) {
+        if !openPGP.SetupKeys(privateKey, pubKey: publicKey, pass: passphrase, error: &anError) {
             return nil
         }
         
