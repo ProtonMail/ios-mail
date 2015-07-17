@@ -98,21 +98,21 @@ class SignUpViewController: UIViewController {
     
     func signUpUser() {
         if(isUserNameValid){
-            MBProgressHUD.showHUDAddedTo(view, animated: true)
-            sharedUserDataService.createNewUser(userNameInput.text, password: passwordInput.text, email: notificationEmail.text, receive: isUpdateNews) { _, error in
-                MBProgressHUD.hideHUDForView(self.view, animated: true)
-                
-                if let error = error {
-                    NSLog("\(__FUNCTION__) error: \(error)")
-                    
-                    let alertController = error.alertController()
-                    alertController.addOKAction()
-                    
-                    self.presentViewController(alertController, animated: true, completion: nil)
-                } else {
-                    self.performSegueWithIdentifier(self.signUpKeySegue, sender: self)
-                }
-            }
+//            MBProgressHUD.showHUDAddedTo(view, animated: true)
+//            sharedUserDataService.createNewUser(userNameInput.text, password: passwordInput.text, email: notificationEmail.text, receive: isUpdateNews) { _, error in
+//                MBProgressHUD.hideHUDForView(self.view, animated: true)
+//                
+//                if let error = error {
+//                    NSLog("\(__FUNCTION__) error: \(error)")
+//                    
+//                    let alertController = error.alertController()
+//                    alertController.addOKAction()
+//                    
+//                    self.presentViewController(alertController, animated: true, completion: nil)
+//                } else {
+//                    self.performSegueWithIdentifier(self.signUpKeySegue, sender: self)
+//                }
+//            }
         }
         else
         {

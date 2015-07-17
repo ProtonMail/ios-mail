@@ -21,6 +21,11 @@ extension APIService {
     typealias AuthCredentialBlock = (AuthCredential?, NSError?) -> Void
     typealias AuthInfo = (accessToken: String?, expiresId: NSTimeInterval?, refreshToken: String?, userID: String?)
     
+    
+    typealias AuthComplete = (task: NSURLSessionDataTask?, hasError : NSError?) -> Void
+    typealias AuthRefreshComplete = (task: NSURLSessionDataTask?, auth:AuthCredential?, hasError : NSError?) -> Void
+    
+    
     struct AuthErrorCode {
         static let credentialExpired = 10
         static let credentialInvalid = 20
@@ -34,67 +39,40 @@ extension APIService {
         //need path and version
     }
     
-    struct Constants {
-        // FIXME: These values would be obtainable by inspecting the binary code, but to make thins a little more difficult, we probably don't want to these values visible when the source code is distributed.  We will probably want to come up with a way to pass in these values as pre-compiler macros.  Swift doesn't support pre-compiler macros, but we have Objective-C and can still use them.  The values would be passed in by the build scripts at build time.  Or, these values could be cleared before publishing the code.
-        static let clientID = "demoapp"
-        static let clientSecret = "demopass"
-        static let rediectURL = "https://protonmail.ch"
-    }
-    
     struct GeneralResponse {
         static let errorCode = "Code"
         static let errorMsg = "Error"
         static let errorDesc = "ErrorDescription"
     }
     
-    //TODO:: need refacotr the api request structures
-    struct AuthRequest {
-        static let clientID = "ClientID"
-        static let clientSecret = "ClientSecret"
-        static let responseType = "ResponseType"
-        static let userName = "Username"
-        static let password = "Password"
-        static let hashedPassword = "HashedPassword"
-        static let grantType = "GrantType"
-        static let redirectUrl = "RedirectURI"
-        static let state = "State"
-        static let scope = "Scope"
-    }
     
     
-    func authAuth(#username: String, password: String, completion: AuthCredentialBlock?) {
-        let path = "/auth" + AppConstants.getDebugOption
-        let parameters = [
-            AuthRequest.clientID : Constants.clientID,
-            AuthRequest.clientSecret : Constants.clientSecret,
-            AuthRequest.responseType : "token",
-            AuthRequest.userName : username,
-            AuthRequest.password : password,
-            AuthRequest.hashedPassword : "",
-            AuthRequest.grantType : "password",
-            AuthRequest.redirectUrl : Constants.rediectURL,
-            AuthRequest.state : "\(NSUUID().UUIDString)",
-            AuthRequest.scope : "test"]
-        
-        let completionWrapper: CompletionBlock = { task, response, error in
-            
-            PMLog.D("\(response)")
-            
-            if self.isErrorResponse(response) {
-                completion?(nil, NSError.authInvalidGrant())
-            } else if let authInfo = self.authInfoForResponse(response) {
-                let credential = AuthCredential(authInfo: authInfo)
-                credential.storeInKeychain()
-                completion?(credential, nil)
-            } else if error == nil {
-                completion?(nil, NSError.authUnableToParseToken())
-            } else {
-                completion?(nil, NSError.unableToParseResponse(response))
+    func auth(username: String, password: String, completion: AuthComplete?) {
+        AuthRequest<AuthResponse>(username: username, password: password).call() { task, res , hasError in
+            if hasError {
+                completion?(task: task, hasError: NSError.authInvalidGrant())
             }
+            else if res?.code == 1000 {
+                let credential = AuthCredential(res: res)
+                credential.storeInKeychain()
+                completion?(task: task, hasError: nil)
+            }
+            else {
+                completion?(task: task, hasError: NSError.authUnableToParseToken())
+            }
+            //            if self.isErrorResponse(response) {
+            //
+            //            } else if let authInfo = self.authInfoForResponse(response) {
+            //
+            //            } else if error == nil {
+            //                completion?(nil, NSError.authUnableToParseToken())
+            //            } else {
+            //                completion?(nil, NSError.unableToParseResponse(response))
+            //            }
         }
-        setApiVesion(2, appVersion: 1)
-        request(method: .POST, path: path, parameters: parameters, authenticated: false, completion: completionWrapper)
+        
     }
+    
     
     func userCreate(user_name: String, pwd: String, email: String, receive_news: Bool, completion: AuthCredentialBlock?) {
         let path = "/users" + AppConstants.getDebugOption
@@ -113,19 +91,19 @@ extension APIService {
         ]
         
         let completionWrapper: CompletionBlock = { task, response, error in
-            if self.isErrorResponse(response) {
-                completion?(nil, NSError.authInvalidGrant())
-            } else if let authInfo = self.authInfoForResponse(response) {
-                let credential = AuthCredential(authInfo: authInfo)
-                
-                credential.storeInKeychain()
-                
-                completion?(credential, nil)
-            } else if error == nil {
-                completion?(nil, NSError.authUnableToParseToken())
-            } else {
-                completion?(nil, NSError.unableToParseResponse(response))
-            }
+//            if self.isErrorResponse(response) {
+//                completion?(nil, NSError.authInvalidGrant())
+//            } else if let authInfo = self.authInfoForResponse(response) {
+//                let credential = AuthCredential(authInfo: authInfo)
+//                
+//                credential.storeInKeychain()
+//                
+//                completion?(credential, nil)
+//            } else if error == nil {
+//                completion?(nil, NSError.authUnableToParseToken())
+//            } else {
+//                completion?(nil, NSError.unableToParseResponse(response))
+//            }
         }
         request(method: .POST, path: path, parameters: parameters, authenticated: false, completion: completionWrapper)
     }
@@ -133,7 +111,7 @@ extension APIService {
     func authRevoke(completion: AuthCredentialBlock?) {
         if let authCredential = AuthCredential.fetchFromKeychain() {
             let path = "/auth/revoke"
-            let parameters = ["access_token" : authCredential.accessToken]
+            let parameters = ["access_token" : authCredential.token ?? ""]
             let completionWrapper: CompletionBlock = { _, _, error in
                 completion?(nil, error)
                 return
@@ -143,77 +121,101 @@ extension APIService {
             completion?(nil, nil)
         }
     }
-
-    func authRefresh(completion: AuthCredentialBlock?) {
+    
+    func authRefresh(password:String, completion: AuthRefreshComplete?) {
         if let authCredential = AuthCredential.fetchFromKeychain() {
-            let path = "/auth/refresh"
             
-            let parameters = [
-                "ClientID": Constants.clientID,
-                "ResponseType": "token",
-                "access_token": authCredential.accessToken,
-                "RefreshToken": authCredential.refreshToken,
-                "GrantType": "refresh_token"]
-            
-            let completionWrapper: CompletionBlock = { task, response, error in
-                if let authInfo = self.authInfoForResponse(response) {
-                    let credential = AuthCredential(authInfo: authInfo)
-                    
-                    credential.storeInKeychain()
-                    
-                    completion?(credential, nil)
-                } else if self.isErrorResponse(response) {
-                    completion?(nil, NSError.authInvalidGrant())
-                } else if error == nil {
-                    completion?(nil, NSError.authUnableToParseToken())
-                } else {
-                    completion?(nil, NSError.unableToParseResponse(response))
+            AuthRefreshRequest<AuthResponse>(resfresh: authCredential.refreshToken).call() { task, res , hasError in
+                if hasError {
+                    completion?(task: task, auth: nil, hasError: NSError.authInvalidGrant())
+                }
+                else if res?.code == 1000 {
+                    authCredential.update(res)
+                    authCredential.setupToken(password)
+                    authCredential.storeInKeychain()
+                    completion?(task: task, auth: authCredential, hasError: nil)
+                }
+                else {
+                    completion?(task: task, auth: nil, hasError: NSError.authUnableToParseToken())
                 }
             }
-            
-            if authCredential.accessToken == nil || authCredential.refreshToken == nil {
-                completion?(nil, NSError.authCacheBad())
-            }
-            else
-            {
-                
-                request(method: .POST, path: path, parameters: parameters, authenticated: false, completion: completionWrapper)
-            }
         } else {
-            completion?(nil, NSError.authCredentialInvalid())
+            completion?(task: nil, auth: nil, hasError: NSError.authCredentialInvalid())
         }
+        
     }
     
-    // MARK: - Private methods
     
-    private func isErrorResponse(response: AnyObject!) -> Bool {
-        if let dict = response as? NSDictionary {
-            //TODO:: check Code == 1000 or now
-            return dict[GeneralResponse.errorMsg] != nil
-        }
-        return false
-    }
     
-    private func authInfoForResponse(response: AnyObject!) -> AuthInfo? {
-        if let response = response as? Dictionary<String,AnyObject> {
-            let accessToken = response["AccessToken"] as? String
-            let expiresIn = response["ExpiresIn"] as? NSTimeInterval
-            let refreshToken = response["RefreshToken"] as? String
-            let userID = response["Uid"] as? String
-            let eventID = response["EventID"] as? String ?? ""
-            
-            lastUpdatedStore.lastEventID = eventID
-            return (accessToken, expiresIn, refreshToken, userID)
-        }
-        return nil
-    }
+    //        if let authCredential = AuthCredential.fetchFromKeychain() {
+    //            let path = "/auth/refresh"
+    //
+    //            let parameters = [
+    //                "ClientID": Constants.clientID,
+    //                "ResponseType": "token",
+    //                "access_token": authCredential.token,
+    //                "RefreshToken": authCredential.refreshToken,
+    //                "GrantType": "refresh_token",
+    //                "Scope": "full"]
+    //
+    //            let completionWrapper: CompletionBlock = { task, response, error in
+    //                if let authInfo = self.authInfoForResponse(response) {
+    //                    let credential = AuthCredential(authInfo: authInfo)
+    //
+    //                    credential.storeInKeychain()
+    //
+    //                    completion?(credential, nil)
+    //                } else if self.isErrorResponse(response) {
+    //                    completion?(nil, NSError.authInvalidGrant())
+    //                } else if error == nil {
+    //                    completion?(nil, NSError.authUnableToParseToken())
+    //                } else {
+    //                    completion?(nil, NSError.unableToParseResponse(response))
+    //                }
+    //            }
+    //
+    //            if authCredential.token == nil || authCredential.refreshToken == nil {
+    //                completion?(nil, NSError.authCacheBad())
+    //            }
+    //            else
+    //            {
+    //                setApiVesion(1, appVersion: 1)
+    //                request(method: .POST, path: path, parameters: parameters, authenticated: false, completion: completionWrapper)
+    //            }
+    //        } else {
+    //            completion?(nil, NSError.authCredentialInvalid())
+    //        }
 }
+
+// MARK: - Private methods
+
+//private func isErrorResponse(response: AnyObject!) -> Bool {
+//    if let dict = response as? NSDictionary {
+//        //TODO:: check Code == 1000 or now
+//        return dict[GeneralResponse.errorMsg] != nil
+//    }
+//    return false
+//}
+//
+//private func authInfoForResponse(response: AnyObject!) -> AuthInfo? {
+//    if let response = response as? Dictionary<String,AnyObject> {
+//        let accessToken = response["AccessToken"] as? String
+//        let expiresIn = response["ExpiresIn"] as? NSTimeInterval
+//        let refreshToken = response["RefreshToken"] as? String
+//        let userID = response["Uid"] as? String
+//        let eventID = response["EventID"] as? String ?? ""
+//
+//        lastUpdatedStore.lastEventID = eventID
+//        return (accessToken, expiresIn, refreshToken, userID)
+//    }
+//    return nil
+//}
 
 extension AuthCredential {
     convenience init(authInfo: APIService.AuthInfo) {
         let expiration = NSDate(timeIntervalSinceNow: (authInfo.expiresId ?? 0))
         
-        self.init(accessToken: authInfo.accessToken, refreshToken: authInfo.refreshToken, userID: authInfo.userID, expiration: expiration)
+        self.init(accessToken: authInfo.accessToken, refreshToken: authInfo.refreshToken, userID: authInfo.userID, expiration: expiration, key : "", plain: authInfo.accessToken, pwd: "")
     }
 }
 

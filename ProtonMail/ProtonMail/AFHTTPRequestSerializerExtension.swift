@@ -18,7 +18,7 @@ import Foundation
 
 extension AFHTTPRequestSerializer {
     func setAuthorizationHeaderFieldWithCredential(credential: AuthCredential) {
-        let accessToken = credential.accessToken ?? ""
+        let accessToken = credential.token ?? ""
         setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         setValue(credential.userID, forHTTPHeaderField: "x-pm-uid")
     }

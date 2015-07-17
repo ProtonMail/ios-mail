@@ -168,7 +168,7 @@ class SettingsViewController: ProtonMailViewController {
     }
     
     private func updateMailboxPassword() {
-        if !sharedUserDataService.isMailboxPasswordValid(currentMailboxPasswordTextField.text) {
+        if !sharedUserDataService.isMailboxPasswordValid(currentMailboxPasswordTextField.text, privateKey: sharedUserDataService.userInfo?.privateKey ?? "") {
             let alertController = UIAlertController(title: NSLocalizedString("Password Mismatch"), message: NSLocalizedString("The mailbox password you entered does not match the current mailbox password."), preferredStyle: .Alert)
             alertController.addOKAction()
             

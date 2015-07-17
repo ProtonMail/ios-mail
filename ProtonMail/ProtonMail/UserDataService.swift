@@ -126,6 +126,10 @@ class UserDataService {
         return userInfo?.signature ?? ""
     }
     
+    var isSet : Bool {
+        return userInfo != nil
+    }
+    
     // MARK: - Public methods
     
     init() {
@@ -142,19 +146,14 @@ class UserDataService {
         }
     }
     
-    func isMailboxPasswordValid(password: String) -> Bool {
-        if let userInfo = userInfo {
-            var error: NSError?
-        
-            let result = OpenPGP().checkPassphrase(password, forPrivateKey: userInfo.privateKey, publicKey: userInfo.publicKey, error: &error)
-                
-            if error == nil {
-                return result
-            } else {
-                NSLog("\(__FUNCTION__) error: \(error!)")
-            }
+    func isMailboxPasswordValid(password: String, privateKey : String) -> Bool {
+        var error: NSError?
+        let result = OpenPGP().checkPassphrase(password, forPrivateKey: privateKey, error: &error)
+        if error == nil {
+            return result
+        } else {
+            NSLog("\(__FUNCTION__) error: \(error!)")
         }
-        
         return false
     }
     
@@ -167,29 +166,34 @@ class UserDataService {
         return self.password == password
     }
     
+    
     func signIn(username: String, password: String, isRemembered: Bool, completion: UserInfoBlock) {
-        sharedAPIService.authAuth(username: username, password: password) { auth, error in
+        sharedAPIService.auth(username, password: password) { task, error in
             if error == nil {
                 self.isSignedIn = true
                 self.username = username
                 self.password = password
-                
                 if isRemembered {
                     self.isRememberUser = isRemembered
                 }
-                
-                let completionWrapper: UserInfoBlock = { auth, error in
-                    if error == nil {
-                        NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignIn, object: self)
-                    }
-                    completion(auth, error)
-                }
-                self.fetchUserInfo(completion: completionWrapper)
+                completion(nil, nil)
             } else {
                 self.signOut(true)
                 completion(nil, error)
             }
         }
+        
+//        if error == nil {
+//            NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignIn, object: self)
+//        }
+//        //completion(auth, error)
+//        self.fetchUserInfo(completion: completionWrapper)
+
+    }
+    
+    func clean() {
+        clearAll()
+        clearAuthToken()
     }
     
     func signOut(animated: Bool) {

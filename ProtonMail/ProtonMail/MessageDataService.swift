@@ -716,9 +716,15 @@ class MessageDataService {
     
     */
     func launchCleanUpIfNeeded() {
-        if !sharedUserDataService.isUserCredentialStored || !userCachedStatus.isCacheOk() {
+        if !sharedUserDataService.isUserCredentialStored || !userCachedStatus.isCacheOk() || !userCachedStatus.isAuthCacheOk() {
             cleanUp()
             userCachedStatus.resetCache()
+            
+            if (!userCachedStatus.isAuthCacheOk()) {
+                sharedUserDataService.clean()
+                userCachedStatus.resetAuthCache()
+            }
+            
             //need add not clean the important infomation here.
         }
     }
@@ -743,6 +749,7 @@ class MessageDataService {
         
         //tempary for clean contact cache
         sharedContactDataService.cleanUp()
+        
         
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
@@ -1107,7 +1114,6 @@ class MessageDataService {
 //                    hud.yOffset = 150
 
                     let attachments = self.attachmentsForMessage(message)
-                    
                     sharedAPIService.userPublicKeysForEmails(message.allEmailAddresses, completion: { (task, response, error) -> Void in
                         if error != nil && error!.code == APIService.ErrorCode.badParameter {
                             errorBlock(task: task, response: response, error: error)

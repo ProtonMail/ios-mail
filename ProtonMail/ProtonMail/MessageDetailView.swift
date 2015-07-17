@@ -746,7 +746,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
         if context != &kKVOContext {
             super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
         } else if object as! NSObject == message && keyPath == Message.Attributes.isDetailDownloaded {
-            updateEmailBodyWebView(true)
+            //updateEmailBodyWebView(true)
             updateAttachments()
         }
     }

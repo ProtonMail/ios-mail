@@ -25,10 +25,10 @@ extension OpenPGP {
         case badProtonMailPGPMessage = 10006
     }
     
-    func checkPassphrase(passphrase: String, forPrivateKey privateKey: String, publicKey: String, error: NSErrorPointer?) -> Bool {
+    func checkPassphrase(passphrase: String, forPrivateKey privateKey: String, error: NSErrorPointer?) -> Bool {
         var anError: NSError?
         
-        if !SetupKeys(privateKey, pubKey: publicKey, pass: passphrase, error: &anError) {
+        if !CheckPassphrase(privateKey, pass: passphrase, error: &anError) {
             if let error = error {
                 error.memory = anError
             }
@@ -73,14 +73,57 @@ extension OpenPGP {
 
 extension String {
     
-    func decryptWithPrivateKey(privateKey: String, passphrase: String, publicKey: String, error: NSErrorPointer?) -> String? {
+    func decryptWithPrivateKey(privateKey: String, passphrase: String, error: NSErrorPointer?) -> String? {
         let openPGP = OpenPGP()
         
-        if !openPGP.checkPassphrase(passphrase, forPrivateKey: privateKey, publicKey: publicKey, error: error) {
+        if !openPGP.CheckPassphrase(privateKey, pass: passphrase, error: nil) {
             return nil
         }
         
         var anError: NSError?
+        if let decrypt = openPGP.decrypt_message(privateKey, pass: passphrase, encrypted: self, error: &anError) {
+            return decrypt
+        }
+        
+        if let error = error {
+            error.memory = anError
+        }
+        
+        return nil
+    }
+    
+    func decryptWithPrivateKey(forLogin privateKey: String, passphrase: String, error: NSErrorPointer?) -> String? {
+        let openPGP = OpenPGP()
+        
+        if !openPGP.checkPassphrase(passphrase, forPrivateKey: privateKey, error: error) {
+            return nil
+        }
+        
+        var anError: NSError?
+        if let decrypt = openPGP.decrypt_message(self, error: &anError) {
+            return decrypt
+        }
+        
+        if let error = error {
+            error.memory = anError
+        }
+        
+        return nil
+    }
+    
+    func decryptWithPrivateKey(privateKey: String, passphrase: String, publicKey: String, error: NSErrorPointer?) -> String? {
+        let openPGP = OpenPGP()
+         var anError: NSError?
+        
+        if !openPGP.SetupKeys(privateKey, pubKey: publicKey, pass: passphrase, error: &anError) {
+            if let error = error {
+                error.memory = anError
+            }
+
+            return nil
+        }
+        
+       
         if let decrypt = openPGP.decrypt_message(self, error: &anError) {
             return decrypt
         }
@@ -173,7 +216,7 @@ extension NSData {
         var anError: NSError?
         let openPGP = OpenPGP()
         
-        if !openPGP.checkPassphrase(passphrase, forPrivateKey: privateKey, publicKey: publicKey, error: error) {
+        if !openPGP.SetupKeys(privateKey, pubKey: publicKey, pass: passphrase, error: &anError) {
             return nil
         }
 
@@ -225,7 +268,7 @@ extension NSData {
         var anError: NSError?
         let openPGP = OpenPGP()
         
-        if !openPGP.checkPassphrase(passphrase, forPrivateKey: privateKey, publicKey: publicKey, error: error) {
+        if !openPGP.SetupKeys(privateKey, pubKey: publicKey, pass: passphrase, error: &anError) {
             return nil
         }
         

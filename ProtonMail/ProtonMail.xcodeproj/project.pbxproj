@@ -837,7 +837,6 @@
 		75ECCDFC1B31EF3600A8C800 /* APIService */ = {
 			isa = PBXGroup;
 			children = (
-				07B797C41A6EE5FF00244532 /* AuthCredential.swift */,
 				75ECCE011B31F44600A8C800 /* AuthAPI.swift */,
 				7567B0741B3383F900A72A1E /* MessageAPI.swift */,
 				7518393E1B3DCA3000C714A6 /* EventAPI.swift */,
@@ -860,6 +859,7 @@
 		75F54C631B3B314100290F73 /* Cache */ = {
 			isa = PBXGroup;
 			children = (
+				07B797C41A6EE5FF00244532 /* AuthCredential.swift */,
 				75CFA26E1B223DBB006E4465 /* SharedCacheBase.swift */,
 				75F169801AF80B5900BE6E79 /* UserCachedStatus.swift */,
 				07DD68A21A96CFB800ED130C /* LastUpdatedStore.swift */,

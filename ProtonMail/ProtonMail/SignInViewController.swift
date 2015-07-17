@@ -162,22 +162,37 @@ class SignInViewController: UIViewController {
                 
                 self.presentViewController(alertController, animated: true, completion: nil)
             } else {
-                self.loadUser()
+                self.loadContent()
             }
         }
     }
     
-    private func loadUser() {
-        self.loadContactsAfterInstall()
+    func signInIfRememberedCredentials() {
+        if sharedUserDataService.isUserCredentialStored {
+            isRemembered = true
+            rememberButton.selected = true
+            usernameTextField.text = sharedUserDataService.username
+            passwordTextField.text = sharedUserDataService.password
+            
+            self.loadContent()
+        }
+        else
+        {
+            clean()
+        }
+    }
+    
+    private func loadContent() {
         if sharedUserDataService.isMailboxPasswordStored {
             (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
+            loadContactsAfterInstall()
         } else {
-            if count(sharedUserDataService.userInfo!.privateKey.trim()) > 10 {
+            //if count(AuthCredential.getPrivateKey().trim()) > 10 {
                 self.performSegueWithIdentifier(self.mailboxSegue, sender: self)
-            }
-            else {
-                self.performSegueWithIdentifier(self.signUpKeySegue, sender: self)
-            }
+//            }
+//            else {
+//                self.performSegueWithIdentifier(self.signUpKeySegue, sender: self)
+//            }
         }
     }
     
@@ -190,21 +205,6 @@ class SignInViewController: UIViewController {
                 NSLog("Contacts count: \(contacts!.count)")
             }
         })
-    }
-    
-    func signInIfRememberedCredentials() {
-        if sharedUserDataService.isUserCredentialStored {
-            isRemembered = true
-            rememberButton.selected = true
-            usernameTextField.text = sharedUserDataService.username
-            passwordTextField.text = sharedUserDataService.password
-            
-            self.loadUser()
-        }
-        else
-        {
-            clean()
-        }
     }
     
     

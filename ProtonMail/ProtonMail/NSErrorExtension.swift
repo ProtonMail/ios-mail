@@ -61,4 +61,24 @@ extension NSError {
         
         return UIAlertController(title: localizedDescription, message: message, preferredStyle: .Alert)
     }
+    
+    class func alertUpdatedToast() ->Void {
+        let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
+        var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+        hud.mode = MBProgressHUDMode.Text
+        hud.labelText = "Alert";
+        hud.detailsLabelText = "Your app cannot be used until it is updated";
+        hud.removeFromSuperViewOnHide = true
+        hud.hide(true, afterDelay: 3)
+    }
+
+    
+    class func unknowError() -> NSError {
+        return apiServiceError(
+            code: -1,
+            localizedDescription: NSLocalizedString("Unknow Error"),
+            localizedFailureReason: NSLocalizedString("Unknow Error!"))
+    }
+    
+    
 }

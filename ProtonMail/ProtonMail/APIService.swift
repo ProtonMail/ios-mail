@@ -23,6 +23,8 @@ let APIServiceErrorDomain = NSError.protonMailErrorDomain(subdomain: "APIService
 let sharedAPIService = APIService()
 class APIService {
     
+    var tried : Int = 0
+    
     typealias CompletionBlock = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, error: NSError?) -> Void
     typealias CompletionFetchDetail = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, message:Message?, error: NSError?) -> Void
     
@@ -72,10 +74,15 @@ class APIService {
             let success: AFNetworkingSuccessBlock = { task, responseObject in
                 //PMLog("\(__FUNCTION__) Response: \(responseObject)")
                 if let responseDictionary = responseObject as? Dictionary<String, AnyObject> {
-                    if authenticated && responseDictionary["code"] as? Int == 401 {
+                    if authenticated && responseDictionary["Code"] as? Int == 401 {
                         AuthCredential.expireOrClear()
                         self.request(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)
-                    } else {
+                    } else if responseDictionary["Code"] as? Int == 5002 {
+                        NSError.alertUpdatedToast()
+                        completion(task: task, response: responseDictionary, error: nil)
+                        sharedUserDataService.signOut(false);
+                    }
+                    else {
                         completion(task: task, response: responseDictionary, error: nil)
                     }
                 } else if responseObject == nil {
@@ -110,21 +117,29 @@ class APIService {
     internal func fetchAuthCredential(#completion: AuthCredentialBlock) {
         if let credential = AuthCredential.fetchFromKeychain() {
             if !credential.isExpired {
+                self.tried = 0
                 self.sessionManager.requestSerializer.setAuthorizationHeaderFieldWithCredential(credential)
                 PMLog.D("credential: \(credential)")
                 completion(credential, nil)
             } else {
-                authRefresh { (authCredential, error) -> Void in
-                    if error == nil {
+                self.tried += 1
+                authRefresh (credential.password  ?? "") { (task, authCredential, error) -> Void in
+                    if error == nil && self.tried < 4{
                         self.fetchAuthCredential(completion: completion)
                     } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIService.AuthErrorCode.invalidGrant {
                         AuthCredential.clearFromKeychain()
                         self.fetchAuthCredential(completion: completion)
                     } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIService.AuthErrorCode.localCacheBad {
-                        
+                        AuthCredential.clearFromKeychain()
+                        completion(authCredential, error)
                         sharedUserDataService.signOut(false)
-                        
-                    } else {
+                    } else if self.tried > 3 {
+                        self.tried = 0
+                        AuthCredential.clearFromKeychain()
+                        completion(nil, NSError.authCacheBad())
+                        sharedUserDataService.signOut(false)
+                    }
+                    else {
                         completion(authCredential, error)
                     }
                 }
@@ -140,7 +155,12 @@ class APIService {
                 }
             }
             
-            authAuth(username: username, password: password, completion: completionWrapper)
+            let authApi = AuthRequest(username: username, password: password)
+            authApi.call() { task, res , hasError in
+                PMLog.D("test")
+            }
+            
+            //authAuth(username, password: password, completion: completionWrapper)
         }
     }
     
@@ -149,36 +169,36 @@ class APIService {
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
     internal func download(#path: String, destinationDirectoryURL: NSURL, downloadTask: ((NSURLSessionDownloadTask) -> Void)?, completion: ((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
         //AuthCredential.expireOrClear()
-//        fetchAuthCredential() { _, error in
-//            if error == nil {
-                if let url = NSURL(string: path, relativeToURL: self.sessionManager.baseURL) {
-                    var serializeError: NSError?
-                    
-                    if let request = self.sessionManager.requestSerializer.requestWithMethod("GET", URLString: url.absoluteString!, parameters: nil, error: &serializeError) {
-                        if let sessionDownloadTask = self.sessionManager.downloadTaskWithRequest(
-                            request,
-                            progress: nil,
-                            destination: { (targetURL, response) -> NSURL! in
-                                //let fileName = response.suggestedFilename!
-                                return destinationDirectoryURL//.URLByAppendingPathComponent(fileName)
-                            },
-                            completionHandler: completion) {
-                                downloadTask?(sessionDownloadTask)
-                                
-                                sessionDownloadTask.resume()
-                        }
-                    } else {
-                        completion?(nil, nil, serializeError)
-                    }
-                    
-                } else {
-                    completion?(nil, nil, NSError.badPath(path))
-                    return
+        //        fetchAuthCredential() { _, error in
+        //            if error == nil {
+        if let url = NSURL(string: path, relativeToURL: self.sessionManager.baseURL) {
+            var serializeError: NSError?
+            
+            if let request = self.sessionManager.requestSerializer.requestWithMethod("GET", URLString: url.absoluteString!, parameters: nil, error: &serializeError) {
+                if let sessionDownloadTask = self.sessionManager.downloadTaskWithRequest(
+                    request,
+                    progress: nil,
+                    destination: { (targetURL, response) -> NSURL! in
+                        //let fileName = response.suggestedFilename!
+                        return destinationDirectoryURL//.URLByAppendingPathComponent(fileName)
+                    },
+                    completionHandler: completion) {
+                        downloadTask?(sessionDownloadTask)
+                        
+                        sessionDownloadTask.resume()
                 }
-//            } else {
-//                completion?(nil, nil, error)
-//            }
-//        }
+            } else {
+                completion?(nil, nil, serializeError)
+            }
+            
+        } else {
+            completion?(nil, nil, NSError.badPath(path))
+            return
+        }
+        //            } else {
+        //                completion?(nil, nil, error)
+        //            }
+        //        }
     }
     
     internal func setApiVesion(apiVersion:Int, appVersion:Int)
