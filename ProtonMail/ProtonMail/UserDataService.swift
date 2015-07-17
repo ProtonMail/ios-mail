@@ -167,29 +167,35 @@ class UserDataService {
         return self.password == password
     }
     
+    
     func signIn(username: String, password: String, isRemembered: Bool, completion: UserInfoBlock) {
-        sharedAPIService.authAuth(username: username, password: password) { auth, error in
-            if error == nil {
-                self.isSignedIn = true
-                self.username = username
-                self.password = password
-                
-                if isRemembered {
-                    self.isRememberUser = isRemembered
-                }
-                
-                let completionWrapper: UserInfoBlock = { auth, error in
-                    if error == nil {
-                        NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignIn, object: self)
-                    }
-                    completion(auth, error)
-                }
-                self.fetchUserInfo(completion: completionWrapper)
-            } else {
-                self.signOut(true)
-                completion(nil, error)
-            }
+        sharedAuthDataService.auth(username, password: password) { task, hasError in
+            
         }
+        
+        
+//       //        sharedAPIService.authAuth(username, password: password) { auth, error in
+//            if error == nil {
+//                self.isSignedIn = true
+//                self.username = username
+//                self.password = password
+//                
+//                if isRemembered {
+//                    self.isRememberUser = isRemembered
+//                }
+//                
+//                let completionWrapper: UserInfoBlock = { auth, error in
+//                    if error == nil {
+//                        NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignIn, object: self)
+//                    }
+//                    completion(auth, error)
+//                }
+//                self.fetchUserInfo(completion: completionWrapper)
+//            } else {
+//                self.signOut(true)
+//                completion(nil, error)
+//            }
+//        }
     }
     
     func signOut(animated: Bool) {

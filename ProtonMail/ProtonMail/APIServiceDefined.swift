@@ -30,6 +30,15 @@ public struct MessageAPI {
     
 }
 
+public struct AuthAPI {
+    /// base message api path
+    static let Path :String = "/auth"
+    
+    /// fetch message request version
+    static let V_AuthRequest : Int = 1
+}
+
+
 public struct SettingsAPI {
     /// base message api path
     static let Path :String = "/settings"

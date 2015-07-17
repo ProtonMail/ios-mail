@@ -13,9 +13,11 @@ public class ApiResponse {
     public required init() {}
     
     public var code : Int! = 1000
-    public var error : String?
+    public var errorMessage : String?
     public var errorDetails : String?
     public var internetCode : Int? //only use when error happend.
+    
+    public var error : NSError?
     
     func CheckHttpStatus() -> Bool {
         return code == 200 || code == 1000
@@ -27,7 +29,7 @@ public class ApiResponse {
     
     func ParseResponseError (response: Dictionary<String,AnyObject>!) -> Bool {
         code = response["Code"] as? Int
-        error = response["Error"] as? String
+        errorMessage = response["Error"] as? String
         errorDetails = response["ErrorDescription"] as? String
         return code != 1000
     }
@@ -43,7 +45,7 @@ public class ApiResponse {
                 internetCode = error.code
             }
             
-            self.error = error.description
+            self.errorMessage = error.description
             self.errorDetails = error.debugDescription
         }
     }

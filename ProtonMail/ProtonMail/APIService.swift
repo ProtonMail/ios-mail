@@ -140,7 +140,12 @@ class APIService {
                 }
             }
             
-            authAuth(username: username, password: password, completion: completionWrapper)
+            let authApi = AuthRequest(username: username, password: password)
+            authApi.call() { task, res , hasError in
+                PMLog.D("test")
+            }
+            
+            //authAuth(username, password: password, completion: completionWrapper)
         }
     }
     

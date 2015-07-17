@@ -34,67 +34,12 @@ extension APIService {
         //need path and version
     }
     
-    struct Constants {
-        // FIXME: These values would be obtainable by inspecting the binary code, but to make thins a little more difficult, we probably don't want to these values visible when the source code is distributed.  We will probably want to come up with a way to pass in these values as pre-compiler macros.  Swift doesn't support pre-compiler macros, but we have Objective-C and can still use them.  The values would be passed in by the build scripts at build time.  Or, these values could be cleared before publishing the code.
-        static let clientID = "demoapp"
-        static let clientSecret = "demopass"
-        static let rediectURL = "https://protonmail.ch"
-    }
-    
     struct GeneralResponse {
         static let errorCode = "Code"
         static let errorMsg = "Error"
         static let errorDesc = "ErrorDescription"
     }
-    
-    //TODO:: need refacotr the api request structures
-    struct AuthRequest {
-        static let clientID = "ClientID"
-        static let clientSecret = "ClientSecret"
-        static let responseType = "ResponseType"
-        static let userName = "Username"
-        static let password = "Password"
-        static let hashedPassword = "HashedPassword"
-        static let grantType = "GrantType"
-        static let redirectUrl = "RedirectURI"
-        static let state = "State"
-        static let scope = "Scope"
-    }
-    
-    
-    func authAuth(#username: String, password: String, completion: AuthCredentialBlock?) {
-        let path = "/auth" + AppConstants.getDebugOption
-        let parameters = [
-            AuthRequest.clientID : Constants.clientID,
-            AuthRequest.clientSecret : Constants.clientSecret,
-            AuthRequest.responseType : "token",
-            AuthRequest.userName : username,
-            AuthRequest.password : password,
-            AuthRequest.hashedPassword : "",
-            AuthRequest.grantType : "password",
-            AuthRequest.redirectUrl : Constants.rediectURL,
-            AuthRequest.state : "\(NSUUID().UUIDString)",
-            AuthRequest.scope : "test"]
-        
-        let completionWrapper: CompletionBlock = { task, response, error in
-            
-            PMLog.D("\(response)")
-            
-            if self.isErrorResponse(response) {
-                completion?(nil, NSError.authInvalidGrant())
-            } else if let authInfo = self.authInfoForResponse(response) {
-                let credential = AuthCredential(authInfo: authInfo)
-                credential.storeInKeychain()
-                completion?(credential, nil)
-            } else if error == nil {
-                completion?(nil, NSError.authUnableToParseToken())
-            } else {
-                completion?(nil, NSError.unableToParseResponse(response))
-            }
-        }
-        setApiVesion(2, appVersion: 1)
-        request(method: .POST, path: path, parameters: parameters, authenticated: false, completion: completionWrapper)
-    }
+
     
     func userCreate(user_name: String, pwd: String, email: String, receive_news: Bool, completion: AuthCredentialBlock?) {
         let path = "/users" + AppConstants.getDebugOption

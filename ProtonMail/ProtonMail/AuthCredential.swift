@@ -34,6 +34,16 @@ class AuthCredential: NSObject, NSCoding {
         return expiration == nil || NSDate().compare(expiration) != .OrderedAscending
     }
     
+    required init(res : AuthResponse!) {
+        
+        self.accessToken = res.accessToken
+        self.refreshToken = res.refreshToken
+        self.userID = res.userID
+        self.expiration = NSDate(timeIntervalSince1970: res.expiresIn ?? 0)
+        
+        super.init()
+    }
+    
     required init(accessToken: String!, refreshToken: String!, userID: String!, expiration: NSDate!) {
         
         self.accessToken = accessToken
