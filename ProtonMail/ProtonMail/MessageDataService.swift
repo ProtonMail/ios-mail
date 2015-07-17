@@ -716,9 +716,15 @@ class MessageDataService {
     
     */
     func launchCleanUpIfNeeded() {
-        if !sharedUserDataService.isUserCredentialStored || !userCachedStatus.isCacheOk() {
+        if !sharedUserDataService.isUserCredentialStored || !userCachedStatus.isCacheOk() || !userCachedStatus.isAuthCacheOk() {
             cleanUp()
             userCachedStatus.resetCache()
+            
+            if (!userCachedStatus.isAuthCacheOk()) {
+                sharedUserDataService.clean()
+                userCachedStatus.resetAuthCache()
+            }
+            
             //need add not clean the important infomation here.
         }
     }
@@ -743,6 +749,7 @@ class MessageDataService {
         
         //tempary for clean contact cache
         sharedContactDataService.cleanUp()
+        
         
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }

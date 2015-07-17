@@ -121,9 +121,8 @@ class APIService {
                         AuthCredential.clearFromKeychain()
                         self.fetchAuthCredential(completion: completion)
                     } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIService.AuthErrorCode.localCacheBad {
-                        
+                        completion(authCredential, error)
                         sharedUserDataService.signOut(false)
-                        
                     } else {
                         completion(authCredential, error)
                     }

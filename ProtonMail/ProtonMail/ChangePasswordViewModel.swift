@@ -96,7 +96,7 @@ class ChangeMailboxPWDViewModel : ChangePWDViewModel{
         let newpwd = new_pwd.trim();
         let confirmpwd = confirm_new_pwd.trim();
         
-        if curr_pwd != sharedUserDataService.mailboxPassword || !sharedUserDataService.isMailboxPasswordValid(curr_pwd) {
+        if curr_pwd != sharedUserDataService.mailboxPassword || !sharedUserDataService.isMailboxPasswordValid(curr_pwd, privateKey: sharedUserDataService.userInfo?.privateKey ?? "") {
             complete(false, NSError.currentPwdWrong())
         }
         else if newpwd == "" || confirmpwd == "" {
@@ -148,7 +148,7 @@ class ChangePWDViewModelTest : ChangePWDViewModel{
         let newpwd = new_pwd.trim();
         let confirmpwd = confirm_new_pwd.trim();
         
-        if curr_pwd != sharedUserDataService.mailboxPassword || !sharedUserDataService.isMailboxPasswordValid(curr_pwd) {
+        if curr_pwd != sharedUserDataService.mailboxPassword || !sharedUserDataService.isMailboxPasswordValid(curr_pwd, privateKey: sharedUserDataService.userInfo?.privateKey ?? "") {
             complete(false, NSError.currentPwdWrong())
         }
         else if newpwd == "" || confirmpwd == "" {

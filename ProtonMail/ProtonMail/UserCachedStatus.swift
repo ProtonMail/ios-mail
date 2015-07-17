@@ -18,6 +18,7 @@ class UserCachedStatus : SharedCacheBase {
         // inuse
         static let lastCacheVersion = "last_cache_version"
         static let isCheckSpaceDisabled = "isCheckSpaceDisabledKey"
+        static let lastAuthCacheVersion = "last_auth_cache_version"
         
         //wait
         static let lastFetchMessageID = "last_fetch_message_id"
@@ -40,8 +41,17 @@ class UserCachedStatus : SharedCacheBase {
         return cachedVersion == AppConstants.CacheVersion
     }
     
+    func isAuthCacheOk() -> Bool {
+        let cachedVersion = getShared().integerForKey(Key.lastAuthCacheVersion)
+        return cachedVersion == AppConstants.CacheVersion
+    }
+    
     func resetCache() -> Void {
         setValue(AppConstants.CacheVersion, forKey: Key.lastCacheVersion)
+    }
+    
+    func resetAuthCache() -> Void {
+        setValue(AppConstants.CacheVersion, forKey: Key.lastAuthCacheVersion)
     }
     
     func resetTempValue() {
@@ -56,6 +66,7 @@ class UserCachedStatus : SharedCacheBase {
         getShared().removeObjectForKey(Key.historyTimeStamp);
         getShared().removeObjectForKey(Key.lastCacheVersion);
         getShared().removeObjectForKey(Key.isCheckSpaceDisabled);
+        getShared().removeObjectForKey(Key.lastAuthCacheVersion);
         getShared().synchronize()
     }
 }

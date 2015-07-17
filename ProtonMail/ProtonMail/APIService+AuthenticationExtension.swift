@@ -21,6 +21,9 @@ extension APIService {
     typealias AuthCredentialBlock = (AuthCredential?, NSError?) -> Void
     typealias AuthInfo = (accessToken: String?, expiresId: NSTimeInterval?, refreshToken: String?, userID: String?)
     
+    
+    typealias AuthComplete = (task: NSURLSessionDataTask?, hasError : NSError?) -> Void
+    
     struct AuthErrorCode {
         static let credentialExpired = 10
         static let credentialInvalid = 20
@@ -39,6 +42,35 @@ extension APIService {
         static let errorMsg = "Error"
         static let errorDesc = "ErrorDescription"
     }
+    
+    
+    
+    func auth(username: String, password: String, completion: AuthComplete?) {
+        AuthRequest<AuthResponse>(username: username, password: password).call() { task, res , hasError in
+            if hasError {
+                completion?(task: task, hasError: NSError.authInvalidGrant())
+            }
+            else if res?.code == 1000 {
+                let credential = AuthCredential(res: res)
+                credential.storeInKeychain()
+                completion?(task: task, hasError: nil)
+            }
+            else {
+                completion?(task: task, hasError: NSError.authUnableToParseToken())
+            }
+            //            if self.isErrorResponse(response) {
+            //
+            //            } else if let authInfo = self.authInfoForResponse(response) {
+            //
+            //            } else if error == nil {
+            //                completion?(nil, NSError.authUnableToParseToken())
+            //            } else {
+            //                completion?(nil, NSError.unableToParseResponse(response))
+            //            }
+        }
+        
+    }
+
 
     
     func userCreate(user_name: String, pwd: String, email: String, receive_news: Bool, completion: AuthCredentialBlock?) {
@@ -78,7 +110,7 @@ extension APIService {
     func authRevoke(completion: AuthCredentialBlock?) {
         if let authCredential = AuthCredential.fetchFromKeychain() {
             let path = "/auth/revoke"
-            let parameters = ["access_token" : authCredential.accessToken]
+            let parameters = ["access_token" : authCredential.token ?? ""]
             let completionWrapper: CompletionBlock = { _, _, error in
                 completion?(nil, error)
                 return
@@ -96,9 +128,10 @@ extension APIService {
             let parameters = [
                 "ClientID": Constants.clientID,
                 "ResponseType": "token",
-                "access_token": authCredential.accessToken,
+                "access_token": authCredential.token,
                 "RefreshToken": authCredential.refreshToken,
-                "GrantType": "refresh_token"]
+                "GrantType": "refresh_token",
+                "Scope": "full"]
             
             let completionWrapper: CompletionBlock = { task, response, error in
                 if let authInfo = self.authInfoForResponse(response) {
@@ -116,12 +149,12 @@ extension APIService {
                 }
             }
             
-            if authCredential.accessToken == nil || authCredential.refreshToken == nil {
+            if authCredential.token == nil || authCredential.refreshToken == nil {
                 completion?(nil, NSError.authCacheBad())
             }
             else
             {
-                
+                setApiVesion(1, appVersion: 1)
                 request(method: .POST, path: path, parameters: parameters, authenticated: false, completion: completionWrapper)
             }
         } else {
@@ -158,7 +191,7 @@ extension AuthCredential {
     convenience init(authInfo: APIService.AuthInfo) {
         let expiration = NSDate(timeIntervalSinceNow: (authInfo.expiresId ?? 0))
         
-        self.init(accessToken: authInfo.accessToken, refreshToken: authInfo.refreshToken, userID: authInfo.userID, expiration: expiration)
+        self.init(accessToken: authInfo.accessToken, refreshToken: authInfo.refreshToken, userID: authInfo.userID, expiration: expiration, key : "", plain: authInfo.accessToken)
     }
 }
 

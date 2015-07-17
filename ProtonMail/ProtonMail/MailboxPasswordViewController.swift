@@ -93,15 +93,60 @@ class MailboxPasswordViewController: UIViewController {
     func decryptPassword() {
         let password = passwordTextField.text
         
-        if sharedUserDataService.isMailboxPasswordValid(password) {
-            sharedUserDataService.setMailboxPassword(password, isRemembered: isRemembered)
-            (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
+        if sharedUserDataService.isMailboxPasswordValid(password, privateKey: AuthCredential.getPrivateKey()) {
+            if sharedUserDataService.isSet {
+                sharedUserDataService.setMailboxPassword(password, isRemembered: self.isRemembered)
+                (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
+            } else {
+                AuthCredential.setupToken(password, isRememberMailbox: self.isRemembered)
+                MBProgressHUD.showHUDAddedTo(view, animated: true)
+                sharedUserDataService.fetchUserInfo() { info, error in
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    if error != nil {
+                        let alertController = error!.alertController()
+                        alertController.addOKAction()
+                        if error!.domain == APIServiceErrorDomain && error!.code == APIService.AuthErrorCode.localCacheBad {
+                            self.navigationController?.popViewControllerAnimated(true)
+                        }
+                    } else if info != nil {
+                        sharedUserDataService.setMailboxPassword(password, isRemembered: self.isRemembered)
+                        self.loadContent()
+                    } else {
+                        let alertController = NSError.unknowError().alertController()
+                        alertController.addOKAction()
+                    }
+                }
+            }
         } else {
             let alert = UIAlertController(title: NSLocalizedString("Incorrect password"), message: NSLocalizedString("The mailbox password is incorrect."), preferredStyle: .Alert)
             alert.addAction((UIAlertAction.okAction()))
-            
             presentViewController(alert, animated: true, completion: nil)
         }
+    }
+    
+    private func loadContent() {
+        self.loadContactsAfterInstall()
+        //if sharedUserDataService.isMailboxPasswordStored {
+            (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
+        //} else {
+//            if count(AuthCredential.getPrivateKey().trim()) > 10 {
+//                self.performSegueWithIdentifier(self.mailboxSegue, sender: self)
+//            }
+//            else {
+//                self.performSegueWithIdentifier(self.signUpKeySegue, sender: self)
+//            }
+       // }
+    }
+    
+    func loadContactsAfterInstall()
+    {
+        sharedContactDataService.fetchContacts({ (contacts, error) -> Void in
+            if error != nil {
+                NSLog("\(error)")
+            } else {
+                NSLog("Contacts count: \(contacts!.count)")
+            }
+        })
     }
     
     func updateButton(button: UIButton) {

@@ -21,36 +21,53 @@ class AuthCredential: NSObject, NSCoding {
         static let keychainStore = "keychainStoreKey"
     }
     
-    let accessToken: String!
+    let encryptToken: String!
     let refreshToken: String!
     let userID: String!
     var expiration: NSDate!
+    let privateKey : String!
+    var plainToken : String?
     
     override var description: String {
-        return "\n  accessToken: \(accessToken)\n  refreshToken: \(refreshToken)\n  expiration: \(expiration)\n  userID: \(userID)"
+        return "\n  encToken: \(encryptToken)\n  refreshToken: \(refreshToken)\n  expiration: \(expiration)\n  userID: \(userID)"
     }
     
     var isExpired: Bool {
         return expiration == nil || NSDate().compare(expiration) != .OrderedAscending
     }
     
+    class func setupToken (password:String, isRememberMailbox : Bool) {
+        if let data = UICKeyChainStore.dataForKey(Key.keychainStore) {
+            if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? AuthCredential {
+                authCredential.plainToken = authCredential.encryptToken.decryptWithPrivateKey(authCredential.privateKey, passphrase: password, error: nil)
+                authCredential.storeInKeychain()
+            }
+        }
+    }
+    
+    var token : String? {
+        return self.plainToken
+    }
+    
+    
     required init(res : AuthResponse!) {
         
-        self.accessToken = res.accessToken
+        self.encryptToken = res.accessToken
         self.refreshToken = res.refreshToken
         self.userID = res.userID
-        self.expiration = NSDate(timeIntervalSince1970: res.expiresIn ?? 0)
-        
+        self.expiration = NSDate(timeIntervalSinceNow: res.expiresIn ?? 0)
+        self.privateKey = res.encPrivateKey
         super.init()
     }
     
-    required init(accessToken: String!, refreshToken: String!, userID: String!, expiration: NSDate!) {
+    required init(accessToken: String!, refreshToken: String!, userID: String!, expiration: NSDate!, key : String!, plain: String?) {
         
-        self.accessToken = accessToken
+        self.encryptToken = accessToken
         self.refreshToken = refreshToken
         self.userID = userID
         self.expiration = expiration
-        
+        self.privateKey = key
+        self.plainToken = plain
         super.init()
     }
     
@@ -58,7 +75,9 @@ class AuthCredential: NSObject, NSCoding {
         self.init(accessToken: aDecoder.decodeObjectForKey(CoderKey.accessToken) as? String,
             refreshToken: aDecoder.decodeObjectForKey(CoderKey.refreshToken) as? String,
             userID: aDecoder.decodeObjectForKey(CoderKey.userID) as? String,
-            expiration: aDecoder.decodeObjectForKey(CoderKey.expiration) as? NSDate);
+            expiration: aDecoder.decodeObjectForKey(CoderKey.expiration) as? NSDate,
+            key: aDecoder.decodeObjectForKey(CoderKey.key) as? String,
+            plain: aDecoder.decodeObjectForKey(CoderKey.plainToken) as? String);
     }
     
     private func expire() {
@@ -68,6 +87,15 @@ class AuthCredential: NSObject, NSCoding {
     
     func storeInKeychain() {
         UICKeyChainStore().setData(NSKeyedArchiver.archivedDataWithRootObject(self), forKey: Key.keychainStore)
+    }
+    
+    class func getPrivateKey() -> String {
+        if let data = UICKeyChainStore.dataForKey(Key.keychainStore) {
+            if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? AuthCredential {
+                return authCredential.privateKey
+            }
+        }
+        return ""
     }
     
     // MARK - Class methods
@@ -101,12 +129,16 @@ class AuthCredential: NSObject, NSCoding {
         static let refreshToken = "refreshTokenCoderKey"
         static let userID = "userIDCoderKey"
         static let expiration = "expirationCoderKey"
+        static let key = "privateKeyCoderKey"
+        static let plainToken = "plainCoderKey"
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(accessToken, forKey: CoderKey.accessToken)
+        aCoder.encodeObject(encryptToken, forKey: CoderKey.accessToken)
         aCoder.encodeObject(refreshToken, forKey: CoderKey.refreshToken)
         aCoder.encodeObject(userID, forKey: CoderKey.userID)
         aCoder.encodeObject(expiration, forKey: CoderKey.expiration)
+        aCoder.encodeObject(privateKey, forKey: CoderKey.key)
+        aCoder.encodeObject(plainToken, forKey: CoderKey.plainToken)
     }
 }

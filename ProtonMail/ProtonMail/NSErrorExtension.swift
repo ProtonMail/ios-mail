@@ -61,4 +61,16 @@ extension NSError {
         
         return UIAlertController(title: localizedDescription, message: message, preferredStyle: .Alert)
     }
+    
+    
+    
+    
+    class func unknowError() -> NSError {
+        return apiServiceError(
+            code: -1,
+            localizedDescription: NSLocalizedString("Unknow Error"),
+            localizedFailureReason: NSLocalizedString("Unknow Error!"))
+    }
+    
+    
 }
