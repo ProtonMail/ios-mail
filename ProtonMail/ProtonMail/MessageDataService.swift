@@ -1114,7 +1114,6 @@ class MessageDataService {
 //                    hud.yOffset = 150
 
                     let attachments = self.attachmentsForMessage(message)
-                    
                     sharedAPIService.userPublicKeysForEmails(message.allEmailAddresses, completion: { (task, response, error) -> Void in
                         if error != nil && error!.code == APIService.ErrorCode.badParameter {
                             errorBlock(task: task, response: response, error: error)

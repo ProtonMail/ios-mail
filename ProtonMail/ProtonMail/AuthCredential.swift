@@ -21,12 +21,13 @@ class AuthCredential: NSObject, NSCoding {
         static let keychainStore = "keychainStoreKey"
     }
     
-    let encryptToken: String!
-    let refreshToken: String!
-    let userID: String!
+    var encryptToken: String!
+    var refreshToken: String!
+    var userID: String!
     var expiration: NSDate!
-    let privateKey : String!
+    var privateKey : String!
     var plainToken : String?
+    var password : String?
     
     override var description: String {
         return "\n  encToken: \(encryptToken)\n  refreshToken: \(refreshToken)\n  expiration: \(expiration)\n  userID: \(userID)"
@@ -36,17 +37,34 @@ class AuthCredential: NSObject, NSCoding {
         return expiration == nil || NSDate().compare(expiration) != .OrderedAscending
     }
     
-    class func setupToken (password:String, isRememberMailbox : Bool) {
+    class func setupToken (password:String, isRememberMailbox : Bool = true) {
         if let data = UICKeyChainStore.dataForKey(Key.keychainStore) {
             if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? AuthCredential {
-                authCredential.plainToken = authCredential.encryptToken.decryptWithPrivateKey(authCredential.privateKey, passphrase: password, error: nil)
-                authCredential.storeInKeychain()
+                authCredential.setupToken(password)
             }
         }
     }
     
+    
+    func setupToken (password:String) {
+        self.plainToken = self.encryptToken.decryptWithPrivateKey(self.privateKey, passphrase: password, error: nil)
+        self.password = password;
+        self.storeInKeychain()
+    }
+    
+    
     var token : String? {
         return self.plainToken
+    }
+    
+    func update(res : AuthResponse!) {
+        self.encryptToken = res.accessToken
+        if res.refreshToken != nil {
+            self.refreshToken = res.refreshToken
+        }
+        self.userID = res.userID
+        self.expiration = NSDate(timeIntervalSinceNow: res.expiresIn ?? 0)
+        self.privateKey = res.encPrivateKey
     }
     
     
@@ -55,12 +73,12 @@ class AuthCredential: NSObject, NSCoding {
         self.encryptToken = res.accessToken
         self.refreshToken = res.refreshToken
         self.userID = res.userID
-        self.expiration = NSDate(timeIntervalSinceNow: res.expiresIn ?? 0)
+        self.expiration = NSDate(timeIntervalSince1970: res.expiresIn ?? 0) //NSDate(timeIntervalSinceNow: res.expiresIn ?? 0)
         self.privateKey = res.encPrivateKey
         super.init()
     }
     
-    required init(accessToken: String!, refreshToken: String!, userID: String!, expiration: NSDate!, key : String!, plain: String?) {
+    required init(accessToken: String!, refreshToken: String!, userID: String!, expiration: NSDate!, key : String!, plain: String?, pwd:String?) {
         
         self.encryptToken = accessToken
         self.refreshToken = refreshToken
@@ -68,6 +86,7 @@ class AuthCredential: NSObject, NSCoding {
         self.expiration = expiration
         self.privateKey = key
         self.plainToken = plain
+        self.password = pwd
         super.init()
     }
     
@@ -77,7 +96,8 @@ class AuthCredential: NSObject, NSCoding {
             userID: aDecoder.decodeObjectForKey(CoderKey.userID) as? String,
             expiration: aDecoder.decodeObjectForKey(CoderKey.expiration) as? NSDate,
             key: aDecoder.decodeObjectForKey(CoderKey.key) as? String,
-            plain: aDecoder.decodeObjectForKey(CoderKey.plainToken) as? String);
+            plain: aDecoder.decodeObjectForKey(CoderKey.plainToken) as? String,
+            pwd: aDecoder.decodeObjectForKey(CoderKey.pwd) as? String);
     }
     
     private func expire() {
@@ -131,6 +151,7 @@ class AuthCredential: NSObject, NSCoding {
         static let expiration = "expirationCoderKey"
         static let key = "privateKeyCoderKey"
         static let plainToken = "plainCoderKey"
+        static let pwd = "pwdKey"
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
@@ -140,5 +161,6 @@ class AuthCredential: NSObject, NSCoding {
         aCoder.encodeObject(expiration, forKey: CoderKey.expiration)
         aCoder.encodeObject(privateKey, forKey: CoderKey.key)
         aCoder.encodeObject(plainToken, forKey: CoderKey.plainToken)
+        aCoder.encodeObject(password, forKey: CoderKey.pwd)
     }
 }

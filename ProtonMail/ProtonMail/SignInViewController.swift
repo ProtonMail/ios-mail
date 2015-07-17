@@ -187,12 +187,12 @@ class SignInViewController: UIViewController {
             (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
             loadContactsAfterInstall()
         } else {
-            if count(AuthCredential.getPrivateKey().trim()) > 10 {
+            //if count(AuthCredential.getPrivateKey().trim()) > 10 {
                 self.performSegueWithIdentifier(self.mailboxSegue, sender: self)
-            }
-            else {
-                self.performSegueWithIdentifier(self.signUpKeySegue, sender: self)
-            }
+//            }
+//            else {
+//                self.performSegueWithIdentifier(self.signUpKeySegue, sender: self)
+//            }
         }
     }
     

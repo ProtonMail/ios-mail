@@ -75,6 +75,56 @@ public class AuthRequest<T : ApiResponse> : ApiRequest<T> {
 }
 
 
+// MARK : Get messages part
+public class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
+    
+    var resfreshToken : String!
+   // var password : String!
+    
+    init(resfresh : String) {
+        self.resfreshToken = resfresh;
+    }
+    
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+
+        let out = [
+            "ClientID": Constants.clientID,
+            "ResponseType": "token",
+            "RefreshToken": resfreshToken,
+            "GrantType": "refresh_token",
+            "RedirectURI" : "http://www.protonmail.ch",
+            AuthKey.state : "\(NSUUID().UUIDString)"]
+        
+//            {
+//                "ResponseType": "token",
+//                "ClientID": "demoapp",
+//                "GrantType": "refresh_token",
+//                "RefreshToken":"8de763c8e14a3c793e7a3b916b53c3492d100285",
+//                "RedirectURI": "http://www.protonmail.ch",
+//                "State": "random_string"
+        //}
+        
+        PMLog.D(self.JSONStringify(out, prettyPrinted: true))
+        
+        return out
+    }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .POST
+    }
+    
+    override public func getRequestPath() -> String {
+        return AuthAPI.Path + "/refresh" + AppConstants.getDebugOption
+    }
+    
+    override public func getIsAuthFunction() -> Bool {
+        return false
+    }
+}
+
+
+
+
 // MARK : Response part
 
 
@@ -90,7 +140,7 @@ public class AuthResponse : ApiResponse {
     override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
         
         PMLog.D(response.JSONStringify(prettyPrinted: true))
-
+        
         self.userID = response["Uid"] as? String
         self.encPrivateKey = response["EncPrivateKey"] as? String
         self.accessToken = response["AccessToken"] as? String
