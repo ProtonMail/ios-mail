@@ -92,7 +92,7 @@ extension String {
         return nil
     }
     
-    func decryptWithPrivateKey(privateKey: String, passphrase: String, publicKey: String, error: NSErrorPointer?) -> String? {
+    func decryptWithPrivateKey(forLogin privateKey: String, passphrase: String, error: NSErrorPointer?) -> String? {
         let openPGP = OpenPGP()
         
         if !openPGP.checkPassphrase(passphrase, forPrivateKey: privateKey, error: error) {
@@ -100,6 +100,30 @@ extension String {
         }
         
         var anError: NSError?
+        if let decrypt = openPGP.decrypt_message(self, error: &anError) {
+            return decrypt
+        }
+        
+        if let error = error {
+            error.memory = anError
+        }
+        
+        return nil
+    }
+    
+    func decryptWithPrivateKey(privateKey: String, passphrase: String, publicKey: String, error: NSErrorPointer?) -> String? {
+        let openPGP = OpenPGP()
+         var anError: NSError?
+        
+        if !openPGP.SetupKeys(privateKey, pubKey: publicKey, pass: passphrase, error: &anError) {
+            if let error = error {
+                error.memory = anError
+            }
+
+            return nil
+        }
+        
+       
         if let decrypt = openPGP.decrypt_message(self, error: &anError) {
             return decrypt
         }
