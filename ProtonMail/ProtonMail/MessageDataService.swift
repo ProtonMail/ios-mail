@@ -1090,13 +1090,8 @@ class MessageDataService {
     }
     
     private func sendMessageID(messageID: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
-        //let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
-        //var  hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
-        
+
         let errorBlock: CompletionBlock = { task, response, error in
-            
-            //hud.labelText = "Fetch key failed"
-            //hud.hide(true, afterDelay: 2)
             // nothing to send, dequeue request
             sharedMessageQueue.remove(elementID: writeQueueUUID)
             self.dequeueIfNeeded()
@@ -1107,12 +1102,6 @@ class MessageDataService {
             var error: NSError?
             if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID) {
                 if let message = context.existingObjectWithID(objectID, error: &error) as? Message {
-//                    hud.mode = MBProgressHUDMode.Text
-//                    hud.labelText = "Sending message ..."
-//                    hud.removeFromSuperViewOnHide = true
-//                    hud.margin = 10
-//                    hud.yOffset = 150
-
                     let attachments = self.attachmentsForMessage(message)
                     sharedAPIService.userPublicKeysForEmails(message.allEmailAddresses, completion: { (task, response, error) -> Void in
                         if error != nil && error!.code == APIService.ErrorCode.badParameter {
@@ -1120,8 +1109,10 @@ class MessageDataService {
                             return
                         }
                         
+                        // is encrypt outside
                         let isEncryptOutside = !message.password.isEmpty
                         
+                        // get attachment
                         let attachments = self.attachmentsForMessage(message)
                         
                         // create package for internal
@@ -1129,19 +1120,10 @@ class MessageDataService {
                         
                         // parse the response for keys
                         let messageBody = self.messageBodyForMessage(message, response: response)
-                        
-                        
-                        // build the encrypt bodys
-                        
-                        
-                        // build clear output
-                        
+
                         let completionWrapper: CompletionBlock = { task, response, error in
                             // remove successful send from Core Data
                             if error == nil {
-//                                hud.labelText = "Message have been sent"
-//                                hud.hide(true, afterDelay: 2)
-                                
                                 //TODO : here need to handle the response have the error code
                                 context.deleteObject(message)
                                 if let error = context.saveUpstreamIfNeeded() {
@@ -1149,8 +1131,7 @@ class MessageDataService {
                                 }
                             }
                             else {
-//                                hud.labelText = "Send Failed"
-//                                hud.hide(true, afterDelay: 2)
+                                
                             }
                             completion?(task: task, response: response, error: error)
                             return

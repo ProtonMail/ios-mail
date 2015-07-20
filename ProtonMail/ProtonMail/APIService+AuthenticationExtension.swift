@@ -175,7 +175,6 @@ extension APIService {
 }
 
 // MARK: - Private methods
-
 //private func isErrorResponse(response: AnyObject!) -> Bool {
 //    if let dict = response as? NSDictionary {
 //        //TODO:: check Code == 1000 or now

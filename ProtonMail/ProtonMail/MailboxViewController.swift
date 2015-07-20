@@ -443,58 +443,23 @@ class MailboxViewController: ProtonMailViewController {
     
     private func performSegueForMessage(message: Message) {
         if isDrafts() {
-            sharedMessageDataService.fetchMessageDetailForMessage(message) {_, _, msg, error in
-                if error != nil {
-                    NSLog("\(__FUNCTION__) error: \(error)")
+            if !message.messageID.isEmpty {
+                sharedMessageDataService.fetchMessageDetailForMessage(message) {_, _, msg, error in
+                    if error != nil {
+                        NSLog("\(__FUNCTION__) error: \(error)")
+                    }
+                    else
+                    {
+                        self.selectedDraft = msg
+                        // delay(1.0, {
+                        self.performSegueWithIdentifier(self.kSegueToComposeShow, sender: self)
+                        //  })
+                        
+                    }
                 }
-                else
-                {
-                    self.selectedDraft = msg
-                   // delay(1.0, {
-                       self.performSegueWithIdentifier(self.kSegueToComposeShow, sender: self)
-                  //  })
-                    
-                }
+            } else {
+                self.performSegueWithIdentifier(self.kSegueToComposeShow, sender: self)
             }
-            //message.fetchDetailIfNeeded()
-//            message.fetchDetailIfNeeded() { _, _, msg, error in
-//                println(self.message.isDetailDownloaded)
-//                
-//                if error != nil {
-//                    NSLog("\(__FUNCTION__) error: \(error)")
-//                }
-//                else
-//                {
-//                    if !self.message.isDetailDownloaded
-//                    {
-//                        // println(msg?.isDetailDownloaded)
-//                        if let fetchedMessageController = self.fetchedMessageController {
-//                            println( fetchedMessageController.fetchedObjects?.count)
-//                            if let last = fetchedMessageController.fetchedObjects?.last as? Message {
-//                                println(last.isDetailDownloaded)
-//                                self.message = last
-//                                self.messageDetailView.message = self.message
-//                            }
-//                            else
-//                            {
-//                                self.setupFetchedResultsController(self.message.messageID)
-//                                if let fetchedMessageController = self.fetchedMessageController {
-//                                    println( fetchedMessageController.fetchedObjects?.count)
-//                                    if let last = fetchedMessageController.fetchedObjects?.last as? Message {
-//                                        println(last.isDetailDownloaded)
-//                                        self.message = last
-//                                        self.messageDetailView.message = self.message
-//                                    }
-//                                }
-//                                
-//                            }
-//                        }
-//                    }
-//                }
-
-            
-            
-            
         } else {
             performSegueWithIdentifier(kSegueToMessageDetailController, sender: self)
         }

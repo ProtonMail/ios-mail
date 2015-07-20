@@ -70,8 +70,14 @@ extension NSError {
         hud.detailsLabelText = "Your app cannot be used until it is updated";
         hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)
+        //                    hud.mode = MBProgressHUDMode.Text
+        //                    hud.labelText = "Sending message ..."
+        //                    hud.removeFromSuperViewOnHide = true
+        //                    hud.margin = 10
+        //                    hud.yOffset = 150
+        
     }
-
+    
     
     class func unknowError() -> NSError {
         return apiServiceError(
