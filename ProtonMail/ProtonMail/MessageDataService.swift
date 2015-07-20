@@ -573,30 +573,6 @@ class MessageDataService {
         }
     }
     
-    
-//    func fetchMessageCountForInbox() {
-//        fetchMessageCountForLocation(.inbox, completion: { (task, response, error) -> Void in
-//            if let unreadCount = response?[Key.unread] as? Int {
-//                UIApplication.sharedApplication().applicationIconBadgeNumber = unreadCount
-//            }
-//        })
-//    }
-    
-//    func fetchMessageCountForLocation(location: MessageLocation, completion: CompletionBlock?) {
-//        queue { () -> Void in
-//            let completionWrapper: CompletionBlock = {task, response, error in
-//                let countInfo: Dictionary<String, Int> = [
-//                    Key.unread : response?["UnRead"] as? Int ?? 0,
-//                    Key.read : response?["Read"] as? Int ?? 0,
-//                    Key.total : response?["Total"] as? Int ?? 0]
-//                
-//                completion?(task: task, response: countInfo, error: error)
-//            }
-//            
-//            sharedAPIService.messageCountForLocation(location.rawValue, completion: completionWrapper)
-//        }
-//    }
-    
     func fetchMessageDetailForMessage(message: Message, completion: CompletionFetchDetail) {
         if !message.isDetailDownloaded {
             queue {
@@ -619,7 +595,7 @@ class MessageDataService {
                                     //}
                                 }
                             } else {
-                                //completion(task: task, response: response, message:nil, error: NS)
+                                completion(task: task, response: response, message:nil, error: NSError.badResponse())
                             }
                         } else {
                             error = NSError.unableToParseResponse(response)
@@ -1104,7 +1080,7 @@ class MessageDataService {
                 if let message = context.existingObjectWithID(objectID, error: &error) as? Message {
                     let attachments = self.attachmentsForMessage(message)
                     sharedAPIService.userPublicKeysForEmails(message.allEmailAddresses, completion: { (task, response, error) -> Void in
-                        if error != nil && error!.code == APIService.ErrorCode.badParameter {
+                        if error != nil && error!.code == APIErrorCode.badParameter {
                             errorBlock(task: task, response: response, error: error)
                             return
                         }

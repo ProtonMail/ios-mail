@@ -9,7 +9,12 @@
 import Foundation
 
 class APIErrorCode {
-    static let ResponseOK = 1000
+    static let responseOK = 1000
+    
+    static let badParameter = 1
+    static let badPath = 2
+    static let unableToParseResponse = 3
+    static let badResponse = 4
     
     struct AuthErrorCode {
         static let credentialExpired = 10
@@ -25,6 +30,10 @@ class APIErrorCode {
         static let newNotMatch = 12022
         static let pwdUpdateFailed = 12023
         static let pwdEmpty = 12024
+    }
+    
+    struct ErrorCode {
+
     }
 }
 
@@ -100,3 +109,49 @@ extension NSError {
             localizedFailureReason: NSLocalizedString("The new password can't empty"))
     }
 }
+
+
+// MARK: - NSError APIService extension
+
+extension NSError {
+    
+    class func apiServiceError(#code: Int, localizedDescription: String, localizedFailureReason: String?, localizedRecoverySuggestion: String? = nil) -> NSError {
+        return NSError(
+            domain: APIServiceErrorDomain,
+            code: code,
+            localizedDescription: localizedDescription,
+            localizedFailureReason: localizedFailureReason,
+            localizedRecoverySuggestion: localizedRecoverySuggestion)
+    }
+    
+    class func badParameter(parameter: AnyObject?) -> NSError {
+        return apiServiceError(
+            code: APIErrorCode.badParameter,
+            localizedDescription: NSLocalizedString("Bad parameter"),
+            localizedFailureReason: NSLocalizedString("Bad parameter: \(parameter)"))
+    }
+    
+    class func badPath(path: String) -> NSError {
+        return apiServiceError(
+            code: APIErrorCode.badPath,
+            localizedDescription: NSLocalizedString("Bad path"),
+            localizedFailureReason: NSLocalizedString("Unable to construct a valid URL with the following path: \(path)"))
+    }
+    
+    class func badResponse() -> NSError {
+        return apiServiceError(
+            code: APIErrorCode.badResponse,
+            localizedDescription: NSLocalizedString("Bad response"),
+            localizedFailureReason: NSLocalizedString("Can't not find the value from the response body"))
+    }
+    
+    class func unableToParseResponse(response: AnyObject?) -> NSError {
+        let noObject = NSLocalizedString("<no object>")
+        
+        return apiServiceError(
+            code: APIErrorCode.unableToParseResponse,
+            localizedDescription: NSLocalizedString("Unable to parse response"),
+            localizedFailureReason: NSLocalizedString("Unable to parse the response object:\n\(response ?? noObject)"))
+    }
+}
+

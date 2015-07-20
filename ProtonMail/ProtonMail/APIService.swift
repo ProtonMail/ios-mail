@@ -27,12 +27,7 @@ class APIService {
     
     typealias CompletionBlock = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, error: NSError?) -> Void
     typealias CompletionFetchDetail = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, message:Message?, error: NSError?) -> Void
-    
-    struct ErrorCode {
-        static let badParameter = 1
-        static let badPath = 2
-        static let unableToParseResponse = 3
-    }
+
     
     enum HTTPMethod {
         case DELETE
@@ -331,39 +326,3 @@ class APIService {
     }
 }
 
-// MARK: - NSError APIService extension
-
-extension NSError {
-    
-    class func apiServiceError(#code: Int, localizedDescription: String, localizedFailureReason: String?, localizedRecoverySuggestion: String? = nil) -> NSError {
-        return NSError(
-            domain: APIServiceErrorDomain,
-            code: code,
-            localizedDescription: localizedDescription,
-            localizedFailureReason: localizedFailureReason,
-            localizedRecoverySuggestion: localizedRecoverySuggestion)
-    }
-    
-    class func badParameter(parameter: AnyObject?) -> NSError {
-        return apiServiceError(
-            code: APIService.ErrorCode.badParameter,
-            localizedDescription: NSLocalizedString("Bad parameter"),
-            localizedFailureReason: NSLocalizedString("Bad parameter: \(parameter)"))
-    }
-    
-    class func badPath(path: String) -> NSError {
-        return apiServiceError(
-            code: APIService.ErrorCode.badPath,
-            localizedDescription: NSLocalizedString("Bad path"),
-            localizedFailureReason: NSLocalizedString("Unable to construct a valid URL with the following path: \(path)"))
-    }
-    
-    class func unableToParseResponse(response: AnyObject?) -> NSError {
-        let noObject = NSLocalizedString("<no object>")
-        
-        return apiServiceError(
-            code: APIService.ErrorCode.unableToParseResponse,
-            localizedDescription: NSLocalizedString("Unable to parse response"),
-            localizedFailureReason: NSLocalizedString("Unable to parse the response object:\n\(response ?? noObject)"))
-    }
-}
