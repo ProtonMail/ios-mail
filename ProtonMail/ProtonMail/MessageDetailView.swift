@@ -22,6 +22,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
     private var isViewingMoreOptions: Bool = false
     private var receipientlist : String = "";
     private var ccList : String = "";
+    private var bccList : String = "";
     private var tempFileUri : NSURL?
     
     // MARK: - Private constants
@@ -69,10 +70,14 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
     private var emailTime: UILabel!
     private var emailDetailButton: UIButton!
     private var emailDetailView: UIView!
+    
     private var emailDetailToLabel: UILabel!
     private var emailDetailToContentLabel: UILabel!
     private var emailDetailCCLabel: UILabel!
     private var emailDetailCCContentLabel: UILabel!
+    private var emailDetailBCCLabel: UILabel!
+    private var emailDetailBCCContentLabel: UILabel!
+    
     private var emailDetailDateLabel: UILabel!
     private var emailDetailDateContentLabel: UILabel!
     private var emailFavoriteButton: UIButton!
@@ -296,6 +301,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
         
         self.configureEmailDetailToLabel()
         self.configureEmailDetailCCLabel()
+        self.configureEmailDetailBCCLabel()
         self.configureEmailDetailDateLabel()
         
         self.emailFavoriteButton = UIButton()
@@ -456,12 +462,25 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
             make.width.equalTo()(self.emailDetailToLabel)
             make.height.equalTo()(ccHeight)
         }
-        
         emailDetailCCContentLabel.mas_makeConstraints { (make) -> Void in
             make.centerY.equalTo()(self.emailDetailCCLabel)
             make.left.equalTo()(self.emailDetailCCLabel.mas_right)
             make.right.equalTo()(self.emailDetailView)
             make.height.equalTo()(ccHeight)
+        }
+        
+        let bccHeight = !self.bccList.isEmpty ? self.emailDetailBCCLabel.frame.size.height : 0
+        emailDetailBCCLabel.mas_makeConstraints { (make) -> Void in
+            make.left.equalTo()(self.emailDetailCCLabel)
+            make.top.equalTo()(self.emailDetailCCLabel.mas_bottom).with().offset()( ccHeight == 0 ? 0 : self.kEmailDetailCCLabelMarginTop)
+            make.width.equalTo()(self.emailDetailCCLabel)
+            make.height.equalTo()(bccHeight)
+        }
+        emailDetailBCCContentLabel.mas_makeConstraints { (make) -> Void in
+            make.centerY.equalTo()(self.emailDetailBCCLabel)
+            make.left.equalTo()(self.emailDetailBCCLabel.mas_right)
+            make.right.equalTo()(self.emailDetailView)
+            make.height.equalTo()(bccHeight)
         }
         
         emailDetailView.mas_makeConstraints { (make) -> Void in
@@ -473,9 +492,9 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
         
         emailDetailDateLabel.mas_makeConstraints { (make) -> Void in
             make.left.equalTo()(self.emailDetailToLabel)
-            make.top.equalTo()(self.emailDetailCCLabel.mas_bottom).with().offset()(self.kEmailDetailDateLabelMarginTop)
+            make.top.equalTo()(self.emailDetailBCCLabel.mas_bottom).with().offset()(self.kEmailDetailDateLabelMarginTop)
             make.width.equalTo()(self.emailDetailToLabel)
-            make.height.equalTo()(self.emailDetailCCLabel.frame.size.height)
+            make.height.equalTo()(self.emailDetailBCCLabel.frame.size.height)
         }
         
         emailDetailDateContentLabel.mas_makeConstraints { (make) -> Void in
@@ -576,8 +595,10 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
                 self.emailRecipients.text = "From: \(self.message.sender)"
                 self.emailDetailToLabel.text = "To: \(self.receipientlist)"
                 self.emailDetailCCLabel.text = "CC: \(self.ccList)"
+                self.emailDetailBCCLabel.text = "BCC: \(self.bccList)"
                 self.emailDetailToLabel.sizeToFit()
                 self.emailDetailCCLabel.sizeToFit()
+                self.emailDetailBCCLabel.sizeToFit()
                 }, completion: nil)
             
             self.emailDetailButton.setTitle(NSLocalizedString("Hide Details"), forState: UIControlState.Normal)
@@ -619,6 +640,22 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
                 make.left.equalTo()(self.emailDetailCCLabel.mas_right)
                 make.right.equalTo()(self.emailDetailView)
                 make.height.equalTo()(ccHeight)
+            }
+            
+            let bccHeight = !self.bccList.isEmpty ? self.emailDetailBCCLabel.frame.size.height : 0
+            emailDetailBCCLabel.mas_updateConstraints { (make) -> Void in
+                make.removeExisting = true
+                make.left.equalTo()(self.emailDetailCCLabel)
+                make.top.equalTo()(self.emailDetailCCLabel.mas_bottom).with().offset()( bccHeight == 0 ? 0 : self.kEmailDetailCCLabelMarginTop)
+                make.width.equalTo()(self.emailDetailCCLabel)
+                make.height.equalTo()(bccHeight)
+            }
+            emailDetailBCCContentLabel.mas_updateConstraints { (make) -> Void in
+                make.removeExisting = true
+                make.centerY.equalTo()(self.emailDetailBCCLabel)
+                make.left.equalTo()(self.emailDetailBCCLabel.mas_right)
+                make.right.equalTo()(self.emailDetailView)
+                make.height.equalTo()(bccHeight)
             }
             
             self.emailTime.mas_updateConstraints({ (make) -> Void in
@@ -675,7 +712,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
     
     private func generateData()
     {
-        //var receipientnamelist = "";
+        self.receipientlist = "";
         let recipients : [[String : String]] = message.recipientList.parseJson()!
         for dict:[String : String] in recipients {
             if(receipientlist.isEmpty) {
@@ -686,7 +723,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
             }
         }
         
-        
+        self.ccList = ""
         let cc : [[String : String]] = message.ccList.parseJson()!
         for dict:[String : String] in cc {
             if(ccList.isEmpty) {
@@ -694,6 +731,17 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
             }
             else{
                 ccList = ccList + "," + dict.getDisplayName()
+            }
+        }
+        
+        self.bccList = ""
+        let bcc : [[String : String]] = message.bccList.parseJson()!
+        for dict:[String : String] in bcc {
+            if(bccList.isEmpty) {
+                bccList = dict.getDisplayName()
+            }
+            else{
+                bccList = bccList + "," + dict.getDisplayName()
             }
         }
     }
@@ -742,6 +790,25 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
         self.emailDetailCCContentLabel.textColor = UIColor.ProtonMail.Blue_85B1DE
         self.emailDetailCCContentLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailCCContentLabel)
+    }
+    
+    private func configureEmailDetailBCCLabel() {
+        self.emailDetailBCCLabel = UILabel()
+        self.emailDetailBCCLabel.font = UIFont.robotoLight(size: UIFont.Size.h5)
+        self.emailDetailBCCLabel.lineBreakMode = NSLineBreakMode.ByCharWrapping
+        self.emailDetailBCCLabel.numberOfLines = 0;
+        self.emailDetailBCCLabel.text = "Bcc: \(self.ccList)"
+        self.emailDetailBCCLabel.textColor = UIColor.ProtonMail.Gray_999DA1
+        self.emailDetailBCCLabel.sizeToFit()
+        self.emailDetailView.addSubview(emailDetailBCCLabel)
+        
+        self.emailDetailBCCContentLabel = UILabel()
+        self.emailDetailBCCContentLabel.font = UIFont.robotoRegular(size: UIFont.Size.h5)
+        self.emailDetailBCCContentLabel.numberOfLines = 1
+        self.emailDetailBCCContentLabel.text = message.ccNameList
+        self.emailDetailBCCContentLabel.textColor = UIColor.ProtonMail.Blue_85B1DE
+        self.emailDetailBCCContentLabel.sizeToFit()
+        self.emailDetailView.addSubview(emailDetailBCCContentLabel)
     }
     
     private func configureEmailDetailDateLabel() {
