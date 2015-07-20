@@ -19,11 +19,16 @@ class MessageDetailViewController: ProtonMailViewController {
             message.fetchDetailIfNeeded() { _, _, msg, error in
                 println(self.message.isDetailDownloaded)
                 println(self.message.body)
+                println(self.message.ccList)
+                
+                NSLog("\(__FUNCTION__) error: \(self.message)")
+                
                 if error != nil {
                     NSLog("\(__FUNCTION__) error: \(error)")
                 }
                 else
                 {
+                    self.messageDetailView?.updateHeaderView()
                     self.messageDetailView?.updateEmailBodyWebView(true)
                     self.messageDetailView?.layoutIfNeeded()
                 }
@@ -52,6 +57,7 @@ class MessageDetailViewController: ProtonMailViewController {
         
         println(msg_id);
         self.fetchedMessageController = sharedMessageDataService.fetchedMessageControllerForID(msg_id)
+
         
         NSLog("\(__FUNCTION__) INFO: \(fetchedMessageController?.sections)")
         

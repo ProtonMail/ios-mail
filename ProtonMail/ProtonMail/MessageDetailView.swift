@@ -174,6 +174,13 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
         }
     }
     
+    func updateHeaderView() {
+        self.generateData()
+        if self.isShowingDetail {
+            self.updateDetailsView(self.isShowingDetail)
+        }
+    }
+    
     func updateEmailBodyWebView(animated: Bool) {
         let completion: ((Bool) -> Void) = { finished in
             var bodyText = NSLocalizedString("Loading...")
@@ -184,7 +191,6 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
                 if let error = error {
                     self.delegate?.messageDetailView(self, didFailDecodeWithError: error)
                 }
-                self.updateFromToField()
             }
             
             let font = UIFont.robotoLight(size: UIFont.Size.h6)
@@ -197,9 +203,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
             
             let css : String  = "article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary{display:block}audio,canvas,video{display:inline-block}audio:not([controls]){display:none;height:0}[hidden]{display:none}html{font-size:80%;-webkit-text-size-adjust:80%;-ms-text-size-adjust:80%}button,html,input,select,textarea{font-family:sans-serif}body{font:15px/1.4rem normal \"Helvetica Neue\",Arial,Helvetica,sans-serif;font-weight:400;margin:0;width:100%;box-sizing:border-box;padding:1rem;word-break:break-word}a:focus{outline:dotted thin}a:active,a:hover{outline:0}h1{font-size:2em;margin:.67em 0}h2{font-size:1.5em;margin:.83em 0}h3{font-size:1.17em;margin:1em 0}h4{font-size:1em;margin:1.33em 0}h5{font-size:.83em;margin:1.67em 0}h6{font-size:.75em;margin:2.33em 0}abbr[title]{border-bottom:1px dotted}b,strong{font-weight:700}blockquote{padding:0 0 0 2rem;margin:1rem 0}blockquote blockquote{padding:0 0 0 1rem}dfn{font-style:italic}mark{background:#ff0;color:#000}p,pre{margin:1em 0}code,kbd,pre,samp{font-family:monospace,serif;font-size:1em}pre{white-space:pre;white-space:pre-wrap;word-wrap:break-word}q{quotes:none}q:after,q:before{content:\"\";content:none}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-.5em}sub{bottom:-.25em}dl,menu,ol,ul{margin:1em 0}dd{margin:0 0 0 40px}menu,ol,ul{padding:0 0 0 40px}nav ol,nav ul{list-style:none}img{border:0;-ms-interpolation-mode:bicubic;max-width:100%}table img{max-width:none}svg:not(:root){overflow:hidden}figure,form{margin:0}fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}legend{border:0;padding:0;white-space:normal}button,input,select,textarea{font-size:100%;margin:0;vertical-align:baseline}button,input{line-height:normal}button,html input[type=button],input[type=reset],input[type=submit]{-webkit-appearance:button;cursor:pointer}button[disabled],input[disabled]{cursor:default}input[type=checkbox],input[type=radio]{box-sizing:border-box;padding:0}input[type=search]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}input[type=search]::-webkit-search-cancel-button,input[type=search]::-webkit-search-decoration{-webkit-appearance:none}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}textarea{overflow:auto;vertical-align:top}table{border-collapse:collapse;border-spacing:0}"
 
-            
 //            let messageCSS: String = "html, body { font-family: sans-serif; font-size:0.9em; margin:0; border:0;width:375px;-webkit-text-size-adjust: auto;word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;}.inbox-body {padding-top:5px;padding-left:1px; padding-bottom:5px;padding-right:1px;} a { color:rgb(0,153,204); } div { max-width:100%%; } .gmail_extra {  display:none; } blockquote, img { max-width: 100%; height:auto; }"
-            
             
            // let htmlString = "<span style=\"font-family: \(font.fontName); font-size: \(font.pointSize); color: \(cssColorString)\">\(bodyText)</span>"
             
@@ -216,19 +220,6 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
             completion(true)
         }
     }
-    
-    func updateFromToField()
-    {
-//        self.emailDetailToLabel.text = "To: \(receipientlist)"
-//        self.emailDetailToContentLabel.text = "\(message.recipientNameList)"
-//        
-//        self.emailDetailCCLabel.text = "Cc: \(self.message.ccList)"
-//        self.emailDetailCCLabel.sizeToFit()
-//        self.emailDetailCCContentLabel.text = message.ccNameList
-//
-//        self.makeConstraints()
-    }
-    
     
     // MARK: - Subviews
     
@@ -457,31 +448,27 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
             make.right.equalTo()(self.emailDetailView)
             make.height.equalTo()(self.emailDetailToContentLabel.frame.size.height)
         }
-        println(self.emailDetailCCLabel.frame.size.height )
-        println(self.message.ccList)
+
         let ccHeight = !self.ccList.isEmpty ? self.emailDetailCCLabel.frame.size.height : 0
         emailDetailCCLabel.mas_makeConstraints { (make) -> Void in
             make.left.equalTo()(self.emailDetailToLabel)
-            make.top.equalTo()(self.emailDetailToLabel.mas_bottom).with().offset()(self.kEmailDetailCCLabelMarginTop)
+            make.top.equalTo()(self.emailDetailToLabel.mas_bottom).with().offset()( ccHeight == 0 ? 0 : self.kEmailDetailCCLabelMarginTop)
             make.width.equalTo()(self.emailDetailToLabel)
             make.height.equalTo()(ccHeight)
-        }//
+        }
         
-        println(emailDetailCCLabel.frame.height)
+        emailDetailCCContentLabel.mas_makeConstraints { (make) -> Void in
+            make.centerY.equalTo()(self.emailDetailCCLabel)
+            make.left.equalTo()(self.emailDetailCCLabel.mas_right)
+            make.right.equalTo()(self.emailDetailView)
+            make.height.equalTo()(ccHeight)
+        }
         
         emailDetailView.mas_makeConstraints { (make) -> Void in
             make.left.equalTo()(self.emailTitle)
             make.right.equalTo()(self.emailHeaderView)
             make.top.equalTo()(self.emailDetailButton.mas_bottom)
             make.height.equalTo()(0)
-        }
-        
-        
-        emailDetailCCContentLabel.mas_makeConstraints { (make) -> Void in
-            make.centerY.equalTo()(self.emailDetailCCLabel)
-            make.left.equalTo()(self.emailDetailCCLabel.mas_right)
-            make.right.equalTo()(self.emailDetailView)
-            make.height.equalTo()(!self.ccList.isEmpty ? self.emailDetailCCContentLabel.frame.size.height : 0)
         }
         
         emailDetailDateLabel.mas_makeConstraints { (make) -> Void in
@@ -555,14 +542,43 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
     
     internal func detailsButtonTapped() {
         self.isShowingDetail = !self.isShowingDetail
-        if (isShowingDetail) {
+        self.updateDetailsView(self.isShowingDetail)
+    }
+    
+    internal func emailFavoriteButtonTapped() {
+        message.isStarred = !message.isStarred
+        
+        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
+            NSLog("\(__FUNCTION__) error: \(error)")
+        }
+
+        self.emailFavoriteButton.selected = self.message.isStarred
+    }
+    
+    func replyClicked()
+    {
+        self.delegate?.messageDetailViewDidTapReplyMessage(self, message: message)
+    }
+    func replyAllClicked()
+    {
+        self.delegate?.messageDetailViewDidTapReplyAllMessage(self, message: message)
+    }
+    func forwardClicked()
+    {
+        self.delegate?.messageDetailViewDidTapForwardMessage(self, message: message)
+    }
+    
+    // MARK: - Private methods
+    
+    private func updateDetailsView(needsShow : Bool) {
+        if (needsShow) {
             UIView.transitionWithView(self.emailRecipients, duration: kAnimationDuration, options: kAnimationOption, animations: { () -> Void in
                 self.emailRecipients.text = "From: \(self.message.sender)"
                 self.emailDetailToLabel.text = "To: \(self.receipientlist)"
                 self.emailDetailCCLabel.text = "CC: \(self.ccList)"
                 self.emailDetailToLabel.sizeToFit()
                 self.emailDetailCCLabel.sizeToFit()
-            }, completion: nil)
+                }, completion: nil)
             
             self.emailDetailButton.setTitle(NSLocalizedString("Hide Details"), forState: UIControlState.Normal)
             self.emailDetailButton.mas_updateConstraints({ (make) -> Void in
@@ -572,6 +588,38 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
                 make.top.equalTo()(self.emailTime)
                 make.width.equalTo()(self.emailDetailButton)
             })
+            
+            let toHeight = self.emailDetailToLabel.frame.height;
+            emailDetailToLabel.mas_updateConstraints { (make) -> Void in
+                make.removeExisting = true
+                make.top.equalTo()(self.emailDetailView)
+                make.left.equalTo()(self.emailDetailView)
+                make.width.equalTo()(self.emailDetailView)
+                make.height.equalTo()(self.emailDetailToLabel.frame.size.height)
+            }
+            emailDetailToContentLabel.mas_updateConstraints { (make) -> Void in
+                make.removeExisting = true
+                make.centerY.equalTo()(self.emailDetailToLabel)
+                make.left.equalTo()(self.emailDetailToLabel.mas_right)
+                make.right.equalTo()(self.emailDetailView)
+                make.height.equalTo()(self.emailDetailToContentLabel.frame.size.height)
+            }
+            
+            let ccHeight = !self.ccList.isEmpty ? self.emailDetailCCLabel.frame.size.height : 0
+            emailDetailCCLabel.mas_updateConstraints { (make) -> Void in
+                make.removeExisting = true
+                make.left.equalTo()(self.emailDetailToLabel)
+                make.top.equalTo()(self.emailDetailToLabel.mas_bottom).with().offset()( ccHeight == 0 ? 0 : self.kEmailDetailCCLabelMarginTop)
+                make.width.equalTo()(self.emailDetailToLabel)
+                make.height.equalTo()(ccHeight)
+            }
+            emailDetailCCContentLabel.mas_updateConstraints { (make) -> Void in
+                make.removeExisting = true
+                make.centerY.equalTo()(self.emailDetailCCLabel)
+                make.left.equalTo()(self.emailDetailCCLabel.mas_right)
+                make.right.equalTo()(self.emailDetailView)
+                make.height.equalTo()(ccHeight)
+            }
             
             self.emailTime.mas_updateConstraints({ (make) -> Void in
                 make.removeExisting = true
@@ -601,7 +649,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
                 make.top.equalTo()(self.emailTime)
                 make.width.equalTo()(self.emailDetailButton)
             })
-
+            
             self.emailTime.sizeToFit()
             self.emailTime.mas_updateConstraints { (make) -> Void in
                 make.removeExisting = true
@@ -624,31 +672,6 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
             self.layoutIfNeeded()
         })
     }
-    
-    internal func emailFavoriteButtonTapped() {
-        message.isStarred = !message.isStarred
-        
-        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
-            NSLog("\(__FUNCTION__) error: \(error)")
-        }
-
-        self.emailFavoriteButton.selected = self.message.isStarred
-    }
-    
-    func replyClicked()
-    {
-        self.delegate?.messageDetailViewDidTapReplyMessage(self, message: message)
-    }
-    func replyAllClicked()
-    {
-        self.delegate?.messageDetailViewDidTapReplyAllMessage(self, message: message)
-    }
-    func forwardClicked()
-    {
-        self.delegate?.messageDetailViewDidTapForwardMessage(self, message: message)
-    }
-    
-    // MARK: - Private methods
     
     private func generateData()
     {
@@ -682,7 +705,9 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
         
         self.emailDetailToLabel = UILabel()
         self.emailDetailToLabel.font = UIFont.robotoLight(size: UIFont.Size.h5)
-        self.emailDetailToLabel.numberOfLines = 1
+        //self.emailDetailToLabel.numberOfLines = 1
+        self.emailDetailToLabel.lineBreakMode = NSLineBreakMode.ByCharWrapping //.lineBreakMode = UILineBreakModel. // UILineBreakModeWordWrap;
+        self.emailDetailToLabel.numberOfLines = 0;
         self.emailDetailToLabel.text = "To: \(self.receipientlist)"
         self.emailDetailToLabel.textColor = UIColor.ProtonMail.Gray_999DA1
         self.emailDetailToLabel.sizeToFit()
@@ -701,7 +726,9 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
     private func configureEmailDetailCCLabel() {
         self.emailDetailCCLabel = UILabel()
         self.emailDetailCCLabel.font = UIFont.robotoLight(size: UIFont.Size.h5)
-        self.emailDetailCCLabel.numberOfLines = 1
+        //self.emailDetailCCLabel.numberOfLines = 1
+        self.emailDetailCCLabel.lineBreakMode = NSLineBreakMode.ByCharWrapping //.lineBreakMode = UILineBreakModel. // UILineBreakModeWordWrap;
+        self.emailDetailCCLabel.numberOfLines = 0;
         self.emailDetailCCLabel.text = "Cc: \(self.ccList)"
         println("\(self.ccList)")
         self.emailDetailCCLabel.textColor = UIColor.ProtonMail.Gray_999DA1

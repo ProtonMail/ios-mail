@@ -40,7 +40,6 @@ class AppDelegate: UIResponder {
     }
         
     // MARK: - Public methods
-    
     func switchTo(#storyboard: UIStoryboard.Storyboard, animated: Bool) {
         if let window = window {
             if let rootViewController = window.rootViewController {
