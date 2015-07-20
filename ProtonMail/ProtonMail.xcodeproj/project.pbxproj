@@ -171,6 +171,7 @@
 		75F906101B1FBECA00107509 /* DebugDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F9060F1B1FBECA00107509 /* DebugDetailsViewController.swift */; };
 		75F9A1121AFD705B007229C7 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F9A1111AFD705B007229C7 /* UIDeviceExtension.swift */; };
 		75FFC65F1B45C549007FB75A /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FFC65E1B45C549007FB75A /* DictionaryExtension.swift */; };
+		75FFCACA1B5D70FC0065BFEC /* APIErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */; };
 		EAF4B9D23FDBAA4F2F237B3A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7171A1EF5F60DDA876FD139 /* libPods.a */; };
 		F77B8F0DFAD04EC03F166E0A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7171A1EF5F60DDA876FD139 /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -362,6 +363,7 @@
 		75F9060F1B1FBECA00107509 /* DebugDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugDetailsViewController.swift; sourceTree = "<group>"; };
 		75F9A1111AFD705B007229C7 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
 		75FFC65E1B45C549007FB75A /* DictionaryExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
+		75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIErrors.swift; sourceTree = "<group>"; };
 		AF1532103B091E2244D6CFE4 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E7171A1EF5F60DDA876FD139 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -432,8 +434,6 @@
 				071323801A7846150043DB41 /* UIViewExtension.swift */,
 				75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */,
 				75F9A1111AFD705B007229C7 /* UIDeviceExtension.swift */,
-				75B1794E1B3775E1006044D4 /* UI */,
-				75ECCDFB1B31EEFC00A8C800 /* APIService */,
 				75B1794D1B3775BA006044D4 /* General */,
 			);
 			name = Extensions;
@@ -463,7 +463,6 @@
 		073FD92D1A71C33B00EB0CAF /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				75ECCDFC1B31EF3600A8C800 /* APIService */,
 				07CFC9D31A81A2B0007A72B7 /* Attachment.swift */,
 				07CF61911A8988F100ED38AE /* AttachmentExtension.swift */,
 				75B1794B1B376D2D006044D4 /* AttachmentHelper.swift */,
@@ -485,6 +484,7 @@
 		073FD9301A71C5F000EB0CAF /* DataServices */ = {
 			isa = PBXGroup;
 			children = (
+				75ECCDFC1B31EF3600A8C800 /* APIService */,
 				75F54C631B3B314100290F73 /* Cache */,
 				70B28D091A9BA0AC002D9EC8 /* AddressBookService.swift */,
 				07655BBC1AB1036200CD3883 /* BugDataService.swift */,
@@ -797,13 +797,6 @@
 			name = General;
 			sourceTree = "<group>";
 		};
-		75B1794E1B3775E1006044D4 /* UI */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = UI;
-			sourceTree = "<group>";
-		};
 		75CFA2701B22544F006E4465 /* Defined */ = {
 			isa = PBXGroup;
 			children = (
@@ -827,13 +820,6 @@
 			name = ViewModels;
 			sourceTree = "<group>";
 		};
-		75ECCDFB1B31EEFC00A8C800 /* APIService */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = APIService;
-			sourceTree = "<group>";
-		};
 		75ECCDFC1B31EF3600A8C800 /* APIService */ = {
 			isa = PBXGroup;
 			children = (
@@ -843,6 +829,7 @@
 				7567B0761B3387F700A72A1E /* APIServiceRequest.swift */,
 				7567B0781B33880500A72A1E /* APIServiceResponse.swift */,
 				75662BA61B543A5B006C538E /* SettingsAPI.swift */,
+				75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */,
 			);
 			name = APIService;
 			sourceTree = "<group>";
@@ -1164,6 +1151,7 @@
 				75F1697E1AF7F43A00BE6E79 /* Logger.swift in Sources */,
 				7069620B1A7139C8001443B2 /* SettingsViewController.swift in Sources */,
 				07520CFC1AA67D38000D2175 /* PushNotificationService.swift in Sources */,
+				75FFCACA1B5D70FC0065BFEC /* APIErrors.swift in Sources */,
 				07B1237E1AB8ECEC006EA38C /* AttachmentCollectionViewCell.swift in Sources */,
 				70945E701A8135EC002B6837 /* UILabel+ProtonMail.swift in Sources */,
 				7567B06D1B334FA400A72A1E /* ViewModelService.swift in Sources */,

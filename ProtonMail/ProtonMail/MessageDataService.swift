@@ -607,25 +607,25 @@ class MessageDataService {
                         
                         if response != nil {
                             //TODO need check the respons code
-                            let msg = response?["Message"] as! Dictionary<String,AnyObject>
-                            let message_n = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg, inManagedObjectContext: message.managedObjectContext!, error: &error) as! Message
-                            if error == nil {
-                                message.isDetailDownloaded = true
-//                                message_n.isDetailDownloaded = true
-                                message.isRead = true
-//                                message_n.isRead = true
-//                                message_n.managedObjectContext?.saveUpstreamIfNeeded()
-                                message.managedObjectContext?.saveUpstreamIfNeeded()
-                                error = context.saveUpstreamIfNeeded()
-                                dispatch_async(dispatch_get_main_queue()) {
-                                    completion(task: task, response: response, message: message_n, error: error)
+                            if let msg = response?["Message"] as? Dictionary<String,AnyObject> {
+                                let message_n = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg, inManagedObjectContext: message.managedObjectContext!, error: &error) as! Message
+                                if error == nil {
+                                    message.isDetailDownloaded = true
+                                    message.isRead = true
+                                    message.managedObjectContext?.saveUpstreamIfNeeded()
+                                    error = context.saveUpstreamIfNeeded()
+                                    //dispatch_async(dispatch_get_main_queue()) {
+                                    completion(task: task, response: response, message: message, error: error)
+                                    //}
                                 }
+                            } else {
+                                //completion(task: task, response: response, message:nil, error: NS)
                             }
                         } else {
                             error = NSError.unableToParseResponse(response)
-                            dispatch_async(dispatch_get_main_queue()) {
-                                completion(task: task, response: response, message:nil, error: error)
-                            }
+                            //dispatch_async(dispatch_get_main_queue()) {
+                            completion(task: task, response: response, message:nil, error: error)
+                            //}
                         }
                         if error != nil  {
                             NSLog("\(__FUNCTION__) error: \(error)")
