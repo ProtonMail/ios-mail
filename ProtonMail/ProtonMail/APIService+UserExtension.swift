@@ -23,15 +23,7 @@ extension APIService {
     typealias UserNameCheckBlock = (Bool, NSError?) -> Void
     
     
-    struct UserErrorCode {
-        static let userOK = 1000
-        static let userNameExsit = 12011
-        static let currentWrong = 12021
-        static let newNotMatch = 12022
-        static let pwdUpdateFailed = 12023
-        static let pwdEmpty = 12024
-    }
-    
+        
     private struct UserPath {
         static let base = "/users"
     }
@@ -201,36 +193,5 @@ extension UserInfo {
                 usedSpace: usedS?.longLongValue,
                 userStatus: response[userStatusResponseKey] as? Int,
                 userAddresses: addresses)
-    }
-}
-
-extension NSError {
-    
-    class func userNameTaken() -> NSError {
-        return apiServiceError(
-            code: APIService.UserErrorCode.userNameExsit,
-            localizedDescription: NSLocalizedString("Invalid UserName"),
-            localizedFailureReason: NSLocalizedString("The UserName have been taken."))
-    }
-    
-    class func currentPwdWrong() -> NSError {
-        return apiServiceError(
-            code: APIService.UserErrorCode.currentWrong,
-            localizedDescription: NSLocalizedString("Change Password"),
-            localizedFailureReason: NSLocalizedString("The Password is wrong."))
-    }
-    
-    class func newNotMatch() -> NSError {
-        return apiServiceError(
-            code: APIService.UserErrorCode.newNotMatch,
-            localizedDescription: NSLocalizedString("Change Password"),
-            localizedFailureReason: NSLocalizedString("The new password not match"))
-    }
-    
-    class func pwdCantEmpty() -> NSError {
-        return apiServiceError(
-            code: APIService.UserErrorCode.pwdEmpty,
-            localizedDescription: NSLocalizedString("Change Password"),
-            localizedFailureReason: NSLocalizedString("The new password can't empty"))
     }
 }

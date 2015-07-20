@@ -105,7 +105,7 @@ class MailboxPasswordViewController: UIViewController {
                     if error != nil {
                         let alertController = error!.alertController()
                         alertController.addOKAction()
-                        if error!.domain == APIServiceErrorDomain && error!.code == APIService.AuthErrorCode.localCacheBad {
+                        if error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
                             self.navigationController?.popViewControllerAnimated(true)
                         }
                     } else if info != nil {

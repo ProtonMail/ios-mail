@@ -91,10 +91,10 @@ class ChangePasswordViewController: UIViewController {
         viewModel.setNewPassword(currentPwdEditor.text, new_pwd: newPwdEditor.text, confirm_new_pwd: confirmPwdEditor.text, complete: { value, error in
             ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
             if let error = error {
-                if error.code == APIService.UserErrorCode.currentWrong {
+                if error.code == APIErrorCode.UserErrorCode.currentWrong {
                     self.currentPwdEditor.becomeFirstResponder()
                 }
-                else if error.code == APIService.UserErrorCode.newNotMatch {
+                else if error.code == APIErrorCode.UserErrorCode.newNotMatch {
                     self.newPwdEditor.becomeFirstResponder()
                 }
                 

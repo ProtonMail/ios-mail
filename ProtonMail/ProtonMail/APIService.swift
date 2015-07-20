@@ -126,10 +126,10 @@ class APIService {
                 authRefresh (credential.password  ?? "") { (task, authCredential, error) -> Void in
                     if error == nil && self.tried < 4{
                         self.fetchAuthCredential(completion: completion)
-                    } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIService.AuthErrorCode.invalidGrant {
+                    } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
                         AuthCredential.clearFromKeychain()
                         self.fetchAuthCredential(completion: completion)
-                    } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIService.AuthErrorCode.localCacheBad {
+                    } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
                         AuthCredential.clearFromKeychain()
                         completion(authCredential, error)
                         sharedUserDataService.signOut(false)
@@ -149,7 +149,7 @@ class APIService {
             let password = sharedUserDataService.password ?? ""
             
             let completionWrapper: AuthCredentialBlock = { authCredential, error in
-                if error != nil && error!.domain == APIServiceErrorDomain && error!.code == AuthErrorCode.credentialInvalid {
+                if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.credentialInvalid {
                     sharedUserDataService.signOut(true)
                     userCachedStatus.signOut()
                 }

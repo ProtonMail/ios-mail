@@ -24,20 +24,7 @@ extension APIService {
     
     typealias AuthComplete = (task: NSURLSessionDataTask?, hasError : NSError?) -> Void
     typealias AuthRefreshComplete = (task: NSURLSessionDataTask?, auth:AuthCredential?, hasError : NSError?) -> Void
-    
-    
-    struct AuthErrorCode {
-        static let credentialExpired = 10
-        static let credentialInvalid = 20
-        static let invalidGrant = 30
-        static let unableToParseToken = 40
-        static let localCacheBad = 50
-    }
-    
-    struct APIServicePath
-    {
-        //need path and version
-    }
+
     
     struct GeneralResponse {
         static let errorCode = "Code"
@@ -219,40 +206,3 @@ extension AuthCredential {
     }
 }
 
-extension NSError {
-    
-    class func authCredentialExpired() -> NSError {
-        return apiServiceError(
-            code: APIService.AuthErrorCode.credentialExpired,
-            localizedDescription: NSLocalizedString("Token expired"),
-            localizedFailureReason: NSLocalizedString("The authentication token has expired."))
-    }
-    
-    class func authCredentialInvalid() -> NSError {
-        return apiServiceError(
-            code: APIService.AuthErrorCode.credentialInvalid,
-            localizedDescription: NSLocalizedString("Invalid credential"),
-            localizedFailureReason: NSLocalizedString("The authentication credentials are invalid."))
-    }
-    
-    class func authInvalidGrant() -> NSError {
-        return apiServiceError(
-            code: APIService.AuthErrorCode.invalidGrant,
-            localizedDescription: NSLocalizedString("Invalid grant"),
-            localizedFailureReason: NSLocalizedString("The supplied credentials are invalid."))
-    }
-    
-    class func authUnableToParseToken() -> NSError {
-        return apiServiceError(
-            code: APIService.AuthErrorCode.unableToParseToken,
-            localizedDescription: NSLocalizedString("Unable to parse token"),
-            localizedFailureReason: NSLocalizedString("Unable to parse authentication token!"))
-    }
-    
-    class func authCacheBad() -> NSError {
-        return apiServiceError(
-            code: APIService.AuthErrorCode.localCacheBad,
-            localizedDescription: NSLocalizedString("Unable to parse token"),
-            localizedFailureReason: NSLocalizedString("Unable to parse authentication token!"))
-    }
-}
