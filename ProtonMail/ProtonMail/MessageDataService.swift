@@ -1124,14 +1124,17 @@ class MessageDataService {
                         let completionWrapper: CompletionBlock = { task, response, error in
                             // remove successful send from Core Data
                             if error == nil {
-                                //TODO : here need to handle the response have the error code
-                                context.deleteObject(message)
+                                //context.deleteObject(message)MOBA-378
+                                if (message.location == MessageLocation.draft) {
+                                    message.location = MessageLocation.outbox
+                                }
+                                
                                 if let error = context.saveUpstreamIfNeeded() {
                                     NSLog("\(__FUNCTION__) error: \(error)")
                                 }
                             }
                             else {
-                                
+                                //TODO : put a error flag, need handle the response error
                             }
                             completion?(task: task, response: response, error: error)
                             return
