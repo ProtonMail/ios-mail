@@ -72,8 +72,16 @@ class APIService {
                     if authenticated && responseDictionary["Code"] as? Int == 401 {
                         AuthCredential.expireOrClear()
                         self.request(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)
+                    } else if responseDictionary["Code"] as? Int == 5001 {
+                        NSError.alertUpdatedToast()
+                        completion(task: task, response: responseDictionary, error: nil)
+                        sharedUserDataService.signOut(false);
                     } else if responseDictionary["Code"] as? Int == 5002 {
                         NSError.alertUpdatedToast()
+                        completion(task: task, response: responseDictionary, error: nil)
+                        sharedUserDataService.signOut(false);
+                    } else if responseDictionary["Code"] as? Int == 5003 {
+                        NSError.alertOfflineToast()
                         completion(task: task, response: responseDictionary, error: nil)
                         sharedUserDataService.signOut(false);
                     }

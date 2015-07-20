@@ -153,13 +153,11 @@ class SignInViewController: UIViewController {
         MBProgressHUD.showHUDAddedTo(view, animated: true)
         sharedUserDataService.signIn(usernameTextField.text, password: passwordTextField.text, isRemembered: isRemembered) { _, error in
             MBProgressHUD.hideHUDForView(self.view, animated: true)
-            
             if let error = error {
                 NSLog("\(__FUNCTION__) error: \(error)")
                 self.ShowLoginViews();
                 let alertController = error.alertController()
                 alertController.addOKAction()
-                
                 self.presentViewController(alertController, animated: true, completion: nil)
             } else {
                 self.loadContent()

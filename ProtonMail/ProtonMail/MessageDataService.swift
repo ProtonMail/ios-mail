@@ -322,8 +322,6 @@ class MessageDataService {
         UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
         
     }
-    
-    
 //    "Labels" : [
 //    {
 //      "LabelID" : "696K_VfDK6NesvPdX84iEuQ8jNQrWlmytEOThe57MrIDzs8QmBnzhzgMYxrb1V0vUMR7C_81IJ-dh7w-EwBEsw==",
@@ -1105,11 +1103,14 @@ class MessageDataService {
                                     message.location = MessageLocation.outbox
                                 }
                                 
+                                NSError.alertMessageSentToast()
+                                
                                 if let error = context.saveUpstreamIfNeeded() {
                                     NSLog("\(__FUNCTION__) error: \(error)")
                                 }
                             }
                             else {
+                                NSError.alertMessageSentErrorToast()
                                 //TODO : put a error flag, need handle the response error
                             }
                             completion?(task: task, response: response, error: error)

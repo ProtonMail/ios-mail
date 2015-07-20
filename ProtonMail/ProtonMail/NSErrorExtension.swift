@@ -67,7 +67,7 @@ extension NSError {
         var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
         hud.labelText = "Alert";
-        hud.detailsLabelText = "Your app cannot be used until it is updated";
+        hud.detailsLabelText = "ProtonMail is currently offline, please check our twitter for the current status @ProtonMail.";
         hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)
         //                    hud.mode = MBProgressHUDMode.Text
@@ -75,9 +75,64 @@ extension NSError {
         //                    hud.removeFromSuperViewOnHide = true
         //                    hud.margin = 10
         //                    hud.yOffset = 150
-        
     }
     
+    class func alertOfflineToast() ->Void {
+        let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
+        var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+        hud.mode = MBProgressHUDMode.Text
+        hud.labelText = "Alert";
+        hud.detailsLabelText = "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail";
+        hud.removeFromSuperViewOnHide = true
+        hud.hide(true, afterDelay: 3)
+
+       // let alertController = UIAlertController(title: "Alert", message: "", preferredStyle: .Alert)
+        
+        
+//        alertController.addAction(UIAlertAction(title: NSLocalizedString("Photo Library"), style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+//            let picker: UIImagePickerController = UIImagePickerController()
+//            picker.delegate = self
+//            picker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+//            self.presentViewController(picker, animated: true, completion: nil)
+//        }))
+//        
+//        alertController.addAction(UIAlertAction(title: NSLocalizedString("Take a Photo"), style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+//            if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)) {
+//                let picker: UIImagePickerController = UIImagePickerController()
+//                picker.delegate = self
+//                picker.sourceType = UIImagePickerControllerSourceType.Camera
+//                self.presentViewController(picker, animated: true, completion: nil)
+//            }
+//        }))
+//        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: UIAlertActionStyle.Cancel, handler: nil))
+        
+ //       window.addSubview(alertController.view);
+        
+        //window.perse
+       //self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    class func alertMessageSentToast() ->Void {
+        let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
+        var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+        hud.mode = MBProgressHUDMode.Text
+        hud.detailsLabelText = "Message sent";
+        hud.removeFromSuperViewOnHide = true
+        hud.margin = 10
+        hud.yOffset = 250.0
+        hud.hide(true, afterDelay: 1)
+    }
+
+    class func alertMessageSentErrorToast() ->Void {
+        let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
+        var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+        hud.mode = MBProgressHUDMode.Text
+        hud.detailsLabelText = "Message send error";
+        hud.removeFromSuperViewOnHide = true
+        hud.margin = 10
+        hud.yOffset = 250.0
+        hud.hide(true, afterDelay: 1)
+    }
     
     class func unknowError() -> NSError {
         return apiServiceError(

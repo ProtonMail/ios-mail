@@ -20,9 +20,7 @@ class MessageDetailViewController: ProtonMailViewController {
                 println(self.message.isDetailDownloaded)
                 println(self.message.body)
                 println(self.message.ccList)
-                
                 NSLog("\(__FUNCTION__) error: \(self.message)")
-                
                 if error != nil {
                     NSLog("\(__FUNCTION__) error: \(error)")
                 }
