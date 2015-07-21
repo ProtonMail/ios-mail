@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -399,6 +399,12 @@
                     <exclude reference="f6s-5h-iHn"/>
                 </mask>
                 <mask key="constraints">
+                    <exclude reference="Ey3-pg-qAo"/>
+                    <exclude reference="L15-Kd-rkO"/>
+                    <exclude reference="qxU-er-lpB"/>
+                    <exclude reference="Afc-sd-pei"/>
+                    <exclude reference="dLk-az-gmB"/>
+                    <exclude reference="vMI-IJ-gQT"/>
                     <exclude reference="053-pq-7GB"/>
                     <exclude reference="H8G-DQ-rjr"/>
                     <exclude reference="KGx-QJ-TrU"/>
@@ -407,21 +413,15 @@
                     <exclude reference="Wb7-4l-ruN"/>
                     <exclude reference="oLT-mE-2Zz"/>
                     <exclude reference="qLn-vv-Zhh"/>
-                    <exclude reference="txF-9J-8Fm"/>
                     <exclude reference="3Yz-gE-oFZ"/>
                     <exclude reference="Vuq-Xg-Tlu"/>
                     <exclude reference="c4T-qO-1T0"/>
                     <exclude reference="riS-Pg-jLT"/>
-                    <exclude reference="Ey3-pg-qAo"/>
-                    <exclude reference="L15-Kd-rkO"/>
-                    <exclude reference="qxU-er-lpB"/>
-                    <exclude reference="Afc-sd-pei"/>
-                    <exclude reference="dLk-az-gmB"/>
-                    <exclude reference="vMI-IJ-gQT"/>
                     <exclude reference="VDJ-kw-Zpd"/>
                     <exclude reference="VLg-3e-bpA"/>
                     <exclude reference="jYM-Dz-byF"/>
                     <exclude reference="kEZ-Iq-5Vy"/>
+                    <exclude reference="txF-9J-8Fm"/>
                     <exclude reference="71z-mG-smT"/>
                     <exclude reference="8Wo-7j-v5X"/>
                     <exclude reference="D9P-7a-0Aj"/>
@@ -436,6 +436,12 @@
                     <include reference="f6s-5h-iHn"/>
                 </mask>
                 <mask key="constraints">
+                    <include reference="Ey3-pg-qAo"/>
+                    <include reference="L15-Kd-rkO"/>
+                    <include reference="qxU-er-lpB"/>
+                    <include reference="Afc-sd-pei"/>
+                    <include reference="dLk-az-gmB"/>
+                    <include reference="vMI-IJ-gQT"/>
                     <exclude reference="053-pq-7GB"/>
                     <include reference="H8G-DQ-rjr"/>
                     <include reference="KGx-QJ-TrU"/>
@@ -444,21 +450,15 @@
                     <exclude reference="Wb7-4l-ruN"/>
                     <exclude reference="oLT-mE-2Zz"/>
                     <exclude reference="qLn-vv-Zhh"/>
-                    <include reference="txF-9J-8Fm"/>
                     <exclude reference="3Yz-gE-oFZ"/>
                     <include reference="Vuq-Xg-Tlu"/>
                     <include reference="c4T-qO-1T0"/>
                     <include reference="riS-Pg-jLT"/>
-                    <include reference="Ey3-pg-qAo"/>
-                    <include reference="L15-Kd-rkO"/>
-                    <include reference="qxU-er-lpB"/>
-                    <include reference="Afc-sd-pei"/>
-                    <include reference="dLk-az-gmB"/>
-                    <include reference="vMI-IJ-gQT"/>
                     <include reference="VDJ-kw-Zpd"/>
                     <include reference="VLg-3e-bpA"/>
                     <include reference="jYM-Dz-byF"/>
                     <include reference="kEZ-Iq-5Vy"/>
+                    <include reference="txF-9J-8Fm"/>
                     <include reference="71z-mG-smT"/>
                     <exclude reference="8Wo-7j-v5X"/>
                     <include reference="D9P-7a-0Aj"/>
