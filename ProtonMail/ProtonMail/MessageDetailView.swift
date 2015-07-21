@@ -211,10 +211,21 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
 //            let messageCSS: String = "html, body { font-family: sans-serif; font-size:0.9em; margin:0; border:0;width:375px;-webkit-text-size-adjust: auto;word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;}.inbox-body {padding-top:5px;padding-left:1px; padding-bottom:5px;padding-right:1px;} a { color:rgb(0,153,204); } div { max-width:100%%; } .gmail_extra {  display:none; } blockquote, img { max-width: 100%; height:auto; }"
             
            // let htmlString = "<span style=\"font-family: \(font.fontName); font-size: \(font.pointSize); color: \(cssColorString)\">\(bodyText)</span>"
-            let s = self.bounds
-            let htmlString = "<style>\(css)</style><div class='inbox-body'>\(bodyText)</div>"
             
-            self.emailBodyWebView.loadHTMLString(htmlString, baseURL: nil)
+            if self.message.isDetailDownloaded {
+                let s = self.bounds
+                let htmlString = "<style>\(css)</style><div class='inbox-body'>\(bodyText)</div>"
+                
+                self.emailBodyWebView.loadHTMLString(htmlString, baseURL: nil)
+            } else {
+                let s = self.bounds
+                let htmlString = "<style>\(css)</style><meta name=\"viewport\" content=\"width=\(s.width)\">\n<div class='inbox-body'>\(bodyText)</div>"
+                
+                self.emailBodyWebView.loadHTMLString(htmlString, baseURL: nil)
+            }
+            
+            
+            
         }
         
         if animated {
