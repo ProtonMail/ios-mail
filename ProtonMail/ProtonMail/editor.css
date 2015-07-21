@@ -30,13 +30,18 @@ button,html,input,select,textarea {
 }
 
 body {
-    font: 14px/1.6em normal Helvetica,Arial,sans-serif;
+    font: 1.4em/1.6em normal Helvetica,Arial,sans-serif;
     font-weight: 400;
     margin: 0;
     width: 100%;
     box-sizing: border-box;
     padding: 1rem;
     word-break: break-word;
+}
+
+div,
+span {
+    font-size: 1em !important;
 }
 
 blockquote {
