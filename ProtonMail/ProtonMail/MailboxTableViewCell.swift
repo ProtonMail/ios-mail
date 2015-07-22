@@ -92,7 +92,23 @@ class MailboxTableViewCell: UITableViewCell {
     
     func configureCell(message: Message) {
         self.title.text = message.subject
-        self.sender.text = message.sender
+        
+        if message.location == MessageLocation.outbox {
+            var receipientlist = "";
+            let recipients : [[String : String]] = message.recipientList.parseJson()!
+            for dict:[String : String] in recipients {
+                if(receipientlist.isEmpty) {
+                    receipientlist = dict.getDisplayName()
+                }
+                else{
+                    receipientlist = receipientlist + ", " + dict.getDisplayName()
+                }
+            }
+            self.sender.text = receipientlist
+        } else {
+            self.sender.text = message.sender
+        }
+        
         self.time.text = message.time != nil ? NSDate.stringForDisplayFromDate(message.time) : ""
         self.encryptedImage.hidden = !message.checkIsEncrypted()
         self.attachImage.hidden = !message.hasAttachments
