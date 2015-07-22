@@ -57,3 +57,10 @@ public struct EventAPI {
     public static let V_LatestEventRequest : Int = 1
 
 }
+
+
+public struct BugsAPI {
+    static let Path :String = "/bugs"
+    
+    static let V_BugsReportRequest : Int = 1
+}

@@ -19,9 +19,14 @@ import Foundation
 class BugDataService {
     
     func reportBug(bug: String, completion: (NSError? -> Void)?) {
-        sharedAPIService.bug(bug, completion: { (_, _, error) -> Void in
-            completion?(error)
-            return
-        })
+        var systemVersion = UIDevice.currentDevice().systemVersion;
+        let model = UIDevice.currentDevice().model
+        let mainBundle = NSBundle.mainBundle()
+        let username = sharedUserDataService.username ?? ""
+        let butAPI = BugReportRequest(os: model, osVersion: "\(systemVersion)", clientVersion: mainBundle.appVersion, title: "ProtonMail App bug report", desc: bug, userName: username, email: "\(username)@protonmail.ch")
+        
+        butAPI.call { (task, response, hasError) -> Void in
+            completion?(response?.error)
+        }
     }
 }

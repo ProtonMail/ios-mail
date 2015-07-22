@@ -31,6 +31,10 @@ public class ApiResponse {
         code = response["Code"] as? Int
         errorMessage = response["Error"] as? String
         errorDetails = response["ErrorDescription"] as? String
+        
+        if code != 1000 {
+            self.error = NSError.protonMailError(code: code ?? 1000, localizedDescription: errorMessage ?? "", localizedFailureReason: errorDetails, localizedRecoverySuggestion: nil)
+        }
         return code != 1000
     }
     
@@ -48,6 +52,8 @@ public class ApiResponse {
             self.errorMessage = error.description
             self.errorDetails = error.debugDescription
         }
+        
+        self.error = error
     }
     
     func ParseResponse (response: Dictionary<String,AnyObject>!) -> Bool {

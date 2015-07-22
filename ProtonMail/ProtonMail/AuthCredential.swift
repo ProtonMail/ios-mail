@@ -30,7 +30,7 @@ class AuthCredential: NSObject, NSCoding {
     var password : String?
     
     override var description: String {
-        return "\n  encToken: \(encryptToken)\n  refreshToken: \(refreshToken)\n  expiration: \(expiration)\n  userID: \(userID)"
+        return ""//"\n  encToken: \(encryptToken)\n  refreshToken: \(refreshToken)\n  expiration: \(expiration)\n  userID: \(userID)"
     }
     
     var isExpired: Bool {
