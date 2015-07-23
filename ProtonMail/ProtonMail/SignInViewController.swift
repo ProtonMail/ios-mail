@@ -41,6 +41,12 @@ class SignInViewController: UIViewController {
         super.init(coder: aDecoder)
     }
     
+    
+    struct Notification {
+        static let didSignOut = "UserDataServiceDidSignOutNotification"
+        static let didSignIn = "UserDataServiceDidSignInNotification"
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         usernameTextField.roundCorners()
@@ -182,6 +188,7 @@ class SignInViewController: UIViewController {
     
     private func loadContent() {
         if sharedUserDataService.isMailboxPasswordStored {
+            NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignIn, object: self)
             (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
             loadContactsAfterInstall()
         } else {

@@ -29,12 +29,30 @@ extension APIService {
         
         deviceToken = tokenString
         
+        // 1 : ios dev
+        // 2 : ios production
+        // 3 : 
+        
+        // 10 : android
+        
+        #if DEBUG
+            let env = 1
+        #else
+            let env = 2
+        #endif
+        
+        var ver = "1.0.0"
+        if let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String {
+            ver = version
+        }
         let parameters = [
-            "device_uid" : deviceID,
-            "device_token" : tokenString,
-            "device_name" : UIDevice.currentDevice().name,
-            "device_model" : UIDevice.currentDevice().model,
-            "device_version" : UIDevice.currentDevice().systemVersion
+            "DeviceUID" : deviceID,
+            "DeviceToken" : tokenString,
+            "DeviceName" : UIDevice.currentDevice().name,
+            "DeviceModel" : UIDevice.currentDevice().model,
+            "DeviceVersion" : UIDevice.currentDevice().systemVersion,
+            "AppVersion" : "iOS_\(ver)",
+            "Environment" : env
         ]
         
         request(method: .POST, path: DevicePath.basePath, parameters: parameters, completion: completion)
