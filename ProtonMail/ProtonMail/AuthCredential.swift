@@ -16,6 +16,7 @@
 
 import Foundation
 
+let authDebugCached =  NSUserDefaults.standardUserDefaults()
 class AuthCredential: NSObject, NSCoding {
     struct Key{
         static let keychainStore = "keychainStoreKey"
@@ -38,11 +39,20 @@ class AuthCredential: NSObject, NSCoding {
     }
     
     class func setupToken (password:String, isRememberMailbox : Bool = true) {
-        if let data = UICKeyChainStore.dataForKey(Key.keychainStore) {
-            if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? AuthCredential {
-                authCredential.setupToken(password)
+        
+        #if DEBUG
+            if let data = authDebugCached.dataForKey(Key.keychainStore) {
+                if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? AuthCredential {
+                    authCredential.setupToken(password)
+                }
             }
-        }
+        #else
+            if let data = UICKeyChainStore.dataForKey(Key.keychainStore) {
+                if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? AuthCredential {
+                    authCredential.setupToken(password)
+                }
+            }
+        #endif
     }
     
     
@@ -106,21 +116,35 @@ class AuthCredential: NSObject, NSCoding {
     }
     
     func storeInKeychain() {
-        UICKeyChainStore().setData(NSKeyedArchiver.archivedDataWithRootObject(self), forKey: Key.keychainStore)
+        #if DEBUG
+            authDebugCached.setObject(NSKeyedArchiver.archivedDataWithRootObject(self), forKey: Key.keychainStore)
+        #else
+            UICKeyChainStore().setData(NSKeyedArchiver.archivedDataWithRootObject(self), forKey: Key.keychainStore)
+        #endif
     }
     
     class func getPrivateKey() -> String {
-        if let data = UICKeyChainStore.dataForKey(Key.keychainStore) {
-            if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? AuthCredential {
-                return authCredential.privateKey
+        
+        #if DEBUG
+            if let data = authDebugCached.dataForKey(Key.keychainStore) {
+                if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? AuthCredential {
+                    return authCredential.privateKey
+                }
             }
-        }
+        #else
+            if let data = UICKeyChainStore.dataForKey(Key.keychainStore) {
+                if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? AuthCredential {
+                    return authCredential.privateKey
+                }
+            }
+        #endif
         return ""
     }
     
     // MARK - Class methods
     class func clearFromKeychain() {
-        UICKeyChainStore.removeItemForKey(Key.keychainStore)
+            authDebugCached.removeObjectForKey(Key.keychainStore)
+            UICKeyChainStore.removeItemForKey(Key.keychainStore)
     }
     
     class func expireOrClear() {
@@ -134,11 +158,21 @@ class AuthCredential: NSObject, NSCoding {
     }
     
     class func fetchFromKeychain() -> AuthCredential? {
-        if let data = UICKeyChainStore.dataForKey(Key.keychainStore) {
-            if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? AuthCredential {
-                return authCredential
+        
+        #if DEBUG
+            if let data = authDebugCached.dataForKey(Key.keychainStore) {
+                if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? AuthCredential {
+                    return authCredential
+                }
             }
-        }
+        #else
+            if let data = UICKeyChainStore.dataForKey(Key.keychainStore) {
+                if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? AuthCredential {
+                    return authCredential
+                }
+            }
+        #endif
+
         return nil
     }
     

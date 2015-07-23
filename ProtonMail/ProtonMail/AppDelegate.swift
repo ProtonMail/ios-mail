@@ -72,10 +72,7 @@ class AppDelegate: UIResponder {
 extension AppDelegate: UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-//        Mint.sharedInstance().enableLogging(true)
-//        Mint.sharedInstance().setLogging(8)
-//        Mint.sharedInstance().initAndStartSession(mintAPIKey)
-        
+
         Fabric.with([Crashlytics()])
         
         shareViewModelFactoy = ViewModelFactoryProduction()
