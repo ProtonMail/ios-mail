@@ -30,6 +30,9 @@ class SearchViewController: ProtonMailViewController {
     
     private var fetchedResultsController: NSFetchedResultsController?
     private var managedObjectContext: NSManagedObjectContext?
+    
+    private var currentPage = 0;
+    private var stop : Bool = false;
 
     private var query: String = "" {
         didSet {
@@ -144,28 +147,31 @@ class SearchViewController: ProtonMailViewController {
 //            
 //            fetchedResultsController.delegate = self
 //        }
-        
-        if query.isEmpty {
+        if query.isEmpty || stop {
             return
         }
         
         tableView.showLoadingFooter()
         
-        sharedMessageDataService.search(query: query, page: 0, managedObjectContext: context, completion: { (messages, error) -> Void in
-            
+        
+        sharedMessageDataService.search(query: query, page: currentPage, completion: { (messages, error) -> Void in
             self.tableView.hideLoadingFooter()
             
-            if error != nil {
-                NSLog("\(__FUNCTION__) search error: \(error)")
+            if messages?.count > 0 {
+                self.currentPage += 1
+                if error != nil {
+                    NSLog("\(__FUNCTION__) search error: \(error)")
+                } else {
+                    
+                }
             } else {
-                
+                self.stop = true
             }
+            
+            self.handleFromLocal(query)
         })
-        
     }
     
-    
-
     func predicateForSearch(query: String) -> NSPredicate? {
         return NSPredicate(format: "(%K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@) AND (%K != -1) AND (%K != 1)", Message.Attributes.title, query, Message.Attributes.senderName, query, Message.Attributes.recipientList, query, Message.Attributes.locationNumber, Message.Attributes.locationNumber)
     }
@@ -175,7 +181,7 @@ class SearchViewController: ProtonMailViewController {
             if let last = fetchedResultsController.fetchedObjects?.last as? Message {
                 if let current = fetchedResultsController.objectAtIndexPath(indexPath) as? Message {
                     if last == current {
-                        //handleQuery(query)
+                        handleQuery(query)
                     }
                 }
             }
@@ -320,6 +326,7 @@ extension SearchViewController: UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         
+        self.stop = false
         handleQuery(query)
         
         return true

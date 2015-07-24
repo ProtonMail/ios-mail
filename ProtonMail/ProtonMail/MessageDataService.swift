@@ -735,29 +735,28 @@ class MessageDataService {
          UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
     
-    
-    
-    
-    func search(#query: String, page: Int, managedObjectContext context: NSManagedObjectContext, completion: (([Message]?, NSError?) -> Void)?) {
+    func search(#query: String, page: Int, completion: (([Message]?, NSError?) -> Void)?) {
         queue {
             let completionWrapper: CompletionBlock = {task, response, error in
                 if error != nil {
                     completion?(nil, error)
                 }
                 
-                if let messagesArray = response?["Messages"] as? [Dictionary<String,AnyObject>] {
+                if let context = sharedCoreDataService.mainManagedObjectContext {
                     
-                    context.performBlockAndWait() {
-                        var error: NSError?
-                        var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error) as! [Message]
-                        
-                        if let completion = completion {
-                            dispatch_async(dispatch_get_main_queue()) {
-                                if error != nil  {
-                                    NSLog("\(__FUNCTION__) error: \(error)")
-                                    completion(nil, error)
-                                } else {
-                                    completion(messages, error)
+                    if let messagesArray = response?["Messages"] as? [Dictionary<String,AnyObject>] {
+                        context.performBlockAndWait() {
+                            var error: NSError?
+                            var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error) as! [Message]
+                            
+                            if let completion = completion {
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    if error != nil  {
+                                        NSLog("\(__FUNCTION__) error: \(error)")
+                                        completion(nil, error)
+                                    } else {
+                                        completion(messages, error)
+                                    }
                                 }
                             }
                         }
