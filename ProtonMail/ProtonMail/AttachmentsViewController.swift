@@ -141,21 +141,27 @@ extension AttachmentsViewController: UIImagePickerControllerDelegate, UINavigati
         
         let tempImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         let type = info[UIImagePickerControllerMediaType] as! String
-        let url = info[UIImagePickerControllerReferenceURL] as! NSURL
+        let url = info[UIImagePickerControllerReferenceURL] as? NSURL
         let img_jpg = UIImage(data:UIImageJPEGRepresentation(tempImage, 1.0))!
         
         let library = ALAssetsLibrary()
         library.assetForURL(url, resultBlock:
             { (asset: ALAsset!) -> Void in
-                var fileName = asset.defaultRepresentation().filename()
-                let mimeType = asset.defaultRepresentation().UTI()
-                self.attachments.append(img_jpg)
-                self.delegate?.attachmentsViewController(self, didPickedAttachment: img_jpg, fileName: fileName, type: mimeType)
-                picker.dismissViewControllerAnimated(true, completion: nil)
-                
-                
+                if asset != nil {
+                    var fileName = asset.defaultRepresentation().filename()
+                    let mimeType = asset.defaultRepresentation().UTI()
+                    self.attachments.append(img_jpg)
+                    self.delegate?.attachmentsViewController(self, didPickedAttachment: img_jpg, fileName: fileName, type: mimeType)
+                    picker.dismissViewControllerAnimated(true, completion: nil)
+                } else {
+                    var fileName = "\(NSUUID().UUIDString).jpg"
+                    let mimeType = "image/jpg"
+                    self.attachments.append(img_jpg)
+                    self.delegate?.attachmentsViewController(self, didPickedAttachment: img_jpg, fileName: fileName, type: mimeType)
+                    picker.dismissViewControllerAnimated(true, completion: nil)
+                }
             })  { (error:NSError!) -> Void in
-                var fileName = "default.jpg"
+                var fileName = "\(NSUUID().UUIDString).jpg"
                 let mimeType = "image/jpg"
                 self.attachments.append(img_jpg)
                 self.delegate?.attachmentsViewController(self, didPickedAttachment: img_jpg, fileName: fileName, type: mimeType)
