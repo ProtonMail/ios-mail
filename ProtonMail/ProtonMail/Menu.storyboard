@@ -356,6 +356,9 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="84" y="5" width="236" height="52"/>
+                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1278,7 +1281,7 @@
                                                     <color key="textColor" red="0.50196078430000002" green="0.51764705879999995" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="343" y="10" width="41" height="14"/>
+                                                        <rect key="frame" x="263" y="10" width="41" height="14"/>
                                                     </variation>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="encrypted_main" translatesAutoresizingMaskIntoConstraints="NO" id="pXj-OE-cWa">
@@ -1295,7 +1298,8 @@
                                                             <exclude reference="ngt-dh-fUe"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="widthClass=compact">
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="268" y="32" width="15" height="20"/>
                                                         <mask key="constraints">
                                                             <include reference="IIn-wL-zsd"/>
                                                             <exclude reference="jLv-ti-OFL"/>
@@ -1323,7 +1327,8 @@
                                                             <exclude reference="gUg-k3-MxK"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="widthClass=compact">
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="284" y="29" width="28" height="27"/>
                                                         <mask key="constraints">
                                                             <include reference="UC4-9n-KFZ"/>
                                                             <include reference="gUg-k3-MxK"/>
@@ -1345,7 +1350,8 @@
                                                             <exclude reference="gHL-Pl-38E"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="widthClass=compact">
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="247" y="36" width="14" height="16"/>
                                                         <mask key="constraints">
                                                             <include reference="EtL-jI-Rnw"/>
                                                             <include reference="gHL-Pl-38E"/>
@@ -1591,6 +1597,64 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v5f-i5-kem" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2152.5" y="1617"/>
+        </scene>
+        <!--Message View Controller-->
+        <scene sceneID="ysU-co-vh9">
+            <objects>
+                <viewController id="kWS-aU-yuK" customClass="MessageViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Dhe-kT-scI"/>
+                        <viewControllerLayoutGuide type="bottom" id="3gu-uZ-r12"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="iHo-JM-gJu">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OR3-3R-Sw8">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="delegate" destination="kWS-aU-yuK" id="4IT-PE-VN6"/>
+                                </connections>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="OR3-3R-Sw8" secondAttribute="trailing" constant="-16" id="4pl-AI-nNO"/>
+                            <constraint firstItem="OR3-3R-Sw8" firstAttribute="leading" secondItem="iHo-JM-gJu" secondAttribute="leadingMargin" constant="-16" id="4tT-Fk-0aE"/>
+                            <constraint firstItem="3gu-uZ-r12" firstAttribute="top" secondItem="OR3-3R-Sw8" secondAttribute="bottom" id="LdU-Sx-B3p"/>
+                            <constraint firstItem="OR3-3R-Sw8" firstAttribute="top" secondItem="iHo-JM-gJu" secondAttribute="topMargin" id="WML-3Q-T1p"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="OR3-3R-Sw8"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="LdU-Sx-B3p"/>
+                                <exclude reference="4pl-AI-nNO"/>
+                                <exclude reference="4tT-Fk-0aE"/>
+                                <exclude reference="WML-3Q-T1p"/>
+                            </mask>
+                        </variation>
+                        <variation key="widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="OR3-3R-Sw8"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="LdU-Sx-B3p"/>
+                                <include reference="4pl-AI-nNO"/>
+                                <include reference="4tT-Fk-0aE"/>
+                                <include reference="WML-3Q-T1p"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="detailWebView" destination="OR3-3R-Sw8" id="548-nv-b0n"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="X4f-eM-03N" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4602" y="965"/>
         </scene>
         <!--Compose View Controller-->
         <scene sceneID="RIs-Xe-M5y">
@@ -3111,6 +3175,7 @@
                     <connections>
                         <outlet property="messageDetailView" destination="xpP-qB-Kil" id="luO-7e-utp"/>
                         <segue destination="1qH-aE-Y3O" kind="presentation" identifier="toCompose" id="BYG-C2-IMk"/>
+                        <segue destination="kWS-aU-yuK" kind="show" identifier="test_details_segue" id="bN1-if-Pvs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1vF-jC-K0B" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4594,11 +4659,11 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="YGe-pV-72F"/>
-        <segue reference="3FM-PP-oeV"/>
-        <segue reference="V9t-nA-fhw"/>
+        <segue reference="dxU-wZ-inN"/>
+        <segue reference="BYG-C2-IMk"/>
+        <segue reference="frl-1S-Qi1"/>
         <segue reference="5rJ-hC-fsT"/>
-        <segue reference="dZz-yt-xGj"/>
-        <segue reference="rFr-1z-1Q8"/>
-        <segue reference="KkU-lW-AKe"/>
+        <segue reference="V9t-nA-fhw"/>
+        <segue reference="3FM-PP-oeV"/>
     </inferredMetricsTieBreakers>
 </document>
