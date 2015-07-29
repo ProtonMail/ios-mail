@@ -37,7 +37,7 @@ class EmailView: UIView , EmailHeaderViewProtocol, UIWebViewDelegate, UIScrollVi
     var contentWebView: UIWebView!
     
     // Message attachment view
-    var attachmentView : EmailAttachmentView!
+    var attachmentView : EmailAttachmentView?
     
     // Message bottom actions view
     var bottomActionView : MessageDetailBottomView!
@@ -56,7 +56,7 @@ class EmailView: UIView , EmailHeaderViewProtocol, UIWebViewDelegate, UIScrollVi
         self.setupBottomView()
         self.setupContentView()
         self.setupHeaderView()
-        self.setupAttachmentView()
+       // self.setupAttachmentView()
         
         //        self.generateData()
         //        self.addSubviews()
@@ -85,12 +85,12 @@ class EmailView: UIView , EmailHeaderViewProtocol, UIWebViewDelegate, UIScrollVi
     
     private func setupAttachmentView() {
         self.attachmentView = EmailAttachmentView()
-        self.attachmentView.backgroundColor = UIColor.redColor()
+        self.attachmentView!.backgroundColor = UIColor.redColor()
         //self.attachmentView.delegate = self
-        self.contentWebView.scrollView.addSubview(self.attachmentView)
-        self.attachmentView.hidden = true;
+        self.contentWebView.scrollView.addSubview(self.attachmentView!)
+        self.attachmentView!.hidden = true;
         let w = UIScreen.mainScreen().applicationFrame.width;
-        self.attachmentView.frame = CGRect(x: 0, y: 0, width: w, height: 100)
+        self.attachmentView!.frame = CGRect(x: 0, y: 0, width: w, height: 100)
     }
     
     private func setupHeaderView () {
@@ -103,19 +103,19 @@ class EmailView: UIView , EmailHeaderViewProtocol, UIWebViewDelegate, UIScrollVi
     }
     
     private func setupContentView() {
-        contentWebView = UIWebView()
-        contentWebView.backgroundColor = UIColor.whiteColor()
-        contentWebView.userInteractionEnabled = true
-        contentWebView.scalesPageToFit = true;
+        self.contentWebView = UIWebView()
+        self.contentWebView.scalesPageToFit = true;
         self.addSubview(contentWebView)
-        contentWebView.scrollView.scrollEnabled = true
-        contentWebView.scrollView.alwaysBounceVertical = true
-        contentWebView.scrollView.userInteractionEnabled = true
-        contentWebView.scrollView.bounces = true;
-        contentWebView.delegate = self
-        contentWebView.scrollView.delegate = self
+        self.contentWebView.backgroundColor = UIColor.whiteColor()
+        self.contentWebView.userInteractionEnabled = true
+        self.contentWebView.scrollView.scrollEnabled = true
+        self.contentWebView.scrollView.alwaysBounceVertical = true
+        self.contentWebView.scrollView.userInteractionEnabled = true
+        self.contentWebView.scrollView.bounces = true;
+        self.contentWebView.delegate = self
+        self.contentWebView.scrollView.delegate = self
 
-        contentWebView.mas_makeConstraints { (make) -> Void in
+        self.contentWebView.mas_makeConstraints { (make) -> Void in
             make.top.equalTo()(self)
             make.left.equalTo()(self)
             make.right.equalTo()(self)
@@ -152,7 +152,8 @@ class EmailView: UIView , EmailHeaderViewProtocol, UIWebViewDelegate, UIScrollVi
                 if sub == self.emailHeader {
                     continue
                 } else if subview is UIImageView {
-                    sub.hidden = true
+                    //sub.hidden = true
+                    continue
                 } else if sub == self.attachmentView {
                     let y = self.attY
                     sub.frame = CGRect(x: sub.frame.origin.x, y:y , width: sub.frame.width, height: 100);
@@ -162,11 +163,9 @@ class EmailView: UIView , EmailHeaderViewProtocol, UIWebViewDelegate, UIScrollVi
                 } else {
                     let h = self.emailHeader.getHeight()
                     sub.frame = CGRect(x: sub.frame.origin.x, y: h, width: sub.frame.width, height: sub.frame.height);
-                    println (sub.frame)
                      self.attY = sub.frame.origin.y + sub.frame.height;
                 }
             }
-
         })
     }
     
@@ -179,10 +178,9 @@ class EmailView: UIView , EmailHeaderViewProtocol, UIWebViewDelegate, UIScrollVi
     }
     
     func webViewDidFinishLoad(webView: UIWebView) {
-        self.attachmentView.hidden = false
-        self.updateContentLayout(false)
+       self.attachmentView?.hidden = false
+       self.updateContentLayout(false)
     }
-    
     
     func scrollViewDidZoom(scrollView: UIScrollView) {
         self.updateContentLayout(false)
