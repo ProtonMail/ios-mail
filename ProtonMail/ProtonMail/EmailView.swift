@@ -42,7 +42,6 @@ class EmailView: UIView , EmailHeaderViewProtocol, UIWebViewDelegate, UIScrollVi
     // Message bottom actions view
     var bottomActionView : MessageDetailBottomView!
     
-    
     private let kButtonsViewHeight: CGFloat = 68.0
     
     
@@ -56,7 +55,7 @@ class EmailView: UIView , EmailHeaderViewProtocol, UIWebViewDelegate, UIScrollVi
         self.setupBottomView()
         self.setupContentView()
         self.setupHeaderView()
-       // self.setupAttachmentView()
+        // self.setupAttachmentView()
         
         //        self.generateData()
         //        self.addSubviews()
@@ -114,14 +113,14 @@ class EmailView: UIView , EmailHeaderViewProtocol, UIWebViewDelegate, UIScrollVi
         self.contentWebView.scrollView.bounces = true;
         self.contentWebView.delegate = self
         self.contentWebView.scrollView.delegate = self
-
+        
         self.contentWebView.mas_makeConstraints { (make) -> Void in
             make.top.equalTo()(self)
             make.left.equalTo()(self)
             make.right.equalTo()(self)
             make.bottom.equalTo()(self.bottomActionView.mas_top)
         }
-
+        
         let font = UIFont.robotoLight(size: UIFont.Size.h6)
         let cssColorString = UIColor.ProtonMail.Gray_383A3B.cssString
         
@@ -134,10 +133,9 @@ class EmailView: UIView , EmailHeaderViewProtocol, UIWebViewDelegate, UIScrollVi
         let path = bundle.pathForResource("editor", ofType: "css")
         let css = String(contentsOfFile: path!, encoding: NSUTF8StringEncoding)!
         let htmlString = "<style>\(css)</style><div class='inbox-body'>\(bodyText)</div>"
-        
         self.contentWebView.loadHTMLString(htmlString, baseURL: nil)
         
-//        UIView.animateWithDuration(0, delay:0, options: nil, animations: { }, completion: nil)
+        // UIView.animateWithDuration(0, delay:0, options: nil, animations: { }, completion: nil)
     }
     
     func updateSize() {
@@ -163,7 +161,7 @@ class EmailView: UIView , EmailHeaderViewProtocol, UIWebViewDelegate, UIScrollVi
                 } else {
                     let h = self.emailHeader.getHeight()
                     sub.frame = CGRect(x: sub.frame.origin.x, y: h, width: sub.frame.width, height: sub.frame.height);
-                     self.attY = sub.frame.origin.y + sub.frame.height;
+                    self.attY = sub.frame.origin.y + sub.frame.height;
                 }
             }
         })
@@ -178,8 +176,10 @@ class EmailView: UIView , EmailHeaderViewProtocol, UIWebViewDelegate, UIScrollVi
     }
     
     func webViewDidFinishLoad(webView: UIWebView) {
-       self.attachmentView?.hidden = false
-       self.updateContentLayout(false)
+        let cH = webView.scrollView.contentSize.height;
+        
+        self.attachmentView?.hidden = false
+        self.updateContentLayout(false)
     }
     
     func scrollViewDidZoom(scrollView: UIScrollView) {

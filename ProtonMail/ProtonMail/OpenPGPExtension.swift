@@ -119,11 +119,9 @@ extension String {
             if let error = error {
                 error.memory = anError
             }
-
             return nil
         }
         
-       
         if let decrypt = openPGP.decrypt_message(self, error: &anError) {
             return decrypt
         }

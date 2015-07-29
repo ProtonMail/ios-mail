@@ -66,14 +66,14 @@ class EmailHeaderView: UIView {
     private let kSeparatorBetweenHeaderAndBodyMarginTop: CGFloat = 16.0
     
     func getHeight () -> CGFloat {
+        //return 100
         return separatorBetweenHeaderAndBodyView.frame.origin.y + 1;
     }
     
     required init() {
         super.init(frame: CGRectZero)
         self.backgroundColor = UIColor.whiteColor()
-        
-        //self.generateData()
+
         self.addSubviews()
         self.makeConstraints()
         

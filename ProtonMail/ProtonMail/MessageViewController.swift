@@ -11,20 +11,33 @@ import UIKit
 class MessageViewController: ProtonMailViewController {
     
     /// message info
-    var message: Message!
-    var bodyText : String!
+    var message: Message! {
+        didSet {
+            message.fetchDetailIfNeeded() { _, _, msg, error in
+                println(self.message.isDetailDownloaded)
+                println(self.message.ccList)
+                NSLog("\(__FUNCTION__) error: \(self.message)")
+                if error != nil {
+                    NSLog("\(__FUNCTION__) error: \(error)")
+                }
+                else
+                {
+                    //self.messageDetailView?.updateHeaderView()
+                    //self.messageDetailView?.updateEmailBodyWebView(true)
+                }
+            }
+        }
+    }
     
     var emailView: EmailView!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     override func loadView() {
         emailView = EmailView(message: message)
-        
         self.view = emailView
-
     }
     
     override func shouldShowSideMenu() -> Bool {
@@ -38,28 +51,4 @@ class MessageViewController: ProtonMailViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
     }
-}
-
-
-extension MessageViewController : UIScrollViewDelegate {
-    
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        
-//        var x : Float = 0;
-//        if(scrollView.contentOffset.x < 0) {
-//            x = 0;
-//        } else if((scrollView.contentOffset.x + customView.Frame.Size.Width) > scrollView.ContentSize.Width) {
-//            x = scrollView.ContentSize.Width - customView.Frame.Size.Width;
-//        } else {
-//            x = scrollView.ContentOffset.X;
-//            customView.Frame = new RectangleF(new PointF(x, customView.Frame.Y), customView.Frame.Size);
-//        }
-        //println("")
-    }
-    
-//    override func scrollViewDidScroll(scrollView: UIScrollView) {
-//        
-//        super.scrollviewd
-//        println("")
-//    }
 }
