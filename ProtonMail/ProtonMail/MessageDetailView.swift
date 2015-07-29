@@ -212,17 +212,17 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
             
             // let htmlString = "<span style=\"font-family: \(font.fontName); font-size: \(font.pointSize); color: \(cssColorString)\">\(bodyText)</span>"
             
-//            if self.message.isDetailDownloaded {
-//                let s = self.bounds
-//                let htmlString = "<style>\(css)</style><div class='inbox-body'>\(bodyText)</div>"
-//                
-//                self.emailBodyWebView.loadHTMLString(htmlString, baseURL: nil)
-//            } else {
-//                let s = self.bounds
-//                let htmlString = "<style>\(css)</style><meta name=\"viewport\" content=\"width=\(s.width)\">\n<div class='inbox-body'>\(bodyText)</div>"
-//                
-//                self.emailBodyWebView.loadHTMLString(htmlString, baseURL: nil)
-//            }
+            if self.message.isDetailDownloaded {
+                let s = self.bounds
+                let htmlString = "<style>\(css)</style><div class='inbox-body'>\(bodyText)</div>"
+                
+                self.emailBodyWebView.loadHTMLString(htmlString, baseURL: nil)
+            } else {
+                let s = self.bounds
+                let htmlString = "<style>\(css)</style><meta name=\"viewport\" content=\"width=\(s.width)\">\n<div class='inbox-body'>\(bodyText)</div>"
+                
+                self.emailBodyWebView.loadHTMLString(htmlString, baseURL: nil)
+            }
         }
         
         if animated {
