@@ -18,16 +18,13 @@ class MessageViewController: ProtonMailViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+    }
+    
+    override func loadView() {
         emailView = EmailView(message: message)
-        emailView.frame = self.view.frame
         
-        
-        self.view.addSubview(emailView)
-        
-        
-        
+        self.view = emailView
+
     }
     
     override func shouldShowSideMenu() -> Bool {

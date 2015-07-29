@@ -41,7 +41,6 @@ class MessageDetailViewController: ProtonMailViewController {
     
     override func loadView() {
         messageDetailView = MessageDetailView(message: message, delegate: self)
-        
         self.view = messageDetailView
     }
     
