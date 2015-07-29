@@ -315,7 +315,7 @@ class MessageDataService {
         }
         
         //MessageLocation
-        var badgeNumber = inboxCount + draftCount + sendCount + spamCount + starCount + trashCount;
+        var badgeNumber = inboxCount //inboxCount + draftCount + sendCount + spamCount + starCount + trashCount;
         if  badgeNumber < 0 {
             badgeNumber = 0
         }
