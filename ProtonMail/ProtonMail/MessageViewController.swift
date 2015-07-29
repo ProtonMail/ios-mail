@@ -10,44 +10,24 @@ import UIKit
 
 class MessageViewController: ProtonMailViewController {
     
+    /// message info
     var message: Message!
     var bodyText : String!
-    @IBOutlet weak var detailWebView: UIWebView!
-
     
+    var emailView: EmailView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let font = UIFont.robotoLight(size: UIFont.Size.h6)
-        let cssColorString = UIColor.ProtonMail.Gray_383A3B.cssString
         
-        let w = UIScreen.mainScreen().applicationFrame.width;
+        emailView = EmailView(message: message)
+        emailView.frame = self.view.frame
         
-        var error: NSError?
-        bodyText = self.message.decryptBodyIfNeeded(&error) ?? NSLocalizedString("Unable to decrypt message.")
         
-        let bundle = NSBundle.mainBundle()
-        let path = bundle.pathForResource("editor", ofType: "css")
-        let css = String(contentsOfFile: path!, encoding: NSUTF8StringEncoding)!
-        let htmlString = "<style>\(css)</style><div class='inbox-body'>\(bodyText)</div>"
+        self.view.addSubview(emailView)
         
-        self.detailWebView.loadHTMLString(htmlString, baseURL: nil)
         
-        var myButton = UIView(frame: CGRect(x: 0, y: 0, width: w, height: 100))
-        myButton.backgroundColor = UIColor.redColor()
-        self.detailWebView.scrollView.addSubview(myButton )
-        self.detailWebView.scrollView.delegate = self
         
-        for subview in self.detailWebView.scrollView.subviews {
-            let sub = subview as! UIView
-            if sub == myButton {
-                continue
-            } else if subview is UIImageView {
-                sub.hidden = true
-            } else {
-                sub.frame = CGRect(x: sub.frame.origin.x, y: sub.frame.origin.y + myButton.frame.height, width: sub.frame.width, height: sub.frame.height);
-            }
-        }
     }
     
     override func shouldShowSideMenu() -> Bool {

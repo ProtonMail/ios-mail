@@ -94,7 +94,7 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fy4-ZC-gVz" id="LAU-bi-L1X">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="draft" translatesAutoresizingMaskIntoConstraints="NO" id="Rrm-fW-TBp">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="draft" translatesAutoresizingMaskIntoConstraints="NO" id="Rrm-fW-TBp">
                                             <rect key="frame" x="24" y="8" width="52" height="54"/>
                                             <variation key="widthClass=compact" misplaced="YES">
                                                 <rect key="frame" x="41" y="8" width="19" height="54"/>
@@ -193,7 +193,7 @@
                                 <color key="textColor" red="0.2196078431372549" green="0.22745098039215686" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="16" y="72" width="123" height="20"/>
+                                    <rect key="frame" x="16" y="72" width="122.5" height="20"/>
                                 </variation>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5sX-Zk-W85">
@@ -1609,48 +1609,8 @@
                     <view key="view" contentMode="scaleToFill" id="iHo-JM-gJu">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OR3-3R-Sw8">
-                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="delegate" destination="kWS-aU-yuK" id="4IT-PE-VN6"/>
-                                </connections>
-                            </webView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="OR3-3R-Sw8" secondAttribute="trailing" constant="-16" id="4pl-AI-nNO"/>
-                            <constraint firstItem="OR3-3R-Sw8" firstAttribute="leading" secondItem="iHo-JM-gJu" secondAttribute="leadingMargin" constant="-16" id="4tT-Fk-0aE"/>
-                            <constraint firstItem="3gu-uZ-r12" firstAttribute="top" secondItem="OR3-3R-Sw8" secondAttribute="bottom" id="LdU-Sx-B3p"/>
-                            <constraint firstItem="OR3-3R-Sw8" firstAttribute="top" secondItem="iHo-JM-gJu" secondAttribute="topMargin" id="WML-3Q-T1p"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="OR3-3R-Sw8"/>
-                            </mask>
-                            <mask key="constraints">
-                                <exclude reference="LdU-Sx-B3p"/>
-                                <exclude reference="4pl-AI-nNO"/>
-                                <exclude reference="4tT-Fk-0aE"/>
-                                <exclude reference="WML-3Q-T1p"/>
-                            </mask>
-                        </variation>
-                        <variation key="widthClass=compact">
-                            <mask key="subviews">
-                                <include reference="OR3-3R-Sw8"/>
-                            </mask>
-                            <mask key="constraints">
-                                <include reference="LdU-Sx-B3p"/>
-                                <include reference="4pl-AI-nNO"/>
-                                <include reference="4tT-Fk-0aE"/>
-                                <include reference="WML-3Q-T1p"/>
-                            </mask>
-                        </variation>
                     </view>
-                    <connections>
-                        <outlet property="detailWebView" destination="OR3-3R-Sw8" id="548-nv-b0n"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X4f-eM-03N" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

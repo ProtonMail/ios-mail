@@ -651,8 +651,8 @@
 				70F9C3201A7BA8F400A45DF3 /* MessageDetailView.swift */,
 				701704741A791856000A90D2 /* MessageDetailViewController.swift */,
 				7582E2F11B015DE400FEA38B /* MessageDetailBottomView.swift */,
-				7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */,
 				757945D51B66E38D004EEDCA /* MessageViewController.swift */,
+				7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */,
 				757945D71B6702A2004EEDCA /* EmailView.swift */,
 				757945D91B6702B5004EEDCA /* EmailHeaderView.swift */,
 			);

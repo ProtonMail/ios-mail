@@ -173,7 +173,6 @@
                 <constraint firstAttribute="bottom" secondItem="ABA-TD-b8t" secondAttribute="bottom" id="v3n-sT-HDx"/>
                 <constraint firstItem="ABA-TD-b8t" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="zdl-qI-fea"/>
             </constraints>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <variation key="default">
                 <mask key="subviews">
                     <exclude reference="ABA-TD-b8t"/>
