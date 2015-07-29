@@ -25,7 +25,7 @@ import Foundation
 import UIKit
 import QuickLook
 
-class EmailView: UIView , EmailHeaderViewProtocol{
+class EmailView: UIView , EmailHeaderViewProtocol, UIWebViewDelegate, UIScrollViewDelegate{
     
     /// Message info
     var message: Message
@@ -36,7 +36,10 @@ class EmailView: UIView , EmailHeaderViewProtocol{
     // Message content
     var contentWebView: UIWebView!
     
-    // Message bottom view
+    // Message attachment view
+    var attachmentView : EmailAttachmentView!
+    
+    // Message bottom actions view
     var bottomActionView : MessageDetailBottomView!
     
     
@@ -53,6 +56,7 @@ class EmailView: UIView , EmailHeaderViewProtocol{
         self.setupBottomView()
         self.setupContentView()
         self.setupHeaderView()
+        self.setupAttachmentView()
         
         //        self.generateData()
         //        self.addSubviews()
@@ -79,6 +83,16 @@ class EmailView: UIView , EmailHeaderViewProtocol{
         }
     }
     
+    private func setupAttachmentView() {
+        self.attachmentView = EmailAttachmentView()
+        self.attachmentView.backgroundColor = UIColor.redColor()
+        //self.attachmentView.delegate = self
+        self.contentWebView.scrollView.addSubview(self.attachmentView)
+        self.attachmentView.hidden = true;
+        let w = UIScreen.mainScreen().applicationFrame.width;
+        self.attachmentView.frame = CGRect(x: 0, y: 0, width: w, height: 100)
+    }
+    
     private func setupHeaderView () {
         self.emailHeader = EmailHeaderView()
         self.emailHeader.backgroundColor = UIColor.whiteColor()
@@ -94,13 +108,12 @@ class EmailView: UIView , EmailHeaderViewProtocol{
         contentWebView.userInteractionEnabled = true
         contentWebView.scalesPageToFit = true;
         self.addSubview(contentWebView)
-        
-        
         contentWebView.scrollView.scrollEnabled = true
         contentWebView.scrollView.alwaysBounceVertical = true
         contentWebView.scrollView.userInteractionEnabled = true
-        contentWebView.scrollView.bounces = false;
-
+        contentWebView.scrollView.bounces = true;
+        contentWebView.delegate = self
+        contentWebView.scrollView.delegate = self
 
         contentWebView.mas_makeConstraints { (make) -> Void in
             make.top.equalTo()(self)
@@ -124,50 +137,58 @@ class EmailView: UIView , EmailHeaderViewProtocol{
         
         self.contentWebView.loadHTMLString(htmlString, baseURL: nil)
         
-        
-//        UIView.animateWithDuration(0, delay:0, options: nil, animations: {
-//            var myButton = UIView(frame: CGRect(x: 0, y: 0, width: w, height: 100))
-//            myButton.backgroundColor = UIColor.redColor()
-//            self.contentWebView.scrollView.addSubview(myButton )
-//
-//            for subview in self.contentWebView.scrollView.subviews {
-//                let sub = subview as! UIView
-//                if sub == myButton {
-//                    continue
-//                } else if subview is UIImageView {
-//                    sub.hidden = true
-//                } else {
-//                    sub.frame = CGRect(x: sub.frame.origin.x, y: sub.frame.origin.y + myButton.frame.height, width: sub.frame.width, height: sub.frame.height);
-//                }
-//            }
-//            }, completion: nil)
-        
-        
+//        UIView.animateWithDuration(0, delay:0, options: nil, animations: { }, completion: nil)
     }
     
     func updateSize() {
         self.updateContentLayout(false)
     }
     
-    
+    private var attY : CGFloat = 0;
     private func updateContentLayout(animation: Bool) {
         UIView.animateWithDuration(animation ? 0.3 : 0, animations: { () -> Void in
             for subview in self.contentWebView.scrollView.subviews {
                 let sub = subview as! UIView
                 if sub == self.emailHeader {
-                    //var h = self.emailHeader.getHeight()
-                    //var f = self.emailHeader.frame
-                    //println("\(h)")
-
                     continue
                 } else if subview is UIImageView {
                     sub.hidden = true
+                } else if sub == self.attachmentView {
+                    let y = self.attY
+                    sub.frame = CGRect(x: sub.frame.origin.x, y:y , width: sub.frame.width, height: 100);
+                    var size = self.contentWebView.scrollView.contentSize;
+                    size.height = self.attY + 100;
+                    self.contentWebView.scrollView.contentSize = size
                 } else {
                     let h = self.emailHeader.getHeight()
                     sub.frame = CGRect(x: sub.frame.origin.x, y: h, width: sub.frame.width, height: sub.frame.height);
+                    println (sub.frame)
+                     self.attY = sub.frame.origin.y + sub.frame.height;
                 }
             }
 
         })
+    }
+    
+    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        if navigationType == .LinkClicked {
+            UIApplication.sharedApplication().openURL(request.URL!)
+            return false
+        }
+        return true
+    }
+    
+    func webViewDidFinishLoad(webView: UIWebView) {
+        self.attachmentView.hidden = false
+        self.updateContentLayout(false)
+    }
+    
+    
+    func scrollViewDidZoom(scrollView: UIScrollView) {
+        self.updateContentLayout(false)
+    }
+    
+    func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView!, atScale scale: CGFloat) {
+        self.updateContentLayout(false)
     }
 }

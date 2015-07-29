@@ -26,7 +26,6 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
     private var tempFileUri : NSURL?
     
     // MARK: - Private constants
-    
     private let kAnimationDuration: NSTimeInterval = 0.3
     private let kAnimationOption: UIViewAnimationOptions = .TransitionCrossDissolve
     private var kKVOContext = 0

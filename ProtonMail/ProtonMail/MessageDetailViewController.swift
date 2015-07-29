@@ -195,8 +195,6 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
         presentViewController(alertController, animated: true, completion: nil)
     }
     
-    
-    
     func messageDetailViewDidTapReplyMessage(messageView: MessageDetailView, message: Message) {
         actionTapped = ComposeMessageAction.Reply
         self.performSegueWithIdentifier("test_details_segue", sender: self)
