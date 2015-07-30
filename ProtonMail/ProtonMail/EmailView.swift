@@ -44,6 +44,10 @@ class EmailView: UIView , EmailHeaderViewProtocol, UIWebViewDelegate, UIScrollVi
     
     private let kButtonsViewHeight: CGFloat = 68.0
     
+    func initLayouts () {
+        //self.emailHeader.configView();
+        self.emailHeader.makeConstraints()
+    }
     
     required init(message: Message) {
         self.message = message
@@ -57,9 +61,9 @@ class EmailView: UIView , EmailHeaderViewProtocol, UIWebViewDelegate, UIScrollVi
         self.setupHeaderView()
         // self.setupAttachmentView()
         
-        //        self.generateData()
-        //        self.addSubviews()
-        //        self.makeConstraints()
+        //self.generateData()
+        //self.addSubviews()
+        //self.makeConstraints()
         //updateAttachments()
         
         self.updateContentLayout(false)
@@ -177,7 +181,6 @@ class EmailView: UIView , EmailHeaderViewProtocol, UIWebViewDelegate, UIScrollVi
     
     func webViewDidFinishLoad(webView: UIWebView) {
         let cH = webView.scrollView.contentSize.height;
-        
         self.attachmentView?.hidden = false
         self.updateContentLayout(false)
     }
