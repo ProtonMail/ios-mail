@@ -47,6 +47,21 @@ class EmailView: UIView , EmailHeaderViewProtocol, UIWebViewDelegate, UIScrollVi
     func initLayouts () {
         //self.emailHeader.configView();
         self.emailHeader.makeConstraints()
+        
+        
+        self.contentWebView.mas_makeConstraints { (make) -> Void in
+            make.top.equalTo()(self)
+            make.left.equalTo()(self)
+            make.right.equalTo()(self)
+            make.bottom.equalTo()(self.bottomActionView.mas_top)
+        }
+        
+        bottomActionView.mas_makeConstraints { (make) -> Void in
+            make.bottom.equalTo()(self)
+            make.left.equalTo()(self)
+            make.right.equalTo()(self)
+            make.height.equalTo()(self.kButtonsViewHeight)
+        }
     }
     
     required init(message: Message) {
@@ -77,13 +92,7 @@ class EmailView: UIView , EmailHeaderViewProtocol, UIWebViewDelegate, UIScrollVi
         self.bottomActionView = NSBundle.mainBundle().loadNibNamed("MessageDetailBottomView", owner: 0, options: nil)[0] as? MessageDetailBottomView
         self.bottomActionView.backgroundColor = UIColor.ProtonMail.Gray_E8EBED
         self.addSubview(bottomActionView)
-        
-        bottomActionView.mas_makeConstraints { (make) -> Void in
-            make.bottom.equalTo()(self)
-            make.left.equalTo()(self)
-            make.right.equalTo()(self)
-            make.height.equalTo()(self.kButtonsViewHeight)
-        }
+
     }
     
     private func setupAttachmentView() {
@@ -117,13 +126,7 @@ class EmailView: UIView , EmailHeaderViewProtocol, UIWebViewDelegate, UIScrollVi
         self.contentWebView.scrollView.bounces = true;
         self.contentWebView.delegate = self
         self.contentWebView.scrollView.delegate = self
-        
-        self.contentWebView.mas_makeConstraints { (make) -> Void in
-            make.top.equalTo()(self)
-            make.left.equalTo()(self)
-            make.right.equalTo()(self)
-            make.bottom.equalTo()(self.bottomActionView.mas_top)
-        }
+
         
         let font = UIFont.robotoLight(size: UIFont.Size.h6)
         let cssColorString = UIColor.ProtonMail.Gray_383A3B.cssString
@@ -152,6 +155,7 @@ class EmailView: UIView , EmailHeaderViewProtocol, UIWebViewDelegate, UIScrollVi
             for subview in self.contentWebView.scrollView.subviews {
                 let sub = subview as! UIView
                 if sub == self.emailHeader {
+                    //sub.backgroundColor = UIColor.yellowColor()
                     continue
                 } else if subview is UIImageView {
                     //sub.hidden = true
