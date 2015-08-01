@@ -115,6 +115,9 @@ class EmailHeaderView: UIView {
 //        self.addSubview(separatorBetweenBodyViewAndFooter)
     }
     
+    
+    
+    
     private func createHeaderView() {
         
         // create header container

@@ -125,6 +125,7 @@
 		75150ED11B1E74A20013B476 /* SettingDebugTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75150ED01B1E74A20013B476 /* SettingDebugTableViewController.swift */; };
 		751562551B68E8050066FE38 /* EmailAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751562541B68E8050066FE38 /* EmailAttachmentView.swift */; };
 		7518393F1B3DCA3000C714A6 /* EventAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518393E1B3DCA3000C714A6 /* EventAPI.swift */; };
+		7526AC8E1B6C4B3700E1967E /* backup.css in Resources */ = {isa = PBXBuildFile; fileRef = 7526AC8D1B6C4B3700E1967E /* backup.css */; };
 		754387D91AB35EB40003B0AC /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754387D81AB35EB40003B0AC /* SignUpViewController.swift */; };
 		754387DB1AB3A54E0003B0AC /* SignUpKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754387DA1AB3A54E0003B0AC /* SignUpKeyViewController.swift */; };
 		75484B8B1AF29EBF00B97472 /* NSDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */; };
@@ -321,6 +322,7 @@
 		75150ED01B1E74A20013B476 /* SettingDebugTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDebugTableViewController.swift; sourceTree = "<group>"; };
 		751562541B68E8050066FE38 /* EmailAttachmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailAttachmentView.swift; sourceTree = "<group>"; };
 		7518393E1B3DCA3000C714A6 /* EventAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventAPI.swift; sourceTree = "<group>"; };
+		7526AC8D1B6C4B3700E1967E /* backup.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = backup.css; sourceTree = "<group>"; };
 		754387D81AB35EB40003B0AC /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		754387DA1AB3A54E0003B0AC /* SignUpKeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpKeyViewController.swift; sourceTree = "<group>"; };
 		75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateExtension.swift; sourceTree = "<group>"; };
@@ -792,6 +794,7 @@
 			children = (
 				07009F101A684BDB00129B07 /* Fonts */,
 				75978BDA1B28F63100D07501 /* editor.css */,
+				7526AC8D1B6C4B3700E1967E /* backup.css */,
 			);
 			name = Resource;
 			sourceTree = "<group>";
@@ -982,6 +985,7 @@
 				7582E2F41B015DF100FEA38B /* MessageDetailBottomView.xib in Resources */,
 				07CC996A1A705BA4000FD6F8 /* Settings.bundle in Resources */,
 				076758761AA0E86400F9AC9C /* LoadingView.xib in Resources */,
+				7526AC8E1B6C4B3700E1967E /* backup.css in Resources */,
 				701704781A794C69000A90D2 /* Roboto-MediumItalic.ttf in Resources */,
 				07411D8C1AAA3F1B002A4611 /* AttachmentTableViewCell.xib in Resources */,
 				075E3DF61A5F4ECF00E001A7 /* Images.xcassets in Resources */,

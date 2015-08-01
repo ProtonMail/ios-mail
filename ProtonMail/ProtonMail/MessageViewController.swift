@@ -34,7 +34,8 @@ class MessageViewController: ProtonMailViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //self.emailView.setHeaderData();
+        self.emailView.updateHeaderData(self.message.subject)
+            
         self.emailView.initLayouts()
     }
     
@@ -49,7 +50,6 @@ class MessageViewController: ProtonMailViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
     }
     
     override func viewDidAppear(animated: Bool) {
