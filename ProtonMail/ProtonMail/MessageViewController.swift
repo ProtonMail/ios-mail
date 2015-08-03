@@ -34,13 +34,20 @@ class MessageViewController: ProtonMailViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.emailView.updateHeaderData(self.message.subject)
-            
+        self.emailView.updateHeaderData(self.message.subject,
+            sender: self.message.senderName ?? self.message.sender,
+            to: self.message.recipientList.getDisplayAddress(),
+            cc: self.message.ccList.getDisplayAddress(),
+            bcc: self.message.bccList.getDisplayAddress(),
+            isStarred: self.message.isStarred,
+            attCount : self.message.attachments.count)
         self.emailView.initLayouts()
+        
+        self.updateEmailBody()
     }
     
     override func loadView() {
-        emailView = EmailView(message: message)
+        emailView = EmailView()
         self.view = emailView
     }
     
@@ -54,5 +61,19 @@ class MessageViewController: ProtonMailViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+    }
+    
+    
+    
+    // MARK : private function
+    private func updateEmailBody () {
+        var bodyText = NSLocalizedString("Loading...")
+        
+        if self.message.isDetailDownloaded {
+            var error: NSError?
+            bodyText = self.message.decryptBodyIfNeeded(&error) ?? NSLocalizedString("Unable to decrypt message.")
+        }
+        
+        self.emailView.updateEmailBody(bodyText)
     }
 }

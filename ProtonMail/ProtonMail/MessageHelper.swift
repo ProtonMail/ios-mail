@@ -79,8 +79,6 @@ public class MessageHelper {
             return message
     }
     
-        
-    
     static func updateMessage (message: Message ,
         expirationTimeInterval: NSTimeInterval,
         body: String,
