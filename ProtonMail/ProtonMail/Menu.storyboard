@@ -94,7 +94,7 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fy4-ZC-gVz" id="LAU-bi-L1X">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="draft" translatesAutoresizingMaskIntoConstraints="NO" id="Rrm-fW-TBp">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="draft" translatesAutoresizingMaskIntoConstraints="NO" id="Rrm-fW-TBp">
                                             <rect key="frame" x="24" y="8" width="52" height="54"/>
                                             <variation key="widthClass=compact" misplaced="YES">
                                                 <rect key="frame" x="41" y="8" width="19" height="54"/>
