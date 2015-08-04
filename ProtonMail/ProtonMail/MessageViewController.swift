@@ -53,8 +53,8 @@ class MessageViewController: ProtonMailViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
-        let composeViewController = segue.destinationViewController.viewControllers!.first as! HtmlEditorViewController
-
+        let composeViewController = segue.destinationViewController.viewControllers!.first as! ComposeEmailViewController
+        composeViewController.viewModel = ComposeViewModelImpl(msg: message, action: ComposeMessageAction.Reply)
         
         var bodyText = NSLocalizedString("Loading...")
         

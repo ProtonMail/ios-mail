@@ -1,5 +1,5 @@
 //
-//  ComposeViewN.swift
+//  ComposeView.swift
 //  ProtonMail
 //
 //  Created by Yanfeng Zhang on 5/27/15.
@@ -10,29 +10,29 @@ import UIKit
 
 
 
-protocol ComposeViewNDelegate {
-    func ComposeViewNDidSizeChanged(size: CGSize)
-    func ComposeViewNDidOffsetChanged(offset: CGPoint)
-    func composeViewDidTapNextButton(composeView: ComposeViewN)
-    func composeViewDidTapEncryptedButton(composeView: ComposeViewN)
-    func composeViewDidTapAttachmentButton(composeView: ComposeViewN)
+protocol ComposeViewDelegate {
+    func ComposeViewDidSizeChanged(size: CGSize)
+    func ComposeViewDidOffsetChanged(offset: CGPoint)
+    func composeViewDidTapNextButton(composeView: ComposeView)
+    func composeViewDidTapEncryptedButton(composeView: ComposeView)
+    func composeViewDidTapAttachmentButton(composeView: ComposeView)
     
-    func composeView(composeView: ComposeViewN, didAddContact contact: ContactVO, toPicker picker: MBContactPicker)
-    func composeView(composeView: ComposeViewN, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker)
+    func composeView(composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: MBContactPicker)
+    func composeView(composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker)
     
-    func composeViewHideExpirationView(composeView: ComposeViewN)
-    func composeViewCancelExpirationData(composeView: ComposeViewN)
-    func composeViewDidTapExpirationButton(composeView: ComposeViewN)
-    func composeViewCollectExpirationData(composeView: ComposeViewN)
+    func composeViewHideExpirationView(composeView: ComposeView)
+    func composeViewCancelExpirationData(composeView: ComposeView)
+    func composeViewDidTapExpirationButton(composeView: ComposeView)
+    func composeViewCollectExpirationData(composeView: ComposeView)
 }
 
-protocol ComposeViewNDataSource {
-    func composeViewContactsModelForPicker(composeView: ComposeViewN, picker: MBContactPicker) -> [AnyObject]!
-    func composeViewSelectedContactsForPicker(composeView: ComposeViewN, picker: MBContactPicker) -> [AnyObject]!
+protocol ComposeViewDataSource {
+    func composeViewContactsModelForPicker(composeView: ComposeView, picker: MBContactPicker) -> [AnyObject]!
+    func composeViewSelectedContactsForPicker(composeView: ComposeView, picker: MBContactPicker) -> [AnyObject]!
 }
 
-class ComposeViewN: UIViewController {
-
+class ComposeView: UIViewController {
+    
     let kConfirmError : String = NSLocalizedString( "Message password doesn't match.")
     let kExpirationNeedsPWDError : String = NSLocalizedString("Please set a password.")
     
@@ -68,7 +68,6 @@ class ComposeViewN: UIViewController {
         return bccContactPicker.contactList
     }
     
-    
     var expirationTimeInterval: NSTimeInterval = 0
     
     var hasContent: Bool {//need check body also here
@@ -79,10 +78,6 @@ class ComposeViewN: UIViewController {
         return subject.text ?? ""
     }
     
-    // MARK : - HtmlEditor
-    var htmlEditor : HtmlEditorViewController!
-    private var screenSize : CGRect!
-    private var editorSize : CGSize!
     
     // MARK : - Outlets
     @IBOutlet var fakeContactPickerHeightConstraint: NSLayoutConstraint!
@@ -108,8 +103,8 @@ class ComposeViewN: UIViewController {
     
     
     // MARK: - Delegate and Datasource
-    var datasource: ComposeViewNDataSource?
-    var delegate: ComposeViewNDelegate?
+    var datasource: ComposeViewDataSource?
+    var delegate: ComposeViewDelegate?
     
     var selfView : UIView!
     
@@ -133,7 +128,6 @@ class ComposeViewN: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.selfView = self.view;
-        self.screenSize = UIScreen.mainScreen().bounds
         
         self.configureContactPickerTemplate()
         self.includeButtonBorder(encryptedButton)
@@ -142,7 +136,6 @@ class ComposeViewN: UIViewController {
         self.includeButtonBorder(encryptedPasswordTextField)
         self.includeButtonBorder(expirationDateTextField)
         
-        self.configureHtmlEditor()
         self.configureToContactPicker()
         self.configureCcContactPicker()
         self.configureBccContactPicker()
@@ -204,7 +197,6 @@ class ComposeViewN: UIViewController {
             self.ccContactPicker.userInteractionEnabled = false
             self.bccContactPicker.userInteractionEnabled = false
             self.subject.userInteractionEnabled = false
-            self.htmlEditor.view.userInteractionEnabled = false
             
             self.showExpirationPicker()
             self.toContactPicker.resignFirstResponder()
@@ -306,8 +298,8 @@ class ComposeViewN: UIViewController {
             println("\(self.buttonView.frame)")
             println("\(self.expirationView.frame)")
             println("\(self.passwordView.frame)")
-            let size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height + self.editorSize.height)
-            self.delegate?.ComposeViewNDidSizeChanged(size)
+            let size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height)
+            self.delegate?.ComposeViewDidSizeChanged(size)
             }, completion: nil)
     }
     
@@ -387,7 +379,7 @@ class ComposeViewN: UIViewController {
         self.ccContactPicker.userInteractionEnabled = true
         self.bccContactPicker.userInteractionEnabled = true
         self.subject.userInteractionEnabled = true
-        self.htmlEditor.view.userInteractionEnabled = true
+        //self.htmlEditor.view.userInteractionEnabled = true
         
         UIView.animateWithDuration(0.3, animations: { () -> Void in
             self.expirationView.alpha = 0.0
@@ -459,21 +451,10 @@ class ComposeViewN: UIViewController {
         }
     }
     
-    private func configureHtmlEditor(){
-        
-        self.editorSize = CGSize.zeroSize
-        self.htmlEditor = HtmlEditorViewController()
-        self.htmlEditor.delegate = self
-        self.view.addSubview(htmlEditor.view);
-        let size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height)
-        self.htmlEditor.view.frame = CGRect(x: 0, y: size.height, width: screenSize.width, height: 1000)
-        //self.htmlEditor.setFrame(CGRect(x: 0, y: 0, width: screenSize.width, height: 1000))
-    }
-    
     private func updateViewSize()
     {
         let size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height)
-        self.htmlEditor.view.frame = CGRect(x: 0, y: size.height, width: editorSize.width, height: editorSize.height)
+        //self.htmlEditor.view.frame = CGRect(x: 0, y: size.height, width: editorSize.width, height: editorSize.height)
         //self.htmlEditor.setFrame(CGRect(x: 0, y: 0, width: editorSize.width, height: editorSize.height))
     }
     
@@ -569,26 +550,10 @@ class ComposeViewN: UIViewController {
 }
 
 
-//html editor delegate
-extension ComposeViewN : HtmlEditorViewControllerDelegate {
-    func editorSizeChanged(size: CGSize) {
-        if( self.editorSize != size)
-        {
-            self.editorSize = size
-            self.notifyViewSize(false)
-        }
-    }
-    
-    func editorCaretPosition(position: Int) {
-        let x = self.htmlEditor.view.frame.origin.y
-        println("x: \(x) -- top : \(position)")
-        let offset = CGPoint(x: 0,y: x + CGFloat(position))
-        self.delegate?.ComposeViewNDidOffsetChanged(offset)
-    }
-}
+
 
 // MARK: - MBContactPickerDataSource
-extension ComposeViewN: MBContactPickerDataSource {
+extension ComposeView: MBContactPickerDataSource {
     func contactModelsForContactPicker(contactPickerView: MBContactPicker!) -> [AnyObject]! {
         if (contactPickerView == toContactPicker) {
             contactPickerView.prompt = NSLocalizedString("To:")
@@ -612,7 +577,7 @@ extension ComposeViewN: MBContactPickerDataSource {
 
 // MARK: - MBContactPickerDelegate
 
-extension ComposeViewN: MBContactPickerDelegate {
+extension ComposeView: MBContactPickerDelegate {
     func contactCollectionView(contactCollectionView: MBContactCollectionView!, didAddContact model: MBContactPickerModelProtocol!) {
         let contactPicker = contactPickerForContactCollectionView(contactCollectionView)
         
@@ -675,7 +640,7 @@ extension ComposeViewN: MBContactPickerDelegate {
 }
 
 // MARK: - UITextFieldDelegate
-extension ComposeViewN: UITextFieldDelegate {
+extension ComposeView: UITextFieldDelegate {
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         if (textField == expirationDateTextField) {
             return false
@@ -694,7 +659,7 @@ extension MBContactPicker {
         }
         return contactList
     }
-
+    
     var hasOutsideEmails: Bool {
         let contactsSelected = NSArray(array: self.contactsSelected)
         if let contacts = contactsSelected.valueForKey(ContactVO.Attributes.email) as? [String] {

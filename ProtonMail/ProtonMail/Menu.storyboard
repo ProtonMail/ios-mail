@@ -1637,10 +1637,10 @@
             </objects>
             <point key="canvasLocation" x="5455.5" y="720"/>
         </scene>
-        <!--Html Editor View Controller-->
+        <!--Compose Email View Controller-->
         <scene sceneID="Nqt-Qf-jZf">
             <objects>
-                <viewController id="3qu-iX-9kV" customClass="HtmlEditorViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="3qu-iX-9kV" customClass="ComposeEmailViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="QuF-P8-4Vw"/>
                         <viewControllerLayoutGuide type="bottom" id="EbU-4D-baf"/>

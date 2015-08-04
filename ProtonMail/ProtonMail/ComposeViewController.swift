@@ -10,7 +10,6 @@ import UIKit
 
 class ComposeViewController : ProtonMailViewController {
     
-    
     // MARK : private var
     var viewModel : ComposeViewModel!
     
@@ -31,7 +30,7 @@ class ComposeViewController : ProtonMailViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var expirationPicker: UIPickerView!
     @IBOutlet weak var keyboradToolbar: UIToolbar!
-    private var composeView : ComposeViewN!
+    private var composeView : ComposeView!
     
     // MARK : const values
     private let kNumberOfColumnsInTimePicker: Int = 2
@@ -59,7 +58,7 @@ class ComposeViewController : ProtonMailViewController {
         self.expirationPicker.dataSource = self
         self.expirationPicker.delegate = self
         
-        self.composeView = ComposeViewN(nibName: "ComposeViewN", bundle: nil)
+        self.composeView = ComposeView(nibName: "ComposeView", bundle: nil)
         self.composeView.delegate = self
         self.composeView.datasource = self
         
@@ -96,7 +95,7 @@ class ComposeViewController : ProtonMailViewController {
         switch viewModel.messageAction!
         {
         case .Reply, .ReplyAll:
-            self.composeView.htmlEditor.focusTextEditor()
+            //self.composeView.htmlEditor.focusTextEditor()
             break
         default:
             self.composeView.toContactPicker.becomeFirstResponder()
@@ -181,7 +180,7 @@ class ComposeViewController : ProtonMailViewController {
             cc: self.composeView.ccContactPicker.contactsSelected as! [ContactVO],
             bcc: self.composeView.bccContactPicker.contactsSelected as! [ContactVO],
             title: self.composeView.subject.text,
-            body: self.composeView.htmlEditor.getHTML(),
+            body: "",//self.composeView.htmlEditor.getHTML(),
             expir: self.composeView.expirationTimeInterval,
             pwd:self.encryptionPassword,
             pwdHit:self.encryptionPasswordHint
@@ -256,7 +255,7 @@ class ComposeViewController : ProtonMailViewController {
     private func updateMessageView() {
         
         self.composeView.subject.text = self.viewModel.getSubject();
-        self.composeView.htmlEditor.setHTML(self.viewModel.getHtmlBody())
+        //self.composeView.htmlEditor.setHTML(self.viewModel.getHtmlBody())
 
     }
     
@@ -287,14 +286,14 @@ class ComposeViewController : ProtonMailViewController {
 
 
 // MARK : - view extensions
-extension ComposeViewController : ComposeViewNDelegate {
+extension ComposeViewController : ComposeViewDelegate {
     
-    func ComposeViewNDidSizeChanged(size: CGSize) {
+    func ComposeViewDidSizeChanged(size: CGSize) {
         self.composeSize = size
         self.updateViewSize()
     }
     
-    func ComposeViewNDidOffsetChanged(offset: CGPoint){
+    func ComposeViewDidOffsetChanged(offset: CGPoint){
         if ( self.cousorOffset  != offset.y)
         {
             self.cousorOffset = offset.y
@@ -302,7 +301,7 @@ extension ComposeViewController : ComposeViewNDelegate {
         }
     }
     
-    func composeViewDidTapNextButton(composeView: ComposeViewN) {
+    func composeViewDidTapNextButton(composeView: ComposeView) {
         switch(actualEncryptionStep) {
         case EncryptionStep.DefinePassword:
             self.encryptionPassword = composeView.encryptedPasswordTextField.text ?? ""
@@ -329,13 +328,13 @@ extension ComposeViewController : ComposeViewNDelegate {
         }
     }
     
-    func composeViewDidTapEncryptedButton(composeView: ComposeViewN) {
+    func composeViewDidTapEncryptedButton(composeView: ComposeView) {
         self.actualEncryptionStep = EncryptionStep.DefinePassword
         self.composeView.showDefinePasswordView()
         self.composeView.hidePasswordAndConfirmDoesntMatch()
     }
     
-    func composeViewDidTapAttachmentButton(composeView: ComposeViewN) {
+    func composeViewDidTapAttachmentButton(composeView: ComposeView) {
         if let viewController = UIStoryboard.instantiateInitialViewController(storyboard: .attachments) as? UINavigationController {
             if let attachmentsViewController = viewController.viewControllers.first as? AttachmentsViewController {
                 attachmentsViewController.delegate = self
@@ -349,23 +348,23 @@ extension ComposeViewController : ComposeViewNDelegate {
         
     }
     
-    func composeViewDidTapExpirationButton(composeView: ComposeViewN)
+    func composeViewDidTapExpirationButton(composeView: ComposeView)
     {
         self.expirationPicker.alpha = 1;
     }
     
-    func composeViewHideExpirationView(composeView: ComposeViewN)
+    func composeViewHideExpirationView(composeView: ComposeView)
     {
         self.expirationPicker.alpha = 0;
     }
     
-    func composeViewCancelExpirationData(composeView: ComposeViewN)
+    func composeViewCancelExpirationData(composeView: ComposeView)
     {
         self.expirationPicker.selectRow(0, inComponent: 0, animated: true)
         self.expirationPicker.selectRow(0, inComponent: 1, animated: true)
     }
     
-    func composeViewCollectExpirationData(composeView: ComposeViewN)
+    func composeViewCollectExpirationData(composeView: ComposeView)
     {
         let selectedDay = expirationPicker.selectedRowInComponent(0)
         let selectedHour = expirationPicker.selectedRowInComponent(1)
@@ -375,7 +374,7 @@ extension ComposeViewController : ComposeViewNDelegate {
         }
     }
     
-    func composeView(composeView: ComposeViewN, didAddContact contact: ContactVO, toPicker picker: MBContactPicker)
+    func composeView(composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: MBContactPicker)
     {
         var selectedContacts: [ContactVO] = [ContactVO]()
         
@@ -391,7 +390,7 @@ extension ComposeViewController : ComposeViewNDelegate {
         
     }
     
-    func composeView(composeView: ComposeViewN, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker)
+    func composeView(composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker)
     {
         var contactIndex = -1
         
@@ -418,12 +417,12 @@ extension ComposeViewController : ComposeViewNDelegate {
 }
 
 
-extension ComposeViewController : ComposeViewNDataSource {
-    func composeViewContactsModelForPicker(composeView: ComposeViewN, picker: MBContactPicker) -> [AnyObject]! {
+extension ComposeViewController : ComposeViewDataSource {
+    func composeViewContactsModelForPicker(composeView: ComposeView, picker: MBContactPicker) -> [AnyObject]! {
         return contacts
     }
     
-    func composeViewSelectedContactsForPicker(composeView: ComposeViewN, picker: MBContactPicker) ->  [AnyObject]! {
+    func composeViewSelectedContactsForPicker(composeView: ComposeView, picker: MBContactPicker) ->  [AnyObject]! {
         var selectedContacts: [ContactVO] = [ContactVO]()
         if (picker == composeView.toContactPicker) {
             selectedContacts = self.viewModel.toSelectedContacts

@@ -12,7 +12,7 @@
         </mutableArray>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ComposeViewN" customModule="ProtonMail" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ComposeView">
             <connections>
                 <outlet property="attachmentButton" destination="dbl-67-gDP" id="XCz-Hd-FJa"/>
                 <outlet property="buttonView" destination="PQh-ZL-ZOh" id="aRB-m7-7iP"/>
