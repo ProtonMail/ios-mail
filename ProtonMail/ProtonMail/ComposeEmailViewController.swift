@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 
 
-class ComposeEmailViewController : ProtonMailViewController{
+class ComposeEmailViewController : ProtonMailViewController {
     
     
     override func viewDidLoad() {

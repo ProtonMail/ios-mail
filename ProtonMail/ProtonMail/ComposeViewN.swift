@@ -467,14 +467,14 @@ class ComposeViewN: UIViewController {
         self.view.addSubview(htmlEditor.view);
         let size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height)
         self.htmlEditor.view.frame = CGRect(x: 0, y: size.height, width: screenSize.width, height: 1000)
-        self.htmlEditor.setFrame(CGRect(x: 0, y: 0, width: screenSize.width, height: 1000))
+        //self.htmlEditor.setFrame(CGRect(x: 0, y: 0, width: screenSize.width, height: 1000))
     }
     
     private func updateViewSize()
     {
         let size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height)
         self.htmlEditor.view.frame = CGRect(x: 0, y: size.height, width: editorSize.width, height: editorSize.height)
-        self.htmlEditor.setFrame(CGRect(x: 0, y: 0, width: editorSize.width, height: editorSize.height))
+        //self.htmlEditor.setFrame(CGRect(x: 0, y: 0, width: editorSize.width, height: editorSize.height))
     }
     
     private func configureToContactPicker() {

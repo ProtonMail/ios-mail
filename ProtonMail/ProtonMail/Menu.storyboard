@@ -94,7 +94,7 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fy4-ZC-gVz" id="LAU-bi-L1X">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="draft" translatesAutoresizingMaskIntoConstraints="NO" id="Rrm-fW-TBp">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="draft" translatesAutoresizingMaskIntoConstraints="NO" id="Rrm-fW-TBp">
                                             <rect key="frame" x="24" y="8" width="52" height="54"/>
                                             <variation key="widthClass=compact" misplaced="YES">
                                                 <rect key="frame" x="41" y="8" width="19" height="54"/>
@@ -1646,9 +1646,11 @@
                         <viewControllerLayoutGuide type="bottom" id="EbU-4D-baf"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="d6Y-iq-ZL0">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="hw7-TX-6n5"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WN4-FR-nyC" userLabel="First Responder" sceneMemberID="firstResponder"/>
