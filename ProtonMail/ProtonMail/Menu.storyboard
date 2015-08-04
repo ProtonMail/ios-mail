@@ -139,7 +139,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vxo-6e-4YM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="352" y="938"/>
+            <point key="canvasLocation" x="798" y="938"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="F6I-vi-xaw">
@@ -4670,12 +4670,12 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="dxU-wZ-inN"/>
+        <segue reference="rFr-1z-1Q8"/>
         <segue reference="YGe-pV-72F"/>
         <segue reference="5rJ-hC-fsT"/>
         <segue reference="3FM-PP-oeV"/>
         <segue reference="V9t-nA-fhw"/>
-        <segue reference="rFr-1z-1Q8"/>
-        <segue reference="dZz-yt-xGj"/>
+        <segue reference="dxU-wZ-inN"/>
+        <segue reference="BYG-C2-IMk"/>
     </inferredMetricsTieBreakers>
 </document>

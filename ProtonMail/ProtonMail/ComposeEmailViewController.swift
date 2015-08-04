@@ -14,7 +14,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     var webView : UIWebView!
     private var composeView : ComposeView!
     
-    private var composeViewSize : CGFloat = 135;
+    private var composeViewSize : CGFloat = 144;
     
     private var contacts: [ContactVO]! = [ContactVO]()
     var viewModel : ComposeViewModel!
@@ -30,7 +30,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         //
         self.composeView = ComposeView(nibName: "ComposeView", bundle: nil)
         let w = UIScreen.mainScreen().applicationFrame.width;
-        self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize)
+        self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize + 60)
         self.composeView.delegate = self
         self.composeView.datasource = self
         self.composeView.view.backgroundColor = UIColor.yellowColor()
@@ -159,8 +159,8 @@ extension ComposeEmailViewController : ComposeViewDelegate {
         //self.composeSize = size
         //self.updateViewSize()
         self.composeViewSize = size.height;
-        
-        
+        let w = UIScreen.mainScreen().applicationFrame.width;
+        self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize )
         
         self.updateContentLayout(true)
     }
