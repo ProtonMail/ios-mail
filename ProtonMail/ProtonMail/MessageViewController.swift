@@ -42,7 +42,7 @@ class MessageViewController: ProtonMailViewController {
             isStarred: self.message.isStarred,
             attCount : self.message.attachments.count)
         self.emailView.initLayouts()
-        
+        self.emailView.bottomActionView.delegate = self
         self.updateEmailBody()
     }
     
@@ -63,8 +63,6 @@ class MessageViewController: ProtonMailViewController {
         super.viewDidAppear(animated)
     }
     
-    
-    
     // MARK : private function
     private func updateEmailBody () {
         var bodyText = NSLocalizedString("Loading...")
@@ -76,4 +74,21 @@ class MessageViewController: ProtonMailViewController {
         
         self.emailView.updateEmailBody(bodyText)
     }
+}
+
+
+extension MessageViewController : MessageDetailBottomViewProtocol {
+    
+    func replyClicked() {
+        self.performSegueWithIdentifier("toCompose", sender: self)
+    }
+    
+    func replyAllClicked() {
+        
+    }
+    
+    func forwardClicked() {
+        
+    }
+    
 }

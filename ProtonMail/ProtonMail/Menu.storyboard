@@ -193,7 +193,7 @@
                                 <color key="textColor" red="0.2196078431372549" green="0.22745098039215686" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="16" y="72" width="123" height="20"/>
+                                    <rect key="frame" x="16" y="72" width="122.5" height="20"/>
                                 </variation>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5sX-Zk-W85">
@@ -1613,10 +1613,47 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <segue destination="fzN-Ci-Qyg" kind="presentation" identifier="toCompose" id="Wa5-dE-jyG"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X4f-eM-03N" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4602" y="965"/>
+            <point key="canvasLocation" x="4602" y="877"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="4pa-9S-l0a">
+            <objects>
+                <navigationController id="fzN-Ci-Qyg" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ol1-XJ-ywN">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="3qu-iX-9kV" kind="relationship" relationship="rootViewController" id="uj7-oW-fwS"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XP8-md-UoJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5455.5" y="720"/>
+        </scene>
+        <!--Html Editor View Controller-->
+        <scene sceneID="Nqt-Qf-jZf">
+            <objects>
+                <viewController id="3qu-iX-9kV" customClass="HtmlEditorViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="QuF-P8-4Vw"/>
+                        <viewControllerLayoutGuide type="bottom" id="EbU-4D-baf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="d6Y-iq-ZL0">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="hw7-TX-6n5"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WN4-FR-nyC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6366" y="727"/>
         </scene>
         <!--Compose View Controller-->
         <scene sceneID="RIs-Xe-M5y">
@@ -2099,7 +2136,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f6C-eJ-O5v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5233.5" y="1586"/>
+            <point key="canvasLocation" x="6106.5" y="1504"/>
         </scene>
         <!--Compose View Controller-->
         <scene sceneID="Z0f-UA-BQc">
@@ -2246,7 +2283,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MCU-sn-dLY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4567.5" y="1603"/>
+            <point key="canvasLocation" x="5329.5" y="2095"/>
         </scene>
         <!--Search View Controller-->
         <scene sceneID="z3E-8M-2ks">
@@ -4538,7 +4575,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IzY-yD-sjO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3714" y="3264"/>
+            <point key="canvasLocation" x="4341" y="2514"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="arq-ry-cmQ">
@@ -4576,7 +4613,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tMD-2T-NjF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5191.5" y="2271"/>
+            <point key="canvasLocation" x="6106.5" y="2257"/>
         </scene>
     </scenes>
     <resources>
@@ -4620,12 +4657,12 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="YGe-pV-72F"/>
         <segue reference="dxU-wZ-inN"/>
-        <segue reference="BYG-C2-IMk"/>
-        <segue reference="frl-1S-Qi1"/>
+        <segue reference="YGe-pV-72F"/>
         <segue reference="5rJ-hC-fsT"/>
-        <segue reference="V9t-nA-fhw"/>
         <segue reference="3FM-PP-oeV"/>
+        <segue reference="V9t-nA-fhw"/>
+        <segue reference="rFr-1z-1Q8"/>
+        <segue reference="dZz-yt-xGj"/>
     </inferredMetricsTieBreakers>
 </document>
