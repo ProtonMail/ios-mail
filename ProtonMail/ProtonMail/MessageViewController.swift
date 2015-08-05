@@ -41,6 +41,7 @@ class MessageViewController: ProtonMailViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupRightButtons()
+        
         self.setupFetchedResultsController(message.messageID)
 
         self.emailView!.updateHeaderData(self.message.subject,
