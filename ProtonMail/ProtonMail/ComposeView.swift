@@ -33,6 +33,8 @@ protocol ComposeViewDataSource {
 
 class ComposeView: UIViewController {
     
+    var pickerHeight : CGFloat = 0;
+    
     let kConfirmError : String = NSLocalizedString( "Message password doesn't match.")
     let kExpirationNeedsPWDError : String = NSLocalizedString("Please set a password.")
     
@@ -298,7 +300,7 @@ class ComposeView: UIViewController {
             println("\(self.buttonView.frame)")
             println("\(self.expirationView.frame)")
             println("\(self.passwordView.frame)")
-            let size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height)
+            let size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height + self.pickerHeight)
             self.delegate?.ComposeViewDidSizeChanged(size)
             }, completion: nil)
     }
@@ -606,12 +608,15 @@ extension ComposeView: MBContactPickerDelegate {
         if (contactPicker.frame.size.height <= contactPicker.currentContentHeight) {
             let pickerRectInWindow = self.view.convertRect(contactPicker.frame, toView: nil)
             let newHeight = self.view.window!.bounds.size.height - pickerRectInWindow.origin.y - contactPicker.keyboardHeight
+            self.pickerHeight = newHeight
             self.updateContactPickerHeight(contactPicker, newHeight: newHeight)
         }
         
         if !contactPicker.hidden {
             
         }
+        
+        self.notifyViewSize(false)
     }
     
     func didHideFilteredContactsForContactPicker(contactPicker: MBContactPicker!) {
@@ -619,6 +624,9 @@ extension ComposeView: MBContactPickerDelegate {
         if (contactPicker.frame.size.height > contactPicker.currentContentHeight) {
             self.updateContactPickerHeight(contactPicker, newHeight: contactPicker.currentContentHeight)
         }
+        
+        self.pickerHeight = 0;
+        self.notifyViewSize(false)
     }
     
     // MARK: Private delegate helper methods
