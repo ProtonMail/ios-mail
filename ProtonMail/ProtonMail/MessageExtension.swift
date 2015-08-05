@@ -163,7 +163,7 @@ extension Message {
     
     func copyMessage () -> Message {
         let message = self
-        let newMessage = Message(context: message.managedObjectContext!)
+        let newMessage = Message(context: sharedCoreDataService.mainManagedObjectContext!)
         
         newMessage.location = MessageLocation.draft
         newMessage.recipientList = message.recipientList

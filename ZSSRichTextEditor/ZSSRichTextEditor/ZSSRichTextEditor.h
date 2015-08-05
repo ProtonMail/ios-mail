@@ -104,15 +104,13 @@ static NSString * const ZSSRichTextEditorToolbarNone = @"com.zedsaid.toolbaritem
  */
 - (NSString *)getHTML;
 
-
-- (NSString *)getCaretPosition;
-
-
 /**
  *  Returns the plain text from the Rich Text Editor
  *
  */
 - (NSString *)getText;
+
+- (UIWebView *) getWebView;
 
 /**
  *  Inserts HTML at the caret position
@@ -197,11 +195,5 @@ static NSString * const ZSSRichTextEditorToolbarNone = @"com.zedsaid.toolbaritem
  *  Scroll event callback with position
  */
 - (void)editorDidScrollWithPosition:(NSInteger)position;
-
-- (CGSize)getContentSize;
-
-- (void)setFrame:(CGRect)frame;
-
-- (void)setInputAccessoryView:(UIView*)frame;
 
 @end

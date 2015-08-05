@@ -28,7 +28,7 @@ zss_editor.currentEditingLink;
 zss_editor.enabledItems = {};
 
 // Height of content window, will be set by viewController
-zss_editor.contentHeight = 0;
+zss_editor.contentHeight = 244;
 
 // Sets to true when extra footer gap shows and requires to hide
 zss_editor.updateScrollOffset = false;
@@ -86,11 +86,11 @@ zss_editor.updateOffset = function() {
     if (maxOffsetY < 0)
         maxOffsetY = 0;
     
-//    if (offsetY > maxOffsetY)
-//    {
-//        window.scrollTo(0, maxOffsetY);
-//    }
-    window.scrollTo(0, 0);
+    if (offsetY > maxOffsetY)
+    {
+        window.scrollTo(0, maxOffsetY);
+    }
+    
     zss_editor.setScrollPosition();
 }
 
@@ -157,15 +157,14 @@ zss_editor.calculateEditorHeightWithCaretPosition = function() {
     
     var offsetY = window.document.body.scrollTop;
     var height = zss_editor.contentHeight;
-   
-    newPos = 0
- //   var newPos = window.pageYOffset;
     
-//    if (c < offsetY) {
-//        newPos = c;
-//    } else if (c > (offsetY + height - padding)) {
-//        var newPos = c - height + padding - 18;
-//    }
+    var newPos = window.pageYOffset;
+    
+    if (c < offsetY) {
+        newPos = c;
+    } else if (c > (offsetY + height - padding)) {
+        var newPos = c - height + padding - 18;
+    }
     
     window.scrollTo(0, newPos);
 }
@@ -449,10 +448,8 @@ zss_editor.insertImage = function(url, alt) {
 zss_editor.setHTML = function(html) {
     var editor = $('#zss_editor_content');
     editor.html(html);
-    
     window.scrollTo(0, 0);
     zss_editor.setScrollPosition();
-
 }
 
 zss_editor.insertHTML = function(html) {

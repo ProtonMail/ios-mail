@@ -25,7 +25,16 @@ import Foundation
 import UIKit
 import QuickLook
 
+
+
 class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
+    
+    //
+    private let kMoreOptionsViewHeight: CGFloat = 123.0
+    
+
+    //
+    var moreOptionsView: MoreOptionsView!
     
     // Message header view
     var emailHeader : EmailHeaderView!
@@ -39,10 +48,12 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     // Message bottom actions view
     var bottomActionView : MessageDetailBottomView!
     
-    
+    //
     var subWebview : UIView?
     
     
+    private var isViewingMoreOptions: Bool = false
+
     private let kButtonsViewHeight: CGFloat = 68.0
     
     private var emailLoaded : Bool = false;
@@ -58,6 +69,13 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
             make.bottom.equalTo()(self.bottomActionView.mas_top)
         }
         
+        moreOptionsView.mas_makeConstraints { (make) -> Void in
+            make.left.equalTo()(self)
+            make.right.equalTo()(self)
+            make.height.equalTo()(self.kMoreOptionsViewHeight)
+            make.bottom.equalTo()(self.mas_top)
+        }
+        
         bottomActionView.mas_makeConstraints { (make) -> Void in
             make.bottom.equalTo()(self)
             make.left.equalTo()(self)
@@ -70,12 +88,12 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         emailHeader.updateHeaderData(title, sender:sender, to: to, cc: cc, bcc: bcc, isStarred: isStarred, attCount: attCount)
     }
     
-    func updateEmailBody (body : String) {
+    func updateEmailBody (body : String, meta : String) {
         let bundle = NSBundle.mainBundle()
         let path = bundle.pathForResource("editor", ofType: "css")
         
         let css = String(contentsOfFile: path!, encoding: NSUTF8StringEncoding)!
-        let htmlString = "<style>\(css)</style><div id='pm-body' class='inbox-body'>\(body)</div>"
+        let htmlString = "<style>\(css)</style>\(meta)<div id='pm-body' class='inbox-body'>\(body)</div>"
         self.contentWebView.loadHTMLString(htmlString, baseURL: nil)
         
     }
@@ -88,11 +106,9 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         self.setupBottomView()
         self.setupContentView()
         self.setupHeaderView()
-        self.setupAttachmentView()
+        self.createMoreOptionsView()
         
-        //self.generateData()
-        //self.addSubviews()
-        //self.makeConstraints()
+        //self.setupAttachmentView()
         //updateAttachments()
         self.updateContentLayout(false)
     }
@@ -100,6 +116,12 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    private func createMoreOptionsView() {
+        self.moreOptionsView = MoreOptionsView()
+        self.addSubview(moreOptionsView)
+    }
+
     
     private func setupBottomView() {
         self.bottomActionView = NSBundle.mainBundle().loadNibNamed("MessageDetailBottomView", owner: 0, options: nil)[0] as? MessageDetailBottomView
@@ -121,7 +143,7 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     private func setupHeaderView () {
         self.emailHeader = EmailHeaderView()
         self.emailHeader.backgroundColor = UIColor.whiteColor()
-        self.emailHeader.delegate = self
+        self.emailHeader.viewDelegate = self
         self.contentWebView.scrollView.addSubview(self.emailHeader)
         let w = UIScreen.mainScreen().applicationFrame.width;
         self.emailHeader.frame = CGRect(x: 0, y: 0, width: w, height: self.emailHeader.getHeight())
@@ -142,6 +164,34 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         let w = UIScreen.mainScreen().applicationFrame.width;
         self.contentWebView.frame = CGRect(x: 0, y: 0, width: w, height: 100);
         // UIView.animateWithDuration(0, delay:0, options: nil, animations: { }, completion: nil)
+    }
+    
+    func animateMoreViewOptions() {
+        self.bringSubviewToFront(self.moreOptionsView)
+        if (self.isViewingMoreOptions) {
+            self.moreOptionsView.mas_updateConstraints({ (make) -> Void in
+                make.removeExisting = true
+                make.left.equalTo()(self)
+                make.right.equalTo()(self)
+                make.height.equalTo()(self.kMoreOptionsViewHeight)
+                make.bottom.equalTo()(self.mas_top)
+            })
+        } else {
+            self.moreOptionsView.mas_updateConstraints({ (make) -> Void in
+                make.removeExisting = true
+                make.left.equalTo()(self)
+                make.right.equalTo()(self)
+                make.height.equalTo()(self.kMoreOptionsViewHeight)
+                
+                make.top.equalTo()(self.mas_top)
+            })
+        }
+        
+        self.isViewingMoreOptions = !self.isViewingMoreOptions
+        
+        UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
+            self.layoutIfNeeded()
+            }, completion: nil)
     }
     
     private var attY : CGFloat = 0;
@@ -253,10 +303,9 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         println("\(scrollView.contentSize)")
         self.updateContentLayout(false)
     }
-
 }
 
-
+//
 extension EmailView : EmailHeaderViewProtocol {
     
     func updateSize() {

@@ -131,9 +131,9 @@
 		75484B8B1AF29EBF00B97472 /* NSDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */; };
 		754CD4881AB809D60084C54A /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754CD4871AB809D60084C54A /* SettingTableViewController.swift */; };
 		754CD48B1AB80D770084C54A /* CustomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754CD48A1AB80D770084C54A /* CustomHeaderView.swift */; };
-		755405B21B1648D2003BFC0A /* ComposeViewN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755405B01B1648D2003BFC0A /* ComposeViewN.swift */; };
-		755405B31B1648D2003BFC0A /* ComposeViewN.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755405B11B1648D2003BFC0A /* ComposeViewN.xib */; };
-		755405B51B164A99003BFC0A /* ComposeViewControllerN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755405B41B164A99003BFC0A /* ComposeViewControllerN.swift */; };
+		755405B21B1648D2003BFC0A /* ComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755405B01B1648D2003BFC0A /* ComposeView.swift */; };
+		755405B31B1648D2003BFC0A /* ComposeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755405B11B1648D2003BFC0A /* ComposeView.xib */; };
+		755405B51B164A99003BFC0A /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755405B41B164A99003BFC0A /* ComposeViewController.swift */; };
 		755B6A701B38C0B800745872 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755B6A6F1B38C0B800745872 /* Label.swift */; };
 		7565998F1AC4809B00C187E4 /* EncryptTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7565998E1AC4809B00C187E4 /* EncryptTypes.swift */; };
 		75662BA71B543A5B006C538E /* SettingsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75662BA61B543A5B006C538E /* SettingsAPI.swift */; };
@@ -152,13 +152,12 @@
 		757945DA1B6702B5004EEDCA /* EmailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757945D91B6702B5004EEDCA /* EmailHeaderView.swift */; };
 		7582E2F21B015DE400FEA38B /* MessageDetailBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582E2F11B015DE400FEA38B /* MessageDetailBottomView.swift */; };
 		7582E2F41B015DF100FEA38B /* MessageDetailBottomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */; };
-		75895BA31B7084720067F1F0 /* ComposeEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75895BA21B7084720067F1F0 /* ComposeEmailViewController.swift */; };
 		759339C01ABB45C700535F1B /* ViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339BF1ABB45C700535F1B /* ViewModelFactory.swift */; };
 		759339C41ABB5EA900535F1B /* SettingDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */; };
 		75978BDB1B28F63100D07501 /* editor.css in Resources */ = {isa = PBXBuildFile; fileRef = 75978BDA1B28F63100D07501 /* editor.css */; };
 		75A4321B1B1D040A00D046B3 /* QueueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A4321A1B1D040A00D046B3 /* QueueManager.swift */; };
 		75A4321D1B1D042C00D046B3 /* QueueConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A4321C1B1D042C00D046B3 /* QueueConstant.swift */; };
-		75B047B31AE708CC005C6D1A /* HtmlEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B047B21AE708CC005C6D1A /* HtmlEditorViewController.swift */; };
+		75B047B31AE708CC005C6D1A /* ComposeEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B047B21AE708CC005C6D1A /* ComposeEmailViewController.swift */; };
 		75B1794C1B376D2E006044D4 /* AttachmentHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B1794B1B376D2D006044D4 /* AttachmentHelper.swift */; };
 		75B179501B377748006044D4 /* ContactVOExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B1794F1B377748006044D4 /* ContactVOExtension.swift */; };
 		75BF9A521B5F0F500087AD2E /* BugsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF9A511B5F0F500087AD2E /* BugsAPI.swift */; };
@@ -329,9 +328,9 @@
 		75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateExtension.swift; sourceTree = "<group>"; };
 		754CD4871AB809D60084C54A /* SettingTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
 		754CD48A1AB80D770084C54A /* CustomHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomHeaderView.swift; sourceTree = "<group>"; };
-		755405B01B1648D2003BFC0A /* ComposeViewN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewN.swift; sourceTree = "<group>"; };
-		755405B11B1648D2003BFC0A /* ComposeViewN.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComposeViewN.xib; sourceTree = "<group>"; };
-		755405B41B164A99003BFC0A /* ComposeViewControllerN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewControllerN.swift; sourceTree = "<group>"; };
+		755405B01B1648D2003BFC0A /* ComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeView.swift; sourceTree = "<group>"; };
+		755405B11B1648D2003BFC0A /* ComposeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComposeView.xib; sourceTree = "<group>"; };
+		755405B41B164A99003BFC0A /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		755B6A6F1B38C0B800745872 /* Label.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
 		7565998E1AC4809B00C187E4 /* EncryptTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptTypes.swift; sourceTree = "<group>"; };
 		75662BA61B543A5B006C538E /* SettingsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsAPI.swift; sourceTree = "<group>"; };
@@ -350,13 +349,12 @@
 		757945D91B6702B5004EEDCA /* EmailHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailHeaderView.swift; sourceTree = "<group>"; };
 		7582E2F11B015DE400FEA38B /* MessageDetailBottomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDetailBottomView.swift; sourceTree = "<group>"; };
 		7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageDetailBottomView.xib; sourceTree = "<group>"; };
-		75895BA21B7084720067F1F0 /* ComposeEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeEmailViewController.swift; sourceTree = "<group>"; };
 		759339BF1ABB45C700535F1B /* ViewModelFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelFactory.swift; sourceTree = "<group>"; };
 		759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDetailsViewModel.swift; sourceTree = "<group>"; };
 		75978BDA1B28F63100D07501 /* editor.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = editor.css; sourceTree = "<group>"; };
 		75A4321A1B1D040A00D046B3 /* QueueManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueManager.swift; sourceTree = "<group>"; };
 		75A4321C1B1D042C00D046B3 /* QueueConstant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueConstant.swift; sourceTree = "<group>"; };
-		75B047B21AE708CC005C6D1A /* HtmlEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlEditorViewController.swift; sourceTree = "<group>"; };
+		75B047B21AE708CC005C6D1A /* ComposeEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeEmailViewController.swift; sourceTree = "<group>"; };
 		75B1794B1B376D2D006044D4 /* AttachmentHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentHelper.swift; sourceTree = "<group>"; };
 		75B1794F1B377748006044D4 /* ContactVOExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactVOExtension.swift; sourceTree = "<group>"; };
 		75BF9A511B5F0F500087AD2E /* BugsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugsAPI.swift; sourceTree = "<group>"; };
@@ -772,11 +770,10 @@
 		709FE39E1A977C8400034288 /* Compose */ = {
 			isa = PBXGroup;
 			children = (
-				75B047B21AE708CC005C6D1A /* HtmlEditorViewController.swift */,
-				755405B01B1648D2003BFC0A /* ComposeViewN.swift */,
-				755405B11B1648D2003BFC0A /* ComposeViewN.xib */,
-				755405B41B164A99003BFC0A /* ComposeViewControllerN.swift */,
-				75895BA21B7084720067F1F0 /* ComposeEmailViewController.swift */,
+				75B047B21AE708CC005C6D1A /* ComposeEmailViewController.swift */,
+				755405B01B1648D2003BFC0A /* ComposeView.swift */,
+				755405B11B1648D2003BFC0A /* ComposeView.xib */,
+				755405B41B164A99003BFC0A /* ComposeViewController.swift */,
 			);
 			name = Compose;
 			sourceTree = "<group>";
@@ -975,7 +972,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75978BDB1B28F63100D07501 /* editor.css in Resources */,
-				755405B31B1648D2003BFC0A /* ComposeViewN.xib in Resources */,
+				755405B31B1648D2003BFC0A /* ComposeView.xib in Resources */,
 				70C6ABE41A72C1B7006EC400 /* Roboto-Regular.ttf in Resources */,
 				07009EFF1A659AD400129B07 /* SignIn.storyboard in Resources */,
 				7017047A1A794C9F000A90D2 /* Roboto-LightItalic.ttf in Resources */,
@@ -1085,7 +1082,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				75895BA31B7084720067F1F0 /* ComposeEmailViewController.swift in Sources */,
 				0756755B1AB1369C00449905 /* UIAlertControllerExtension.swift in Sources */,
 				07CCCC2E1AA2BD8800ECA79E /* Snapshot.swift in Sources */,
 				07CF61921A8988F100ED38AE /* AttachmentExtension.swift in Sources */,
@@ -1180,7 +1176,7 @@
 				07CC99641A6F076A000FD6F8 /* NSErrorExtension.swift in Sources */,
 				075F0A521ABF5DB500E6B9AE /* MessageLocation.swift in Sources */,
 				75ECCE021B31F44600A8C800 /* AuthAPI.swift in Sources */,
-				755405B51B164A99003BFC0A /* ComposeViewControllerN.swift in Sources */,
+				755405B51B164A99003BFC0A /* ComposeViewController.swift in Sources */,
 				07CC99661A6F1380000FD6F8 /* FoundationExtension.swift in Sources */,
 				751562551B68E8050066FE38 /* EmailAttachmentView.swift in Sources */,
 				073FE0191A955ED900825980 /* ContactDataService.swift in Sources */,
@@ -1198,14 +1194,14 @@
 				07CC3F931A941C7A0005E39F /* MessageQueue.swift in Sources */,
 				75F906101B1FBECA00107509 /* DebugDetailsViewController.swift in Sources */,
 				07CB234C1AAE9FCB00699068 /* FullHeightWebView.swift in Sources */,
-				75B047B31AE708CC005C6D1A /* HtmlEditorViewController.swift in Sources */,
+				75B047B31AE708CC005C6D1A /* ComposeEmailViewController.swift in Sources */,
 				07DD68A71A9815DF00ED130C /* NSURLExtension.swift in Sources */,
 				706932AB1A77BE3D00A75A93 /* SearchViewController.swift in Sources */,
 				071323A01A7C1AB10043DB41 /* NSTimeIntervalExtension.swift in Sources */,
 				701DDE921AA64DEB0038149C /* MBContactCollectionViewEntryCell.m in Sources */,
 				7567B0731B3363D000A72A1E /* ControllerDefined.swift in Sources */,
 				75BF9A521B5F0F500087AD2E /* BugsAPI.swift in Sources */,
-				755405B21B1648D2003BFC0A /* ComposeViewN.swift in Sources */,
+				755405B21B1648D2003BFC0A /* ComposeView.swift in Sources */,
 				75484B8B1AF29EBF00B97472 /* NSDateExtension.swift in Sources */,
 				701DDE941AA64DEB0038149C /* MBContactCollectionViewPromptCell.m in Sources */,
 				75150ED11B1E74A20013B476 /* SettingDebugTableViewController.swift in Sources */,
