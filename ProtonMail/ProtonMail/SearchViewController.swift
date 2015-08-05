@@ -198,7 +198,7 @@ class SearchViewController: ProtonMailViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == kSegueToMessageDetailController) {
-            let messageDetailViewController: MessageDetailViewController = segue.destinationViewController as! MessageDetailViewController
+            let messageDetailViewController = segue.destinationViewController as! MessageViewController
             let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {

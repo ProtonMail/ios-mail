@@ -1,0 +1,43 @@
+
+
+
+[hidden] {
+display: none;
+}
+
+html {
+font-size:80%;
+-webkit-text-size-adjust:80%;
+-ms-text-size-adjust:80%
+}
+
+body {
+font-weight: 400;
+margin: 0;
+width: 100%;
+box-sizing: border-box;
+padding: 1rem;
+word-break: break-word;
+}
+
+blockquote {
+padding: 0 0 0 2rem !important;
+margin: 0 !important;
+border: 1px solid #ccc !important;
+border-width: 0 0 0 1px !important;
+-webkit-margin-before: 2rem !important;
+-webkit-margin-after: 2rem !important;
+-webkit-margin-start: 0 !important;
+-webkit-margin-end: 0 !important;
+}
+
+blockquote blockquote blockquote {
+padding: 0 !important;
+border: none !important;
+}
+
+img {
+border: 0;
+-ms-interpolation-mode: bicubic;
+max-width: 100%;
+}

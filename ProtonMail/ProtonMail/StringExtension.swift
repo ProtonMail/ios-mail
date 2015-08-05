@@ -51,6 +51,25 @@ extension String {
         let decoded = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error:  &error) as! [[String:String]]
         return decoded
     }
+    
+    
+    /**
+    get display address for message details
+    
+    :returns: parsed address
+    */
+    func getDisplayAddress() -> String {
+        var lists: [String] = []
+        let recipients : [[String : String]] = self.parseJson()!
+        for dict:[String : String] in recipients {
+            let to = dict.getDisplayName()
+            if !to.isEmpty  {
+                lists.append(to)
+            }
+        }
+        return ",".join(lists)
+    }
+    
 
     
     /**

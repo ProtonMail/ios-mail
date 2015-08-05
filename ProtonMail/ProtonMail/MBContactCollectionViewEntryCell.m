@@ -114,7 +114,9 @@
 
 - (void)setFocus
 {
-    [self.contactEntryTextField becomeFirstResponder];
+    if (self.contactEntryTextField != nil ) {
+        [self.contactEntryTextField becomeFirstResponder];
+    }
 }
 
 - (void)removeFocus

@@ -18,7 +18,7 @@ class MessageDetailViewController: ProtonMailViewController {
         didSet {
             message.fetchDetailIfNeeded() { _, _, msg, error in
                 println(self.message.isDetailDownloaded)
-                println(self.message.body)
+                //println(self.message.body)
                 println(self.message.ccList)
                 NSLog("\(__FUNCTION__) error: \(self.message)")
                 if error != nil {
@@ -41,7 +41,6 @@ class MessageDetailViewController: ProtonMailViewController {
     
     override func loadView() {
         messageDetailView = MessageDetailView(message: message, delegate: self)
-        
         self.view = messageDetailView
     }
     
@@ -196,11 +195,10 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
         presentViewController(alertController, animated: true, completion: nil)
     }
     
-    
-    
     func messageDetailViewDidTapReplyMessage(messageView: MessageDetailView, message: Message) {
         actionTapped = ComposeMessageAction.Reply
-        self.performSegueWithIdentifier("toCompose", sender: self)
+        self.performSegueWithIdentifier("test_details_segue", sender: self)
+        //self.performSegueWithIdentifier("toCompose", sender: self)
     }
     
     func messageDetailViewDidTapReplyAllMessage(messageView: MessageDetailView, message: Message) {
@@ -217,6 +215,9 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
         if (segue.identifier == "toCompose") {
             let composeViewController = segue.destinationViewController.viewControllers!.first as! ComposeViewController
             composeViewController.viewModel = ComposeViewModelImpl(msg: message, action: self.actionTapped)
+        } else if segue.identifier == "test_details_segue" {
+            let messageDetailViewController: MessageViewController = segue.destinationViewController as! MessageViewController
+            messageDetailViewController.message = message;
         }
     }
 }

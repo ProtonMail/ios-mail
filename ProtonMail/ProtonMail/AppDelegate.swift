@@ -135,5 +135,21 @@ extension AppDelegate: UIApplicationDelegate {
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         sharedPushNotificationService.didRegisterForRemoteNotificationsWithDeviceToken(deviceToken)
     }
+    
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+        super.touchesBegan(touches, withEvent: event)
+        
+        var touch = touches.first as! UITouch
+        var point = touch.locationInView(self.window)
+        var statusBarFrame = UIApplication.sharedApplication().statusBarFrame
+        if (CGRectContainsPoint(statusBarFrame, point)) {
+            self.touchStatusBar()
+        }
+        
+    }
+    
+    func touchStatusBar() {
+        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "touchStatusBarClick", object: nil, userInfo: nil))
+    }
 }
 

@@ -26,7 +26,6 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
     private var tempFileUri : NSURL?
     
     // MARK: - Private constants
-    
     private let kAnimationDuration: NSTimeInterval = 0.3
     private let kAnimationOption: UIViewAnimationOptions = .TransitionCrossDissolve
     private var kKVOContext = 0
@@ -206,23 +205,23 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
             let path = bundle.pathForResource("editor", ofType: "css")
             let css = String(contentsOfFile: path!, encoding: NSUTF8StringEncoding)!
             
-            //let css : String  = "article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary{display:block}audio,canvas,video{display:inline-block}audio:not([controls]){display:none;height:0}[hidden]{display:none}html{font-size:80%;-webkit-text-size-adjust:80%;-ms-text-size-adjust:80%}button,html,input,select,textarea{font-family:sans-serif}body{font:15px/1.4rem normal \"Helvetica Neue\",Arial,Helvetica,sans-serif;font-weight:400;margin:0;width:100%;box-sizing:border-box;padding:1rem;word-break:break-word}a:focus{outline:dotted thin}a:active,a:hover{outline:0}h1{font-size:2em;margin:.67em 0}h2{font-size:1.5em;margin:.83em 0}h3{font-size:1.17em;margin:1em 0}h4{font-size:1em;margin:1.33em 0}h5{font-size:.83em;margin:1.67em 0}h6{font-size:.75em;margin:2.33em 0}abbr[title]{border-bottom:1px dotted}b,strong{font-weight:700}blockquote{padding:0 0 0 2rem;margin:1rem 0}blockquote blockquote{padding:0 0 0 1rem}dfn{font-style:italic}mark{background:#ff0;color:#000}p,pre{margin:1em 0}code,kbd,pre,samp{font-family:monospace,serif;font-size:1em}pre{white-space:pre;white-space:pre-wrap;word-wrap:break-word}q{quotes:none}q:after,q:before{content:\"\";content:none}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-.5em}sub{bottom:-.25em}dl,menu,ol,ul{margin:1em 0}dd{margin:0 0 0 40px}menu,ol,ul{padding:0 0 0 40px}nav ol,nav ul{list-style:none}img{border:0;-ms-interpolation-mode:bicubic;max-width:100%}table img{max-width:none}svg:not(:root){overflow:hidden}figure,form{margin:0}fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}legend{border:0;padding:0;white-space:normal}button,input,select,textarea{font-size:100%;margin:0;vertical-align:baseline}button,input{line-height:normal}button,html input[type=button],input[type=reset],input[type=submit]{-webkit-appearance:button;cursor:pointer}button[disabled],input[disabled]{cursor:default}input[type=checkbox],input[type=radio]{box-sizing:border-box;padding:0}input[type=search]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}input[type=search]::-webkit-search-cancel-button,input[type=search]::-webkit-search-decoration{-webkit-appearance:none}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}textarea{overflow:auto;vertical-align:top}table{border-collapse:collapse;border-spacing:0}"
+//            let css : String  = "article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary{display:block}audio,canvas,video{display:inline-block}audio:not([controls]){display:none;height:0}[hidden]{display:none}html{font-size:80%;-webkit-text-size-adjust:80%;-ms-text-size-adjust:80%}button,html,input,select,textarea{font-family:sans-serif}body{font:15px/1.4rem normal \"Helvetica Neue\",Arial,Helvetica,sans-serif;font-weight:400;margin:0;width:100%;box-sizing:border-box;padding:1rem;word-break:break-word}a:focus{outline:dotted thin}a:active,a:hover{outline:0}h1{font-size:2em;margin:.67em 0}h2{font-size:1.5em;margin:.83em 0}h3{font-size:1.17em;margin:1em 0}h4{font-size:1em;margin:1.33em 0}h5{font-size:.83em;margin:1.67em 0}h6{font-size:.75em;margin:2.33em 0}abbr[title]{border-bottom:1px dotted}b,strong{font-weight:700}blockquote{padding:0 0 0 2rem;margin:1rem 0}blockquote blockquote{padding:0 0 0 1rem}dfn{font-style:italic}mark{background:#ff0;color:#000}p,pre{margin:1em 0}code,kbd,pre,samp{font-family:monospace,serif;font-size:1em}pre{white-space:pre;white-space:pre-wrap;word-wrap:break-word}q{quotes:none}q:after,q:before{content:\"\";content:none}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-.5em}sub{bottom:-.25em}dl,menu,ol,ul{margin:1em 0}dd{margin:0 0 0 40px}menu,ol,ul{padding:0 0 0 40px}nav ol,nav ul{list-style:none}img{border:0;-ms-interpolation-mode:bicubic;max-width:100%}table img{max-width:none}svg:not(:root){overflow:hidden}figure,form{margin:0}fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}legend{border:0;padding:0;white-space:normal}button,input,select,textarea{font-size:100%;margin:0;vertical-align:baseline}button,input{line-height:normal}button,html input[type=button],input[type=reset],input[type=submit]{-webkit-appearance:button;cursor:pointer}button[disabled],input[disabled]{cursor:default}input[type=checkbox],input[type=radio]{box-sizing:border-box;padding:0}input[type=search]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}input[type=search]::-webkit-search-cancel-button,input[type=search]::-webkit-search-decoration{-webkit-appearance:none}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}textarea{overflow:auto;vertical-align:top}table{border-collapse:collapse;border-spacing:0}"
             
             //            let messageCSS: String = "html, body { font-family: sans-serif; font-size:0.9em; margin:0; border:0;width:375px;-webkit-text-size-adjust: auto;word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-break: after-white-space;}.inbox-body {padding-top:5px;padding-left:1px; padding-bottom:5px;padding-right:1px;} a { color:rgb(0,153,204); } div { max-width:100%%; } .gmail_extra {  display:none; } blockquote, img { max-width: 100%; height:auto; }"
             
             // let htmlString = "<span style=\"font-family: \(font.fontName); font-size: \(font.pointSize); color: \(cssColorString)\">\(bodyText)</span>"
             
-            if self.message.isDetailDownloaded {
-                let s = self.bounds
-                let htmlString = "<style>\(css)</style><div class='inbox-body'>\(bodyText)</div>"
-                
-                self.emailBodyWebView.loadHTMLString(htmlString, baseURL: nil)
-            } else {
-                let s = self.bounds
-                let htmlString = "<style>\(css)</style><meta name=\"viewport\" content=\"width=\(s.width)\">\n<div class='inbox-body'>\(bodyText)</div>"
-                
-                self.emailBodyWebView.loadHTMLString(htmlString, baseURL: nil)
-            }
+//            if self.message.isDetailDownloaded {
+//                let s = self.bounds
+//                let htmlString = "<style>\(css)</style><div class='inbox-body'>\(bodyText)</div>"
+//                
+//                self.emailBodyWebView.loadHTMLString(htmlString, baseURL: nil)
+//            } else {
+//                let s = self.bounds
+//                let htmlString = "<style>\(css)</style><meta name=\"viewport\" content=\"width=\(s.width)\">\n<div class='inbox-body'>\(bodyText)</div>"
+//                
+//                self.emailBodyWebView.loadHTMLString(htmlString, baseURL: nil)
+//            }
         }
         
         if animated {
@@ -574,7 +573,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
     
     internal func emailFavoriteButtonTapped() {
         message.isStarred = !message.isStarred
-        
+        message.needsUpdate = true
         if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
             NSLog("\(__FUNCTION__) error: \(error)")
         }
