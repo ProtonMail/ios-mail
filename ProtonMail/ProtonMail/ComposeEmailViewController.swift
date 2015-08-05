@@ -154,14 +154,18 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         if presentingViewController != nil {
             dismissViewControllerAnimated(true, completion: nil)
         } else {
-            navigationController?.popViewControllerAnimated(true)
+            navigationController?.popToRootViewControllerAnimated(true)
         }
 
     }
     
     @IBAction func cancel_clicked(sender: AnyObject) {
         let dismiss: (() -> Void) = {
-            self.dismissViewControllerAnimated(true, completion: nil)
+            if self.presentingViewController != nil {
+                self.dismissViewControllerAnimated(true, completion: nil)
+            } else {
+                self.navigationController?.popViewControllerAnimated(true)
+            }
         }
         
         if self.viewModel.hasDraft || composeView.hasContent || ((attachments?.count ?? 0) > 0) {

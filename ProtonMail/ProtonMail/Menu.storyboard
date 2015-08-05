@@ -1530,7 +1530,7 @@
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
-                        <segue destination="fzN-Ci-Qyg" kind="presentation" identifier="toCompose" id="Wa5-dE-jyG"/>
+                        <segue destination="3qu-iX-9kV" kind="show" identifier="toCompose" id="ddm-eA-erE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X4f-eM-03N" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2416,7 +2416,9 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="ra6-z6-Jk4"/>
+                    <navigationItem key="navigationItem" id="ra6-z6-Jk4">
+                        <barButtonItem key="backBarButtonItem" title="Search" id="kzF-uz-ox9"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="searchTextField" destination="osS-Tz-qFA" id="htt-nR-W0x"/>
                         <outlet property="tableView" destination="bZe-7F-cQr" id="Xyl-eG-V8M"/>
@@ -4077,11 +4079,12 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="V9t-nA-fhw"/>
         <segue reference="NtN-3n-87s"/>
-        <segue reference="fux-iz-qV0"/>
+        <segue reference="uv8-bX-yhD"/>
         <segue reference="w5b-0j-26v"/>
+        <segue reference="ddm-eA-erE"/>
         <segue reference="5rJ-hC-fsT"/>
         <segue reference="3FM-PP-oeV"/>
-        <segue reference="V9t-nA-fhw"/>
     </inferredMetricsTieBreakers>
 </document>

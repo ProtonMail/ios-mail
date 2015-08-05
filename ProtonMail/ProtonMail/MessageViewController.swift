@@ -107,10 +107,11 @@ class MessageViewController: ProtonMailViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toCompose" {
-            let composeViewController = segue.destinationViewController.viewControllers!.first as! ComposeEmailViewController
+            let composeViewController = segue.destinationViewController as! ComposeEmailViewController
             composeViewController.viewModel = ComposeViewModelImpl(msg: message, action: self.actionTapped)
         }
     }
+
     
     override func shouldShowSideMenu() -> Bool {
         return false
