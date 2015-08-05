@@ -117,6 +117,13 @@ class MessageViewController: ProtonMailViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+
+        message.isRead = true
+        message.needsUpdate = true
+        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
+            NSLog("\(__FUNCTION__) error: \(error)")
+        }
+
     }
     
     override func viewDidAppear(animated: Bool) {

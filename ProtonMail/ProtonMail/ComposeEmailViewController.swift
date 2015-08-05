@@ -160,35 +160,29 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     }
     
     @IBAction func cancel_clicked(sender: AnyObject) {
-        
         let dismiss: (() -> Void) = {
-            // if self.viewModel.messageAction == ComposeMessageAction.OpenDraft {
-            self.navigationController?.popViewControllerAnimated(true)
-            // } else {
             self.dismissViewControllerAnimated(true, completion: nil)
-            // }
         }
         
-        //        if self.viewModel.hasDraft || composeView.hasContent || ((attachments?.count ?? 0) > 0) {
-        //            let alertController = UIAlertController(title: NSLocalizedString("Confirmation"), message: nil, preferredStyle: .ActionSheet)
-        //            alertController.addAction(UIAlertAction(title: NSLocalizedString("Save draft"), style: .Default, handler: { (action) -> Void in
-        //                self.stopAutoSave()
-        //                self.collectDraft()
-        //                self.viewModel.updateDraft()
-        //                dismiss()
-        //            }))
-        //            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
-        //            alertController.addAction(UIAlertAction(title: NSLocalizedString("Discard draft"), style: .Destructive, handler: { (action) -> Void in
-        //                self.stopAutoSave()
-        //                self.viewModel.deleteDraft()
-        //                dismiss()
-        //            }))
-        //
-        //            presentViewController(alertController, animated: true, completion: nil)
-        //        } else {
-        dismiss()
-        //        }
-        
+        if self.viewModel.hasDraft || composeView.hasContent || ((attachments?.count ?? 0) > 0) {
+            let alertController = UIAlertController(title: NSLocalizedString("Confirmation"), message: nil, preferredStyle: .ActionSheet)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Save draft"), style: .Default, handler: { (action) -> Void in
+                self.stopAutoSave()
+                self.collectDraft()
+                self.viewModel.updateDraft()
+                dismiss()
+            }))
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Discard draft"), style: .Destructive, handler: { (action) -> Void in
+                self.stopAutoSave()
+                self.viewModel.deleteDraft()
+                dismiss()
+            }))
+            
+            presentViewController(alertController, animated: true, completion: nil)
+        } else {
+            dismiss()
+        }
     }
     
     // MARK: - Private methods
