@@ -56,7 +56,7 @@
                     <color key="backgroundColor" red="0.98823529409999999" green="0.99607843139999996" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="Fen-0r-N7C">
-                            <variation key="widthClass=compact" constant="36"/>
+                            <variation key="widthClass=compact" constant="44"/>
                         </constraint>
                     </constraints>
                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="14"/>
@@ -76,12 +76,12 @@
                     <rect key="frame" x="568" y="13" width="22" height="22"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="Tn1-q8-Z7u">
-                            <variation key="widthClass=compact" constant="36"/>
+                            <variation key="widthClass=compact" constant="44"/>
                         </constraint>
                         <constraint firstAttribute="height" constant="22" id="WD0-6x-aic"/>
                         <constraint firstAttribute="width" constant="22" id="eog-7S-Y00"/>
                         <constraint firstAttribute="width" constant="49" id="rnH-Q4-xMI">
-                            <variation key="widthClass=compact" constant="36"/>
+                            <variation key="widthClass=compact" constant="44"/>
                         </constraint>
                     </constraints>
                     <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>

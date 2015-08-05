@@ -14,7 +14,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     var webView : UIWebView!
     private var composeView : ComposeView!
     
-    private var composeViewSize : CGFloat = 122;
+    private var composeViewSize : CGFloat = 138;
     
     private var contacts: [ContactVO]! = [ContactVO]()
     var viewModel : ComposeViewModel!

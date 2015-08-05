@@ -71,7 +71,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(contactLabel)]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(6)-[contactLabel]-(6)-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(8)-[contactLabel]-(8)-|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(contactLabel)]];

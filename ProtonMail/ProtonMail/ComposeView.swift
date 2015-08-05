@@ -111,7 +111,7 @@ class ComposeView: UIViewController {
     var selfView : UIView!
     
     // MARK: - Constants
-    private let kDefaultRecipientHeight = 36
+    private let kDefaultRecipientHeight = 44
     private let kErrorMessageHeight: CGFloat = 48.0
     private let kNumberOfColumnsInTimePicker: Int = 2
     private let kNumberOfDaysInTimePicker: Int = 30
