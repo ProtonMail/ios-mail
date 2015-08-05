@@ -11,49 +11,80 @@ import UIKit
 
 class ComposeEmailViewController: ZSSRichTextEditor {
     
-    var webView : UIWebView!
+    
+    // view model
+    var viewModel : ComposeViewModel!
+    
+    // private views
+    private var webView : UIWebView!
     private var composeView : ComposeView!
     
-    private var composeViewSize : CGFloat = 138;
-    
+    // private vars
+    private var timer : NSTimer!
+    private var draggin : Bool! = false
     private var contacts: [ContactVO]! = [ContactVO]()
-    var viewModel : ComposeViewModel!
+    private var actualEncryptionStep = EncryptionStep.DefinePassword
+    private var encryptionPassword: String = ""
+    private var encryptionConfirmPassword: String = ""
+    private var encryptionPasswordHint: String = ""
+    private var hasAccessToAddressBook: Bool = false
+    private var userAddress : Array<Address>!
+    
+    private var attachments: [AnyObject]?
+    
+    // offsets
+    private var composeViewSize : CGFloat = 138;
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.baseURL = NSURL( fileURLWithPath: "https://protonmail.ch")
-        self.webView = self.getWebView()
         
         configureNavigationBar()
         setNeedsStatusBarAppearanceUpdate()
         
-        //
+        self.baseURL = NSURL( fileURLWithPath: "https://protonmail.ch")
+        self.webView = self.getWebView()
+        
+        // init views
         self.composeView = ComposeView(nibName: "ComposeView", bundle: nil)
         let w = UIScreen.mainScreen().applicationFrame.width;
         self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize + 60)
         self.composeView.delegate = self
         self.composeView.datasource = self
-        //self.composeView.view.backgroundColor = UIColor.yellowColor()
-        
         self.webView.scrollView.addSubview(composeView.view);
         self.webView.scrollView.bringSubviewToFront(composeView.view)
         
-        //self.updateMessageView()
+        // get user's address
+        userAddress = sharedUserDataService.userAddresses
         
+        // update content values
+        updateMessageView()
         self.contacts = sharedContactDataService.allContactVOs()
         self.composeView.toContactPicker.reloadData()
         self.composeView.ccContactPicker.reloadData()
         self.composeView.bccContactPicker.reloadData()
         
+        // update header layous
         updateContentLayout(false)
+        
+        //change message as read
+        self.viewModel.markAsRead();
+    }
+    
+    private func updateMessageView() {
+        self.composeView.subject.text = self.viewModel.getSubject();
+        self.setHTML(self.viewModel.getHtmlBody())
     }
     
     override func viewWillAppear(animated: Bool) {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: "touchStatusBarClick", object:nil)
+        
+        setupAutoSave()
     }
     
     override func viewWillDisappear(animated: Bool) {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "touchStatusBarClick", object:nil)
+        
+        stopAutoSave()
     }
     
     internal func statusBarHit (notify: NSNotification) {
@@ -75,10 +106,6 @@ class ComposeEmailViewController: ZSSRichTextEditor {
             NSForegroundColorAttributeName: UIColor.whiteColor(),
             NSFontAttributeName: navigationBarTitleFont
         ]
-    }
-    
-    func setBody (body : String ) {
-        self.setHTML(body)
     }
     
     override func didReceiveMemoryWarning() {
@@ -114,7 +141,22 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     
     
     @IBAction func send_clicked(sender: AnyObject) {
+        if self.composeView.expirationTimeInterval > 0 {
+            if self.composeView.hasOutSideEmails && count(self.encryptionPassword) <= 0 {
+                self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kExpirationNeedsPWDError)
+                return;
+            }
+        }
+        stopAutoSave()
+        self.collectDraft()
+        self.viewModel.sendMessage()
         
+        if presentingViewController != nil {
+            dismissViewControllerAnimated(true, completion: nil)
+        } else {
+            navigationController?.popViewControllerAnimated(true)
+        }
+
     }
     
     @IBAction func cancel_clicked(sender: AnyObject) {
@@ -148,7 +190,44 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         //        }
         
     }
+    
+    // MARK: - Private methods
+    private func setupAutoSave()
+    {
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(120, target: self, selector: "autoSaveTimer", userInfo: nil, repeats: true)
+        self.timer.fire()
+    }
+    
+    private func stopAutoSave()
+    {
+        if self.timer != nil {
+            self.timer.invalidate()
+            self.timer = nil
+        }
+    }
+    
+    func autoSaveTimer()
+    {
+        self.collectDraft()
+        self.viewModel.updateDraft()
+    }
+    
+    private func collectDraft()
+    {
+        self.viewModel.collectDraft(
+            self.composeView.toContactPicker.contactsSelected as! [ContactVO],
+            cc: self.composeView.ccContactPicker.contactsSelected as! [ContactVO],
+            bcc: self.composeView.bccContactPicker.contactsSelected as! [ContactVO],
+            title: self.composeView.subject.text,
+            body: self.getHTML(),
+            expir: self.composeView.expirationTimeInterval,
+            pwd:self.encryptionPassword,
+            pwdHit:self.encryptionPasswordHint
+        )
+    }
 }
+
+
 
 
 // MARK : - view extensions
@@ -173,50 +252,49 @@ extension ComposeEmailViewController : ComposeViewDelegate {
     }
     
     func composeViewDidTapNextButton(composeView: ComposeView) {
-        //        switch(actualEncryptionStep) {
-        //        case EncryptionStep.DefinePassword:
-        //            self.encryptionPassword = composeView.encryptedPasswordTextField.text ?? ""
-        //            self.actualEncryptionStep = EncryptionStep.ConfirmPassword
-        //            self.composeView.showConfirmPasswordView()
-        //
-        //        case EncryptionStep.ConfirmPassword:
-        //            self.encryptionConfirmPassword = composeView.encryptedPasswordTextField.text ?? ""
-        //
-        //            if (self.encryptionPassword == self.encryptionConfirmPassword) {
-        //                self.actualEncryptionStep = EncryptionStep.DefineHintPassword
-        //                self.composeView.hidePasswordAndConfirmDoesntMatch()
-        //                self.composeView.showPasswordHintView()
-        //            } else {
-        //                self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kConfirmError)
-        //            }
-        //
-        //        case EncryptionStep.DefineHintPassword:
-        //            self.encryptionPasswordHint = composeView.encryptedPasswordTextField.text ?? ""
-        //            self.actualEncryptionStep = EncryptionStep.DefinePassword
-        //            self.composeView.showEncryptionDone()
-        //        default:
-        //            println("No step defined.")
-        //        }
+        switch(actualEncryptionStep) {
+        case EncryptionStep.DefinePassword:
+            self.encryptionPassword = composeView.encryptedPasswordTextField.text ?? ""
+            self.actualEncryptionStep = EncryptionStep.ConfirmPassword
+            self.composeView.showConfirmPasswordView()
+            
+        case EncryptionStep.ConfirmPassword:
+            self.encryptionConfirmPassword = composeView.encryptedPasswordTextField.text ?? ""
+            
+            if (self.encryptionPassword == self.encryptionConfirmPassword) {
+                self.actualEncryptionStep = EncryptionStep.DefineHintPassword
+                self.composeView.hidePasswordAndConfirmDoesntMatch()
+                self.composeView.showPasswordHintView()
+            } else {
+                self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kConfirmError)
+            }
+            
+        case EncryptionStep.DefineHintPassword:
+            self.encryptionPasswordHint = composeView.encryptedPasswordTextField.text ?? ""
+            self.actualEncryptionStep = EncryptionStep.DefinePassword
+            self.composeView.showEncryptionDone()
+        default:
+            println("No step defined.")
+        }
     }
     
     func composeViewDidTapEncryptedButton(composeView: ComposeView) {
-        //        self.actualEncryptionStep = EncryptionStep.DefinePassword
-        //        self.composeView.showDefinePasswordView()
-        //        self.composeView.hidePasswordAndConfirmDoesntMatch()
+        self.actualEncryptionStep = EncryptionStep.DefinePassword
+        self.composeView.showDefinePasswordView()
+        self.composeView.hidePasswordAndConfirmDoesntMatch()
     }
     
     func composeViewDidTapAttachmentButton(composeView: ComposeView) {
-        //        if let viewController = UIStoryboard.instantiateInitialViewController(storyboard: .attachments) as? UINavigationController {
-        //            if let attachmentsViewController = viewController.viewControllers.first as? AttachmentsViewController {
-        //                attachmentsViewController.delegate = self
-        //                if let attachments = attachments {
-        //                    attachmentsViewController.attachments = attachments
-        //
-        //                }
-        //            }
-        //            presentViewController(viewController, animated: true, completion: nil)
-        //        }
-        
+        if let viewController = UIStoryboard.instantiateInitialViewController(storyboard: .attachments) as? UINavigationController {
+            if let attachmentsViewController = viewController.viewControllers.first as? AttachmentsViewController {
+                attachmentsViewController.delegate = self
+                if let attachments = attachments {
+                    attachmentsViewController.attachments = attachments
+                    
+                }
+            }
+            presentViewController(viewController, animated: true, completion: nil)
+        }
     }
     
     func composeViewDidTapExpirationButton(composeView: ComposeView)
@@ -237,12 +315,12 @@ extension ComposeEmailViewController : ComposeViewDelegate {
     
     func composeViewCollectExpirationData(composeView: ComposeView)
     {
-        //        let selectedDay = expirationPicker.selectedRowInComponent(0)
-        //        let selectedHour = expirationPicker.selectedRowInComponent(1)
-        //        if self.composeView.setExpirationValue(selectedDay, hour: selectedHour)
-        //        {
-        //            self.expirationPicker.alpha = 0;
-        //        }
+//        let selectedDay = expirationPicker.selectedRowInComponent(0)
+//        let selectedHour = expirationPicker.selectedRowInComponent(1)
+//        if self.composeView.setExpirationValue(selectedDay, hour: selectedHour)
+//        {
+//            self.expirationPicker.alpha = 0;
+//        }
     }
     
     func composeView(composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: MBContactPicker)
@@ -287,6 +365,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
 }
 
 
+// MARK : compose data source
 extension ComposeEmailViewController : ComposeViewDataSource {
     func composeViewContactsModelForPicker(composeView: ComposeView, picker: MBContactPicker) -> [AnyObject]! {
         return contacts
@@ -302,5 +381,20 @@ extension ComposeEmailViewController : ComposeViewDataSource {
             selectedContacts = self.viewModel.bccSelectedContacts
         }
         return selectedContacts
+    }
+}
+
+
+// MARK: - AttachmentsViewControllerDelegate
+extension ComposeEmailViewController: AttachmentsViewControllerDelegate {
+    func attachmentsViewController(attachmentsViewController: AttachmentsViewController, didFinishPickingAttachments attachments: [AnyObject]) {
+        self.attachments = attachments
+    }
+    
+    func attachmentsViewController(attachmentsViewController: AttachmentsViewController, didPickedAttachment: UIImage, fileName:String, type:String) -> Void {
+        self.collectDraft()
+        let attachment = didPickedAttachment.toAttachment(self.viewModel.message!, fileName: fileName, type: type)
+        self.viewModel.uploadAtt(attachment)
+        
     }
 }

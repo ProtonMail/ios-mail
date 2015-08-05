@@ -170,7 +170,7 @@ class MailboxViewController: ProtonMailViewController {
         } else if segue.identifier == kSegueToComposeShow {
             self.cancelButtonTapped()
 
-            let composeViewController: ComposeViewController = segue.destinationViewController as! ComposeViewController
+            let composeViewController = segue.destinationViewController.viewControllers![0] as! ComposeEmailViewController
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {
                     composeViewController.viewModel = ComposeViewModelImpl(msg: message, action : ComposeMessageAction.OpenDraft)
@@ -183,7 +183,7 @@ class MailboxViewController: ProtonMailViewController {
                 println("No selected row.")
             }
         } else if segue.identifier == kSegueToCompose {
-            let composeViewController: ComposeViewController = segue.destinationViewController.viewControllers![0] as! ComposeViewController
+            let composeViewController = segue.destinationViewController.viewControllers![0] as! ComposeEmailViewController
             composeViewController.viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.NewDraft)
         }
     }

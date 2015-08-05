@@ -32,7 +32,7 @@ class MessageDataService {
     
     private let incrementalUpdateQueue = dispatch_queue_create("ch.protonmail.incrementalUpdateQueue", DISPATCH_QUEUE_SERIAL)
     private let lastUpdatedMaximumTimeInterval: NSTimeInterval = 24 /*hours*/ * 3600
-    private let maximumCachedMessageCount = 500
+    private let maximumCachedMessageCount = 5000
     
     private var managedObjectContext: NSManagedObjectContext? {
         return sharedCoreDataService.mainManagedObjectContext
@@ -584,6 +584,7 @@ class MessageDataService {
                                 let message_n = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg, inManagedObjectContext: message.managedObjectContext!, error: &error) as! Message
                                 if error == nil {
                                     message.isDetailDownloaded = true
+                                    message.needsUpdate = true
                                     message.isRead = true
                                     message.managedObjectContext?.saveUpstreamIfNeeded()
                                     error = context.saveUpstreamIfNeeded()
@@ -800,21 +801,22 @@ class MessageDataService {
             if error != nil {
                 NSLog("\(__FUNCTION__) error: \(error)")
             } else if count > maximumCachedMessageCount {
-                fetchRequest.predicate = NSPredicate(format: "%K != %@ AND %K < %@", Message.Attributes.locationNumber, MessageLocation.outbox.rawValue, Message.Attributes.time, NSDate(timeIntervalSinceNow: -cutoffTimeInterval))
-                
-                if let oldMessages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
-                    for message in oldMessages {
-                        context.deleteObject(message)
-                    }
-                    
-                    NSLog("\(__FUNCTION__) \(oldMessages.count) old messages purged.")
-                    
-                    if let error = context.saveUpstreamIfNeeded() {
-                        NSLog("\(__FUNCTION__) error: \(error)")
-                    }
-                } else {
-                    NSLog("\(__FUNCTION__) error: \(error)")
-                }
+                // TODO:: disable this need add later
+//                fetchRequest.predicate = NSPredicate(format: "%K != %@ AND %K < %@", Message.Attributes.locationNumber, MessageLocation.outbox.rawValue, Message.Attributes.time, NSDate(timeIntervalSinceNow: -cutoffTimeInterval))
+//                
+//                if let oldMessages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
+//                    for message in oldMessages {
+//                        context.deleteObject(message)
+//                    }
+//                    
+//                    NSLog("\(__FUNCTION__) \(oldMessages.count) old messages purged.")
+//                    
+//                    if let error = context.saveUpstreamIfNeeded() {
+//                        NSLog("\(__FUNCTION__) error: \(error)")
+//                    }
+//                } else {
+//                    NSLog("\(__FUNCTION__) error: \(error)")
+//                }
             } else {
                 NSLog("\(__FUNCTION__) cached message count: \(count)")
             }
@@ -1098,6 +1100,8 @@ class MessageDataService {
                             if error == nil {
                                 //context.deleteObject(message)MOBA-378
                                 if (message.location == MessageLocation.draft) {
+                                    message.needsUpdate = false;
+                                    message.isRead = false
                                     message.location = MessageLocation.outbox
                                 }
                                 

@@ -10,13 +10,16 @@ import Foundation
 
 protocol EmailHeaderViewProtocol {
     func updateSize()
+}
+
+protocol EmailHeaderActionsProtocol {
     func starredChanged(isStarred : Bool)
 }
 
-
 class EmailHeaderView: UIView {
     
-    var delegate: EmailHeaderViewProtocol?
+    var viewDelegate: EmailHeaderViewProtocol?
+    var actionsDelegate: EmailHeaderActionsProtocol?
   
     
     /// Header Content View
@@ -66,8 +69,7 @@ class EmailHeaderView: UIView {
     private let kEmailBodyTextViewMarginLeft: CGFloat = 0//-16.0
     private let kEmailBodyTextViewMarginRight: CGFloat = 0//-16.0
     private let kEmailBodyTextViewMarginTop: CGFloat = 16.0
-    private let kSeparatorBetweenHeaderAndBodyMarginTop: CGFloat = 16.0
-    
+    private let kSeparatorBetweenHeaderAndBodyMarginTop: CGFloat = 16.0    
     private let kHourMinuteFormat = "h:mma"
     
     
@@ -517,7 +519,7 @@ class EmailHeaderView: UIView {
     
     internal func emailFavoriteButtonTapped() {
         self.starred = !self.starred
-        self.delegate?.starredChanged(self.starred)
+        self.actionsDelegate?.starredChanged(self.starred)
         self.emailFavoriteButton.selected = self.starred
     }
     
@@ -528,7 +530,7 @@ class EmailHeaderView: UIView {
             var f = self.frame;
             f.size.height = self.getHeight();
             self.frame = f;
-            self.delegate?.updateSize()
+            self.viewDelegate?.updateSize()
         })
     }
     

@@ -104,13 +104,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bug Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K0q-PU-hIm">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Bug Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K0q-PU-hIm">
                                 <rect key="frame" x="16" y="72" width="119" height="20"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="17"/>
                                 <color key="textColor" red="0.2196078431372549" green="0.22745098039215686" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="16" y="72" width="123" height="20"/>
+                                    <rect key="frame" x="16" y="72" width="122.5" height="20"/>
                                 </variation>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5sX-Zk-W85">
@@ -1505,9 +1505,9 @@
                         <outlet property="menuButton" destination="MGt-Hd-KyR" id="g5E-fz-E2f"/>
                         <outlet property="tableView" destination="7Zx-Yy-VI3" id="xAI-ZE-pMC"/>
                         <segue destination="xBI-ex-VGk" kind="presentation" identifier="toSearchViewController" id="6qA-ON-8KL"/>
-                        <segue destination="1qH-aE-Y3O" kind="presentation" identifier="toCompose" id="dZz-yt-xGj"/>
-                        <segue destination="zEJ-rK-fGr" kind="show" identifier="toComposeShow" id="rFr-1z-1Q8"/>
                         <segue destination="kWS-aU-yuK" kind="show" identifier="toMessageDetailViewController" id="f3k-3A-WEA"/>
+                        <segue destination="fzN-Ci-Qyg" kind="presentation" identifier="toCompose" id="fux-iz-qV0"/>
+                        <segue destination="fzN-Ci-Qyg" kind="presentation" identifier="toComposeShow" id="uv8-bX-yhD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v5f-i5-kem" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1551,7 +1551,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XP8-md-UoJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4125" y="1941"/>
+            <point key="canvasLocation" x="3229.5" y="2707"/>
         </scene>
         <!--Compose Email View Controller-->
         <scene sceneID="Nqt-Qf-jZf">
@@ -1582,7 +1582,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WN4-FR-nyC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4938" y="1941"/>
+            <point key="canvasLocation" x="4125" y="2707"/>
         </scene>
         <!--Compose View Controller-->
         <scene sceneID="Z0f-UA-BQc">
@@ -1729,7 +1729,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MCU-sn-dLY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4125" y="2698"/>
+            <point key="canvasLocation" x="4125" y="3368"/>
         </scene>
         <!--Search View Controller-->
         <scene sceneID="z3E-8M-2ks">
@@ -3784,7 +3784,7 @@
                         <outlet property="searchDisplayController" destination="mKK-GV-NK5" id="yU5-XN-CG5"/>
                         <outlet property="tableView" destination="RIQ-6S-Rqf" id="ctQ-AU-tvT"/>
                         <segue destination="d3P-H0-xNt" kind="presentation" identifier="toEditContact" id="Lm0-2L-Xlj"/>
-                        <segue destination="1qH-aE-Y3O" kind="presentation" identifier="toCompose" id="D5R-VT-Dfw"/>
+                        <segue destination="fzN-Ci-Qyg" kind="presentation" identifier="toCompose" id="oQx-RX-nff"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Rs-Sb-Nje" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3946,7 +3946,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uqF-zP-yCE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3238.5" y="4032"/>
+            <point key="canvasLocation" x="3229.5" y="4032"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="SEY-3E-LYY">
@@ -4022,7 +4022,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IzY-yD-sjO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3202.5" y="2698"/>
+            <point key="canvasLocation" x="3229.5" y="3368"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="arq-ry-cmQ">
@@ -4078,12 +4078,11 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="rFr-1z-1Q8"/>
         <segue reference="NtN-3n-87s"/>
+        <segue reference="f3k-3A-WEA"/>
+        <segue reference="uv8-bX-yhD"/>
         <segue reference="5rJ-hC-fsT"/>
         <segue reference="3FM-PP-oeV"/>
         <segue reference="V9t-nA-fhw"/>
-        <segue reference="dZz-yt-xGj"/>
-        <segue reference="f3k-3A-WEA"/>
     </inferredMetricsTieBreakers>
 </document>

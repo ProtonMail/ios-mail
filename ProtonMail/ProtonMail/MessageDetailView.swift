@@ -573,7 +573,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
     
     internal func emailFavoriteButtonTapped() {
         message.isStarred = !message.isStarred
-        
+        message.needsUpdate = true
         if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
             NSLog("\(__FUNCTION__) error: \(error)")
         }
