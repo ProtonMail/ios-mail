@@ -22,6 +22,7 @@ class MessageViewController: ProtonMailViewController {
                 }
                 else
                 {
+                    self.updateEmailBody ()
                     //self.messageDetailView?.updateHeaderView()
                     //self.messageDetailView?.updateEmailBodyWebView(true)
                 }
@@ -29,20 +30,20 @@ class MessageViewController: ProtonMailViewController {
         }
     }
     
-    var emailView: EmailView!
+    var emailView: EmailView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.emailView.updateHeaderData(self.message.subject,
+        self.emailView!.updateHeaderData(self.message.subject,
             sender: self.message.senderName ?? self.message.sender,
             to: self.message.recipientList.getDisplayAddress(),
             cc: self.message.ccList.getDisplayAddress(),
             bcc: self.message.bccList.getDisplayAddress(),
             isStarred: self.message.isStarred,
             attCount : self.message.attachments.count)
-        self.emailView.initLayouts()
-        self.emailView.bottomActionView.delegate = self
+        self.emailView!.initLayouts()
+        self.emailView!.bottomActionView.delegate = self
         self.updateEmailBody()
     }
     
@@ -93,7 +94,7 @@ class MessageViewController: ProtonMailViewController {
             bodyText = self.message.decryptBodyIfNeeded(&error) ?? NSLocalizedString("Unable to decrypt message.")
         }
         
-        self.emailView.updateEmailBody(bodyText)
+        self.emailView?.updateEmailBody(bodyText)
     }
 }
 

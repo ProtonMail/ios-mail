@@ -1505,9 +1505,9 @@
                         <outlet property="menuButton" destination="MGt-Hd-KyR" id="g5E-fz-E2f"/>
                         <outlet property="tableView" destination="7Zx-Yy-VI3" id="xAI-ZE-pMC"/>
                         <segue destination="xBI-ex-VGk" kind="presentation" identifier="toSearchViewController" id="6qA-ON-8KL"/>
-                        <segue destination="NZX-qa-4Ud" kind="show" identifier="toMessageDetailViewController" id="dxU-wZ-inN"/>
                         <segue destination="1qH-aE-Y3O" kind="presentation" identifier="toCompose" id="dZz-yt-xGj"/>
                         <segue destination="zEJ-rK-fGr" kind="show" identifier="toComposeShow" id="rFr-1z-1Q8"/>
+                        <segue destination="kWS-aU-yuK" kind="show" identifier="toMessageDetailViewController" id="f3k-3A-WEA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v5f-i5-kem" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1535,7 +1535,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X4f-eM-03N" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4986" y="1941"/>
+            <point key="canvasLocation" x="3229.5" y="1941"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="4pa-9S-l0a">
@@ -1551,7 +1551,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XP8-md-UoJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5845.5" y="1941"/>
+            <point key="canvasLocation" x="4125" y="1941"/>
         </scene>
         <!--Compose Email View Controller-->
         <scene sceneID="Nqt-Qf-jZf">
@@ -1582,7 +1582,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WN4-FR-nyC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5845.5" y="2766"/>
+            <point key="canvasLocation" x="4938" y="1941"/>
         </scene>
         <!--Compose View Controller-->
         <scene sceneID="Z0f-UA-BQc">
@@ -1729,7 +1729,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MCU-sn-dLY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4125" y="3204"/>
+            <point key="canvasLocation" x="4125" y="2698"/>
         </scene>
         <!--Search View Controller-->
         <scene sceneID="z3E-8M-2ks">
@@ -2619,13 +2619,12 @@
                     </view>
                     <connections>
                         <outlet property="messageDetailView" destination="xpP-qB-Kil" id="luO-7e-utp"/>
-                        <segue destination="1qH-aE-Y3O" kind="presentation" identifier="toCompose" id="BYG-C2-IMk"/>
                         <segue destination="kWS-aU-yuK" kind="show" identifier="test_details_segue" id="bN1-if-Pvs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1vF-jC-K0B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4125" y="1941"/>
+            <point key="canvasLocation" x="4938" y="1159"/>
         </scene>
         <!--Settings Table View-->
         <scene sceneID="qpL-sf-AfB">
@@ -4023,7 +4022,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IzY-yD-sjO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3229.5" y="3204"/>
+            <point key="canvasLocation" x="3202.5" y="2698"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="arq-ry-cmQ">
@@ -4084,7 +4083,7 @@
         <segue reference="5rJ-hC-fsT"/>
         <segue reference="3FM-PP-oeV"/>
         <segue reference="V9t-nA-fhw"/>
-        <segue reference="KkU-lW-AKe"/>
-        <segue reference="BYG-C2-IMk"/>
+        <segue reference="dZz-yt-xGj"/>
+        <segue reference="f3k-3A-WEA"/>
     </inferredMetricsTieBreakers>
 </document>
