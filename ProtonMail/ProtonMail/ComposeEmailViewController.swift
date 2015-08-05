@@ -139,7 +139,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         })
     }
     
-    
+
     @IBAction func send_clicked(sender: AnyObject) {
         if self.composeView.expirationTimeInterval > 0 {
             if self.composeView.hasOutSideEmails && count(self.encryptionPassword) <= 0 {

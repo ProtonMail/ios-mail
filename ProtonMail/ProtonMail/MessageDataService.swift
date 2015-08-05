@@ -1102,14 +1102,14 @@ class MessageDataService {
                                 //context.deleteObject(message)MOBA-378
                                 if (message.location == MessageLocation.draft) {
                                     message.needsUpdate = false;
-                                    message.isRead = false
+                                    message.isRead = true
                                     message.location = MessageLocation.outbox
                                 }
-                                
                                 NSError.alertMessageSentToast()
-                                
                                 if let error = context.saveUpstreamIfNeeded() {
                                     NSLog("\(__FUNCTION__) error: \(error)")
+                                } else {
+                                    self.markReplyStatus(message.orginalMessageID, action: message.action)
                                 }
                             }
                             else {
@@ -1119,7 +1119,6 @@ class MessageDataService {
                             completion?(task: task, response: response, error: error)
                             return
                         }
-                        
                         sharedAPIService.POST(sendMessage, completion: completionWrapper)
                     })
                     
@@ -1129,6 +1128,40 @@ class MessageDataService {
         }
         
         errorBlock(task: nil, response: nil, error: NSError.badParameter(messageID))
+    }
+    
+    private func markReplyStatus(oriMsgID : String?, action : NSNumber?) {
+        
+        if let context = managedObjectContext {
+            if let originMessageID = oriMsgID {
+                if let act = action {
+                    if !originMessageID.isEmpty {
+                        if let fetchedMessageController = sharedMessageDataService.fetchedMessageControllerForID(originMessageID) {
+                            var error: NSError?
+                            if !fetchedMessageController.performFetch(&error) {
+                                NSLog("\(__FUNCTION__) error: \(error)")
+                            } else {
+                                if let message : Message = fetchedMessageController.fetchedObjects?.first as? Message  {
+                                    //{0|1|2} // Optional, reply = 0, reply all = 1, forward = 2
+                                    if act == 0 {
+                                        message.isReplied = true;
+                                    } else if act == 1 {
+                                        message.isRepliedAll = true;
+                                    } else if act == 2{
+                                        message.isForwarded = true;
+                                    } else {
+                                        //ignore
+                                    }
+                                    if let error = message.managedObjectContext!.saveUpstreamIfNeeded() {
+                                        NSLog("\(__FUNCTION__) error: \(error)")
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     
     // MARK: Notifications
