@@ -221,7 +221,7 @@ extension ContactsViewController: UITableViewDelegate {
         }
         
         if (segue.identifier == "toCompose") {
-            let composeViewController: ComposeViewController = segue.destinationViewController.viewControllers![0] as! ComposeViewController
+            let composeViewController = segue.destinationViewController.viewControllers![0] as! ComposeEmailViewController
             composeViewController.viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.NewDraft)
             composeViewController.viewModel.addToContacts(self.selectedContact)
         }
