@@ -109,7 +109,7 @@ class ComposeView: UIViewController {
     var selfView : UIView!
     
     // MARK: - Constants
-    private let kDefaultRecipientHeight: CGFloat = 48.0
+    private let kDefaultRecipientHeight = 36
     private let kErrorMessageHeight: CGFloat = 48.0
     private let kNumberOfColumnsInTimePicker: Int = 2
     private let kNumberOfDaysInTimePicker: Int = 30
@@ -188,7 +188,7 @@ class ComposeView: UIViewController {
     @IBAction func expirationButtonTapped(sender: UIButton) {
         self.view.endEditing(true)
         self.toContactPicker.becomeFirstResponder()
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
+        UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
             self.passwordView.alpha = 0.0
             self.buttonView.alpha = 0.0
             self.expirationView.alpha = 1.0
@@ -206,7 +206,7 @@ class ComposeView: UIViewController {
     @IBAction func encryptedButtonTapped(sender: UIButton) {
         self.delegate?.composeViewDidTapEncryptedButton(self)
         self.encryptedPasswordTextField.becomeFirstResponder()
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
+        UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
             self.encryptedButton.setImage(UIImage(named: "encrypted_compose"), forState: UIControlState.Normal)
             self.passwordView.alpha = 1.0
             self.buttonView.alpha = 0.0
@@ -220,7 +220,7 @@ class ComposeView: UIViewController {
     @IBAction func didTapEncryptedDismissButton(sender: UIButton) {
         self.delegate?.composeViewDidTapEncryptedButton(self)
         self.encryptedPasswordTextField.resignFirstResponder()
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
+        UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
             self.encryptedPasswordTextField.text = ""
             self.passwordView.alpha = 0.0
             self.buttonView.alpha = 1.0
@@ -381,7 +381,7 @@ class ComposeView: UIViewController {
         self.subject.userInteractionEnabled = true
         //self.htmlEditor.view.userInteractionEnabled = true
         
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
+        UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
             self.expirationView.alpha = 0.0
             self.buttonView.alpha = 1.0
             self.delegate?.composeViewHideExpirationView(self)
@@ -461,6 +461,7 @@ class ComposeView: UIViewController {
     private func configureToContactPicker() {
         toContactPicker = MBContactPicker()
         toContactPicker.setTranslatesAutoresizingMaskIntoConstraints(true)
+        toContactPicker.cellHeight = self.kDefaultRecipientHeight;
         self.view.addSubview(toContactPicker)
         toContactPicker.datasource = self
         toContactPicker.delegate = self
@@ -580,13 +581,13 @@ extension ComposeView: MBContactPickerDataSource {
 extension ComposeView: MBContactPickerDelegate {
     func contactCollectionView(contactCollectionView: MBContactCollectionView!, didAddContact model: MBContactPickerModelProtocol!) {
         let contactPicker = contactPickerForContactCollectionView(contactCollectionView)
-        
+        self.notifyViewSize(true)
         self.delegate?.composeView(self, didAddContact: model as! ContactVO, toPicker: contactPicker)
     }
     
     func contactCollectionView(contactCollectionView: MBContactCollectionView!, didRemoveContact model: MBContactPickerModelProtocol!) {
         let contactPicker = contactPickerForContactCollectionView(contactCollectionView)
-        
+        self.notifyViewSize(true)
         self.delegate?.composeView(self, didRemoveContact: model as! ContactVO, fromPicker: contactPicker)
     }
     

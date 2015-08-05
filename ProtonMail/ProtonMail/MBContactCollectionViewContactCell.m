@@ -48,14 +48,15 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 - (void)setup
 {
     self.backgroundColor = UIColorFromRGB(0xFCFEFF);
+    
     UILabel *contactLabel = [[UILabel alloc] initWithFrame:self.bounds];
     [self addSubview:contactLabel];
     contactLabel.textColor = [UIColor blueColor];
     contactLabel.textAlignment = NSTextAlignmentCenter;
     contactLabel.clipsToBounds = YES;
-    contactLabel.layer.cornerRadius = 13.0;
-    contactLabel.layer.borderColor = UIColorFromRGB(0x6789AB).CGColor;
-    contactLabel.layer.borderWidth = 1.0;
+    contactLabel.layer.cornerRadius = 3.0;
+    //contactLabel.layer.borderColor = UIColorFromRGB(0x6789AB).CGColor;
+    //contactLabel.layer.borderWidth = 1.0;
     
     UIFont *font = [[self.class appearance] font];
     if (font)
@@ -70,7 +71,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(contactLabel)]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(2)-[contactLabel]-(8)-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(6)-[contactLabel]-(6)-|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(contactLabel)]];
@@ -105,7 +106,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     else
     {
         self.contactTitleLabel.textColor = self.tintColor;
-        self.contactTitleLabel.backgroundColor = [UIColor clearColor];
+        self.contactTitleLabel.backgroundColor = [UIColor colorWithRed: 0.9214 green: 0.9215 blue: 0.9214 alpha: 1.0];
     }
 }
 

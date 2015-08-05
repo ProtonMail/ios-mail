@@ -55,9 +55,11 @@
                     <rect key="frame" x="0.0" y="49" width="600" height="48"/>
                     <color key="backgroundColor" red="0.98823529409999999" green="0.99607843139999996" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="48" id="Fen-0r-N7C"/>
+                        <constraint firstAttribute="height" constant="48" id="Fen-0r-N7C">
+                            <variation key="widthClass=compact" constant="36"/>
+                        </constraint>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="16"/>
+                    <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                     <variation key="default">
                         <mask key="constraints">
@@ -73,10 +75,14 @@
                 <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="chC-fW-E4g" userLabel="Show CC BCC View">
                     <rect key="frame" x="568" y="13" width="22" height="22"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="48" id="Tn1-q8-Z7u"/>
+                        <constraint firstAttribute="height" constant="48" id="Tn1-q8-Z7u">
+                            <variation key="widthClass=compact" constant="36"/>
+                        </constraint>
                         <constraint firstAttribute="height" constant="22" id="WD0-6x-aic"/>
                         <constraint firstAttribute="width" constant="22" id="eog-7S-Y00"/>
-                        <constraint firstAttribute="width" constant="49" id="rnH-Q4-xMI"/>
+                        <constraint firstAttribute="width" constant="49" id="rnH-Q4-xMI">
+                            <variation key="widthClass=compact" constant="36"/>
+                        </constraint>
                     </constraints>
                     <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <state key="normal" image="plus_compose">
@@ -364,7 +370,9 @@
             <constraints>
                 <constraint firstItem="aWx-4S-hlX" firstAttribute="leading" secondItem="6W7-2D-2Lf" secondAttribute="leading" id="053-pq-7GB"/>
                 <constraint firstItem="6W7-2D-2Lf" firstAttribute="top" secondItem="aWx-4S-hlX" secondAttribute="bottom" id="3Yz-gE-oFZ"/>
-                <constraint firstAttribute="trailing" secondItem="chC-fW-E4g" secondAttribute="trailing" id="71z-mG-smT"/>
+                <constraint firstAttribute="trailing" secondItem="chC-fW-E4g" secondAttribute="trailing" id="71z-mG-smT">
+                    <variation key="widthClass=compact" constant="10"/>
+                </constraint>
                 <constraint firstAttribute="trailing" secondItem="chC-fW-E4g" secondAttribute="trailing" constant="8" id="8Wo-7j-v5X"/>
                 <constraint firstItem="PQh-ZL-ZOh" firstAttribute="top" secondItem="6W7-2D-2Lf" secondAttribute="bottom" constant="-1" id="Afc-sd-pei"/>
                 <constraint firstItem="chC-fW-E4g" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="D9P-7a-0Aj"/>

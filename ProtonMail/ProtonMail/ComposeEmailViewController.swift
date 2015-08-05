@@ -30,7 +30,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         //
         self.composeView = ComposeView(nibName: "ComposeView", bundle: nil)
         let w = UIScreen.mainScreen().applicationFrame.width;
-        self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize + 60)
+        self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize + 38)
         self.composeView.delegate = self
         self.composeView.datasource = self
         self.composeView.view.backgroundColor = UIColor.yellowColor()
@@ -46,7 +46,6 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         self.composeView.bccContactPicker.reloadData()
         
         updateContentLayout(false)
-        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -97,7 +96,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     }
     
     private func updateContentLayout(animation: Bool) {
-        UIView.animateWithDuration(animation ? 0.3 : 0, animations: { () -> Void in
+        UIView.animateWithDuration(animation ? 0.25 : 0, animations: { () -> Void in
             for subview in self.webView.scrollView.subviews {
                 let sub = subview as! UIView
                 if sub == self.composeView.view {
