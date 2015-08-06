@@ -32,7 +32,6 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     //
     private let kMoreOptionsViewHeight: CGFloat = 123.0
     
-
     //
     var moreOptionsView: MoreOptionsView!
     
@@ -83,9 +82,10 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
             make.height.equalTo()(self.kButtonsViewHeight)
         }
     }
+
     // MARK : config values 
-    func updateHeaderData (title : String, sender : String, to:String, cc : String, bcc: String, isStarred:Bool, attCount : Int) {
-        emailHeader.updateHeaderData(title, sender:sender, to: to, cc: cc, bcc: bcc, isStarred: isStarred, attCount: attCount)
+    func updateHeaderData (title : String, sender : String, to:String, cc : String, bcc: String, isStarred:Bool) {
+        emailHeader.updateHeaderData(title, sender:sender, to: to, cc: cc, bcc: bcc, isStarred: isStarred)
     }
     
     func updateEmailBody (body : String, meta : String) {
@@ -96,6 +96,10 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         let htmlString = "<style>\(css)</style>\(meta)<div id='pm-body' class='inbox-body'>\(body)</div>"
         self.contentWebView.loadHTMLString(htmlString, baseURL: nil)
         
+    }
+    
+    func updateEmailAttachment (atts : [Attachment]?) {
+        self.emailHeader.updateAttachmentData(atts)
     }
     
     required init() {
@@ -315,8 +319,5 @@ extension EmailView : EmailHeaderViewProtocol {
     func starredChanged(isStarred: Bool) {
         
     }
-    
 }
-
-
 

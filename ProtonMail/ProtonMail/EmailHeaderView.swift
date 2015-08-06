@@ -6,7 +6,8 @@
 //  Copyright (c) 2015 ArcTouch. All rights reserved.
 //
 
-import Foundation
+
+import UIKit
 
 protocol EmailHeaderViewProtocol {
     func updateSize()
@@ -14,6 +15,8 @@ protocol EmailHeaderViewProtocol {
 
 protocol EmailHeaderActionsProtocol {
     func starredChanged(isStarred : Bool)
+    
+    func quickLookAttachment (tempfile : NSURL, keyPackage:NSData, fileName:String)
 }
 
 class EmailHeaderView: UIView {
@@ -45,7 +48,9 @@ class EmailHeaderView: UIView {
     private var emailHasAttachmentsImageView: UIImageView!
     private var emailAttachmentsAmount: UILabel!
     private var separatorBetweenHeaderAndBodyView: UIView!
-    private var separatorBetweenBodyViewAndFooter: UIView!
+    private var separatorBetweenHeaderAndAttView: UIView!
+    
+    private var attachmentView : UITableView!
     
     
     // const header view
@@ -73,8 +78,13 @@ class EmailHeaderView: UIView {
     private let kHourMinuteFormat = "h:mma"
     
     
+    private var tempFileUri : NSURL?
+    
     func getHeight () -> CGFloat {
-        return separatorBetweenHeaderAndBodyView.frame.origin.y + 10;
+        
+        return self.attachmentView.frame.origin.y + self.attachmentView.frame.height + 10;
+        
+        //return separatorBetweenHeaderAndBodyView.frame.origin.y + 10;
     }
     
     private var title : String!
@@ -83,6 +93,7 @@ class EmailHeaderView: UIView {
     private var ccList : String!
     private var bccList : String!
     private var attachmentCount : Int!
+    private var attachments : [Attachment] = []
 
     private var date : NSDate!
     private var starred : Bool!
@@ -146,7 +157,7 @@ class EmailHeaderView: UIView {
     }
     
     // MARK : Private functions
-    func updateHeaderData (title : String, sender : String, to : String, cc : String, bcc : String, isStarred : Bool, attCount : Int) {
+    func updateHeaderData (title : String, sender : String, to : String, cc : String, bcc : String, isStarred : Bool) {
         
         self.title = title
         self.sender = sender
@@ -155,7 +166,6 @@ class EmailHeaderView: UIView {
         self.bccList = bcc
         self.date = NSDate()
         self.starred = isStarred
-        self.attachmentCount = attCount
         
         self.emailTitle.text = title
         self.emailSender.text = senderText
@@ -163,8 +173,12 @@ class EmailHeaderView: UIView {
         self.emailDetailCCLabel.text = ccText
         self.emailDetailBCCLabel.text = bccText
         self.emailFavoriteButton.selected = self.starred;
-        
-        if (attCount > 0) {
+    }
+    
+    func updateAttachmentData (atts : [Attachment]?) {
+        self.attachmentCount = atts?.count
+        self.attachments = atts!
+        if (self.attachmentCount > 0) {
             self.emailAttachmentsAmount.text = "\(self.attachmentCount)"
             self.emailAttachmentsAmount.hidden = false
             self.emailHasAttachmentsImageView.hidden = false
@@ -172,22 +186,43 @@ class EmailHeaderView: UIView {
             self.emailAttachmentsAmount.hidden = true
             self.emailHasAttachmentsImageView.hidden = true
         }
+
     }
     
     func updateHeaderLayout () {
         self.updateDetailsView(self.isShowingDetail)
     }
     
+    func attachmentForIndexPath(indexPath: NSIndexPath) -> Attachment {
+        return self.attachments[indexPath.row]
+    }
+
+    
     // MARK: - Subviews
     func addSubviews() {
         self.createHeaderView()
+        self.createAttachmentView()
         self.createSeparator()
+    }
+    
+    private func createAttachmentView() {
+        self.attachmentView = UITableView()
+        self.attachmentView.alwaysBounceVertical = false
+        self.attachmentView.dataSource = self
+        self.attachmentView.delegate = self
+        self.attachmentView.registerNib(UINib(nibName: "AttachmentTableViewCell", bundle: nil), forCellReuseIdentifier: AttachmentTableViewCell.Constant.identifier)
+        self.attachmentView.separatorStyle = .None
+        self.addSubview(attachmentView)
     }
     
     private func createSeparator() {
         self.separatorBetweenHeaderAndBodyView = UIView()
         self.separatorBetweenHeaderAndBodyView.backgroundColor = UIColor.ProtonMail.Gray_C9CED4
         self.addSubview(separatorBetweenHeaderAndBodyView)
+        
+        self.separatorBetweenHeaderAndAttView = UIView()
+        self.separatorBetweenHeaderAndAttView.backgroundColor = UIColor.ProtonMail.Gray_C9CED4
+        self.addSubview(separatorBetweenHeaderAndAttView)
     }
     
     private func createHeaderView() {
@@ -273,21 +308,41 @@ class EmailHeaderView: UIView {
     func makeConstraints() {
         
         self.makeHeaderConstraints()
-        separatorBetweenHeaderAndBodyView.mas_makeConstraints { (make) -> Void in
+        
+        self.updateAttConstraints(false)
+    }
+    
+    func updateAttConstraints (animition : Bool) {
+        attachmentView.reloadData()
+        attachmentView.layoutIfNeeded();
+        
+        let h = self.attachmentCount > 0 ? attachmentView.contentSize.height : 0;
+        self.separatorBetweenHeaderAndAttView.hidden = self.attachmentCount == 0
+        
+        separatorBetweenHeaderAndBodyView.mas_updateConstraints { (make) -> Void in
+            make.removeExisting = true
             make.left.equalTo()(self)
             make.right.equalTo()(self)
             make.top.equalTo()(self.emailHeaderView.mas_bottom).with().offset()(self.kSeparatorBetweenHeaderAndBodyMarginTop)
             make.height.equalTo()(1)
         }
-
-//        self.mas_updateConstraints { (make) -> Void in
-//            make.left.equalTo()(self)
-//            make.right.equalTo()(self)
-//            make.top.equalTo()(1)
-//            make.height.equalTo()(1)
-//        }
+        self.attachmentView.mas_updateConstraints { (make) -> Void in
+            make.removeExisting = true
+            make.left.equalTo()(self)
+            make.right.equalTo()(self)
+            make.top.equalTo()(self.separatorBetweenHeaderAndBodyView.mas_bottom)
+            make.height.equalTo()(h)
+        }
         
-        self.updateSelf(false)
+        separatorBetweenHeaderAndAttView.mas_updateConstraints { (make) -> Void in
+            make.removeExisting = true
+            make.left.equalTo()(self)
+            make.right.equalTo()(self)
+            make.top.equalTo()(self.attachmentView.mas_bottom)//.with().offset()(self.kSeparatorBetweenHeaderAndBodyMarginTop)
+            make.height.equalTo()(1)
+        }
+        
+        self.updateSelf(animition)
     }
     
     private func configureEmailDetailToLabel() {
@@ -668,6 +723,74 @@ class EmailHeaderView: UIView {
         
         self.updateSelf(true)
     }
+}
 
+
+
+extension EmailHeaderView: UITableViewDataSource {
     
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let attachment = attachmentForIndexPath(indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(AttachmentTableViewCell.Constant.identifier, forIndexPath: indexPath) as! AttachmentTableViewCell
+       // cell.setFilename("test", fileSize: 1000)
+        cell.setFilename(attachment.fileName, fileSize: Int(attachment.fileSize))
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return  attachments.count
+    }
+}
+
+extension EmailHeaderView: UITableViewDelegate {
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        let attachment = attachmentForIndexPath(indexPath)
+        if !attachment.isDownloaded {
+            downloadAttachment(attachment, forIndexPath: indexPath)
+        } else if let localURL = attachment.localURL {
+            if NSFileManager.defaultManager().fileExistsAtPath(attachment.localURL!.path!, isDirectory: nil) {
+                let cell = tableView.cellForRowAtIndexPath(indexPath)
+                let data: NSData = NSData(base64EncodedString: attachment.keyPacket!, options: NSDataBase64DecodingOptions(rawValue: 0))!
+                openLocalURL(localURL, keyPackage: data, fileName: attachment.fileName, forCell: cell!)
+            } else {
+                attachment.localURL = nil
+                let error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
+                if error != nil  {
+                    NSLog("\(__FUNCTION__) error: \(error)")
+                }
+                
+                downloadAttachment(attachment, forIndexPath: indexPath)
+            }
+        }
+    }
+    
+    // MARK: Private methods
+    
+    private func downloadAttachment(attachment: Attachment, forIndexPath indexPath: NSIndexPath) {
+        sharedMessageDataService.fetchAttachmentForAttachment(attachment, downloadTask: { (task) -> Void in
+            if let cell = self.attachmentView.cellForRowAtIndexPath(indexPath) as? AttachmentTableViewCell {
+                cell.progressView.alpha = 1.0
+                cell.progressView.setProgressWithDownloadProgressOfTask(task, animated: true)
+            }
+            }, completion: { (_, url, error) -> Void in
+                if let cell = self.attachmentView.cellForRowAtIndexPath(indexPath) as? AttachmentTableViewCell {
+                    UIView.animateWithDuration(0.25, animations: { () -> Void in
+                        cell.progressView.hidden = true
+                        if let localURL = attachment.localURL {
+                            if NSFileManager.defaultManager().fileExistsAtPath(attachment.localURL!.path!, isDirectory: nil) {
+                                let cell = self.attachmentView.cellForRowAtIndexPath(indexPath)
+                                let data: NSData = NSData(base64EncodedString: attachment.keyPacket!, options: NSDataBase64DecodingOptions(rawValue: 0))!
+                                self.openLocalURL(localURL, keyPackage: data, fileName: attachment.fileName, forCell: cell!)
+                            }
+                        }
+                    })
+                }
+        })
+    }
+    
+    private func openLocalURL(localURL: NSURL, keyPackage:NSData, fileName:String, forCell cell: UITableViewCell) {
+        self.actionsDelegate?.quickLookAttachment(localURL, keyPackage: keyPackage, fileName: fileName)        
+    }
 }

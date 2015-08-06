@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import QuickLook
+
 
 class MessageViewController: ProtonMailViewController {
     
@@ -25,6 +27,7 @@ class MessageViewController: ProtonMailViewController {
                     self.updateEmailBody ()
                     //self.messageDetailView?.updateHeaderView()
                     //self.messageDetailView?.updateEmailBodyWebView(true)
+                    self.emailView?.emailHeader.updateAttConstraints(true)
                 }
             }
         }
@@ -49,8 +52,12 @@ class MessageViewController: ProtonMailViewController {
             to: self.message.recipientList.getDisplayAddress(),
             cc: self.message.ccList.getDisplayAddress(),
             bcc: self.message.bccList.getDisplayAddress(),
-            isStarred: self.message.isStarred,
-            attCount : self.message.attachments.count)
+            isStarred: self.message.isStarred)
+        if (self.message.hasAttachments) {
+            let atts = self.message.attachments.allObjects as! [Attachment]
+            self.emailView?.updateEmailAttachment(atts);
+        }
+
         self.emailView!.initLayouts()
         self.emailView!.bottomActionView.delegate = self
         self.emailView!.emailHeader.actionsDelegate = self
@@ -138,6 +145,13 @@ class MessageViewController: ProtonMailViewController {
     
     // MARK : private function
     private func updateEmailBody () {
+        
+        if (self.message.hasAttachments) {
+            let atts = self.message.attachments.allObjects as! [Attachment]
+            self.emailView?.updateEmailAttachment(atts);
+        }
+        
+        
         var bodyText = NSLocalizedString("Loading...")
         
         if self.message.isDetailDownloaded {
@@ -184,6 +198,7 @@ extension MessageViewController : MessageDetailBottomViewProtocol {
 
 
 // MARK
+private var tempFileUri : NSURL?
 extension MessageViewController : EmailHeaderActionsProtocol {
     func starredChanged(isStarred: Bool) {
         message.isStarred = isStarred
@@ -191,6 +206,44 @@ extension MessageViewController : EmailHeaderActionsProtocol {
         if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
             NSLog("\(__FUNCTION__) error: \(error)")
         }
+    }
+    
+    func quickLookAttachment (localURL : NSURL, keyPackage:NSData, fileName:String) {
+        
+        if let data : NSData = NSData(contentsOfURL: localURL) {
+            tempFileUri = NSFileManager.defaultManager().attachmentDirectory.URLByAppendingPathComponent(fileName);
+            let decryptData = data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!, publicKey: sharedUserDataService.userInfo!.publicKey, privateKey: sharedUserDataService.userInfo!.privateKey, error: nil)
+            
+            decryptData!.writeToURL(tempFileUri!, atomically: true)
+            
+            let previewQL = QLPreviewController()
+            previewQL.dataSource = self
+            self.presentViewController(previewQL, animated: true, completion: nil)
+        }
+        else{
+            
+        }
+
+    }
+}
+
+// MARK: - UIDocumentInteractionControllerDelegate
+
+extension MessageViewController: UIDocumentInteractionControllerDelegate {
+}
+
+
+extension MessageViewController : QLPreviewControllerDataSource {
+    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController!) -> Int {
+        return 1
+    }
+    
+    func previewController(controller: QLPreviewController!, previewItemAtIndex index: Int) -> QLPreviewItem! {
+        //let fileURL : NSURL
+        //        if let filePath = urlList[index].lastPathComponent {
+        //            fileURL = NSBundle.mainBundle().URLForResource(filePath, withExtension:nil)
+        //        }
+        return tempFileUri // 6
     }
 }
 

@@ -9,13 +9,11 @@
 import Foundation
 
 
-class EmailAttachmentView: UIView {
-    
+class EmailAttachmentView: UITableView {
     
     required init() {
         super.init(frame: CGRectZero)
         self.backgroundColor = UIColor.whiteColor()
-        
         
         self.layoutIfNeeded()
     }
@@ -23,7 +21,4 @@ class EmailAttachmentView: UIView {
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    
-
 }
