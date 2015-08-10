@@ -230,12 +230,14 @@ class MessageDataService {
                     
                     self.processIncrementalUpdateUnread(response!.unreads)
                     self.processIncrementalUpdateTotal(response!.total)
+                    self.processIncrementalUpdateUserInfo(response!.userinfo)
                 }
                 else {
                     if response!.code == 1000 {
                         lastUpdatedStore.lastEventID = response!.eventID
                         self.processIncrementalUpdateUnread(response!.unreads)
                         self.processIncrementalUpdateTotal(response!.total)
+                        self.processIncrementalUpdateUserInfo(response!.userinfo)
                     }
                     completion?(task: task, response:nil, error: nil)
                 }
@@ -264,9 +266,12 @@ class MessageDataService {
                 }
             }
         }
-        
     }
     
+    func processIncrementalUpdateUserInfo(userinfo: Dictionary<String, AnyObject>?) {
+        
+
+    }
     
     func processIncrementalUpdateUnread(unreads: Dictionary<String, AnyObject>?) {
         

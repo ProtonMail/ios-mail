@@ -58,7 +58,7 @@ public class EventCheckResponse : ApiResponse {
     
     var messages : [Dictionary<String,AnyObject>]?
     var contacts : [Dictionary<String,AnyObject>]?
-    var userinfo : [Dictionary<String,AnyObject>]?
+    var userinfo : Dictionary<String,AnyObject>?
     var unreads : Dictionary<String,AnyObject>?
     var total : Dictionary<String,AnyObject>?
     var usedSpace : String?
@@ -66,12 +66,13 @@ public class EventCheckResponse : ApiResponse {
     override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
 
         PMLog.D(response.JSONStringify(prettyPrinted: true))
-        //PMLog("\(response)")
         
         self.eventID = response["EventID"] as? String ?? ""
         self.messages =  response["Messages"] as? [Dictionary<String,AnyObject>]
         
         self.isRefresh = response["Refresh"] as! Bool
+        
+        self.userinfo = response["User"] as? Dictionary<String,AnyObject>
         
         self.unreads = response["Unread"] as? Dictionary<String,AnyObject>
 
