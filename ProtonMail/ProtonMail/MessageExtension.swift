@@ -82,6 +82,12 @@ extension Message {
         return title //.decodeHtml()
     }
     
+    var displaySender : String {
+        get {
+            return senderName.isEmpty ?  sender : senderName
+        }
+        
+    }
     
     // MARK: - Public methods
     

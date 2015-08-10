@@ -94,19 +94,9 @@ class MailboxTableViewCell: UITableViewCell {
         self.title.text = message.subject
         
         if message.location == MessageLocation.outbox {
-            var receipientlist = "";
-            let recipients : [[String : String]] = message.recipientList.parseJson()!
-            for dict:[String : String] in recipients {
-                if(receipientlist.isEmpty) {
-                    receipientlist = dict.getDisplayName()
-                }
-                else{
-                    receipientlist = receipientlist + ", " + dict.getDisplayName()
-                }
-            }
-            self.sender.text = receipientlist
+            self.sender.text = message.recipientList.getDisplayAddress()
         } else {
-            self.sender.text = message.sender
+            self.sender.text = message.displaySender
         }
         
         self.time.text = message.time != nil ? NSDate.stringForDisplayFromDate(message.time) : ""
