@@ -143,6 +143,7 @@
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
+        <attribute name="isSoftDelete" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isStarred" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Starred"/>
@@ -243,6 +244,6 @@
         <element name="Attachment" positionX="1989" positionY="-3666" width="128" height="165"/>
         <element name="Contact" positionX="2149" positionY="-3600" width="128" height="90"/>
         <element name="Label" positionX="1989" positionY="-3465" width="128" height="133"/>
-        <element name="Message" positionX="1771" positionY="-3870" width="128" height="615"/>
+        <element name="Message" positionX="1771" positionY="-3870" width="128" height="630"/>
     </elements>
 </model>

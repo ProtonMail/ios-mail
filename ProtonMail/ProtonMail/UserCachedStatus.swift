@@ -43,7 +43,7 @@ class UserCachedStatus : SharedCacheBase {
     
     func isAuthCacheOk() -> Bool {
         let cachedVersion = getShared().integerForKey(Key.lastAuthCacheVersion)
-        return cachedVersion == AppConstants.CacheVersion
+        return cachedVersion == AppConstants.AuthCacheVersion
     }
     
     func resetCache() -> Void {
@@ -51,7 +51,7 @@ class UserCachedStatus : SharedCacheBase {
     }
     
     func resetAuthCache() -> Void {
-        setValue(AppConstants.CacheVersion, forKey: Key.lastAuthCacheVersion)
+        setValue(AppConstants.AuthCacheVersion, forKey: Key.lastAuthCacheVersion)
     }
     
     func resetTempValue() {

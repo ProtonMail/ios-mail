@@ -53,6 +53,7 @@ public class Message: NSManagedObject {
     @NSManaged var orginalMessageID: String?
     @NSManaged var orginalTime: NSDate?
     @NSManaged var action: NSNumber?
+    @NSManaged var isSoftDelete: Bool
     
     @NSManaged var attachments: NSSet
 }

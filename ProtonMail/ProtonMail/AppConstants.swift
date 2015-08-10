@@ -10,17 +10,18 @@ import Foundation
 
 
 class AppConstants {
-
-    static let CacheVersion : Int = 47
-    static let AuthCacheVersion : Int = 5
+    
+    static let CacheVersion : Int = 48
+    static let AuthCacheVersion : Int = 6
     static let SpaceWarningThreshold: Double = 80
     
     static var AppVersion : Int = 1;
     static let BaseURLString : String = "https://api.protonmail.ch"
+    
     //static let BaseURLString : String = "https://test-api.protonmail.ch"
-    //private let BaseURLString = "http://protonmail.xyz"
     //static let BaseURLString : String = "http://feng.api.com"
-    //private let BaseURLString = "https://dev-api.protonmail.ch"
+    //static let BaseURLString = "https://dev-api.protonmail.ch"
+    //static let BaseURLString = "http://protonmail.xyz"
     
     static var getDebugOption : String {
         get {
