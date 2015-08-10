@@ -25,8 +25,9 @@ class MenuViewController: UIViewController {
     // MARK: - Private constants
     
     private let items = [MenuItem.inbox, MenuItem.starred, MenuItem.drafts, MenuItem.sent, MenuItem.trash, MenuItem.spam, MenuItem.contacts, MenuItem.settings, MenuItem.bugs, MenuItem.signout]
-    private let kMenuCellHeight: CGFloat = 62.0
-    private let kMenuOptionsWidth: CGFloat = 227.0
+    private let kMenuCellHeight: CGFloat = 48.0
+    private let kMenuOptionsWidth: CGFloat = 300.0 //227.0
+    private let kMenuOptionsWidthOffset: CGFloat = 80.0
     
     private let kSegueToBugs: String = "toBugs"
     private let kSegueToInbox: String = "toInbox"
@@ -49,7 +50,9 @@ class MenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.revealViewController().rearViewRevealWidth = kMenuOptionsWidth
+        let w = UIScreen.mainScreen().applicationFrame.width;
+        
+        self.revealViewController().rearViewRevealWidth = w - kMenuOptionsWidthOffset
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -169,7 +172,7 @@ class MenuViewController: UIViewController {
 extension MenuViewController: UITableViewDelegate {
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -178,7 +181,6 @@ extension MenuViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let item = itemForIndexPath(indexPath)
-        
         if item == .signout {
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
             self.handleSignOut()
@@ -189,17 +191,28 @@ extension MenuViewController: UITableViewDelegate {
 extension MenuViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        if section == 0 {
+            return items.count
+        }
+        return 3
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: MenuTableViewCell = tableView.dequeueReusableCellWithIdentifier(itemForIndexPath(indexPath).identifier, forIndexPath: indexPath) as! MenuTableViewCell
+        if indexPath.section == 0 {
+            var cell: MenuTableViewCell = tableView.dequeueReusableCellWithIdentifier(itemForIndexPath(indexPath).identifier, forIndexPath: indexPath) as! MenuTableViewCell
+            
+            let selectedBackgroundView = UIView(frame: CGRectZero)
+            selectedBackgroundView.backgroundColor = UIColor.ProtonMail.Blue_5C7A99
+            
+            cell.selectedBackgroundView = selectedBackgroundView
+            return cell
+        } else {
+            var cell: MenuTableViewCell = tableView.dequeueReusableCellWithIdentifier(itemForIndexPath(indexPath).identifier, forIndexPath: indexPath) as! MenuTableViewCell
+            cell.backgroundColor = UIColor.yellowColor()
+            return cell
+        }
         
-        let selectedBackgroundView = UIView(frame: CGRectZero)
-        selectedBackgroundView.backgroundColor = UIColor.ProtonMail.Blue_5C7A99
-        
-        cell.selectedBackgroundView = selectedBackgroundView
-        return cell
+
     }
 }
 
