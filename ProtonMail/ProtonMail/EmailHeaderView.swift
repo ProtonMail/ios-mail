@@ -301,6 +301,14 @@ class EmailHeaderView: UIView {
         self.emailAttachmentsAmount.textColor = UIColor.ProtonMail.Gray_999DA1
         self.emailAttachmentsAmount.sizeToFit()
         self.emailHeaderView.addSubview(emailAttachmentsAmount)
+        
+        if (self.attachmentCount > 0) {
+            self.emailAttachmentsAmount.hidden = false
+            self.emailHasAttachmentsImageView.hidden = false
+        } else {
+            self.emailAttachmentsAmount.hidden = true
+            self.emailHasAttachmentsImageView.hidden = true
+        }
     }
     
     // MARK: - Subview constraints
@@ -332,6 +340,19 @@ class EmailHeaderView: UIView {
             make.right.equalTo()(self)
             make.top.equalTo()(self.separatorBetweenHeaderAndBodyView.mas_bottom)
             make.height.equalTo()(h)
+        }
+        
+        emailIsEncryptedImageView.mas_updateConstraints { (make) -> Void in
+            make.removeExisting = true
+            if (self.attachmentCount > 0) {
+                make.right.equalTo()(self.emailHasAttachmentsImageView.mas_left).with().offset()(self.kEmailIsEncryptedImageViewMarginRight)
+            } else {
+                make.right.equalTo()(self.emailHeaderView)
+            }
+            
+            make.bottom.equalTo()(self.emailAttachmentsAmount)
+            make.height.equalTo()(self.emailIsEncryptedImageView.frame.height)
+            make.width.equalTo()(self.emailIsEncryptedImageView.frame.width)
         }
         
         separatorBetweenHeaderAndAttView.mas_updateConstraints { (make) -> Void in
