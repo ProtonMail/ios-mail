@@ -51,6 +51,6 @@ extension UIColor {
         
         static let MenuUnreadCountBackground_8182C3 = UIColor(RRGGBB: UInt(0x8182C3))
         static let MenuUnSelectBackground_403F4F = UIColor(RRGGBB: UInt(0x403F4F))
-        static let MenuSelectedBackground_403F4F = UIColor(RRGGBB: UInt(0x2F2E3C))
+        static let MenuSelectedBackground_2F2E3C = UIColor(RRGGBB: UInt(0x2F2E3C))
     }    
 }

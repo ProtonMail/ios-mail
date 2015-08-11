@@ -195,7 +195,7 @@
                                         </variation>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.21568627450980393" green="0.21176470588235294" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.25098039215686274" green="0.24705882352941178" blue="0.30980392156862746" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="UJa-fM-KPk" firstAttribute="top" secondItem="E7U-Dc-qS6" secondAttribute="top" constant="20" id="4WZ-sS-AqA"/>
                                     <constraint firstItem="dGF-dy-Rrr" firstAttribute="trailing" secondItem="E7U-Dc-qS6" secondAttribute="trailingMargin" id="6gX-aT-a78"/>
@@ -241,9 +241,9 @@
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="wwg-Tx-xnK">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" red="0.40392156862745099" green="0.53725490196078429" blue="0.6705882352941176" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.25098039215686274" green="0.24705882352941178" blue="0.30980392156862746" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="separatorColor" red="0.21568627450980393" green="0.21176470588235294" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="sectionIndexBackgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="sectionIndexBackgroundColor" red="0.25098039215686274" green="0.24705882352941178" blue="0.30980392156862746" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="menu_table_cell" rowHeight="62" id="28n-53-jPI" customClass="MenuTableViewCell" customModule="ProtonMail" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -275,6 +275,9 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="76" y="8" width="213" height="46"/>
+                                                    </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="GIx-SN-s62">
                                                     <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
@@ -282,6 +285,9 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="269" y="9" width="44" height="44"/>
+                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.25098039215686274" green="0.24705882352941178" blue="0.30980392156862746" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -313,17 +319,17 @@
                                                     <exclude reference="GIx-SN-s62"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="8TN-Ym-4Tg"/>
-                                                    <exclude reference="adt-Mp-4Xt"/>
-                                                    <exclude reference="pXf-px-s3g"/>
-                                                    <exclude reference="R7g-Gh-IND"/>
-                                                    <exclude reference="baA-m5-37o"/>
-                                                    <exclude reference="pCS-XW-8nK"/>
-                                                    <exclude reference="xXg-9i-sDp"/>
                                                     <exclude reference="NYE-tc-jjg"/>
                                                     <exclude reference="dH2-A8-ZlM"/>
                                                     <exclude reference="iFZ-K0-VhR"/>
                                                     <exclude reference="k8Y-8k-Leb"/>
+                                                    <exclude reference="R7g-Gh-IND"/>
+                                                    <exclude reference="baA-m5-37o"/>
+                                                    <exclude reference="pCS-XW-8nK"/>
+                                                    <exclude reference="xXg-9i-sDp"/>
+                                                    <exclude reference="8TN-Ym-4Tg"/>
+                                                    <exclude reference="adt-Mp-4Xt"/>
+                                                    <exclude reference="pXf-px-s3g"/>
                                                 </mask>
                                             </variation>
                                             <variation key="widthClass=compact">
@@ -333,17 +339,17 @@
                                                     <include reference="GIx-SN-s62"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="8TN-Ym-4Tg"/>
-                                                    <include reference="adt-Mp-4Xt"/>
-                                                    <include reference="pXf-px-s3g"/>
-                                                    <include reference="R7g-Gh-IND"/>
-                                                    <include reference="baA-m5-37o"/>
-                                                    <include reference="pCS-XW-8nK"/>
-                                                    <include reference="xXg-9i-sDp"/>
                                                     <include reference="NYE-tc-jjg"/>
                                                     <include reference="dH2-A8-ZlM"/>
                                                     <include reference="iFZ-K0-VhR"/>
                                                     <include reference="k8Y-8k-Leb"/>
+                                                    <include reference="R7g-Gh-IND"/>
+                                                    <include reference="baA-m5-37o"/>
+                                                    <include reference="pCS-XW-8nK"/>
+                                                    <include reference="xXg-9i-sDp"/>
+                                                    <include reference="8TN-Ym-4Tg"/>
+                                                    <include reference="adt-Mp-4Xt"/>
+                                                    <include reference="pXf-px-s3g"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -381,6 +387,9 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="76" y="8" width="133" height="46"/>
+                                                    </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4o0-Fo-2cR">
                                                     <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
@@ -388,6 +397,9 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="189" y="9" width="44" height="44"/>
+                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -413,17 +425,17 @@
                                                     <exclude reference="4o0-Fo-2cR"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="GBF-Hl-IPZ"/>
-                                                    <exclude reference="Veh-9L-evu"/>
-                                                    <exclude reference="afk-uQ-0xH"/>
-                                                    <exclude reference="6Ay-68-8Yl"/>
-                                                    <exclude reference="f74-c0-N5X"/>
-                                                    <exclude reference="kKg-CR-Hap"/>
-                                                    <exclude reference="oyb-gY-ZxB"/>
                                                     <exclude reference="9dw-oY-GNN"/>
                                                     <exclude reference="RSJ-1h-f1D"/>
                                                     <exclude reference="X1E-qv-0T2"/>
                                                     <exclude reference="YfE-Be-YKA"/>
+                                                    <exclude reference="6Ay-68-8Yl"/>
+                                                    <exclude reference="f74-c0-N5X"/>
+                                                    <exclude reference="kKg-CR-Hap"/>
+                                                    <exclude reference="oyb-gY-ZxB"/>
+                                                    <exclude reference="GBF-Hl-IPZ"/>
+                                                    <exclude reference="Veh-9L-evu"/>
+                                                    <exclude reference="afk-uQ-0xH"/>
                                                 </mask>
                                             </variation>
                                             <variation key="widthClass=compact">
@@ -433,17 +445,17 @@
                                                     <include reference="4o0-Fo-2cR"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="GBF-Hl-IPZ"/>
-                                                    <include reference="Veh-9L-evu"/>
-                                                    <include reference="afk-uQ-0xH"/>
-                                                    <include reference="6Ay-68-8Yl"/>
-                                                    <include reference="f74-c0-N5X"/>
-                                                    <include reference="kKg-CR-Hap"/>
-                                                    <include reference="oyb-gY-ZxB"/>
                                                     <include reference="9dw-oY-GNN"/>
                                                     <include reference="RSJ-1h-f1D"/>
                                                     <include reference="X1E-qv-0T2"/>
                                                     <include reference="YfE-Be-YKA"/>
+                                                    <include reference="6Ay-68-8Yl"/>
+                                                    <include reference="f74-c0-N5X"/>
+                                                    <include reference="kKg-CR-Hap"/>
+                                                    <include reference="oyb-gY-ZxB"/>
+                                                    <include reference="GBF-Hl-IPZ"/>
+                                                    <include reference="Veh-9L-evu"/>
+                                                    <include reference="afk-uQ-0xH"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -478,6 +490,9 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="76" y="8" width="213" height="46"/>
+                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -496,13 +511,13 @@
                                                     <exclude reference="2li-qJ-jYf"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="6i9-ch-OxP"/>
-                                                    <exclude reference="MlR-qN-Ttq"/>
-                                                    <exclude reference="ij7-2M-y4V"/>
                                                     <exclude reference="7lB-Zj-Qdj"/>
                                                     <exclude reference="ahB-DX-49o"/>
                                                     <exclude reference="hoh-Ol-xKb"/>
                                                     <exclude reference="uHI-RV-dgK"/>
+                                                    <exclude reference="6i9-ch-OxP"/>
+                                                    <exclude reference="MlR-qN-Ttq"/>
+                                                    <exclude reference="ij7-2M-y4V"/>
                                                 </mask>
                                             </variation>
                                             <variation key="widthClass=compact">
@@ -511,13 +526,13 @@
                                                     <include reference="2li-qJ-jYf"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="6i9-ch-OxP"/>
-                                                    <include reference="MlR-qN-Ttq"/>
-                                                    <include reference="ij7-2M-y4V"/>
                                                     <include reference="7lB-Zj-Qdj"/>
                                                     <include reference="ahB-DX-49o"/>
                                                     <include reference="hoh-Ol-xKb"/>
                                                     <include reference="uHI-RV-dgK"/>
+                                                    <include reference="6i9-ch-OxP"/>
+                                                    <include reference="MlR-qN-Ttq"/>
+                                                    <include reference="ij7-2M-y4V"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -552,6 +567,9 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="76" y="8" width="213" height="46"/>
+                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -570,13 +588,13 @@
                                                     <exclude reference="xqp-il-AC8"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="XkD-ZQ-dzt"/>
-                                                    <exclude reference="s9y-ts-7w4"/>
-                                                    <exclude reference="wRv-KG-n5g"/>
                                                     <exclude reference="Gs0-uB-zj9"/>
                                                     <exclude reference="aCl-b8-D8v"/>
                                                     <exclude reference="d8g-Do-wM9"/>
                                                     <exclude reference="jxT-sz-yIY"/>
+                                                    <exclude reference="XkD-ZQ-dzt"/>
+                                                    <exclude reference="s9y-ts-7w4"/>
+                                                    <exclude reference="wRv-KG-n5g"/>
                                                 </mask>
                                             </variation>
                                             <variation key="widthClass=compact">
@@ -585,13 +603,13 @@
                                                     <include reference="xqp-il-AC8"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="XkD-ZQ-dzt"/>
-                                                    <include reference="s9y-ts-7w4"/>
-                                                    <include reference="wRv-KG-n5g"/>
                                                     <include reference="Gs0-uB-zj9"/>
                                                     <include reference="aCl-b8-D8v"/>
                                                     <include reference="d8g-Do-wM9"/>
                                                     <include reference="jxT-sz-yIY"/>
+                                                    <include reference="XkD-ZQ-dzt"/>
+                                                    <include reference="s9y-ts-7w4"/>
+                                                    <include reference="wRv-KG-n5g"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -626,6 +644,9 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="76" y="8" width="213" height="46"/>
+                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -644,13 +665,13 @@
                                                     <exclude reference="YnN-h4-Fh2"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="I1h-MM-7tr"/>
-                                                    <exclude reference="Wh8-y9-wiK"/>
-                                                    <exclude reference="XR4-RW-gMd"/>
                                                     <exclude reference="Cp9-VQ-Ekx"/>
                                                     <exclude reference="SUQ-si-H6o"/>
                                                     <exclude reference="ezg-Wp-DTl"/>
                                                     <exclude reference="k9i-0J-FhS"/>
+                                                    <exclude reference="I1h-MM-7tr"/>
+                                                    <exclude reference="Wh8-y9-wiK"/>
+                                                    <exclude reference="XR4-RW-gMd"/>
                                                 </mask>
                                             </variation>
                                             <variation key="widthClass=compact">
@@ -659,13 +680,13 @@
                                                     <include reference="YnN-h4-Fh2"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="I1h-MM-7tr"/>
-                                                    <include reference="Wh8-y9-wiK"/>
-                                                    <include reference="XR4-RW-gMd"/>
                                                     <include reference="Cp9-VQ-Ekx"/>
                                                     <include reference="SUQ-si-H6o"/>
                                                     <include reference="ezg-Wp-DTl"/>
                                                     <include reference="k9i-0J-FhS"/>
+                                                    <include reference="I1h-MM-7tr"/>
+                                                    <include reference="Wh8-y9-wiK"/>
+                                                    <include reference="XR4-RW-gMd"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -700,6 +721,9 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="76" y="8" width="213" height="46"/>
+                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -718,13 +742,13 @@
                                                     <exclude reference="S2I-Xd-G2y"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="5uZ-Pq-WE7"/>
-                                                    <exclude reference="8pw-Yr-G0U"/>
-                                                    <exclude reference="n6I-ug-u87"/>
                                                     <exclude reference="2O9-vO-reO"/>
                                                     <exclude reference="nnY-lf-ihy"/>
                                                     <exclude reference="uhV-N5-5rD"/>
                                                     <exclude reference="zYX-ds-ksI"/>
+                                                    <exclude reference="5uZ-Pq-WE7"/>
+                                                    <exclude reference="8pw-Yr-G0U"/>
+                                                    <exclude reference="n6I-ug-u87"/>
                                                 </mask>
                                             </variation>
                                             <variation key="widthClass=compact">
@@ -733,13 +757,13 @@
                                                     <include reference="S2I-Xd-G2y"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="5uZ-Pq-WE7"/>
-                                                    <include reference="8pw-Yr-G0U"/>
-                                                    <include reference="n6I-ug-u87"/>
                                                     <include reference="2O9-vO-reO"/>
                                                     <include reference="nnY-lf-ihy"/>
                                                     <include reference="uhV-N5-5rD"/>
                                                     <include reference="zYX-ds-ksI"/>
+                                                    <include reference="5uZ-Pq-WE7"/>
+                                                    <include reference="8pw-Yr-G0U"/>
+                                                    <include reference="n6I-ug-u87"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -774,6 +798,9 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="76" y="8" width="133" height="46"/>
+                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -792,13 +819,13 @@
                                                     <exclude reference="Cvm-Jg-qNv"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="e8s-jY-p44"/>
-                                                    <exclude reference="eMC-rf-keJ"/>
-                                                    <exclude reference="iZ1-bp-QJH"/>
                                                     <exclude reference="5Gk-Yh-I3l"/>
                                                     <exclude reference="5Tx-Nk-4GW"/>
                                                     <exclude reference="W6A-QS-MoR"/>
                                                     <exclude reference="lAs-qT-Jlq"/>
+                                                    <exclude reference="e8s-jY-p44"/>
+                                                    <exclude reference="eMC-rf-keJ"/>
+                                                    <exclude reference="iZ1-bp-QJH"/>
                                                 </mask>
                                             </variation>
                                             <variation key="widthClass=compact">
@@ -807,13 +834,13 @@
                                                     <include reference="Cvm-Jg-qNv"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="e8s-jY-p44"/>
-                                                    <include reference="eMC-rf-keJ"/>
-                                                    <include reference="iZ1-bp-QJH"/>
                                                     <include reference="5Gk-Yh-I3l"/>
                                                     <include reference="5Tx-Nk-4GW"/>
                                                     <include reference="W6A-QS-MoR"/>
                                                     <include reference="lAs-qT-Jlq"/>
+                                                    <include reference="e8s-jY-p44"/>
+                                                    <include reference="eMC-rf-keJ"/>
+                                                    <include reference="iZ1-bp-QJH"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -848,6 +875,9 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="76" y="8" width="133" height="46"/>
+                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -866,13 +896,13 @@
                                                     <exclude reference="4ET-hv-zNP"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="Bvy-y1-E29"/>
-                                                    <exclude reference="re4-8R-Rxt"/>
-                                                    <exclude reference="wri-oJ-rov"/>
                                                     <exclude reference="A9W-qg-ZnA"/>
                                                     <exclude reference="F2h-E2-Ed6"/>
                                                     <exclude reference="Y4l-Vw-DwE"/>
                                                     <exclude reference="bZx-sl-pdI"/>
+                                                    <exclude reference="Bvy-y1-E29"/>
+                                                    <exclude reference="re4-8R-Rxt"/>
+                                                    <exclude reference="wri-oJ-rov"/>
                                                 </mask>
                                             </variation>
                                             <variation key="widthClass=compact">
@@ -881,13 +911,13 @@
                                                     <include reference="4ET-hv-zNP"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="Bvy-y1-E29"/>
-                                                    <include reference="re4-8R-Rxt"/>
-                                                    <include reference="wri-oJ-rov"/>
                                                     <include reference="A9W-qg-ZnA"/>
                                                     <include reference="F2h-E2-Ed6"/>
                                                     <include reference="Y4l-Vw-DwE"/>
                                                     <include reference="bZx-sl-pdI"/>
+                                                    <include reference="Bvy-y1-E29"/>
+                                                    <include reference="re4-8R-Rxt"/>
+                                                    <include reference="wri-oJ-rov"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -905,6 +935,9 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="76" y="8" width="213" height="46"/>
+                                                    </variation>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bug_selected" highlightedImage="bug_selected" translatesAutoresizingMaskIntoConstraints="NO" id="PMV-kE-a7O" userLabel="Settings Image">
                                                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
@@ -940,13 +973,13 @@
                                                     <exclude reference="PMV-kE-a7O"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="0yA-NO-1oX"/>
-                                                    <exclude reference="HVq-3a-PBf"/>
-                                                    <exclude reference="aqU-yr-A3l"/>
                                                     <exclude reference="68r-M4-AoO"/>
                                                     <exclude reference="cBr-5g-H4O"/>
                                                     <exclude reference="iE6-c0-5hQ"/>
                                                     <exclude reference="ohh-cs-iLL"/>
+                                                    <exclude reference="0yA-NO-1oX"/>
+                                                    <exclude reference="HVq-3a-PBf"/>
+                                                    <exclude reference="aqU-yr-A3l"/>
                                                 </mask>
                                             </variation>
                                             <variation key="widthClass=compact">
@@ -955,13 +988,13 @@
                                                     <include reference="PMV-kE-a7O"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="0yA-NO-1oX"/>
-                                                    <include reference="HVq-3a-PBf"/>
-                                                    <include reference="aqU-yr-A3l"/>
                                                     <include reference="68r-M4-AoO"/>
                                                     <include reference="cBr-5g-H4O"/>
                                                     <include reference="iE6-c0-5hQ"/>
                                                     <include reference="ohh-cs-iLL"/>
+                                                    <include reference="0yA-NO-1oX"/>
+                                                    <include reference="HVq-3a-PBf"/>
+                                                    <include reference="aqU-yr-A3l"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -996,6 +1029,9 @@
                                                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="76" y="8" width="133" height="46"/>
+                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1014,13 +1050,13 @@
                                                     <exclude reference="di8-gb-Qwx"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <exclude reference="GVV-md-Aa8"/>
-                                                    <exclude reference="IEU-wm-y54"/>
-                                                    <exclude reference="xru-FE-dcp"/>
                                                     <exclude reference="713-II-yeJ"/>
                                                     <exclude reference="V3Z-FB-mtZ"/>
                                                     <exclude reference="dna-3s-TXe"/>
                                                     <exclude reference="uJK-zC-blb"/>
+                                                    <exclude reference="GVV-md-Aa8"/>
+                                                    <exclude reference="IEU-wm-y54"/>
+                                                    <exclude reference="xru-FE-dcp"/>
                                                 </mask>
                                             </variation>
                                             <variation key="widthClass=compact">
@@ -1029,13 +1065,13 @@
                                                     <include reference="di8-gb-Qwx"/>
                                                 </mask>
                                                 <mask key="constraints">
-                                                    <include reference="GVV-md-Aa8"/>
-                                                    <include reference="IEU-wm-y54"/>
-                                                    <include reference="xru-FE-dcp"/>
                                                     <include reference="713-II-yeJ"/>
                                                     <include reference="V3Z-FB-mtZ"/>
                                                     <include reference="dna-3s-TXe"/>
                                                     <include reference="uJK-zC-blb"/>
+                                                    <include reference="GVV-md-Aa8"/>
+                                                    <include reference="IEU-wm-y54"/>
+                                                    <include reference="xru-FE-dcp"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>

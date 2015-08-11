@@ -17,6 +17,8 @@ class MenuTableViewCell: UITableViewCell {
     @IBOutlet weak var titleImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var unreadLabel: UILabel!
+    
+    private var item: MenuItem!
 
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -25,10 +27,17 @@ class MenuTableViewCell: UITableViewCell {
     }
     
     
-    func configCell () {
+    func configCell (item : MenuItem!) {
         unreadLabel.layer.masksToBounds = true;
         unreadLabel.layer.cornerRadius = 14;
         unreadLabel.text = "0";
+        
+        titleLabel.text = item.identifier;
+        
+        titleImageView.image = UIImage(named: item.image);
+        
+        
+        unreadLabel.hidden = !item.hasCount
     }
     
     override func setHighlighted(highlighted: Bool, animated: Bool) {
@@ -38,7 +47,7 @@ class MenuTableViewCell: UITableViewCell {
         }
         
         if highlighted {
-            self.backgroundColor = UIColor.ProtonMail.MenuSelectedBackground_403F4F
+            self.backgroundColor = UIColor.ProtonMail.MenuSelectedBackground_2F2E3C
         } else {
             self.backgroundColor = UIColor.ProtonMail.MenuUnSelectBackground_403F4F
         }
@@ -52,7 +61,7 @@ class MenuTableViewCell: UITableViewCell {
         
         
         if selected {
-            self.backgroundColor = UIColor.ProtonMail.MenuSelectedBackground_403F4F
+            self.backgroundColor = UIColor.ProtonMail.MenuSelectedBackground_2F2E3C
         } else {
             self.backgroundColor = UIColor.ProtonMail.MenuUnSelectBackground_403F4F
         }

@@ -24,7 +24,7 @@ class MenuViewController: UIViewController {
     
     // MARK: - Private constants
     
-    private let items = [MenuItem.inbox, MenuItem.starred, MenuItem.drafts, MenuItem.sent, MenuItem.trash, MenuItem.spam, MenuItem.contacts, MenuItem.settings, MenuItem.bugs, MenuItem.signout]
+    private let items = [MenuItem.inbox, MenuItem.starred, MenuItem.drafts, MenuItem.sent, MenuItem.archive, MenuItem.trash, MenuItem.spam, MenuItem.contacts, MenuItem.settings, MenuItem.bugs, MenuItem.signout]
     private let kMenuCellHeight: CGFloat = 48.0
     private let kMenuOptionsWidth: CGFloat = 300.0 //227.0
     private let kMenuOptionsWidthOffset: CGFloat = 80.0
@@ -37,9 +37,7 @@ class MenuViewController: UIViewController {
     private let kSegueToTrash: String = "toTrash"
     private let kSegueToSpam: String = "toSpam"
     
-    
     private var kLastSegue: String = "toInbox"
-    
     
     private let kMenuTableCellId = "menu_table_cell"
     private let kLabelTableCellId = "menu_label_cell"
@@ -210,40 +208,19 @@ extension MenuViewController: UITableViewDataSource {
         if indexPath.section == 0 {
             var cell: MenuTableViewCell = tableView.dequeueReusableCellWithIdentifier(kMenuTableCellId, forIndexPath: indexPath) as! MenuTableViewCell
             
-            
             let selectedBackgroundView = UIView(frame: CGRectZero)
-            selectedBackgroundView.backgroundColor = UIColor.ProtonMail.MenuSelectedBackground_403F4F
+            selectedBackgroundView.backgroundColor = UIColor.ProtonMail.MenuSelectedBackground_2F2E3C
             
             cell.selectedBackgroundView = selectedBackgroundView
-            
-            
-            cell.configCell()
-            
             cell.separatorInset = UIEdgeInsetsZero
             cell.layoutMargins = UIEdgeInsetsZero
             
+            cell.configCell(items[indexPath.row])
             return cell
         } else {
             var cell: MenuTableViewCell = tableView.dequeueReusableCellWithIdentifier(kMenuTableCellId, forIndexPath: indexPath) as! MenuTableViewCell
             cell.backgroundColor = UIColor.yellowColor()
             return cell
         }
-    }
-}
-
-extension MenuViewController {
-    enum MenuItem: String {
-        case bugs = "Bugs"
-        case inbox = "Inbox"
-        case starred = "Starred"
-        case drafts = "Drafts"
-        case sent = "Sent"
-        case trash = "Trash"
-        case spam = "Spam"
-        case contacts = "Contacts"
-        case settings = "Settings"
-        case signout = "Signout"
-        
-        var identifier: String { return rawValue }
     }
 }
