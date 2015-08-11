@@ -40,6 +40,10 @@ class MenuViewController: UIViewController {
     
     private var kLastSegue: String = "toInbox"
     
+    
+    private let kMenuTableCellId = "menu_table_cell"
+    private let kLabelTableCellId = "menu_label_cell"
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -62,6 +66,9 @@ class MenuViewController: UIViewController {
             selector: "performLastSegue:",
             name: MenuViewController.ObserverSwitchView,
             object: nil)
+        
+        tableView.separatorInset = UIEdgeInsetsZero
+        tableView.layoutMargins = UIEdgeInsetsZero
     }
     
     func performLastSegue(notification: NSNotification)
@@ -175,6 +182,8 @@ extension MenuViewController: UITableViewDelegate {
         return 2
     }
     
+    
+    
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return kMenuCellHeight
     }
@@ -199,20 +208,26 @@ extension MenuViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            var cell: MenuTableViewCell = tableView.dequeueReusableCellWithIdentifier(itemForIndexPath(indexPath).identifier, forIndexPath: indexPath) as! MenuTableViewCell
+            var cell: MenuTableViewCell = tableView.dequeueReusableCellWithIdentifier(kMenuTableCellId, forIndexPath: indexPath) as! MenuTableViewCell
+            
             
             let selectedBackgroundView = UIView(frame: CGRectZero)
-            selectedBackgroundView.backgroundColor = UIColor.ProtonMail.Blue_5C7A99
+            selectedBackgroundView.backgroundColor = UIColor.ProtonMail.MenuSelectedBackground_403F4F
             
             cell.selectedBackgroundView = selectedBackgroundView
+            
+            
+            cell.configCell()
+            
+            cell.separatorInset = UIEdgeInsetsZero
+            cell.layoutMargins = UIEdgeInsetsZero
+            
             return cell
         } else {
-            var cell: MenuTableViewCell = tableView.dequeueReusableCellWithIdentifier(itemForIndexPath(indexPath).identifier, forIndexPath: indexPath) as! MenuTableViewCell
+            var cell: MenuTableViewCell = tableView.dequeueReusableCellWithIdentifier(kMenuTableCellId, forIndexPath: indexPath) as! MenuTableViewCell
             cell.backgroundColor = UIColor.yellowColor()
             return cell
         }
-        
-
     }
 }
 
