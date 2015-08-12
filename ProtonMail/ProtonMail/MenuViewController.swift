@@ -38,6 +38,8 @@ class MenuViewController: UIViewController {
 //    private let kSegueToSpam: String = "toSpam"
     private let kSegueToMailbox: String = "toMailboxSegue"
     private let kSegueToSettings: String = "toSettingsSegue"
+    private let kSegueToBugs: String = "toBugsSegue"
+    private let kSegueToContacts: String = "toContactsSegue"
     
     private var kLastSegue: String = "toInbox"
     private var kLastMenuItem: MenuItem = MenuItem.inbox
@@ -193,6 +195,10 @@ extension MenuViewController: UITableViewDelegate {
             self.handleSignOut()
         } else if item == .settings {
             self.performSegueWithIdentifier(kSegueToSettings, sender: indexPath);
+        } else if item == .bugs {
+            self.performSegueWithIdentifier(kSegueToBugs, sender: indexPath);
+        } else if item == .contacts {
+            self.performSegueWithIdentifier(kSegueToContacts, sender: indexPath);
         } else {
             self.performSegueWithIdentifier(kSegueToMailbox, sender: indexPath);
         }

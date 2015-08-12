@@ -842,9 +842,6 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="PFX-v3-PCL" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="hPG-1Q-wNs"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Bugs" rowHeight="62" id="hpw-gd-GWq" customClass="MenuTableViewCell" customModule="ProtonMail" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -919,9 +916,6 @@
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="8dN-79-EXg" kind="custom" identifier="toBugs" customClass="SWRevealViewControllerSeguePushController" id="a99-Q6-tZ0"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Signout" rowHeight="62" id="dJD-jx-bvD" customClass="MenuTableViewCell" customModule="ProtonMail" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -1050,6 +1044,8 @@
                         <outlet property="tableView" destination="wwg-Tx-xnK" id="6s2-NN-nIS"/>
                         <segue destination="N9H-or-xL9" kind="custom" identifier="toMailboxSegue" customClass="SWRevealViewControllerSeguePushController" id="F9J-SM-saL"/>
                         <segue destination="Olh-tY-NxQ" kind="custom" identifier="toSettingsSegue" customClass="SWRevealViewControllerSeguePushController" id="wom-VL-14a"/>
+                        <segue destination="8dN-79-EXg" kind="custom" identifier="toBugsSegue" customClass="SWRevealViewControllerSeguePushController" id="0gE-az-sje"/>
+                        <segue destination="PFX-v3-PCL" kind="custom" identifier="toContactsSegue" customClass="SWRevealViewControllerSeguePushController" id="dAN-KX-s86"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JBp-ua-X1G" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4048,10 +4044,10 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="F9J-SM-saL"/>
-        <segue reference="5rJ-hC-fsT"/>
+        <segue reference="NJJ-IG-yar"/>
         <segue reference="3FM-PP-oeV"/>
         <segue reference="V9t-nA-fhw"/>
+        <segue reference="5rJ-hC-fsT"/>
         <segue reference="uv8-bX-yhD"/>
         <segue reference="w5b-0j-26v"/>
         <segue reference="ddm-eA-erE"/>
