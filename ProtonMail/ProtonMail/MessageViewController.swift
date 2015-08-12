@@ -25,6 +25,7 @@ class MessageViewController: ProtonMailViewController {
                 else
                 {
                     self.updateEmailBody ()
+                    self.updateHeader()
                     //self.messageDetailView?.updateHeaderView()
                     //self.messageDetailView?.updateEmailBodyWebView(true)
                     self.emailView?.emailHeader.updateAttConstraints(true)
@@ -47,13 +48,7 @@ class MessageViewController: ProtonMailViewController {
         
         self.setupFetchedResultsController(message.messageID)
 
-        self.emailView!.updateHeaderData(self.message.subject,
-            sender: self.message.senderName ?? self.message.sender,
-            to: self.message.recipientList.getDisplayAddress(),
-            cc: self.message.ccList.getDisplayAddress(),
-            bcc: self.message.bccList.getDisplayAddress(),
-            isStarred: self.message.isStarred,
-            time: self.message.time)
+        self.updateHeader()
         
         if (self.message.hasAttachments) {
             let atts = self.message.attachments.allObjects as! [Attachment]
@@ -70,6 +65,16 @@ class MessageViewController: ProtonMailViewController {
     override func loadView() {
         emailView = EmailView()
         self.view = emailView
+    }
+    
+    private func updateHeader() {
+        self.emailView?.updateHeaderData(self.message.subject,
+            sender: self.message.senderName ?? self.message.sender,
+            to: self.message.recipientList.getDisplayAddress(),
+            cc: self.message.ccList.getDisplayAddress(),
+            bcc: self.message.bccList.getDisplayAddress(),
+            isStarred: self.message.isStarred,
+            time: self.message.time)
     }
     
         

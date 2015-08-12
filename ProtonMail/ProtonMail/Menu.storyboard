@@ -194,7 +194,7 @@
                                         </variation>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.25098039215686274" green="0.24705882352941178" blue="0.30980392156862746" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.31372549019607843" green="0.31372549019607843" blue="0.38039215686274508" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="UJa-fM-KPk" firstAttribute="top" secondItem="E7U-Dc-qS6" secondAttribute="top" constant="20" id="4WZ-sS-AqA"/>
                                     <constraint firstItem="dGF-dy-Rrr" firstAttribute="trailing" secondItem="E7U-Dc-qS6" secondAttribute="trailingMargin" id="6gX-aT-a78"/>
@@ -240,9 +240,9 @@
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="wwg-Tx-xnK">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" red="0.25098039215686274" green="0.24705882352941178" blue="0.30980392156862746" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="separatorColor" red="0.21568627450980393" green="0.21176470588235294" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="sectionIndexBackgroundColor" red="0.25098039215686274" green="0.24705882352941178" blue="0.30980392156862746" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.31372549019607843" green="0.31372549019607843" blue="0.38039215686274508" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="separatorColor" red="0.51372549019607838" green="0.53333333333333333" blue="0.59215686274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="sectionIndexBackgroundColor" red="0.31372549019607843" green="0.31372549019607843" blue="0.38039215686274508" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="menu_table_cell" rowHeight="62" id="28n-53-jPI" customClass="MenuTableViewCell" customModule="ProtonMail" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -285,11 +285,11 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="269" y="10" width="44" height="44"/>
+                                                        <rect key="frame" x="269" y="9" width="44" height="44"/>
                                                     </variation>
                                                 </label>
                                             </subviews>
-                                            <color key="backgroundColor" red="0.25098039215686274" green="0.24705882352941178" blue="0.30980392156862746" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="backgroundColor" red="0.31372549019607843" green="0.31372549019607843" blue="0.38039215686274508" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstItem="Lt3-yt-zm4" firstAttribute="leading" secondItem="RCw-uN-pgW" secondAttribute="leading" id="8TN-Ym-4Tg">
                                                     <variation key="widthClass=compact" constant="16"/>
@@ -489,7 +489,7 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="76" y="8" width="133" height="46"/>
+                                                        <rect key="frame" x="75" y="8" width="133" height="46"/>
                                                     </variation>
                                                 </label>
                                             </subviews>
@@ -854,7 +854,7 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="76" y="8" width="213" height="46"/>
+                                                        <rect key="frame" x="76" y="8" width="133" height="46"/>
                                                     </variation>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bug_selected" highlightedImage="bug_selected" translatesAutoresizingMaskIntoConstraints="NO" id="PMV-kE-a7O" userLabel="Settings Image">
@@ -1102,8 +1102,8 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="19" id="tge-h2-Oiz"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="15"/>
-                                                    <color key="textColor" red="0.2196078431372549" green="0.22745098039215686" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
+                                                    <color key="textColor" red="0.31372549019607843" green="0.31372549019607843" blue="0.38039215686274508" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="default">
                                                         <mask key="constraints">
@@ -1123,7 +1123,7 @@
                                                         <constraint firstAttribute="height" constant="14" id="whr-xd-6g3"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
-                                                    <color key="textColor" red="0.50196078431372548" green="0.51764705882352946" blue="0.52941176470588236" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="textColor" red="0.51372549019607838" green="0.53333333333333333" blue="0.59215686274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="default">
                                                         <mask key="constraints">
@@ -1140,7 +1140,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7:36pm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d4p-Fy-H08">
                                                     <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
-                                                    <color key="textColor" red="0.50196078430000002" green="0.51764705879999995" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="textColor" red="0.51372549019607838" green="0.53333333333333333" blue="0.59215686274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="widthClass=compact" misplaced="YES">
                                                         <rect key="frame" x="263" y="10" width="41" height="14"/>
@@ -1470,7 +1470,7 @@
                     <view key="view" contentMode="scaleToFill" id="iHo-JM-gJu">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
@@ -2359,16 +2359,16 @@
                                 <exclude reference="hkd-6v-qIH"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="G0g-YA-Pm9"/>
+                                <exclude reference="9TX-js-aFM"/>
+                                <exclude reference="K5S-Pu-TPb"/>
+                                <exclude reference="lmP-8C-cRk"/>
                                 <exclude reference="5TX-Z9-lTo"/>
                                 <exclude reference="Tjk-S1-jKH"/>
                                 <exclude reference="gJ7-Wm-bbg"/>
                                 <exclude reference="0Bs-HM-Qzb"/>
                                 <exclude reference="4ED-vi-h9d"/>
                                 <exclude reference="LiJ-ly-H3n"/>
-                                <exclude reference="9TX-js-aFM"/>
-                                <exclude reference="K5S-Pu-TPb"/>
-                                <exclude reference="lmP-8C-cRk"/>
-                                <exclude reference="G0g-YA-Pm9"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
@@ -2378,16 +2378,16 @@
                                 <include reference="hkd-6v-qIH"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="G0g-YA-Pm9"/>
+                                <include reference="9TX-js-aFM"/>
+                                <include reference="K5S-Pu-TPb"/>
+                                <include reference="lmP-8C-cRk"/>
                                 <include reference="5TX-Z9-lTo"/>
                                 <include reference="Tjk-S1-jKH"/>
                                 <include reference="gJ7-Wm-bbg"/>
                                 <include reference="0Bs-HM-Qzb"/>
                                 <include reference="4ED-vi-h9d"/>
                                 <include reference="LiJ-ly-H3n"/>
-                                <include reference="9TX-js-aFM"/>
-                                <include reference="K5S-Pu-TPb"/>
-                                <include reference="lmP-8C-cRk"/>
-                                <include reference="G0g-YA-Pm9"/>
                             </mask>
                         </variation>
                     </view>
@@ -4045,11 +4045,11 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="NJJ-IG-yar"/>
-        <segue reference="3FM-PP-oeV"/>
-        <segue reference="V9t-nA-fhw"/>
-        <segue reference="5rJ-hC-fsT"/>
+        <segue reference="f3k-3A-WEA"/>
         <segue reference="uv8-bX-yhD"/>
-        <segue reference="w5b-0j-26v"/>
         <segue reference="ddm-eA-erE"/>
+        <segue reference="5rJ-hC-fsT"/>
+        <segue reference="V9t-nA-fhw"/>
+        <segue reference="3FM-PP-oeV"/>
     </inferredMetricsTieBreakers>
 </document>

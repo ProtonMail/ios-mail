@@ -98,7 +98,6 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
     private var buttonsView: MessageDetailBottomView!
     
     
-    
     // MARK: - Init methods
     
     required init(message: Message, delegate: MessageDetailViewDelegate?) {

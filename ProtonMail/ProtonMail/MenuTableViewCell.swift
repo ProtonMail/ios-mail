@@ -26,7 +26,7 @@ class MenuTableViewCell: UITableViewCell {
         self.separatorInset = UIEdgeInsetsZero
         
         let selectedBackgroundView = UIView(frame: CGRectZero)
-        selectedBackgroundView.backgroundColor = UIColor.ProtonMail.MenuSelectedBackground_2F2E3C
+        selectedBackgroundView.backgroundColor = UIColor.ProtonMail.Menu_SelectedBackground
         
         self.selectedBackgroundView = selectedBackgroundView
         self.separatorInset = UIEdgeInsetsZero
@@ -36,7 +36,7 @@ class MenuTableViewCell: UITableViewCell {
     func configCell (item : MenuItem!) {
         self.item = item;
         unreadLabel.layer.masksToBounds = true;
-        unreadLabel.layer.cornerRadius = 14;
+        unreadLabel.layer.cornerRadius = 12;
         unreadLabel.text = "0";
         
         titleLabel.text = item.identifier;
@@ -69,27 +69,27 @@ class MenuTableViewCell: UITableViewCell {
     override func setHighlighted(highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
         if highlighted {
-            unreadLabel.backgroundColor = UIColor.ProtonMail.MenuUnreadCountBackground_8182C3
+            unreadLabel.backgroundColor = UIColor.ProtonMail.Menu_UnreadCountBackground
         }
         
         if highlighted {
-            self.backgroundColor = UIColor.ProtonMail.MenuSelectedBackground_2F2E3C
+            self.backgroundColor = UIColor.ProtonMail.Menu_SelectedBackground
         } else {
-            self.backgroundColor = UIColor.ProtonMail.MenuUnSelectBackground_403F4F
+            self.backgroundColor = UIColor.ProtonMail.Menu_UnSelectBackground
         }
     }
     
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         if selected {
-            unreadLabel.backgroundColor = UIColor.ProtonMail.MenuUnreadCountBackground_8182C3
+            unreadLabel.backgroundColor = UIColor.ProtonMail.Menu_UnreadCountBackground
         }
         
         
         if selected {
-            self.backgroundColor = UIColor.ProtonMail.MenuSelectedBackground_2F2E3C
+            self.backgroundColor = UIColor.ProtonMail.Menu_SelectedBackground
         } else {
-            self.backgroundColor = UIColor.ProtonMail.MenuUnSelectBackground_403F4F
+            self.backgroundColor = UIColor.ProtonMail.Menu_UnSelectBackground
         }
     }
 }

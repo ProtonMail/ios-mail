@@ -23,7 +23,7 @@ class MailboxViewController: ProtonMailViewController {
     
     // MARK: - Private constants
     
-    private let kMailboxCellHeight: CGFloat = 64.0
+    private let kMailboxCellHeight: CGFloat = 62.0
     private let kCellIdentifier: String = "MailboxCell"
     private let kLongPressDuration: CFTimeInterval = 0.60 // seconds
     private let kSegueToCompose = "toCompose"
@@ -101,10 +101,7 @@ class MailboxViewController: ProtonMailViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
-        self.refreshControl.tintColor = UIColor.whiteColor()
-        self.refreshControl.tintColorDidChange()
-    
+
         let usedStorageSpace = sharedUserDataService.userInfo!.usedSpace
         let maxStorageSpace = sharedUserDataService.userInfo!.maxSpace
         StorageLimit().checkSpace(usedSpace: usedStorageSpace, maxSpace: maxStorageSpace)
@@ -124,9 +121,9 @@ class MailboxViewController: ProtonMailViewController {
         self.navigationItem.titleView = navigationTitleLabel
         
         self.refreshControl = UIRefreshControl()
-        self.refreshControl.backgroundColor = UIColor.ProtonMail.Blue_475F77
+        self.refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8)) //.whiteColor() //ProtonMail.Blue_475F77
         self.refreshControl.addTarget(self, action: "getLatestMessages", forControlEvents: UIControlEvents.ValueChanged)
-        self.refreshControl.tintColor = UIColor.whiteColor()
+        self.refreshControl.tintColor = UIColor.grayColor()
         self.refreshControl.tintColorDidChange()
 
         

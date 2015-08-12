@@ -156,14 +156,16 @@ class MailboxTableViewCell: UITableViewCell {
     }
     
     func changeStyleToReadDesign() {
-        self.contentView.backgroundColor = UIColor.ProtonMail.Gray_E8EBED
+        //self.contentView.backgroundColor = UIColor.ProtonMail.Gray_E8EBED
+        self.contentView.backgroundColor = UIColor(RRGGBB: UInt(0xF2F3F7))
         self.title.font = UIFont.robotoLight(size: UIFont.Size.h4)
         self.sender.font = UIFont.robotoLight(size: UIFont.Size.h6)
         self.time.font = UIFont.robotoLight(size: UIFont.Size.h6)
     }
     
     func changeStyleToUnreadDesign() {
-        self.contentView.backgroundColor = UIColor.ProtonMail.Gray_FCFEFF
+        //self.contentView.backgroundColor = UIColor.ProtonMail.Gray_FCFEFF
+        self.contentView.backgroundColor = UIColor(RRGGBB: UInt(0xFFFFFF))
         self.title.font = UIFont.robotoRegular(size: UIFont.Size.h4)
         self.sender.font = UIFont.robotoRegular(size: UIFont.Size.h6)
         self.time.font = UIFont.robotoRegular(size: UIFont.Size.h6)

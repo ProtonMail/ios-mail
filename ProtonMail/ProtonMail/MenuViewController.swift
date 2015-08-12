@@ -25,7 +25,7 @@ class MenuViewController: UIViewController {
     // MARK: - Private constants
     
     private let items = [MenuItem.inbox, MenuItem.starred, MenuItem.drafts, MenuItem.sent, MenuItem.archive, MenuItem.trash, MenuItem.spam, MenuItem.contacts, MenuItem.settings, MenuItem.bugs, MenuItem.signout]
-    private let kMenuCellHeight: CGFloat = 48.0
+    private let kMenuCellHeight: CGFloat = 44.0
     private let kMenuOptionsWidth: CGFloat = 300.0 //227.0
     private let kMenuOptionsWidthOffset: CGFloat = 80.0
     
@@ -224,5 +224,9 @@ extension MenuViewController: UITableViewDataSource {
             var cell: MenuTableViewCell = tableView.dequeueReusableCellWithIdentifier(kMenuTableCellId, forIndexPath: indexPath) as! MenuTableViewCell
             return cell
         }
+    }
+    
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 2.0
     }
 }
