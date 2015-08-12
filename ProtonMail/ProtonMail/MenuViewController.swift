@@ -85,6 +85,7 @@ class MenuViewController: UIViewController {
         
         updateEmailLabel()
         updateDisplayNameLabel()
+        tableView.reloadData()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -211,6 +212,7 @@ extension MenuViewController: UITableViewDataSource {
         if indexPath.section == 0 {
             var cell = tableView.dequeueReusableCellWithIdentifier(kMenuTableCellId, forIndexPath: indexPath) as! MenuTableViewCell
             cell.configCell(items[indexPath.row])
+            cell.configUnreadCount()
             return cell
         } else {
             var cell: MenuTableViewCell = tableView.dequeueReusableCellWithIdentifier(kMenuTableCellId, forIndexPath: indexPath) as! MenuTableViewCell

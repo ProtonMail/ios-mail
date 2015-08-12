@@ -19,7 +19,7 @@ class MenuTableViewCell: UITableViewCell {
     @IBOutlet weak var unreadLabel: UILabel!
     
     private var item: MenuItem!
-
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.layoutMargins = UIEdgeInsetsZero;
@@ -34,6 +34,7 @@ class MenuTableViewCell: UITableViewCell {
     }
     
     func configCell (item : MenuItem!) {
+        self.item = item;
         unreadLabel.layer.masksToBounds = true;
         unreadLabel.layer.cornerRadius = 14;
         unreadLabel.text = "0";
@@ -45,6 +46,24 @@ class MenuTableViewCell: UITableViewCell {
         titleImageView.highlightedImage = image
         
         unreadLabel.hidden = !item.hasCount
+    }
+    
+    func configUnreadCount () {
+        if let location = item.menuToLocation {
+            let count = lastUpdatedStore.unreadCountForKey(location)
+            
+            if count > 0 {
+                unreadLabel.text = "\(count)";
+                unreadLabel.hidden = false;
+            } else {
+                unreadLabel.text = "0";
+                unreadLabel.hidden = true;
+            }
+
+        } else {
+            unreadLabel.text = "0";
+            unreadLabel.hidden = true;
+        }
     }
     
     override func setHighlighted(highlighted: Bool, animated: Bool) {

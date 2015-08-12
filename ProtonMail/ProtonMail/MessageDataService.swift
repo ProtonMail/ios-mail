@@ -288,7 +288,7 @@ class MessageDataService {
         }
 
         if let locations = unreads?["Locations"] as? [Dictionary<String,AnyObject>] {
-            
+            lastUpdatedStore.resetUnreadCounts()
             for location:[String : AnyObject] in locations {
                 
                 if let l = location["Location"] as? Int {
@@ -313,6 +313,7 @@ class MessageDataService {
                             default:
                                 break;
                             }
+                            lastUpdatedStore.updateUnreadCountForKey(lo, count: c ?? 0)
                         }
                     }
                 }

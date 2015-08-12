@@ -78,6 +78,27 @@ enum MenuItem: String {
         return image;
     }
     
+    var menuToLocation : MessageLocation? {
+        switch self {
+        case inbox:
+            return .inbox
+        case starred:
+            return .starred
+        case archive:
+            return .archive
+        case drafts:
+            return .draft
+        case sent:
+            return .outbox
+        case trash:
+            return .trash
+        case spam:
+            return .spam
+        default:
+            return nil
+        }
+    }
+    
     var selectedImage : String {
         var image = "inbox_selected"
         switch self {
