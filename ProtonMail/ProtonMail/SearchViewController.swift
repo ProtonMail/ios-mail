@@ -18,6 +18,7 @@ class SearchViewController: ProtonMailViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchTextField: UITextField!
     
+    @IBOutlet weak var noResultLabel: UILabel!
     
     // MARK: - Private Constants
     
@@ -122,7 +123,7 @@ class SearchViewController: ProtonMailViewController {
                 }
                 
                 tableView.reloadData()
-                
+                showHideNoresult()
                 fetchedResultsController.delegate = self
             }
             
@@ -130,6 +131,17 @@ class SearchViewController: ProtonMailViewController {
                 return
             }
         }
+    }
+    
+    func showHideNoresult(){
+        
+        noResultLabel.hidden = false
+        if let count = fetchedResultsController?.numberOfRowsInSection(0) {
+            if count > 0 {
+                noResultLabel.hidden = true
+            }
+        }
+        
     }
     
     func handleQuery(query: String) {
@@ -150,7 +162,7 @@ class SearchViewController: ProtonMailViewController {
         if query.isEmpty || stop {
             return
         }
-        
+        noResultLabel.hidden = true
         tableView.showLoadingFooter()
         
         

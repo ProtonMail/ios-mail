@@ -2319,6 +2319,25 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Results Found" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hkd-6v-qIH">
+                                <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="81" id="nba-l9-gS7"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="nba-l9-gS7"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="nba-l9-gS7"/>
+                                    </mask>
+                                </variation>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -2327,41 +2346,52 @@
                                 <variation key="widthClass=compact" constant="0.0"/>
                             </constraint>
                             <constraint firstAttribute="trailing" secondItem="2zf-id-O9k" secondAttribute="trailing" id="5TX-Z9-lTo"/>
+                            <constraint firstAttribute="trailing" secondItem="hkd-6v-qIH" secondAttribute="trailing" id="9TX-js-aFM"/>
                             <constraint firstItem="ebA-AZ-99q" firstAttribute="top" secondItem="bZe-7F-cQr" secondAttribute="bottom" id="G0g-YA-Pm9"/>
+                            <constraint firstItem="hkd-6v-qIH" firstAttribute="leading" secondItem="GFM-UM-cBX" secondAttribute="leading" id="K5S-Pu-TPb"/>
                             <constraint firstItem="bZe-7F-cQr" firstAttribute="leading" secondItem="GFM-UM-cBX" secondAttribute="leading" id="LiJ-ly-H3n"/>
                             <constraint firstItem="2zf-id-O9k" firstAttribute="top" secondItem="LVg-7A-0tI" secondAttribute="bottom" id="Tjk-S1-jKH">
                                 <variation key="widthClass=compact" constant="-20"/>
                             </constraint>
                             <constraint firstItem="2zf-id-O9k" firstAttribute="leading" secondItem="GFM-UM-cBX" secondAttribute="leading" id="gJ7-Wm-bbg"/>
+                            <constraint firstItem="hkd-6v-qIH" firstAttribute="top" secondItem="2zf-id-O9k" secondAttribute="bottom" id="lmP-8C-cRk"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="2zf-id-O9k"/>
                                 <exclude reference="bZe-7F-cQr"/>
+                                <exclude reference="hkd-6v-qIH"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="G0g-YA-Pm9"/>
                                 <exclude reference="5TX-Z9-lTo"/>
                                 <exclude reference="Tjk-S1-jKH"/>
                                 <exclude reference="gJ7-Wm-bbg"/>
                                 <exclude reference="0Bs-HM-Qzb"/>
                                 <exclude reference="4ED-vi-h9d"/>
                                 <exclude reference="LiJ-ly-H3n"/>
+                                <exclude reference="9TX-js-aFM"/>
+                                <exclude reference="K5S-Pu-TPb"/>
+                                <exclude reference="lmP-8C-cRk"/>
+                                <exclude reference="G0g-YA-Pm9"/>
                             </mask>
                         </variation>
                         <variation key="widthClass=compact">
                             <mask key="subviews">
                                 <include reference="2zf-id-O9k"/>
                                 <include reference="bZe-7F-cQr"/>
+                                <include reference="hkd-6v-qIH"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="G0g-YA-Pm9"/>
                                 <include reference="5TX-Z9-lTo"/>
                                 <include reference="Tjk-S1-jKH"/>
                                 <include reference="gJ7-Wm-bbg"/>
                                 <include reference="0Bs-HM-Qzb"/>
                                 <include reference="4ED-vi-h9d"/>
                                 <include reference="LiJ-ly-H3n"/>
+                                <include reference="9TX-js-aFM"/>
+                                <include reference="K5S-Pu-TPb"/>
+                                <include reference="lmP-8C-cRk"/>
+                                <include reference="G0g-YA-Pm9"/>
                             </mask>
                         </variation>
                     </view>
@@ -2369,6 +2399,7 @@
                         <barButtonItem key="backBarButtonItem" title="Search" id="kzF-uz-ox9"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="noResultLabel" destination="hkd-6v-qIH" id="7OS-3B-k7O"/>
                         <outlet property="searchTextField" destination="osS-Tz-qFA" id="htt-nR-W0x"/>
                         <outlet property="tableView" destination="bZe-7F-cQr" id="Xyl-eG-V8M"/>
                         <segue destination="kWS-aU-yuK" kind="show" identifier="toMessageDetailViewController" id="w5b-0j-26v"/>
