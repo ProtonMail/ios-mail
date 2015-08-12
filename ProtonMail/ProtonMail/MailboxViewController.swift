@@ -694,13 +694,12 @@ extension MailboxViewController: MoreOptionsViewDelegate {
         let alertController = UIAlertController(title: NSLocalizedString("Move to..."), message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
         
-        let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .trash : .Destructive]
+        let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .archive : .Destructive, .trash : .Destructive]
         
         for (location, style) in locations {
             if mailboxLocation != location {
                 alertController.addAction(UIAlertAction(title: location.description, style: style, handler: { (action) -> Void in
                     self.moveMessagesToLocation(location)
-                    
                     self.navigationController?.popViewControllerAnimated(true)
                 }))
             }
