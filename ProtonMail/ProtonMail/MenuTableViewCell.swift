@@ -24,8 +24,14 @@ class MenuTableViewCell: UITableViewCell {
         super.init(coder: aDecoder)
         self.layoutMargins = UIEdgeInsetsZero;
         self.separatorInset = UIEdgeInsetsZero
+        
+        let selectedBackgroundView = UIView(frame: CGRectZero)
+        selectedBackgroundView.backgroundColor = UIColor.ProtonMail.MenuSelectedBackground_2F2E3C
+        
+        self.selectedBackgroundView = selectedBackgroundView
+        self.separatorInset = UIEdgeInsetsZero
+        self.layoutMargins = UIEdgeInsetsZero
     }
-    
     
     func configCell (item : MenuItem!) {
         unreadLabel.layer.masksToBounds = true;
@@ -34,8 +40,9 @@ class MenuTableViewCell: UITableViewCell {
         
         titleLabel.text = item.identifier;
         
-        titleImageView.image = UIImage(named: item.image);
-        
+        let image = UIImage(named: item.image)
+        titleImageView.image = image
+        titleImageView.highlightedImage = image
         
         unreadLabel.hidden = !item.hasCount
     }

@@ -29,15 +29,18 @@ class MenuViewController: UIViewController {
     private let kMenuOptionsWidth: CGFloat = 300.0 //227.0
     private let kMenuOptionsWidthOffset: CGFloat = 80.0
     
-    private let kSegueToBugs: String = "toBugs"
-    private let kSegueToInbox: String = "toInbox"
-    private let kSegueToStarred: String = "toStarred"
-    private let kSegueToDrafts: String = "toDrafts"
-    private let kSegueToSent: String = "toSent"
-    private let kSegueToTrash: String = "toTrash"
-    private let kSegueToSpam: String = "toSpam"
+//    private let kSegueToBugs: String = "toBugs"
+//    private let kSegueToInbox: String = "toInbox"
+//    private let kSegueToStarred: String = "toStarred"
+//    private let kSegueToDrafts: String = "toDrafts"
+//    private let kSegueToSent: String = "toSent"
+//    private let kSegueToTrash: String = "toTrash"
+//    private let kSegueToSpam: String = "toSpam"
+    private let kSegueToMailbox: String = "toMailboxSegue"
+    private let kSegueToSettings: String = "toSettingsSegue"
     
     private var kLastSegue: String = "toInbox"
+    private var kLastMenuItem: MenuItem = MenuItem.inbox
     
     private let kMenuTableCellId = "menu_table_cell"
     private let kLabelTableCellId = "menu_label_cell"
@@ -95,35 +98,35 @@ class MenuViewController: UIViewController {
         if let firstViewController: UIViewController = navigationController.viewControllers.first as? UIViewController {
             if (firstViewController.isKindOfClass(MailboxViewController)) {
                 let mailboxViewController: MailboxViewController = navigationController.viewControllers.first as! MailboxViewController
-                
-                kLastSegue = segue.identifier!
-                switch(segue.identifier!) {
-                case kSegueToInbox:
-                    mailboxViewController.mailboxLocation = .inbox
-                    mailboxViewController.setNavigationTitleText("INBOX")
-                    
-                case kSegueToStarred:
-                    mailboxViewController.mailboxLocation = .starred
-                    mailboxViewController.setNavigationTitleText("STARRED")
-                    
-                case kSegueToDrafts:
-                    mailboxViewController.mailboxLocation = .draft
-                    mailboxViewController.setNavigationTitleText("DRAFTS")
-                    
-                case kSegueToSent:
-                    mailboxViewController.mailboxLocation = .outbox
-                    mailboxViewController.setNavigationTitleText("SENT")
-                    
-                case kSegueToTrash:
-                    mailboxViewController.mailboxLocation = .trash
-                    mailboxViewController.setNavigationTitleText("TRASH")
-                    
-                case kSegueToSpam:
-                    mailboxViewController.mailboxLocation = .spam
-                    mailboxViewController.setNavigationTitleText("SPAM")
-                default:
-                    mailboxViewController.mailboxLocation = .inbox
-                    mailboxViewController.setNavigationTitleText("INBOX")
+                if let indexPath = sender as? NSIndexPath {
+                    kLastSegue = segue.identifier!
+                    self.kLastMenuItem = self.itemForIndexPath(indexPath)
+                    switch(self.kLastMenuItem) {
+                    case .inbox:
+                        mailboxViewController.mailboxLocation = .inbox
+                        mailboxViewController.setNavigationTitleText("INBOX")
+                    case .starred:
+                        mailboxViewController.mailboxLocation = .starred
+                        mailboxViewController.setNavigationTitleText("STARRED")
+                    case .drafts:
+                        mailboxViewController.mailboxLocation = .draft
+                        mailboxViewController.setNavigationTitleText("DRAFTS")
+                    case .sent:
+                        mailboxViewController.mailboxLocation = .outbox
+                        mailboxViewController.setNavigationTitleText("SENT")
+                    case .trash:
+                        mailboxViewController.mailboxLocation = .trash
+                        mailboxViewController.setNavigationTitleText("TRASH")
+                    case .archive:
+                        mailboxViewController.mailboxLocation = .archive
+                        mailboxViewController.setNavigationTitleText("ARCHIVE")
+                    case .spam:
+                        mailboxViewController.mailboxLocation = .spam
+                        mailboxViewController.setNavigationTitleText("SPAM")
+                    default:
+                        mailboxViewController.mailboxLocation = .inbox
+                        mailboxViewController.setNavigationTitleText("INBOX")
+                    }
                 }
             }
         }
@@ -143,7 +146,6 @@ class MenuViewController: UIViewController {
             userCachedStatus.signOut()
         }))
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
-        
         presentViewController(alertController, animated: true, completion: nil)
     }
     
@@ -169,7 +171,6 @@ class MenuViewController: UIViewController {
                 return
             }
         }
-        
         emailLabel.text = ""
     }
 }
@@ -177,10 +178,8 @@ class MenuViewController: UIViewController {
 extension MenuViewController: UITableViewDelegate {
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
-    
-    
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return kMenuCellHeight
@@ -191,6 +190,10 @@ extension MenuViewController: UITableViewDelegate {
         if item == .signout {
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
             self.handleSignOut()
+        } else if item == .settings {
+            self.performSegueWithIdentifier(kSegueToSettings, sender: indexPath);
+        } else {
+            self.performSegueWithIdentifier(kSegueToMailbox, sender: indexPath);
         }
     }
 }
@@ -206,20 +209,11 @@ extension MenuViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            var cell: MenuTableViewCell = tableView.dequeueReusableCellWithIdentifier(kMenuTableCellId, forIndexPath: indexPath) as! MenuTableViewCell
-            
-            let selectedBackgroundView = UIView(frame: CGRectZero)
-            selectedBackgroundView.backgroundColor = UIColor.ProtonMail.MenuSelectedBackground_2F2E3C
-            
-            cell.selectedBackgroundView = selectedBackgroundView
-            cell.separatorInset = UIEdgeInsetsZero
-            cell.layoutMargins = UIEdgeInsetsZero
-            
+            var cell = tableView.dequeueReusableCellWithIdentifier(kMenuTableCellId, forIndexPath: indexPath) as! MenuTableViewCell
             cell.configCell(items[indexPath.row])
             return cell
         } else {
             var cell: MenuTableViewCell = tableView.dequeueReusableCellWithIdentifier(kMenuTableCellId, forIndexPath: indexPath) as! MenuTableViewCell
-            cell.backgroundColor = UIColor.yellowColor()
             return cell
         }
     }

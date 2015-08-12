@@ -52,7 +52,9 @@ class MessageViewController: ProtonMailViewController {
             to: self.message.recipientList.getDisplayAddress(),
             cc: self.message.ccList.getDisplayAddress(),
             bcc: self.message.bccList.getDisplayAddress(),
-            isStarred: self.message.isStarred)
+            isStarred: self.message.isStarred,
+            time: self.message.time)
+        
         if (self.message.hasAttachments) {
             let atts = self.message.attachments.allObjects as! [Attachment]
             self.emailView?.updateEmailAttachment(atts);
@@ -73,15 +75,11 @@ class MessageViewController: ProtonMailViewController {
         
     private func setupRightButtons() {
         var rightButtons: [UIBarButtonItem] = []
-        
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "arrow_down"), style: UIBarButtonItemStyle.Plain, target: self, action: "moreButtonTapped"))
-        
         if message.location != .spam {
             rightButtons.append(UIBarButtonItem(image: UIImage(named: "spam_selected"), style: UIBarButtonItemStyle.Plain, target: self, action: "spamButtonTapped"))
         }
-        
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "trash_selected"), style: UIBarButtonItemStyle.Plain, target: self, action: "removeButtonTapped"))
-        
         self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
     }
     
@@ -93,11 +91,9 @@ class MessageViewController: ProtonMailViewController {
             message.location = .trash
         }
         message.needsUpdate = true
-        
         if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
             NSLog("\(__FUNCTION__) error: \(error)")
         }
-        
         self.navigationController?.popViewControllerAnimated(true)
     }
     
@@ -111,7 +107,6 @@ class MessageViewController: ProtonMailViewController {
         self.navigationController?.popViewControllerAnimated(true)
     }
 
-    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toCompose" {
             let composeViewController = segue.destinationViewController as! ComposeEmailViewController
@@ -119,7 +114,6 @@ class MessageViewController: ProtonMailViewController {
         }
     }
 
-    
     override func shouldShowSideMenu() -> Bool {
         return false
     }
@@ -148,21 +142,17 @@ class MessageViewController: ProtonMailViewController {
     
     // MARK : private function
     private func updateEmailBody () {
-        
         if (self.message.hasAttachments) {
             let atts = self.message.attachments.allObjects as! [Attachment]
             self.emailView?.updateEmailAttachment(atts);
         }
         
-        
         var bodyText = NSLocalizedString("Loading...")
-        
         if self.message.isDetailDownloaded {
             var error: NSError?
             bodyText = self.message.decryptBodyIfNeeded(&error) ?? NSLocalizedString("Unable to decrypt message.")
         }
         
-
         let meta : String = "<meta name=\"viewport\" content=\"width=600\">\n"
         
         self.emailView?.updateEmailBody(bodyText, meta: self.message.isDetailDownloaded ? "" : meta)
@@ -177,7 +167,6 @@ class MessageViewController: ProtonMailViewController {
             }
         }
     }
-
 }
 
 // MARK
@@ -212,7 +201,6 @@ extension MessageViewController : EmailHeaderActionsProtocol {
     }
     
     func quickLookAttachment (localURL : NSURL, keyPackage:NSData, fileName:String) {
-        
         if let data : NSData = NSData(contentsOfURL: localURL) {
             tempFileUri = NSFileManager.defaultManager().attachmentDirectory.URLByAppendingPathComponent(fileName);
             let decryptData = data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!, publicKey: sharedUserDataService.userInfo!.publicKey, privateKey: sharedUserDataService.userInfo!.privateKey, error: nil)
@@ -226,7 +214,6 @@ extension MessageViewController : EmailHeaderActionsProtocol {
         else{
             
         }
-
     }
 }
 
@@ -235,18 +222,13 @@ extension MessageViewController : EmailHeaderActionsProtocol {
 extension MessageViewController: UIDocumentInteractionControllerDelegate {
 }
 
-
 extension MessageViewController : QLPreviewControllerDataSource {
     func numberOfPreviewItemsInPreviewController(controller: QLPreviewController!) -> Int {
         return 1
     }
     
     func previewController(controller: QLPreviewController!, previewItemAtIndex index: Int) -> QLPreviewItem! {
-        //let fileURL : NSURL
-        //        if let filePath = urlList[index].lastPathComponent {
-        //            fileURL = NSBundle.mainBundle().URLForResource(filePath, withExtension:nil)
-        //        }
-        return tempFileUri // 6
+        return tempFileUri
     }
 }
 
@@ -262,7 +244,6 @@ extension MessageViewController : MoreOptionsViewDelegate {
         
         navigationController?.popViewControllerAnimated(true)
 
-        
         self.emailView!.animateMoreViewOptions()
     }
     
@@ -285,6 +266,18 @@ extension MessageViewController : MoreOptionsViewDelegate {
         if message.location != .spam {
             alertController.addAction(UIAlertAction(title: MessageLocation.spam.description, style: .Default, handler: { (action) -> Void in
                 self.message.location = .spam
+                self.message.needsUpdate = true
+                if let error = self.message.managedObjectContext?.saveUpstreamIfNeeded() {
+                    NSLog("\(__FUNCTION__) error: \(error)")
+                }
+                
+                self.navigationController?.popViewControllerAnimated(true)
+            }))
+        }
+        
+        if message.location != .archive {
+            alertController.addAction(UIAlertAction(title: MessageLocation.archive.description, style: .Destructive, handler: { (action) -> Void in
+                self.message.location = .archive
                 self.message.needsUpdate = true
                 if let error = self.message.managedObjectContext?.saveUpstreamIfNeeded() {
                     NSLog("\(__FUNCTION__) error: \(error)")

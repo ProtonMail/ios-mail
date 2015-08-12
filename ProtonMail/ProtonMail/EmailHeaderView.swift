@@ -157,14 +157,19 @@ class EmailHeaderView: UIView {
     }
     
     // MARK : Private functions
-    func updateHeaderData (title : String, sender : String, to : String, cc : String, bcc : String, isStarred : Bool) {
+    func updateHeaderData (title : String, sender : String, to : String, cc : String, bcc : String, isStarred : Bool, time : NSDate?) {
         
         self.title = title
         self.sender = sender
         self.toList = to
         self.ccList = cc
         self.bccList = bcc
-        self.date = NSDate()
+        if time != nil {
+            self.date = time
+        } else {
+            self.date = NSDate()
+        }
+        
         self.starred = isStarred
         
         self.emailTitle.text = title
@@ -173,6 +178,9 @@ class EmailHeaderView: UIView {
         self.emailDetailCCLabel.text = ccText
         self.emailDetailBCCLabel.text = bccText
         self.emailFavoriteButton.selected = self.starred;
+        self.emailTime.text = "at \(self.date.stringWithFormat(self.kHourMinuteFormat))".lowercaseString
+        let tm = self.date.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? "";
+        self.emailDetailDateLabel.text = "Date: \(tm)"
     }
     
     func updateAttachmentData (atts : [Attachment]?) {

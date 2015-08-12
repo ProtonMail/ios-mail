@@ -28,7 +28,6 @@
             <string>Roboto-Light</string>
             <string>Roboto-Light</string>
             <string>Roboto-Light</string>
-            <string>Roboto-Light</string>
         </mutableArray>
         <mutableArray key="Roboto-Regular.ttf">
             <string>Roboto-Regular</string>
@@ -286,7 +285,7 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="269" y="9" width="44" height="44"/>
+                                                        <rect key="frame" x="269" y="10" width="44" height="44"/>
                                                     </variation>
                                                 </label>
                                             </subviews>
@@ -357,7 +356,6 @@
                                             <outlet property="titleImageView" destination="Lt3-yt-zm4" id="VlR-ym-8Ce"/>
                                             <outlet property="titleLabel" destination="xd1-8V-NU7" id="KsQ-cq-tO7"/>
                                             <outlet property="unreadLabel" destination="GIx-SN-s62" id="x61-Tj-fTL"/>
-                                            <segue destination="N9H-or-xL9" kind="custom" identifier="toInbox" customClass="SWRevealViewControllerSeguePushController" id="o3e-Jf-WEv"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Starred" rowHeight="62" id="hEb-SX-lfB" userLabel="Starred" customClass="MenuTableViewCell" customModule="ProtonMail" customModuleProvider="target">
@@ -491,7 +489,7 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="76" y="8" width="213" height="46"/>
+                                                        <rect key="frame" x="76" y="8" width="133" height="46"/>
                                                     </variation>
                                                 </label>
                                             </subviews>
@@ -568,7 +566,7 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="76" y="8" width="213" height="46"/>
+                                                        <rect key="frame" x="76" y="8" width="133" height="46"/>
                                                     </variation>
                                                 </label>
                                             </subviews>
@@ -722,7 +720,7 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="76" y="8" width="213" height="46"/>
+                                                        <rect key="frame" x="76" y="8" width="133" height="46"/>
                                                     </variation>
                                                 </label>
                                             </subviews>
@@ -846,83 +844,6 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <segue destination="PFX-v3-PCL" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="hPG-1Q-wNs"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Settings" rowHeight="62" id="Aqk-Su-pS8" customClass="MenuTableViewCell" customModule="ProtonMail" customModuleProvider="target">
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Aqk-Su-pS8" id="zgh-VJ-oJv">
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="settings_selected" highlightedImage="settings_selected" translatesAutoresizingMaskIntoConstraints="NO" id="KWX-hl-VIt" userLabel="Settings Image">
-                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                                                    <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" secondItem="KWX-hl-VIt" secondAttribute="height" multiplier="1:1" id="dCi-xa-Uvi"/>
-                                                    </constraints>
-                                                    <variation key="default">
-                                                        <mask key="constraints">
-                                                            <exclude reference="dCi-xa-Uvi"/>
-                                                        </mask>
-                                                    </variation>
-                                                    <variation key="widthClass=compact">
-                                                        <mask key="constraints">
-                                                            <include reference="dCi-xa-Uvi"/>
-                                                        </mask>
-                                                    </variation>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SETTINGS" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4ET-hv-zNP" userLabel="Settings Label">
-                                                    <rect key="frame" x="0.0" y="-21" width="42" height="21"/>
-                                                    <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <variation key="widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="76" y="8" width="133" height="46"/>
-                                                    </variation>
-                                                </label>
-                                            </subviews>
-                                            <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="4ET-hv-zNP" secondAttribute="trailing" constant="104" id="A9W-qg-ZnA"/>
-                                                <constraint firstAttribute="bottom" secondItem="KWX-hl-VIt" secondAttribute="bottom" constant="9" id="Bvy-y1-E29"/>
-                                                <constraint firstItem="4ET-hv-zNP" firstAttribute="bottom" secondItem="zgh-VJ-oJv" secondAttribute="bottomMargin" id="F2h-E2-Ed6"/>
-                                                <constraint firstItem="4ET-hv-zNP" firstAttribute="leading" secondItem="KWX-hl-VIt" secondAttribute="trailing" constant="16" id="Y4l-Vw-DwE"/>
-                                                <constraint firstItem="4ET-hv-zNP" firstAttribute="top" secondItem="zgh-VJ-oJv" secondAttribute="topMargin" id="bZx-sl-pdI"/>
-                                                <constraint firstItem="KWX-hl-VIt" firstAttribute="top" secondItem="zgh-VJ-oJv" secondAttribute="top" constant="9" id="re4-8R-Rxt"/>
-                                                <constraint firstItem="KWX-hl-VIt" firstAttribute="leading" secondItem="zgh-VJ-oJv" secondAttribute="leading" constant="16" id="wri-oJ-rov"/>
-                                            </constraints>
-                                            <variation key="default">
-                                                <mask key="subviews">
-                                                    <exclude reference="KWX-hl-VIt"/>
-                                                    <exclude reference="4ET-hv-zNP"/>
-                                                </mask>
-                                                <mask key="constraints">
-                                                    <exclude reference="A9W-qg-ZnA"/>
-                                                    <exclude reference="F2h-E2-Ed6"/>
-                                                    <exclude reference="Y4l-Vw-DwE"/>
-                                                    <exclude reference="bZx-sl-pdI"/>
-                                                    <exclude reference="Bvy-y1-E29"/>
-                                                    <exclude reference="re4-8R-Rxt"/>
-                                                    <exclude reference="wri-oJ-rov"/>
-                                                </mask>
-                                            </variation>
-                                            <variation key="widthClass=compact">
-                                                <mask key="subviews">
-                                                    <include reference="KWX-hl-VIt"/>
-                                                    <include reference="4ET-hv-zNP"/>
-                                                </mask>
-                                                <mask key="constraints">
-                                                    <include reference="A9W-qg-ZnA"/>
-                                                    <include reference="F2h-E2-Ed6"/>
-                                                    <include reference="Y4l-Vw-DwE"/>
-                                                    <include reference="bZx-sl-pdI"/>
-                                                    <include reference="Bvy-y1-E29"/>
-                                                    <include reference="re4-8R-Rxt"/>
-                                                    <include reference="wri-oJ-rov"/>
-                                                </mask>
-                                            </variation>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="Olh-tY-NxQ" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="I9a-Rs-5KR"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Bugs" rowHeight="62" id="hpw-gd-GWq" customClass="MenuTableViewCell" customModule="ProtonMail" customModuleProvider="target">
@@ -1127,6 +1048,8 @@
                         <outlet property="displayNameLabel" destination="UJa-fM-KPk" id="gmL-HX-nrN"/>
                         <outlet property="emailLabel" destination="dGF-dy-Rrr" id="pon-Wp-B7h"/>
                         <outlet property="tableView" destination="wwg-Tx-xnK" id="6s2-NN-nIS"/>
+                        <segue destination="N9H-or-xL9" kind="custom" identifier="toMailboxSegue" customClass="SWRevealViewControllerSeguePushController" id="F9J-SM-saL"/>
+                        <segue destination="Olh-tY-NxQ" kind="custom" identifier="toSettingsSegue" customClass="SWRevealViewControllerSeguePushController" id="wom-VL-14a"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JBp-ua-X1G" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4087,7 +4010,6 @@
         <image name="search" width="22" height="22"/>
         <image name="sent_compose" width="26" height="22"/>
         <image name="sent_selected" width="26" height="26"/>
-        <image name="settings_selected" width="24" height="24"/>
         <image name="signout_selected" width="20" height="30"/>
         <image name="spam_selected" width="24" height="25"/>
         <image name="starred_selected" width="26" height="24"/>
@@ -4095,12 +4017,12 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="F9J-SM-saL"/>
+        <segue reference="5rJ-hC-fsT"/>
+        <segue reference="3FM-PP-oeV"/>
         <segue reference="V9t-nA-fhw"/>
-        <segue reference="NtN-3n-87s"/>
         <segue reference="uv8-bX-yhD"/>
         <segue reference="w5b-0j-26v"/>
         <segue reference="ddm-eA-erE"/>
-        <segue reference="5rJ-hC-fsT"/>
-        <segue reference="3FM-PP-oeV"/>
     </inferredMetricsTieBreakers>
 </document>

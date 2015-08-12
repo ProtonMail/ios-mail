@@ -1239,7 +1239,6 @@ class MessageDataService {
     }
     
     private func dequeueIfNeeded() {
-        //return
         if let (uuid, messageID, actionString) = sharedMessageQueue.nextMessage() {
             if let action = MessageAction(rawValue: actionString) {
                 sharedMessageQueue.isInProgress = true
@@ -1263,8 +1262,6 @@ class MessageDataService {
         }
     }
     
-    
-    
     private func queue(#message: Message, action: MessageAction) {
         if action == .saveDraft || action == .send {
             sharedMessageQueue.addMessage(message.objectID.URIRepresentation().absoluteString!, action: action)
@@ -1278,7 +1275,6 @@ class MessageDataService {
         sharedMessageQueue.addMessage(att.objectID.URIRepresentation().absoluteString!, action: action)
         dequeueIfNeeded()
     }
-    
     
     private func queue(#readBlock: ReadBlock) {
         readQueue.append(readBlock)
@@ -1312,8 +1308,6 @@ class MessageDataService {
         })
     }
 }
-
-
 
 // MARK: - Attachment extension
 
