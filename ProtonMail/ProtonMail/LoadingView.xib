@@ -29,7 +29,7 @@
                             <rect key="frame" x="81" y="0.0" width="20" height="20"/>
                         </activityIndicatorView>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="KVF-SM-cwh" firstAttribute="centerY" secondItem="ZRd-6v-t3o" secondAttribute="centerY" id="7e7-HX-wMU"/>
                         <constraint firstAttribute="bottom" secondItem="KVF-SM-cwh" secondAttribute="bottom" constant="2" id="E6d-tR-uER"/>
@@ -40,7 +40,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="centerY" secondItem="pCg-oo-wyv" secondAttribute="centerY" constant="0.5" id="CkD-ei-Owi"/>
                 <constraint firstAttribute="centerX" secondItem="pCg-oo-wyv" secondAttribute="centerX" id="PJa-Go-pyz"/>

@@ -21,6 +21,7 @@ class MenuViewController: UIViewController {
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var headerView: UIView!
     
     // MARK: - Private constants
     
@@ -29,13 +30,6 @@ class MenuViewController: UIViewController {
     private let kMenuOptionsWidth: CGFloat = 300.0 //227.0
     private let kMenuOptionsWidthOffset: CGFloat = 80.0
     
-//    private let kSegueToBugs: String = "toBugs"
-//    private let kSegueToInbox: String = "toInbox"
-//    private let kSegueToStarred: String = "toStarred"
-//    private let kSegueToDrafts: String = "toDrafts"
-//    private let kSegueToSent: String = "toSent"
-//    private let kSegueToTrash: String = "toTrash"
-//    private let kSegueToSpam: String = "toSpam"
     private let kSegueToMailbox: String = "toMailboxSegue"
     private let kSegueToSettings: String = "toSettingsSegue"
     private let kSegueToBugs: String = "toBugsSegue"

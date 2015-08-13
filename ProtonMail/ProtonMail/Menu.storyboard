@@ -481,6 +481,7 @@
                                     <constraint firstItem="UJa-fM-KPk" firstAttribute="top" secondItem="E7U-Dc-qS6" secondAttribute="top" constant="20" id="4WZ-sS-AqA"/>
                                     <constraint firstItem="dGF-dy-Rrr" firstAttribute="trailing" secondItem="E7U-Dc-qS6" secondAttribute="trailingMargin" id="6gX-aT-a78"/>
                                     <constraint firstItem="dGF-dy-Rrr" firstAttribute="trailing" secondItem="UJa-fM-KPk" secondAttribute="trailing" id="Qg7-Cn-Otl"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="64" id="f1b-6I-JKl"/>
                                     <constraint firstItem="UJa-fM-KPk" firstAttribute="leading" secondItem="dGF-dy-Rrr" secondAttribute="leading" id="jzY-Lg-q3S"/>
                                     <constraint firstItem="dGF-dy-Rrr" firstAttribute="top" secondItem="UJa-fM-KPk" secondAttribute="bottom" constant="2" id="qoy-VF-EUt"/>
                                     <constraint firstItem="UJa-fM-KPk" firstAttribute="leading" secondItem="E7U-Dc-qS6" secondAttribute="leading" constant="16" id="tej-Zq-zyY"/>
@@ -491,18 +492,19 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="wwg-Tx-xnK" secondAttribute="trailing" id="CfE-Br-STB"/>
-                            <constraint firstItem="V9N-Gh-JaM" firstAttribute="top" secondItem="wwg-Tx-xnK" secondAttribute="bottom" id="WgU-4I-DeZ"/>
-                            <constraint firstItem="E7U-Dc-qS6" firstAttribute="leading" secondItem="zic-x0-v3T" secondAttribute="leading" id="cWg-Rq-HvJ"/>
-                            <constraint firstItem="wwg-Tx-xnK" firstAttribute="leading" secondItem="zic-x0-v3T" secondAttribute="leading" id="iMq-Tm-sIF"/>
-                            <constraint firstItem="wwg-Tx-xnK" firstAttribute="top" secondItem="E7U-Dc-qS6" secondAttribute="bottom" id="imK-a1-1xc"/>
-                            <constraint firstItem="E7U-Dc-qS6" firstAttribute="top" secondItem="zic-x0-v3T" secondAttribute="topMargin" id="jev-he-T43"/>
-                            <constraint firstAttribute="trailing" secondItem="E7U-Dc-qS6" secondAttribute="trailing" id="xdt-EQ-IW9"/>
+                            <constraint firstItem="V9N-Gh-JaM" firstAttribute="top" secondItem="wwg-Tx-xnK" secondAttribute="bottom" id="4Dt-zv-LU7"/>
+                            <constraint firstAttribute="trailing" secondItem="wwg-Tx-xnK" secondAttribute="trailing" id="6nV-ZL-X0J"/>
+                            <constraint firstItem="wwg-Tx-xnK" firstAttribute="top" secondItem="E7U-Dc-qS6" secondAttribute="bottom" id="BhC-Lu-qbE"/>
+                            <constraint firstAttribute="trailing" secondItem="E7U-Dc-qS6" secondAttribute="trailing" id="FD0-1r-wqb"/>
+                            <constraint firstItem="E7U-Dc-qS6" firstAttribute="top" secondItem="zic-x0-v3T" secondAttribute="top" id="hD2-9w-Bdv"/>
+                            <constraint firstItem="wwg-Tx-xnK" firstAttribute="leading" secondItem="zic-x0-v3T" secondAttribute="leading" id="hKZ-FA-PiR"/>
+                            <constraint firstItem="E7U-Dc-qS6" firstAttribute="leading" secondItem="zic-x0-v3T" secondAttribute="leading" id="jm0-Tw-sXU"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="displayNameLabel" destination="UJa-fM-KPk" id="gmL-HX-nrN"/>
                         <outlet property="emailLabel" destination="dGF-dy-Rrr" id="pon-Wp-B7h"/>
+                        <outlet property="headerView" destination="E7U-Dc-qS6" id="wdS-qs-nxc"/>
                         <outlet property="tableView" destination="wwg-Tx-xnK" id="6s2-NN-nIS"/>
                         <segue destination="N9H-or-xL9" kind="custom" identifier="toMailboxSegue" customClass="SWRevealViewControllerSeguePushController" id="F9J-SM-saL"/>
                         <segue destination="Olh-tY-NxQ" kind="custom" identifier="toSettingsSegue" customClass="SWRevealViewControllerSeguePushController" id="wom-VL-14a"/>
