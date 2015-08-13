@@ -227,6 +227,6 @@ extension MenuViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 2.0
+        return 1.0
     }
 }

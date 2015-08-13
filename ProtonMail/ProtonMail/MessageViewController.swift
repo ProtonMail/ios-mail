@@ -26,8 +26,6 @@ class MessageViewController: ProtonMailViewController {
                 {
                     self.updateEmailBody ()
                     self.updateHeader()
-                    //self.messageDetailView?.updateHeaderView()
-                    //self.messageDetailView?.updateEmailBodyWebView(true)
                     self.emailView?.emailHeader.updateAttConstraints(true)
                 }
             }
@@ -41,6 +39,8 @@ class MessageViewController: ProtonMailViewController {
     /// 
     private var actionTapped: ComposeMessageAction!
     private var fetchedMessageController: NSFetchedResultsController?
+    
+    private var bodyLoaded: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -152,15 +152,17 @@ class MessageViewController: ProtonMailViewController {
             self.emailView?.updateEmailAttachment(atts);
         }
         
-        var bodyText = NSLocalizedString("Loading...")
-        if self.message.isDetailDownloaded {
-            var error: NSError?
-            bodyText = self.message.decryptBodyIfNeeded(&error) ?? NSLocalizedString("Unable to decrypt message.")
+        if !self.bodyLoaded && self.emailView != nil {
+            var bodyText = NSLocalizedString("Loading...")
+            if self.message.isDetailDownloaded {
+                self.bodyLoaded = true
+                var error: NSError?
+                bodyText = self.message.decryptBodyIfNeeded(&error) ?? NSLocalizedString("Unable to decrypt message.")
+            }
+            
+            let meta : String = "<meta name=\"viewport\" content=\"width=600\">\n"
+            self.emailView?.updateEmailBody(bodyText, meta: self.message.isDetailDownloaded ? "" : meta)
         }
-        
-        let meta : String = "<meta name=\"viewport\" content=\"width=600\">\n"
-        
-        self.emailView?.updateEmailBody(bodyText, meta: self.message.isDetailDownloaded ? "" : meta)
     }
     
     private func setupFetchedResultsController(msg_id:String) {
