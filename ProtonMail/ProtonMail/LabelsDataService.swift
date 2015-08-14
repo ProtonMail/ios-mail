@@ -38,12 +38,22 @@ class LabelsDataService {
                 //completion?(task: task, response:nil, error: nil)
             } else if let labels = response?.labels {
                 //save
+                let context = sharedCoreDataService.newMainManagedObjectContext()
+                context.performBlockAndWait() {
+                    var error: NSError?
+                    var labes = GRTJSONSerialization.mergeObjectsForEntityName(Label.Attributes.entityName, fromJSONArray: labels, inManagedObjectContext: context, error: &error)
+                    if error == nil {
+                        error = context.saveUpstreamIfNeeded()
+                    } else {
+                        NSLog("\(__FUNCTION__) error: \(error)")
+                    }
+                }
             } else {
                 //error
             }
             
 //            else if response!.isRefresh || (hasError && response!.code == 18001) {
-//                
+//
 //                let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
 //                getLatestEventID.call() { task, response, hasError in
 //                    if response != nil && !hasError && !response!.eventID.isEmpty {
@@ -85,6 +95,17 @@ class LabelsDataService {
 //                completion?(task: task, response:nil, error: nil)
 //            }
         }
+    }
+    
+    func fetchedResultsController() -> NSFetchedResultsController? {
+        if let moc = managedObjectContext {
+            let fetchRequest = NSFetchRequest(entityName: Label.Attributes.entityName)
+            fetchRequest.predicate = NSPredicate(format: "%K == %i", Label.Attributes.isDisplay, true)
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: Label.Attributes.order, ascending: true)]
+            return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+        }
+        
+        return nil
     }
     
 //

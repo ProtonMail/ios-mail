@@ -57,30 +57,35 @@
     <entity name="Label" representedClassName="ProtonMail.Label" syncable="YES">
         <attribute name="color" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
-                <entry key="key" value="Color"/>
+                <entry key="JSONKeyPath" value="Color"/>
             </userInfo>
         </attribute>
         <attribute name="isDisplay" optional="YES" attributeType="Boolean" syncable="YES">
             <userInfo>
-                <entry key="key" value="Display"/>
+                <entry key="JSONKeyPath" value="Display"/>
+                <entry key="NumberTransformer" value="NumberTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="labelID" attributeType="String" indexed="YES" syncable="YES">
             <userInfo>
-                <entry key="key" value="ID"/>
+                <entry key="JSONKeyPath" value="ID"/>
             </userInfo>
         </attribute>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
-                <entry key="key" value="Name"/>
+                <entry key="JSONKeyPath" value="Name"/>
             </userInfo>
         </attribute>
         <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
             <userInfo>
-                <entry key="key" value="Order"/>
+                <entry key="JSONKeyPath" value="Order"/>
+                <entry key="NumberTransformer" value="NumberTransformer"/>
             </userInfo>
         </attribute>
         <relationship name="message" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="labels" inverseEntity="Message" syncable="YES"/>
+        <userInfo>
+            <entry key="identityAttribute" value="labelID"/>
+        </userInfo>
     </entity>
     <entity name="Message" representedClassName="ProtonMail.Message" syncable="YES">
         <attribute name="action" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -154,7 +159,7 @@
         <attribute name="isReplied" attributeType="Boolean" defaultValueString="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="IsReplied"/>
-                <entry key="JSONTransformerName" value="NumberTransformer"/>
+                <entry key="JSONTransformerName" value="I"/>
             </userInfo>
         </attribute>
         <attribute name="isRepliedAll" attributeType="Boolean" defaultValueString="NO" syncable="YES">

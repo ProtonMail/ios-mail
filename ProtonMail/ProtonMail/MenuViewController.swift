@@ -41,6 +41,9 @@ class MenuViewController: UIViewController {
     private let kMenuTableCellId = "menu_table_cell"
     private let kLabelTableCellId = "menu_label_cell"
     
+    // private data
+    private var fetchedResultsController: NSFetchedResultsController?
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -53,11 +56,12 @@ class MenuViewController: UIViewController {
         super.viewDidLoad()
         let w = UIScreen.mainScreen().applicationFrame.width;
         
+        setupFetchedResultsController()
+        
         self.revealViewController().rearViewRevealWidth = w - kMenuOptionsWidthOffset
         
         tableView.dataSource = self
         tableView.delegate = self
-        
         NSNotificationCenter.defaultCenter().addObserver(
             self,
             selector: "performLastSegue:",
@@ -98,6 +102,10 @@ class MenuViewController: UIViewController {
             if (firstViewController.isKindOfClass(MailboxViewController)) {
                 let mailboxViewController: MailboxViewController = navigationController.viewControllers.first as! MailboxViewController
                 if let indexPath = sender as? NSIndexPath {
+                    
+                    if let labels = fetchedResultsController?.fetchedObjects as? [Label] {
+                        PMLog.D(labels)
+                    }
                     kLastSegue = segue.identifier!
                     self.kLastMenuItem = self.itemForIndexPath(indexPath)
                     switch(self.kLastMenuItem) {
@@ -133,6 +141,20 @@ class MenuViewController: UIViewController {
     
     
     // MARK: - Methods
+    
+    private func setupFetchedResultsController() {
+        self.fetchedResultsController = sharedLabelsDataService.fetchedResultsController()
+        self.fetchedResultsController?.delegate = self
+        
+        NSLog("\(__FUNCTION__) INFO: \(fetchedResultsController?.sections)")
+        
+        if let fetchedResultsController = fetchedResultsController {
+            var error: NSError?
+            if !fetchedResultsController.performFetch(&error) {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
+        }
+    }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
@@ -224,5 +246,50 @@ extension MenuViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 1.0
+    }
+}
+
+
+extension MenuViewController: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        //        tableView.endUpdates()
+        //
+        //        selectMessageIDIfNeeded()
+    }
+    
+    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+        tableView.beginUpdates()
+    }
+    
+    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+        //        switch(type) {
+        //        case .Delete:
+        //            tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+        //        case .Insert:
+        //            tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+        //        default:
+        //            return
+        //        }
+    }
+    
+    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+        //        switch(type) {
+        //        case .Delete:
+        //            if let indexPath = indexPath {
+        //                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+        //            }
+        //        case .Insert:
+        //            if let newIndexPath = newIndexPath {
+        //                tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+        //            }
+        //        case .Update:
+        //            if let indexPath = indexPath {
+        //                if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MailboxTableViewCell {
+        //                    configureCell(cell, atIndexPath: indexPath)
+        //                }
+        //            }
+        //        default:
+        //            return
+        //        }
     }
 }
