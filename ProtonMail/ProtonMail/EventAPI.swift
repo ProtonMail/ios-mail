@@ -61,6 +61,7 @@ public class EventCheckResponse : ApiResponse {
     var userinfo : Dictionary<String,AnyObject>?
     var unreads : Dictionary<String,AnyObject>?
     var total : Dictionary<String,AnyObject>?
+    var labels : [Dictionary<String,AnyObject>]?
     var usedSpace : String?
     
     override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
@@ -79,6 +80,8 @@ public class EventCheckResponse : ApiResponse {
         self.usedSpace = response["UsedSpace"] as? String
         
         self.total = response["Total"] as? Dictionary<String,AnyObject>
+        
+        self.labels =  response["Labels"] as? [Dictionary<String,AnyObject>]
         
         return true
     }
@@ -99,6 +102,20 @@ public class MessageEvent {
         self.message?["needsUpdate"] = false
     }
 }
+
+public class LabelEvent {
+    
+    var Action : Int!
+    var ID : String!;
+    var label : Dictionary<String,AnyObject>?
+    
+    init(event: Dictionary<String,AnyObject>!) {
+        self.Action = event["Action"] as! Int
+        self.label =  event["Label"] as? Dictionary<String,AnyObject>
+        self.ID =  event["ID"] as! String
+    }
+}
+
 
 
 

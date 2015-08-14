@@ -35,15 +35,16 @@ class MenuLabelViewCell: UITableViewCell {
     
     func configCell (item : Label!) {
         self.item = item;
+        
         unreadLabel.layer.masksToBounds = true;
         unreadLabel.layer.cornerRadius = 12;
         unreadLabel.text = "0";
         
+        let color = UIColor(hexString: item.color, alpha:1)
+        let image = UIImage.imageWithColor(color)
         titleLabel.text = item.name;
-        titleImageView.backgroundColor = UIColor.yellowColor();
-//        let image = UIImage(named: item.image)
-//        titleImageView.image = image
-//        titleImageView.highlightedImage = image
+        titleImageView.image = image
+        titleImageView.highlightedImage = image
     }
     
     func configUnreadCount () {

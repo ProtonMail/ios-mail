@@ -231,6 +231,7 @@ class MessageDataService {
                     self.processIncrementalUpdateUnread(response!.unreads)
                     self.processIncrementalUpdateTotal(response!.total)
                     self.processIncrementalUpdateUserInfo(response!.userinfo)
+                    self.processIncrementalUpdateLabels(response!.labels)
                 }
                 else {
                     if response!.code == 1000 {
@@ -238,6 +239,7 @@ class MessageDataService {
                         self.processIncrementalUpdateUnread(response!.unreads)
                         self.processIncrementalUpdateTotal(response!.total)
                         self.processIncrementalUpdateUserInfo(response!.userinfo)
+                        self.processIncrementalUpdateLabels(response!.labels)
                     }
                     completion?(task: task, response:nil, error: nil)
                 }
@@ -271,6 +273,48 @@ class MessageDataService {
     func processIncrementalUpdateUserInfo(userinfo: Dictionary<String, AnyObject>?) {
         
 
+    }
+    
+    func processIncrementalUpdateLabels(labels: [Dictionary<String, AnyObject>]?) {
+        
+        struct IncrementalUpdateType {
+            static let delete = 0
+            static let insert = 1
+            static let update = 2
+        }
+        
+        if let labels = labels {
+            // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
+            dispatch_sync(self.incrementalUpdateQueue) {
+                let context = sharedCoreDataService.newMainManagedObjectContext()
+                context.performBlockAndWait { () -> Void in
+                    var error: NSError?
+                    for labelEvent in labels {
+                        let label = LabelEvent(event: labelEvent)
+                        switch(label.Action) {
+                        case .Some(IncrementalUpdateType.delete):
+                            if let labelID = label.ID {
+                                if let dLabel = Label.labelForLableID(labelID, inManagedObjectContext: context) {
+                                    context.deleteObject(dLabel)
+                                }
+                            }
+                        case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update):
+                            if let labelObject = GRTJSONSerialization.mergeObjectForEntityName(Label.Attributes.entityName, fromJSONDictionary: label.label, inManagedObjectContext: context, error: &error) as? NSManagedObject {
+                            } else {
+                                NSLog("\(__FUNCTION__) error: \(error)")
+                            }
+                        default:
+                            NSLog("\(__FUNCTION__) unknown type in message: \(label)")
+                        }
+                    }
+                    error = context.saveUpstreamIfNeeded()
+                    if error != nil  {
+                        NSLog("\(__FUNCTION__) error: \(error)")
+                    }
+                }
+            }
+            
+        }
     }
     
     func processIncrementalUpdateUnread(unreads: Dictionary<String, AnyObject>?) {
@@ -340,31 +384,7 @@ class MessageDataService {
         UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
         
     }
-//    "Labels" : [
-//    {
-//      "LabelID" : "696K_VfDK6NesvPdX84iEuQ8jNQrWlmytEOThe57MrIDzs8QmBnzhzgMYxrb1V0vUMR7C_81IJ-dh7w-EwBEsw==",
-//      "Count" : 2
-//    }
-//    ],
-//      "Starred" : 0,
-//      "Locations" : [
-//    {
-//      "Count" : 245,
-//      "Location" : 0
-//    },
-//    {
-//      "Count" : 43,
-//      "Location" : 1
-//    },
-//    {
-//      "Count" : 323,
-//      "Location" : 3
-//    },
-//    {
-//      "Count" : 19,
-//      "Location" : 4
-//    }
-//    ]
+    
     
     func cleanLocalMessageCache(completion: CompletionBlock?) {
         let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()

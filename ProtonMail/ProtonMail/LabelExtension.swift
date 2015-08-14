@@ -36,4 +36,8 @@ extension Label {
     class func deleteAll(inContext context: NSManagedObjectContext) {
         context.deleteAll(Attributes.entityName)
     }
+    
+    class func labelForLableID(labelID: String, inManagedObjectContext context: NSManagedObjectContext) -> Label? {
+        return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.labelID, matchingValue: labelID) as? Label
+    }
 }
