@@ -323,6 +323,12 @@ extension MenuViewController: NSFetchedResultsControllerDelegate {
                 if let newIndexPath = newIndexPath {
                     tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: newIndexPath.row, inSection: 2)], withRowAnimation: UITableViewRowAnimation.Fade)
                 }
+            case .Move:
+                if let indexPath = indexPath {
+                    if let newIndexPath = newIndexPath {
+                        tableView.moveRowAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 2), toIndexPath: NSIndexPath(forRow: newIndexPath.row, inSection: 2))
+                    }
+                }
             case .Update:
                 if let indexPath = indexPath {
                     let index = NSIndexPath(forRow: indexPath.row, inSection: 2)
