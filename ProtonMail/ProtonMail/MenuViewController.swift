@@ -66,6 +66,8 @@ class MenuViewController: UIViewController {
         
         tableView.separatorInset = UIEdgeInsetsZero
         tableView.layoutMargins = UIEdgeInsetsZero
+        
+        sharedLabelsDataService.fetchLabels();
     }
     
     func performLastSegue(notification: NSNotification)

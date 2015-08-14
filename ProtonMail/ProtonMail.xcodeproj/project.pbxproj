@@ -137,6 +137,9 @@
 		755405B31B1648D2003BFC0A /* ComposeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755405B11B1648D2003BFC0A /* ComposeView.xib */; };
 		755405B51B164A99003BFC0A /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755405B41B164A99003BFC0A /* ComposeViewController.swift */; };
 		755B6A701B38C0B800745872 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755B6A6F1B38C0B800745872 /* Label.swift */; };
+		7564898E1B7DBE64007EA207 /* LabelAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7564898D1B7DBE64007EA207 /* LabelAPI.swift */; };
+		756489901B7DBE8C007EA207 /* LabelsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7564898F1B7DBE8C007EA207 /* LabelsDataService.swift */; };
+		756489921B7DC8B8007EA207 /* LabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756489911B7DC8B8007EA207 /* LabelExtension.swift */; };
 		7565998F1AC4809B00C187E4 /* EncryptTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7565998E1AC4809B00C187E4 /* EncryptTypes.swift */; };
 		75662BA71B543A5B006C538E /* SettingsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75662BA61B543A5B006C538E /* SettingsAPI.swift */; };
 		7567B06B1B334AF200A72A1E /* ComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B06A1B334AF200A72A1E /* ComposeViewModel.swift */; };
@@ -336,6 +339,9 @@
 		755405B11B1648D2003BFC0A /* ComposeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComposeView.xib; sourceTree = "<group>"; };
 		755405B41B164A99003BFC0A /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		755B6A6F1B38C0B800745872 /* Label.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
+		7564898D1B7DBE64007EA207 /* LabelAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelAPI.swift; sourceTree = "<group>"; };
+		7564898F1B7DBE8C007EA207 /* LabelsDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelsDataService.swift; sourceTree = "<group>"; };
+		756489911B7DC8B8007EA207 /* LabelExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelExtension.swift; sourceTree = "<group>"; };
 		7565998E1AC4809B00C187E4 /* EncryptTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptTypes.swift; sourceTree = "<group>"; };
 		75662BA61B543A5B006C538E /* SettingsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsAPI.swift; sourceTree = "<group>"; };
 		7567B06A1B334AF200A72A1E /* ComposeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModel.swift; sourceTree = "<group>"; };
@@ -491,6 +497,7 @@
 				075E3DED1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld */,
 				07A0E1AC1A9D3C64005FD04B /* UserInfo.swift */,
 				755B6A6F1B38C0B800745872 /* Label.swift */,
+				756489911B7DC8B8007EA207 /* LabelExtension.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -509,6 +516,7 @@
 				072AB6901A8E89AD00AF45D6 /* MonitorSavesDataServiceMessageExtension.swift */,
 				07520CFB1AA67D38000D2175 /* PushNotificationService.swift */,
 				073FD9311A71C60900EB0CAF /* UserDataService.swift */,
+				7564898F1B7DBE8C007EA207 /* LabelsDataService.swift */,
 			);
 			name = DataServices;
 			sourceTree = "<group>";
@@ -851,6 +859,7 @@
 				75662BA61B543A5B006C538E /* SettingsAPI.swift */,
 				75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */,
 				75BF9A511B5F0F500087AD2E /* BugsAPI.swift */,
+				7564898D1B7DBE64007EA207 /* LabelAPI.swift */,
 			);
 			name = APIService;
 			sourceTree = "<group>";
@@ -1115,6 +1124,7 @@
 				750B00981B7AB91400F180BD /* NotificationDefined.swift in Sources */,
 				7567B06B1B334AF200A72A1E /* ComposeViewModel.swift in Sources */,
 				07B797C21A6EE50F00244532 /* APIService+AuthenticationExtension.swift in Sources */,
+				756489921B7DC8B8007EA207 /* LabelExtension.swift in Sources */,
 				0713237F1A7844390043DB41 /* MailboxPasswordViewController.swift in Sources */,
 				073FE01D1A9561F600825980 /* Contact.swift in Sources */,
 				073FE01F1A95620D00825980 /* ContactExtension.swift in Sources */,
@@ -1136,6 +1146,7 @@
 				07B1237A1AB8CE6A006EA38C /* AttachmentsViewController.swift in Sources */,
 				754CD48B1AB80D770084C54A /* CustomHeaderView.swift in Sources */,
 				072AB6911A8E89AD00AF45D6 /* MonitorSavesDataServiceMessageExtension.swift in Sources */,
+				756489901B7DBE8C007EA207 /* LabelsDataService.swift in Sources */,
 				754387D91AB35EB40003B0AC /* SignUpViewController.swift in Sources */,
 				701DDE971AA651100038149C /* ContactVO.swift in Sources */,
 				7510AE7C1AB8D68B00EF3C41 /* SettingDetailViewController.swift in Sources */,
@@ -1154,6 +1165,7 @@
 				701DDE901AA64DEB0038149C /* MBContactCollectionView.m in Sources */,
 				07CAB8041A894A3B00C5E347 /* MessageDetailView.swift in Sources */,
 				07CAB8031A894A3B00C5E347 /* MessageDetailViewController.swift in Sources */,
+				7564898E1B7DBE64007EA207 /* LabelAPI.swift in Sources */,
 				75B179501B377748006044D4 /* ContactVOExtension.swift in Sources */,
 				701DDE951AA64DEB0038149C /* MBContactModel.m in Sources */,
 				07655BC11AB10D7100CD3883 /* NSBundleExtension.swift in Sources */,

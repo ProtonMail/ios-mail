@@ -10,7 +10,7 @@ import Foundation
 
 
 
-// MARK : Get messages part
+// MARK : update domain order
 public class UpdateDomainOrder<T : ApiResponse> : ApiRequest<T> {
     let domains : Array<Address>!
     

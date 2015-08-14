@@ -13,13 +13,11 @@ import CoreData
 
 class Label: NSManagedObject {
     
-//    @NSManaged var attachmentID: String
-//    @NSManaged var fileData: NSData?
-//    @NSManaged var keyPacket: String?
-//    @NSManaged var fileName: String
-//    @NSManaged var fileSize: NSNumber
-//    @NSManaged var localURL: NSURL?
-//    @NSManaged var mimeType: String
-//    
-//    @NSManaged var message: Message
+    @NSManaged var color: String
+    @NSManaged var isDisplay: Bool
+    @NSManaged var labelID: String?
+    @NSManaged var name: String
+    @NSManaged var order: NSNumber
+    
+    @NSManaged var message: Message
 }

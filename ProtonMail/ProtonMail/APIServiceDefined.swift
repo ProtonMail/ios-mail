@@ -30,6 +30,13 @@ public struct MessageAPI {
     
 }
 
+public struct LabelAPI {
+    static let Path :String = "/labels"
+    
+    //
+    static let V_LabelFetchRequest : Int = 1
+}
+
 public struct AuthAPI {
     /// base message api path
     static let Path :String = "/auth"
