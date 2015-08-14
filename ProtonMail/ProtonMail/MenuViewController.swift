@@ -25,7 +25,11 @@ class MenuViewController: UIViewController {
     
     // MARK: - Private constants
     
-    private let items = [MenuItem.inbox, MenuItem.starred, MenuItem.drafts, MenuItem.sent, MenuItem.archive, MenuItem.trash, MenuItem.spam, MenuItem.contacts, MenuItem.settings, MenuItem.bugs, MenuItem.signout]
+    private let inboxItems = [MenuItem.inbox, MenuItem.starred, MenuItem.drafts, MenuItem.sent, MenuItem.archive, MenuItem.trash, MenuItem.spam]
+    private let otherItems = [MenuItem.contacts, MenuItem.settings, MenuItem.bugs, MenuItem.signout]
+    private var fetchedLabels: NSFetchedResultsController?
+    private var signingOut: Bool = false
+    
     private let kMenuCellHeight: CGFloat = 44.0
     private let kMenuOptionsWidth: CGFloat = 300.0 //227.0
     private let kMenuOptionsWidthOffset: CGFloat = 80.0
@@ -42,7 +46,6 @@ class MenuViewController: UIViewController {
     private let kLabelTableCellId = "menu_label_cell"
     
     // private data
-    private var fetchedResultsController: NSFetchedResultsController?
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -102,37 +105,43 @@ class MenuViewController: UIViewController {
             if (firstViewController.isKindOfClass(MailboxViewController)) {
                 let mailboxViewController: MailboxViewController = navigationController.viewControllers.first as! MailboxViewController
                 if let indexPath = sender as? NSIndexPath {
+                    let count = fetchedLabels?.fetchedObjects?.count
                     
-                    if let labels = fetchedResultsController?.fetchedObjects as? [Label] {
-                        PMLog.D(labels)
-                    }
                     kLastSegue = segue.identifier!
-                    self.kLastMenuItem = self.itemForIndexPath(indexPath)
-                    switch(self.kLastMenuItem) {
-                    case .inbox:
-                        mailboxViewController.mailboxLocation = .inbox
-                        mailboxViewController.setNavigationTitleText("INBOX")
-                    case .starred:
-                        mailboxViewController.mailboxLocation = .starred
-                        mailboxViewController.setNavigationTitleText("STARRED")
-                    case .drafts:
-                        mailboxViewController.mailboxLocation = .draft
-                        mailboxViewController.setNavigationTitleText("DRAFTS")
-                    case .sent:
-                        mailboxViewController.mailboxLocation = .outbox
-                        mailboxViewController.setNavigationTitleText("SENT")
-                    case .trash:
-                        mailboxViewController.mailboxLocation = .trash
-                        mailboxViewController.setNavigationTitleText("TRASH")
-                    case .archive:
-                        mailboxViewController.mailboxLocation = .archive
-                        mailboxViewController.setNavigationTitleText("ARCHIVE")
-                    case .spam:
-                        mailboxViewController.mailboxLocation = .spam
-                        mailboxViewController.setNavigationTitleText("SPAM")
-                    default:
-                        mailboxViewController.mailboxLocation = .inbox
-                        mailboxViewController.setNavigationTitleText("INBOX")
+                    if indexPath.section == 0 {
+                        self.kLastMenuItem = self.itemForIndexPath(indexPath)
+                        switch(self.kLastMenuItem) {
+                        case .inbox:
+                            mailboxViewController.mailboxLocation = .inbox
+                            mailboxViewController.setNavigationTitleText("INBOX")
+                        case .starred:
+                            mailboxViewController.mailboxLocation = .starred
+                            mailboxViewController.setNavigationTitleText("STARRED")
+                        case .drafts:
+                            mailboxViewController.mailboxLocation = .draft
+                            mailboxViewController.setNavigationTitleText("DRAFTS")
+                        case .sent:
+                            mailboxViewController.mailboxLocation = .outbox
+                            mailboxViewController.setNavigationTitleText("SENT")
+                        case .trash:
+                            mailboxViewController.mailboxLocation = .trash
+                            mailboxViewController.setNavigationTitleText("TRASH")
+                        case .archive:
+                            mailboxViewController.mailboxLocation = .archive
+                            mailboxViewController.setNavigationTitleText("ARCHIVE")
+                        case .spam:
+                            mailboxViewController.mailboxLocation = .spam
+                            mailboxViewController.setNavigationTitleText("SPAM")
+                        default:
+                            mailboxViewController.mailboxLocation = .inbox
+                            mailboxViewController.setNavigationTitleText("INBOX")
+                        }
+                    } else if indexPath.section == 1 {
+                        
+                    } else if indexPath.section == 2 {
+                        
+                    } else {
+                        
                     }
                 }
             }
@@ -143,12 +152,12 @@ class MenuViewController: UIViewController {
     // MARK: - Methods
     
     private func setupFetchedResultsController() {
-        self.fetchedResultsController = sharedLabelsDataService.fetchedResultsController()
-        self.fetchedResultsController?.delegate = self
+        self.fetchedLabels = sharedLabelsDataService.fetchedResultsController()
+        self.fetchedLabels?.delegate = self
         
-        NSLog("\(__FUNCTION__) INFO: \(fetchedResultsController?.sections)")
+        NSLog("\(__FUNCTION__) INFO: \(fetchedLabels?.sections)")
         
-        if let fetchedResultsController = fetchedResultsController {
+        if let fetchedResultsController = fetchedLabels {
             var error: NSError?
             if !fetchedResultsController.performFetch(&error) {
                 NSLog("\(__FUNCTION__) error: \(error)")
@@ -163,6 +172,7 @@ class MenuViewController: UIViewController {
     func handleSignOut() {
         let alertController = UIAlertController(title: NSLocalizedString("Confirm"), message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Sign Out"), style: .Destructive, handler: { (action) -> Void in
+            self.signingOut = true
             sharedUserDataService.signOut(true)
             userCachedStatus.signOut()
         }))
@@ -171,7 +181,7 @@ class MenuViewController: UIViewController {
     }
     
     func itemForIndexPath(indexPath: NSIndexPath) -> MenuItem {
-        return items[indexPath.row]
+        return inboxItems[indexPath.row]
     }
     
     func updateDisplayNameLabel() {
@@ -199,7 +209,7 @@ class MenuViewController: UIViewController {
 extension MenuViewController: UITableViewDelegate {
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 3
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -207,18 +217,25 @@ extension MenuViewController: UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let item = itemForIndexPath(indexPath)
-        if item == .signout {
-            tableView.deselectRowAtIndexPath(indexPath, animated: true)
-            self.handleSignOut()
-        } else if item == .settings {
-            self.performSegueWithIdentifier(kSegueToSettings, sender: indexPath);
-        } else if item == .bugs {
-            self.performSegueWithIdentifier(kSegueToBugs, sender: indexPath);
-        } else if item == .contacts {
-            self.performSegueWithIdentifier(kSegueToContacts, sender: indexPath);
-        } else {
+        
+        if indexPath.section == 0 {
+            //inbox
             self.performSegueWithIdentifier(kSegueToMailbox, sender: indexPath);
+        } else if (indexPath.section == 1) {
+            //others
+            let item = otherItems[indexPath.row]
+            if item == .signout {
+                tableView.deselectRowAtIndexPath(indexPath, animated: true)
+                self.handleSignOut()
+            } else if item == .settings {
+                self.performSegueWithIdentifier(kSegueToSettings, sender: indexPath);
+            } else if item == .bugs {
+                self.performSegueWithIdentifier(kSegueToBugs, sender: indexPath);
+            } else if item == .contacts {
+                self.performSegueWithIdentifier(kSegueToContacts, sender: indexPath);
+            }
+        } else if (indexPath.section == 2) {
+            //labels
         }
     }
 }
@@ -227,16 +244,35 @@ extension MenuViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return items.count
+            return inboxItems.count
+        } else if (section == 1) {
+            return otherItems.count
+        } else if (section == 2) {
+            //fetchedLabels?.fetchedObjects?.count
+            let count = fetchedLabels?.numberOfRowsInSection(0) ?? 0
+            return count
         }
-        return 3
+        return 0
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             var cell = tableView.dequeueReusableCellWithIdentifier(kMenuTableCellId, forIndexPath: indexPath) as! MenuTableViewCell
-            cell.configCell(items[indexPath.row])
+            cell.configCell(inboxItems[indexPath.row])
             cell.configUnreadCount()
+            return cell
+        } else if indexPath.section == 1 {
+            var cell = tableView.dequeueReusableCellWithIdentifier(kMenuTableCellId, forIndexPath: indexPath) as! MenuTableViewCell
+            cell.configCell(otherItems[indexPath.row])
+            cell.configUnreadCount()
+            return cell
+        } else if indexPath.section == 2 {
+            let data = fetchedLabels?.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as! Label;
+            
+            var cell = tableView.dequeueReusableCellWithIdentifier(kLabelTableCellId, forIndexPath: indexPath) as! MenuLabelViewCell
+            cell.configCell(data)
+            cell.configUnreadCount()
+            
             return cell
         } else {
             var cell: MenuTableViewCell = tableView.dequeueReusableCellWithIdentifier(kMenuTableCellId, forIndexPath: indexPath) as! MenuTableViewCell
@@ -252,44 +288,55 @@ extension MenuViewController: UITableViewDataSource {
 
 extension MenuViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        //        tableView.endUpdates()
-        //
-        //        selectMessageIDIfNeeded()
+        if !signingOut {
+            tableView.endUpdates()
+        }
     }
     
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        tableView.beginUpdates()
+        if !signingOut {
+            tableView.beginUpdates()
+        }
     }
     
     func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
-        //        switch(type) {
-        //        case .Delete:
-        //            tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
-        //        case .Insert:
-        //            tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
-        //        default:
-        //            return
-        //        }
+        if !signingOut {
+            switch(type) {
+            case .Delete:
+                tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+            case .Insert:
+                tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+            default:
+                return
+            }
+        }
     }
     
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
-        //        switch(type) {
-        //        case .Delete:
-        //            if let indexPath = indexPath {
-        //                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
-        //            }
-        //        case .Insert:
-        //            if let newIndexPath = newIndexPath {
-        //                tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: UITableViewRowAnimation.Fade)
-        //            }
-        //        case .Update:
-        //            if let indexPath = indexPath {
-        //                if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MailboxTableViewCell {
-        //                    configureCell(cell, atIndexPath: indexPath)
-        //                }
-        //            }
-        //        default:
-        //            return
-        //        }
+        if !signingOut {
+            switch(type) {
+            case .Delete:
+                if let indexPath = indexPath {
+                    tableView.deleteRowsAtIndexPaths([NSIndexPath(forRow: indexPath.row, inSection: 2)], withRowAnimation: UITableViewRowAnimation.Fade)
+                }
+            case .Insert:
+                if let newIndexPath = newIndexPath {
+                    tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: newIndexPath.row, inSection: 2)], withRowAnimation: UITableViewRowAnimation.Fade)
+                }
+            case .Update:
+                if let indexPath = indexPath {
+                    let index = NSIndexPath(forRow: indexPath.row, inSection: 2)
+                    if let cell = tableView.cellForRowAtIndexPath(index) as? MenuLabelViewCell {
+                        if let label = fetchedLabels?.objectAtIndexPath(index) as? Label {
+                            cell.configCell(label);
+                            cell.configUnreadCount()
+                        }
+                    }
+                    
+                }
+            default:
+                return
+            }
+        }
     }
 }

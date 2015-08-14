@@ -320,6 +320,18 @@ class MessageDataService {
             }
         }
         
+        if let locations = unreads?["Labels"] as? [Dictionary<String,AnyObject>] {
+            lastUpdatedStore.resetLabelsUnreadCounts()
+            for location:[String : AnyObject] in locations {
+                
+                if let l = location["LabelID"] as? String {
+                    if let c = location["Count"] as? Int {
+                        lastUpdatedStore.updateLabelsUnreadCountForKey(l, count: c)
+                    }
+                }
+            }
+        }
+        
         //MessageLocation
         var badgeNumber = inboxCount //inboxCount + draftCount + sendCount + spamCount + starCount + trashCount;
         if  badgeNumber < 0 {

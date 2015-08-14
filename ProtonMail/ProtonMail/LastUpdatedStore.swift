@@ -28,6 +28,7 @@ public class LastUpdatedStore : SharedCacheBase {
         static let lastEventID = "lastEventID"
         static let unreadMessageCount = "unreadMessageCount"
         static let mailboxUnreadCount = "MailboxUnreadCount"
+        static let labelsUnreadCount = "LabelsUnreadCount"
         
         //
         static let lastLabelsUpdated = "LastLabelsUpdated"
@@ -107,6 +108,16 @@ public class LastUpdatedStore : SharedCacheBase {
         }
     }
     
+    private var labelsUnreadCounts: Dictionary<String, Int> {
+        get {
+            return (getShared().customObjectForKey(Key.mailboxUnreadCount) as? Dictionary<String, Int>) ?? [:]
+        }
+        set {
+            getShared().setCustomValue(newValue, forKey: Key.mailboxUnreadCount)
+            getShared().synchronize()
+        }
+    }
+    
     public var lastEventID: String! {
         get {
             return getShared().stringForKey(Key.lastEventID) ?? "0"
@@ -150,6 +161,7 @@ public class LastUpdatedStore : SharedCacheBase {
         getShared().removeObjectForKey(Key.lastEventID)
         getShared().removeObjectForKey(Key.unreadMessageCount)
         getShared().removeObjectForKey(Key.mailboxUnreadCount)
+        getShared().removeObjectForKey(Key.labelsUnreadCount)
         getShared().synchronize()
     }
     
@@ -186,4 +198,18 @@ public class LastUpdatedStore : SharedCacheBase {
     public func updateUnreadCountForKey(location : MessageLocation, count: Int) -> Void {
         return mailboxUnreadCounts[location.key] = count
     }
+    
+    
+    public func resetLabelsUnreadCounts() {
+        getShared().removeObjectForKey(Key.labelsUnreadCount)
+        getShared().synchronize()
+    }
+    
+    public func unreadLabelsCountForKey(labelID : String) -> Int {
+        return mailboxUnreadCounts[labelID] ?? 0
+    }
+    public func updateLabelsUnreadCountForKey(labelID : String, count: Int) -> Void {
+        return mailboxUnreadCounts[labelID] = count
+    }
+
 }
