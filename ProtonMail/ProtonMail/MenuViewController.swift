@@ -338,7 +338,6 @@ extension MenuViewController: NSFetchedResultsControllerDelegate {
                             cell.configUnreadCount()
                         }
                     }
-                    
                 }
             default:
                 return
