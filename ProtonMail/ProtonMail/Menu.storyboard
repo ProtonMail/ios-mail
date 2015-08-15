@@ -596,6 +596,7 @@
                         <segue destination="Olh-tY-NxQ" kind="custom" identifier="toSettingsSegue" customClass="SWRevealViewControllerSeguePushController" id="wom-VL-14a"/>
                         <segue destination="8dN-79-EXg" kind="custom" identifier="toBugsSegue" customClass="SWRevealViewControllerSeguePushController" id="0gE-az-sje"/>
                         <segue destination="PFX-v3-PCL" kind="custom" identifier="toContactsSegue" customClass="SWRevealViewControllerSeguePushController" id="dAN-KX-s86"/>
+                        <segue destination="N9H-or-xL9" kind="custom" identifier="toLabelboxSegue" customClass="SWRevealViewControllerSeguePushController" id="LdN-DE-nXL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JBp-ua-X1G" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2346,12 +2347,12 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="F9J-SM-saL"/>
-        <segue reference="f3k-3A-WEA"/>
-        <segue reference="uv8-bX-yhD"/>
         <segue reference="ddm-eA-erE"/>
-        <segue reference="5rJ-hC-fsT"/>
+        <segue reference="f3k-3A-WEA"/>
+        <segue reference="YGe-pV-72F"/>
         <segue reference="3FM-PP-oeV"/>
         <segue reference="V9t-nA-fhw"/>
+        <segue reference="5rJ-hC-fsT"/>
+        <segue reference="uv8-bX-yhD"/>
     </inferredMetricsTieBreakers>
 </document>

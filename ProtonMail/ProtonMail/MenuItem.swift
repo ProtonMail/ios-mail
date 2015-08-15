@@ -78,7 +78,7 @@ enum MenuItem: String {
         return image;
     }
     
-    var menuToLocation : MessageLocation? {
+    var menuToLocation : MessageLocation {
         switch self {
         case inbox:
             return .inbox
@@ -95,7 +95,7 @@ enum MenuItem: String {
         case spam:
             return .spam
         default:
-            return nil
+            return .inbox
         }
     }
     

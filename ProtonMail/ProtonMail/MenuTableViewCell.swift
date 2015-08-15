@@ -49,17 +49,10 @@ class MenuTableViewCell: UITableViewCell {
     }
     
     func configUnreadCount () {
-        if let location = item.menuToLocation {
-            let count = lastUpdatedStore.unreadCountForKey(location)
-            
-            if count > 0 {
-                unreadLabel.text = "\(count)";
-                unreadLabel.hidden = false;
-            } else {
-                unreadLabel.text = "0";
-                unreadLabel.hidden = true;
-            }
-
+        let count = lastUpdatedStore.unreadCountForKey(self.item.menuToLocation)
+        if count > 0 {
+            unreadLabel.text = "\(count)";
+            unreadLabel.hidden = false;
         } else {
             unreadLabel.text = "0";
             unreadLabel.hidden = true;

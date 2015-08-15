@@ -49,6 +49,30 @@ public enum MessageLocation: Int, Printable {
         }
     }
     
+    public var title : String {
+        
+        switch(self) {
+        case .inbox:
+            return "INBOX"
+        case .starred:
+            return "STARRED"
+        case .draft:
+            return "DRAFTS"
+        case .outbox:
+            return "SENT"
+        case .trash:
+            return "TRASH"
+        case .archive:
+            return "ARCHIVE"
+        case .spam:
+            return "SPAM"
+        default:
+            return "INBOX"
+        }
+
+        
+    }
+    
     public var key: String {
         switch(self) {
         case deleted:

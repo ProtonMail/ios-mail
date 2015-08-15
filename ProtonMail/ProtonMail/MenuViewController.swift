@@ -35,15 +35,18 @@ class MenuViewController: UIViewController {
     private let kMenuOptionsWidthOffset: CGFloat = 80.0
     
     private let kSegueToMailbox: String = "toMailboxSegue"
+    private let kSegueToLabelbox: String = "toLabelboxSegue"
     private let kSegueToSettings: String = "toSettingsSegue"
     private let kSegueToBugs: String = "toBugsSegue"
     private let kSegueToContacts: String = "toContactsSegue"
     
-    private var kLastSegue: String = "toInbox"
-    private var kLastMenuItem: MenuItem = MenuItem.inbox
-    
     private let kMenuTableCellId = "menu_table_cell"
     private let kLabelTableCellId = "menu_label_cell"
+    
+    // temp vars
+    private var lastSegue: String = "toInbox"
+    private var lastMenuItem: MenuItem = MenuItem.inbox
+    
     
     // private data
     
@@ -79,7 +82,7 @@ class MenuViewController: UIViewController {
     
     func performLastSegue(notification: NSNotification)
     {
-        self.performSegueWithIdentifier(kLastSegue, sender: self)
+        self.performSegueWithIdentifier(lastSegue, sender: self)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -100,46 +103,20 @@ class MenuViewController: UIViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let navigationController = segue.destinationViewController as! UINavigationController
-        
         if let firstViewController: UIViewController = navigationController.viewControllers.first as? UIViewController {
             if (firstViewController.isKindOfClass(MailboxViewController)) {
                 let mailboxViewController: MailboxViewController = navigationController.viewControllers.first as! MailboxViewController
                 if let indexPath = sender as? NSIndexPath {
                     let count = fetchedLabels?.fetchedObjects?.count
-                    
-                    kLastSegue = segue.identifier!
+                    self.lastSegue = segue.identifier!
                     if indexPath.section == 0 {
-                        self.kLastMenuItem = self.itemForIndexPath(indexPath)
-                        switch(self.kLastMenuItem) {
-                        case .inbox:
-                            mailboxViewController.mailboxLocation = .inbox
-                            mailboxViewController.setNavigationTitleText("INBOX")
-                        case .starred:
-                            mailboxViewController.mailboxLocation = .starred
-                            mailboxViewController.setNavigationTitleText("STARRED")
-                        case .drafts:
-                            mailboxViewController.mailboxLocation = .draft
-                            mailboxViewController.setNavigationTitleText("DRAFTS")
-                        case .sent:
-                            mailboxViewController.mailboxLocation = .outbox
-                            mailboxViewController.setNavigationTitleText("SENT")
-                        case .trash:
-                            mailboxViewController.mailboxLocation = .trash
-                            mailboxViewController.setNavigationTitleText("TRASH")
-                        case .archive:
-                            mailboxViewController.mailboxLocation = .archive
-                            mailboxViewController.setNavigationTitleText("ARCHIVE")
-                        case .spam:
-                            mailboxViewController.mailboxLocation = .spam
-                            mailboxViewController.setNavigationTitleText("SPAM")
-                        default:
-                            mailboxViewController.mailboxLocation = .inbox
-                            mailboxViewController.setNavigationTitleText("INBOX")
-                        }
+                        self.lastMenuItem = self.itemForIndexPath(indexPath)
+                        mailboxViewController.viewModel = MailboxViewModelImpl(location: self.lastMenuItem.menuToLocation)
                     } else if indexPath.section == 1 {
                         
                     } else if indexPath.section == 2 {
-                        
+                        let label = self.fetchedLabels?.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as! Label
+                        mailboxViewController.viewModel = LabelboxViewModelImpl(label: label)
                     } else {
                         
                     }
@@ -236,6 +213,7 @@ extension MenuViewController: UITableViewDelegate {
             }
         } else if (indexPath.section == 2) {
             //labels
+            self.performSegueWithIdentifier(kSegueToLabelbox, sender: indexPath);
         }
     }
 }

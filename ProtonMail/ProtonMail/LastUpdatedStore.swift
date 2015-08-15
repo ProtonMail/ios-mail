@@ -36,6 +36,7 @@ public class LastUpdatedStore : SharedCacheBase {
 
     }
     
+    
     public class UpdateTime : NSObject, NSCoding {
         
         private struct CoderKey {
@@ -87,6 +88,7 @@ public class LastUpdatedStore : SharedCacheBase {
             return UpdateTime(start: NSDate.distantPast() as! NSDate, end: NSDate.distantPast() as! NSDate, update: NSDate.distantPast() as! NSDate, total: 0, unread: 0)
         }
     }
+
     
     private var lastInboxesUpdateds: Dictionary<String, UpdateTime> {
         get {
@@ -213,3 +215,6 @@ public class LastUpdatedStore : SharedCacheBase {
     }
 
 }
+
+
+
