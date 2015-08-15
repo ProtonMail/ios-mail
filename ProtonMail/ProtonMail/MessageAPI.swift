@@ -46,6 +46,38 @@ public class MessageFetchRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
+public class MessageByLabelRequest<T : ApiResponse> : ApiRequest<T> {
+    let labelID : String!
+    let startTime : Int?
+    let endTime : Int
+    
+    init(labelID : String, endTime : Int = 0) {
+        self.labelID = labelID
+        self.endTime = endTime
+        self.startTime = 0
+    }
+    
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+        var out : [String : AnyObject] = ["Sort" : "Time"]
+        out["Label"] = self.labelID
+        if(self.endTime > 0)
+        {
+            var newTime = self.endTime - 1
+            out["End"] = newTime
+        }
+        
+        PMLog.D(self.JSONStringify(out, prettyPrinted: true))
+        return out
+    }
+    
+    override public func getRequestPath() -> String {
+        return MessageAPI.Path + AppConstants.getDebugOption
+    }
+    
+    override public func getVersion() -> Int {
+        return MessageAPI.V_MessageFetchRequest
+    }
+}
 
 // MARK : Create/Update Draft Part
 

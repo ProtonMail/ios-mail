@@ -167,6 +167,64 @@ class MessageDataService {
         }
     }
     
+    
+    func fetchMessagesForLabels(labelID : String, MessageID : String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
+        queue {
+            let completionWrapper: CompletionBlock = { task, responseDict, error in
+                // TODO :: need abstract the respons error checking
+                if let messagesArray = responseDict?["Messages"] as? [Dictionary<String,AnyObject>] {
+                    let messcount = responseDict?["Total"] as? Int ?? 0
+                    
+                    let context = sharedCoreDataService.newMainManagedObjectContext()
+                    context.performBlockAndWait() {
+                        var error: NSError?
+                        if foucsClean {
+                            self.cleanMessage()
+                            context.saveUpstreamIfNeeded()
+                        }
+                        var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
+                        if error == nil {
+                            error = context.saveUpstreamIfNeeded()
+                        }
+                        if error != nil  {
+                            NSLog("\(__FUNCTION__) error: \(error)")
+                        }
+                        
+                        if (messages != nil && messages.last != nil && messages.first != nil) {
+                            var updateTime = lastUpdatedStore.labelsLastForKey(labelID)
+                            
+                            if (updateTime.isNew) {
+                                let mf = messages.first as! Message
+                                updateTime.start = mf.time!
+                                updateTime.total = Int32(messcount)
+                            }
+                            let ml = messages.last as! Message
+                            updateTime.end = ml.time!
+                            updateTime.update = NSDate()
+                            
+                            lastUpdatedStore.updateLabelsForKey(labelID, updateTime: updateTime)
+                        }
+                        
+                        dispatch_async(dispatch_get_main_queue()) {
+                            if MessageID == "0" && Time == 0 {
+                                //TODO : fix the last update
+                                //self.lastUpdatedStore[location.key] = lastUpdated
+                            }
+                            completion?(task: task, response: responseDict, error: error)
+                        }
+                    }
+                } else {
+                    completion?(task: task, response: responseDict, error: NSError.unableToParseResponse(responseDict))
+                }
+            }
+            
+            let request = MessageByLabelRequest(labelID: labelID, endTime: Time);
+            sharedAPIService.GET(request, completion: completionWrapper)
+        }
+    }
+
+    
+    
     func fetchMessagesForLocationWithEventReset(location: MessageLocation, MessageID : String, Time: Int, completion: CompletionBlock?) {
         queue {
             let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
@@ -213,6 +271,60 @@ class MessageDataService {
                             }
                             self.cleanMessage()
                             self.fetchMessagesForLocation(location, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
+                        }
+                    }
+                    completion?(task: task, response:nil, error: nil)
+                }
+                else if response!.messages != nil {
+                    self.processIncrementalUpdateMessages(response!.messages!, task: task) { task, res, error in
+                        if error == nil {
+                            lastUpdatedStore.lastEventID = response!.eventID
+                            completion?(task: task, response:nil, error: nil)
+                        }
+                        else {
+                            completion?(task: task, response:nil, error: error)
+                        }
+                    }
+                    
+                    self.processIncrementalUpdateUnread(response!.unreads)
+                    self.processIncrementalUpdateTotal(response!.total)
+                    self.processIncrementalUpdateUserInfo(response!.userinfo)
+                    self.processIncrementalUpdateLabels(response!.labels)
+                }
+                else {
+                    if response!.code == 1000 {
+                        lastUpdatedStore.lastEventID = response!.eventID
+                        self.processIncrementalUpdateUnread(response!.unreads)
+                        self.processIncrementalUpdateTotal(response!.total)
+                        self.processIncrementalUpdateUserInfo(response!.userinfo)
+                        self.processIncrementalUpdateLabels(response!.labels)
+                    }
+                    completion?(task: task, response:nil, error: nil)
+                }
+            }
+        }
+    }
+    
+    func fetchNewMessagesForLabels(labelID: String, Time: Int, completion: CompletionBlock?) {
+        queue {
+            let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
+            eventAPI.call() { task, response, hasError in
+                if response == nil {
+                    completion?(task: task, response:nil, error: nil)
+                } else if response!.isRefresh || (hasError && response!.code == 18001) {
+                    
+                    let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
+                    getLatestEventID.call() { task, response, hasError in
+                        if response != nil && !hasError && !response!.eventID.isEmpty {
+                            let completionWrapper: CompletionBlock = { task, responseDict, error in
+                                if error == nil {
+                                    lastUpdatedStore.clear();
+                                    lastUpdatedStore.lastEventID = response!.eventID
+                                }
+                                completion?(task: task, response:nil, error: error)
+                            }
+                            self.cleanMessage()
+                            self.fetchMessagesForLabels(labelID, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
                         }
                     }
                     completion?(task: task, response:nil, error: nil)
@@ -673,6 +785,18 @@ class MessageDataService {
             } else {
                 fetchRequest.predicate = NSPredicate(format: "%K == %i", Message.Attributes.locationNumber, location.rawValue)
             }
+            
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
+            return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+        }
+        
+        return nil
+    }
+    
+    func fetchedResultsControllerForLabels(label: Label) -> NSFetchedResultsController? {
+        if let moc = managedObjectContext {
+            let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
+            let predicate = NSPredicate(format: "%@ in labels.labelID", label.labelID)
             
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)

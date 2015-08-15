@@ -39,22 +39,22 @@ class MailboxViewController: ProtonMailViewController {
     internal var viewModel: MailboxViewModel!
     private var fetchedResultsController: NSFetchedResultsController?
     
-    
-    internal var refreshControl: UIRefreshControl!
+    // this is for when user click the notification email
     internal var messageID: String?
-    
-    
-    private var moreOptionsView: MoreOptionsView!
-    private var navigationTitleLabel = UILabel()
     private var selectedMessages: NSMutableSet = NSMutableSet()
     private var isEditing: Bool = false
     private var isViewingMoreOptions: Bool = false
     private var timer : NSTimer!
     
     private var fetching : Bool = false
-    
     private var selectedDraft : Message!
     private var indexPathForSelectedRow : NSIndexPath!
+    
+    
+    // MAKR : - Private views
+    internal var refreshControl: UIRefreshControl!
+    private var moreOptionsView: MoreOptionsView!
+    private var navigationTitleLabel = UILabel()
     
     
     // MARK: - Right bar buttons
@@ -253,7 +253,7 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     internal func handleLongPress(longPressGestureRecognizer: UILongPressGestureRecognizer) {
-        showCheckOptions(longPressGestureRecognizer)
+        self.showCheckOptions(longPressGestureRecognizer)
         updateNavigationController(isEditing)
     }
     
@@ -343,6 +343,7 @@ class MailboxViewController: ProtonMailViewController {
     
     private func checkEmptyMailbox () {
         if let fetchedResultsController = fetchedResultsController {
+            let secoutn = fetchedResultsController.numberOfSections() ?? 0
             let sectionCount = fetchedResultsController.numberOfRowsInSection(0) ?? 0
             if sectionCount == 0 {
                 let updateTime = viewModel.lastUpdateTime()
@@ -432,10 +433,7 @@ class MailboxViewController: ProtonMailViewController {
                     else
                     {
                         self.selectedDraft = msg
-                        // delay(1.0, {
                         self.performSegueWithIdentifier(self.kSegueToComposeShow, sender: self)
-                        //  })
-                        
                     }
                 }
             } else {

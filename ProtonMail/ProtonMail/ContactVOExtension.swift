@@ -9,9 +9,6 @@
 import Foundation
 
 
-
-
-
 extension ContactVO {
     
     
