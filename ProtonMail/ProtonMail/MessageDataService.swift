@@ -90,7 +90,7 @@ class MessageDataService {
         completion?(task: nil, response: nil, error: error)
     }
     
-
+    
     
     
     // MARK : fetch functions
@@ -173,7 +173,7 @@ class MessageDataService {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 // TODO :: need abstract the respons error checking
                 if let messagesArray = responseDict?["Messages"] as? [Dictionary<String,AnyObject>] {
-
+                    
                     let messcount = responseDict?["Total"] as? Int ?? 0
                     
                     let context = sharedCoreDataService.newMainManagedObjectContext()
@@ -223,7 +223,7 @@ class MessageDataService {
             sharedAPIService.GET(request, completion: completionWrapper)
         }
     }
-
+    
     
     
     func fetchMessagesForLocationWithEventReset(location: MessageLocation, MessageID : String, Time: Int, completion: CompletionBlock?) {
@@ -367,7 +367,7 @@ class MessageDataService {
             updateTime.total = Int32(star)
             lastUpdatedStore.updateInboxForKey(MessageLocation.starred, updateTime: updateTime)
         }
-
+        
         if let locations = totals?["Locations"] as? [Dictionary<String,AnyObject>] {
             for location:[String : AnyObject] in locations {
                 if let l = location["Location"] as? Int {
@@ -385,7 +385,7 @@ class MessageDataService {
     
     func processIncrementalUpdateUserInfo(userinfo: Dictionary<String, AnyObject>?) {
         
-
+        
     }
     
     func processIncrementalUpdateLabels(labels: [Dictionary<String, AnyObject>]?) {
@@ -443,7 +443,7 @@ class MessageDataService {
         if let star = unreads?["Starred"] as? Int {
             starCount = star;
         }
-
+        
         if let locations = unreads?["Locations"] as? [Dictionary<String,AnyObject>] {
             lastUpdatedStore.resetUnreadCounts()
             for location:[String : AnyObject] in locations {
@@ -513,9 +513,9 @@ class MessageDataService {
                 }
                 
                 //if foucsClean {
-                    self.cleanMessage()
+                self.cleanMessage()
                 //}
-
+                
                 
                 self.fetchMessagesForLocation(MessageLocation.inbox, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
             }
@@ -534,8 +534,8 @@ class MessageDataService {
         struct IncrementalUpdateType {
             static let delete = 0
             static let insert = 1
-            static let updateDraft = 2
-            static let update = 3
+            static let update1 = 2
+            static let update2 = 3
         }
         
         // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
@@ -555,8 +555,35 @@ class MessageDataService {
                                 context.deleteObject(message)
                             }
                         }
-                    case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update):
-                        if let messageObject = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg.message, inManagedObjectContext: context, error: &error) as? NSManagedObject {
+                    case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update1), .Some(IncrementalUpdateType.update2):
+                        if let messageObject = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg.message, inManagedObjectContext: context, error: &error) as? Message {
+                            // apply the label changes
+                            if let deleted = msg.message?["LabelIDsRemoved"] as? NSArray {
+                                for delete in deleted {
+                                    if let label = Label.labelForLableID(delete as! String, inManagedObjectContext: context) {
+                                        var labelObjs = messageObject.mutableSetValueForKey("labels")
+                                        if labelObjs.count > 0 {
+                                            labelObjs.removeObject(label)
+                                            messageObject.setValue(labelObjs, forKey: "labels")
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            if let added = msg.message?["LabelIDsAdded"] as? NSArray {
+                                for add in added {
+                                    if let label = Label.labelForLableID(add as! String, inManagedObjectContext: context) {
+                                        var labelObjs = messageObject.mutableSetValueForKey("labels")
+                                        labelObjs.addObject(label)
+                                        messageObject.setValue(labelObjs, forKey: "labels")
+                                    }
+                                }
+                            }
+                            
+                            if let labels = msg.message?["LabelIDs"] as? NSArray {
+                                //TODO : add later need to know whne it is happending
+                            }
+                            
                         } else {
                             NSLog("\(__FUNCTION__) error: \(error)")
                         }
@@ -586,51 +613,51 @@ class MessageDataService {
     
     
     
-//                if let Jiao = responseDict?["Messages"] as? [Dictionary<String,AnyObject>] {
-//                    let context = sharedCoreDataService.newManagedObjectContext()
-//                    context.performBlockAndWait() {
-//                        var error: NSError?
-//                        var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
-//                        
-//                        if error == nil {
-//                            //                            for message in messages as! [Message] {
-//                            //                                // PRO-157 - The issue for inbox <--> starred page switch
-//                            //                                // only change the location if the message is new or not starred
-//                            //                                // this prevents starred messages from disappearing out of the inbox until the next refresh
-//                            //                                if message.inserted || location != .starred {
-//                            //                                    message.locationNumber = location.rawValue
-//                            //                                }
-//                            //                            }
-//                            error = context.saveUpstreamIfNeeded()
-//                        }
-//                        if error != nil  {
-//                            NSLog("\(__FUNCTION__) error: \(error)")
-//                        }
-//                        
-//                        var updateTime = lastUpdatedStore.inboxLastForKey(location)
-//                        for msg in messages {
-//                            let m = msg as! Message
-//                            if (m.location == location) {
-//                                updateTime.start = m.time!
-//                                updateTime.update = NSDate()
-//                                lastUpdatedStore.updateInboxForKey(location, updateTime: updateTime)
-//                                break;
-//                            }
-//                        }
-//                        
-//                        dispatch_async(dispatch_get_main_queue()) {
-//                            completion?(task: task, response: responseDict, error: error)
-//                        }
-//                    }
-//                } else {
-//                    completion?(task: task, response: responseDict, error: NSError.unableToParseResponse(responseDict))
-//                }
-//                
-//            }
-//            
-//        }
-//    }
-//    
+    //                if let Jiao = responseDict?["Messages"] as? [Dictionary<String,AnyObject>] {
+    //                    let context = sharedCoreDataService.newManagedObjectContext()
+    //                    context.performBlockAndWait() {
+    //                        var error: NSError?
+    //                        var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
+    //
+    //                        if error == nil {
+    //                            //                            for message in messages as! [Message] {
+    //                            //                                // PRO-157 - The issue for inbox <--> starred page switch
+    //                            //                                // only change the location if the message is new or not starred
+    //                            //                                // this prevents starred messages from disappearing out of the inbox until the next refresh
+    //                            //                                if message.inserted || location != .starred {
+    //                            //                                    message.locationNumber = location.rawValue
+    //                            //                                }
+    //                            //                            }
+    //                            error = context.saveUpstreamIfNeeded()
+    //                        }
+    //                        if error != nil  {
+    //                            NSLog("\(__FUNCTION__) error: \(error)")
+    //                        }
+    //
+    //                        var updateTime = lastUpdatedStore.inboxLastForKey(location)
+    //                        for msg in messages {
+    //                            let m = msg as! Message
+    //                            if (m.location == location) {
+    //                                updateTime.start = m.time!
+    //                                updateTime.update = NSDate()
+    //                                lastUpdatedStore.updateInboxForKey(location, updateTime: updateTime)
+    //                                break;
+    //                            }
+    //                        }
+    //
+    //                        dispatch_async(dispatch_get_main_queue()) {
+    //                            completion?(task: task, response: responseDict, error: error)
+    //                        }
+    //                    }
+    //                } else {
+    //                    completion?(task: task, response: responseDict, error: NSError.unableToParseResponse(responseDict))
+    //                }
+    //
+    //            }
+    //
+    //        }
+    //    }
+    //
     
     //        let lastUpdatedCuttoff = NSDate(timeIntervalSinceNow: -lastUpdatedMaximumTimeInterval)
     //
@@ -654,47 +681,47 @@ class MessageDataService {
     //        }
     //    }
     
-//    private func fetchMessageIncrementalUpdates(#lastUpdated: NSDate, completion: CompletionBlock?) {
-//        struct ResponseKey {
-//            static let code = "code"
-//            static let message = "message"
-//            static let response = "response"
-//        }
-//        
-//        let validResponse = 1000
-//        
-//        queue { () -> Void in
-//            let completionWrapper: CompletionBlock = { task, response, error in
-//                if error != nil {
-//                    completion?(task: task, response: nil, error: error)
-//                    return
-//                }
-//                
-//                if let code = response?[ResponseKey.code] as? Int {
-//                    if code == validResponse {
-//                        if let response = response?[ResponseKey.response] as? Dictionary<String, AnyObject> {
-//                            if let messages = response[ResponseKey.message] as? Array<Dictionary<String, AnyObject>> {
-//                                if messages.isEmpty {
-//                                    completion?(task: task, response: nil, error: nil)
-//                                } else {
-//                                    self.processIncrementalUpdateMessages(messages, task: task, completion: completion)
-//                                }
-//                                
-//                                return
-//                            }
-//                        }
-//                    }
-//                }
-//                
-//                completion?(task: task, response: nil, error: NSError.unableToParseResponse(response))
-//            }
-//            
-//            sharedAPIService.messageCheck(timestamp: lastUpdated.timeIntervalSince1970, completion: completionWrapper)
-//        }
-//    }
+    //    private func fetchMessageIncrementalUpdates(#lastUpdated: NSDate, completion: CompletionBlock?) {
+    //        struct ResponseKey {
+    //            static let code = "code"
+    //            static let message = "message"
+    //            static let response = "response"
+    //        }
+    //
+    //        let validResponse = 1000
+    //
+    //        queue { () -> Void in
+    //            let completionWrapper: CompletionBlock = { task, response, error in
+    //                if error != nil {
+    //                    completion?(task: task, response: nil, error: error)
+    //                    return
+    //                }
+    //
+    //                if let code = response?[ResponseKey.code] as? Int {
+    //                    if code == validResponse {
+    //                        if let response = response?[ResponseKey.response] as? Dictionary<String, AnyObject> {
+    //                            if let messages = response[ResponseKey.message] as? Array<Dictionary<String, AnyObject>> {
+    //                                if messages.isEmpty {
+    //                                    completion?(task: task, response: nil, error: nil)
+    //                                } else {
+    //                                    self.processIncrementalUpdateMessages(messages, task: task, completion: completion)
+    //                                }
+    //
+    //                                return
+    //                            }
+    //                        }
+    //                    }
+    //                }
+    //
+    //                completion?(task: task, response: nil, error: NSError.unableToParseResponse(response))
+    //            }
+    //
+    //            sharedAPIService.messageCheck(timestamp: lastUpdated.timeIntervalSince1970, completion: completionWrapper)
+    //        }
+    //    }
     
     
-
+    
     // old functions
     
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
@@ -891,7 +918,7 @@ class MessageDataService {
         if let context = managedObjectContext {
             Message.deleteAll(inContext: context)
         }
-         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
     
     func search(#query: String, page: Int, completion: (([Message]?, NSError?) -> Void)?) {
@@ -962,21 +989,21 @@ class MessageDataService {
                 NSLog("\(__FUNCTION__) error: \(error)")
             } else if count > maximumCachedMessageCount {
                 // TODO:: disable this need add later
-//                fetchRequest.predicate = NSPredicate(format: "%K != %@ AND %K < %@", Message.Attributes.locationNumber, MessageLocation.outbox.rawValue, Message.Attributes.time, NSDate(timeIntervalSinceNow: -cutoffTimeInterval))
-//                
-//                if let oldMessages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
-//                    for message in oldMessages {
-//                        context.deleteObject(message)
-//                    }
-//                    
-//                    NSLog("\(__FUNCTION__) \(oldMessages.count) old messages purged.")
-//                    
-//                    if let error = context.saveUpstreamIfNeeded() {
-//                        NSLog("\(__FUNCTION__) error: \(error)")
-//                    }
-//                } else {
-//                    NSLog("\(__FUNCTION__) error: \(error)")
-//                }
+                //                fetchRequest.predicate = NSPredicate(format: "%K != %@ AND %K < %@", Message.Attributes.locationNumber, MessageLocation.outbox.rawValue, Message.Attributes.time, NSDate(timeIntervalSinceNow: -cutoffTimeInterval))
+                //
+                //                if let oldMessages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
+                //                    for message in oldMessages {
+                //                        context.deleteObject(message)
+                //                    }
+                //
+                //                    NSLog("\(__FUNCTION__) \(oldMessages.count) old messages purged.")
+                //
+                //                    if let error = context.saveUpstreamIfNeeded() {
+                //                        NSLog("\(__FUNCTION__) error: \(error)")
+                //                    }
+                //                } else {
+                //                    NSLog("\(__FUNCTION__) error: \(error)")
+                //                }
             } else {
                 NSLog("\(__FUNCTION__) cached message count: \(count)")
             }
@@ -1089,7 +1116,7 @@ class MessageDataService {
     
     
     // MARK : old functions
-
+    
     private func attachmentsForMessage(message: Message) -> [Attachment] {
         return message.attachments.allObjects as! [Attachment]
         //        var attachments: [MessageAPI.Attachment] = []
@@ -1131,7 +1158,7 @@ class MessageDataService {
         
         return messageBody
     }
-
+    
     
     private func saveDraftWithMessageID(messageID: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
         if let context = managedObjectContext {
@@ -1162,9 +1189,9 @@ class MessageDataService {
                     }
                     
                     if message.isDetailDownloaded && message.messageID != "0" {
-                       sharedAPIService.PUT(MessageUpdateDraftRequest<ApiResponse>(message:message), completion: completionWrapper)
+                        sharedAPIService.PUT(MessageUpdateDraftRequest<ApiResponse>(message:message), completion: completionWrapper)
                     } else {
-                       sharedAPIService.POST(MessageDraftRequest<ApiResponse>(message:message), completion: completionWrapper)
+                        sharedAPIService.POST(MessageDraftRequest<ApiResponse>(message:message), completion: completionWrapper)
                     }
                     return;
                 }
@@ -1224,7 +1251,7 @@ class MessageDataService {
     }
     
     private func sendMessageID(messageID: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
-
+        
         let errorBlock: CompletionBlock = { task, response, error in
             // nothing to send, dequeue request
             sharedMessageQueue.remove(elementID: writeQueueUUID)
@@ -1254,7 +1281,7 @@ class MessageDataService {
                         
                         // parse the response for keys
                         let messageBody = self.messageBodyForMessage(message, response: response)
-
+                        
                         let completionWrapper: CompletionBlock = { task, response, error in
                             // remove successful send from Core Data
                             if error == nil {
