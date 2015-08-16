@@ -56,5 +56,6 @@ public class Message: NSManagedObject {
     @NSManaged var isSoftDelete: Bool
     
     @NSManaged var attachments: NSSet
+    @NSManaged var labels: NSSet
 }
 

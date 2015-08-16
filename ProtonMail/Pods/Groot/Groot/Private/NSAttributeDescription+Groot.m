@@ -31,3 +31,14 @@
 }
 
 @end
+
+
+
+@implementation NSRelationshipDescription (Groot)
+
+- (NSValueTransformer *)grt_JSONTransformer {
+    NSString *name = self.userInfo[GRTJSONTransformerNameKey];
+    return name ? [NSValueTransformer valueTransformerForName:name] : nil;
+}
+
+@end

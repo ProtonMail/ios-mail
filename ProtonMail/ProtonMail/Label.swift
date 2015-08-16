@@ -21,5 +21,5 @@ class Label: NSManagedObject {
  /// start at 1 , lower number on the top
     @NSManaged var order: NSNumber
     
-    @NSManaged var message: Message
+    @NSManaged var messages: NSSet
 }

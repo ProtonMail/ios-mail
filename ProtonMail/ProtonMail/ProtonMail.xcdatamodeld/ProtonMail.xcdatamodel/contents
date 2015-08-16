@@ -82,9 +82,10 @@
                 <entry key="NumberTransformer" value="NumberTransformer"/>
             </userInfo>
         </attribute>
-        <relationship name="message" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="labels" inverseEntity="Message" syncable="YES"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="labels" inverseEntity="Message" syncable="YES"/>
         <userInfo>
             <entry key="identityAttribute" value="labelID"/>
+            <entry key="JSONTransformerName" value="TransforDataNoID"/>
         </userInfo>
     </entity>
     <entity name="Message" representedClassName="ProtonMail.Message" syncable="YES">
@@ -260,9 +261,10 @@
                 <entry key="JSONKeyPath" value="Attachments"/>
             </userInfo>
         </relationship>
-        <relationship name="labels" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Label" inverseName="message" inverseEntity="Label" syncable="YES">
+        <relationship name="labels" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Label" inverseName="messages" inverseEntity="Label" syncable="YES">
             <userInfo>
-                <entry key="key" value="Labels"/>
+                <entry key="JSONKeyPath" value="LabelIDs"/>
+                <entry key="JSONTransformerName" value="TransforDataNoID"/>
             </userInfo>
         </relationship>
         <userInfo>

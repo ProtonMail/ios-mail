@@ -166,6 +166,19 @@ class MailboxViewController: ProtonMailViewController {
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {
                     messageDetailViewController.message = message
+                    println(message)
+                    println(message.labels.allObjects.count)
+                    for t in message.labels.allObjects {
+                        
+                        let label = t as! Label
+                        
+                        for m in label.messages.allObjects {
+                             println(m.messageID)
+                        }
+                        
+                         println(t)
+                    }
+                    
                 }
             } else {
                 println("No selected row.")

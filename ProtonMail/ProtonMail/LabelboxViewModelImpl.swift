@@ -26,7 +26,14 @@ public class LabelboxViewModelImpl : MailboxViewModel {
     }
     
     public override func getFetchedResultsController() -> NSFetchedResultsController? {
-        return sharedMessageDataService.fetchedResultsControllerForLabels(self.label)
+        let fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLabels(self.label)
+        if let fetchedResultsController = fetchedResultsController {
+            var error: NSError?
+            if !fetchedResultsController.performFetch(&error) {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
+        }
+        return fetchedResultsController
     }
     
     public override func lastUpdateTime() -> LastUpdatedStore.UpdateTime {

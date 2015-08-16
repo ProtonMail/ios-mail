@@ -173,6 +173,7 @@ class MessageDataService {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 // TODO :: need abstract the respons error checking
                 if let messagesArray = responseDict?["Messages"] as? [Dictionary<String,AnyObject>] {
+
                     let messcount = responseDict?["Total"] as? Int ?? 0
                     
                     let context = sharedCoreDataService.newMainManagedObjectContext()
@@ -796,7 +797,7 @@ class MessageDataService {
     func fetchedResultsControllerForLabels(label: Label) -> NSFetchedResultsController? {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
-            let predicate = NSPredicate(format: "%@ in labels.labelID", label.labelID)
+            let predicate = NSPredicate(format: "ANY labels.labelID == %@", label.labelID)
             
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
