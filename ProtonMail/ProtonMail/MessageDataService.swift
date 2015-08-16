@@ -765,9 +765,6 @@ class MessageDataService {
     }
     
     
-    
-    
-    
     // MARK : fuctions for only fetch the local cache
     
     /**
@@ -797,8 +794,7 @@ class MessageDataService {
     func fetchedResultsControllerForLabels(label: Label) -> NSFetchedResultsController? {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
-            let predicate = NSPredicate(format: "ANY labels.labelID == %@", label.labelID)
-            
+            fetchRequest.predicate = NSPredicate(format: "ANY labels.labelID =[cd] %@", label.labelID)
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         }

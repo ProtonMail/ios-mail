@@ -59,6 +59,11 @@ class MenuTableViewCell: UITableViewCell {
         }
     }
     
+    func hideCount () {
+        unreadLabel.text = "0";
+        unreadLabel.hidden = true;
+    }
+    
     override func setHighlighted(highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
         if highlighted {

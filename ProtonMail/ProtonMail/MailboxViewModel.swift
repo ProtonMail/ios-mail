@@ -39,7 +39,8 @@ public class MailboxViewModel {
     }
     
     public func isCurrentLocation(l : MessageLocation) -> Bool {
-        fatalError("This method must be overridden")
+        return false
+        
     }
     
     func fetchMessages(MessageID : String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {

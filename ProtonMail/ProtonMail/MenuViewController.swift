@@ -242,7 +242,7 @@ extension MenuViewController: UITableViewDataSource {
         } else if indexPath.section == 1 {
             var cell = tableView.dequeueReusableCellWithIdentifier(kMenuTableCellId, forIndexPath: indexPath) as! MenuTableViewCell
             cell.configCell(otherItems[indexPath.row])
-            cell.configUnreadCount()
+            cell.hideCount()
             return cell
         } else if indexPath.section == 2 {
             let data = fetchedLabels?.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as! Label;
@@ -310,8 +310,9 @@ extension MenuViewController: NSFetchedResultsControllerDelegate {
             case .Update:
                 if let indexPath = indexPath {
                     let index = NSIndexPath(forRow: indexPath.row, inSection: 2)
+                    println(index)
                     if let cell = tableView.cellForRowAtIndexPath(index) as? MenuLabelViewCell {
-                        if let label = fetchedLabels?.objectAtIndexPath(index) as? Label {
+                        if let label = fetchedLabels?.objectAtIndexPath(indexPath) as? Label {
                             cell.configCell(label);
                             cell.configUnreadCount()
                         }
