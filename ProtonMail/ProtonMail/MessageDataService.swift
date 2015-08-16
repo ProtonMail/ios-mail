@@ -239,6 +239,7 @@ class MessageDataService {
                     }
                     self.cleanMessage()
                     self.fetchMessagesForLocation(location, MessageID: MessageID, Time: Time, foucsClean: false, completion: completionWrapper)
+                    sharedLabelsDataService.fetchLabels();
                 }
             }
         }
@@ -272,6 +273,7 @@ class MessageDataService {
                             }
                             self.cleanMessage()
                             self.fetchMessagesForLocation(location, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
+                            sharedLabelsDataService.fetchLabels();
                         }
                     }
                     completion?(task: task, response:nil, error: nil)
@@ -326,6 +328,7 @@ class MessageDataService {
                             }
                             self.cleanMessage()
                             self.fetchMessagesForLabels(labelID, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
+                            sharedLabelsDataService.fetchLabels();
                         }
                     }
                     completion?(task: task, response:nil, error: nil)
@@ -518,6 +521,7 @@ class MessageDataService {
                 
                 
                 self.fetchMessagesForLocation(MessageLocation.inbox, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
+                sharedLabelsDataService.fetchLabels();
             }
         }
     }
