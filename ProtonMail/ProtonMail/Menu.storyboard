@@ -759,7 +759,7 @@
                                                     <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="42" id="DI9-hP-3bA"/>
-                                                        <constraint firstAttribute="height" constant="20" id="sjt-A4-W2c"/>
+                                                        <constraint firstAttribute="height" constant="14" id="sjt-A4-W2c"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>

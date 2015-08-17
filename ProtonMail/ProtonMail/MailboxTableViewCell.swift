@@ -115,7 +115,9 @@ class MailboxTableViewCell: UITableViewCell {
         
         let labels = message.labels.allObjects
         if labels.count > 0 {
-            let w = labelView.setText(labels.first!.name)
+            let label = labels.first as? Label
+
+            let w = labelView.setText(label!.name, color: UIColor(hexString: label!.color, alpha: 1.0) )
             labelOne.constant = w
         } else {
             labelView.hidden = true

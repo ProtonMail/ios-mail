@@ -9,21 +9,17 @@
 import UIKit
 
 class TableCellLabelView: UIView {
-    private var cover:UIView!
     private var textLabel:UILabel!
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        
-        cover = UIView(frame: CGRect(x: 0,y: 0, width: 5, height: 20));
-        cover.backgroundColor = UIColor(RRGGBB: UInt(0xF2F3F7))
         textLabel = UILabel(frame: CGRect(x: 0,y: 0, width: 50, height: 20))
         
         textLabel.text = ""
         textLabel.textColor = UIColor.greenColor()
         textLabel.layer.borderWidth = 1.0
         textLabel.layer.borderColor = UIColor.greenColor().CGColor
-
+        textLabel.font = UIFont.robotoLight(size: 12)
         self.addSubview(textLabel)
         
         
@@ -41,9 +37,12 @@ class TableCellLabelView: UIView {
     }
     
     
-    func setText(label  :  String) ->CGFloat {
+    func setText(label  :  String, color : UIColor) ->CGFloat {
         self.textLabel.text = label;
         let s = self.textLabel.sizeThatFits(CGSizeZero)
+        
+        textLabel.textColor = color
+        textLabel.layer.borderColor = color.CGColor
         return s.width;
     }
 
