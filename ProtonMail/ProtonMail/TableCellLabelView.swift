@@ -17,11 +17,10 @@ class TableCellLabelView: UIView {
         
         textLabel.text = ""
         textLabel.textColor = UIColor.greenColor()
-        textLabel.layer.borderWidth = 1.0
+        textLabel.layer.borderWidth = 1.5
         textLabel.layer.borderColor = UIColor.greenColor().CGColor
-        textLabel.font = UIFont.robotoLight(size: 12)
+        textLabel.font = UIFont.robotoLight(size: 10)
         self.addSubview(textLabel)
-        
         
         textLabel.mas_makeConstraints { (make) -> Void in
             make.top.equalTo()(self)
@@ -38,7 +37,7 @@ class TableCellLabelView: UIView {
     
     
     func setText(label  :  String, color : UIColor) ->CGFloat {
-        self.textLabel.text = label;
+        self.textLabel.text = "  \(label)  "
         let s = self.textLabel.sizeThatFits(CGSizeZero)
         
         textLabel.textColor = color

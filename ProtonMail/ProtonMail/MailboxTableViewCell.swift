@@ -27,13 +27,18 @@ class MailboxTableViewCell: UITableViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var sender: UILabel!
     @IBOutlet weak var time: UILabel!
-    @IBOutlet weak var favoriteButton: UIButton!
+    //@IBOutlet weak var favoriteButton: UIButton!
     @IBOutlet weak var encryptedImage: UIImageView!
     @IBOutlet weak var attachImage: UIImageView!
     @IBOutlet weak var checkboxButton: UIButton!
     @IBOutlet weak var replyImage: UIImageView!
+    @IBOutlet weak var starredImage: UIImageView!
     
     @IBOutlet weak var labelView: TableCellLabelView!
+    @IBOutlet weak var labelView2: TableCellLabelView!
+    @IBOutlet weak var labelView3: TableCellLabelView!
+    @IBOutlet weak var labelView4: TableCellLabelView!
+    @IBOutlet weak var labelView5: TableCellLabelView!
     
     // MARK: - Constraint Outlets
     
@@ -50,18 +55,26 @@ class MailboxTableViewCell: UITableViewCell {
     private let kCheckboxCheckedImage: UIImage = UIImage(named: "checked")!
     private let kTitleMarginLeft: CGFloat = 16.0
     private let kReplyImageWidth : CGFloat = 27.0
+    private let kAttachmentWidth : CGFloat = 14.0
     
     //MAKR : constants
     
-    @IBOutlet weak var labelOne: NSLayoutConstraint!
+    @IBOutlet weak var label1: NSLayoutConstraint!
+    @IBOutlet weak var label2: NSLayoutConstraint!
+    @IBOutlet weak var label3: NSLayoutConstraint!
+    @IBOutlet weak var label4: NSLayoutConstraint!
+    @IBOutlet weak var label5: NSLayoutConstraint!
     
+    @IBOutlet weak var timeConstraint: NSLayoutConstraint!
+    @IBOutlet weak var attachmentConstraint: NSLayoutConstraint!
     
     // MARK: - Private attributes
     
     private var isChecked: Bool = false
     private var isStarred: Bool = false {
         didSet {
-            self.favoriteButton.selected = isStarred
+            let image = UIImage(named: isStarred ? "mail_starred-active" : "mail_starred")
+            self.starredImage.image = image
         }
     }
     
@@ -74,11 +87,12 @@ class MailboxTableViewCell: UITableViewCell {
     // MARK: - Actions
     
     @IBAction func favoriteButtonAction(sender: UIButton) {
-        self.isStarred = !self.isStarred
-        
-        // TODO: display activity indicator
-        
-        delegate?.mailboxTableViewCell(self, didChangeStarred: isStarred)
+        return ;
+//        self.isStarred = !self.isStarred
+//        
+//        // TODO: display activity indicator
+//        
+//        delegate?.mailboxTableViewCell(self, didChangeStarred: isStarred)
     }
     
     func checkboxTapped() {
@@ -104,23 +118,62 @@ class MailboxTableViewCell: UITableViewCell {
             self.sender.text = message.displaySender
         }
         
-        self.time.text = message.time != nil ? NSDate.stringForDisplayFromDate(message.time) : ""
         self.encryptedImage.hidden = !message.checkIsEncrypted()
         self.attachImage.hidden = !message.hasAttachments
+        
+        if message.hasAttachments {
+            self.attachmentConstraint.constant = self.kAttachmentWidth
+        } else {
+            self.attachmentConstraint.constant = 0
+        }
+        
         self.checkboxButton.layer.cornerRadius = kCheckboxButtonCornerRadius
         self.checkboxButton.layer.masksToBounds = true
         self.isStarred = message.isStarred
         
         labelView.backgroundColor = UIColor.clearColor();
+        labelView2.backgroundColor = UIColor.clearColor();
+        labelView3.backgroundColor = UIColor.clearColor();
+        labelView4.backgroundColor = UIColor.clearColor();
+        labelView5.backgroundColor = UIColor.clearColor();
         
         let labels = message.labels.allObjects
-        if labels.count > 0 {
-            let label = labels.first as? Label
-
-            let w = labelView.setText(label!.name, color: UIColor(hexString: label!.color, alpha: 1.0) )
-            labelOne.constant = w
-        } else {
-            labelView.hidden = true
+        let lc = labels.count - 1;
+        for i in 0 ... 4 {
+            switch i {
+            case 0:
+                var label : Label? = nil
+                if i <= lc {
+                    label = labels[i] as? Label
+                }
+                self.updateLables(labelView, labelConstraint: label1, label: label)
+            case 1:
+                var label : Label? = nil
+                if i <= lc {
+                    label = labels[i] as? Label
+                }
+                self.updateLables(labelView2, labelConstraint: label2, label: label)
+            case 2:
+                var label : Label? = nil
+                if i <= lc {
+                    label = labels[i] as? Label
+                }
+                self.updateLables(labelView3, labelConstraint: label3, label: label)
+            case 3:
+                var label : Label? = nil
+                if i <= lc {
+                    label = labels[i] as? Label
+                }
+                self.updateLables(labelView4, labelConstraint: label4, label: label)
+            case 4:
+                var label : Label? = nil
+                if i <= lc {
+                    label = labels[i] as? Label
+                }
+                self.updateLables(labelView5, labelConstraint: label5, label: label)
+            default:
+                break;
+            }
         }
         
         if (message.isRead) {
@@ -137,6 +190,19 @@ class MailboxTableViewCell: UITableViewCell {
         }
         else {
             hideReply()
+        }
+        
+        self.time.text = message.time != nil ? " \(NSDate.stringForDisplayFromDate(message.time))" : ""
+        
+        timeConstraint.constant = self.time.sizeThatFits(CGSizeZero).width
+    }
+    
+    private func updateLables (labelView : TableCellLabelView, labelConstraint : NSLayoutConstraint, label:Label?) {
+        if let label = label {
+            let w = labelView.setText(label.name, color: UIColor(hexString: label.color, alpha: 1.0) )
+            labelConstraint.constant = w
+        } else {
+            labelConstraint.constant = 0
         }
     }
     
@@ -172,7 +238,6 @@ class MailboxTableViewCell: UITableViewCell {
     }
     
     func changeStyleToReadDesign() {
-        //self.contentView.backgroundColor = UIColor.ProtonMail.Gray_E8EBED
         self.contentView.backgroundColor = UIColor(RRGGBB: UInt(0xF2F3F7))
         self.title.font = UIFont.robotoLight(size: UIFont.Size.h4)
         self.sender.font = UIFont.robotoLight(size: UIFont.Size.h6)
@@ -180,7 +245,6 @@ class MailboxTableViewCell: UITableViewCell {
     }
     
     func changeStyleToUnreadDesign() {
-        //self.contentView.backgroundColor = UIColor.ProtonMail.Gray_FCFEFF
         self.contentView.backgroundColor = UIColor(RRGGBB: UInt(0xFFFFFF))
         self.title.font = UIFont.robotoRegular(size: UIFont.Size.h4)
         self.sender.font = UIFont.robotoRegular(size: UIFont.Size.h6)
@@ -189,7 +253,6 @@ class MailboxTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
         delegate = nil
     }
     
