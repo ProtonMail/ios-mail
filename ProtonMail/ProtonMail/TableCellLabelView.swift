@@ -9,25 +9,38 @@
 import UIKit
 
 class TableCellLabelView: UIView {
+    private let kCoverImageViewWidth : CGFloat = 3.0
+    
     private var textLabel:UILabel!
+    private var contentView : UIView!
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
-        textLabel = UILabel(frame: CGRect(x: 0,y: 0, width: 50, height: 20))
+        contentView = UIView(frame: CGRect(x: 0,y: 0, width: 50, height: 13))
+        textLabel = UILabel(frame: CGRect(x: 0,y: 0, width: 50, height: 13))
         
         textLabel.text = ""
         textLabel.textColor = UIColor.greenColor()
-        textLabel.layer.borderWidth = 1.5
+        textLabel.layer.borderWidth = 1
+        textLabel.layer.cornerRadius = 2
         textLabel.layer.borderColor = UIColor.greenColor().CGColor
-        textLabel.font = UIFont.robotoLight(size: 10)
-        self.addSubview(textLabel)
+        textLabel.font = UIFont.robotoLight(size: 9)
+        self.contentView.addSubview(textLabel)
+        self.addSubview(contentView)
         
         textLabel.mas_makeConstraints { (make) -> Void in
+            make.top.equalTo()(self.contentView)
+            make.bottom.equalTo()(self.contentView)
+            make.right.equalTo()(self.contentView)
+            make.left.equalTo()(self.contentView)
+        }
+        contentView.mas_makeConstraints { (make) -> Void in
             make.top.equalTo()(self)
             make.bottom.equalTo()(self)
+            make.left.equalTo()(self).offset()(self.kCoverImageViewWidth)
             make.right.equalTo()(self)
-            make.left.equalTo()(self).offset() //(-5)
         }
+        self.clipsToBounds = true
+        self.contentView.clipsToBounds = true
     }
     
     
@@ -40,9 +53,16 @@ class TableCellLabelView: UIView {
         self.textLabel.text = "  \(label)  "
         let s = self.textLabel.sizeThatFits(CGSizeZero)
         
+        textLabel.mas_makeConstraints { (make) -> Void in
+            make.top.equalTo()(self.contentView)
+            make.bottom.equalTo()(self.contentView)
+            make.right.equalTo()(self.contentView)
+            make.left.equalTo()(self.contentView)
+        }
+        
         textLabel.textColor = color
         textLabel.layer.borderColor = color.CGColor
-        return s.width;
+        return s.width + self.kCoverImageViewWidth;
     }
 
     /*
@@ -53,7 +73,4 @@ class TableCellLabelView: UIView {
     }
     */
     
-    
-    
-
 }

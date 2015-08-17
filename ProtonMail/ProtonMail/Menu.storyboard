@@ -706,36 +706,36 @@
                                                     </constraints>
                                                 </imageView>
                                                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Doc-Vw-ojY" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
-                                                    <rect key="frame" x="510" y="34" width="42" height="18"/>
+                                                    <rect key="frame" x="510" y="36" width="42" height="13"/>
                                                     <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="42" id="DI9-hP-3bA"/>
-                                                        <constraint firstAttribute="height" constant="18" id="sjt-A4-W2c"/>
+                                                        <constraint firstAttribute="height" constant="13" id="sjt-A4-W2c"/>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TKO-Jg-2IQ" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
-                                                    <rect key="frame" x="453" y="34" width="57" height="18"/>
+                                                    <rect key="frame" x="453" y="36" width="57" height="13"/>
                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="57" id="3Ty-Cs-hTh"/>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vPR-Y5-3yr" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
-                                                    <rect key="frame" x="396" y="34" width="57" height="18"/>
+                                                    <rect key="frame" x="396" y="36" width="57" height="13"/>
                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="57" id="eTY-l0-Hb8"/>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PVv-oE-TYD" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
-                                                    <rect key="frame" x="339" y="34" width="57" height="18"/>
+                                                    <rect key="frame" x="339" y="36" width="57" height="13"/>
                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="57" id="Vdw-IX-dEa"/>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="scv-OH-SZp" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
-                                                    <rect key="frame" x="282" y="34" width="57" height="18"/>
+                                                    <rect key="frame" x="282" y="36" width="57" height="13"/>
                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="57" id="BJH-OM-ahe"/>
@@ -780,6 +780,7 @@
                                                 <constraint firstItem="vPR-Y5-3yr" firstAttribute="top" secondItem="TKO-Jg-2IQ" secondAttribute="top" id="IWA-gr-r85"/>
                                                 <constraint firstItem="pXj-OE-cWa" firstAttribute="leading" secondItem="eZS-fQ-wdc" secondAttribute="trailing" constant="7" id="J8r-MV-iux"/>
                                                 <constraint firstAttribute="bottom" secondItem="Doc-Vw-ojY" secondAttribute="bottom" constant="9.5" id="Ju7-MS-BP8"/>
+                                                <constraint firstItem="Doc-Vw-ojY" firstAttribute="centerY" secondItem="eZS-fQ-wdc" secondAttribute="centerY" id="Mve-gY-OFq"/>
                                                 <constraint firstItem="20n-9z-aN4" firstAttribute="leading" secondItem="5WI-FY-7Rt" secondAttribute="trailing" constant="7" id="RaY-1B-P0K"/>
                                                 <constraint firstItem="PVv-oE-TYD" firstAttribute="bottom" secondItem="vPR-Y5-3yr" secondAttribute="bottom" id="TcU-U3-bAa"/>
                                                 <constraint firstItem="d4p-Fy-H08" firstAttribute="top" secondItem="ksF-aC-XEE" secondAttribute="topMargin" constant="2" id="UpI-bo-3Sn"/>
@@ -810,6 +811,7 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
+                                                    <exclude reference="Ju7-MS-BP8"/>
                                                     <exclude reference="UpI-bo-3Sn"/>
                                                     <exclude reference="pHl-HO-p9e"/>
                                                     <exclude reference="sH5-0p-sq2"/>
