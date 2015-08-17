@@ -33,6 +33,7 @@ class MailboxTableViewCell: UITableViewCell {
     @IBOutlet weak var checkboxButton: UIButton!
     @IBOutlet weak var replyImage: UIImageView!
     
+    @IBOutlet weak var labelView: TableCellLabelView!
     
     // MARK: - Constraint Outlets
     
@@ -49,6 +50,10 @@ class MailboxTableViewCell: UITableViewCell {
     private let kCheckboxCheckedImage: UIImage = UIImage(named: "checked")!
     private let kTitleMarginLeft: CGFloat = 16.0
     private let kReplyImageWidth : CGFloat = 27.0
+    
+    //MAKR : constants
+    
+    @IBOutlet weak var labelOne: NSLayoutConstraint!
     
     
     // MARK: - Private attributes
@@ -106,12 +111,21 @@ class MailboxTableViewCell: UITableViewCell {
         self.checkboxButton.layer.masksToBounds = true
         self.isStarred = message.isStarred
         
+        labelView.backgroundColor = UIColor.clearColor();
+        
+        let labels = message.labels.allObjects
+        if labels.count > 0 {
+            let w = labelView.setText(labels.first!.name)
+            labelOne.constant = w
+        } else {
+            labelView.hidden = true
+        }
+        
         if (message.isRead) {
             changeStyleToReadDesign()
         } else {
             changeStyleToUnreadDesign()
         }
-        
         
         if  message.isRepliedAll {
             showReplyAll()
@@ -202,4 +216,15 @@ class MailboxTableViewCell: UITableViewCell {
     func isCheckBoxSelected() -> Bool {
         return self.isChecked
     }
+    
+    override func setSelected(selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+    }
+    
+    override func setHighlighted(highlighted: Bool, animated: Bool) {
+        super.setHighlighted(highlighted, animated: animated)
+    }
+    
+    
+    
 }

@@ -100,7 +100,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Bug Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K0q-PU-hIm">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bug Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K0q-PU-hIm">
                                 <rect key="frame" x="16" y="72" width="119" height="20"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="17"/>
                                 <color key="textColor" red="0.2196078431372549" green="0.22745098039215686" blue="0.23137254901960785" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -666,7 +666,7 @@
                                                         <rect key="frame" x="16" y="38" width="215" height="14"/>
                                                     </variation>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="7:36pm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d4p-Fy-H08">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7:36pm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d4p-Fy-H08">
                                                     <rect key="frame" x="543" y="10" width="41" height="16"/>
                                                     <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
                                                     <color key="textColor" red="0.51372549019607838" green="0.53333333333333333" blue="0.59215686274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -754,6 +754,14 @@
                                                         </constraint>
                                                     </constraints>
                                                 </imageView>
+                                                <view clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Doc-Vw-ojY" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
+                                                    <rect key="frame" x="485" y="34" width="42" height="20"/>
+                                                    <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="42" id="DI9-hP-3bA"/>
+                                                        <constraint firstAttribute="height" constant="20" id="sjt-A4-W2c"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" red="0.9882352941176471" green="0.99607843137254903" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
@@ -775,6 +783,8 @@
                                                 <constraint firstItem="5WI-FY-7Rt" firstAttribute="top" secondItem="ksF-aC-XEE" secondAttribute="topMargin" constant="4" id="ctR-0f-BPx"/>
                                                 <constraint firstItem="20n-9z-aN4" firstAttribute="top" secondItem="ksF-aC-XEE" secondAttribute="topMargin" constant="4" id="hse-Mw-wEK"/>
                                                 <constraint firstItem="eZS-fQ-wdc" firstAttribute="top" secondItem="nf0-vX-tEC" secondAttribute="bottom" constant="-20" id="nIy-GM-D6N"/>
+                                                <constraint firstItem="eZS-fQ-wdc" firstAttribute="bottom" secondItem="Doc-Vw-ojY" secondAttribute="bottom" id="pHl-HO-p9e"/>
+                                                <constraint firstItem="eZS-fQ-wdc" firstAttribute="leading" secondItem="Doc-Vw-ojY" secondAttribute="trailing" constant="8" id="sH5-0p-sq2"/>
                                                 <constraint firstItem="CWu-xu-Rc3" firstAttribute="leading" secondItem="ksF-aC-XEE" secondAttribute="leadingMargin" constant="8" id="seq-dn-5NO"/>
                                                 <constraint firstItem="5WI-FY-7Rt" firstAttribute="leading" secondItem="7GD-28-QOt" secondAttribute="leading" id="vK2-vG-SVf"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="7GD-28-QOt" secondAttribute="bottom" constant="4" id="y8C-R6-X0v"/>
@@ -786,6 +796,8 @@
                                             <outlet property="checkboxWidth" destination="ohL-Zn-uTt" id="m3a-p4-Tev"/>
                                             <outlet property="encryptedImage" destination="pXj-OE-cWa" id="MfC-jA-LaJ"/>
                                             <outlet property="favoriteButton" destination="aKV-ph-ziD" id="PNl-W0-FEj"/>
+                                            <outlet property="labelOne" destination="DI9-hP-3bA" id="gkm-dA-ZRV"/>
+                                            <outlet property="labelView" destination="Doc-Vw-ojY" id="4F7-5o-8QO"/>
                                             <outlet property="replyImage" destination="5WI-FY-7Rt" id="whV-1j-Red"/>
                                             <outlet property="replyWidthConstraint" destination="PWe-me-D61" id="QSW-bP-enf"/>
                                             <outlet property="sender" destination="7GD-28-QOt" id="YMg-uB-STC"/>
