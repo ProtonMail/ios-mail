@@ -39,3 +39,72 @@ public class GetLabelsResponse : ApiResponse {
         return true
     }
 }
+
+
+// MARK : apply label to message
+public class ApplyLabelToMessageRequest<T : ApiResponse> : ApiRequest<T> {
+    var labelID: String!
+    var messages:[String]!
+    
+    init(labelID:String!, messages: [String]!) {
+        self.labelID = labelID
+        self.messages = messages
+    }
+    
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+        var out : [String : AnyObject] = [String : AnyObject]()
+        out["MessageIDs"] = messages;
+        PMLog.D(self.JSONStringify(out, prettyPrinted: true))
+        return out
+    }
+
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .PUT
+    }
+    
+    override public func getRequestPath() -> String {
+        return LabelAPI.Path + "/apply/" + self.labelID + AppConstants.getDebugOption
+    }
+    
+    override public func getVersion() -> Int {
+        return LabelAPI.V_ApplyLabelToMessageRequest
+    }
+}
+
+// MARK : remove label from message
+public class RemoveLabelFromMessageRequest<T : ApiResponse> : ApiRequest<T> {
+    
+    var labelID: String!
+    var messages:[String]!
+    
+    init(labelID:String!, messages: [String]!) {
+        self.labelID = labelID
+        self.messages = messages
+    }
+    
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+        var out : [String : AnyObject] = [String : AnyObject]()
+        out["MessageIDs"] = messages;
+        
+        PMLog.D(self.JSONStringify(out, prettyPrinted: true))
+        return out
+    }
+
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .PUT
+    }
+    
+    override public func getRequestPath() -> String {
+        return LabelAPI.Path + "/remove/" + self.labelID + AppConstants.getDebugOption
+    }
+    
+    override public func getVersion() -> Int {
+        return LabelAPI.V_RemoveLabelFromMessageRequest
+    }
+}
+
+
+
+

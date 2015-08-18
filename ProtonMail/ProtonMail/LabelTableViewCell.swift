@@ -42,9 +42,15 @@ class LabelTableViewCell: UITableViewCell {
         let s = sender as! UISwitch
         let on : Bool = s.on
         if on == true {
-            viewModel.applyLabel(self.label.labelID)
+            let isok = viewModel.applyLabel(self.label.labelID)
+            if !isok {
+                s.on = false
+            }
         } else {
-            viewModel.removeLabel(self.label.labelID)
+            let isok = viewModel.removeLabel(self.label.labelID)
+            if !isok {
+
+            }
         }
         
     }
