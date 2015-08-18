@@ -60,6 +60,7 @@ class MessageViewController: ProtonMailViewController {
         self.emailView!.emailHeader.actionsDelegate = self
         self.emailView!.moreOptionsView.delegate = self
         self.updateEmailBody()
+        
     }
     
     override func loadView() {
@@ -116,6 +117,9 @@ class MessageViewController: ProtonMailViewController {
         if segue.identifier == "toCompose" {
             let composeViewController = segue.destinationViewController as! ComposeEmailViewController
             composeViewController.viewModel = ComposeViewModelImpl(msg: message, action: self.actionTapped)
+        } else if segue.identifier == "toApplyLabelsSegue" {
+            let popup = segue.destinationViewController as! UIViewController
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }
 
@@ -143,6 +147,14 @@ class MessageViewController: ProtonMailViewController {
 
     func moreButtonTapped() {
         self.emailView!.animateMoreViewOptions()
+        self.performSegueWithIdentifier("toApplyLabelsSegue", sender: self)
+    }
+    
+    func setPresentationStyleForSelfController(selfController : UIViewController,  presentingController: UIViewController)
+    {
+        presentingController.providesPresentationContextTransitionStyle = true;
+        presentingController.definesPresentationContext = true;
+        presentingController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
     }
     
     // MARK : private function
