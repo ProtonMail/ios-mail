@@ -98,7 +98,6 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
     private var buttonsView: MessageDetailBottomView!
     
     
-    
     // MARK: - Init methods
     
     required init(message: Message, delegate: MessageDetailViewDelegate?) {
@@ -866,6 +865,10 @@ extension MessageDetailView: MoreOptionsViewDelegate {
     func moreOptionsViewDidSelectMoveTo(moreOptionsView: MoreOptionsView) {
         delegate?.messageDetailView(self, didTapMoveToForMessage: message)
         
+        animateMoreViewOptions()
+    }
+    
+    func moreOptionsViewDidSelectTagAs(moreOptionsView: MoreOptionsView) {
         animateMoreViewOptions()
     }
 }

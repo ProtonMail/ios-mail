@@ -66,6 +66,20 @@ class AppDelegate: UIResponder {
     }
 }
 
+extension SWRevealViewController {
+    
+    public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == "sw_front") {
+            let navigationController = segue.destinationViewController as! UINavigationController
+            if let firstViewController: UIViewController = navigationController.viewControllers.first as? UIViewController {
+                if (firstViewController.isKindOfClass(MailboxViewController)) {
+                    let mailboxViewController: MailboxViewController = navigationController.viewControllers.first as! MailboxViewController
+                    mailboxViewController.viewModel = MailboxViewModelImpl(location: .inbox)
+                }
+            }
+        }
+    }
+}
 
 // MARK: - UIApplicationDelegate
 

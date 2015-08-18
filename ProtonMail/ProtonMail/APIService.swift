@@ -331,6 +331,18 @@ class APIService {
             return nil;
         }
         NSValueTransformer.setValueTransformer(JsonStringTransformer, forName: "EncodedDataTransformer")
+        
+        let transforDataNoID = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
+            if let idArray = value as? NSArray {
+                var fixedArray = [Dictionary<String, AnyObject>]()
+                for labelID in idArray {
+                    fixedArray.append(["ID" : labelID])
+                }
+                return fixedArray
+            }
+            return value;
+        }
+        NSValueTransformer.setValueTransformer(transforDataNoID, forName: "TransforDataNoID")
     }
 }
 

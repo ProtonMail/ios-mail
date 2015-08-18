@@ -23,6 +23,7 @@ public enum MessageLocation: Int, Printable {
     case outbox = 2
     case spam = 4
     case starred = 5
+    case archive = 6
     case trash = 3
     
     public var description : String {
@@ -40,10 +41,36 @@ public enum MessageLocation: Int, Printable {
                 return NSLocalizedString("Spam")
             case starred:
                 return NSLocalizedString("Starred")
+            case archive:
+                return NSLocalizedString("Archive")
             case trash:
                 return NSLocalizedString("Trash")
             }
         }
+    }
+    
+    public var title : String {
+        
+        switch(self) {
+        case .inbox:
+            return "INBOX"
+        case .starred:
+            return "STARRED"
+        case .draft:
+            return "DRAFTS"
+        case .outbox:
+            return "SENT"
+        case .trash:
+            return "TRASH"
+        case .archive:
+            return "ARCHIVE"
+        case .spam:
+            return "SPAM"
+        default:
+            return "INBOX"
+        }
+
+        
     }
     
     public var key: String {
@@ -60,6 +87,8 @@ public enum MessageLocation: Int, Printable {
             return "Spam"
         case starred:
             return "Starred"
+        case archive:
+            return "Archive"
         case trash:
             return "Trash"
         }
@@ -75,6 +104,8 @@ public enum MessageLocation: Int, Printable {
             return .spam
         case .trash:
             return .trash
+        case .archive:
+            return .archive
         default:
             return nil
         }

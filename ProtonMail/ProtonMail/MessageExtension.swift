@@ -30,6 +30,7 @@ extension Message {
         static let senderName = "senderName"
         static let time = "time"
         static let title = "title"
+        static let labels = "labels"
     }
     
     struct Constants {
@@ -82,6 +83,12 @@ extension Message {
         return title //.decodeHtml()
     }
     
+    var displaySender : String {
+        get {
+            return senderName.isEmpty ?  sender : senderName
+        }
+        
+    }
     
     // MARK: - Public methods
     

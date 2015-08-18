@@ -51,27 +51,28 @@ public class EventLatestIDResponse : ApiResponse {
     }
 }
 
-
 public class EventCheckResponse : ApiResponse {
     var eventID : String = ""
     var isRefresh : Bool = false
     
     var messages : [Dictionary<String,AnyObject>]?
     var contacts : [Dictionary<String,AnyObject>]?
-    var userinfo : [Dictionary<String,AnyObject>]?
+    var userinfo : Dictionary<String,AnyObject>?
     var unreads : Dictionary<String,AnyObject>?
     var total : Dictionary<String,AnyObject>?
+    var labels : [Dictionary<String,AnyObject>]?
     var usedSpace : String?
     
     override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
 
         PMLog.D(response.JSONStringify(prettyPrinted: true))
-        //PMLog("\(response)")
         
         self.eventID = response["EventID"] as? String ?? ""
         self.messages =  response["Messages"] as? [Dictionary<String,AnyObject>]
         
         self.isRefresh = response["Refresh"] as! Bool
+        
+        self.userinfo = response["User"] as? Dictionary<String,AnyObject>
         
         self.unreads = response["Unread"] as? Dictionary<String,AnyObject>
 
@@ -79,10 +80,11 @@ public class EventCheckResponse : ApiResponse {
         
         self.total = response["Total"] as? Dictionary<String,AnyObject>
         
+        self.labels =  response["Labels"] as? [Dictionary<String,AnyObject>]
+        
         return true
     }
 }
-
 
 public class MessageEvent {
     
@@ -98,6 +100,20 @@ public class MessageEvent {
         self.message?["needsUpdate"] = false
     }
 }
+
+public class LabelEvent {
+    
+    var Action : Int!
+    var ID : String!;
+    var label : Dictionary<String,AnyObject>?
+    
+    init(event: Dictionary<String,AnyObject>!) {
+        self.Action = event["Action"] as! Int
+        self.label =  event["Label"] as? Dictionary<String,AnyObject>
+        self.ID =  event["ID"] as! String
+    }
+}
+
 
 
 

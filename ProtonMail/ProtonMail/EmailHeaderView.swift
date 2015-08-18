@@ -136,7 +136,7 @@ class EmailHeaderView: UIView {
     
     required init() {
         super.init(frame: CGRectZero)
-        self.backgroundColor = UIColor.whiteColor()
+        self.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
 
         // init data
         self.title = ""
@@ -157,14 +157,19 @@ class EmailHeaderView: UIView {
     }
     
     // MARK : Private functions
-    func updateHeaderData (title : String, sender : String, to : String, cc : String, bcc : String, isStarred : Bool) {
+    func updateHeaderData (title : String, sender : String, to : String, cc : String, bcc : String, isStarred : Bool, time : NSDate?) {
         
         self.title = title
         self.sender = sender
         self.toList = to
         self.ccList = cc
         self.bccList = bcc
-        self.date = NSDate()
+        if time != nil {
+            self.date = time
+        } else {
+            self.date = NSDate()
+        }
+        
         self.starred = isStarred
         
         self.emailTitle.text = title
@@ -173,6 +178,9 @@ class EmailHeaderView: UIView {
         self.emailDetailCCLabel.text = ccText
         self.emailDetailBCCLabel.text = bccText
         self.emailFavoriteButton.selected = self.starred;
+        self.emailTime.text = "at \(self.date.stringWithFormat(self.kHourMinuteFormat))".lowercaseString
+        let tm = self.date.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? "";
+        self.emailDetailDateLabel.text = "Date: \(tm)"
     }
     
     func updateAttachmentData (atts : [Attachment]?) {
@@ -233,11 +241,11 @@ class EmailHeaderView: UIView {
         
         // create title
         self.emailTitle = UILabel()
-        self.emailTitle.font = UIFont.robotoLight(size: UIFont.Size.h2)
+        self.emailTitle.font = UIFont.robotoLight(size: UIFont.Size.h4)
         self.emailTitle.numberOfLines = 0
         self.emailTitle.lineBreakMode = .ByWordWrapping
         self.emailTitle.text = self.title
-        self.emailTitle.textColor = UIColor.ProtonMail.Gray_383A3B
+        self.emailTitle.textColor = UIColor(RRGGBB: UInt(0x505061)) //UIColor.ProtonMail.Gray_383A3B
         self.emailTitle.sizeToFit()
         self.emailHeaderView.addSubview(emailTitle)
         
@@ -259,14 +267,14 @@ class EmailHeaderView: UIView {
         self.emailSender.font = UIFont.robotoRegular(size: UIFont.Size.h6)
         self.emailSender.numberOfLines = 1
         self.emailSender.text = senderText
-        self.emailSender.textColor = UIColor.ProtonMail.Gray_999DA1
+        self.emailSender.textColor = UIColor(RRGGBB: UInt(0x838897)) // UIColor.ProtonMail.Gray_999DA1
         self.emailHeaderView.addSubview(emailSender)
 
         self.emailTime = UILabel()
         self.emailTime.font = UIFont.robotoMediumItalic(size: UIFont.Size.h6)
         self.emailTime.numberOfLines = 1
         self.emailTime.text = "at \(self.date.stringWithFormat(self.kHourMinuteFormat))".lowercaseString
-        self.emailTime.textColor = UIColor.ProtonMail.Gray_999DA1
+        self.emailTime.textColor = UIColor(RRGGBB: UInt(0x838897)) //UIColor.ProtonMail.Gray_999DA1
         self.emailTime.sizeToFit()
         self.emailHeaderView.addSubview(emailTime)
         
@@ -275,7 +283,7 @@ class EmailHeaderView: UIView {
         self.emailDetailButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
         self.emailDetailButton.titleLabel?.font = UIFont.robotoRegular(size: UIFont.Size.h6)
         self.emailDetailButton.setTitle(NSLocalizedString("Details"), forState: UIControlState.Normal)
-        self.emailDetailButton.setTitleColor(UIColor.ProtonMail.Blue_85B1DE, forState: UIControlState.Normal)
+        self.emailDetailButton.setTitleColor(UIColor(RRGGBB: UInt(0x9397CD)), forState: UIControlState.Normal) //UIColor.ProtonMail.Blue_85B1DE
         self.emailDetailButton.sizeToFit()
         self.emailHeaderView.addSubview(emailDetailButton)
         
@@ -301,6 +309,14 @@ class EmailHeaderView: UIView {
         self.emailAttachmentsAmount.textColor = UIColor.ProtonMail.Gray_999DA1
         self.emailAttachmentsAmount.sizeToFit()
         self.emailHeaderView.addSubview(emailAttachmentsAmount)
+        
+        if (self.attachmentCount > 0) {
+            self.emailAttachmentsAmount.hidden = false
+            self.emailHasAttachmentsImageView.hidden = false
+        } else {
+            self.emailAttachmentsAmount.hidden = true
+            self.emailHasAttachmentsImageView.hidden = true
+        }
     }
     
     // MARK: - Subview constraints
@@ -334,6 +350,19 @@ class EmailHeaderView: UIView {
             make.height.equalTo()(h)
         }
         
+        emailIsEncryptedImageView.mas_updateConstraints { (make) -> Void in
+            make.removeExisting = true
+            if (self.attachmentCount > 0) {
+                make.right.equalTo()(self.emailHasAttachmentsImageView.mas_left).with().offset()(self.kEmailIsEncryptedImageViewMarginRight)
+            } else {
+                make.right.equalTo()(self.emailHeaderView)
+            }
+            
+            make.bottom.equalTo()(self.emailAttachmentsAmount)
+            make.height.equalTo()(self.emailIsEncryptedImageView.frame.height)
+            make.width.equalTo()(self.emailIsEncryptedImageView.frame.width)
+        }
+        
         separatorBetweenHeaderAndAttView.mas_updateConstraints { (make) -> Void in
             make.removeExisting = true
             make.left.equalTo()(self)
@@ -348,64 +377,64 @@ class EmailHeaderView: UIView {
     private func configureEmailDetailToLabel() {
         
         self.emailDetailToLabel = UILabel()
-        self.emailDetailToLabel.font = UIFont.robotoLight(size: UIFont.Size.h5)
+        self.emailDetailToLabel.font = UIFont.robotoLight(size: UIFont.Size.h6)
         self.emailDetailToLabel.lineBreakMode = NSLineBreakMode.ByCharWrapping
         self.emailDetailToLabel.numberOfLines = 0;
         self.emailDetailToLabel.text = self.toText
-        self.emailDetailToLabel.textColor = UIColor.ProtonMail.Gray_999DA1
+        self.emailDetailToLabel.textColor = UIColor(RRGGBB: UInt(0x838897)) //UIColor.ProtonMail.Gray_999DA1
         self.emailDetailToLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailToLabel)
         
         self.emailDetailToContentLabel = UILabel()
-        self.emailDetailToContentLabel.font = UIFont.robotoRegular(size: UIFont.Size.h5)
+        self.emailDetailToContentLabel.font = UIFont.robotoRegular(size: UIFont.Size.h6)
         self.emailDetailToContentLabel.numberOfLines = 1
         self.emailDetailToContentLabel.text = self.toText
-        self.emailDetailToContentLabel.textColor = UIColor.ProtonMail.Blue_85B1DE
+        self.emailDetailToContentLabel.textColor = UIColor(RRGGBB: UInt(0x838897)) //UIColor.ProtonMail.Blue_85B1DE
         self.emailDetailToContentLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailToContentLabel)
     }
     
     private func configureEmailDetailCCLabel() {
         self.emailDetailCCLabel = UILabel()
-        self.emailDetailCCLabel.font = UIFont.robotoLight(size: UIFont.Size.h5)
+        self.emailDetailCCLabel.font = UIFont.robotoLight(size: UIFont.Size.h6)
         self.emailDetailCCLabel.lineBreakMode = NSLineBreakMode.ByCharWrapping
         self.emailDetailCCLabel.numberOfLines = 0;
         self.emailDetailCCLabel.text = self.ccText;
-        self.emailDetailCCLabel.textColor = UIColor.ProtonMail.Gray_999DA1
+        self.emailDetailCCLabel.textColor = UIColor(RRGGBB: UInt(0x838897))// UIColor.ProtonMail.Gray_999DA1
         self.emailDetailCCLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailCCLabel)
         
         self.emailDetailCCContentLabel = UILabel()
-        self.emailDetailCCContentLabel.font = UIFont.robotoRegular(size: UIFont.Size.h5)
+        self.emailDetailCCContentLabel.font = UIFont.robotoRegular(size: UIFont.Size.h6)
         self.emailDetailCCContentLabel.numberOfLines = 1
         self.emailDetailCCContentLabel.text = self.ccText;
-        self.emailDetailCCContentLabel.textColor = UIColor.ProtonMail.Blue_85B1DE
+        self.emailDetailCCContentLabel.textColor = UIColor(RRGGBB: UInt(0x838897)) //UIColor.ProtonMail.Blue_85B1DE
         self.emailDetailCCContentLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailCCContentLabel)
     }
     
     private func configureEmailDetailBCCLabel() {
         self.emailDetailBCCLabel = UILabel()
-        self.emailDetailBCCLabel.font = UIFont.robotoLight(size: UIFont.Size.h5)
+        self.emailDetailBCCLabel.font = UIFont.robotoLight(size: UIFont.Size.h6)
         self.emailDetailBCCLabel.lineBreakMode = NSLineBreakMode.ByCharWrapping
         self.emailDetailBCCLabel.numberOfLines = 0;
         self.emailDetailBCCLabel.text = self.bccList
-        self.emailDetailBCCLabel.textColor = UIColor.ProtonMail.Gray_999DA1
+        self.emailDetailBCCLabel.textColor = UIColor(RRGGBB: UInt(0x838897)) //UIColor.ProtonMail.Gray_999DA1
         self.emailDetailBCCLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailBCCLabel)
         
         self.emailDetailBCCContentLabel = UILabel()
-        self.emailDetailBCCContentLabel.font = UIFont.robotoRegular(size: UIFont.Size.h5)
+        self.emailDetailBCCContentLabel.font = UIFont.robotoRegular(size: UIFont.Size.h6)
         self.emailDetailBCCContentLabel.numberOfLines = 1
         self.emailDetailBCCContentLabel.text = self.bccList
-        self.emailDetailBCCContentLabel.textColor = UIColor.ProtonMail.Blue_85B1DE
+        self.emailDetailBCCContentLabel.textColor = UIColor(RRGGBB: UInt(0x838897)) //UIColor.ProtonMail.Blue_85B1DE
         self.emailDetailBCCContentLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailBCCContentLabel)
     }
     
     private func configureEmailDetailDateLabel() {
         self.emailDetailDateLabel = UILabel()
-        self.emailDetailDateLabel.font = UIFont.robotoLight(size: UIFont.Size.h5)
+        self.emailDetailDateLabel.font = UIFont.robotoLight(size: UIFont.Size.h6)
         self.emailDetailDateLabel.numberOfLines = 1
         if let messageTime = self.date {
             let tm = messageTime.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? "";
@@ -413,15 +442,15 @@ class EmailHeaderView: UIView {
         } else {
             self.emailDetailDateLabel.text = "Date: "
         }
-        self.emailDetailDateLabel.textColor = UIColor.ProtonMail.Gray_999DA1
+        self.emailDetailDateLabel.textColor = UIColor(RRGGBB: UInt(0x838897)) //UIColor.ProtonMail.Gray_999DA1
         self.emailDetailDateLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailDateLabel)
         
         self.emailDetailDateContentLabel = UILabel()
-        self.emailDetailDateContentLabel.font = UIFont.robotoRegular(size: UIFont.Size.h5)
+        self.emailDetailDateContentLabel.font = UIFont.robotoRegular(size: UIFont.Size.h6)
         self.emailDetailDateContentLabel.numberOfLines = 1
         self.emailDetailDateContentLabel.text = self.date.stringWithFormat(kEmailTimeLongFormat)
-        self.emailDetailDateContentLabel.textColor = UIColor.ProtonMail.Gray_383A3B
+        self.emailDetailDateContentLabel.textColor = UIColor(RRGGBB: UInt(0x838897)) //UIColor.ProtonMail.Gray_383A3B
         self.emailDetailDateContentLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailDateContentLabel)
     }

@@ -38,5 +38,6 @@ extension UITableView {
     
     func showLoadingFooter() {
         tableFooterView = LoadingView.viewForOwner(self)
+        tableFooterView?.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
     }    
 }

@@ -61,7 +61,7 @@ public class ApiRequest<T : ApiResponse> : Package {
     :returns: String value
     */
     public func getRequestPath () -> String {
-        fatalError("Not Implement, you need override the function")
+        NSException(name:"Error", reason:"Not Implement, you need override the function", userInfo:nil).raise()
         return "";
     }
     

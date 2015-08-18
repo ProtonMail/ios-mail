@@ -25,14 +25,17 @@ public class LastUpdatedStore : SharedCacheBase {
     
     private struct Key {
         static let lastInboxesUpdated = "LastInboxesUpdated"
+        static let lastLabelsUpdated = "LastLabelsUpdated"
         static let lastEventID = "lastEventID"
         static let unreadMessageCount = "unreadMessageCount"
+        static let mailboxUnreadCount = "MailboxUnreadCount"
+        static let labelsUnreadCount = "LabelsUnreadCount"
         
         //
-        static let lastLabelsUpdated = "LastLabelsUpdated"
         static let lastCantactsUpdated = "LastCantactsUpdated"
 
     }
+    
     
     public class UpdateTime : NSObject, NSCoding {
         
@@ -85,6 +88,7 @@ public class LastUpdatedStore : SharedCacheBase {
             return UpdateTime(start: NSDate.distantPast() as! NSDate, end: NSDate.distantPast() as! NSDate, update: NSDate.distantPast() as! NSDate, total: 0, unread: 0)
         }
     }
+
     
     private var lastInboxesUpdateds: Dictionary<String, UpdateTime> {
         get {
@@ -92,6 +96,37 @@ public class LastUpdatedStore : SharedCacheBase {
         }
         set {
             getShared().setCustomValue(newValue, forKey: Key.lastInboxesUpdated)
+            getShared().synchronize()
+        }
+    }
+    
+    private var lastLabelsUpdateds: Dictionary<String, UpdateTime> {
+        get {
+            return (getShared().customObjectForKey(Key.lastLabelsUpdated) as? Dictionary<String, UpdateTime>) ?? [:]
+        }
+        set {
+            getShared().setCustomValue(newValue, forKey: Key.lastLabelsUpdated)
+            getShared().synchronize()
+        }
+    }
+    
+    
+    private var mailboxUnreadCounts: Dictionary<String, Int> {
+        get {
+            return (getShared().customObjectForKey(Key.mailboxUnreadCount) as? Dictionary<String, Int>) ?? [:]
+        }
+        set {
+            getShared().setCustomValue(newValue, forKey: Key.mailboxUnreadCount)
+            getShared().synchronize()
+        }
+    }
+    
+    private var labelsUnreadCounts: Dictionary<String, Int> {
+        get {
+            return (getShared().customObjectForKey(Key.mailboxUnreadCount) as? Dictionary<String, Int>) ?? [:]
+        }
+        set {
+            getShared().setCustomValue(newValue, forKey: Key.mailboxUnreadCount)
             getShared().synchronize()
         }
     }
@@ -138,6 +173,8 @@ public class LastUpdatedStore : SharedCacheBase {
         getShared().removeObjectForKey(Key.lastInboxesUpdated)
         getShared().removeObjectForKey(Key.lastEventID)
         getShared().removeObjectForKey(Key.unreadMessageCount)
+        getShared().removeObjectForKey(Key.mailboxUnreadCount)
+        getShared().removeObjectForKey(Key.labelsUnreadCount)
         getShared().synchronize()
     }
     
@@ -153,7 +190,6 @@ public class LastUpdatedStore : SharedCacheBase {
         return lastInboxesUpdateds[location.key] ?? UpdateTime.distantPast()
     }
     
-    
     /**
     update the exsit inbox last update time by location
     
@@ -163,49 +199,43 @@ public class LastUpdatedStore : SharedCacheBase {
     public func updateInboxForKey(location : MessageLocation, updateTime: UpdateTime) -> Void {
         return lastInboxesUpdateds[location.key] = updateTime
     }
-
     
-    //    subscript(key: String) -> NSDate {
-    //        get {
-    //            return lastUpdatedForKey(key)
-    //        }
-    //        set {
-    //            setLastUpdated(newValue, forKey: key)
-    //        }
-    //    }
-    //
-    //    /// Clears all the last updated values from the store.
-    //
-
-    //
-    //    func setLastUpdated(date: NSDate, forKey key: String) {
-    //        lastUpdateds[key] = date
-    //    }
     
-    //    private var getLastFetchMessageID: String! {
-    //        get {
-    //            return getShared().stringForKey(Key.lastFetchMessageID) ?? "0"
-    //        }
-    //        set {
-    //            setValue(newValue, forKey: Key.lastFetchMessageID)
-    //        }
-    //    }
-    //
-    //    private var getLastFetchMessageTime: Float {
-    //        get {
-    //            return getShared().floatForKey(Key.lastFetchMessageTime)
-    //        }
-    //        set {
-    //            setValue(newValue, forKey: Key.lastFetchMessageTime)
-    //        }
-    //    }
-    //
-    //    private var getLastUpdateTime: Float {
-    //        get {
-    //            return getShared().floatForKey(Key.lastUpdateTime)
-    //        }
-    //        set {
-    //            setValue(newValue, forKey: Key.lastUpdateTime)
-    //        }
-    //    }
+    public func labelsLastForKey(labelID : String) -> UpdateTime {
+        return lastLabelsUpdateds[labelID] ?? UpdateTime.distantPast()
+    }
+    
+    public func updateLabelsForKey(labelID : String, updateTime: UpdateTime) -> Void {
+        return lastLabelsUpdateds[labelID] = updateTime
+    }
+    
+    
+    public func resetUnreadCounts() {
+        getShared().removeObjectForKey(Key.mailboxUnreadCount)
+        getShared().synchronize()
+    }
+    
+    public func unreadCountForKey(location : MessageLocation) -> Int {
+        return mailboxUnreadCounts[location.key] ?? 0
+    }
+    public func updateUnreadCountForKey(location : MessageLocation, count: Int) -> Void {
+        return mailboxUnreadCounts[location.key] = count
+    }
+    
+    
+    public func resetLabelsUnreadCounts() {
+        getShared().removeObjectForKey(Key.labelsUnreadCount)
+        getShared().synchronize()
+    }
+    
+    public func unreadLabelsCountForKey(labelID : String) -> Int {
+        return mailboxUnreadCounts[labelID] ?? 0
+    }
+    public func updateLabelsUnreadCountForKey(labelID : String, count: Int) -> Void {
+        return mailboxUnreadCounts[labelID] = count
+    }
+
 }
+
+
+

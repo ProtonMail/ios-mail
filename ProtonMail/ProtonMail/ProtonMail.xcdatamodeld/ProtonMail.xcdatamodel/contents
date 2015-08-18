@@ -55,12 +55,38 @@
         </userInfo>
     </entity>
     <entity name="Label" representedClassName="ProtonMail.Label" syncable="YES">
-        <attribute name="color" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="isDisplay" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="labelID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="labels" inverseEntity="Message" syncable="YES"/>
+        <attribute name="color" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Color"/>
+            </userInfo>
+        </attribute>
+        <attribute name="isDisplay" optional="YES" attributeType="Boolean" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Display"/>
+                <entry key="NumberTransformer" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="labelID" attributeType="String" indexed="YES" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="ID"/>
+            </userInfo>
+        </attribute>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Name"/>
+            </userInfo>
+        </attribute>
+        <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Order"/>
+                <entry key="NumberTransformer" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="labels" inverseEntity="Message" syncable="YES"/>
+        <userInfo>
+            <entry key="identityAttribute" value="labelID"/>
+            <entry key="JSONTransformerName" value="TransforDataNoID"/>
+        </userInfo>
     </entity>
     <entity name="Message" representedClassName="ProtonMail.Message" syncable="YES">
         <attribute name="action" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -134,7 +160,7 @@
         <attribute name="isReplied" attributeType="Boolean" defaultValueString="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="IsReplied"/>
-                <entry key="JSONTransformerName" value="NumberTransformer"/>
+                <entry key="JSONTransformerName" value="I"/>
             </userInfo>
         </attribute>
         <attribute name="isRepliedAll" attributeType="Boolean" defaultValueString="NO" syncable="YES">
@@ -143,6 +169,7 @@
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
+        <attribute name="isSoftDelete" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isStarred" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Starred"/>
@@ -159,7 +186,7 @@
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="locationNumber" attributeType="Integer 16" defaultValueString="0" syncable="YES">
+        <attribute name="locationNumber" attributeType="Integer 16" defaultValueString="0" indexed="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Location"/>
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
@@ -234,7 +261,12 @@
                 <entry key="JSONKeyPath" value="Attachments"/>
             </userInfo>
         </relationship>
-        <relationship name="labels" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Label" inverseName="message" inverseEntity="Label" syncable="YES"/>
+        <relationship name="labels" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Label" inverseName="messages" inverseEntity="Label" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="LabelIDs"/>
+                <entry key="JSONTransformerName" value="TransforDataNoID"/>
+            </userInfo>
+        </relationship>
         <userInfo>
             <entry key="identityAttribute" value="messageID"/>
         </userInfo>
@@ -242,7 +274,7 @@
     <elements>
         <element name="Attachment" positionX="1989" positionY="-3666" width="128" height="165"/>
         <element name="Contact" positionX="2149" positionY="-3600" width="128" height="90"/>
-        <element name="Label" positionX="1989" positionY="-3465" width="128" height="133"/>
-        <element name="Message" positionX="1771" positionY="-3870" width="128" height="615"/>
+        <element name="Label" positionX="1989" positionY="-3465" width="128" height="135"/>
+        <element name="Message" positionX="1771" positionY="-3870" width="128" height="630"/>
     </elements>
 </model>

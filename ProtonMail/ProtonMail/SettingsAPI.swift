@@ -10,7 +10,7 @@ import Foundation
 
 
 
-// MARK : Get messages part
+// MARK : update domain order
 public class UpdateDomainOrder<T : ApiResponse> : ApiRequest<T> {
     let domains : Array<Address>!
     
@@ -20,11 +20,8 @@ public class UpdateDomainOrder<T : ApiResponse> : ApiRequest<T> {
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
         var out : [String : AnyObject] = ["Order" : self.domains.getAddressOrder()]
-        
-        
+    
         //self.domains.();
-
-        
         PMLog.D(self.JSONStringify(out, prettyPrinted: true))
         return out
     }

@@ -37,6 +37,7 @@ enum MessageAction: String {
     case inbox = "inbox"
     case spam = "spam"
     case trash = "trash"
+    case archive = "archive"
     
     // Send
     case send = "send"
@@ -61,6 +62,7 @@ enum MessageLastUpdateType: String {
     case inbox = "inbox"
     case spam = "spam"
     case trash = "trash"
+    case archive = "archive"
     
     // Send
     case send = "send"

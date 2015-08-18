@@ -97,7 +97,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     
     func configureNavigationBar() {
         self.navigationController?.navigationBar.barStyle = UIBarStyle.Black
-        self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Blue_475F77
+        self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;
         self.navigationController?.navigationBar.translucent = false
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         

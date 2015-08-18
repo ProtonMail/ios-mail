@@ -15,6 +15,7 @@ import Foundation
 protocol MoreOptionsViewDelegate {
     func moreOptionsViewDidMarkAsUnread(moreOptionsView: MoreOptionsView) -> Void
     func moreOptionsViewDidSelectMoveTo(moreOptionsView: MoreOptionsView) -> Void
+    func moreOptionsViewDidSelectTagAs(moreOptionsView: MoreOptionsView) -> Void
 }
 
 class MoreOptionsView: UIView {
@@ -30,8 +31,8 @@ class MoreOptionsView: UIView {
     
     // MARK: - Private attributes
     
-//    private var tagButton: UIButton!
-//    private var tagLabel: UILabel!
+    private var tagButton: UIButton!
+    private var tagLabel: UILabel!
     private var moveButton: UIButton!
     private var moveLabel: UILabel!
     private var markButton: UIButton!
@@ -66,11 +67,12 @@ class MoreOptionsView: UIView {
         let labelFont = UIFont.robotoRegular(size: UIFont.Size.h5)
         let labelColor = UIColor.ProtonMail.Gray_FCFEFF
         
-//        self.tagButton = UIButton.buttonWithImage(UIImage(named: "tag")!)
-//        self.addSubview(tagButton)
-//        
-//        self.tagLabel = UILabel.labelWith(labelFont, text: NSLocalizedString("Tag as..."), textColor: labelColor)
-//        self.addSubview(tagLabel)
+        self.tagButton = UIButton.buttonWithImage(UIImage(named: "tag")!)
+        self.tagButton.addTarget(self, action: "tagAction:", forControlEvents: .TouchUpInside)
+        self.addSubview(tagButton)
+        
+        self.tagLabel = UILabel.labelWith(labelFont, text: NSLocalizedString("Label as..."), textColor: labelColor)
+        self.addSubview(tagLabel)
         
         self.moveButton = UIButton.buttonWithImage(UIImage(named: "move")!)
         self.moveButton.addTarget(self, action: "moveAction:", forControlEvents: .TouchUpInside)
@@ -104,17 +106,17 @@ class MoreOptionsView: UIView {
             make.top.equalTo()(self.moveButton.mas_bottom).with().offset()(self.kLabelMarginTop)
         }
         
-//        tagButton.mas_makeConstraints { (make) -> Void in
-//            make.centerY.equalTo()(self.moveButton)
-//            make.left.equalTo()(self).with().offset()(self.kButtonsMarginLeftRight)
-//            make.width.equalTo()(self.tagButton.frame.size.width)
-//            make.height.equalTo()(self.tagButton.frame.size.height)
-//        }
-//        
-//        tagLabel.mas_makeConstraints { (make) -> Void in
-//            make.centerX.equalTo()(self.tagButton)
-//            make.top.equalTo()(self.tagButton.mas_bottom).with().offset()(self.kLabelMarginTop)
-//        }
+        tagButton.mas_makeConstraints { (make) -> Void in
+            make.centerY.equalTo()(self.moveButton)
+            make.left.equalTo()(self).with().offset()(self.kButtonsMarginLeftRight)
+            make.width.equalTo()(self.tagButton.frame.size.width)
+            make.height.equalTo()(self.tagButton.frame.size.height)
+        }
+        
+        tagLabel.mas_makeConstraints { (make) -> Void in
+            make.centerX.equalTo()(self.tagButton)
+            make.top.equalTo()(self.tagButton.mas_bottom).with().offset()(self.kLabelMarginTop)
+        }
         
         markButton.mas_makeConstraints { (make) -> Void in
             make.centerY.equalTo()(self.moveButton)
@@ -137,6 +139,10 @@ class MoreOptionsView: UIView {
     
     @objc private func moveAction(sender: AnyObject) {
         delegate?.moreOptionsViewDidSelectMoveTo(self)
+    }
+    
+    @objc private func tagAction(sender: AnyObject) {
+        delegate?.moreOptionsViewDidSelectTagAs(self)
     }
     
 }

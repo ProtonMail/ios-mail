@@ -32,17 +32,21 @@ extension UIFont {
     class func robotoMediumItalic(#size: CGFloat) -> UIFont {
         return UIFont(name: "Roboto-MediumItalic", size: size)!
     }
-
+    
     class func robotoLightItalic(#size: CGFloat) -> UIFont {
         return UIFont(name: "Roboto-LightItalic", size: size)!
     }
     
     struct Size {
         static var h1:CGFloat = 24.0
+        
+        /// size 18
         static var h2:CGFloat = 18.0
         static var h3:CGFloat = 17.0
+        /// size 16
         static var h4:CGFloat = 16.0
         static var h5:CGFloat = 14.0
+ /// size 12
         static var h6:CGFloat = 12.0
         static var h7:CGFloat = 9.0
     }

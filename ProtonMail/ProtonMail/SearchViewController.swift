@@ -18,6 +18,7 @@ class SearchViewController: ProtonMailViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchTextField: UITextField!
     
+    @IBOutlet weak var noResultLabel: UILabel!
     
     // MARK: - Private Constants
     
@@ -100,7 +101,8 @@ class SearchViewController: ProtonMailViewController {
     override func configureNavigationBar() {
         super.configureNavigationBar()
         self.searchDisplayController?.displaysSearchBarInNavigationBar = true
-        self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Blue_5C7A99        
+        //self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Blue_5C7A99
+        self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;//.Blue_475F77
     }
     
     func fetchedResultsControllerForSearch(managedObjectContext context: NSManagedObjectContext) -> NSFetchedResultsController? {
@@ -122,12 +124,21 @@ class SearchViewController: ProtonMailViewController {
                 }
                 
                 tableView.reloadData()
-                
+                showHideNoresult()
                 fetchedResultsController.delegate = self
             }
             
             if query.isEmpty {
                 return
+            }
+        }
+    }
+    
+    func showHideNoresult(){
+        noResultLabel.hidden = false
+        if let count = fetchedResultsController?.numberOfRowsInSection(0) {
+            if count > 0 {
+                noResultLabel.hidden = true
             }
         }
     }
@@ -150,7 +161,7 @@ class SearchViewController: ProtonMailViewController {
         if query.isEmpty || stop {
             return
         }
-        
+        noResultLabel.hidden = true
         tableView.showLoadingFooter()
         
         

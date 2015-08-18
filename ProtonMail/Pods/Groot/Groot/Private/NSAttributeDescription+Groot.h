@@ -27,3 +27,10 @@
 - (NSValueTransformer *)grt_JSONTransformer;
 
 @end
+
+
+@interface NSRelationshipDescription (Groot)
+
+- (NSValueTransformer *)grt_JSONTransformer;
+
+@end
