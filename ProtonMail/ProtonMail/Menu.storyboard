@@ -635,7 +635,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tPx-HX-rjT">
-                                <rect key="frame" x="20" y="45" width="560" height="500"/>
+                                <rect key="frame" x="20" y="40" width="560" height="540"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Apply Labels" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mSx-Zq-fBF">
                                         <rect key="frame" x="12" y="12" width="536" height="30"/>
@@ -674,7 +674,7 @@
                                         </constraints>
                                     </view>
                                     <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="jza-Nd-HPW">
-                                        <rect key="frame" x="12" y="96" width="536" height="347"/>
+                                        <rect key="frame" x="12" y="96" width="536" height="387"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="hoG-8N-jwQ">
                                             <size key="itemSize" width="50" height="50"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -682,8 +682,8 @@
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                     </collectionView>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DLH-ou-vZe">
-                                        <rect key="frame" x="12" y="96" width="536" height="347"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DLH-ou-vZe">
+                                        <rect key="frame" x="12" y="96" width="536" height="387"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="labelApplyCell" rowHeight="45" id="zeh-GA-VuO" customClass="LabelTableViewCell" customModule="ProtonMail" customModuleProvider="target">
@@ -691,7 +691,34 @@
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zeh-GA-VuO" id="wuB-ho-YEh">
                                                     <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ob3-FJ-Dei" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="6" width="156" height="32.5"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="156" id="drj-8y-wfa"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="flM-qQ-Dwf">
+                                                            <rect key="frame" x="481" y="7" width="51" height="31"/>
+                                                            <connections>
+                                                                <action selector="switchAction:" destination="zeh-GA-VuO" eventType="valueChanged" id="hSS-nN-U6f"/>
+                                                            </connections>
+                                                        </switch>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" secondItem="Ob3-FJ-Dei" secondAttribute="bottom" constant="6" id="GuV-jt-wKQ"/>
+                                                        <constraint firstItem="Ob3-FJ-Dei" firstAttribute="top" secondItem="wuB-ho-YEh" secondAttribute="top" constant="6" id="KYa-x6-6eW"/>
+                                                        <constraint firstAttribute="trailing" secondItem="flM-qQ-Dwf" secondAttribute="trailing" constant="6" id="Wm0-uu-6Lv"/>
+                                                        <constraint firstAttribute="centerY" secondItem="flM-qQ-Dwf" secondAttribute="centerY" id="c3A-Af-LJP"/>
+                                                        <constraint firstItem="Ob3-FJ-Dei" firstAttribute="leading" secondItem="wuB-ho-YEh" secondAttribute="leading" id="uJx-OB-Lpd"/>
+                                                    </constraints>
                                                 </tableViewCellContentView>
+                                                <connections>
+                                                    <outlet property="labelView" destination="Ob3-FJ-Dei" id="hrW-lt-lA0"/>
+                                                    <outlet property="labelWidth" destination="drj-8y-wfa" id="ZZ9-d5-0Zs"/>
+                                                    <outlet property="switchView" destination="flM-qQ-Dwf" id="VAQ-T7-ge5"/>
+                                                </connections>
                                             </tableViewCell>
                                         </prototypes>
                                         <connections>
@@ -700,7 +727,7 @@
                                         </connections>
                                     </tableView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HT9-xR-iih">
-                                        <rect key="frame" x="0.0" y="455" width="560" height="45"/>
+                                        <rect key="frame" x="0.0" y="495" width="560" height="45"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yPS-fX-Gy3">
                                                 <rect key="frame" x="0.0" y="0.0" width="280" height="45"/>
@@ -769,6 +796,7 @@
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="5Hj-dw-42e"/>
+                                        <exclude reference="kJS-gx-JRn"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -776,11 +804,12 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="9Rd-Ua-EDv" firstAttribute="top" secondItem="viD-Nu-yL2" secondAttribute="bottom" id="1VP-tA-dkf"/>
+                            <constraint firstItem="tPx-HX-rjT" firstAttribute="top" secondItem="kZ6-JY-rgk" secondAttribute="bottom" constant="20" id="4ap-HG-nlF"/>
                             <constraint firstAttribute="trailing" secondItem="tPx-HX-rjT" secondAttribute="trailing" constant="20" id="HlW-eq-8iT"/>
-                            <constraint firstItem="tPx-HX-rjT" firstAttribute="top" secondItem="kZ6-JY-rgk" secondAttribute="bottom" constant="25" id="Knt-nk-Xf9"/>
                             <constraint firstItem="tPx-HX-rjT" firstAttribute="leading" secondItem="DPk-ca-rce" secondAttribute="leading" constant="20" id="MX8-7s-55S"/>
                             <constraint firstItem="viD-Nu-yL2" firstAttribute="top" secondItem="DPk-ca-rce" secondAttribute="top" id="Me5-y3-Sf6"/>
                             <constraint firstItem="viD-Nu-yL2" firstAttribute="leading" secondItem="DPk-ca-rce" secondAttribute="leading" id="dv0-4d-oBP"/>
+                            <constraint firstItem="9Rd-Ua-EDv" firstAttribute="top" secondItem="tPx-HX-rjT" secondAttribute="bottom" constant="20" id="lRj-Px-bN4"/>
                             <constraint firstAttribute="trailing" secondItem="viD-Nu-yL2" secondAttribute="trailing" id="vtq-xd-kDf"/>
                             <constraint firstAttribute="centerX" secondItem="tPx-HX-rjT" secondAttribute="centerX" id="z0R-0P-IQM"/>
                         </constraints>

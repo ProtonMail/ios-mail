@@ -11,6 +11,8 @@ import Foundation
 
 class LablesViewController : UIViewController {
     
+    var viewModel : LabelViewModel!
+    
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -37,6 +39,7 @@ class LablesViewController : UIViewController {
     }
     
     @IBAction func applyAction(sender: AnyObject) {
+        self.viewModel.apply()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -83,15 +86,12 @@ extension LablesViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var mailboxCell = tableView.dequeueReusableCellWithIdentifier("labelApplyCell", forIndexPath: indexPath) as! LabelTableViewCell
-        //        mailboxCell.delegate = self
-        
+        var labelCell = tableView.dequeueReusableCellWithIdentifier("labelApplyCell", forIndexPath: indexPath) as! LabelTableViewCell
         var label = fetchedLabels?.objectAtIndexPath(indexPath) as? Label
-        mailboxCell.textLabel?.text = label?.name
-        
-        //        configureCell(mailboxCell, atIndexPath: indexPath)
-        
-        return mailboxCell
+        labelCell.viewModel = self.viewModel;
+        labelCell.ConfigCell(label!, applyed: viewModel.isEnabled(label!.labelID))
+    
+        return labelCell
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {

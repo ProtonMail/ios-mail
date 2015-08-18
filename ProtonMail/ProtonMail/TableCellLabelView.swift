@@ -49,8 +49,10 @@ class TableCellLabelView: UIView {
     }
     
     
-    func setText(label  :  String, color : UIColor) ->CGFloat {
+    func setText(label: String, color: UIColor, font:UIFont = UIFont.robotoLight(size: 9)) ->CGFloat {
         self.textLabel.text = "  \(label)  "
+        textLabel.font = font
+        
         let s = self.textLabel.sizeThatFits(CGSizeZero)
         
         textLabel.mas_makeConstraints { (make) -> Void in
@@ -59,7 +61,6 @@ class TableCellLabelView: UIView {
             make.right.equalTo()(self.contentView)
             make.left.equalTo()(self.contentView)
         }
-        
         textLabel.textColor = color
         textLabel.layer.borderColor = color.CGColor
         return s.width + self.kCoverImageViewWidth;

@@ -87,7 +87,6 @@ public class EventCheckResponse : ApiResponse {
     }
 }
 
-
 public class MessageEvent {
     
     var Action : Int!
