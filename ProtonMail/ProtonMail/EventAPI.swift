@@ -51,7 +51,6 @@ public class EventLatestIDResponse : ApiResponse {
     }
 }
 
-
 public class EventCheckResponse : ApiResponse {
     var eventID : String = ""
     var isRefresh : Bool = false

@@ -106,5 +106,49 @@ public class RemoveLabelFromMessageRequest<T : ApiResponse> : ApiRequest<T> {
 }
 
 
+// MARK : remove label from message
+public class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
+    
+    var labelName: String!
+    var color:String!
+    
+    init(name:String!, color:String!) {
+        self.labelName = name
+        self.color = color
+    }
+    
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+        var out : [String : AnyObject] = [String : AnyObject]()
+        out["Name"] = self.labelName
+        out["Color"] = self.color
+        out["Display"] = "0"
+        PMLog.D(self.JSONStringify(out, prettyPrinted: true))
+        return out
+    }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .POST
+    }
+    
+    override public func getRequestPath() -> String {
+        return LabelAPI.Path + AppConstants.getDebugOption
+    }
+    
+    override public func getVersion() -> Int {
+        return LabelAPI.V_RemoveLabelFromMessageRequest
+    }
+}
+public class CreateLabelRequestResponse : ApiResponse {
+    var label:Dictionary<String,AnyObject>?
+    
+    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
+        
+        PMLog.D(response.JSONStringify(prettyPrinted: true))
+        
+        self.label = response["Label"] as? Dictionary<String,AnyObject>
+       
+        return true
+    }
+}
 
 

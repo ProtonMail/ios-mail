@@ -148,7 +148,6 @@ class MessageViewController: ProtonMailViewController {
 
     func moreButtonTapped() {
         self.emailView!.animateMoreViewOptions()
-        self.performSegueWithIdentifier("toApplyLabelsSegue", sender: self)
     }
     
     func setPresentationStyleForSelfController(selfController : UIViewController,  presentingController: UIViewController)
@@ -265,6 +264,11 @@ extension MessageViewController : MoreOptionsViewDelegate {
         navigationController?.popViewControllerAnimated(true)
 
         self.emailView!.animateMoreViewOptions()
+    }
+    
+    func moreOptionsViewDidSelectTagAs(moreOptionsView: MoreOptionsView) {
+        self.emailView!.animateMoreViewOptions()
+        self.performSegueWithIdentifier("toApplyLabelsSegue", sender: self)
     }
     
     func moreOptionsViewDidSelectMoveTo(moreOptionsView: MoreOptionsView) {

@@ -13,6 +13,10 @@ class LablesViewController : UIViewController {
     
     var viewModel : LabelViewModel!
     
+    let titles : [String] = ["#7272a7","#cf5858", "#c26cc7", "#7569d1", "#69a9d1", "#5ec7b7", "#72bb75", "#c3d261", "#e6c04c", "#e6984c", "#8989ac", "#cf7e7e", "#c793ca", "#9b94d1", "#a8c4d5", "#97c9c1", "#9db99f", "#c6cd97", "#e7d292", "#dfb286"]
+    
+    private var selected : NSIndexPath?
+    private var isCreateView: Bool = false
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -36,15 +40,50 @@ class LablesViewController : UIViewController {
         inputContentView.layer.borderColor = UIColor.lightGrayColor().CGColor
         inputContentView.layer.borderWidth = 1.0
         self.setupFetchedResultsController()
+        
+        //var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+       // self.view.addGestureRecognizer(tapGestureRecognizer)
     }
     
     @IBAction func applyAction(sender: AnyObject) {
-        self.viewModel.apply()
-        self.dismissViewControllerAnimated(true, completion: nil)
+        if isCreateView {
+            // start
+            viewModel.createLabel(newLabelInput.text, color: titles[selected!.row], error: { () -> Void in
+                //error
+            }, complete: { () -> Void in
+                //ok
+            })
+            //viewModel.createLabel(newLabelInput.text, titles[selected!.row], error)
+            // viewModel.createLabel() {
+                newLabelInput.text = ""
+                tableView.hidden = false;
+                isCreateView = false
+                collectionView.hidden = true;
+                applyButton.setTitle("Apply", forState: UIControlState.Normal)
+//            } else {
+//                
+//                // show alert
+//            }
+        
+            
+            
+        } else {
+            self.viewModel.apply()
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
     }
     
     @IBAction func cancelAction(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        if isCreateView {
+            newLabelInput.text = ""
+            tableView.hidden = false;
+            isCreateView = false
+            collectionView.hidden = true;
+            applyButton.setTitle("Apply", forState: UIControlState.Normal)
+        } else {
+            
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
     }
     
     private func setupFetchedResultsController() {
@@ -58,12 +97,31 @@ class LablesViewController : UIViewController {
         }
     }
     
+    func dismissKeyboard() {
+        if (self.newLabelInput != nil) {
+            newLabelInput.resignFirstResponder()
+        }
+    }
+    
+    @IBAction func startEditing(sender: AnyObject) {
+        tableView.hidden = true;
+        isCreateView = true
+        collectionView.hidden = false;
+        applyButton.setTitle("Add", forState: UIControlState.Normal)
+    }
+    
+    @IBAction func endEditing(sender: UITextField) {
+        if sender.text.isEmpty {
+            tableView.hidden = false;
+            isCreateView = false
+            collectionView.hidden = true;
+            applyButton.setTitle("Apply", forState: UIControlState.Normal)
+        }
+    }
+    
+    @IBAction func valueChanged(sender: UITextField) {
+    }
 }
-
-
-
-
-
 
 // MARK: - UITableViewDataSource
 
@@ -90,7 +148,7 @@ extension LablesViewController: UITableViewDataSource {
         var label = fetchedLabels?.objectAtIndexPath(indexPath) as? Label
         labelCell.viewModel = self.viewModel;
         labelCell.ConfigCell(label!, applyed: viewModel.isEnabled(label!.labelID))
-    
+        
         return labelCell
     }
     
@@ -118,9 +176,6 @@ extension LablesViewController: UITableViewDataSource {
     }
 }
 
-
-
-
 // MARK: - UITableViewDelegate
 
 extension LablesViewController: UITableViewDelegate {
@@ -139,6 +194,58 @@ extension LablesViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // verify whether the user is checking messages or not
     }
+}
+
+
+
+
+extension LablesViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+    //    let sectionInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
+   
+    // MARK: UICollectionViewDataSource
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 20
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("labelColorCell", forIndexPath: indexPath) as! UICollectionViewCell
+        let color = titles[indexPath.row]
+        cell.backgroundColor = UIColor(hexString: color, alpha: 1.0)
+        return cell
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
+        
+        if let index = selected {
+            let oldCell = collectionView.cellForItemAtIndexPath(index)
+            oldCell?.layer.borderWidth = 0
+        }
+        
+        let newCell = collectionView.cellForItemAtIndexPath(indexPath)
+        newCell?.layer.borderWidth = 4
+        newCell?.layer.borderColor = UIColor.whiteColor().CGColor
+        self.selected = indexPath
+
+        
+        self.dismissKeyboard()
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        return UIEdgeInsetsMake(0, 0, 0, 0);
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
+    {
+        return CGSize(width: collectionView.frame.size.width/2, height: 30)
+    }
+    
+
 }
 
 

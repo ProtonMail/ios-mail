@@ -867,6 +867,10 @@ extension MessageDetailView: MoreOptionsViewDelegate {
         
         animateMoreViewOptions()
     }
+    
+    func moreOptionsViewDidSelectTagAs(moreOptionsView: MoreOptionsView) {
+        animateMoreViewOptions()
+    }
 }
 
 

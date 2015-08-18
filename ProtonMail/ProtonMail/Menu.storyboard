@@ -656,10 +656,15 @@
                                                     <constraint firstAttribute="width" constant="16" id="vvu-QX-Sqj"/>
                                                 </constraints>
                                             </imageView>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Create new label" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bx1-og-R61">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Create new label" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bx1-og-R61">
                                                 <rect key="frame" x="34" y="0.0" width="502" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <action selector="endEditing:" destination="C6e-Un-S8J" eventType="editingDidEnd" id="87w-oI-s4p"/>
+                                                    <action selector="startEditing:" destination="C6e-Un-S8J" eventType="editingDidBegin" id="dVE-Wq-d6m"/>
+                                                    <action selector="valueChanged:" destination="C6e-Un-S8J" eventType="valueChanged" id="rX2-oL-NNR"/>
+                                                </connections>
                                             </textField>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -673,15 +678,6 @@
                                             <constraint firstAttribute="bottom" secondItem="Bx1-og-R61" secondAttribute="bottom" id="rQz-Ga-hhi"/>
                                         </constraints>
                                     </view>
-                                    <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="jza-Nd-HPW">
-                                        <rect key="frame" x="12" y="96" width="536" height="387"/>
-                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="hoG-8N-jwQ">
-                                            <size key="itemSize" width="50" height="50"/>
-                                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        </collectionViewFlowLayout>
-                                    </collectionView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DLH-ou-vZe">
                                         <rect key="frame" x="12" y="96" width="536" height="387"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -726,6 +722,45 @@
                                             <outlet property="delegate" destination="C6e-Un-S8J" id="qqU-WX-qI7"/>
                                         </connections>
                                     </tableView>
+                                    <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="jza-Nd-HPW">
+                                        <rect key="frame" x="12" y="96" width="536" height="387"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="dub-wn-3LJ">
+                                            <size key="itemSize" width="50" height="50"/>
+                                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        </collectionViewFlowLayout>
+                                        <cells>
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="labelColorCell" id="XvP-JL-pkd">
+                                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="40"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9X2-SK-Wvf">
+                                                            <rect key="frame" x="0.0" y="0.0" width="200" height="40"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        </view>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                </view>
+                                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstItem="9X2-SK-Wvf" firstAttribute="leading" secondItem="XvP-JL-pkd" secondAttribute="leading" id="GHo-aq-nos"/>
+                                                    <constraint firstAttribute="trailing" secondItem="9X2-SK-Wvf" secondAttribute="trailing" id="dQN-vf-HrF"/>
+                                                    <constraint firstAttribute="bottom" secondItem="9X2-SK-Wvf" secondAttribute="bottom" id="sOb-t8-ywW"/>
+                                                    <constraint firstItem="9X2-SK-Wvf" firstAttribute="top" secondItem="XvP-JL-pkd" secondAttribute="top" id="smw-rP-jRj"/>
+                                                </constraints>
+                                                <size key="customSize" width="200" height="40"/>
+                                            </collectionViewCell>
+                                        </cells>
+                                        <connections>
+                                            <outlet property="dataSource" destination="C6e-Un-S8J" id="LTN-cj-kd5"/>
+                                            <outlet property="delegate" destination="C6e-Un-S8J" id="BkV-5k-KYD"/>
+                                        </connections>
+                                    </collectionView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HT9-xR-iih">
                                         <rect key="frame" x="0.0" y="495" width="560" height="45"/>
                                         <subviews>

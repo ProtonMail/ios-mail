@@ -660,6 +660,10 @@ extension MailboxViewController: MoreOptionsViewDelegate {
         }
     }
     
+    func moreOptionsViewDidSelectTagAs(moreOptionsView: MoreOptionsView) {
+        hideMoreButtonIfNeeded()
+    }
+    
     func moreOptionsViewDidMarkAsUnread(moreOptionsView: MoreOptionsView) {
         selectedMessagesSetValue(setValue: false, forKey: Message.Attributes.isRead)
         hideMoreButtonIfNeeded()

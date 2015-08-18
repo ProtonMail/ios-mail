@@ -65,6 +65,22 @@ class LabelsDataService {
         return nil
     }
     
+    func addNewLabel(response : Dictionary<String, AnyObject>?) {
+        if let label = response {
+            let context = sharedCoreDataService.newMainManagedObjectContext()
+            context.performBlockAndWait() {
+                var error: NSError?
+                var labes = GRTJSONSerialization.mergeObjectsForEntityName(Label.Attributes.entityName, fromJSONArray: [label], inManagedObjectContext: context, error: &error)
+                if error == nil {
+                    error = context.saveUpstreamIfNeeded()
+                } else {
+                    NSLog("\(__FUNCTION__) error: \(error)")
+                }
+            }
+
+        }
+    }
+    
 //
 //    /// Only call from the main thread
 //    func allContacts() -> [Contact] {

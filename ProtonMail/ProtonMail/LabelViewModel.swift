@@ -10,6 +10,10 @@ import Foundation
 
 
 public class LabelViewModel {
+    
+    public typealias OkBlock = () -> Void
+    public typealias ErrorBlock = () -> Void
+    
     public init() { }
     
     public func applyLabel(labelID: String) -> Bool {
@@ -28,6 +32,9 @@ public class LabelViewModel {
         fatalError("This method must be overridden")
     }
     
+    public func createLabel (name : String, color : String, error:ErrorBlock,  complete: OkBlock)  {
+        fatalError("This method must be overridden")
+    }
 }
 
 
@@ -75,41 +82,52 @@ public class LabelViewModelImpl : LabelViewModel {
     
     override public func apply() {
         
-        //let context = sharedCoreDataService.newMainManagedObjectContext()
-        
-        if addList.count > 0 {
-            for str in addList.allObjects {
-                if let str = str as? String {
-                    let api = ApplyLabelToMessageRequest(labelID: str, messages: [message.messageID])
-                    api.call(nil)
-                    
-//                    if let label = Label.labelForLableID(str, inManagedObjectContext: context) {
-//                        var labelObjs = self.message.mutableSetValueForKey("labels")
-//                        labelObjs.addObject(label)
-//                        self.message.setValue(labelObjs, forKey: "labels")
-//                    }
+//        let context = sharedCoreDataService.newMainManagedObjectContext()
+//        context.performBlockAndWait { () -> Void in
+            if self.addList.count > 0 {
+                for str in self.addList.allObjects {
+                    if let str = str as? String {
+//                        if let label = Label.labelForLableID(str, inManagedObjectContext: context) {
+//                            var labelObjs = self.message.mutableSetValueForKey("labels")
+//                            labelObjs.addObject(label)
+//                            self.message.setValue(labelObjs, forKey: "labels")
+//                        }
+                        let api = ApplyLabelToMessageRequest(labelID: str, messages: [self.message.messageID])
+                        api.call(nil)
+                    }
                     
                 }
-                
             }
-        }
-        
-        if removeList.count > 0 {
-            for str in removeList.allObjects {
-                if let str = str as? String {
-                    let api = RemoveLabelFromMessageRequest(labelID: str, messages: [message.messageID])
-                    api.call(nil)
-                    
-//                    if let label = Label.labelForLableID(str, inManagedObjectContext: context) {
-//                        var labelObjs = self.message.mutableSetValueForKey("labels")
-//                        labelObjs.removeObject(label)
-//                        self.message.setValue(labelObjs, forKey: "labels")
-//                    }
+            
+            if self.removeList.count > 0 {
+                for str in self.removeList.allObjects {
+                    if let str = str as? String {
+//                        if let label = Label.labelForLableID(str, inManagedObjectContext: context) {
+//                            var labelObjs = self.message.mutableSetValueForKey("labels")
+//                            labelObjs.removeObject(label)
+//                            self.message.setValue(labelObjs, forKey: "labels")
+//                        }
+                        let api = RemoveLabelFromMessageRequest(labelID: str, messages: [self.message.messageID])
+                        api.call(nil)
+                    }
                 }
             }
-        }
+            //context.saveUpstreamIfNeeded()
+        //}
+    }
+    
+    override public func createLabel(name: String, color: String, error:ErrorBlock,  complete: OkBlock) {
+        let api = CreateLabelRequest<CreateLabelRequestResponse>(name: name, color: color)
         
-        //context.saveUpstreamIfNeeded()
+        api.call { (task, response, hasError) -> Void in
+            if hasError {
+                error();
+            } else {
+                //var label = response["Label"] as? Dictionary<String,AnyObject>
+                sharedLabelsDataService.addNewLabel(response?.label);
+                complete()
+            }
+        }
     }
     
 }
