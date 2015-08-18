@@ -634,27 +634,45 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="popup_behind_image" translatesAutoresizingMaskIntoConstraints="NO" id="viD-Nu-yL2">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tPx-HX-rjT">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tPx-HX-rjT">
                                 <rect key="frame" x="20" y="45" width="560" height="500"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Apply Labels" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mSx-Zq-fBF">
                                         <rect key="frame" x="12" y="12" width="536" height="30"/>
-                                        <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="vC0-Q5-oK1"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <color key="textColor" red="0.27450980392156865" green="0.26666666666666666" blue="0.32941176470588235" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WWM-xq-lcc">
                                         <rect key="frame" x="12" y="54" width="536" height="30"/>
-                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="label_addlabel" translatesAutoresizingMaskIntoConstraints="NO" id="ADH-4p-Nm7">
+                                                <rect key="frame" x="6" y="7" width="16" height="16"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="16" id="FqW-Fw-0Q0"/>
+                                                    <constraint firstAttribute="width" constant="16" id="vvu-QX-Sqj"/>
+                                                </constraints>
+                                            </imageView>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Create new label" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bx1-og-R61">
+                                                <rect key="frame" x="34" y="0.0" width="502" height="30"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="Bx1-og-R61" firstAttribute="leading" secondItem="ADH-4p-Nm7" secondAttribute="trailing" constant="12" id="5PO-FB-KYB"/>
+                                            <constraint firstItem="ADH-4p-Nm7" firstAttribute="leading" secondItem="WWM-xq-lcc" secondAttribute="leading" constant="6" id="9IL-Yj-o4V"/>
+                                            <constraint firstItem="ADH-4p-Nm7" firstAttribute="top" secondItem="WWM-xq-lcc" secondAttribute="top" constant="7" id="BYn-mL-jwo"/>
+                                            <constraint firstAttribute="trailing" secondItem="Bx1-og-R61" secondAttribute="trailing" id="CBB-4b-PGn"/>
+                                            <constraint firstAttribute="bottom" secondItem="ADH-4p-Nm7" secondAttribute="bottom" constant="7" id="K1Q-Xs-W7R"/>
+                                            <constraint firstItem="Bx1-og-R61" firstAttribute="top" secondItem="WWM-xq-lcc" secondAttribute="top" id="hCG-LP-pSs"/>
+                                            <constraint firstAttribute="bottom" secondItem="Bx1-og-R61" secondAttribute="bottom" id="rQz-Ga-hhi"/>
+                                        </constraints>
                                     </view>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DLH-ou-vZe">
-                                        <rect key="frame" x="12" y="96" width="536" height="347"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </tableView>
                                     <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="jza-Nd-HPW">
                                         <rect key="frame" x="12" y="96" width="536" height="347"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="hoG-8N-jwQ">
@@ -664,6 +682,23 @@
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                     </collectionView>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DLH-ou-vZe">
+                                        <rect key="frame" x="12" y="96" width="536" height="347"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <prototypes>
+                                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="labelApplyCell" rowHeight="45" id="zeh-GA-VuO" customClass="LabelTableViewCell" customModule="ProtonMail" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="536" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zeh-GA-VuO" id="wuB-ho-YEh">
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </tableViewCellContentView>
+                                            </tableViewCell>
+                                        </prototypes>
+                                        <connections>
+                                            <outlet property="dataSource" destination="C6e-Un-S8J" id="43u-gp-EV9"/>
+                                            <outlet property="delegate" destination="C6e-Un-S8J" id="qqU-WX-qI7"/>
+                                        </connections>
+                                    </tableView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HT9-xR-iih">
                                         <rect key="frame" x="0.0" y="455" width="560" height="45"/>
                                         <subviews>
@@ -758,6 +793,7 @@
                         <outlet property="collectionView" destination="jza-Nd-HPW" id="eG1-dh-oGD"/>
                         <outlet property="contentView" destination="tPx-HX-rjT" id="75b-ul-oR4"/>
                         <outlet property="inputContentView" destination="WWM-xq-lcc" id="aMk-ee-XT7"/>
+                        <outlet property="newLabelInput" destination="Bx1-og-R61" id="HCi-hK-qPZ"/>
                         <outlet property="tableView" destination="DLH-ou-vZe" id="m38-Lh-eKz"/>
                         <outlet property="titleLabel" destination="mSx-Zq-fBF" id="1m2-py-tqy"/>
                     </connections>
@@ -2608,6 +2644,7 @@
         <image name="forward" width="28" height="23"/>
         <image name="hamburger" width="20" height="16"/>
         <image name="inbox_selected" width="24" height="16"/>
+        <image name="label_addlabel" width="16" height="16"/>
         <image name="mail_attachment" width="14" height="14"/>
         <image name="mail_lock" width="14" height="14"/>
         <image name="mail_starred" width="16" height="16"/>

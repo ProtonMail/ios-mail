@@ -29,8 +29,6 @@ class MenuTableViewCell: UITableViewCell {
         selectedBackgroundView.backgroundColor = UIColor.ProtonMail.Menu_SelectedBackground
         
         self.selectedBackgroundView = selectedBackgroundView
-        self.separatorInset = UIEdgeInsetsZero
-        self.layoutMargins = UIEdgeInsetsZero
     }
     
     func configCell (item : MenuItem!) {

@@ -134,6 +134,7 @@
 		75484B8B1AF29EBF00B97472 /* NSDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */; };
 		754CD4881AB809D60084C54A /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754CD4871AB809D60084C54A /* SettingTableViewController.swift */; };
 		754CD48B1AB80D770084C54A /* CustomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754CD48A1AB80D770084C54A /* CustomHeaderView.swift */; };
+		75510BAB1B82BDEB001348FF /* LabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75510BAA1B82BDEB001348FF /* LabelTableViewCell.swift */; };
 		755405B21B1648D2003BFC0A /* ComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755405B01B1648D2003BFC0A /* ComposeView.swift */; };
 		755405B31B1648D2003BFC0A /* ComposeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755405B11B1648D2003BFC0A /* ComposeView.xib */; };
 		755405B51B164A99003BFC0A /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755405B41B164A99003BFC0A /* ComposeViewController.swift */; };
@@ -344,6 +345,7 @@
 		75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateExtension.swift; sourceTree = "<group>"; };
 		754CD4871AB809D60084C54A /* SettingTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
 		754CD48A1AB80D770084C54A /* CustomHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomHeaderView.swift; sourceTree = "<group>"; };
+		75510BAA1B82BDEB001348FF /* LabelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelTableViewCell.swift; sourceTree = "<group>"; };
 		755405B01B1648D2003BFC0A /* ComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeView.swift; sourceTree = "<group>"; };
 		755405B11B1648D2003BFC0A /* ComposeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComposeView.xib; sourceTree = "<group>"; };
 		755405B41B164A99003BFC0A /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
@@ -859,6 +861,7 @@
 			isa = PBXGroup;
 			children = (
 				75E652B31B82AC0D0084DDF8 /* LabelsViewController.swift */,
+				75510BAA1B82BDEB001348FF /* LabelTableViewCell.swift */,
 			);
 			name = Labels;
 			sourceTree = "<group>";
@@ -1225,6 +1228,7 @@
 				7514FC291B79825F00DDD297 /* MenuItem.swift in Sources */,
 				7069620B1A7139C8001443B2 /* SettingsViewController.swift in Sources */,
 				07520CFC1AA67D38000D2175 /* PushNotificationService.swift in Sources */,
+				75510BAB1B82BDEB001348FF /* LabelTableViewCell.swift in Sources */,
 				75FFCACA1B5D70FC0065BFEC /* APIErrors.swift in Sources */,
 				07B1237E1AB8ECEC006EA38C /* AttachmentCollectionViewCell.swift in Sources */,
 				70945E701A8135EC002B6837 /* UILabel+ProtonMail.swift in Sources */,
