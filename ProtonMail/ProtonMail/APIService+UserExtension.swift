@@ -22,6 +22,7 @@ extension APIService {
     typealias UserInfoBlock = (UserInfo?, NSError?) -> Void
     typealias UserNameCheckBlock = (Bool, NSError?) -> Void
     
+
     private struct UserPath {
         static let base = "/users"
     }
