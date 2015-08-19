@@ -199,8 +199,12 @@ class MailboxTableViewCell: UITableViewCell {
     
     private func updateLables (labelView : TableCellLabelView, labelConstraint : NSLayoutConstraint, label:Label?) {
         if let label = label {
-            let w = labelView.setText(label.name, color: UIColor(hexString: label.color, alpha: 1.0) )
-            labelConstraint.constant = w
+            if label.name.isEmpty || label.color.isEmpty {
+                labelConstraint.constant = 0
+            } else {
+                let w = labelView.setText(label.name, color: UIColor(hexString: label.color, alpha: 1.0) )
+                labelConstraint.constant = w
+            }
         } else {
             labelConstraint.constant = 0
         }

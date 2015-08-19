@@ -105,6 +105,7 @@ class MailboxPasswordViewController: UIViewController {
             } else {
                 AuthCredential.setupToken(password, isRememberMailbox: self.isRemembered)
                 MBProgressHUD.showHUDAddedTo(view, animated: true)
+                sharedLabelsDataService.fetchLabels()
                 sharedUserDataService.fetchUserInfo() { info, error in
                     MBProgressHUD.hideHUDForView(self.view, animated: true)
                     if error != nil {
