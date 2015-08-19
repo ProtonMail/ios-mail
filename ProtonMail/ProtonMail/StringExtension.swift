@@ -85,7 +85,6 @@ extension String {
     }
     
     
-    
     func ln2br() -> String {
         return  self.stringByReplacingOccurrencesOfString("\n", withString:  "<br>") 
     }

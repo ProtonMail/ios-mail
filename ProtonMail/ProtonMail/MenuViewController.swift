@@ -44,7 +44,7 @@ class MenuViewController: UIViewController {
     private let kLabelTableCellId = "menu_label_cell"
     
     // temp vars
-    private var lastSegue: String = "toInbox"
+    private var lastSegue: String = "toMailboxSegue"
     private var lastMenuItem: MenuItem = MenuItem.inbox
     
     
@@ -82,7 +82,7 @@ class MenuViewController: UIViewController {
     
     func performLastSegue(notification: NSNotification)
     {
-        self.performSegueWithIdentifier(lastSegue, sender: self)
+        self.performSegueWithIdentifier(lastSegue, sender: NSIndexPath(forRow: 0, inSection: 0))
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -108,7 +108,7 @@ class MenuViewController: UIViewController {
                 let mailboxViewController: MailboxViewController = navigationController.viewControllers.first as! MailboxViewController
                 if let indexPath = sender as? NSIndexPath {
                     let count = fetchedLabels?.fetchedObjects?.count
-                    self.lastSegue = segue.identifier!
+                    //self.lastSegue = segue.identifier!
                     if indexPath.section == 0 {
                         self.lastMenuItem = self.itemForIndexPath(indexPath)
                         mailboxViewController.viewModel = MailboxViewModelImpl(location: self.lastMenuItem.menuToLocation)
