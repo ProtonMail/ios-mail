@@ -58,7 +58,6 @@ extension NSError {
             
             message = message! + localizedRecoverySuggestion!
         }
-        
         return UIAlertController(title: localizedDescription, message: message, preferredStyle: .Alert)
     }
     

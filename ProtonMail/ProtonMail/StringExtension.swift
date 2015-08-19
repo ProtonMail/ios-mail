@@ -10,6 +10,12 @@ import Foundation
 
 extension String {
     
+    func contains(s: String) -> Bool
+    {
+        return (self.rangeOfString(s) != nil) ? true : false
+    }
+
+    
     /**
     String extension check is email valid use the basic regex
     

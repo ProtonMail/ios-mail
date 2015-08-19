@@ -64,7 +64,27 @@ class APIService {
         if let completion = completion {
             let failure: AFNetworkingFailureBlock = { task, error in
                 PMLog.D("\(__FUNCTION__) Error: \(error)")
-                completion(task: task, response: nil, error: error)
+                
+                var errorCode : Int = 200;
+                if let errorUserInfo = error.userInfo {
+                    if let detail = errorUserInfo["com.alamofire.serialization.response.error.response"] as? NSHTTPURLResponse {
+                        errorCode = detail.statusCode
+                    }
+                    else {
+                        errorCode = error.code
+                    }
+                }
+                
+                if authenticated && errorCode == 401 {
+                    AuthCredential.expireOrClear()
+                    if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
+                        sharedUserDataService.signOut(false);
+                    }else {
+                        self.request(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)
+                    }
+                } else {
+                    completion(task: task, response: nil, error: error)
+                }
             }
             let success: AFNetworkingSuccessBlock = { task, responseObject in
                 //PMLog("\(__FUNCTION__) Response: \(responseObject)")
@@ -120,50 +140,80 @@ class APIService {
     internal func fetchAuthCredential(#completion: AuthCredentialBlock) {
         if let credential = AuthCredential.fetchFromKeychain() {
             if !credential.isExpired {
-                self.tried = 0
-                self.sessionManager.requestSerializer.setAuthorizationHeaderFieldWithCredential(credential)
-                PMLog.D("credential: \(credential)")
-                completion(credential, nil)
+                if (credential.password ?? "").isEmpty {
+                    self.tried = 0
+                    AuthCredential.clearFromKeychain()
+                    completion(nil, NSError.authCacheBad())
+                    sharedUserDataService.signOut(false)
+                } else {
+                    
+                    self.tried = 0
+                    self.sessionManager.requestSerializer.setAuthorizationHeaderFieldWithCredential(credential)
+                    PMLog.D("credential: \(credential)")
+                    completion(credential, nil)
+                }
             } else {
                 self.tried += 1
-                authRefresh (credential.password  ?? "") { (task, authCredential, error) -> Void in
-                    if error == nil && self.tried < 4{
-                        self.fetchAuthCredential(completion: completion)
-                    } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
-                        AuthCredential.clearFromKeychain()
-                        self.fetchAuthCredential(completion: completion)
-                    } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
-                        AuthCredential.clearFromKeychain()
-                        completion(authCredential, error)
-                        sharedUserDataService.signOut(false)
-                    } else if self.tried > 3 {
-                        self.tried = 0
-                        AuthCredential.clearFromKeychain()
-                        completion(nil, NSError.authCacheBad())
-                        sharedUserDataService.signOut(false)
-                    }
-                    else {
-                        completion(authCredential, error)
+                if (credential.password ?? "").isEmpty {
+                    self.tried = 0
+                    AuthCredential.clearFromKeychain()
+                    completion(nil, NSError.authCacheBad())
+                    sharedUserDataService.signOut(false)
+                } else {
+                    authRefresh (credential.password  ?? "") { (task, authCredential, error) -> Void in
+                        if error == nil && self.tried < 4{
+                            self.fetchAuthCredential(completion: completion)
+                        } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
+                            AuthCredential.clearFromKeychain()
+                            self.fetchAuthCredential(completion: completion)
+                        } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
+                            AuthCredential.clearFromKeychain()
+                            completion(authCredential, error)
+                            sharedUserDataService.signOut(false)
+                        } else if self.tried > 3 {
+                            self.tried = 0
+                            AuthCredential.clearFromKeychain()
+                            completion(nil, NSError.authCacheBad())
+                            sharedUserDataService.signOut(false)
+                        }
+                        else {
+                            completion(authCredential, error)
+                        }
                     }
                 }
             }
         } else {
-            let username = sharedUserDataService.username ?? ""
-            let password = sharedUserDataService.password ?? ""
             
-            let completionWrapper: AuthCredentialBlock = { authCredential, error in
-                if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.credentialInvalid {
-                    sharedUserDataService.signOut(true)
-                    userCachedStatus.signOut()
-                }
+            if sharedUserDataService.isSignedIn {
+                completion(nil, NSError.authCacheBad())
+                sharedUserDataService.signOut(true)
+                userCachedStatus.signOut()
+                NSError.alertUpdatedToast()
             }
-            
-            let authApi = AuthRequest(username: username, password: password)
-            authApi.call() { task, res , hasError in
-                PMLog.D("test")
-            }
-            
-            //authAuth(username, password: password, completion: completionWrapper)
+            //            let username = sharedUserDataService.username ?? ""
+            //            let password = sharedUserDataService.password ?? ""
+            //
+            //            let completionWrapper: AuthCredentialBlock = { authCredential, error in
+            //                if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.credentialInvalid {
+            //                    sharedUserDataService.signOut(true)
+//                    userCachedStatus.signOut()
+//                }
+//            }
+//            
+//            let authApi = AuthRequest<AuthResponse>(username: username, password: password)
+//            authApi.call() { task, res , hasError in
+//                if hasError {
+//                    completionWrapper(nil, res?.error)
+//                }
+//                else if res?.code == 1000 {
+//                    let credential = AuthCredential(res: res)
+//                    credential.storeInKeychain()
+//                    completionWrapper(credential, nil)
+//                }
+//                else {
+//                    completionWrapper(nil, nil)
+//                }
+//            }
         }
     }
     

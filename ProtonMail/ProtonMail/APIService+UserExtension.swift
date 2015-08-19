@@ -102,14 +102,15 @@ extension APIService {
         completion?(task: nil, response: nil, error: NSError.badParameter(emails))
     }
     
-    func userUpdateKeypair(publicKey: String, privateKey: String, completion: CompletionBlock?) {
-        let path = UserPath.base.stringByAppendingPathComponent("key")
+    func userUpdateKeypair(pwd: String, publicKey: String, privateKey: String, completion: CompletionBlock?) {
+        let path = UserPath.base.stringByAppendingPathComponent("keys")
         let parameters = [
-            "public" : publicKey,
-            "private" : privateKey
+            "Password" : pwd,
+            "PublicKey" : publicKey,
+            "PrivateKey" : privateKey
         ]
-        
-        request(method: .POST, path: path, parameters: parameters, completion: completion)
+        setApiVesion(2, appVersion: 1)
+        request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
     
     func userCheckExist(user_name:String, completion: UserNameCheckBlock) {

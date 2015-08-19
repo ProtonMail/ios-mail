@@ -216,7 +216,7 @@ class UserDataService {
         if let userInfo = userInfo {
             if let mailboxPassword = mailboxPassword {
                 if let newPrivateKey = OpenPGP().updatePassphrase(userInfo.privateKey, publicKey: userInfo.publicKey, old_pass: mailboxPassword, new_pass: newMailboxPassword, error: &error) {
-                    sharedAPIService.userUpdateKeypair(userInfo.publicKey, privateKey: newPrivateKey, completion: { task, response, error in
+                    sharedAPIService.userUpdateKeypair(sharedUserDataService.password!, publicKey: userInfo.publicKey, privateKey: newPrivateKey, completion: { task, response, error in
                         if error == nil {
                             self.mailboxPassword = newMailboxPassword
                             
@@ -240,10 +240,9 @@ class UserDataService {
             if let newPrivateKey = OpenPGP().generateKey(mbp, userName: username!, error: &error) {
                 var pubkey = newPrivateKey["public"] as! String
                 var privkey = newPrivateKey["private"] as! String
-                sharedAPIService.userUpdateKeypair(pubkey, privateKey: privkey, completion: { task, response, error in
+                sharedAPIService.userUpdateKeypair("" , publicKey: pubkey, privateKey: privkey, completion: { task, response, error in
                     if error == nil {
                         self.mailboxPassword = mbp;
-                        
                         let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: privkey, publicKey: pubkey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses)
                         
                         self.userInfo = userInfo
@@ -255,7 +254,6 @@ class UserDataService {
             }
         }
     }
-    
     
     func updateUserDomiansOrder(email_domains: Array<Address>, completion: CompletionBlock) {
         
