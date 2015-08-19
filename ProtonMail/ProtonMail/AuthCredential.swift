@@ -77,13 +77,12 @@ class AuthCredential: NSObject, NSCoding {
         self.privateKey = res.encPrivateKey
     }
     
-    
     required init(res : AuthResponse!) {
         
         self.encryptToken = res.accessToken
         self.refreshToken = res.refreshToken
         self.userID = res.userID
-        self.expiration = NSDate(timeIntervalSince1970: res.expiresIn ?? 0) //NSDate(timeIntervalSinceNow: res.expiresIn ?? 0)
+        self.expiration = NSDate(timeIntervalSinceNow: res.expiresIn ?? 0)
         self.privateKey = res.encPrivateKey
         super.init()
     }

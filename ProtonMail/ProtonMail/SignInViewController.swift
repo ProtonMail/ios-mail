@@ -245,6 +245,7 @@ class SignInViewController: UIViewController {
         signIn()
     }
     
+    
 //    @IBAction func signUpAction(sender: UIButton) {
 //        dismissKeyboard()
 //        UIApplication.sharedApplication().openURL(signUpURL)

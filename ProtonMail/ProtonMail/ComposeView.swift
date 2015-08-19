@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 
-
 protocol ComposeViewDelegate {
     func ComposeViewDidSizeChanged(size: CGSize)
     func ComposeViewDidOffsetChanged(offset: CGPoint)
