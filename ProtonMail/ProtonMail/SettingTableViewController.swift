@@ -10,8 +10,8 @@ import UIKit
 
 class SettingTableViewController: ProtonMailViewController {
     
-    var setting_headers = [SettingSections.Debug, SettingSections.General, SettingSections.MultiDomain, SettingSections.Storage, SettingSections.Version]
-    var setting_general_items = [SGItems.NotifyEmail, SGItems.DisplayName, SGItems.Signature, SGItems.LoginPWD, SGItems.MBP]
+    var setting_headers = [SettingSections.General, SettingSections.MultiDomain, SettingSections.Storage, SettingSections.Version] //SettingSections.Debug,
+    var setting_general_items = [SGItems.NotifyEmail, SGItems.DisplayName, SGItems.Signature, SGItems.LoginPWD, SGItems.MBP, SGItems.CleanCache]
     var setting_debug_items = [SDebugItem.Queue, SDebugItem.ErrorLogs, SDebugItem.CleanCache]
     
     var multi_domains: Array<Address>!
@@ -33,6 +33,7 @@ class SettingTableViewController: ProtonMailViewController {
     let SettingDomainsCell = "setting_domains"
     let SettingStorageCell = "setting_storage_cell"
     let HeaderCell = "header_cell"
+    let SingleTextCell = "single_text_cell"
     
     //
     let CellHeight : CGFloat = 30.0
@@ -152,6 +153,9 @@ class SettingTableViewController: ProtonMailViewController {
             case SGItems.MBP:
                 cell.RightText.text = "**********"
                 break;
+            case SGItems.CleanCache:
+                cell.RightText.text = ""
+                break;
             }
             return cell
         }
@@ -233,6 +237,24 @@ class SettingTableViewController: ProtonMailViewController {
                 break;
             case SGItems.MBP:
                 self.performSegueWithIdentifier(MailboxpwdSegue, sender: self)
+                break;
+            case SGItems.CleanCache:
+                if !cleaning {
+                    cleaning = true;
+                    
+                    let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
+                    var  hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+                    hud.labelText = "Reseting message cache ..."
+                    hud.removeFromSuperViewOnHide = true
+                    //                hud.margin = 10
+                    //                hud.yOffset = 150
+                    sharedMessageDataService.cleanLocalMessageCache() { task, res, error in
+                        hud.mode = MBProgressHUDMode.Text
+                        hud.labelText = "Done"
+                        hud.hide(true, afterDelay: 1)
+                        self.cleaning = false
+                    }
+                }
                 break;
             }
         }
@@ -329,7 +351,7 @@ extension SettingTableViewController {
             case ErrorLogs:
                 return NSLocalizedString("Error Logs")
             case .CleanCache:
-                return NSLocalizedString("Clean Local Cache")
+                return NSLocalizedString("Clear Local Message Cache")
             }
         }
     }
@@ -340,6 +362,7 @@ extension SettingTableViewController {
         case Signature = 2
         case LoginPWD = 3
         case MBP = 4
+        case CleanCache = 5
         var description : String {
             switch(self){
             case NotifyEmail:
@@ -352,6 +375,8 @@ extension SettingTableViewController {
                 return NSLocalizedString("Login Password")
             case MBP:
                 return NSLocalizedString("Mailbox Password")
+            case .CleanCache:
+                return NSLocalizedString("Clear Local Message Cache")
             }
         }
     }
