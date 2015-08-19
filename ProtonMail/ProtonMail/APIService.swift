@@ -188,7 +188,7 @@ class APIService {
                 completion(nil, NSError.authCacheBad())
                 sharedUserDataService.signOut(true)
                 userCachedStatus.signOut()
-                NSError.alertUpdatedToast()
+                NSError.alertBadTokenToast()
             }
             //            let username = sharedUserDataService.username ?? ""
             //            let password = sharedUserDataService.password ?? ""

@@ -76,6 +76,21 @@ extension NSError {
         //                    hud.yOffset = 150
     }
     
+    class func alertBadTokenToast() ->Void {
+        let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
+        var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+        hud.mode = MBProgressHUDMode.Text
+        hud.labelText = "Alert";
+        hud.detailsLabelText = "Invalid access token please relogin";
+        hud.removeFromSuperViewOnHide = true
+        hud.hide(true, afterDelay: 3)
+        //                    hud.mode = MBProgressHUDMode.Text
+        //                    hud.labelText = "Sending message ..."
+        //                    hud.removeFromSuperViewOnHide = true
+        //                    hud.margin = 10
+        //                    hud.yOffset = 150
+    }
+    
     class func alertOfflineToast() ->Void {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
         var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
