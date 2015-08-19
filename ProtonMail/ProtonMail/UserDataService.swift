@@ -87,7 +87,7 @@ class UserDataService {
         }
     }
     
-    private(set) var isSignedIn: Bool = false
+    var isSignedIn: Bool = false
     private(set) var isMailboxPWDOk: Bool = false
     
     var isUserCredentialStored: Bool {

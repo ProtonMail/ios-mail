@@ -115,6 +115,7 @@ class SignInViewController: UIViewController {
     
     private func ShowLoginViews()
     {
+        sharedPushNotificationService.unregisterForRemoteNotifications()
         UIView.animateWithDuration(1.0, animations: { () -> Void in
             self.passwordTextField.alpha = 1.0
             self.rememberView.alpha = 1.0
@@ -173,6 +174,7 @@ class SignInViewController: UIViewController {
     
     func signInIfRememberedCredentials() {
         if sharedUserDataService.isUserCredentialStored {
+            sharedUserDataService.isSignedIn = true
             isRemembered = true
             rememberButton.selected = true
             usernameTextField.text = sharedUserDataService.username
