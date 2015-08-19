@@ -82,7 +82,7 @@ public class ComposeViewModel {
         return ""
     }
     
-    func collectDraft(to: [ContactVO], cc:[ContactVO], bcc: [ContactVO], title:String, body:String, expir:NSTimeInterval, pwd:String, pwdHit:String) -> Void {
+    func collectDraft(title:String, body:String, expir:NSTimeInterval, pwd:String, pwdHit:String) -> Void {
          NSException(name:"name", reason:"reason", userInfo:nil).raise()
     }
 }

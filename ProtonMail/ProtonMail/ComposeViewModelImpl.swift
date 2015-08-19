@@ -99,11 +99,10 @@ public class ComposeViewModelImpl : ComposeViewModel {
         //        }
     }
     
-    override func collectDraft(to: [ContactVO], cc: [ContactVO], bcc: [ContactVO], title: String, body: String, expir:NSTimeInterval, pwd:String, pwdHit:String) {
-        
-        self.toSelectedContacts = to
-        self.ccSelectedContacts = cc
-        self.bccSelectedContacts = bcc
+    override func collectDraft(title: String, body: String, expir:NSTimeInterval, pwd:String, pwdHit:String) {
+        PMLog.D(self.toSelectedContacts)
+        PMLog.D(self.ccSelectedContacts)
+        PMLog.D(self.bccSelectedContacts)
         
         if message == nil {
             self.message = MessageHelper.messageWithLocation(MessageLocation.draft,

@@ -213,10 +213,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     private func collectDraft()
     {
         self.viewModel.collectDraft(
-            self.composeView.toContactPicker.contactsSelected as! [ContactVO],
-            cc: self.composeView.ccContactPicker.contactsSelected as! [ContactVO],
-            bcc: self.composeView.bccContactPicker.contactsSelected as! [ContactVO],
-            title: self.composeView.subject.text,
+            self.composeView.subject.text,
             body: self.getHTML(),
             expir: self.composeView.expirationTimeInterval,
             pwd:self.encryptionPassword,
@@ -323,42 +320,52 @@ extension ComposeEmailViewController : ComposeViewDelegate {
     
     func composeView(composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: MBContactPicker)
     {
-        var selectedContacts: [ContactVO] = [ContactVO]()
-        
         if (picker == composeView.toContactPicker) {
-            selectedContacts = self.viewModel.toSelectedContacts
+            self.viewModel.toSelectedContacts.append(contact)
         } else if (picker == composeView.ccContactPicker) {
-            selectedContacts = self.viewModel.ccSelectedContacts
+            self.viewModel.ccSelectedContacts.append(contact)
         } else if (picker == composeView.bccContactPicker) {
-            selectedContacts = self.viewModel.bccSelectedContacts
+            self.viewModel.bccSelectedContacts.append(contact)
         }
-        
-        selectedContacts.append(contact)
-        
     }
     
     func composeView(composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker)
-    {
-        var contactIndex = -1
-        
-        var selectedContacts: [ContactVO] = [ContactVO]()
-        
+    {// here each logic most same, need refactor later
         if (picker == composeView.toContactPicker) {
-            selectedContacts = self.viewModel.toSelectedContacts
+            var contactIndex = -1
+            let selectedContacts = self.viewModel.toSelectedContacts
+            for (index, selectedContact) in enumerate(selectedContacts) {
+                if (contact.email == selectedContact.email) {
+                    contactIndex = index
+                }
+            }
+            if (contactIndex >= 0) {
+                self.viewModel.toSelectedContacts.removeAtIndex(contactIndex)
+            }
         } else if (picker == composeView.ccContactPicker) {
-            selectedContacts = self.viewModel.ccSelectedContacts
+            var contactIndex = -1
+            let selectedContacts = self.viewModel.ccSelectedContacts
+            for (index, selectedContact) in enumerate(selectedContacts) {
+                if (contact.email == selectedContact.email) {
+                    contactIndex = index
+                }
+            }
+            if (contactIndex >= 0) {
+                self.viewModel.ccSelectedContacts.removeAtIndex(contactIndex)
+            }
         } else if (picker == composeView.bccContactPicker) {
-            selectedContacts = self.viewModel.bccSelectedContacts
-        }
-        for (index, selectedContact) in enumerate(selectedContacts) {
-            if (contact.email == selectedContact.email) {
-                contactIndex = index
+            var contactIndex = -1
+            let selectedContacts = self.viewModel.bccSelectedContacts
+            for (index, selectedContact) in enumerate(selectedContacts) {
+                if (contact.email == selectedContact.email) {
+                    contactIndex = index
+                }
+            }
+            if (contactIndex >= 0) {
+                self.viewModel.bccSelectedContacts.removeAtIndex(contactIndex)
             }
         }
         
-        if (contactIndex >= 0) {
-            selectedContacts.removeAtIndex(contactIndex)
-        }
     }
 }
 

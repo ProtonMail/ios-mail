@@ -176,10 +176,7 @@ class ComposeViewController : ProtonMailViewController {
     private func collectDraft()
     {
         self.viewModel.collectDraft(
-            self.composeView.toContactPicker.contactsSelected as! [ContactVO],
-            cc: self.composeView.ccContactPicker.contactsSelected as! [ContactVO],
-            bcc: self.composeView.bccContactPicker.contactsSelected as! [ContactVO],
-            title: self.composeView.subject.text,
+            self.composeView.subject.text,
             body: "",//self.composeView.htmlEditor.getHTML(),
             expir: self.composeView.expirationTimeInterval,
             pwd:self.encryptionPassword,
