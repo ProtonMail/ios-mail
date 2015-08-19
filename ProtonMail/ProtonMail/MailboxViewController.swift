@@ -312,27 +312,29 @@ class MailboxViewController: ProtonMailViewController {
         if let fetchedResultsController = fetchedResultsController {
             if let last = fetchedResultsController.fetchedObjects?.last as? Message {
                 if let current = fetchedResultsController.objectAtIndexPath(indexPath) as? Message {
-                    
                     let updateTime = viewModel.lastUpdateTime()
-                    let isOlderMessage = updateTime.end.compare(current.time!) != NSComparisonResult.OrderedAscending
-                    let isLastMessage = last == current
-                    if  (isOlderMessage || isLastMessage) && !fetching {
-                        let sectionCount = fetchedResultsController.numberOfRowsInSection(0) ?? 0
-                        let recordedCount = Int(updateTime.total)
-                        if updateTime.isNew || recordedCount > sectionCount { //here need add a counter to check if tried too many times make one real call in case count not right
-                            self.fetching = true
-                            tableView.showLoadingFooter()
-                            let updateTime = viewModel.lastUpdateTime()
-                            
-                            viewModel.fetchMessages(last.messageID ?? "0", Time: Int(updateTime.end.timeIntervalSince1970), foucsClean: false, completion: { (task, response, error) -> Void in
-                                self.tableView.hideLoadingFooter()
-                                self.fetching = false
-                                if error != nil {
-                                    NSLog("\(__FUNCTION__) search error: \(error)")
-                                } else {
-                                    
-                                }
-                            })
+                    if let currentTime = current.time {
+                        let isOlderMessage = updateTime.end.compare(currentTime) != NSComparisonResult.OrderedAscending
+                        let isLastMessage = last == current
+                        if  (isOlderMessage || isLastMessage) && !fetching {
+                            let sectionCount = fetchedResultsController.numberOfRowsInSection(0) ?? 0
+                            let recordedCount = Int(updateTime.total)
+                            if updateTime.isNew || recordedCount > sectionCount { //here need add a counter to check if tried too many times make one real call in case count not right
+                                self.fetching = true
+                                tableView.showLoadingFooter()
+                                let updateTime = viewModel.lastUpdateTime()
+                                
+                                let unixTimt:Int = (updateTime.end == NSDate.distantPast() as! NSDate) ? 0 : Int(updateTime.end.timeIntervalSince1970)
+                                viewModel.fetchMessages(last.messageID ?? "0", Time: unixTimt, foucsClean: false, completion: { (task, response, error) -> Void in
+                                    self.tableView.hideLoadingFooter()
+                                    self.fetching = false
+                                    if error != nil {
+                                        NSLog("\(__FUNCTION__) search error: \(error)")
+                                    } else {
+                                        
+                                    }
+                                })
+                            }
                         }
                     }
                 }
