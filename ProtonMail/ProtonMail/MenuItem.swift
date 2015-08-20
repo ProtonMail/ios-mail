@@ -12,7 +12,7 @@ import UIKit
 
 
 enum MenuItem: String {
-    case bugs = "Bugs"
+    case bugs = "Report Bugs"
     case inbox = "Inbox"
     case starred = "Starred"
     case archive = "Archive"

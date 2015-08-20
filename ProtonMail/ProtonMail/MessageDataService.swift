@@ -1034,68 +1034,71 @@ class MessageDataService {
         
         var error: NSError?
         if let body = message.decryptBody(&error) {
-            
-            for (key, v) in keys! {
-                
-                if key == "Code" {
-                    continue
-                }
-                
-                let publicKey = v as! String
-                let isOutsideUser = publicKey.isEmpty
-                let password = "123"
-                
-                if isOutsideUser {
-                    if encrptOutside {
-                        
-                        let encryptedBody = body.encryptWithPassphrase(message.password, error: &error)
-                        //create outside encrypt packet
-                        let token = String.randomString(32)
-                        let encryptedToken = token.encryptWithPassphrase(message.password, error: &error)
+            if let keys = keys {
+                for (key, v) in keys{
+                    if key == "Code" {
+                        continue
+                    }
+                    
+                    let publicKey = v as! String
+                    let isOutsideUser = publicKey.isEmpty
+                    let password = "123"
+                    
+                    if isOutsideUser {
+                        if encrptOutside {
+                            
+                            let encryptedBody = body.encryptWithPassphrase(message.password, error: &error)
+                            //create outside encrypt packet
+                            let token = String.randomString(32) as String
+                            let based64Token = token.encodeBase64() as String
+                            let encryptedToken = based64Token.encryptWithPassphrase(message.password, error: &error)
+                            
+                            token.encodeBase64()
+                            
+                            // encrypt keys use public key
+                            var attPack : [AttachmentKeyPackage] = []
+                            for att in tempAtts {
+                                let newKeyPack = att.Key.getSymmetricSessionKeyPackage(message.password, error: nil)?.base64EncodedStringWithOptions(nil)
+                                let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack)
+                                attPack.append(attPacket)
+                            }
+                            
+                            var pack = MessagePackage(address: key, type: 2,  body: encryptedBody, attPackets:attPack, token: based64Token, encToken: encryptedToken, passwordHint: message.passwordHint)
+                            out.append(pack)
+                            
+                            // encrypt keys use pwd .
+                        }
+                        else {
+                            needsPlainText = true
+                        }
+                    }
+                    else {
                         
                         // encrypt keys use public key
                         var attPack : [AttachmentKeyPackage] = []
                         for att in tempAtts {
-                            let newKeyPack = att.Key.getSymmetricSessionKeyPackage(message.password, error: nil)?.base64EncodedStringWithOptions(nil)
+                            //attID:String!, attKey:String!, Algo : String! = ""
+                            let newKeyPack = att.Key.getPublicSessionKeyPackage(publicKey, error: nil)?.base64EncodedStringWithOptions(nil)
                             let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack)
                             attPack.append(attPacket)
                         }
                         
-                        var pack = MessagePackage(address: key, type: 2,  body: encryptedBody, attPackets:attPack, token: token.encodeBase64(), encToken: encryptedToken, passwordHint: message.passwordHint)
-                        out.append(pack)
-                        
-                        // encrypt keys use pwd .
-                    }
-                    else {
-                        needsPlainText = true
-                    }
-                }
-                else {
-                    
-                    // encrypt keys use public key
-                    var attPack : [AttachmentKeyPackage] = []
-                    for att in tempAtts {
-                        //attID:String!, attKey:String!, Algo : String! = ""
-                        let newKeyPack = att.Key.getPublicSessionKeyPackage(publicKey, error: nil)?.base64EncodedStringWithOptions(nil)
-                        let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack)
-                        attPack.append(attPacket)
-                    }
-                    
-                    //create inside packet
-                    if let encryptedBody = body.encryptWithPublicKey(publicKey, error: &error) {
-                        var pack = MessagePackage(address: key, type: 1, body: encryptedBody, attPackets: attPack)
-                        out.append(pack)
-                    } else {
-                        NSLog("\(__FUNCTION__) can't encrypt body for \(body) with error: \(error)")
+                        //create inside packet
+                        if let encryptedBody = body.encryptWithPublicKey(publicKey, error: &error) {
+                            var pack = MessagePackage(address: key, type: 1, body: encryptedBody, attPackets: attPack)
+                            out.append(pack)
+                        } else {
+                            NSLog("\(__FUNCTION__) can't encrypt body for \(body) with error: \(error)")
+                        }
                     }
                 }
+                
             }
             
             outRequest.messagePackage = out
             
             if needsPlainText {
                 outRequest.clearBody = body
-                
                 
                 //add attachment package
                 var attPack : [AttachmentKeyPackage] = []

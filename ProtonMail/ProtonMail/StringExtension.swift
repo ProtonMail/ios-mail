@@ -181,7 +181,7 @@ extension String {
         let charSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         var c = Array(charSet)
         var s:String = ""
-        for n in (1...10) {
+        for n in (1...len) {
             
             let index : Int = Int(UInt32(arc4random()) % UInt32(c.count))
             
