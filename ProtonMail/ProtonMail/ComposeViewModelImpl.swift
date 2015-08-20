@@ -112,7 +112,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
                 title: title,
                 encryptionPassword: "",
                 passwordHint: "",
-                expirationTimeInterval: 0,
+                expirationTimeInterval: expir,
                 body: body,
                 attachments: nil,
                 inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext!)
@@ -124,7 +124,8 @@ public class ComposeViewModelImpl : ComposeViewModel {
             self.message?.time = NSDate()
             self.message?.password = pwd
             self.message?.passwordHint = pwdHit
-            MessageHelper.updateMessage(self.message!, expirationTimeInterval: 0, body: body, attachments: nil)
+            self.message?.expirationOffset = Int32(expir)
+            MessageHelper.updateMessage(self.message!, expirationTimeInterval: expir, body: body, attachments: nil)
             if let error = message!.managedObjectContext?.saveUpstreamIfNeeded() {
                 NSLog("\(__FUNCTION__) error: \(error)")
             }

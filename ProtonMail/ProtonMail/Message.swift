@@ -54,6 +54,7 @@ public class Message: NSManagedObject {
     @NSManaged var orginalTime: NSDate?
     @NSManaged var action: NSNumber?
     @NSManaged var isSoftDelete: Bool
+    @NSManaged var expirationOffset : Int32
     
     @NSManaged var attachments: NSSet
     @NSManaged var labels: NSSet

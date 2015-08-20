@@ -164,7 +164,8 @@ class ComposeView: UIViewController {
             make.top.equalTo()(self.passwordView.mas_bottom)
         }
         
-        errorTextView.mas_makeConstraints { (make) -> Void in
+        errorTextView.mas_updateConstraints { (make) -> Void in
+            make.removeExisting = true
             make.left.equalTo()(self.selfView)
             make.right.equalTo()(self.selfView)
             make.height.equalTo()(self.errorTextView.frame.size.height)
@@ -279,8 +280,18 @@ class ComposeView: UIViewController {
         self.errorTextView.textAlignment = NSTextAlignment.Center
         self.errorTextView.textColor = UIColor.whiteColor()
         self.errorTextView.sizeToFit()
+
         self.view.addSubview(errorView)
         errorView.addSubview(errorTextView)
+        
+        errorTextView.mas_makeConstraints { (make) -> Void in
+            make.left.equalTo() (self.errorView)
+            make.right.equalTo() (self.errorView)
+            make.bottom.equalTo() (self.errorView)
+            make.height.equalTo()(self.errorTextView.frame.size.height)
+            make.top.equalTo()(self.errorView).with().offset()(8)
+        }
+        
     }
     
     private func configureContactPickerTemplate() {

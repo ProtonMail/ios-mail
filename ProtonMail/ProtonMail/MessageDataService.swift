@@ -1030,7 +1030,7 @@ class MessageDataService {
         
         var out : [MessagePackage] = []
         var needsPlainText : Bool = false
-        let outRequest : MessageSendRequest = MessageSendRequest<T>(messageID: message.messageID, messagePackage: nil, clearBody: "", attPackages: nil)
+        let outRequest : MessageSendRequest = MessageSendRequest<T>(messageID: message.messageID, expirationTime: message.expirationOffset, messagePackage: nil, clearBody: "", attPackages: nil)
         
         var error: NSError?
         if let body = message.decryptBody(&error) {

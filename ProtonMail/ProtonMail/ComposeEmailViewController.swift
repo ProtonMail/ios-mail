@@ -32,8 +32,14 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     
     private var attachments: [AnyObject]?
     
+    @IBOutlet weak var expirationPicker: UIPickerView!
     // offsets
     private var composeViewSize : CGFloat = 138;
+    
+    // MARK : const values
+    private let kNumberOfColumnsInTimePicker: Int = 2
+    private let kNumberOfDaysInTimePicker: Int = 30
+    private let kNumberOfHoursInTimePicker: Int = 24
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,6 +68,10 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         self.composeView.toContactPicker.reloadData()
         self.composeView.ccContactPicker.reloadData()
         self.composeView.bccContactPicker.reloadData()
+        
+        self.expirationPicker.alpha = 0.0
+        self.expirationPicker.dataSource = self
+        self.expirationPicker.delegate = self
         
         // update header layous
         updateContentLayout(false)
@@ -294,28 +304,29 @@ extension ComposeEmailViewController : ComposeViewDelegate {
     
     func composeViewDidTapExpirationButton(composeView: ComposeView)
     {
-        //self.expirationPicker.alpha = 1;
+        self.expirationPicker.alpha = 1;
+        self.view.bringSubviewToFront(expirationPicker)
     }
     
     func composeViewHideExpirationView(composeView: ComposeView)
     {
-        //self.expirationPicker.alpha = 0;
+        self.expirationPicker.alpha = 0;
     }
     
     func composeViewCancelExpirationData(composeView: ComposeView)
     {
-        //self.expirationPicker.selectRow(0, inComponent: 0, animated: true)
-        //self.expirationPicker.selectRow(0, inComponent: 1, animated: true)
+        self.expirationPicker.selectRow(0, inComponent: 0, animated: true)
+        self.expirationPicker.selectRow(0, inComponent: 1, animated: true)
     }
     
     func composeViewCollectExpirationData(composeView: ComposeView)
     {
-//        let selectedDay = expirationPicker.selectedRowInComponent(0)
-//        let selectedHour = expirationPicker.selectedRowInComponent(1)
-//        if self.composeView.setExpirationValue(selectedDay, hour: selectedHour)
-//        {
-//            self.expirationPicker.alpha = 0;
-//        }
+        let selectedDay = expirationPicker.selectedRowInComponent(0)
+        let selectedHour = expirationPicker.selectedRowInComponent(1)
+        if self.composeView.setExpirationValue(selectedDay, hour: selectedHour)
+        {
+            self.expirationPicker.alpha = 0;
+        }
     }
     
     func composeView(composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: MBContactPicker)
@@ -403,3 +414,43 @@ extension ComposeEmailViewController: AttachmentsViewControllerDelegate {
         
     }
 }
+
+
+
+// MARK: - UIPickerViewDataSource
+
+extension ComposeEmailViewController: UIPickerViewDataSource {
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return kNumberOfColumnsInTimePicker
+    }
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if (component == 0) {
+            return kNumberOfDaysInTimePicker
+        } else {
+            return kNumberOfHoursInTimePicker
+        }
+    }
+}
+
+// MARK: - UIPickerViewDelegate
+
+extension ComposeEmailViewController: UIPickerViewDelegate {
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+        if (component == 0) {
+            return "\(row) days"
+        } else {
+            return "\(row) hours"
+        }
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let selectedDay = pickerView.selectedRowInComponent(0)
+        let selectedHour = pickerView.selectedRowInComponent(1)
+        
+        let day = "\(selectedDay) days"
+        let hour = "\(selectedHour) hours"
+        self.composeView.updateExpirationValue(((Double(selectedDay) * 24) + Double(selectedHour)) * 3600, text: "\(day) \(hour)")
+    }
+}
+
+

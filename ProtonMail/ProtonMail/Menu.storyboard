@@ -1231,7 +1231,22 @@
                     <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="d6Y-iq-ZL0">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <pickerView alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CBy-Nb-v7E">
+                                <rect key="frame" x="0.0" y="374" width="600" height="162"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="162" id="Cci-8B-CTb"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="162" id="tjY-fu-K2o"/>
+                                </constraints>
+                            </pickerView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="EbU-4D-baf" firstAttribute="top" secondItem="CBy-Nb-v7E" secondAttribute="bottom" id="Fc1-4R-xxp"/>
+                            <constraint firstAttribute="trailing" secondItem="CBy-Nb-v7E" secondAttribute="trailing" id="VaL-r8-1d6"/>
+                            <constraint firstItem="CBy-Nb-v7E" firstAttribute="leading" secondItem="d6Y-iq-ZL0" secondAttribute="leading" id="x1R-9e-myC"/>
+                        </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="hw7-TX-6n5">
@@ -1246,6 +1261,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="expirationPicker" destination="CBy-Nb-v7E" id="gJc-CG-W5q"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WN4-FR-nyC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1895,14 +1913,14 @@
                                                 <mask key="constraints">
                                                     <exclude reference="g7D-ns-bu5"/>
                                                     <exclude reference="Xuf-CC-Nwg"/>
-                                                    <exclude reference="qJJ-6g-aLd"/>
                                                     <exclude reference="Ff2-ET-0On"/>
+                                                    <exclude reference="qJJ-6g-aLd"/>
                                                     <exclude reference="wJv-1B-GJu"/>
-                                                    <exclude reference="MHY-Uw-kf0"/>
                                                     <exclude reference="0zH-TE-KSE"/>
-                                                    <exclude reference="LfD-9g-hZo"/>
-                                                    <exclude reference="hcf-36-U5a"/>
                                                     <exclude reference="Azo-tN-9Dz"/>
+                                                    <exclude reference="LfD-9g-hZo"/>
+                                                    <exclude reference="MHY-Uw-kf0"/>
+                                                    <exclude reference="hcf-36-U5a"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>

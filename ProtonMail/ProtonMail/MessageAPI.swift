@@ -188,12 +188,14 @@ public class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
     var attPackets : [AttachmentKeyPackage]!    //  for optside encrypt att.
     var clearBody : String!                     //  optional for out side user
     let messageID : String!
+    let expirationTime : Int32?
     
-    init(messageID : String!, messagePackage: [MessagePackage]!, clearBody : String! = "", attPackages:[AttachmentKeyPackage]! = nil) {
+    init(messageID : String!, expirationTime: Int32?, messagePackage: [MessagePackage]!, clearBody : String! = "", attPackages:[AttachmentKeyPackage]! = nil) {
         self.messageID = messageID
         self.messagePackage = messagePackage
         self.clearBody = clearBody
         self.attPackets = attPackages
+        self.expirationTime = expirationTime
     }
     
     override func toDictionary() -> Dictionary<String,AnyObject>? {
@@ -210,6 +212,12 @@ public class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
                 attPack.append(pack.toDictionary()!)
             }
             out["AttachmentKeys"] = attPack
+        }
+        
+        if let expTime = expirationTime {
+            if expTime > 0 {
+                out["ExpirationTime"] = "\(expTime)"
+            }
         }
         
         var package : [AnyObject] = [AnyObject]()

@@ -35,9 +35,10 @@ public class MessageHelper {
             message.passwordHint = passwordHint
             message.time = NSDate()
             message.isEncrypted = 1
+            message.expirationOffset = Int32(expirationTimeInterval)
             
             if expirationTimeInterval > 0 {
-                message.expirationTime = NSDate(timeIntervalSince1970: expirationTimeInterval)
+                message.expirationTime = NSDate(timeIntervalSinceNow: expirationTimeInterval)
             }
             
             var error: NSError?
@@ -85,7 +86,7 @@ public class MessageHelper {
         attachments: [AnyObject]?)
     {
         if expirationTimeInterval > 0 {
-            message.expirationTime = NSDate(timeIntervalSince1970: expirationTimeInterval)
+            message.expirationTime = NSDate(timeIntervalSinceNow: expirationTimeInterval)
         }
         
         var error: NSError?

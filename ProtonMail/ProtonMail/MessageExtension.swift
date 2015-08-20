@@ -185,6 +185,7 @@ extension Message {
         
         newMessage.orginalTime = message.time
         newMessage.orginalMessageID = message.messageID
+        newMessage.expirationOffset = 0
         //            if let attachments = message.attachments {
         //                for (index, attachment) in enumerate(attachments) {
         //                    if let image = attachment as? UIImage {
