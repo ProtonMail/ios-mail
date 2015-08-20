@@ -41,4 +41,8 @@ extension Contact {
     class func deleteAll(inContext context: NSManagedObjectContext) {
         context.deleteAll(Attributes.entityName)
     }
+    
+    class func contactForContactID(contactID: String, inManagedObjectContext context: NSManagedObjectContext) -> Contact? {
+        return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.contactID, matchingValue: contactID) as? Contact
+    }
 }

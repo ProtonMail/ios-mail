@@ -62,6 +62,8 @@ class ContactsViewController: ProtonMailViewController {
         
         searchDisplayController?.searchResultsTableView.setEditing(false, animated: true)
         searchDisplayController?.setActive(false, animated: true)
+        
+        retrieveAllContacts()
     }
     
     func filterContentForSearchText(searchText: String) {
@@ -76,7 +78,8 @@ class ContactsViewController: ProtonMailViewController {
     // MARK: - Private methods
     
     internal func retrieveAllContacts() {
-        sharedContactDataService.fetchContactVOs { (contacts, error) -> Void in
+        
+        sharedContactDataService.getContactVOs { (contacts, error) -> Void in
             if let error = error {
                 NSLog("\(__FUNCTION__) error: \(error)")
                 
@@ -87,7 +90,7 @@ class ContactsViewController: ProtonMailViewController {
             }
             
             self.contacts = contacts
-
+            
             self.refreshControl.endRefreshing()
             self.tableView.reloadData()
         }

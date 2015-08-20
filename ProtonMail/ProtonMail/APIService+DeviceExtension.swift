@@ -23,7 +23,6 @@ extension APIService {
     private struct DevicePath {
         static let basePath = "/device"
     }
-    
     func deviceRegisterWithToken(token: NSData, completion: CompletionBlock?) {
         let tokenString = stringFromToken(token)
         

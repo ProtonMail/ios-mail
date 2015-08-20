@@ -58,11 +58,31 @@ class ContactDataService {
     }
     
     func deleteContact(contactID: String!, completion: ContactCompletionBlock?) {
-        if (completion != nil) {
-            sharedAPIService.contactDelete(contactID: contactID, completion: completionBlockForContactCompletionBlock(completion))
-        } else {
-            sharedAPIService.contactDelete(contactID: contactID, completion: nil)
+        
+        sharedAPIService.contactDelete(contactID: contactID) { (task, response, error) -> Void in
+            if error == nil {
+                if let context = sharedCoreDataService.mainManagedObjectContext {
+                    if let contact = Contact.contactForContactID(contactID, inManagedObjectContext: context) {
+                        context.deleteObject(contact)
+                    }
+                    if let error = context.saveUpstreamIfNeeded() {
+                        NSLog("\(__FUNCTION__) error: \(error)")
+                        
+                    }
+                }
+            }
+            
+            completion?(nil,nil)
         }
+
+        
+        
+        
+//        if (completion != nil) {
+//            sharedAPIService.contactDelete(contactID: contactID, completion: completionBlockForContactCompletionBlock(completion))
+//        } else {
+//            sharedAPIService.contactDelete(contactID: contactID, completion: nil)
+//        }
     }
     
     func fetchContacts(completion: ContactCompletionBlock?) {
@@ -157,6 +177,13 @@ extension ContactDataService {
             self.requestAccessToAddressBookIfNeeded(lastError: error, completion: completion)
             self.processContacts(addressBookAccessGranted: sharedAddressBookService.hasAccessToAddressBook(), lastError: error, completion: completion)
         }
+    }
+    
+    func getContactVOs(completion: ContactVOCompletionBlock) {
+        
+        self.requestAccessToAddressBookIfNeeded(lastError: nil, completion: completion)
+        self.processContacts(addressBookAccessGranted: sharedAddressBookService.hasAccessToAddressBook(), lastError: nil, completion: completion)
+        
     }
     
     private func requestAccessToAddressBookIfNeeded(var #lastError: NSError?, completion: ContactVOCompletionBlock) {

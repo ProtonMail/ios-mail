@@ -25,20 +25,26 @@ extension APIService {
     
     func contactAdd(#name: String, email: String, completion: CompletionBlock?) {
         let path = ContactPath.base
-        let parameters = parametersForName(name, email: email)
-        setApiVesion(2, appVersion: 1)
+        
+        let contact = [ "Name": name, "Email" : email];
+        
+        
+        let parameters = ["Contacts": [contact] ];
+        //parametersForName(name, email: email)
+        setApiVesion(1, appVersion: 1)
         request(method: .POST, path: path, parameters: parameters, completion: completion)
     }
     
     func contactDelete(#contactID: String, completion: CompletionBlock?) {
-        let path = ContactPath.base.stringByAppendingPathComponent(contactID)
-        setApiVesion(2, appVersion: 1)
-        request(method: .DELETE, path: path, parameters: nil, completion: completion)
+        let path = ContactPath.base.stringByAppendingPathComponent("delete")
+        let parameters = ["IDs": [ contactID ] ]
+        setApiVesion(1, appVersion: 1)
+        request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
     
     func contactList(completion: CompletionBlock?) {
         let path = ContactPath.base
-        setApiVesion(2, appVersion: 1)
+        setApiVesion(1, appVersion: 1)
         request(method: .GET, path: path, parameters: nil, completion: completion)
     }
     
@@ -46,7 +52,7 @@ extension APIService {
         let path = ContactPath.base.stringByAppendingPathComponent(contactID)
         
         let parameters = parametersForName(name, email: email)
-        setApiVesion(2, appVersion: 1)
+        setApiVesion(1, appVersion: 1)
         request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
     
