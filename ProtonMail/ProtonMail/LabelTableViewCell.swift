@@ -25,6 +25,7 @@ class LabelTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.labelView.updateTextFont(UIFont.robotoLight(size: 20))
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -33,7 +34,7 @@ class LabelTableViewCell: UITableViewCell {
 
     func ConfigCell(label : Label, applyed: Bool) {
         self.label = label
-        let w = labelView.setText(label.name, color: UIColor(hexString: label.color, alpha: 1.0), font: UIFont.robotoLight(size: 20))
+        let w = labelView.setText(label.name, color: UIColor(hexString: label.color, alpha: 1.0))
         labelWidth.constant = w;
         self.switchView.on = applyed
     }

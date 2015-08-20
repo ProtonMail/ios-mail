@@ -346,19 +346,22 @@ static CGFloat const ROW_HEIGHT = 64.0;
     }
 }
 
-- (void) contactCollectionView:(MBContactCollectionView *)contactCollectionView didEnterCustomContact:(NSString *)text
+
+- (void) contactCollectionView:(MBContactCollectionView*)contactCollectionView didEnterCustomContact:(NSString*)text needFocus:(BOOL)focus
 {
-    if ([self.delegate respondsToSelector:@selector(contactPicker:didEnterCustomText:)])
+    if ([self.delegate respondsToSelector:@selector(contactPicker:didEnterCustomText:needFocus:)])
     {
-        [self.delegate contactPicker:self didEnterCustomText:text];
+        [self.delegate contactPicker:self didEnterCustomText:text needFocus:focus];
         [self hideSearchTableView];
     }
 }
 
-- (void)addToSelectedContacts:(id<MBContactPickerModelProtocol>)model
+- (void)addToSelectedContacts:(id<MBContactPickerModelProtocol>)model needFocus:(BOOL)focus
 {
     [self.contactCollectionView addToSelectedContacts:model withCompletion:^{
-        [self becomeFirstResponder];
+        if (focus) {
+            [self becomeFirstResponder];
+        }
     }];
 }
 

@@ -603,12 +603,11 @@ extension ComposeView: MBContactPickerDelegate {
         self.delegate?.composeView(self, didRemoveContact: model as! ContactVO, fromPicker: contactPicker)
     }
     
-    func contactPicker(contactPicker: MBContactPicker!, didEnterCustomText text: String!) {
+    func contactPicker(contactPicker: MBContactPicker!, didEnterCustomText text: String!, needFocus focus: Bool) {
         let customContact = ContactVO(id: "", name: text, email: text)
-        
-        contactPicker.addToSelectedContacts(customContact)
+        contactPicker.addToSelectedContacts(customContact, needFocus: focus)
     }
-    
+
     func contactPicker(contactPicker: MBContactPicker!, didUpdateContentHeightTo newHeight: CGFloat) {
         self.updateContactPickerHeight(contactPicker, newHeight: newHeight)
     }

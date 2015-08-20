@@ -33,7 +33,7 @@ typedef void(^CompletionBlock)();
 - (void)contactPicker:(MBContactPicker*)contactPicker didUpdateContentHeightTo:(CGFloat)newHeight;
 - (void)didShowFilteredContactsForContactPicker:(MBContactPicker*)contactPicker;
 - (void)didHideFilteredContactsForContactPicker:(MBContactPicker*)contactPicker;
-- (void)contactPicker:(MBContactPicker*)contactPicker didEnterCustomText:(NSString*)text;
+- (void)contactPicker:(MBContactPicker*)contactPicker didEnterCustomText:(NSString*)text needFocus:(BOOL)focus;
 - (NSPredicate*) customFilterPredicate:(NSString*)searchString;
 
 @end
@@ -57,6 +57,6 @@ typedef void(^CompletionBlock)();
 @property (nonatomic, weak) MBContactCollectionView *contactCollectionView;
 
 - (void)reloadData;
-- (void)addToSelectedContacts:(id<MBContactPickerModelProtocol>)model;
+- (void)addToSelectedContacts:(id<MBContactPickerModelProtocol>)model needFocus:(BOOL)focus;
 - (void)addToSelectedContacts:(id<MBContactPickerModelProtocol>)model withCompletion:(CompletionBlock)completion;
 @end

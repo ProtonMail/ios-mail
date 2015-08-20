@@ -81,13 +81,21 @@ class MailboxTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         checkboxButton.addTarget(self, action: "checkboxTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        labelView.backgroundColor = UIColor.clearColor();
+        labelView2.backgroundColor = UIColor.clearColor();
+        labelView3.backgroundColor = UIColor.clearColor();
+        labelView4.backgroundColor = UIColor.clearColor();
+        labelView5.backgroundColor = UIColor.clearColor();
+    }
+    
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
     }
 
-    
     // MARK: - Actions
     
     @IBAction func favoriteButtonAction(sender: UIButton) {
-        return ;
 //        self.isStarred = !self.isStarred
 //        
 //        // TODO: display activity indicator
@@ -130,12 +138,6 @@ class MailboxTableViewCell: UITableViewCell {
         self.checkboxButton.layer.cornerRadius = kCheckboxButtonCornerRadius
         self.checkboxButton.layer.masksToBounds = true
         self.isStarred = message.isStarred
-        
-        labelView.backgroundColor = UIColor.clearColor();
-        labelView2.backgroundColor = UIColor.clearColor();
-        labelView3.backgroundColor = UIColor.clearColor();
-        labelView4.backgroundColor = UIColor.clearColor();
-        labelView5.backgroundColor = UIColor.clearColor();
         
         let labels = message.labels.allObjects
         let lc = labels.count - 1;
@@ -285,15 +287,6 @@ class MailboxTableViewCell: UITableViewCell {
     func isCheckBoxSelected() -> Bool {
         return self.isChecked
     }
-    
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-    
-    override func setHighlighted(highlighted: Bool, animated: Bool) {
-        super.setHighlighted(highlighted, animated: animated)
-    }
-    
     
     
 }

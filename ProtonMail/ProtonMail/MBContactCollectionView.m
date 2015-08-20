@@ -1,4 +1,4 @@
-//
+z//
 //  ContactCollectionView.m
 //  MBContactPicker
 //
@@ -561,17 +561,32 @@ typedef NS_ENUM(NSInteger, ContactCollectionViewSection) {
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if ([self.contactDelegate respondsToSelector:@selector(contactCollectionView:didEnterCustomContact:)])
+    if ([self.contactDelegate respondsToSelector:@selector(contactCollectionView:didEnterCustomContact:needFocus:)])
     {
         NSString *trimmedString = [textField.text stringByTrimmingCharactersInSet:
                                    [NSCharacterSet whitespaceCharacterSet]];
         if (trimmedString.length > 0)
         {
-            [self.contactDelegate contactCollectionView:self didEnterCustomContact:trimmedString];
+            [self.contactDelegate contactCollectionView:self didEnterCustomContact:trimmedString needFocus:YES];
         }
     }
     return NO;
 }
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if ([self.contactDelegate respondsToSelector:@selector(contactCollectionView:didEnterCustomContact:needFocus:)])
+    {
+        NSString *trimmedString = [textField.text stringByTrimmingCharactersInSet:
+                                   [NSCharacterSet whitespaceCharacterSet]];
+        if (trimmedString.length > 0)
+        {
+            [self.contactDelegate contactCollectionView:self didEnterCustomContact:trimmedString needFocus:NO];
+        }
+    }
+}
+
+
 
 - (UITextRange*) selectedTextRange
 {
