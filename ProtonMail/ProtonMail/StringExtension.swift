@@ -12,7 +12,39 @@ extension String {
     
     func contains(s: String) -> Bool
     {
-        return (self.rangeOfString(s) != nil) ? true : false
+        return self.rangeOfString(s, options: NSStringCompareOptions.CaseInsensitiveSearch) != nil ? true : false
+        //return (self.rangeOfString(s) != nil) ? true : false
+    }
+    
+    func isMatch(regex: String, options: NSRegularExpressionOptions) -> Bool
+    {
+        var error: NSError?
+        var exp = NSRegularExpression(pattern: regex, options: options, error: &error)
+        
+        if let error = error {
+            println(error.description)
+        }
+        var matchCount = exp?.numberOfMatchesInString(self, options: nil, range: NSMakeRange(0, count(self)))
+        return matchCount > 0
+    }
+    
+    
+    func hasRe () -> Bool {
+        if count(self) < 3 {
+            return false;
+        }
+        let myNSString = self as NSString
+        let str = myNSString.substringWithRange(NSRange(location: 0, length: 3))
+        return str.contains("Re:")
+    }
+    
+    func hasFwd () -> Bool {
+        if count(self) < 4 {
+            return false;
+        }
+        let myNSString = self as NSString
+        let str = myNSString.substringWithRange(NSRange(location: 0, length: 4))
+        return str.contains("Fwd:")
     }
 
     
