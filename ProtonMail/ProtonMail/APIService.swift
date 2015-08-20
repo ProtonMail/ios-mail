@@ -149,7 +149,6 @@ class APIService {
                     
                     self.tried = 0
                     self.sessionManager.requestSerializer.setAuthorizationHeaderFieldWithCredential(credential)
-                    PMLog.D("credential: \(credential)")
                     completion(credential, nil)
                 }
             } else {
@@ -277,7 +276,6 @@ class APIService {
             
             }, error: &serializeError) {
                 let uploadTask = self.sessionManager.uploadTaskWithStreamedRequest(request, progress: nil) { (response, responseObject, error) -> Void in
-                    println("")
                     completion?(task: nil, response: responseObject as? Dictionary<String,AnyObject>, error: error)
                 }
                 uploadTask.resume()
