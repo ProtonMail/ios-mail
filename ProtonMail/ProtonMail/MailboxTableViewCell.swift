@@ -50,12 +50,14 @@ class MailboxTableViewCell: UITableViewCell {
     // MARK: - Private constants
     
     private let kCheckboxWidth: CGFloat = 22.0
+    private let kStarWidth : CGFloat = 22.0
+    private let kAttachmentWidth : CGFloat = 24.0
+    
     private let kCheckboxButtonCornerRadius: CGFloat = 1.0
     private let kCheckboxUncheckedImage: UIImage = UIImage(named: "unchecked")!
     private let kCheckboxCheckedImage: UIImage = UIImage(named: "checked")!
     private let kTitleMarginLeft: CGFloat = 16.0
     private let kReplyImageWidth : CGFloat = 27.0
-    private let kAttachmentWidth : CGFloat = 14.0
     
     //MAKR : constants
     
@@ -67,16 +69,19 @@ class MailboxTableViewCell: UITableViewCell {
     
     @IBOutlet weak var timeConstraint: NSLayoutConstraint!
     @IBOutlet weak var attachmentConstraint: NSLayoutConstraint!
+    @IBOutlet weak var starConstraint: NSLayoutConstraint!
     
     // MARK: - Private attributes
     
     private var isChecked: Bool = false
-    private var isStarred: Bool = false {
-        didSet {
-            let image = UIImage(named: isStarred ? "mail_starred-active" : "mail_starred")
-            self.starredImage.image = image
-        }
-    }
+    
+    
+//    private var isStarred: Bool = false {
+//        didSet {
+//            let image = UIImage(named: isStarred ? "mail_starred-active" : "mail_starred")
+//            self.starredImage.image = image
+//        }
+//    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -137,7 +142,12 @@ class MailboxTableViewCell: UITableViewCell {
         
         self.checkboxButton.layer.cornerRadius = kCheckboxButtonCornerRadius
         self.checkboxButton.layer.masksToBounds = true
-        self.isStarred = message.isStarred
+        
+        if message.isStarred {
+            self.starConstraint.constant = self.kStarWidth
+        } else {
+            self.starConstraint.constant = 0
+        }
         
         let labels = message.labels.allObjects
         let lc = labels.count - 1;
