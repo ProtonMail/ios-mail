@@ -97,13 +97,14 @@ class MailboxViewController: ProtonMailViewController {
             self.tableView.reloadRowsAtIndexPaths([selectedItem], withRowAnimation: UITableViewRowAnimation.Fade)
             self.tableView.deselectRowAtIndexPath(selectedItem, animated: true)
         }
-        
+         self.fetchedResultsController?.delegate = self
         self.startAutoFetch()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         self.stopAutoFetch()
+        self.fetchedResultsController?.delegate = nil;
     }
     
     override func viewDidAppear(animated: Bool) {
