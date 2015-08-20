@@ -1936,24 +1936,24 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="mnW-8k-lc0"/>
                                                     <exclude reference="gCr-N9-p4v"/>
-                                                    <exclude reference="cbH-OI-Ahh"/>
-                                                    <exclude reference="EQe-NP-U5x"/>
-                                                    <exclude reference="uKo-x6-3Q9"/>
+                                                    <exclude reference="mnW-8k-lc0"/>
                                                     <exclude reference="14P-Jb-Ekn"/>
+                                                    <exclude reference="EQe-NP-U5x"/>
+                                                    <exclude reference="cbH-OI-Ahh"/>
+                                                    <exclude reference="uKo-x6-3Q9"/>
                                                     <exclude reference="WUT-hy-g7K"/>
                                                     <exclude reference="eME-30-bJN"/>
-                                                    <exclude reference="bdl-OX-t9Z"/>
-                                                    <exclude reference="RAi-YY-YxU"/>
-                                                    <exclude reference="KYq-eh-fO2"/>
-                                                    <exclude reference="Ghq-UY-UI9"/>
                                                     <exclude reference="Gd8-AL-cYQ"/>
-                                                    <exclude reference="Qkt-ET-Am9"/>
-                                                    <exclude reference="qu6-qO-gHX"/>
-                                                    <exclude reference="o5e-07-amf"/>
+                                                    <exclude reference="Ghq-UY-UI9"/>
+                                                    <exclude reference="KYq-eh-fO2"/>
+                                                    <exclude reference="RAi-YY-YxU"/>
+                                                    <exclude reference="bdl-OX-t9Z"/>
                                                     <exclude reference="6lW-OS-XLC"/>
                                                     <exclude reference="Oef-58-AHW"/>
+                                                    <exclude reference="Qkt-ET-Am9"/>
+                                                    <exclude reference="o5e-07-amf"/>
+                                                    <exclude reference="qu6-qO-gHX"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -3014,12 +3014,12 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="uv8-bX-yhD"/>
-        <segue reference="YGe-pV-72F"/>
-        <segue reference="5rJ-hC-fsT"/>
-        <segue reference="A7E-cY-hB0"/>
         <segue reference="V9t-nA-fhw"/>
+        <segue reference="YGe-pV-72F"/>
+        <segue reference="uv8-bX-yhD"/>
         <segue reference="w5b-0j-26v"/>
         <segue reference="ddm-eA-erE"/>
+        <segue reference="5rJ-hC-fsT"/>
+        <segue reference="A7E-cY-hB0"/>
     </inferredMetricsTieBreakers>
 </document>

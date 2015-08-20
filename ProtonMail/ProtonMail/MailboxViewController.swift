@@ -88,7 +88,7 @@ class MailboxViewController: ProtonMailViewController {
         self.updateNavigationController(isEditing)
     }
     
-     deinit {
+    deinit {
 
     }
     
@@ -312,6 +312,10 @@ class MailboxViewController: ProtonMailViewController {
     private func setupFetchedResultsController() {
         self.fetchedResultsController = self.viewModel.getFetchedResultsController()
         self.fetchedResultsController?.delegate = self
+    }
+    
+    func resetFetchedResultsController() {
+        self.fetchedResultsController?.delegate = nil
     }
     
     private func fetchMessagesIfNeededForIndexPath(indexPath: NSIndexPath) {

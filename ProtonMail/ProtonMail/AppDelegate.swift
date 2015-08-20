@@ -51,8 +51,20 @@ class AppDelegate: UIResponder {
                             rootViewController.view.alpha = 0
                         }, completion: { (finished) -> Void in
                             let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
-                            viewController.view.alpha = 0
                             
+                            if let oldView = window.rootViewController as? SWRevealViewController {
+                                if let nav = oldView.frontViewController as? UINavigationController {
+                                    if let firstViewController: UIViewController = nav.viewControllers.first as? UIViewController {
+                                        if (firstViewController.isKindOfClass(MailboxViewController)) {
+                                            if let mailboxViewController: MailboxViewController = firstViewController as? MailboxViewController {
+                                                mailboxViewController.resetFetchedResultsController()
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            viewController.view.alpha = 0
                             window.rootViewController = viewController
                             
                             UIView.animateWithDuration(self.animationDuration/2, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
