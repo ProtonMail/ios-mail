@@ -111,6 +111,8 @@ extension AppDelegate: UIApplicationDelegate {
         setupWindow()
         sharedMessageDataService.launchCleanUpIfNeeded()
         sharedPushNotificationService.registerForRemoteNotifications()
+        
+        let tmp = UIApplication.sharedApplication().releaseMode()
 
         return true
     }

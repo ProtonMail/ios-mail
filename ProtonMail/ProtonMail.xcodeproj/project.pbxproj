@@ -119,6 +119,7 @@
 		70C9133D1A6D83FA002CBE61 /* UIColor+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */; };
 		70FC90DA1A9BC11F00498B42 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FC90D91A9BC11F00498B42 /* StringExtension.swift */; };
 		750254DA1AB8157800050B12 /* GeneralSettingViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750254D91AB8157800050B12 /* GeneralSettingViewCell.swift */; };
+		7508BAC61B87C6EA001A3564 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7508BAC51B87C6EA001A3564 /* UIApplicationExtension.swift */; };
 		750B00981B7AB91400F180BD /* NotificationDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B00971B7AB91400F180BD /* NotificationDefined.swift */; };
 		7510AE761AB8989E00EF3C41 /* DomainsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7510AE751AB8989E00EF3C41 /* DomainsTableViewCell.swift */; };
 		7510AE7C1AB8D68B00EF3C41 /* SettingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7510AE7B1AB8D68B00EF3C41 /* SettingDetailViewController.swift */; };
@@ -331,6 +332,7 @@
 		70FC90D91A9BC11F00498B42 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		70FD2BCB1A6FDC9B0086ADC5 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		750254D91AB8157800050B12 /* GeneralSettingViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralSettingViewCell.swift; sourceTree = "<group>"; };
+		7508BAC51B87C6EA001A3564 /* UIApplicationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
 		750B00971B7AB91400F180BD /* NotificationDefined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationDefined.swift; sourceTree = "<group>"; };
 		7510AE751AB8989E00EF3C41 /* DomainsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsTableViewCell.swift; sourceTree = "<group>"; };
 		7510AE7B1AB8D68B00EF3C41 /* SettingDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDetailViewController.swift; sourceTree = "<group>"; };
@@ -475,6 +477,7 @@
 				75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */,
 				75F9A1111AFD705B007229C7 /* UIDeviceExtension.swift */,
 				756489951B7E94BB007EA207 /* UIImageExtension.swift */,
+				7508BAC51B87C6EA001A3564 /* UIApplicationExtension.swift */,
 				75B1794D1B3775BA006044D4 /* General */,
 			);
 			name = Extensions;
@@ -1237,6 +1240,7 @@
 				07B1237E1AB8ECEC006EA38C /* AttachmentCollectionViewCell.swift in Sources */,
 				70945E701A8135EC002B6837 /* UILabel+ProtonMail.swift in Sources */,
 				7567B06D1B334FA400A72A1E /* ViewModelService.swift in Sources */,
+				7508BAC61B87C6EA001A3564 /* UIApplicationExtension.swift in Sources */,
 				701DDE8E1AA64DEB0038149C /* MBContactPicker.m in Sources */,
 				07CC99641A6F076A000FD6F8 /* NSErrorExtension.swift in Sources */,
 				075F0A521ABF5DB500E6B9AE /* MessageLocation.swift in Sources */,
@@ -1455,8 +1459,8 @@
 			baseConfigurationReference = 132129A26ED76512DB66C024 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

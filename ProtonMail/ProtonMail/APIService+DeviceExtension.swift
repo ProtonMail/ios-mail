@@ -25,8 +25,9 @@ extension APIService {
     }
     func deviceRegisterWithToken(token: NSData, completion: CompletionBlock?) {
         let tokenString = stringFromToken(token)
-        
         deviceToken = tokenString
+        
+        //UIApplication.sharedApplication().release
         
         // 1 : ios dev
         // 2 : ios production
