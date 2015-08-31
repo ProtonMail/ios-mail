@@ -169,6 +169,7 @@ class MessageViewController: ProtonMailViewController {
             if self.message.isDetailDownloaded {
                 self.bodyLoaded = true
                 var error: NSError?
+                //println(self.message!.body);
                 bodyText = self.message.decryptBodyIfNeeded(&error) ?? NSLocalizedString("Unable to decrypt message.")
             }
             

@@ -147,7 +147,7 @@ public class AuthResponse : ApiResponse {
         self.expiresIn = response["ExpiresIn"] as? NSTimeInterval
         self.refreshToken = response["RefreshToken"] as? String
         self.eventID = response["EventID"] as? String
-        
+        //PMLog.D(self.encPrivateKey!);
         return true
     }
 }
