@@ -173,13 +173,7 @@ class MenuViewController: UIViewController {
     }
     
     func updateEmailLabel() {
-        if let username = sharedUserDataService.username {
-            if !username.isEmpty {
-                emailLabel.text = "\(username)@protonmail.ch"
-                return
-            }
-        }
-        emailLabel.text = ""
+        emailLabel.text = sharedUserDataService.defaultEmail;
     }
 }
 
