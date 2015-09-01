@@ -57,6 +57,6 @@ public class ApiResponse {
     }
     
     func ParseResponse (response: Dictionary<String,AnyObject>!) -> Bool {
-        return false
+        return true
     }
 }

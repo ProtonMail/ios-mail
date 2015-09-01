@@ -2318,16 +2318,10 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Settings" id="UEn-BL-Kjn">
                         <barButtonItem key="leftBarButtonItem" image="hamburger" id="tIr-9y-oZU"/>
-                        <barButtonItem key="rightBarButtonItem" title="Edit" id="mbD-Cs-qFQ">
-                            <connections>
-                                <action selector="editAction:" destination="Htd-jh-FjZ" id="kFD-Tm-Bsk"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="editBarButton" destination="mbD-Cs-qFQ" id="ruZ-K0-hTP"/>
                         <outlet property="menuButton" destination="tIr-9y-oZU" id="rsH-ds-zcK"/>
                         <outlet property="settingTableView" destination="ERU-k3-Enh" id="Dnk-AJ-gWO"/>
                         <segue destination="OCS-Qd-wj6" kind="show" identifier="setting_displayname" id="3FM-PP-oeV"/>

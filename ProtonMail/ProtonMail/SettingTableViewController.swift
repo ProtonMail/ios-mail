@@ -17,7 +17,6 @@ class SettingTableViewController: ProtonMailViewController {
     var multi_domains: Array<Address>!
     var userInfo = sharedUserDataService.userInfo
     
-    
     /// segues
     let NotificationSegue:String = "setting_notification"
     let DisplayNameSegue:String = "setting_displayname"
@@ -124,7 +123,7 @@ class SettingTableViewController: ProtonMailViewController {
         case SettingSections.General:
             return setting_general_items.count
         case SettingSections.MultiDomain:
-            return multi_domains.count
+            return 1 //multi_domains.count
         case SettingSections.Storage:
             return 1
         case SettingSections.Version:
@@ -170,7 +169,7 @@ class SettingTableViewController: ProtonMailViewController {
             {
                 cell.defaultMark.text = ""
             }
-            cell.selectionStyle = UITableViewCellSelectionStyle.None
+            cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator;
             return cell
         }
         else if setting_headers[indexPath.section] == SettingSections.Storage {
@@ -285,23 +284,48 @@ class SettingTableViewController: ProtonMailViewController {
                 }
                 break;
             }
+        } else if setting_headers[indexPath.section] == SettingSections.MultiDomain {
+            let alertController = UIAlertController(title: NSLocalizedString("Change default domain to .."), message: nil, preferredStyle: .ActionSheet)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
+            for addr in multi_domains {
+                if multi_domains.first != addr {
+                    alertController.addAction(UIAlertAction(title: addr.email, style: .Default, handler: { (action) -> Void in
+                        self.navigationController?.popViewControllerAnimated(true)
+                        
+                        var newAddrs = Array<Address>()
+                        newAddrs.append(addr);
+                        for oldAddr in self.multi_domains {
+                            if oldAddr != addr {
+                                newAddrs.append(oldAddr)
+                            }
+                        }
+
+                        ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
+                        sharedUserDataService.updateUserDomiansOrder(newAddrs) { _, _, error in
+                            tableView.reloadData();
+                            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                            if let error = error {
+                            } else {
+                                self.multi_domains = newAddrs
+                                tableView.reloadData()
+                            }
+                        }
+                    }))
+                }
+            }
+            presentViewController(alertController, animated: true, completion: nil)
+            
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     // Override to support conditional editing of the table view.
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if setting_headers[indexPath.section] == SettingSections.MultiDomain {
-            return true
-        }
         return false
     }
     
     // Override to support conditional rearranging of the table view.
     func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if setting_headers[indexPath.section] == SettingSections.MultiDomain {
-            return true
-        }
         return false
     }
     

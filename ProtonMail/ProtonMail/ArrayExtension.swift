@@ -18,10 +18,10 @@ extension Array {
 
 
 extension Array {
-    func getAddressOrder () -> Array<String> {
-     
+    func getAddressOrder <T: Address>() -> Array<String> {
+        
         let ids = self.map { ($0 as! Address).address_id }
-
+        
         return ids;
     }
     
