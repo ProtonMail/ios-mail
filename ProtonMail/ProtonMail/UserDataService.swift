@@ -154,6 +154,10 @@ class UserDataService {
         }
     }
     
+    func updateUserInfoFromEventLog (userInfo : UserInfo){
+        self.userInfo = userInfo
+    }
+    
     func isMailboxPasswordValid(password: String, privateKey : String) -> Bool {
         var error: NSError?
         let result = OpenPGP().checkPassphrase(password, forPrivateKey: privateKey, error: &error)
