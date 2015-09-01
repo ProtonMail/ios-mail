@@ -43,7 +43,7 @@ final class UserInfo: NSObject {
 final class Address: NSObject {
     let address_id: String
     let email: String
-    let send: Int
+    var send: Int
     let receive: Int
     let mailbox: Int
     let display_name: String

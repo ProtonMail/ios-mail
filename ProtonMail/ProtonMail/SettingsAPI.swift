@@ -12,14 +12,14 @@ import Foundation
 
 // MARK : update domain order
 public class UpdateDomainOrder<T : ApiResponse> : ApiRequest<T> {
-    let domains : Array<Address>!
+    let newOrder : Array<Int>!
     
-    init(adds:Array<Address>!) {
-        self.domains = adds
+    init(adds:Array<Int>!) {
+        self.newOrder = adds
     }
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
-        var out : [String : AnyObject] = ["Order" : self.domains.getAddressOrder()]
+        var out : [String : AnyObject] = ["Order" : self.newOrder]
     
         //self.domains.();
         PMLog.D(self.JSONStringify(out, prettyPrinted: true))

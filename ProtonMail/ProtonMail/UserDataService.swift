@@ -263,14 +263,12 @@ class UserDataService {
         }
     }
     
-    func updateUserDomiansOrder(email_domains: Array<Address>, completion: CompletionBlock) {
-        
-        let domainSetting = UpdateDomainOrder<ApiResponse>(adds: email_domains)
+    func updateUserDomiansOrder(email_domains: Array<Address>, newOrder : Array<Int>, completion: CompletionBlock) {
+        let domainSetting = UpdateDomainOrder<ApiResponse>(adds: newOrder)
         domainSetting.call() { task, response, hasError in
             if !hasError {
                 if let userInfo = self.userInfo {
                     let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:email_domains)
-                    
                     self.userInfo = userInfo
                 }
             }

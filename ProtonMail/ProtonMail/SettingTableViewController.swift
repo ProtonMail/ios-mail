@@ -99,14 +99,14 @@ class SettingTableViewController: ProtonMailViewController {
         }
         else
         {
-            ActivityIndicatorHelper.showActivityIndicatorAtView(view)
-            editBarButton.title = NSLocalizedString("Edit")
-            sharedUserDataService.updateUserDomiansOrder(multi_domains) { _, _, error in
-                ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-                if let error = error {
-                } else {
-                }
-            }
+//            ActivityIndicatorHelper.showActivityIndicatorAtView(view)
+//            editBarButton.title = NSLocalizedString("Edit")
+//            sharedUserDataService.updateUserDomiansOrder(multi_domains) { _, _, error in
+//                ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+//                if let error = error {
+//                } else {
+//                }
+//            }
         }
     }
     
@@ -287,21 +287,26 @@ class SettingTableViewController: ProtonMailViewController {
         } else if setting_headers[indexPath.section] == SettingSections.MultiDomain {
             let alertController = UIAlertController(title: NSLocalizedString("Change default domain to .."), message: nil, preferredStyle: .ActionSheet)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
-            for addr in multi_domains {
+            for (var addr) in multi_domains {
                 if multi_domains.first != addr {
                     alertController.addAction(UIAlertAction(title: addr.email, style: .Default, handler: { (action) -> Void in
                         self.navigationController?.popViewControllerAnimated(true)
                         
                         var newAddrs = Array<Address>()
+                        var newOrder = Array<Int>()
                         newAddrs.append(addr);
-                        for oldAddr in self.multi_domains {
+                        newOrder.append(addr.send);
+                        var order = 1;
+                        addr.send = order++;
+                        for (var oldAddr) in self.multi_domains {
                             if oldAddr != addr {
                                 newAddrs.append(oldAddr)
+                                newOrder.append(oldAddr.send);
+                                oldAddr.send = order++
                             }
                         }
-
                         ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
-                        sharedUserDataService.updateUserDomiansOrder(newAddrs) { _, _, error in
+                        sharedUserDataService.updateUserDomiansOrder(newAddrs,  newOrder:newOrder) { _, _, error in
                             tableView.reloadData();
                             ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
                             if let error = error {
