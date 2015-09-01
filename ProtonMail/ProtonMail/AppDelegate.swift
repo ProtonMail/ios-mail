@@ -32,13 +32,13 @@ class AppDelegate: UIResponder {
         let storyboard = UIStoryboard.Storyboard.signIn
         return UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
     }
-
+    
     func setupWindow() {
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         window?.rootViewController = instantiateRootViewController()
         window?.makeKeyAndVisible()
     }
-        
+    
     // MARK: - Public methods
     func switchTo(#storyboard: UIStoryboard.Storyboard, animated: Bool) {
         if let window = window {
@@ -49,27 +49,27 @@ class AppDelegate: UIResponder {
                     } else {
                         UIView.animateWithDuration(animationDuration/2, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
                             rootViewController.view.alpha = 0
-                        }, completion: { (finished) -> Void in
-                            let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
-                            
-                            if let oldView = window.rootViewController as? SWRevealViewController {
-                                if let nav = oldView.frontViewController as? UINavigationController {
-                                    if let firstViewController: UIViewController = nav.viewControllers.first as? UIViewController {
-                                        if (firstViewController.isKindOfClass(MailboxViewController)) {
-                                            if let mailboxViewController: MailboxViewController = firstViewController as? MailboxViewController {
-                                                mailboxViewController.resetFetchedResultsController()
+                            }, completion: { (finished) -> Void in
+                                let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
+                                
+                                if let oldView = window.rootViewController as? SWRevealViewController {
+                                    if let nav = oldView.frontViewController as? UINavigationController {
+                                        if let firstViewController: UIViewController = nav.viewControllers.first as? UIViewController {
+                                            if (firstViewController.isKindOfClass(MailboxViewController)) {
+                                                if let mailboxViewController: MailboxViewController = firstViewController as? MailboxViewController {
+                                                    mailboxViewController.resetFetchedResultsController()
+                                                }
                                             }
                                         }
                                     }
                                 }
-                            }
-                            
-                            viewController.view.alpha = 0
-                            window.rootViewController = viewController
-                            
-                            UIView.animateWithDuration(self.animationDuration/2, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
-                                viewController.view.alpha = 1.0
-                            }, completion: nil)
+                                
+                                viewController.view.alpha = 0
+                                window.rootViewController = viewController
+                                
+                                UIView.animateWithDuration(self.animationDuration/2, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+                                    viewController.view.alpha = 1.0
+                                    }, completion: nil)
                         })
                     }
                 }
@@ -96,24 +96,29 @@ extension SWRevealViewController {
 // MARK: - UIApplicationDelegate
 
 extension AppDelegate: UIApplicationDelegate {
-
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-
+        
         Fabric.with([Crashlytics()])
         
         shareViewModelFactoy = ViewModelFactoryProduction()
         
+        
         AFNetworkActivityIndicatorManager.sharedManager().enabled = true
         
+        //net work debug option
         AFNetworkActivityLogger.sharedLogger().startLogging()
         AFNetworkActivityLogger.sharedLogger().level = AFHTTPRequestLoggerLevel.AFLoggerLevelDebug
+        AFNetworkActivityLogger.sharedLogger().stopLogging()
         
         setupWindow()
         sharedMessageDataService.launchCleanUpIfNeeded()
         sharedPushNotificationService.registerForRemoteNotifications()
         
         let tmp = UIApplication.sharedApplication().releaseMode()
-
+        if tmp != .Dev && tmp != .Sim {
+            AFNetworkActivityLogger.sharedLogger().stopLogging()
+        }
         return true
     }
     
@@ -155,7 +160,7 @@ extension AppDelegate: UIApplicationDelegate {
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
     }
-
+    
     func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
         sharedPushNotificationService.didRegisterUserNotificationSettings(notificationSettings)
     }

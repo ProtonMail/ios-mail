@@ -54,6 +54,17 @@ class UserDataService {
         }
     }
     
+    var cleanUserName : String {
+        if let un = self.username {
+            let cleanOne = un.stringByReplacingOccurrencesOfString("@protonmail.ch", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            let cleaned = cleanOne.stringByReplacingOccurrencesOfString("@protonmail.com", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            return cleaned;
+        } else {
+            return "";
+        }
+    }
+    
+    
     var usedSpace: Int64 {
         return userInfo?.usedSpace ?? 0
     }

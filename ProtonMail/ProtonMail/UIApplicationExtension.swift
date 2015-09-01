@@ -85,7 +85,7 @@ extension UIApplication {
             // failure to read other than it simply not existing
             return .Unknown
         } else if mobileProvision?.count == 0 {
-            #if TARGET_IPHONE_SIMULATOR
+            #if (arch(i386) || arch(x86_64)) && os(iOS)
                 return .Sim;
                 #else
                 return .AppStore;
