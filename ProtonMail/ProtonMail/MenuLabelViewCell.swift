@@ -41,10 +41,13 @@ class MenuLabelViewCell: UITableViewCell {
         unreadLabel.text = "0";
         
         let color = UIColor(hexString: item.color, alpha:1)
-        let image = UIImage.imageWithColor(color)
+        let image = UIImage(named: "menu_label")
         titleLabel.text = item.name;
-        titleImageView.image = image
-        titleImageView.highlightedImage = image
+        
+        titleImageView.image = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        titleImageView.highlightedImage = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        
+        titleImageView.tintColor = color
     }
     
     func configUnreadCount () {

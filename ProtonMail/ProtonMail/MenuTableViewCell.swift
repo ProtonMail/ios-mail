@@ -39,9 +39,10 @@ class MenuTableViewCell: UITableViewCell {
         
         titleLabel.text = item.identifier;
         
-        let image = UIImage(named: item.image)
-        titleImageView.image = image
-        titleImageView.highlightedImage = image
+        let defaultImage = UIImage(named: item.image)
+        let selectedImage = UIImage(named: item.imageSelected)
+        titleImageView.image = defaultImage
+        titleImageView.highlightedImage = selectedImage
         
         unreadLabel.hidden = !item.hasCount
     }
@@ -67,12 +68,12 @@ class MenuTableViewCell: UITableViewCell {
         if highlighted {
             unreadLabel.backgroundColor = UIColor.ProtonMail.Menu_UnreadCountBackground
         }
-        
-        if highlighted {
-            self.backgroundColor = UIColor.ProtonMail.Menu_SelectedBackground
-        } else {
-            self.backgroundColor = UIColor.ProtonMail.Menu_UnSelectBackground
-        }
+//
+//        if highlighted {
+//            self.backgroundColor = UIColor.ProtonMail.Menu_SelectedBackground
+//        } else {
+//            self.backgroundColor = UIColor.ProtonMail.Menu_UnSelectBackground
+//        }
     }
     
     override func setSelected(selected: Bool, animated: Bool) {
@@ -80,12 +81,11 @@ class MenuTableViewCell: UITableViewCell {
         if selected {
             unreadLabel.backgroundColor = UIColor.ProtonMail.Menu_UnreadCountBackground
         }
-        
-        
-        if selected {
-            self.backgroundColor = UIColor.ProtonMail.Menu_SelectedBackground
-        } else {
-            self.backgroundColor = UIColor.ProtonMail.Menu_UnSelectBackground
-        }
+//
+//        if selected {
+//            self.backgroundColor = UIColor.ProtonMail.Menu_SelectedBackground
+//        } else {
+//            self.backgroundColor = UIColor.ProtonMail.Menu_UnSelectBackground
+//        }
     }
 }

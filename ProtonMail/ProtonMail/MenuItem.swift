@@ -22,7 +22,7 @@ enum MenuItem: String {
     case spam = "Spam"
     case contacts = "Contacts"
     case settings = "Settings"
-    case signout = "Signout"
+    case signout = "Logout"
     
     var identifier: String { return rawValue }
     
@@ -39,44 +39,89 @@ enum MenuItem: String {
     }
     
     var image : String {
-        var image = "inbox_selected"
+        var image = "menu_inbox"
         switch self {
         case bugs:
-            image = "bug_selected"
+            image = "menu_bugs"
             break
-        case inbox, archive:
-            image = "inbox_selected"
+        case inbox:
+            image = "menu_inbox"
+            break
+        case archive:
+            image = "menu_archive"
             break
         case starred:
-            image = "starred_selected"
+            image = "menu_starred"
             break
         case drafts:
-            image = "draft_selected"
+            image = "menu_draft"
             break
         case sent:
-            image = "sent_selected"
+            image = "menu_sent"
             break
         case trash:
-            image = "trash_selected"
+            image = "menu_trash"
             break
         case spam:
-            image = "spam_selected"
+            image = "menu_spam"
             break
         case contacts:
-            image = "contact_selected"
+            image = "menu_contacts"
             break
         case settings:
-            image = "settings_selected"
+            image = "menu_settings"
             break
         case signout:
-            image = "signout_selected"
+            image = "menu_logout"
             break
         default:
-            image = "inbox_selected"
             break
         }
         return image;
     }
+    
+    var imageSelected : String {
+        var image = "menu_inbox-active"
+        switch self {
+        case bugs:
+            image = "menu_bugs-active"
+            break
+        case inbox:
+            image = "menu_inbox-active"
+            break
+        case archive:
+            image = "menu_archive-active"
+            break
+        case starred:
+            image = "menu_starred-active"
+            break
+        case drafts:
+            image = "menu_draft-active"
+            break
+        case sent:
+            image = "menu_sent-active"
+            break
+        case trash:
+            image = "menu_trash-active"
+            break
+        case spam:
+            image = "menu_spam-active"
+            break
+        case contacts:
+            image = "menu_contacts-active"
+            break
+        case settings:
+            image = "menu_settings-active"
+            break
+        case signout:
+            image = "menu_logout-active"
+            break
+        default:
+            break
+        }
+        return image;
+    }
+
     
     var menuToLocation : MessageLocation {
         switch self {
