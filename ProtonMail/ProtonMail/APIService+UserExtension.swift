@@ -50,7 +50,14 @@ extension APIService {
                                 signatureResponseKey: "Signature",
                                 usedSpaceResponseKey: "UsedSpace",
                                 userStatusResponseKey: "UserStatus",
-                                userAddressResponseKey: "Addresses")
+                                userAddressResponseKey: "Addresses",
+                                
+                                autoSaveContactResponseKey : "AutoSaveContacts",
+                                languageResponseKey : "Language",
+                                maxUploadResponseKey: "MaxUpload",
+                                notifyResponseKey: "Notify",
+                                showImagesResponseKey : "ShowImages"
+                            )
                             
                             completion(userInfo, nil)
                         }
@@ -167,7 +174,14 @@ extension UserInfo {
         signatureResponseKey: String,
         usedSpaceResponseKey: String,
         userStatusResponseKey:String,
-        userAddressResponseKey:String) {
+        userAddressResponseKey:String,
+        
+        autoSaveContactResponseKey : String,
+        languageResponseKey : String,
+        maxUploadResponseKey: String,
+        notifyResponseKey: String,
+        showImagesResponseKey : String
+        ) {
             var addresses: [Address] = Array<Address>()
             let address_response = response[userAddressResponseKey] as! Array<Dictionary<String, AnyObject>>
             for res in address_response
@@ -192,6 +206,14 @@ extension UserInfo {
                 signature: response[signatureResponseKey] as? String,
                 usedSpace: usedS?.longLongValue,
                 userStatus: response[userStatusResponseKey] as? Int,
-                userAddresses: addresses)
+                userAddresses: addresses,
+                
+                autoSC : response[autoSaveContactResponseKey] as? Int,
+                language : response[languageResponseKey] as? String,
+                maxUpload: response[maxUploadResponseKey] as? Int64,
+                notify: response[notifyResponseKey] as? Int,
+                showImage : response[showImagesResponseKey] as? Int
+            
+            )
     }
 }

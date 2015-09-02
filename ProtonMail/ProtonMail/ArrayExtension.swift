@@ -18,10 +18,27 @@ extension Array {
 
 
 extension Array {
-    func getAddressOrder () -> Array<String> {
-     
+    func getAddressOrder <T: Address>() -> Array<String> {
+        
         let ids = self.map { ($0 as! Address).address_id }
-
+        
+        return ids;
+    }
+    
+    func getAddressNewOrder <T: Address>() -> Array<Int> {
+        
+        let ids = self.map { ($0 as! Address).send }
+        
+        return ids;
+    }
+    
+    func updateOrder <T: Address>() -> Array<Int> {
+        for var i = 0; i < self.count; ++i {
+            var addr = (self[i] as! Address)
+        }
+        
+        let ids = self.map { ($0 as! Address).send }
+        
         return ids;
     }
     

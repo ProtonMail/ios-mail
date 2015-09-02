@@ -388,7 +388,28 @@ class MessageDataService {
     
     func processIncrementalUpdateUserInfo(userinfo: Dictionary<String, AnyObject>?) {
         
-        
+        if let userData = userinfo {
+            let userInfo = UserInfo(
+                response: userData,
+                displayNameResponseKey: "DisplayName",
+                maxSpaceResponseKey: "MaxSpace",
+                notificationEmailResponseKey: "NotificationEmail",
+                privateKeyResponseKey: "EncPrivateKey",
+                publicKeyResponseKey: "PublicKey",
+                signatureResponseKey: "Signature",
+                usedSpaceResponseKey: "UsedSpace",
+                userStatusResponseKey: "UserStatus",
+                userAddressResponseKey: "Addresses",
+                
+                autoSaveContactResponseKey : "AutoSaveContacts",
+                languageResponseKey : "Language",
+                maxUploadResponseKey: "MaxUpload",
+                notifyResponseKey: "Notify",
+                showImagesResponseKey : "ShowImages"
+            )
+            
+            sharedUserDataService.updateUserInfoFromEventLog(userInfo);
+        }
     }
     
     func processIncrementalUpdateLabels(labels: [Dictionary<String, AnyObject>]?) {

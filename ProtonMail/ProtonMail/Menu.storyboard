@@ -22,10 +22,12 @@
             <string>Roboto-Light</string>
             <string>Roboto-Light</string>
             <string>Roboto-Light</string>
-            <string>Roboto-Light</string>
-            <string>Roboto-Light</string>
         </mutableArray>
         <mutableArray key="Roboto-Regular.ttf">
+            <string>Roboto-Regular</string>
+            <string>Roboto-Regular</string>
+            <string>Roboto-Regular</string>
+            <string>Roboto-Regular</string>
             <string>Roboto-Regular</string>
             <string>Roboto-Regular</string>
             <string>Roboto-Regular</string>
@@ -173,40 +175,30 @@
                                 <color key="separatorColor" red="0.51372549019607838" green="0.53333333333333333" blue="0.59215686274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="sectionIndexBackgroundColor" red="0.31372549019607843" green="0.31372549019607843" blue="0.38039215686274508" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="menu_table_cell" rowHeight="62" id="28n-53-jPI" customClass="MenuTableViewCell" customModule="ProtonMail" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="menu_table_cell" rowHeight="44" id="28n-53-jPI" customClass="MenuTableViewCell" customModule="ProtonMail" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="28n-53-jPI" id="RCw-uN-pgW">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="inbox_selected" highlightedImage="inbox_selected" translatesAutoresizingMaskIntoConstraints="NO" id="Lt3-yt-zm4" userLabel="Inbox Image">
-                                                    <rect key="frame" x="0.0" y="0.0" width="62" height="62"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="menu_inbox" highlightedImage="menu_inbox-active" translatesAutoresizingMaskIntoConstraints="NO" id="Lt3-yt-zm4" userLabel="Inbox Image">
+                                                    <rect key="frame" x="0.0" y="14" width="16" height="16"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" secondItem="Lt3-yt-zm4" secondAttribute="height" multiplier="1:1" id="SNw-mf-nAH"/>
+                                                        <constraint firstAttribute="height" constant="16" id="70j-Ta-2cD"/>
+                                                        <constraint firstAttribute="width" constant="16" id="9s8-0i-yhf"/>
                                                     </constraints>
                                                     <variation key="widthClass=compact" misplaced="YES">
                                                         <rect key="frame" x="16" y="9" width="52" height="52"/>
                                                     </variation>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="INBOX" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xd1-8V-NU7" userLabel="Inbox Label">
-                                                    <rect key="frame" x="70" y="8" width="418" height="46"/>
-                                                    <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <variation key="heightClass=regular" misplaced="YES">
-                                                        <rect key="frame" x="70" y="8" width="138" height="46"/>
-                                                    </variation>
-                                                    <variation key="widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="84" y="8" width="204" height="46"/>
-                                                    </variation>
-                                                    <variation key="widthClass=regular" misplaced="YES">
-                                                        <rect key="frame" x="70" y="8" width="138" height="46"/>
-                                                    </variation>
-                                                </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="GIx-SN-s62">
-                                                    <rect key="frame" x="450" y="0.0" width="62" height="62"/>
+                                                    <rect key="frame" x="486" y="9" width="26" height="26"/>
                                                     <color key="backgroundColor" red="0.50588235290000005" green="0.50980392159999999" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="26" id="7pu-1q-hWT"/>
+                                                        <constraint firstAttribute="width" constant="26" id="TXX-4A-ZrH"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular" misplaced="YES">
@@ -219,28 +211,36 @@
                                                         <rect key="frame" x="170" y="0.0" width="62" height="62"/>
                                                     </variation>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Inbox" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xd1-8V-NU7" userLabel="Inbox Label">
+                                                    <rect key="frame" x="32" y="8" width="446" height="28"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="28" id="Mo6-R7-hFh"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular" misplaced="YES">
+                                                        <rect key="frame" x="70" y="8" width="138" height="46"/>
+                                                    </variation>
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="84" y="8" width="204" height="46"/>
+                                                    </variation>
+                                                    <variation key="widthClass=regular" misplaced="YES">
+                                                        <rect key="frame" x="70" y="8" width="138" height="46"/>
+                                                    </variation>
+                                                </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.31372549019607843" green="0.31372549019607843" blue="0.38039215686274508" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstItem="Lt3-yt-zm4" firstAttribute="leading" secondItem="RCw-uN-pgW" secondAttribute="leading" id="8TN-Ym-4Tg">
                                                     <variation key="widthClass=compact" constant="16"/>
                                                 </constraint>
-                                                <constraint firstItem="GIx-SN-s62" firstAttribute="height" secondItem="Lt3-yt-zm4" secondAttribute="height" id="NYE-tc-jjg"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="xd1-8V-NU7" secondAttribute="trailing" constant="104" id="R7g-Gh-IND"/>
-                                                <constraint firstAttribute="bottom" secondItem="Lt3-yt-zm4" secondAttribute="bottom" id="adt-Mp-4Xt">
-                                                    <variation key="widthClass=compact" constant="9"/>
-                                                </constraint>
-                                                <constraint firstItem="xd1-8V-NU7" firstAttribute="top" secondItem="RCw-uN-pgW" secondAttribute="topMargin" id="baA-m5-37o"/>
+                                                <constraint firstAttribute="centerY" secondItem="Lt3-yt-zm4" secondAttribute="centerY" id="HEa-U4-CGa"/>
+                                                <constraint firstAttribute="centerY" secondItem="xd1-8V-NU7" secondAttribute="centerY" id="Yun-Zb-R9H"/>
                                                 <constraint firstAttribute="trailing" secondItem="GIx-SN-s62" secondAttribute="trailing" constant="88" id="dH2-A8-ZlM"/>
+                                                <constraint firstItem="GIx-SN-s62" firstAttribute="leading" secondItem="xd1-8V-NU7" secondAttribute="trailing" constant="8" id="dOM-JL-QRB"/>
                                                 <constraint firstAttribute="centerY" secondItem="GIx-SN-s62" secondAttribute="centerY" id="iFZ-K0-VhR"/>
-                                                <constraint firstItem="GIx-SN-s62" firstAttribute="width" secondItem="Lt3-yt-zm4" secondAttribute="width" id="k8Y-8k-Leb"/>
-                                                <constraint firstItem="xd1-8V-NU7" firstAttribute="bottom" secondItem="RCw-uN-pgW" secondAttribute="bottomMargin" id="pCS-XW-8nK"/>
-                                                <constraint firstItem="Lt3-yt-zm4" firstAttribute="top" secondItem="RCw-uN-pgW" secondAttribute="top" id="pXf-px-s3g">
-                                                    <variation key="widthClass=compact" constant="9"/>
-                                                </constraint>
-                                                <constraint firstItem="xd1-8V-NU7" firstAttribute="leading" secondItem="Lt3-yt-zm4" secondAttribute="trailing" constant="8" id="xXg-9i-sDp">
-                                                    <variation key="widthClass=compact" constant="16"/>
-                                                </constraint>
+                                                <constraint firstItem="xd1-8V-NU7" firstAttribute="leading" secondItem="Lt3-yt-zm4" secondAttribute="trailing" constant="16" id="wH9-MA-JtI"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -249,24 +249,17 @@
                                             <outlet property="unreadLabel" destination="GIx-SN-s62" id="x61-Tj-fTL"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="menu_label_cell" rowHeight="62" id="JYu-fd-bBP" customClass="MenuLabelViewCell" customModule="ProtonMail" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="menu_label_cell" rowHeight="44" id="JYu-fd-bBP" customClass="MenuLabelViewCell" customModule="ProtonMail" customModuleProvider="target">
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JYu-fd-bBP" id="FJp-CH-LAo">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Sot-l0-45d" userLabel="Inbox Image">
-                                                    <rect key="frame" x="0.0" y="0.0" width="62" height="62"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="25D-xV-VyZ" userLabel="Inbox Label">
+                                                    <rect key="frame" x="48" y="8" width="430" height="28"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" secondItem="Sot-l0-45d" secondAttribute="height" multiplier="1:1" id="ET1-fQ-ZQZ"/>
+                                                        <constraint firstAttribute="height" constant="28" id="v3r-JM-OJB"/>
                                                     </constraints>
-                                                    <variation key="widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="16" y="9" width="52" height="52"/>
-                                                    </variation>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="INBOX" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="25D-xV-VyZ" userLabel="Inbox Label">
-                                                    <rect key="frame" x="70" y="8" width="418" height="46"/>
-                                                    <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
+                                                    <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular" misplaced="YES">
@@ -283,9 +276,13 @@
                                                     </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="tmP-lC-VOQ">
-                                                    <rect key="frame" x="450" y="0.0" width="62" height="62"/>
+                                                    <rect key="frame" x="486" y="9" width="26" height="26"/>
                                                     <color key="backgroundColor" red="0.50588235290000005" green="0.50980392159999999" blue="0.76470588240000004" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="26" id="Jlk-5a-z9m"/>
+                                                        <constraint firstAttribute="width" constant="26" id="OIN-VP-Ut7"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular" misplaced="YES">
@@ -298,28 +295,27 @@
                                                         <rect key="frame" x="170" y="0.0" width="62" height="62"/>
                                                     </variation>
                                                 </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="menu_label" highlightedImage="menu_label" translatesAutoresizingMaskIntoConstraints="NO" id="Sot-l0-45d" userLabel="Inbox Image">
+                                                    <rect key="frame" x="16" y="14" width="16" height="16"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="16" id="78m-yE-ZV6"/>
+                                                        <constraint firstAttribute="width" constant="16" id="8rT-Sk-FdV"/>
+                                                    </constraints>
+                                                    <variation key="widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="16" y="9" width="52" height="52"/>
+                                                    </variation>
+                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
-                                                <constraint firstItem="25D-xV-VyZ" firstAttribute="top" secondItem="FJp-CH-LAo" secondAttribute="topMargin" id="0ME-n7-ERs"/>
-                                                <constraint firstAttribute="trailing" secondItem="tmP-lC-VOQ" secondAttribute="trailing" constant="88" id="1zO-te-v9a"/>
-                                                <constraint firstAttribute="bottom" secondItem="Sot-l0-45d" secondAttribute="bottom" id="EtR-M5-EUf">
-                                                    <variation key="widthClass=compact" constant="9"/>
-                                                </constraint>
-                                                <constraint firstItem="Sot-l0-45d" firstAttribute="top" secondItem="FJp-CH-LAo" secondAttribute="top" id="Pn9-VB-ecr">
-                                                    <variation key="widthClass=compact" constant="9"/>
-                                                </constraint>
-                                                <constraint firstItem="25D-xV-VyZ" firstAttribute="bottom" secondItem="FJp-CH-LAo" secondAttribute="bottomMargin" id="RKy-rk-UPl"/>
-                                                <constraint firstItem="tmP-lC-VOQ" firstAttribute="height" secondItem="Sot-l0-45d" secondAttribute="height" id="SM3-gD-ZMh"/>
-                                                <constraint firstItem="Sot-l0-45d" firstAttribute="leading" secondItem="FJp-CH-LAo" secondAttribute="leading" id="Tid-1U-SYo">
-                                                    <variation key="widthClass=compact" constant="16"/>
-                                                </constraint>
-                                                <constraint firstAttribute="centerY" secondItem="tmP-lC-VOQ" secondAttribute="centerY" id="YFp-7L-stP"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="25D-xV-VyZ" secondAttribute="trailing" constant="104" id="d9r-V8-3Ke"/>
-                                                <constraint firstItem="25D-xV-VyZ" firstAttribute="leading" secondItem="Sot-l0-45d" secondAttribute="trailing" constant="8" id="dMj-fO-i9u">
-                                                    <variation key="widthClass=compact" constant="16"/>
-                                                </constraint>
-                                                <constraint firstItem="tmP-lC-VOQ" firstAttribute="width" secondItem="Sot-l0-45d" secondAttribute="width" id="z08-iq-0zW"/>
+                                                <constraint firstAttribute="centerY" secondItem="Sot-l0-45d" secondAttribute="centerY" id="KVE-wi-Q8U"/>
+                                                <constraint firstAttribute="centerY" secondItem="25D-xV-VyZ" secondAttribute="centerY" id="L7y-43-z9H"/>
+                                                <constraint firstItem="Sot-l0-45d" firstAttribute="leading" secondItem="FJp-CH-LAo" secondAttribute="leading" constant="16" id="O9e-V0-MQW"/>
+                                                <constraint firstItem="tmP-lC-VOQ" firstAttribute="leading" secondItem="25D-xV-VyZ" secondAttribute="trailing" constant="8" id="dOS-fN-I50"/>
+                                                <constraint firstAttribute="centerY" secondItem="tmP-lC-VOQ" secondAttribute="centerY" id="dV1-iK-lgq"/>
+                                                <constraint firstItem="25D-xV-VyZ" firstAttribute="leading" secondItem="Sot-l0-45d" secondAttribute="trailing" constant="16" id="gnl-TO-oik"/>
+                                                <constraint firstAttribute="trailing" secondItem="tmP-lC-VOQ" secondAttribute="trailing" constant="88" id="sCn-9j-ynj"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
@@ -549,13 +545,13 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E7U-Dc-qS6" userLabel="Header View">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="64"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="John Doe" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UJa-fM-KPk">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UJa-fM-KPk">
                                         <rect key="frame" x="16" y="20" width="576" height="20"/>
                                         <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="johndoe@protonmail.ch" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dGF-dy-Rrr">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="zhj4478@protonmail.ch" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dGF-dy-Rrr">
                                         <rect key="frame" x="16" y="42" width="576" height="13"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="13" id="Qa3-jH-MjH"/>
@@ -2318,16 +2314,10 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Settings" id="UEn-BL-Kjn">
                         <barButtonItem key="leftBarButtonItem" image="hamburger" id="tIr-9y-oZU"/>
-                        <barButtonItem key="rightBarButtonItem" title="Edit" id="mbD-Cs-qFQ">
-                            <connections>
-                                <action selector="editAction:" destination="Htd-jh-FjZ" id="kFD-Tm-Bsk"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="editBarButton" destination="mbD-Cs-qFQ" id="ruZ-K0-hTP"/>
                         <outlet property="menuButton" destination="tIr-9y-oZU" id="rsH-ds-zcK"/>
                         <outlet property="settingTableView" destination="ERU-k3-Enh" id="Dnk-AJ-gWO"/>
                         <segue destination="OCS-Qd-wj6" kind="show" identifier="setting_displayname" id="3FM-PP-oeV"/>
@@ -3000,11 +2990,13 @@
         <image name="favorite_main_selected" width="19" height="19"/>
         <image name="forward" width="28" height="23"/>
         <image name="hamburger" width="20" height="16"/>
-        <image name="inbox_selected" width="24" height="16"/>
         <image name="label_addlabel" width="16" height="16"/>
         <image name="mail_attachment" width="14" height="14"/>
         <image name="mail_lock" width="14" height="14"/>
         <image name="mail_starred-active" width="16" height="16"/>
+        <image name="menu_inbox" width="16" height="16"/>
+        <image name="menu_inbox-active" width="16" height="16"/>
+        <image name="menu_label" width="16" height="16"/>
         <image name="popup_behind_image" width="106" height="153"/>
         <image name="reply" width="28" height="23"/>
         <image name="replyall" width="31" height="24"/>
@@ -3014,12 +3006,12 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="LdN-DE-nXL"/>
+        <segue reference="A7E-cY-hB0"/>
         <segue reference="V9t-nA-fhw"/>
-        <segue reference="YGe-pV-72F"/>
         <segue reference="uv8-bX-yhD"/>
         <segue reference="w5b-0j-26v"/>
         <segue reference="ddm-eA-erE"/>
         <segue reference="5rJ-hC-fsT"/>
-        <segue reference="A7E-cY-hB0"/>
     </inferredMetricsTieBreakers>
 </document>
