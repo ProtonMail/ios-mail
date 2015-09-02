@@ -35,7 +35,6 @@ class MessageViewController: ProtonMailViewController {
     ///
     var emailView: EmailView?
     
-    
     ///
     private var actionTapped: ComposeMessageAction!
     private var fetchedMessageController: NSFetchedResultsController?
@@ -58,9 +57,7 @@ class MessageViewController: ProtonMailViewController {
         self.emailView!.initLayouts()
         self.emailView!.bottomActionView.delegate = self
         self.emailView!.emailHeader.actionsDelegate = self
-        self.emailView!.moreOptionsView.delegate = self
         self.updateEmailBody()
-        
     }
     
     override func loadView() {
@@ -82,28 +79,33 @@ class MessageViewController: ProtonMailViewController {
     private func setupRightButtons() {
         var rightButtons: [UIBarButtonItem] = []
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_more"), style: UIBarButtonItemStyle.Plain, target: self, action: "moreButtonTapped"))
-        if message.location != .spam {
-            rightButtons.append(UIBarButtonItem(image: UIImage(named: "spam_selected"), style: UIBarButtonItemStyle.Plain, target: self, action: "spamButtonTapped"))
-        }
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_trash"), style: UIBarButtonItemStyle.Plain, target: self, action: "removeButtonTapped"))
+        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_label"), style: UIBarButtonItemStyle.Plain, target: self, action: "labelButtonTapped"))
+        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_unread"), style: UIBarButtonItemStyle.Plain, target: self, action: "unreadButtonTapped"))
+        
         self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
     }
     
-    func removeButtonTapped() {
+    internal func unreadButtonTapped() {
+        messagesSetValue(setValue: false, forKey: Message.Attributes.isRead)
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
+    internal func removeButtonTapped() {
         switch(message.location) {
         case .trash, .spam:
-            message.location = .deleted
+            self.messagesSetValue(setValue: MessageLocation.deleted.rawValue, forKey: Message.Attributes.locationNumber)
         default:
-            message.location = .trash
-        }
-        message.needsUpdate = true
-        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
-            NSLog("\(__FUNCTION__) error: \(error)")
+            self.messagesSetValue(setValue: MessageLocation.trash.rawValue, forKey: Message.Attributes.locationNumber)
         }
         self.navigationController?.popViewControllerAnimated(true)
     }
     
-    func spamButtonTapped() {
+    internal func labelButtonTapped() {
+        self.performSegueWithIdentifier("toApplyLabelsSegue", sender: self)
+    }
+    
+    internal func spamButtonTapped() {
         message.location = .spam
         message.needsUpdate = true
         if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
@@ -112,6 +114,32 @@ class MessageViewController: ProtonMailViewController {
         
         self.navigationController?.popViewControllerAnimated(true)
     }
+    
+    internal func moreButtonTapped() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
+
+        let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .archive : .Destructive]
+        for (location, style) in locations {
+            if message.location != location {
+                alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
+                    self.messagesSetValue(setValue: location.rawValue, forKey: Message.Attributes.locationNumber)
+                    self.navigationController?.popViewControllerAnimated(true)
+                }))
+            }
+        }
+        presentViewController(alertController, animated: true, completion: nil)
+    }
+
+    private func messagesSetValue(setValue value: AnyObject?, forKey key: String) {
+        message.setValue(value, forKey: key)
+        message.setValue(true, forKey: "needsUpdate")
+        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
+            NSLog("\(__FUNCTION__) error: \(error)")
+        }
+    }
+    
+    
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toCompose" {
@@ -144,10 +172,6 @@ class MessageViewController: ProtonMailViewController {
     
     internal func statusBarHit (notify: NSNotification) {
         self.emailView?.contentWebView.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
-    }
-    
-    func moreButtonTapped() {
-        self.emailView!.animateMoreViewOptions()
     }
     
     func setPresentationStyleForSelfController(selfController : UIViewController,  presentingController: UIViewController)
@@ -213,11 +237,7 @@ extension MessageViewController : MessageDetailBottomViewProtocol {
 private var tempFileUri : NSURL?
 extension MessageViewController : EmailHeaderActionsProtocol {
     func starredChanged(isStarred: Bool) {
-        message.isStarred = isStarred
-        message.needsUpdate = true
-        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
-            NSLog("\(__FUNCTION__) error: \(error)")
-        }
+        self.messagesSetValue(setValue: isStarred, forKey: Message.Attributes.isStarred)
     }
     
     func quickLookAttachment (localURL : NSURL, keyPackage:NSData, fileName:String) {
@@ -238,7 +258,6 @@ extension MessageViewController : EmailHeaderActionsProtocol {
 }
 
 // MARK: - UIDocumentInteractionControllerDelegate
-
 extension MessageViewController: UIDocumentInteractionControllerDelegate {
 }
 
@@ -252,81 +271,4 @@ extension MessageViewController : QLPreviewControllerDataSource {
     }
 }
 
-// MARK
-extension MessageViewController : MoreOptionsViewDelegate {
-    
-    func moreOptionsViewDidMarkAsUnread(moreOptionsView: MoreOptionsView) {
-        message.isRead = false
-        message.needsUpdate = true
-        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
-            NSLog("\(__FUNCTION__) error: \(error)")
-        }
-        
-        navigationController?.popViewControllerAnimated(true)
-        
-        self.emailView!.animateMoreViewOptions()
-    }
-    
-    func moreOptionsViewDidSelectTagAs(moreOptionsView: MoreOptionsView) {
-        self.emailView!.animateMoreViewOptions()
-        self.performSegueWithIdentifier("toApplyLabelsSegue", sender: self)
-    }
-    
-    func moreOptionsViewDidSelectMoveTo(moreOptionsView: MoreOptionsView) {
-        let alertController = UIAlertController(title: NSLocalizedString("Move to..."), message: nil, preferredStyle: .ActionSheet)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
-        
-        if message.location != .inbox {
-            alertController.addAction(UIAlertAction(title: MessageLocation.inbox.description, style: .Default, handler: { (action) -> Void in
-                self.message.location = .inbox
-                self.message.needsUpdate = true
-                if let error = self.message.managedObjectContext?.saveUpstreamIfNeeded() {
-                    NSLog("\(__FUNCTION__) error: \(error)")
-                }
-                
-                self.navigationController?.popViewControllerAnimated(true)
-            }))
-        }
-        
-        if message.location != .spam {
-            alertController.addAction(UIAlertAction(title: MessageLocation.spam.description, style: .Default, handler: { (action) -> Void in
-                self.message.location = .spam
-                self.message.needsUpdate = true
-                if let error = self.message.managedObjectContext?.saveUpstreamIfNeeded() {
-                    NSLog("\(__FUNCTION__) error: \(error)")
-                }
-                
-                self.navigationController?.popViewControllerAnimated(true)
-            }))
-        }
-        
-        if message.location != .archive {
-            alertController.addAction(UIAlertAction(title: MessageLocation.archive.description, style: .Destructive, handler: { (action) -> Void in
-                self.message.location = .archive
-                self.message.needsUpdate = true
-                if let error = self.message.managedObjectContext?.saveUpstreamIfNeeded() {
-                    NSLog("\(__FUNCTION__) error: \(error)")
-                }
-                
-                self.navigationController?.popViewControllerAnimated(true)
-            }))
-        }
-        
-        if message.location != .trash {
-            alertController.addAction(UIAlertAction(title: MessageLocation.trash.description, style: .Destructive, handler: { (action) -> Void in
-                self.message.location = .trash
-                self.message.needsUpdate = true
-                if let error = self.message.managedObjectContext?.saveUpstreamIfNeeded() {
-                    NSLog("\(__FUNCTION__) error: \(error)")
-                }
-                
-                self.navigationController?.popViewControllerAnimated(true)
-            }))
-        }
-        
-        presentViewController(alertController, animated: true, completion: nil)
-        
-        self.emailView!.animateMoreViewOptions()
-    }
-    
-}
+

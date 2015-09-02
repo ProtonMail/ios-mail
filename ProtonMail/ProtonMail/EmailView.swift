@@ -32,9 +32,6 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     //
     private let kMoreOptionsViewHeight: CGFloat = 123.0
     
-    //
-    var moreOptionsView: MoreOptionsView!
-    
     // Message header view
     var emailHeader : EmailHeaderView!
     
@@ -66,13 +63,6 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
             make.left.equalTo()(self)
             make.right.equalTo()(self)
             make.bottom.equalTo()(self.bottomActionView.mas_top)
-        }
-        
-        moreOptionsView.mas_makeConstraints { (make) -> Void in
-            make.left.equalTo()(self)
-            make.right.equalTo()(self)
-            make.height.equalTo()(self.kMoreOptionsViewHeight)
-            make.bottom.equalTo()(self.mas_top)
         }
         
         bottomActionView.mas_makeConstraints { (make) -> Void in
@@ -110,7 +100,6 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         self.setupBottomView()
         self.setupContentView()
         self.setupHeaderView()
-        self.createMoreOptionsView()
         
         //self.setupAttachmentView()
         //updateAttachments()
@@ -120,12 +109,6 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    private func createMoreOptionsView() {
-        self.moreOptionsView = MoreOptionsView()
-        self.addSubview(moreOptionsView)
-    }
-
     
     private func setupBottomView() {
         self.bottomActionView = NSBundle.mainBundle().loadNibNamed("MessageDetailBottomView", owner: 0, options: nil)[0] as? MessageDetailBottomView
@@ -168,34 +151,6 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         let w = UIScreen.mainScreen().applicationFrame.width;
         self.contentWebView.frame = CGRect(x: 0, y: 0, width: w, height: 100);
         // UIView.animateWithDuration(0, delay:0, options: nil, animations: { }, completion: nil)
-    }
-    
-    func animateMoreViewOptions() {
-        self.bringSubviewToFront(self.moreOptionsView)
-        if (self.isViewingMoreOptions) {
-            self.moreOptionsView.mas_updateConstraints({ (make) -> Void in
-                make.removeExisting = true
-                make.left.equalTo()(self)
-                make.right.equalTo()(self)
-                make.height.equalTo()(self.kMoreOptionsViewHeight)
-                make.bottom.equalTo()(self.mas_top)
-            })
-        } else {
-            self.moreOptionsView.mas_updateConstraints({ (make) -> Void in
-                make.removeExisting = true
-                make.left.equalTo()(self)
-                make.right.equalTo()(self)
-                make.height.equalTo()(self.kMoreOptionsViewHeight)
-                
-                make.top.equalTo()(self.mas_top)
-            })
-        }
-        
-        self.isViewingMoreOptions = !self.isViewingMoreOptions
-        
-        UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
-            self.layoutIfNeeded()
-            }, completion: nil)
     }
     
     private var attY : CGFloat = 0;

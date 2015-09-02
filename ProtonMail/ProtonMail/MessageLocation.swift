@@ -30,17 +30,17 @@ public enum MessageLocation: Int, Printable {
         get {
             switch(self) {
             case deleted:
-                return NSLocalizedString("Deleted")
+                return NSLocalizedString("Trash")
             case inbox:
-                return NSLocalizedString("Inbox")
+                return NSLocalizedString("Move to Inbox")
             case draft:
-                return NSLocalizedString("Draft")
+                return NSLocalizedString("Move to Draft")
             case outbox:
-                return NSLocalizedString("Outbox")
+                return NSLocalizedString("Move to Outbox")
             case spam:
                 return NSLocalizedString("Move to Spam")
             case starred:
-                return NSLocalizedString("Starred")
+                return NSLocalizedString("Add Star")
             case archive:
                 return NSLocalizedString("Move to Archive")
             case trash:
