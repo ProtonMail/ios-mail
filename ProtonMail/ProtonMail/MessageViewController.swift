@@ -36,7 +36,7 @@ class MessageViewController: ProtonMailViewController {
     var emailView: EmailView?
     
     
-    /// 
+    ///
     private var actionTapped: ComposeMessageAction!
     private var fetchedMessageController: NSFetchedResultsController?
     
@@ -47,14 +47,14 @@ class MessageViewController: ProtonMailViewController {
         self.setupRightButtons()
         
         self.setupFetchedResultsController(message.messageID)
-
+        
         self.updateHeader()
         
         if (self.message.hasAttachments) {
             let atts = self.message.attachments.allObjects as! [Attachment]
             self.emailView?.updateEmailAttachment(atts);
         }
-
+        
         self.emailView!.initLayouts()
         self.emailView!.bottomActionView.delegate = self
         self.emailView!.emailHeader.actionsDelegate = self
@@ -78,14 +78,14 @@ class MessageViewController: ProtonMailViewController {
             time: self.message.time)
     }
     
-        
+    
     private func setupRightButtons() {
         var rightButtons: [UIBarButtonItem] = []
-        rightButtons.append(UIBarButtonItem(image: UIImage(named: "arrow_down"), style: UIBarButtonItemStyle.Plain, target: self, action: "moreButtonTapped"))
+        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_more"), style: UIBarButtonItemStyle.Plain, target: self, action: "moreButtonTapped"))
         if message.location != .spam {
             rightButtons.append(UIBarButtonItem(image: UIImage(named: "spam_selected"), style: UIBarButtonItemStyle.Plain, target: self, action: "spamButtonTapped"))
         }
-        rightButtons.append(UIBarButtonItem(image: UIImage(named: "trash_selected"), style: UIBarButtonItemStyle.Plain, target: self, action: "removeButtonTapped"))
+        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_trash"), style: UIBarButtonItemStyle.Plain, target: self, action: "removeButtonTapped"))
         self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
     }
     
@@ -112,7 +112,7 @@ class MessageViewController: ProtonMailViewController {
         
         self.navigationController?.popViewControllerAnimated(true)
     }
-
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toCompose" {
             let composeViewController = segue.destinationViewController as! ComposeEmailViewController
@@ -123,7 +123,7 @@ class MessageViewController: ProtonMailViewController {
             self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }
-
+    
     override func shouldShowSideMenu() -> Bool {
         return false
     }
@@ -145,7 +145,7 @@ class MessageViewController: ProtonMailViewController {
     internal func statusBarHit (notify: NSNotification) {
         self.emailView?.contentWebView.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
-
+    
     func moreButtonTapped() {
         self.emailView!.animateMoreViewOptions()
     }
@@ -254,7 +254,7 @@ extension MessageViewController : QLPreviewControllerDataSource {
 
 // MARK
 extension MessageViewController : MoreOptionsViewDelegate {
-   
+    
     func moreOptionsViewDidMarkAsUnread(moreOptionsView: MoreOptionsView) {
         message.isRead = false
         message.needsUpdate = true
@@ -263,7 +263,7 @@ extension MessageViewController : MoreOptionsViewDelegate {
         }
         
         navigationController?.popViewControllerAnimated(true)
-
+        
         self.emailView!.animateMoreViewOptions()
     }
     
@@ -328,5 +328,5 @@ extension MessageViewController : MoreOptionsViewDelegate {
         
         self.emailView!.animateMoreViewOptions()
     }
-
+    
 }

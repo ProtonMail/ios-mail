@@ -43,7 +43,6 @@ class MailboxViewController: ProtonMailViewController {
     internal var messageID: String?
     private var selectedMessages: NSMutableSet = NSMutableSet()
     private var isEditing: Bool = false
-    private var isViewingMoreOptions: Bool = false
     private var timer : NSTimer!
     
     private var fetching : Bool = false
@@ -53,7 +52,6 @@ class MailboxViewController: ProtonMailViewController {
     
     // MAKR : - Private views
     internal var refreshControl: UIRefreshControl!
-    private var moreOptionsView: MoreOptionsView!
     private var navigationTitleLabel = UILabel()
     
     
@@ -63,6 +61,8 @@ class MailboxViewController: ProtonMailViewController {
     private var searchBarButtonItem: UIBarButtonItem!
     private var removeBarButtonItem: UIBarButtonItem!
     private var favoriteBarButtonItem: UIBarButtonItem!
+    private var labelBarButtonItem: UIBarButtonItem!
+    private var unreadBarButtonItem: UIBarButtonItem!
     private var moreBarButtonItem: UIBarButtonItem!
     
     
@@ -86,10 +86,6 @@ class MailboxViewController: ProtonMailViewController {
         self.addConstraints()
         
         self.updateNavigationController(isEditing)
-    }
-    
-    deinit {
-
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -117,11 +113,19 @@ class MailboxViewController: ProtonMailViewController {
         StorageLimit().checkSpace(usedSpace: usedStorageSpace, maxSpace: maxStorageSpace)
     }
     
-    private func addSubViews() {
-        self.moreOptionsView = MoreOptionsView()
-        self.moreOptionsView.delegate = self
-        self.view.addSubview(self.moreOptionsView)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
+        if (self.tableView.respondsToSelector("setSeparatorInset:")) {
+            self.tableView.separatorInset = UIEdgeInsetsZero
+        }
+        
+        if (self.tableView.respondsToSelector("setLayoutMargins:")) {
+            self.tableView.layoutMargins = UIEdgeInsetsZero
+        }
+    }
+    
+    private func addSubViews() {
         self.navigationTitleLabel.backgroundColor = UIColor.clearColor()
         self.navigationTitleLabel.font = UIFont.robotoRegular(size: UIFont.Size.h2)
         self.navigationTitleLabel.textAlignment = NSTextAlignment.Center
@@ -149,12 +153,7 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     private func addConstraints() {
-        self.moreOptionsView.mas_makeConstraints { (make) -> Void in
-            make.left.equalTo()(self.view)
-            make.right.equalTo()(self.view)
-            make.height.equalTo()(self.kMoreOptionsViewHeight)
-            make.bottom.equalTo()(self.view.mas_top)
-        }
+
     }
     
     // MARK: - Prepare for segue
@@ -206,51 +205,52 @@ class MailboxViewController: ProtonMailViewController {
     
     internal func removeButtonTapped() {
         moveMessagesToLocation(.trash)
+        cancelButtonTapped();
     }
     
     internal func favoriteButtonTapped() {
         selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isStarred)
+        cancelButtonTapped();
+    }
+    
+    internal func unreadButtonTapped() {
+        selectedMessagesSetValue(setValue: false, forKey: Message.Attributes.isRead)
+        cancelButtonTapped();
     }
     
     internal func moreButtonTapped() {
-        self.view.bringSubviewToFront(self.moreOptionsView)
-        //TODO:: need monitor here
-        let topLayoutGuide: UIView = self.topLayoutGuide as! UIView
-        if (self.isViewingMoreOptions) {
-            self.moreOptionsView.mas_updateConstraints({ (make) -> Void in
-                make.removeExisting = true
-                make.left.equalTo()(self.view)
-                make.right.equalTo()(self.view)
-                make.height.equalTo()(self.kMoreOptionsViewHeight)
-                make.bottom.equalTo()(topLayoutGuide.mas_top)
-            })
-        } else {
-            self.moreOptionsView.mas_updateConstraints({ (make) -> Void in
-                make.removeExisting = true
-                make.left.equalTo()(self.view)
-                make.right.equalTo()(self.view)
-                make.height.equalTo()(self.kMoreOptionsViewHeight)
-                
-                make.top.equalTo()(topLayoutGuide.mas_bottom)
-            })
+        
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
+        
+        alertController.addAction(UIAlertAction(title: "Mark Read", style: .Default, handler: { (action) -> Void in
+            self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isRead)
+            self.cancelButtonTapped();
+            self.navigationController?.popViewControllerAnimated(true)
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "Add Star", style: .Default, handler: { (action) -> Void in
+            self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isStarred)
+            self.cancelButtonTapped();
+            self.navigationController?.popViewControllerAnimated(true)
+        }))
+        
+        let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .archive : .Destructive]
+        for (location, style) in locations {
+            if !viewModel.isCurrentLocation(location) {
+                alertController.addAction(UIAlertAction(title: location.description, style: style, handler: { (action) -> Void in
+                    self.moveMessagesToLocation(location)
+                    self.cancelButtonTapped();
+                    self.navigationController?.popViewControllerAnimated(true)
+                }))
+            }
         }
-        
-        self.isViewingMoreOptions = !self.isViewingMoreOptions
-        
-        UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
-            self.view.layoutIfNeeded()
-            }, completion: nil)
+        presentViewController(alertController, animated: true, completion: nil)
     }
     
     internal func cancelButtonTapped() {
         self.selectedMessages.removeAllObjects()
         self.hideCheckOptions()
-        
-        // dismiss more options view
-        
-        if (isViewingMoreOptions) {
-            self.moreButtonTapped()
-        }
         
         self.updateNavigationController(false)
     }
@@ -525,7 +525,14 @@ class MailboxViewController: ProtonMailViewController {
             rightButtons = [self.composeBarButtonItem, self.searchBarButtonItem]
             
         } else {
-            
+            if (self.unreadBarButtonItem == nil) {
+                self.unreadBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_unread"), style: UIBarButtonItemStyle.Plain, target: self, action: "unreadButtonTapped")
+            }
+
+            if (self.labelBarButtonItem == nil) {
+                self.labelBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_label"), style: UIBarButtonItemStyle.Plain, target: self, action: "labelButtonTapped")
+            }
+
             if (self.removeBarButtonItem == nil) {
                 self.removeBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_trash"), style: UIBarButtonItemStyle.Plain, target: self, action: "removeButtonTapped")
             }
@@ -538,10 +545,10 @@ class MailboxViewController: ProtonMailViewController {
                 self.moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_more"), style: UIBarButtonItemStyle.Plain, target: self, action: "moreButtonTapped")
             }
             
-            rightButtons = [self.moreBarButtonItem, self.favoriteBarButtonItem, self.removeBarButtonItem]
-            
             if (viewModel.isDrafts()) {
                 rightButtons = [self.removeBarButtonItem]
+            } else {
+                rightButtons = [self.moreBarButtonItem, self.removeBarButtonItem, self.unreadBarButtonItem] //self.labelBarButtonItem,
             }
         }
         
@@ -660,55 +667,9 @@ extension MailboxViewController: MailboxTableViewCellDelegate {
 }
 
 
-// MARK: - MoreOptionsViewDelegate
-
-extension MailboxViewController: MoreOptionsViewDelegate {
-    private func hideMoreButtonIfNeeded() {
-        if isViewingMoreOptions {
-            moreButtonTapped()
-        }
-    }
-    
-    func moreOptionsViewDidSelectTagAs(moreOptionsView: MoreOptionsView) {
-        hideMoreButtonIfNeeded()
-    }
-    
-    func moreOptionsViewDidMarkAsUnread(moreOptionsView: MoreOptionsView) {
-        selectedMessagesSetValue(setValue: false, forKey: Message.Attributes.isRead)
-        hideMoreButtonIfNeeded()
-    }
-    
-    func moreOptionsViewDidSelectMoveTo(moreOptionsView: MoreOptionsView) {
-        let alertController = UIAlertController(title: NSLocalizedString("Move to..."), message: nil, preferredStyle: .ActionSheet)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
-        let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .archive : .Destructive, .trash : .Destructive]
-        for (location, style) in locations {
-            if !viewModel.isCurrentLocation(location) {
-                alertController.addAction(UIAlertAction(title: location.description, style: style, handler: { (action) -> Void in
-                    self.moveMessagesToLocation(location)
-                    self.navigationController?.popViewControllerAnimated(true)
-                }))
-            }
-        }
-        presentViewController(alertController, animated: true, completion: nil)
-        hideMoreButtonIfNeeded()
-    }
-}
-
 // MARK: - UITableViewDataSource
 
 extension MailboxViewController: UITableViewDataSource {
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        if (self.tableView.respondsToSelector("setSeparatorInset:")) {
-            self.tableView.separatorInset = UIEdgeInsetsZero
-        }
-        
-        if (self.tableView.respondsToSelector("setLayoutMargins:")) {
-            self.tableView.layoutMargins = UIEdgeInsetsZero
-        }
-    }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return fetchedResultsController?.numberOfSections() ?? 1

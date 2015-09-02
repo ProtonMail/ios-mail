@@ -26,6 +26,30 @@ public enum MessageLocation: Int, Printable {
     case archive = 6
     case trash = 3
     
+    public var actionTitle : String {
+        get {
+            switch(self) {
+            case deleted:
+                return NSLocalizedString("Deleted")
+            case inbox:
+                return NSLocalizedString("Inbox")
+            case draft:
+                return NSLocalizedString("Draft")
+            case outbox:
+                return NSLocalizedString("Outbox")
+            case spam:
+                return NSLocalizedString("Move to Spam")
+            case starred:
+                return NSLocalizedString("Starred")
+            case archive:
+                return NSLocalizedString("Move to Archive")
+            case trash:
+                return NSLocalizedString("Move to Trash")
+            }
+        }
+    }
+
+    
     public var description : String {
         get {
             switch(self) {
