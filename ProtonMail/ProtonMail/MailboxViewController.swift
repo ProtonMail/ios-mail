@@ -95,8 +95,6 @@ class MailboxViewController: ProtonMailViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        //self.fetchedResultsController?.delegate = self
-        
         let selectedItem: NSIndexPath? = self.tableView.indexPathForSelectedRow() as NSIndexPath?
         
         if let selectedItem = selectedItem {
@@ -109,7 +107,6 @@ class MailboxViewController: ProtonMailViewController {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         self.stopAutoFetch()
-        //self.fetchedResultsController?.delegate = nil;
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -126,7 +123,7 @@ class MailboxViewController: ProtonMailViewController {
         self.view.addSubview(self.moreOptionsView)
         
         self.navigationTitleLabel.backgroundColor = UIColor.clearColor()
-        self.navigationTitleLabel.font = UIFont.robotoLight(size: UIFont.Size.h2)
+        self.navigationTitleLabel.font = UIFont.robotoRegular(size: UIFont.Size.h2)
         self.navigationTitleLabel.textAlignment = NSTextAlignment.Center
         self.navigationTitleLabel.textColor = UIColor.whiteColor()
         self.navigationTitleLabel.text = self.title ?? NSLocalizedString("INBOX")
@@ -518,11 +515,11 @@ class MailboxViewController: ProtonMailViewController {
         
         if (!editingMode) {
             if (self.composeBarButtonItem == nil) {
-                self.composeBarButtonItem = UIBarButtonItem(image: UIImage(named: "compose"), style: UIBarButtonItemStyle.Plain, target: self, action: "composeButtonTapped")
+                self.composeBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_compose"), style: UIBarButtonItemStyle.Plain, target: self, action: "composeButtonTapped")
             }
             
             if (self.searchBarButtonItem == nil) {
-                self.searchBarButtonItem = UIBarButtonItem(image: UIImage(named: "search"), style: UIBarButtonItemStyle.Plain, target: self, action: "searchButtonTapped")
+                self.searchBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_search"), style: UIBarButtonItemStyle.Plain, target: self, action: "searchButtonTapped")
             }
             
             rightButtons = [self.composeBarButtonItem, self.searchBarButtonItem]
@@ -530,7 +527,7 @@ class MailboxViewController: ProtonMailViewController {
         } else {
             
             if (self.removeBarButtonItem == nil) {
-                self.removeBarButtonItem = UIBarButtonItem(image: UIImage(named: "trash_selected"), style: UIBarButtonItemStyle.Plain, target: self, action: "removeButtonTapped")
+                self.removeBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_trash"), style: UIBarButtonItemStyle.Plain, target: self, action: "removeButtonTapped")
             }
             
             if (self.favoriteBarButtonItem == nil) {
@@ -538,7 +535,7 @@ class MailboxViewController: ProtonMailViewController {
             }
             
             if (self.moreBarButtonItem == nil) {
-                self.moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "arrow_down"), style: UIBarButtonItemStyle.Plain, target: self, action: "moreButtonTapped")
+                self.moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_more"), style: UIBarButtonItemStyle.Plain, target: self, action: "moreButtonTapped")
             }
             
             rightButtons = [self.moreBarButtonItem, self.favoriteBarButtonItem, self.removeBarButtonItem]

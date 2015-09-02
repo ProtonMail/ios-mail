@@ -180,7 +180,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="28n-53-jPI" id="RCw-uN-pgW">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="menu_inbox" highlightedImage="menu_inbox-active" translatesAutoresizingMaskIntoConstraints="NO" id="Lt3-yt-zm4" userLabel="Inbox Image">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="menu_inbox" highlightedImage="menu_inbox-active" translatesAutoresizingMaskIntoConstraints="NO" id="Lt3-yt-zm4" userLabel="Inbox Image">
                                                     <rect key="frame" x="0.0" y="14" width="16" height="16"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
@@ -211,7 +211,7 @@
                                                         <rect key="frame" x="170" y="0.0" width="62" height="62"/>
                                                     </variation>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Inbox" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xd1-8V-NU7" userLabel="Inbox Label">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Inbox" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xd1-8V-NU7" userLabel="Inbox Label">
                                                     <rect key="frame" x="32" y="8" width="446" height="28"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="28" id="Mo6-R7-hFh"/>
@@ -1177,7 +1177,7 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="Mail" id="Y7X-YF-pK8">
-                        <barButtonItem key="leftBarButtonItem" image="hamburger" id="MGt-Hd-KyR"/>
+                        <barButtonItem key="leftBarButtonItem" image="top_menu" id="MGt-Hd-KyR" userLabel="MenuItem"/>
                     </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
@@ -2996,22 +2996,23 @@
         <image name="mail_starred-active" width="16" height="16"/>
         <image name="menu_inbox" width="16" height="16"/>
         <image name="menu_inbox-active" width="16" height="16"/>
-        <image name="menu_label" width="16" height="16"/>
+        <image name="menu_label" width="24" height="24"/>
         <image name="popup_behind_image" width="106" height="153"/>
         <image name="reply" width="28" height="23"/>
         <image name="replyall" width="31" height="24"/>
         <image name="search" width="22" height="22"/>
         <image name="sent_compose" width="26" height="22"/>
         <image name="signout_selected" width="20" height="30"/>
+        <image name="top_menu" width="24" height="24"/>
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="LdN-DE-nXL"/>
-        <segue reference="A7E-cY-hB0"/>
-        <segue reference="V9t-nA-fhw"/>
-        <segue reference="uv8-bX-yhD"/>
-        <segue reference="w5b-0j-26v"/>
-        <segue reference="ddm-eA-erE"/>
         <segue reference="5rJ-hC-fsT"/>
+        <segue reference="f3k-3A-WEA"/>
+        <segue reference="uv8-bX-yhD"/>
+        <segue reference="ddm-eA-erE"/>
+        <segue reference="V9t-nA-fhw"/>
+        <segue reference="A7E-cY-hB0"/>
     </inferredMetricsTieBreakers>
 </document>
