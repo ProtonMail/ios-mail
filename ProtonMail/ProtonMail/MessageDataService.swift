@@ -399,15 +399,17 @@ class MessageDataService {
                 signatureResponseKey: "Signature",
                 usedSpaceResponseKey: "UsedSpace",
                 userStatusResponseKey: "UserStatus",
-                userAddressResponseKey: "Addresses")
+                userAddressResponseKey: "Addresses",
+                
+                autoSaveContactResponseKey : "AutoSaveContacts",
+                languageResponseKey : "Language",
+                maxUploadResponseKey: "MaxUpload",
+                notifyResponseKey: "Notify",
+                showImagesResponseKey : "ShowImages"
+            )
             
             sharedUserDataService.updateUserInfoFromEventLog(userInfo);
         }
-        
-        
-        
-        
-        
     }
     
     func processIncrementalUpdateLabels(labels: [Dictionary<String, AnyObject>]?) {

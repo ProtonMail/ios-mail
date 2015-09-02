@@ -120,6 +120,10 @@ class UserDataService {
         return userInfo?.notificationEmail ?? ""
     }
     
+    var notify: Bool {
+        return false;
+    }
+    
     /// Value is only stored in the keychain
     private(set) var password: String? {
         get {
@@ -232,7 +236,10 @@ class UserDataService {
                         if error == nil {
                             self.mailboxPassword = newMailboxPassword
                             
-                            let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: newPrivateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses)
+                            let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: newPrivateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
+                                
+                                autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages
+                            )
                             
                             self.userInfo = userInfo
                         }
@@ -255,7 +262,9 @@ class UserDataService {
                 sharedAPIService.userUpdateKeypair("" , publicKey: pubkey, privateKey: privkey, completion: { task, response, error in
                     if error == nil {
                         self.mailboxPassword = mbp;
-                        let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: privkey, publicKey: pubkey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses)
+                        let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: privkey, publicKey: pubkey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
+                        autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages
+                        )
                         
                         self.userInfo = userInfo
                     }
@@ -272,7 +281,9 @@ class UserDataService {
         domainSetting.call() { task, response, hasError in
             if !hasError {
                 if let userInfo = self.userInfo {
-                    let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:email_domains)
+                    let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:email_domains,
+                    autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages
+                    )
                     self.userInfo = userInfo
                 }
             }
@@ -281,7 +292,23 @@ class UserDataService {
     }
 
     func updateNotificationEmail(newNotificationEmail: String, completion: UserInfoBlock?) {
-        sharedAPIService.settingUpdateNotificationEmail(newNotificationEmail, completion: completionForUserInfo(completion))
+        
+        
+//        let domainSetting = UpdateDomainOrder<ApiResponse>(adds: newOrder)
+//        domainSetting.call() { task, response, hasError in
+//            if !hasError {
+//                if let userInfo = self.userInfo {
+//                    let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:email_domains,
+ //       autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages)
+//                    self.userInfo = userInfo
+//                }
+//            }
+//            completion(task: task, response: nil, error: nil)
+//        }
+        
+        
+        
+        //sharedAPIService.settingUpdateNotificationEmail(newNotificationEmail, completion: completionForUserInfo(completion))
     }
     
     func updatePassword(old_pwd: String, newPassword: String, completion: CompletionBlock) {

@@ -27,7 +27,20 @@ final class UserInfo: NSObject {
     let userStatus: Int
     let userAddresses: Array<Address>
     
-    required init(displayName: String?, maxSpace: Int64?, notificationEmail: String?, privateKey: String?, publicKey: String?, signature: String?, usedSpace: Int64?, userStatus: Int?, userAddresses: Array<Address>?) {
+    // new values after 1.08
+    let autoSaveContact : Int
+    let language : String
+    let maxUpload: Int64
+    let notify: Int
+    let showImages : Int
+    
+    
+    required init(
+        displayName: String?, maxSpace: Int64?, notificationEmail: String?,
+        privateKey: String?, publicKey: String?, signature: String?,
+        usedSpace: Int64?, userStatus: Int?, userAddresses: Array<Address>?,
+        autoSC:Int?, language:String?, maxUpload:Int64?, notify:Int?, showImage:Int?)
+    {
         self.displayName = displayName ?? ""
         self.maxSpace = maxSpace ?? 0
         self.notificationEmail = notificationEmail ?? ""
@@ -37,6 +50,12 @@ final class UserInfo: NSObject {
         self.usedSpace = usedSpace ?? 0
         self.userStatus = userStatus ?? 0
         self.userAddresses = userAddresses ?? Array<Address>()
+        
+        self.autoSaveContact  = autoSC ?? 0
+        self.language = language ?? "en_US"
+        self.maxUpload = maxUpload ?? 0
+        self.notify = notify ?? 0
+        self.showImages = showImage ?? 0
     }
 }
 
@@ -75,6 +94,12 @@ extension UserInfo: NSCoding {
         static let usedSpace = "usedSpace"
         static let userStatus = "userStatus"
         static let userAddress = "userAddresses"
+        
+        static let autoSaveContact = "autoSaveContact"
+        static let language = "language"
+        static let maxUpload = "maxUpload"
+        static let notify = "notify"
+        static let showImages = "showImages"
     }
     
     convenience init(coder aDecoder: NSCoder) {
@@ -87,7 +112,13 @@ extension UserInfo: NSCoding {
             signature: aDecoder.decodeStringForKey(CoderKey.signature),
             usedSpace: aDecoder.decodeInt64ForKey(CoderKey.usedSpace),
             userStatus: aDecoder.decodeIntegerForKey(CoderKey.userStatus),
-            userAddresses: aDecoder.decodeObjectForKey(CoderKey.userAddress) as? Array<Address>)
+            userAddresses: aDecoder.decodeObjectForKey(CoderKey.userAddress) as? Array<Address>,
+            autoSC:aDecoder.decodeIntegerForKey(CoderKey.autoSaveContact),
+            language:aDecoder.decodeStringForKey(CoderKey.language),
+            maxUpload:aDecoder.decodeInt64ForKey(CoderKey.maxUpload),
+            notify:aDecoder.decodeIntegerForKey(CoderKey.notify),
+            showImage:aDecoder.decodeIntegerForKey(CoderKey.showImages)
+        )
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
@@ -100,6 +131,12 @@ extension UserInfo: NSCoding {
         aCoder.encodeInt64(usedSpace, forKey: CoderKey.usedSpace)
         aCoder.encodeInteger(userStatus, forKey: CoderKey.userStatus)
         aCoder.encodeObject(userAddresses, forKey: CoderKey.userAddress)
+        
+        aCoder.encodeInteger(autoSaveContact, forKey: CoderKey.autoSaveContact)
+        aCoder.encodeObject(language, forKey: CoderKey.language)
+        aCoder.encodeInt64(maxUpload, forKey: CoderKey.maxUpload)
+        aCoder.encodeInteger(notify, forKey: CoderKey.notify)
+        aCoder.encodeInteger(showImages, forKey: CoderKey.showImages)
     }
 }
 
