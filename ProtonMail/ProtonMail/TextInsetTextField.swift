@@ -17,13 +17,13 @@
 import Foundation
 
 class TextInsetTextField: UITextField {
-    private let inset: CGFloat = 10
+    private let inset: CGFloat = 24
     
     override func editingRectForBounds(bounds: CGRect) -> CGRect {
-        return CGRectInset(super.editingRectForBounds(bounds), inset, inset)
+        return CGRectInset(super.editingRectForBounds(bounds), inset, 0)
     }
     
     override func textRectForBounds(bounds: CGRect) -> CGRect {
-        return CGRectInset(super.textRectForBounds(bounds), inset, inset)
+        return CGRectInset(super.textRectForBounds(bounds), inset, 0)
     }
 }

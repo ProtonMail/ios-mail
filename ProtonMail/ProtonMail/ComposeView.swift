@@ -280,7 +280,7 @@ class ComposeView: UIViewController {
         self.errorTextView.textAlignment = NSTextAlignment.Center
         self.errorTextView.textColor = UIColor.whiteColor()
         self.errorTextView.sizeToFit()
-
+        
         self.view.addSubview(errorView)
         errorView.addSubview(errorTextView)
         
@@ -607,7 +607,7 @@ extension ComposeView: MBContactPickerDelegate {
         let customContact = ContactVO(id: "", name: text, email: text)
         contactPicker.addToSelectedContacts(customContact, needFocus: focus)
     }
-
+    
     func contactPicker(contactPicker: MBContactPicker!, didUpdateContentHeightTo newHeight: CGFloat) {
         self.updateContactPickerHeight(contactPicker, newHeight: newHeight)
     }

@@ -35,6 +35,15 @@ extension UIColor {
         )
     }
     
+    convenience init(r: CGFloat, g:CGFloat, b:CGFloat, a:CGFloat) {
+        self.init(
+            red: r / 255.0,
+            green: g / 255.0,
+            blue: b / 255.0,
+            alpha: a
+        )
+    }
+    
     internal struct ProtonMail {
         static let Blue_475F77 = UIColor(RRGGBB: UInt(0x475F77))
         static let Blue_85B1DE = UIColor(RRGGBB: UInt(0x85B1DE))
@@ -55,11 +64,14 @@ extension UIColor {
         
         static let Nav_Bar_Background = UIColor(RRGGBB: UInt(0x505061))
     
+        
+        static let Login_Background_Gradient_Left = UIColor(red: 147/255, green: 151/255, blue: 205/255, alpha: 0.9)
+        static let Login_Background_Gradient_Right = UIColor(red: 23/255, green: 41/255, blue: 131/255, alpha: 0.9)
+        
+        
+        static let TextFieldTintColor = UIColor.whiteColor()
     }
 }
-
-
-
 
 
 extension UIColor

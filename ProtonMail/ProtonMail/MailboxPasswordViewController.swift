@@ -188,7 +188,7 @@ extension MailboxPasswordViewController: NSNotificationCenterKeyboardObserverPro
     func keyboardWillHideNotification(notification: NSNotification) {
         let keyboardInfo = notification.keyboardInfo
         
-        keyboardPaddingConstraint.constant = 0
+        //keyboardPaddingConstraint.constant = 0
         
         UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
@@ -198,7 +198,7 @@ extension MailboxPasswordViewController: NSNotificationCenterKeyboardObserverPro
     func keyboardWillShowNotification(notification: NSNotification) {
         let keyboardInfo = notification.keyboardInfo
         
-        keyboardPaddingConstraint.constant = keyboardInfo.beginFrame.height + keyboardPadding
+        //keyboardPaddingConstraint.constant = keyboardInfo.beginFrame.height + keyboardPadding
         
         UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()

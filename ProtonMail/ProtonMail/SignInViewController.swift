@@ -17,25 +17,35 @@
 import UIKit
 
 class SignInViewController: UIViewController {
+    
+    private let kMailboxSegue = "mailboxSegue"
+    private let kSignUpKeySegue = "signUpKeySegue"
+    
+    
     private let animationDuration: NSTimeInterval = 0.5
     private let keyboardPadding: CGFloat = 12
     private let buttonDisabledAlpha: CGFloat = 0.5
-    private let mailboxSegue = "mailboxSegue"
-    private let signUpKeySegue = "signUpKeySegue"
     private let signUpURL = NSURL(string: "https://protonmail.ch/sign_up.php")!
     
     static var isComeBackFromMailbox = false
     
     var isRemembered = false
-        
+    var isShowpwd = false;
+    
     @IBOutlet weak var keyboardPaddingConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var usernameView: UIView!
+    @IBOutlet weak var passwordView: UIView!
+    @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet weak var rememberButton: UIButton!
+    
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var signUpButton: UIButton!
-    @IBOutlet weak var usernameTextField: UITextField!
-    @IBOutlet weak var rememberView: UIView!
+    @IBOutlet weak var forgotButton: UIButton!
+    @IBOutlet weak var rememberButton: UIButton!
+    
     @IBOutlet weak var signInLabel: UILabel!
+    @IBOutlet weak var backgroundImage: UIImageView!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -49,9 +59,10 @@ class SignInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        usernameTextField.roundCorners()
-        passwordTextField.roundCorners()
+        setupTextFields()
+        
         rememberButton.selected = isRemembered
+        setupTextFields();
         setupSignInButton()
         setupSignUpButton()
         signInIfRememberedCredentials()
@@ -63,6 +74,29 @@ class SignInViewController: UIViewController {
         else
         {
             ShowLoginViews();
+        }
+        
+        
+        var gradient: CAGradientLayer = CAGradientLayer()
+        gradient.frame = CGRectMake(0.0, 0.0, view.frame.size.width, view.frame.size.height)
+        gradient.colors = [UIColor.ProtonMail.Login_Background_Gradient_Left.CGColor, UIColor.ProtonMail.Login_Background_Gradient_Right.CGColor];
+        
+        gradient.locations = [0.0, 1.0]
+        
+        gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
+        gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
+      
+        backgroundImage.layer.insertSublayer(gradient, atIndex:0)
+    }
+    
+    @IBAction func showPasswordAction(sender: UIButton) {
+        isShowpwd = !isShowpwd
+        sender.selected = isShowpwd
+        
+        if isShowpwd {
+            self.passwordTextField.secureTextEntry = false;
+        } else {
+            self.passwordTextField.secureTextEntry = true;
         }
     }
     
@@ -94,7 +128,6 @@ class SignInViewController: UIViewController {
             usernameTextField.becomeFirstResponder()
         }
     }
-
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
@@ -105,28 +138,32 @@ class SignInViewController: UIViewController {
     
     private func HideLoginViews()
     {
-        self.passwordTextField.alpha = 0.0
-        self.rememberView.alpha = 0.0
+        self.usernameView.alpha = 0.0
+        self.passwordView.alpha = 0.0
+        
+        self.rememberButton.alpha = 0.0
         self.signInButton.alpha = 0.0
         self.signUpButton.alpha = 0.0
-        self.usernameTextField.alpha = 0.0
         self.signInLabel.alpha = 0.0
+        self.forgotButton.alpha = 0.0
+        
     }
     
     private func ShowLoginViews()
     {
         sharedPushNotificationService.unregisterForRemoteNotifications()
         UIView.animateWithDuration(1.0, animations: { () -> Void in
-            self.passwordTextField.alpha = 1.0
-            self.rememberView.alpha = 1.0
+            self.usernameView.alpha = 1.0
+            self.passwordView.alpha = 1.0
+            
+            self.rememberButton.alpha = 1.0
             self.signInButton.alpha = 1.0
             self.signUpButton.alpha = 1.0
-            self.usernameTextField.alpha = 1.0
             self.signInLabel.alpha = 1.0
+            self.forgotButton.alpha = 1.0
+            
             }, completion: { finished in
-                
         })
-
     }
     
     func dismissKeyboard() {
@@ -134,25 +171,28 @@ class SignInViewController: UIViewController {
         passwordTextField.resignFirstResponder()
     }
     
-    func setupSignInButton() {
-        signInButton.roundCorners()
-        signInButton.alpha = buttonDisabledAlpha
+    internal func setupTextFields() {
+        UITextField.appearance().tintColor = UIColor.ProtonMail.TextFieldTintColor;
     }
     
-    // FIXME: Work around for http://stackoverflow.com/questions/25925914/attributed-string-with-custom-fonts-in-storyboard-does-not-load-correctly <http://openradar.appspot.com/18425809>
+    func setupSignInButton() {
+        signInButton.layer.borderColor = UIColor(hexString: "9397CD", alpha: 1.0).CGColor
+        signInButton.alpha = buttonDisabledAlpha
+    }
+
     func setupSignUpButton() {
         
-        let needAnAccount = NSLocalizedString("Need an account? ", comment: "Need an account? ")
-        let signUp = NSLocalizedString("Sign Up.", comment: "Sign Up.")
-        
-        let title = NSMutableAttributedString(string: needAnAccount, attributes: [NSUnderlineStyleAttributeName : NSUnderlineStyle.StyleNone.rawValue])
-        let signUpAttributed = NSAttributedString(string: signUp, attributes: [NSUnderlineStyleAttributeName : NSUnderlineStyle.StyleSingle.rawValue])
-        
-        title.appendAttributedString(signUpAttributed)
-        
-        title.addAttribute(NSFontAttributeName, value: UIFont.robotoThin(size: 12.5), range: NSMakeRange(0, title.length))
-        
-        signUpButton.setAttributedTitle(title, forState: .Normal)
+//        let needAnAccount = NSLocalizedString("Need an account? ", comment: "Need an account? ")
+//        let signUp = NSLocalizedString("Sign Up.", comment: "Sign Up.")
+//        
+//        let title = NSMutableAttributedString(string: needAnAccount, attributes: [NSUnderlineStyleAttributeName : NSUnderlineStyle.StyleNone.rawValue])
+//        let signUpAttributed = NSAttributedString(string: signUp, attributes: [NSUnderlineStyleAttributeName : NSUnderlineStyle.StyleSingle.rawValue])
+//        
+//        title.appendAttributedString(signUpAttributed)
+//        
+//        title.addAttribute(NSFontAttributeName, value: UIFont.robotoThin(size: 12.5), range: NSMakeRange(0, title.length))
+//        
+//        signUpButton.setAttributedTitle(title, forState: .Normal)
     }
     
     func signIn() {
@@ -195,7 +235,7 @@ class SignInViewController: UIViewController {
             loadContactsAfterInstall()
         } else {
             //if count(AuthCredential.getPrivateKey().trim()) > 10 {
-                self.performSegueWithIdentifier(self.mailboxSegue, sender: self)
+                self.performSegueWithIdentifier(self.kMailboxSegue, sender: self)
 //            }
 //            else {
 //                self.performSegueWithIdentifier(self.signUpKeySegue, sender: self)
@@ -263,7 +303,7 @@ extension SignInViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(notification: NSNotification) {
         let keyboardInfo = notification.keyboardInfo
         
-        keyboardPaddingConstraint.constant = 0
+        //keyboardPaddingConstraint.constant = 0
         
         UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
@@ -273,7 +313,7 @@ extension SignInViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillShowNotification(notification: NSNotification) {
         let keyboardInfo = notification.keyboardInfo
         
-        keyboardPaddingConstraint.constant = keyboardInfo.beginFrame.height + keyboardPadding
+       // keyboardPaddingConstraint.constant = keyboardInfo.beginFrame.height + keyboardPadding
         
         UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()

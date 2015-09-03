@@ -103,7 +103,6 @@ extension AppDelegate: UIApplicationDelegate {
         
         shareViewModelFactoy = ViewModelFactoryProduction()
         
-        
         AFNetworkActivityIndicatorManager.sharedManager().enabled = true
         
         //net work debug option
