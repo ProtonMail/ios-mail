@@ -50,7 +50,7 @@ class EmailHeaderView: UIView {
     private var separatorBetweenHeaderAndBodyView: UIView!
     private var separatorBetweenHeaderAndAttView: UIView!
     
-    private var attachmentView : UITableView!
+    private var attachmentView : UITableView?
     
     
     // const header view
@@ -82,7 +82,11 @@ class EmailHeaderView: UIView {
     
     func getHeight () -> CGFloat {
         
-        return self.attachmentView.frame.origin.y + self.attachmentView.frame.height + 10;
+        let y = (self.attachmentView != nil) ? self.attachmentView!.frame.origin.y : 0;
+        
+        let h = (self.attachmentView != nil) ? self.attachmentView!.frame.height : 0;
+        
+        return y + h + 10;
         
         //return separatorBetweenHeaderAndBodyView.frame.origin.y + 10;
     }
@@ -215,12 +219,12 @@ class EmailHeaderView: UIView {
     
     private func createAttachmentView() {
         self.attachmentView = UITableView()
-        self.attachmentView.alwaysBounceVertical = false
-        self.attachmentView.dataSource = self
-        self.attachmentView.delegate = self
-        self.attachmentView.registerNib(UINib(nibName: "AttachmentTableViewCell", bundle: nil), forCellReuseIdentifier: AttachmentTableViewCell.Constant.identifier)
-        self.attachmentView.separatorStyle = .None
-        self.addSubview(attachmentView)
+        self.attachmentView!.alwaysBounceVertical = false
+        self.attachmentView!.dataSource = self
+        self.attachmentView!.delegate = self
+        self.attachmentView!.registerNib(UINib(nibName: "AttachmentTableViewCell", bundle: nil), forCellReuseIdentifier: AttachmentTableViewCell.Constant.identifier)
+        self.attachmentView!.separatorStyle = .None
+        self.addSubview(attachmentView!)
     }
     
     private func createSeparator() {
@@ -329,10 +333,10 @@ class EmailHeaderView: UIView {
     }
     
     func updateAttConstraints (animition : Bool) {
-        attachmentView.reloadData()
-        attachmentView.layoutIfNeeded();
+        attachmentView!.reloadData()
+        attachmentView!.layoutIfNeeded();
         
-        let h = self.attachmentCount > 0 ? attachmentView.contentSize.height : 0;
+        let h = self.attachmentCount > 0 ? attachmentView!.contentSize.height : 0;
         self.separatorBetweenHeaderAndAttView.hidden = self.attachmentCount == 0
         
         separatorBetweenHeaderAndBodyView.mas_updateConstraints { (make) -> Void in
@@ -342,7 +346,7 @@ class EmailHeaderView: UIView {
             make.top.equalTo()(self.emailHeaderView.mas_bottom).with().offset()(self.kSeparatorBetweenHeaderAndBodyMarginTop)
             make.height.equalTo()(1)
         }
-        self.attachmentView.mas_updateConstraints { (make) -> Void in
+        self.attachmentView!.mas_updateConstraints { (make) -> Void in
             make.removeExisting = true
             make.left.equalTo()(self)
             make.right.equalTo()(self)
@@ -367,7 +371,7 @@ class EmailHeaderView: UIView {
             make.removeExisting = true
             make.left.equalTo()(self)
             make.right.equalTo()(self)
-            make.top.equalTo()(self.attachmentView.mas_bottom)//.with().offset()(self.kSeparatorBetweenHeaderAndBodyMarginTop)
+            make.top.equalTo()(self.attachmentView!.mas_bottom)//.with().offset()(self.kSeparatorBetweenHeaderAndBodyMarginTop)
             make.height.equalTo()(1)
         }
         
@@ -799,17 +803,17 @@ extension EmailHeaderView: UITableViewDelegate {
     
     private func downloadAttachment(attachment: Attachment, forIndexPath indexPath: NSIndexPath) {
         sharedMessageDataService.fetchAttachmentForAttachment(attachment, downloadTask: { (task) -> Void in
-            if let cell = self.attachmentView.cellForRowAtIndexPath(indexPath) as? AttachmentTableViewCell {
+            if let cell = self.attachmentView!.cellForRowAtIndexPath(indexPath) as? AttachmentTableViewCell {
                 cell.progressView.alpha = 1.0
                 cell.progressView.setProgressWithDownloadProgressOfTask(task, animated: true)
             }
             }, completion: { (_, url, error) -> Void in
-                if let cell = self.attachmentView.cellForRowAtIndexPath(indexPath) as? AttachmentTableViewCell {
+                if let cell = self.attachmentView!.cellForRowAtIndexPath(indexPath) as? AttachmentTableViewCell {
                     UIView.animateWithDuration(0.25, animations: { () -> Void in
                         cell.progressView.hidden = true
                         if let localURL = attachment.localURL {
                             if NSFileManager.defaultManager().fileExistsAtPath(attachment.localURL!.path!, isDirectory: nil) {
-                                let cell = self.attachmentView.cellForRowAtIndexPath(indexPath)
+                                let cell = self.attachmentView!.cellForRowAtIndexPath(indexPath)
                                 let data: NSData = NSData(base64EncodedString: attachment.keyPacket!, options: NSDataBase64DecodingOptions(rawValue: 0))!
                                 self.openLocalURL(localURL, keyPackage: data, fileName: attachment.fileName, forCell: cell!)
                             }
