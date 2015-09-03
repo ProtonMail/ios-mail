@@ -252,6 +252,8 @@ static Class hackishFixClass = Nil;
     
     NSMutableArray *items = [[NSMutableArray alloc] init];
     
+    return items;
+    
     // None
     if(_enabledToolbarItems && [_enabledToolbarItems containsObject:ZSSRichTextEditorToolbarNone])
     {
