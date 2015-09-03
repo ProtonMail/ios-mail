@@ -25,6 +25,20 @@ public class LabelboxViewModelImpl : MailboxViewModel {
         return self.label.name
     }
     
+    public override func getSwipeEditTitle() -> String {
+        var title : String = "Trash"
+        
+        return title
+    }
+    
+    public override func deleteMessage(msg: Message) {
+        msg.location = .trash
+        msg.needsUpdate = true
+        if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
+            NSLog("\(__FUNCTION__) error: \(error)")
+        }
+    }
+
     public override func getFetchedResultsController() -> NSFetchedResultsController? {
         let fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLabels(self.label)
         if let fetchedResultsController = fetchedResultsController {
