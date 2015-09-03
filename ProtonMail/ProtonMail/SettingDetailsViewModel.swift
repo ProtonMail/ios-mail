@@ -21,6 +21,7 @@ protocol SettingDetailsViewModel {
     
     func getCurrentValue() -> String
     func updateValue(new_value: String, complete:(Bool, NSError?) -> Void)
+    func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void)
 }
 
 
@@ -62,6 +63,10 @@ class SettingDetailsViewModelTest : SettingDetailsViewModel{
     }
     
     func updateValue(new_value: String, complete: (Bool, NSError?) -> Void) {
+        complete(true, nil)
+    }
+    
+    func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void) {
         complete(true, nil)
     }
 }
@@ -114,8 +119,11 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
             }
         }
     }
+    
+    func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void) {
+        complete(true, nil)
+    }
 }
-
 
 
 class ChangeSignatureViewModel : SettingDetailsViewModel{
@@ -164,6 +172,10 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
             }
         }
     }
+    
+    func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void) {
+        complete(true, nil)
+    }
 }
 
 
@@ -189,7 +201,7 @@ class ChangeNotificationEmailViewModel : SettingDetailsViewModel{
     }
     
     func getSwitchStatus() -> Bool {
-        return sharedUserDataService.notificationEmail != ""
+        return sharedUserDataService.notify
     }
   
     func isShowTextView() -> Bool {
@@ -205,14 +217,30 @@ class ChangeNotificationEmailViewModel : SettingDetailsViewModel{
     }
     
     func updateValue(new_value: String, complete: (Bool, NSError?) -> Void) {
-        //add random test case and random
-        //remove space.
-        sharedUserDataService.updateNotificationEmail(new_value) { _, error in
-            if let error = error {
-                complete(false, error)
-            } else {
-                complete(true, nil)
+        if new_value == getCurrentValue() {
+             complete(true, nil)
+        } else {
+            sharedUserDataService.updateNotificationEmail(new_value) { _, _, error in
+                if let error = error {
+                    complete(false, error)
+                } else {
+                    complete(true, nil)
+                }
             }
+        }
+    }
+    
+    func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void) {
+        if isOn == getSwitchStatus() {
+            complete(true, nil)
+        } else {
+            sharedUserDataService.updateNotify(isOn, completion: { (task, response, error) -> Void in
+                if let error = error {
+                    complete(false, error)
+                } else {
+                    complete(true, nil)
+                }
+            })
         }
     }
 }

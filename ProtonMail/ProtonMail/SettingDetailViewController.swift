@@ -78,10 +78,12 @@ class SettingDetailViewController: UIViewController {
     
     @IBAction func swiitchAction(sender: AnyObject) {
 
-        UIView.animateWithDuration(0.5, animations: { () -> Void in
-            self.inputTextGroupView.alpha = self.switcher.on ? 1.0 : 0
-            self.inputTextField.text = ""
-        })
+        if viewModel.getCurrentValue() == inputTextField.text && viewModel.getSwitchStatus() == self.switcher.on {
+            self.navigationItem.rightBarButtonItem = nil;
+        }
+        else {
+            self.navigationItem.rightBarButtonItem = doneButton
+        }
     }
     
     // MARK: private methods
@@ -123,16 +125,25 @@ class SettingDetailViewController: UIViewController {
     private func startUpdateValue () -> Void {
         dismissKeyboard()
         ActivityIndicatorHelper.showActivityIndicatorAtView(view)
-        viewModel.updateValue(getTextValue(), complete: { value, error in
-            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-            if let error = error {                
+        
+        viewModel.updateNotification(self.switcher.on, complete: { (value, error) -> Void in
+            if let error = error {
                 let alertController = error.alertController()
                 alertController.addOKAction()
                 self.presentViewController(alertController, animated: true, completion: nil)
             } else {
-                self.navigationController?.popToRootViewControllerAnimated(true)
+                self.viewModel.updateValue(self.getTextValue(), complete: { value, error in
+                    ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                    if let error = error {
+                        let alertController = error.alertController()
+                        alertController.addOKAction()
+                        self.presentViewController(alertController, animated: true, completion: nil)
+                    } else {
+                        self.navigationController?.popToRootViewControllerAnimated(true)
+                    }
+                });
             }
-        });
+        })
     }
 }
 
@@ -150,7 +161,7 @@ extension SettingDetailViewController: UITextFieldDelegate {
         let text = textField.text as NSString
         let changedText = text.stringByReplacingCharactersInRange(range, withString: string)
         
-        if viewModel.getCurrentValue() == changedText {
+        if viewModel.getCurrentValue() == changedText && viewModel.getSwitchStatus() == self.switcher.on {
             self.navigationItem.rightBarButtonItem = nil;
         }
         else {

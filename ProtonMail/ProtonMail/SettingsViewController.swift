@@ -87,26 +87,26 @@ class SettingsViewController: ProtonMailViewController {
     
     // MARK: - Actions Outlets
     
-    @IBAction func recoveryEmailSaveButtonTapped(sender: UIButton) {
-        dismissKeyboard()
-        ActivityIndicatorHelper.showActivityIndicatorAtView(view)
-        
-        sharedUserDataService.updateNotificationEmail(recoveryEmailTextField.text) { _, error in
-            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-            
-            if let error = error {
-                let alertController = error.alertController()
-                alertController.addOKAction()
-                
-                self.presentViewController(alertController, animated: true, completion: nil)
-            } else {
-                let alertController = UIAlertController(title: NSLocalizedString("Recovery Email Updated"), message: NSLocalizedString("Recovery emails will now be sent to \(self.recoveryEmailTextField.text)."), preferredStyle: .Alert)
-                alertController.addOKAction()
-                
-                self.presentViewController(alertController, animated: true, completion: nil)
-            }
-        }
-    }
+//    @IBAction func recoveryEmailSaveButtonTapped(sender: UIButton) {
+//        dismissKeyboard()
+//        ActivityIndicatorHelper.showActivityIndicatorAtView(view)
+//        
+//        sharedUserDataService.updateNotificationEmail(recoveryEmailTextField.text) { _, error in
+//            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+//            
+//            if let error = error {
+//                let alertController = error.alertController()
+//                alertController.addOKAction()
+//                
+//                self.presentViewController(alertController, animated: true, completion: nil)
+//            } else {
+//                let alertController = UIAlertController(title: NSLocalizedString("Recovery Email Updated"), message: NSLocalizedString("Recovery emails will now be sent to \(self.recoveryEmailTextField.text)."), preferredStyle: .Alert)
+//                alertController.addOKAction()
+//                
+//                self.presentViewController(alertController, animated: true, completion: nil)
+//            }
+//        }
+//    }
     
     @IBAction func loginPasswordSaveButtonTapped(sender: UIButton) {
         updatePassword()
