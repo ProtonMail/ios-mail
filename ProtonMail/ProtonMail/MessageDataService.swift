@@ -778,7 +778,7 @@ class MessageDataService {
             queue {
                 let completionWrapper: CompletionBlock = { task, response, error in
                     let context = sharedCoreDataService.newMainManagedObjectContext()
-                    context.performBlockAndWait() {
+                    context.performBlock() {
                         var error: NSError?
                         
                         if response != nil {
