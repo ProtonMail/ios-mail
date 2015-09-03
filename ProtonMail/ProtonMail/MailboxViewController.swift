@@ -273,7 +273,6 @@ class MailboxViewController: ProtonMailViewController {
     private func stopAutoFetch()
     {
         fetchingStopped = true
-        
         self.timer.invalidate()
         self.timer = nil
     }
@@ -350,24 +349,32 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     private func checkEmptyMailbox () {
+        
+        if self.fetchingStopped! == true {
+            return;
+        }
+        
         if let fetchedResultsController = fetchedResultsController {
-            let secoutn = fetchedResultsController.numberOfSections() ?? 0
-            let sectionCount = fetchedResultsController.numberOfRowsInSection(0) ?? 0
-            if sectionCount == 0 {
-                let updateTime = viewModel.lastUpdateTime()
-                let recordedCount = Int(updateTime.total)
-                if updateTime.isNew || recordedCount > sectionCount {
-                    self.fetching = true
-                    viewModel.fetchMessages("", Time: 0, foucsClean: false, completion:
-                        { (task, messages, error) -> Void in
-                            self.fetching = false
-                            if error != nil {
-                                NSLog("\(__FUNCTION__) search error: \(error)")
-                            } else {
-                                
-                            }
-                    })
+            let secouts = fetchedResultsController.numberOfSections() ?? 0
+            if secouts > 0 {
+                let sectionCount = fetchedResultsController.numberOfRowsInSection(0) ?? 0
+                if sectionCount == 0 {
+                    let updateTime = viewModel.lastUpdateTime()
+                    let recordedCount = Int(updateTime.total)
+                    if updateTime.isNew || recordedCount > sectionCount {
+                        self.fetching = true
+                        viewModel.fetchMessages("", Time: 0, foucsClean: false, completion:
+                            { (task, messages, error) -> Void in
+                                self.fetching = false
+                                if error != nil {
+                                    NSLog("\(__FUNCTION__) search error: \(error)")
+                                } else {
+                                    
+                                }
+                        })
+                    }
                 }
+                
             }
         }
     }
@@ -380,6 +387,11 @@ class MailboxViewController: ProtonMailViewController {
             self.refreshControl.beginRefreshing()
             let updateTime = viewModel.lastUpdateTime()
             var complete : APIService.CompletionBlock = { (task, messages, error) -> Void in
+                
+                if self.fetchingStopped! == true {
+                    return;
+                }
+                
                 self.fetchingMessage = false
                 if let error = error {
                     NSLog("error: \(error)")
