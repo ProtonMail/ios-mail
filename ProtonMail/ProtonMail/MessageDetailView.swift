@@ -1025,7 +1025,6 @@ extension MessageDetailView: UIWebViewDelegate {
             UIApplication.sharedApplication().openURL(request.URL!)
             return false
         }
-        
         return true
     }
 }

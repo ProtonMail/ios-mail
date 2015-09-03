@@ -112,7 +112,7 @@ class MessageDataService {
                     let messcount = responseDict?["Total"] as? Int ?? 0
                     
                     let context = sharedCoreDataService.newMainManagedObjectContext()
-                    context.performBlockAndWait() {
+                    context.performBlock() {
                         var error: NSError?
                         if foucsClean {
                             self.cleanMessage()
@@ -120,14 +120,6 @@ class MessageDataService {
                         }
                         var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
                         if error == nil {
-                            //                            for message in messages as! [Message] {
-                            //                                // PRO-157 - The issue for inbox <--> starred page switch
-                            //                                // only change the location if the message is new or not starred
-                            //                                // this prevents starred messages from disappearing out of the inbox until the next refresh
-                            //                                if message.inserted || location != .starred {
-                            //                                    message.locationNumber = location.rawValue
-                            //                                }
-                            //                            }
                             error = context.saveUpstreamIfNeeded()
                         }
                         if error != nil  {
