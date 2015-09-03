@@ -176,7 +176,7 @@ class SignInViewController: UIViewController {
     }
     
     func setupSignInButton() {
-        signInButton.layer.borderColor = UIColor(hexString: "9397CD", alpha: 1.0).CGColor
+        signInButton.layer.borderColor = UIColor.ProtonMail.Login_Button_Border_Color.CGColor;
         signInButton.alpha = buttonDisabledAlpha
     }
 

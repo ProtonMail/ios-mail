@@ -25,6 +25,7 @@ class MailboxPasswordViewController: UIViewController {
     @IBOutlet weak var keyboardPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var rememberButton: UIButton!
+    @IBOutlet weak var backgroundImage: UIImageView!
     
     struct Notification {
         static let didSignOut = "UserDataServiceDidSignOutNotification"
@@ -32,20 +33,33 @@ class MailboxPasswordViewController: UIViewController {
     }
     
     var isRemembered: Bool = sharedUserDataService.isRememberMailboxPassword
+    var isShowpwd : Bool = false;
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDecryptButton()
         rememberButton.selected = isRemembered
-        passwordTextField.roundCorners()
+//        passwordTextField.roundCorners()
         
-        configureNavigationBar()
-        setNeedsStatusBarAppearanceUpdate()
+//        configureNavigationBar()
+//        setNeedsStatusBarAppearanceUpdate()
+        
+        
+        var gradient: CAGradientLayer = CAGradientLayer()
+        gradient.frame = CGRectMake(0.0, 0.0, view.frame.size.width, view.frame.size.height)
+        gradient.colors = [UIColor.ProtonMail.Login_Background_Gradient_Left.CGColor, UIColor.ProtonMail.Login_Background_Gradient_Right.CGColor];
+        
+        gradient.locations = [0.0, 1.0]
+        
+        gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
+        gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
+        
+        backgroundImage.layer.insertSublayer(gradient, atIndex:0)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: true)
+        //navigationController?.setNavigationBarHidden(false, animated: true)
         NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
     }
     
@@ -75,8 +89,8 @@ class MailboxPasswordViewController: UIViewController {
     }
     
     func setupDecryptButton() {
+        decryptButton.layer.borderColor = UIColor.ProtonMail.Login_Button_Border_Color.CGColor;
         decryptButton.alpha = buttonDisabledAlpha
-        decryptButton.roundCorners()
     }
     
     
@@ -178,6 +192,21 @@ class MailboxPasswordViewController: UIViewController {
     
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
         passwordTextField.resignFirstResponder()
+    }
+
+    @IBAction func backAction(sender: UIButton) {
+        navigationController?.popViewControllerAnimated(true);
+    }
+    @IBAction func showAction(sender: UIButton) {
+        isShowpwd = !isShowpwd
+        sender.selected = isShowpwd
+        
+        if isShowpwd {
+            self.passwordTextField.secureTextEntry = false;
+        } else {
+            self.passwordTextField.secureTextEntry = true;
+        }
+
     }
 }
 

@@ -67,7 +67,7 @@ extension UIColor {
         
         static let Login_Background_Gradient_Left = UIColor(red: 147/255, green: 151/255, blue: 205/255, alpha: 0.9)
         static let Login_Background_Gradient_Right = UIColor(red: 23/255, green: 41/255, blue: 131/255, alpha: 0.9)
-        
+        static let Login_Button_Border_Color = UIColor(RRGGBB: UInt(0x9397CD))
         
         static let TextFieldTintColor = UIColor.whiteColor()
     }
