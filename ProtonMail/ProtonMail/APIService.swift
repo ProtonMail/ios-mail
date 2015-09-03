@@ -78,7 +78,7 @@ class APIService {
                 if authenticated && errorCode == 401 {
                     AuthCredential.expireOrClear()
                     if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
-                        sharedUserDataService.signOut(false);
+                        sharedUserDataService.signOut(true);
                     }else {
                         self.request(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)
                     }
@@ -95,15 +95,15 @@ class APIService {
                     } else if responseDictionary["Code"] as? Int == 5001 {
                         NSError.alertUpdatedToast()
                         completion(task: task, response: responseDictionary, error: nil)
-                        sharedUserDataService.signOut(false);
+                        sharedUserDataService.signOut(true);
                     } else if responseDictionary["Code"] as? Int == 5002 {
                         NSError.alertUpdatedToast()
                         completion(task: task, response: responseDictionary, error: nil)
-                        sharedUserDataService.signOut(false);
+                        sharedUserDataService.signOut(true);
                     } else if responseDictionary["Code"] as? Int == 5003 {
                         NSError.alertOfflineToast()
                         completion(task: task, response: responseDictionary, error: nil)
-                        sharedUserDataService.signOut(false);
+                        sharedUserDataService.signOut(true);
                     }
                     else {
                         completion(task: task, response: responseDictionary, error: nil)
@@ -144,7 +144,7 @@ class APIService {
                     self.tried = 0
                     AuthCredential.clearFromKeychain()
                     completion(nil, NSError.authCacheBad())
-                    sharedUserDataService.signOut(false)
+                    sharedUserDataService.signOut(true)
                 } else {
                     
                     self.tried = 0
@@ -157,7 +157,7 @@ class APIService {
                     self.tried = 0
                     AuthCredential.clearFromKeychain()
                     completion(nil, NSError.authCacheBad())
-                    sharedUserDataService.signOut(false)
+                    sharedUserDataService.signOut(true)
                 } else {
                     authRefresh (credential.password  ?? "") { (task, authCredential, error) -> Void in
                         if error == nil && self.tried < 4{
@@ -168,12 +168,12 @@ class APIService {
                         } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
                             AuthCredential.clearFromKeychain()
                             completion(authCredential, error)
-                            sharedUserDataService.signOut(false)
+                            sharedUserDataService.signOut(true)
                         } else if self.tried > 3 {
                             self.tried = 0
                             AuthCredential.clearFromKeychain()
                             completion(nil, NSError.authCacheBad())
-                            sharedUserDataService.signOut(false)
+                            sharedUserDataService.signOut(true)
                         }
                         else {
                             completion(authCredential, error)
