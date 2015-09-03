@@ -346,9 +346,9 @@ public class AttachmentKeyPackage : Package {
 */
 public class TempAttachment {
     let ID : String!
-    let Key : NSData!
+    let Key : NSData?
     
-    public init(id: String, key: NSData) {
+    public init(id: String, key: NSData?) {
         self.ID = id
         self.Key = key
     }

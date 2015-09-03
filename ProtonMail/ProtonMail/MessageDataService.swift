@@ -1079,7 +1079,7 @@ class MessageDataService {
                             // encrypt keys use public key
                             var attPack : [AttachmentKeyPackage] = []
                             for att in tempAtts {
-                                let newKeyPack = att.Key.getSymmetricSessionKeyPackage(message.password, error: nil)?.base64EncodedStringWithOptions(nil)
+                                let newKeyPack = att.Key?.getSymmetricSessionKeyPackage(message.password, error: nil)?.base64EncodedStringWithOptions(nil) ?? ""
                                 let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack)
                                 attPack.append(attPacket)
                             }
@@ -1099,7 +1099,7 @@ class MessageDataService {
                         var attPack : [AttachmentKeyPackage] = []
                         for att in tempAtts {
                             //attID:String!, attKey:String!, Algo : String! = ""
-                            let newKeyPack = att.Key.getPublicSessionKeyPackage(publicKey, error: nil)?.base64EncodedStringWithOptions(nil)
+                            let newKeyPack = att.Key?.getPublicSessionKeyPackage(publicKey, error: nil)?.base64EncodedStringWithOptions(nil) ?? ""
                             let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack)
                             attPack.append(attPacket)
                         }
@@ -1125,13 +1125,11 @@ class MessageDataService {
                 var attPack : [AttachmentKeyPackage] = []
                 for att in tempAtts {
                     //attID:String!, attKey:String!, Algo : String! = ""
-                    let newKeyPack = att.Key.base64EncodedStringWithOptions(nil)
+                    let newKeyPack = att.Key?.base64EncodedStringWithOptions(nil) ?? ""
                     let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack, Algo: "aes256")
                     attPack.append(attPacket)
                 }
-                
                 outRequest.attPackets = attPack
-                
             }
             
         } else {
