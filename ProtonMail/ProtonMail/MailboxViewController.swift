@@ -403,6 +403,11 @@ class MailboxViewController: ProtonMailViewController {
                 
                 delay(1.0, {
                     self.refreshControl.endRefreshing()
+                    
+                    if self.fetchingStopped! == true {
+                        return;
+                    }
+                    
                     self.tableView.reloadData()
                 })
             }
