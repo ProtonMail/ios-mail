@@ -38,6 +38,10 @@ public class MailboxViewModel {
         return false
     }
     
+    public func isDelete () -> Bool {
+        return false
+    }
+    
     public func isCurrentLocation(l : MessageLocation) -> Bool {
         return false
         

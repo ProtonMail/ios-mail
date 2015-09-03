@@ -204,7 +204,12 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     internal func removeButtonTapped() {
-        moveMessagesToLocation(.trash)
+        
+        if viewModel.isDelete() {
+            moveMessagesToLocation(.deleted)
+        } else {
+            moveMessagesToLocation(.trash)
+        }
         cancelButtonTapped();
     }
     

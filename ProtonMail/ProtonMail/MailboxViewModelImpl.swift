@@ -68,6 +68,15 @@ public class MailboxViewModelImpl : MailboxViewModel {
         return self.location == MessageLocation.draft
     }
     
+    public override func isDelete () -> Bool {
+        switch(self.location!) {
+        case .trash, .spam:
+            return true;
+        default:
+            return false
+        }
+    }
+    
     public override func isCurrentLocation(l: MessageLocation) -> Bool {
         return self.location == l
     }
