@@ -139,8 +139,8 @@ extension AttachmentsViewController: UIImagePickerControllerDelegate, UINavigati
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
         
-        let tempImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        let type = info[UIImagePickerControllerMediaType] as! String
+        let tempImage = info[UIImagePickerControllerOriginalImage] as? UIImage
+        let type = info[UIImagePickerControllerMediaType] as? String
         let url = info[UIImagePickerControllerReferenceURL] as? NSURL
         let img_jpg = UIImage(data:UIImageJPEGRepresentation(tempImage, 1.0))!
         
