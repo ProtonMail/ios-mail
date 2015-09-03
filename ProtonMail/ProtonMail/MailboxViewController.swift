@@ -153,7 +153,7 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     private func addConstraints() {
-
+        
     }
     
     // MARK: - Prepare for segue
@@ -285,16 +285,18 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     private func configureCell(mailboxCell: MailboxTableViewCell, atIndexPath indexPath: NSIndexPath) {
-        if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-            mailboxCell.configureCell(message)
-            mailboxCell.setCellIsChecked(selectedMessages.containsObject(message.messageID))
-            
-            if (self.isEditing) {
-                mailboxCell.showCheckboxOnLeftSide()
-            }
-            else
-            {
-                mailboxCell.hideCheckboxOnLeftSide()
+        if self.fetchedResultsController?.numberOfSections() >= indexPath.section {
+            if self.fetchedResultsController?.numberOfRowsInSection(indexPath.section) >= indexPath.row {
+                if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+                    mailboxCell.configureCell(message)
+                    mailboxCell.setCellIsChecked(selectedMessages.containsObject(message.messageID))
+                    if (self.isEditing) {
+                        mailboxCell.showCheckboxOnLeftSide()
+                    }
+                    else {
+                        mailboxCell.hideCheckboxOnLeftSide()
+                    }
+                }
             }
         }
     }
@@ -545,11 +547,11 @@ class MailboxViewController: ProtonMailViewController {
             if (self.unreadBarButtonItem == nil) {
                 self.unreadBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_unread"), style: UIBarButtonItemStyle.Plain, target: self, action: "unreadButtonTapped")
             }
-
+            
             if (self.labelBarButtonItem == nil) {
                 self.labelBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_label"), style: UIBarButtonItemStyle.Plain, target: self, action: "labelButtonTapped")
             }
-
+            
             if (self.removeBarButtonItem == nil) {
                 self.removeBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_trash"), style: UIBarButtonItemStyle.Plain, target: self, action: "removeButtonTapped")
             }
