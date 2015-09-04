@@ -292,7 +292,7 @@ class MailboxViewController: ProtonMailViewController {
         }
     }
     
-    private func configureCell(mailboxCell: MailboxTableViewCell, atIndexPath indexPath: NSIndexPath) {
+    private func configureCell(mailboxCell: MailboxMessageCell, atIndexPath indexPath: NSIndexPath) {
         if self.fetchedResultsController?.numberOfSections() >= indexPath.section {
             if self.fetchedResultsController?.numberOfRowsInSection(indexPath.section) >= indexPath.row {
                 if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
@@ -590,12 +590,12 @@ class MailboxViewController: ProtonMailViewController {
         
         if let indexPathsForVisibleRows = indexPathsForVisibleRows {
             for indexPath in indexPathsForVisibleRows {
-                let mailboxTableViewCell: MailboxTableViewCell = self.tableView.cellForRowAtIndexPath(indexPath) as! MailboxTableViewCell
-                mailboxTableViewCell.setCellIsChecked(false)
-                mailboxTableViewCell.hideCheckboxOnLeftSide()
+                let messageCell: MailboxMessageCell = self.tableView.cellForRowAtIndexPath(indexPath) as! MailboxMessageCell
+                messageCell.setCellIsChecked(false)
+                messageCell.hideCheckboxOnLeftSide()
                 
                 UIView.animateWithDuration(0.25, animations: { () -> Void in
-                    mailboxTableViewCell.layoutIfNeeded()
+                    messageCell.layoutIfNeeded()
                 })
             }
         }
@@ -614,20 +614,19 @@ class MailboxViewController: ProtonMailViewController {
                 if let indexPathsForVisibleRows = indexPathsForVisibleRows {
                     for visibleIndexPath in indexPathsForVisibleRows {
                         
-                        let mailboxTableViewCell: MailboxTableViewCell = self.tableView.cellForRowAtIndexPath(visibleIndexPath) as! MailboxTableViewCell
-                        mailboxTableViewCell.showCheckboxOnLeftSide()
+                        let messageCell: MailboxMessageCell = self.tableView.cellForRowAtIndexPath(visibleIndexPath) as! MailboxMessageCell
+                        messageCell.showCheckboxOnLeftSide()
                         
                         // set selected row to checked
-                        
                         if (indexPath.row == visibleIndexPath.row) {
                             if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
                                 selectedMessages.addObject(message.messageID)
                             }
-                            mailboxTableViewCell.setCellIsChecked(true)
+                            messageCell.setCellIsChecked(true)
                         }
                         
                         UIView.animateWithDuration(0.25, animations: { () -> Void in
-                            mailboxTableViewCell.layoutIfNeeded()
+                            messageCell.layoutIfNeeded()
                         })
                     }
                 }
@@ -664,36 +663,6 @@ class MailboxViewController: ProtonMailViewController {
 }
 
 
-// MARK: - MailboxTableViewCellDelegate
-
-extension MailboxViewController: MailboxTableViewCellDelegate {
-    func mailboxTableViewCell(cell: MailboxTableViewCell, didChangeStarred isStarred: Bool) {
-        if let indexPath = tableView.indexPathForCell(cell) {
-            if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-                message.isStarred = isStarred
-                message.needsUpdate = true
-                if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
-                    NSLog("\(__FUNCTION__) error: \(error)")
-                }
-            }
-        }
-    }
-    
-    func mailBoxTableViewCell(cell: MailboxTableViewCell, didChangeChecked: Bool) {
-        var indexPath: NSIndexPath? = tableView.indexPathForCell(cell) as NSIndexPath?
-        if let indexPath = indexPath {
-            if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-                if (selectedMessages.containsObject(message.messageID)) {
-                    selectedMessages.removeObject(message.messageID)
-                } else {
-                    selectedMessages.addObject(message.messageID)
-                }
-            }
-        }
-    }
-}
-
-
 // MARK: - UITableViewDataSource
 
 extension MailboxViewController: UITableViewDataSource {
@@ -705,9 +674,8 @@ extension MailboxViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         var mailboxCell = tableView.dequeueReusableCellWithIdentifier(MailboxMessageCell.Constant.identifier, forIndexPath: indexPath) as! MailboxMessageCell
-       // mailboxCell.delegate = self
         
-        //configureCell(mailboxCell, atIndexPath: indexPath)
+        configureCell(mailboxCell, atIndexPath: indexPath)
         
         return mailboxCell
     }
@@ -773,7 +741,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             }
         case .Update:
             if let indexPath = indexPath {
-                if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MailboxTableViewCell {
+                if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MailboxMessageCell {
                     configureCell(cell, atIndexPath: indexPath)
                 }
             }
@@ -817,7 +785,7 @@ extension MailboxViewController: UITableViewDelegate {
                 }
                 
                 // update checkbox state
-                if let mailboxCell: MailboxTableViewCell = tableView.cellForRowAtIndexPath(indexPath) as? MailboxTableViewCell {
+                if let mailboxCell: MailboxMessageCell = tableView.cellForRowAtIndexPath(indexPath) as? MailboxMessageCell {
                     mailboxCell.setCellIsChecked(!messageAlreadySelected)
                 }
             }

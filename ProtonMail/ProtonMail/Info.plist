@@ -38,6 +38,7 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Roboto-Medium.ttf</string>
 		<string>Roboto-Regular.ttf</string>
 		<string>Roboto-LightItalic.ttf</string>
 		<string>Roboto-MediumItalic.ttf</string>

@@ -138,6 +138,7 @@
 		75484B8B1AF29EBF00B97472 /* NSDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */; };
 		754CD4881AB809D60084C54A /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754CD4871AB809D60084C54A /* SettingTableViewController.swift */; };
 		754CD48B1AB80D770084C54A /* CustomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754CD48A1AB80D770084C54A /* CustomHeaderView.swift */; };
+		7550648E1B9A5ECA006F2D39 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7550648D1B9A5B79006F2D39 /* Roboto-Medium.ttf */; };
 		75510BAB1B82BDEB001348FF /* LabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75510BAA1B82BDEB001348FF /* LabelTableViewCell.swift */; };
 		75510BAD1B82F990001348FF /* LabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75510BAC1B82F990001348FF /* LabelViewModel.swift */; };
 		755405B21B1648D2003BFC0A /* ComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755405B01B1648D2003BFC0A /* ComposeView.swift */; };
@@ -354,6 +355,7 @@
 		75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateExtension.swift; sourceTree = "<group>"; };
 		754CD4871AB809D60084C54A /* SettingTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
 		754CD48A1AB80D770084C54A /* CustomHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomHeaderView.swift; sourceTree = "<group>"; };
+		7550648D1B9A5B79006F2D39 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		75510BAA1B82BDEB001348FF /* LabelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelTableViewCell.swift; sourceTree = "<group>"; };
 		75510BAC1B82F990001348FF /* LabelViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelViewModel.swift; sourceTree = "<group>"; };
 		755405B01B1648D2003BFC0A /* ComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeView.swift; sourceTree = "<group>"; };
@@ -492,6 +494,7 @@
 		07009F101A684BDB00129B07 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				7550648D1B9A5B79006F2D39 /* Roboto-Medium.ttf */,
 				701704771A794C69000A90D2 /* Roboto-MediumItalic.ttf */,
 				07009F111A684C1900129B07 /* Roboto-Light.ttf */,
 				701704791A794C9F000A90D2 /* Roboto-LightItalic.ttf */,
@@ -1061,6 +1064,7 @@
 				07CC996A1A705BA4000FD6F8 /* Settings.bundle in Resources */,
 				076758761AA0E86400F9AC9C /* LoadingView.xib in Resources */,
 				7526AC8E1B6C4B3700E1967E /* backup.css in Resources */,
+				7550648E1B9A5ECA006F2D39 /* Roboto-Medium.ttf in Resources */,
 				701704781A794C69000A90D2 /* Roboto-MediumItalic.ttf in Resources */,
 				07411D8C1AAA3F1B002A4611 /* AttachmentTableViewCell.xib in Resources */,
 				075E3DF61A5F4ECF00E001A7 /* Images.xcassets in Resources */,

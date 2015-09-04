@@ -65,7 +65,7 @@ public class EventCheckResponse : ApiResponse {
     
     override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
 
-        PMLog.D(response.JSONStringify(prettyPrinted: true))
+        //PMLog.D(response.JSONStringify(prettyPrinted: true))
         
         self.eventID = response["EventID"] as? String ?? ""
         self.messages =  response["Messages"] as? [Dictionary<String,AnyObject>]

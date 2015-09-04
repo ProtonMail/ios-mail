@@ -4,10 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <customFonts key="customFonts">
-        <mutableArray key="Roboto-Regular.ttf">
-            <string>Roboto-Regular</string>
-            <string>Roboto-Regular</string>
-            <string>Roboto-Regular</string>
+        <mutableArray key="Roboto-Medium.ttf">
+            <string>Roboto-Medium</string>
+            <string>Roboto-Medium</string>
+            <string>Roboto-Medium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -20,21 +20,47 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SIc-09-lb0">
-                        <rect key="frame" x="52" y="12" width="32" height="20"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Here goes the Subject" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SIc-09-lb0">
+                        <rect key="frame" x="16" y="12" width="560" height="18"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="20" id="Seu-kN-EFT"/>
+                            <constraint firstAttribute="height" constant="18" id="Seu-kN-EFT"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
+                        <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="16"/>
                         <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                         <variation key="heightClass=regular" misplaced="YES">
                             <rect key="frame" x="43" y="12" width="188" height="19"/>
                         </variation>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="7:36pm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yr1-Vg-xT6">
-                        <rect key="frame" x="0.0" y="0.0" width="41" height="16"/>
-                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sender1123123123" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DjW-zn-eI5">
+                        <rect key="frame" x="16" y="51" width="107" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="14" id="yfD-nd-8l0"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="12"/>
+                        <color key="textColor" red="0.51372549020000002" green="0.53333333329999999" blue="0.59215686270000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                        <variation key="heightClass=regular" misplaced="YES">
+                            <rect key="frame" x="16" y="38" width="215" height="14"/>
+                        </variation>
+                    </label>
+                    <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ehh-A8-O8P" userLabel="Checked">
+                        <rect key="frame" x="16" y="21" width="0.0" height="36"/>
+                        <constraints>
+                            <constraint firstAttribute="width" id="Sgz-zJ-w4Y"/>
+                            <constraint firstAttribute="height" constant="36" id="ibG-mP-5WN"/>
+                        </constraints>
+                        <state key="normal" image="mail_check">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <state key="selected" image="mail_check-active"/>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7:36pm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yr1-Vg-xT6">
+                        <rect key="frame" x="580" y="12" width="50" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="50" id="g31-AH-9IZ"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="12"/>
                         <color key="textColor" red="0.51372549020000002" green="0.53333333329999999" blue="0.59215686270000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                         <variation key="heightClass=regular" misplaced="YES">
@@ -44,43 +70,33 @@
                             <rect key="frame" x="343" y="10" width="41" height="14"/>
                         </variation>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ehh-A8-O8P" userLabel="Checked">
-                        <rect key="frame" x="16" y="21" width="36" height="36"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="36" id="Sgz-zJ-w4Y"/>
-                            <constraint firstAttribute="height" constant="36" id="ibG-mP-5WN"/>
-                        </constraints>
-                        <state key="normal" image="unchecked">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                    </button>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DjW-zn-eI5">
-                        <rect key="frame" x="52" y="51" width="38" height="14"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="14" id="yfD-nd-8l0"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
-                        <color key="textColor" red="0.51372549020000002" green="0.53333333329999999" blue="0.59215686270000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <nil key="highlightedColor"/>
-                        <variation key="heightClass=regular" misplaced="YES">
-                            <rect key="frame" x="16" y="38" width="215" height="14"/>
-                        </variation>
-                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="SIc-09-lb0" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="4LO-LE-TvG"/>
+                    <constraint firstAttribute="trailing" secondItem="yr1-Vg-xT6" secondAttribute="trailing" constant="16" id="AK8-cl-BPV"/>
                     <constraint firstAttribute="bottom" secondItem="DjW-zn-eI5" secondAttribute="bottom" constant="12" id="Ogc-go-UU2"/>
                     <constraint firstItem="SIc-09-lb0" firstAttribute="leading" secondItem="ehh-A8-O8P" secondAttribute="trailing" id="R7Q-On-ZTH"/>
                     <constraint firstItem="ehh-A8-O8P" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="UVn-lf-HvP"/>
+                    <constraint firstItem="yr1-Vg-xT6" firstAttribute="leading" secondItem="SIc-09-lb0" secondAttribute="trailing" constant="4" id="gzJ-4O-edC"/>
+                    <constraint firstItem="yr1-Vg-xT6" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="l13-e7-hhK"/>
                     <constraint firstAttribute="centerY" secondItem="ehh-A8-O8P" secondAttribute="centerY" id="mZK-f1-017"/>
                     <constraint firstItem="DjW-zn-eI5" firstAttribute="leading" secondItem="ehh-A8-O8P" secondAttribute="trailing" id="ove-NS-C4h"/>
                     <constraint firstAttribute="centerY" secondItem="ehh-A8-O8P" secondAttribute="centerY" id="t4G-Qy-sga"/>
                 </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="checkboxButton" destination="ehh-A8-O8P" id="7zz-Yx-j88"/>
+                <outlet property="checkboxWidth" destination="Sgz-zJ-w4Y" id="VnI-I6-zoo"/>
+                <outlet property="sender" destination="DjW-zn-eI5" id="GIk-n6-AqB"/>
+                <outlet property="time" destination="yr1-Vg-xT6" id="UMl-AV-8Qu"/>
+                <outlet property="timeWidth" destination="g31-AH-9IZ" id="YgU-BO-otT"/>
+                <outlet property="title" destination="SIc-09-lb0" id="C1X-fG-0Xu"/>
+            </connections>
             <point key="canvasLocation" x="380" y="243.5"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="unchecked" width="22" height="22"/>
+        <image name="mail_check" width="24" height="24"/>
+        <image name="mail_check-active" width="24" height="24"/>
     </resources>
 </document>

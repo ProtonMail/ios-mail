@@ -202,24 +202,24 @@
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
-                        <exclude reference="vXz-xa-yfN"/>
                         <exclude reference="pk5-0q-qlO"/>
+                        <exclude reference="vXz-xa-yfN"/>
+                        <exclude reference="BS2-pA-jbx"/>
                         <exclude reference="Ocb-v5-v51"/>
                         <exclude reference="PDL-yB-8AB"/>
                         <exclude reference="jmy-j9-sdi"/>
-                        <exclude reference="BS2-pA-jbx"/>
                         <exclude reference="Rsb-gW-sCJ"/>
                         <exclude reference="vlm-7K-5aV"/>
                         <exclude reference="5Rm-NQ-umI"/>
-                        <exclude reference="Xef-gl-7mb"/>
                         <exclude reference="SWg-Vq-4a5"/>
+                        <exclude reference="Xef-gl-7mb"/>
                         <exclude reference="lgk-tw-H7Y"/>
                         <exclude reference="nh7-2D-7kw"/>
-                        <exclude reference="tlV-RA-Syf"/>
-                        <exclude reference="e7O-ln-Xh3"/>
                         <exclude reference="3vK-by-xoe"/>
-                        <exclude reference="hnt-QM-gcT"/>
                         <exclude reference="6FG-xN-NGs"/>
+                        <exclude reference="e7O-ln-Xh3"/>
+                        <exclude reference="hnt-QM-gcT"/>
+                        <exclude reference="tlV-RA-Syf"/>
                     </mask>
                 </variation>
             </tableViewCellContentView>
