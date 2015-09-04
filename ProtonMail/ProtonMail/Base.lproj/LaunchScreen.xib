@@ -69,6 +69,6 @@
     </objects>
     <resources>
         <image name="Logo" width="228" height="37"/>
-        <image name="sign_background" width="721" height="508"/>
+        <image name="sign_background" width="320" height="480"/>
     </resources>
 </document>

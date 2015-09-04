@@ -795,7 +795,7 @@
         <image name="SignIn" width="320" height="568"/>
         <image name="cancel_compose" width="22" height="22"/>
         <image name="checked_signin" width="26" height="27"/>
-        <image name="sign_background" width="721" height="508"/>
+        <image name="sign_background" width="320" height="480"/>
         <image name="sign_check" width="24" height="24"/>
         <image name="sign_check-active" width="24" height="24"/>
         <image name="sign_invisiblecharacters" width="14" height="14"/>
