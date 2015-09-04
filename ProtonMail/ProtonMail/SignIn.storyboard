@@ -147,10 +147,10 @@
                                             <constraint firstAttribute="width" secondItem="Kcw-XM-pjz" secondAttribute="height" multiplier="1.5:1" id="xvg-xi-WAo"/>
                                         </constraints>
                                         <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="24" maxY="0.0"/>
-                                        <state key="normal" image="sign_invisiblecharacters">
+                                        <state key="normal" image="sign_visiblecharacters">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <state key="selected" image="sign_visiblecharacters"/>
+                                        <state key="selected" image="sign_invisiblecharacters"/>
                                         <connections>
                                             <action selector="showPasswordAction:" destination="rb7-9h-TvB" eventType="touchUpInside" id="6uQ-7O-4Tb"/>
                                         </connections>
@@ -671,10 +671,10 @@
                                             <constraint firstAttribute="width" secondItem="Dak-er-dwn" secondAttribute="height" multiplier="1.5:1" id="jEH-KJ-xzx"/>
                                         </constraints>
                                         <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="24" maxY="0.0"/>
-                                        <state key="normal" image="sign_invisiblecharacters">
+                                        <state key="normal" image="sign_visiblecharacters">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
-                                        <state key="selected" image="sign_visiblecharacters"/>
+                                        <state key="selected" image="sign_invisiblecharacters"/>
                                         <connections>
                                             <action selector="showAction:" destination="Zzb-6r-tlP" eventType="touchUpInside" id="VEz-ih-ZYo"/>
                                         </connections>

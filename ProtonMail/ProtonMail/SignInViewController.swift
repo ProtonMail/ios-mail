@@ -172,7 +172,7 @@ class SignInViewController: UIViewController {
     }
     
     internal func setupTextFields() {
-        UITextField.appearance().tintColor = UIColor.ProtonMail.TextFieldTintColor;
+        //UITextField.appearance().tintColor = UIColor.ProtonMail.TextFieldTintColor;
     }
     
     func setupSignInButton() {
