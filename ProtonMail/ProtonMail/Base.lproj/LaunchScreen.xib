@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
@@ -7,43 +7,68 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SignIn" translatesAutoresizingMaskIntoConstraints="NO" id="VDi-Mg-ytx">
-                    <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sign_background" translatesAutoresizingMaskIntoConstraints="NO" id="VDi-Mg-ytx">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="ylD-ti-cEi">
-                    <rect key="frame" x="126" y="39" width="228" height="37"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j07-5X-rPA">
+                    <rect key="frame" x="185" y="246" width="230" height="60"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ENCRYPTED EMAILS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L1Q-fd-6fr">
+                            <rect key="frame" x="40" y="45" width="150" height="14"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="14" id="gJj-eV-2mh"/>
+                                <constraint firstAttribute="width" constant="150" id="mMZ-Iu-r3J"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="14"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="ylD-ti-cEi">
+                            <rect key="frame" x="1" y="0.0" width="228" height="37"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="228" id="Fra-9s-XVk"/>
+                                <constraint firstAttribute="height" constant="37" id="gXK-IT-lPZ"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="228" id="Fra-9s-XVk"/>
-                        <constraint firstAttribute="height" constant="37" id="gXK-IT-lPZ"/>
+                        <constraint firstItem="L1Q-fd-6fr" firstAttribute="top" secondItem="ylD-ti-cEi" secondAttribute="bottom" constant="8" id="6ov-74-5Ry"/>
+                        <constraint firstAttribute="height" constant="60" id="E2U-8q-lZx"/>
+                        <constraint firstItem="ylD-ti-cEi" firstAttribute="centerX" secondItem="L1Q-fd-6fr" secondAttribute="centerX" id="N3h-I9-eU8"/>
+                        <constraint firstItem="ylD-ti-cEi" firstAttribute="top" secondItem="j07-5X-rPA" secondAttribute="top" id="QcU-Po-E4O"/>
+                        <constraint firstItem="ylD-ti-cEi" firstAttribute="centerY" secondItem="j07-5X-rPA" secondAttribute="centerY" id="RLC-08-hmR"/>
+                        <constraint firstItem="ylD-ti-cEi" firstAttribute="centerX" secondItem="j07-5X-rPA" secondAttribute="centerX" id="e84-Dr-dmv"/>
+                        <constraint firstAttribute="width" constant="230" id="we2-W5-et3"/>
                     </constraints>
-                </imageView>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="RLC-08-hmR"/>
+                        </mask>
+                    </variation>
+                </view>
             </subviews>
-            <color key="backgroundColor" red="0.13725490200000001" green="0.2274509804" blue="0.37254901959999998" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="centerX" secondItem="ylD-ti-cEi" secondAttribute="centerX" id="BpF-um-nWB"/>
+                <constraint firstItem="VDi-Mg-ytx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="0wd-Bv-gX7"/>
+                <constraint firstAttribute="bottom" secondItem="VDi-Mg-ytx" secondAttribute="bottom" id="9TV-4w-pDU"/>
                 <constraint firstAttribute="bottom" secondItem="VDi-Mg-ytx" secondAttribute="bottom" id="Elb-ce-FAg"/>
-                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="ylD-ti-cEi" secondAttribute="bottom" constant="404" id="GAf-TR-uOO"/>
+                <constraint firstItem="VDi-Mg-ytx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Fqv-Hd-QYB"/>
                 <constraint firstAttribute="trailing" secondItem="VDi-Mg-ytx" secondAttribute="trailing" id="RqP-2g-Li2"/>
-                <constraint firstItem="ylD-ti-cEi" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" priority="750" constant="210" id="Uzb-cL-N9a"/>
-                <constraint firstAttribute="centerY" secondItem="ylD-ti-cEi" secondAttribute="centerY" priority="250" constant="145" id="gpg-S8-sKV"/>
+                <constraint firstAttribute="trailing" secondItem="VDi-Mg-ytx" secondAttribute="trailing" id="VSx-rR-r16"/>
+                <constraint firstAttribute="centerX" secondItem="j07-5X-rPA" secondAttribute="centerX" id="WpK-Bw-igG"/>
+                <constraint firstAttribute="centerY" secondItem="j07-5X-rPA" secondAttribute="centerY" constant="24" id="h1I-zM-q36"/>
                 <constraint firstItem="VDi-Mg-ytx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="u1K-Ry-Ox5"/>
                 <constraint firstItem="VDi-Mg-ytx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="xKS-AO-TK5"/>
             </constraints>
-            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="Uzb-cL-N9a"/>
-                </mask>
-            </variation>
-            <point key="canvasLocation" x="548" y="455"/>
+            <point key="canvasLocation" x="428" y="402"/>
         </view>
     </objects>
     <resources>
         <image name="Logo" width="228" height="37"/>
-        <image name="SignIn" width="320" height="568"/>
+        <image name="sign_background" width="721" height="508"/>
     </resources>
 </document>

@@ -287,7 +287,6 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="UC0-zs-LZ5"/>
-                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="backgroundImage" destination="B79-ZV-yWF" id="p2w-gn-VV6"/>
                         <outlet property="forgotButton" destination="vM0-vQ-zml" id="n5L-Ty-Pg8"/>
