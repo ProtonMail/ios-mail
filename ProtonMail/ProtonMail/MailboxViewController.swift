@@ -80,6 +80,9 @@ class MailboxViewController: ProtonMailViewController {
         super.viewDidLoad()
         
         self.setNavigationTitleText(viewModel.getNavigationTitle())
+        
+        self.tableView!.RegisterCell(MailboxMessageCell.Constant.identifier)
+        
         self.setupFetchedResultsController()
         
         self.addSubViews()
@@ -701,10 +704,10 @@ extension MailboxViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var mailboxCell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as! MailboxTableViewCell
-        mailboxCell.delegate = self
+        var mailboxCell = tableView.dequeueReusableCellWithIdentifier(MailboxMessageCell.Constant.identifier, forIndexPath: indexPath) as! MailboxMessageCell
+       // mailboxCell.delegate = self
         
-        configureCell(mailboxCell, atIndexPath: indexPath)
+        //configureCell(mailboxCell, atIndexPath: indexPath)
         
         return mailboxCell
     }

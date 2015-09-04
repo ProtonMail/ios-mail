@@ -129,6 +129,9 @@
 		751562551B68E8050066FE38 /* EmailAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751562541B68E8050066FE38 /* EmailAttachmentView.swift */; };
 		7518393F1B3DCA3000C714A6 /* EventAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518393E1B3DCA3000C714A6 /* EventAPI.swift */; };
 		751B446E1B81245100B68CD6 /* TableCellLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B446D1B81245100B68CD6 /* TableCellLabelView.swift */; };
+		75230C241B9A3A3600EC2AC2 /* MailboxMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75230C221B9A3A3600EC2AC2 /* MailboxMessageCell.swift */; };
+		75230C251B9A3A3600EC2AC2 /* MailboxMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75230C231B9A3A3600EC2AC2 /* MailboxMessageCell.xib */; };
+		75230C271B9A430F00EC2AC2 /* TempXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75230C261B9A430F00EC2AC2 /* TempXIB.xib */; };
 		7526AC8E1B6C4B3700E1967E /* backup.css in Resources */ = {isa = PBXBuildFile; fileRef = 7526AC8D1B6C4B3700E1967E /* backup.css */; };
 		754387D91AB35EB40003B0AC /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754387D81AB35EB40003B0AC /* SignUpViewController.swift */; };
 		754387DB1AB3A54E0003B0AC /* SignUpKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754387DA1AB3A54E0003B0AC /* SignUpKeyViewController.swift */; };
@@ -342,6 +345,9 @@
 		751562541B68E8050066FE38 /* EmailAttachmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailAttachmentView.swift; sourceTree = "<group>"; };
 		7518393E1B3DCA3000C714A6 /* EventAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventAPI.swift; sourceTree = "<group>"; };
 		751B446D1B81245100B68CD6 /* TableCellLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableCellLabelView.swift; sourceTree = "<group>"; };
+		75230C221B9A3A3600EC2AC2 /* MailboxMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxMessageCell.swift; sourceTree = "<group>"; };
+		75230C231B9A3A3600EC2AC2 /* MailboxMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MailboxMessageCell.xib; sourceTree = "<group>"; };
+		75230C261B9A430F00EC2AC2 /* TempXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TempXIB.xib; sourceTree = "<group>"; };
 		7526AC8D1B6C4B3700E1967E /* backup.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = backup.css; sourceTree = "<group>"; };
 		754387D81AB35EB40003B0AC /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		754387DA1AB3A54E0003B0AC /* SignUpKeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpKeyViewController.swift; sourceTree = "<group>"; };
@@ -800,6 +806,7 @@
 		70945E681A80F331002B6837 /* Mailbox */ = {
 			isa = PBXGroup;
 			children = (
+				75230C211B9A392500EC2AC2 /* Cells */,
 				706628201A715A0900164117 /* MailboxTableViewCell.swift */,
 				70945E691A80F351002B6837 /* MailboxViewController.swift */,
 				751B446D1B81245100B68CD6 /* TableCellLabelView.swift */,
@@ -816,6 +823,16 @@
 				755405B41B164A99003BFC0A /* ComposeViewController.swift */,
 			);
 			name = Compose;
+			sourceTree = "<group>";
+		};
+		75230C211B9A392500EC2AC2 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				75230C221B9A3A3600EC2AC2 /* MailboxMessageCell.swift */,
+				75230C231B9A3A3600EC2AC2 /* MailboxMessageCell.xib */,
+				75230C261B9A430F00EC2AC2 /* TempXIB.xib */,
+			);
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		754CD4891AB80D580084C54A /* Cells */ = {
@@ -1032,6 +1049,7 @@
 				70C6ABE41A72C1B7006EC400 /* Roboto-Regular.ttf in Resources */,
 				07009EFF1A659AD400129B07 /* SignIn.storyboard in Resources */,
 				7017047A1A794C9F000A90D2 /* Roboto-LightItalic.ttf in Resources */,
+				75230C251B9A3A3600EC2AC2 /* MailboxMessageCell.xib in Resources */,
 				7061A3F51A6E8C9D0006D36C /* Menu.storyboard in Resources */,
 				075E3DF91A5F4ECF00E001A7 /* LaunchScreen.xib in Resources */,
 				07009F131A684C1900129B07 /* Roboto-Light.ttf in Resources */,
@@ -1039,6 +1057,7 @@
 				07B123781AB8CD90006EA38C /* Attachments.storyboard in Resources */,
 				07009F141A684C1900129B07 /* Roboto-Thin.ttf in Resources */,
 				7582E2F41B015DF100FEA38B /* MessageDetailBottomView.xib in Resources */,
+				75230C271B9A430F00EC2AC2 /* TempXIB.xib in Resources */,
 				07CC996A1A705BA4000FD6F8 /* Settings.bundle in Resources */,
 				076758761AA0E86400F9AC9C /* LoadingView.xib in Resources */,
 				7526AC8E1B6C4B3700E1967E /* backup.css in Resources */,
@@ -1145,6 +1164,7 @@
 				07CF61921A8988F100ED38AE /* AttachmentExtension.swift in Sources */,
 				071323901A79BD8F0043DB41 /* TextInsetTextField.swift in Sources */,
 				078FF4D01A92CE15008321D1 /* APIService+SettingsExtension.swift in Sources */,
+				75230C241B9A3A3600EC2AC2 /* MailboxMessageCell.swift in Sources */,
 				071323921A7ADA590043DB41 /* APIService+MessagesExtension.swift in Sources */,
 				078FF4CA1A91232D008321D1 /* OpenPGPExtension.swift in Sources */,
 				701DDE931AA64DEB0038149C /* MBContactCollectionViewFlowLayout.m in Sources */,

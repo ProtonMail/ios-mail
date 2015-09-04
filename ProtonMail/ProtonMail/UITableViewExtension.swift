@@ -41,3 +41,12 @@ extension UITableView {
         tableFooterView?.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
     }    
 }
+
+
+
+extension UITableView {
+    
+    func RegisterCell(cellID : String) {
+        self.registerNib(UINib(nibName: cellID, bundle: nil), forCellReuseIdentifier: cellID)
+    }
+}
