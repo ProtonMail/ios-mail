@@ -149,6 +149,13 @@ extension Message {
         
         return checkIsEncrypted
     }
+    
+    var encryptType : EncryptTypes!
+    {
+        let enc_type = EncryptTypes(rawValue: isEncrypted.integerValue) ?? EncryptTypes.Internal
+        
+        return enc_type
+    }
 
     
     

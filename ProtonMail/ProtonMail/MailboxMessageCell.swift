@@ -18,9 +18,14 @@ class MailboxMessageCell: UITableViewCell {
     }
     
     private let kCheckboxWidth : CGFloat = 36.0
+    private let kIconsWidth : CGFloat = 18.0
     
     @IBOutlet weak var checkboxWidth: NSLayoutConstraint!
     @IBOutlet weak var timeWidth: NSLayoutConstraint!
+    @IBOutlet weak var starWidth: NSLayoutConstraint!
+    @IBOutlet weak var attachmentWidth: NSLayoutConstraint!
+    @IBOutlet weak var lockWidth: NSLayoutConstraint!
+    @IBOutlet weak var expirationWidth: NSLayoutConstraint!
 
     
     
@@ -32,6 +37,7 @@ class MailboxMessageCell: UITableViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var sender: UILabel!
     @IBOutlet weak var time: UILabel!
+    @IBOutlet weak var lockImage: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -45,7 +51,7 @@ class MailboxMessageCell: UITableViewCell {
     
     
     
-// MARK : 
+    // MARK : funcs
 
     func showCheckboxOnLeftSide() {
         self.checkboxWidth.constant = kCheckboxWidth
@@ -93,25 +99,34 @@ class MailboxMessageCell: UITableViewCell {
         } else {
             self.sender.text = message.displaySender
         }
-//
-//        self.encryptedImage.hidden = !message.checkIsEncrypted()
-//        self.attachImage.hidden = !message.hasAttachments
-//        
-//        if message.hasAttachments {
-//            self.attachmentConstraint.constant = self.kAttachmentWidth
-//        } else {
-//            self.attachmentConstraint.constant = 0
-//        }
-//        
-//        self.checkboxButton.layer.cornerRadius = kCheckboxButtonCornerRadius
-//        self.checkboxButton.layer.masksToBounds = true
-//        
-//        if message.isStarred {
-//            self.starConstraint.constant = self.kStarWidth
-//        } else {
-//            self.starConstraint.constant = 0
-//        }
-//        
+
+        var encryptedType = message.encryptType
+        if encryptedType == EncryptTypes.Internal {
+            self.lockImage.highlighted = false;
+        } else {
+            self.lockImage.highlighted = true;
+        }
+        
+        if message.hasAttachments {
+            self.attachmentWidth.constant = kIconsWidth
+        } else {
+            self.attachmentWidth.constant = 0
+        }
+        
+        if message.isStarred {
+            self.starWidth.constant = self.kIconsWidth
+        } else {
+            self.starWidth.constant = 0
+        }
+        
+        if message.expirationTime != nil {
+            self.expirationWidth.constant = self.kIconsWidth
+        } else {
+            self.expirationWidth.constant = 0
+        }
+
+        
+        
 //        let labels = message.labels.allObjects
 //        let lc = labels.count - 1;
 //        for i in 0 ... 4 {

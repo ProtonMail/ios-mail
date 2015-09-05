@@ -21,7 +21,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Here goes the Subject" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SIc-09-lb0">
-                        <rect key="frame" x="16" y="12" width="560" height="18"/>
+                        <rect key="frame" x="52" y="12" width="528" height="18"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="18" id="Seu-kN-EFT"/>
                         </constraints>
@@ -32,31 +32,8 @@
                             <rect key="frame" x="43" y="12" width="188" height="19"/>
                         </variation>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sender1123123123" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DjW-zn-eI5">
-                        <rect key="frame" x="16" y="51" width="107" height="14"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="14" id="yfD-nd-8l0"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="12"/>
-                        <color key="textColor" red="0.51372549020000002" green="0.53333333329999999" blue="0.59215686270000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <nil key="highlightedColor"/>
-                        <variation key="heightClass=regular" misplaced="YES">
-                            <rect key="frame" x="16" y="38" width="215" height="14"/>
-                        </variation>
-                    </label>
-                    <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ehh-A8-O8P" userLabel="Checked">
-                        <rect key="frame" x="16" y="21" width="0.0" height="36"/>
-                        <constraints>
-                            <constraint firstAttribute="width" id="Sgz-zJ-w4Y"/>
-                            <constraint firstAttribute="height" constant="36" id="ibG-mP-5WN"/>
-                        </constraints>
-                        <state key="normal" image="mail_check">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                        <state key="selected" image="mail_check-active"/>
-                    </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7:36pm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yr1-Vg-xT6">
-                        <rect key="frame" x="580" y="12" width="50" height="16"/>
+                        <rect key="frame" x="580" y="13" width="50" height="16"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="50" id="g31-AH-9IZ"/>
                         </constraints>
@@ -70,24 +47,98 @@
                             <rect key="frame" x="343" y="10" width="41" height="14"/>
                         </variation>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sender1123123123" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DjW-zn-eI5">
+                        <rect key="frame" x="52" y="51" width="506" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="14" id="yfD-nd-8l0"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="12"/>
+                        <color key="textColor" red="0.51372549020000002" green="0.53333333329999999" blue="0.59215686270000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                        <variation key="heightClass=regular" misplaced="YES">
+                            <rect key="frame" x="16" y="38" width="215" height="14"/>
+                        </variation>
+                    </label>
+                    <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ehh-A8-O8P" userLabel="Checked">
+                        <rect key="frame" x="16" y="21" width="36" height="36"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="36" id="Sgz-zJ-w4Y"/>
+                            <constraint firstAttribute="height" constant="36" id="ibG-mP-5WN"/>
+                        </constraints>
+                        <state key="normal" image="mail_check">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <state key="selected" image="mail_check-active"/>
+                    </button>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_lock" highlightedImage="mail_lock_dark" translatesAutoresizingMaskIntoConstraints="NO" id="I1O-3N-hks">
+                        <rect key="frame" x="612" y="51" width="18" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="14" id="3IN-uA-1v1"/>
+                            <constraint firstAttribute="width" constant="18" id="DL3-zp-Dz4"/>
+                        </constraints>
+                        <variation key="heightClass=regular" misplaced="YES">
+                            <rect key="frame" x="276" y="32" width="15" height="20"/>
+                        </variation>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_starred-active-small" translatesAutoresizingMaskIntoConstraints="NO" id="GYc-tV-NYw">
+                        <rect key="frame" x="558" y="51" width="18" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="18" id="ITM-Qa-OrE"/>
+                            <constraint firstAttribute="height" constant="14" id="bFa-oL-Ehz"/>
+                        </constraints>
+                    </imageView>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_attachment" translatesAutoresizingMaskIntoConstraints="NO" id="MUg-6h-6KQ">
+                        <rect key="frame" x="576" y="51" width="18" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="14" id="FfP-xx-02q"/>
+                            <constraint firstAttribute="width" constant="18" id="ZQl-7I-b7j"/>
+                        </constraints>
+                        <variation key="heightClass=regular" misplaced="YES">
+                            <rect key="frame" x="255" y="36" width="14" height="16"/>
+                        </variation>
+                    </imageView>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_expiration" translatesAutoresizingMaskIntoConstraints="NO" id="l8F-Fo-5Gz">
+                        <rect key="frame" x="594" y="51" width="18" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="18" id="GgZ-zI-WdS"/>
+                            <constraint firstAttribute="height" constant="14" id="T24-bP-EYb"/>
+                        </constraints>
+                        <variation key="heightClass=regular" misplaced="YES">
+                            <rect key="frame" x="255" y="36" width="14" height="16"/>
+                        </variation>
+                    </imageView>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="bottom" secondItem="l8F-Fo-5Gz" secondAttribute="bottom" constant="12" id="1fv-aE-4tl"/>
                     <constraint firstItem="SIc-09-lb0" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="4LO-LE-TvG"/>
+                    <constraint firstItem="SIc-09-lb0" firstAttribute="centerY" secondItem="yr1-Vg-xT6" secondAttribute="centerY" id="6h3-kd-U8G"/>
                     <constraint firstAttribute="trailing" secondItem="yr1-Vg-xT6" secondAttribute="trailing" constant="16" id="AK8-cl-BPV"/>
+                    <constraint firstAttribute="bottom" secondItem="I1O-3N-hks" secondAttribute="bottom" constant="12" id="NAJ-RT-FAm"/>
                     <constraint firstAttribute="bottom" secondItem="DjW-zn-eI5" secondAttribute="bottom" constant="12" id="Ogc-go-UU2"/>
+                    <constraint firstAttribute="bottom" secondItem="MUg-6h-6KQ" secondAttribute="bottom" constant="12" id="PrT-3l-42s"/>
                     <constraint firstItem="SIc-09-lb0" firstAttribute="leading" secondItem="ehh-A8-O8P" secondAttribute="trailing" id="R7Q-On-ZTH"/>
                     <constraint firstItem="ehh-A8-O8P" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="UVn-lf-HvP"/>
-                    <constraint firstItem="yr1-Vg-xT6" firstAttribute="leading" secondItem="SIc-09-lb0" secondAttribute="trailing" constant="4" id="gzJ-4O-edC"/>
-                    <constraint firstItem="yr1-Vg-xT6" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="l13-e7-hhK"/>
+                    <constraint firstItem="I1O-3N-hks" firstAttribute="leading" secondItem="l8F-Fo-5Gz" secondAttribute="trailing" id="aNL-is-MRl"/>
+                    <constraint firstItem="yr1-Vg-xT6" firstAttribute="leading" secondItem="SIc-09-lb0" secondAttribute="trailing" id="gzJ-4O-edC"/>
+                    <constraint firstAttribute="bottom" secondItem="GYc-tV-NYw" secondAttribute="bottom" constant="12" id="haf-Mv-6NM"/>
                     <constraint firstAttribute="centerY" secondItem="ehh-A8-O8P" secondAttribute="centerY" id="mZK-f1-017"/>
                     <constraint firstItem="DjW-zn-eI5" firstAttribute="leading" secondItem="ehh-A8-O8P" secondAttribute="trailing" id="ove-NS-C4h"/>
+                    <constraint firstAttribute="trailing" secondItem="I1O-3N-hks" secondAttribute="trailing" constant="16" id="pNP-jI-IAq"/>
+                    <constraint firstItem="MUg-6h-6KQ" firstAttribute="leading" secondItem="GYc-tV-NYw" secondAttribute="trailing" id="r48-Lw-Hi6"/>
+                    <constraint firstItem="GYc-tV-NYw" firstAttribute="leading" secondItem="DjW-zn-eI5" secondAttribute="trailing" id="rlm-sx-G5S"/>
                     <constraint firstAttribute="centerY" secondItem="ehh-A8-O8P" secondAttribute="centerY" id="t4G-Qy-sga"/>
+                    <constraint firstItem="l8F-Fo-5Gz" firstAttribute="leading" secondItem="MUg-6h-6KQ" secondAttribute="trailing" id="vpK-Qa-Iuh"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="attachmentWidth" destination="ZQl-7I-b7j" id="8BV-F3-dgB"/>
                 <outlet property="checkboxButton" destination="ehh-A8-O8P" id="7zz-Yx-j88"/>
                 <outlet property="checkboxWidth" destination="Sgz-zJ-w4Y" id="VnI-I6-zoo"/>
+                <outlet property="expirationWidth" destination="GgZ-zI-WdS" id="asZ-oN-uSr"/>
+                <outlet property="lockImage" destination="I1O-3N-hks" id="peF-26-g6I"/>
+                <outlet property="lockWidth" destination="DL3-zp-Dz4" id="10T-on-5fH"/>
                 <outlet property="sender" destination="DjW-zn-eI5" id="GIk-n6-AqB"/>
+                <outlet property="starWidth" destination="ITM-Qa-OrE" id="k9Z-MQ-Qat"/>
                 <outlet property="time" destination="yr1-Vg-xT6" id="UMl-AV-8Qu"/>
                 <outlet property="timeWidth" destination="g31-AH-9IZ" id="YgU-BO-otT"/>
                 <outlet property="title" destination="SIc-09-lb0" id="C1X-fG-0Xu"/>
@@ -96,7 +147,12 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="mail_attachment" width="14" height="14"/>
         <image name="mail_check" width="24" height="24"/>
         <image name="mail_check-active" width="24" height="24"/>
+        <image name="mail_expiration" width="14" height="14"/>
+        <image name="mail_lock" width="14" height="14"/>
+        <image name="mail_lock_dark" width="10" height="14"/>
+        <image name="mail_starred-active-small" width="14" height="14"/>
     </resources>
 </document>

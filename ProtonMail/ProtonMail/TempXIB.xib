@@ -125,16 +125,6 @@
                             <rect key="frame" x="343" y="10" width="41" height="14"/>
                         </variation>
                     </label>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_attachment" translatesAutoresizingMaskIntoConstraints="NO" id="L0v-Bs-vty">
-                        <rect key="frame" x="550" y="36" width="22" height="14"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="14" id="BvR-wb-Xzk"/>
-                            <constraint firstAttribute="width" constant="22" id="wHG-3R-Yeo"/>
-                        </constraints>
-                        <variation key="heightClass=regular" misplaced="YES">
-                            <rect key="frame" x="255" y="36" width="14" height="16"/>
-                        </variation>
-                    </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" misplaced="YES" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aoW-p5-zr1">
                         <rect key="frame" x="44" y="12" width="491" height="20"/>
                         <constraints>
@@ -147,6 +137,16 @@
                             <rect key="frame" x="43" y="12" width="188" height="19"/>
                         </variation>
                     </label>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="mail_attachment" translatesAutoresizingMaskIntoConstraints="NO" id="L0v-Bs-vty">
+                        <rect key="frame" x="552" y="36" width="22" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="14" id="BvR-wb-Xzk"/>
+                            <constraint firstAttribute="width" constant="22" id="wHG-3R-Yeo"/>
+                        </constraints>
+                        <variation key="heightClass=regular" misplaced="YES">
+                            <rect key="frame" x="255" y="36" width="14" height="16"/>
+                        </variation>
+                    </imageView>
                 </subviews>
                 <color key="backgroundColor" red="0.98823529409999999" green="0.99607843139999996" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
