@@ -2527,6 +2527,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
+                                            <action selector="StartEditing:" destination="MwW-sL-ahJ" eventType="editingDidBegin" id="oco-rB-u0O"/>
                                             <outlet property="delegate" destination="MwW-sL-ahJ" id="SSg-tY-Xy3"/>
                                         </connections>
                                     </textField>
@@ -2563,6 +2564,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
+                                            <action selector="StartEditing:" destination="MwW-sL-ahJ" eventType="editingDidBegin" id="JBN-Ds-bHJ"/>
                                             <outlet property="delegate" destination="MwW-sL-ahJ" id="KvC-BP-CpV"/>
                                         </connections>
                                     </textField>
@@ -2599,6 +2601,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
+                                            <action selector="StartEditing:" destination="MwW-sL-ahJ" eventType="editingDidBegin" id="Go6-f0-zfP"/>
                                             <outlet property="delegate" destination="MwW-sL-ahJ" id="Qc9-vU-P36"/>
                                         </connections>
                                     </textField>
@@ -2639,6 +2642,9 @@
                             <constraint firstItem="Mfx-Gi-piy" firstAttribute="top" secondItem="Xhk-QT-8Ba" secondAttribute="bottom" constant="8" id="wEq-mB-pqW"/>
                             <constraint firstItem="Xhk-QT-8Ba" firstAttribute="leading" secondItem="3eg-Va-6Bg" secondAttribute="leadingMargin" constant="-8" id="yJq-tN-zud"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="Zzk-BQ-VmK" appends="YES" id="OJl-lJ-yT6"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" title="PASSWORD" id="yyT-Xg-RIN"/>
                     <connections>
@@ -2649,9 +2655,16 @@
                         <outlet property="labelTwo" destination="O4p-Qy-s83" id="rd5-G5-tXB"/>
                         <outlet property="newPwdEditor" destination="1zL-KV-y5U" id="jHs-De-p1S"/>
                         <outlet property="titleLable" destination="Xhk-QT-8Ba" id="li5-qK-6Fp"/>
+                        <outlet property="topOffset" destination="ZyF-wK-o5K" id="ohj-ev-Tjq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bed-5V-aMj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer cancelsTouchesInView="NO" id="Zzk-BQ-VmK">
+                    <connections>
+                        <action selector="tapAction:" destination="MwW-sL-ahJ" id="8sJ-NN-xUv"/>
+                        <outlet property="delegate" destination="3eg-Va-6Bg" id="SX4-kq-DG8"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1146" y="4026"/>
         </scene>

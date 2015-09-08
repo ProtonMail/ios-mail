@@ -19,6 +19,11 @@ class ChangePasswordViewController: UIViewController {
     @IBOutlet weak var labelTwo: UILabel!
     @IBOutlet weak var labelThree: UILabel!
     
+    @IBOutlet weak var topOffset: NSLayoutConstraint!
+    
+    var keyboardHeight : CGFloat = 0.0;
+    var textFieldPoint : CGFloat = 0.0;
+    
     private var doneButton: UIBarButtonItem!
     private var viewModel : ChangePWDViewModel!
     func setViewModel(vm:ChangePWDViewModel) -> Void
@@ -58,6 +63,52 @@ class ChangePasswordViewController: UIViewController {
         if (self.confirmPwdEditor != nil) {
             self.confirmPwdEditor.resignFirstResponder()
         }
+    }
+    @IBAction func tapAction(sender: UITapGestureRecognizer) {
+        dismissKeyboard()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShowOne:", name: UIKeyboardDidShowNotification, object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object:nil)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object:nil)
+    }
+
+    func updateView() {
+        var screenHeight = view.frame.height;
+        var offbox = screenHeight - textFieldPoint
+        if offbox > keyboardHeight {
+            topOffset.constant = 8;
+        } else {
+            topOffset.constant = offbox - keyboardHeight;
+        }
+    }
+    
+    // MARK: - Private methods
+    func keyboardWillShowOne(sender: NSNotification) {
+        let info: NSDictionary = sender.userInfo!
+        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
+            println(keyboardSize)
+            keyboardHeight = keyboardSize.height;
+            updateView();
+        }
+    }
+    
+    func keyboardWillHide(sender: NSNotification) {
+        keyboardHeight = 0;
+        updateView();
+    }
+    @IBAction func StartEditing(sender: UITextField) {
+        
+        var frame = sender.convertRect(sender.frame, toView: self.view)
+        textFieldPoint = frame.origin.y + frame.height + 40;
+        updateView();
     }
     
     private func isInputEmpty() -> Bool {
