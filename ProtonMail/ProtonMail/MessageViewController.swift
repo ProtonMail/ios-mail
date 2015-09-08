@@ -36,10 +36,13 @@ class MessageViewController: ProtonMailViewController {
     private var actionTapped: ComposeMessageAction!
     private var fetchedMessageController: NSFetchedResultsController?
     
+    @IBOutlet var backButton: UIBarButtonItem!
+    
     private var bodyLoaded: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.setupRightButtons()
         
         self.setupFetchedResultsController(message.messageID)
@@ -69,7 +72,8 @@ class MessageViewController: ProtonMailViewController {
             cc: self.message.ccList.getDisplayAddress(),
             bcc: self.message.bccList.getDisplayAddress(),
             isStarred: self.message.isStarred,
-            time: self.message.time)
+            time: self.message.time,
+            encType: self.message.encryptType)
     }
     
     

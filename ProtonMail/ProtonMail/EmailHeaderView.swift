@@ -60,8 +60,8 @@ class EmailHeaderView: UIView {
     
     private let kEmailHeaderViewHeight: CGFloat = 70.0
     private let kEmailTitleViewMarginRight: CGFloat = -8.0
-    private let kEmailFavoriteButtonHeight: CGFloat = 24.5
-    private let kEmailFavoriteButtonWidth: CGFloat = 26
+    private let kEmailFavoriteButtonHeight: CGFloat = 40
+    private let kEmailFavoriteButtonWidth: CGFloat = 40
     private let kEmailRecipientsViewMarginTop: CGFloat = 6.0
     private let kEmailTimeViewMarginTop: CGFloat = 6.0
     private let kEmailDetailToWidth: CGFloat = 40.0
@@ -87,7 +87,6 @@ class EmailHeaderView: UIView {
         let h = (self.attachmentView != nil) ? self.attachmentView!.frame.height : 0;
         
         return y + h + 10;
-        
         //return separatorBetweenHeaderAndBodyView.frame.origin.y + 10;
     }
     
@@ -161,7 +160,7 @@ class EmailHeaderView: UIView {
     }
     
     // MARK : Private functions
-    func updateHeaderData (title : String, sender : String, to : String, cc : String, bcc : String, isStarred : Bool, time : NSDate?) {
+    func updateHeaderData (title : String, sender : String, to : String, cc : String, bcc : String, isStarred : Bool, time : NSDate?, encType : EncryptTypes) {
         
         self.title = title
         self.sender = sender
@@ -185,6 +184,12 @@ class EmailHeaderView: UIView {
         self.emailTime.text = "at \(self.date.stringWithFormat(self.kHourMinuteFormat))".lowercaseString
         let tm = self.date.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? "";
         self.emailDetailDateLabel.text = "Date: \(tm)"
+        
+        if encType == EncryptTypes.Internal {
+            self.emailIsEncryptedImageView.highlighted = false;
+        } else {
+            self.emailIsEncryptedImageView.highlighted = true;
+        }
     }
     
     func updateAttachmentData (atts : [Attachment]?) {
@@ -245,21 +250,22 @@ class EmailHeaderView: UIView {
         
         // create title
         self.emailTitle = UILabel()
-        self.emailTitle.font = UIFont.robotoLight(size: UIFont.Size.h4)
+        self.emailTitle.font = UIFont.robotoMedium(size: UIFont.Size.h4)
         self.emailTitle.numberOfLines = 0
         self.emailTitle.lineBreakMode = .ByWordWrapping
         self.emailTitle.text = self.title
-        self.emailTitle.textColor = UIColor(RRGGBB: UInt(0x505061)) //UIColor.ProtonMail.Gray_383A3B
+        self.emailTitle.textColor = UIColor(RRGGBB: UInt(0x505061))
         self.emailTitle.sizeToFit()
         self.emailHeaderView.addSubview(emailTitle)
         
         // favorite button
         self.emailFavoriteButton = UIButton()
         self.emailFavoriteButton.addTarget(self, action: "emailFavoriteButtonTapped", forControlEvents: .TouchUpInside)
-        self.emailFavoriteButton.setImage(UIImage(named: "favorite")!, forState: .Normal)
-        self.emailFavoriteButton.setImage(UIImage(named: "favorite_selected")!, forState: .Selected)
+        self.emailFavoriteButton.setImage(UIImage(named: "mail_starred")!, forState: .Normal)
+        self.emailFavoriteButton.setImage(UIImage(named: "mail_starred-active")!, forState: .Selected)
         self.emailFavoriteButton.selected = self.starred
-        self.emailFavoriteButton.sizeToFit()
+        self.emailFavoriteButton.contentVerticalAlignment = UIControlContentVerticalAlignment.Top
+        self.emailFavoriteButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Right
         self.emailHeaderView.addSubview(emailFavoriteButton)
         
         // details view
@@ -296,12 +302,13 @@ class EmailHeaderView: UIView {
         self.configureEmailDetailBCCLabel()
         self.configureEmailDetailDateLabel()
 
-        self.emailIsEncryptedImageView = UIImageView(image: UIImage(named: "encrypted_main"))
+        self.emailIsEncryptedImageView = UIImageView(image: UIImage(named: "mail_lock"))
+        self.emailIsEncryptedImageView.highlightedImage = UIImage(named: "mail_lock_dark")
         self.emailIsEncryptedImageView.contentMode = UIViewContentMode.Center
         self.emailIsEncryptedImageView.sizeToFit()
         self.emailHeaderView.addSubview(emailIsEncryptedImageView)
         
-        self.emailHasAttachmentsImageView = UIImageView(image: UIImage(named: "attached_compose"))
+        self.emailHasAttachmentsImageView = UIImageView(image: UIImage(named: "mail_attachment"))
         self.emailHasAttachmentsImageView.contentMode = UIViewContentMode.Center
         self.emailHasAttachmentsImageView.sizeToFit()
         self.emailHeaderView.addSubview(emailHasAttachmentsImageView)
@@ -474,6 +481,7 @@ class EmailHeaderView: UIView {
             make.height.equalTo()(self.kEmailFavoriteButtonHeight)
             make.width.equalTo()(self.kEmailFavoriteButtonWidth)
         }
+        
         emailTitle.mas_updateConstraints { (make) -> Void in
             make.removeExisting = true
             make.left.equalTo()(self.emailHeaderView)

@@ -118,6 +118,7 @@ extension AppDelegate: UIApplicationDelegate {
         if tmp != .Dev && tmp != .Sim {
             AFNetworkActivityLogger.sharedLogger().stopLogging()
         }
+        
         return true
     }
     
