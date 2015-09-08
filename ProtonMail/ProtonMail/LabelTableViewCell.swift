@@ -22,7 +22,6 @@ class LabelTableViewCell: UITableViewCell {
         self.separatorInset = UIEdgeInsetsZero
     }
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.labelView.updateTextFont(UIFont.robotoLight(size: 20))

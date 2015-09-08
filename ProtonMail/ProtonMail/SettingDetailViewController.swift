@@ -10,9 +10,6 @@ import UIKit
 
 class SettingDetailViewController: UIViewController {
 
-    @IBOutlet weak var topHelpImage: UIButton!
-    @IBOutlet weak var topHelpLabel: UILabel!
-    
     @IBOutlet weak var sectionTitleLabel: UILabel!
     
     @IBOutlet weak var switchView: UIView!
@@ -40,7 +37,6 @@ class SettingDetailViewController: UIViewController {
         doneButton.action = "doneAction:"
         doneButton.title = "Done"
         self.navigationItem.title = viewModel.getNavigationTitle()
-        topHelpLabel.text = viewModel.getTopHelpText()
         sectionTitleLabel.text = viewModel.getSectionTitle()
         
         
