@@ -9,7 +9,7 @@
 import UIKit
 
 class LabelTableViewCell: UITableViewCell {
-
+    var vc : UIViewController!;
     var viewModel : LabelViewModel!
     var label: Label!
     @IBOutlet weak var labelView: TableCellLabelView!
@@ -32,7 +32,8 @@ class LabelTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
 
-    func ConfigCell(label : Label, applyed: Bool) {
+    func ConfigCell(label : Label, applyed: Bool, vc : UIViewController) {
+        self.vc = vc;
         self.label = label
         let w = labelView.setText(label.name, color: UIColor(hexString: label.color, alpha: 1.0))
         labelWidth.constant = w;
@@ -45,6 +46,9 @@ class LabelTableViewCell: UITableViewCell {
         if on == true {
             let isok = viewModel.applyLabel(self.label.labelID)
             if !isok {
+                var alert = "A message cannot have more than 5 labels".alertController();
+                alert.addOKAction()
+                vc.presentViewController(alert, animated: true, completion: nil)
                 s.on = false
             }
         } else {

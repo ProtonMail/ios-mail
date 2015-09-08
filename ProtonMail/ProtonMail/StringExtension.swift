@@ -10,6 +10,12 @@ import Foundation
 
 extension String {
     
+    func alertController() -> UIAlertController {
+        var message = self
+        return UIAlertController(title: "Alert", message: message, preferredStyle: .Alert)
+    }
+
+    
     func contains(s: String) -> Bool
     {
         return self.rangeOfString(s, options: NSStringCompareOptions.CaseInsensitiveSearch) != nil ? true : false

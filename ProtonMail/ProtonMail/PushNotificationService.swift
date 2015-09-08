@@ -30,7 +30,6 @@ class PushNotificationService {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
-    
     // MARK: - registration methods
     
     func registerUserNotificationSettings() {

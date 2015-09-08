@@ -40,31 +40,33 @@ class LablesViewController : UIViewController {
         inputContentView.layer.borderColor = UIColor.lightGrayColor().CGColor
         inputContentView.layer.borderWidth = 1.0
         self.setupFetchedResultsController()
-        
         //var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
-       // self.view.addGestureRecognizer(tapGestureRecognizer)
+        // self.view.addGestureRecognizer(tapGestureRecognizer)
     }
     
     @IBAction func applyAction(sender: AnyObject) {
         if isCreateView {
             // start
             viewModel.createLabel(newLabelInput.text, color: titles[selected!.row], error: { () -> Void in
-                //error
-            }, complete: { () -> Void in
-                //ok
+                var alert = "The maximum number of labels i 20.".alertController()
+                alert.addOKAction()
+                self.presentViewController(alert, animated: true, completion: nil)
+                
+                }, complete: { () -> Void in
+                    //ok
             })
             //viewModel.createLabel(newLabelInput.text, titles[selected!.row], error)
             // viewModel.createLabel() {
-                newLabelInput.text = ""
-                tableView.hidden = false;
-                isCreateView = false
-                collectionView.hidden = true;
-                applyButton.setTitle("Apply", forState: UIControlState.Normal)
-//            } else {
-//                
-//                // show alert
-//            }
-        
+            newLabelInput.text = ""
+            tableView.hidden = false;
+            isCreateView = false
+            collectionView.hidden = true;
+            applyButton.setTitle("Apply", forState: UIControlState.Normal)
+            //            } else {
+            //
+            //                // show alert
+            //            }
+            
             
             
         } else {
@@ -147,7 +149,7 @@ extension LablesViewController: UITableViewDataSource {
         var labelCell = tableView.dequeueReusableCellWithIdentifier("labelApplyCell", forIndexPath: indexPath) as! LabelTableViewCell
         var label = fetchedLabels?.objectAtIndexPath(indexPath) as? Label
         labelCell.viewModel = self.viewModel;
-        labelCell.ConfigCell(label!, applyed: viewModel.isEnabled(label!.labelID))
+        labelCell.ConfigCell(label!, applyed: viewModel.isEnabled(label!.labelID), vc: self)
         
         return labelCell
     }
@@ -201,7 +203,7 @@ extension LablesViewController: UITableViewDelegate {
 
 extension LablesViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     //    let sectionInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
-   
+    
     // MARK: UICollectionViewDataSource
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -231,7 +233,7 @@ extension LablesViewController: UICollectionViewDelegateFlowLayout, UICollection
         newCell?.layer.borderWidth = 4
         newCell?.layer.borderColor = UIColor.whiteColor().CGColor
         self.selected = indexPath
-
+        
         
         self.dismissKeyboard()
     }
@@ -245,7 +247,7 @@ extension LablesViewController: UICollectionViewDelegateFlowLayout, UICollection
         return CGSize(width: collectionView.frame.size.width/2, height: 30)
     }
     
-
+    
 }
 
 

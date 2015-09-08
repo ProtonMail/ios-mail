@@ -178,7 +178,6 @@ class SettingsViewController: ProtonMailViewController {
             
             return
         }
-        
         if validatePasswordTextField(newMailboxPasswordTextField, matchesConfirmPasswordTextField: confirmNewMailboxPasswordTextField) {
             let alertController = UIAlertController(title: NSLocalizedString("Confirm mailbox password change"), message: resetMailboxPasswordMessage, preferredStyle: .ActionSheet)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: { (action) -> Void in
