@@ -167,10 +167,10 @@ static CGFloat const ROW_HEIGHT = 64.0;
     self.contacts = [self.datasource contactModelsForContactPicker:self];
     
     [self.contactCollectionView reloadData];
-    [self.contactCollectionView layoutIfNeeded];
+    //[self layoutIfNeeded];
+    //[self.contactCollectionView layoutIfNeeded];
     [self.contactCollectionView scrollToEntryAnimated:NO onComplete:nil];
-    
-    [self hideSearchTableView];
+    //[self hideSearchTableView];
 }
 
 #pragma mark - Properties

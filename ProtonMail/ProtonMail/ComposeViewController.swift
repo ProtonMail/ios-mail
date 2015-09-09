@@ -71,9 +71,11 @@ class ComposeViewController : ProtonMailViewController {
         
         self.contacts = sharedContactDataService.allContactVOs()
         self.composeView.toContactPicker.reloadData()
+        //self.composeView.toContactPicker.contactCollectionView.layoutIfNeeded()
         self.composeView.ccContactPicker.reloadData()
+        //self.composeView.ccContactPicker.contactCollectionView.layoutIfNeeded()
         self.composeView.bccContactPicker.reloadData()
-        
+        //self.composeView.bccContactPicker.contactCollectionView.layoutIfNeeded()
         self.viewModel.markAsRead();
     }
     
@@ -97,6 +99,9 @@ class ComposeViewController : ProtonMailViewController {
             self.composeView.toContactPicker.becomeFirstResponder()
             break
         }
+        
+        
+        var  rect = self.composeView.bccContactPicker.contactCollectionView.frame;
         
     }
     
@@ -188,7 +193,7 @@ class ComposeViewController : ProtonMailViewController {
         stopAutoSave()
         self.collectDraft()
         self.viewModel.sendMessage()
-
+        
         if presentingViewController != nil {
             dismissViewControllerAnimated(true, completion: nil)
         } else {
@@ -247,7 +252,7 @@ class ComposeViewController : ProtonMailViewController {
         
         self.composeView.subject.text = self.viewModel.getSubject();
         //self.composeView.htmlEditor.setHTML(self.viewModel.getHtmlBody())
-
+        
     }
     
     private func updateSelectedContacts(inout selectedContacts: [ContactVO]!, withNameList nameList: String, emailList: String) {

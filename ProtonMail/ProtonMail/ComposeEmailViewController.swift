@@ -86,12 +86,18 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     }
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: "touchStatusBarClick", object:nil)
         
         setupAutoSave()
+
+        self.composeView.toContactPicker.contactCollectionView.layoutIfNeeded()
+        self.composeView.bccContactPicker.contactCollectionView.layoutIfNeeded()
+        self.composeView.ccContactPicker.contactCollectionView.layoutIfNeeded()
     }
     
     override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "touchStatusBarClick", object:nil)
         
         stopAutoSave()
