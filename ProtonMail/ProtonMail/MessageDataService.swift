@@ -775,7 +775,10 @@ class MessageDataService {
                         
                         if response != nil {
                             //TODO need check the respons code
-                            if let msg = response?["Message"] as? Dictionary<String,AnyObject> {
+                            if var msg: Dictionary<String,AnyObject> = response?["Message"] as? Dictionary<String,AnyObject> {
+                                msg.removeValueForKey("Location")
+                                msg.removeValueForKey("Starred")
+                                msg.removeValueForKey("test")
                                 let message_n = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg, inManagedObjectContext: message.managedObjectContext!, error: &error) as! Message
                                 if error == nil {
                                     message.isDetailDownloaded = true
