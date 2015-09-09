@@ -583,6 +583,7 @@ extension ComposeView: MBContactPickerDataSource {
     }
     
     func selectedContactModelsForContactPicker(contactPickerView: MBContactPicker!) -> [AnyObject]! {
+         self.notifyViewSize(true)
         return self.datasource?.composeViewSelectedContactsForPicker(self, picker: contactPickerView)
     }
 }

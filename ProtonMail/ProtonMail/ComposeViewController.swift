@@ -74,9 +74,7 @@ class ComposeViewController : ProtonMailViewController {
         self.composeView.ccContactPicker.reloadData()
         self.composeView.bccContactPicker.reloadData()
         
-                
         self.viewModel.markAsRead();
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -90,8 +88,6 @@ class ComposeViewController : ProtonMailViewController {
             composeView.notifyViewSize(true)
         }
         
-        
-        
         switch viewModel.messageAction!
         {
         case .Reply, .ReplyAll:
@@ -102,8 +98,6 @@ class ComposeViewController : ProtonMailViewController {
             break
         }
         
-        
-
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -279,7 +273,6 @@ class ComposeViewController : ProtonMailViewController {
         }
     }
 }
-
 
 
 // MARK : - view extensions
