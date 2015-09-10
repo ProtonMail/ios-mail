@@ -54,6 +54,7 @@ class MailboxViewController: ProtonMailViewController {
     internal var refreshControl: UIRefreshControl!
     private var navigationTitleLabel = UILabel()
     
+    @IBOutlet weak var noResultLabel: UILabel!
     
     // MARK: - Right bar buttons
     
@@ -408,7 +409,7 @@ class MailboxViewController: ProtonMailViewController {
                 }
                 
                 if error == nil {
-                    self.checkEmptyMailbox()
+                    //self.checkEmptyMailbox()
                 }
                 
                 delay(1.0, {
@@ -417,6 +418,8 @@ class MailboxViewController: ProtonMailViewController {
                     if self.fetchingStopped! == true {
                         return;
                     }
+                    
+                    self.showNoResultLabel();
                     
                     self.tableView.reloadData()
                 })
@@ -434,6 +437,15 @@ class MailboxViewController: ProtonMailViewController {
                 viewModel.fetchNewMessages(Int(updateTime.start.timeIntervalSince1970),  completion: complete)
                 self.checkEmptyMailbox()
             }
+        }
+    }
+    
+    private func showNoResultLabel() {
+        let count = (self.fetchedResultsController?.numberOfSections() > 0) ? (self.fetchedResultsController?.numberOfRowsInSection(0) ?? 0) : 0
+        if (count > 0) {
+            self.noResultLabel.hidden = true;
+        } else {
+            self.noResultLabel.hidden = false;
         }
     }
     
@@ -748,6 +760,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         default:
             return
         }
+        self.showNoResultLabel();
     }
 }
 

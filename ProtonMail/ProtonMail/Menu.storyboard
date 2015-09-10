@@ -1126,13 +1126,25 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Results Found" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q7u-jG-CGT">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="81"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="81" id="iQg-We-R7h"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="Q7u-jG-CGT" firstAttribute="leading" secondItem="OTG-Sc-6eN" secondAttribute="leading" id="1H2-nX-7Is"/>
                             <constraint firstItem="7Zx-Yy-VI3" firstAttribute="leading" secondItem="OTG-Sc-6eN" secondAttribute="leading" id="6aH-UA-ezI"/>
                             <constraint firstAttribute="trailing" secondItem="7Zx-Yy-VI3" secondAttribute="trailing" id="Sxx-a1-umD"/>
+                            <constraint firstItem="Q7u-jG-CGT" firstAttribute="top" secondItem="vYi-81-AYM" secondAttribute="bottom" id="aTw-Lo-DLO"/>
                             <constraint firstItem="7Zx-Yy-VI3" firstAttribute="top" secondItem="vYi-81-AYM" secondAttribute="bottom" id="dQc-GT-Q7X"/>
                             <constraint firstItem="Jzd-SW-ZeK" firstAttribute="top" secondItem="7Zx-Yy-VI3" secondAttribute="bottom" id="p9A-ps-8sY"/>
+                            <constraint firstAttribute="trailing" secondItem="Q7u-jG-CGT" secondAttribute="trailing" id="rKq-q2-7Ov"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
@@ -1143,6 +1155,7 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
                         <outlet property="menuButton" destination="MGt-Hd-KyR" id="g5E-fz-E2f"/>
+                        <outlet property="noResultLabel" destination="Q7u-jG-CGT" id="p9K-UZ-b7h"/>
                         <outlet property="tableView" destination="7Zx-Yy-VI3" id="xAI-ZE-pMC"/>
                         <segue destination="xBI-ex-VGk" kind="presentation" identifier="toSearchViewController" id="6qA-ON-8KL"/>
                         <segue destination="kWS-aU-yuK" kind="show" identifier="toMessageDetailViewController" id="f3k-3A-WEA"/>
@@ -1420,7 +1433,7 @@
                                                         <rect key="frame" x="16" y="38" width="215" height="14"/>
                                                     </variation>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7:36pm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E7k-96-obM">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="7:36pm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E7k-96-obM">
                                                     <rect key="frame" x="543" y="10" width="41" height="16"/>
                                                     <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
                                                     <color key="textColor" red="0.50196078430000002" green="0.51764705879999995" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1556,7 +1569,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dPv-H5-B16" id="NPq-YL-tsi">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r6J-rE-13v">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r6J-rE-13v">
                                                     <rect key="frame" x="16" y="12" width="495" height="22"/>
                                                     <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
                                                     <color key="textColor" red="0.21960784310000001" green="0.2274509804" blue="0.23137254900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1574,7 +1587,7 @@
                                                         <rect key="frame" x="16" y="12" width="295" height="19"/>
                                                     </variation>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jWm-9z-a5k">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Sender" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jWm-9z-a5k">
                                                     <rect key="frame" x="16" y="36" width="495" height="16"/>
                                                     <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
                                                     <color key="textColor" red="0.50196078430000002" green="0.51764705879999995" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1592,7 +1605,7 @@
                                                         <rect key="frame" x="16" y="38" width="295" height="14"/>
                                                     </variation>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7:36pm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ki4-zi-Jta">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="7:36pm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ki4-zi-Jta">
                                                     <rect key="frame" x="543" y="10" width="41" height="16"/>
                                                     <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
                                                     <color key="textColor" red="0.50196078430000002" green="0.51764705879999995" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2949,8 +2962,8 @@
     <inferredMetricsTieBreakers>
         <segue reference="pf5-Mm-LDI"/>
         <segue reference="YGe-pV-72F"/>
+        <segue reference="f3k-3A-WEA"/>
         <segue reference="uv8-bX-yhD"/>
-        <segue reference="w5b-0j-26v"/>
         <segue reference="ddm-eA-erE"/>
         <segue reference="5rJ-hC-fsT"/>
         <segue reference="A7E-cY-hB0"/>
