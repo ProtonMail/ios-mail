@@ -21,7 +21,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Here goes the Subject" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SIc-09-lb0">
-                        <rect key="frame" x="52" y="12" width="528" height="18"/>
+                        <rect key="frame" x="92" y="12" width="488" height="18"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="18" id="Seu-kN-EFT"/>
                         </constraints>
@@ -133,6 +133,19 @@
                             <userDefinedRuntimeAttribute type="string" keyPath="labelTitle" value="Test"/>
                         </userDefinedRuntimeAttributes>
                     </view>
+                    <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="74g-hg-rul" userLabel="label 3" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
+                        <rect key="frame" x="233" y="51" width="32" height="14"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="14" id="pea-j9-z4G"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="LabelTintColor">
+                                <color key="value" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="string" keyPath="labelTitle" value="Test"/>
+                        </userDefinedRuntimeAttributes>
+                    </view>
                     <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Oll-aK-RwB" userLabel="label 4" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
                         <rect key="frame" x="266" y="51" width="86" height="14"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -159,31 +172,41 @@
                             <userDefinedRuntimeAttribute type="string" keyPath="labelTitle" value="This is a test label "/>
                         </userDefinedRuntimeAttributes>
                     </view>
-                    <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="74g-hg-rul" userLabel="label 3" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
-                        <rect key="frame" x="233" y="51" width="32" height="14"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_forwarded" translatesAutoresizingMaskIntoConstraints="NO" id="W87-z9-Lfj">
+                        <rect key="frame" x="72" y="13" width="20" height="16"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="14" id="pea-j9-z4G"/>
+                            <constraint firstAttribute="height" constant="16" id="iRK-md-p80"/>
+                            <constraint firstAttribute="width" constant="20" id="yaw-js-fIe">
+                                <variation key="widthClass=compact" constant="20"/>
+                            </constraint>
                         </constraints>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="color" keyPath="LabelTintColor">
-                                <color key="value" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="string" keyPath="labelTitle" value="Test"/>
-                        </userDefinedRuntimeAttributes>
-                    </view>
+                    </imageView>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_replied" translatesAutoresizingMaskIntoConstraints="NO" id="ERi-2M-ccE">
+                        <rect key="frame" x="52" y="13" width="20" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="DB7-Cd-pNk">
+                                <variation key="widthClass=compact" constant="20"/>
+                            </constraint>
+                            <constraint firstAttribute="height" constant="16" id="fhd-kT-5Nt"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="W87-z9-Lfj" firstAttribute="leading" secondItem="ERi-2M-ccE" secondAttribute="trailing" id="1Dg-HQ-bF1"/>
+                    <constraint firstItem="SIc-09-lb0" firstAttribute="centerY" secondItem="ERi-2M-ccE" secondAttribute="centerY" id="1Mw-sD-RKm"/>
                     <constraint firstAttribute="bottom" secondItem="l8F-Fo-5Gz" secondAttribute="bottom" constant="12" id="1fv-aE-4tl"/>
                     <constraint firstItem="SIc-09-lb0" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="4LO-LE-TvG"/>
                     <constraint firstItem="SIc-09-lb0" firstAttribute="centerY" secondItem="yr1-Vg-xT6" secondAttribute="centerY" id="6h3-kd-U8G"/>
                     <constraint firstAttribute="trailing" secondItem="yr1-Vg-xT6" secondAttribute="trailing" constant="16" id="AK8-cl-BPV"/>
+                    <constraint firstItem="SIc-09-lb0" firstAttribute="leading" secondItem="W87-z9-Lfj" secondAttribute="trailing" id="GTJ-ca-0KO"/>
+                    <constraint firstItem="ERi-2M-ccE" firstAttribute="leading" secondItem="ehh-A8-O8P" secondAttribute="trailing" id="JvL-Ag-kDX"/>
                     <constraint firstAttribute="bottom" secondItem="I1O-3N-hks" secondAttribute="bottom" constant="12" id="NAJ-RT-FAm"/>
                     <constraint firstAttribute="bottom" secondItem="DjW-zn-eI5" secondAttribute="bottom" constant="12" id="Ogc-go-UU2"/>
                     <constraint firstAttribute="bottom" secondItem="MUg-6h-6KQ" secondAttribute="bottom" constant="12" id="PrT-3l-42s"/>
                     <constraint firstItem="SIc-09-lb0" firstAttribute="leading" secondItem="ehh-A8-O8P" secondAttribute="trailing" id="R7Q-On-ZTH"/>
                     <constraint firstItem="ehh-A8-O8P" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="UVn-lf-HvP"/>
                     <constraint firstItem="I1O-3N-hks" firstAttribute="leading" secondItem="l8F-Fo-5Gz" secondAttribute="trailing" id="aNL-is-MRl"/>
+                    <constraint firstItem="ERi-2M-ccE" firstAttribute="centerY" secondItem="W87-z9-Lfj" secondAttribute="centerY" id="c5h-ca-Lhp"/>
                     <constraint firstItem="yr1-Vg-xT6" firstAttribute="leading" secondItem="SIc-09-lb0" secondAttribute="trailing" id="gzJ-4O-edC"/>
                     <constraint firstAttribute="bottom" secondItem="GYc-tV-NYw" secondAttribute="bottom" constant="12" id="haf-Mv-6NM"/>
                     <constraint firstAttribute="centerY" secondItem="ehh-A8-O8P" secondAttribute="centerY" id="mZK-f1-017"/>
@@ -193,12 +216,18 @@
                     <constraint firstAttribute="centerY" secondItem="ehh-A8-O8P" secondAttribute="centerY" id="t4G-Qy-sga"/>
                     <constraint firstItem="l8F-Fo-5Gz" firstAttribute="leading" secondItem="MUg-6h-6KQ" secondAttribute="trailing" id="vpK-Qa-Iuh"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="R7Q-On-ZTH"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="attachmentWidth" destination="ZQl-7I-b7j" id="8BV-F3-dgB"/>
                 <outlet property="checkboxButton" destination="ehh-A8-O8P" id="7zz-Yx-j88"/>
                 <outlet property="checkboxWidth" destination="Sgz-zJ-w4Y" id="VnI-I6-zoo"/>
                 <outlet property="expirationWidth" destination="GgZ-zI-WdS" id="asZ-oN-uSr"/>
+                <outlet property="forwardWidth" destination="yaw-js-fIe" id="zZq-lW-vhX"/>
                 <outlet property="label1" destination="Mmh-wF-Tkj" id="LWA-pH-8vb"/>
                 <outlet property="label2" destination="4Zd-UJ-8zf" id="BhY-PP-xyZ"/>
                 <outlet property="label3" destination="UH2-lT-4m5" id="Z7u-zr-JOq"/>
@@ -206,6 +235,8 @@
                 <outlet property="label5" destination="74g-hg-rul" id="gNs-2t-UJ8"/>
                 <outlet property="lockImage" destination="I1O-3N-hks" id="peF-26-g6I"/>
                 <outlet property="lockWidth" destination="DL3-zp-Dz4" id="10T-on-5fH"/>
+                <outlet property="replyImage" destination="ERi-2M-ccE" id="yNE-x0-uEc"/>
+                <outlet property="replyWidth" destination="DB7-Cd-pNk" id="9wX-Nr-ls8"/>
                 <outlet property="sender" destination="DjW-zn-eI5" id="GIk-n6-AqB"/>
                 <outlet property="starImage" destination="GYc-tV-NYw" id="vDo-uW-JM2"/>
                 <outlet property="starWidth" destination="ITM-Qa-OrE" id="k9Z-MQ-Qat"/>
@@ -221,8 +252,10 @@
         <image name="mail_check" width="24" height="24"/>
         <image name="mail_check-active" width="24" height="24"/>
         <image name="mail_expiration" width="14" height="14"/>
+        <image name="mail_forwarded" width="16" height="16"/>
         <image name="mail_lock" width="14" height="14"/>
         <image name="mail_lock_dark" width="10" height="14"/>
+        <image name="mail_replied" width="16" height="16"/>
         <image name="mail_starred-active-small" width="14" height="14"/>
     </resources>
 </document>

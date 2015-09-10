@@ -19,7 +19,7 @@ class MailboxMessageCell: UITableViewCell {
     
     private let kCheckboxWidth : CGFloat = 36.0
     private let kIconsWidth : CGFloat = 18.0
-    
+    private let kReplyWidth : CGFloat = 20.0
     @IBOutlet weak var checkboxWidth: NSLayoutConstraint!
     @IBOutlet weak var timeWidth: NSLayoutConstraint!
     @IBOutlet weak var starWidth: NSLayoutConstraint!
@@ -27,6 +27,8 @@ class MailboxMessageCell: UITableViewCell {
     @IBOutlet weak var lockWidth: NSLayoutConstraint!
     @IBOutlet weak var expirationWidth: NSLayoutConstraint!
     
+    @IBOutlet weak var replyWidth: NSLayoutConstraint!
+    @IBOutlet weak var forwardWidth: NSLayoutConstraint!
     
     @IBOutlet weak var label1: LabelDisplayView!
     @IBOutlet weak var label2: LabelDisplayView!
@@ -42,6 +44,7 @@ class MailboxMessageCell: UITableViewCell {
     @IBOutlet weak var sender: UILabel!
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var lockImage: UIImageView!
+    @IBOutlet weak var replyImage: UIImageView!
     
     @IBOutlet weak var starImage: UIImageView!
     override func awakeFromNib() {
@@ -79,7 +82,7 @@ class MailboxMessageCell: UITableViewCell {
             make.bottom.equalTo()(self.label4.mas_bottom)
             make.top.equalTo()(self.label4.mas_top)
         }
-
+        
     }
     
     override func setSelected(selected: Bool, animated: Bool) {
@@ -163,7 +166,7 @@ class MailboxMessageCell: UITableViewCell {
             self.expirationWidth.constant = 0
         }
         
-                let labels = message.labels.allObjects
+        let labels = message.labels.allObjects
         let lc = labels.count - 1;
         for i in 0 ... 4 {
             switch i {
@@ -207,19 +210,27 @@ class MailboxMessageCell: UITableViewCell {
         } else {
             changeStyleToUnreadDesign()
         }
-        //
-        //        if  message.isRepliedAll {
-        //            showReplyAll()
-        //        }
-        //        else if message.isReplied {
-        //            showReply()
-        //        }
-        //        else {
-        //            hideReply()
-        //        }
-        //
+        
+        if  message.isRepliedAll {
+            showReplyAll()
+        }
+        else if message.isReplied {
+            showReply()
+        }
+        else {
+            hideReply()
+        }
+        
+        if  message.isForwarded {
+            showForward()
+        } else {
+            hideForward()
+        }
+        
         self.time.text = message.time != nil ? " \(NSDate.stringForDisplayFromDate(message.time))" : ""
         timeWidth.constant = self.time.sizeThatFits(CGSizeZero).width
+        
+        self.setNeedsUpdateConstraints()
     }
     private func updateLables (labelView : LabelDisplayView, label:Label?) {
         if let label = label {
@@ -235,6 +246,26 @@ class MailboxMessageCell: UITableViewCell {
         }
     }
     
+    func showReply() {
+        self.replyWidth.constant = kReplyWidth
+        self.replyImage.image = UIImage(named: "mail_replied")
+    }
     
+    func showReplyAll() {
+        self.replyWidth.constant = kReplyWidth
+        self.replyImage.image = UIImage(named: "mail_repliedall")
+        
+    }
     
+    func hideReply() {
+        self.replyWidth.constant = 0
+    }
+    
+    func showForward() {
+        self.forwardWidth.constant = kReplyWidth
+    }
+    
+    func hideForward() {
+        self.forwardWidth.constant = 0.0
+    }
 }
