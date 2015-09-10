@@ -68,6 +68,9 @@ class SearchViewController: ProtonMailViewController {
             fetchedResultsController = fetchedResultsControllerForSearch(managedObjectContext: context)
             fetchedResultsController?.delegate = self
         }
+        
+        
+        searchTextField.becomeFirstResponder()
     }
     
     override func viewDidLayoutSubviews() {
@@ -90,7 +93,6 @@ class SearchViewController: ProtonMailViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        searchTextField.becomeFirstResponder()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -200,6 +202,9 @@ class SearchViewController: ProtonMailViewController {
         }
     }
 
+    @IBAction func tapAction(sender: AnyObject) {
+        searchTextField.resignFirstResponder()
+    }
     // MARK: - Button Actions
     
     @IBAction func cancelButtonTapped(sender: UIButton) {

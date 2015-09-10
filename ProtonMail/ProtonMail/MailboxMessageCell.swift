@@ -89,14 +89,20 @@ class MailboxMessageCell: UITableViewCell {
         }
         
         locationLabel.layer.cornerRadius = 2;
-        
+
     }
     
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
+        locationLabel.backgroundColor = UIColor.grayColor()
     }
     
+    override func setHighlighted(highlighted: Bool, animated: Bool) {
+        super.setHighlighted(highlighted, animated: animated)
+        
+        locationLabel.backgroundColor = UIColor.grayColor()
+    }
     
     
     // MARK : funcs
