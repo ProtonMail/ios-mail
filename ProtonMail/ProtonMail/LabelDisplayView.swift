@@ -7,8 +7,7 @@
 //
 
 import UIKit
-
-@IBDesignable class LabelDisplayView: PMView {
+class LabelDisplayView: PMView {
     
     @IBOutlet weak var labelText: UILabel!
     
@@ -22,7 +21,7 @@ import UIKit
         
     }
     
-    @IBInspectable var LabelTintColor : UIColor? {
+    var LabelTintColor : UIColor? {
         get {
             return boardColor;
         }
@@ -32,7 +31,7 @@ import UIKit
         }
     }
     
-    @IBInspectable var labelTitle : String? {
+    var labelTitle : String? {
         get {
             return labelText.text;
         }

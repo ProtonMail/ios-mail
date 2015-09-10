@@ -23,7 +23,7 @@ class MessageViewController: ProtonMailViewController {
                 {
                     self.updateEmailBody ()
                     self.updateHeader()
-                    self.emailView?.emailHeader.updateAttConstraints(true)
+                   // self.emailView?.emailHeader.updateAttConstraints(true)
                 }
             }
         }
@@ -55,8 +55,9 @@ class MessageViewController: ProtonMailViewController {
         }
         
         self.emailView!.initLayouts()
-        self.emailView!.bottomActionView.delegate = self
-        self.emailView!.emailHeader.actionsDelegate = self
+        //self.emailView!.bottomActionView.delegate = self
+        //self.emailView!.emailHeader.actionsDelegate = self
+       
         self.updateEmailBody()
     }
     

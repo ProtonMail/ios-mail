@@ -110,70 +110,40 @@
                             <rect key="frame" x="255" y="36" width="14" height="16"/>
                         </variation>
                     </imageView>
-                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mmh-wF-Tkj" userLabel="label 1" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
+                    <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mmh-wF-Tkj" userLabel="label 1" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
                         <rect key="frame" x="477" y="51" width="32" height="14"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="c6C-uu-ssA"/>
                         </constraints>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="color" keyPath="LabelTintColor">
-                                <color key="value" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="string" keyPath="labelTitle" value="Test"/>
-                        </userDefinedRuntimeAttributes>
                     </view>
-                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Zd-UJ-8zf" userLabel="label 2" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
+                    <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Zd-UJ-8zf" userLabel="label 2" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
                         <rect key="frame" x="442" y="51" width="32" height="14"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="4Gm-Jh-j7N"/>
                         </constraints>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="color" keyPath="LabelTintColor">
-                                <color key="value" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="string" keyPath="labelTitle" value="Test"/>
-                        </userDefinedRuntimeAttributes>
                     </view>
-                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="74g-hg-rul" userLabel="label 3" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
+                    <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="74g-hg-rul" userLabel="label 3" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
                         <rect key="frame" x="233" y="51" width="32" height="14"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="pea-j9-z4G"/>
                         </constraints>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="color" keyPath="LabelTintColor">
-                                <color key="value" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="string" keyPath="labelTitle" value="Test"/>
-                        </userDefinedRuntimeAttributes>
                     </view>
-                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oll-aK-RwB" userLabel="label 4" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
+                    <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Oll-aK-RwB" userLabel="label 4" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
                         <rect key="frame" x="266" y="51" width="86" height="14"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="Nzc-n0-nLQ"/>
                         </constraints>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="color" keyPath="LabelTintColor">
-                                <color key="value" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="string" keyPath="labelTitle" value="This is a test label "/>
-                        </userDefinedRuntimeAttributes>
                     </view>
-                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UH2-lT-4m5" userLabel="label 5" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
-                        <rect key="frame" x="348" y="51" width="86" height="14"/>
+                    <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UH2-lT-4m5" userLabel="label 5" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
+                        <rect key="frame" x="354" y="51" width="86" height="14"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="1Bb-aY-3Xh"/>
                         </constraints>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="color" keyPath="LabelTintColor">
-                                <color key="value" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="string" keyPath="labelTitle" value="This is a test label "/>
-                        </userDefinedRuntimeAttributes>
                     </view>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_forwarded" translatesAutoresizingMaskIntoConstraints="NO" id="W87-z9-Lfj">
                         <rect key="frame" x="72" y="13" width="20" height="16"/>
@@ -193,8 +163,8 @@
                             <constraint firstAttribute="height" constant="16" id="fhd-kT-5Nt"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q38-eq-ScR">
-                        <rect key="frame" x="92" y="14.5" width="42" height="14"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q38-eq-ScR">
+                        <rect key="frame" x="92" y="15" width="42" height="14"/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="Zw4-wr-4Ql"/>

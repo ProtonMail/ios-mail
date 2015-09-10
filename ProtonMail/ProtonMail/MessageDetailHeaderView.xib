@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="Roboto-Medium.ttf">
+            <string>Roboto-Medium</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MessageDetailHeaderView" customModule="ProtonMail" customModuleProvider="target">
+            <connections>
+                <outlet property="bccView" destination="1eS-bK-L3O" id="yIE-Go-SH3"/>
+                <outlet property="ccView" destination="ng8-6b-K4f" id="T00-Ka-ErC"/>
+                <outlet property="fromView" destination="cqc-in-Af5" id="Ytk-N0-Edx"/>
+                <outlet property="titleLabel" destination="7A4-1l-GsN" id="5OR-t2-ezg"/>
+                <outlet property="toView" destination="Ou2-jf-Ip3" id="ODx-sq-uaZ"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7A4-1l-GsN" userLabel="title">
+                    <rect key="frame" x="16" y="12" width="548" height="85"/>
+                    <string key="text">Here goes the subject Here goes the subject He ges the subject Here goes the subject Here goes the subject Here goes the subject Here goes the subject Here goes the subject Here goes the subject Here goes the subject Here goes the subject </string>
+                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="16"/>
+                    <color key="textColor" red="0.31372549019607843" green="0.31372549019607843" blue="0.38039215686274508" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Ck-Bg-Oof">
+                    <rect key="frame" x="554" y="12" width="30" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="n9i-mr-fI7"/>
+                        <constraint firstAttribute="width" constant="30" id="oEy-mI-jmX"/>
+                    </constraints>
+                    <state key="normal" image="mail_starred">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="selected" image="mail_starred-active"/>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cqc-in-Af5" userLabel="from" customClass="RecipientView" customModule="ProtonMail" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="97" width="600" height="121"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="121" id="UW1-ha-61x"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ng8-6b-K4f" userLabel="cc" customClass="RecipientView" customModule="ProtonMail" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="344" width="600" height="121"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1eS-bK-L3O" userLabel="bcc" customClass="RecipientView" customModule="ProtonMail" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="471" width="600" height="121"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ou2-jf-Ip3" userLabel="to" customClass="RecipientView" customModule="ProtonMail" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="221" width="600" height="121"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="1eS-bK-L3O" firstAttribute="top" secondItem="ng8-6b-K4f" secondAttribute="bottom" constant="6" id="3ax-lr-25D"/>
+                <constraint firstAttribute="bottom" secondItem="1eS-bK-L3O" secondAttribute="bottom" constant="8" id="4HI-rj-yFo"/>
+                <constraint firstItem="ng8-6b-K4f" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="6RD-9q-hMH"/>
+                <constraint firstItem="cqc-in-Af5" firstAttribute="top" secondItem="7A4-1l-GsN" secondAttribute="bottom" id="7BK-AV-hQW"/>
+                <constraint firstItem="7A4-1l-GsN" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="12" id="7da-ly-x5T"/>
+                <constraint firstItem="cqc-in-Af5" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="97" id="C7G-ni-VKB"/>
+                <constraint firstItem="1eS-bK-L3O" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="471" id="CkG-g8-fqv"/>
+                <constraint firstAttribute="trailing" secondItem="1eS-bK-L3O" secondAttribute="trailing" id="Ef0-LA-tCm"/>
+                <constraint firstAttribute="trailing" secondItem="cqc-in-Af5" secondAttribute="trailing" id="Et8-rY-XcH"/>
+                <constraint firstAttribute="trailing" secondItem="7Ck-Bg-Oof" secondAttribute="trailing" constant="16" id="GdQ-by-K3e"/>
+                <constraint firstItem="Ou2-jf-Ip3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="H4y-i8-wsC"/>
+                <constraint firstAttribute="bottom" secondItem="cqc-in-Af5" secondAttribute="bottom" constant="382" id="Hi8-eX-At4"/>
+                <constraint firstItem="ng8-6b-K4f" firstAttribute="top" secondItem="Ou2-jf-Ip3" secondAttribute="bottom" constant="2" id="TgN-zg-VLt"/>
+                <constraint firstItem="7Ck-Bg-Oof" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="12" id="ZWO-Ff-uok"/>
+                <constraint firstItem="Ou2-jf-Ip3" firstAttribute="top" secondItem="cqc-in-Af5" secondAttribute="bottom" constant="3" id="eJy-fl-b8n"/>
+                <constraint firstItem="cqc-in-Af5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="gYt-Rb-mJc"/>
+                <constraint firstItem="1eS-bK-L3O" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="jHK-dG-KJd"/>
+                <constraint firstAttribute="trailing" secondItem="ng8-6b-K4f" secondAttribute="trailing" id="qqO-9E-xas"/>
+                <constraint firstItem="ng8-6b-K4f" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="344" id="rSq-jn-Mnz"/>
+                <constraint firstItem="7Ck-Bg-Oof" firstAttribute="leading" secondItem="7A4-1l-GsN" secondAttribute="trailing" constant="-10" id="wau-kq-vjk"/>
+                <constraint firstAttribute="trailing" secondItem="Ou2-jf-Ip3" secondAttribute="trailing" id="wud-kY-26P"/>
+                <constraint firstItem="7A4-1l-GsN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="y8A-8K-HVd"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="C7G-ni-VKB"/>
+                    <exclude reference="Hi8-eX-At4"/>
+                </mask>
+            </variation>
+            <point key="canvasLocation" x="554" y="341"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="mail_starred" width="16" height="16"/>
+        <image name="mail_starred-active" width="16" height="16"/>
+    </resources>
+</document>
