@@ -48,6 +48,7 @@ class SearchViewController: ProtonMailViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.noSeparatorsBelowFooter()
+        self.tableView!.RegisterCell(MailboxMessageCell.Constant.identifier)
         
         searchTextField.autocapitalizationType = UITextAutocapitalizationType.None
         searchTextField.returnKeyType = .Search
@@ -257,9 +258,9 @@ extension SearchViewController: NSFetchedResultsControllerDelegate {
             }
         case .Update:
             if let indexPath = indexPath {
-                if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MailboxTableViewCell {
+                if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MailboxMessageCell {
                     if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-                        cell.configureCell(message)
+                        cell.configureCell(message, showLocation: true)
                     }
                 }
             }
@@ -283,13 +284,11 @@ extension SearchViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-
-        var cell = tableView.dequeueReusableCellWithIdentifier(kCellIdentifier, forIndexPath: indexPath) as! MailboxTableViewCell
+        var mailboxCell = tableView.dequeueReusableCellWithIdentifier(MailboxMessageCell.Constant.identifier, forIndexPath: indexPath) as! MailboxMessageCell
         if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-            cell.configureCell(message)
+            mailboxCell.configureCell(message, showLocation: true)
         }
-        
-        return cell
+        return mailboxCell
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {

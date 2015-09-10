@@ -30,12 +30,16 @@ class MailboxMessageCell: UITableViewCell {
     @IBOutlet weak var replyWidth: NSLayoutConstraint!
     @IBOutlet weak var forwardWidth: NSLayoutConstraint!
     
+    @IBOutlet weak var locationWidth: NSLayoutConstraint!
+    @IBOutlet weak var loctionRightSpace: NSLayoutConstraint!
+   
     @IBOutlet weak var label1: LabelDisplayView!
     @IBOutlet weak var label2: LabelDisplayView!
     @IBOutlet weak var label3: LabelDisplayView!
     @IBOutlet weak var label4: LabelDisplayView!
     @IBOutlet weak var label5: LabelDisplayView!
     
+    @IBOutlet weak var locationLabel: UILabel!
     // MARK : vars
     private var isChecked : Bool = false
     
@@ -50,6 +54,7 @@ class MailboxMessageCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        checkboxWidth.constant = 0.0
         
         label1.mas_updateConstraints { (make) -> Void in
             make.removeExisting = true
@@ -82,6 +87,8 @@ class MailboxMessageCell: UITableViewCell {
             make.bottom.equalTo()(self.label4.mas_bottom)
             make.top.equalTo()(self.label4.mas_top)
         }
+        
+        locationLabel.layer.cornerRadius = 2;
         
     }
     
@@ -132,8 +139,17 @@ class MailboxMessageCell: UITableViewCell {
     
     // MARK: - Cell configuration
     
-    func configureCell(message: Message) {
+    func configureCell(message: Message, showLocation : Bool) {
         self.title.text = message.subject
+        
+        if showLocation {
+            self.locationLabel.text = " \(message.location.title) "
+            locationWidth.constant = self.locationLabel.sizeThatFits(CGSizeZero).width
+            loctionRightSpace.constant = 4.0;
+        } else {
+            locationWidth.constant = 0.0;
+            loctionRightSpace.constant = 0.0;
+        }
         
         if message.location == MessageLocation.outbox {
             self.sender.text = message.recipientList.getDisplayAddress()

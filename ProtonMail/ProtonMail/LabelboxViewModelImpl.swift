@@ -21,6 +21,10 @@ public class LabelboxViewModelImpl : MailboxViewModel {
         super.init()
     }
     
+    public override func showLocation () -> Bool {
+        return true
+    }
+    
     override public func getNavigationTitle() -> String {
         return self.label.name
     }

@@ -9,6 +9,9 @@
             <string>Roboto-Medium</string>
             <string>Roboto-Medium</string>
         </mutableArray>
+        <mutableArray key="Roboto-Regular.ttf">
+            <string>Roboto-Regular</string>
+        </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -21,7 +24,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Here goes the Subject" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SIc-09-lb0">
-                        <rect key="frame" x="92" y="12" width="488" height="18"/>
+                        <rect key="frame" x="138" y="12" width="442" height="18"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="18" id="Seu-kN-EFT"/>
                         </constraints>
@@ -107,7 +110,7 @@
                             <rect key="frame" x="255" y="36" width="14" height="16"/>
                         </variation>
                     </imageView>
-                    <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mmh-wF-Tkj" userLabel="label 1" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mmh-wF-Tkj" userLabel="label 1" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
                         <rect key="frame" x="477" y="51" width="32" height="14"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -120,7 +123,7 @@
                             <userDefinedRuntimeAttribute type="string" keyPath="labelTitle" value="Test"/>
                         </userDefinedRuntimeAttributes>
                     </view>
-                    <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Zd-UJ-8zf" userLabel="label 2" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Zd-UJ-8zf" userLabel="label 2" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
                         <rect key="frame" x="442" y="51" width="32" height="14"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -133,7 +136,7 @@
                             <userDefinedRuntimeAttribute type="string" keyPath="labelTitle" value="Test"/>
                         </userDefinedRuntimeAttributes>
                     </view>
-                    <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="74g-hg-rul" userLabel="label 3" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="74g-hg-rul" userLabel="label 3" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
                         <rect key="frame" x="233" y="51" width="32" height="14"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -146,7 +149,7 @@
                             <userDefinedRuntimeAttribute type="string" keyPath="labelTitle" value="Test"/>
                         </userDefinedRuntimeAttributes>
                     </view>
-                    <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Oll-aK-RwB" userLabel="label 4" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oll-aK-RwB" userLabel="label 4" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
                         <rect key="frame" x="266" y="51" width="86" height="14"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -159,7 +162,7 @@
                             <userDefinedRuntimeAttribute type="string" keyPath="labelTitle" value="This is a test label "/>
                         </userDefinedRuntimeAttributes>
                     </view>
-                    <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UH2-lT-4m5" userLabel="label 5" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UH2-lT-4m5" userLabel="label 5" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
                         <rect key="frame" x="348" y="51" width="86" height="14"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -190,20 +193,32 @@
                             <constraint firstAttribute="height" constant="16" id="fhd-kT-5Nt"/>
                         </constraints>
                     </imageView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q38-eq-ScR">
+                        <rect key="frame" x="92" y="14.5" width="42" height="14"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="14" id="Zw4-wr-4Ql"/>
+                            <constraint firstAttribute="width" constant="42" id="sRT-xH-c9B"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="9"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="W87-z9-Lfj" firstAttribute="leading" secondItem="ERi-2M-ccE" secondAttribute="trailing" id="1Dg-HQ-bF1"/>
                     <constraint firstItem="SIc-09-lb0" firstAttribute="centerY" secondItem="ERi-2M-ccE" secondAttribute="centerY" id="1Mw-sD-RKm"/>
                     <constraint firstAttribute="bottom" secondItem="l8F-Fo-5Gz" secondAttribute="bottom" constant="12" id="1fv-aE-4tl"/>
+                    <constraint firstItem="SIc-09-lb0" firstAttribute="leading" secondItem="q38-eq-ScR" secondAttribute="trailing" constant="4" id="21n-Rk-D5T"/>
                     <constraint firstItem="SIc-09-lb0" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="4LO-LE-TvG"/>
                     <constraint firstItem="SIc-09-lb0" firstAttribute="centerY" secondItem="yr1-Vg-xT6" secondAttribute="centerY" id="6h3-kd-U8G"/>
                     <constraint firstAttribute="trailing" secondItem="yr1-Vg-xT6" secondAttribute="trailing" constant="16" id="AK8-cl-BPV"/>
-                    <constraint firstItem="SIc-09-lb0" firstAttribute="leading" secondItem="W87-z9-Lfj" secondAttribute="trailing" id="GTJ-ca-0KO"/>
+                    <constraint firstItem="q38-eq-ScR" firstAttribute="centerY" secondItem="SIc-09-lb0" secondAttribute="centerY" id="DbS-RJ-rxS"/>
+                    <constraint firstItem="q38-eq-ScR" firstAttribute="leading" secondItem="W87-z9-Lfj" secondAttribute="trailing" id="I5w-1P-hAe"/>
                     <constraint firstItem="ERi-2M-ccE" firstAttribute="leading" secondItem="ehh-A8-O8P" secondAttribute="trailing" id="JvL-Ag-kDX"/>
                     <constraint firstAttribute="bottom" secondItem="I1O-3N-hks" secondAttribute="bottom" constant="12" id="NAJ-RT-FAm"/>
                     <constraint firstAttribute="bottom" secondItem="DjW-zn-eI5" secondAttribute="bottom" constant="12" id="Ogc-go-UU2"/>
                     <constraint firstAttribute="bottom" secondItem="MUg-6h-6KQ" secondAttribute="bottom" constant="12" id="PrT-3l-42s"/>
-                    <constraint firstItem="SIc-09-lb0" firstAttribute="leading" secondItem="ehh-A8-O8P" secondAttribute="trailing" id="R7Q-On-ZTH"/>
                     <constraint firstItem="ehh-A8-O8P" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="UVn-lf-HvP"/>
                     <constraint firstItem="I1O-3N-hks" firstAttribute="leading" secondItem="l8F-Fo-5Gz" secondAttribute="trailing" id="aNL-is-MRl"/>
                     <constraint firstItem="ERi-2M-ccE" firstAttribute="centerY" secondItem="W87-z9-Lfj" secondAttribute="centerY" id="c5h-ca-Lhp"/>
@@ -216,11 +231,6 @@
                     <constraint firstAttribute="centerY" secondItem="ehh-A8-O8P" secondAttribute="centerY" id="t4G-Qy-sga"/>
                     <constraint firstItem="l8F-Fo-5Gz" firstAttribute="leading" secondItem="MUg-6h-6KQ" secondAttribute="trailing" id="vpK-Qa-Iuh"/>
                 </constraints>
-                <variation key="default">
-                    <mask key="constraints">
-                        <exclude reference="R7Q-On-ZTH"/>
-                    </mask>
-                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="attachmentWidth" destination="ZQl-7I-b7j" id="8BV-F3-dgB"/>
@@ -233,8 +243,11 @@
                 <outlet property="label3" destination="UH2-lT-4m5" id="Z7u-zr-JOq"/>
                 <outlet property="label4" destination="Oll-aK-RwB" id="cgc-6O-7rH"/>
                 <outlet property="label5" destination="74g-hg-rul" id="gNs-2t-UJ8"/>
+                <outlet property="locationLabel" destination="q38-eq-ScR" id="B3U-W9-W8B"/>
+                <outlet property="locationWidth" destination="sRT-xH-c9B" id="PsR-ka-mx7"/>
                 <outlet property="lockImage" destination="I1O-3N-hks" id="peF-26-g6I"/>
                 <outlet property="lockWidth" destination="DL3-zp-Dz4" id="10T-on-5fH"/>
+                <outlet property="loctionRightSpace" destination="21n-Rk-D5T" id="hWl-Js-NfU"/>
                 <outlet property="replyImage" destination="ERi-2M-ccE" id="yNE-x0-uEc"/>
                 <outlet property="replyWidth" destination="DB7-Cd-pNk" id="9wX-Nr-ls8"/>
                 <outlet property="sender" destination="DjW-zn-eI5" id="GIk-n6-AqB"/>
