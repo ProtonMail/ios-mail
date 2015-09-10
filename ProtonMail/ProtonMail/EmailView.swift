@@ -158,7 +158,7 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         if !emailLoaded {
             return
         }
-        println("\(self.contentWebView.frame)")
+        PMLog.D("\(self.contentWebView.frame)")
         UIView.animateWithDuration(animation ? 0.3 : 0, animations: { () -> Void in
             for subview in self.contentWebView.scrollView.subviews {
                 let sub = subview as! UIView
@@ -258,7 +258,7 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     }
     
     func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView!, atScale scale: CGFloat) {
-        println("\(scrollView.contentSize)")
+        PMLog.D("\(scrollView.contentSize)")
         self.updateContentLayout(false)
     }
 }

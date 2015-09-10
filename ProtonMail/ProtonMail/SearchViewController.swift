@@ -216,7 +216,7 @@ class SearchViewController: ProtonMailViewController {
                     messageDetailViewController.message = message
                 }
             } else {
-                println("No selected row.")
+                PMLog.D("No selected row.")
             }
         }
     }

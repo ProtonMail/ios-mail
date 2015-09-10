@@ -28,7 +28,7 @@ extension String {
         var exp = NSRegularExpression(pattern: regex, options: options, error: &error)
         
         if let error = error {
-            println(error.description)
+            PMLog.D(error.description)
         }
         var matchCount = exp?.numberOfMatchesInString(self, options: nil, range: NSMakeRange(0, count(self)))
         return matchCount > 0

@@ -1,0 +1,71 @@
+//
+//  LabelDisplayView.swift
+//  ProtonMail
+//
+//  Created by Yanfeng Zhang on 9/9/15.
+//  Copyright (c) 2015 ArcTouch. All rights reserved.
+//
+
+import UIKit
+
+@IBDesignable class LabelDisplayView: PMView {
+    
+    @IBOutlet weak var labelText: UILabel!
+    
+    var boardColor : UIColor!
+    
+    override func getNibName() -> String {
+        return "LabelDisplayView"
+    }
+    
+    override func awakeFromNib() {
+        
+    }
+    
+    @IBInspectable var LabelTintColor : UIColor? {
+        get {
+            return boardColor;
+        }
+        set (color) {
+            boardColor = color;
+            self.updateLabel(color)
+        }
+    }
+    
+    @IBInspectable var labelTitle : String? {
+        get {
+            return labelText.text;
+        }
+        set (t) {
+            if let t = t {
+                labelText.text = "  \(t)  ";
+            }
+        }
+    }
+    
+    override func sizeToFit() {
+        labelText.sizeToFit();
+        super.sizeToFit();
+    }
+    
+    override func sizeThatFits(size: CGSize) -> CGSize {
+        var s = super.sizeThatFits(size)
+        return  CGSize(width: s.width + 4, height: s.height)
+    }
+    
+    override func setup() {
+        
+        labelText.layer.borderWidth = 1
+        labelText.layer.cornerRadius = 2
+        labelText.font = UIFont.robotoLight(size: 9)
+    }
+    
+    private func updateLabel(color : UIColor?) {
+        if let color = color {
+
+            labelText.textColor = color
+            labelText.layer.borderColor = color.CGColor
+
+        }
+    }
+}

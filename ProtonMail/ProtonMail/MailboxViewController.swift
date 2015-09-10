@@ -173,7 +173,7 @@ class MailboxViewController: ProtonMailViewController {
                     messageDetailViewController.message = message
                 }
             } else {
-                println("No selected row.")
+                PMLog.D("No selected row.")
             }
         } else if segue.identifier == kSegueToComposeShow {
             self.cancelButtonTapped()
@@ -185,10 +185,10 @@ class MailboxViewController: ProtonMailViewController {
                 }
                 else
                 {
-                    println("No selected row.")
+                    PMLog.D("No selected row.")
                 }
             } else {
-                println("No selected row.")
+                PMLog.D("No selected row.")
             }
         } else if segue.identifier == kSegueToCompose {
             let composeViewController = segue.destinationViewController.viewControllers![0] as! ComposeEmailViewController
@@ -630,10 +630,10 @@ class MailboxViewController: ProtonMailViewController {
                         })
                     }
                 }
-                println("Long press on table view at row \(indexPath.row)")
+                PMLog.D("Long press on table view at row \(indexPath.row)")
             }
         } else {
-            println("Long press on table view, but not on a row.")
+            PMLog.D("Long press on table view, but not on a row.")
         }
     }
     

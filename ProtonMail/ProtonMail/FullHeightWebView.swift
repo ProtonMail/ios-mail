@@ -48,7 +48,7 @@ class FullHeightWebView: UIWebView {
     
     override func updateConstraints() {
         mas_updateConstraints { (make) -> Void in
-            println("height: \(self.scrollView.contentSize.height)")
+            PMLog.D("height: \(self.scrollView.contentSize.height)")
             make.height.equalTo()(self.scrollView.contentSize.height)
             return
         }

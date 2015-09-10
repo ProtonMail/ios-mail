@@ -26,9 +26,13 @@ class MailboxMessageCell: UITableViewCell {
     @IBOutlet weak var attachmentWidth: NSLayoutConstraint!
     @IBOutlet weak var lockWidth: NSLayoutConstraint!
     @IBOutlet weak var expirationWidth: NSLayoutConstraint!
-
     
     
+    @IBOutlet weak var label1: LabelDisplayView!
+    @IBOutlet weak var label2: LabelDisplayView!
+    @IBOutlet weak var label3: LabelDisplayView!
+    @IBOutlet weak var label4: LabelDisplayView!
+    @IBOutlet weak var label5: LabelDisplayView!
     
     // MARK : vars
     private var isChecked : Bool = false
@@ -39,9 +43,43 @@ class MailboxMessageCell: UITableViewCell {
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var lockImage: UIImageView!
     
+    @IBOutlet weak var starImage: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
+        label1.mas_updateConstraints { (make) -> Void in
+            make.removeExisting = true
+            make.right.equalTo()(self.starImage.mas_left)
+            make.bottom.equalTo()(self.starImage.mas_bottom)
+            make.top.equalTo()(self.starImage.mas_top)
+        }
+        
+        label2.mas_updateConstraints { (make) -> Void in
+            make.removeExisting = true
+            make.right.equalTo()(self.label1.mas_left)
+            make.bottom.equalTo()(self.label1.mas_bottom)
+            make.top.equalTo()(self.label1.mas_top)
+        }
+        label3.mas_updateConstraints { (make) -> Void in
+            make.removeExisting = true
+            make.right.equalTo()(self.label2.mas_left)
+            make.bottom.equalTo()(self.label2.mas_bottom)
+            make.top.equalTo()(self.label2.mas_top)
+        }
+        label4.mas_updateConstraints { (make) -> Void in
+            make.removeExisting = true
+            make.right.equalTo()(self.label3.mas_left)
+            make.bottom.equalTo()(self.label3.mas_bottom)
+            make.top.equalTo()(self.label3.mas_top)
+        }
+        label5.mas_updateConstraints { (make) -> Void in
+            make.removeExisting = true
+            make.right.equalTo()(self.label4.mas_left)
+            make.bottom.equalTo()(self.label4.mas_bottom)
+            make.top.equalTo()(self.label4.mas_top)
+        }
+
     }
     
     override func setSelected(selected: Bool, animated: Bool) {
@@ -52,7 +90,7 @@ class MailboxMessageCell: UITableViewCell {
     
     
     // MARK : funcs
-
+    
     func showCheckboxOnLeftSide() {
         self.checkboxWidth.constant = kCheckboxWidth
         //self.titleLeadingConstraint.constant = kTitleMarginLeft
@@ -99,7 +137,7 @@ class MailboxMessageCell: UITableViewCell {
         } else {
             self.sender.text = message.displaySender
         }
-
+        
         var encryptedType = message.encryptType
         if encryptedType == EncryptTypes.Internal {
             self.lockImage.highlighted = false;
@@ -124,68 +162,78 @@ class MailboxMessageCell: UITableViewCell {
         } else {
             self.expirationWidth.constant = 0
         }
-
         
+                let labels = message.labels.allObjects
+        let lc = labels.count - 1;
+        for i in 0 ... 4 {
+            switch i {
+            case 0:
+                var label : Label? = nil
+                if i <= lc {
+                    label = labels[i] as? Label
+                }
+                self.updateLables(label1, label: label)
+            case 1:
+                var label : Label? = nil
+                if i <= lc {
+                    label = labels[i] as? Label
+                }
+                self.updateLables(label2, label: label)
+            case 2:
+                var label : Label? = nil
+                if i <= lc {
+                    label = labels[i] as? Label
+                }
+                self.updateLables(label3, label: label)
+            case 3:
+                var label : Label? = nil
+                if i <= lc {
+                    label = labels[i] as? Label
+                }
+                self.updateLables(label4, label: label)
+            case 4:
+                var label : Label? = nil
+                if i <= lc {
+                    label = labels[i] as? Label
+                }
+                self.updateLables(label5, label: label)
+            default:
+                break;
+            }
+        }
         
-//        let labels = message.labels.allObjects
-//        let lc = labels.count - 1;
-//        for i in 0 ... 4 {
-//            switch i {
-//            case 0:
-//                var label : Label? = nil
-//                if i <= lc {
-//                    label = labels[i] as? Label
-//                }
-//                self.updateLables(labelView, labelConstraint: label1, label: label)
-//            case 1:
-//                var label : Label? = nil
-//                if i <= lc {
-//                    label = labels[i] as? Label
-//                }
-//                self.updateLables(labelView2, labelConstraint: label2, label: label)
-//            case 2:
-//                var label : Label? = nil
-//                if i <= lc {
-//                    label = labels[i] as? Label
-//                }
-//                self.updateLables(labelView3, labelConstraint: label3, label: label)
-//            case 3:
-//                var label : Label? = nil
-//                if i <= lc {
-//                    label = labels[i] as? Label
-//                }
-//                self.updateLables(labelView4, labelConstraint: label4, label: label)
-//            case 4:
-//                var label : Label? = nil
-//                if i <= lc {
-//                    label = labels[i] as? Label
-//                }
-//                self.updateLables(labelView5, labelConstraint: label5, label: label)
-//            default:
-//                break;
-//            }
-//        }
-//        
         if (message.isRead) {
             changeStyleToReadDesign()
         } else {
             changeStyleToUnreadDesign()
         }
-//
-//        if  message.isRepliedAll {
-//            showReplyAll()
-//        }
-//        else if message.isReplied {
-//            showReply()
-//        }
-//        else {
-//            hideReply()
-//        }
-//        
+        //
+        //        if  message.isRepliedAll {
+        //            showReplyAll()
+        //        }
+        //        else if message.isReplied {
+        //            showReply()
+        //        }
+        //        else {
+        //            hideReply()
+        //        }
+        //
         self.time.text = message.time != nil ? " \(NSDate.stringForDisplayFromDate(message.time))" : ""
         timeWidth.constant = self.time.sizeThatFits(CGSizeZero).width
     }
-    
+    private func updateLables (labelView : LabelDisplayView, label:Label?) {
+        if let label = label {
+            if label.name.isEmpty || label.color.isEmpty {
+                labelView.hidden = true;
+            } else {
+                labelView.hidden = false;
+                labelView.labelTitle = label.name
+                labelView.LabelTintColor = UIColor(hexString: label.color, alpha: 1.0)
+            }
+        } else {
+            labelView.hidden = true;
+        }
+    }
     
     
     

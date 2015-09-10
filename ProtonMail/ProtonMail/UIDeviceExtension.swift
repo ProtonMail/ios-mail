@@ -50,8 +50,8 @@ public extension UIDevice {
     
     func isLargeScreen() -> Bool{
         let screenBounds = UIScreen.mainScreen().bounds;
-        println("height: \(screenBounds.height)")
-        println("model: \(self.model)")
+        PMLog.D("height: \(screenBounds.height)")
+        PMLog.D("model: \(self.model)")
         if(screenBounds.height > 568)
         {
             return true;

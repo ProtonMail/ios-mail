@@ -17,9 +17,9 @@ class MessageDetailViewController: ProtonMailViewController {
     var message: Message! {
         didSet {
             message.fetchDetailIfNeeded() { _, _, msg, error in
-                println(self.message.isDetailDownloaded)
+                PMLog.D(self.message.isDetailDownloaded)
                 //println(self.message.body)
-                println(self.message.ccList)
+                PMLog.D(self.message.ccList)
                 NSLog("\(__FUNCTION__) error: \(self.message)")
                 if error != nil {
                     NSLog("\(__FUNCTION__) error: \(error)")
@@ -52,7 +52,7 @@ class MessageDetailViewController: ProtonMailViewController {
     
     private func setupFetchedResultsController(msg_id:String) {
         
-        println(msg_id);
+        PMLog.D(msg_id);
         self.fetchedMessageController = sharedMessageDataService.fetchedMessageControllerForID(msg_id)
 
         

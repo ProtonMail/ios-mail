@@ -39,7 +39,7 @@ extension APIService {
                         if let errorres = self.isErrorResponse(response) {
                             completion(nil, errorres)
                         }else {
-                            println("\(response)")
+                            PMLog.D("\(response)")
                             let userInfo = UserInfo(
                                 response: response["User"] as! Dictionary<String, AnyObject>,
                                 displayNameResponseKey: "DisplayName",

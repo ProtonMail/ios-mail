@@ -220,7 +220,7 @@ extension ContactsViewController: UITableViewDelegate {
             let editContactViewController: EditContactViewController = segue.destinationViewController.viewControllers![0] as! EditContactViewController
             editContactViewController.contact = self.selectedContact
             
-            println("tableView.indexPathForSelectedRow() = \(tableView.indexPathForSelectedRow())")
+            PMLog.D("tableView.indexPathForSelectedRow() = \(tableView.indexPathForSelectedRow())")
         }
         
         if (segue.identifier == "toCompose") {

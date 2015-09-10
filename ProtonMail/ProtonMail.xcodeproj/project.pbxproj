@@ -174,6 +174,11 @@
 		759339C01ABB45C700535F1B /* ViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339BF1ABB45C700535F1B /* ViewModelFactory.swift */; };
 		759339C41ABB5EA900535F1B /* SettingDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */; };
 		75978BDB1B28F63100D07501 /* editor.css in Resources */ = {isa = PBXBuildFile; fileRef = 75978BDA1B28F63100D07501 /* editor.css */; };
+		759BBDC01BA0C55E002608B5 /* LabelDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759BBDBF1BA0C55E002608B5 /* LabelDisplayView.swift */; };
+		759BBDC21BA0C586002608B5 /* LabelDisplayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 759BBDC11BA0C586002608B5 /* LabelDisplayView.xib */; };
+		759BBDC41BA0D18A002608B5 /* MultiLabelDisplayVIew.xib in Resources */ = {isa = PBXBuildFile; fileRef = 759BBDC31BA0D18A002608B5 /* MultiLabelDisplayVIew.xib */; };
+		759BBDC61BA0D1C8002608B5 /* MultiLabelDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759BBDC51BA0D1C8002608B5 /* MultiLabelDisplayView.swift */; };
+		759BBDC81BA0D1E3002608B5 /* PMView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759BBDC71BA0D1E3002608B5 /* PMView.swift */; };
 		75A4321B1B1D040A00D046B3 /* QueueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A4321A1B1D040A00D046B3 /* QueueManager.swift */; };
 		75A4321D1B1D042C00D046B3 /* QueueConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A4321C1B1D042C00D046B3 /* QueueConstant.swift */; };
 		75B047B31AE708CC005C6D1A /* ComposeEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B047B21AE708CC005C6D1A /* ComposeEmailViewController.swift */; };
@@ -391,6 +396,11 @@
 		759339BF1ABB45C700535F1B /* ViewModelFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelFactory.swift; sourceTree = "<group>"; };
 		759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDetailsViewModel.swift; sourceTree = "<group>"; };
 		75978BDA1B28F63100D07501 /* editor.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = editor.css; sourceTree = "<group>"; };
+		759BBDBF1BA0C55E002608B5 /* LabelDisplayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelDisplayView.swift; sourceTree = "<group>"; };
+		759BBDC11BA0C586002608B5 /* LabelDisplayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LabelDisplayView.xib; sourceTree = "<group>"; };
+		759BBDC31BA0D18A002608B5 /* MultiLabelDisplayVIew.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MultiLabelDisplayVIew.xib; sourceTree = "<group>"; };
+		759BBDC51BA0D1C8002608B5 /* MultiLabelDisplayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiLabelDisplayView.swift; sourceTree = "<group>"; };
+		759BBDC71BA0D1E3002608B5 /* PMView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMView.swift; sourceTree = "<group>"; };
 		75A4321A1B1D040A00D046B3 /* QueueManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueManager.swift; sourceTree = "<group>"; };
 		75A4321C1B1D042C00D046B3 /* QueueConstant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueConstant.swift; sourceTree = "<group>"; };
 		75B047B21AE708CC005C6D1A /* ComposeEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeEmailViewController.swift; sourceTree = "<group>"; };
@@ -677,6 +687,11 @@
 			children = (
 				076758751AA0E86400F9AC9C /* LoadingView.xib */,
 				076758771AA0EB6900F9AC9C /* LoadingView.swift */,
+				759BBDBF1BA0C55E002608B5 /* LabelDisplayView.swift */,
+				759BBDC11BA0C586002608B5 /* LabelDisplayView.xib */,
+				759BBDC51BA0D1C8002608B5 /* MultiLabelDisplayView.swift */,
+				759BBDC31BA0D18A002608B5 /* MultiLabelDisplayVIew.xib */,
+				759BBDC71BA0D1E3002608B5 /* PMView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1053,6 +1068,7 @@
 				07009EFF1A659AD400129B07 /* SignIn.storyboard in Resources */,
 				7017047A1A794C9F000A90D2 /* Roboto-LightItalic.ttf in Resources */,
 				75230C251B9A3A3600EC2AC2 /* MailboxMessageCell.xib in Resources */,
+				759BBDC21BA0C586002608B5 /* LabelDisplayView.xib in Resources */,
 				7061A3F51A6E8C9D0006D36C /* Menu.storyboard in Resources */,
 				075E3DF91A5F4ECF00E001A7 /* LaunchScreen.xib in Resources */,
 				07009F131A684C1900129B07 /* Roboto-Light.ttf in Resources */,
@@ -1061,6 +1077,7 @@
 				07009F141A684C1900129B07 /* Roboto-Thin.ttf in Resources */,
 				7582E2F41B015DF100FEA38B /* MessageDetailBottomView.xib in Resources */,
 				75230C271B9A430F00EC2AC2 /* TempXIB.xib in Resources */,
+				759BBDC41BA0D18A002608B5 /* MultiLabelDisplayVIew.xib in Resources */,
 				07CC996A1A705BA4000FD6F8 /* Settings.bundle in Resources */,
 				076758761AA0E86400F9AC9C /* LoadingView.xib in Resources */,
 				7526AC8E1B6C4B3700E1967E /* backup.css in Resources */,
@@ -1200,6 +1217,7 @@
 				07655BBD1AB1036200CD3883 /* BugDataService.swift in Sources */,
 				70FC90DA1A9BC11F00498B42 /* StringExtension.swift in Sources */,
 				07CC996C1A717ABD000FD6F8 /* UIStoryboardExtension.swift in Sources */,
+				759BBDC81BA0D1E3002608B5 /* PMView.swift in Sources */,
 				07CB23561AB0F24700699068 /* ReportBugsViewController.swift in Sources */,
 				7510AE761AB8989E00EF3C41 /* DomainsTableViewCell.swift in Sources */,
 				07A0E1AD1A9D3C64005FD04B /* UserInfo.swift in Sources */,
@@ -1225,6 +1243,7 @@
 				75A4321B1B1D040A00D046B3 /* QueueManager.swift in Sources */,
 				7061A3F31A6E8C6A0006D36C /* MenuViewController.swift in Sources */,
 				70945E6E1A813550002B6837 /* UIButton+ProtonMail.swift in Sources */,
+				759BBDC01BA0C55E002608B5 /* LabelDisplayView.swift in Sources */,
 				07B797C51A6EE5FF00244532 /* AuthCredential.swift in Sources */,
 				701DDE911AA64DEB0038149C /* MBContactCollectionViewContactCell.m in Sources */,
 				75B1794C1B376D2E006044D4 /* AttachmentHelper.swift in Sources */,
@@ -1280,6 +1299,7 @@
 				0713239A1A7C02AB0043DB41 /* Message.swift in Sources */,
 				756489961B7E94BB007EA207 /* UIImageExtension.swift in Sources */,
 				0767587A1AA126E400F9AC9C /* StorageLimit.swift in Sources */,
+				759BBDC61BA0D1C8002608B5 /* MultiLabelDisplayView.swift in Sources */,
 				072AB6A11A8EE50000AF45D6 /* ProtonMail-Bridging-Header.cpp in Sources */,
 				071210E61AA91B4000B834F2 /* APIService+DeviceExtension.swift in Sources */,
 				07B797C01A6EDFF400244532 /* APIService.swift in Sources */,

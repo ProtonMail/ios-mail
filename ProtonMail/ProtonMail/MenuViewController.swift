@@ -304,7 +304,7 @@ extension MenuViewController: NSFetchedResultsControllerDelegate {
             case .Update:
                 if let indexPath = indexPath {
                     let index = NSIndexPath(forRow: indexPath.row, inSection: 2)
-                    println(index)
+                    PMLog.D(index)
                     if let cell = tableView.cellForRowAtIndexPath(index) as? MenuLabelViewCell {
                         if let label = fetchedLabels?.objectAtIndexPath(indexPath) as? Label {
                             cell.configCell(label);

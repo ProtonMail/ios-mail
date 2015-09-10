@@ -285,7 +285,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
             self.actualEncryptionStep = EncryptionStep.DefinePassword
             self.composeView.showEncryptionDone()
         default:
-            println("No step defined.")
+            PMLog.D("No step defined.")
         }
     }
     

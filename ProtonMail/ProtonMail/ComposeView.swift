@@ -307,9 +307,9 @@ class ComposeView: UIViewController {
         UIView.animateWithDuration(animation ? self.kAnimationDuration : 0, delay:0, options: nil, animations: {
             //143
             self.updateViewSize()
-            println("\(self.buttonView.frame)")
-            println("\(self.expirationView.frame)")
-            println("\(self.passwordView.frame)")
+            PMLog.D("\(self.buttonView.frame)")
+            PMLog.D("\(self.expirationView.frame)")
+            PMLog.D("\(self.passwordView.frame)")
             let size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height + self.pickerHeight)
             self.delegate?.ComposeViewDidSizeChanged(size)
             }, completion: nil)

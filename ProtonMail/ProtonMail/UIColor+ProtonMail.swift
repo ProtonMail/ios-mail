@@ -113,12 +113,12 @@ extension UIColor
                 }
                 else
                 {
-                    print("invalid hex code string, length should be 7 or 9")
+                    PMLog.D("invalid hex code string, length should be 7 or 9")
                 }
             }
             else
             {
-                println("scan hex error")
+                PMLog.D("scan hex error")
             }
         }
         else

@@ -319,7 +319,7 @@ extension ComposeViewController : ComposeViewDelegate {
             self.actualEncryptionStep = EncryptionStep.DefinePassword
             self.composeView.showEncryptionDone()
         default:
-            println("No step defined.")
+            PMLog.D("No step defined.")
         }
     }
     
@@ -490,7 +490,7 @@ extension ComposeViewController: UIPickerViewDelegate {
 extension ComposeViewController : UIScrollViewDelegate {
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         self.draggin = true;
-        println("drig")
+        PMLog.D("drig")
     }
     
     func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {

@@ -94,7 +94,7 @@ class ChangePasswordViewController: UIViewController {
     func keyboardWillShowOne(sender: NSNotification) {
         let info: NSDictionary = sender.userInfo!
         if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
-            println(keyboardSize)
+            PMLog.D("\(keyboardSize)")
             keyboardHeight = keyboardSize.height;
             updateView();
         }
