@@ -33,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CLSReport : NSObject <CLSCrashReport>
 
 - (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
 
 /**
  * Returns the session identifier for the report.
