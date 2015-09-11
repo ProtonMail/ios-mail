@@ -47,7 +47,7 @@ class EmailHeaderView: UIView {
     private var emailDetailView: UIView!
     
     private var emailDetailDateLabel: UILabel!
-    private var emailDetailDateContentLabel: UILabel!
+
     private var emailFavoriteButton: UIButton!
     private var emailIsEncryptedImageView: UIImageView!
     private var emailHasAttachmentsImageView: UIImageView!
@@ -178,11 +178,7 @@ class EmailHeaderView: UIView {
             return  (self.toList?.count ?? 0) > 0 ? true : false
         }
     }
-    private var ccText : String! {
-        get {
-            return "Cc: \(self.ccList)"
-        }
-    }
+    
     private var showCc : Bool {
         get {
             return (self.ccList?.count ?? 0) > 0 ? true : false
@@ -193,12 +189,7 @@ class EmailHeaderView: UIView {
             return (self.bccList?.count ?? 0) > 0 ? true : false
         }
     }
-    private var bccText : String! {
-        get {
-            return "Bcc: \(self.bccList)"
-        }
-    }
-    
+   
     required init() {
         super.init(frame: CGRectZero)
         self.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
@@ -248,6 +239,7 @@ class EmailHeaderView: UIView {
         self.emailFavoriteButton.selected = self.starred;
         
         self.emailShortTime.text = "at \(self.date.stringWithFormat(self.kHourMinuteFormat))".lowercaseString
+        
         let tm = self.date.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? "";
         self.emailDetailDateLabel.text = "Date: \(tm)"
         
@@ -365,19 +357,19 @@ class EmailHeaderView: UIView {
         self.emailHeaderView.addSubview(emailCcTable)
 
         self.emailShortTime = UILabel()
-        self.emailShortTime.font = UIFont.robotoMediumItalic(size: UIFont.Size.h6)
+        self.emailShortTime.font = UIFont.robotoMedium(size: UIFont.Size.h6)
         self.emailShortTime.numberOfLines = 1
-        //self.emailShortTime.text = "at \(self.date.stringWithFormat(self.kHourMinuteFormat))".lowercaseString
-        self.emailShortTime.textColor = UIColor(RRGGBB: UInt(0x838897)) //UIColor.ProtonMail.Gray_999DA1
+        self.emailShortTime.text = "at \(self.date.stringWithFormat(self.kHourMinuteFormat))".lowercaseString
+        self.emailShortTime.textColor = UIColor(RRGGBB: UInt(0x838897))
         self.emailShortTime.sizeToFit()
         self.emailHeaderView.addSubview(emailShortTime)
         
         self.emailDetailButton = UIButton()
         self.emailDetailButton.addTarget(self, action: "detailsButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         self.emailDetailButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
-        self.emailDetailButton.titleLabel?.font = UIFont.robotoRegular(size: UIFont.Size.h6)
+        self.emailDetailButton.titleLabel?.font = UIFont.robotoMedium(size: UIFont.Size.h6)
         self.emailDetailButton.setTitle(NSLocalizedString("Details"), forState: UIControlState.Normal)
-        self.emailDetailButton.setTitleColor(UIColor(RRGGBB: UInt(0x9397CD)), forState: UIControlState.Normal) //UIColor.ProtonMail.Blue_85B1DE
+        self.emailDetailButton.setTitleColor(UIColor(RRGGBB: UInt(0x9397CD)), forState: UIControlState.Normal)
         self.emailDetailButton.sizeToFit()
         self.emailHeaderView.addSubview(emailDetailButton)
         
@@ -468,7 +460,7 @@ class EmailHeaderView: UIView {
     
     private func configureEmailDetailDateLabel() {
         self.emailDetailDateLabel = UILabel()
-        self.emailDetailDateLabel.font = UIFont.robotoLight(size: UIFont.Size.h6)
+        self.emailDetailDateLabel.font = UIFont.robotoMedium(size: UIFont.Size.h6)
         self.emailDetailDateLabel.numberOfLines = 1
         if let messageTime = self.date {
             let tm = messageTime.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? "";
@@ -479,14 +471,6 @@ class EmailHeaderView: UIView {
         self.emailDetailDateLabel.textColor = UIColor(RRGGBB: UInt(0x838897)) //UIColor.ProtonMail.Gray_999DA1
         self.emailDetailDateLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailDateLabel)
-        
-        self.emailDetailDateContentLabel = UILabel()
-        self.emailDetailDateContentLabel.font = UIFont.robotoRegular(size: UIFont.Size.h6)
-        self.emailDetailDateContentLabel.numberOfLines = 1
-        self.emailDetailDateContentLabel.text = self.date.stringWithFormat(kEmailTimeLongFormat)
-        self.emailDetailDateContentLabel.textColor = UIColor(RRGGBB: UInt(0x838897)) //UIColor.ProtonMail.Gray_383A3B
-        self.emailDetailDateContentLabel.sizeToFit()
-        self.emailDetailView.addSubview(emailDetailDateContentLabel)
     }
     
     private func makeHeaderConstraints() {
@@ -560,6 +544,7 @@ class EmailHeaderView: UIView {
             make.height.equalTo()(self.emailCc)
         }
         
+        emailShortTime.sizeToFit()
         emailShortTime.mas_makeConstraints { (make) -> Void in
             make.left.equalTo()(self.emailHeaderView)
             make.width.equalTo()(self.emailShortTime.frame.size.width)
@@ -586,13 +571,6 @@ class EmailHeaderView: UIView {
             make.top.equalTo()(self.emailDetailView)
             make.width.equalTo()(self.emailDetailView)
             make.height.equalTo()(self.emailDetailView)
-        }
-        
-        emailDetailDateContentLabel.mas_makeConstraints { (make) -> Void in
-            make.centerY.equalTo()(self.emailDetailDateLabel)
-            make.left.equalTo()(self.emailDetailDateLabel.mas_right)
-            make.right.equalTo()(self.emailDetailView)
-            make.height.equalTo()(self.emailDetailDateLabel.frame.size.height)
         }
         
         emailAttachmentsAmount.mas_makeConstraints { (make) -> Void in
@@ -649,7 +627,6 @@ class EmailHeaderView: UIView {
     private let kAnimationOption: UIViewAnimationOptions = .TransitionCrossDissolve
     private func updateDetailsView(needsShow : Bool) {
         if (needsShow) {
-            
             // update views value
             UIView.transitionWithView(self.emailFrom, duration: 0.3, options: kAnimationOption, animations: { () -> Void in
                 self.emailFrom.attributedText = self.fromShortAttr
@@ -689,7 +666,6 @@ class EmailHeaderView: UIView {
                 make.top.equalTo()(self.emailFromTable.mas_bottom).with().offset()(toOffset)
                 make.height.equalTo()(eth)
             }
-            
             
             let ccOffset = self.showTo ? kEmailRecipientsViewMarginTop : 0
             let ccHeight = self.showTo ? 16 : 0
@@ -732,13 +708,6 @@ class EmailHeaderView: UIView {
                 make.top.equalTo()(self.emailDetailView)
                 make.width.equalTo()(self.emailDetailView)
                 make.height.equalTo()(self.emailDetailView)
-            }
-            emailDetailDateContentLabel.mas_updateConstraints { (make) -> Void in
-                make.removeExisting = true
-                make.centerY.equalTo()(self.emailDetailDateLabel)
-                make.left.equalTo()(self.emailDetailDateLabel.mas_right)
-                make.right.equalTo()(self.emailDetailView)
-                make.height.equalTo()(self.emailDetailDateLabel.frame.size.height)
             }
             
             self.emailDetailView.mas_updateConstraints({ (make) -> Void in
@@ -783,8 +752,8 @@ class EmailHeaderView: UIView {
                 make.top.equalTo()(self.emailTo)
                 make.height.equalTo()(self.emailTo)
             }
-            
-                        emailCcTable.mas_makeConstraints { (make) -> Void in
+
+            emailCcTable.mas_makeConstraints { (make) -> Void in
                 make.removeExisting = true
                 make.left.equalTo()(36)
                 make.right.equalTo()(self.emailTitle)
