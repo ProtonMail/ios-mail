@@ -67,6 +67,7 @@ class MessageViewController: ProtonMailViewController {
     }
     
     private func updateHeader() {
+        var a = self.message.labels.allObjects
         self.emailView?.updateHeaderData(self.message.subject,
             sender: ContactVO(id: "", name: self.message.senderName, email: self.message.sender),
             to: self.message.recipientList.toContacts(),
@@ -74,7 +75,8 @@ class MessageViewController: ProtonMailViewController {
             bcc: self.message.bccList.toContacts(),
             isStarred: self.message.isStarred,
             time: self.message.time,
-            encType: self.message.encryptType)
+            encType: self.message.encryptType,
+            labels : self.message.labels.allObjects as? [Label])
     }
     
     
