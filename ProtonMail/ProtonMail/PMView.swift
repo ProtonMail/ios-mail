@@ -37,7 +37,8 @@ class PMView: UIView {
         pmView.frame = self.bounds
         pmView.autoresizingMask = .FlexibleHeight | .FlexibleWidth
         self.addSubview(pmView)
-        
+        pmView.clipsToBounds = true;
+        self.clipsToBounds = true;
         self.setup()
     }
     

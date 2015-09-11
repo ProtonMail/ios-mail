@@ -23,13 +23,19 @@ class EmailHeaderView: UIView {
     
     var viewDelegate: EmailHeaderViewProtocol?
     var actionsDelegate: EmailHeaderActionsProtocol?
-  
+    
     
     /// Header Content View
     private var emailHeaderView: UIView!
     
     private var emailTitle: UILabel!
-    private var emailSender: UILabel!
+    
+    private var emailFrom: UILabel!    //from or sender
+    private var emailFromTable: RecipientView!
+    
+    private var emailTo: UILabel!    //from or sender
+    
+    
     private var emailTime: UILabel!
     private var emailDetailButton: UIButton!
     private var emailDetailView: UIView!
@@ -74,7 +80,7 @@ class EmailHeaderView: UIView {
     private let kEmailBodyTextViewMarginLeft: CGFloat = 0//-16.0
     private let kEmailBodyTextViewMarginRight: CGFloat = 0//-16.0
     private let kEmailBodyTextViewMarginTop: CGFloat = 16.0
-    private let kSeparatorBetweenHeaderAndBodyMarginTop: CGFloat = 16.0    
+    private let kSeparatorBetweenHeaderAndBodyMarginTop: CGFloat = 16.0
     private let kHourMinuteFormat = "h:mma"
     
     
@@ -97,18 +103,40 @@ class EmailHeaderView: UIView {
     private var bccList : String!
     private var attachmentCount : Int!
     private var attachments : [Attachment] = []
-
+    
     private var date : NSDate!
     private var starred : Bool!
     
-    private var senderText : String! {
+    private var fromSinglelineAttr : NSMutableAttributedString! {
         get {
-            return "From: \(self.sender)"
+            let from = "From: \(self.sender)"
+            let formRange = NSRange (location: 0, length: 6)
+            let attributedString = NSMutableAttributedString(string: from, attributes: [NSFontAttributeName : UIFont.robotoMedium(size: 12), NSForegroundColorAttributeName : UIColor(hexColorCode: "#838897")])
+            attributedString.setAttributes([NSFontAttributeName : UIFont.robotoMedium(size: 12), NSForegroundColorAttributeName : UIColor(hexColorCode: "#C0C4CE")], range: formRange)
+            
+            return attributedString
         }
     }
-    private var toText : String! {
+    
+    private var fromShortAttr : NSMutableAttributedString! {
         get {
-            return "To: \(self.toList)"
+            let from = "From: "
+            let formRange = NSRange (location: 0, length: 6)
+            let attributedString = NSMutableAttributedString(string: from, attributes: [NSFontAttributeName : UIFont.robotoMedium(size: 12), NSForegroundColorAttributeName : UIColor(hexColorCode: "#838897")])
+            attributedString.setAttributes([NSFontAttributeName : UIFont.robotoMedium(size: 12), NSForegroundColorAttributeName : UIColor(hexColorCode: "#C0C4CE")], range: formRange)
+            
+            return attributedString
+        }
+    }
+    
+    private var toSinglelineAttr : NSMutableAttributedString! {
+        get {
+            let to = "To: \(self.sender)"
+            let formRange = NSRange (location: 0, length: 4)
+            let attributedString = NSMutableAttributedString(string: to, attributes: [NSFontAttributeName : UIFont.robotoMedium(size: 12), NSForegroundColorAttributeName : UIColor(hexColorCode: "#838897")])
+            attributedString.setAttributes([NSFontAttributeName : UIFont.robotoMedium(size: 12), NSForegroundColorAttributeName : UIColor(hexColorCode: "#C0C4CE")], range: formRange)
+            
+            return attributedString
         }
     }
     private var showTo : Bool {
@@ -140,7 +168,7 @@ class EmailHeaderView: UIView {
     required init() {
         super.init(frame: CGRectZero)
         self.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
-
+        
         // init data
         self.title = ""
         self.toList = ""
@@ -161,7 +189,6 @@ class EmailHeaderView: UIView {
     
     // MARK : Private functions
     func updateHeaderData (title : String, sender : String, to : String, cc : String, bcc : String, isStarred : Bool, time : NSDate?, encType : EncryptTypes) {
-        
         self.title = title
         self.sender = sender
         self.toList = to
@@ -176,8 +203,10 @@ class EmailHeaderView: UIView {
         self.starred = isStarred
         
         self.emailTitle.text = title
-        self.emailSender.text = senderText
-        self.emailDetailToLabel.text = toText
+        
+        self.emailFrom.attributedText = fromSinglelineAttr
+        self.emailTo.attributedText = toSinglelineAttr
+        
         self.emailDetailCCLabel.text = ccText
         self.emailDetailBCCLabel.text = bccText
         self.emailFavoriteButton.selected = self.starred;
@@ -203,7 +232,7 @@ class EmailHeaderView: UIView {
             self.emailAttachmentsAmount.hidden = true
             self.emailHasAttachmentsImageView.hidden = true
         }
-
+        
     }
     
     func updateHeaderLayout () {
@@ -213,7 +242,7 @@ class EmailHeaderView: UIView {
     func attachmentForIndexPath(indexPath: NSIndexPath) -> Attachment {
         return self.attachments[indexPath.row]
     }
-
+    
     
     // MARK: - Subviews
     func addSubviews() {
@@ -273,13 +302,20 @@ class EmailHeaderView: UIView {
         self.emailDetailView.clipsToBounds = true
         self.emailHeaderView.addSubview(emailDetailView)
         
-        self.emailSender = UILabel()
-        self.emailSender.font = UIFont.robotoRegular(size: UIFont.Size.h6)
-        self.emailSender.numberOfLines = 1
-        self.emailSender.text = senderText
-        self.emailSender.textColor = UIColor(RRGGBB: UInt(0x838897)) // UIColor.ProtonMail.Gray_999DA1
-        self.emailHeaderView.addSubview(emailSender)
-
+        self.emailFrom = UILabel()
+        self.emailFrom.numberOfLines = 1
+        self.emailFrom.attributedText = fromSinglelineAttr
+        self.emailHeaderView.addSubview(emailFrom)
+        
+        self.emailFromTable = RecipientView()
+        self.emailFromTable.alpha = 0.0;
+        self.emailHeaderView.addSubview(emailFromTable)
+        
+        self.emailTo = UILabel()
+        self.emailTo.numberOfLines = 1
+        self.emailTo.attributedText = toSinglelineAttr
+        self.emailHeaderView.addSubview(emailTo)
+        
         self.emailTime = UILabel()
         self.emailTime.font = UIFont.robotoMediumItalic(size: UIFont.Size.h6)
         self.emailTime.numberOfLines = 1
@@ -301,7 +337,7 @@ class EmailHeaderView: UIView {
         self.configureEmailDetailCCLabel()
         self.configureEmailDetailBCCLabel()
         self.configureEmailDetailDateLabel()
-
+        
         self.emailIsEncryptedImageView = UIImageView(image: UIImage(named: "mail_lock"))
         self.emailIsEncryptedImageView.highlightedImage = UIImage(named: "mail_lock_dark")
         self.emailIsEncryptedImageView.contentMode = UIViewContentMode.Center
@@ -391,16 +427,12 @@ class EmailHeaderView: UIView {
         self.emailDetailToLabel.font = UIFont.robotoLight(size: UIFont.Size.h6)
         self.emailDetailToLabel.lineBreakMode = NSLineBreakMode.ByCharWrapping
         self.emailDetailToLabel.numberOfLines = 0;
-        self.emailDetailToLabel.text = self.toText
-        self.emailDetailToLabel.textColor = UIColor(RRGGBB: UInt(0x838897)) //UIColor.ProtonMail.Gray_999DA1
         self.emailDetailToLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailToLabel)
         
         self.emailDetailToContentLabel = UILabel()
         self.emailDetailToContentLabel.font = UIFont.robotoRegular(size: UIFont.Size.h6)
         self.emailDetailToContentLabel.numberOfLines = 1
-        self.emailDetailToContentLabel.text = self.toText
-        self.emailDetailToContentLabel.textColor = UIColor(RRGGBB: UInt(0x838897)) //UIColor.ProtonMail.Blue_85B1DE
         self.emailDetailToContentLabel.sizeToFit()
         self.emailDetailView.addSubview(emailDetailToContentLabel)
     }
@@ -496,17 +528,30 @@ class EmailHeaderView: UIView {
             make.height.equalTo()(0)
         }
         
-        emailSender.mas_makeConstraints { (make) -> Void in
+        emailFrom.mas_makeConstraints { (make) -> Void in
             make.left.equalTo()(self.emailHeaderView)
             make.right.equalTo()(self.emailTitle)
             make.top.equalTo()(self.emailTitle.mas_bottom).with().offset()(self.kEmailRecipientsViewMarginTop)
+        }
+        
+        emailFromTable.mas_makeConstraints { (make) -> Void in
+            make.left.equalTo()(36)
+            make.right.equalTo()(self.emailTitle)
+            make.top.equalTo()(self.emailTitle.mas_bottom).with().offset()(self.kEmailRecipientsViewMarginTop)
+            make.height.equalTo()(self.emailFrom)
+        }
+        
+        emailTo.mas_makeConstraints { (make) -> Void in
+            make.left.equalTo()(self.emailHeaderView)
+            make.right.equalTo()(self.emailTitle)
+            make.top.equalTo()(self.emailFrom.mas_bottom).with().offset()(self.kEmailRecipientsViewMarginTop)
         }
         
         emailTime.mas_makeConstraints { (make) -> Void in
             make.left.equalTo()(self.emailHeaderView)
             make.width.equalTo()(self.emailTime.frame.size.width)
             make.height.equalTo()(self.emailTime.frame.size.height)
-            make.top.equalTo()(self.emailSender.mas_bottom).with().offset()(self.kEmailTimeViewMarginTop)
+            make.top.equalTo()(self.emailTo.mas_bottom).with().offset()(self.kEmailTimeViewMarginTop)
         }
         
         emailDetailButton.mas_makeConstraints { (make) -> Void in
@@ -515,7 +560,7 @@ class EmailHeaderView: UIView {
             make.top.equalTo()(self.emailTime)
             make.width.equalTo()(self.emailDetailButton)
         }
-
+        
         emailDetailToLabel.mas_makeConstraints { (make) -> Void in
             make.top.equalTo()(self.emailDetailView)
             make.left.equalTo()(self.emailDetailView)
@@ -633,15 +678,39 @@ class EmailHeaderView: UIView {
     private let kAnimationOption: UIViewAnimationOptions = .TransitionCrossDissolve
     private func updateDetailsView(needsShow : Bool) {
         if (needsShow) {
-            UIView.transitionWithView(self.emailSender, duration: 0.3, options: kAnimationOption, animations: { () -> Void in
-                self.emailSender.text = self.senderText
-                self.emailDetailToLabel.text = self.toText
+            
+            // update views value
+            UIView.transitionWithView(self.emailFrom, duration: 0.3, options: kAnimationOption, animations: { () -> Void in
+                self.emailFrom.attributedText = self.fromShortAttr
+                self.emailTo.attributedText = self.toSinglelineAttr
+                self.emailFromTable.alpha = 1.0;
+                
+                //self.emailDetailToLabel.text = self.toText
                 self.emailDetailCCLabel.text = self.ccText
                 self.emailDetailBCCLabel.text = self.bccText
                 self.emailDetailToLabel.sizeToFit()
                 self.emailDetailCCLabel.sizeToFit()
                 self.emailDetailBCCLabel.sizeToFit()
+                
+               var s = self.emailFrom.sizeThatFits(CGSizeZero)
+                
                 }, completion: nil)
+            
+            let eth = emailFromTable.getContentSize().height;
+            emailFromTable.mas_updateConstraints { (make) -> Void in
+                make.removeExisting = true
+                make.left.equalTo()(36)
+                make.right.equalTo()(self.emailTitle)
+                make.top.equalTo()(self.emailTitle.mas_bottom).with().offset()(self.kEmailRecipientsViewMarginTop)
+                make.height.equalTo()(eth)
+            }
+            
+            emailTo.mas_updateConstraints { (make) -> Void in
+                make.removeExisting = true
+                make.left.equalTo()(self.emailHeaderView)
+                make.right.equalTo()(self.emailTitle)
+                make.top.equalTo()(self.emailFromTable.mas_bottom).with().offset()(self.kEmailRecipientsViewMarginTop)
+            }
             
             self.emailDetailButton.setTitle(NSLocalizedString("Hide Details"), forState: UIControlState.Normal)
             self.emailDetailButton.mas_updateConstraints({ (make) -> Void in
@@ -714,13 +783,13 @@ class EmailHeaderView: UIView {
                 make.right.equalTo()(self.emailDetailView)
                 make.height.equalTo()(self.emailDetailDateLabel.frame.size.height)
             }
-
+            
             self.emailTime.mas_updateConstraints({ (make) -> Void in
                 make.removeExisting = true
                 make.left.equalTo()(self.emailHeaderView)
                 make.width.equalTo()(0)
                 make.height.equalTo()(self.emailTime.frame.size.height)
-                make.top.equalTo()(self.emailSender.mas_bottom).with().offset()(self.kEmailTimeViewMarginTop)
+                make.top.equalTo()(self.emailTo.mas_bottom).with().offset()(self.kEmailTimeViewMarginTop)
             })
             
             self.emailDetailView.mas_updateConstraints({ (make) -> Void in
@@ -731,9 +800,22 @@ class EmailHeaderView: UIView {
                 make.bottom.equalTo()(self.emailDetailDateLabel)
             })
         } else {
-            UIView.transitionWithView(self.emailSender, duration: 0.3, options: kAnimationOption, animations: { () -> Void in
-                //self.emailRecipients.text = " "
+            
+            UIView.transitionWithView(self.emailFrom, duration: 0.3, options: kAnimationOption, animations: { () -> Void in
+                self.emailFrom.attributedText = self.fromSinglelineAttr
+                self.emailTo.attributedText = self.toSinglelineAttr
+                self.emailFromTable.alpha = 0.0;
                 }, completion: nil)
+            
+            
+            emailFromTable.mas_updateConstraints { (make) -> Void in
+                make.removeExisting = true
+                make.left.equalTo()(36)
+                make.right.equalTo()(self.emailTitle)
+                make.top.equalTo()(self.emailTitle.mas_bottom).with().offset()(self.kEmailRecipientsViewMarginTop)
+                make.height.equalTo()(self.emailFrom)
+            }
+
             
             self.emailDetailButton.setTitle(NSLocalizedString("Details"), forState: UIControlState.Normal)
             self.emailDetailButton.mas_updateConstraints({ (make) -> Void in
@@ -744,13 +826,30 @@ class EmailHeaderView: UIView {
                 make.width.equalTo()(self.emailDetailButton)
             })
             
+            self.emailFrom.sizeToFit();
+            emailFrom.mas_makeConstraints { (make) -> Void in
+                make.left.equalTo()(self.emailHeaderView)
+                make.width.equalTo()(self.emailFrom.frame.size.width)
+                make.height.equalTo()(self.emailFrom.frame.size.height)
+                make.top.equalTo()(self.emailTitle.mas_bottom).with().offset()(self.kEmailRecipientsViewMarginTop)
+            }
+
+            
+            self.emailTo.sizeToFit();
+            emailTo.mas_makeConstraints { (make) -> Void in
+                make.left.equalTo()(self.emailHeaderView)
+                make.width.equalTo()(self.emailTo.frame.size.width)
+                make.height.equalTo()(self.emailTo.frame.size.height)
+                make.top.equalTo()(self.emailFrom.mas_bottom).with().offset()(self.kEmailRecipientsViewMarginTop)
+            }
+            
             self.emailTime.sizeToFit()
             self.emailTime.mas_updateConstraints { (make) -> Void in
                 make.removeExisting = true
                 make.left.equalTo()(self.emailHeaderView)
                 make.width.equalTo()(self.emailTime.frame.size.width)
                 make.height.equalTo()(self.emailTime.frame.size.height)
-                make.top.equalTo()(self.emailSender.mas_bottom).with().offset()(self.kEmailTimeViewMarginTop)
+                make.top.equalTo()(self.emailTo.mas_bottom).with().offset()(self.kEmailTimeViewMarginTop)
             }
             
             self.emailDetailView.mas_updateConstraints({ (make) -> Void in
@@ -773,7 +872,7 @@ extension EmailHeaderView: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let attachment = attachmentForIndexPath(indexPath)
         let cell = tableView.dequeueReusableCellWithIdentifier(AttachmentTableViewCell.Constant.identifier, forIndexPath: indexPath) as! AttachmentTableViewCell
-       // cell.setFilename("test", fileSize: 1000)
+        // cell.setFilename("test", fileSize: 1000)
         cell.setFilename(attachment.fileName, fileSize: Int(attachment.fileSize))
         return cell
     }
@@ -832,6 +931,6 @@ extension EmailHeaderView: UITableViewDelegate {
     }
     
     private func openLocalURL(localURL: NSURL, keyPackage:NSData, fileName:String, forCell cell: UITableViewCell) {
-        self.actionsDelegate?.quickLookAttachment(localURL, keyPackage: keyPackage, fileName: fileName)        
+        self.actionsDelegate?.quickLookAttachment(localURL, keyPackage: keyPackage, fileName: fileName)
     }
 }

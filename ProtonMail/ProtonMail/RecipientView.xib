@@ -3,15 +3,10 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="Roboto-Medium.ttf">
-            <string>Roboto-Medium</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RecipientView" customModule="ProtonMail" customModuleProvider="target">
             <connections>
-                <outlet property="fromLabel" destination="9fu-qv-Hej" id="P8B-Qg-A3A"/>
+                <outlet property="tableView" destination="bbH-ul-OfE" id="UfN-3z-gET"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -20,24 +15,19 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="bbH-ul-OfE">
-                    <rect key="frame" x="56" y="6" width="544" height="594"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="4E1-tf-FQv"/>
+                        <outlet property="delegate" destination="-1" id="3rq-Vl-Xgj"/>
+                    </connections>
                 </tableView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9fu-qv-Hej">
-                    <rect key="frame" x="16" y="6" width="32" height="16"/>
-                    <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="12"/>
-                    <color key="textColor" red="0.75294117650000003" green="0.76862745099999996" blue="0.80784313730000001" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="bbH-ul-OfE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="56" id="5Ej-05-AnC"/>
-                <constraint firstAttribute="bottom" secondItem="bbH-ul-OfE" secondAttribute="bottom" id="AAg-RH-5Df"/>
-                <constraint firstAttribute="trailing" secondItem="bbH-ul-OfE" secondAttribute="trailing" id="Cer-yo-oaf"/>
-                <constraint firstItem="9fu-qv-Hej" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="6" id="QK5-x1-aJ6"/>
-                <constraint firstItem="bbH-ul-OfE" firstAttribute="top" secondItem="9fu-qv-Hej" secondAttribute="top" id="ope-mE-Kyp"/>
-                <constraint firstItem="9fu-qv-Hej" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="tnW-JB-ZUV"/>
+                <constraint firstAttribute="bottom" secondItem="bbH-ul-OfE" secondAttribute="bottom" id="28h-LJ-t5h"/>
+                <constraint firstAttribute="trailing" secondItem="bbH-ul-OfE" secondAttribute="trailing" id="OFS-2g-GPt"/>
+                <constraint firstItem="bbH-ul-OfE" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="UFG-xI-8dG"/>
+                <constraint firstItem="bbH-ul-OfE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="woD-Nb-hPu"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <point key="canvasLocation" x="441" y="338"/>

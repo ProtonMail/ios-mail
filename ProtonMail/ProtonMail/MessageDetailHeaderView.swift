@@ -14,21 +14,89 @@ class MessageDetailHeaderView: PMView {
         return "MessageDetailHeaderView"
     }
     
+    var contentHeight : CGFloat = 300;
+    
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var fromView: RecipientView!
     @IBOutlet weak var toView: RecipientView!
     @IBOutlet weak var ccView: RecipientView!
     @IBOutlet weak var bccView: RecipientView!
     
-    override func awakeFromNib() {
-        fromView.prompt = "From:"
-        toView.prompt = "To:"
-        ccView.prompt = "Cc:"
-        bccView.prompt = "Bcc:"
+    @IBOutlet weak var starButton: UIButton!
+    @IBOutlet weak var expirationView: UIView!
+    
+//    @IBOutlet weak var fromHeight: NSLayoutConstraint!
+//    @IBOutlet weak var toHeight: NSLayoutConstraint!
+//    @IBOutlet weak var ccHeight: NSLayoutConstraint!
+//    @IBOutlet weak var bccHeight: NSLayoutConstraint!
+    
+    
+    override func setup() {
+        fromView.prompt = "From"
+        toView.prompt = "To"
+        ccView.prompt = "Cc"
+        bccView.prompt = "Bcc"
+        
+        titleLabel.mas_makeConstraints { (make) -> Void in
+            make.removeExisting = true
+            make.top.equalTo()(self.pmView)
+            make.left.equalTo()(self.pmView)
+            make.right.equalTo()(self.pmView)
+            make.height.equalTo()(10)
+        }
+        layoutIfNeeded()
     }
     
     func getHeight() -> CGFloat {
-        return 500;
+        return 150;
+    }
+    
+    func makeConstraints() {
+        titleLabel.sizeToFit()
+        var size = titleLabel.sizeThatFits(CGSizeZero)
+        
+        titleLabel.mas_updateConstraints { (make) -> Void in
+            make.removeExisting = true
+            make.top.equalTo()(self.pmView.mas_top)
+            make.left.equalTo()(self.pmView.mas_left)
+            make.right.equalTo()(self.pmView.mas_right).offset()(-50)
+            make.height.equalTo()(10)
+        }
+
+        
+        PMLog.D("\(titleLabel.frame)")
+        
+        PMLog.D("\(self.frame)")
+        
+        PMLog.D("\(self.pmView.frame)")
+
+        self.updateConstraintsIfNeeded()
+//        fromView.sizeToFit()
+//        var s = fromView.sizeThatFits(CGSizeZero)
+//        //fromHeight.constant = s.height;
+//        
+//        toView.sizeToFit()
+//        s = toView.sizeThatFits(CGSizeZero)
+//        //toHeight.constant = s.height;
+//        
+//        ccView.sizeToFit()
+//        s = ccView.sizeThatFits(CGSizeZero)
+//        //ccHeight.constant = s.height;
+//        contentHeight = ccView.frame.origin.y + ccView.frame.height;
+//
+//        bccView.sizeToFit()
+//        s = bccView.sizeThatFits(CGSizeZero)
+//        //bccHeight.constant = s.height;
+//        self.pmView.updateConstraintsIfNeeded()
+        //self.pmView.setNeedsUpdateConstraints()
+        
+       // contentHeight = bccView.frame.origin.y + bccView.frame.height;
+        
+        contentHeight = expirationView.frame.origin.y
+    }
+
+
+    @IBAction func starAction(sender: UIButton) {
     }
     
     // MARK : Private functions
@@ -49,11 +117,15 @@ class MessageDetailHeaderView: PMView {
 
         titleLabel.text = title;
         
-        fromView.labelValue = sender
-        toView.labelValue = to
-        ccView.labelValue = cc
-        bccView.labelValue = bcc
+        fromView.label = sender
+        toView.label = to
+        ccView.label = cc
+        bccView.label = bcc
         
+//        fromView.updateValue();
+//        toView.updateValue();
+//        ccView.updateValue();
+//        bccView.updateValue();
 //        self.emailTitle.text = title
 //        self.emailSender.text = senderText
 //        self.emailDetailToLabel.text = toText
@@ -70,4 +142,13 @@ class MessageDetailHeaderView: PMView {
 //            self.emailIsEncryptedImageView.highlighted = true;
 //        }
     }
+    
+    
+    func showDetails(){
+        
+    }
+    
+    
+
+    
 }
