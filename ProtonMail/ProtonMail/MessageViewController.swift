@@ -23,7 +23,7 @@ class MessageViewController: ProtonMailViewController {
                 {
                     self.updateEmailBody ()
                     self.updateHeader()
-                   // self.emailView?.emailHeader.updateAttConstraints(true)
+                    self.emailView?.emailHeader.updateAttConstraints(true)
                 }
             }
         }
@@ -55,8 +55,8 @@ class MessageViewController: ProtonMailViewController {
         }
         
         self.emailView!.initLayouts()
-        //self.emailView!.bottomActionView.delegate = self
-        //self.emailView!.emailHeader.actionsDelegate = self
+        self.emailView!.bottomActionView.delegate = self
+        self.emailView!.emailHeader.actionsDelegate = self
        
         self.updateEmailBody()
     }
@@ -68,10 +68,10 @@ class MessageViewController: ProtonMailViewController {
     
     private func updateHeader() {
         self.emailView?.updateHeaderData(self.message.subject,
-            sender: self.message.senderName ?? self.message.sender,
-            to: self.message.recipientList.getDisplayAddress(),
-            cc: self.message.ccList.getDisplayAddress(),
-            bcc: self.message.bccList.getDisplayAddress(),
+            sender: ContactVO(id: "", name: self.message.senderName, email: self.message.sender),
+            to: self.message.recipientList.toContacts(),
+            cc: self.message.ccList.toContacts(),
+            bcc: self.message.bccList.toContacts(),
             isStarred: self.message.isStarred,
             time: self.message.time,
             encType: self.message.encryptType)

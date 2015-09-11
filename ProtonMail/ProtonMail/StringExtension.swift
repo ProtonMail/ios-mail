@@ -14,7 +14,7 @@ extension String {
         var message = self
         return UIAlertController(title: "Alert", message: message, preferredStyle: .Alert)
     }
-
+    
     
     func contains(s: String) -> Bool
     {
@@ -52,7 +52,7 @@ extension String {
         let str = myNSString.substringWithRange(NSRange(location: 0, length: 4))
         return str.contains("Fwd:")
     }
-
+    
     
     /**
     String extension check is email valid use the basic regex
@@ -70,8 +70,8 @@ extension String {
     /**
     String extension for remove the whitespaces begain&end
     
-        Example: 
-        " adsf " => "ads"
+    Example:
+    " adsf " => "ads"
     
     :returns: trimed string value
     */
@@ -114,11 +114,11 @@ extension String {
         return ",".join(lists)
     }
     
-
+    
     
     /**
     String extension split a string by comma
-        
+    
     Example:
     "a,b,c,d" => ["a","b","c","d"]
     
@@ -130,7 +130,7 @@ extension String {
     
     
     func ln2br() -> String {
-        return  self.stringByReplacingOccurrencesOfString("\n", withString:  "<br>") 
+        return  self.stringByReplacingOccurrencesOfString("\n", withString:  "<br>")
     }
     
     
@@ -164,13 +164,13 @@ extension String {
         result = result.stringByReplacingOccurrencesOfString("&lt;", withString: "<", options: nil, range: nil)
         result = result.stringByReplacingOccurrencesOfString("&gt;", withString: ">", options: nil, range: nil)
         return result
-//        let encodedData = self.dataUsingEncoding(NSUTF8StringEncoding)!
-//        let attributedOptions : [String: AnyObject] = [
-//            NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-//            NSCharacterEncodingDocumentAttribute: NSUTF8StringEncoding
-//        ]
-//        let attributedString = NSAttributedString(data: encodedData, options: attributedOptions, documentAttributes: nil, error: nil)!
-//        return attributedString.string
+        //        let encodedData = self.dataUsingEncoding(NSUTF8StringEncoding)!
+        //        let attributedOptions : [String: AnyObject] = [
+        //            NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
+        //            NSCharacterEncodingDocumentAttribute: NSUTF8StringEncoding
+        //        ]
+        //        let attributedString = NSAttributedString(data: encodedData, options: attributedOptions, documentAttributes: nil, error: nil)!
+        //        return attributedString.string
     }
     
     func encodeHtml() -> String {
@@ -205,11 +205,21 @@ extension String {
         let base64Encoded = utf8str!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
         
         return base64Encoded
-//        let data: NSData = NSData(base64EncodedString: base64Encoded, options: NSDataBase64DecodingOptions.fromRaw(0)!)
-//        let data = NSData(base64EncodedString: base64Encoded, options: NSDataBase64DecodingOptions.fromRaw(0)!)
-//        
-//        let base64Decoded: NSString = NSString(data: data, encoding: NSUTF8StringEncoding)
-//        let base64Decoded = NSString(data: data, encoding: NSUTF8StringEncoding)
+        //        let data: NSData = NSData(base64EncodedString: base64Encoded, options: NSDataBase64DecodingOptions.fromRaw(0)!)
+        //        let data = NSData(base64EncodedString: base64Encoded, options: NSDataBase64DecodingOptions.fromRaw(0)!)
+        //
+        //        let base64Decoded: NSString = NSString(data: data, encoding: NSUTF8StringEncoding)
+        //        let base64Decoded = NSString(data: data, encoding: NSUTF8StringEncoding)
+    }
+    
+    //
+    func toContacts() -> [ContactVO] {
+        var out : [ContactVO] = [ContactVO]();
+        let recipients : [[String : String]] = self.parseJson()!
+        for dict:[String : String] in recipients {
+            out.append(ContactVO(id: "", name: dict["Name"], email: dict["Address"]))
+        }
+        return out
     }
 }
 
