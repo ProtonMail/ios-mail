@@ -100,7 +100,6 @@ public class ComposeViewModelImpl : ComposeViewModel {
             case .NewDraft, .Forward:
                 break;
             case .OpenDraft:
-                let userAddress = sharedUserDataService.userAddresses
                 let toContacts = self.toContacts(self.message!.recipientList)
                 for cont in toContacts {
                     if !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
@@ -183,8 +182,6 @@ public class ComposeViewModelImpl : ComposeViewModel {
                         }
                     }
                 }
-            default:
-                break;
             }
         }
     }
@@ -226,7 +223,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
             self.message?.expirationOffset = Int32(expir)
             MessageHelper.updateMessage(self.message!, expirationTimeInterval: expir, body: body, attachments: nil)
             if let error = message!.managedObjectContext?.saveUpstreamIfNeeded() {
-                NSLog("\(__FUNCTION__) error: \(error)")
+                PMLog.D(" error: \(error)")
             }
         }
         
@@ -249,7 +246,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
         if message != nil {
             message?.isRead = true;
             if let error = message!.managedObjectContext?.saveUpstreamIfNeeded() {
-                NSLog("\(__FUNCTION__) error: \(error)")
+                PMLog.D(" error: \(error)")
             }
         }
     }
@@ -269,12 +266,10 @@ public class ComposeViewModelImpl : ComposeViewModel {
         switch messageAction!
         {
         case .OpenDraft:
-            let body = message!.decryptBodyIfNeeded(nil) ?? ""
+            let body = try! message!.decryptBodyIfNeeded() ?? ""
             return body
         case .Reply, .ReplyAll:
-            // composeView.subject.text = "Re: " + viewModel.getSubject()
-            let replyMessage = NSLocalizedString("Reply message")
-            var body = message!.decryptBodyIfNeeded(nil) ?? ""
+            var body = try! message!.decryptBodyIfNeeded() ?? ""
             
             body = body.stringByStrippingStyleHTML()
             body = body.stringByStrippingBodyStyle()
@@ -287,9 +282,9 @@ public class ComposeViewModelImpl : ComposeViewModel {
             
             let replyHeader = time + ", " + sn + " <'\(se)'>"
             let sp = "<div><br><div><div><br></div>\(replyHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
+
             return "\(htmlString) \(sp) \(body)</blockquote>"
         case .Forward:
-            //composeView.subject.text = "Fwd: \(message.title)"
             let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
             var forwardHeader = "---------- Forwarded message ----------<br>From: \( message!.senderContactVO.name) <'\(message!.senderContactVO.email)'> <br>Date: \(time)<br>Subject: \(message!.title)<br>"
             if message!.recipientList != "" {
@@ -300,7 +295,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
                 forwardHeader += "CC: \(message!.ccList.formatJsonContact())<br>"
             }
             forwardHeader += "<br><br>"
-            var body = message!.decryptBodyIfNeeded(nil) ?? ""
+            var body = try! message!.decryptBodyIfNeeded() ?? ""
             
             body = body.stringByStrippingStyleHTML()
             body = body.stringByStrippingBodyStyle()
@@ -310,12 +305,9 @@ public class ComposeViewModelImpl : ComposeViewModel {
             return "\(defaultSignature) \(mobileSignature) \(sp) \(body)"
         case .NewDraft:
             return htmlString
-        default:
-            return htmlString
         }
         
     }
-    
 }
 
 extension ComposeViewModelImpl {
@@ -327,7 +319,7 @@ extension ComposeViewModelImpl {
             out.append(to)
         }
         
-        let bytes : NSData = NSJSONSerialization.dataWithJSONObject(out, options: NSJSONWritingOptions.allZeros, error: nil)!
+        let bytes : NSData = try! NSJSONSerialization.dataWithJSONObject(out, options: NSJSONWritingOptions())
         let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
         
         return strJson
@@ -357,21 +349,17 @@ extension ComposeViewModelImpl {
     }
     
     func parse (json : String) -> [String:String] {
-        var error: NSError?
         if json.isEmpty {
             return ["" : ""];
         }
-        
-        let data : NSData! = json.dataUsingEncoding(NSUTF8StringEncoding)
-        let decoded = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error:  &error) as? [String:String]
-        
-        
-        if error != nil {
+        do {
+            let data : NSData! = json.dataUsingEncoding(NSUTF8StringEncoding)
+            let decoded = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as? [String:String]
+            return decoded ?? ["" : ""]
+        } catch {
             PMLog.D(" func parseJson() -> error error \(error)")
-            return ["":""]
         }
-        
-        return decoded!
+        return ["":""]
     }
 }
 

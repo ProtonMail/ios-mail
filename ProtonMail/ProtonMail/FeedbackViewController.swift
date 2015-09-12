@@ -33,11 +33,11 @@ class FeedbackViewController : ProtonMailViewController, UITableViewDelegate {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        if (self.tableView.respondsToSelector("setSeparatorInset:")) {
+        if (self.tableView.respondsToSelector(Selector("setSeparatorInset:"))) {
             self.tableView.separatorInset = UIEdgeInsetsZero
         }
         
-        if (self.tableView.respondsToSelector("setLayoutMargins:")) {
+        if (self.tableView.respondsToSelector(Selector("setLayoutMargins:"))) {
             self.tableView.layoutMargins = UIEdgeInsetsZero
         }
     }
@@ -96,7 +96,7 @@ class FeedbackViewController : ProtonMailViewController, UITableViewDelegate {
         let key = sectionSource[indexPath.section]
         let items : [FeedbackItem]? = dataSource[key]
         if key == .header {
-            let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("feedback_table_top_cell", forIndexPath: indexPath) as! UITableViewCell
+            let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("feedback_table_top_cell", forIndexPath: indexPath) 
             cell.selectionStyle = .None
             return cell
         } else {
@@ -148,68 +148,68 @@ class FeedbackViewController : ProtonMailViewController, UITableViewDelegate {
     
     func shareMore () {
         
-        let bounds = UIScreen.mainScreen().bounds
-        UIGraphicsBeginImageContextWithOptions(bounds.size, true, 0.0)
-        self.view.drawViewHierarchyInRect(bounds, afterScreenUpdates: false)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        let URL = NSURL(string: "http://protonmail.com/")!
-        let text = "ProtonMail post default... #ProtonMail \(URL)"
-        
-        let activityViewController = UIActivityViewController(activityItems: [text], applicationActivities: nil)
-        
-        let iTems = self.extensionContext?.inputItems
-        let url = NSURL(string: "https://protonmail.com")!
-//        let image = UIImage(named:"trash")!
-//        let text : String = "ProtonMail post default";
-//        let activityViewController = UIActivityViewController(activityItems: [image, text, url], applicationActivities: nil)
-        
-        activityViewController.excludedActivityTypes = []
-        
-        self.presentViewController(activityViewController, animated: true, completion: nil)
-        
-        
-        
-        
-        
-//        NSDictionary *item = @{ AppExtensionVersionNumberKey: VERSION_NUMBER, AppExtensionURLStringKey: URLString };
+//        let bounds = UIScreen.mainScreen().bounds
+//        UIGraphicsBeginImageContextWithOptions(bounds.size, true, 0.0)
+//        self.view.drawViewHierarchyInRect(bounds, afterScreenUpdates: false)
+//        let image = UIGraphicsGetImageFromCurrentImageContext()
+//        UIGraphicsEndImageContext()
+//        let URL = NSURL(string: "http://protonmail.com/")!
+//        let text = "ProtonMail post default... #ProtonMail \(URL)"
 //        
-//        UIActivityViewController *activityViewController = [self activityViewControllerForItem:item viewController:viewController sender:sender typeIdentifier:kUTTypeAppExtensionFindLoginAction];
-//        activityViewController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
-//            if (returnedItems.count == 0) {
-//                NSError *error = nil;
-//                if (activityError) {
-//                    NSLog(@"Failed to findLoginForURLString: %@", activityError);
-//                    error = [OnePasswordExtension failedToContactExtensionErrorWithActivityError:activityError];
-//                }
-//                else {
-//                    error = [OnePasswordExtension extensionCancelledByUserError];
-//                }
-//                
-//                if (completion) {
-//                    completion(nil, error);
-//                }
-//                
-//                return;
-//            }
-//            
-//            [self processExtensionItem:returnedItems.firstObject completion:^(NSDictionary *itemDictionary, NSError *error) {
-//                if (completion) {
-//                completion(itemDictionary, error);
-//                }
-//                }];
-//        };
+//        let activityViewController = UIActivityViewController(activityItems: [text], applicationActivities: nil)
 //        
-//        [viewController presentViewController:activityViewController animated:YES completion:nil];
+//        let iTems = self.extensionContext?.inputItems
+//        let url = NSURL(string: "https://protonmail.com")!
+////        let image = UIImage(named:"trash")!
+////        let text : String = "ProtonMail post default";
+////        let activityViewController = UIActivityViewController(activityItems: [image, text, url], applicationActivities: nil)
+//        
+//        activityViewController.excludedActivityTypes = []
+//        
+//        self.presentViewController(activityViewController, animated: true, completion: nil)
+//        
+//        
+//        
+//        
+//        
+////        NSDictionary *item = @{ AppExtensionVersionNumberKey: VERSION_NUMBER, AppExtensionURLStringKey: URLString };
+////        
+////        UIActivityViewController *activityViewController = [self activityViewControllerForItem:item viewController:viewController sender:sender typeIdentifier:kUTTypeAppExtensionFindLoginAction];
+////        activityViewController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
+////            if (returnedItems.count == 0) {
+////                NSError *error = nil;
+////                if (activityError) {
+////                    NSLog(@"Failed to findLoginForURLString: %@", activityError);
+////                    error = [OnePasswordExtension failedToContactExtensionErrorWithActivityError:activityError];
+////                }
+////                else {
+////                    error = [OnePasswordExtension extensionCancelledByUserError];
+////                }
+////                
+////                if (completion) {
+////                    completion(nil, error);
+////                }
+////                
+////                return;
+////            }
+////            
+////            [self processExtensionItem:returnedItems.firstObject completion:^(NSDictionary *itemDictionary, NSError *error) {
+////                if (completion) {
+////                completion(itemDictionary, error);
+////                }
+////                }];
+////        };
+////        
+////        [viewController presentViewController:activityViewController animated:YES completion:nil];
 
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if (cell.respondsToSelector("setSeparatorInset:")) {
+        if (cell.respondsToSelector(Selector("setSeparatorInset:"))) {
             cell.separatorInset = UIEdgeInsetsZero
         }
         
-        if (cell.respondsToSelector("setLayoutMargins:")) {
+        if (cell.respondsToSelector(Selector("setLayoutMargins:"))) {
             cell.layoutMargins = UIEdgeInsetsZero
         }
     }

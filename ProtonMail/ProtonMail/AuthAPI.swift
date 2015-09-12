@@ -127,7 +127,7 @@ public class AuthResponse : ApiResponse {
     
     override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
         
-        PMLog.D(response.JSONStringify(prettyPrinted: true))
+        PMLog.D(response.JSONStringify(true))
         
         self.userID = response["Uid"] as? String
         self.encPrivateKey = response["EncPrivateKey"] as? String

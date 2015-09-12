@@ -16,6 +16,7 @@ static NSMutableDictionary *parseHeaders(const char *headers)
     unsigned long max = strlen(headers);
     unsigned long start = 0;
     unsigned long cursor =0;
+
     while(cursor<max)
     {
         while((headers[cursor]!=':')&&(headers[cursor]!='='))
@@ -135,7 +136,7 @@ static NSMutableDictionary *parseHeaders(const char *headers)
                         }
                     }
                 }
-                cursor=cursor+patternLength-1;
+                cursor= cursor + patternLength - 1;
                 start=cursor+1;
             }
         }

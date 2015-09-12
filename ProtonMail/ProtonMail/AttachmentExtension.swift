@@ -14,8 +14,8 @@
 // the license agreement.
 //
 
-import CoreData
 import Foundation
+import CoreData
 
 extension Attachment {
     
@@ -35,9 +35,10 @@ extension Attachment {
     override func prepareForDeletion() {
         super.prepareForDeletion()
         if let localURL = localURL {
-            var error: NSError? = nil
-            if !NSFileManager.defaultManager().removeItemAtURL(localURL, error: &error) {
-                NSLog("\(__FUNCTION__) Could not delete \(localURL) with error: \(error)")
+            do {
+                try NSFileManager.defaultManager().removeItemAtURL(localURL)
+            } catch let ex as NSError {
+                PMLog.D("Could not delete \(localURL) with error: \(ex)")
             }
         }
     }
@@ -48,43 +49,45 @@ extension Attachment {
         return sharedUserDataService.mailboxPassword ?? ""
     }
     
+    
     // Mark : public functions
     
-    func encryptAttachment(sender_address_id : String, error: NSErrorPointer?) -> PMNEncryptPackage? {
-        let out = fileData?.encryptAttachment(sender_address_id, fileName: self.fileName, error: error)
+    func encryptAttachment(sender_address_id : String) throws -> PMNEncryptPackage? {
+        let out = try fileData?.encryptAttachment(sender_address_id, fileName: self.fileName)
         if out == nil {
             return nil
         }
         return out
     }
     
-    func getSessionKey(error: NSErrorPointer?) -> NSData? {
+    func getSessionKey() throws -> NSData? {
         if self.keyPacket == nil {
             return nil
         }
         let data: NSData = NSData(base64EncodedString: self.keyPacket!, options: NSDataBase64DecodingOptions(rawValue: 0))!
-        let sessionKey = data.getSessionKeyFromPubKeyPackage(passphrase, error: error) ?? nil
+        let sessionKey = try data.getSessionKeyFromPubKeyPackage(passphrase) ?? nil
         return sessionKey
     }
     
     func fetchAttachment(downloadTask: ((NSURLSessionDownloadTask) -> Void)?, completion:((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
         sharedMessageDataService.fetchAttachmentForAttachment(self, downloadTask: downloadTask, completion: completion)
     }
+
 }
 
 extension Attachment {
     class func attachmentDelete(attachmentObjectID: NSManagedObjectID, inManagedObjectContext context: NSManagedObjectContext) -> Void {
-        var error: NSError? = nil
-        if let att = context.existingObjectWithID(attachmentObjectID, error: &error) as? Attachment {
-            context.delete(att);
-            
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D("error: \(error)")
+        do {
+            if let att = try context.existingObjectWithID(attachmentObjectID) as? Attachment {
+                context.delete(att);
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D("error: \(error)")
+                }
             }
-            
+        } catch let ex as NSError {
+            PMLog.D("error: \(ex)")
         }
     }
-    
 }
 
 extension UIImage {
@@ -105,7 +108,7 @@ extension UIImage {
             var error: NSError? = nil
             error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
             if error != nil {
-                NSLog("\(__FUNCTION__) toAttachment () with error: \(error)")
+                PMLog.D("toAttachment () with error: \(error)")
             }
             return attachment
         }
@@ -131,7 +134,7 @@ extension NSData {
         var error: NSError? = nil
         error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
         if error != nil {
-            NSLog("\(__FUNCTION__) toAttachment () with error: \(error)")
+            PMLog.D(" toAttachment () with error: \(error)")
         }
         return attachment
         

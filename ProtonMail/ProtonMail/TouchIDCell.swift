@@ -42,8 +42,8 @@ class TouchIDCell: UITableViewCell {
                     // The LAError.TouchIDNotAvailable case.
                     alertString = NSLocalizedString("TouchID not available")
                 }
-                println(alertString)
-                println(error?.localizedDescription)
+                PMLog.D(alertString)
+                PMLog.D("\(error?.localizedDescription)")
                 alertString.alertToast()
                 switchView.on = false;
             }

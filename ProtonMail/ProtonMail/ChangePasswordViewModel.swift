@@ -96,7 +96,7 @@ class ChangeMailboxPWDViewModel : ChangePWDViewModel{
         let newpwd = new_pwd.trim();
         let confirmpwd = confirm_new_pwd.trim();
         
-        if curr_pwd != sharedUserDataService.mailboxPassword || !sharedUserDataService.isMailboxPasswordValid(curr_pwd, privateKey: sharedUserDataService.userInfo?.privateKey ?? "") {
+        if curr_pwd != sharedUserDataService.mailboxPassword || !sharedOpenPGP.checkPassphrase(curr_pwd, forPrivateKey: sharedUserDataService.userInfo?.privateKey ?? "") {
             complete(false, NSError.currentPwdWrong())
         }
         else if newpwd == "" || confirmpwd == "" {
@@ -119,7 +119,6 @@ class ChangeMailboxPWDViewModel : ChangePWDViewModel{
         }
     }
 }
-
 
 class ChangePWDViewModelTest : ChangePWDViewModel{
     func getNavigationTitle() -> String {

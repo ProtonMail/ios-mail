@@ -1,1 +1,9 @@
-GROOT_OTHER_LDFLAGS = -framework "CoreData" -framework "Foundation"
+CONFIGURATION_BUILD_DIR = $PODS_CONFIGURATION_BUILD_DIR/Groot
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/Groot" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworkActivityLogger" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/Groot" "${PODS_ROOT}/Headers/Public/MBProgressHUD" "${PODS_ROOT}/Headers/Public/MCSwipeTableViewCell" "${PODS_ROOT}/Headers/Public/Masonry" "${PODS_ROOT}/Headers/Public/NSDate+Helper" "${PODS_ROOT}/Headers/Public/OpenPGP" "${PODS_ROOT}/Headers/Public/OpenSSL" "${PODS_ROOT}/Headers/Public/RHAddressBook" "${PODS_ROOT}/Headers/Public/SWRevealViewController" "${PODS_ROOT}/Headers/Public/UICKeyChainStore" "${PODS_ROOT}/Headers/Public/UIColor+Hex" "${PODS_ROOT}/Headers/Public/ZSSRichTextEditor"
+OTHER_LDFLAGS = -framework "CoreData" -framework "Foundation"
+PODS_BUILD_DIR = $BUILD_DIR
+PODS_CONFIGURATION_BUILD_DIR = $PODS_BUILD_DIR/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
+PODS_ROOT = ${SRCROOT}
+PRODUCT_BUNDLE_IDENTIFIER = org.cocoapods.${PRODUCT_NAME:rfc1034identifier}
+SKIP_INSTALL = YES

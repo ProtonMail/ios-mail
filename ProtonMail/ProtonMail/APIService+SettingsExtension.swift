@@ -22,9 +22,9 @@ extension APIService {
     private struct SettingPath {
         static let base = AppConstants.BaseAPIPath + "/settings"
     }
-
+    
     func settingUpdatePassword(oldPassword: String, newPassword: String, completion: CompletionBlock) {
-        let path = SettingPath.base.stringByAppendingPathComponent("password")
+        let path = SettingPath.base + "/password"
         let parameters = [
             "OldPassword" : oldPassword,
             "OldHashedPassword" : "",
@@ -36,7 +36,7 @@ extension APIService {
     }
     
     func settingUpdateSignature(signature: String, completion: CompletionBlock) {
-        let path = SettingPath.base.stringByAppendingPathComponent("signature")
+        let path = SettingPath.base + "/signature"
         let parameters = ["Signature" : signature]
         
         setApiVesion(1, appVersion: 1)

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 
 public class MailboxViewModelImpl : MailboxViewModel {
@@ -27,9 +28,10 @@ public class MailboxViewModelImpl : MailboxViewModel {
     public override func getFetchedResultsController() -> NSFetchedResultsController? {
         let fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLocation(self.location)
         if let fetchedResultsController = fetchedResultsController {
-            var error: NSError?
-            if !fetchedResultsController.performFetch(&error) {
-                PMLog.D("error: \(error)")
+            do {
+                try fetchedResultsController.performFetch()
+            } catch let ex as NSError {
+                PMLog.D("error: \(ex)")
             }
         }
         return fetchedResultsController
@@ -59,8 +61,6 @@ public class MailboxViewModelImpl : MailboxViewModel {
             return action != .star
         case .spam:
             return action != .spam
-        case .starred:
-            return action != .star
         case .draft:
             return action != .spam
         case .trash:
@@ -89,7 +89,7 @@ public class MailboxViewModelImpl : MailboxViewModel {
         }
         msg.needsUpdate = true
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-            NSLog("\(__FUNCTION__) error: \(error)")
+            PMLog.D("error: \(error)")
         }
     }
     

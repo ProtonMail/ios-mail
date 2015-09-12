@@ -106,7 +106,7 @@ final class Address: NSObject {
     }
 }
 
-final class Key: NSObject {
+final class Key : NSObject {
     let key_id: String
     let public_key: String
     var private_key : String
@@ -357,33 +357,34 @@ extension Address {
 }
 
 extension Key {
-    func toPMNPgpKey() -> PMNOpenPgpKey {
-        return PMNOpenPgpKey(publicKey: public_key, privateKey: private_key)
+    func toPMNPgpKey<T : PMNOpenPgpKey>() -> T {
+        return T(publicKey: public_key, privateKey: private_key)
     }
 }
 
-extension Array {
-    func toPMNPgpKeys <T: Key>() -> Array<PMNOpenPgpKey> {
+extension Array where Element : Key {
+    func toPMNPgpKeys() -> [PMNOpenPgpKey] {
         var out_array = Array<PMNOpenPgpKey>()
-        for var i = 0; i < self.count; ++i {
-            var addr = (self[i] as! Key)
+        for i in 0 ..< self.count {
+            let addr = self[i]
             out_array.append(addr.toPMNPgpKey())
         }
         return out_array;
     }
-    
-    func toPMNAddresses <T: Address>() -> Array<PMNAddress> {
+}
+
+extension Array where Element : Address {
+    func toPMNAddresses() -> Array<PMNAddress> {
         var out_array = Array<PMNAddress>()
-        for var i = 0; i < self.count; ++i {
-            var addr = (self[i] as! Address)
+        for i in 0 ..< self.count {
+            let addr = self[i]
             out_array.append(addr.toPMNAddress())
         }
         return out_array;
     }
     
-    func getDefaultAddress <T: Address>() -> Address? {
-        for var i = 0; i < self.count; ++i {
-            var addr = (self[i] as! Address)
+    func getDefaultAddress () -> Address? {
+        for addr in self {
             if addr.status == 1 && addr.receive == 1 {
                 return addr;
             }
@@ -391,20 +392,23 @@ extension Array {
         return nil;
     }
     
-    func indexOfAddress <T: Address>(addressid : String) -> Address? {
-        for var i = 0; i < self.count; ++i {
-            var addr = (self[i] as! Address)
+    func indexOfAddress(addressid : String) -> Address? {
+        for addr in self {
             if addr.status == 1 && addr.receive == 1 && addr.address_id == addressid {
                 return addr;
             }
         }
         return nil;
     }
+    
+    func getAddressOrder() -> Array<String> {
+        let ids = self.map { $0.address_id }
+        return ids;
+    }
+    
+    func getAddressNewOrder() -> Array<Int> {
+        let ids = self.map { $0.send }
+        return ids;
+    }
 }
-
-
-
-
-
-
 

@@ -42,8 +42,6 @@ class APIErrorCode {
     }
 }
 
-
-
 extension NSError {
     
     class func authCredentialExpired() -> NSError {
@@ -65,9 +63,6 @@ extension NSError {
             code: APIErrorCode.AuthErrorCode.invalidGrant,
             localizedDescription: NSLocalizedString("Alert"),
             localizedFailureReason: NSLocalizedString("Authentication Failed Wrong username or password"))
-        
-//            localizedDescription: NSLocalizedString("Invalid grant"),
-//            localizedFailureReason: NSLocalizedString("The supplied credentials are invalid."))
     }
     
     class func internetError() -> NSError {
@@ -130,7 +125,7 @@ extension NSError {
 
 extension NSError {
     
-    class func apiServiceError(#code: Int, localizedDescription: String, localizedFailureReason: String?, localizedRecoverySuggestion: String? = nil) -> NSError {
+    class func apiServiceError(code code: Int, localizedDescription: String, localizedFailureReason: String?, localizedRecoverySuggestion: String? = nil) -> NSError {
         return NSError(
             domain: APIServiceErrorDomain,
             code: code,

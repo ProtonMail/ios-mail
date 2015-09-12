@@ -50,13 +50,16 @@ extension Dictionary { //email name
     :returns: String value
     */
     func JSONStringify(prettyPrinted: Bool = false) -> String {
-        var options = prettyPrinted ? NSJSONWritingOptions.PrettyPrinted : nil
+        let options : NSJSONWritingOptions = prettyPrinted ? .PrettyPrinted : NSJSONWritingOptions()
         let anyObject: AnyObject = self as! AnyObject
         if NSJSONSerialization.isValidJSONObject(anyObject) {
-            if let data = NSJSONSerialization.dataWithJSONObject(anyObject, options: options, error: nil) {
+            do {
+                let data = try NSJSONSerialization.dataWithJSONObject(anyObject, options: options)
                 if let string = NSString(data: data, encoding: NSUTF8StringEncoding) {
                     return string as String
                 }
+            } catch let ex as NSError {
+                PMLog.D("\(ex)")
             }
         }
         return ""

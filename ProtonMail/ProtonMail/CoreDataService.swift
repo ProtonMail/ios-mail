@@ -14,10 +14,10 @@
 // the license agreement.
 //
 
-import CoreData
 import Foundation
+import CoreData
 
-let CoreDataServiceErrorDomain = NSError.protonMailErrorDomain(subdomain: "CoreDataService")
+let CoreDataServiceErrorDomain = NSError.protonMailErrorDomain("CoreDataService")
 
 let sharedCoreDataService = CoreDataService()
 
@@ -74,35 +74,43 @@ class CoreDataService {
     func newPersistentStoreCoordinator(managedObjectModel: NSManagedObjectModel) -> NSPersistentStoreCoordinator? {
         var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
         let url = NSFileManager.defaultManager().applicationSupportDirectoryURL.URLByAppendingPathComponent("ProtonMail.sqlite")
-        var error: NSError? = nil
-        
-        if coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil, error: &error) != nil {
+        do {
+            try coordinator?.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
             url.excludeFromBackup()
-        } else {
-            if error?.domain == "NSCocoaErrorDomain" && error?.code == 134100 && NSFileManager.defaultManager().removeItemAtURL(url, error: &error) {
-                NSLog("\(__FUNCTION__) Removed old persistent store.  Error: \(error)")
-                coordinator = newPersistentStoreCoordinator(managedObjectModel)
+        } catch let ex as NSError {
+            if (ex.domain == "NSCocoaErrorDomain" && ex.code == 134100) {
+                do {
+                    try NSFileManager.defaultManager().removeItemAtURL(url)
+                    coordinator = newPersistentStoreCoordinator(managedObjectModel)
+                } catch let error as NSError{
+                    coordinator = nil
+                    popError(error)
+                }
             } else {
                 coordinator = nil
-                // Report any error we got.
-                let dict = NSMutableDictionary()
-                dict[NSLocalizedDescriptionKey] = NSLocalizedString("Failed to initialize the application's saved data")
-                dict[NSLocalizedFailureReasonErrorKey] = NSLocalizedString("There was an error creating or loading the application's saved data.")
-                dict[NSUnderlyingErrorKey] = error
-                //TODO:: need monitor
-                error = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict as [NSObject : AnyObject])
-                NSLog("Unresolved error \(error), \(error!.userInfo)")
-                
-                if let alertController = error?.alertController() {
-                    alertController.addAction(UIAlertAction(title: NSLocalizedString("Close"), style: .Default, handler: { (action) -> Void in
-                        abort()
-                    }))
-                    UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
-                }
+                popError(ex)
             }
         }
-        
         return coordinator
+    }
+    
+    func popError (error : NSError) {
+        
+        // Report any error we got.
+        var dict = [NSObject : AnyObject]()
+        dict[NSLocalizedDescriptionKey] = NSLocalizedString("Failed to initialize the application's saved data")
+        dict[NSLocalizedFailureReasonErrorKey] = NSLocalizedString("There was an error creating or loading the application's saved data.")
+        dict[NSUnderlyingErrorKey] = error
+        //TODO:: need monitor
+        let alertError = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict as [NSObject : AnyObject])
+        NSLog("Unresolved error \(error), \(error.userInfo)")
+        
+        let alertController = alertError.alertController()
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Close"), style: .Default, handler: { (action) -> Void in
+            abort()
+        }))
+        UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
+        
     }
 }
 

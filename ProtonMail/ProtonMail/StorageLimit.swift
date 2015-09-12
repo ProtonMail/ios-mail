@@ -22,7 +22,7 @@ class StorageLimit {
     
     // MARK: - Public methods
     
-    func checkSpace(#usedSpace: Int64, maxSpace: Int64) {
+    func checkSpace(usedSpace usedSpace: Int64, maxSpace: Int64) {
         
         if userCachedStatus.isCheckSpaceDisabled {
             return

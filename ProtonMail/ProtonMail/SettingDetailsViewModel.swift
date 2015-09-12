@@ -283,9 +283,9 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
     
     internal func getRole() -> Bool {
         #if Enterprise
-            var isEnterprise = true
+            let isEnterprise = true
         #else
-            var isEnterprise = false
+            let isEnterprise = false
         #endif
         
         return sharedUserDataService.userInfo?.role > 0 || isEnterprise

@@ -14,12 +14,12 @@
 // the license agreement.
 //
 
-import CoreData
 import Foundation
+import CoreData
 
 extension NSFetchedResultsController {
     func numberOfRowsInSection(section: Int) -> Int {
-        if let sectionInfo = sections?[section] as? NSFetchedResultsSectionInfo {
+        if let sectionInfo = sections?[section] {
             let n = sectionInfo.numberOfObjects
             return n ?? 0
         } else {

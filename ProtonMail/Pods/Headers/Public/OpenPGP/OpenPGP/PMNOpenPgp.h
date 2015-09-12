@@ -1,1 +1,1 @@
-../../../../../../OpenPGP/include/openpgp/PMNOpenPgp.h
+../../../../../../OpenPGP/include/OpenPGP/PMNOpenPgp.h

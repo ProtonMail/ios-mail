@@ -9,6 +9,7 @@
 import UIKit
 import QuickLook
 import Foundation
+import CoreData
 
 
 class MessageViewController: ProtonMailViewController, LablesViewControllerDelegate {
@@ -54,10 +55,11 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         self.emailView!.bottomActionView.delegate = self
         self.emailView!.emailHeader.actionsDelegate = self
         
+        
         showEmailLoading()
         message.fetchDetailIfNeeded() { _, _, msg, error in
             if error != nil {
-                NSLog("\(__FUNCTION__) error: \(error)")
+                PMLog.D(" error: \(error)")
                 self.updateEmailBodyWithError("Can't download message body, please try again.")
             }
             else
@@ -69,6 +71,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     func updateContent () {
         self.updateEmailBody ()
+        
     }
     
     override func loadView() {
@@ -77,9 +80,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     }
     
     private func updateHeader() {
-        if let context = self.message.managedObjectContext {
-            var a = self.message.labels.allObjects
-            
+        if self.message.managedObjectContext != nil {
             self.emailView?.updateHeaderData(self.message.subject,
                 sender: self.message.senderContactVO,
                 to: self.message.recipientList.toContacts(),
@@ -104,10 +105,10 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     private func setupRightButtons() {
         var rightButtons: [UIBarButtonItem] = []
-        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_more"), style: UIBarButtonItemStyle.Plain, target: self, action: "moreButtonTapped:"))
-        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_trash"), style: UIBarButtonItemStyle.Plain, target: self, action: "removeButtonTapped"))
-        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_label"), style: UIBarButtonItemStyle.Plain, target: self, action: "labelButtonTapped"))
-        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_unread"), style: UIBarButtonItemStyle.Plain, target: self, action: "unreadButtonTapped"))
+        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_more"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MessageViewController.moreButtonTapped(_:))))
+        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_trash"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MessageViewController.removeButtonTapped)))
+        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_label"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MessageViewController.labelButtonTapped)))
+        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_unread"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MessageViewController.unreadButtonTapped)))
         
         self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
     }
@@ -137,7 +138,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         message.location = .spam
         message.needsUpdate = true
         if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
-            NSLog("\(__FUNCTION__) error: \(error)")
+            PMLog.D(" error: \(error)")
         }
         
         self.navigationController?.popViewControllerAnimated(true)
@@ -146,7 +147,6 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     internal func moreButtonTapped(sender : UIBarButtonItem) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
-
         let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .archive : .Destructive]
         for (location, style) in locations {
             if message.location != location {
@@ -160,13 +160,13 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         alertController.popoverPresentationController?.sourceRect = self.view.frame
         presentViewController(alertController, animated: true, completion: nil)
     }
-
+    
     private func messagesSetValue(setValue value: AnyObject?, forKey key: String) {
         if let context = message.managedObjectContext {
             message.setValue(value, forKey: key)
             message.setValue(true, forKey: "needsUpdate")
             if let error = context.saveUpstreamIfNeeded() {
-                NSLog("\(__FUNCTION__) error: \(error)")
+                PMLog.D(" error: \(error)")
             }
         }
     }
@@ -194,13 +194,13 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: NotificationDefined.TouchStatusBar, object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MessageViewController.statusBarHit(_:)), name: NotificationDefined.TouchStatusBar, object:nil)
 
         if let context = message.managedObjectContext {
             message.isRead = true
             message.needsUpdate = true
             if let error = context.saveUpstreamIfNeeded() {
-                NSLog("\(__FUNCTION__) error: \(error)")
+                PMLog.D(" error: \(error)")
             }
         }
         
@@ -231,7 +231,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     private func setupExpirationTimer()
     {
         if self.message.expirationTime != nil {
-            self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "autoTimer", userInfo: nil, repeats: true)
+            self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(MessageViewController.autoTimer), userInfo: nil, repeats: true)
             //self.timer.fire()
         }
     }
@@ -276,9 +276,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
                 if self.message.isDetailDownloaded {  //&& forceReload == false
                     self.bodyLoaded = true
                     //PMLog.D(self.message!.body);
-                    if let body = self.purifiedBody {
-                        
-                    } else {
+                    if self.purifiedBody == nil {
                         self.purifiedBody = self.purifyEmailBody(self.message)
                     }
                     
@@ -298,7 +296,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
                     }
                 }
             }
-            if let body = self.purifiedBody {
+            if self.purifiedBody != nil {
                 dispatch_async(dispatch_get_main_queue()) {
                     self.loadEmailBody(self.needShowShowImageView ? (self.purifiedBodyWithoutImage ?? (self.purifiedBody ?? "")) : (self.purifiedBody ?? ""))
                 }
@@ -308,8 +306,8 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     internal func purifyEmailBody(message : Message!) -> String?
     {
-        var error: NSError?
-        var bodyText = self.message.decryptBodyIfNeeded(&error) ?? NSLocalizedString("Unable to decrypt message.")
+        
+        var bodyText = try! self.message.decryptBodyIfNeeded() ?? NSLocalizedString("Unable to decrypt message.")
         bodyText = bodyText.stringByStrippingStyleHTML()
         bodyText = bodyText.stringByStrippingBodyStyle()
         bodyText = bodyText.stringByPurifyHTML()
@@ -317,7 +315,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     }
     
     internal func showEmailLoading () {
-        var body = NSLocalizedString("Loading...")
+        let body = NSLocalizedString("Loading...")
         let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=1.0\" content=\"yes\">"
         self.emailView?.updateEmailBody(body, meta: meta)
     }
@@ -337,17 +335,19 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             let atts = self.message.attachments.allObjects as! [Attachment]
             self.emailView?.updateEmailAttachment(atts);
         }
-        var bodyText = NSLocalizedString(error)
+        let bodyText = NSLocalizedString(error)
         let meta1 : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=1.0\" content=\"yes\">"
+
         self.emailView?.updateEmailBody(bodyText, meta: meta1)
     }
-
+    
     private func setupFetchedResultsController(msg_id:String) {
         self.fetchedMessageController = sharedMessageDataService.fetchedMessageControllerForID(msg_id)
         if let fetchedMessageController = fetchedMessageController {
-            var error: NSError?
-            if !fetchedMessageController.performFetch(&error) {
-                NSLog("\(__FUNCTION__) error: \(error)")
+            do {
+                try fetchedMessageController.performFetch()
+            } catch let ex as NSError {
+                PMLog.D("error: \(ex)")
             }
         }
     }
@@ -388,7 +388,7 @@ extension MessageViewController : MessageDetailBottomViewProtocol {
     }
     
     func showAlertWhenNoDetails() {
-        var alert = NSLocalizedString("Please wait until the email downloaded!").alertController();
+        let alert = NSLocalizedString("Please wait until the email downloaded!").alertController();
         alert.addOKAction()
         self.presentViewController(alert, animated: true, completion: nil)
     }
@@ -412,23 +412,21 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     func quickLookAttachment (localURL : NSURL, keyPackage:NSData, fileName:String) {
         PMLog.D(localURL)
         if let data : NSData = NSData(contentsOfURL: localURL) {
-            tempFileUri = NSFileManager.defaultManager().attachmentDirectory.URLByAppendingPathComponent(fileName);
-            var error: NSError?
-            let decryptData = data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!, error: &error)
-            if error != nil {
-                var alert = NSLocalizedString("Cant' decrypt this attachment!").alertController();
+            do {
+                tempFileUri = NSFileManager.defaultManager().attachmentDirectory.URLByAppendingPathComponent(fileName)
+                if let decryptData = try data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!) {
+                    decryptData.writeToURL(tempFileUri!, atomically: true)
+                    let previewQL = QuickViewViewController()
+                    previewQL.dataSource = self
+                    self.presentViewController(previewQL, animated: true, completion: nil)
+                }
+            } catch {
+                let alert = NSLocalizedString("Cant' decrypt this attachment!").alertController();
                 alert.addOKAction()
                 self.presentViewController(alert, animated: true, completion: nil)
-            } else {
-                decryptData!.writeToURL(tempFileUri!, atomically: true)
-
-                let previewQL = QuickViewViewController()
-                previewQL.dataSource = self
-                self.presentViewController(previewQL, animated: true, completion: nil)
             }
-        }
-        else{
-            var alert = NSLocalizedString("Can't find this attachment!").alertController();
+        } else{
+            let alert = NSLocalizedString("Can't find this attachment!").alertController();
             alert.addOKAction()
             self.presentViewController(alert, animated: true, completion: nil)
         }
@@ -439,18 +437,14 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     }
 }
 
-// MARK: - UIDocumentInteractionControllerDelegate
-extension MessageViewController: UIDocumentInteractionControllerDelegate {
-    
-}
-
 extension MessageViewController : QLPreviewControllerDataSource {
-    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController!) -> Int {
+    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
         return 1
     }
     
-    func previewController(controller: QLPreviewController!, previewItemAtIndex index: Int) -> QLPreviewItem! {
-        return tempFileUri
+    func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {
+        //TODO :: fix here
+        return tempFileUri!
     }
 }
 

@@ -1,1 +1,1 @@
-../../../../../../OpenPGP/include/openpgp/PMNAddress.h
+../../../../../../OpenPGP/include/OpenPGP/PMNAddress.h

@@ -29,12 +29,10 @@ class Snapshot {
             let snapshotView = (NSBundle.mainBundle().loadNibNamed("LaunchScreen", owner: window, options: nil).first as? UIView) ?? {
                 let view = UIView(frame: window.bounds)
                 view.backgroundColor = UIColor.ProtonMail.Blue_85B1DE
-                
                 return view
                 }() as UIView
             
             snapshotView.tag = Tag.snapshot
-            
             window.addSubview(snapshotView)
             
             snapshotView.mas_makeConstraints { (make) -> Void in

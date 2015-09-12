@@ -53,12 +53,6 @@ class MoreOptionsView: UIView {
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-//    init() {
-//        super.init()
-//        self.backgroundColor = UIColor.ProtonMail.Blue_6789AB
-//        addSubviews()
-//        makeConstraints()
-//    }
     
     
     // MARK: - Subviews
@@ -68,21 +62,21 @@ class MoreOptionsView: UIView {
         let labelColor = UIColor.ProtonMail.Gray_FCFEFF
         
         self.tagButton = UIButton.buttonWithImage(UIImage(named: "tag")!)
-        self.tagButton.addTarget(self, action: "tagAction:", forControlEvents: .TouchUpInside)
+        self.tagButton.addTarget(self, action: #selector(MoreOptionsView.tagAction(_:)), forControlEvents: .TouchUpInside)
         self.addSubview(tagButton)
         
         self.tagLabel = UILabel.labelWith(labelFont, text: NSLocalizedString("Label as..."), textColor: labelColor)
         self.addSubview(tagLabel)
         
         self.moveButton = UIButton.buttonWithImage(UIImage(named: "move")!)
-        self.moveButton.addTarget(self, action: "moveAction:", forControlEvents: .TouchUpInside)
+        self.moveButton.addTarget(self, action: #selector(MoreOptionsView.moveAction(_:)), forControlEvents: .TouchUpInside)
         self.addSubview(moveButton)
 
         self.moveLabel = UILabel.labelWith(labelFont, text: NSLocalizedString("Move to..."), textColor: labelColor)
         self.addSubview(moveLabel)
         
         self.markButton = UIButton.buttonWithImage(UIImage(named: "mark")!)
-        self.markButton.addTarget(self, action: "markAction:", forControlEvents: .TouchUpInside)
+        self.markButton.addTarget(self, action: #selector(MoreOptionsView.markAction(_:)), forControlEvents: .TouchUpInside)
         self.addSubview(markButton)
         
         self.markLabel = UILabel.labelWith(labelFont, text: NSLocalizedString("Mark as unread"), textColor: labelColor)

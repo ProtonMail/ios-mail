@@ -108,14 +108,10 @@ class PinCodeView : PMView {
     }
     
     @IBAction func buttonActions(sender: UIButton) {
-        
-        var numberClicked = sender.tag
-        
+        let numberClicked = sender.tag
         self.add(numberClicked)
-        
-        //pinView.shake(3, offset: 10)
-        
     }
+    
     @IBAction func deleteAction(sender: UIButton) {
         self.remove()
     }

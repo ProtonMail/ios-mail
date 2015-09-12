@@ -12,12 +12,11 @@ import Foundation
 class EmailAttachmentView: UITableView {
     
     required init() {
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRectZero, style: UITableViewStyle.Plain)
         self.backgroundColor = UIColor.whiteColor()
-        
         self.layoutIfNeeded()
     }
-
+    
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

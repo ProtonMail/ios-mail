@@ -7,17 +7,13 @@
 //
 
 import Foundation
+import CoreData
 
 
 let sharedLabelsDataService = LabelsDataService()
 
 class LabelsDataService {
-//    typealias ContactCompletionBlock = (([Contact]?, NSError?) -> Void)
-//    
-//    func addContact(#name: String, email: String, completion: ContactCompletionBlock?) {
-//        sharedAPIService.contactAdd(name: name, email: email, completion: completionBlockForContactCompletionBlock(completion))
-//    }
-//    
+
     private var managedObjectContext: NSManagedObjectContext? {
         return sharedCoreDataService.mainManagedObjectContext
     }
@@ -34,22 +30,28 @@ class LabelsDataService {
         let eventAPI = GetLabelsRequest<GetLabelsResponse>()
         eventAPI.call() { task, response, hasError in
             if response == nil {
-                //error
-                //completion?(task: task, response:nil, error: nil)
+                //TODO:: error
             } else if let labels = response?.labels {
                 //save
                 let context = sharedCoreDataService.newMainManagedObjectContext()
                 context.performBlockAndWait() {
-                    var error: NSError?
-                    var labes = GRTJSONSerialization.mergeObjectsForEntityName(Label.Attributes.entityName, fromJSONArray: labels, inManagedObjectContext: context, error: &error)
-                    if error == nil {
-                        error = context.saveUpstreamIfNeeded()
-                    } else {
-                        NSLog("\(__FUNCTION__) error: \(error)")
+                    do {
+                        let labels_out = try GRTJSONSerialization.objectsWithEntityName(Label.Attributes.entityName, fromJSONArray: labels, inContext: context)
+                        let error = context.saveUpstreamIfNeeded()
+                        if error == nil {
+                            if labels_out.count != labels.count {
+                               PMLog.D(" error: labels insert partial failed!")
+                            }
+                        } else {
+                            //TODO:: error
+                            PMLog.D("error: \(error)")
+                        }
+                    } catch let ex as NSError {
+                        PMLog.D("error: \(ex)")
                     }
                 }
             } else {
-                //error
+                //TODO:: error
             }
         }
     }
@@ -68,81 +70,15 @@ class LabelsDataService {
         if let label = response {
             let context = sharedCoreDataService.newMainManagedObjectContext()
             context.performBlockAndWait() {
-                var error: NSError?
-                var labes = GRTJSONSerialization.mergeObjectsForEntityName(Label.Attributes.entityName, fromJSONArray: [label], inManagedObjectContext: context, error: &error)
-                if error == nil {
-                    error = context.saveUpstreamIfNeeded()
-                } else {
-                    NSLog("\(__FUNCTION__) error: \(error)")
+                do {
+                    try GRTJSONSerialization.objectWithEntityName(Label.Attributes.entityName, fromJSONDictionary: label, inContext: context)
+                    if let error = context.saveUpstreamIfNeeded() {
+                        PMLog.D("error: \(error)")
+                    }
+                } catch let ex as NSError {
+                    PMLog.D("error: \(ex)")
                 }
             }
-
         }
     }
-    
-//    /// Only call from the main thread
-//    func allContacts() -> [Contact] {
-//        if let context = sharedCoreDataService.mainManagedObjectContext {
-//            return allContactsInManagedObjectContext(context)
-//        }
-//        return []
-//    }
-//    
-//    func allContactsInManagedObjectContext(context: NSManagedObjectContext) -> [Contact] {
-//        let fetchRequest = NSFetchRequest(entityName: Contact.Attributes.entityName)
-//        var error: NSError?
-//        if let contacts = context.executeFetchRequest(fetchRequest, error: &error) as? [Contact] {
-//            return contacts
-//        }
-//        
-//        NSLog("\(__FUNCTION__) error: \(error)")
-//        
-//        return []
-//    }
-//    
-//    func deleteContact(contactID: String!, completion: ContactCompletionBlock?) {
-//        if (completion != nil) {
-//            sharedAPIService.contactDelete(contactID: contactID, completion: completionBlockForContactCompletionBlock(completion))
-//        } else {
-//            sharedAPIService.contactDelete(contactID: contactID, completion: nil)
-//        }
-//    }
-//    
-
-//    
-//    func updateContact(#contactID: String, name: String, email: String, completion: ContactCompletionBlock?) {
-//        if (completion != nil) {
-//            sharedAPIService.contactUpdate(contactID: contactID, name: name, email: email, completion: completionBlockForContactCompletionBlock(completion))
-//        } else {
-//            sharedAPIService.contactUpdate(contactID: contactID, name: name, email: email, completion: nil)
-//        }
-//    }
-//    
-//    
-//    // MARK: - Private methods
-//    
-//    private func completionBlockForContactCompletionBlock(completion: ContactCompletionBlock?) -> APIService.CompletionBlock {
-//        return { task, response, error in
-//            if error == nil {
-//                self.fetchContacts(completion)
-//            } else {
-//                completion?(nil, error)
-//            }
-//        }
-//    }
-//    
-//    private func removeContacts(contacts: [Contact], notInContext context: NSManagedObjectContext, error: NSErrorPointer) {
-//        if contacts.count == 0 {
-//            return
-//        }
-//        
-//        let fetchRequest = NSFetchRequest(entityName: Contact.Attributes.entityName)
-//        fetchRequest.predicate = NSPredicate(format: "NOT (SELF IN %@)", contacts)
-//        
-//        if let deletedObjects = context.executeFetchRequest(fetchRequest, error: error) {
-//            for deletedObject in deletedObjects as! [NSManagedObject] {
-//                context.deleteObject(deletedObject)
-//            }
-//        }
-//    }
 }

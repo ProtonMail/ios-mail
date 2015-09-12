@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum EncryptTypes: Int, Printable {
+enum EncryptTypes: Int, CustomStringConvertible {
     case Plain = 0          //Plain text
     case Internal = 1       // ProtonMail encrypted emails
     case External = 2       // Encrypted from outside
@@ -60,8 +60,6 @@ enum EncryptTypes: Int, Printable {
             return .EncryptLock
         case OutPGPInline, OutPGPMime:
             return .PGPLock
-        default:
-            return .EncryptLock
         }
     }
 }

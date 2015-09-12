@@ -36,7 +36,7 @@ class SettingDetailViewController: UIViewController {
         
         doneButton = self.editButtonItem()
         doneButton.target = self;
-        doneButton.action = "doneAction:"
+        doneButton.action = #selector(SettingDetailViewController.doneAction(_:))
         doneButton.title = "Done"
         self.navigationItem.title = viewModel.getNavigationTitle()
         sectionTitleLabel.text = viewModel.getSectionTitle()
@@ -121,7 +121,7 @@ class SettingDetailViewController: UIViewController {
             return inputTextView.text
         }
         else {
-            return inputTextField.text
+            return inputTextField.text!
         }
     }
     
@@ -161,7 +161,7 @@ extension SettingDetailViewController: UITextFieldDelegate {
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        let text = textField.text as NSString
+        let text = textField.text! as NSString
         let changedText = text.stringByReplacingCharactersInRange(range, withString: string)
         
         if viewModel.getCurrentValue() == changedText && viewModel.getSwitchStatus() == self.switcher.on {

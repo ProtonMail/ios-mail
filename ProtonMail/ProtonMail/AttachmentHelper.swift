@@ -3,7 +3,7 @@
 //  ProtonMail
 //
 //  Created by Yanfeng Zhang on 6/21/15.
-//  Copyright (c) 2015 ArcTouch. All rights reserved.
+//  Copyright (c) 2015 ArcTouchÏ. All rights reserved.
 //
 
 import Foundation
@@ -34,6 +34,6 @@ public class AttachmentHelper {
 //        }
 //        
 //        let description = attachment.description ?? "unknown"
-//        NSLog("\(__FUNCTION__) unsupported attachment type \(description)")
+//        PMLog.D(" unsupported attachment type \(description)")
 //    }
 //}

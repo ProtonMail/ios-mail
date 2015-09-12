@@ -93,20 +93,20 @@ extension UIColor
         
         if hexColorCode.hasPrefix("#")
         {
-            let index   = advance(hexColorCode.startIndex, 1)
+            let index   = hexColorCode.startIndex.advancedBy(1)
             let hex     = hexColorCode.substringFromIndex(index)
             let scanner = NSScanner(string: hex)
             var hexValue: CUnsignedLongLong = 0
             
             if scanner.scanHexLongLong(&hexValue)
             {
-                if count(hex) == 6
+                if hex.characters.count == 6
                 {
                     red   = CGFloat((hexValue & 0xFF0000) >> 16) / 255.0
                     green = CGFloat((hexValue & 0x00FF00) >> 8)  / 255.0
                     blue  = CGFloat(hexValue & 0x0000FF) / 255.0
                 }
-                else if count(hex) == 8
+                else if hex.characters.count == 8
                 {
                     red   = CGFloat((hexValue & 0xFF000000) >> 24) / 255.0
                     green = CGFloat((hexValue & 0x00FF0000) >> 16) / 255.0
@@ -125,7 +125,7 @@ extension UIColor
         }
         else
         {
-            print("invalid hex code string, missing '#' as prefix")
+            PMLog.D("invalid hex code string, missing '#' as prefix")
         }
         
         self.init(red:red, green:green, blue:blue, alpha:alpha)
@@ -169,29 +169,29 @@ extension UIColor
         // Check for hash and remove the hash
         if hex.hasPrefix("#")
         {
-            hex = hex.substringFromIndex(advance(hex.startIndex, 1))
+            hex = hex.substringFromIndex(hex.startIndex.advancedBy(1))
         }
-        
-        if count(hex) == 0 {
+
+        if hex.characters.count == 0 {
             hex = "000000"
         }
-        
+
+        let hexLength = hex.characters.count
         // Check for string length
-        assert(count(hex) == 6 || count(hex) == 3)
+        assert(hexLength == 6 || hexLength == 3)
         
         // Deal with 3 character Hex strings
-        if count(hex) == 3
+        if hexLength == 3
         {
-            var redHex   = hex.substringToIndex(advance(hex.startIndex, 1))
-            var greenHex = hex.substringWithRange(Range<String.Index>(start: advance(hex.startIndex, 1), end: advance(hex.startIndex, 2)))
-            var blueHex  = hex.substringFromIndex(advance(hex.startIndex, 2))
-            
+            let redHex   = hex.substringToIndex(hex.startIndex.advancedBy(1))
+            let greenHex = hex.substringWithRange(hex.startIndex.advancedBy(1) ..< hex.startIndex.advancedBy(2))
+            let blueHex  = hex.substringFromIndex(hex.startIndex.advancedBy(2))
             hex = redHex + redHex + greenHex + greenHex + blueHex + blueHex
         }
         
-        let redHex = hex.substringToIndex(advance(hex.startIndex, 2))
-        let greenHex = hex.substringWithRange(Range<String.Index>(start: advance(hex.startIndex, 2), end: advance(hex.startIndex, 4)))
-        let blueHex = hex.substringWithRange(Range<String.Index>(start: advance(hex.startIndex, 4), end: advance(hex.startIndex, 6)))
+        let redHex = hex.substringToIndex(hex.startIndex.advancedBy(2))
+        let greenHex = hex.substringWithRange(hex.startIndex.advancedBy(2) ..< hex.startIndex.advancedBy(4))
+        let blueHex = hex.substringWithRange(hex.startIndex.advancedBy(4) ..< hex.startIndex.advancedBy(6))
         
         var redInt:   CUnsignedInt = 0
         var greenInt: CUnsignedInt = 0
@@ -220,7 +220,7 @@ extension UIColor
     
     convenience init(hex: Int, alpha: Float)
     {
-        var hexString = NSString(format: "%2X", hex)
+        let hexString = NSString(format: "%2X", hex)
         self.init(hexString: hexString as String, alpha: alpha)
     }
     

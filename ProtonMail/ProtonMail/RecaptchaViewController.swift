@@ -183,13 +183,13 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
             return false
         }
         
-        if let tmp = urlString?.rangeOfString("https://secure.protonmail.com/expired_recaptcha_response://") {
+        if let _ = urlString?.rangeOfString("https://secure.protonmail.com/expired_recaptcha_response://") {
             viewModel.setRecaptchaToken("", isExpired: true)
             resetWebviewHeight()
             webView.reload()
             return false
         }
-        else if let tmp = urlString?.rangeOfString("https://secure.protonmail.com/recaptcha_response://") {
+        else if let _ = urlString?.rangeOfString("https://secure.protonmail.com/recaptcha_response://") {
             if let token = urlString?.stringByReplacingOccurrencesOfString("https://secure.protonmail.com/recaptcha_response://", withString: "", options: NSStringCompareOptions.WidthInsensitiveSearch, range: nil) {
                 viewModel.setRecaptchaToken(token, isExpired: false)
             }
@@ -201,7 +201,7 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
     
     func webViewDidFinishLoad(webView: UIWebView) {
         if startVerify {
-            if let result = webView.stringByEvaluatingJavaScriptFromString("document.body.scrollHeight;")?.toInt()  {
+            if let _ = webView.stringByEvaluatingJavaScriptFromString("document.body.scrollHeight;") {
                 let height = CGFloat(500)
                 webViewHeightConstraint.constant = height;
             }
@@ -212,7 +212,7 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
     }
     
     func resetWebviewHeight() {
-        if let result = webView.stringByEvaluatingJavaScriptFromString("document.body.scrollHeight;")?.toInt()  {
+        if let _ = webView.stringByEvaluatingJavaScriptFromString("document.body.scrollHeight;") {
             let height = CGFloat(85)
             webViewHeightConstraint.constant = height;
         }
@@ -222,7 +222,7 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
         PMLog.D("")
     }
     
-    func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
+    func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
         PMLog.D("")
     }
     

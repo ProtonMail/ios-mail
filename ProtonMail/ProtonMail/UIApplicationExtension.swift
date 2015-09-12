@@ -27,51 +27,40 @@ extension UIApplication {
         }
         
         if MP.mobileProvision == nil {
-            let provisioningPath = NSBundle.mainBundle().pathForResource("embedded", ofType: "mobileprovision")
-            if provisioningPath == nil {
+            guard let provisioningPath = NSBundle.mainBundle().pathForResource("embedded", ofType: "mobileprovision") else {
                 MP.mobileProvision = Dictionary<String, String>();
-                //mobileProvision = [@{} retain];
                 return MP.mobileProvision;
             }
             
-            let binaryString = String(contentsOfFile: provisioningPath!, encoding: NSISOLatin1StringEncoding, error: nil)
-            if binaryString == nil {
-                return nil;
-            }
-            
-            let scanner : NSScanner = NSScanner(string: binaryString!)
-            var ok : Bool = scanner.scanUpToString("<plist" , intoString: nil)
-            if !ok {
-                PMLog.D("unable to find beginning of plist");
-                //return UIApplicationReleaseUnknown;
-            }
-            
-            var plistString : NSString?
-            ok = scanner.scanUpToString("</plist>" , intoString: &plistString)
-            if !ok {
-                PMLog.D("unable to find end of plist");
-                //return UIApplicationReleaseUnknown;
-            }
-            
-            let newStr = String("\(plistString!)</plist>")
-            
-            PMLog.D(newStr)
-            // juggle latin1 back to utf-8!
-            let plistdata_latin1 : NSData = newStr.dataUsingEncoding(NSISOLatin1StringEncoding, allowLossyConversion: false)!
-            
-            
-            var error : NSError?
-            MP.mobileProvision = NSPropertyListSerialization.propertyListWithData(plistdata_latin1, options: 0, format: nil, error: &error) as? Dictionary<String, AnyObject>
-            if (error != nil) {
+            do {
+                let binaryString = try String(contentsOfFile: provisioningPath, encoding: NSISOLatin1StringEncoding)
+                let scanner : NSScanner = NSScanner(string: binaryString)
+                var ok : Bool = scanner.scanUpToString("<plist" , intoString: nil)
+                if !ok {
+                    PMLog.D("unable to find beginning of plist");
+                    //return UIApplicationReleaseUnknown;
+                }
+                
+                var plistString : NSString?
+                ok = scanner.scanUpToString("</plist>" , intoString: &plistString)
+                if !ok {
+                    PMLog.D("unable to find end of plist");
+                    //return UIApplicationReleaseUnknown;
+                }
+                
+                let newStr = String("\(plistString!)</plist>")
+                
+                PMLog.D(newStr)
+                // juggle latin1 back to utf-8!
+                let plistdata_latin1 : NSData = newStr.dataUsingEncoding(NSISOLatin1StringEncoding, allowLossyConversion: false)!
+                
+                MP.mobileProvision = try NSPropertyListSerialization.propertyListWithData(plistdata_latin1, options: NSPropertyListReadOptions(rawValue: 0), format: nil) as? Dictionary<String, AnyObject>
+            } catch {
                 PMLog.D("error parsing extracted plist — \(error)");
-                
                 MP.mobileProvision = nil;
-                
                 return nil;
             }
-            
         }
-        
         return MP.mobileProvision
     }
     

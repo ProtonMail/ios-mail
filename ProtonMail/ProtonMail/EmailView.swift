@@ -87,14 +87,9 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     func updateEmailBody (body : String, meta : String) {
         let bundle = NSBundle.mainBundle()
         let path = bundle.pathForResource("editor", ofType: "css")
-        
-        let css = String(contentsOfFile: path!, encoding: NSUTF8StringEncoding)!
+        let css = try! String(contentsOfFile: path!, encoding: NSUTF8StringEncoding)
         let htmlString = "<style>\(css)</style>\(meta)<div id='pm-body' class='inbox-body'>\(body)</div>"
         self.contentWebView.loadHTMLString(htmlString, baseURL: nil)
-
-//        if let sub = subWebview {
-//            sub.hidden = true;
-//        }
     }
     
     func updateEmailAttachment (atts : [Attachment]?) {
@@ -155,7 +150,7 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         }
         UIView.animateWithDuration(animation ? 0.3 : 0, animations: { () -> Void in
             for subview in self.contentWebView.scrollView.subviews {
-                let sub = subview as! UIView
+                let sub = subview 
                 if sub == self.emailHeader {
                     continue
                 } else if subview is UIImageView {
@@ -187,8 +182,8 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     }
     
     func webViewDidFinishLoad(webView: UIWebView) {
-        var contentSize = webView.scrollView.contentSize
-        var viewSize = webView.bounds.size
+        let contentSize = webView.scrollView.contentSize
+        let viewSize = webView.bounds.size
         var zoom = viewSize.width / contentSize.width
         if zoom < 1 {
             zoom = zoom * self.kDefautWebViewScale - 0.05
@@ -199,23 +194,13 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         }
         self.emailLoaded = true
         self.updateContentLayout(false)
-//        UIView.animateWithDuration(0.3, animations: { () -> Void in
-////            if let subOk = self.subWebview {
-////                if self.emailLoaded {
-////                    subOk.hidden = false;
-////                }
-////            }
-//        })
-        
     }
     
     func scrollViewDidZoom(scrollView: UIScrollView) {
-        //PMLog.D("\(scrollView.contentSize)")
         self.updateContentLayout(false)
     }
-    
-    func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView!, atScale scale: CGFloat) {
-        //PMLog.D("\(scrollView.contentSize)")
+
+    func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView?, atScale scale: CGFloat) {
         self.updateContentLayout(false)
     }
 }

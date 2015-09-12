@@ -29,15 +29,15 @@ extension UIView {
     
     func shake(times: Float, offset: CGFloat) {
         
-        println(self.center);
+        PMLog.D("\(self.center)");
         UIView.animateWithDuration(1.0, animations: {
-            var shakeAnimation = CABasicAnimation(keyPath: "position")
+            let shakeAnimation = CABasicAnimation(keyPath: "position")
             shakeAnimation.duration = 0.075
             shakeAnimation.repeatCount = times
             shakeAnimation.autoreverses = true
             shakeAnimation.fromValue = NSValue(CGPoint: CGPointMake(self.center.x - offset, self.center.y))
             shakeAnimation.toValue = NSValue(CGPoint: CGPointMake(self.center.x + offset, self.center.y))
-            println(self.center);
+            PMLog.D("\(self.center)");
             self.layer.addAnimation(shakeAnimation, forKey: "position")
         })
     }

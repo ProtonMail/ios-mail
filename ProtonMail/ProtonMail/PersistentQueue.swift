@@ -90,11 +90,15 @@ class PersistentQueue {
     }
     
     /// Removes an element from the persistent queue
-    func remove(#elementID: NSUUID) -> Bool {
-        for (index, element) in enumerate(queue) {
-            if element[Key.elementID] as! NSUUID == elementID {
-                queue.removeAtIndex(index)
-                return true
+    func remove(elementID elementID: NSUUID) -> Bool {
+        PMLog.D(elementID)
+        for (index, element) in queue.enumerate() {
+            PMLog.D(element)
+            if let elementDict = element as? [String : AnyObject], kID = elementDict[Key.elementID] as? NSUUID{
+                if kID == elementID {
+                    queue.removeAtIndex(index)
+                    return true
+                }
             }
         }
         return false

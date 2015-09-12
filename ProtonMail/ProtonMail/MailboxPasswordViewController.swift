@@ -20,11 +20,10 @@ class MailboxPasswordViewController: UIViewController {
     let animationDuration: NSTimeInterval = 0.5
     let buttonDisabledAlpha: CGFloat = 0.5
     let keyboardPadding: CGFloat = 12
-
+    
     @IBOutlet weak var decryptButton: UIButton!
     @IBOutlet weak var keyboardPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var passwordTextField: UITextField!
-    //@IBOutlet weak var rememberButton: UIButton!
     @IBOutlet weak var backgroundImage: UIImageView!
 
     @IBOutlet weak var passwordManagerButton: UIButton!
@@ -55,25 +54,6 @@ class MailboxPasswordViewController: UIViewController {
         setupDecryptButton()
         
         passwordTextField.attributedPlaceholder = NSAttributedString(string: "MAILBOX PASSWORD", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#cecaca")])
-
-        
-        //rememberButton.selected = isRemembered
-//        passwordTextField.roundCorners()
-        
-//        configureNavigationBar()
-//        setNeedsStatusBarAppearanceUpdate()
-        
-        
-//        var gradient: CAGradientLayer = CAGradientLayer()
-//        gradient.frame = CGRectMake(0.0, 0.0, view.frame.size.width, view.frame.size.height)
-//        gradient.colors = [UIColor.ProtonMail.Login_Background_Gradient_Left.CGColor, UIColor.ProtonMail.Login_Background_Gradient_Right.CGColor];
-//        
-//        gradient.locations = [0.0, 1.0]
-//        
-//        gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
-//        gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
-//        
-//        backgroundImage.layer.insertSublayer(gradient, atIndex:0)
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -94,7 +74,6 @@ class MailboxPasswordViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        //navigationController?.setNavigationBarHidden(false, animated: true)
         NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
         
         if OnePasswordExtension.sharedExtension().isAppExtensionAvailable() == true {
@@ -135,7 +114,7 @@ class MailboxPasswordViewController: UIViewController {
     
     override func segueForUnwindingToViewController(toViewController: UIViewController, fromViewController: UIViewController, identifier: String?) -> UIStoryboardSegue {
         navigationController?.setNavigationBarHidden(true, animated: true)
-        return super.segueForUnwindingToViewController(toViewController, fromViewController: fromViewController, identifier: identifier)
+        return super.segueForUnwindingToViewController(toViewController, fromViewController: fromViewController, identifier: identifier)!
     }
     
     func setupDecryptButton() {
@@ -157,24 +136,11 @@ class MailboxPasswordViewController: UIViewController {
                 }
                 return
             }
-            
-            println("\(loginDictionary)")
-            
-            let username : String! = loginDictionary?[AppExtensionUsernameKey] as? String ?? ""
-            let password : String! = loginDictionary?[AppExtensionPasswordKey] as? String ?? ""
+            PMLog.D("\(loginDictionary)")
+            //_ = (loginDictionary?[AppExtensionUsernameKey] as? String ?? "").trim()
+            let password : String! = (loginDictionary?[AppExtensionPasswordKey] as? String ?? "").trim()
             
             self.passwordTextField.text = password
-            
-            //            if let generatedOneTimePassword = loginDictionary?[AppExtensionTOTPKey] as? String {
-            //                //self.oneTimePasswordTextField.hidden = false
-            //                //self.oneTimePasswordTextField.text = generatedOneTimePassword
-            //
-            //                // Important: It is recommended that you submit the OTP/TOTP to your validation server as soon as you receive it, otherwise it may expire.
-            //                let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
-            //                dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
-            //                    self.performSegueWithIdentifier("showThankYouViewController", sender: self)
-            //                })
-            //            }
             
             if !password.isEmpty {
                 self.decryptButton.enabled = !password.isEmpty
@@ -182,7 +148,6 @@ class MailboxPasswordViewController: UIViewController {
                 self.decryptPassword()
             }
         })
-        
     }
     
     func configureNavigationBar() {
@@ -206,36 +171,44 @@ class MailboxPasswordViewController: UIViewController {
                 sharedUserDataService.setMailboxPassword(password, isRemembered: self.isRemembered)
                 (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
             } else {
-                AuthCredential.setupToken(password, isRememberMailbox: self.isRemembered)
-                MBProgressHUD.showHUDAddedTo(view, animated: true)
-                sharedLabelsDataService.fetchLabels()
-                sharedUserDataService.fetchUserInfo() { info, error in
-                    MBProgressHUD.hideHUDForView(self.view, animated: true)
-                    if error != nil {
-                        let alertController = error!.alertController()
-                        alertController.addOKAction()
-                        self.presentViewController(alertController, animated: true, completion: nil)
-                        if error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
-                            self.navigationController?.popViewControllerAnimated(true)
-                        }
-                    } else if info != nil {
-                        if info!.delinquent < 3 {
-                            sharedUserDataService.setMailboxPassword(password, isRemembered: self.isRemembered)
-                            self.loadContent()
-                            self.restoreBackup();
-                            NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)
-                        } else {
-                            let alertController = NSLocalizedString("Access to this account is disabled due to non-payment. Please visit our knowledge base for more information.").alertController() //here needs change to a clickable link
-                            alertController.addAction(UIAlertAction.okAction(handler: { (action) -> Void in
+                do {
+                    try AuthCredential.setupToken(password, isRememberMailbox: self.isRemembered)
+                    MBProgressHUD.showHUDAddedTo(view, animated: true)
+                    sharedLabelsDataService.fetchLabels()
+                    sharedUserDataService.fetchUserInfo() { info, error in
+                        MBProgressHUD.hideHUDForView(self.view, animated: true)
+                        if error != nil {
+                            let alertController = error!.alertController()
+                            alertController.addOKAction()
+                            self.presentViewController(alertController, animated: true, completion: nil)
+                            if error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
                                 self.navigationController?.popViewControllerAnimated(true)
-                            }))
+                            }
+                        } else if info != nil {
+                            if info!.delinquent < 3 {
+                                sharedUserDataService.setMailboxPassword(password, isRemembered: self.isRemembered)
+                                self.loadContent()
+                                self.restoreBackup();
+                                NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)
+                            } else {
+                                let alertController = NSLocalizedString("Access to this account is disabled due to non-payment. Please visit our knowledge base for more information.").alertController() //here needs change to a clickable link
+                                alertController.addAction(UIAlertAction.okAction({ (action) -> Void in
+                                    self.navigationController?.popViewControllerAnimated(true)
+                                }))
+                                self.presentViewController(alertController, animated: true, completion: nil)
+                            }
+                        } else {
+                            let alertController = NSError.unknowError().alertController()
+                            alertController.addOKAction()
                             self.presentViewController(alertController, animated: true, completion: nil)
                         }
-                    } else {
-                        let alertController = NSError.unknowError().alertController()
-                        alertController.addOKAction()
-                        self.presentViewController(alertController, animated: true, completion: nil)
                     }
+                } catch let ex as NSError {
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    let message = (ex.userInfo["MONExceptionReason"] as? String) ?? NSLocalizedString("The mailbox password is incorrect.")
+                    let alertController = UIAlertController(title: NSLocalizedString("Incorrect password"), message: NSLocalizedString(message),preferredStyle: .Alert)
+                    alertController.addOKAction()
+                    presentViewController(alertController, animated: true, completion: nil)
                 }
             }
         } else {
@@ -247,21 +220,11 @@ class MailboxPasswordViewController: UIViewController {
     
     func restoreBackup () {
         UserTempCachedStatus.restore()
-        
     }
     
     private func loadContent() {
         self.loadContactsAfterInstall()
-        //if sharedUserDataService.isMailboxPasswordStored {
-            (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
-        //} else {
-//            if count(AuthCredential.getPrivateKey().trim()) > 10 {
-//                self.performSegueWithIdentifier(self.mailboxSegue, sender: self)
-//            }
-//            else {
-//                self.performSegueWithIdentifier(self.signUpKeySegue, sender: self)
-//            }
-       // }
+        (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
     }
     
     func loadContactsAfterInstall()
@@ -285,7 +248,7 @@ class MailboxPasswordViewController: UIViewController {
     // MARK: - Actions
     @IBOutlet weak var resetMailboxPasswordAction: UIButton!
     @IBAction func resetMBPAction(sender: AnyObject) {
-        let alert = UIAlertController(title: NSLocalizedString("Alert"), message: NSLocalizedString("To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch"), preferredStyle: .Alert)
+        let alert = UIAlertController(title: NSLocalizedString("Alert"), message: NSLocalizedString("To reset your mailbox password, please use the web version of ProtonMail at protonmail.com"), preferredStyle: .Alert)
         alert.addAction((UIAlertAction.okAction()))
         presentViewController(alert, animated: true, completion: nil)
     }
@@ -295,22 +258,19 @@ class MailboxPasswordViewController: UIViewController {
     }
     
     @IBAction func rememberButtonAction(sender: UIButton) {
-        isRemembered = !isRemembered
-        
-        isRemembered = true;
-        
-       // rememberButton.selected = isRemembered
+        self.isRemembered = !isRemembered
+        self.isRemembered = true;
     }
     
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
         passwordTextField.resignFirstResponder()
     }
-
+    
     @IBAction func backAction(sender: UIButton) {
         navigationController?.popViewControllerAnimated(true);
     }
     @IBAction func showAction(sender: UIButton) {
-        isShowpwd = !isShowpwd
+        self.isShowpwd = !isShowpwd
         sender.selected = isShowpwd
         
         if isShowpwd {
@@ -318,7 +278,7 @@ class MailboxPasswordViewController: UIViewController {
         } else {
             self.passwordTextField.secureTextEntry = true;
         }
-
+        
     }
 }
 
@@ -359,25 +319,22 @@ extension MailboxPasswordViewController: UITextFieldDelegate {
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        let text = textField.text as NSString
+        let text = textField.text as NSString!
         let changedText = text.stringByReplacingCharactersInRange(range, withString: string)
         
         if textField == passwordTextField {
             decryptButton.enabled = !changedText.isEmpty
         }
-        
         updateButton(decryptButton)
-        
         return true
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        
-        if !passwordTextField.text.isEmpty {
+        let pwd = (passwordTextField.text ?? "").trim()
+        if !pwd.isEmpty {
             decryptPassword()
         }
-        
         return true
     }
 }

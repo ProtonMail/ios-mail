@@ -207,7 +207,7 @@ class SettingTableViewController: ProtonMailViewController {
                         cell.configCell(itme.description, bottomLine: "", status: !sharedUserDataService.showShowImageView, complete: { (cell, newStatus, feedback) -> Void in
                             if let indexp = tableView.indexPathForCell(cell) {
                                 if indexPath == indexp {
-                                    let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
+                                    let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
                                     ActivityIndicatorHelper.showActivityIndicatorAtView(window)
                                     sharedUserDataService.updateAutoLoadImage(newStatus == true ? 1 : 0) { _, error in
                                         ActivityIndicatorHelper.hideActivityIndicatorAtView(window)
@@ -265,8 +265,8 @@ class SettingTableViewController: ProtonMailViewController {
                                             // The LAError.TouchIDNotAvailable case.
                                             alertString = "TouchID not available"
                                         }
-                                        println(alertString)
-                                        println(error?.localizedDescription)
+                                        PMLog.D(alertString)
+                                        PMLog.D("\(error?.localizedDescription)")
                                         alertString.alertToast()
                                         feedback(isOK: false)
                                     }
@@ -328,7 +328,7 @@ class SettingTableViewController: ProtonMailViewController {
                     cellout = cell
                 } else if item == .EnterTime {
                     var timeIndex : Int = -1
-                    if let t = userCachedStatus.lockTime.toInt() {
+                    if let t = Int(userCachedStatus.lockTime) {
                         timeIndex = t
                     }
                     
@@ -405,12 +405,13 @@ class SettingTableViewController: ProtonMailViewController {
             }
             else
             {
-                let cell = tableView.dequeueReusableCellWithIdentifier(SettingStorageCell, forIndexPath: indexPath) as! UITableViewCell
+                let cell = tableView.dequeueReusableCellWithIdentifier(SettingStorageCell, forIndexPath: indexPath) 
                 cell.selectionStyle = UITableViewCellSelectionStyle.None
                 return cell
             }
         }
-        else {let cell = tableView.dequeueReusableCellWithIdentifier(SettingStorageCell, forIndexPath: indexPath) as! UITableViewCell
+        else {
+            let cell = tableView.dequeueReusableCellWithIdentifier(SettingStorageCell, forIndexPath: indexPath)
             cell.selectionStyle = UITableViewCellSelectionStyle.None
             return cell
         }
@@ -469,9 +470,8 @@ class SettingTableViewController: ProtonMailViewController {
             case SGItems.CleanCache:
                 if !cleaning {
                     cleaning = true;
-                    
-                    let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
-                    var  hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+                    let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
+                    let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
                     hud.labelText = NSLocalizedString("Resetting message cache ...")
                     hud.removeFromSuperViewOnHide = true
                     //                hud.margin = 10
@@ -500,8 +500,8 @@ class SettingTableViewController: ProtonMailViewController {
                 if !cleaning {
                     cleaning = true;
                     
-                    let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
-                    var  hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+                    let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
+                    let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
                     hud.labelText = "Reseting message cache ..."
                     hud.removeFromSuperViewOnHide = true
                     sharedMessageDataService.cleanLocalMessageCache() { task, res, error in
@@ -527,7 +527,7 @@ class SettingTableViewController: ProtonMailViewController {
             case .EnterTime:
                 let alertController = UIAlertController(title: NSLocalizedString("Auto Lock Time"), message: nil, preferredStyle: .ActionSheet)
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
-                for (var timeIndex) in protection_auto_logout {
+                for timeIndex in protection_auto_logout {
                     var text = "\(timeIndex) Minutes"
                     if timeIndex == -1 {
                         text = "None"
@@ -556,8 +556,8 @@ class SettingTableViewController: ProtonMailViewController {
             var needsShow : Bool = false
             let alertController = UIAlertController(title: NSLocalizedString("Change default address to .."), message: nil, preferredStyle: .ActionSheet)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
-            var defaultAddress : Address? = multi_domains.getDefaultAddress()
-            for (var addr) in multi_domains {
+            let defaultAddress : Address? = multi_domains.getDefaultAddress()
+            for addr in multi_domains {
                 if addr.status == 1 && addr.receive == 1 {
                     if defaultAddress != addr {
                         needsShow = true
@@ -566,24 +566,26 @@ class SettingTableViewController: ProtonMailViewController {
                             
                             var newAddrs = Array<Address>()
                             var newOrder = Array<Int>()
-                            newAddrs.append(addr);
-                            newOrder.append(addr.send);
-                            var order = 1;
-                            addr.send = order++;
-                            for (var oldAddr) in self.multi_domains {
+                            newAddrs.append(addr)
+                            newOrder.append(addr.send)
+                            var order = 1
+                            addr.send = order
+                            order += 1
+                            for oldAddr in self.multi_domains {
                                 if oldAddr != addr {
                                     newAddrs.append(oldAddr)
                                     newOrder.append(oldAddr.send);
-                                    oldAddr.send = order++
+                                    oldAddr.send = order
+                                    order += 1
                                 }
                             }
-                            let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
+                            
+                            let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
                             ActivityIndicatorHelper.showActivityIndicatorAtView(window)
                             sharedUserDataService.updateUserDomiansOrder(newAddrs,  newOrder:newOrder) { _, _, error in
                                 tableView.reloadData();
                                 ActivityIndicatorHelper.hideActivityIndicatorAtView(window)
-                                if let error = error {
-                                } else {
+                                if error == nil {
                                     self.multi_domains = newAddrs
                                     tableView.reloadData()
                                 }
@@ -599,30 +601,25 @@ class SettingTableViewController: ProtonMailViewController {
                 presentViewController(alertController, animated: true, completion: nil)
             }
         }  else if setting_headers[indexPath.section] == SettingSections.SwipeAction {
-            
             if indexPath.row < setting_swipe_action_items.count {
-                
                 let actionItem = setting_swipe_action_items[indexPath.row]
-                
                 let alertController = UIAlertController(title: actionItem.actionDescription, message: nil, preferredStyle: .ActionSheet)
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
                 
                 let currentAction = actionItem == .left ? sharedUserDataService.swiftLeft : sharedUserDataService.swiftRight
-                for (var swipeAction) in setting_swipe_actions {
+                for swipeAction in setting_swipe_actions {
                     if swipeAction != currentAction {
                         alertController.addAction(UIAlertAction(title: swipeAction.description, style: .Default, handler: { (action) -> Void in
                             self.navigationController?.popViewControllerAnimated(true)
                             
-                            let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
+                            let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
                             ActivityIndicatorHelper.showActivityIndicatorAtView(window)
                             sharedUserDataService.updateUserSwipeAction(actionItem == .left, action: swipeAction, completion: { (task, response, error) -> Void in
                                 tableView.reloadData()
                                 ActivityIndicatorHelper.hideActivityIndicatorAtView(window)
-                                if let error = error {
-                                } else {
+                                if error == nil {
                                     tableView.reloadData()
                                 }
-                                
                             })
                         }))
                     }
@@ -673,7 +670,7 @@ class SettingTableViewController: ProtonMailViewController {
         if setting_headers[fromIndexPath.section] == SettingSections.MultiDomain {
             let val = self.multi_domains.removeAtIndex(fromIndexPath.row)
             self.multi_domains.insert(val, atIndex: toIndexPath.row)
-            let indexSet = NSIndexSet(index:fromIndexPath.section)
+            //let indexSet = NSIndexSet(index:fromIndexPath.section)
             tableView.reloadData()
         }
     }
@@ -682,7 +679,7 @@ class SettingTableViewController: ProtonMailViewController {
 
 extension SettingTableViewController {
     
-    enum SDebugItem: Int, Printable {
+    enum SDebugItem: Int, CustomStringConvertible {
         case Queue = 0
         case ErrorLogs = 1
         case CleanCache = 2
@@ -698,7 +695,7 @@ extension SettingTableViewController {
         }
     }
     
-    enum SGItems: Int, Printable {
+    enum SGItems: Int, CustomStringConvertible {
         case NotifyEmail = 0
         case DisplayName = 1
         case Signature = 2
@@ -730,7 +727,7 @@ extension SettingTableViewController {
         }
     }
     
-    enum SSwipeActionItems: Int, Printable {
+    enum SSwipeActionItems: Int, CustomStringConvertible {
         case left = 0
         case right = 1
         
@@ -753,7 +750,7 @@ extension SettingTableViewController {
         }
     }
     
-    enum SProtectionItems : Int, Printable {
+    enum SProtectionItems : Int, CustomStringConvertible {
         case TouchID = 0
         case PinCode = 1
         case UpdatePin = 2
@@ -776,7 +773,7 @@ extension SettingTableViewController {
         }
     }
     
-    enum SettingSections: Int, Printable {
+    enum SettingSections: Int, CustomStringConvertible {
         case Debug = 0
         case General = 1
         case MultiDomain = 2

@@ -19,7 +19,7 @@ public class UpdateDomainOrder<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
-        var out : [String : AnyObject] = ["Order" : self.newOrder]
+        let out : [String : AnyObject] = ["Order" : self.newOrder]
     
         //self.domains.();
         PMLog.D(self.JSONStringify(out, prettyPrinted: true))
@@ -49,7 +49,7 @@ public class UpdateNotify<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
-        var out : [String : AnyObject] = ["Notify" : self.notify]
+        let out : [String : AnyObject] = ["Notify" : self.notify]
 
         return out
     }
@@ -79,7 +79,7 @@ public class UpdateNotificationEmail<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
-        var out : [String : AnyObject] = ["Password" : self.pwd, "NotificationEmail" : self.email]
+        let out : [String : AnyObject] = ["Password" : self.pwd, "NotificationEmail" : self.email]
         return out
     }
     
@@ -106,7 +106,7 @@ public class UpdateNewsRequest<T : ApiResponse> : ApiRequest<T> {
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
         let receiveNews = self.news == true ? 1 : 0
-        var out : [String : AnyObject] = ["News" : receiveNews]
+        let out : [String : AnyObject] = ["News" : receiveNews]
         return out
     }
     
@@ -132,7 +132,7 @@ public class UpdateDisplayNameRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
-        var out : [String : AnyObject] = ["DisplayName" : displayName]
+        let out : [String : AnyObject] = ["DisplayName" : displayName]
         return out
     }
     
@@ -158,7 +158,7 @@ public class UpdateShowImagesRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
-        var out : [String : AnyObject] = ["ShowImages" : status]
+        let out : [String : AnyObject] = ["ShowImages" : status]
         return out
     }
     
@@ -184,7 +184,7 @@ public class UpdateSwiftLeftAction<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
-        var out : [String : AnyObject] = ["SwipeLeft" : self.newAction.rawValue]
+        let out : [String : AnyObject] = ["SwipeLeft" : self.newAction.rawValue]
         return out
     }
     
@@ -210,7 +210,7 @@ public class UpdateSwiftRightAction<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
-        var out : [String : AnyObject] = ["SwipeRight" : self.newAction.rawValue]
+        let out : [String : AnyObject] = ["SwipeRight" : self.newAction.rawValue]
         return out
     }
     

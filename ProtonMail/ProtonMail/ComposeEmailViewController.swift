@@ -91,7 +91,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     internal func retrieveAllContacts() {
         sharedContactDataService.getContactVOs { (contacts, error) -> Void in
             if let error = error {
-                NSLog("\(__FUNCTION__) error: \(error)")
+                PMLog.D(" error: \(error)")
             }
             self.contacts = contacts
             
@@ -99,9 +99,9 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
             self.composeView.ccContactPicker.reloadData()
             self.composeView.bccContactPicker.reloadData()
             
-            self.composeView.toContactPicker.contactCollectionView.layoutIfNeeded()
-            self.composeView.bccContactPicker.contactCollectionView.layoutIfNeeded()
-            self.composeView.ccContactPicker.contactCollectionView.layoutIfNeeded()
+            self.composeView.toContactPicker.contactCollectionView!.layoutIfNeeded()
+            self.composeView.bccContactPicker.contactCollectionView!.layoutIfNeeded()
+            self.composeView.ccContactPicker.contactCollectionView!.layoutIfNeeded()
             
             switch self.viewModel.messageAction!
             {
@@ -134,8 +134,8 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     override func viewWillAppear(animated: Bool) {
         self.updateAttachmentButton()
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: NotificationDefined.TouchStatusBar, object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "willResignActiveNotification:", name: UIApplicationWillResignActiveNotification, object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ComposeEmailViewController.statusBarHit(_:)), name: NotificationDefined.TouchStatusBar, object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ComposeEmailViewController.willResignActiveNotification(_:)), name: UIApplicationWillResignActiveNotification, object:nil)
         setupAutoSave()
     }
     
@@ -206,7 +206,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     private func updateContentLayout(animation: Bool) {
         UIView.animateWithDuration(animation ? 0.25 : 0, animations: { () -> Void in
             for subview in self.webView.scrollView.subviews {
-                let sub = subview as! UIView
+                let sub = subview 
                 if sub == self.composeView.view {
                     continue
                 } else if sub is UIImageView {
@@ -242,7 +242,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     func sendMessage () {
         if self.composeView.expirationTimeInterval > 0 {
-            if self.composeView.hasOutSideEmails && count(self.encryptionPassword) <= 0 {
+            if self.composeView.hasOutSideEmails && self.encryptionPassword.characters.count <= 0 {
                 self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kExpirationNeedsPWDError)
                 return;
             }
@@ -304,7 +304,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     // MARK: - Private methods
     private func setupAutoSave()
     {
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(120, target: self, selector: "autoSaveTimer", userInfo: nil, repeats: true)
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(120, target: self, selector: #selector(ComposeEmailViewController.autoSaveTimer), userInfo: nil, repeats: true)
         if viewModel.getActionType() != .OpenDraft {
             self.timer.fire()
         }
@@ -327,7 +327,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     private func collectDraft()
     {
         self.viewModel.collectDraft(
-            self.composeView.subject.text,
+            self.composeView.subject.text!,
             body: self.getHTML(),
             expir: self.composeView.expirationTimeInterval,
             pwd:self.encryptionPassword,
@@ -382,7 +382,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
             let multi_domains = self.viewModel.getAddresses()
             let defaultAddr = self.viewModel.getDefaultAddress()
-            for (var addr) in multi_domains {
+            for addr in multi_domains {
                 if addr.status == 1 && addr.receive == 1 && defaultAddr != addr {
                     needsShow = true
                     alertController.addAction(UIAlertAction(title: addr.email, style: .Default, handler: { (action) -> Void in
@@ -423,7 +423,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
     func composeViewDidTapNextButton(composeView: ComposeView) {
         switch(actualEncryptionStep) {
         case EncryptionStep.DefinePassword:
-            self.encryptionPassword = composeView.encryptedPasswordTextField.text ?? ""
+            self.encryptionPassword = (composeView.encryptedPasswordTextField.text ?? "").trim()
             if !self.encryptionPassword.isEmpty {
                 self.actualEncryptionStep = EncryptionStep.ConfirmPassword
                 self.composeView.showConfirmPasswordView()
@@ -431,7 +431,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
                 self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kEmptyEOPWD);
             }
         case EncryptionStep.ConfirmPassword:
-            self.encryptionConfirmPassword = composeView.encryptedPasswordTextField.text ?? ""
+            self.encryptionConfirmPassword = (composeView.encryptedPasswordTextField.text ?? "").trim()
             
             if (self.encryptionPassword == self.encryptionConfirmPassword) {
                 self.actualEncryptionStep = EncryptionStep.DefineHintPassword
@@ -442,7 +442,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
             }
             
         case EncryptionStep.DefineHintPassword:
-            self.encryptionPasswordHint = composeView.encryptedPasswordTextField.text ?? ""
+            self.encryptionPasswordHint = (composeView.encryptedPasswordTextField.text ?? "").trim()
             self.actualEncryptionStep = EncryptionStep.DefinePassword
             self.composeView.showEncryptionDone()
         default:
@@ -462,7 +462,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
             if let attachmentsViewController = viewController.viewControllers.first as? AttachmentsTableViewController {
                 attachmentsViewController.delegate = self
                 attachmentsViewController.message = viewModel.message;
-                if let attachments = attachments {
+                if let _ = attachments {
                     attachmentsViewController.attachments = viewModel.getAttachments() ?? []
                 }
             }
@@ -513,7 +513,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
         if (picker == composeView.toContactPicker) {
             var contactIndex = -1
             let selectedContacts = self.viewModel.toSelectedContacts
-            for (index, selectedContact) in enumerate(selectedContacts) {
+            for (index, selectedContact) in selectedContacts.enumerate() {
                 if (contact.email == selectedContact.email) {
                     contactIndex = index
                 }
@@ -524,7 +524,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
         } else if (picker == composeView.ccContactPicker) {
             var contactIndex = -1
             let selectedContacts = self.viewModel.ccSelectedContacts
-            for (index, selectedContact) in enumerate(selectedContacts) {
+            for (index, selectedContact) in selectedContacts.enumerate() {
                 if (contact.email == selectedContact.email) {
                     contactIndex = index
                 }
@@ -535,7 +535,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
         } else if (picker == composeView.bccContactPicker) {
             var contactIndex = -1
             let selectedContacts = self.viewModel.bccSelectedContacts
-            for (index, selectedContact) in enumerate(selectedContacts) {
+            for (index, selectedContact) in selectedContacts.enumerate() {
                 if (contact.email == selectedContact.email) {
                     contactIndex = index
                 }
@@ -610,7 +610,7 @@ extension ComposeEmailViewController: UIPickerViewDataSource {
 // MARK: - UIPickerViewDelegate
 
 extension ComposeEmailViewController: UIPickerViewDelegate {
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if (component == 0) {
             return "\(row) " + NSLocalizedString("days")
         } else {

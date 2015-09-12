@@ -27,14 +27,14 @@ class PMView: UIView {
     }
     
     required init(coder aDecoder: NSCoder) { // for using CustomView in IB
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
         self.setupView()
     }
     
     func setupView() {
         pmView = loadViewFromNib()
         pmView.frame = self.bounds
-        pmView.autoresizingMask = .FlexibleHeight | .FlexibleWidth
+        pmView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         self.addSubview(pmView)
         pmView.clipsToBounds = true;
         self.clipsToBounds = true;
@@ -44,7 +44,7 @@ class PMView: UIView {
     private func loadViewFromNib () -> UIView {
         let bundle = NSBundle(forClass: self.dynamicType )
         let nib = UINib(nibName: self.getNibName(), bundle: bundle)
-        var view = nib.instantiateWithOwner(self, options: nil)[0] as! UIView
+        let view = nib.instantiateWithOwner(self, options: nil)[0] as! UIView
         
         return view;
     }

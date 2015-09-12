@@ -33,7 +33,7 @@ public class GetLabelsResponse : ApiResponse {
     
     override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
         
-        PMLog.D(response.JSONStringify(prettyPrinted: true))
+        PMLog.D(response.JSONStringify(true))
         self.labels =  response["Labels"] as? [Dictionary<String,AnyObject>]
         
         return true
@@ -143,7 +143,7 @@ public class CreateLabelRequestResponse : ApiResponse {
     
     override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
         
-        PMLog.D(response.JSONStringify(prettyPrinted: true))
+        PMLog.D(response.JSONStringify(true))
         
         self.label = response["Label"] as? Dictionary<String,AnyObject>
        

@@ -38,7 +38,7 @@ class OnboardingViewController : UIViewController, UIScrollViewDelegate {
         for i in 0 ..< count {
             let board = onboardingList[i]
             let xPoint : CGFloat =  pageWidth * CGFloat(i)
-            var boardView = OnboardingView(frame: CGRect(x:xPoint, y: 0, width: pageWidth, height: h))
+            let boardView = OnboardingView(frame: CGRect(x:xPoint, y: 0, width: pageWidth, height: h))
             boardView.configView(board)
             self.contentScrollView.addSubview(boardView);
         }

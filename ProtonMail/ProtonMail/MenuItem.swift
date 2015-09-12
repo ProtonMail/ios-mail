@@ -62,8 +62,6 @@ enum MenuItem: String {
             image = "menu_logout"
         case feedback:
             image = "menu_feedback"
-        default:
-            image = "menu_settings"
         }
         return image;
     }
@@ -95,8 +93,6 @@ enum MenuItem: String {
             image = "menu_logout-active"
         case feedback:
             image = "menu_feedback-active"
-        default:
-            image = "menu_settings-active"
         }
         return image;
     }
@@ -122,5 +118,4 @@ enum MenuItem: String {
             return .inbox
         }
     }
-    
 }

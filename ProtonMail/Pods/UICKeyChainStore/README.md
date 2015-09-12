@@ -1,7 +1,7 @@
 # UICKeyChainStore
 [![CI Status](http://img.shields.io/travis/kishikawakatsumi/UICKeyChainStore.svg?style=flat)](https://travis-ci.org/kishikawakatsumi/UICKeyChainStore)
 [![Coverage Status](https://img.shields.io/coveralls/kishikawakatsumi/UICKeyChainStore.svg?style=flat)](https://coveralls.io/r/kishikawakatsumi/UICKeyChainStore?branch=master)
-[![Carthage Compatibility](https://img.shields.io/badge/carthage-✓-f2a77e.svg?style=flat)](https://github.com/Carthage/Carthage/)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Version](https://img.shields.io/cocoapods/v/UICKeyChainStore.svg?style=flat)](http://cocoadocs.org/docsets/UICKeyChainStore)
 [![License](https://img.shields.io/cocoapods/l/UICKeyChainStore.svg?style=flat)](http://cocoadocs.org/docsets/UICKeyChainStore)
 [![Platform](https://img.shields.io/cocoapods/p/UICKeyChainStore.svg?style=flat)](http://cocoadocs.org/docsets/UICKeyChainStore)
@@ -26,6 +26,7 @@ Try [KeychainAccess](https://github.com/kishikawakatsumi/KeychainAccess).
 - **[Support TouchID and Keychain integration (iOS 8+)](#touch_id_integration)**
 - **[Support Shared Web Credentials (iOS 8+)](#shared_web_credentials)**
 - Works on both iOS & OS X
+- Supported watchOS 2
 
 ## Usage
 
@@ -474,7 +475,7 @@ item: {
 }
 ```
 
-### Convienient class methods
+### Convenient class methods
 
 Add items using default service name (=bundle identifer).
 
@@ -516,6 +517,21 @@ UICKeyChainStore is available through [CocoaPods](http://cocoapods.org). To inst
 it, simply add the following line to your Podfile:
 
 `pod 'UICKeyChainStore'`
+
+##### For watchOS 2
+
+```ruby
+use_frameworks!
+
+target 'EampleApp' do
+  pod 'UICKeyChainStore'
+end
+
+target 'EampleApp WatchKit Extension' do
+  platform :watchos, '2.0'
+  pod 'UICKeyChainStore'
+end
+```
 
 ### Carthage
 

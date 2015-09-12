@@ -71,7 +71,7 @@ public class RegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
         if let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String {
             ver = version
         }
-        let parameters = [
+        let parameters : Dictionary<String, AnyObject> = [
             "DeviceUID" : DeviceUtil.deviceID,
             "DeviceToken" : tokenString,
             "DeviceName" : UIDevice.currentDevice().name,
@@ -81,7 +81,7 @@ public class RegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
             "Environment" : env
         ]
         
-        return nil
+        return parameters
     }
     
     override public func getIsAuthFunction() -> Bool {

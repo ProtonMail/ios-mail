@@ -17,7 +17,7 @@
 import Foundation
 
 extension MonitorSavesDataService {
-    func registerMessage(#attribute: String, handler: (Message -> Void)) {
+    func registerMessage(attribute attribute: String, handler: (Message -> Void)) {
         registerEntityName(Message.Attributes.entityName, attribute: attribute, handler: { managedObject in
             if let message = managedObject as? Message {
                 handler(message)

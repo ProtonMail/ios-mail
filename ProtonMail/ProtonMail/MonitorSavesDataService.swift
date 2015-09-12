@@ -14,8 +14,8 @@
 // the license agreement.
 //
 
-import CoreData
 import Foundation
+import CoreData
 
 let sharedMonitorSavesDataService = MonitorSavesDataService()
 
@@ -27,8 +27,8 @@ class MonitorSavesDataService {
     private var monitorQueue: [NSManagedObject : [HandlerBlock]] = [:]
     
     init() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didSaveNotification:", name: NSManagedObjectContextDidSaveNotification, object: sharedCoreDataService.mainManagedObjectContext)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "willSaveNotification:", name: NSManagedObjectContextWillSaveNotification, object: sharedCoreDataService.mainManagedObjectContext)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MonitorSavesDataService.didSaveNotification(_:)), name: NSManagedObjectContextDidSaveNotification, object: sharedCoreDataService.mainManagedObjectContext)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MonitorSavesDataService.willSaveNotification(_:)), name: NSManagedObjectContextWillSaveNotification, object: sharedCoreDataService.mainManagedObjectContext)
     }
     
     deinit {
