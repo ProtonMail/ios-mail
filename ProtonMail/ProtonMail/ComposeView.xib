@@ -60,7 +60,7 @@
                         </constraint>
                     </constraints>
                     <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                     <variation key="default">
                         <mask key="constraints">
                             <exclude reference="Fen-0r-N7C"/>
