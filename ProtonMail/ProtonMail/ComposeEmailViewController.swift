@@ -266,9 +266,12 @@ extension ComposeEmailViewController : ComposeViewDelegate {
         switch(actualEncryptionStep) {
         case EncryptionStep.DefinePassword:
             self.encryptionPassword = composeView.encryptedPasswordTextField.text ?? ""
-            self.actualEncryptionStep = EncryptionStep.ConfirmPassword
-            self.composeView.showConfirmPasswordView()
-            
+            if !self.encryptionPassword.isEmpty {
+                self.actualEncryptionStep = EncryptionStep.ConfirmPassword
+                self.composeView.showConfirmPasswordView()
+            } else {
+                self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kEmptyEOPWD);
+            }
         case EncryptionStep.ConfirmPassword:
             self.encryptionConfirmPassword = composeView.encryptedPasswordTextField.text ?? ""
             
