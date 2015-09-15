@@ -253,6 +253,9 @@
                                 <state key="normal" title="FORGOT PASSWORD?">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="fogorPasswordAction:" destination="rb7-9h-TvB" eventType="touchUpInside" id="hiL-Yl-35a"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -734,7 +737,7 @@
                                     <action selector="decryptAction:" destination="Zzb-6r-tlP" eventType="touchUpInside" id="nXs-NK-7Qm"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOp-gd-g09">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOp-gd-g09">
                                 <rect key="frame" x="160" y="372" width="280" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="1tO-uh-UUL"/>
@@ -744,6 +747,9 @@
                                 <state key="normal" title="RESET MAILBOX PASSWORD">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="resetMBPAction:" destination="Zzb-6r-tlP" eventType="touchUpInside" id="4VP-RH-LhA"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -778,6 +784,7 @@
                         <outlet property="decryptButton" destination="SVX-4t-hlE" id="AdW-AD-PXg"/>
                         <outlet property="passwordTextField" destination="8W9-bi-DrJ" id="4Jt-5b-8vY"/>
                         <outlet property="rememberButton" destination="rvA-wZ-yaO" id="Puh-u9-fY1"/>
+                        <outlet property="resetMailboxPasswordAction" destination="DOp-gd-g09" id="BSp-dM-XGH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gtd-a3-Tsl" userLabel="First Responder" sceneMemberID="firstResponder"/>

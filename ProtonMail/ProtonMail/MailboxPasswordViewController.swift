@@ -180,6 +180,12 @@ class MailboxPasswordViewController: UIViewController {
     
     
     // MARK: - Actions
+    @IBOutlet weak var resetMailboxPasswordAction: UIButton!
+    @IBAction func resetMBPAction(sender: AnyObject) {
+        let alert = UIAlertController(title: NSLocalizedString("Alert"), message: NSLocalizedString("To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch"), preferredStyle: .Alert)
+        alert.addAction((UIAlertAction.okAction()))
+        presentViewController(alert, animated: true, completion: nil)
+    }
     
     @IBAction func decryptAction(sender: UIButton) {
         decryptPassword()
