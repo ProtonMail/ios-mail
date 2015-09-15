@@ -34,7 +34,7 @@ class ComposeView: UIViewController {
     
     var pickerHeight : CGFloat = 0;
     
-    let kConfirmError : String = NSLocalizedString( "Message password doesn't match.")
+    let kConfirmError : String = NSLocalizedString( "Message password does not match.")
     let kEmptyEOPWD : String = NSLocalizedString( "Password cannot be empty.")
     let kExpirationNeedsPWDError : String = NSLocalizedString("Please set a password.")
     
