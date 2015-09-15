@@ -784,7 +784,9 @@ static NSString *_defaultService;
     query[(__bridge __strong id)kSecReturnAttributes] = (__bridge id)kCFBooleanTrue;
     
     CFArrayRef result = nil;
-    OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query,(CFTypeRef *)&result);
+    CFDictionaryRef cfquery = (CFDictionaryRef)CFBridgingRetain(query);
+    OSStatus status = SecItemCopyMatching(cfquery,(CFTypeRef *)&result);
+    CFRelease(cfquery);
     
     if (status == errSecSuccess) {
         NSArray *items = [self prettify:itemClassObject items:(__bridge NSArray *)result];
@@ -822,7 +824,9 @@ static NSString *_defaultService;
 #endif
     
     CFArrayRef result = nil;
-    OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query,(CFTypeRef *)&result);
+    CFDictionaryRef cfquery = (CFDictionaryRef)CFBridgingRetain(query);
+    OSStatus status = SecItemCopyMatching(cfquery,(CFTypeRef *)&result);
+    CFRelease(cfquery);
     
     if (status == errSecSuccess) {
         return [self prettify:itemClassObject items:(__bridge NSArray *)result];
@@ -906,9 +910,12 @@ static NSString *_defaultService;
         if (accessible) {
             item[@"accessibility"] = accessible;
         }
-        id synchronizable = attributes[(__bridge id)kSecAttrSynchronizable];
-        if (synchronizable) {
-            item[@"synchronizable"] = synchronizable;
+        
+        if (floor(NSFoundationVersionNumber) > floor(993.00)) { // iOS 7+
+            id synchronizable = attributes[(__bridge id)kSecAttrSynchronizable];
+            if (synchronizable) {
+                item[@"synchronizable"] = synchronizable;
+            }
         }
         
         [prettified addObject:item];
@@ -1202,7 +1209,9 @@ static NSString *_defaultService;
         }
     }
     
-    attributes[(__bridge __strong id)kSecAttrSynchronizable] = @(_synchronizable);
+    if (floor(NSFoundationVersionNumber) > floor(993.00)) { // iOS 7+
+        attributes[(__bridge __strong id)kSecAttrSynchronizable] = @(_synchronizable);
+    }
     
     return attributes;
 }

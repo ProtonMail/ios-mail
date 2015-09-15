@@ -1,3 +1,0 @@
-PODS_SPLUNKMINT_IOS_FRAMEWORK_SEARCH_PATHS = "$(PODS_ROOT)/SplunkMint-iOS/"
-PODS_SPLUNKMINT_IOS_HEADER_SEARCH_PATHS = $(SDKROOT)/usr/include/libz
-PODS_SPLUNKMINT_IOS_OTHER_LDFLAGS = -l"z" -framework "CoreTelephony" -framework "SplunkMint-iOS" -framework "SystemConfiguration" -framework "WebKit"

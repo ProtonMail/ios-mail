@@ -2,7 +2,7 @@
   "name": "ZSSRichTextEditor",
   "version": "0.5.2.1",
   "summary": "ZSSRichTextEditor is a beautiful Rich Text WYSIWYG Editor for iOS.",
-  "description": "`ZSSRichTextEditor` is a beautiful Rich Text `WYSIWYG Editor` for `iOS`. It includes all of the standard editor tools one would expect from a `WYSIWYG` editor as well as an amazing source view with syntax highlighting.\n",
+  "description": "`ZSSRichTextEditor` is a beautiful Rich Text `WYSIWYG Editor` for `iOS`. It includes all of the standard editor tools one would expect from a `WYSIWYG` editor as well as an amazing source view with syntax highlighting.",
   "homepage": "https://github.com/nnhubbard/ZSSRichTextEditor",
   "screenshots": [
     "https://camo.githubusercontent.com/2bcf02776f39cae560c57793adbd5eaf4fff9223/687474703a2f2f662e636c2e6c792f6974656d732f304c3363304e337531343251325330763159306f2f64656d6f312e676966",

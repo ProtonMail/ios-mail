@@ -329,13 +329,6 @@ const NSInteger GRTJSONSerializationErrorInvalidJSONObject = 0xcaca;
 	if ([value isEqual:NSNull.null]) {
 		value = nil;
 	}
-    
-    if (value != nil) {
-        NSValueTransformer *transformer = [relationship grt_JSONTransformer];
-        if (transformer) {
-            value = [transformer transformedValue:value];
-        }
-    }
 	
 	if (value != nil) {
 		NSString *entityName = relationship.destinationEntity.name;

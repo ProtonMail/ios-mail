@@ -1,9 +1,10 @@
+
 platform :ios, '8.0'
 
 inhibit_all_warnings!
 
 link_with 'ProtonMail', 'ProtonMailTests'
-pod 'AFNetworking'
+pod 'AFNetworking', '2.5.3'
 pod 'AFNetworkActivityLogger'
 pod 'Groot', :git => 'https://github.com/zhj4478/Groot.git'
 pod 'MBProgressHUD'
@@ -17,6 +18,7 @@ pod 'Masonry', '0.6.0'
 pod 'RHAddressBook', '1.1.1'
 pod 'UIColor+Hex'
 pod 'FSSyncSpinner'
+pod 'MCSwipeTableViewCell', '~> 2.1.4'
 
 post_install do | installer |
     require 'fileutils'

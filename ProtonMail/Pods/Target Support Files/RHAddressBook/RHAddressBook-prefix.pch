@@ -1,0 +1,15 @@
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#endif
+
+//
+// Prefix header for all source files of the 'RHAddressBook' target in the 'RHAddressBook' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+
+//ARC Macro Support
+    #import "RHARCSupport.h"
+#endif
+

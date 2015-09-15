@@ -27,14 +27,15 @@ PODS:
   - Groot (0.2)
   - Masonry (0.6.0)
   - MBProgressHUD (0.9.1)
+  - MCSwipeTableViewCell (2.1.4)
   - NSDate+Helper (1.0.0)
   - OpenPGP (0.0.1):
     - OpenSSL
-  - OpenSSL (1.0.201)
+  - OpenSSL (1.0.204.1)
   - RHAddressBook (1.1.1)
   - SplunkMint-iOS (4.2)
   - SWRevealViewController (2.3.0)
-  - UICKeyChainStore (2.0.4)
+  - UICKeyChainStore (2.0.6)
   - UIColor+Hex (1.0.1):
     - UIColor+Hex/NSColor (= 1.0.1)
     - UIColor+Hex/UIColor (= 1.0.1)
@@ -43,11 +44,12 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworkActivityLogger
-  - AFNetworking
+  - AFNetworking (= 2.5.3)
   - FSSyncSpinner
   - Groot (from `https://github.com/zhj4478/Groot.git`)
   - Masonry (= 0.6.0)
   - MBProgressHUD
+  - MCSwipeTableViewCell (~> 2.1.4)
   - NSDate+Helper
   - OpenPGP (from `../OpenPGP`)
   - RHAddressBook (= 1.1.1)
@@ -74,17 +76,18 @@ SPEC CHECKSUMS:
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
   FSSyncSpinner: b75c88af18a5f6ac6237a9cffdd16c026d9e5b2b
-  Groot: feb95bd5ece64f6786df281a9353a572444d834a
+  Groot: 6d793716e77896523895bd5858d4891dea76278e
   Masonry: 695dcee5cf90504cc83d85c40e0bd3f4376ed583
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
+  MCSwipeTableViewCell: 1b303e16c3a26b1982f3a68386e9b8c5fc8344c3
   NSDate+Helper: 38676f1c2bd50fcebcebf8fc281276e1f18df18c
   OpenPGP: 170a702b56a2c867eefba45fcc8f763134dea08a
-  OpenSSL: 4e990d04b14015c49c800c400b86ae44a4818a5c
+  OpenSSL: 7f853fcada78e5162c2183b4d90ebbd0aa02f5ac
   RHAddressBook: 870e9e0b34cb917b9c4c600fc3b7d5b530b23b13
   SplunkMint-iOS: 058e5297f7cc8d335aea3dcaa8111eeb0f657371
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
-  UICKeyChainStore: 69eb0c3a6f669bccf16ba88de3b9069b71501361
+  UICKeyChainStore: c5719c814e8bd69e74e4a0fc09daf8f4d6257a59
   UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
-  ZSSRichTextEditor: 56ed060d6d7a98fb6be9fceb8074ced22160349b
+  ZSSRichTextEditor: b61bdcb41a0b5609d523efadc680f0d6b022c3dd
 
-COCOAPODS: 0.36.1
+COCOAPODS: 0.38.2

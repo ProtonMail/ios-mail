@@ -1,0 +1,1 @@
+ZSSRICHTEXTEDITOR_OTHER_LDFLAGS = -framework "CoreGraphics" -framework "CoreText"

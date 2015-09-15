@@ -1,1 +1,1 @@
-../../../../../../OpenPGP/include/OpenPGP/OpenPGP.h
+../../../../../../OpenPGP/include/openpgp/OpenPGP.h

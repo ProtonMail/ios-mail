@@ -2,7 +2,7 @@
   "name": "Groot",
   "version": "0.2",
   "summary": "From JSON to Core Data and back.",
-  "description": "                   With Groot you can convert JSON dictionaries and arrays into Core Data object graphs.\n",
+  "description": "With Groot you can convert JSON dictionaries and arrays into Core Data object graphs.",
   "homepage": "https://github.com/gonzalezreal/Groot",
   "license": {
     "type": "MIT",
