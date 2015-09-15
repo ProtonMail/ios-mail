@@ -58,8 +58,11 @@ extension NSError {
     class func authInvalidGrant() -> NSError {
         return apiServiceError(
             code: APIErrorCode.AuthErrorCode.invalidGrant,
-            localizedDescription: NSLocalizedString("Invalid grant"),
-            localizedFailureReason: NSLocalizedString("The supplied credentials are invalid."))
+            localizedDescription: NSLocalizedString("Alert"),
+            localizedFailureReason: NSLocalizedString("Authentication Failed Wrong username or password"))
+        
+//            localizedDescription: NSLocalizedString("Invalid grant"),
+//            localizedFailureReason: NSLocalizedString("The supplied credentials are invalid."))
     }
     
     class func authUnableToParseToken() -> NSError {
