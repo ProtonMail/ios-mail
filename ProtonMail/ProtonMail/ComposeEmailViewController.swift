@@ -174,6 +174,14 @@ class ComposeEmailViewController: ZSSRichTextEditor {
                 return;
             }
         }
+        
+        if self.viewModel.toSelectedContacts.count <= 0 && self.viewModel.ccSelectedContacts.count <= 0 && self.viewModel.bccSelectedContacts.count <= 0 {
+            let alert = UIAlertController(title: NSLocalizedString("Alert"), message: NSLocalizedString("You need at least one recipient to send"), preferredStyle: .Alert)
+            alert.addAction((UIAlertAction.okAction()))
+            presentViewController(alert, animated: true, completion: nil)
+            return;
+        }
+        
         stopAutoSave()
         self.collectDraft()
         self.viewModel.sendMessage()
