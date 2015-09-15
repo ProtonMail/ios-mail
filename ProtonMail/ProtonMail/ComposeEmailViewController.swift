@@ -65,9 +65,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         // update content values
         updateMessageView()
         self.contacts = sharedContactDataService.allContactVOs()
-        self.composeView.toContactPicker.reloadData()
-        self.composeView.ccContactPicker.reloadData()
-        self.composeView.bccContactPicker.reloadData()
+        retrieveAllContacts()
         
         self.expirationPicker.alpha = 0.0
         self.expirationPicker.dataSource = self
@@ -78,6 +76,19 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         
         //change message as read
         self.viewModel.markAsRead();
+    }
+    
+    internal func retrieveAllContacts() {
+        sharedContactDataService.getContactVOs { (contacts, error) -> Void in
+            if let error = error {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
+            self.contacts = contacts
+            
+            self.composeView.toContactPicker.reloadData()
+            self.composeView.ccContactPicker.reloadData()
+            self.composeView.bccContactPicker.reloadData()
+        }
     }
     
     private func updateMessageView() {
