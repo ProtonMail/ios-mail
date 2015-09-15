@@ -88,6 +88,22 @@ class ComposeEmailViewController: ZSSRichTextEditor {
             self.composeView.toContactPicker.reloadData()
             self.composeView.ccContactPicker.reloadData()
             self.composeView.bccContactPicker.reloadData()
+            
+            self.composeView.toContactPicker.contactCollectionView.layoutIfNeeded()
+            self.composeView.bccContactPicker.contactCollectionView.layoutIfNeeded()
+            self.composeView.ccContactPicker.contactCollectionView.layoutIfNeeded()
+            
+            switch self.viewModel.messageAction!
+            {
+            case .Reply, .ReplyAll:
+                self.focusTextEditor();
+                //self.composeView.htmlEditor.focusTextEditor()
+                break
+            default:
+                self.composeView.toContactPicker.becomeFirstResponder()
+                break
+            }
+
         }
     }
     
@@ -101,10 +117,6 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: "touchStatusBarClick", object:nil)
         
         setupAutoSave()
-
-        self.composeView.toContactPicker.contactCollectionView.layoutIfNeeded()
-        self.composeView.bccContactPicker.contactCollectionView.layoutIfNeeded()
-        self.composeView.ccContactPicker.contactCollectionView.layoutIfNeeded()
     }
     
     override func viewWillDisappear(animated: Bool) {
