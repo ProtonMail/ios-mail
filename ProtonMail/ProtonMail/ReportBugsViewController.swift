@@ -18,7 +18,7 @@ import Foundation
 
 class ReportBugsViewController: ProtonMailViewController {
     
-    private let bottomPadding: CGFloat = 20.0
+    private let bottomPadding: CGFloat = 30.0
     
     @IBOutlet weak var sendButton: UIBarButtonItem!
     @IBOutlet weak var textView: UITextView!
