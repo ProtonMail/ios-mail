@@ -175,7 +175,6 @@ class MessageDataService {
                             self.cleanMessage()
                             context.saveUpstreamIfNeeded()
                         }
-                        PMLog.D(messagesArray);
                         var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
                         if error == nil {
                             error = context.saveUpstreamIfNeeded()
