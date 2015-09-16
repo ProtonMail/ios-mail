@@ -34,7 +34,6 @@ final class UserInfo: NSObject {
     let notify: Int
     let showImages : Int
     
-    
     required init(
         displayName: String?, maxSpace: Int64?, notificationEmail: String?,
         privateKey: String?, publicKey: String?, signature: String?,

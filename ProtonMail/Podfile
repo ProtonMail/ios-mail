@@ -4,7 +4,7 @@ platform :ios, '8.0'
 inhibit_all_warnings!
 
 link_with 'ProtonMail', 'ProtonMailTests'
-pod 'AFNetworking', '2.5.3'
+pod 'AFNetworking', '2.5.4'
 pod 'AFNetworkActivityLogger'
 pod 'Groot', :git => 'https://github.com/zhj4478/Groot.git'
 pod 'MBProgressHUD'

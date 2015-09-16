@@ -197,7 +197,8 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         stopAutoSave()
         self.collectDraft()
         self.viewModel.sendMessage()
-        
+        // show message
+        NSError.alertMessageSendingToast();
         if presentingViewController != nil {
             dismissViewControllerAnimated(true, completion: nil)
         } else {

@@ -269,31 +269,31 @@ class EmailHeaderView: UIView {
                 case 0:
                     var label : Label? = nil
                     if i <= lc {
-                        label = labels[i] as? Label
+                        label = labels[i] as Label
                     }
                     self.updateLablesDetails(LabelOne, label: label)
                 case 1:
                     var label : Label? = nil
                     if i <= lc {
-                        label = labels[i] as? Label
+                        label = labels[i] as Label
                     }
                     self.updateLablesDetails(LabelTwo, label: label)
                 case 2:
                     var label : Label? = nil
                     if i <= lc {
-                        label = labels[i] as? Label
+                        label = labels[i] as Label
                     }
                     self.updateLablesDetails(LabelThree, label: label)
                 case 3:
                     var label : Label? = nil
                     if i <= lc {
-                        label = labels[i] as? Label
+                        label = labels[i] as Label
                     }
                     self.updateLablesDetails(LabelFour, label: label)
                 case 4:
                     var label : Label? = nil
                     if i <= lc {
-                        label = labels[i] as? Label
+                        label = labels[i] as Label
                     }
                     self.updateLablesDetails(LabelFive, label: label)
                 default:

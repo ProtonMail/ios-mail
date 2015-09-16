@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// old
 class ComposeViewController : ProtonMailViewController {
     
     // MARK : private var

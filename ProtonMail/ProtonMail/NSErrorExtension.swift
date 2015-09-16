@@ -126,6 +126,17 @@ extension NSError {
        //self.presentViewController(alertController, animated: true, completion: nil)
     }
     
+    class func alertMessageSendingToast() ->Void {
+        let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
+        var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+        hud.mode = MBProgressHUDMode.Text
+        hud.detailsLabelText = "Sending Message";
+        hud.removeFromSuperViewOnHide = true
+        hud.margin = 10
+        hud.yOffset = 250.0
+        hud.hide(true, afterDelay: 0.5)
+    }
+    
     class func alertMessageSentToast() ->Void {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
         var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)

@@ -98,9 +98,11 @@ extension SWRevealViewController {
 extension AppDelegate: UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        
         Fabric.with([Crashlytics()])
-        
+//        
+//        let sharedCache = NSURLCache(memoryCapacity: 0, diskCapacity: 0, diskPath: nil)
+//        NSURLCache.setSharedURLCache(sharedCache)
+//        
         shareViewModelFactoy = ViewModelFactoryProduction()
         
         AFNetworkActivityIndicatorManager.sharedManager().enabled = true
