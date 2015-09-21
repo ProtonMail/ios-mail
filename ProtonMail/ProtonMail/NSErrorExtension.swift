@@ -166,5 +166,25 @@ extension NSError {
             localizedFailureReason: NSLocalizedString("Unknow Error!"))
     }
     
+    func isInternetError() -> Bool {
+        
+        var isInternetIssue = false
+        if let errorUserInfo = self.userInfo {
+            if let detail = errorUserInfo["com.alamofire.serialization.response.error.response"] as? NSHTTPURLResponse {
+                
+            }
+            else {
+                //                        if(error?.code == -1001) {
+                //                            // request timed out
+                //                        }
+                if self.code == -1009 || self.code == -1004 || self.code == -1001 { //internet issue
+                    isInternetIssue = true
+                }
+            }
+        }
+        
+        return isInternetIssue
+    }
+    
     
 }

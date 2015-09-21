@@ -22,6 +22,7 @@ class APIErrorCode {
         static let invalidGrant = 30
         static let unableToParseToken = 40
         static let localCacheBad = 50
+        static let networkIusse = 60
     }
     
     struct UserErrorCode {
@@ -63,6 +64,13 @@ extension NSError {
         
 //            localizedDescription: NSLocalizedString("Invalid grant"),
 //            localizedFailureReason: NSLocalizedString("The supplied credentials are invalid."))
+    }
+    
+    class func internetError() -> NSError {
+        return apiServiceError(
+            code: APIErrorCode.AuthErrorCode.networkIusse,
+            localizedDescription: NSLocalizedString("Alert"),
+            localizedFailureReason: NSLocalizedString("Unable to connect to the server"))
     }
     
     class func authUnableToParseToken() -> NSError {

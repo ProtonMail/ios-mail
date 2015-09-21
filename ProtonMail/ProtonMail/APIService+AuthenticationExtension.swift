@@ -32,11 +32,16 @@ extension APIService {
         static let errorDesc = "ErrorDescription"
     }
     
-    
-    
     func auth(username: String, password: String, completion: AuthComplete?) {
         AuthRequest<AuthResponse>(username: username, password: password).call() { task, res , hasError in
             if hasError {
+                
+                if let error = res?.error {
+                    if error.isInternetError() {
+                        completion?(task: task, hasError: NSError.internetError())
+                        return;
+                    }
+                }
                 completion?(task: task, hasError: NSError.authInvalidGrant())
             }
             else if res?.code == 1000 {
