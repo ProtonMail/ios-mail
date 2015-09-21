@@ -139,21 +139,27 @@ class SettingTableViewController: ProtonMailViewController {
             switch itme {
             case SGItems.NotifyEmail:
                 cell.RightText.text = userInfo?.notificationEmail
+                cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                 break;
             case SGItems.DisplayName:
                 cell.RightText.text = sharedUserDataService.displayName
+                 cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                 break;
             case SGItems.Signature:
                 cell.RightText.text = userInfo?.signature;
+                 cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                 break;
             case SGItems.LoginPWD:
                 cell.RightText.text = "**********"
+                 cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                 break;
             case SGItems.MBP:
                 cell.RightText.text = "**********"
+                 cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                 break;
             case SGItems.CleanCache:
                 cell.RightText.text = ""
+                 cell.accessoryType = UITableViewCellAccessoryType.None
                 break;
             }
             return cell
