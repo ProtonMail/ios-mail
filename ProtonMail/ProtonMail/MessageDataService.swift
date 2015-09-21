@@ -1300,6 +1300,8 @@ class MessageDataService {
                         // create package for internal
                         let sendMessage = self.generatMessagePackage(message, keys: response, atts:attachments, encrptOutside: isEncryptOutside)
                         
+                        let reskeys = response;
+                        
                         // parse the response for keys
                         let messageBody = self.messageBodyForMessage(message, response: response)
                         
@@ -1308,6 +1310,36 @@ class MessageDataService {
                             if error == nil {
                                 //context.deleteObject(message)MOBA-378
                                 if (message.location == MessageLocation.draft) {
+                                    
+                                    var isOutsideUser = false
+                                    if let keys = reskeys {
+                                        for (key, v) in keys{
+                                            if key == "Code" {
+                                                continue
+                                            }
+                                            if let publicKey = v as? String {
+                                                if publicKey.isEmpty {
+                                                    isOutsideUser = true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                    if isEncryptOutside {
+                                        if isOutsideUser {
+                                            message.isEncrypted = EncryptTypes.OutEnc.rawValue;
+                                        } else {
+                                            message.isEncrypted = EncryptTypes.Internal.rawValue;
+                                        }
+                                    } else {
+                                        if isOutsideUser {
+                                            message.isEncrypted = EncryptTypes.OutPlain.rawValue;
+                                        } else {
+                                            message.isEncrypted = EncryptTypes.Internal.rawValue;
+                                        }
+                                    }
+                                    
                                     message.needsUpdate = false;
                                     message.isRead = true
                                     message.location = MessageLocation.outbox

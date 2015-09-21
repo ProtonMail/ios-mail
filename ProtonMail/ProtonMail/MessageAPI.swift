@@ -63,7 +63,7 @@ public class MessageByLabelRequest<T : ApiResponse> : ApiRequest<T> {
         if(self.endTime > 0)
         {
             var newTime = self.endTime - 1
-            out["End"] = newTime
+            out["te"] = newTime
         }
         
         PMLog.D(self.JSONStringify(out, prettyPrinted: true))
