@@ -1340,6 +1340,10 @@ class MessageDataService {
                                         }
                                     }
                                     
+                                    if count(attachments) > 0 {
+                                        message.hasAttachments = true;
+                                    }
+                                    
                                     message.needsUpdate = false;
                                     message.isRead = true
                                     message.location = MessageLocation.outbox
