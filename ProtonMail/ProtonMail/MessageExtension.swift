@@ -236,7 +236,7 @@ extension String {
         //get boundary= 
         let boundarLine = "boundary=".dataUsingEncoding(NSASCIIStringEncoding)!
         let boundaryRange = data.rangeOfData(boundarLine, options: nil, range: NSMakeRange(0, len))
-        if boundaryRange.location != NSNotFound {
+        if boundaryRange.location == NSNotFound {
             return "";
         }
         
@@ -245,7 +245,7 @@ extension String {
         data = data.subdataWithRange(NSMakeRange(boundaryRange.location + boundaryRange.length, len))
         let lineEnd = "\n".dataUsingEncoding(NSASCIIStringEncoding)!;
         let nextLine = data.rangeOfData(lineEnd, options: nil, range: NSMakeRange(0, len))
-        if nextLine.location != NSNotFound {
+        if nextLine.location == NSNotFound {
             return "";
         }
         let boundary = data.subdataWithRange(NSMakeRange(0, nextLine.location))
@@ -264,7 +264,7 @@ extension String {
         let nextBoundaryLine = boundaryString.dataUsingEncoding(NSASCIIStringEncoding)!
         var firstboundaryRange = data.rangeOfData(nextBoundaryLine, options: nil, range: NSMakeRange(0, len))
         
-        if firstboundaryRange.location != NSNotFound {
+        if firstboundaryRange.location == NSNotFound {
             return "";
         }
 
@@ -283,7 +283,7 @@ extension String {
             var bodyString = NSString(data: data, encoding: NSUTF8StringEncoding) as! String
             
             let ContentEnd = data.rangeOfData(lineEnd, options: nil, range: NSMakeRange(2, len - 2))
-            if ContentEnd.location != NSNotFound {
+            if ContentEnd.location == NSNotFound {
                 break
             }
             let ContentType = data.subdataWithRange(NSMakeRange(0, ContentEnd.location))
@@ -293,7 +293,7 @@ extension String {
             bodyString = NSString(data: ContentType, encoding: NSUTF8StringEncoding) as! String
             
             let EncodingEnd = data.rangeOfData(lineEnd, options: nil, range: NSMakeRange(2, len - 2))
-            if EncodingEnd.location != NSNotFound {
+            if EncodingEnd.location == NSNotFound {
                 break
             }
             let EncodingType = data.subdataWithRange(NSMakeRange(0, EncodingEnd.location))
@@ -303,7 +303,7 @@ extension String {
             bodyString = NSString(data: EncodingType, encoding: NSUTF8StringEncoding) as! String
             
             var secondboundaryRange = data.rangeOfData(nextBoundaryLine, options: nil, range: NSMakeRange(0, len))
-            if secondboundaryRange.location != NSNotFound {
+            if secondboundaryRange.location == NSNotFound {
                 break
             }
             //get data
