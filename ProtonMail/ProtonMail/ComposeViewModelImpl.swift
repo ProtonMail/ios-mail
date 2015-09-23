@@ -162,7 +162,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
     
     override public func getHtmlBody() -> String {
         let signature = !sharedUserDataService.signature.isEmpty ? "\n\n\(sharedUserDataService.signature)" : ""
-        let htmlString = "<div><br></div><div><br></div><div><br></div><div><br></div>\(signature)<div><br></div><div><br></div>";
+        let htmlString = "<div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div>\(signature)<div><br></div><div><br></div>";
         switch messageAction!
         {
         case .OpenDraft:
