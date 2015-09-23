@@ -136,7 +136,10 @@
 		75230C241B9A3A3600EC2AC2 /* MailboxMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75230C221B9A3A3600EC2AC2 /* MailboxMessageCell.swift */; };
 		75230C251B9A3A3600EC2AC2 /* MailboxMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75230C231B9A3A3600EC2AC2 /* MailboxMessageCell.xib */; };
 		75230C271B9A430F00EC2AC2 /* TempXIB.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75230C261B9A430F00EC2AC2 /* TempXIB.xib */; };
+		7523E88E1BB1561F00126D62 /* NSData+MultipartResponses.m in Sources */ = {isa = PBXBuildFile; fileRef = 7523E88D1BB1561F00126D62 /* NSData+MultipartResponses.m */; };
+		7523E8C01BB182B300126D62 /* MultipartResponseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7523E8BF1BB182B300126D62 /* MultipartResponseParser.m */; };
 		7526AC8E1B6C4B3700E1967E /* backup.css in Resources */ = {isa = PBXBuildFile; fileRef = 7526AC8D1B6C4B3700E1967E /* backup.css */; };
+		752EEC1C1BB0A9D800770331 /* QuickViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752EEC1B1BB0A9D800770331 /* QuickViewViewController.swift */; };
 		754387D91AB35EB40003B0AC /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754387D81AB35EB40003B0AC /* SignUpViewController.swift */; };
 		754387DB1AB3A54E0003B0AC /* SignUpKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754387DA1AB3A54E0003B0AC /* SignUpKeyViewController.swift */; };
 		75484B8B1AF29EBF00B97472 /* NSDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */; };
@@ -364,7 +367,12 @@
 		75230C221B9A3A3600EC2AC2 /* MailboxMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxMessageCell.swift; sourceTree = "<group>"; };
 		75230C231B9A3A3600EC2AC2 /* MailboxMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MailboxMessageCell.xib; sourceTree = "<group>"; };
 		75230C261B9A430F00EC2AC2 /* TempXIB.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TempXIB.xib; sourceTree = "<group>"; };
+		7523E88C1BB1561F00126D62 /* NSData+MultipartResponses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+MultipartResponses.h"; sourceTree = "<group>"; };
+		7523E88D1BB1561F00126D62 /* NSData+MultipartResponses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+MultipartResponses.m"; sourceTree = "<group>"; };
+		7523E8BE1BB182B300126D62 /* MultipartResponseParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultipartResponseParser.h; sourceTree = "<group>"; };
+		7523E8BF1BB182B300126D62 /* MultipartResponseParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultipartResponseParser.m; sourceTree = "<group>"; };
 		7526AC8D1B6C4B3700E1967E /* backup.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = backup.css; sourceTree = "<group>"; };
+		752EEC1B1BB0A9D800770331 /* QuickViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickViewViewController.swift; sourceTree = "<group>"; };
 		754387D81AB35EB40003B0AC /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		754387DA1AB3A54E0003B0AC /* SignUpKeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpKeyViewController.swift; sourceTree = "<group>"; };
 		75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateExtension.swift; sourceTree = "<group>"; };
@@ -721,6 +729,7 @@
 		701704761A79185D000A90D2 /* Message Detail */ = {
 			isa = PBXGroup;
 			children = (
+				752EEC1B1BB0A9D800770331 /* QuickViewViewController.swift */,
 				07411D8D1AAA407A002A4611 /* AttachmentTableViewCell.swift */,
 				07411D8B1AAA3F1B002A4611 /* AttachmentTableViewCell.xib */,
 				07CB234B1AAE9FCB00699068 /* FullHeightWebView.swift */,
@@ -802,6 +811,10 @@
 				07009EFD1A659A8000129B07 /* Sign In */,
 				7061A3F11A6E8C4A0006D36C /* Menu */,
 				07CCCC2C1AA2962200ECA79E /* Views */,
+				7523E88C1BB1561F00126D62 /* NSData+MultipartResponses.h */,
+				7523E88D1BB1561F00126D62 /* NSData+MultipartResponses.m */,
+				7523E8BE1BB182B300126D62 /* MultipartResponseParser.h */,
+				7523E8BF1BB182B300126D62 /* MultipartResponseParser.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1214,6 +1227,7 @@
 				756489981B7F2AB3007EA207 /* MailboxViewModel.swift in Sources */,
 				70C9133D1A6D83FA002CBE61 /* UIColor+ProtonMail.swift in Sources */,
 				07CF61981A8AE5AA00ED38AE /* MonitorSavesDataService.swift in Sources */,
+				752EEC1C1BB0A9D800770331 /* QuickViewViewController.swift in Sources */,
 				073FD9321A71C60900EB0CAF /* UserDataService.swift in Sources */,
 				07CCCC301AA4E26000ECA79E /* NSCoderExtension.swift in Sources */,
 				754CD4881AB809D60084C54A /* SettingTableViewController.swift in Sources */,
@@ -1250,6 +1264,7 @@
 				7567B0771B3387F700A72A1E /* APIServiceRequest.swift in Sources */,
 				075E3DEC1A5F4ECF00E001A7 /* AppDelegate.swift in Sources */,
 				7567B07B1B338EB900A72A1E /* MessageHelper.swift in Sources */,
+				7523E8C01BB182B300126D62 /* MultipartResponseParser.m in Sources */,
 				759339C01ABB45C700535F1B /* ViewModelFactory.swift in Sources */,
 				75F9A1121AFD705B007229C7 /* UIDeviceExtension.swift in Sources */,
 				07B1237A1AB8CE6A006EA38C /* AttachmentsViewController.swift in Sources */,
@@ -1275,6 +1290,7 @@
 				076758781AA0EB6900F9AC9C /* LoadingView.swift in Sources */,
 				701DDE901AA64DEB0038149C /* MBContactCollectionView.m in Sources */,
 				07CAB8041A894A3B00C5E347 /* MessageDetailView.swift in Sources */,
+				7523E88E1BB1561F00126D62 /* NSData+MultipartResponses.m in Sources */,
 				07CAB8031A894A3B00C5E347 /* MessageDetailViewController.swift in Sources */,
 				7564898E1B7DBE64007EA207 /* LabelAPI.swift in Sources */,
 				75E652B41B82AC0D0084DDF8 /* LabelsViewController.swift in Sources */,

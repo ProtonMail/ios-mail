@@ -52,7 +52,6 @@ class SignInViewController: UIViewController {
         super.init(coder: aDecoder)
     }
     
-    
     struct Notification {
         static let didSignOut = "UserDataServiceDidSignOutNotification"
         static let didSignIn = "UserDataServiceDidSignInNotification"
@@ -89,6 +88,16 @@ class SignInViewController: UIViewController {
       
         backgroundImage.layer.insertSublayer(gradient, atIndex:0)
     }
+    
+    override func shouldAutorotate() -> Bool {
+        return false
+    }
+    
+    override func supportedInterfaceOrientations() -> Int {
+        return  Int(UIInterfaceOrientationMask.Portrait.rawValue)
+    }
+    
+    
     
     @IBAction func showPasswordAction(sender: UIButton) {
         isShowpwd = !isShowpwd

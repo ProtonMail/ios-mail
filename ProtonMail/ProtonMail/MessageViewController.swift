@@ -8,6 +8,7 @@
 
 import UIKit
 import QuickLook
+import Foundation
 
 
 class MessageViewController: ProtonMailViewController {
@@ -199,8 +200,9 @@ class MessageViewController: ProtonMailViewController {
                 var error: NSError?
                 PMLog.D(self.message!.body);
                 bodyText = self.message.decryptBodyIfNeeded(&error) ?? NSLocalizedString("Unable to decrypt message.")
-            }
-            
+                
+                            }
+
             let meta : String = "<meta name=\"viewport\" content=\"width=600\">\n"
             self.emailView?.updateEmailBody(bodyText, meta: self.message.isDetailDownloaded ? "" : meta)
         }
@@ -215,6 +217,8 @@ class MessageViewController: ProtonMailViewController {
             }
         }
     }
+    
+    
 }
 
 // MARK
@@ -251,7 +255,7 @@ extension MessageViewController : EmailHeaderActionsProtocol {
             
             decryptData!.writeToURL(tempFileUri!, atomically: true)
             
-            let previewQL = QLPreviewController()
+            let previewQL = QuickViewViewController()
             previewQL.dataSource = self
             self.presentViewController(previewQL, animated: true, completion: nil)
         }

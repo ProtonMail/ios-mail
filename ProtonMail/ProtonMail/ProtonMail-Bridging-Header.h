@@ -33,6 +33,8 @@
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <UIColor+Hex/UIColor+Hex.h>
 #import <ZSSRichTextEditor.h>
+#import "NSData+MultipartResponses.h"
+#import "MultipartResponseParser.h"
 
 
 #endif

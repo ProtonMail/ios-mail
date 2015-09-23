@@ -134,7 +134,14 @@ extension Message {
         if !checkIsEncrypted() {
             return body
         } else {
-            return decryptBody(error)
+            var body = decryptBody(error)
+            if body == nil {
+                return body
+            }
+            if isEncrypted == 8 {
+                body = body?.multipartGetHtmlContent () ?? ""
+            }
+            return body
         }
     }
     
@@ -212,9 +219,116 @@ extension Message {
         //                    NSLog("\(__FUNCTION__) unsupported attachment type \(description)")
         //                }
         //            }
-        
         return newMessage
     }
+}
+
+extension String {
+    
+    public func multipartGetHtmlContent() -> String {
+        //PMLog.D(self)
+        let textplainType = "text/plain".dataUsingEncoding(NSUTF8StringEncoding)!
+        let htmlType = "text/html".dataUsingEncoding(NSUTF8StringEncoding)!
+        
+        var data = self.dataUsingEncoding(NSUTF8StringEncoding)!
+        var len = data.length as Int;
+        
+        //get boundary= 
+        let boundarLine = "boundary=".dataUsingEncoding(NSASCIIStringEncoding)!
+        let boundaryRange = data.rangeOfData(boundarLine, options: nil, range: NSMakeRange(0, len))
+        if boundaryRange.location != NSNotFound {
+            return "";
+        }
+        
+        //new len
+        len = len - (boundaryRange.location + boundaryRange.length);
+        data = data.subdataWithRange(NSMakeRange(boundaryRange.location + boundaryRange.length, len))
+        let lineEnd = "\n".dataUsingEncoding(NSASCIIStringEncoding)!;
+        let nextLine = data.rangeOfData(lineEnd, options: nil, range: NSMakeRange(0, len))
+        if nextLine.location != NSNotFound {
+            return "";
+        }
+        let boundary = data.subdataWithRange(NSMakeRange(0, nextLine.location))
+        var boundaryString = NSString(data: boundary, encoding: NSUTF8StringEncoding) as! String
+        boundaryString = boundaryString.stringByReplacingOccurrencesOfString("\"", withString: "")
+        boundaryString = boundaryString.stringByReplacingOccurrencesOfString("\r", withString: "")
+        boundaryString = "--" + boundaryString;
+        
+        len = len - (nextLine.location + nextLine.length);
+        data = data.subdataWithRange(NSMakeRange(nextLine.location + nextLine.length, len))
+
+        var html : String = "";
+        var plaintext : String = "";
+        
+        var count = 0;
+        let nextBoundaryLine = boundaryString.dataUsingEncoding(NSASCIIStringEncoding)!
+        var firstboundaryRange = data.rangeOfData(nextBoundaryLine, options: nil, range: NSMakeRange(0, len))
+        
+        if firstboundaryRange.location != NSNotFound {
+            return "";
+        }
+
+        while true {
+            if count >= 10 {
+                break;
+            }
+            count++;
+            len = len - (firstboundaryRange.location + firstboundaryRange.length) - 1;
+            data = data.subdataWithRange(NSMakeRange(1 + firstboundaryRange.location + firstboundaryRange.length, len))
+            
+            if data.subdataWithRange(NSMakeRange(0 , 1)).isEqualToData("-".dataUsingEncoding(NSASCIIStringEncoding)!) {
+                break;
+            }
+            
+            var bodyString = NSString(data: data, encoding: NSUTF8StringEncoding) as! String
+            
+            let ContentEnd = data.rangeOfData(lineEnd, options: nil, range: NSMakeRange(2, len - 2))
+            if ContentEnd.location != NSNotFound {
+                break
+            }
+            let ContentType = data.subdataWithRange(NSMakeRange(0, ContentEnd.location))
+            len = len - (ContentEnd.location + ContentEnd.length);
+            data = data.subdataWithRange(NSMakeRange(ContentEnd.location + ContentEnd.length, len))
+
+            bodyString = NSString(data: ContentType, encoding: NSUTF8StringEncoding) as! String
+            
+            let EncodingEnd = data.rangeOfData(lineEnd, options: nil, range: NSMakeRange(2, len - 2))
+            if EncodingEnd.location != NSNotFound {
+                break
+            }
+            let EncodingType = data.subdataWithRange(NSMakeRange(0, EncodingEnd.location))
+            len = len - (EncodingEnd.location + EncodingEnd.length);
+            data = data.subdataWithRange(NSMakeRange(EncodingEnd.location + EncodingEnd.length, len))
+    
+            bodyString = NSString(data: EncodingType, encoding: NSUTF8StringEncoding) as! String
+            
+            var secondboundaryRange = data.rangeOfData(nextBoundaryLine, options: nil, range: NSMakeRange(0, len))
+            if secondboundaryRange.location != NSNotFound {
+                break
+            }
+            //get data
+            
+            var text = data.subdataWithRange(NSMakeRange(1, secondboundaryRange.location - 1))
+            let plainFound = ContentType.rangeOfData(textplainType, options: nil, range: NSMakeRange(0, ContentType.length))
+            if plainFound.location != NSNotFound {
+                plaintext = NSString(data: text, encoding: NSUTF8StringEncoding) as! String;
+            }
+            
+            let htmlFound = ContentType.rangeOfData(htmlType, options: nil, range: NSMakeRange(0, ContentType.length))
+            if htmlFound.location != NSNotFound {
+                html = NSString(data: text, encoding: NSUTF8StringEncoding) as! String;
+            }
+            
+            
+            // check html or plain text
+            bodyString = NSString(data: text, encoding: NSUTF8StringEncoding) as! String
+            
+            firstboundaryRange = secondboundaryRange
+        }
+        
+        return (html.isEmpty ? plaintext : html).ln2br();
+    }
+
 }
 
 
