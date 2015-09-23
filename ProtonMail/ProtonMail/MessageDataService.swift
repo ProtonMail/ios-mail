@@ -1234,7 +1234,7 @@ class MessageDataService {
                     
                     var params = [
                         "Filename":attachment.fileName,
-                        "MessageID" : attachment.message.messageID,
+                        "MessageID" :  attachment.message.messageID ?? "",
                         "MIMEType" : attachment.mimeType,
                     ]
                     
