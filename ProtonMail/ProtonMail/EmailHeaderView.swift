@@ -69,8 +69,8 @@ class EmailHeaderView: UIView {
     
     private let kEmailHeaderViewHeight: CGFloat = 70.0
     private let kEmailTitleViewMarginRight: CGFloat = -8.0
-    private let kEmailFavoriteButtonHeight: CGFloat = 40
-    private let kEmailFavoriteButtonWidth: CGFloat = 40
+    private let kEmailFavoriteButtonHeight: CGFloat = 44
+    private let kEmailFavoriteButtonWidth: CGFloat = 52
     private let kEmailRecipientsViewMarginTop: CGFloat = 6.0
     private let kEmailTimeViewMarginTop: CGFloat = 6.0
     private let kEmailDetailToWidth: CGFloat = 40.0
@@ -391,9 +391,10 @@ class EmailHeaderView: UIView {
         self.emailFavoriteButton.setImage(UIImage(named: "mail_starred")!, forState: .Normal)
         self.emailFavoriteButton.setImage(UIImage(named: "mail_starred-active")!, forState: .Selected)
         self.emailFavoriteButton.selected = self.starred
-        self.emailFavoriteButton.contentVerticalAlignment = UIControlContentVerticalAlignment.Top
-        self.emailFavoriteButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Right
+        self.emailFavoriteButton.contentVerticalAlignment = UIControlContentVerticalAlignment.Center
+        self.emailFavoriteButton.contentHorizontalAlignment = UIControlContentHorizontalAlignment.Center
         self.emailHeaderView.addSubview(emailFavoriteButton)
+        
         
         // details view
         self.emailDetailView = UIView()
@@ -508,7 +509,7 @@ class EmailHeaderView: UIView {
             if (self.attachmentCount > 0) {
                 make.right.equalTo()(self.emailHasAttachmentsImageView.mas_left).with().offset()(self.kEmailIsEncryptedImageViewMarginRight)
             } else {
-                make.right.equalTo()(self.emailHeaderView)
+                make.right.equalTo()(self.emailHeaderView).offset()(-16)
             }
             
             make.bottom.equalTo()(self.emailAttachmentsAmount)
@@ -586,9 +587,9 @@ class EmailHeaderView: UIView {
     private func makeHeaderConstraints() {
         emailHeaderView.mas_updateConstraints { (make) -> Void in
             make.removeExisting = true
-            make.top.equalTo()(self).with().offset()(self.kEmailHeaderViewMarginTop)
+            make.top.equalTo()(self).with().offset()(0)
             make.left.equalTo()(self).with().offset()(self.kEmailHeaderViewMarginLeft)
-            make.right.equalTo()(self).with().offset()(self.kEmailHeaderViewMarginRight)
+            make.right.equalTo()(self).with().offset()(0)
             make.bottom.equalTo()(self.emailDetailView)
         }
         emailFavoriteButton.mas_updateConstraints { (make) -> Void in
@@ -602,7 +603,7 @@ class EmailHeaderView: UIView {
         emailTitle.mas_updateConstraints { (make) -> Void in
             make.removeExisting = true
             make.left.equalTo()(self.emailHeaderView)
-            make.top.equalTo()(self.emailHeaderView)
+            make.top.equalTo()(self.emailHeaderView).offset()(self.kEmailHeaderViewMarginTop)
             make.right.equalTo()(self.emailFavoriteButton.mas_left).with().offset()(self.kEmailTitleViewMarginRight)
         }
         
@@ -735,7 +736,7 @@ class EmailHeaderView: UIView {
         }
 
         emailAttachmentsAmount.mas_makeConstraints { (make) -> Void in
-            make.right.equalTo()(self.emailHeaderView)
+            make.right.equalTo()(self.emailHeaderView).offset()(-16)
             make.bottom.equalTo()(self.emailDetailButton)
             make.height.equalTo()(self.emailAttachmentsAmount.frame.height)
             make.width.equalTo()(self.emailAttachmentsAmount.frame.width)
