@@ -17,6 +17,9 @@ enum EncryptTypes: Int, Printable {
     case DraftStoreEnc = 5  // Draft
     case OutEncReply = 6    // Encrypted for outside reply
     
+    case OutPGPInline = 7    // out side pgp inline
+    case OutPGPMime = 8    // out pgp mime
+    
     var description : String {
         switch(self){
         case Plain:
@@ -33,6 +36,10 @@ enum EncryptTypes: Int, Printable {
             return NSLocalizedString("Draft")
         case OutEncReply:
             return NSLocalizedString("Encrypted for outside reply")
+        case OutPGPInline:
+            return NSLocalizedString("Encrypted from outside pgp inline")
+        case OutPGPMime:
+            return NSLocalizedString("Encrypted from outside pgp mime")
         }
     }
     

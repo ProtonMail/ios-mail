@@ -254,12 +254,19 @@ class EmailHeaderView: UIView {
         let tm = self.date.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? "";
         self.emailDetailDateLabel.text = "Date: \(tm)"
         
-        if encType == EncryptTypes.Internal {
+        if encType == EncryptTypes.OutPGPInline || encType == EncryptTypes.OutPGPMime {
+            self.emailIsEncryptedImageView.image = UIImage(named: "mail_lock-pgpmime");
             self.emailIsEncryptedImageView.highlighted = false;
         } else {
-            self.emailIsEncryptedImageView.highlighted = true;
+            self.emailIsEncryptedImageView.image = UIImage(named: "mail_lock");
+            self.emailIsEncryptedImageView.highlighted = false;
+            if encType == EncryptTypes.Internal {
+                self.emailIsEncryptedImageView.highlighted = false;
+            } else {
+                self.emailIsEncryptedImageView.highlighted = true;
+            }
         }
-        
+
         self.labels = labels;
         
         if let labels = labels {
@@ -446,7 +453,7 @@ class EmailHeaderView: UIView {
         self.configureEmailDetailDateLabel()
         
         self.emailIsEncryptedImageView = UIImageView(image: UIImage(named: "mail_lock"))
-        self.emailIsEncryptedImageView.highlightedImage = UIImage(named: "mail_lock_dark")
+        self.emailIsEncryptedImageView.highlightedImage = UIImage(named: "mail_lock-outside")
         self.emailIsEncryptedImageView.contentMode = UIViewContentMode.Center
         self.emailIsEncryptedImageView.sizeToFit()
         self.emailHeaderView.addSubview(emailIsEncryptedImageView)
