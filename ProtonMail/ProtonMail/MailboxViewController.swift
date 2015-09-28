@@ -306,9 +306,9 @@ class MailboxViewController: ProtonMailViewController {
                         mailboxCell.hideCheckboxOnLeftSide()
                     }
                     
-                   mailboxCell.defaultColor = UIColor.lightGrayColor()
+                    mailboxCell.defaultColor = UIColor.lightGrayColor()
                     let crossView = UILabel();
-                    crossView.text = "Trash";
+                    crossView.text = self.viewModel.getSwipeEditTitle()
                     crossView.sizeToFit()
                     crossView.textColor = UIColor.whiteColor()
                     
@@ -316,24 +316,29 @@ class MailboxViewController: ProtonMailViewController {
                     archiveVIew.text = "Archive";
                     archiveVIew.sizeToFit()
                     archiveVIew.textColor = UIColor.whiteColor()
-
-                    mailboxCell.setSwipeGestureWithView(archiveVIew, color: UIColor.greenColor(), mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State1 ) { (cell, state, mode) -> Void in
-                        if let indexp = self.tableView.indexPathForCell(cell) {
-                            self.archiveMessageForIndexPath(indexp)
-                        } else {
-                            self.tableView.reloadData()
+                    
+                    if !self.viewModel.isArchive() {
+                        mailboxCell.setSwipeGestureWithView(archiveVIew, color: UIColor.greenColor(), mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State1 ) { (cell, state, mode) -> Void in
+                            if let indexp = self.tableView.indexPathForCell(cell) {
+                                self.archiveMessageForIndexPath(indexp)
+                                if self.viewModel.showLocation() {
+                                    mailboxCell.swipeToOriginWithCompletion(nil)
+                                }
+                            } else {
+                                self.tableView.reloadData()
+                            }
                         }
-
                     }
-
                     mailboxCell.setSwipeGestureWithView(crossView, color: UIColor.redColor(), mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State3  ) { (cell, state, mode) -> Void in
                         if let indexp = self.tableView.indexPathForCell(cell) {
                             self.deleteMessageForIndexPath(indexp)
+                            if self.viewModel.showLocation() {
+                                mailboxCell.swipeToOriginWithCompletion(nil)
+                            }
                         } else {
                             self.tableView.reloadData()
                         }
                     }
-                    
                 }
             }
         }
@@ -726,12 +731,12 @@ extension MailboxViewController: UITableViewDataSource {
         return mailboxCell
     }
     
-//    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-//        if (editingStyle == .Delete) {
-//            deleteMessageForIndexPath(indexPath)
-//        }
-//    }
-//    
+    //    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    //        if (editingStyle == .Delete) {
+    //            deleteMessageForIndexPath(indexPath)
+    //        }
+    //    }
+    //
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count = fetchedResultsController?.numberOfRowsInSection(section) ?? 0
         return count
@@ -806,17 +811,17 @@ extension MailboxViewController: UITableViewDelegate {
         return kMailboxCellHeight
     }
     
-//    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
-//        
-//        let title = viewModel.getSwipeEditTitle()
-//        let trashed: UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: title) { (rowAction, indexPath) -> Void in
-//            self.deleteMessageForIndexPath(indexPath)
-//        }
-//        
-//        trashed.backgroundColor = UIColor.ProtonMail.Red_D74B4B
-//        
-//        return [trashed]
-//    }
+    //    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+    //
+    //        let title = viewModel.getSwipeEditTitle()
+    //        let trashed: UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: title) { (rowAction, indexPath) -> Void in
+    //            self.deleteMessageForIndexPath(indexPath)
+    //        }
+    //
+    //        trashed.backgroundColor = UIColor.ProtonMail.Red_D74B4B
+    //
+    //        return [trashed]
+    //    }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // verify whether the user is checking messages or not

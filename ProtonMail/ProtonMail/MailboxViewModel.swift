@@ -42,6 +42,10 @@ public class MailboxViewModel {
         return false
     }
     
+    public func isArchive() -> Bool {
+        return false
+    }
+    
     public func isDelete () -> Bool {
         return false
     }
