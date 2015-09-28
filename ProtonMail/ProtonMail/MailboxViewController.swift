@@ -432,12 +432,12 @@ class MailboxViewController: ProtonMailViewController {
             self.refreshControl.beginRefreshing()
             let updateTime = viewModel.lastUpdateTime()
             var complete : APIService.CompletionBlock = { (task, messages, error) -> Void in
+                self.fetchingMessage = false
                 
                 if self.fetchingStopped! == true {
                     return;
                 }
                 
-                self.fetchingMessage = false
                 if let error = error {
                     NSLog("error: \(error)")
                 }
