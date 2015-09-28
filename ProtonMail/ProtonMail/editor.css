@@ -26,17 +26,18 @@ html {
 }
 
 button,html,input,select,textarea {
-    font-family: sans-serif;
+    font-family: "Roboto-Regular",sans-serif;
 }
 
 body {
-    font: 1.4em/1.6em normal Helvetica,Arial,sans-serif;
+    font: 1.4em/1.6em normal "Roboto-Regular",Helvetica,Arial,sans-serif;
     font-weight: 400;
     margin: 0;
     width: 100%;
     box-sizing: border-box;
     padding: 1rem;
     word-break: break-word;
+    color: #505061
 }
 
 div,
