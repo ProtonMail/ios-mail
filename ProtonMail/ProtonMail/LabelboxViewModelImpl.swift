@@ -42,6 +42,14 @@ public class LabelboxViewModelImpl : MailboxViewModel {
             NSLog("\(__FUNCTION__) error: \(error)")
         }
     }
+    
+    public override func archiveMessage(msg: Message) {
+        msg.location = .archive
+        msg.needsUpdate = true
+        if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
+            NSLog("\(__FUNCTION__) error: \(error)")
+        }
+    }
 
     public override func getFetchedResultsController() -> NSFetchedResultsController? {
         let fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLabels(self.label)

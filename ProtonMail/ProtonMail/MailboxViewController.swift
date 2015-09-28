@@ -305,11 +305,45 @@ class MailboxViewController: ProtonMailViewController {
                     else {
                         mailboxCell.hideCheckboxOnLeftSide()
                     }
+                    
+                   mailboxCell.defaultColor = UIColor.lightGrayColor()
+                    let crossView = UILabel();
+                    crossView.text = "Trash";
+                    crossView.sizeToFit()
+                    crossView.textColor = UIColor.whiteColor()
+                    
+                    let archiveVIew = UILabel();
+                    archiveVIew.text = "Archive";
+                    archiveVIew.sizeToFit()
+                    archiveVIew.textColor = UIColor.whiteColor()
+
+                    mailboxCell.setSwipeGestureWithView(archiveVIew, color: UIColor.greenColor(), mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State1 ) { (cell, state, mode) -> Void in
+                        if let indexp = self.tableView.indexPathForCell(cell) {
+                            self.archiveMessageForIndexPath(indexp)
+                        } else {
+                            self.tableView.reloadData()
+                        }
+
+                    }
+
+                    mailboxCell.setSwipeGestureWithView(crossView, color: UIColor.redColor(), mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State3  ) { (cell, state, mode) -> Void in
+                        if let indexp = self.tableView.indexPathForCell(cell) {
+                            self.deleteMessageForIndexPath(indexp)
+                        } else {
+                            self.tableView.reloadData()
+                        }
+                    }
+                    
                 }
             }
         }
     }
     
+    private func archiveMessageForIndexPath(indexPath: NSIndexPath) {
+        if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+            viewModel.archiveMessage(message)
+        }
+    }
     private func deleteMessageForIndexPath(indexPath: NSIndexPath) {
         if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
             viewModel.deleteMessage(message)
@@ -692,12 +726,12 @@ extension MailboxViewController: UITableViewDataSource {
         return mailboxCell
     }
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if (editingStyle == .Delete) {
-            deleteMessageForIndexPath(indexPath)
-        }
-    }
-    
+//    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+//        if (editingStyle == .Delete) {
+//            deleteMessageForIndexPath(indexPath)
+//        }
+//    }
+//    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count = fetchedResultsController?.numberOfRowsInSection(section) ?? 0
         return count
@@ -772,17 +806,17 @@ extension MailboxViewController: UITableViewDelegate {
         return kMailboxCellHeight
     }
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
-        
-        let title = viewModel.getSwipeEditTitle()
-        let trashed: UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: title) { (rowAction, indexPath) -> Void in
-            self.deleteMessageForIndexPath(indexPath)
-        }
-        
-        trashed.backgroundColor = UIColor.ProtonMail.Red_D74B4B
-        
-        return [trashed]
-    }
+//    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+//        
+//        let title = viewModel.getSwipeEditTitle()
+//        let trashed: UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: title) { (rowAction, indexPath) -> Void in
+//            self.deleteMessageForIndexPath(indexPath)
+//        }
+//        
+//        trashed.backgroundColor = UIColor.ProtonMail.Red_D74B4B
+//        
+//        return [trashed]
+//    }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // verify whether the user is checking messages or not

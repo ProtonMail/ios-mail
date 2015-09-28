@@ -34,6 +34,10 @@ public class MailboxViewModel {
         fatalError("This method must be overridden")
     }
     
+    public func archiveMessage(msg: Message) {
+        fatalError("This method must be overridden")
+    }
+    
     public func isDrafts() -> Bool {
         return false
     }

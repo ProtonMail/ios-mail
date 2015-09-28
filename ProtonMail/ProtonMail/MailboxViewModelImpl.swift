@@ -64,6 +64,14 @@ public class MailboxViewModelImpl : MailboxViewModel {
         }
     }
     
+    public override func archiveMessage(msg: Message) {
+        msg.location = .archive
+        msg.needsUpdate = true
+        if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
+            NSLog("\(__FUNCTION__) error: \(error)")
+        }
+    }
+    
     public override func isDrafts() -> Bool {
         return self.location == MessageLocation.draft
     }

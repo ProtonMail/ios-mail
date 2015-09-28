@@ -35,6 +35,7 @@
 #import <ZSSRichTextEditor.h>
 #import "NSData+MultipartResponses.h"
 #import "MultipartResponseParser.h"
+#import <MCSwipeTableViewCell.h>
 
 
 #endif

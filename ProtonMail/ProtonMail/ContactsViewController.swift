@@ -41,14 +41,14 @@ class ContactsViewController: ProtonMailViewController {
         searchDisplayController?.searchResultsTableView.registerNib(UINib(nibName: "ContactsTableViewCell", bundle: NSBundle.mainBundle()), forCellReuseIdentifier: kContactCellIdentifier)
         
         refreshControl = UIRefreshControl()
-        refreshControl.backgroundColor = UIColor.ProtonMail.Blue_475F77
+        refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
         refreshControl.addTarget(self, action: "retrieveAllContacts", forControlEvents: UIControlEvents.ValueChanged)
         
         tableView.addSubview(self.refreshControl)
         tableView.dataSource = self
         tableView.delegate = self
         
-        refreshControl.tintColor = UIColor.whiteColor()
+        refreshControl.tintColor = UIColor.grayColor()
         refreshControl.tintColorDidChange()
 
         contacts = sharedContactDataService.allContactVOs()
@@ -140,7 +140,6 @@ extension ContactsViewController: UITableViewDataSource {
         return cell
     }
 }
-
 
 // MARK: - UITableViewDelegate
 
