@@ -12,11 +12,26 @@ import QuickLook
 
 class QuickViewViewController: QLPreviewController {
 
+    var isPresented = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
+    
+    override func viewWillDisappear(animated: Bool) {
+        isPresented = false
+        super.viewWillDisappear(animated)
+    }
+//    
+//    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+//        UIView.setAnimationsEnabled(true)
+//    }
+//    
+//    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+//        UIView.setAnimationsEnabled(false)
+//    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

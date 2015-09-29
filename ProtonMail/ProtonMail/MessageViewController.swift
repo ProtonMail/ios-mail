@@ -144,7 +144,13 @@ class MessageViewController: ProtonMailViewController {
         }
     }
     
+    override func shouldAutorotate() -> Bool {
+        return true
+    }
     
+    override func supportedInterfaceOrientations() -> Int {
+        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
+    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toCompose" {
@@ -162,6 +168,10 @@ class MessageViewController: ProtonMailViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
+        UIView.setAnimationsEnabled(false)
+        let value = UIInterfaceOrientationMask.Portrait.rawValue
+        UIDevice.currentDevice().setValue(value, forKey: "orientation")
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: "touchStatusBarClick", object:nil)
         
         message.isRead = true
@@ -169,6 +179,10 @@ class MessageViewController: ProtonMailViewController {
         if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
             NSLog("\(__FUNCTION__) error: \(error)")
         }
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        UIView.setAnimationsEnabled(true)
     }
     
     override func viewWillDisappear(animated: Bool) {
