@@ -568,7 +568,10 @@ class MessageDataService {
                     switch(msg.Action) {
                     case .Some(IncrementalUpdateType.delete):
                         if let messageID = msg.ID {
-                            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                            if var message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                                var labelObjs = message.mutableSetValueForKey("labels")
+                                labelObjs.removeAllObjects()
+                                message.setValue(labelObjs, forKey: "labels")
                                 context.deleteObject(message)
                             }
                         }
@@ -876,7 +879,10 @@ class MessageDataService {
     func deleteMessage(messageID : String) {
         if let context = sharedCoreDataService.mainManagedObjectContext {
             
-            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+            if var message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                var labelObjs = message.mutableSetValueForKey("labels")
+                labelObjs.removeAllObjects()
+                message.setValue(labelObjs, forKey: "labels")
                 context.deleteObject(message)
             }
             if let error = context.saveUpstreamIfNeeded() {
