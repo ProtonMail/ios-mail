@@ -180,7 +180,7 @@ static Class hackishFixClass = Nil;
         line.alpha = 0.7f;
         [toolbarCropper addSubview:line];
     }
-    [self.view addSubview:self.toolbarHolder];
+   // [self.view addSubview:self.toolbarHolder];
     
     // Build the toolbar
     [self buildToolbar];
@@ -527,15 +527,15 @@ static Class hackishFixClass = Nil;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowOrHide:) name:UIKeyboardWillShowNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowOrHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowOrHide:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowOrHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 
@@ -1218,7 +1218,7 @@ static Class hackishFixClass = Nil;
     CGRect keyboardEnd = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     
     // Toolbar Sizes
-    CGFloat sizeOfToolbar = self.toolbarHolder.frame.size.height;
+    CGFloat sizeOfToolbar = 0; // self.toolbarHolder.frame.size.height;
     
     // Keyboard Size
     //Checks if IOS8, gets correct keyboard height
@@ -1234,26 +1234,26 @@ static Class hackishFixClass = Nil;
             // Toolbar
             CGRect frame = self.toolbarHolder.frame;
             frame.origin.y = self.view.frame.size.height - (keyboardHeight + sizeOfToolbar);
-            self.toolbarHolder.frame = frame;
+            //self.toolbarHolder.frame = frame;
             
             // Editor View
             const int extraHeight = 10;
             
             CGRect editorFrame = self.editorView.frame;
             editorFrame.size.height = (self.view.frame.size.height - keyboardHeight) - sizeOfToolbar - extraHeight;
-            self.editorView.frame = editorFrame;
-            self.editorViewFrame = self.editorView.frame;
+            //self.editorView.frame = editorFrame;
+            //self.editorViewFrame = self.editorView.frame;
             self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
             self.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
             
             // Source View
             CGRect sourceFrame = self.sourceView.frame;
             sourceFrame.size.height = (self.view.frame.size.height - keyboardHeight) - sizeOfToolbar - extraHeight;
-            self.sourceView.frame = sourceFrame;
+            //self.sourceView.frame = sourceFrame;
             
             // Provide editor with keyboard height and editor view height
             [self setFooterHeight:(keyboardHeight - 8)];
-            [self setContentHeight: self.editorViewFrame.size.height];
+            [self setContentHeight: editorFrame.size.height];
             
         } completion:nil];
         
@@ -1263,12 +1263,12 @@ static Class hackishFixClass = Nil;
             
             CGRect frame = self.toolbarHolder.frame;
             frame.origin.y = self.view.frame.size.height + keyboardHeight;
-            self.toolbarHolder.frame = frame;
+            //self.toolbarHolder.frame = frame;
             
             // Editor View
             CGRect editorFrame = self.editorView.frame;
             editorFrame.size.height = self.view.frame.size.height;
-            self.editorView.frame = editorFrame;
+            //self.editorView.frame = editorFrame;
             self.editorViewFrame = self.editorView.frame;
             self.editorView.scrollView.contentInset = UIEdgeInsetsZero;
             self.editorView.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero;
@@ -1276,7 +1276,7 @@ static Class hackishFixClass = Nil;
             // Source View
             CGRect sourceFrame = self.sourceView.frame;
             sourceFrame.size.height = self.view.frame.size.height;
-            self.sourceView.frame = sourceFrame;
+            //self.sourceView.frame = sourceFrame;
             
         } completion:nil];
         
