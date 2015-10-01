@@ -132,7 +132,7 @@ typedef NS_ENUM(NSInteger, ContactCollectionViewSection) {
     
     self.allowsMultipleSelection = NO;
     self.allowsSelection = YES;
-    self.backgroundColor = UIColorFromRGB(0xFCFEFF);
+    self.backgroundColor = UIColorFromRGB(0xFFFFFF); //UIColorFromRGB(0xFCFEFF);
     
     [self registerClass:[MBContactCollectionViewContactCell class] forCellWithReuseIdentifier:@"ContactCell"];
     [self registerClass:[MBContactCollectionViewEntryCell class] forCellWithReuseIdentifier:@"ContactEntryCell"];

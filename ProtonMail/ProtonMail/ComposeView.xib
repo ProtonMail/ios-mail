@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="15B22c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -8,7 +8,9 @@
         <mutableArray key="Roboto-Light.ttf">
             <string>Roboto-Light</string>
             <string>Roboto-Light</string>
-            <string>Roboto-Light</string>
+        </mutableArray>
+        <mutableArray key="Roboto-Regular.ttf">
+            <string>Roboto-Regular</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -36,6 +38,7 @@
             <subviews>
                 <view hidden="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aWx-4S-hlX" userLabel="To Contact Picker" customClass="MBContactPicker" customModule="ProtonMail" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
+                    <animations/>
                     <color key="backgroundColor" red="0.90980392160000001" green="0.92156862750000001" blue="0.92941176469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="sdc-Ad-iWb"/>
@@ -51,15 +54,17 @@
                         </mask>
                     </variation>
                 </view>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Subject" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6W7-2D-2Lf">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Subject" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="6W7-2D-2Lf">
                     <rect key="frame" x="0.0" y="49" width="600" height="48"/>
-                    <color key="backgroundColor" red="0.98823529409999999" green="0.99607843139999996" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="Fen-0r-N7C">
                             <variation key="widthClass=compact" constant="44"/>
                         </constraint>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="14"/>
+                    <color key="textColor" red="0.31372549019607843" green="0.31372549019607843" blue="0.38039215686274508" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                     <variation key="default">
                         <mask key="constraints">
@@ -74,6 +79,7 @@
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="chC-fW-E4g" userLabel="Show CC BCC View">
                     <rect key="frame" x="568" y="13" width="22" height="22"/>
+                    <animations/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="Tn1-q8-Z7u">
                             <variation key="widthClass=compact" constant="44"/>
@@ -113,7 +119,8 @@
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dbl-67-gDP" userLabel="Attachment Button">
                             <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                            <color key="backgroundColor" red="0.98823529409999999" green="0.99607843139999996" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <animations/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <state key="normal" image="attached_compose">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -123,7 +130,8 @@
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z2X-0b-CtZ" userLabel="Encrypted Button">
                             <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                            <color key="backgroundColor" red="0.98823529409999999" green="0.99607843139999996" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <animations/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <state key="normal" image="encrypted_compose">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -133,7 +141,8 @@
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JkT-bn-Mlp" userLabel="Expiration Button">
                             <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                            <color key="backgroundColor" red="0.98823529409999999" green="0.99607843139999996" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <animations/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <state key="normal" image="expiration_compose">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -142,6 +151,7 @@
                             </connections>
                         </button>
                     </subviews>
+                    <animations/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="JkT-bn-Mlp" firstAttribute="bottom" secondItem="Z2X-0b-CtZ" secondAttribute="bottom" id="2ly-X2-VWh"/>
@@ -210,6 +220,7 @@
                     <subviews>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Define Expiration Date" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0cq-9r-3dX" userLabel="Expiration Text Field">
                             <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
+                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="48" id="5hk-D9-wdh"/>
                             </constraints>
@@ -228,6 +239,7 @@
                         </textField>
                         <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eEu-2X-OTC" userLabel="Expiration Action">
                             <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                            <animations/>
                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="48" id="IpN-S8-Y9f"/>
@@ -253,6 +265,7 @@
                             </connections>
                         </button>
                     </subviews>
+                    <animations/>
                     <constraints>
                         <constraint firstItem="eEu-2X-OTC" firstAttribute="leading" secondItem="Okn-ub-h7D" secondAttribute="leading" id="5I1-BN-U40"/>
                         <constraint firstItem="0cq-9r-3dX" firstAttribute="top" secondItem="Okn-ub-h7D" secondAttribute="top" id="M9A-pn-K3G"/>
@@ -295,11 +308,13 @@
                     <subviews>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Define Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WxL-Ya-BL5" userLabel="Encrypted Password TextField">
                             <rect key="frame" x="0.0" y="-30" width="97" height="30"/>
+                            <animations/>
                             <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
                             <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                         </textField>
                         <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w8G-S8-0hr" userLabel="Encrypted Action Button">
                             <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                            <animations/>
                             <color key="backgroundColor" red="0.4039215686" green="0.53725490200000003" blue="0.6705882353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="52" id="Tmt-hU-Ru0"/>
@@ -325,6 +340,7 @@
                             </connections>
                         </button>
                     </subviews>
+                    <animations/>
                     <constraints>
                         <constraint firstItem="w8G-S8-0hr" firstAttribute="top" secondItem="f6s-5h-iHn" secondAttribute="top" id="0wP-NS-ef5"/>
                         <constraint firstItem="WxL-Ya-BL5" firstAttribute="top" secondItem="f6s-5h-iHn" secondAttribute="top" id="2Dr-3D-GIJ"/>
@@ -366,6 +382,7 @@
                     </variation>
                 </view>
             </subviews>
+            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="aWx-4S-hlX" firstAttribute="leading" secondItem="6W7-2D-2Lf" secondAttribute="leading" id="053-pq-7GB"/>
