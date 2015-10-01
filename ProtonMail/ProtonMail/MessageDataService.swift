@@ -789,18 +789,18 @@ class MessageDataService {
                                     message.isRead = true
                                     message.managedObjectContext?.saveUpstreamIfNeeded()
                                     error = context.saveUpstreamIfNeeded()
-                                    //dispatch_async(dispatch_get_main_queue()) {
-                                    completion(task: task, response: response, message: message, error: error)
-                                    //}
+                                    dispatch_async(dispatch_get_main_queue()) {
+                                        completion(task: task, response: response, message: message, error: error)
+                                    }
                                 }
                             } else {
                                 completion(task: task, response: response, message:nil, error: NSError.badResponse())
                             }
                         } else {
                             error = NSError.unableToParseResponse(response)
-                            //dispatch_async(dispatch_get_main_queue()) {
-                            completion(task: task, response: response, message:nil, error: error)
-                            //}
+                            dispatch_async(dispatch_get_main_queue()) {
+                                completion(task: task, response: response, message:nil, error: error)
+                            }
                         }
                         if error != nil  {
                             NSLog("\(__FUNCTION__) error: \(error)")
