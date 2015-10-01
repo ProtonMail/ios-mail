@@ -91,7 +91,7 @@
                         </constraint>
                     </constraints>
                     <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
-                    <state key="normal" image="plus_compose">
+                    <state key="normal" image="compose_pluscontact">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <variation key="default">
@@ -121,7 +121,7 @@
                             <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                             <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <state key="normal" image="attached_compose">
+                            <state key="normal" image="compose_attachment">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -132,7 +132,7 @@
                             <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                             <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <state key="normal" image="encrypted_compose">
+                            <state key="normal" image="compose_lock">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -143,7 +143,7 @@
                             <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                             <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <state key="normal" image="expiration_compose">
+                            <state key="normal" image="compose_expiration">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -495,11 +495,11 @@
         </view>
     </objects>
     <resources>
-        <image name="attached_compose" width="19" height="21"/>
-        <image name="encrypted_compose" width="20" height="27"/>
+        <image name="compose_attachment" width="44" height="44"/>
+        <image name="compose_expiration" width="44" height="44"/>
+        <image name="compose_lock" width="44" height="44"/>
+        <image name="compose_pluscontact" width="24" height="24"/>
         <image name="encrypted_compose_white" width="20" height="27"/>
-        <image name="expiration_compose" width="22" height="22"/>
         <image name="expiration_compose_white" width="22" height="22"/>
-        <image name="plus_compose" width="22" height="22"/>
     </resources>
 </document>

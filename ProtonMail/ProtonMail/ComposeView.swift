@@ -188,6 +188,14 @@ class ComposeView: UIViewController {
         self.delegate?.composeViewDidTapAttachmentButton(self)
     }
     
+    func updateAttachmentButton(hasAtts: Bool) {
+        if hasAtts {
+            self.attachmentButton.setImage(UIImage(named: "compose_attachment-active"), forState: UIControlState.Normal)
+        } else {
+            self.attachmentButton.setImage(UIImage(named: "compose_attachment"), forState: UIControlState.Normal)
+        }
+    }
+    
     @IBAction func expirationButtonTapped(sender: UIButton) {
         self.view.endEditing(true)
         self.toContactPicker.becomeFirstResponder()
@@ -210,7 +218,7 @@ class ComposeView: UIViewController {
         self.delegate?.composeViewDidTapEncryptedButton(self)
         self.encryptedPasswordTextField.becomeFirstResponder()
         UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
-            self.encryptedButton.setImage(UIImage(named: "encrypted_compose"), forState: UIControlState.Normal)
+            self.encryptedButton.setImage(UIImage(named: "compose_lock"), forState: UIControlState.Normal)
             self.passwordView.alpha = 1.0
             self.buttonView.alpha = 0.0
         })
@@ -333,7 +341,7 @@ class ComposeView: UIViewController {
                 self.fakeContactPickerHeightConstraint.constant = self.toContactPicker.currentContentHeight
                 self.ccContactPicker.alpha = 0.0
                 self.bccContactPicker.alpha = 0.0
-                self.showCcBccButton.setImage(UIImage(named: "plus_compose"), forState:UIControlState.Normal )
+                self.showCcBccButton.setImage(UIImage(named: "compose_pluscontact"), forState:UIControlState.Normal )
                 self.view.layoutIfNeeded()
             })
         } else {
@@ -341,7 +349,7 @@ class ComposeView: UIViewController {
                 self.ccContactPicker.alpha = 1.0
                 self.bccContactPicker.alpha = 1.0
                 self.fakeContactPickerHeightConstraint.constant = self.toContactPicker.currentContentHeight + self.ccContactPicker.currentContentHeight + self.bccContactPicker.currentContentHeight
-                self.showCcBccButton.setImage(UIImage(named: "minus_compose"), forState:UIControlState.Normal )
+                self.showCcBccButton.setImage(UIImage(named: "compose_minuscontact"), forState:UIControlState.Normal )
                 self.view.layoutIfNeeded()
             })
         }
@@ -379,7 +387,7 @@ class ComposeView: UIViewController {
         didTapEncryptedDismissButton(encryptedButton)
         self.encryptedPasswordTextField.placeholder = NSLocalizedString("Define Password")
         self.encryptedPasswordTextField.secureTextEntry = true
-        self.encryptedButton.setImage(UIImage(named: "encrypted_compose_checked"), forState: UIControlState.Normal)
+        self.encryptedButton.setImage(UIImage(named: "compose_lock-active"), forState: UIControlState.Normal)
     }
     
     internal func showExpirationPicker() {
@@ -449,12 +457,12 @@ class ComposeView: UIViewController {
             
         } else {
             if (!hasExpirationSchedule) {
-                self.expirationButton.setImage(UIImage(named: "expiration_compose_checked"), forState: UIControlState.Normal)
+                self.expirationButton.setImage(UIImage(named: "compose_expiration-active"), forState: UIControlState.Normal)
                 self.confirmExpirationButton.setImage(UIImage(named: "cancel_compose"), forState: UIControlState.Normal)
             } else {
                 self.expirationDateTextField.text = ""
                 self.expirationTimeInterval  = 0;
-                self.expirationButton.setImage(UIImage(named: "expiration_compose"), forState: UIControlState.Normal)
+                self.expirationButton.setImage(UIImage(named: "compose_expiration"), forState: UIControlState.Normal)
                 self.confirmExpirationButton.setImage(UIImage(named: "next"), forState: UIControlState.Normal)
                 self.delegate?.composeViewCancelExpirationData(self)
                 

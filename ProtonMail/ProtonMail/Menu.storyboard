@@ -1402,7 +1402,7 @@
                                 <action selector="cancelClicked:" destination="zEJ-rK-fGr" id="hE9-dx-zBg"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="sent_compose" id="z0d-q0-MMH">
+                        <barButtonItem key="rightBarButtonItem" image="compose_send" id="z0d-q0-MMH">
                             <connections>
                                 <action selector="sendClicked:" destination="zEJ-rK-fGr" id="gja-xg-rEX"/>
                             </connections>
@@ -3120,6 +3120,7 @@
         <image name="Logo" width="228" height="37"/>
         <image name="attached_main" width="14" height="16"/>
         <image name="bug_selected" width="52" height="52"/>
+        <image name="compose_send" width="24" height="24"/>
         <image name="contact_selected" width="20" height="27"/>
         <image name="encrypted_main" width="15" height="20"/>
         <image name="favorite_main" width="19" height="19"/>

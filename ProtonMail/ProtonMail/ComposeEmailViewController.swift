@@ -113,6 +113,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     }
     
     override func viewWillAppear(animated: Bool) {
+        self.updateAttachmentButton()
         super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: "touchStatusBarClick", object:nil)
         
@@ -155,9 +156,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         super.editorDidScrollWithPosition(position)
         
         //let new_position = self.getCaretPosition().toInt() ?? 0
-        
         //self.delegate?.editorSizeChanged(self.getContentSize())
-        
         //self.delegate?.editorCaretPosition(new_position)
     }
     
@@ -267,6 +266,14 @@ class ComposeEmailViewController: ZSSRichTextEditor {
             pwd:self.encryptionPassword,
             pwdHit:self.encryptionPasswordHint
         )
+    }
+    
+    private func updateAttachmentButton () {
+        if attachments?.count > 0 {
+            self.composeView.updateAttachmentButton(true)
+        } else {
+            self.composeView.updateAttachmentButton(false)
+        }
     }
 }
 
