@@ -52,7 +52,7 @@ class AttachmentsViewController: UICollectionViewController {
     
     func configureNavigationBar(navigationController: UINavigationController) {
         navigationController.navigationBar.barStyle = UIBarStyle.Black
-        navigationController.navigationBar.barTintColor = UIColor.ProtonMail.Blue_475F77
+        navigationController.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;
         navigationController.navigationBar.translucent = false
         navigationController.navigationBar.tintColor = UIColor.whiteColor()
         
