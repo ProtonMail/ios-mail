@@ -295,7 +295,7 @@ class MailboxViewController: ProtonMailViewController {
     
     private func configureCell(mailboxCell: MailboxMessageCell, atIndexPath indexPath: NSIndexPath) {
         if self.fetchedResultsController?.numberOfSections() >= indexPath.section {
-            if self.fetchedResultsController?.numberOfRowsInSection(indexPath.section) >= indexPath.row {
+            if self.fetchedResultsController?.numberOfRowsInSection(indexPath.section) > indexPath.row {
                 if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
                     mailboxCell.configureCell(message, showLocation: viewModel.showLocation())
                     mailboxCell.setCellIsChecked(selectedMessages.containsObject(message.messageID))
