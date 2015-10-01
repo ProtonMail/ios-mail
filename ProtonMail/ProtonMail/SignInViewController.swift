@@ -75,18 +75,6 @@ class SignInViewController: UIViewController {
         {
             ShowLoginViews();
         }
-        
-        
-        var gradient: CAGradientLayer = CAGradientLayer()
-        gradient.frame = CGRectMake(0.0, 0.0, view.frame.size.width, view.frame.size.height)
-        gradient.colors = [UIColor.ProtonMail.Login_Background_Gradient_Left.CGColor, UIColor.ProtonMail.Login_Background_Gradient_Right.CGColor];
-        
-        gradient.locations = [0.0, 1.0]
-        
-        gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
-        gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
-      
-        backgroundImage.layer.insertSublayer(gradient, atIndex:0)
     }
     
     override func shouldAutorotate() -> Bool {
