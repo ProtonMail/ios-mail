@@ -35,9 +35,9 @@ class LablesViewController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        contentView.layer.cornerRadius = 5;
-        inputContentView.layer.cornerRadius = 5;
-        inputContentView.layer.borderColor = UIColor.lightGrayColor().CGColor
+        contentView.layer.cornerRadius = 4;
+        inputContentView.layer.cornerRadius = 4;
+        inputContentView.layer.borderColor = UIColor(hexColorCode: "#DADEE8").CGColor!
         inputContentView.layer.borderWidth = 1.0
         self.setupFetchedResultsController()
         //var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
