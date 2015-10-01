@@ -168,10 +168,10 @@ class MessageViewController: ProtonMailViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
-        UIView.setAnimationsEnabled(false)
-        let value = UIInterfaceOrientationMask.Portrait.rawValue
-        UIDevice.currentDevice().setValue(value, forKey: "orientation")
-        
+        //UIView.setAnimationsEnabled(false)
+//        let value = UIInterfaceOrientationMask.Portrait.rawValue
+//        UIDevice.currentDevice().setValue(value, forKey: "orientation")
+//        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: "touchStatusBarClick", object:nil)
         
         message.isRead = true
@@ -182,7 +182,7 @@ class MessageViewController: ProtonMailViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
-        UIView.setAnimationsEnabled(true)
+       // UIView.setAnimationsEnabled(true)
     }
     
     override func viewWillDisappear(animated: Bool) {

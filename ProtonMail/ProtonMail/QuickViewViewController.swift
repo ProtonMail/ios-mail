@@ -21,10 +21,14 @@ class QuickViewViewController: QLPreviewController {
     }
     
     override func viewWillDisappear(animated: Bool) {
+        
         isPresented = false
+        
+        let value = UIInterfaceOrientationMask.Portrait.rawValue
+        UIDevice.currentDevice().setValue(value, forKey: "orientation")
         super.viewWillDisappear(animated)
     }
-//    
+//
 //    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
 //        UIView.setAnimationsEnabled(true)
 //    }

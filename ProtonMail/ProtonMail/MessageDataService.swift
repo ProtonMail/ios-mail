@@ -936,7 +936,7 @@ class MessageDataService {
         //tempary for clean contact cache
         sharedContactDataService.cleanUp()
         sharedLabelsDataService.cleanUp()
-        
+
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
     
