@@ -32,7 +32,7 @@ class MailboxViewController: ProtonMailViewController {
     private let kSegueToComposeShow = "toComposeShow"
     private let kSegueToSearchController = "toSearchViewController"
     private let kSegueToMessageDetailController = "toMessageDetailViewController"
-    
+    private let kSegueToLabelsController = "toApplyLabelsSegue"
     
     // MARK: - Private attributes
     
@@ -191,10 +191,22 @@ class MailboxViewController: ProtonMailViewController {
             } else {
                 PMLog.D("No selected row.")
             }
+        } else if segue.identifier == kSegueToLabelsController {
+            let popup = segue.destinationViewController as! LablesViewController
+            popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages()[0])
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
+            self.cancelButtonTapped()
         } else if segue.identifier == kSegueToCompose {
             let composeViewController = segue.destinationViewController.viewControllers![0] as! ComposeEmailViewController
             composeViewController.viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.NewDraft)
         }
+    }
+    
+    func setPresentationStyleForSelfController(selfController : UIViewController,  presentingController: UIViewController)
+    {
+        presentingController.providesPresentationContextTransitionStyle = true;
+        presentingController.definesPresentationContext = true;
+        presentingController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
     }
     
     // MARK: - Button Targets
@@ -205,6 +217,10 @@ class MailboxViewController: ProtonMailViewController {
     
     internal func searchButtonTapped() {
         self.performSegueWithIdentifier(kSegueToSearchController, sender: self)
+    }
+    
+    internal func labelButtonTapped() {
+        self.performSegueWithIdentifier(kSegueToLabelsController, sender: self)
     }
     
     internal func removeButtonTapped() {
@@ -562,6 +578,25 @@ class MailboxViewController: ProtonMailViewController {
         }
     }
     
+    private func getSelectedMessages() -> [Message] {
+        if let context = fetchedResultsController?.managedObjectContext {
+            let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
+            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selectedMessages)
+            
+            var error: NSError?
+            if let messages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
+                return messages;
+            }
+            
+            if let error = error {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
+            
+        }
+        
+        return [Message]();
+    }
+    
     private func setupLeftButtons(editingMode: Bool) {
         var leftButtons: [UIBarButtonItem]
         
@@ -626,7 +661,7 @@ class MailboxViewController: ProtonMailViewController {
             if (viewModel.isDrafts()) {
                 rightButtons = [self.removeBarButtonItem]
             } else {
-                rightButtons = [self.moreBarButtonItem, self.removeBarButtonItem, self.unreadBarButtonItem] //self.labelBarButtonItem,
+                rightButtons = [self.moreBarButtonItem, self.removeBarButtonItem, self.labelBarButtonItem, self.unreadBarButtonItem]
             }
         }
         

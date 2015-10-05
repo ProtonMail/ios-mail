@@ -54,6 +54,7 @@
             <string>Roboto-Regular</string>
             <string>Roboto-Regular</string>
             <string>Roboto-Regular</string>
+            <string>Roboto-Regular</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -720,57 +721,8 @@
                                             <constraint firstAttribute="height" constant="30" id="vTa-uc-zz9"/>
                                         </constraints>
                                     </view>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DLH-ou-vZe">
-                                        <rect key="frame" x="16" y="98" width="528" height="385"/>
-                                        <animations/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <prototypes>
-                                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="labelApplyCell" rowHeight="45" id="zeh-GA-VuO" customClass="LabelTableViewCell" customModule="ProtonMail" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="536" height="44"/>
-                                                <autoresizingMask key="autoresizingMask"/>
-                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zeh-GA-VuO" id="wuB-ho-YEh">
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <subviews>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ob3-FJ-Dei" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="8" width="156" height="29"/>
-                                                            <animations/>
-                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="156" id="drj-8y-wfa"/>
-                                                            </constraints>
-                                                        </view>
-                                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="flM-qQ-Dwf">
-                                                            <rect key="frame" x="481" y="7" width="51" height="31"/>
-                                                            <animations/>
-                                                            <connections>
-                                                                <action selector="switchAction:" destination="zeh-GA-VuO" eventType="valueChanged" id="hSS-nN-U6f"/>
-                                                            </connections>
-                                                        </switch>
-                                                    </subviews>
-                                                    <animations/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="bottom" secondItem="Ob3-FJ-Dei" secondAttribute="bottom" constant="8" id="GuV-jt-wKQ"/>
-                                                        <constraint firstItem="Ob3-FJ-Dei" firstAttribute="top" secondItem="wuB-ho-YEh" secondAttribute="top" constant="8" id="KYa-x6-6eW"/>
-                                                        <constraint firstAttribute="trailing" secondItem="flM-qQ-Dwf" secondAttribute="trailing" constant="6" id="Wm0-uu-6Lv"/>
-                                                        <constraint firstAttribute="centerY" secondItem="flM-qQ-Dwf" secondAttribute="centerY" id="c3A-Af-LJP"/>
-                                                        <constraint firstItem="Ob3-FJ-Dei" firstAttribute="leading" secondItem="wuB-ho-YEh" secondAttribute="leading" id="uJx-OB-Lpd"/>
-                                                    </constraints>
-                                                </tableViewCellContentView>
-                                                <animations/>
-                                                <connections>
-                                                    <outlet property="labelView" destination="Ob3-FJ-Dei" id="hrW-lt-lA0"/>
-                                                    <outlet property="labelWidth" destination="drj-8y-wfa" id="ZZ9-d5-0Zs"/>
-                                                    <outlet property="switchView" destination="flM-qQ-Dwf" id="VAQ-T7-ge5"/>
-                                                </connections>
-                                            </tableViewCell>
-                                        </prototypes>
-                                        <connections>
-                                            <outlet property="dataSource" destination="C6e-Un-S8J" id="43u-gp-EV9"/>
-                                            <outlet property="delegate" destination="C6e-Un-S8J" id="qqU-WX-qI7"/>
-                                        </connections>
-                                    </tableView>
                                     <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="jza-Nd-HPW">
-                                        <rect key="frame" x="16" y="98" width="528" height="385"/>
+                                        <rect key="frame" x="16" y="98" width="528" height="320"/>
                                         <animations/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="dub-wn-3LJ">
@@ -812,6 +764,63 @@
                                             <outlet property="delegate" destination="C6e-Un-S8J" id="BkV-5k-KYD"/>
                                         </connections>
                                     </collectionView>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="DLH-ou-vZe">
+                                        <rect key="frame" x="16" y="98" width="528" height="320"/>
+                                        <animations/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <prototypes>
+                                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="labelApplyCell" rowHeight="45" id="zeh-GA-VuO" customClass="LabelTableViewCell" customModule="ProtonMail" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="536" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zeh-GA-VuO" id="wuB-ho-YEh">
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ob3-FJ-Dei" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="8" width="156" height="29"/>
+                                                            <animations/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="156" id="drj-8y-wfa"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hli-Rq-vrf">
+                                                            <rect key="frame" x="478" y="0.0" width="50" height="45"/>
+                                                            <animations/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="Hsf-EX-Doe"/>
+                                                                <constraint firstAttribute="width" constant="50" id="cQL-R8-yRJ"/>
+                                                            </constraints>
+                                                            <state key="normal" image="mail_check">
+                                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="buttonAction:" destination="zeh-GA-VuO" eventType="touchUpInside" id="6iF-G5-lac"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                    <animations/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" secondItem="Ob3-FJ-Dei" secondAttribute="bottom" constant="8" id="GuV-jt-wKQ"/>
+                                                        <constraint firstItem="Ob3-FJ-Dei" firstAttribute="top" secondItem="wuB-ho-YEh" secondAttribute="top" constant="8" id="KYa-x6-6eW"/>
+                                                        <constraint firstAttribute="bottom" secondItem="hli-Rq-vrf" secondAttribute="bottom" id="bQW-jx-4RY"/>
+                                                        <constraint firstItem="hli-Rq-vrf" firstAttribute="top" secondItem="wuB-ho-YEh" secondAttribute="top" id="f7j-M6-9Vo"/>
+                                                        <constraint firstAttribute="trailing" secondItem="hli-Rq-vrf" secondAttribute="trailing" id="ll5-W0-H3j"/>
+                                                        <constraint firstItem="Ob3-FJ-Dei" firstAttribute="leading" secondItem="wuB-ho-YEh" secondAttribute="leading" id="uJx-OB-Lpd"/>
+                                                    </constraints>
+                                                </tableViewCellContentView>
+                                                <animations/>
+                                                <connections>
+                                                    <outlet property="labelView" destination="Ob3-FJ-Dei" id="hrW-lt-lA0"/>
+                                                    <outlet property="labelWidth" destination="drj-8y-wfa" id="ZZ9-d5-0Zs"/>
+                                                    <outlet property="selectStatusButton" destination="hli-Rq-vrf" id="wGH-vL-kaP"/>
+                                                </connections>
+                                            </tableViewCell>
+                                        </prototypes>
+                                        <connections>
+                                            <outlet property="dataSource" destination="C6e-Un-S8J" id="43u-gp-EV9"/>
+                                            <outlet property="delegate" destination="C6e-Un-S8J" id="qqU-WX-qI7"/>
+                                        </connections>
+                                    </tableView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HT9-xR-iih">
                                         <rect key="frame" x="0.0" y="495" width="560" height="45"/>
                                         <subviews>
@@ -829,7 +838,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aea-99-bTG">
-                                                <rect key="frame" x="281" y="1" width="279" height="44"/>
+                                                <rect key="frame" x="280" y="1" width="280" height="44"/>
                                                 <animations/>
                                                 <color key="backgroundColor" red="0.96862745100000003" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="18"/>
@@ -856,27 +865,67 @@
                                             <constraint firstItem="aea-99-bTG" firstAttribute="top" secondItem="HT9-xR-iih" secondAttribute="top" constant="1" id="zao-ZA-NOb"/>
                                         </constraints>
                                     </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jzF-8V-78C">
+                                        <rect key="frame" x="16" y="434" width="528" height="45"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Also Archive" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MhH-jF-Qky">
+                                                <rect key="frame" x="0.0" y="0.0" width="478" height="45"/>
+                                                <animations/>
+                                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
+                                                <color key="textColor" red="0.31372549019607843" green="0.31372549019607843" blue="0.38039215686274508" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E7L-cs-KEo">
+                                                <rect key="frame" x="478" y="0.0" width="50" height="45"/>
+                                                <animations/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="50" id="qEw-ia-Qav"/>
+                                                </constraints>
+                                                <state key="normal" image="mail_check">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="archiveSelectAction:" destination="C6e-Un-S8J" eventType="touchUpInside" id="Qzz-7y-QDL"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <animations/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="MhH-jF-Qky" firstAttribute="leading" secondItem="jzF-8V-78C" secondAttribute="leading" id="159-bm-6aH"/>
+                                            <constraint firstItem="E7L-cs-KEo" firstAttribute="top" secondItem="jzF-8V-78C" secondAttribute="top" id="B2f-Yv-3uf"/>
+                                            <constraint firstAttribute="bottom" secondItem="MhH-jF-Qky" secondAttribute="bottom" id="BPb-0Q-Fx1"/>
+                                            <constraint firstAttribute="bottom" secondItem="E7L-cs-KEo" secondAttribute="bottom" id="ExZ-9n-6nd"/>
+                                            <constraint firstAttribute="trailing" secondItem="E7L-cs-KEo" secondAttribute="trailing" id="Fal-hV-TFs"/>
+                                            <constraint firstItem="MhH-jF-Qky" firstAttribute="top" secondItem="jzF-8V-78C" secondAttribute="top" id="anz-tE-T3r"/>
+                                            <constraint firstAttribute="height" constant="45" id="igJ-Er-OqR"/>
+                                            <constraint firstItem="E7L-cs-KEo" firstAttribute="leading" secondItem="MhH-jF-Qky" secondAttribute="trailing" id="tGu-XU-0eG"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <animations/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="HT9-xR-iih" firstAttribute="top" secondItem="jzF-8V-78C" secondAttribute="bottom" constant="16" id="0rp-Pr-UeQ"/>
                                     <constraint firstItem="WWM-xq-lcc" firstAttribute="top" secondItem="mSx-Zq-fBF" secondAttribute="bottom" constant="16" id="1SK-M9-7bp"/>
+                                    <constraint firstItem="jzF-8V-78C" firstAttribute="top" secondItem="DLH-ou-vZe" secondAttribute="bottom" constant="16" id="4Jw-sn-EhG"/>
                                     <constraint firstItem="DLH-ou-vZe" firstAttribute="top" secondItem="WWM-xq-lcc" secondAttribute="bottom" constant="16" id="B6u-QB-cGJ"/>
                                     <constraint firstItem="WWM-xq-lcc" firstAttribute="width" secondItem="mSx-Zq-fBF" secondAttribute="width" id="BPN-WM-kEI"/>
                                     <constraint firstAttribute="trailing" secondItem="HT9-xR-iih" secondAttribute="trailing" id="CAI-Xn-Etk"/>
+                                    <constraint firstItem="jza-Nd-HPW" firstAttribute="leading" secondItem="DLH-ou-vZe" secondAttribute="leading" id="D4b-IL-H2b"/>
+                                    <constraint firstItem="jza-Nd-HPW" firstAttribute="trailing" secondItem="DLH-ou-vZe" secondAttribute="trailing" id="DFP-GY-O7h"/>
                                     <constraint firstItem="DLH-ou-vZe" firstAttribute="leading" secondItem="tPx-HX-rjT" secondAttribute="leading" constant="16" id="Efo-MM-H6p"/>
                                     <constraint firstAttribute="bottom" secondItem="HT9-xR-iih" secondAttribute="bottom" id="HxB-2A-xXe"/>
                                     <constraint firstAttribute="trailing" secondItem="DLH-ou-vZe" secondAttribute="trailing" constant="16" id="JB2-wP-KW9"/>
                                     <constraint firstItem="mSx-Zq-fBF" firstAttribute="top" secondItem="tPx-HX-rjT" secondAttribute="top" constant="16" id="MGN-qn-Nvl"/>
                                     <constraint firstItem="HT9-xR-iih" firstAttribute="leading" secondItem="tPx-HX-rjT" secondAttribute="leading" id="Mu8-RI-cbW"/>
-                                    <constraint firstItem="jza-Nd-HPW" firstAttribute="trailing" secondItem="DLH-ou-vZe" secondAttribute="trailing" id="QDE-0K-uEd"/>
-                                    <constraint firstItem="jza-Nd-HPW" firstAttribute="leading" secondItem="DLH-ou-vZe" secondAttribute="leading" id="UTg-Y6-lzM"/>
+                                    <constraint firstItem="jzF-8V-78C" firstAttribute="leading" secondItem="tPx-HX-rjT" secondAttribute="leading" constant="16" id="VPo-Nq-wOf"/>
+                                    <constraint firstItem="jza-Nd-HPW" firstAttribute="top" secondItem="DLH-ou-vZe" secondAttribute="top" id="b7n-jw-73e"/>
+                                    <constraint firstAttribute="trailing" secondItem="jzF-8V-78C" secondAttribute="trailing" constant="16" id="f6Z-Rn-RK0"/>
                                     <constraint firstAttribute="trailing" secondItem="mSx-Zq-fBF" secondAttribute="trailing" constant="16" id="fPH-LU-w8a"/>
-                                    <constraint firstItem="HT9-xR-iih" firstAttribute="top" secondItem="DLH-ou-vZe" secondAttribute="bottom" constant="12" id="fdy-jK-xzt"/>
+                                    <constraint firstItem="jza-Nd-HPW" firstAttribute="bottom" secondItem="DLH-ou-vZe" secondAttribute="bottom" id="jiF-uX-hKa"/>
                                     <constraint firstItem="WWM-xq-lcc" firstAttribute="leading" secondItem="mSx-Zq-fBF" secondAttribute="leading" id="mGL-AI-cXB"/>
                                     <constraint firstItem="mSx-Zq-fBF" firstAttribute="leading" secondItem="tPx-HX-rjT" secondAttribute="leading" constant="16" id="mOH-Iy-Vt7"/>
-                                    <constraint firstItem="jza-Nd-HPW" firstAttribute="bottom" secondItem="DLH-ou-vZe" secondAttribute="bottom" id="ptB-3n-aUk"/>
-                                    <constraint firstItem="jza-Nd-HPW" firstAttribute="top" secondItem="DLH-ou-vZe" secondAttribute="top" id="rxd-SJ-x4X"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -897,6 +946,7 @@
                     <navigationItem key="navigationItem" id="iLS-Gu-LeZ"/>
                     <connections>
                         <outlet property="applyButton" destination="aea-99-bTG" id="Q1B-oa-G2p"/>
+                        <outlet property="archiveSelectButton" destination="E7L-cs-KEo" id="Gnz-6e-ZRi"/>
                         <outlet property="backgroundImageView" destination="viD-Nu-yL2" id="K8Q-uQ-41x"/>
                         <outlet property="cancelButton" destination="yPS-fX-Gy3" id="Q8N-Y4-xDx"/>
                         <outlet property="collectionView" destination="jza-Nd-HPW" id="eG1-dh-oGD"/>
@@ -1230,6 +1280,7 @@
                         <segue destination="kWS-aU-yuK" kind="show" identifier="toMessageDetailViewController" id="f3k-3A-WEA"/>
                         <segue destination="fzN-Ci-Qyg" kind="presentation" identifier="toCompose" id="fux-iz-qV0"/>
                         <segue destination="fzN-Ci-Qyg" kind="presentation" identifier="toComposeShow" id="uv8-bX-yhD"/>
+                        <segue destination="C6e-Un-S8J" kind="presentation" identifier="toApplyLabelsSegue" id="zIE-XJ-wkG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v5f-i5-kem" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3129,6 +3180,7 @@
         <image name="hamburger" width="20" height="16"/>
         <image name="label_addlabel" width="16" height="16"/>
         <image name="mail_attachment" width="14" height="14"/>
+        <image name="mail_check" width="24" height="24"/>
         <image name="mail_lock" width="14" height="14"/>
         <image name="mail_starred-active" width="20" height="20"/>
         <image name="menu_inbox" width="16" height="16"/>
@@ -3145,11 +3197,12 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="YGe-pV-72F"/>
+        <segue reference="zIE-XJ-wkG"/>
         <segue reference="f3k-3A-WEA"/>
+        <segue reference="uv8-bX-yhD"/>
         <segue reference="ddm-eA-erE"/>
+        <segue reference="5rJ-hC-fsT"/>
         <segue reference="pf5-Mm-LDI"/>
         <segue reference="A7E-cY-hB0"/>
-        <segue reference="5rJ-hC-fsT"/>
-        <segue reference="oQx-RX-nff"/>
     </inferredMetricsTieBreakers>
 </document>

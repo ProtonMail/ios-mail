@@ -30,6 +30,10 @@ class LablesViewController : UIViewController {
     
     @IBOutlet weak var newLabelInput: UITextField!
     
+    @IBOutlet weak var archiveSelectButton: UIButton!
+    
+    private var archiveMessage = false;
+    
     //
     private var fetchedLabels: NSFetchedResultsController?
     
@@ -42,6 +46,16 @@ class LablesViewController : UIViewController {
         self.setupFetchedResultsController()
         //var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
         // self.view.addGestureRecognizer(tapGestureRecognizer)
+    }
+    @IBAction func archiveSelectAction(sender: UIButton) {
+        archiveMessage = !archiveMessage
+        if archiveMessage {
+            archiveSelectButton.setImage(UIImage(named: "mail_check-active"), forState: UIControlState.Normal)
+            
+        } else {
+            archiveSelectButton.setImage(UIImage(named: "mail_check"), forState: UIControlState.Normal)
+        }
+        
     }
     
     @IBAction func applyAction(sender: AnyObject) {
@@ -148,8 +162,8 @@ extension LablesViewController: UITableViewDataSource {
         
         var labelCell = tableView.dequeueReusableCellWithIdentifier("labelApplyCell", forIndexPath: indexPath) as! LabelTableViewCell
         var label = fetchedLabels?.objectAtIndexPath(indexPath) as? Label
-        labelCell.viewModel = self.viewModel;
-        labelCell.ConfigCell(label!, applyed: viewModel.isEnabled(label!.labelID), vc: self)
+        //TODO
+//        labelCell.ConfigCell(label!, applyed: viewModel.isEnabled(label!.labelID), vc: self)
         
         return labelCell
     }

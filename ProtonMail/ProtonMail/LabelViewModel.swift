@@ -9,13 +9,25 @@
 import Foundation
 
 
+
+public class LabelMessageModel {
+    var selectedMessage : [Message]!
+    
+    var needSelect : Bool!
+    var needRemove : Bool!
+}
+
+
 public class LabelViewModel {
+
     
     public typealias OkBlock = () -> Void
     public typealias ErrorBlock = () -> Void
     
-    public init() { }
+    public init() {
     
+    }
+
     public func applyLabel(labelID: String) -> Bool {
         fatalError("This method must be overridden")
     }
@@ -36,7 +48,6 @@ public class LabelViewModel {
         fatalError("This method must be overridden")
     }
 }
-
 
 public class LabelViewModelImpl : LabelViewModel {
     private var message : Message!
