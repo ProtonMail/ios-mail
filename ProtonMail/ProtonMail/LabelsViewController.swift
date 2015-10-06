@@ -55,7 +55,6 @@ class LablesViewController : UIViewController {
         } else {
             archiveSelectButton.setImage(UIImage(named: "mail_check"), forState: UIControlState.Normal)
         }
-        
     }
     
     @IBAction func applyAction(sender: AnyObject) {
@@ -161,10 +160,9 @@ extension LablesViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         var labelCell = tableView.dequeueReusableCellWithIdentifier("labelApplyCell", forIndexPath: indexPath) as! LabelTableViewCell
-        var label = fetchedLabels?.objectAtIndexPath(indexPath) as? Label
-        //TODO
-//        labelCell.ConfigCell(label!, applyed: viewModel.isEnabled(label!.labelID), vc: self)
-        
+        if let label = fetchedLabels?.objectAtIndexPath(indexPath) as? Label {
+            labelCell.ConfigCell(label, model: viewModel.getLabelMessage(label.labelID), vc: self)
+        }
         return labelCell
     }
     

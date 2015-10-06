@@ -13,11 +13,8 @@ class LabelTableViewCell: UITableViewCell {
     var model : LabelMessageModel!
     var label : Label!
 
-    var selectStatus : Int! = 0
-    
     @IBOutlet weak var labelView: TableCellLabelView!
     @IBOutlet weak var selectStatusButton: UIButton!
-    
     
     @IBOutlet weak var labelWidth: NSLayoutConstraint!
     required init(coder aDecoder: NSCoder) {
@@ -36,12 +33,20 @@ class LabelTableViewCell: UITableViewCell {
     }
 
     @IBAction func buttonAction(sender: UIButton) {
-        selectStatus = selectStatus + 1;
-        if selectStatus > 2 {
-            selectStatus = 0;
+        var plusCount = 1;
+        if model.totalMessages.count <= 1 || 0 ==  model.originalSelected.count || model.originalSelected.count ==  model.totalMessages.count {
+            plusCount = 2;
         }
         
-        switch selectStatus {
+        self.model.status = self.model.status + plusCount;
+        if self.model.status > 2 {
+            self.model.status = 0;
+        }
+        self.updateStatusButton();
+    }
+    
+    func updateStatusButton () {
+        switch self.model.status {
         case 0:
             selectStatusButton.setImage(UIImage(named:"mail_check"), forState: UIControlState.Normal)
             break
@@ -55,39 +60,15 @@ class LabelTableViewCell: UITableViewCell {
             selectStatusButton.setImage(UIImage(named:"mail_check"), forState: UIControlState.Normal)
             break
         }
-        
-        
     }
     
-    
-    func ConfigCell(label : Label!, model : LabelMessageModel, vc : UIViewController) {
+    func ConfigCell(label : Label!, model : LabelMessageModel?, vc : UIViewController) {
         self.vc = vc;
         self.label = label;
         self.model = model;
         let w = labelView.setText(label.name, color: UIColor(hexString: label.color, alpha: 1.0))
         labelWidth.constant = w;
         
-       // self.switchView.on = applyed
+        self.updateStatusButton()
     }
-    
-//    @IBAction func switchAction(sender: AnyObject) {
-//        let s = sender as! UISwitch
-//        let on : Bool = s.on
-//        if on == true {
-//            let isok = viewModel.applyLabel(self.label.labelID)
-//            if !isok {
-//                var alert = "A message cannot have more than 5 labels".alertController();
-//                alert.addOKAction()
-//                vc.presentViewController(alert, animated: true, completion: nil)
-//                s.on = false
-//            }
-//        } else {
-//            let isok = viewModel.removeLabel(self.label.labelID)
-//            if !isok {
-//
-//            }
-//        }
-//        
-//    }
-
 }
