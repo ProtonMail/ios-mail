@@ -177,6 +177,9 @@ public class MessageActionRequest<T : ApiResponse>  : ApiRequest <T> {
         return MessageAPI.V_MessageActionRequest
     }
     
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .PUT
+    }
 }
 
 

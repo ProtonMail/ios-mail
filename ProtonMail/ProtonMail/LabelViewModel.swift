@@ -112,20 +112,26 @@ public class LabelViewModelImpl : LabelViewModel {
             } else {
                 
             }
-        }
-
-        if archiveMessage {
-            for message in self.messages {
-                message.location = .archive
-                message.needsUpdate = true
+            
+            let error = context.saveUpstreamIfNeeded()
+            if let error = error {
+                NSLog("\(__FUNCTION__) error: \(error)")
             }
         }
         
-        let error = context.saveUpstreamIfNeeded()
-        if let error = error {
-            NSLog("\(__FUNCTION__) error: \(error)")
+        if archiveMessage {
+            for message in self.messages {
+                message.location = .archive
+                message.needsUpdate = false
+            }
+            let error = context.saveUpstreamIfNeeded()
+            if let error = error {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
+            let ids = self.messages.map { ($0).messageID }
+            let api = MessageActionRequest<ApiResponse>(action: "archive", ids: ids)
+            api.call(nil)
         }
-
     }
     
     override public func cancel() {
