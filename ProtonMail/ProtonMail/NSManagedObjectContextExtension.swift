@@ -29,9 +29,7 @@ extension NSManagedObjectContext {
                 for object in objects as! [NSManagedObject] {
                     self.deleteObject(object)
                 }
-                
                 NSLog("\(__FUNCTION__) Deleted \(objects.count) objects.")
-                
                 if let error = self.saveUpstreamIfNeeded() {
                     NSLog("\(__FUNCTION__) error: \(error)")
                 }

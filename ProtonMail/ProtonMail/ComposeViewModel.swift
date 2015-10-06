@@ -9,7 +9,6 @@
 import Foundation
 
 
-
 public class ComposeViewModel {
     var message : Message?
     var messageAction : ComposeMessageAction!

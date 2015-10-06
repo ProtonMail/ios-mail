@@ -29,11 +29,15 @@ public class LabelViewModel {
         fatalError("This method must be overridden")
     }
     
+    public func cancel () {
+        fatalError("This method must be overridden")
+    }
+    
     public func createLabel (name : String, color : String, error:ErrorBlock,  complete: OkBlock)  {
         fatalError("This method must be overridden")
     }
     
-    public func getLabelMessage(label : Label!) -> LabelMessageModel? {
+    public func getLabelMessage(label : Label!) -> LabelMessageModel! {
         fatalError("This method must be overridden")
     }
 }
@@ -48,7 +52,7 @@ public class LabelViewModelImpl : LabelViewModel {
         super.init()
     }
     
-    override public func getLabelMessage( label : Label!) -> LabelMessageModel? {
+    override public func getLabelMessage( label : Label!) -> LabelMessageModel! {
         if let outVar = self.labelMessages[label.labelID] {
             return outVar
         } else {
@@ -109,8 +113,7 @@ public class LabelViewModelImpl : LabelViewModel {
                 
             }
         }
-        
-        
+
         if archiveMessage {
             for message in self.messages {
                 message.location = .archive
@@ -122,7 +125,30 @@ public class LabelViewModelImpl : LabelViewModel {
         if let error = error {
             NSLog("\(__FUNCTION__) error: \(error)")
         }
+
+    }
+    
+    override public func cancel() {
+        let context = sharedCoreDataService.newMainManagedObjectContext()
+        for (key, value) in self.labelMessages {
+            
+            for mm in self.messages {
+                var labelObjs = mm.mutableSetValueForKey("labels")
+                labelObjs.removeObject(value.label)
+                mm.setValue(labelObjs, forKey: "labels")
+            }
+            
+            for mm in value.originalSelected {
+                var labelObjs = mm.mutableSetValueForKey("labels")
+                labelObjs.addObject(value.label)
+                mm.setValue(labelObjs, forKey: "labels")
+            }
+        }
         
+        let error = context.saveUpstreamIfNeeded()
+        if let error = error {
+            NSLog("\(__FUNCTION__) error: \(error)")
+        }
     }
     
     override public func createLabel(name: String, color: String, error:ErrorBlock,  complete: OkBlock) {

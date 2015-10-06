@@ -81,7 +81,6 @@ class LabelsDataService {
         }
     }
     
-//
 //    /// Only call from the main thread
 //    func allContacts() -> [Contact] {
 //        if let context = sharedCoreDataService.mainManagedObjectContext {

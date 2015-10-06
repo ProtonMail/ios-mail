@@ -11,7 +11,6 @@ import UIKit
 class LabelTableViewCell: UITableViewCell {
     var vc : UIViewController!;
     var model : LabelMessageModel!
-    var label : Label!
 
     @IBOutlet weak var labelView: TableCellLabelView!
     @IBOutlet weak var selectStatusButton: UIButton!
@@ -38,13 +37,58 @@ class LabelTableViewCell: UITableViewCell {
             plusCount = 2;
         }
         
-        self.model.status = self.model.status + plusCount;
-        if self.model.status > 2 {
-            self.model.status = 0;
+        var tempStatus = self.model.status + plusCount;
+        if tempStatus > 2 {
+            tempStatus = 0;
         }
+        
+        if tempStatus == 0 {
+
+            for mm in self.model.totalMessages {
+                var labelObjs = mm.mutableSetValueForKey("labels")
+                labelObjs.removeObject(model.label)
+                mm.setValue(labelObjs, forKey: "labels")
+            }
+        } else if tempStatus == 1 {
+            for mm in self.model.totalMessages {
+                var labelObjs = mm.mutableSetValueForKey("labels")
+                labelObjs.removeObject(model.label)
+                mm.setValue(labelObjs, forKey: "labels")
+            }
+            
+            for mm in self.model.originalSelected {
+                var labelObjs = mm.mutableSetValueForKey("labels")
+                labelObjs.addObject(model.label)
+                mm.setValue(labelObjs, forKey: "labels")
+            }
+        } else if tempStatus == 2 {
+            for mm in self.model.totalMessages {
+                var labelObjs = mm.mutableSetValueForKey("labels")
+                var labelCount = 0
+                for l in labelObjs {
+                    if (l as! Label).labelID != model.label.labelID {
+                        labelCount++
+                    }
+                }
+                if labelCount >= 5 {
+                    var alert = "A message cannot have more than 5 labels".alertController();
+                    alert.addOKAction()
+                    vc.presentViewController(alert, animated: true, completion: nil)
+                    return;
+                }
+            }
+            
+            for mm in self.model.totalMessages {
+                var labelObjs = mm.mutableSetValueForKey("labels")
+                labelObjs.addObject(model.label)
+                mm.setValue(labelObjs, forKey: "labels")
+            }
+        }
+
+        self.model.status = tempStatus
         self.updateStatusButton();
     }
-    
+
     func updateStatusButton () {
         switch self.model.status {
         case 0:
@@ -62,11 +106,10 @@ class LabelTableViewCell: UITableViewCell {
         }
     }
     
-    func ConfigCell(label : Label!, model : LabelMessageModel?, vc : UIViewController) {
+    func ConfigCell(model : LabelMessageModel!, vc : UIViewController) {
         self.vc = vc;
-        self.label = label;
         self.model = model;
-        let w = labelView.setText(label.name, color: UIColor(hexString: label.color, alpha: 1.0))
+        let w = labelView.setText(model.label.name, color: UIColor(hexString: model.label.color, alpha: 1.0))
         labelWidth.constant = w;
         
         self.updateStatusButton()

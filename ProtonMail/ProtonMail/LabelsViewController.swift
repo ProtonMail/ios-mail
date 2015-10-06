@@ -96,7 +96,7 @@ class LablesViewController : UIViewController {
             collectionView.hidden = true;
             applyButton.setTitle("Apply", forState: UIControlState.Normal)
         } else {
-            
+            viewModel.cancel();
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
@@ -110,6 +110,10 @@ class LablesViewController : UIViewController {
                 NSLog("\(__FUNCTION__) error: \(error)")
             }
         }
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        self.fetchedLabels?.delegate = nil
     }
     
     func dismissKeyboard() {
@@ -161,7 +165,7 @@ extension LablesViewController: UITableViewDataSource {
         
         var labelCell = tableView.dequeueReusableCellWithIdentifier("labelApplyCell", forIndexPath: indexPath) as! LabelTableViewCell
         if let label = fetchedLabels?.objectAtIndexPath(indexPath) as? Label {
-            labelCell.ConfigCell(label, model: viewModel.getLabelMessage(label), vc: self)
+            labelCell.ConfigCell(viewModel.getLabelMessage(label), vc: self)
         }
         return labelCell
     }
@@ -263,9 +267,6 @@ extension LablesViewController: UICollectionViewDelegateFlowLayout, UICollection
 }
 
 
-
-
-
 // MARK: - NSFetchedResultsControllerDelegate
 
 extension LablesViewController : NSFetchedResultsControllerDelegate {
@@ -301,9 +302,9 @@ extension LablesViewController : NSFetchedResultsControllerDelegate {
             }
         case .Update:
             if let indexPath = indexPath {
-                if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MailboxTableViewCell {
+                //if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MailboxTableViewCell {
                     //configureCell(cell, atIndexPath: indexPath)
-                }
+                //}
             }
         default:
             return

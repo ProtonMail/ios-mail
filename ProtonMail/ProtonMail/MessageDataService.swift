@@ -531,10 +531,9 @@ class MessageDataService {
                 //if foucsClean {
                 self.cleanMessage()
                 //}
-                
-                
-                self.fetchMessagesForLocation(MessageLocation.inbox, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
                 sharedLabelsDataService.fetchLabels();
+                self.fetchMessagesForLocation(MessageLocation.inbox, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
+
             }
         }
     }
