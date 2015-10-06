@@ -11,7 +11,7 @@ import Foundation
 
 import CoreData
 
-class Label: NSManagedObject {
+public class Label: NSManagedObject {
     
     @NSManaged var color: String
     @NSManaged var isDisplay: Bool

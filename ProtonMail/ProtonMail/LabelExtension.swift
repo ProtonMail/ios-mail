@@ -27,7 +27,7 @@ extension Label {
         self.init(entity: NSEntityDescription.entityForName(Attributes.entityName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
     }
     
-    override func awakeFromInsert() {
+    public override func awakeFromInsert() {
         super.awakeFromInsert()
         replaceNilStringAttributesWithEmptyString()
     }

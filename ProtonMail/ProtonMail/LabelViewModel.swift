@@ -10,6 +10,7 @@ import Foundation
 
 
 public class LabelMessageModel {
+    var label : Label!
     var totalMessages : [Message] = []
     var originalSelected : [Message] = []
     var status : Int = 0
@@ -24,19 +25,7 @@ public class LabelViewModel {
         
     }
     
-    public func applyLabel(labelID: String) -> Bool {
-        fatalError("This method must be overridden")
-    }
-    
-    public func removeLabel(labelID : String) -> Bool {
-        fatalError("This method must be overridden")
-    }
-    
-    public func isEnabled(labelID : String) -> Bool {
-        fatalError("This method must be overridden")
-    }
-    
-    public func apply () {
+    public func apply (archiveMessage : Bool) {
         fatalError("This method must be overridden")
     }
     
@@ -44,7 +33,7 @@ public class LabelViewModel {
         fatalError("This method must be overridden")
     }
     
-    public func getLabelMessage( labelID : String) -> LabelMessageModel? {
+    public func getLabelMessage(label : Label!) -> LabelMessageModel? {
         fatalError("This method must be overridden")
     }
 }
@@ -53,58 +42,24 @@ public class LabelViewModelImpl : LabelViewModel {
     private var messages : [Message]!
     private var labelMessages : Dictionary<String, LabelMessageModel>!
     
-    //    var currentList = NSMutableSet()
-    //    var addList = NSMutableSet()
-    //    var removeList = NSMutableSet()
-    
     init(msg:[Message]!) {
         self.messages = msg
         self.labelMessages = Dictionary<String, LabelMessageModel>()
         super.init()
-        //TODO need figureout the labels
-        //        let labels = self.messages[0].mutableSetValueForKey("labels")
-        //        for label in labels {
-        //            if let label = label as? Label {
-        //                currentList.addObject(label.labelID)
-        //            }
-        //        }
     }
     
-    override public func applyLabel(labelID: String) -> Bool {
-        //        if currentList.count >= 5 {
-        //            return false
-        //        }
-        //
-        //        addList.addObject(labelID)
-        //        removeList.removeObject(labelID)
-        //        currentList.addObject(labelID)
-        
-        return true
-    }
-    
-    override public func removeLabel(labelID : String) -> Bool {
-        //        removeList.addObject(labelID)
-        //        addList.removeObject(labelID)
-        //        currentList.removeObject(labelID)
-        return true
-    }
-    
-    override public func isEnabled(labelID : String) -> Bool {
-        let found = false //self.currentList.containsObject(labelID)
-        return found
-    }
-    
-    override public func getLabelMessage( labelID : String) -> LabelMessageModel? {
-        if let outVar = self.labelMessages[labelID] {
+    override public func getLabelMessage( label : Label!) -> LabelMessageModel? {
+        if let outVar = self.labelMessages[label.labelID] {
             return outVar
         } else {
             var lmm = LabelMessageModel();
+            lmm.label = label
             lmm.totalMessages = self.messages;
             for (var m : Message) in self.messages {
                 let labels = m.mutableSetValueForKey("labels")
-                for label in labels {
-                    if let label = label as? Label {
-                        if label.labelID == labelID {
+                for lb in labels {
+                    if let lb = lb as? Label {
+                        if lb.labelID == lmm.label.labelID {
                             lmm.originalSelected.append(m)
                         }
                     }
@@ -119,45 +74,55 @@ public class LabelViewModelImpl : LabelViewModel {
                 lmm.status = 2;
             }
             
-            self.labelMessages[labelID] = lmm;
+            self.labelMessages[label.labelID] = lmm;
             return lmm
         }
     }
     
-    override public func apply() {
+    override public func apply(archiveMessage : Bool) {
         
-        //        let context = sharedCoreDataService.newMainManagedObjectContext()
-        //        context.performBlockAndWait { () -> Void in
-        //            if self.addList.count > 0 {
-        //                for str in self.addList.allObjects {
-        //                    if let str = str as? String {
-        ////                        if let label = Label.labelForLableID(str, inManagedObjectContext: context) {
-        ////                            var labelObjs = self.message.mutableSetValueForKey("labels")
-        ////                            labelObjs.addObject(label)
-        ////                            self.message.setValue(labelObjs, forKey: "labels")
-        ////                        }
-        //                        let api = ApplyLabelToMessageRequest(labelID: str, messages: [self.message[0].messageID])
-        //                        api.call(nil)
-        //                    }
-        //
-        //                }
-        //            }
-        //
-        //            if self.removeList.count > 0 {
-        //                for str in self.removeList.allObjects {
-        //                    if let str = str as? String {
-        ////                        if let label = Label.labelForLableID(str, inManagedObjectContext: context) {
-        ////                            var labelObjs = self.message.mutableSetValueForKey("labels")
-        ////                            labelObjs.removeObject(label)
-        ////                            self.message.setValue(labelObjs, forKey: "labels")
-        ////                        }
-        //                        let api = RemoveLabelFromMessageRequest(labelID: str, messages: [self.message[0].messageID])
-        //                        api.call(nil)
-        //                    }
-        //                }
-        //            }
-        //context.saveUpstreamIfNeeded()
-        //}
+        let context = sharedCoreDataService.newMainManagedObjectContext()
+        for (key, value) in self.labelMessages {
+            if value.status == 0 { //remove
+                let ids = self.messages.map { ($0).messageID }
+                let api = RemoveLabelFromMessageRequest(labelID: key, messages: ids)
+                api.call(nil)
+                context.performBlockAndWait { () -> Void in
+                    for mm in self.messages {
+                        var labelObjs = mm.mutableSetValueForKey("labels")
+                        labelObjs.removeObject(value.label)
+                        mm.setValue(labelObjs, forKey: "labels")
+                    }
+                }
+            } else if value.status == 2 { //add
+                let ids = self.messages.map { ($0).messageID }
+                let api = ApplyLabelToMessageRequest(labelID: key, messages: ids)
+                api.call(nil)
+                context.performBlockAndWait { () -> Void in
+                    for mm in self.messages {
+                        var labelObjs = mm.mutableSetValueForKey("labels")
+                        labelObjs.addObject(value.label)
+                        mm.setValue(labelObjs, forKey: "labels")
+                    }
+                }
+            } else {
+                
+            }
+        }
+        
+        
+        if archiveMessage {
+            for message in self.messages {
+                message.location = .archive
+                message.needsUpdate = true
+            }
+        }
+        
+        let error = context.saveUpstreamIfNeeded()
+        if let error = error {
+            NSLog("\(__FUNCTION__) error: \(error)")
+        }
+        
     }
     
     override public func createLabel(name: String, color: String, error:ErrorBlock,  complete: OkBlock) {

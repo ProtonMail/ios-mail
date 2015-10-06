@@ -83,7 +83,7 @@ class LablesViewController : UIViewController {
             
             
         } else {
-            self.viewModel.apply()
+            self.viewModel.apply(archiveMessage)
             self.dismissViewControllerAnimated(true, completion: nil)
         }
     }
@@ -161,7 +161,7 @@ extension LablesViewController: UITableViewDataSource {
         
         var labelCell = tableView.dequeueReusableCellWithIdentifier("labelApplyCell", forIndexPath: indexPath) as! LabelTableViewCell
         if let label = fetchedLabels?.objectAtIndexPath(indexPath) as? Label {
-            labelCell.ConfigCell(label, model: viewModel.getLabelMessage(label.labelID), vc: self)
+            labelCell.ConfigCell(label, model: viewModel.getLabelMessage(label), vc: self)
         }
         return labelCell
     }
