@@ -193,7 +193,7 @@ class MailboxViewController: ProtonMailViewController {
             }
         } else if segue.identifier == kSegueToLabelsController {
             let popup = segue.destinationViewController as! LablesViewController
-            popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages()[0])
+            popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
             self.setPresentationStyleForSelfController(self, presentingController: popup)
             self.cancelButtonTapped()
         } else if segue.identifier == kSegueToCompose {

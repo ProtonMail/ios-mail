@@ -158,7 +158,7 @@ class MessageViewController: ProtonMailViewController {
             composeViewController.viewModel = ComposeViewModelImpl(msg: message, action: self.actionTapped)
         } else if segue.identifier == "toApplyLabelsSegue" {
             let popup = segue.destinationViewController as! LablesViewController
-            popup.viewModel = LabelViewModelImpl(msg: self.message)
+            popup.viewModel = LabelViewModelImpl(msg: [self.message])
             self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }

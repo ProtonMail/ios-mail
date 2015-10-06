@@ -17,10 +17,8 @@ public class LabelMessageModel {
     var needRemove : Bool!
 }
 
-
 public class LabelViewModel {
 
-    
     public typealias OkBlock = () -> Void
     public typealias ErrorBlock = () -> Void
     
@@ -50,16 +48,17 @@ public class LabelViewModel {
 }
 
 public class LabelViewModelImpl : LabelViewModel {
-    private var message : Message!
+    private var message : [Message]!
     
     var currentList = NSMutableSet()
     var addList = NSMutableSet()
     var removeList = NSMutableSet()
     
-    init(msg:Message!) {
+    init(msg:[Message]!) {
         self.message = msg
         super.init()
-        let labels = self.message.mutableSetValueForKey("labels")
+        //TODO need figureout the labels
+        let labels = self.message[0].mutableSetValueForKey("labels")
         for label in labels {
             if let label = label as? Label {
                 currentList.addObject(label.labelID)
@@ -103,7 +102,7 @@ public class LabelViewModelImpl : LabelViewModel {
 //                            labelObjs.addObject(label)
 //                            self.message.setValue(labelObjs, forKey: "labels")
 //                        }
-                        let api = ApplyLabelToMessageRequest(labelID: str, messages: [self.message.messageID])
+                        let api = ApplyLabelToMessageRequest(labelID: str, messages: [self.message[0].messageID])
                         api.call(nil)
                     }
                     
@@ -118,7 +117,7 @@ public class LabelViewModelImpl : LabelViewModel {
 //                            labelObjs.removeObject(label)
 //                            self.message.setValue(labelObjs, forKey: "labels")
 //                        }
-                        let api = RemoveLabelFromMessageRequest(labelID: str, messages: [self.message.messageID])
+                        let api = RemoveLabelFromMessageRequest(labelID: str, messages: [self.message[0].messageID])
                         api.call(nil)
                     }
                 }
