@@ -95,7 +95,7 @@ extension Message {
     convenience init(context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entityForName(Attributes.entityName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
     }
-        
+    
     /// Removes all messages from the store.
     class func deleteAll(inContext context: NSManagedObjectContext) {
         context.deleteAll(Attributes.entityName)
@@ -113,7 +113,7 @@ extension Message {
         super.awakeFromInsert()
         replaceNilStringAttributesWithEmptyString()
     }
-        
+    
     func updateTag(tag: String) {
         self.tag = tag
         isStarred = tag.rangeOfString(Constants.starredTag) != nil
@@ -138,8 +138,11 @@ extension Message {
             if body == nil {
                 return body
             }
+            
             if isEncrypted == 8 {
                 body = body?.multipartGetHtmlContent () ?? ""
+            } else if isEncrypted == 7 {
+                body = body?.ln2br() ?? ""
             }
             return body
         }
@@ -158,12 +161,12 @@ extension Message {
     }
     
     var encryptType : EncryptTypes!
-    {
-        let enc_type = EncryptTypes(rawValue: isEncrypted.integerValue) ?? EncryptTypes.Internal
-        
-        return enc_type
+        {
+            let enc_type = EncryptTypes(rawValue: isEncrypted.integerValue) ?? EncryptTypes.Internal
+            
+            return enc_type
     }
-
+    
     
     
     // MARK: Private variables
@@ -180,7 +183,7 @@ extension Message {
         return sharedUserDataService.userInfo?.publicKey ?? ""
     }
     
-
+    
     
     func copyMessage () -> Message {
         let message = self
@@ -233,7 +236,7 @@ extension String {
         var data = self.dataUsingEncoding(NSUTF8StringEncoding)!
         var len = data.length as Int;
         
-        //get boundary= 
+        //get boundary=
         let boundarLine = "boundary=".dataUsingEncoding(NSASCIIStringEncoding)!
         let boundaryRange = data.rangeOfData(boundarLine, options: nil, range: NSMakeRange(0, len))
         if boundaryRange.location == NSNotFound {
@@ -256,7 +259,7 @@ extension String {
         
         len = len - (nextLine.location + nextLine.length);
         data = data.subdataWithRange(NSMakeRange(nextLine.location + nextLine.length, len))
-
+        
         var html : String = "";
         var plaintext : String = "";
         
@@ -267,7 +270,7 @@ extension String {
         if firstboundaryRange.location == NSNotFound {
             return "";
         }
-
+        
         while true {
             if count >= 10 {
                 break;
@@ -289,7 +292,7 @@ extension String {
             let ContentType = data.subdataWithRange(NSMakeRange(0, ContentEnd.location))
             len = len - (ContentEnd.location + ContentEnd.length);
             data = data.subdataWithRange(NSMakeRange(ContentEnd.location + ContentEnd.length, len))
-
+            
             bodyString = NSString(data: ContentType, encoding: NSUTF8StringEncoding) as! String
             
             let EncodingEnd = data.rangeOfData(lineEnd, options: nil, range: NSMakeRange(2, len - 2))
@@ -299,7 +302,7 @@ extension String {
             let EncodingType = data.subdataWithRange(NSMakeRange(0, EncodingEnd.location))
             len = len - (EncodingEnd.location + EncodingEnd.length);
             data = data.subdataWithRange(NSMakeRange(EncodingEnd.location + EncodingEnd.length, len))
-    
+            
             bodyString = NSString(data: EncodingType, encoding: NSUTF8StringEncoding) as! String
             
             var secondboundaryRange = data.rangeOfData(nextBoundaryLine, options: nil, range: NSMakeRange(0, len))
@@ -328,7 +331,7 @@ extension String {
         
         return (html.isEmpty ? plaintext : html).ln2br();
     }
-
+    
 }
 
 
