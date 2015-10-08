@@ -55,6 +55,7 @@
             <string>Roboto-Regular</string>
             <string>Roboto-Regular</string>
             <string>Roboto-Regular</string>
+            <string>Roboto-Regular</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -1253,15 +1254,55 @@
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3pf-Hd-Pee">
+                                <rect key="frame" x="0.0" y="536" width="600" height="44"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message Deleted" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IgK-Na-2zA">
+                                        <rect key="frame" x="16" y="0.0" width="484" height="44"/>
+                                        <animations/>
+                                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NP8-8G-jWE">
+                                        <rect key="frame" x="500" y="0.0" width="100" height="44"/>
+                                        <animations/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="100" id="xTI-kn-F1J"/>
+                                        </constraints>
+                                        <state key="normal" title="Undo">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="undoAction:" destination="aed-G8-Az6" eventType="touchUpInside" id="ZgN-BV-mAt"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <animations/>
+                                <color key="backgroundColor" red="0.31372549019607843" green="0.31372549019607843" blue="0.38039215686274508" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="IgK-Na-2zA" secondAttribute="bottom" id="3gr-pb-mZX"/>
+                                    <constraint firstAttribute="trailing" secondItem="NP8-8G-jWE" secondAttribute="trailing" id="40n-1A-hHc"/>
+                                    <constraint firstItem="NP8-8G-jWE" firstAttribute="leading" secondItem="IgK-Na-2zA" secondAttribute="trailing" id="A7M-Iz-fHS"/>
+                                    <constraint firstAttribute="bottom" secondItem="NP8-8G-jWE" secondAttribute="bottom" id="D7a-A7-p1n"/>
+                                    <constraint firstAttribute="height" constant="44" id="JZp-cY-d2o"/>
+                                    <constraint firstItem="IgK-Na-2zA" firstAttribute="leading" secondItem="3pf-Hd-Pee" secondAttribute="leading" constant="16" id="O3h-p4-izw"/>
+                                    <constraint firstItem="NP8-8G-jWE" firstAttribute="top" secondItem="3pf-Hd-Pee" secondAttribute="top" id="mTi-5F-7Dj"/>
+                                    <constraint firstItem="IgK-Na-2zA" firstAttribute="top" secondItem="3pf-Hd-Pee" secondAttribute="top" id="tbO-J8-tRc"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Q7u-jG-CGT" firstAttribute="leading" secondItem="OTG-Sc-6eN" secondAttribute="leading" id="1H2-nX-7Is"/>
                             <constraint firstItem="7Zx-Yy-VI3" firstAttribute="leading" secondItem="OTG-Sc-6eN" secondAttribute="leading" id="6aH-UA-ezI"/>
+                            <constraint firstItem="3pf-Hd-Pee" firstAttribute="leading" secondItem="OTG-Sc-6eN" secondAttribute="leadingMargin" constant="-16" id="KOu-fu-6Rs"/>
                             <constraint firstAttribute="trailing" secondItem="7Zx-Yy-VI3" secondAttribute="trailing" id="Sxx-a1-umD"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="3pf-Hd-Pee" secondAttribute="trailing" constant="-16" id="aAc-DK-rxb"/>
                             <constraint firstItem="Q7u-jG-CGT" firstAttribute="top" secondItem="vYi-81-AYM" secondAttribute="bottom" id="aTw-Lo-DLO"/>
                             <constraint firstItem="7Zx-Yy-VI3" firstAttribute="top" secondItem="vYi-81-AYM" secondAttribute="bottom" id="dQc-GT-Q7X"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="3pf-Hd-Pee" secondAttribute="bottom" constant="-44" id="i67-ZP-Yjt"/>
                             <constraint firstItem="Jzd-SW-ZeK" firstAttribute="top" secondItem="7Zx-Yy-VI3" secondAttribute="bottom" id="p9A-ps-8sY"/>
                             <constraint firstAttribute="trailing" secondItem="Q7u-jG-CGT" secondAttribute="trailing" id="rKq-q2-7Ov"/>
                         </constraints>
@@ -1276,6 +1317,8 @@
                         <outlet property="menuButton" destination="MGt-Hd-KyR" id="g5E-fz-E2f"/>
                         <outlet property="noResultLabel" destination="Q7u-jG-CGT" id="p9K-UZ-b7h"/>
                         <outlet property="tableView" destination="7Zx-Yy-VI3" id="xAI-ZE-pMC"/>
+                        <outlet property="undoBottomDistance" destination="i67-ZP-Yjt" id="mP5-Zd-Jeb"/>
+                        <outlet property="undoLabel" destination="IgK-Na-2zA" id="33M-Ke-Aut"/>
                         <segue destination="xBI-ex-VGk" kind="presentation" identifier="toSearchViewController" id="6qA-ON-8KL"/>
                         <segue destination="kWS-aU-yuK" kind="show" identifier="toMessageDetailViewController" id="f3k-3A-WEA"/>
                         <segue destination="fzN-Ci-Qyg" kind="presentation" identifier="toCompose" id="fux-iz-qV0"/>
@@ -3196,13 +3239,13 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="YGe-pV-72F"/>
-        <segue reference="zIE-XJ-wkG"/>
+        <segue reference="LdN-DE-nXL"/>
         <segue reference="f3k-3A-WEA"/>
         <segue reference="uv8-bX-yhD"/>
+        <segue reference="zIE-XJ-wkG"/>
         <segue reference="ddm-eA-erE"/>
-        <segue reference="5rJ-hC-fsT"/>
-        <segue reference="pf5-Mm-LDI"/>
         <segue reference="A7E-cY-hB0"/>
+        <segue reference="pf5-Mm-LDI"/>
+        <segue reference="5rJ-hC-fsT"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -13,6 +13,18 @@
 import CoreData
 import UIKit
 
+class UndoMessage {
+    var messageID : String!
+    var oldLocation : MessageLocation!
+    
+    required init(msgID:String!, oldLocation : MessageLocation!) {
+        self.messageID = msgID
+        self.oldLocation = oldLocation
+        
+    }
+    
+}
+
 class MailboxViewController: ProtonMailViewController {
     
     // MARK: - View Outlets
@@ -34,6 +46,7 @@ class MailboxViewController: ProtonMailViewController {
     private let kSegueToMessageDetailController = "toMessageDetailViewController"
     private let kSegueToLabelsController = "toApplyLabelsSegue"
     
+    @IBOutlet weak var undoBottomDistance: NSLayoutConstraint!
     // MARK: - Private attributes
     
     internal var viewModel: MailboxViewModel!
@@ -45,14 +58,21 @@ class MailboxViewController: ProtonMailViewController {
     private var isEditing: Bool = false
     private var timer : NSTimer!
     
+    private var timerAutoDismiss : NSTimer?
+    
     private var fetching : Bool = false
     private var selectedDraft : Message!
     private var indexPathForSelectedRow : NSIndexPath!
+    
+    private var undoMessage : UndoMessage?
+    
+    private var isShowUndo : Bool = false
     
     
     // MAKR : - Private views
     internal var refreshControl: UIRefreshControl!
     private var navigationTitleLabel = UILabel()
+    @IBOutlet weak var undoLabel: UILabel!
     
     @IBOutlet weak var noResultLabel: UILabel!
     
@@ -102,6 +122,11 @@ class MailboxViewController: ProtonMailViewController {
             self.tableView.deselectRowAtIndexPath(selectedItem, animated: true)
         }
         self.startAutoFetch()
+    }
+    
+    @IBAction func undoAction(sender: UIButton) {
+        self.undoTheMessage();
+        self.hideUndoView();
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -362,13 +387,59 @@ class MailboxViewController: ProtonMailViewController {
     
     private func archiveMessageForIndexPath(indexPath: NSIndexPath) {
         if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+            undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
             viewModel.archiveMessage(message)
+            showUndoView("Archived")
         }
     }
     private func deleteMessageForIndexPath(indexPath: NSIndexPath) {
         if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+            undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
             viewModel.deleteMessage(message)
+            showUndoView("Deleted")
         }
+    }
+    
+    private func undoTheMessage() { //need move into viewModel
+        if undoMessage != nil {
+            if let context = fetchedResultsController?.managedObjectContext {
+                if let message = Message.messageForMessageID(undoMessage!.messageID, inManagedObjectContext: context) {
+                    message.location = undoMessage!.oldLocation
+                    message.needsUpdate = true
+                    if let error = context.saveUpstreamIfNeeded() {
+                        NSLog("\(__FUNCTION__) error: \(error)")
+                    }
+                }
+            }
+            undoMessage = nil
+        }
+    }
+    
+    private func showUndoView(title : String!) {
+        undoLabel.text = "Message \(title)"
+        self.undoBottomDistance.constant = 0
+        self.updateViewConstraints()
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+        })
+        self.timerAutoDismiss?.invalidate()
+        self.timerAutoDismiss = nil
+        self.timerAutoDismiss = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: "timerTriggered", userInfo: nil, repeats: false)
+    }
+    
+    private func hideUndoView() {
+        self.timerAutoDismiss?.invalidate()
+        self.timerAutoDismiss = nil
+
+        self.undoBottomDistance.constant = -44
+        self.updateViewConstraints()
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    func timerTriggered() {
+        self.hideUndoView()
     }
     
     private func setupFetchedResultsController() {
