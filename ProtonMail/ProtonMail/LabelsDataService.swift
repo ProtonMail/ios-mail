@@ -57,7 +57,6 @@ class LabelsDataService {
     func fetchedResultsController() -> NSFetchedResultsController? {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Label.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "%K == 0", Label.Attributes.isDisplay)
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Label.Attributes.order, ascending: true)]
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         }
