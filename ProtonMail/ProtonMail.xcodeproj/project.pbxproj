@@ -1008,12 +1008,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 075E3E081A5F4ECF00E001A7 /* Build configuration list for PBXNativeTarget "ProtonMail" */;
 			buildPhases = (
-				D5F434AFF2C00C9ABE6BB23E /* Check Pods Manifest.lock */,
+				7575CA6A1BCC5E6400A97F6C /* ShellScript */,
 				075E3DE21A5F4ECF00E001A7 /* Sources */,
+				D5F434AFF2C00C9ABE6BB23E /* Check Pods Manifest.lock */,
 				075E3DE31A5F4ECF00E001A7 /* Frameworks */,
 				075E3DE41A5F4ECF00E001A7 /* Resources */,
 				A7038E57DA5EA382DAD3045B /* Copy Pods Resources */,
-				75C217571AD6F07C00978579 /* ShellScript */,
+				75C217571AD6F07C00978579 /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -1147,13 +1148,27 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		75C217571AD6F07C00978579 /* ShellScript */ = {
+		7575CA6A1BCC5E6400A97F6C /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=$(git rev-parse --short HEAD)\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;";
+		};
+		75C217571AD6F07C00978579 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
