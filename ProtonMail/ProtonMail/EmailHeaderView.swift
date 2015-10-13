@@ -137,8 +137,9 @@ class EmailHeaderView: UIView {
     private var toSinglelineAttr : NSMutableAttributedString! {
         get {
             var strTo : String = ""
-            var count = toList?.count ?? 0
+            var count = (toList?.count ?? 0)
             if count > 0 {
+                count += (ccList?.count ?? 0) + (bccList?.count ?? 0)
                 if let contact = toList?[0] {
                     let n = (contact.name ?? "")
                     let e = (contact.email ?? "")
@@ -836,8 +837,8 @@ class EmailHeaderView: UIView {
                 make.height.equalTo()(eth)
             }
             
-            let ccOffset = self.showTo ? kEmailRecipientsViewMarginTop : 0
-            let ccHeight = self.showTo ? 16 : 0
+            let ccOffset = self.showCc ? kEmailRecipientsViewMarginTop : 0
+            let ccHeight = self.showCc ? 16 : 0
             emailCc.mas_updateConstraints { (make) -> Void in
                 make.removeExisting = true
                 make.left.equalTo()(self.emailHeaderView)
@@ -959,7 +960,7 @@ class EmailHeaderView: UIView {
                 make.top.equalTo()(self.emailFrom)
                 make.height.equalTo()(self.emailFrom)
             }
-            
+
             let toOffset = self.showTo ? kEmailRecipientsViewMarginTop : 0
             let toHeight = self.showTo ? 16 : 0
             emailTo.mas_updateConstraints { (make) -> Void in
@@ -969,20 +970,28 @@ class EmailHeaderView: UIView {
                 make.top.equalTo()(self.emailFrom.mas_bottom).with().offset()(toOffset)
                 make.height.equalTo()(toHeight)
             }
+            
             emailToTable.mas_updateConstraints { (make) -> Void in
                 make.removeExisting = true
                 make.left.equalTo()(36)
                 make.right.equalTo()(self.emailHeaderView)
                 make.top.equalTo()(self.emailTo)
-                make.height.equalTo()(self.emailTo)
+                make.height.equalTo()(toHeight)
             }
 
+            emailCc.mas_updateConstraints { (make) -> Void in
+                make.removeExisting = true
+                make.left.equalTo()(self.emailHeaderView)
+                make.right.equalTo()(self.emailTitle)
+                make.top.equalTo()(self.emailToTable.mas_bottom).with().offset()(0)
+                make.height.equalTo()(0)
+            }
             emailCcTable.mas_makeConstraints { (make) -> Void in
                 make.removeExisting = true
                 make.left.equalTo()(36)
                 make.right.equalTo()(self.emailHeaderView)
                 make.top.equalTo()(self.emailCc).with().offset()(self.kEmailRecipientsViewMarginTop)
-                make.height.equalTo()(self.emailCc)
+                make.height.equalTo()(0)
             }
 
             self.emailDetailButton.setTitle(NSLocalizedString("Details"), forState: UIControlState.Normal)
@@ -995,7 +1004,8 @@ class EmailHeaderView: UIView {
             })
             
             self.emailFrom.sizeToFit();
-            emailFrom.mas_makeConstraints { (make) -> Void in
+            emailFrom.mas_updateConstraints { (make) -> Void in
+                make.removeExisting = true
                 make.left.equalTo()(self.emailHeaderView)
                 make.width.equalTo()(self.emailFrom.frame.size.width)
                 make.height.equalTo()(self.emailFrom.frame.size.height)
@@ -1003,13 +1013,14 @@ class EmailHeaderView: UIView {
             }
             
             self.emailTo.sizeToFit();
-            emailTo.mas_makeConstraints { (make) -> Void in
+            emailTo.mas_updateConstraints { (make) -> Void in
+                make.removeExisting = true
                 make.left.equalTo()(self.emailHeaderView)
                 make.width.equalTo()(self.emailTo.frame.size.width)
                 make.height.equalTo()(self.emailTo.frame.size.height)
-                make.top.equalTo()(self.emailFrom.mas_bottom).with().offset()(self.kEmailRecipientsViewMarginTop)
+                make.top.equalTo()(self.emailFrom.mas_bottom).with().offset()(toOffset)
             }
-            
+
             self.emailShortTime.sizeToFit()
             self.emailShortTime.mas_updateConstraints { (make) -> Void in
                 make.removeExisting = true
@@ -1018,7 +1029,7 @@ class EmailHeaderView: UIView {
                 make.height.equalTo()(self.emailShortTime.frame.size.height)
                 make.top.equalTo()(self.emailToTable.mas_bottom).with().offset()(self.kEmailTimeViewMarginTop)
             }
-            
+
             self.emailDetailView.mas_updateConstraints({ (make) -> Void in
                 make.removeExisting = true
                 make.left.equalTo()(self.emailTitle)
