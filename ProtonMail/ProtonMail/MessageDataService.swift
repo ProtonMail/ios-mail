@@ -249,6 +249,9 @@ class MessageDataService {
         queue {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
             eventAPI.call() { task, response, hasError in
+                
+                PMLog.D("\(response!)")
+                
                 if response == nil {
                     completion?(task: task, response:nil, error: nil)
                 } else if response!.isRefresh || (hasError && response!.code == 18001) {
@@ -767,6 +770,48 @@ class MessageDataService {
         }
     }
     
+    func ForcefetchDetailForMessage(message: Message, completion: CompletionFetchDetail) {
+        queue {
+            let completionWrapper: CompletionBlock = { task, response, error in
+                let context = sharedCoreDataService.newMainManagedObjectContext()
+                context.performBlockAndWait() {
+                    var error: NSError?
+                    
+                    if response != nil {
+                        //TODO need check the respons code
+                        if var msg: Dictionary<String,AnyObject> = response?["Message"] as? Dictionary<String,AnyObject> {
+                            msg.removeValueForKey("Location")
+                            msg.removeValueForKey("Starred")
+                            msg.removeValueForKey("test")
+                            let message_n = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg, inManagedObjectContext: message.managedObjectContext!, error: &error) as! Message
+                            if error == nil {
+                                message.isDetailDownloaded = true
+                                message.needsUpdate = true
+                                message.isRead = true
+                                message.managedObjectContext?.saveUpstreamIfNeeded()
+                                error = context.saveUpstreamIfNeeded()
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    completion(task: task, response: response, message: message, error: error)
+                                }
+                            }
+                        } else {
+                            completion(task: task, response: response, message:nil, error: NSError.badResponse())
+                        }
+                    } else {
+                        error = NSError.unableToParseResponse(response)
+                        dispatch_async(dispatch_get_main_queue()) {
+                            completion(task: task, response: response, message:nil, error: error)
+                        }
+                    }
+                    if error != nil  {
+                        NSLog("\(__FUNCTION__) error: \(error)")
+                    }
+                }
+            }
+            sharedAPIService.messageDetail(messageID: message.messageID, completion: completionWrapper)
+        }
+    }
+
     func fetchMessageDetailForMessage(message: Message, completion: CompletionFetchDetail) {
         if !message.isDetailDownloaded {
             queue {

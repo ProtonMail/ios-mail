@@ -52,7 +52,28 @@ public class ComposeViewModelImpl : ComposeViewModel {
         if message != nil {
             switch messageAction!
             {
-            case .OpenDraft, .NewDraft, .Forward:
+            case .NewDraft, .Forward:
+                break;
+            case .OpenDraft:
+                let sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.sender)
+                
+                if  !sender.isDuplicated(userAddress) {
+                    self.toSelectedContacts.append(sender)
+                }
+                
+                let toContacts = self.toContacts(self.message!.recipientList)
+                for cont in toContacts {
+                    if  !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
+                        self.toSelectedContacts.append(cont)
+                    }
+                }
+
+                let senderContacts = self.toContacts(self.message!.ccList)
+                for cont in senderContacts {
+                    if  !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
+                        self.ccSelectedContacts.append(cont)
+                    }
+                }
                 break;
             case .Reply:
                 let sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.sender)

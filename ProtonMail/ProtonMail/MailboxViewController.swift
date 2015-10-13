@@ -207,7 +207,7 @@ class MailboxViewController: ProtonMailViewController {
             let composeViewController = segue.destinationViewController.viewControllers![0] as! ComposeEmailViewController
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {
-                    composeViewController.viewModel = ComposeViewModelImpl(msg: message, action : ComposeMessageAction.OpenDraft)
+                    composeViewController.viewModel = ComposeViewModelImpl(msg: selectedDraft ?? message, action : ComposeMessageAction.OpenDraft)
                 }
                 else
                 {
@@ -599,7 +599,7 @@ class MailboxViewController: ProtonMailViewController {
     private func performSegueForMessage(message: Message) {
         if viewModel.isDrafts() {
             if !message.messageID.isEmpty {
-                sharedMessageDataService.fetchMessageDetailForMessage(message) {_, _, msg, error in
+                sharedMessageDataService.ForcefetchDetailForMessage(message) {_, _, msg, error in
                     if error != nil {
                         NSLog("\(__FUNCTION__) error: \(error)")
                     }

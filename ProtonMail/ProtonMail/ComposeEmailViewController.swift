@@ -240,7 +240,9 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     private func setupAutoSave()
     {
         self.timer = NSTimer.scheduledTimerWithTimeInterval(120, target: self, selector: "autoSaveTimer", userInfo: nil, repeats: true)
-        self.timer.fire()
+        if viewModel.getActionType() != .OpenDraft {
+            self.timer.fire()
+        }
     }
     
     private func stopAutoSave()
