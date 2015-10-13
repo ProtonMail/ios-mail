@@ -536,7 +536,7 @@ class MessageDataService {
                 //}
                 sharedLabelsDataService.fetchLabels();
                 self.fetchMessagesForLocation(MessageLocation.inbox, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
-
+                
             }
         }
     }
@@ -811,7 +811,7 @@ class MessageDataService {
             sharedAPIService.messageDetail(messageID: message.messageID, completion: completionWrapper)
         }
     }
-
+    
     func fetchMessageDetailForMessage(message: Message, completion: CompletionFetchDetail) {
         if !message.isDetailDownloaded {
             queue {
@@ -980,7 +980,7 @@ class MessageDataService {
         //tempary for clean contact cache
         sharedContactDataService.cleanUp()
         sharedLabelsDataService.cleanUp()
-
+        
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
     
@@ -1396,6 +1396,7 @@ class MessageDataService {
                                     
                                     message.needsUpdate = false;
                                     message.isRead = true
+                                    lastUpdatedStore.ReadMailboxMessage(message.location)
                                     message.location = MessageLocation.outbox
                                 }
                                 NSError.alertMessageSentToast()

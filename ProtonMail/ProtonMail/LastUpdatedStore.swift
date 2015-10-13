@@ -151,18 +151,6 @@ public class LastUpdatedStore : SharedCacheBase {
         }
     }
 
-//    public func getInboxesLastUpdate(key: String) -> UpdateTime {
-//        return UpdateTime(start: NSDate.distantPast() as! NSDate, end: NSDate.distantPast() as! NSDate)
-//    }
-//    
-//    public func getLabelsLastUpdate(key: String) -> UpdateTime {
-//        return UpdateTime(start: NSDate.distantPast() as! NSDate, end: NSDate.distantPast() as! NSDate)
-//    }
-//    
-//    public func getContactsLastUpdate(key: String) -> UpdateTime {
-//        return UpdateTime(start: NSDate.distantPast() as! NSDate, end: NSDate.distantPast() as! NSDate)
-//    }
-    
     
     /**
     clear the last update time cache
@@ -222,7 +210,6 @@ public class LastUpdatedStore : SharedCacheBase {
         return mailboxUnreadCounts[location.key] = count
     }
     
-    
     public func resetLabelsUnreadCounts() {
         getShared().removeObjectForKey(Key.labelsUnreadCount)
         getShared().synchronize()
@@ -234,7 +221,28 @@ public class LastUpdatedStore : SharedCacheBase {
     public func updateLabelsUnreadCountForKey(labelID : String, count: Int) -> Void {
         return mailboxUnreadCounts[labelID] = count
     }
-
+    
+    
+    // Mailbox unread count change
+    public func UnreadMailboxMessage(location : MessageLocation) {
+        var currentCount = mailboxUnreadCounts[location.key] ?? 0
+        currentCount += 1;
+        mailboxUnreadCounts[location.key] = currentCount
+    }
+    
+    public func ReadMailboxMessage(location : MessageLocation) {
+        var currentCount = mailboxUnreadCounts[location.key] ?? 0
+        currentCount -= 1;
+        if currentCount < 0 {
+            currentCount = 0
+        }
+        mailboxUnreadCounts[location.key] = currentCount
+    }
+    
+    public func MoveUnReadMailboxMessage(from : MessageLocation, to : MessageLocation) {
+        UnreadMailboxMessage(from);
+        ReadMailboxMessage(to)
+    }
 }
 
 

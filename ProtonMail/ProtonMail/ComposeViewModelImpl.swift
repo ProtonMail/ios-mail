@@ -169,6 +169,9 @@ public class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override public func deleteDraft() {
+        if let tmpLocation = self.message?.location {
+            lastUpdatedStore.ReadMailboxMessage(tmpLocation)
+        }
         sharedMessageDataService.deleteDraft(self.message);
     }
     
