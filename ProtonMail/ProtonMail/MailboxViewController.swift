@@ -359,7 +359,7 @@ class MailboxViewController: ProtonMailViewController {
                     archiveVIew.textColor = UIColor.whiteColor()
                     
                     if !self.viewModel.isArchive() {
-                        mailboxCell.setSwipeGestureWithView(archiveVIew, color: UIColor.greenColor(), mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State1 ) { (cell, state, mode) -> Void in
+                        mailboxCell.setSwipeGestureWithView(archiveVIew, color: UIColor.ProtonMail.MessageActionTintColor, mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State1 ) { (cell, state, mode) -> Void in
                             if let indexp = self.tableView.indexPathForCell(cell) {
                                 self.archiveMessageForIndexPath(indexp)
                                 if self.viewModel.showLocation() {
@@ -370,7 +370,7 @@ class MailboxViewController: ProtonMailViewController {
                             }
                         }
                     }
-                    mailboxCell.setSwipeGestureWithView(crossView, color: UIColor.redColor(), mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State3  ) { (cell, state, mode) -> Void in
+                    mailboxCell.setSwipeGestureWithView(crossView, color: UIColor.ProtonMail.MessageActionTintColor, mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State3  ) { (cell, state, mode) -> Void in
                         if let indexp = self.tableView.indexPathForCell(cell) {
                             self.deleteMessageForIndexPath(indexp)
                             if self.viewModel.showLocation() {

@@ -75,6 +75,8 @@ extension UIColor {
     
         
         static let TextFieldTintColor = UIColor.whiteColor()
+        
+        static let MessageActionTintColor = UIColor(hexString: "#9397cd", alpha: 1.0)
     }
 }
 
