@@ -255,6 +255,9 @@
                                 <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
                                     <rect key="frame" x="152" y="640" width="98" height="27"/>
                                 </variation>
+                                <connections>
+                                    <action selector="signUpAction:" destination="rb7-9h-TvB" eventType="touchUpInside" id="aHD-lR-vnz"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vM0-vQ-zml">
                                 <rect key="frame" x="160" y="456" width="280" height="20"/>
