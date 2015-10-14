@@ -568,10 +568,10 @@ class MailboxViewController: ProtonMailViewController {
     
     private func showNoResultLabel() {
         let count = (self.fetchedResultsController?.numberOfSections() > 0) ? (self.fetchedResultsController?.numberOfRowsInSection(0) ?? 0) : 0
-        if (count > 0) {
-            self.noResultLabel.hidden = true;
-        } else {
+        if (count <= 0 && !fetchingMessage ) {
             self.noResultLabel.hidden = false;
+        } else {
+            self.noResultLabel.hidden = true;
         }
     }
     
