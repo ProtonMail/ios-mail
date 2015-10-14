@@ -107,6 +107,11 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         }
     }
     
+    private func dismissKeyboard() {
+        self.composeView.toContactPicker.becomeFirstResponder()
+        self.composeView.toContactPicker.resignFirstResponder()
+    }
+    
     private func updateMessageView() {
         self.composeView.subject.text = self.viewModel.getSubject();
         self.setHTML(self.viewModel.getHtmlBody())
@@ -179,6 +184,8 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     
 
     @IBAction func send_clicked(sender: AnyObject) {
+        self.dismissKeyboard()
+        
         if self.composeView.expirationTimeInterval > 0 {
             if self.composeView.hasOutSideEmails && count(self.encryptionPassword) <= 0 {
                 self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kExpirationNeedsPWDError)
@@ -207,6 +214,8 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     }
     
     @IBAction func cancel_clicked(sender: AnyObject) {
+        
+        self.dismissKeyboard()
         let dismiss: (() -> Void) = {
             if self.presentingViewController != nil {
                 self.dismissViewControllerAnimated(true, completion: nil)
