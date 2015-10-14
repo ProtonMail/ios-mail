@@ -329,7 +329,7 @@ extension String {
             firstboundaryRange = secondboundaryRange
         }
         
-        return (html.isEmpty ? plaintext : html).ln2br();
+        return html.isEmpty ? plaintext.ln2br() : html;
     }
     
 }

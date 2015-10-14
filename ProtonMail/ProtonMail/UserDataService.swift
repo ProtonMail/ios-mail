@@ -135,7 +135,7 @@ class UserDataService {
     }
     
     var signature: String {
-        return userInfo?.signature ?? ""
+        return (userInfo?.signature ?? "").ln2br()
     }
     
     var isSet : Bool {
