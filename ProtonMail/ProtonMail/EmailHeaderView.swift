@@ -51,7 +51,7 @@ class EmailHeaderView: UIView {
     private var LabelThree: UILabel!
     private var LabelFour: UILabel!
     private var LabelFive: UILabel!
-
+    
     private var emailFavoriteButton: UIButton!
     private var emailIsEncryptedImageView: UIImageView!
     private var emailHasAttachmentsImageView: UIImageView!
@@ -202,7 +202,7 @@ class EmailHeaderView: UIView {
             return (self.labels?.count ?? 0) > 0 ? true : false
         }
     }
-   
+    
     required init() {
         super.init(frame: CGRectZero)
         self.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
@@ -267,7 +267,7 @@ class EmailHeaderView: UIView {
                 self.emailIsEncryptedImageView.highlighted = true;
             }
         }
-
+        
         self.labels = labels;
         
         if let labels = labels {
@@ -309,7 +309,7 @@ class EmailHeaderView: UIView {
                 }
             }
         }
-
+        
     }
     
     private func updateLablesDetails (labelView : UILabel, label:Label?) {
@@ -325,7 +325,7 @@ class EmailHeaderView: UIView {
             labelView.text = ""
         }
     }
-
+    
     
     func updateAttachmentData (atts : [Attachment]?) {
         self.attachmentCount = atts?.count
@@ -433,7 +433,7 @@ class EmailHeaderView: UIView {
         self.emailCcTable = RecipientView()
         self.emailCcTable.alpha = 0.0;
         self.emailHeaderView.addSubview(emailCcTable)
-
+        
         self.emailShortTime = UILabel()
         self.emailShortTime.font = UIFont.robotoMedium(size: UIFont.Size.h6)
         self.emailShortTime.numberOfLines = 1
@@ -742,7 +742,7 @@ class EmailHeaderView: UIView {
             make.width.equalTo()(self.LabelFive.frame.size.width)
             make.height.equalTo()(lb5Height)
         }
-
+        
         emailAttachmentsAmount.mas_makeConstraints { (make) -> Void in
             make.right.equalTo()(self.emailHeaderView).offset()(-16)
             make.bottom.equalTo()(self.emailDetailButton)
@@ -960,7 +960,7 @@ class EmailHeaderView: UIView {
                 make.top.equalTo()(self.emailFrom)
                 make.height.equalTo()(self.emailFrom)
             }
-
+            
             let toOffset = self.showTo ? kEmailRecipientsViewMarginTop : 0
             let toHeight = self.showTo ? 16 : 0
             emailTo.mas_updateConstraints { (make) -> Void in
@@ -978,7 +978,7 @@ class EmailHeaderView: UIView {
                 make.top.equalTo()(self.emailTo)
                 make.height.equalTo()(toHeight)
             }
-
+            
             emailCc.mas_updateConstraints { (make) -> Void in
                 make.removeExisting = true
                 make.left.equalTo()(self.emailHeaderView)
@@ -993,7 +993,7 @@ class EmailHeaderView: UIView {
                 make.top.equalTo()(self.emailCc).with().offset()(self.kEmailRecipientsViewMarginTop)
                 make.height.equalTo()(0)
             }
-
+            
             self.emailDetailButton.setTitle(NSLocalizedString("Details"), forState: UIControlState.Normal)
             self.emailDetailButton.mas_updateConstraints({ (make) -> Void in
                 make.removeExisting = true
@@ -1020,7 +1020,7 @@ class EmailHeaderView: UIView {
                 make.height.equalTo()(self.emailTo.frame.size.height)
                 make.top.equalTo()(self.emailFrom.mas_bottom).with().offset()(toOffset)
             }
-
+            
             self.emailShortTime.sizeToFit()
             self.emailShortTime.mas_updateConstraints { (make) -> Void in
                 make.removeExisting = true
@@ -1029,7 +1029,7 @@ class EmailHeaderView: UIView {
                 make.height.equalTo()(self.emailShortTime.frame.size.height)
                 make.top.equalTo()(self.emailToTable.mas_bottom).with().offset()(self.kEmailTimeViewMarginTop)
             }
-
+            
             self.emailDetailView.mas_updateConstraints({ (make) -> Void in
                 make.removeExisting = true
                 make.left.equalTo()(self.emailTitle)
@@ -1050,7 +1050,6 @@ extension EmailHeaderView: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let attachment = attachmentForIndexPath(indexPath)
         let cell = tableView.dequeueReusableCellWithIdentifier(AttachmentTableViewCell.Constant.identifier, forIndexPath: indexPath) as! AttachmentTableViewCell
-        // cell.setFilename("test", fileSize: 1000)
         cell.setFilename(attachment.fileName, fileSize: Int(attachment.fileSize))
         return cell
     }
@@ -1082,7 +1081,6 @@ extension EmailHeaderView: UITableViewDelegate {
                 if error != nil  {
                     NSLog("\(__FUNCTION__) error: \(error)")
                 }
-                
                 downloadAttachment(attachment, forIndexPath: indexPath)
             }
         }
@@ -1091,10 +1089,32 @@ extension EmailHeaderView: UITableViewDelegate {
     // MARK: Private methods
     
     private func downloadAttachment(attachment: Attachment, forIndexPath indexPath: NSIndexPath) {
-        sharedMessageDataService.fetchAttachmentForAttachment(attachment, downloadTask: { (task) -> Void in
+        sharedMessageDataService.fetchAttachmentForAttachment(attachment, downloadTask: { (taskOne : NSURLSessionDownloadTask) -> Void in
             if let cell = self.attachmentView!.cellForRowAtIndexPath(indexPath) as? AttachmentTableViewCell {
+                //task.set
+                //let session = AFHTTPSessionManager.manager .manager;
                 cell.progressView.alpha = 1.0
-                cell.progressView.setProgressWithDownloadProgressOfTask(task, animated: true)
+                cell.progressView.progress = 0.0
+                //cell.progressView.setProgressWithDownloadProgressOfTask(task, animated: true)
+
+                let totalValue = attachment.fileSize.floatValue;
+                sharedAPIService.getSession().setDownloadTaskDidWriteDataBlock({ (session, taskTwo, bytesWritten, totalBytesWritten, totalBytesExpectedToWrite) -> Void in
+                    if taskOne == taskTwo {
+                        NSLog("\(totalValue)")
+                        NSLog("%lld  - %lld - %lld", bytesWritten, totalBytesWritten, totalBytesExpectedToWrite)
+                        
+                        var progressPercentage =  ( Float(totalBytesWritten) / totalValue )
+                        NSLog("\(progressPercentage)")
+                        if progressPercentage >= 1.000000000 {
+                            progressPercentage = 1.0
+                        }
+                        dispatch_async(dispatch_get_main_queue(), {
+                            UIView.animateWithDuration(0.25, animations: { () -> Void in
+                                cell.progressView.progress = progressPercentage
+                            })
+                        });
+                    }
+                })
             }
             }, completion: { (_, url, error) -> Void in
                 if let cell = self.attachmentView!.cellForRowAtIndexPath(indexPath) as? AttachmentTableViewCell {
@@ -1111,6 +1131,19 @@ extension EmailHeaderView: UITableViewDelegate {
                 }
         })
     }
+    
+    override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+        
+    }
+    //    - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+    //    {
+    //    if ([keyPath isEqualToString:@"fractionCompleted"]) {
+    //    NSProgress *progress = (NSProgress *)object;
+    //    NSLog(@"Progress… %f", progress.fractionCompleted);
+    //    } else {
+    //    [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    //    }
+    //    }
     
     private func openLocalURL(localURL: NSURL, keyPackage:NSData, fileName:String, forCell cell: UITableViewCell) {
         self.actionsDelegate?.quickLookAttachment(localURL, keyPackage: keyPackage, fileName: fileName)

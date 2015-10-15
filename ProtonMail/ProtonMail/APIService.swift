@@ -27,7 +27,7 @@ class APIService {
     
     typealias CompletionBlock = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, error: NSError?) -> Void
     typealias CompletionFetchDetail = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, message:Message?, error: NSError?) -> Void
-
+    
     
     enum HTTPMethod {
         case DELETE
@@ -44,6 +44,10 @@ class APIService {
     // MARK: - Private variables
     
     private let sessionManager: AFHTTPSessionManager
+    
+    public func getSession() ->AFHTTPSessionManager{
+        return sessionManager;
+    }
     
     // MARK: - Internal methods
     
@@ -195,24 +199,24 @@ class APIService {
             //            let completionWrapper: AuthCredentialBlock = { authCredential, error in
             //                if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.credentialInvalid {
             //                    sharedUserDataService.signOut(true)
-//                    userCachedStatus.signOut()
-//                }
-//            }
-//            
-//            let authApi = AuthRequest<AuthResponse>(username: username, password: password)
-//            authApi.call() { task, res , hasError in
-//                if hasError {
-//                    completionWrapper(nil, res?.error)
-//                }
-//                else if res?.code == 1000 {
-//                    let credential = AuthCredential(res: res)
-//                    credential.storeInKeychain()
-//                    completionWrapper(credential, nil)
-//                }
-//                else {
-//                    completionWrapper(nil, nil)
-//                }
-//            }
+            //                    userCachedStatus.signOut()
+            //                }
+            //            }
+            //
+            //            let authApi = AuthRequest<AuthResponse>(username: username, password: password)
+            //            authApi.call() { task, res , hasError in
+            //                if hasError {
+            //                    completionWrapper(nil, res?.error)
+            //                }
+            //                else if res?.code == 1000 {
+            //                    let credential = AuthCredential(res: res)
+            //                    credential.storeInKeychain()
+            //                    completionWrapper(credential, nil)
+            //                }
+            //                else {
+            //                    completionWrapper(nil, nil)
+            //                }
+            //            }
         }
     }
     
@@ -225,7 +229,6 @@ class APIService {
         //            if error == nil {
         if let url = NSURL(string: path, relativeToURL: self.sessionManager.baseURL) {
             var serializeError: NSError?
-            
             if let request = self.sessionManager.requestSerializer.requestWithMethod("GET", URLString: url.absoluteString!, parameters: nil, error: &serializeError) {
                 if let sessionDownloadTask = self.sessionManager.downloadTaskWithRequest(
                     request,
@@ -234,9 +237,9 @@ class APIService {
                         //let fileName = response.suggestedFilename!
                         return destinationDirectoryURL//.URLByAppendingPathComponent(fileName)
                     },
-                    completionHandler: completion) {
+                    completionHandler: completion)
+                {
                         downloadTask?(sessionDownloadTask)
-                        
                         sessionDownloadTask.resume()
                 }
             } else {

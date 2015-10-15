@@ -61,14 +61,5 @@ class TableCellLabelView: UIView {
         textLabel.layer.borderColor = color.CGColor
         
         return s.width + self.kCoverImageViewWidth;
-    }
-
-    /*
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func drawRect(rect: CGRect) {
-        // Drawing code
-    }
-    */
-    
+    }    
 }
