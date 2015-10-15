@@ -367,26 +367,39 @@ class MessageDataService {
     }
     
     func processIncrementalUpdateContacts(contacts: [Dictionary<String,AnyObject>]?) {
+        struct IncrementalContactUpdateType {
+            static let delete = 0
+            static let insert = 1
+            static let update = 2
+        }
         
-//        if let star = totals?["Starred"] as? Int {
-//            var updateTime = lastUpdatedStore.inboxLastForKey(MessageLocation.starred)
-//            updateTime.total = Int32(star)
-//            lastUpdatedStore.updateInboxForKey(MessageLocation.starred, updateTime: updateTime)
-//        }
-//        
-//        if let locations = totals?["Locations"] as? [Dictionary<String,AnyObject>] {
-//            for location:[String : AnyObject] in locations {
-//                if let l = location["Location"] as? Int {
-//                    if let c = location["Count"] as? Int {
-//                        if let lo = MessageLocation(rawValue: l) {
-//                            var updateTime = lastUpdatedStore.inboxLastForKey(lo)
-//                            updateTime.total = Int32(c)
-//                            lastUpdatedStore.updateInboxForKey(lo, updateTime: updateTime)
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        if let contacts = contacts {
+            let context = sharedCoreDataService.newMainManagedObjectContext()
+            var error: NSError?
+            context.performBlockAndWait { () -> Void in
+                for contact in contacts {
+                    let contactObj = ContactEvent(event: contact)
+                    switch(contactObj.Action) {
+                    case .Some(IncrementalContactUpdateType.delete):
+                        if let contactID = contactObj.ID {
+                            if var tempContact = Contact.contactForContactID(contactID, inManagedObjectContext: context) {
+                                context.deleteObject(tempContact)
+                            }
+                        }
+                    case .Some(IncrementalContactUpdateType.insert), .Some(IncrementalContactUpdateType.update) :
+                        if let contactObject = GRTJSONSerialization.mergeObjectForEntityName(Contact.Attributes.entityName, fromJSONDictionary: contactObj.contact, inManagedObjectContext: context, error: &error) as? Contact {
+                        
+                        }
+                    default:
+                        NSLog("\(__FUNCTION__) unknown type in contact: \(contact)")
+                    }
+                }
+            }
+            error = context.saveUpstreamIfNeeded()
+            if error != nil  {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
+        }
     }
     
     func processIncrementalUpdateTotal(totals: Dictionary<String, AnyObject>?) {
@@ -658,121 +671,6 @@ class MessageDataService {
             }
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    //                if let Jiao = responseDict?["Messages"] as? [Dictionary<String,AnyObject>] {
-    //                    let context = sharedCoreDataService.newManagedObjectContext()
-    //                    context.performBlockAndWait() {
-    //                        var error: NSError?
-    //                        var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
-    //
-    //                        if error == nil {
-    //                            //                            for message in messages as! [Message] {
-    //                            //                                // PRO-157 - The issue for inbox <--> starred page switch
-    //                            //                                // only change the location if the message is new or not starred
-    //                            //                                // this prevents starred messages from disappearing out of the inbox until the next refresh
-    //                            //                                if message.inserted || location != .starred {
-    //                            //                                    message.locationNumber = location.rawValue
-    //                            //                                }
-    //                            //                            }
-    //                            error = context.saveUpstreamIfNeeded()
-    //                        }
-    //                        if error != nil  {
-    //                            NSLog("\(__FUNCTION__) error: \(error)")
-    //                        }
-    //
-    //                        var updateTime = lastUpdatedStore.inboxLastForKey(location)
-    //                        for msg in messages {
-    //                            let m = msg as! Message
-    //                            if (m.location == location) {
-    //                                updateTime.start = m.time!
-    //                                updateTime.update = NSDate()
-    //                                lastUpdatedStore.updateInboxForKey(location, updateTime: updateTime)
-    //                                break;
-    //                            }
-    //                        }
-    //
-    //                        dispatch_async(dispatch_get_main_queue()) {
-    //                            completion?(task: task, response: responseDict, error: error)
-    //                        }
-    //                    }
-    //                } else {
-    //                    completion?(task: task, response: responseDict, error: NSError.unableToParseResponse(responseDict))
-    //                }
-    //
-    //            }
-    //
-    //        }
-    //    }
-    //
-    
-    //        let lastUpdatedCuttoff = NSDate(timeIntervalSinceNow: -lastUpdatedMaximumTimeInterval)
-    //
-    //        if updateTime.update.compare(lastUpdatedCuttoff) == .OrderedAscending {
-    //            // use paging
-    //            fetchMessagesForLocation(location, MessageID: "0", Time: 0, completion: completion)
-    //            //fetchMessagesForLocation(location, page: firstPage, completion: completion)
-    //        } else {
-    //            // use incremental
-    //            let lastUpdated = NSDate()
-    //
-    //            let completionWrapper: CompletionBlock = { task, response, error in
-    //                if error == nil {
-    //                    self.lastUpdatedStore[location.key] = lastUpdated
-    //                }
-    //
-    //                completion?(task: task, response: response, error: error)
-    //            }
-    //
-    //            fetchMessageIncrementalUpdates(lastUpdated: locationLastUpdated, completion: completionWrapper)
-    //        }
-    //    }
-    
-    //    private func fetchMessageIncrementalUpdates(#lastUpdated: NSDate, completion: CompletionBlock?) {
-    //        struct ResponseKey {
-    //            static let code = "code"
-    //            static let message = "message"
-    //            static let response = "response"
-    //        }
-    //
-    //        let validResponse = 1000
-    //
-    //        queue { () -> Void in
-    //            let completionWrapper: CompletionBlock = { task, response, error in
-    //                if error != nil {
-    //                    completion?(task: task, response: nil, error: error)
-    //                    return
-    //                }
-    //
-    //                if let code = response?[ResponseKey.code] as? Int {
-    //                    if code == validResponse {
-    //                        if let response = response?[ResponseKey.response] as? Dictionary<String, AnyObject> {
-    //                            if let messages = response[ResponseKey.message] as? Array<Dictionary<String, AnyObject>> {
-    //                                if messages.isEmpty {
-    //                                    completion?(task: task, response: nil, error: nil)
-    //                                } else {
-    //                                    self.processIncrementalUpdateMessages(messages, task: task, completion: completion)
-    //                                }
-    //
-    //                                return
-    //                            }
-    //                        }
-    //                    }
-    //                }
-    //
-    //                completion?(task: task, response: nil, error: NSError.unableToParseResponse(response))
-    //            }
-    //
-    //            sharedAPIService.messageCheck(timestamp: lastUpdated.timeIntervalSince1970, completion: completionWrapper)
-    //        }
-    //    }
-    
     
     
     // old functions

@@ -103,6 +103,19 @@ public class MessageEvent {
     }
 }
 
+public class ContactEvent {
+    
+    var Action : Int!
+    var ID : String!;
+    var contact : Dictionary<String,AnyObject>?
+    
+    init(event: Dictionary<String,AnyObject>!) {
+        self.Action = event["Action"] as! Int
+        self.contact =  event["Contact"] as? Dictionary<String,AnyObject>
+        self.ID =  event["ID"] as! String
+    }
+}
+
 public class LabelEvent {
     
     var Action : Int!
@@ -115,7 +128,6 @@ public class LabelEvent {
         self.ID =  event["ID"] as! String
     }
 }
-
 
 
 
