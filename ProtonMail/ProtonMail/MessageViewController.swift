@@ -168,6 +168,7 @@ class MessageViewController: ProtonMailViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         //UIView.setAnimationsEnabled(false)
 //        let value = UIInterfaceOrientationMask.Portrait.rawValue
 //        UIDevice.currentDevice().setValue(value, forKey: "orientation")
@@ -179,6 +180,8 @@ class MessageViewController: ProtonMailViewController {
         if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
             NSLog("\(__FUNCTION__) error: \(error)")
         }
+        
+        self.emailView?.contentWebView.userInteractionEnabled = true;
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -186,7 +189,9 @@ class MessageViewController: ProtonMailViewController {
     }
     
     override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "touchStatusBarClick", object:nil)
+        self.emailView?.contentWebView.userInteractionEnabled = false;
     }
     
     internal func statusBarHit (notify: NSNotification) {

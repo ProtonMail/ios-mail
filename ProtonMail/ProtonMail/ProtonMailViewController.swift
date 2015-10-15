@@ -55,4 +55,5 @@ class ProtonMailViewController: UIViewController {
     func shouldShowSideMenu() -> Bool {
         return true
     }
+
 }
