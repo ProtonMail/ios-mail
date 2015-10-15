@@ -114,6 +114,7 @@ class MailboxViewController: ProtonMailViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        self.refreshControl.endRefreshing()
         
         let selectedItem: NSIndexPath? = self.tableView.indexPathForSelectedRow() as NSIndexPath?
         
