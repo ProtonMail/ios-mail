@@ -66,6 +66,7 @@ extension APIService {
                     }
                 }
                 
+                self.setApiVesion(1, appVersion: 1)
                 self.request(method: .GET, path: path, parameters: nil, completion: completionWrapper)
             } else {
                 completion(nil, error)
@@ -76,6 +77,7 @@ extension APIService {
     func userPublicKeyForUsername(username: String, completion: CompletionBlock?) {
         let path = UserPath.base.stringByAppendingPathComponent("pubkey").stringByAppendingPathComponent(username)
         
+        setApiVesion(1, appVersion: 1)
         request(method: .GET, path: path, parameters: nil, completion: completion)
     }
     
@@ -122,6 +124,7 @@ extension APIService {
     
     func userCheckExist(user_name:String, completion: UserNameCheckBlock) {
         let path = UserPath.base.stringByAppendingPathComponent("check").stringByAppendingPathComponent(user_name)
+        setApiVesion(1, appVersion: 1)
         request(method: .GET, path: path, parameters: nil, authenticated: false, completion:{ task, response, error in
             
             if error == nil {

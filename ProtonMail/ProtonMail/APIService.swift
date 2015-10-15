@@ -84,6 +84,7 @@ class APIService {
                     if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
                         sharedUserDataService.signOut(true);
                     }else {
+                        self.setApiVesion(1, appVersion: 1)
                         self.request(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)
                     }
                 } else {
@@ -95,6 +96,7 @@ class APIService {
                 if let responseDictionary = responseObject as? Dictionary<String, AnyObject> {
                     if authenticated && responseDictionary["Code"] as? Int == 401 {
                         AuthCredential.expireOrClear()
+                        self.setApiVesion(1, appVersion: 1)
                         self.request(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)
                     } else if responseDictionary["Code"] as? Int == 5001 {
                         NSError.alertUpdatedToast()

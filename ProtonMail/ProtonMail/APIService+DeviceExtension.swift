@@ -55,6 +55,7 @@ extension APIService {
             "Environment" : env
         ]
         
+        setApiVesion(1, appVersion: 1)
         request(method: .POST, path: DevicePath.basePath, parameters: parameters, completion: completion)
     }
     
@@ -65,6 +66,7 @@ extension APIService {
                 "device_token": deviceToken
             ]
             
+            setApiVesion(1, appVersion: 1)
             request(method: .DELETE, path: DevicePath.basePath, parameters: parameters, completion: completion)
         }
     }

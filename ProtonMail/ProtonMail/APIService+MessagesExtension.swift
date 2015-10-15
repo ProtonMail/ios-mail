@@ -80,6 +80,7 @@ extension APIService {
     func fetchLatestMessageList(time: Int, completion: CompletionBlock) {
         let path = MessagePath.base + "/latest/\(time)"
         
+        setApiVesion(1, appVersion: 1)
         request(method: .GET, path: path, parameters: nil, completion: completion)
     }
     
@@ -92,6 +93,7 @@ extension APIService {
         let path = "/messages/check"
         let parameters = ["t" : timestamp]
         
+        setApiVesion(1, appVersion: 1)
         request(method: .GET, path: path, parameters: parameters, completion: completion)
     }
     
@@ -100,6 +102,7 @@ extension APIService {
         let parameters = ["Location" : location]
         let completionWrapper = completionWrapperParseCompletion(completion, forKey: "MessageCount")
         
+        setApiVesion(1, appVersion: 1)
         request(method: .GET, path: path, parameters: parameters, completion: completionWrapper)
     }
     
@@ -179,7 +182,7 @@ extension APIService {
 //                
 //                parameters["Attachments"] = attachmentsJSON
             }
-            
+            setApiVesion(1, appVersion: 1)
             request(method: .POST, path: path, parameters: parameters, completion: completion)
     }
     
@@ -216,7 +219,7 @@ extension APIService {
 //                
 //                parameters["Attachments"] = attachmentsJSON
             }
-            
+            setApiVesion(1, appVersion: 1)
             request(method: .POST, path: path, parameters: parameters, completion: completion)
     }
     
@@ -225,7 +228,7 @@ extension APIService {
         let path = MessagePath.base.stringByAppendingPathComponent(messageID)
         
         NSLog("\(__FUNCTION__) path: \(path)")
-        
+        setApiVesion(1, appVersion: 1)
         request(method: .GET, path: path, parameters: nil, completion: completion)
     }
     
@@ -239,6 +242,7 @@ extension APIService {
             "Order" : order.rawValue,
             "FilterUnread" : filter.rawValue]
         
+        setApiVesion(1, appVersion: 1)
         request(method: .GET, path: path, parameters: parameters, completion: completion)
     }
     
@@ -249,6 +253,7 @@ extension APIService {
             "Keyword" : query,
             "Page" : page]
         
+        setApiVesion(1, appVersion: 1)
         request(method: .GET, path: path, parameters: parameters, completion: completion)
     }
     

@@ -27,6 +27,7 @@ extension APIService {
     }
     
     func attachmentDeleteForAttachmentID(attachmentID: String, completion: CompletionBlock?) {
+        setApiVesion(1, appVersion: 1)
         request(method: .DELETE, path: pathForAttachmentID(attachmentID), parameters: nil, completion: completion)
     }
     

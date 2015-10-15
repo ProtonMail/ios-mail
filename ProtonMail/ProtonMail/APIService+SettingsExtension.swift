@@ -27,6 +27,7 @@ extension APIService {
         let path = SettingPath.base.stringByAppendingPathComponent("display")
         let parameters = ["DisplayName" : displayName]
         
+        setApiVesion(1, appVersion: 1)
         request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
     
@@ -37,6 +38,8 @@ extension APIService {
             "OldHashedPassword" : "",
             "NewPassword" : newPassword
         ]
+        
+        setApiVesion(1, appVersion: 1)
         request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
     
@@ -44,6 +47,7 @@ extension APIService {
         let path = SettingPath.base.stringByAppendingPathComponent("signature")
         let parameters = ["Signature" : signature]
         
+        setApiVesion(1, appVersion: 1)
         request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
 }
