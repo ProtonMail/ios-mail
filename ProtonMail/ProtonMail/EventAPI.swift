@@ -82,6 +82,8 @@ public class EventCheckResponse : ApiResponse {
         
         self.labels =  response["Labels"] as? [Dictionary<String,AnyObject>]
         
+        self.contacts = response["Contacts"] as? [Dictionary<String,AnyObject>]
+        
         return true
     }
 }

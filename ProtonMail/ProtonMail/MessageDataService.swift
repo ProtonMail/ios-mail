@@ -249,13 +249,10 @@ class MessageDataService {
         queue {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
             eventAPI.call() { task, response, hasError in
-                
                 PMLog.D("\(response!)")
-                
                 if response == nil {
                     completion?(task: task, response:nil, error: nil)
                 } else if response!.isRefresh || (hasError && response!.code == 18001) {
-                    
                     let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
                     getLatestEventID.call() { task, response, hasError in
                         if response != nil && !hasError && !response!.eventID.isEmpty {
@@ -269,9 +266,10 @@ class MessageDataService {
                             self.cleanMessage()
                             self.fetchMessagesForLocation(location, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
                             sharedLabelsDataService.fetchLabels();
+                        } else {
+                            completion?(task: task, response:nil, error: nil)
                         }
                     }
-                    completion?(task: task, response:nil, error: nil)
                 }
                 else if response!.messages != nil {
                     self.processIncrementalUpdateMessages(response!.messages!, task: task) { task, res, error in
@@ -288,6 +286,7 @@ class MessageDataService {
                     self.processIncrementalUpdateTotal(response!.total)
                     self.processIncrementalUpdateUserInfo(response!.userinfo)
                     self.processIncrementalUpdateLabels(response!.labels)
+                    self.processIncrementalUpdateContacts(response!.contacts)
                 }
                 else {
                     if response!.code == 1000 {
@@ -296,6 +295,7 @@ class MessageDataService {
                         self.processIncrementalUpdateTotal(response!.total)
                         self.processIncrementalUpdateUserInfo(response!.userinfo)
                         self.processIncrementalUpdateLabels(response!.labels)
+                        self.processIncrementalUpdateContacts(response!.contacts)
                     }
                     completion?(task: task, response:nil, error: nil)
                 }
@@ -343,6 +343,7 @@ class MessageDataService {
                     self.processIncrementalUpdateTotal(response!.total)
                     self.processIncrementalUpdateUserInfo(response!.userinfo)
                     self.processIncrementalUpdateLabels(response!.labels)
+                    self.processIncrementalUpdateContacts(response!.contacts)
                 }
                 else {
                     if response!.code == 1000 {
@@ -351,11 +352,35 @@ class MessageDataService {
                         self.processIncrementalUpdateTotal(response!.total)
                         self.processIncrementalUpdateUserInfo(response!.userinfo)
                         self.processIncrementalUpdateLabels(response!.labels)
+                        self.processIncrementalUpdateContacts(response!.contacts)
                     }
                     completion?(task: task, response:nil, error: nil)
                 }
             }
         }
+    }
+    
+    func processIncrementalUpdateContacts(contacts: [Dictionary<String,AnyObject>]?) {
+        
+//        if let star = totals?["Starred"] as? Int {
+//            var updateTime = lastUpdatedStore.inboxLastForKey(MessageLocation.starred)
+//            updateTime.total = Int32(star)
+//            lastUpdatedStore.updateInboxForKey(MessageLocation.starred, updateTime: updateTime)
+//        }
+//        
+//        if let locations = totals?["Locations"] as? [Dictionary<String,AnyObject>] {
+//            for location:[String : AnyObject] in locations {
+//                if let l = location["Location"] as? Int {
+//                    if let c = location["Count"] as? Int {
+//                        if let lo = MessageLocation(rawValue: l) {
+//                            var updateTime = lastUpdatedStore.inboxLastForKey(lo)
+//                            updateTime.total = Int32(c)
+//                            lastUpdatedStore.updateInboxForKey(lo, updateTime: updateTime)
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
     
     func processIncrementalUpdateTotal(totals: Dictionary<String, AnyObject>?) {

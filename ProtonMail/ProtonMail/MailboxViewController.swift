@@ -905,7 +905,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         default:
             return
         }
-        self.showNoResultLabel();
+        //self.showNoResultLabel();
     }
 }
 
