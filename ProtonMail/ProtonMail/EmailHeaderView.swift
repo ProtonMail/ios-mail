@@ -1058,6 +1058,10 @@ extension EmailHeaderView: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return  attachments.count
     }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 34;
+    }
 }
 
 extension EmailHeaderView: UITableViewDelegate {

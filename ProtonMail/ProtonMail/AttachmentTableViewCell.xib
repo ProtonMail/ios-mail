@@ -1,55 +1,80 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="15B22c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <mutableArray key="Roboto-Light.ttf">
-            <string>Roboto-Light</string>
+        <mutableArray key="Roboto-Regular.ttf">
+            <string>Roboto-Regular</string>
         </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="jwZ-9P-8ik" customClass="AttachmentTableViewCell" customModule="ProtonMail" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="167" id="jwZ-9P-8ik" customClass="AttachmentTableViewCell" customModule="ProtonMail" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="468" height="167"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jwZ-9P-8ik" id="S5M-E8-Ldb">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="attached_compose" translatesAutoresizingMaskIntoConstraints="NO" id="GZk-Sg-DKL">
-                        <rect key="frame" x="8" y="12" width="19" height="21"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_attachment" highlightedImage="mail_attachment" translatesAutoresizingMaskIntoConstraints="NO" id="GZk-Sg-DKL">
+                        <rect key="frame" x="16" y="76.5" width="14" height="14"/>
+                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="14" id="WJp-SO-15O"/>
+                            <constraint firstAttribute="height" constant="14" id="tO6-5j-D8g"/>
+                        </constraints>
+                        <variation key="widthClass=compact" misplaced="YES">
+                            <rect key="frame" x="16" y="0.0" width="14" height="14"/>
+                        </variation>
                     </imageView>
-                    <progressView opaque="NO" alpha="0.0" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="xh2-ST-5dh">
-                        <rect key="frame" x="36" y="32" width="118" height="2"/>
+                    <progressView opaque="NO" alpha="0.0" contentMode="scaleToFill" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="xh2-ST-5dh">
+                        <rect key="frame" x="36" y="94.5" width="386" height="2"/>
+                        <animations/>
                     </progressView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="File name (size)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A6v-CT-zxf">
-                        <rect key="frame" x="36" y="12" width="118" height="20"/>
-                        <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="17"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <rect key="frame" x="36" y="73.5" width="386" height="20"/>
+                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="D1H-tX-LiK"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
+                        <color key="textColor" red="0.31372549019607843" green="0.31372549019607843" blue="0.38039215686274508" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="mail_download" translatesAutoresizingMaskIntoConstraints="NO" id="xwp-Xm-P2R">
+                        <rect key="frame" x="428" y="71.5" width="24" height="24"/>
+                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="24" id="dzw-8j-r2b"/>
+                            <constraint firstAttribute="width" constant="24" id="pRz-86-AIQ"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
+                <animations/>
                 <constraints>
-                    <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="A6v-CT-zxf" secondAttribute="trailing" id="ClA-92-xS5"/>
-                    <constraint firstAttribute="centerY" secondItem="GZk-Sg-DKL" secondAttribute="centerY" id="NWz-x7-pSf"/>
-                    <constraint firstItem="xh2-ST-5dh" firstAttribute="top" secondItem="A6v-CT-zxf" secondAttribute="bottom" id="UgX-Fw-ALy"/>
-                    <constraint firstItem="GZk-Sg-DKL" firstAttribute="leading" secondItem="S5M-E8-Ldb" secondAttribute="leadingMargin" id="VhS-MP-fYI"/>
-                    <constraint firstItem="A6v-CT-zxf" firstAttribute="leading" secondItem="GZk-Sg-DKL" secondAttribute="trailing" constant="9" id="Z3L-r5-7Nd"/>
-                    <constraint firstItem="xh2-ST-5dh" firstAttribute="leading" secondItem="A6v-CT-zxf" secondAttribute="leading" id="aaM-Mj-o6w"/>
-                    <constraint firstItem="A6v-CT-zxf" firstAttribute="top" secondItem="GZk-Sg-DKL" secondAttribute="top" id="f5r-2L-5xg"/>
-                    <constraint firstItem="xh2-ST-5dh" firstAttribute="width" secondItem="A6v-CT-zxf" secondAttribute="width" id="s8f-9o-EQB"/>
+                    <constraint firstItem="GZk-Sg-DKL" firstAttribute="leading" secondItem="S5M-E8-Ldb" secondAttribute="leading" constant="16" id="5Ff-r8-uvW"/>
+                    <constraint firstAttribute="centerY" secondItem="A6v-CT-zxf" secondAttribute="centerY" id="RLn-fh-rZ9"/>
+                    <constraint firstAttribute="centerY" secondItem="xwp-Xm-P2R" secondAttribute="centerY" id="TlE-QO-yeo"/>
+                    <constraint firstAttribute="trailing" secondItem="xwp-Xm-P2R" secondAttribute="trailing" constant="16" id="XsY-vc-qed"/>
+                    <constraint firstItem="xwp-Xm-P2R" firstAttribute="leading" secondItem="A6v-CT-zxf" secondAttribute="trailing" constant="6" id="Yj6-BN-kbJ"/>
+                    <constraint firstItem="A6v-CT-zxf" firstAttribute="leading" secondItem="xh2-ST-5dh" secondAttribute="leading" id="ayz-bH-C5O"/>
+                    <constraint firstItem="xh2-ST-5dh" firstAttribute="top" secondItem="A6v-CT-zxf" secondAttribute="bottom" constant="1" id="e5B-TL-a10"/>
+                    <constraint firstItem="A6v-CT-zxf" firstAttribute="leading" secondItem="GZk-Sg-DKL" secondAttribute="trailing" constant="6" id="oB3-vd-XFb"/>
+                    <constraint firstAttribute="centerY" secondItem="GZk-Sg-DKL" secondAttribute="centerY" id="t3R-o5-TDJ"/>
+                    <constraint firstItem="A6v-CT-zxf" firstAttribute="width" secondItem="xh2-ST-5dh" secondAttribute="width" id="wow-uC-fjK"/>
                 </constraints>
             </tableViewCellContentView>
+            <animations/>
             <connections>
                 <outlet property="fileNameLabel" destination="A6v-CT-zxf" id="rIx-vI-Gz6"/>
                 <outlet property="progressView" destination="xh2-ST-5dh" id="zSz-lh-ffk"/>
             </connections>
-            <point key="canvasLocation" x="351" y="233"/>
+            <point key="canvasLocation" x="187" y="333.5"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="attached_compose" width="19" height="21"/>
+        <image name="mail_attachment" width="14" height="14"/>
+        <image name="mail_download" width="24" height="24"/>
     </resources>
 </document>
