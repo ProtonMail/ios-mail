@@ -196,7 +196,11 @@ class SignInViewController: UIViewController {
     func signIn() {
         SignInViewController.isComeBackFromMailbox = false
         MBProgressHUD.showHUDAddedTo(view, animated: true)
-        sharedUserDataService.signIn(usernameTextField.text, password: passwordTextField.text, isRemembered: isRemembered) { _, error in
+        
+        var username = (usernameTextField.text ?? "").trim();
+        var password = (passwordTextField.text ?? "").trim();
+        
+        sharedUserDataService.signIn(username, password: password, isRemembered: isRemembered) { _, error in
             MBProgressHUD.hideHUDForView(self.view, animated: true)
             if let error = error {
                 NSLog("\(__FUNCTION__) error: \(error)")
