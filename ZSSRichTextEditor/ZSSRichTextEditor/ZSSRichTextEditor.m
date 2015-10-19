@@ -1089,11 +1089,9 @@ static Class hackishFixClass = Nil;
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     
-    
-    
     NSString *urlString = [[request URL] absoluteString];
-    NSLog(@"web request");
-    NSLog(@"%@", urlString);
+//    NSLog(@"web request");
+//    NSLog(@"%@", urlString);
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {
         return NO;
     } else if ([urlString rangeOfString:@"callback://0/"].location != NSNotFound) {
@@ -1107,7 +1105,7 @@ static Class hackishFixClass = Nil;
         // We recieved the callback
         NSString *debug = [urlString stringByReplacingOccurrencesOfString:@"debug://" withString:@""];
         debug = [debug stringByReplacingPercentEscapesUsingEncoding:NSStringEncodingConversionAllowLossy];
-        NSLog(@"%@", debug);
+        //NSLog(@"%@", debug);
         
     } else if ([urlString rangeOfString:@"scroll://"].location != NSNotFound) {
         

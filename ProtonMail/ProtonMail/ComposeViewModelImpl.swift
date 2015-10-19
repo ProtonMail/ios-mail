@@ -13,14 +13,13 @@ public class ComposeViewModelImpl : ComposeViewModel {
     
     init(msg: Message?, action : ComposeMessageAction!) {
         super.init()
-        
         userAddress = sharedUserDataService.userAddresses
         if msg == nil || msg?.location == MessageLocation.draft {
             self.message = msg
         }
         else
         {
-            self.message = msg?.copyMessage()
+            self.message = msg?.copyMessage(action == ComposeMessageAction.Forward)
             self.message?.action = action.rawValue
             if action == ComposeMessageAction.Reply || action == ComposeMessageAction.ReplyAll {
                 if let title = self.message?.title {
@@ -35,16 +34,20 @@ public class ComposeViewModelImpl : ComposeViewModel {
                     }
                 }
             }
+            //PMLog.D(message!);
         }
         
         self.messageAction = action
-        
         self.updateContacts()
     }
     
     override func uploadAtt(att: Attachment!) {
         self.updateDraft()
         sharedMessageDataService.uploadAttachment(att)
+    }
+  
+    override func getAttachments() -> [Attachment]? {
+        return self.message?.attachments.allObjects as? [Attachment]
     }
     
     private func updateContacts()
@@ -108,10 +111,6 @@ public class ComposeViewModelImpl : ComposeViewModel {
             default:
                 break;
             }
-            
-            
-            
-            
             //self.bccSelectedContacts = toContacts(self.message!.bccList)
         }
     }
@@ -162,6 +161,9 @@ public class ComposeViewModelImpl : ComposeViewModel {
                 NSLog("\(__FUNCTION__) error: \(error)")
             }
         }
+        
+        PMLog.D(message!);
+        
     }
     
     public override func updateDraft() {
@@ -221,6 +223,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
         default:
             return htmlString
         }
+
     }
     
 }

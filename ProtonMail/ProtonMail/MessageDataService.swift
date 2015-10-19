@@ -388,7 +388,7 @@ class MessageDataService {
                         }
                     case .Some(IncrementalContactUpdateType.insert), .Some(IncrementalContactUpdateType.update) :
                         if let contactObject = GRTJSONSerialization.mergeObjectForEntityName(Contact.Attributes.entityName, fromJSONDictionary: contactObj.contact, inManagedObjectContext: context, error: &error) as? Contact {
-                        
+                            
                         }
                     default:
                         NSLog("\(__FUNCTION__) unknown type in contact: \(contact)")
@@ -1165,14 +1165,23 @@ class MessageDataService {
             var error: NSError?
             if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID) {
                 if let message = context.existingObjectWithID(objectID, error: &error) as? Message {
-                    
-                    let attachments = self.attachmentsForMessage(message)
                     let completionWrapper: CompletionBlock = { task, response, error in
                         if let mess = response?["Message"] as? Dictionary<String, AnyObject> {
                             if let messageID = mess["ID"] as? String {
                                 message.messageID = messageID
                                 message.isDetailDownloaded = true
-                                if let error = context.saveUpstreamIfNeeded() {
+                                
+                                //let attachments = self.attachmentsForMessage(message)
+                                var attachments = message.mutableSetValueForKey("attachments")
+                                for att in attachments {
+                                    if var att = att as? Attachment {
+                                        if att.isTemp {
+                                            context.deleteObject(att)
+                                        }
+                                    }
+                                }
+                                
+                                if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
                                     NSLog("\(__FUNCTION__) error: \(error)")
                                 }
                                 var checkError: NSError?

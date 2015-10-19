@@ -14,12 +14,12 @@
                         <animations/>
                     </navigationBar>
                     <connections>
-                        <segue destination="gAt-p9-qmR" kind="relationship" relationship="rootViewController" id="ogq-V9-QDW"/>
+                        <segue destination="XmV-ga-Mfz" kind="relationship" relationship="rootViewController" id="qQF-Ik-9dg"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jgf-Dr-MGC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="316" y="453"/>
+            <point key="canvasLocation" x="181" y="566"/>
         </scene>
         <!--Attachments-->
         <scene sceneID="vd0-Qj-uO5">
@@ -81,10 +81,43 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IEJ-1e-9Mi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1031" y="453"/>
+            <point key="canvasLocation" x="1070" y="221"/>
+        </scene>
+        <!--Attachments Table View Controller-->
+        <scene sceneID="8g9-VQ-2qJ">
+            <objects>
+                <tableViewController id="XmV-ga-Mfz" customClass="AttachmentsTableViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="gtd-40-ouv">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outlet property="dataSource" destination="XmV-ga-Mfz" id="v40-hT-lfD"/>
+                            <outlet property="delegate" destination="XmV-ga-Mfz" id="L4l-JD-ouj"/>
+                        </connections>
+                    </tableView>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="oYa-Ep-Jvl">
+                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="7sy-38-GSU">
+                            <connections>
+                                <action selector="doneAction:" destination="XmV-ga-Mfz" id="tRy-HF-Ejs"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="d78-Rf-E87">
+                            <connections>
+                                <action selector="addAction:" destination="XmV-ga-Mfz" id="j9A-lk-1V9"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CKh-iC-oy6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1066" y="890"/>
         </scene>
     </scenes>
 </document>

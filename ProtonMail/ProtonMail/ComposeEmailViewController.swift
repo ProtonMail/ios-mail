@@ -71,6 +71,8 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         self.expirationPicker.dataSource = self
         self.expirationPicker.delegate = self
         
+        self.attachments = viewModel.getAttachments();
+        
         // update header layous
         updateContentLayout(false)
         
@@ -350,8 +352,8 @@ extension ComposeEmailViewController : ComposeViewDelegate {
     
     func composeViewDidTapAttachmentButton(composeView: ComposeView) {
         if let viewController = UIStoryboard.instantiateInitialViewController(storyboard: .attachments) as? UINavigationController {
-            if let attachmentsViewController = viewController.viewControllers.first as? AttachmentsViewController {
-                attachmentsViewController.delegate = self
+            if let attachmentsViewController = viewController.viewControllers.first as? AttachmentsTableViewController {
+                //attachmentsViewController.delegate = self
                 if let attachments = attachments {
                     attachmentsViewController.attachments = attachments
                     

@@ -84,6 +84,10 @@ public class ComposeViewModel {
     func collectDraft(title:String, body:String, expir:NSTimeInterval, pwd:String, pwdHit:String) -> Void {
          NSException(name:"name", reason:"reason", userInfo:nil).raise()
     }
+    
+    func getAttachments() -> [Attachment]? {
+        fatalError("This method must be overridden")
+    }
 }
 
 

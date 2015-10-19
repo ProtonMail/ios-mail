@@ -18,7 +18,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_attachment" highlightedImage="mail_attachment" translatesAutoresizingMaskIntoConstraints="NO" id="GZk-Sg-DKL">
-                        <rect key="frame" x="16" y="76.5" width="14" height="14"/>
+                        <rect key="frame" x="16" y="77" width="14" height="14"/>
                         <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="14" id="WJp-SO-15O"/>
@@ -28,12 +28,12 @@
                             <rect key="frame" x="16" y="0.0" width="14" height="14"/>
                         </variation>
                     </imageView>
-                    <progressView opaque="NO" alpha="0.0" contentMode="scaleToFill" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="xh2-ST-5dh">
-                        <rect key="frame" x="36" y="94.5" width="386" height="2"/>
+                    <progressView opaque="NO" alpha="0.0" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="xh2-ST-5dh">
+                        <rect key="frame" x="36" y="95" width="386" height="2"/>
                         <animations/>
                     </progressView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="File name (size)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A6v-CT-zxf">
-                        <rect key="frame" x="36" y="73.5" width="386" height="20"/>
+                        <rect key="frame" x="36" y="74" width="386" height="20"/>
                         <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="D1H-tX-LiK"/>
@@ -42,8 +42,8 @@
                         <color key="textColor" red="0.31372549019607843" green="0.31372549019607843" blue="0.38039215686274508" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="mail_download" translatesAutoresizingMaskIntoConstraints="NO" id="xwp-Xm-P2R">
-                        <rect key="frame" x="428" y="71.5" width="24" height="24"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_download" translatesAutoresizingMaskIntoConstraints="NO" id="xwp-Xm-P2R">
+                        <rect key="frame" x="428" y="72" width="24" height="24"/>
                         <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="24" id="dzw-8j-r2b"/>

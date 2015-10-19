@@ -25,6 +25,7 @@ class Attachment: NSManagedObject {
     @NSManaged var fileSize: NSNumber
     @NSManaged var localURL: NSURL?
     @NSManaged var mimeType: String
+    @NSManaged var isTemp: Bool
     
     @NSManaged var message: Message
 }

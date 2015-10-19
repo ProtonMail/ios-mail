@@ -18,7 +18,7 @@ import CoreData
 import Foundation
 
 extension Attachment {
-
+    
     struct Attributes {
         static let entityName = "Attachment"
         static let attachmentID = "attachmentID"
@@ -43,7 +43,7 @@ extension Attachment {
     }
     
     // MARK: - This is private functions
-
+    
     private var passphrase: String {
         return sharedUserDataService.mailboxPassword ?? ""
     }
@@ -78,27 +78,41 @@ extension Attachment {
         return sessionKey
     }
     
-//    func getNewSessionKeyPackage(publicKey: String!, error: NSErrorPointer?) -> NSData? {
-//        let key = self.getSessionKey(nil)
-//        
-//        key?.getSessionKeyPackage(publicKey, error: nil)
-//        
-//    }
+    //    func getNewSessionKeyPackage(publicKey: String!, error: NSErrorPointer?) -> NSData? {
+    //        let key = self.getSessionKey(nil)
+    //
+    //        key?.getSessionKeyPackage(publicKey, error: nil)
+    //
+    //    }
     
-//    func decryptAttachment(keyPackage:NSData!, error: NSErrorPointer?) -> NSData? {
-//    
-//        self.keyPacket
-//    
-//        return nil
-//    }
-
+    //    func decryptAttachment(keyPackage:NSData!, error: NSErrorPointer?) -> NSData? {
+    //
+    //        self.keyPacket
+    //
+    //        return nil
+    //    }
+    
 }
 
 
 extension Attachment {
-//    func toImage -> UIImage {
-//        return UIImage();
+    //    func toImage -> UIImage {
+    //        return UIImage();
     //    }
+    
+    
+    class func attachmentDelete(attachmentObjectID: NSManagedObjectID, inManagedObjectContext context: NSManagedObjectContext) -> Void {
+        var error: NSError? = nil
+        if let att = context.existingObjectWithID(attachmentObjectID, error: &error) as? Attachment {
+            context.delete(att);
+            
+            if let error = context.saveUpstreamIfNeeded() {
+                PMLog.D("error: \(error)")
+            }
+            
+        }
+    }
+    
 }
 
 extension UIImage {
@@ -114,7 +128,7 @@ extension UIImage {
             var error: NSError? = nil
             error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
             if error != nil {
-                 NSLog("\(__FUNCTION__) toAttachment () with error: \(error)")
+                NSLog("\(__FUNCTION__) toAttachment () with error: \(error)")
             }
             return attachment
         }
