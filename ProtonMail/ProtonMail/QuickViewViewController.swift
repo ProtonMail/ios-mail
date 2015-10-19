@@ -16,8 +16,27 @@ class QuickViewViewController: QLPreviewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+    }
+    
+    func configureNavigationBar(navigationController: UINavigationController) {
+        navigationController.navigationBar.barStyle = UIBarStyle.Black
+        navigationController.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;
+        navigationController.navigationBar.translucent = false
+        navigationController.navigationBar.tintColor = UIColor.whiteColor()
+        
+        let navigationBarTitleFont = UIFont.robotoLight(size: UIFont.Size.h2)
+        navigationController.navigationBar.titleTextAttributes = [
+            NSForegroundColorAttributeName: UIColor.whiteColor(),
+            NSFontAttributeName: navigationBarTitleFont
+        ]
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if let navigationController = navigationController {
+            configureNavigationBar(navigationController)
+            setNeedsStatusBarAppearanceUpdate()
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {

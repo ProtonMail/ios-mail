@@ -115,6 +115,8 @@ class AttachmentsTableViewController: UITableViewController {
             }
         }
         
+        cell.selectionStyle = .None;
+        
         return cell
     }
     

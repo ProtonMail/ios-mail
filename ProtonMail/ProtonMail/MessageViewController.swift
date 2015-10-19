@@ -275,7 +275,9 @@ extension MessageViewController : EmailHeaderActionsProtocol {
             
             let previewQL = QuickViewViewController()
             previewQL.dataSource = self
-            self.presentViewController(previewQL, animated: true, completion: nil)
+            
+            self.navigationController?.pushViewController(previewQL, animated: true)
+            //self.presentViewController(previewQL, animated: true, completion: nil)
         }
         else{
             
