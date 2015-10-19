@@ -21,11 +21,24 @@ class AttachmentTableViewCell: UITableViewCell {
         static let identifier = "AttachmentTableViewCell"
     }
     
+    @IBOutlet weak var downloadIcon: UIImageView!
     @IBOutlet weak var fileNameLabel: UILabel!
     @IBOutlet weak var progressView: UIProgressView!
     
     func setFilename(filename: String, fileSize: Int) {
         let byteCountFormatter = NSByteCountFormatter()
         fileNameLabel.text = "\(filename) (\(byteCountFormatter.stringFromByteCount(Int64(fileSize))))"
+    }
+    
+    
+    func configCell ( filename : String, fileSize : Int, showDownload : Bool = false) {
+        let byteCountFormatter = NSByteCountFormatter()
+        fileNameLabel.text = "\(filename) (\(byteCountFormatter.stringFromByteCount(Int64(fileSize))))"
+        
+        if showDownload {
+            downloadIcon.hidden = false
+        } else {
+            downloadIcon.hidden = true
+        }
     }
 }

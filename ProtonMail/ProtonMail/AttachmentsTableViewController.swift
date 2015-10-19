@@ -42,7 +42,6 @@ class AttachmentsTableViewController: UITableViewController {
         self.clearsSelectionOnViewWillAppear = false
     }
     
-    
     func configureNavigationBar(navigationController: UINavigationController) {
         navigationController.navigationBar.barStyle = UIBarStyle.Black
         navigationController.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;
@@ -55,7 +54,6 @@ class AttachmentsTableViewController: UITableViewController {
             NSFontAttributeName: navigationBarTitleFont
         ]
     }
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -108,7 +106,14 @@ class AttachmentsTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(AttachmentTableViewCell.Constant.identifier, forIndexPath: indexPath) as! AttachmentTableViewCell
- 
+        
+        if attachments.count > indexPath.row {
+            if let att = attachments[indexPath.row] as? Attachment {
+                PMLog.D("\(att)")
+                PMLog.D("\(att.fileName)")
+                cell.configCell(att.fileName ?? "unknow file", fileSize:  Int(att.fileSize ?? 0), showDownload: false)
+            }
+        }
         
         return cell
     }
@@ -205,7 +210,7 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                 picker.dismissViewControllerAnimated(true, completion: nil)
         }
     }
-
+    
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         picker.dismissViewControllerAnimated(true, completion: nil)
     }

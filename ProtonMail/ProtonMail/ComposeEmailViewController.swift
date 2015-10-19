@@ -355,7 +355,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
             if let attachmentsViewController = viewController.viewControllers.first as? AttachmentsTableViewController {
                 //attachmentsViewController.delegate = self
                 if let attachments = attachments {
-                    attachmentsViewController.attachments = attachments
+                    attachmentsViewController.attachments = viewModel.getAttachments() ?? []
                     
                 }
             }

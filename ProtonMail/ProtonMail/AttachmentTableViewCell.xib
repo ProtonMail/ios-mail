@@ -67,6 +67,7 @@
             </tableViewCellContentView>
             <animations/>
             <connections>
+                <outlet property="downloadIcon" destination="xwp-Xm-P2R" id="tyk-3P-USk"/>
                 <outlet property="fileNameLabel" destination="A6v-CT-zxf" id="rIx-vI-Gz6"/>
                 <outlet property="progressView" destination="xh2-ST-5dh" id="zSz-lh-ffk"/>
             </connections>
