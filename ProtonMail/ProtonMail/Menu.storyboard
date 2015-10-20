@@ -1324,6 +1324,7 @@
                         <segue destination="fzN-Ci-Qyg" kind="presentation" identifier="toCompose" id="fux-iz-qV0"/>
                         <segue destination="fzN-Ci-Qyg" kind="presentation" identifier="toComposeShow" id="uv8-bX-yhD"/>
                         <segue destination="C6e-Un-S8J" kind="presentation" identifier="toApplyLabelsSegue" id="zIE-XJ-wkG"/>
+                        <segue destination="kWS-aU-yuK" kind="show" identifier="toMessageDetailViewControllerFromNotification" id="hZj-FM-cPb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v5f-i5-kem" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3242,13 +3243,13 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="uv8-bX-yhD"/>
         <segue reference="LdN-DE-nXL"/>
+        <segue reference="5rJ-hC-fsT"/>
         <segue reference="A7E-cY-hB0"/>
         <segue reference="pf5-Mm-LDI"/>
-        <segue reference="5rJ-hC-fsT"/>
-        <segue reference="f3k-3A-WEA"/>
+        <segue reference="zIE-XJ-wkG"/>
+        <segue reference="hZj-FM-cPb"/>
+        <segue reference="fux-iz-qV0"/>
         <segue reference="ddm-eA-erE"/>
-        <segue reference="xUw-S1-zl5"/>
     </inferredMetricsTieBreakers>
 </document>

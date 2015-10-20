@@ -45,6 +45,8 @@ class MailboxViewController: ProtonMailViewController {
     private let kSegueToSearchController = "toSearchViewController"
     private let kSegueToMessageDetailController = "toMessageDetailViewController"
     private let kSegueToLabelsController = "toApplyLabelsSegue"
+    private let kSegueToMessageDetailFromNotification = "toMessageDetailViewControllerFromNotification"
+    
     
     @IBOutlet weak var undoBottomDistance: NSLayoutConstraint!
     // MARK: - Private attributes
@@ -67,7 +69,7 @@ class MailboxViewController: ProtonMailViewController {
     private var undoMessage : UndoMessage?
     
     private var isShowUndo : Bool = false
-    
+    private var notificationMessageID : String? = nil
     
     // MAKR : - Private views
     internal var refreshControl: UIRefreshControl!
@@ -189,7 +191,20 @@ class MailboxViewController: ProtonMailViewController {
     // MARK: - Prepare for segue
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if (segue.identifier == kSegueToMessageDetailController) {
+        if segue.identifier == kSegueToMessageDetailFromNotification {
+            self.cancelButtonTapped()
+            let messageDetailViewController = segue.destinationViewController as! MessageViewController
+            if let msgID = self.notificationMessageID {
+                if let context = fetchedResultsController?.managedObjectContext {
+                    if let message = Message.messageForMessageID(msgID, inManagedObjectContext: context) {
+                        messageDetailViewController.message = message
+                        self.notificationMessageID = nil;
+                    }
+                }
+            } else {
+                PMLog.D("No selected row.")
+            }
+        } else if (segue.identifier == kSegueToMessageDetailController) {
             self.cancelButtonTapped()
             
             let messageDetailViewController = segue.destinationViewController as! MessageViewController
@@ -247,6 +262,11 @@ class MailboxViewController: ProtonMailViewController {
     
     internal func labelButtonTapped() {
         self.performSegueWithIdentifier(kSegueToLabelsController, sender: self)
+    }
+    
+    public func performSegueForMessageFromNotification(messageID: String) {
+        self.notificationMessageID = messageID;
+        performSegueWithIdentifier(kSegueToMessageDetailFromNotification, sender: self)
     }
     
     internal func removeButtonTapped() {

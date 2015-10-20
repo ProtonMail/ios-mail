@@ -113,10 +113,10 @@ extension AppDelegate: UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         Fabric.with([Crashlytics()])
-//        
-//        let sharedCache = NSURLCache(memoryCapacity: 0, diskCapacity: 0, diskPath: nil)
-//        NSURLCache.setSharedURLCache(sharedCache)
-//        
+        //
+        //        let sharedCache = NSURLCache(memoryCapacity: 0, diskCapacity: 0, diskPath: nil)
+        //        NSURLCache.setSharedURLCache(sharedCache)
+        //
         shareViewModelFactoy = ViewModelFactoryProduction()
         
         AFNetworkActivityIndicatorManager.sharedManager().enabled = true
@@ -134,6 +134,8 @@ extension AppDelegate: UIApplicationDelegate {
         if tmp != .Dev && tmp != .Sim {
             AFNetworkActivityLogger.sharedLogger().stopLogging()
         }
+        
+        NSLog("launchOptions \(launchOptions)")
         
         return true
     }
@@ -174,6 +176,7 @@ extension AppDelegate: UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+        NSLog("receive \(userInfo)")
         sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
     }
     

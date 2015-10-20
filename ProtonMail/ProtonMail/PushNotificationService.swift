@@ -60,20 +60,57 @@ class PushNotificationService {
     func didReceiveRemoteNotification(userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         let application = UIApplication.sharedApplication()
         
-        // if the app is in the background, then switch to the inbox and load the message detail
-        if application.applicationState == UIApplicationState.Inactive || application.applicationState == UIApplicationState.Background {
-            if let revealViewController = application.keyWindow?.rootViewController as? SWRevealViewController {
-                //revealViewController
-//                if let navigationController = revealViewController.storyboard?.instantiateViewControllerWithIdentifier("MailboxNavigationController") as? UINavigationController {
-//                    revealViewController.frontViewController = navigationController
-//                    if let mailboxViewController = navigationController.topViewController as? MailboxViewController {
-//                        mailboxViewController.mailboxLocation = .inbox
-//                        mailboxViewController.messageID = messageIDForUserInfo(userInfo)
+        if let messageid = messageIDForUserInfo(userInfo) {
+            // if the app is in the background, then switch to the inbox and load the message detail
+            if application.applicationState == UIApplicationState.Inactive || application.applicationState == UIApplicationState.Background {
+                if let revealViewController = application.keyWindow?.rootViewController as? SWRevealViewController {
+                    //revealViewController
+                    
+                    sharedMessageDataService.fetchNotificationMessageDetail(messageid, completion: { (task, response, message, error) -> Void in
+                        if error != nil {
+                            completionHandler(.Failed)
+                        } else {
+                            if let front = revealViewController.frontViewController as? UINavigationController {
+                                if let mailboxViewController: MailboxViewController = front.viewControllers.first as? MailboxViewController {
+                                    mailboxViewController.performSegueForMessageFromNotification(messageid)
+                                }
+                            }
+                            completionHandler(.NewData)
+                        }
+                    });
+
+//
+//                    
+//                    let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
+//                    
+//                    if let oldView = window.rootViewController as? SWRevealViewController {
+//                        if let nav = oldView.frontViewController as? UINavigationController {
+//                            if let firstViewController: UIViewController = nav.viewControllers.first as? UIViewController {
+//                                if (firstViewController.isKindOfClass(MailboxViewController)) {
+//                                    if let mailboxViewController: MailboxViewController = firstViewController as? MailboxViewController {
+//                                        mailboxViewController.resetFetchedResultsController()
+//                                    }
+//                                }
+//                            }
+//                        }
 //                    }
-//                }
+//
+//                    
+//                    if let navigationController = revealViewController.storyboard?.instantiateViewControllerWithIdentifier("MailboxNavigationController") as? UINavigationController {
+//                        revealViewController.frontViewController = navigationController
+//                        if let mailboxViewController = navigationController.topViewController as? MailboxViewController {
+//                            mailboxViewController.viewModel = MailboxViewModelImpl(location: .inbox)
+//                            
+//                            sharedMessageDataService.fetchNotificationMessageDetail(messageid, completion: { (task, response, message, error) -> Void in
+//                                
+//                                mailboxViewController.performSegueForMessageFromNotification(messageid)
+//                            });
+//                        }
+//                    }
+                }
             }
         }
-
+        
         
         //TODO :: fix the notification fetch part
 //        sharedMessageDataService.fetchLatestMessagesForLocation(.inbox, completion: { (task, messages, error) -> Void in

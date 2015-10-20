@@ -800,6 +800,62 @@ class MessageDataService {
     }
     
     
+    func fetchNotificationMessageDetail(messageID: String, completion: CompletionFetchDetail) {
+        queue {
+            let completionWrapper: CompletionBlock = { task, response, error in
+                let context = sharedCoreDataService.newMainManagedObjectContext()
+                context.performBlockAndWait() {
+                    var error: NSError?
+                    
+                    if response != nil {
+                        //TODO need check the respons code
+                        if var msg: Dictionary<String,AnyObject> = response?["Message"] as? Dictionary<String,AnyObject> {
+                            msg.removeValueForKey("Location")
+                            msg.removeValueForKey("Starred")
+                            msg.removeValueForKey("test")
+                            let message_n = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg, inManagedObjectContext: context, error: &error) as! Message
+                            if error == nil {
+                                message_n.isDetailDownloaded = true
+                                message_n.needsUpdate = true
+                                message_n.isRead = true
+                                message_n.managedObjectContext?.saveUpstreamIfNeeded()
+                                error = context.saveUpstreamIfNeeded()
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    completion(task: task, response: response, message: message_n, error: error)
+                                }
+                            }
+                        } else {
+                            completion(task: task, response: response, message:nil, error: NSError.badResponse())
+                        }
+                    } else {
+                        error = NSError.unableToParseResponse(response)
+                        dispatch_async(dispatch_get_main_queue()) {
+                            completion(task: task, response: response, message:nil, error: error)
+                        }
+                    }
+                    if error != nil  {
+                        NSLog("\(__FUNCTION__) error: \(error)")
+                    }
+                }
+            }
+            
+            if let context = sharedCoreDataService.mainManagedObjectContext {
+                if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                    if message.isDetailDownloaded {
+                        completion(task: nil, response: nil, message: message, error: nil)
+                    } else {
+                        sharedAPIService.messageDetail(messageID: messageID, completion: completionWrapper)
+                    }
+                } else {
+                    sharedAPIService.messageDetail(messageID: messageID, completion: completionWrapper)
+                }
+            } else {
+                sharedAPIService.messageDetail(messageID: messageID, completion: completionWrapper)
+            }
+        }
+    }
+    
+    
     // MARK : fuctions for only fetch the local cache
     
     /**
