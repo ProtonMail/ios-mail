@@ -14,9 +14,9 @@ protocol AttachmentsTableViewControllerDelegate {
     
     func attachments(attViewController: AttachmentsTableViewController, didFinishPickingAttachments: [AnyObject]) -> Void
     
-    func attachments(attViewController: AttachmentsTableViewController, didPickedAttachment: UIImage, fileName:String, type:String) -> Void
+    func attachments(attViewController: AttachmentsTableViewController, didPickedAttachment: Attachment) -> Void
     
-    func attachments(attViewController: AttachmentsTableViewController, didDeletedAttachment: UIImage, fileName:String, type:String) -> Void
+    func attachments(attViewController: AttachmentsTableViewController, didDeletedAttachment: Attachment) -> Void
 }
 
 
@@ -27,6 +27,10 @@ class AttachmentsTableViewController: UITableViewController {
             tableView?.reloadData()
         }
     }
+    
+    var message: Message!
+    
+    var delegate: AttachmentsTableViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,7 +65,7 @@ class AttachmentsTableViewController: UITableViewController {
     }
     
     @IBAction func doneAction(sender: AnyObject) {
-        //delegate?.attachmentsViewController(self, didFinishPickingAttachments: attachments)
+        self.delegate?.attachments(self, didFinishPickingAttachments: attachments)
         dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -93,14 +97,10 @@ class AttachmentsTableViewController: UITableViewController {
     // MARK: - Table view data source
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
-        // Return the number of sections.
         return 1
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
-        // Return the number of rows in the section.
         return attachments.count;
     }
     
@@ -112,11 +112,32 @@ class AttachmentsTableViewController: UITableViewController {
                 PMLog.D("\(att)")
                 PMLog.D("\(att.fileName)")
                 cell.configCell(att.fileName ?? "unknow file", fileSize:  Int(att.fileSize ?? 0), showDownload: false)
+                
+                let crossView = UILabel();
+                crossView.text = "Remove"
+                crossView.sizeToFit()
+                crossView.textColor = UIColor.whiteColor()
+                cell.defaultColor = UIColor.lightGrayColor()
+                cell.setSwipeGestureWithView(crossView, color: UIColor.ProtonMail.MessageActionTintColor, mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State3  ) { (cell, state, mode) -> Void in
+                    if let indexp = self.tableView.indexPathForCell(cell) {
+                        if let att = self.attachments[indexPath.row] as? Attachment {
+                            if att.attachmentID != "0" {
+                                self.delegate?.attachments(self, didDeletedAttachment: att)
+                                self.attachments.removeAtIndex(indexPath.row)
+                                self.tableView.reloadData()
+                            } else {
+                                cell.swipeToOriginWithCompletion(nil)
+                            }
+                        } else {
+                            cell.swipeToOriginWithCompletion(nil)
+                        }
+                    } else {
+                        self.tableView.reloadData()
+                    }
+                }
             }
         }
-        
         cell.selectionStyle = .None;
-        
         return cell
     }
     
@@ -194,22 +215,28 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                 if asset != nil {
                     var fileName = asset.defaultRepresentation().filename()
                     let mimeType = asset.defaultRepresentation().UTI()
-                    //self.attachments.append(img_jpg)
-                    //self.delegate?.attachmentsViewController(self, didPickedAttachment: img_jpg, fileName: fileName, type: mimeType)
+                    let attachment = img_jpg.toAttachment(self.message, fileName: fileName, type: mimeType)
+                    self.attachments.append(attachment!)
+                    self.delegate?.attachments(self, didPickedAttachment: attachment!)
                     picker.dismissViewControllerAnimated(true, completion: nil)
+                    self.tableView.reloadData()
                 } else {
                     var fileName = "\(NSUUID().UUIDString).jpg"
                     let mimeType = "image/jpg"
-                    //self.attachments.append(img_jpg)
-                    //self.delegate?.attachmentsViewController(self, didPickedAttachment: img_jpg, fileName: fileName, type: mimeType)
+                    let attachment = img_jpg.toAttachment(self.message, fileName: fileName, type: mimeType)
+                    self.attachments.append(attachment!)
+                    self.delegate?.attachments(self, didPickedAttachment: attachment!)
                     picker.dismissViewControllerAnimated(true, completion: nil)
+                    self.tableView.reloadData()
                 }
             })  { (error:NSError!) -> Void in
                 var fileName = "\(NSUUID().UUIDString).jpg"
                 let mimeType = "image/jpg"
-                //self.attachments.append(img_jpg)
-                //self.delegate?.attachmentsViewController(self, didPickedAttachment: img_jpg, fileName: fileName, type: mimeType)
+                let attachment = img_jpg.toAttachment(self.message, fileName: fileName, type: mimeType)
+                self.delegate?.attachments(self, didPickedAttachment: attachment!)
+                self.attachments.append(attachment!)
                 picker.dismissViewControllerAnimated(true, completion: nil)
+                self.tableView.reloadData()
         }
     }
     

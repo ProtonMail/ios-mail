@@ -61,7 +61,19 @@ class MessageDataService {
                 queue(att: att, action: .uploadAtt)
             }
         }
-        
+        dequeueIfNeeded()
+    }
+    
+    func deleteAttachment(messageid : String, att: Attachment!)
+    {
+        var out : [String : AnyObject] = ["MessageID" : messageid, "AttachmentID" : att.attachmentID]
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            context.deleteObject(att)
+            if let error = context.saveUpstreamIfNeeded() {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
+        }
+        sharedMessageQueue.addMessage(out.JSONStringify(prettyPrinted: false), action: .deleteAtt)
         dequeueIfNeeded()
     }
     
@@ -1219,7 +1231,6 @@ class MessageDataService {
             var error: NSError?
             if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(addressID) {
                 if let attachment = context.existingObjectWithID(objectID, error: &error) as? Attachment {
-                    
                     var params = [
                         "Filename":attachment.fileName,
                         "MessageID" :  attachment.message.messageID ?? "",
@@ -1231,12 +1242,10 @@ class MessageDataService {
                     let dataPacket = encrypt_data!["DataPacket"] as! NSData
                     
                     let completionWrapper: CompletionBlock = { task, response, error in
-                        
                         if error == nil {
                             if let messageID = response?["AttachmentID"] as? String {
                                 attachment.attachmentID = messageID
                                 attachment.keyPacket = keyPacket.base64EncodedStringWithOptions(nil)
-                                
                                 if let error = context.saveUpstreamIfNeeded() {
                                     NSLog("\(__FUNCTION__) error: \(error)")
                                 }
@@ -1257,6 +1266,33 @@ class MessageDataService {
         self.dequeueIfNeeded()
         
         completion?(task: nil, response: nil, error: NSError.badParameter(addressID))
+    }
+    
+    private func deleteAttachmentWithAttachmentID (deleteObject: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
+        if let context = managedObjectContext {
+
+            let api = AttachmentDeleteRequest(body: deleteObject);
+            api.call({ (task, response, hasError) -> Void in
+                
+//                if error == nil {
+//                    //if let messageID = response?["AttachmentID"] as? String {
+//                    //attachment.attachmentID = messageID
+//                    //attachment.keyPacket = keyPacket.base64EncodedStringWithOptions(nil)
+//                    //                        if let error = context.saveUpstreamIfNeeded() {
+//                    //                            NSLog("\(__FUNCTION__) error: \(error)")
+//                    //                        }
+//                    //}
+//                }
+                completion?(task: task, response: nil, error: nil)
+            })
+            //sharedAPIService.upload( AppConstants.BaseURLString + "/attachments/upload", parameters: params, keyPackets: keyPacket, dataPacket: dataPacket, completion: completionWrapper)
+            return
+        }
+        
+        // nothing to send, dequeue request
+        sharedMessageQueue.remove(elementID: writeQueueUUID)
+        self.dequeueIfNeeded()
+        completion?(task: nil, response: nil, error: NSError.badParameter(deleteObject))
     }
     
     private func sendMessageID(messageID: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
@@ -1476,6 +1512,8 @@ class MessageDataService {
                     sendMessageID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .uploadAtt:
                     uploadAttachmentWithAttachmentID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                case .deleteAtt:
+                    deleteAttachmentWithAttachmentID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 default:
                     sharedAPIService.PUT(MessageActionRequest<ApiResponse>(action: actionString, ids: [messageID]), completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 }

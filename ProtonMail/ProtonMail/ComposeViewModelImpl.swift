@@ -45,6 +45,11 @@ public class ComposeViewModelImpl : ComposeViewModel {
         self.updateDraft()
         sharedMessageDataService.uploadAttachment(att)
     }
+    
+    override func deleteAtt(att: Attachment!) {
+        self.updateDraft()
+        sharedMessageDataService.deleteAttachment(message?.messageID ?? "", att: att)
+    }
   
     override func getAttachments() -> [Attachment]? {
         return self.message?.attachments.allObjects as? [Attachment]

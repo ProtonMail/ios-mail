@@ -23,6 +23,7 @@ enum MessageAction: String {
     
     // Attachment
     case uploadAtt = "uploadAtt"
+    case deleteAtt = "deleteAtt"
     
     // Read/unread
     case read = "read"

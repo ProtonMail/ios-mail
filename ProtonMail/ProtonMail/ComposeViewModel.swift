@@ -35,8 +35,6 @@ public class ComposeViewModel {
     var bodyChanged : Bool = false;
     var userAddress : Array<Address>!
 
-        
-    
     public init() { }
     
     public func getSubject() -> String {
@@ -65,6 +63,10 @@ public class ComposeViewModel {
     }
     
     func uploadAtt(att : Attachment!) {
+        NSException(name:"name", reason:"reason", userInfo:nil).raise()
+    }
+    
+    func deleteAtt(att : Attachment!) {
         NSException(name:"name", reason:"reason", userInfo:nil).raise()
     }
     

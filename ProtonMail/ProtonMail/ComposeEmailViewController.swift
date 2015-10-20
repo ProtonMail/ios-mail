@@ -353,10 +353,10 @@ extension ComposeEmailViewController : ComposeViewDelegate {
     func composeViewDidTapAttachmentButton(composeView: ComposeView) {
         if let viewController = UIStoryboard.instantiateInitialViewController(storyboard: .attachments) as? UINavigationController {
             if let attachmentsViewController = viewController.viewControllers.first as? AttachmentsTableViewController {
-                //attachmentsViewController.delegate = self
+                attachmentsViewController.delegate = self
+                attachmentsViewController.message = viewModel.message;
                 if let attachments = attachments {
                     attachmentsViewController.attachments = viewModel.getAttachments() ?? []
-                    
                 }
             }
             presentViewController(viewController, animated: true, completion: nil)
@@ -463,20 +463,22 @@ extension ComposeEmailViewController : ComposeViewDataSource {
 
 
 // MARK: - AttachmentsViewControllerDelegate
-extension ComposeEmailViewController: AttachmentsViewControllerDelegate {
-    func attachmentsViewController(attachmentsViewController: AttachmentsViewController, didFinishPickingAttachments attachments: [AnyObject]) {
+extension ComposeEmailViewController: AttachmentsTableViewControllerDelegate {
+    
+    func attachments(attViewController: AttachmentsTableViewController, didFinishPickingAttachments attachments: [AnyObject]) {
         self.attachments = attachments
     }
     
-    func attachmentsViewController(attachmentsViewController: AttachmentsViewController, didPickedAttachment: UIImage, fileName:String, type:String) -> Void {
+    func attachments(attViewController: AttachmentsTableViewController, didPickedAttachment attachment: Attachment) {
         self.collectDraft()
-        let attachment = didPickedAttachment.toAttachment(self.viewModel.message!, fileName: fileName, type: type)
         self.viewModel.uploadAtt(attachment)
-        
+    }
+
+    func attachments(attViewController: AttachmentsTableViewController, didDeletedAttachment attachment: Attachment) {
+        self.collectDraft()
+        self.viewModel.deleteAtt(attachment)
     }
 }
-
-
 
 // MARK: - UIPickerViewDataSource
 

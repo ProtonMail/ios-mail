@@ -30,6 +30,17 @@ public struct MessageAPI {
     
 }
 
+public struct AttachmentAPI {
+    /// base message api path
+    static let Path :String = "/attachments"
+    
+    
+    /// fetch message request version
+    static let V_AttachmentRemoveRequest : Int = 1
+
+    
+}
+
 public struct LabelAPI {
     static let Path :String = "/labels"
     

@@ -16,7 +16,7 @@
 
 import Foundation
 
-class AttachmentTableViewCell: UITableViewCell {
+class AttachmentTableViewCell: MCSwipeTableViewCell {
     struct Constant {
         static let identifier = "AttachmentTableViewCell"
     }
