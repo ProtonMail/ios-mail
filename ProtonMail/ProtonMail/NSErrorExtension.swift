@@ -66,7 +66,7 @@ extension NSError {
         var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
         hud.labelText = "Alert";
-        hud.detailsLabelText = "ProtonMail is currently offline, please check our twitter for the current status @ProtonMail.";
+        hud.detailsLabelText = "A new version of ProtonMail app is available, please update to latest version.";
         hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)
         //                    hud.mode = MBProgressHUDMode.Text

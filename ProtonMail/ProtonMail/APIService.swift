@@ -45,7 +45,7 @@ class APIService {
     
     private let sessionManager: AFHTTPSessionManager
     
-    public func getSession() ->AFHTTPSessionManager{
+    func getSession() ->AFHTTPSessionManager{
         return sessionManager;
     }
     
@@ -94,19 +94,16 @@ class APIService {
             let success: AFNetworkingSuccessBlock = { task, responseObject in
                 //PMLog("\(__FUNCTION__) Response: \(responseObject)")
                 if let responseDictionary = responseObject as? Dictionary<String, AnyObject> {
-                    if authenticated && responseDictionary["Code"] as? Int == 401 {
+                    let responseCode = responseDictionary["Code"] as? Int
+                    if authenticated && responseCode == 401 {
                         AuthCredential.expireOrClear()
                         self.setApiVesion(1, appVersion: 1)
                         self.request(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)
-                    } else if responseDictionary["Code"] as? Int == 5001 {
+                    } else if responseCode == 5001 || responseCode == 5002 || responseCode == 5003 || responseCode == 5004 {
                         NSError.alertUpdatedToast()
                         completion(task: task, response: responseDictionary, error: nil)
                         sharedUserDataService.signOut(true);
-                    } else if responseDictionary["Code"] as? Int == 5002 {
-                        NSError.alertUpdatedToast()
-                        completion(task: task, response: responseDictionary, error: nil)
-                        sharedUserDataService.signOut(true);
-                    } else if responseDictionary["Code"] as? Int == 5003 {
+                    } else if responseCode == 7001 { //offline
                         NSError.alertOfflineToast()
                         completion(task: task, response: responseDictionary, error: nil)
                         sharedUserDataService.signOut(true);
