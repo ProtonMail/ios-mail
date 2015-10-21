@@ -140,6 +140,8 @@ class MailboxViewController: ProtonMailViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
+        sharedPushNotificationService.processCachedLaunchOptions()
+        
         let usedStorageSpace = sharedUserDataService.usedSpace
         let maxStorageSpace = sharedUserDataService.maxSpace
         StorageLimit().checkSpace(usedSpace: usedStorageSpace, maxSpace: maxStorageSpace)

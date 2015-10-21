@@ -1045,36 +1045,36 @@ class MessageDataService {
     }
     
     func purgeOldMessages() {
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            let cutoffTimeInterval: NSTimeInterval = 3 * 86400 // days converted to seconds
-            let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
-            
-            var error: NSError?
-            let count = context.countForFetchRequest(fetchRequest, error: &error)
-            
-            if error != nil {
-                NSLog("\(__FUNCTION__) error: \(error)")
-            } else if count > maximumCachedMessageCount {
-                // TODO:: disable this need add later
-                //                fetchRequest.predicate = NSPredicate(format: "%K != %@ AND %K < %@", Message.Attributes.locationNumber, MessageLocation.outbox.rawValue, Message.Attributes.time, NSDate(timeIntervalSinceNow: -cutoffTimeInterval))
-                //
-                //                if let oldMessages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
-                //                    for message in oldMessages {
-                //                        context.deleteObject(message)
-                //                    }
-                //
-                //                    NSLog("\(__FUNCTION__) \(oldMessages.count) old messages purged.")
-                //
-                //                    if let error = context.saveUpstreamIfNeeded() {
-                //                        NSLog("\(__FUNCTION__) error: \(error)")
-                //                    }
-                //                } else {
-                //                    NSLog("\(__FUNCTION__) error: \(error)")
-                //                }
-            } else {
-                NSLog("\(__FUNCTION__) cached message count: \(count)")
-            }
-        }
+//        if let context = sharedCoreDataService.mainManagedObjectContext {
+//            let cutoffTimeInterval: NSTimeInterval = 3 * 86400 // days converted to seconds
+//            let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
+//            
+//            var error: NSError?
+//            let count = context.countForFetchRequest(fetchRequest, error: &error)
+//            
+//            if error != nil {
+//                NSLog("\(__FUNCTION__) error: \(error)")
+//            } else if count > maximumCachedMessageCount {
+//                 TODO:: disable this need add later
+//                                fetchRequest.predicate = NSPredicate(format: "%K != %@ AND %K < %@", Message.Attributes.locationNumber, MessageLocation.outbox.rawValue, Message.Attributes.time, NSDate(timeIntervalSinceNow: -cutoffTimeInterval))
+//                
+//                                if let oldMessages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
+//                                    for message in oldMessages {
+//                                        context.deleteObject(message)
+//                                    }
+//                
+//                                    NSLog("\(__FUNCTION__) \(oldMessages.count) old messages purged.")
+//                
+//                                    if let error = context.saveUpstreamIfNeeded() {
+//                                        NSLog("\(__FUNCTION__) error: \(error)")
+//                                    }
+//                                } else {
+//                                    NSLog("\(__FUNCTION__) error: \(error)")
+//                                }
+//            } else {
+//                NSLog("\(__FUNCTION__) cached message count: \(count)")
+//            }
+//        }
     }
     
     

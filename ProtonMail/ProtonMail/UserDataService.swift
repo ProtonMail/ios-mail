@@ -78,6 +78,9 @@ class UserDataService {
     }
     
     var isMailboxPasswordStored: Bool {
+        
+        isMailboxPWDOk = mailboxPassword != nil;
+        
         return mailboxPassword != nil
     }
     
@@ -176,6 +179,7 @@ class UserDataService {
     func setMailboxPassword(password: String, isRemembered: Bool) {
         mailboxPassword = password
         isRememberMailboxPassword = isRemembered
+        self.isMailboxPWDOk = true;
     }
     
     func isPasswordValid(password: String?) -> Bool {

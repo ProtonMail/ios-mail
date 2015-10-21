@@ -96,8 +96,6 @@ extension SWRevealViewController {
 // MARK: - UIApplicationDelegate
 
 extension AppDelegate: UIApplicationDelegate {
-    
-    
     func application(application: UIApplication, supportedInterfaceOrientationsForWindow window: UIWindow?) -> Int {
         if self.window?.rootViewController?.presentedViewController is QuickViewViewController {
             let secondController = self.window!.rootViewController!.presentedViewController as! QuickViewViewController
@@ -135,7 +133,7 @@ extension AppDelegate: UIApplicationDelegate {
             AFNetworkActivityLogger.sharedLogger().stopLogging()
         }
         
-        NSLog("launchOptions \(launchOptions)")
+        sharedPushNotificationService.setLaunchOptions(launchOptions)
         
         return true
     }
@@ -153,10 +151,6 @@ extension AppDelegate: UIApplicationDelegate {
     
     func applicationWillEnterForeground(application: UIApplication) {
         Snapshot().willEnterForeground(application)
-        
-        if sharedUserDataService.isSignedIn && sharedUserDataService.isMailboxPWDOk {
-            sharedUserDataService.fetchUserInfo()
-        }
     }
     
     func applicationDidBecomeActive(application: UIApplication) {

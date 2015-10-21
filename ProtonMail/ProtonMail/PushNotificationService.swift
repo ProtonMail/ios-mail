@@ -21,6 +21,9 @@ let sharedPushNotificationService = PushNotificationService()
 
 class PushNotificationService {
     
+    private var launchOptions: [NSObject: AnyObject]? = nil
+    
+    
     init() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "didSignInNotification:", name: UserDataService.Notification.didSignIn, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "didSignOutNotification:", name: UserDataService.Notification.didSignOut, object: nil)
@@ -57,71 +60,83 @@ class PushNotificationService {
         NSLog("\(__FUNCTION__) \(error)")
     }
     
-    func didReceiveRemoteNotification(userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-        let application = UIApplication.sharedApplication()
+    func setLaunchOptions (launchOptions: [NSObject: AnyObject]?) {
+        if let launchoption = launchOptions {
+            if let option = launchoption["UIApplicationLaunchOptionsRemoteNotificationKey"] as? [NSObject: AnyObject] {
+                
+                self.launchOptions = option;
+                
+                NSLog("options : \(self.launchOptions)")
+            }
+        }
+    }
+    
+    func processCachedLaunchOptions() {
         
-        if let messageid = messageIDForUserInfo(userInfo) {
-            // if the app is in the background, then switch to the inbox and load the message detail
-            if application.applicationState == UIApplicationState.Inactive || application.applicationState == UIApplicationState.Background {
-                if let revealViewController = application.keyWindow?.rootViewController as? SWRevealViewController {
-                    //revealViewController
+        NSLog("process options1 : \(self.launchOptions)")
+        
+        if let options = self.launchOptions {
+            
+            
+            NSLog("process options2 : \(self.launchOptions)")
+            sharedPushNotificationService.didReceiveRemoteNotification(options, forceProcess: true, fetchCompletionHandler: { (UIBackgroundFetchResult) -> Void in
+                
+            })
+            
+            self.launchOptions = nil;
+        }
+    }
+    
+    func didReceiveRemoteNotification(userInfo: [NSObject : AnyObject], forceProcess : Bool = false, fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+        
+        NSLog("did options1 : \(self.launchOptions)")
+        if sharedUserDataService.isSignedIn && sharedUserDataService.isMailboxPWDOk {
+            
+            NSLog("did options2 : \(self.launchOptions)")
+            
+            let application = UIApplication.sharedApplication()
+            if let messageid = messageIDForUserInfo(userInfo) {
+                
+                NSLog("message \(messageid)")
+                
+                NSLog("static \(application.applicationState)")
+                
+                // if the app is in the background, then switch to the inbox and load the message detail
+                if application.applicationState == UIApplicationState.Inactive || application.applicationState == UIApplicationState.Background || forceProcess {
                     
-                    sharedMessageDataService.fetchNotificationMessageDetail(messageid, completion: { (task, response, message, error) -> Void in
-                        if error != nil {
-                            completionHandler(.Failed)
-                        } else {
-                            if let front = revealViewController.frontViewController as? UINavigationController {
-                                if let mailboxViewController: MailboxViewController = front.viewControllers.first as? MailboxViewController {
-                                    mailboxViewController.performSegueForMessageFromNotification(messageid)
+                    NSLog("ok1 \(messageid)")
+                    
+                    if let revealViewController = application.keyWindow?.rootViewController as? SWRevealViewController {
+                        //revealViewController
+                        
+                        sharedMessageDataService.fetchNotificationMessageDetail(messageid, completion: { (task, response, message, error) -> Void in
+                            if error != nil {
+                                completionHandler(.Failed)
+                            } else {
+                                if let front = revealViewController.frontViewController as? UINavigationController {
+                                    if let mailboxViewController: MailboxViewController = front.viewControllers.first as? MailboxViewController {
+                                        NSLog("ok2")
+                                        mailboxViewController.performSegueForMessageFromNotification(messageid)
+                                    }
                                 }
+                                completionHandler(.NewData)
                             }
-                            completionHandler(.NewData)
-                        }
-                    });
-
-//
-//                    
-//                    let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
-//                    
-//                    if let oldView = window.rootViewController as? SWRevealViewController {
-//                        if let nav = oldView.frontViewController as? UINavigationController {
-//                            if let firstViewController: UIViewController = nav.viewControllers.first as? UIViewController {
-//                                if (firstViewController.isKindOfClass(MailboxViewController)) {
-//                                    if let mailboxViewController: MailboxViewController = firstViewController as? MailboxViewController {
-//                                        mailboxViewController.resetFetchedResultsController()
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//
-//                    
-//                    if let navigationController = revealViewController.storyboard?.instantiateViewControllerWithIdentifier("MailboxNavigationController") as? UINavigationController {
-//                        revealViewController.frontViewController = navigationController
-//                        if let mailboxViewController = navigationController.topViewController as? MailboxViewController {
-//                            mailboxViewController.viewModel = MailboxViewModelImpl(location: .inbox)
-//                            
-//                            sharedMessageDataService.fetchNotificationMessageDetail(messageid, completion: { (task, response, message, error) -> Void in
-//                                
-//                                mailboxViewController.performSegueForMessageFromNotification(messageid)
-//                            });
-//                        }
-//                    }
+                        });
+                    }
                 }
             }
         }
         
-        
         //TODO :: fix the notification fetch part
-//        sharedMessageDataService.fetchLatestMessagesForLocation(.inbox, completion: { (task, messages, error) -> Void in
-//            if error != nil {
-//                completionHandler(.Failed)
-//            } else if messages != nil && messages!.isEmpty {
-//                completionHandler(.NoData)
-//            } else {
-//                completionHandler(.NewData)
-//            }
-//        })
+        //        sharedMessageDataService.fetchLatestMessagesForLocation(.inbox, completion: { (task, messages, error) -> Void in
+        //            if error != nil {
+        //                completionHandler(.Failed)
+        //            } else if messages != nil && messages!.isEmpty {
+        //                completionHandler(.NoData)
+        //            } else {
+        //                completionHandler(.NewData)
+        //            }
+        //        })
     }
     
     func didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: NSData) {
