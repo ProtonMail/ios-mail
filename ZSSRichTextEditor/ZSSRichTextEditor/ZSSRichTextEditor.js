@@ -634,6 +634,12 @@ zss_editor.focusEditor = function() {
     editor.focus();
 }
 
+zss_editor.removeRanges = function() {
+    var selection = window.getSelection();
+    selection.removeAllRanges();
+}
+
+
 zss_editor.blurEditor = function() {
     $('#zss_editor_content').blur();
 }//end

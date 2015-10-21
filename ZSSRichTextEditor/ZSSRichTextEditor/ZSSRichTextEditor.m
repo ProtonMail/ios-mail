@@ -553,6 +553,11 @@ static Class hackishFixClass = Nil;
     [self.editorView stringByEvaluatingJavaScriptFromString:js];
 }
 
+- (void)removeRanges {
+    NSString *js = [NSString stringWithFormat:@"removeRanges();"];
+    [self.editorView stringByEvaluatingJavaScriptFromString:js];
+}
+
 - (void)blurTextEditor {
     NSString *js = [NSString stringWithFormat:@"zss_editor.blurEditor();"];
     [self.editorView stringByEvaluatingJavaScriptFromString:js];

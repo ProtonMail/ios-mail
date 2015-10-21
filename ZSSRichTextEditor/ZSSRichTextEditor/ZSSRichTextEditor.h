@@ -125,6 +125,7 @@ static NSString * const ZSSRichTextEditorToolbarNone = @"com.zedsaid.toolbaritem
  */
 - (void)focusTextEditor;
 
+- (void)removeRanges;
 /**
  *  Manually dismisses on the text editor
  */
