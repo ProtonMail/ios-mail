@@ -19,6 +19,7 @@ class MessageViewController: ProtonMailViewController {
             message.fetchDetailIfNeeded() { _, _, msg, error in
                 if error != nil {
                     NSLog("\(__FUNCTION__) error: \(error)")
+                    self.updateEmailBodyWithError(error?.localizedDescription ?? "Unknow error .")
                 }
                 else
                 {
@@ -226,6 +227,17 @@ class MessageViewController: ProtonMailViewController {
         }
     }
     
+    // MARK : private function
+    private func updateEmailBodyWithError (error:String) {
+        if (self.message.hasAttachments) {
+            let atts = self.message.attachments.allObjects as! [Attachment]
+            self.emailView?.updateEmailAttachment(atts);
+        }
+        var bodyText = NSLocalizedString(error)
+        let meta1 : String = "<meta name=\"viewport\" content=\"width=\(600)\">"
+        self.emailView?.updateEmailBody(bodyText, meta: meta1)
+    }
+
     private func setupFetchedResultsController(msg_id:String) {
         self.fetchedMessageController = sharedMessageDataService.fetchedMessageControllerForID(msg_id)
         if let fetchedMessageController = fetchedMessageController {

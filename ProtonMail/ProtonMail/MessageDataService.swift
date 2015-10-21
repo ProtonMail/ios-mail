@@ -759,35 +759,36 @@ class MessageDataService {
                 let completionWrapper: CompletionBlock = { task, response, error in
                     let context = sharedCoreDataService.newMainManagedObjectContext()
                     context.performBlockAndWait() {
-                        var error: NSError?
-                        
+                        var tempError: NSError?
                         if response != nil {
                             //TODO need check the respons code
                             if var msg: Dictionary<String,AnyObject> = response?["Message"] as? Dictionary<String,AnyObject> {
                                 msg.removeValueForKey("Location")
                                 msg.removeValueForKey("Starred")
                                 msg.removeValueForKey("test")
-                                let message_n = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg, inManagedObjectContext: message.managedObjectContext!, error: &error) as! Message
-                                if error == nil {
+                                let message_n = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg, inManagedObjectContext: message.managedObjectContext!, error: &tempError) as! Message
+                                if tempError == nil {
                                     message.isDetailDownloaded = true
                                     message.needsUpdate = true
                                     message.isRead = true
                                     message.managedObjectContext?.saveUpstreamIfNeeded()
-                                    error = context.saveUpstreamIfNeeded()
+                                    tempError = context.saveUpstreamIfNeeded()
                                     dispatch_async(dispatch_get_main_queue()) {
-                                        completion(task: task, response: response, message: message, error: error)
+                                        completion(task: task, response: response, message: message, error: tempError)
                                     }
                                 }
                             } else {
                                 completion(task: task, response: response, message:nil, error: NSError.badResponse())
                             }
                         } else {
-                            error = NSError.unableToParseResponse(response)
+                            
+                            tempError = error;
+                            //error = NSError.unableToParseResponse(response)
                             dispatch_async(dispatch_get_main_queue()) {
-                                completion(task: task, response: response, message:nil, error: error)
+                                completion(task: task, response: response, message:nil, error: tempError)
                             }
                         }
-                        if error != nil  {
+                        if tempError != nil  {
                             NSLog("\(__FUNCTION__) error: \(error)")
                         }
                     }
