@@ -331,7 +331,8 @@ class ComposeView: UIViewController {
         let subjectLeftPaddingView = UIView(frame: CGRectMake(0, 0, 12, self.subject.frame.size.height))
         self.subject.leftView = subjectLeftPaddingView
         self.subject.leftViewMode = UITextFieldViewMode.Always
-        self.subject.autocapitalizationType = .Words
+        self.subject.autocapitalizationType = .Sentences
+        
     }
     
     internal func plusButtonHandle()
