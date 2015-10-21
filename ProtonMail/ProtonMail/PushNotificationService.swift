@@ -23,7 +23,6 @@ class PushNotificationService {
     
     private var launchOptions: [NSObject: AnyObject]? = nil
     
-    
     init() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "didSignInNotification:", name: UserDataService.Notification.didSignIn, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "didSignOutNotification:", name: UserDataService.Notification.didSignOut, object: nil)
@@ -38,7 +37,6 @@ class PushNotificationService {
     func registerUserNotificationSettings() {
         let types: UIUserNotificationType = .Badge | .Sound | .Alert
         let settings = UIUserNotificationSettings(forTypes: types, categories: nil)
-        
         UIApplication.sharedApplication().registerUserNotificationSettings(settings)
     }
     

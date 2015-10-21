@@ -87,7 +87,7 @@ class SearchViewController: ProtonMailViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
+        self.tableView.reloadData();
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
