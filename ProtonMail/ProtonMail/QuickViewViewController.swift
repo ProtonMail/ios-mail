@@ -33,21 +33,23 @@ class QuickViewViewController: QLPreviewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if let navigationController = navigationController {
-            configureNavigationBar(navigationController)
-            setNeedsStatusBarAppearanceUpdate()
+        
+        let views = self.childViewControllers
+        if views.count > 0 {
+            if let nav = views[0] as? UINavigationController {
+                configureNavigationBar(nav)
+                setNeedsStatusBarAppearanceUpdate()
+            }
         }
     }
     
     override func viewWillDisappear(animated: Bool) {
-        
         isPresented = false
-        
         let value = UIInterfaceOrientationMask.Portrait.rawValue
         UIDevice.currentDevice().setValue(value, forKey: "orientation")
         super.viewWillDisappear(animated)
     }
-//
+
 //    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
 //        UIView.setAnimationsEnabled(true)
 //    }
