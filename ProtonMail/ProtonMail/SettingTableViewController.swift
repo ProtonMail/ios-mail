@@ -10,9 +10,12 @@ import UIKit
 
 class SettingTableViewController: ProtonMailViewController {
     
-    var setting_headers = [SettingSections.General, SettingSections.MultiDomain, SettingSections.Storage, SettingSections.Version] //SettingSections.Debug,
+    var setting_headers = [SettingSections.General, SettingSections.MultiDomain, SettingSections.SwipeAction, SettingSections.Storage, SettingSections.Version] //SettingSections.Debug,
     var setting_general_items = [SGItems.NotifyEmail, SGItems.DisplayName, SGItems.Signature, SGItems.LoginPWD, SGItems.MBP, SGItems.CleanCache]
     var setting_debug_items = [SDebugItem.Queue, SDebugItem.ErrorLogs, SDebugItem.CleanCache]
+    
+    var setting_swipe_action_items = [SSwipeActionItems.left, SSwipeActionItems.right]
+    var setting_swipe_actions = [MessageSwipeAction.trash, MessageSwipeAction.spam, MessageSwipeAction.star, MessageSwipeAction.archive]
     
     var multi_domains: Array<Address>!
     var userInfo = sharedUserDataService.userInfo
@@ -118,21 +121,23 @@ class SettingTableViewController: ProtonMailViewController {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch(setting_headers[section])
         {
-        case SettingSections.Debug:
+        case .Debug:
             return setting_debug_items.count
-        case SettingSections.General:
+        case .General:
             return setting_general_items.count
-        case SettingSections.MultiDomain:
-            return 1 //multi_domains.count
-        case SettingSections.Storage:
+        case .MultiDomain:
             return 1
-        case SettingSections.Version:
+        case .SwipeAction:
+            return setting_swipe_action_items.count
+        case .Storage:
+            return 1
+        case .Version:
             return 0
         }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if setting_headers[indexPath.section] == SettingSections.General {
+        if setting_headers[indexPath.section] == .General {
             let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! GeneralSettingViewCell
             let itme: SGItems = setting_general_items[indexPath.row];
             cell.LeftText.text = itme.description;
@@ -164,7 +169,7 @@ class SettingTableViewController: ProtonMailViewController {
             }
             return cell
         }
-        else if setting_headers[indexPath.section] == SettingSections.MultiDomain {
+        else if setting_headers[indexPath.section] == .MultiDomain {
             let cell = tableView.dequeueReusableCellWithIdentifier(SettingDomainsCell, forIndexPath: indexPath) as! DomainsTableViewCell
             cell.domainText.text = multi_domains[indexPath.row].email
             if indexPath.row == 0
@@ -178,7 +183,18 @@ class SettingTableViewController: ProtonMailViewController {
             cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator;
             return cell
         }
-        else if setting_headers[indexPath.section] == SettingSections.Storage {
+        else if setting_headers[indexPath.section] == .SwipeAction {
+            let cell = tableView.dequeueReusableCellWithIdentifier(SettingDomainsCell, forIndexPath: indexPath) as! DomainsTableViewCell
+            
+            if indexPath.row < setting_swipe_action_items.count {
+                let actionItem = setting_swipe_action_items[indexPath.row]
+                let action = actionItem == .left ? MessageSwipeAction(rawValue: userInfo?.swipeLeft ?? 3) ?? .archive :  MessageSwipeAction(rawValue: userInfo?.swipeRight ?? 0) ?? .trash
+                cell.domainText.text = actionItem.description
+                cell.defaultMark.text = action.description
+                cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator;
+            }
+            return cell
+        } else if setting_headers[indexPath.section] == .Storage {
             let cell = tableView.dequeueReusableCellWithIdentifier(SettingStorageCell, forIndexPath: indexPath) as! StorageViewCell
             let usedSpace = sharedUserDataService.usedSpace
             let maxSpace = sharedUserDataService.maxSpace
@@ -186,7 +202,7 @@ class SettingTableViewController: ProtonMailViewController {
             cell.selectionStyle = UITableViewCellSelectionStyle.None
             return cell
         }
-        else if setting_headers[indexPath.section] == SettingSections.Debug {
+        else if setting_headers[indexPath.section] == .Debug {
             let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! GeneralSettingViewCell
             let itme: SDebugItem = setting_debug_items[indexPath.row]
             cell.LeftText.text = itme.description
@@ -326,7 +342,37 @@ class SettingTableViewController: ProtonMailViewController {
             }
             presentViewController(alertController, animated: true, completion: nil)
             
+        }  else if setting_headers[indexPath.section] == SettingSections.SwipeAction {
+            
+            if indexPath.row < setting_swipe_action_items.count {
+                
+                let actionItem = setting_swipe_action_items[indexPath.row]
+
+                let alertController = UIAlertController(title: actionItem.actionDescription, message: nil, preferredStyle: .ActionSheet)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
+
+                let currentAction = actionItem == .left ? MessageSwipeAction(rawValue: userInfo?.swipeLeft ?? 3) ?? .archive :  MessageSwipeAction(rawValue: userInfo?.swipeRight ?? 0) ?? .trash
+                for (var swipeAction) in setting_swipe_actions {
+                    if swipeAction != currentAction {
+                        alertController.addAction(UIAlertAction(title: swipeAction.description, style: .Default, handler: { (action) -> Void in
+                            self.navigationController?.popViewControllerAnimated(true)
+                            
+                            ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
+                            sharedUserDataService.updateUserSwipeAction(actionItem == .left, action: swipeAction, completion: { (task, response, error) -> Void in
+                                ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                                if let error = error {
+                                } else {
+                                    tableView.reloadData()
+                                }
+
+                            })
+                        }))
+                    }
+                }
+                presentViewController(alertController, animated: true, completion: nil)
+            }
         }
+
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
@@ -416,12 +462,37 @@ extension SettingTableViewController {
         }
     }
     
+    enum SSwipeActionItems: Int, Printable {
+        case left = 0
+        case right = 1
+        
+        var description : String {
+            switch(self){
+            case left:
+                return NSLocalizedString("Swipe Left to Right")
+            case right:
+                return NSLocalizedString("Swipe Right to Left")
+            }
+        }
+        
+        var actionDescription : String {
+            switch(self){
+            case left:
+                return NSLocalizedString("Change left swipe action")
+            case right:
+                return NSLocalizedString("Change right swipe action")
+            }
+        }
+    }
+    
     enum SettingSections: Int, Printable {
         case Debug = 0
         case General = 1
         case MultiDomain = 2
         case Storage = 3
         case Version = 4
+        case SwipeAction = 5
+        
         var description : String {
             switch(self){
             case Debug:
@@ -434,6 +505,8 @@ extension SettingTableViewController {
                 return NSLocalizedString("Storage")
             case Version:
                 return NSLocalizedString("")
+            case SwipeAction:
+                return NSLocalizedString("Message Swipe Actions")
             }
         }
     }

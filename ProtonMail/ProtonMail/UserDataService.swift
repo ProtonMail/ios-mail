@@ -67,6 +67,18 @@ class UserDataService {
         }
         return "";
     }
+    
+//    var swiftLeft : MessageSwipeAction {
+//        get {
+//            return MessageSwipeAction(rawValue: userInfo?.swipeLeft ?? 3) ?? .archive
+//        }
+//    }
+//    
+//    var swiftRight : MessageSwipeAction {
+//        get {
+//            return MessageSwipeAction(rawValue: userInfo?.swipeLeft ?? 0) ?? .trash
+//        }
+//    }
 
     
     var userAddresses: Array<Address> { //never be null
@@ -294,6 +306,24 @@ class UserDataService {
                         autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
                         
                         swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight
+                    )
+                    self.userInfo = userInfo
+                }
+            }
+            completion(task: task, response: nil, error: nil)
+        }
+    }
+    
+    
+    func updateUserSwipeAction(isLeft : Bool , action: MessageSwipeAction, completion: CompletionBlock) {
+        let api = isLeft ? UpdateSwiftLeftAction<ApiResponse>(action: action) : UpdateSwiftRightAction<ApiResponse>(action: action)
+        api.call() { task, response, hasError in
+            if !hasError {
+                if let userInfo = self.userInfo {
+                    let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
+                        autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
+                        
+                        swipeL: isLeft ? action.rawValue : userInfo.swipeLeft, swipeR: isLeft ? userInfo.swipeRight : action.rawValue
                     )
                     self.userInfo = userInfo
                 }

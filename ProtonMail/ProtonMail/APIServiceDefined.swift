@@ -68,6 +68,9 @@ public struct SettingsAPI {
     /// fetch message request version
     static let V_SettingsUpdateDomainRequest : Int = 1
     static let V_SettingsUpdateNotifyRequest : Int = 1
+    
+    static let V_SettingsUpdateSwipeLeftRequest : Int = 1
+    static let V_SettingsUpdateSwipeRightRequest : Int = 1
 }
 
 

@@ -97,4 +97,54 @@ public class UpdateNotificationEmail<T : ApiResponse> : ApiRequest<T> {
 }
 
 
+// MARK : update left swipe action
+public class UpdateSwiftLeftAction<T : ApiResponse> : ApiRequest<T> {
+    let newAction : MessageSwipeAction!
+    
+    init(action : MessageSwipeAction!) {
+        self.newAction = action;
+    }
+    
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+        var out : [String : AnyObject] = ["SwipeLeft" : self.newAction.rawValue]
+        return out
+    }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .PUT
+    }
+    
+    override public func getRequestPath() -> String {
+        return SettingsAPI.Path + "/swipeleft" + AppConstants.getDebugOption
+    }
+    
+    override public func getVersion() -> Int {
+        return SettingsAPI.V_SettingsUpdateSwipeLeftRequest
+    }
+}
 
+// MARK : update right swipe action
+public class UpdateSwiftRightAction<T : ApiResponse> : ApiRequest<T> {
+    let newAction : MessageSwipeAction!
+    
+    init(action : MessageSwipeAction!) {
+        self.newAction = action;
+    }
+    
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+        var out : [String : AnyObject] = ["SwipeRight" : self.newAction.rawValue]
+        return out
+    }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .PUT
+    }
+    
+    override public func getRequestPath() -> String {
+        return SettingsAPI.Path + "/swiperight" + AppConstants.getDebugOption
+    }
+    
+    override public func getVersion() -> Int {
+        return SettingsAPI.V_SettingsUpdateSwipeRightRequest
+    }
+}
