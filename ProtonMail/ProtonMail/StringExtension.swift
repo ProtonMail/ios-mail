@@ -183,6 +183,30 @@ extension String {
         
     }
     
+    func plainText(html : String) -> String {
+        
+        return "";
+        //        -(NSString *)convertHTML:(NSString *)html {
+        //
+        //            NSScanner *myScanner;
+        //            NSString *text = nil;
+        //            myScanner = [NSScanner scannerWithString:html];
+        //
+        //            while ([myScanner isAtEnd] == NO) {
+        //
+        //                [myScanner scanUpToString:@"<" intoString:NULL] ;
+        //
+        //                [myScanner scanUpToString:@">" intoString:&text] ;
+        //
+        //                html = [html stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@>", text] withString:@""];
+        //            }
+        //            //
+        //            html = [html stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        //            
+        //            return html;
+        //        }
+    }
+    
     static func randomString(len:Int) -> String {
         let charSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         var c = Array(charSet)

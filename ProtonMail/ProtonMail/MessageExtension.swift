@@ -91,7 +91,6 @@ extension Message {
     }
     
     // MARK: - Public methods
-    
     convenience init(context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entityForName(Attributes.entityName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
     }
@@ -100,6 +99,49 @@ extension Message {
     class func deleteAll(inContext context: NSManagedObjectContext) {
         context.deleteAll(Attributes.entityName)
     }
+    
+    /**
+    delete the message from local cache only use the message id
+    
+    :param: messageID String
+    */
+    class func deleteMessage(messageID : String) {
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            if var message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                var labelObjs = message.mutableSetValueForKey("labels")
+                labelObjs.removeAllObjects()
+                message.setValue(labelObjs, forKey: "labels")
+                context.deleteObject(message)
+            }
+            if let error = context.saveUpstreamIfNeeded() {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
+        }
+    }
+    
+    class func deleteLocation(location : MessageLocation) -> Bool{
+        if let moc = sharedCoreDataService.mainManagedObjectContext {
+            let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
+            
+            if location == .spam || location == .trash {
+                var error : NSError?
+                fetchRequest.predicate = NSPredicate(format: "%K == %i", Message.Attributes.locationNumber, location.rawValue)
+                fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
+                if let oldMessages = moc.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
+                    for message in oldMessages {
+                        moc.deleteObject(message)
+                    }
+                    if let error = moc.saveUpstreamIfNeeded() {
+                        PMLog.D(" error: \(error)")
+                    } else {
+                        return true
+                    }
+                }
+            }
+        }
+        return false
+    }
+    
     
     class func messageForMessageID(messageID: String, inManagedObjectContext context: NSManagedObjectContext) -> Message? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.messageID, matchingValue: messageID) as? Message
@@ -207,28 +249,11 @@ extension Message {
         if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D("error: \(error)")
         }
-
+        
         
         if copyAtts {
             for (index, attachment) in enumerate(message.attachments) {
                 if let att = attachment as? Attachment {
-//                    let attachment = Attachment(context: sharedCoreDataService.mainManagedObjectContext!)
-//                    attachment.attachmentID = "0"
-//                    attachment.fileData = nil
-//                    attachment.keyPacket = att.keyPacket
-//                    attachment.fileName = att.fileName
-//                    attachment.fileSize = att.fileSize
-//                    attachment.mimeType = att.mimeType
-//                    attachment.isTemp = true
-//                    attachment.message = newMessage
-//                    
-//                    if let error = attachment.managedObjectContext?.saveUpstreamIfNeeded() {
-//                        PMLog.D("error: \(error)")
-//                    }
-//                    
-//                    
-//
-//                    
                     let attachment = Attachment(context: newMessage.managedObjectContext!)
                     attachment.attachmentID = "0"
                     attachment.message = newMessage
@@ -244,9 +269,15 @@ extension Message {
                 }
             }
         }
-
+        
         return newMessage
     }
+    
+    func fetchDetailIfNeeded(completion: MessageDataService.CompletionFetchDetail) {
+        sharedMessageDataService.fetchMessageDetailForMessage(self, completion: completion)
+        
+    }
+    
 }
 
 extension String {

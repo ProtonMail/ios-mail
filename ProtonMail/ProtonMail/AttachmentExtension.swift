@@ -78,29 +78,12 @@ extension Attachment {
         return sessionKey
     }
     
-    //    func getNewSessionKeyPackage(publicKey: String!, error: NSErrorPointer?) -> NSData? {
-    //        let key = self.getSessionKey(nil)
-    //
-    //        key?.getSessionKeyPackage(publicKey, error: nil)
-    //
-    //    }
-    
-    //    func decryptAttachment(keyPackage:NSData!, error: NSErrorPointer?) -> NSData? {
-    //
-    //        self.keyPacket
-    //
-    //        return nil
-    //    }
-    
+    func fetchAttachment(downloadTask: ((NSURLSessionDownloadTask) -> Void)?, completion:((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
+        sharedMessageDataService.fetchAttachmentForAttachment(self, downloadTask: downloadTask, completion: completion)
+    }
 }
 
-
 extension Attachment {
-    //    func toImage -> UIImage {
-    //        return UIImage();
-    //    }
-    
-    
     class func attachmentDelete(attachmentObjectID: NSManagedObjectID, inManagedObjectContext context: NSManagedObjectContext) -> Void {
         var error: NSError? = nil
         if let att = context.existingObjectWithID(attachmentObjectID, error: &error) as? Attachment {

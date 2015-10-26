@@ -93,6 +93,26 @@ public class MailboxViewModelImpl : MailboxViewModel {
         return self.location == l
     }
     
+    public override func isShowEmptyFolder() -> Bool {
+        switch(self.location!) {
+        case .trash, .spam:
+            return true;
+        default:
+            return false
+        }
+    }
+    
+    override public func emptyFolder() {
+        switch(self.location!) {
+        case .trash:
+            sharedMessageDataService.emptyTrash();
+        case .spam:
+            sharedMessageDataService.emptySpam();
+        default:
+            break
+        }
+    }
+    
     override func fetchMessages(MessageID: String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
         sharedMessageDataService.fetchMessagesForLocation(self.location, MessageID: MessageID, Time:Time, foucsClean: foucsClean, completion:completion)
     }
@@ -100,7 +120,7 @@ public class MailboxViewModelImpl : MailboxViewModel {
     override func fetchNewMessages(Time: Int, completion: CompletionBlock?) {
         sharedMessageDataService.fetchNewMessagesForLocation(self.location, Time: Time, completion: completion)
     }
-
+    
     override func fetchMessagesForLocationWithEventReset(MessageID: String, Time: Int, completion: CompletionBlock?) {
         sharedMessageDataService.fetchMessagesForLocationWithEventReset(self.location, MessageID: MessageID, Time: Time, completion: completion)
     }

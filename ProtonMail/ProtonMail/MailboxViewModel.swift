@@ -56,7 +56,13 @@ public class MailboxViewModel {
     
     public func isCurrentLocation(l : MessageLocation) -> Bool {
         return false
-        
+    }
+    
+    public func isShowEmptyFolder() -> Bool {
+        return false
+    }
+    
+    public func emptyFolder() {
     }
     
     func fetchMessages(MessageID : String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {

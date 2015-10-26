@@ -103,7 +103,18 @@ class MessageDataService {
     }
     
     
+    //
+    func emptyTrash() {
+        if Message.deleteLocation(MessageLocation.trash) {
+            queue(.emptyTrash)
+        }
+    }
     
+    func emptySpam() {
+        if Message.deleteLocation(MessageLocation.spam) {
+            queue(.emptySpam)
+        }
+    }
     
     // MARK : fetch functions
     
@@ -170,7 +181,6 @@ class MessageDataService {
             sharedAPIService.GET(request, completion: completionWrapper)
         }
     }
-    
     
     func fetchMessagesForLabels(labelID : String, MessageID : String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
         queue {
@@ -914,28 +924,6 @@ class MessageDataService {
     }
     
     /**
-    delete the message from local cache only use the message id
-    
-    :param: messageID String
-    */
-    func deleteMessage(messageID : String) {
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            
-            if var message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                var labelObjs = message.mutableSetValueForKey("labels")
-                labelObjs.removeAllObjects()
-                message.setValue(labelObjs, forKey: "labels")
-                context.deleteObject(message)
-            }
-            if let error = context.saveUpstreamIfNeeded() {
-                NSLog("\(__FUNCTION__) error: \(error)")
-                
-            }
-        }
-    }
-    
-    
-    /**
     clean up function for clean up the local cache this will be called when:
     
     1. logout.
@@ -1352,6 +1340,22 @@ class MessageDataService {
         completion?(task: nil, response: nil, error: NSError.badParameter(deleteObject))
     }
     
+    private func emptyMessageWithLocation (location: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
+        if let context = managedObjectContext {
+            let api = MessageEmptyRequest(location: location);
+            api.call({ (task, response, hasError) -> Void in
+                completion?(task: task, response: nil, error: nil)
+            })
+            return
+        }
+        
+        // nothing to send, dequeue request
+        sharedMessageQueue.remove(elementID: writeQueueUUID)
+        self.dequeueIfNeeded()
+        completion?(task: nil, response: nil, error: NSError.badParameter("\(location)"))
+    }
+    
+    
     private func sendMessageID(messageID: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
         
         let errorBlock: CompletionBlock = { task, response, error in
@@ -1456,7 +1460,6 @@ class MessageDataService {
     }
     
     private func markReplyStatus(oriMsgID : String?, action : NSNumber?) {
-        
         if let context = managedObjectContext {
             if let originMessageID = oriMsgID {
                 if let act = action {
@@ -1509,14 +1512,13 @@ class MessageDataService {
             if error == nil {
                 if let action = MessageAction(rawValue: actionString) {
                     if action == MessageAction.delete {
-                        self.deleteMessage(messageID)
+                        Message.deleteMessage(messageID)
                     }
                 }
                 sharedMessageQueue.remove(elementID: elementID)
                 self.dequeueIfNeeded()
             } else {
                 NSLog("\(__FUNCTION__) error: \(error)")
-                
                 var statusCode = 200;
                 var isInternetIssue = false
                 if let errorUserInfo = error?.userInfo {
@@ -1571,6 +1573,10 @@ class MessageDataService {
                     uploadAttachmentWithAttachmentID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .deleteAtt:
                     deleteAttachmentWithAttachmentID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                case .emptyTrash:
+                    emptyMessageWithLocation("trash", writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                case .emptySpam:
+                    emptyMessageWithLocation("spam", writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 default:
                     sharedAPIService.PUT(MessageActionRequest<ApiResponse>(action: actionString, ids: [messageID]), completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 }
@@ -1590,6 +1596,11 @@ class MessageDataService {
         } else {
             sharedMessageQueue.addMessage(message.messageID, action: action)
         }
+        dequeueIfNeeded()
+    }
+    
+    private func queue(action: MessageAction) {
+        sharedMessageQueue.addMessage("", action: action)
         dequeueIfNeeded()
     }
     
@@ -1628,23 +1639,6 @@ class MessageDataService {
                 self.queue(message: message, action: action)
             }
         })
-    }
-}
-
-// MARK: - Attachment extension
-
-extension Attachment {
-    func fetchAttachment(downloadTask: ((NSURLSessionDownloadTask) -> Void)?, completion:((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
-        sharedMessageDataService.fetchAttachmentForAttachment(self, downloadTask: downloadTask, completion: completion)
-    }
-}
-
-
-// MARK: - Message extension
-
-extension Message {
-    func fetchDetailIfNeeded(completion: MessageDataService.CompletionFetchDetail) {
-        sharedMessageDataService.fetchMessageDetailForMessage(self, completion: completion)
     }
 }
 

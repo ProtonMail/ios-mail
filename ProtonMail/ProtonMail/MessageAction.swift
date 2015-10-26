@@ -42,6 +42,10 @@ enum MessageAction: String {
     
     // Send
     case send = "send"
+    
+    // Empty
+    case emptyTrash = "emptyTrash"
+    case emptySpam = "emptySpam"
 }
 
 

@@ -26,6 +26,8 @@ public struct MessageAPI {
     
     static let V_MessageActionRequest : Int = 1
     
+    static let V_MessageEmptyRequest : Int = 1
+    
     static let V_MessageSendRequest : Int = 1
     
 }

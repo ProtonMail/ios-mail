@@ -266,7 +266,7 @@ class MailboxViewController: ProtonMailViewController {
         self.performSegueWithIdentifier(kSegueToLabelsController, sender: self)
     }
     
-    public func performSegueForMessageFromNotification(messageID: String) {
+    func performSegueForMessageFromNotification(messageID: String) {
         self.notificationMessageID = messageID;
         performSegueWithIdentifier(kSegueToMessageDetailFromNotification, sender: self)
     }
@@ -296,26 +296,34 @@ class MailboxViewController: ProtonMailViewController {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
         
-        alertController.addAction(UIAlertAction(title: "Mark Read", style: .Default, handler: { (action) -> Void in
-            self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isRead)
-            self.cancelButtonTapped();
-            self.navigationController?.popViewControllerAnimated(true)
-        }))
-        
-        alertController.addAction(UIAlertAction(title: "Add Star", style: .Default, handler: { (action) -> Void in
-            self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isStarred)
-            self.cancelButtonTapped();
-            self.navigationController?.popViewControllerAnimated(true)
-        }))
-        
-        let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .archive : .Destructive]
-        for (location, style) in locations {
-            if !viewModel.isCurrentLocation(location) {
-                alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
-                    self.moveMessagesToLocation(location)
-                    self.cancelButtonTapped();
-                    self.navigationController?.popViewControllerAnimated(true)
-                }))
+        if viewModel.isShowEmptyFolder() {
+            alertController.addAction(UIAlertAction(title: "Empty Folder", style: .Destructive, handler: { (action) -> Void in
+                self.viewModel.emptyFolder()
+                self.showNoResultLabel()
+                self.navigationController?.popViewControllerAnimated(true)
+            }))
+        } else {
+            alertController.addAction(UIAlertAction(title: "Mark Read", style: .Default, handler: { (action) -> Void in
+                self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isRead)
+                self.cancelButtonTapped();
+                self.navigationController?.popViewControllerAnimated(true)
+            }))
+            
+            alertController.addAction(UIAlertAction(title: "Add Star", style: .Default, handler: { (action) -> Void in
+                self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isStarred)
+                self.cancelButtonTapped();
+                self.navigationController?.popViewControllerAnimated(true)
+            }))
+            
+            let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .archive : .Destructive]
+            for (location, style) in locations {
+                if !viewModel.isCurrentLocation(location) {
+                    alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
+                        self.moveMessagesToLocation(location)
+                        self.cancelButtonTapped();
+                        self.navigationController?.popViewControllerAnimated(true)
+                    }))
+                }
             }
         }
         presentViewController(alertController, animated: true, completion: nil)
@@ -729,8 +737,29 @@ class MailboxViewController: ProtonMailViewController {
                 self.searchBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_search"), style: UIBarButtonItemStyle.Plain, target: self, action: "searchButtonTapped")
             }
             
-            rightButtons = [self.composeBarButtonItem, self.searchBarButtonItem]
+            if (self.moreBarButtonItem == nil) {
+                //var labelView = UILabel(frame: CGRectMake(0, 0, 20, 30)) //UIImageView(image: UIImage(named: "top_more"));
+                //labelView.text = "..."
+                //labelView.font
+                //imageView.frame = CGRectMake(0, 0, 20, 30);
+                
+                //self.moreBarButtonItem = UIBarButtonItem(customView: imageView);
+                //self.moreBarButtonItem.action = "moreButtonTapped"
+                //UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"button-image.png"]];
+                //imageView.frame = CGRectMake(0, 0, 43, 30);
+                //
+                //UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:imageView];
+                //
+                //self.navigationItem.leftBarButtonItem = barButtonItem;
+                
+                self.moreBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_more"), style: UIBarButtonItemStyle.Plain, target: self, action: "moreButtonTapped")
+            }
             
+            if viewModel.isShowEmptyFolder() {
+                rightButtons = [self.moreBarButtonItem, self.composeBarButtonItem, self.searchBarButtonItem]
+            } else {
+                rightButtons = [self.composeBarButtonItem, self.searchBarButtonItem]
+            }
         } else {
             if (self.unreadBarButtonItem == nil) {
                 self.unreadBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_unread"), style: UIBarButtonItemStyle.Plain, target: self, action: "unreadButtonTapped")

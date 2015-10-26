@@ -19,7 +19,7 @@ public class MessageFetchRequest<T : ApiResponse> : ApiRequest<T> {
         self.endTime = endTime
         self.startTime = 0
     }
-
+    
     override func toDictionary() -> Dictionary<String, AnyObject>? {
         var out : [String : AnyObject] = ["Sort" : "Time"]
         if self.location == MessageLocation.starred {
@@ -36,7 +36,7 @@ public class MessageFetchRequest<T : ApiResponse> : ApiRequest<T> {
         PMLog.D(self.JSONStringify(out, prettyPrinted: true))
         return out
     }
-        
+    
     override public func getRequestPath() -> String {
         return MessageAPI.Path + AppConstants.getDebugOption
     }
@@ -110,7 +110,7 @@ public class MessageDraftRequest<T: ApiResponse>  : ApiRequest<T> {
         
         PMLog.D(self.JSONStringify(out, prettyPrinted: true))
         return out
-
+        
     }
     
     override public func getRequestPath() -> String {
@@ -182,6 +182,30 @@ public class MessageActionRequest<T : ApiResponse>  : ApiRequest <T> {
     }
 }
 
+/// empty trash or spam
+public class MessageEmptyRequest<T : ApiResponse> : ApiRequest <T> {
+    let location : String!
+    
+    public init(location: String! ) {
+        self.location = location
+    }
+    
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+        return nil
+    }
+    
+    override public func getRequestPath() -> String {
+        return MessageAPI.Path + "/" + location + AppConstants.getDebugOption
+    }
+    
+    override public func getVersion() -> Int {
+        return MessageAPI.V_MessageEmptyRequest
+    }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .DELETE
+    }
+}
 
 // MARK : Message Send part
 
