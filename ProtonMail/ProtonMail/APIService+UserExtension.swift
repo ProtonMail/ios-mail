@@ -56,7 +56,9 @@ extension APIService {
                                 languageResponseKey : "Language",
                                 maxUploadResponseKey: "MaxUpload",
                                 notifyResponseKey: "Notify",
-                                showImagesResponseKey : "ShowImages"
+                                showImagesResponseKey : "ShowImages",
+                                swipeLeftResponseKey : "SwipeLeft",
+                                swipeRightResponseKey : "SwipeRight"
                             )
                             
                             completion(userInfo, nil)
@@ -183,7 +185,10 @@ extension UserInfo {
         languageResponseKey : String,
         maxUploadResponseKey: String,
         notifyResponseKey: String,
-        showImagesResponseKey : String
+        showImagesResponseKey : String,
+        
+        swipeLeftResponseKey : String,
+        swipeRightResponseKey : String
         ) {
             var addresses: [Address] = Array<Address>()
             let address_response = response[userAddressResponseKey] as! Array<Dictionary<String, AnyObject>>
@@ -215,7 +220,10 @@ extension UserInfo {
                 language : response[languageResponseKey] as? String,
                 maxUpload: response[maxUploadResponseKey] as? Int64,
                 notify: response[notifyResponseKey] as? Int,
-                showImage : response[showImagesResponseKey] as? Int
+                showImage : response[showImagesResponseKey] as? Int,
+                
+                swipeL: response[swipeLeftResponseKey] as? Int,
+                swipeR: response[swipeRightResponseKey] as? Int
             
             )
     }

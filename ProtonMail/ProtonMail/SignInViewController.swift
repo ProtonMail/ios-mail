@@ -232,7 +232,6 @@ class SignInViewController: UIViewController {
     
     private func loadContent() {
         if sharedUserDataService.isMailboxPasswordStored {
-            
             NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignIn, object: self)
             (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
             loadContactsAfterInstall()
@@ -248,6 +247,7 @@ class SignInViewController: UIViewController {
     
     func loadContactsAfterInstall()
     {
+        sharedUserDataService.fetchUserInfo()
         sharedContactDataService.fetchContacts({ (contacts, error) -> Void in
             if error != nil {
                 NSLog("\(error)")

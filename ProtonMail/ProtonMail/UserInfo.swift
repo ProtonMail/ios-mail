@@ -27,18 +27,23 @@ final class UserInfo: NSObject {
     let userStatus: Int
     let userAddresses: Array<Address>
     
-    // new values after 1.08
+    // new values v1.0.8
     let autoSaveContact : Int
     let language : String
     let maxUpload: Int64
     let notify: Int
     let showImages : Int
     
+    // new valuse v1.1.4
+    let swipeLeft : Int
+    let swipeRight : Int
+    
     required init(
         displayName: String?, maxSpace: Int64?, notificationEmail: String?,
         privateKey: String?, publicKey: String?, signature: String?,
         usedSpace: Int64?, userStatus: Int?, userAddresses: Array<Address>?,
-        autoSC:Int?, language:String?, maxUpload:Int64?, notify:Int?, showImage:Int?)
+        autoSC:Int?, language:String?, maxUpload:Int64?, notify:Int?, showImage:Int?,  //v1.0.8
+        swipeL:Int?, swipeR:Int? ) //v1.1.4
     {
         self.displayName = displayName ?? ""
         self.maxSpace = maxSpace ?? 0
@@ -55,6 +60,9 @@ final class UserInfo: NSObject {
         self.maxUpload = maxUpload ?? 0
         self.notify = notify ?? 0
         self.showImages = showImage ?? 0
+        
+        self.swipeLeft = swipeL ?? 3
+        self.swipeRight = swipeR ?? 0
     }
 }
 
@@ -99,6 +107,9 @@ extension UserInfo: NSCoding {
         static let maxUpload = "maxUpload"
         static let notify = "notify"
         static let showImages = "showImages"
+        
+        static let swipeLeft = "swipeLeft"
+        static let swipeRight = "swipeRight"
     }
     
     convenience init(coder aDecoder: NSCoder) {
@@ -112,11 +123,17 @@ extension UserInfo: NSCoding {
             usedSpace: aDecoder.decodeInt64ForKey(CoderKey.usedSpace),
             userStatus: aDecoder.decodeIntegerForKey(CoderKey.userStatus),
             userAddresses: aDecoder.decodeObjectForKey(CoderKey.userAddress) as? Array<Address>,
+            
             autoSC:aDecoder.decodeIntegerForKey(CoderKey.autoSaveContact),
             language:aDecoder.decodeStringForKey(CoderKey.language),
             maxUpload:aDecoder.decodeInt64ForKey(CoderKey.maxUpload),
             notify:aDecoder.decodeIntegerForKey(CoderKey.notify),
-            showImage:aDecoder.decodeIntegerForKey(CoderKey.showImages)
+            showImage:aDecoder.decodeIntegerForKey(CoderKey.showImages),
+            
+            swipeL:aDecoder.decodeIntegerForKey(CoderKey.swipeLeft),
+            swipeR:aDecoder.decodeIntegerForKey(CoderKey.swipeRight)
+
+            
         )
     }
     
@@ -136,6 +153,9 @@ extension UserInfo: NSCoding {
         aCoder.encodeInt64(maxUpload, forKey: CoderKey.maxUpload)
         aCoder.encodeInteger(notify, forKey: CoderKey.notify)
         aCoder.encodeInteger(showImages, forKey: CoderKey.showImages)
+        
+        aCoder.encodeInteger(swipeLeft, forKey: CoderKey.swipeLeft)
+        aCoder.encodeInteger(swipeRight, forKey: CoderKey.swipeRight)
     }
 }
 

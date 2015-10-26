@@ -466,7 +466,10 @@ class MessageDataService {
                 languageResponseKey : "Language",
                 maxUploadResponseKey: "MaxUpload",
                 notifyResponseKey: "Notify",
-                showImagesResponseKey : "ShowImages"
+                showImagesResponseKey : "ShowImages",
+                
+                swipeLeftResponseKey : "SwipeLeft",
+                swipeRightResponseKey : "SwipeRight"
             )
             
             sharedUserDataService.updateUserInfoFromEventLog(userInfo);

@@ -73,4 +73,55 @@ enum MessageLastUpdateType: String {
     case send = "send"
 }
 
+public enum MessageSwipeAction : Int, Printable {
+    case trash = 0
+    case spam = 1
+    case star = 2
+    case archive = 3
+    
+    public var description : String {
+        get {
+            switch(self) {
+            case trash:
+                return NSLocalizedString("Trash")
+            case spam:
+                return NSLocalizedString("Spam")
+            case star:
+                return NSLocalizedString("Star")
+            case archive:
+                return NSLocalizedString("Archive")
+            }
+        }
+    }
+    
+//    public var key: String {
+//        switch(self) {
+//        case deleted:
+//            return "Deleted"
+//        case inbox:
+//            return "Inbox"
+//        case draft:
+//            return "Draft"
+//        case outbox:
+//            return "Outbox"
+//        case spam:
+//            return "Spam"
+//        case starred:
+//            return "Starred"
+//        case archive:
+//            return "Archive"
+//        case trash:
+//            return "Trash"
+//        }
+//    }
+    
+    var actionColor: UIColor? {
+        switch(self) {
+        case .trash:
+            return UIColor.redColor()
+        default:
+            return UIColor.ProtonMail.MessageActionTintColor
+        }
+    }
+}
 
