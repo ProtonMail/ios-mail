@@ -26,7 +26,7 @@ public class MailboxViewModel {
         fatalError("This method must be overridden")
     }
     
-    public func getSwipeEditTitle() -> String {
+    public func getSwipeTitle(action: MessageSwipeAction) -> String {
         fatalError("This method must be overridden")
     }
     

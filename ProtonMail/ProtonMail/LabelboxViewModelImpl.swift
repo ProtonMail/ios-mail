@@ -29,11 +29,16 @@ public class LabelboxViewModelImpl : MailboxViewModel {
         return self.label.name
     }
     
-    public override func getSwipeEditTitle() -> String {
-        var title : String = "Trash"
+    public override func getSwipeTitle(action: MessageSwipeAction) -> String {
         
-        return title
+        return action.description;
     }
+//    
+//    public override func getSwipeEditTitle() -> String {
+//        var title : String = "Trash"
+//        
+//        return title
+//    }
     
     public override func deleteMessage(msg: Message) {
         msg.location = .trash

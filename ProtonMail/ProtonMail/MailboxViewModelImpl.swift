@@ -39,16 +39,21 @@ public class MailboxViewModelImpl : MailboxViewModel {
         return lastUpdatedStore.inboxLastForKey(self.location)
     }
     
-    public override func getSwipeEditTitle() -> String {
-        var title : String = "Trash"
-        switch(self.location!) {
-        case .trash, .spam:
-            title = "Delete"
-        default:
-            title = "Trash"
-        }
-        return title
+    public override func getSwipeTitle(action: MessageSwipeAction) -> String {
+
+        return action.description;
     }
+    
+//    public override func getSwipeEditTitle() -> String {
+//        var title : String = "Trash"
+//        switch(self.location!) {
+//        case .trash, .spam:
+//            title = "Delete"
+//        default:
+//            title = "Trash"
+//        }
+//        return title
+//    }
     
     public override func deleteMessage(msg: Message) {
         switch(self.location!) {

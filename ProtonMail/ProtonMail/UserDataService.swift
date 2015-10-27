@@ -68,17 +68,17 @@ class UserDataService {
         return "";
     }
     
-//    var swiftLeft : MessageSwipeAction {
-//        get {
-//            return MessageSwipeAction(rawValue: userInfo?.swipeLeft ?? 3) ?? .archive
-//        }
-//    }
-//    
-//    var swiftRight : MessageSwipeAction {
-//        get {
-//            return MessageSwipeAction(rawValue: userInfo?.swipeLeft ?? 0) ?? .trash
-//        }
-//    }
+    var swiftLeft : MessageSwipeAction! {
+        get {
+            return MessageSwipeAction(rawValue: userInfo?.swipeLeft ?? 3) ?? .archive
+        }
+    }
+    
+    var swiftRight : MessageSwipeAction! {
+        get {
+            return MessageSwipeAction(rawValue: userInfo?.swipeRight ?? 0) ?? .trash
+        }
+    }
 
     
     var userAddresses: Array<Address> { //never be null
@@ -313,7 +313,6 @@ class UserDataService {
             completion(task: task, response: nil, error: nil)
         }
     }
-    
     
     func updateUserSwipeAction(isLeft : Bool , action: MessageSwipeAction, completion: CompletionBlock) {
         let api = isLeft ? UpdateSwiftLeftAction<ApiResponse>(action: action) : UpdateSwiftRightAction<ApiResponse>(action: action)

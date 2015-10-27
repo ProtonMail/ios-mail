@@ -115,7 +115,7 @@ public enum MessageSwipeAction : Int, Printable {
 //        }
 //    }
     
-    var actionColor: UIColor? {
+    var actionColor: UIColor {
         switch(self) {
         case .trash:
             return UIColor.redColor()

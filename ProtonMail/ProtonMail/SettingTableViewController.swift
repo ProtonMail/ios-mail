@@ -188,7 +188,7 @@ class SettingTableViewController: ProtonMailViewController {
             
             if indexPath.row < setting_swipe_action_items.count {
                 let actionItem = setting_swipe_action_items[indexPath.row]
-                let action = actionItem == .left ? MessageSwipeAction(rawValue: userInfo?.swipeLeft ?? 3) ?? .archive :  MessageSwipeAction(rawValue: userInfo?.swipeRight ?? 0) ?? .trash
+                let action = actionItem == .left ? sharedUserDataService.swiftLeft : sharedUserDataService.swiftRight
                 cell.domainText.text = actionItem.description
                 cell.defaultMark.text = action.description
                 cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator;
@@ -351,7 +351,7 @@ class SettingTableViewController: ProtonMailViewController {
                 let alertController = UIAlertController(title: actionItem.actionDescription, message: nil, preferredStyle: .ActionSheet)
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
 
-                let currentAction = actionItem == .left ? MessageSwipeAction(rawValue: userInfo?.swipeLeft ?? 3) ?? .archive :  MessageSwipeAction(rawValue: userInfo?.swipeRight ?? 0) ?? .trash
+                let currentAction = actionItem == .left ? sharedUserDataService.swiftLeft : sharedUserDataService.swiftRight
                 for (var swipeAction) in setting_swipe_actions {
                     if swipeAction != currentAction {
                         alertController.addAction(UIAlertAction(title: swipeAction.description, style: .Default, handler: { (action) -> Void in
@@ -359,6 +359,7 @@ class SettingTableViewController: ProtonMailViewController {
                             
                             ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
                             sharedUserDataService.updateUserSwipeAction(actionItem == .left, action: swipeAction, completion: { (task, response, error) -> Void in
+                                tableView.reloadData()
                                 ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
                                 if let error = error {
                                 } else {

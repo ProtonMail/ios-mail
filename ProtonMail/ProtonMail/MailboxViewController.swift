@@ -20,7 +20,6 @@ class UndoMessage {
     required init(msgID:String!, oldLocation : MessageLocation!) {
         self.messageID = msgID
         self.oldLocation = oldLocation
-        
     }
     
 }
@@ -97,6 +96,11 @@ class MailboxViewController: ProtonMailViewController {
     private var fetchingStopped : Bool! = true
     
     
+    // MARK: swipactions
+    private var leftSwipeAction : MessageSwipeAction = .archive
+    private var rightSwipeAction : MessageSwipeAction = .trash
+    
+    
     // MARK: - UIViewController Lifecycle
     
     override func viewDidLoad() {
@@ -116,6 +120,10 @@ class MailboxViewController: ProtonMailViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        leftSwipeAction = sharedUserDataService.swiftLeft
+        rightSwipeAction = sharedUserDataService.swiftRight
+        
         self.refreshControl.endRefreshing()
         
         let selectedItem: NSIndexPath? = self.tableView.indexPathForSelectedRow() as NSIndexPath?
@@ -379,20 +387,20 @@ class MailboxViewController: ProtonMailViewController {
                     }
                     
                     mailboxCell.defaultColor = UIColor.lightGrayColor()
-                    let crossView = UILabel();
-                    crossView.text = self.viewModel.getSwipeEditTitle()
-                    crossView.sizeToFit()
-                    crossView.textColor = UIColor.whiteColor()
+                    let leftCrossView = UILabel();
+                    leftCrossView.text = self.viewModel.getSwipeTitle(leftSwipeAction)
+                    leftCrossView.sizeToFit()
+                    leftCrossView.textColor = UIColor.whiteColor()
                     
-                    let archiveVIew = UILabel();
-                    archiveVIew.text = "Archive";
-                    archiveVIew.sizeToFit()
-                    archiveVIew.textColor = UIColor.whiteColor()
+                    let rightCrossView = UILabel();
+                    rightCrossView.text = self.viewModel.getSwipeTitle(rightSwipeAction)
+                    rightCrossView.sizeToFit()
+                    rightCrossView.textColor = UIColor.whiteColor()
                     
                     if !self.viewModel.isArchive() {
-                        mailboxCell.setSwipeGestureWithView(archiveVIew, color: UIColor.ProtonMail.MessageActionTintColor, mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State1 ) { (cell, state, mode) -> Void in
+                        mailboxCell.setSwipeGestureWithView(leftCrossView, color: leftSwipeAction.actionColor, mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State1 ) { (cell, state, mode) -> Void in
                             if let indexp = self.tableView.indexPathForCell(cell) {
-                                self.archiveMessageForIndexPath(indexp)
+                                //self.archiveMessageForIndexPath(indexp)
                                 if self.viewModel.showLocation() {
                                     mailboxCell.swipeToOriginWithCompletion(nil)
                                 }
@@ -401,9 +409,9 @@ class MailboxViewController: ProtonMailViewController {
                             }
                         }
                     }
-                    mailboxCell.setSwipeGestureWithView(crossView, color: UIColor.redColor(), mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State3  ) { (cell, state, mode) -> Void in
+                    mailboxCell.setSwipeGestureWithView(rightCrossView, color: rightSwipeAction.actionColor, mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State3  ) { (cell, state, mode) -> Void in
                         if let indexp = self.tableView.indexPathForCell(cell) {
-                            self.deleteMessageForIndexPath(indexp)
+                            //self.deleteMessageForIndexPath(indexp)
                             if self.viewModel.showLocation() {
                                 mailboxCell.swipeToOriginWithCompletion(nil)
                             }
