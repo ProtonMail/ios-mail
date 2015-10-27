@@ -225,9 +225,10 @@ class MessageViewController: ProtonMailViewController {
                 var error: NSError?
                 PMLog.D(self.message!.body);
                 bodyText = self.message.decryptBodyIfNeeded(&error) ?? NSLocalizedString("Unable to decrypt message.")
-                
-                            }
-//<meta name=\"viewport\" content=\"user-scalable=yes,maximum-scale=5.0,minimum-scale=0.5\" />
+                bodyText = bodyText.stringByStrippingStyleHTML()
+                bodyText = bodyText.stringByStrippingBodyStyle()
+            }
+            //<meta name=\"viewport\" content=\"user-scalable=yes,maximum-scale=5.0,minimum-scale=0.5\" />
             let w = UIScreen.mainScreen().bounds.width * 2
             let meta : String = "<meta name=\"viewport\" content=\"width=\(w)\">\n"
             let meta1 : String = "<meta name=\"viewport\" content=\"width=\(600)\">"

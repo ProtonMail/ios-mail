@@ -183,9 +183,9 @@ extension String {
         
     }
     
-    func plainText(html : String) -> String {
+    func plainText() -> String {
         
-        return "";
+        return self;
         //        -(NSString *)convertHTML:(NSString *)html {
         //
         //            NSScanner *myScanner;
@@ -202,9 +202,64 @@ extension String {
         //            }
         //            //
         //            html = [html stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        //            
+        //
         //            return html;
         //        }
+    }
+    
+    
+    func stringByStrippingStyleHTML() -> String {
+        
+        var options = NSRegularExpressionOptions.allZeros
+        options |= NSRegularExpressionOptions.CaseInsensitive
+        options |= NSRegularExpressionOptions.DotMatchesLineSeparators
+        
+        var error:NSError?
+        if let regex = NSRegularExpression(pattern: "<style[^>]*?>.*?</style>", options:options, error:&error) {
+            if error == nil {
+                let replacedString = regex.stringByReplacingMatchesInString(self, options: nil, range: NSRange(location: 0, length: count(self)), withTemplate: "")
+                if !replacedString.isEmpty && count(replacedString) > 0 {
+                    return replacedString;
+                }
+            }
+        }
+        return self
+    }
+    
+    func stringByStrippingBodyStyle() -> String {
+        var options = NSRegularExpressionOptions.allZeros
+        options |= NSRegularExpressionOptions.CaseInsensitive
+        options |= NSRegularExpressionOptions.DotMatchesLineSeparators
+        
+        var error:NSError?
+        if let regexBody = NSRegularExpression(pattern: "<body[^>]*>", options:options, error:&error) {
+            if error == nil {
+                let matches = regexBody.matchesInString(self, options: nil, range: NSRange(location: 0, length: count(self))) as! [NSTextCheckingResult]
+                if let first = matches.first {
+                    if first.numberOfRanges > 0 {
+                        let range = first.rangeAtIndex(0)
+                        if let nRange = self.rangeFromNSRange(range) {
+                            var bodyTag = self.substringWithRange(nRange)
+                            if !bodyTag.isEmpty && count(bodyTag) > 0  {
+                                if let regexStyle = NSRegularExpression(pattern: "style=\"[^\"]*\"", options:options, error:&error) {
+                                    if error == nil {
+                                        bodyTag = regexStyle.stringByReplacingMatchesInString(bodyTag, options: nil, range: NSRange(location: 0, length: count(bodyTag)), withTemplate: "")
+                                        if !bodyTag.isEmpty && count(bodyTag) > 0  {
+                                            let newBody = self.stringByReplacingCharactersInRange(nRange, withString: bodyTag);
+                                            if !newBody.isEmpty && count(newBody) > 0  {
+                                                return newBody
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+        }
+        return self
     }
     
     static func randomString(len:Int) -> String {
@@ -218,6 +273,29 @@ extension String {
             s.append(c[index])
         }
         return s
+    }
+    
+    func rangeFromNSRange(nsRange : NSRange) -> Range<String.Index>? {
+        let from16 = advance(utf16.startIndex, nsRange.location, utf16.endIndex)
+        let to16 = advance(from16, nsRange.length, utf16.endIndex)
+        if let from = String.Index(from16, within: self),
+            let to = String.Index(to16, within: self) {
+                return from ..< to
+        }
+        return nil
+    }
+    
+    func NSRangeFromRange(range : Range<String.Index>) -> NSRange {
+        let utf16view = self.utf16
+        let from = String.UTF16View.Index(range.startIndex, within: utf16view)
+        let to = String.UTF16View.Index(range.endIndex, within: utf16view)
+        return NSMakeRange(from - utf16view.startIndex, to - from)
+    }
+    
+    func RangeFromNSRange(range: Range<Int>) -> Range<String.Index> {
+        let startIndex = advance(self.startIndex, range.startIndex)
+        let endIndex = advance(startIndex, range.endIndex - range.startIndex)
+        return Range<String.Index>(start: startIndex, end: endIndex)
     }
     
     func encodeBase64() -> String {
