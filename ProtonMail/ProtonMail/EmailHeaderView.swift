@@ -1051,6 +1051,7 @@ extension EmailHeaderView: UITableViewDataSource {
         let attachment = attachmentForIndexPath(indexPath)
         let cell = tableView.dequeueReusableCellWithIdentifier(AttachmentTableViewCell.Constant.identifier, forIndexPath: indexPath) as! AttachmentTableViewCell
         cell.setFilename(attachment.fileName, fileSize: Int(attachment.fileSize))
+        cell.configAttachmentIcon(attachment.mimeType)
         return cell
     }
     

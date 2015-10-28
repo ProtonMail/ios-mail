@@ -24,6 +24,7 @@ class AttachmentTableViewCell: MCSwipeTableViewCell {
     @IBOutlet weak var downloadIcon: UIImageView!
     @IBOutlet weak var fileNameLabel: UILabel!
     @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet weak var attachmentIcon: UIImageView!
     
     func setFilename(filename: String, fileSize: Int) {
         let byteCountFormatter = NSByteCountFormatter()
@@ -40,5 +41,31 @@ class AttachmentTableViewCell: MCSwipeTableViewCell {
         } else {
             downloadIcon.hidden = true
         }
+    }
+    
+    
+    func configAttachmentIcon (mimeType : String) {
+        
+        PMLog.D(mimeType)
+        var image : UIImage;
+        if mimeType == "image/jpeg" || mimeType == "image/jpg" {
+            image = UIImage(named: "mail_attachment-jpeg")!
+        } else if mimeType == "image/png" {
+            image = UIImage(named: "mail_attachment-png")!
+        } else if mimeType == "application/zip" {
+            image = UIImage(named: "mail_attachment-zip")!
+        } else if mimeType == "application/pdf" {
+            image = UIImage(named: "mail_attachment-pdf")!
+        } else if mimeType == "text/plain" {
+            image = UIImage(named: "mail_attachment-txt")!
+        } else if mimeType == "application/msword" {
+          image = UIImage(named: "mail_attachment-doc")!
+        } else {
+            image = UIImage(named: "mail_attachment-file")!
+        }
+        
+        attachmentIcon.image = image
+        attachmentIcon.highlightedImage = image
+        
     }
 }
