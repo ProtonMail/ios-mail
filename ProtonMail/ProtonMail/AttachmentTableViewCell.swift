@@ -66,6 +66,6 @@ class AttachmentTableViewCell: MCSwipeTableViewCell {
         
         attachmentIcon.image = image
         attachmentIcon.highlightedImage = image
-        
+
     }
 }

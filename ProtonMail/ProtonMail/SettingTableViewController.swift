@@ -102,14 +102,14 @@ class SettingTableViewController: ProtonMailViewController {
         }
         else
         {
-//            ActivityIndicatorHelper.showActivityIndicatorAtView(view)
-//            editBarButton.title = NSLocalizedString("Edit")
-//            sharedUserDataService.updateUserDomiansOrder(multi_domains) { _, _, error in
-//                ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-//                if let error = error {
-//                } else {
-//                }
-//            }
+            //            ActivityIndicatorHelper.showActivityIndicatorAtView(view)
+            //            editBarButton.title = NSLocalizedString("Edit")
+            //            sharedUserDataService.updateUserDomiansOrder(multi_domains) { _, _, error in
+            //                ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+            //                if let error = error {
+            //                } else {
+            //                }
+            //            }
         }
     }
     
@@ -137,81 +137,92 @@ class SettingTableViewController: ProtonMailViewController {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if setting_headers[indexPath.section] == .General {
-            let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! GeneralSettingViewCell
-            let itme: SGItems = setting_general_items[indexPath.row];
-            cell.LeftText.text = itme.description;
-            switch itme {
-            case SGItems.NotifyEmail:
-                cell.RightText.text = userInfo?.notificationEmail
-                cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-                break;
-            case SGItems.DisplayName:
-                cell.RightText.text = sharedUserDataService.displayName
-                 cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-                break;
-            case SGItems.Signature:
-                cell.RightText.text = userInfo?.signature;
-                 cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-                break;
-            case SGItems.LoginPWD:
-                cell.RightText.text = "**********"
-                 cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-                break;
-            case SGItems.MBP:
-                cell.RightText.text = "**********"
-                 cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-                break;
-            case SGItems.CleanCache:
-                cell.RightText.text = ""
-                 cell.accessoryType = UITableViewCellAccessoryType.None
-                break;
+        if setting_headers.count > indexPath.row {
+            if setting_headers[indexPath.section] == .General {
+                let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! GeneralSettingViewCell
+                if setting_general_items.count > indexPath.row {
+                    let itme: SGItems = setting_general_items[indexPath.row];
+                    cell.LeftText.text = itme.description;
+                    switch itme {
+                    case SGItems.NotifyEmail:
+                        cell.RightText.text = userInfo?.notificationEmail
+                        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                        break;
+                    case SGItems.DisplayName:
+                        cell.RightText.text = sharedUserDataService.displayName
+                        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                        break;
+                    case SGItems.Signature:
+                        cell.RightText.text = userInfo?.signature;
+                        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                        break;
+                    case SGItems.LoginPWD:
+                        cell.RightText.text = "**********"
+                        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                        break;
+                    case SGItems.MBP:
+                        cell.RightText.text = "**********"
+                        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                        break;
+                    case SGItems.CleanCache:
+                        cell.RightText.text = ""
+                        cell.accessoryType = UITableViewCellAccessoryType.None
+                        break;
+                    }
+                }
+                return cell
             }
-            return cell
-        }
-        else if setting_headers[indexPath.section] == .MultiDomain {
-            let cell = tableView.dequeueReusableCellWithIdentifier(SettingDomainsCell, forIndexPath: indexPath) as! DomainsTableViewCell
-            cell.domainText.text = multi_domains[indexPath.row].email
-            if indexPath.row == 0
-            {
-                cell.defaultMark.text = NSLocalizedString("Default")
+            else if setting_headers[indexPath.section] == .MultiDomain {
+                let cell = tableView.dequeueReusableCellWithIdentifier(SettingDomainsCell, forIndexPath: indexPath) as! DomainsTableViewCell
+                if multi_domains.count > indexPath.row {
+                    cell.domainText.text = multi_domains[indexPath.row].email
+                    if indexPath.row == 0
+                    {
+                        cell.defaultMark.text = NSLocalizedString("Default")
+                    }
+                    else
+                    {
+                        cell.defaultMark.text = ""
+                    }
+                }
+                cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator;
+                return cell
+            }
+            else if setting_headers[indexPath.section] == .SwipeAction {
+                let cell = tableView.dequeueReusableCellWithIdentifier(SettingDomainsCell, forIndexPath: indexPath) as! DomainsTableViewCell
+                if indexPath.row < setting_swipe_action_items.count {
+                    let actionItem = setting_swipe_action_items[indexPath.row]
+                    let action = actionItem == .left ? sharedUserDataService.swiftLeft : sharedUserDataService.swiftRight
+                    cell.domainText.text = actionItem.description
+                    cell.defaultMark.text = action.description
+                    cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator;
+                }
+                return cell
+            } else if setting_headers[indexPath.section] == .Storage {
+                let cell = tableView.dequeueReusableCellWithIdentifier(SettingStorageCell, forIndexPath: indexPath) as! StorageViewCell
+                let usedSpace = sharedUserDataService.usedSpace
+                let maxSpace = sharedUserDataService.maxSpace
+                cell.setValue(usedSpace, maxSpace: maxSpace)
+                cell.selectionStyle = UITableViewCellSelectionStyle.None
+                return cell
+            }
+            else if setting_headers[indexPath.section] == .Debug {
+                let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! GeneralSettingViewCell
+                if indexPath.row < setting_debug_items.count {
+                    let itme: SDebugItem = setting_debug_items[indexPath.row]
+                    cell.LeftText.text = itme.description
+                    cell.RightText.text  = ""
+                }
+                return cell
             }
             else
             {
-                cell.defaultMark.text = ""
+                let cell = tableView.dequeueReusableCellWithIdentifier(SettingStorageCell, forIndexPath: indexPath) as! UITableViewCell
+                cell.selectionStyle = UITableViewCellSelectionStyle.None
+                return cell
             }
-            cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator;
-            return cell
         }
-        else if setting_headers[indexPath.section] == .SwipeAction {
-            let cell = tableView.dequeueReusableCellWithIdentifier(SettingDomainsCell, forIndexPath: indexPath) as! DomainsTableViewCell
-            
-            if indexPath.row < setting_swipe_action_items.count {
-                let actionItem = setting_swipe_action_items[indexPath.row]
-                let action = actionItem == .left ? sharedUserDataService.swiftLeft : sharedUserDataService.swiftRight
-                cell.domainText.text = actionItem.description
-                cell.defaultMark.text = action.description
-                cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator;
-            }
-            return cell
-        } else if setting_headers[indexPath.section] == .Storage {
-            let cell = tableView.dequeueReusableCellWithIdentifier(SettingStorageCell, forIndexPath: indexPath) as! StorageViewCell
-            let usedSpace = sharedUserDataService.usedSpace
-            let maxSpace = sharedUserDataService.maxSpace
-            cell.setValue(usedSpace, maxSpace: maxSpace)
-            cell.selectionStyle = UITableViewCellSelectionStyle.None
-            return cell
-        }
-        else if setting_headers[indexPath.section] == .Debug {
-            let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! GeneralSettingViewCell
-            let itme: SDebugItem = setting_debug_items[indexPath.row]
-            cell.LeftText.text = itme.description
-            cell.RightText.text  = ""
-            return cell
-        }
-        else
-        {
-            let cell = tableView.dequeueReusableCellWithIdentifier(SettingStorageCell, forIndexPath: indexPath) as! UITableViewCell
+        else {let cell = tableView.dequeueReusableCellWithIdentifier(SettingStorageCell, forIndexPath: indexPath) as! UITableViewCell
             cell.selectionStyle = UITableViewCellSelectionStyle.None
             return cell
         }
@@ -347,10 +358,10 @@ class SettingTableViewController: ProtonMailViewController {
             if indexPath.row < setting_swipe_action_items.count {
                 
                 let actionItem = setting_swipe_action_items[indexPath.row]
-
+                
                 let alertController = UIAlertController(title: actionItem.actionDescription, message: nil, preferredStyle: .ActionSheet)
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
-
+                
                 let currentAction = actionItem == .left ? sharedUserDataService.swiftLeft : sharedUserDataService.swiftRight
                 for (var swipeAction) in setting_swipe_actions {
                     if swipeAction != currentAction {
@@ -365,7 +376,7 @@ class SettingTableViewController: ProtonMailViewController {
                                 } else {
                                     tableView.reloadData()
                                 }
-
+                                
                             })
                         }))
                     }
@@ -373,7 +384,7 @@ class SettingTableViewController: ProtonMailViewController {
                 presentViewController(alertController, animated: true, completion: nil)
             }
         }
-
+        
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
