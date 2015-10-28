@@ -25,6 +25,10 @@ public class LabelboxViewModelImpl : MailboxViewModel {
         return true
     }
     
+    public func stayAfterAction () -> Bool {
+        return true
+    }
+    
     override public func getNavigationTitle() -> String {
         return self.label.name
     }
@@ -33,23 +37,13 @@ public class LabelboxViewModelImpl : MailboxViewModel {
         
         return action.description;
     }
-//    
-//    public override func getSwipeEditTitle() -> String {
-//        var title : String = "Trash"
-//        
-//        return title
-//    }
+    
+    public override func stayAfterAction (action: MessageSwipeAction) -> Bool {
+        return true
+    }
     
     public override func deleteMessage(msg: Message) {
         msg.location = .trash
-        msg.needsUpdate = true
-        if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-            NSLog("\(__FUNCTION__) error: \(error)")
-        }
-    }
-    
-    public override func archiveMessage(msg: Message) {
-        msg.location = .archive
         msg.needsUpdate = true
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
             NSLog("\(__FUNCTION__) error: \(error)")

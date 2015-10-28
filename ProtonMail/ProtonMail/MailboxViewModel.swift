@@ -35,7 +35,27 @@ public class MailboxViewModel {
     }
     
     public func archiveMessage(msg: Message) {
-        fatalError("This method must be overridden")
+        msg.location = .archive
+        msg.needsUpdate = true
+        if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
+            NSLog("\(__FUNCTION__) error: \(error)")
+        }
+    }
+    
+    public func spamMessage(msg: Message) {
+        msg.location = .spam
+        msg.needsUpdate = true
+        if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
+            NSLog("\(__FUNCTION__) error: \(error)")
+        }
+    }
+    
+    public func starMessage(msg: Message) {
+        msg.isStarred = true
+        msg.needsUpdate = true
+        if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
+            NSLog("\(__FUNCTION__) error: \(error)")
+        }
     }
     
     public func isDrafts() -> Bool {
@@ -55,6 +75,14 @@ public class MailboxViewModel {
     }
     
     public func isCurrentLocation(l : MessageLocation) -> Bool {
+        return false
+    }
+    
+    public func isSwipeActionValid(action: MessageSwipeAction) -> Bool {
+        return true
+    }
+    
+    public func stayAfterAction (action: MessageSwipeAction) -> Bool {
         return false
     }
     

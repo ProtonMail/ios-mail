@@ -40,20 +40,40 @@ public class MailboxViewModelImpl : MailboxViewModel {
     }
     
     public override func getSwipeTitle(action: MessageSwipeAction) -> String {
-
-        return action.description;
+        switch(self.location!) {
+        case .trash, .spam:
+            if action == .trash {
+                return "Delete"
+            }
+            return action.description;
+        default:
+            return action.description;
+        }
     }
     
-//    public override func getSwipeEditTitle() -> String {
-//        var title : String = "Trash"
-//        switch(self.location!) {
-//        case .trash, .spam:
-//            title = "Delete"
-//        default:
-//            title = "Trash"
-//        }
-//        return title
-//    }
+    public override func isSwipeActionValid(action: MessageSwipeAction) -> Bool {
+        switch(self.location!) {
+        case .archive:
+            return action != .archive
+        case .starred:
+            return action != .star
+        case .spam:
+            return action != .spam
+        case .starred:
+            return action != .star
+        default:
+            return true
+        }
+    }
+    
+    public override func stayAfterAction (action: MessageSwipeAction) -> Bool {
+        switch(self.location!) {
+        case .starred:
+            return true
+        default:
+            return false
+        }
+    }
     
     public override func deleteMessage(msg: Message) {
         switch(self.location!) {
@@ -62,15 +82,6 @@ public class MailboxViewModelImpl : MailboxViewModel {
         default:
             msg.location = .trash
         }
-        msg.needsUpdate = true
-        
-        if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-            NSLog("\(__FUNCTION__) error: \(error)")
-        }
-    }
-    
-    public override func archiveMessage(msg: Message) {
-        msg.location = .archive
         msg.needsUpdate = true
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
             NSLog("\(__FUNCTION__) error: \(error)")

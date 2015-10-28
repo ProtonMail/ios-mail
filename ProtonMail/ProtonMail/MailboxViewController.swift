@@ -397,22 +397,31 @@ class MailboxViewController: ProtonMailViewController {
                     rightCrossView.sizeToFit()
                     rightCrossView.textColor = UIColor.whiteColor()
                     
-                    if !self.viewModel.isArchive() {
-                        mailboxCell.setSwipeGestureWithView(leftCrossView, color: leftSwipeAction.actionColor, mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State1 ) { (cell, state, mode) -> Void in
-                            if let indexp = self.tableView.indexPathForCell(cell) {
-                                //self.archiveMessageForIndexPath(indexp)
-                                if self.viewModel.showLocation() {
+                    mailboxCell.setSwipeGestureWithView(leftCrossView, color: leftSwipeAction.actionColor, mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State1 ) { (cell, state, mode) -> Void in
+                        if let indexp = self.tableView.indexPathForCell(cell) {
+                            if self.viewModel.isSwipeActionValid(self.leftSwipeAction) {
+                                if !self.processSwipeActions(self.leftSwipeAction, indexPath: indexp) {
+                                    mailboxCell.swipeToOriginWithCompletion(nil)
+                                } else if self.viewModel.stayAfterAction(self.leftSwipeAction) {
                                     mailboxCell.swipeToOriginWithCompletion(nil)
                                 }
                             } else {
-                                self.tableView.reloadData()
+                                mailboxCell.swipeToOriginWithCompletion(nil)
                             }
+                        } else {
+                            self.tableView.reloadData()
                         }
                     }
+                    
                     mailboxCell.setSwipeGestureWithView(rightCrossView, color: rightSwipeAction.actionColor, mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State3  ) { (cell, state, mode) -> Void in
                         if let indexp = self.tableView.indexPathForCell(cell) {
-                            //self.deleteMessageForIndexPath(indexp)
-                            if self.viewModel.showLocation() {
+                            if self.viewModel.isSwipeActionValid(self.rightSwipeAction) {
+                                if !self.processSwipeActions(self.rightSwipeAction, indexPath: indexp) {
+                                    mailboxCell.swipeToOriginWithCompletion(nil)
+                                } else if self.viewModel.stayAfterAction(self.rightSwipeAction) {
+                                    mailboxCell.swipeToOriginWithCompletion(nil)
+                                }
+                            } else {
                                 mailboxCell.swipeToOriginWithCompletion(nil)
                             }
                         } else {
@@ -422,6 +431,27 @@ class MailboxViewController: ProtonMailViewController {
                 }
             }
         }
+    }
+    
+    
+    private func processSwipeActions(action: MessageSwipeAction, indexPath: NSIndexPath) -> Bool {
+        switch (action) {
+        case .archive:
+            self.archiveMessageForIndexPath(indexPath)
+            return true
+        case .trash:
+            self.deleteMessageForIndexPath(indexPath)
+            return true
+        case .spam:
+            self.spamMessageForIndexPath(indexPath)
+            return true
+        case .star:
+            self.starMessageForIndexPath(indexPath)
+            return false
+        default:
+            return true
+        }
+        
     }
     
     private func archiveMessageForIndexPath(indexPath: NSIndexPath) {
@@ -436,6 +466,21 @@ class MailboxViewController: ProtonMailViewController {
             undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
             viewModel.deleteMessage(message)
             showUndoView("Deleted")
+        }
+    }
+    
+    private func spamMessageForIndexPath(indexPath: NSIndexPath) {
+        if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+            undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
+            viewModel.spamMessage(message)
+            showUndoView("Spamed")
+        }
+    }
+    
+    private func starMessageForIndexPath(indexPath: NSIndexPath) {
+        if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+            undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
+            viewModel.starMessage(message)
         }
     }
     
