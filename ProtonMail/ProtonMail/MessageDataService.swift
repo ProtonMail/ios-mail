@@ -1292,14 +1292,15 @@ class MessageDataService {
                     }
                     
                     let encrypt_data = attachment.encryptAttachment(nil)
-                    let keyPacket = encrypt_data!["self"] as! NSData
-                    let dataPacket = encrypt_data!["DataPacket"] as! NSData
+                    //TODO:: here need check is encryptdata is nil and return the error to user.
+                    let keyPacket = encrypt_data?["self"] as? NSData
+                    let dataPacket = encrypt_data?["DataPacket"] as? NSData
                     
                     let completionWrapper: CompletionBlock = { task, response, error in
                         if error == nil {
                             if let messageID = response?["AttachmentID"] as? String {
                                 attachment.attachmentID = messageID
-                                attachment.keyPacket = keyPacket.base64EncodedStringWithOptions(nil)
+                                attachment.keyPacket = keyPacket?.base64EncodedStringWithOptions(nil) ?? ""
                                 if let error = context.saveUpstreamIfNeeded() {
                                     NSLog("\(__FUNCTION__) error: \(error)")
                                 }
