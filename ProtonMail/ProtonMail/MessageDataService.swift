@@ -1281,9 +1281,15 @@ class MessageDataService {
                 if let attachment = context.existingObjectWithID(objectID, error: &error) as? Attachment {
                     var params = [
                         "Filename":attachment.fileName,
-                        "MessageID" :  attachment.message.messageID ?? "",
-                        "MIMEType" : attachment.mimeType,
+                         "MIMEType" : attachment.mimeType,
                     ]
+                    
+                    //TODO::here need to fix sometime message is not valid'
+                    if attachment.message.managedObjectContext == nil {
+                        params["MessageID"] =  ""
+                    } else {
+                        params["MessageID"] =  attachment.message.messageID ?? ""
+                    }
                     
                     let encrypt_data = attachment.encryptAttachment(nil)
                     let keyPacket = encrypt_data!["self"] as! NSData

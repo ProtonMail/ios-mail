@@ -45,7 +45,7 @@ class AttachmentTableViewCell: MCSwipeTableViewCell {
     
     
     func configAttachmentIcon (mimeType : String) {
-        
+        //TODO:: sometime see general mime type like "application/octet-stream" then need parse the extention to get types
         PMLog.D(mimeType)
         var image : UIImage;
         if mimeType == "image/jpeg" || mimeType == "image/jpg" {
