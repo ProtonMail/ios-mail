@@ -191,7 +191,7 @@ class MessageDataService {
                     let messcount = responseDict?["Total"] as? Int ?? 0
                     
                     let context = sharedCoreDataService.newMainManagedObjectContext()
-                    context.performBlockAndWait() {
+                    context.performBlock() {
                         var error: NSError?
                         if foucsClean {
                             self.cleanMessage()
@@ -398,7 +398,7 @@ class MessageDataService {
         if let contacts = contacts {
             let context = sharedCoreDataService.newMainManagedObjectContext()
             var error: NSError?
-            context.performBlockAndWait { () -> Void in
+            context.performBlock { () -> Void in
                 for contact in contacts {
                     let contactObj = ContactEvent(event: contact)
                     switch(contactObj.Action) {
@@ -488,7 +488,7 @@ class MessageDataService {
             // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
             dispatch_sync(self.incrementalUpdateQueue) {
                 let context = sharedCoreDataService.newMainManagedObjectContext()
-                context.performBlockAndWait { () -> Void in
+                context.performBlock { () -> Void in
                     var error: NSError?
                     for labelEvent in labels {
                         let label = LabelEvent(event: labelEvent)
@@ -630,7 +630,7 @@ class MessageDataService {
         dispatch_sync(self.incrementalUpdateQueue) {
             let context = sharedCoreDataService.newMainManagedObjectContext()
             
-            context.performBlockAndWait { () -> Void in
+            context.performBlock { () -> Void in
                 var error: NSError?
                 
                 for message in messages {
@@ -728,7 +728,7 @@ class MessageDataService {
         queue {
             let completionWrapper: CompletionBlock = { task, response, error in
                 let context = sharedCoreDataService.newMainManagedObjectContext()
-                context.performBlockAndWait() {
+                context.performBlock() {
                     var error: NSError?
                     
                     if response != nil {
@@ -771,7 +771,7 @@ class MessageDataService {
             queue {
                 let completionWrapper: CompletionBlock = { task, response, error in
                     let context = sharedCoreDataService.newMainManagedObjectContext()
-                    context.performBlockAndWait() {
+                    context.performBlock() {
                         var tempError: NSError?
                         if response != nil {
                             //TODO need check the respons code
@@ -818,7 +818,7 @@ class MessageDataService {
         queue {
             let completionWrapper: CompletionBlock = { task, response, error in
                 let context = sharedCoreDataService.newMainManagedObjectContext()
-                context.performBlockAndWait() {
+                context.performBlock() {
                     var error: NSError?
                     
                     if response != nil {
@@ -990,7 +990,7 @@ class MessageDataService {
                 if let context = sharedCoreDataService.mainManagedObjectContext {
                     
                     if let messagesArray = response?["Messages"] as? [Dictionary<String,AnyObject>] {
-                        context.performBlockAndWait() {
+                        context.performBlock() {
                             var error: NSError?
                             var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error) as! [Message]
                             

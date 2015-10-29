@@ -137,7 +137,7 @@ class SettingTableViewController: ProtonMailViewController {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if setting_headers.count > indexPath.row {
+        if setting_headers.count > indexPath.section {
             if setting_headers[indexPath.section] == .General {
                 let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! GeneralSettingViewCell
                 if setting_general_items.count > indexPath.row {
@@ -232,10 +232,12 @@ class SettingTableViewController: ProtonMailViewController {
         let  headerCell = tableView.dequeueReusableCellWithIdentifier(HeaderCell) as! CustomHeaderView
         if(setting_headers[section] == SettingSections.Version){
             if let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String {
-                headerCell.headerText.text = NSLocalizedString("Version ") + version
-            }
-            else
-            {
+                if let build = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"] as? String {
+                    headerCell.headerText.text = NSLocalizedString("Version ") + version + " (\(build))"
+                } else {
+                    headerCell.headerText.text = NSLocalizedString("Version ") + version
+                }
+            } else {
                 headerCell.headerText.text = NSLocalizedString("Unkonw Version")
             }
         }
