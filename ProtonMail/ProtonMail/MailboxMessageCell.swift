@@ -32,7 +32,7 @@ class MailboxMessageCell: MCSwipeTableViewCell {
     
     @IBOutlet weak var locationWidth: NSLayoutConstraint!
     @IBOutlet weak var loctionRightSpace: NSLayoutConstraint!
-   
+    
     @IBOutlet weak var label1: LabelDisplayView!
     @IBOutlet weak var label2: LabelDisplayView!
     @IBOutlet weak var label3: LabelDisplayView!
@@ -62,25 +62,29 @@ class MailboxMessageCell: MCSwipeTableViewCell {
             make.bottom.equalTo()(self.starImage.mas_bottom)
             make.top.equalTo()(self.starImage.mas_top)
         }
-        
+        label1.hidden = true;
         label2.mas_updateConstraints { (make) -> Void in
             make.removeExisting = true
             make.right.equalTo()(self.label1.mas_left)
             make.bottom.equalTo()(self.label1.mas_bottom)
             make.top.equalTo()(self.label1.mas_top)
         }
+        
+        label2.hidden = true;
         label3.mas_updateConstraints { (make) -> Void in
             make.removeExisting = true
             make.right.equalTo()(self.label2.mas_left)
             make.bottom.equalTo()(self.label2.mas_bottom)
             make.top.equalTo()(self.label2.mas_top)
         }
+        label3.hidden = true;
         label4.mas_updateConstraints { (make) -> Void in
             make.removeExisting = true
             make.right.equalTo()(self.label3.mas_left)
             make.bottom.equalTo()(self.label3.mas_bottom)
             make.top.equalTo()(self.label3.mas_top)
         }
+        label4.hidden = true;
         label5.mas_updateConstraints { (make) -> Void in
             make.removeExisting = true
             make.right.equalTo()(self.label4.mas_left)
@@ -88,8 +92,9 @@ class MailboxMessageCell: MCSwipeTableViewCell {
             make.top.equalTo()(self.label4.mas_top)
         }
         
+        label5.hidden = true;
         locationLabel.layer.cornerRadius = 2;
-
+        
     }
     
     override func setSelected(selected: Bool, animated: Bool) {
@@ -140,6 +145,7 @@ class MailboxMessageCell: MCSwipeTableViewCell {
         self.title.font = UIFont.robotoMedium(size: UIFont.Size.h4)
         self.sender.font = UIFont.robotoMedium(size: UIFont.Size.h6)
         self.time.font = UIFont.robotoMedium(size: UIFont.Size.h6)
+        
     }
     
     
@@ -147,6 +153,12 @@ class MailboxMessageCell: MCSwipeTableViewCell {
     
     func configureCell(message: Message, showLocation : Bool) {
         self.title.text = message.subject
+        
+        var leftLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 14, height: 14))
+        leftLabel.textAlignment = .Left
+        leftLabel.font = UIFont.robotoLight(size: UIFont.Size.h6)
+        leftLabel.numberOfLines = 0;
+        leftLabel.textColor = UIColor(hexColorCode: "#838897")
         
         if showLocation {
             self.locationLabel.text = " \(message.location.title) "
@@ -162,6 +174,8 @@ class MailboxMessageCell: MCSwipeTableViewCell {
         } else {
             self.sender.text = message.displaySender
         }
+        leftLabel.text = self.sender.text
+        let sWidth = leftLabel.sizeThatFits(CGSizeZero).width
         
         var encryptedType = message.encryptType
         if encryptedType == EncryptTypes.OutPGPInline || encryptedType == EncryptTypes.OutPGPMime {
@@ -197,6 +211,13 @@ class MailboxMessageCell: MCSwipeTableViewCell {
         
         let labels = message.labels.allObjects
         let lc = labels.count - 1;
+        
+        var label1Size : CGFloat = 0
+        var label2Size : CGFloat = 0
+        var label3Size : CGFloat = 0
+        var label4Size : CGFloat = 0
+        var label5Size : CGFloat = 0
+        
         for i in 0 ... 4 {
             switch i {
             case 0:
@@ -205,34 +226,107 @@ class MailboxMessageCell: MCSwipeTableViewCell {
                     label = labels[i] as? Label
                 }
                 self.updateLables(label1, label: label)
+                if label != nil {
+                    label1Size = label1.frame.width
+                }
+                
             case 1:
                 var label : Label? = nil
                 if i <= lc {
                     label = labels[i] as? Label
                 }
                 self.updateLables(label2, label: label)
+                if label != nil {
+                    label2Size = label2.frame.width
+                }
             case 2:
                 var label : Label? = nil
                 if i <= lc {
                     label = labels[i] as? Label
                 }
                 self.updateLables(label3, label: label)
+                if label != nil {
+                    label3Size = label3.frame.width
+                }
             case 3:
                 var label : Label? = nil
                 if i <= lc {
                     label = labels[i] as? Label
                 }
                 self.updateLables(label4, label: label)
+                if label != nil {
+                    label4Size = label4.frame.width
+                }
             case 4:
                 var label : Label? = nil
                 if i <= lc {
                     label = labels[i] as? Label
                 }
                 self.updateLables(label5, label: label)
+                if label != nil {
+                    label5Size = label5.frame.width
+                }
             default:
                 break;
             }
         }
+        
+        let width : CGFloat = starImage.frame.origin.x - leftLabel.frame.origin.x
+        let sizeLimit : CGFloat = width - sWidth//sender.frame.width
+        
+        for i in 0 ... 4 {
+            switch i {
+            case 0:
+                var label : Label? = nil
+                if i < lc {
+                    var check : CGFloat = label5Size + label4Size + label3Size + label2Size + label1Size
+                    if check > sizeLimit {
+                        label1.setIcon(UIColor.redColor())
+                        label1Size = 14
+                    }
+                }
+                
+            case 1:
+                var label : Label? = nil
+                if i < lc {
+                    var check : CGFloat = label5Size + label4Size + label3Size + label2Size + label1Size
+                    if check > sizeLimit {
+                        label2.setIcon(UIColor.redColor())
+                        label2Size = 14
+                    }
+                }
+                
+            case 2:
+                var label : Label? = nil
+                if i < lc {
+                    var check : CGFloat = label5Size + label4Size + label3Size + label2Size + label1Size
+                    if check > sizeLimit {
+                        label3.setIcon(UIColor.redColor())
+                        label3Size = 14
+                    }
+                }
+                
+            case 3:
+                var label : Label? = nil
+                if i < lc {
+                    var check : CGFloat = label5Size + label4Size + label3Size + label2Size + label1Size
+                    if check > sizeLimit {
+                        label4.setIcon(UIColor.redColor())
+                        label4Size = 14
+                    }
+                }
+//                
+//            case 4:
+//                var label : Label? = nil
+//                if i < lc {
+//                    
+//                }
+                
+            default:
+                break;
+            }
+        }
+        
         
         if (message.isRead) {
             changeStyleToReadDesign()
