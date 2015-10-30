@@ -239,12 +239,13 @@ extension MenuViewController: UITableViewDataSource {
             cell.hideCount()
             return cell
         } else if indexPath.section == 2 {
-            let data = fetchedLabels?.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as! Label;
-            
             var cell = tableView.dequeueReusableCellWithIdentifier(kLabelTableCellId, forIndexPath: indexPath) as! MenuLabelViewCell
-            cell.configCell(data)
-            cell.configUnreadCount()
-            
+            if  fetchedLabels?.fetchedObjects?.count ?? 0 > indexPath.row {
+                if let data = fetchedLabels?.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as? Label {
+                    cell.configCell(data)
+                    cell.configUnreadCount()
+                }
+            }
             return cell
         } else {
             var cell: MenuTableViewCell = tableView.dequeueReusableCellWithIdentifier(kMenuTableCellId, forIndexPath: indexPath) as! MenuTableViewCell

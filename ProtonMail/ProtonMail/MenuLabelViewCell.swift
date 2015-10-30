@@ -40,26 +40,27 @@ class MenuLabelViewCell: UITableViewCell {
         unreadLabel.layer.cornerRadius = 12;
         unreadLabel.text = "0";
         
-        let color = UIColor(hexString: item.color, alpha:1)
-        let image = UIImage(named: "menu_label")
-        titleLabel.text = item.name;
-        
-        titleImageView.image = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-        titleImageView.highlightedImage = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-        
-        titleImageView.tintColor = color
+        if item.managedObjectContext != nil {
+            let color = UIColor(hexString: item.color, alpha:1)
+            let image = UIImage(named: "menu_label")
+            titleLabel.text = item.name;
+            
+            titleImageView.image = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            titleImageView.highlightedImage = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            titleImageView.tintColor = color
+        }
     }
     
     func configUnreadCount () {
         
-            let count = lastUpdatedStore.unreadLabelsCountForKey(item.labelID)
-            if count > 0 {
-                unreadLabel.text = "\(count)";
-                unreadLabel.hidden = false;
-            } else {
-                unreadLabel.text = "0";
-                unreadLabel.hidden = true;
-            }
+        let count = lastUpdatedStore.unreadLabelsCountForKey(item.labelID)
+        if count > 0 {
+            unreadLabel.text = "\(count)";
+            unreadLabel.hidden = false;
+        } else {
+            unreadLabel.text = "0";
+            unreadLabel.hidden = true;
+        }
     }
     
     override func setHighlighted(highlighted: Bool, animated: Bool) {
@@ -80,7 +81,6 @@ class MenuLabelViewCell: UITableViewCell {
         if selected {
             unreadLabel.backgroundColor = UIColor.ProtonMail.Menu_UnreadCountBackground
         }
-        
         
         if selected {
             self.backgroundColor = UIColor.ProtonMail.Menu_SelectedBackground
