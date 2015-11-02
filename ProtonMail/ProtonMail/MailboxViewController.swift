@@ -947,7 +947,7 @@ extension MailboxViewController: UITableViewDataSource {
     //            deleteMessageForIndexPath(indexPath)
     //        }
     //    }
-    //
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count = fetchedResultsController?.numberOfRowsInSection(section) ?? 0
         return count
@@ -1036,7 +1036,6 @@ extension MailboxViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // verify whether the user is checking messages or not
-        
         if (self.isEditing) {
             if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
                 let messageAlreadySelected: Bool = selectedMessages.containsObject(message.messageID)

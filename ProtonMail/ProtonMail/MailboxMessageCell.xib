@@ -7,7 +7,6 @@
         <mutableArray key="Roboto-Medium.ttf">
             <string>Roboto-Medium</string>
             <string>Roboto-Medium</string>
-            <string>Roboto-Medium</string>
         </mutableArray>
         <mutableArray key="Roboto-Regular.ttf">
             <string>Roboto-Regular</string>
@@ -50,19 +49,6 @@
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
                             <rect key="frame" x="343" y="10" width="41" height="14"/>
-                        </variation>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sender1123123123" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DjW-zn-eI5">
-                        <rect key="frame" x="52" y="51" width="106.5" height="14"/>
-                        <animations/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="14" id="yfD-nd-8l0"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="12"/>
-                        <color key="textColor" red="0.51372549020000002" green="0.53333333329999999" blue="0.59215686270000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <nil key="highlightedColor"/>
-                        <variation key="heightClass=regular" misplaced="YES">
-                            <rect key="frame" x="16" y="38" width="215" height="14"/>
                         </variation>
                     </label>
                     <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ehh-A8-O8P" userLabel="Checked">
@@ -118,46 +104,6 @@
                             <rect key="frame" x="255" y="36" width="14" height="16"/>
                         </variation>
                     </imageView>
-                    <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mmh-wF-Tkj" userLabel="label 1" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
-                        <rect key="frame" x="477" y="51" width="32" height="14"/>
-                        <animations/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="14" id="c6C-uu-ssA"/>
-                        </constraints>
-                    </view>
-                    <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Zd-UJ-8zf" userLabel="label 2" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
-                        <rect key="frame" x="442" y="51" width="32" height="14"/>
-                        <animations/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="14" id="4Gm-Jh-j7N"/>
-                        </constraints>
-                    </view>
-                    <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="74g-hg-rul" userLabel="label 3" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
-                        <rect key="frame" x="233" y="51" width="32" height="14"/>
-                        <animations/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="14" id="pea-j9-z4G"/>
-                        </constraints>
-                    </view>
-                    <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Oll-aK-RwB" userLabel="label 4" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
-                        <rect key="frame" x="266" y="51" width="86" height="14"/>
-                        <animations/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="14" id="Nzc-n0-nLQ"/>
-                        </constraints>
-                    </view>
-                    <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UH2-lT-4m5" userLabel="label 5" customClass="LabelDisplayView" customModule="ProtonMail" customModuleProvider="target">
-                        <rect key="frame" x="354" y="51" width="86" height="14"/>
-                        <animations/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="14" id="1Bb-aY-3Xh"/>
-                        </constraints>
-                    </view>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_forwarded" translatesAutoresizingMaskIntoConstraints="NO" id="W87-z9-Lfj">
                         <rect key="frame" x="72" y="13" width="20" height="16"/>
                         <animations/>
@@ -178,8 +124,8 @@
                             <constraint firstAttribute="height" constant="16" id="fhd-kT-5Nt"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q38-eq-ScR">
-                        <rect key="frame" x="92" y="15" width="42" height="14"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q38-eq-ScR">
+                        <rect key="frame" x="92" y="14" width="42" height="14"/>
                         <animations/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -190,6 +136,14 @@
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="highlightedColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </label>
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qih-v7-hfv" customClass="LabelsView" customModule="ProtonMail" customModuleProvider="target">
+                        <rect key="frame" x="52" y="51" width="506" height="14"/>
+                        <animations/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="14" id="G9G-0u-3jM"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <animations/>
                 <constraints>
@@ -199,21 +153,22 @@
                     <constraint firstItem="SIc-09-lb0" firstAttribute="leading" secondItem="q38-eq-ScR" secondAttribute="trailing" constant="4" id="21n-Rk-D5T"/>
                     <constraint firstItem="SIc-09-lb0" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="4LO-LE-TvG"/>
                     <constraint firstItem="SIc-09-lb0" firstAttribute="centerY" secondItem="yr1-Vg-xT6" secondAttribute="centerY" id="6h3-kd-U8G"/>
+                    <constraint firstItem="qih-v7-hfv" firstAttribute="leading" secondItem="ehh-A8-O8P" secondAttribute="trailing" id="7PS-XI-pVi"/>
                     <constraint firstAttribute="trailing" secondItem="yr1-Vg-xT6" secondAttribute="trailing" constant="16" id="AK8-cl-BPV"/>
                     <constraint firstItem="q38-eq-ScR" firstAttribute="centerY" secondItem="SIc-09-lb0" secondAttribute="centerY" id="DbS-RJ-rxS"/>
                     <constraint firstItem="q38-eq-ScR" firstAttribute="leading" secondItem="W87-z9-Lfj" secondAttribute="trailing" id="I5w-1P-hAe"/>
                     <constraint firstItem="ERi-2M-ccE" firstAttribute="leading" secondItem="ehh-A8-O8P" secondAttribute="trailing" id="JvL-Ag-kDX"/>
                     <constraint firstAttribute="bottom" secondItem="I1O-3N-hks" secondAttribute="bottom" constant="12" id="NAJ-RT-FAm"/>
-                    <constraint firstAttribute="bottom" secondItem="DjW-zn-eI5" secondAttribute="bottom" constant="12" id="Ogc-go-UU2"/>
                     <constraint firstAttribute="bottom" secondItem="MUg-6h-6KQ" secondAttribute="bottom" constant="12" id="PrT-3l-42s"/>
                     <constraint firstItem="ehh-A8-O8P" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="UVn-lf-HvP"/>
                     <constraint firstItem="I1O-3N-hks" firstAttribute="leading" secondItem="l8F-Fo-5Gz" secondAttribute="trailing" id="aNL-is-MRl"/>
                     <constraint firstItem="ERi-2M-ccE" firstAttribute="centerY" secondItem="W87-z9-Lfj" secondAttribute="centerY" id="c5h-ca-Lhp"/>
                     <constraint firstItem="yr1-Vg-xT6" firstAttribute="leading" secondItem="SIc-09-lb0" secondAttribute="trailing" id="gzJ-4O-edC"/>
                     <constraint firstAttribute="bottom" secondItem="GYc-tV-NYw" secondAttribute="bottom" constant="12" id="haf-Mv-6NM"/>
+                    <constraint firstAttribute="bottom" secondItem="qih-v7-hfv" secondAttribute="bottom" constant="12" id="lkU-I3-fcJ"/>
                     <constraint firstAttribute="centerY" secondItem="ehh-A8-O8P" secondAttribute="centerY" id="mZK-f1-017"/>
-                    <constraint firstItem="DjW-zn-eI5" firstAttribute="leading" secondItem="ehh-A8-O8P" secondAttribute="trailing" id="ove-NS-C4h"/>
                     <constraint firstAttribute="trailing" secondItem="I1O-3N-hks" secondAttribute="trailing" constant="16" id="pNP-jI-IAq"/>
+                    <constraint firstItem="GYc-tV-NYw" firstAttribute="leading" secondItem="qih-v7-hfv" secondAttribute="trailing" id="r1k-Ab-m3I"/>
                     <constraint firstItem="MUg-6h-6KQ" firstAttribute="leading" secondItem="GYc-tV-NYw" secondAttribute="trailing" id="r48-Lw-Hi6"/>
                     <constraint firstAttribute="centerY" secondItem="ehh-A8-O8P" secondAttribute="centerY" id="t4G-Qy-sga"/>
                     <constraint firstItem="l8F-Fo-5Gz" firstAttribute="leading" secondItem="MUg-6h-6KQ" secondAttribute="trailing" id="vpK-Qa-Iuh"/>
@@ -226,11 +181,7 @@
                 <outlet property="checkboxWidth" destination="Sgz-zJ-w4Y" id="VnI-I6-zoo"/>
                 <outlet property="expirationWidth" destination="GgZ-zI-WdS" id="asZ-oN-uSr"/>
                 <outlet property="forwardWidth" destination="yaw-js-fIe" id="zZq-lW-vhX"/>
-                <outlet property="label1" destination="Mmh-wF-Tkj" id="LWA-pH-8vb"/>
-                <outlet property="label2" destination="4Zd-UJ-8zf" id="BhY-PP-xyZ"/>
-                <outlet property="label3" destination="UH2-lT-4m5" id="Z7u-zr-JOq"/>
-                <outlet property="label4" destination="Oll-aK-RwB" id="cgc-6O-7rH"/>
-                <outlet property="label5" destination="74g-hg-rul" id="gNs-2t-UJ8"/>
+                <outlet property="labelsView" destination="qih-v7-hfv" id="oHn-37-EtJ"/>
                 <outlet property="locationLabel" destination="q38-eq-ScR" id="B3U-W9-W8B"/>
                 <outlet property="locationWidth" destination="sRT-xH-c9B" id="PsR-ka-mx7"/>
                 <outlet property="lockImage" destination="I1O-3N-hks" id="peF-26-g6I"/>
@@ -238,7 +189,6 @@
                 <outlet property="loctionRightSpace" destination="21n-Rk-D5T" id="hWl-Js-NfU"/>
                 <outlet property="replyImage" destination="ERi-2M-ccE" id="yNE-x0-uEc"/>
                 <outlet property="replyWidth" destination="DB7-Cd-pNk" id="9wX-Nr-ls8"/>
-                <outlet property="sender" destination="DjW-zn-eI5" id="GIk-n6-AqB"/>
                 <outlet property="starImage" destination="GYc-tV-NYw" id="vDo-uW-JM2"/>
                 <outlet property="starWidth" destination="ITM-Qa-OrE" id="k9Z-MQ-Qat"/>
                 <outlet property="time" destination="yr1-Vg-xT6" id="UMl-AV-8Qu"/>
