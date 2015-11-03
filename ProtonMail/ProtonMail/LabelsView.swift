@@ -100,9 +100,9 @@ class LabelsView: PMView {
         self.sender = leftText;
         self.labels = labels;
         
-        if self.inited {
+        //if self.inited {
             self.update();
-        }
+       // }
     }
     
     private func update() {
@@ -119,7 +119,14 @@ class LabelsView: PMView {
                 for i in 0 ... 4 {
                     let labelView = labelViews[i]
                     if labels.count > i {
+                        
                         let label = labels[i]
+                        
+                        if label.managedObjectContext == nil {
+                            self.hideAll();
+                            return ;
+                        }
+                        
                         labelView.text = "  \(label.name.trim())  "
                         
                         let color = UIColor(hexString: label.color, alpha: 1.0)
@@ -128,6 +135,7 @@ class LabelsView: PMView {
                         
                         labelsSize.append(labelView.sizeThatFits(CGSizeZero).width)
                     } else {
+                        labelView.text = ""
                         labelsSize.append(0)
                     }
                 }
@@ -148,6 +156,8 @@ class LabelsView: PMView {
                             if check > sizeLimit {
                                 labelConstraint.constant = 14.0
                                 labelsSize[i] = 14
+                            } else {
+                                labelConstraint.constant = labelsSize[i]
                             }
                         } else {
                             labelConstraint.constant = labelsSize[i]
@@ -160,112 +170,8 @@ class LabelsView: PMView {
         } else {
             self.hideAll()
         }
-        
-        //
-        //            for i in 0 ... 4 {
-        //                switch i {
-        //                case 0:
-        //                    if i < lc {
-        //
-        //                    }
-        //
-        //                case 1:
-        //                    var label : Label? = nil
-        //                    if i < lc {
-        //
-        //                    }
-        //
-        //                case 2:
-        //                    var label : Label? = nil
-        //                    if i < lc {
-        //
-        //                    }
-        //
-        //                case 3:
-        //                    var label : Label? = nil
-        //                    if i < lc {
-        //
-        //                    }
-        //                case 4:
-        //                    var label : Label? = nil
-        //                    if i < lc {
-        //
-        //                    }
-        //
-        //                default:
-        //                    break;
-        //                }
-        //            }
-        //
-        //        } else {
-        //            self.hideAll();
-        //        }
-        //
-        //
-        //        leftLabelView.text =  self.sender
-        //        var leftLabelSize = leftLabelView.sizeThatFits(CGSizeZero).width
-        //
-        //        var label1 = labelView1
-        //        label1.hidden = false;
-        //        label1.text = labels[4]
-        //        var labelSize1 = label1.sizeThatFits(CGSizeZero).width
-        //
-        //        var label2 = labelView2
-        //        label2.hidden = false;
-        //        label2.text = labels[3]
-        //        var labelSize2 = label2.sizeThatFits(CGSizeZero).width
-        //
-        //        var label3 = labelView3
-        //        label3.hidden = false;
-        //        label3.text = labels[2]
-        //        var labelSize3 = label3.sizeThatFits(CGSizeZero).width
-        //
-        //        var label4 = labelView4
-        //        label4.hidden = false;
-        //        label4.text = labels[1]
-        //        var labelSize4 = label4.sizeThatFits(CGSizeZero).width
-        //
-        //        var label5 = labelView5
-        //        label5.hidden = false;
-        //        label5.text = labels[0]
-        //        var labelSize5 = label5.sizeThatFits(CGSizeZero).width
-        //
-        //        let sizeLimit : CGFloat = width - leftLabelSize
-        //        var right = width
-        //
-        //        var check : CGFloat = labelSize1 + labelSize2 + labelSize3 + labelSize4 + labelSize5
-        //        if check > sizeLimit{
-        //            labelConstraint1.constant = 14.0
-        //            labelSize1 = 14
-        //        } else {
-        //            labelConstraint1.constant = labelSize1
-        //        }
-        //
-        //        check = labelSize1 + labelSize2 + labelSize3 + labelSize4 + labelSize5
-        //        if check > sizeLimit {
-        //            labelConstraint2.constant = 14.0
-        //            labelSize2 = 14
-        //        } else {
-        //            labelConstraint2.constant = labelSize2
-        //        }
-        //
-        //        check = labelSize1 + labelSize2 + labelSize3 + labelSize4 + labelSize5
-        //        if check > sizeLimit {
-        //            labelConstraint3.constant = 14.0
-        //            labelSize3 = 14
-        //        } else {
-        //            labelConstraint3.constant = labelSize3
-        //        }
-        //        
-        //        check = labelSize1 + labelSize2 + labelSize3 + labelSize4 + labelSize5
-        //        if check > sizeLimit {
-        //            labelConstraint4.constant = 14.0
-        //            labelSize4 = 14
-        //        } else {
-        //            labelConstraint4.constant = labelSize4
-        //        }
-        //        
-        //        labelConstraint5.constant = labelSize5
+        self.layoutIfNeeded()
+        self.updateConstraintsIfNeeded()
     }
     
     private func hideAll() {
