@@ -20,6 +20,12 @@ class LabelsView: PMView {
     @IBOutlet weak var labelView2: UILabel!
     @IBOutlet weak var labelView1: UILabel!
     
+    @IBOutlet weak var image1: UIImageView!
+    @IBOutlet weak var image2: UIImageView!
+    @IBOutlet weak var image3: UIImageView!
+    @IBOutlet weak var image4: UIImageView!
+    @IBOutlet weak var image5: UIImageView!
+    
     @IBOutlet weak var leftLabelView: UILabel!
     
     @IBOutlet weak var labelConstraint1: NSLayoutConstraint!
@@ -30,6 +36,7 @@ class LabelsView: PMView {
     
     var labels : [Label]?
     var labelViews : [UILabel] = []
+    var imageViews : [UIImageView] = []
     var labelLayoutConstraints : [NSLayoutConstraint] = []
     
     var sender : String = "";
@@ -89,6 +96,12 @@ class LabelsView: PMView {
         labelLayoutConstraints.append(labelConstraint4)
         labelLayoutConstraints.append(labelConstraint5)
         
+        imageViews.append(image1)
+        imageViews.append(image2)
+        imageViews.append(image3)
+        imageViews.append(image4)
+        imageViews.append(image5)
+        
         leftLabelView.textAlignment = .Left
         leftLabelView.font = UIFont.robotoLight(size: UIFont.Size.h6)
         leftLabelView.numberOfLines = 0;
@@ -118,6 +131,7 @@ class LabelsView: PMView {
             if labels.count > 0 {
                 for i in 0 ... 4 {
                     let labelView = labelViews[i]
+                    let imageView = imageViews[i]
                     if labels.count > i {
                         
                         let label = labels[i]
@@ -130,6 +144,11 @@ class LabelsView: PMView {
                         let color = UIColor(hexString: label.color, alpha: 1.0)
                         labelView.textColor = color
                         labelView.layer.borderColor = color.CGColor
+                        
+                        let image = UIImage(named: "mail_label-collapsed")
+                        imageView.image = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+                        imageView.highlightedImage = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+                        imageView.tintColor = color
                         
                         labelsSize.append(labelView.sizeThatFits(CGSizeZero).width)
                     } else {
@@ -144,22 +163,29 @@ class LabelsView: PMView {
                 for i in 0 ... 4 {
                     var check : CGFloat = labelsSize[0] + labelsSize[1] + labelsSize[2] + labelsSize[3] + labelsSize[4]
                     let labelView = labelViews[i]
+                    let imageView = imageViews[i]
+
                     let labelConstraint = labelLayoutConstraints[i]
                     if  labels.count == i + 1 {
+                        labelView.hidden = false;
+                        imageView.hidden = true;
                         labelConstraint.constant = labelsSize[i]
                     } else {
                         if labels.count > i {
-                            var check : CGFloat = labelsSize[0] + labelsSize[1] + labelsSize[2] + labelsSize[3] + labelsSize[4]
-                            let labelView = labelViews[i]
                             if check > sizeLimit {
                                 if let text = labelView.text?.trim() {
                                     if count(text) > 0 {
                                          labelView.text = "  " + text[0] + "  ";
                                     }
                                 }
+                                
+                                labelView.hidden = true;
+                                imageView.hidden = false;
                                 labelConstraint.constant = 14.0
                                 labelsSize[i] = 14
                             } else {
+                                labelView.hidden = false;
+                                imageView.hidden = true;
                                 labelConstraint.constant = labelsSize[i]
                             }
                         } else {
