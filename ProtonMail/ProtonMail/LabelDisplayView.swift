@@ -11,6 +11,7 @@ class LabelDisplayView: PMView {
     
     @IBOutlet weak var labelText: UILabel!
     
+    @IBOutlet weak var halfLabelIcon: UIImageView!
     var boardColor : UIColor!
     
     override func getNibName() -> String {
@@ -37,11 +38,19 @@ class LabelDisplayView: PMView {
         }
         set (t) {
             if let t = t {
+                labelText.layer.borderWidth = 1
+                halfLabelIcon.hidden = true
                 labelText.text = "  \(t)  ";
             }
         }
     }
     
+    func setIcon(color : UIColor?) {
+        halfLabelIcon.hidden = false
+        labelText.layer.borderWidth = 0
+        labelText.text = "";
+    }
+        
     override func sizeToFit() {
         labelText.sizeToFit();
         super.sizeToFit();
@@ -53,7 +62,6 @@ class LabelDisplayView: PMView {
     }
     
     override func setup() {
-        
         labelText.layer.borderWidth = 1
         labelText.layer.cornerRadius = 2
         labelText.font = UIFont.robotoLight(size: 9)
