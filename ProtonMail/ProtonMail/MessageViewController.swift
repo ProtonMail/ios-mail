@@ -284,7 +284,7 @@ extension MessageViewController : MessageDetailBottomViewProtocol {
 
 // MARK
 private var tempFileUri : NSURL?
-extension MessageViewController : EmailHeaderActionsProtocol {
+extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteractionControllerDelegate {
     func starredChanged(isStarred: Bool) {
         self.messagesSetValue(setValue: isStarred, forKey: Message.Attributes.isStarred)
     }
@@ -296,6 +296,18 @@ extension MessageViewController : EmailHeaderActionsProtocol {
             
             decryptData!.writeToURL(tempFileUri!, atomically: true)
             
+//            NSString *path = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"ics"];
+//            NSURL *url = [NSURL fileURLWithPath:path];
+            
+//            var dc = UIDocumentInteractionController(URL: tempFileUri!)
+//            dc.delegate = self;
+//            
+//            dc.presentPreviewAnimated(true)
+            //[dc presentPreviewAnimated:YES];
+            
+//            NSString *url = @"webcal://url.ics";
+//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+//            
             let previewQL = QuickViewViewController()
             previewQL.dataSource = self
             
@@ -305,6 +317,10 @@ extension MessageViewController : EmailHeaderActionsProtocol {
         else{
             
         }
+    }
+    
+    func documentInteractionControllerViewControllerForPreview(controller: UIDocumentInteractionController) -> UIViewController {
+        return self
     }
 }
 
