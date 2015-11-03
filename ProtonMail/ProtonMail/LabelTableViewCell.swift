@@ -110,7 +110,8 @@ class LabelTableViewCell: UITableViewCell {
         self.vc = vc;
         self.model = model;
         let w = labelView.setText(model.label.name, color: UIColor(hexString: model.label.color, alpha: 1.0))
-        labelWidth.constant = w;
+        
+        labelWidth.constant = w > selectStatusButton.frame.origin.x ? selectStatusButton.frame.origin.x : w;
         
         self.updateStatusButton()
     }
