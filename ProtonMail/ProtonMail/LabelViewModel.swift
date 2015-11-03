@@ -19,7 +19,7 @@ public class LabelMessageModel {
 public class LabelViewModel {
     
     public typealias OkBlock = () -> Void
-    public typealias ErrorBlock = () -> Void
+    public typealias ErrorBlock = (code : Int, errorMessage : String) -> Void
     
     public init() {
         
@@ -162,7 +162,7 @@ public class LabelViewModelImpl : LabelViewModel {
         
         api.call { (task, response, hasError) -> Void in
             if hasError {
-                error();
+                error(code: response?.code ?? 1000, errorMessage: response?.errorMessage ?? "");
             } else {
                 //var label = response["Label"] as? Dictionary<String,AnyObject>
                 sharedLabelsDataService.addNewLabel(response?.label);

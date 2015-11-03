@@ -60,14 +60,24 @@ class LablesViewController : UIViewController {
     @IBAction func applyAction(sender: AnyObject) {
         if isCreateView {
             // start
-            viewModel.createLabel(newLabelInput.text, color: titles[selected!.row], error: { () -> Void in
-                var alert = "The maximum number of labels i 20.".alertController()
-                alert.addOKAction()
-                self.presentViewController(alert, animated: true, completion: nil)
-                
+            viewModel.createLabel(newLabelInput.text, color: titles[selected?.row ?? 0], error: { (code, errorMessage) -> Void in
+                if code == 14005 {
+                    var alert = "The maximum number of labels is 20.".alertController()
+                    alert.addOKAction()
+                    self.presentViewController(alert, animated: true, completion: nil)
+                } else if code == 14002 {
+                    var alert = "The label name is duplicate".alertController()
+                    alert.addOKAction()
+                    self.presentViewController(alert, animated: true, completion: nil)
+                } else {
+                    var alert = errorMessage.alertController()
+                    alert.addOKAction()
+                    self.presentViewController(alert, animated: true, completion: nil)
+                }
                 }, complete: { () -> Void in
                     //ok
             })
+            
             //viewModel.createLabel(newLabelInput.text, titles[selected!.row], error)
             // viewModel.createLabel() {
             newLabelInput.text = ""
@@ -303,7 +313,7 @@ extension LablesViewController : NSFetchedResultsControllerDelegate {
         case .Update:
             if let indexPath = indexPath {
                 //if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MailboxTableViewCell {
-                    //configureCell(cell, atIndexPath: indexPath)
+                //configureCell(cell, atIndexPath: indexPath)
                 //}
             }
         default:
