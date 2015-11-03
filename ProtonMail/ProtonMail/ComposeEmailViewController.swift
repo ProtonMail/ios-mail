@@ -99,7 +99,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
             {
             case .Reply, .ReplyAll:
                 self.focusTextEditor();
-                //self.composeView.htmlEditor.focusTextEditor()
+                self.composeView.notifyViewSize(true)
                 break
             default:
                 self.composeView.toContactPicker.becomeFirstResponder()
@@ -123,7 +123,6 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         self.updateAttachmentButton()
         super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: "touchStatusBarClick", object:nil)
-        
         setupAutoSave()
     }
     
