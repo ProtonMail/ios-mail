@@ -48,6 +48,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         setNeedsStatusBarAppearanceUpdate()
         
         self.baseURL = NSURL( fileURLWithPath: "https://protonmail.ch")
+        self.formatHTML = false
         self.webView = self.getWebView()
         
         // init views
