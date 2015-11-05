@@ -219,10 +219,13 @@ class MailboxViewController: ProtonMailViewController {
             
             let messageDetailViewController = segue.destinationViewController as! MessageViewController
             let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
-            
             if let indexPathForSelectedRow = indexPathForSelectedRow {
-                if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {
+                if let message = self.messageAtIndexPath(indexPathForSelectedRow) {
                     messageDetailViewController.message = message
+                } else {
+                    let alert = "Can't find the clicked message please try again!".alertController()
+                    alert.addOKAction()
+                    presentViewController(alert, animated: true, completion: nil)
                 }
             } else {
                 PMLog.D("No selected row.")
@@ -232,16 +235,18 @@ class MailboxViewController: ProtonMailViewController {
             
             let composeViewController = segue.destinationViewController.viewControllers![0] as! ComposeEmailViewController
             if let indexPathForSelectedRow = indexPathForSelectedRow {
-                if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {
+                if let message = self.messageAtIndexPath(indexPathForSelectedRow) {
                     composeViewController.viewModel = ComposeViewModelImpl(msg: selectedDraft ?? message, action : ComposeMessageAction.OpenDraft)
+                } else {
+                    let alert = "Can't find the clicked message please try again!".alertController()
+                    alert.addOKAction()
+                    presentViewController(alert, animated: true, completion: nil)
                 }
-                else
-                {
-                    PMLog.D("No selected row.")
-                }
+                
             } else {
                 PMLog.D("No selected row.")
             }
+            
         } else if segue.identifier == kSegueToLabelsController {
             let popup = segue.destinationViewController as! LablesViewController
             popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
@@ -373,61 +378,69 @@ class MailboxViewController: ProtonMailViewController {
         }
     }
     
-    private func configureCell(mailboxCell: MailboxMessageCell, atIndexPath indexPath: NSIndexPath) {
+    private func messageAtIndexPath(indexPath: NSIndexPath) -> Message? {
+        
         if self.fetchedResultsController?.numberOfSections() > indexPath.section {
             if self.fetchedResultsController?.numberOfRowsInSection(indexPath.section) > indexPath.row {
                 if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-                    mailboxCell.configureCell(message, showLocation: viewModel.showLocation())
-                    mailboxCell.setCellIsChecked(selectedMessages.containsObject(message.messageID))
-                    if (self.isEditing) {
-                        mailboxCell.showCheckboxOnLeftSide()
-                    }
-                    else {
-                        mailboxCell.hideCheckboxOnLeftSide()
-                    }
-                    
-                    mailboxCell.defaultColor = UIColor.lightGrayColor()
-                    let leftCrossView = UILabel();
-                    leftCrossView.text = self.viewModel.getSwipeTitle(leftSwipeAction)
-                    leftCrossView.sizeToFit()
-                    leftCrossView.textColor = UIColor.whiteColor()
-                    
-                    let rightCrossView = UILabel();
-                    rightCrossView.text = self.viewModel.getSwipeTitle(rightSwipeAction)
-                    rightCrossView.sizeToFit()
-                    rightCrossView.textColor = UIColor.whiteColor()
-                    
-                    mailboxCell.setSwipeGestureWithView(leftCrossView, color: leftSwipeAction.actionColor, mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State1 ) { (cell, state, mode) -> Void in
-                        if let indexp = self.tableView.indexPathForCell(cell) {
-                            if self.viewModel.isSwipeActionValid(self.leftSwipeAction) {
-                                if !self.processSwipeActions(self.leftSwipeAction, indexPath: indexp) {
-                                    mailboxCell.swipeToOriginWithCompletion(nil)
-                                } else if self.viewModel.stayAfterAction(self.leftSwipeAction) {
-                                    mailboxCell.swipeToOriginWithCompletion(nil)
-                                }
-                            } else {
-                                mailboxCell.swipeToOriginWithCompletion(nil)
-                            }
-                        } else {
-                            self.tableView.reloadData()
+                    return message;
+                }
+            }
+        }
+        return nil
+    }
+    
+    private func configureCell(mailboxCell: MailboxMessageCell, atIndexPath indexPath: NSIndexPath) {
+        if let message = self.messageAtIndexPath(indexPath) {
+            mailboxCell.configureCell(message, showLocation: viewModel.showLocation())
+            mailboxCell.setCellIsChecked(selectedMessages.containsObject(message.messageID))
+            if (self.isEditing) {
+                mailboxCell.showCheckboxOnLeftSide()
+            }
+            else {
+                mailboxCell.hideCheckboxOnLeftSide()
+            }
+            
+            mailboxCell.defaultColor = UIColor.lightGrayColor()
+            let leftCrossView = UILabel();
+            leftCrossView.text = self.viewModel.getSwipeTitle(leftSwipeAction)
+            leftCrossView.sizeToFit()
+            leftCrossView.textColor = UIColor.whiteColor()
+            
+            let rightCrossView = UILabel();
+            rightCrossView.text = self.viewModel.getSwipeTitle(rightSwipeAction)
+            rightCrossView.sizeToFit()
+            rightCrossView.textColor = UIColor.whiteColor()
+            
+            mailboxCell.setSwipeGestureWithView(leftCrossView, color: leftSwipeAction.actionColor, mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State1 ) { (cell, state, mode) -> Void in
+                if let indexp = self.tableView.indexPathForCell(cell) {
+                    if self.viewModel.isSwipeActionValid(self.leftSwipeAction) {
+                        if !self.processSwipeActions(self.leftSwipeAction, indexPath: indexp) {
+                            mailboxCell.swipeToOriginWithCompletion(nil)
+                        } else if self.viewModel.stayAfterAction(self.leftSwipeAction) {
+                            mailboxCell.swipeToOriginWithCompletion(nil)
                         }
+                    } else {
+                        mailboxCell.swipeToOriginWithCompletion(nil)
                     }
-                    
-                    mailboxCell.setSwipeGestureWithView(rightCrossView, color: rightSwipeAction.actionColor, mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State3  ) { (cell, state, mode) -> Void in
-                        if let indexp = self.tableView.indexPathForCell(cell) {
-                            if self.viewModel.isSwipeActionValid(self.rightSwipeAction) {
-                                if !self.processSwipeActions(self.rightSwipeAction, indexPath: indexp) {
-                                    mailboxCell.swipeToOriginWithCompletion(nil)
-                                } else if self.viewModel.stayAfterAction(self.rightSwipeAction) {
-                                    mailboxCell.swipeToOriginWithCompletion(nil)
-                                }
-                            } else {
-                                mailboxCell.swipeToOriginWithCompletion(nil)
-                            }
-                        } else {
-                            self.tableView.reloadData()
+                } else {
+                    self.tableView.reloadData()
+                }
+            }
+            
+            mailboxCell.setSwipeGestureWithView(rightCrossView, color: rightSwipeAction.actionColor, mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State3  ) { (cell, state, mode) -> Void in
+                if let indexp = self.tableView.indexPathForCell(cell) {
+                    if self.viewModel.isSwipeActionValid(self.rightSwipeAction) {
+                        if !self.processSwipeActions(self.rightSwipeAction, indexPath: indexp) {
+                            mailboxCell.swipeToOriginWithCompletion(nil)
+                        } else if self.viewModel.stayAfterAction(self.rightSwipeAction) {
+                            mailboxCell.swipeToOriginWithCompletion(nil)
                         }
+                    } else {
+                        mailboxCell.swipeToOriginWithCompletion(nil)
                     }
+                } else {
+                    self.tableView.reloadData()
                 }
             }
         }
@@ -514,7 +527,7 @@ class MailboxViewController: ProtonMailViewController {
     private func hideUndoView() {
         self.timerAutoDismiss?.invalidate()
         self.timerAutoDismiss = nil
-
+        
         self.undoBottomDistance.constant = -44
         self.updateViewConstraints()
         UIView.animateWithDuration(0.25, animations: { () -> Void in
