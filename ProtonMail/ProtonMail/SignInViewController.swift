@@ -15,6 +15,8 @@
 //
 
 import UIKit
+import Fabric
+import Crashlytics
 
 class SignInViewController: UIViewController {
     
@@ -230,7 +232,16 @@ class SignInViewController: UIViewController {
         }
     }
     
+    func logUser() {
+        if  let username = sharedUserDataService.username {
+            //Crashlytics.sharedInstance().setUserEmail("user@fabric.io")
+            Crashlytics.sharedInstance().setUserIdentifier(username)
+            Crashlytics.sharedInstance().setUserName(username)
+        }
+    }
+
     private func loadContent() {
+        logUser()
         if sharedUserDataService.isMailboxPasswordStored {
             NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignIn, object: self)
             (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
@@ -298,7 +309,11 @@ class SignInViewController: UIViewController {
     
     @IBAction func signUpAction(sender: UIButton) {
         dismissKeyboard()
-        UIApplication.sharedApplication().openURL(signUpURL)
+        
+        self.performSegueWithIdentifier("goSignUpSegue", sender: self)
+        
+        
+       // UIApplication.sharedApplication().openURL(signUpURL)
     }
     
     @IBAction func tapAction(sender: UITapGestureRecognizer) {

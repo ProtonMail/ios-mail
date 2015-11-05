@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="15B22c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iNi-o2-nXB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="iNi-o2-nXB">
     <dependencies>
         <development version="6100" identifier="xcode"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -320,7 +320,7 @@
                         <outlet property="usernameTextField" destination="sKV-Mt-Vgi" id="fer-Ki-efM"/>
                         <outlet property="usernameView" destination="dVV-Jm-zNh" id="3ck-k6-aZc"/>
                         <segue destination="Zzb-6r-tlP" kind="show" identifier="mailboxSegue" id="xf0-Do-kI6"/>
-                        <segue destination="F7r-Ek-PBO" kind="show" identifier="signUpKeySegue" id="J5q-0Y-9RO"/>
+                        <segue destination="cMZ-5g-sJh" kind="show" identifier="goSignUpSegue" id="U1E-ha-CpM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GLw-RM-bn5" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -521,7 +521,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-222" y="1001"/>
+            <point key="canvasLocation" x="-598" y="1084"/>
         </scene>
         <!--Step 2 / 2-->
         <scene sceneID="gfC-q2-gyr">
@@ -634,7 +634,62 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="597" y="1001"/>
+            <point key="canvasLocation" x="114" y="1084"/>
+        </scene>
+        <!--Sign Up View Controller-->
+        <scene sceneID="iym-KR-Gcb">
+            <objects>
+                <viewController id="cMZ-5g-sJh" customClass="SignUpViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wYk-v4-qSJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="zAG-SY-UIZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="rEL-vp-o6q">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TOW-U0-i9S">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="delegate" destination="cMZ-5g-sJh" id="Shu-no-aU3"/>
+                                </connections>
+                            </webView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3kf-AF-x7E">
+                                <rect key="frame" x="250" y="550" width="100" height="50"/>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="16m-K4-2zm"/>
+                                    <constraint firstAttribute="height" constant="50" id="bBu-3P-NJl"/>
+                                </constraints>
+                                <state key="normal" title="Check Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="checkAction:" destination="cMZ-5g-sJh" eventType="touchUpInside" id="hTy-Lx-CWA"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="TOW-U0-i9S" firstAttribute="leading" secondItem="rEL-vp-o6q" secondAttribute="leading" id="Ay7-NK-Jcc"/>
+                            <constraint firstItem="TOW-U0-i9S" firstAttribute="top" secondItem="rEL-vp-o6q" secondAttribute="top" id="NKk-wo-2Mf"/>
+                            <constraint firstItem="zAG-SY-UIZ" firstAttribute="top" secondItem="3kf-AF-x7E" secondAttribute="bottom" id="W50-Mj-ce3"/>
+                            <constraint firstItem="zAG-SY-UIZ" firstAttribute="top" secondItem="TOW-U0-i9S" secondAttribute="bottom" id="fXU-ai-kjY"/>
+                            <constraint firstAttribute="trailing" secondItem="TOW-U0-i9S" secondAttribute="trailing" id="sSu-61-esR"/>
+                            <constraint firstAttribute="centerX" secondItem="3kf-AF-x7E" secondAttribute="centerX" id="sls-ZD-UBN"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="webView" destination="TOW-U0-i9S" id="m6A-ZP-k6P"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RTT-xm-2wa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="783" y="1084"/>
         </scene>
         <!--Mailbox Password View Controller-->
         <scene sceneID="pHR-Af-VAi">
@@ -862,7 +917,4 @@
         <image name="top_back" width="24" height="24"/>
         <image name="unchecked_signin" width="26" height="27"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="J5q-0Y-9RO"/>
-    </inferredMetricsTieBreakers>
 </document>
