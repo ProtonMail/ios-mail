@@ -117,7 +117,6 @@ extension APIService {
     
     func authRefresh(password:String, completion: AuthRefreshComplete?) {
         if let authCredential = AuthCredential.fetchFromKeychain() {
-            
             AuthRefreshRequest<AuthResponse>(resfresh: authCredential.refreshToken).call() { task, res , hasError in
                 if hasError {
                     completion?(task: task, auth: nil, hasError: NSError.authInvalidGrant())

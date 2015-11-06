@@ -20,7 +20,7 @@ import Foundation
 extension APIService {
     
     private struct ContactPath {
-        static let base = "/contacts"
+        static let base = AppConstants.BaseAPIPath + "/contacts"
     }
     
     func contactAdd(#name: String, email: String, completion: CompletionBlock?) {

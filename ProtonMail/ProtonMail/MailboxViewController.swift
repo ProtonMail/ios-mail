@@ -551,7 +551,9 @@ class MailboxViewController: ProtonMailViewController {
     private func fetchMessagesIfNeededForIndexPath(indexPath: NSIndexPath) {
         if let fetchedResultsController = fetchedResultsController {
             if let last = fetchedResultsController.fetchedObjects?.last as? Message {
-                if let current = fetchedResultsController.objectAtIndexPath(indexPath) as? Message {
+                
+                if let current = self.messageAtIndexPath(indexPath) {
+                    
                     let updateTime = viewModel.lastUpdateTime()
                     if let currentTime = current.time {
                         let isOlderMessage = updateTime.end.compare(currentTime) != NSComparisonResult.OrderedAscending
@@ -955,12 +957,6 @@ extension MailboxViewController: UITableViewDataSource {
         return mailboxCell
     }
     
-    //    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-    //        if (editingStyle == .Delete) {
-    //            deleteMessageForIndexPath(indexPath)
-    //        }
-    //    }
-    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count = fetchedResultsController?.numberOfRowsInSection(section) ?? 0
         return count
@@ -1034,19 +1030,7 @@ extension MailboxViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return kMailboxCellHeight
     }
-    
-    //    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
-    //
-    //        let title = viewModel.getSwipeEditTitle()
-    //        let trashed: UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: title) { (rowAction, indexPath) -> Void in
-    //            self.deleteMessageForIndexPath(indexPath)
-    //        }
-    //
-    //        trashed.backgroundColor = UIColor.ProtonMail.Red_D74B4B
-    //
-    //        return [trashed]
-    //    }
-    
+
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // verify whether the user is checking messages or not
         if (self.isEditing) {

@@ -24,7 +24,7 @@ extension APIService {
     
 
     private struct UserPath {
-        static let base = "/users"
+        static let base = AppConstants.BaseAPIPath + "/users"
     }
     
     func userInfo(completion: UserInfoBlock) {

@@ -95,17 +95,7 @@ public class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
             "RedirectURI" : "http://www.protonmail.ch",
             AuthKey.state : "\(NSUUID().UUIDString)"]
         
-//            {
-//                "ResponseType": "token",
-//                "ClientID": "demoapp",
-//                "GrantType": "refresh_token",
-//                "RefreshToken":"8de763c8e14a3c793e7a3b916b53c3492d100285",
-//                "RedirectURI": "http://www.protonmail.ch",
-//                "State": "random_string"
-        //}
-        
         PMLog.D(self.JSONStringify(out, prettyPrinted: true))
-        
         return out
     }
     
@@ -121,8 +111,6 @@ public class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
         return false
     }
 }
-
-
 
 
 // MARK : Response part

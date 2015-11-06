@@ -219,145 +219,22 @@ class MailboxMessageCell: MCSwipeTableViewCell {
             self.expirationWidth.constant = 0
         }
         
-        let labels = message.labels.allObjects as? [Label]
+        //let labels = message.labels.allObjects as? [Label]
+        
+        
+        let predicate = NSPredicate(format: "labelID MATCHES %@", "(?!^\\d+$)^.+$")
+        //labels = labels.sortedArrayUsingDescriptors([NSSortDescriptor(key: Label.Attributes.order, ascending: true)])
+        let tempLabels = message.labels.filteredSetUsingPredicate(predicate)
+        var labels : [Label] = []
+        for vowel in tempLabels {
+            var label = vowel as! Label;
+            labels.append(label)
+        }
         if message.location == MessageLocation.outbox {
             labelsView.configLables( message.recipientList.getDisplayAddress(), labels: labels)
         } else {
             labelsView.configLables( message.displaySender, labels: labels)
         }
-        
-        
-        
-        
-        //        leftLabel!.frame = sender.frame
-        //        //leftLabel.text = self.sender.text
-        //        let sWidth = leftLabel!.sizeThatFits(CGSizeZero).width
-        
-        //        let labels = message.labels.allObjects
-        //        let lc = labels.count - 1;
-        //
-        //        var label1Size : CGFloat = 0
-        //        var label2Size : CGFloat = 0
-        //        var label3Size : CGFloat = 0
-        //        var label4Size : CGFloat = 0
-        //        var label5Size : CGFloat = 0
-        //
-        //        for i in 0 ... 4 {
-        //            switch i {
-        //            case 0:
-        //                var label : Label? = nil
-        //                if i <= lc {
-        //                    label = labels[i] as? Label
-        //                }
-        //                self.updateLables(label1, label: label)
-        //                if label != nil {
-        //                    label1Size = label1.frame.width
-        //                }
-        //
-        //            case 1:
-        //                var label : Label? = nil
-        //                if i <= lc {
-        //                    label = labels[i] as? Label
-        //                }
-        //                self.updateLables(label2, label: label)
-        //                if label != nil {
-        //                    label2Size = label2.frame.width
-        //                }
-        //            case 2:
-        //                var label : Label? = nil
-        //                if i <= lc {
-        //                    label = labels[i] as? Label
-        //                }
-        //                self.updateLables(label3, label: label)
-        //                if label != nil {
-        //                    label3Size = label3.frame.width
-        //                }
-        //            case 3:
-        //                var label : Label? = nil
-        //                if i <= lc {
-        //                    label = labels[i] as? Label
-        //                }
-        //                self.updateLables(label4, label: label)
-        //                if label != nil {
-        //                    label4Size = label4.frame.width
-        //                }
-        //            case 4:
-        //                var label : Label? = nil
-        //                if i <= lc {
-        //                    label = labels[i] as? Label
-        //                }
-        //                self.updateLables(label5, label: label)
-        //                if label != nil {
-        //                    label5Size = label5.frame.width
-        //                }
-        //            default:
-        //                break;
-        //            }
-        //        }
-        //        let viewWidth = self.frame;
-        //        let senderX = sender.frame;
-        //        let leftx : CGFloat = leftLabel!.frame.origin.x
-        //        let leftStart : CGFloat = 342.0 // starImage.frame.origin.x
-        //        let width : CGFloat = leftStart - leftLabel!.frame.origin.x
-        //        let sizeLimit : CGFloat = width - sWidth//sender.frame.width
-        //
-        //        for i in 0 ... 4 {
-        //            switch i {
-        //            case 0:
-        //                var label : Label? = nil
-        //                if i < lc {
-        //                    var check : CGFloat = label5Size + label4Size + label3Size + label2Size + label1Size
-        //                    if check > sizeLimit {
-        //                        label1.setIcon(UIColor.redColor())
-        //                        label1Size = 14
-        //                    }
-        //                }
-        //
-        //            case 1:
-        //                var label : Label? = nil
-        //                if i < lc {
-        //                    var check : CGFloat = label5Size + label4Size + label3Size + label2Size + label1Size
-        //                    if check > sizeLimit {
-        //                        label2.setIcon(UIColor.redColor())
-        //                        label2Size = 14
-        //                    }
-        //                }
-        //
-        //            case 2:
-        //                var label : Label? = nil
-        //                if i < lc {
-        //                    var check : CGFloat = label5Size + label4Size + label3Size + label2Size + label1Size
-        //                    if check > sizeLimit {
-        //                        label3.setIcon(UIColor.redColor())
-        //                        label3Size = 14
-        //                    }
-        //                }
-        //
-        //            case 3:
-        //                var label : Label? = nil
-        //                if i < lc {
-        //                    var check : CGFloat = label5Size + label4Size + label3Size + label2Size + label1Size
-        //                    if check > sizeLimit {
-        //                        label4.setIcon(UIColor.redColor())
-        //                        label4Size = 14
-        //                    }
-        //                }
-        ////
-        ////            case 4:
-        ////                var label : Label? = nil
-        ////                if i < lc {
-        ////
-        ////                }
-        //
-        //            default:
-        //                break;
-        //            }
-        //        }
-        //
-        //        var check : CGFloat = label5Size + label4Size + label3Size + label2Size + label1Size
-        //        var leftlabelF = leftLabel!.frame
-        //        leftlabelF.size.width = width - check;
-        //        leftLabel!.frame = leftlabelF
         
         if (message.isRead) {
             changeStyleToReadDesign()

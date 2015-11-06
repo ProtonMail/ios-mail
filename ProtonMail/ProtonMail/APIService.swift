@@ -24,11 +24,11 @@ let sharedAPIService = APIService()
 class APIService {
     
     var tried : Int = 0
+    var tokenRefreshing = false
     
     typealias CompletionBlock = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, error: NSError?) -> Void
     typealias CompletionFetchDetail = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, message:Message?, error: NSError?) -> Void
-    
-    
+
     enum HTTPMethod {
         case DELETE
         case GET
@@ -285,6 +285,7 @@ class APIService {
     }
     
     func request(#method: HTTPMethod, path: String, parameters: AnyObject?, authenticated: Bool = true, completion: CompletionBlock?) {
+        
         let authBlock: AuthCredentialBlock = { _, error in
             if error == nil {
                 let (successBlock, failureBlock) = self.afNetworkingBlocksForRequest(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)

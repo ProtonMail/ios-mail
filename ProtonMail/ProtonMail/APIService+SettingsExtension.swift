@@ -20,7 +20,7 @@ import Foundation
 extension APIService {
     
     private struct SettingPath {
-        static let base = "/settings"
+        static let base = AppConstants.BaseAPIPath + "/settings"
     }
     
     func settingUpdateDisplayName(displayName: String, completion: CompletionBlock) {

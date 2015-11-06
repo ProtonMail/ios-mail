@@ -113,9 +113,7 @@ class LabelsView: PMView {
         self.sender = leftText;
         self.labels = labels;
         
-        //if self.inited {
-            self.update();
-       // }
+        self.update();
     }
     
     private func update() {
@@ -141,7 +139,7 @@ class LabelsView: PMView {
                             return ;
                         }
                         labelView.text = "  \(label.name.trim())  "
-                        let color = UIColor(hexString: label.color, alpha: 1.0)
+                        let color = label.color.isEmpty ? UIColor.whiteColor() : UIColor(hexString: label.color, alpha: 1.0)
                         labelView.textColor = color
                         labelView.layer.borderColor = color.CGColor
                         
@@ -164,7 +162,7 @@ class LabelsView: PMView {
                     var check : CGFloat = labelsSize[0] + labelsSize[1] + labelsSize[2] + labelsSize[3] + labelsSize[4]
                     let labelView = labelViews[i]
                     let imageView = imageViews[i]
-
+                    
                     let labelConstraint = labelLayoutConstraints[i]
                     if  labels.count == i + 1 {
                         labelView.hidden = false;
@@ -175,7 +173,7 @@ class LabelsView: PMView {
                             if check > sizeLimit {
                                 if let text = labelView.text?.trim() {
                                     if count(text) > 0 {
-                                         labelView.text = "  " + text[0] + "  ";
+                                        labelView.text = "  " + text[0] + "  ";
                                     }
                                 }
                                 

@@ -21,7 +21,7 @@ import Foundation
 extension APIService {
     
     private struct MessagePath {
-        static let base = "/messages"
+        static let base = AppConstants.BaseAPIPath + "/messages"
     }
    
     enum Filter: Int {

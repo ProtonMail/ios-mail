@@ -172,6 +172,10 @@ extension UIColor
             hex = hex.substringFromIndex(advance(hex.startIndex, 1))
         }
         
+        if count(hex) == 0 {
+            hex = "000000"
+        }
+        
         // Check for string length
         assert(count(hex) == 6 || count(hex) == 3)
         

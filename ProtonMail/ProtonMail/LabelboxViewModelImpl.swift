@@ -34,7 +34,6 @@ public class LabelboxViewModelImpl : MailboxViewModel {
     }
     
     public override func getSwipeTitle(action: MessageSwipeAction) -> String {
-        
         return action.description;
     }
     
@@ -61,16 +60,23 @@ public class LabelboxViewModelImpl : MailboxViewModel {
         return fetchedResultsController
     }
     
+    private func getLabelID() -> String {
+        if label.managedObjectContext != nil {
+            return label.labelID
+        }
+        return "unknown"
+    }
+    
     public override func lastUpdateTime() -> LastUpdatedStore.UpdateTime {
-        return lastUpdatedStore.labelsLastForKey(label.labelID)
+        return lastUpdatedStore.labelsLastForKey(self.getLabelID())
     }
     
     override func fetchMessages(MessageID: String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
-        sharedMessageDataService.fetchMessagesForLabels(self.label.labelID, MessageID: MessageID, Time:Time, foucsClean: foucsClean, completion:completion)
+        sharedMessageDataService.fetchMessagesForLabels(self.getLabelID(), MessageID: MessageID, Time:Time, foucsClean: foucsClean, completion:completion)
     }
     
     override func fetchNewMessages(Time: Int, completion: CompletionBlock?) {
-        sharedMessageDataService.fetchNewMessagesForLabels(self.label.labelID, Time: Time, completion: completion)
+        sharedMessageDataService.fetchNewMessagesForLabels(self.getLabelID(), Time: Time, completion: completion)
     }
     
 }

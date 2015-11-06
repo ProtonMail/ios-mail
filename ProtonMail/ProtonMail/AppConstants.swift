@@ -17,12 +17,14 @@ class AppConstants {
     
     static var AppVersion : Int = 1;
     static let BaseURLString : String = "https://api.protonmail.ch"
-    
+    //static let BaseURLString : String = "http://protonmail.blue/api"
     //static let BaseURLString : String = "https://test-api.protonmail.ch"
     //static let BaseURLString : String = "http://feng.api.com"
     //static let BaseURLString = "https://dev-api.protonmail.ch"
     //static let BaseURLString = "http://protonmail.xyz"
-    
+
+    static let BaseAPIPath : String = ""  //"/api"
+
     static var getDebugOption : String {
         get {
             #if DEBUG

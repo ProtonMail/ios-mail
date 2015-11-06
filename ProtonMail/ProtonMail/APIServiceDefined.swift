@@ -9,12 +9,10 @@
 import Foundation
 
 
-
-
-
 public struct MessageAPI {
+    
     /// base message api path
-    static let Path :String = "/messages"
+    static let Path :String = AppConstants.BaseAPIPath + "/messages"
     
     
     /// fetch message request version
@@ -34,7 +32,7 @@ public struct MessageAPI {
 
 public struct AttachmentAPI {
     /// base message api path
-    static let Path :String = "/attachments"
+    static let Path :String = AppConstants.BaseAPIPath + "/attachments"
     
     
     /// fetch message request version
@@ -44,7 +42,7 @@ public struct AttachmentAPI {
 }
 
 public struct LabelAPI {
-    static let Path :String = "/labels"
+    static let Path :String = AppConstants.BaseAPIPath + "/labels"
     
     //
     static let V_LabelFetchRequest : Int = 1
@@ -54,7 +52,7 @@ public struct LabelAPI {
 
 public struct AuthAPI {
     /// base message api path
-    static let Path :String = "/auth"
+    static let Path :String = AppConstants.BaseAPIPath + "/auth"
     
     /// fetch message request version
     static let V_AuthRequest : Int = 1
@@ -63,7 +61,7 @@ public struct AuthAPI {
 
 public struct SettingsAPI {
     /// base message api path
-    static let Path :String = "/settings"
+    static let Path :String = AppConstants.BaseAPIPath + "/settings"
     
     /// fetch message request version
     static let V_SettingsUpdateDomainRequest : Int = 1
@@ -76,7 +74,7 @@ public struct SettingsAPI {
 
 public struct EventAPI {
     /// base event api path
-    public static let Path :String = "/events"
+    public static let Path :String = AppConstants.BaseAPIPath + "/events"
     
     /// current event api version
     public static let V_EventCheckRequest : Int = 1
@@ -86,7 +84,7 @@ public struct EventAPI {
 
 
 public struct BugsAPI {
-    static let Path :String = "/bugs"
+    static let Path :String = AppConstants.BaseAPIPath + "/bugs"
     
     static let V_BugsReportRequest : Int = 1
 }
