@@ -192,7 +192,7 @@ class MessageViewController: ProtonMailViewController {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "touchStatusBarClick", object:nil)
         //self.emailView?.contentWebView.userInteractionEnabled = false;
-        //self.updateEmailBody();
+        self.updateEmailBody(force : true);
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -213,13 +213,13 @@ class MessageViewController: ProtonMailViewController {
     }
     
     // MARK : private function
-    private func updateEmailBody () {
+    private func updateEmailBody (force forceReload : Bool = false) {
         if (self.message.hasAttachments) {
             let atts = self.message.attachments.allObjects as! [Attachment]
             self.emailView?.updateEmailAttachment(atts);
         }
         
-        if !self.bodyLoaded && self.emailView != nil {
+        if (!self.bodyLoaded || forceReload) && self.emailView != nil {
             var bodyText = NSLocalizedString("Loading...")
             if self.message.isDetailDownloaded {
                 self.bodyLoaded = true
