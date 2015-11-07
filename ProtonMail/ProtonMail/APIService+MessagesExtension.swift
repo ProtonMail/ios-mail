@@ -59,8 +59,8 @@ extension APIService {
     func PUT<T: ApiResponse>  ( apiRequest : ApiRequest<T>!, completion: CompletionBlock?) {
         var parameterStrings = apiRequest.toDictionary()
         setApiVesion(apiRequest.getVersion(), appVersion: AppConstants.AppVersion)
-        request(method: .PUT, path: apiRequest.getRequestPath(), parameters: parameterStrings, completion: nil)
-        completion!(task: nil, response: nil, error: nil)
+        request(method: .PUT, path: apiRequest.getRequestPath(), parameters: parameterStrings, completion: completion)
+        //completion!(task: nil, response: nil, error: nil)
     }
 
     func GET<T: ApiResponse>  ( apiRequest : ApiRequest<T>!, completion: CompletionBlock?) {
