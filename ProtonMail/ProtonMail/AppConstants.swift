@@ -23,7 +23,7 @@ class AppConstants {
     //static let BaseURLString = "https://dev-api.protonmail.ch"
     //static let BaseURLString = "http://protonmail.xyz"
 
-    static let BaseAPIPath : String = ""  //"/api"
+    static let BaseAPIPath : String = ""
 
     static var getDebugOption : String {
         get {
