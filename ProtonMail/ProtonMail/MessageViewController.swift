@@ -149,9 +149,9 @@ class MessageViewController: ProtonMailViewController {
         return true
     }
     
-    override func supportedInterfaceOrientations() -> Int {
-        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
-    }
+//    override func supportedInterfaceOrientations() -> Int {
+//        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
+//    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toCompose" {
@@ -197,7 +197,7 @@ class MessageViewController: ProtonMailViewController {
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
-        self.emailView?.contentWebView.stringByEvaluatingJavaScriptFromString("window.getSelection().removeAllRanges();")
+        //self.emailView?.contentWebView.stringByEvaluatingJavaScriptFromString("window.getSelection().removeAllRanges();")
         //self.emailView?.contentWebView.reload()
     }
     

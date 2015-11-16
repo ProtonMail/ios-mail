@@ -45,8 +45,8 @@ class QuickViewViewController: QLPreviewController {
     
     override func viewWillDisappear(animated: Bool) {
         isPresented = false
-        let value = UIInterfaceOrientationMask.Portrait.rawValue
-        UIDevice.currentDevice().setValue(value, forKey: "orientation")
+//        let value = UIInterfaceOrientationMask.Portrait.rawValue
+//        UIDevice.currentDevice().setValue(value, forKey: "orientation")
         super.viewWillDisappear(animated)
     }
 
@@ -67,9 +67,9 @@ class QuickViewViewController: QLPreviewController {
         return true
     }
 
-    override func supportedInterfaceOrientations() -> Int {
-        return Int(UIInterfaceOrientationMask.Portrait.rawValue) | Int(UIInterfaceOrientationMask.Landscape.rawValue);
-    }
+//    override func supportedInterfaceOrientations() -> Int {
+//        return Int(UIInterfaceOrientationMask.Portrait.rawValue) | Int(UIInterfaceOrientationMask.Landscape.rawValue);
+//    }
 
     /*
     // MARK: - Navigation
