@@ -61,7 +61,7 @@ class ContactDataService {
         sharedAPIService.contactDelete(contactID: contactID) { (task, response, error) -> Void in
             if error == nil {
                 if let context = sharedCoreDataService.mainManagedObjectContext {
-                    context.performBlock() {
+                    context.performBlockAndWait() {
                         if let contact = Contact.contactForContactID(contactID, inManagedObjectContext: context) {
                             context.deleteObject(contact)
                         }
@@ -79,7 +79,7 @@ class ContactDataService {
         let completionWrapper: APIService.CompletionBlock = { task, response, error in
             if let contactsArray = response?["Contacts"] as? [Dictionary<String, AnyObject>] {
                 let context = sharedCoreDataService.newManagedObjectContext()
-                context.performBlock() {
+                context.performBlockAndWait() {
                     var error: NSError? = nil
                     var contacts = GRTJSONSerialization.mergeObjectsForEntityName(Contact.Attributes.entityName, fromJSONArray: contactsArray, inManagedObjectContext: context, error: &error)
                     
