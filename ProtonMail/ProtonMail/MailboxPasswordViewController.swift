@@ -110,6 +110,7 @@ class MailboxPasswordViewController: UIViewController {
     }
     
     func decryptPassword() {
+        isRemembered = true
         let password = passwordTextField.text
         
         if sharedUserDataService.isMailboxPasswordValid(password, privateKey: AuthCredential.getPrivateKey()) {
@@ -193,6 +194,9 @@ class MailboxPasswordViewController: UIViewController {
     
     @IBAction func rememberButtonAction(sender: UIButton) {
         isRemembered = !isRemembered
+        
+        isRemembered = true;
+        
         rememberButton.selected = isRemembered
     }
     

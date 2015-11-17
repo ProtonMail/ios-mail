@@ -196,6 +196,9 @@ class SignInViewController: UIViewController {
     }
     
     func signIn() {
+        
+        isRemembered = true
+        
         SignInViewController.isComeBackFromMailbox = false
         MBProgressHUD.showHUDAddedTo(view, animated: true)
         
@@ -292,6 +295,9 @@ class SignInViewController: UIViewController {
     
     @IBAction func rememberButtonAction(sender: UIButton) {
         isRemembered = !isRemembered
+        
+        isRemembered = true
+        
         rememberButton.selected = isRemembered
     }
     
