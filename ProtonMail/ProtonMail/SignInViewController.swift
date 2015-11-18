@@ -64,6 +64,8 @@ class SignInViewController: UIViewController {
     
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
     
+    private let secureStore = KeyChainStore()
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -72,7 +74,8 @@ class SignInViewController: UIViewController {
         super.viewDidLoad()
         
         setupTextFields()
-        
+        rememberButton.selected = isRemembered
+        setupTextFields();
         setupSignInButton()
         signInIfRememberedCredentials()
         
@@ -136,7 +139,20 @@ class SignInViewController: UIViewController {
         NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
         
         updateSignInButton(usernameText: usernameTextField.text, passwordText: passwordTextField.text)
-        
+
+        let fadeOutTime = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 1.0))
+        dispatch_after(fadeOutTime, dispatch_get_main_queue()) {
+            UIView.animateWithDuration(0.5, animations: {
+                let secret = self.secureStore.secret
+                PMLog.D("\(secret)");
+                }, completion: {
+                    _ in
+                    //  self.secretRetrievalLabel.text = "<placeholder>".
+                    // PMLog.D("\(secret)")
+            })
+        }
+
+        //PMLog.D("\(secret)");
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -222,15 +238,40 @@ class SignInViewController: UIViewController {
     }
     
     func signIn() {
-        
         isRemembered = true
         
         SignInViewController.isComeBackFromMailbox = false
-        MBProgressHUD.showHUDAddedTo(view, animated: true)
+        //MBProgressHUD.showHUDAddedTo(view, animated: true)
         
         var username = (usernameTextField.text ?? "").trim();
         var password = (passwordTextField.text ?? "").trim();
         
+        
+//        let fadeOutTime = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 1.0))
+//        dispatch_after(fadeOutTime, dispatch_get_main_queue()) {
+//            UIView.animateWithDuration(0.5, animations: {
+//                self.secureStore.secret = "This is a test secret";
+//                }, completion: {
+//                    _ in
+//                    //  self.secretRetrievalLabel.text = "<placeholder>".
+//                    // PMLog.D("\(secret)")
+//            })
+//        }
+//
+//        
+//        let fadeOutTime = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 1.0))
+//        dispatch_after(fadeOutTime, dispatch_get_main_queue()) {
+//            UIView.animateWithDuration(0.5, animations: {
+//                let secret = self.secureStore.secret
+//                PMLog.D("\(secret)");
+//                }, completion: {
+//                    _ in
+//                    //  self.secretRetrievalLabel.text = "<placeholder>".
+//                    // PMLog.D("\(secret)")
+//            })
+//        }
+        
+//        self.secureStore.secret = "This is a test secret";
         sharedUserDataService.signIn(username, password: password, isRemembered: isRemembered) { _, error in
             MBProgressHUD.hideHUDForView(self.view, animated: true)
             if let error = error {

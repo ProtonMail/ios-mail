@@ -193,6 +193,7 @@
 		7582E2F21B015DE400FEA38B /* MessageDetailBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582E2F11B015DE400FEA38B /* MessageDetailBottomView.swift */; };
 		7582E2F41B015DF100FEA38B /* MessageDetailBottomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */; };
 		758C44841C6D09FE00E6E867 /* EncryptionSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758C44831C6D09FE00E6E867 /* EncryptionSetupViewController.swift */; };
+		7588BB401BFBE05A00EC8EFD /* SecureStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7588BB3F1BFBE05A00EC8EFD /* SecureStore.swift */; };
 		759339C01ABB45C700535F1B /* ViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339BF1ABB45C700535F1B /* ViewModelFactory.swift */; };
 		759339C41ABB5EA900535F1B /* SettingDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */; };
 		75978BDB1B28F63100D07501 /* editor.css in Resources */ = {isa = PBXBuildFile; fileRef = 75978BDA1B28F63100D07501 /* editor.css */; };
@@ -452,6 +453,7 @@
 		7582E2F11B015DE400FEA38B /* MessageDetailBottomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDetailBottomView.swift; sourceTree = "<group>"; };
 		7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageDetailBottomView.xib; sourceTree = "<group>"; };
 		758C44831C6D09FE00E6E867 /* EncryptionSetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionSetupViewController.swift; sourceTree = "<group>"; };
+		7588BB3F1BFBE05A00EC8EFD /* SecureStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureStore.swift; sourceTree = "<group>"; };
 		759339BF1ABB45C700535F1B /* ViewModelFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelFactory.swift; sourceTree = "<group>"; };
 		759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDetailsViewModel.swift; sourceTree = "<group>"; };
 		75978BDA1B28F63100D07501 /* editor.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = editor.css; sourceTree = "<group>"; };
@@ -641,6 +643,7 @@
 				072AB6901A8E89AD00AF45D6 /* MonitorSavesDataServiceMessageExtension.swift */,
 				07520CFB1AA67D38000D2175 /* PushNotificationService.swift */,
 				073FD9311A71C60900EB0CAF /* UserDataService.swift */,
+				7588BB3F1BFBE05A00EC8EFD /* SecureStore.swift */,
 				7564898F1B7DBE8C007EA207 /* LabelsDataService.swift */,
 			);
 			name = DataServices;
@@ -1374,6 +1377,7 @@
 				70762C3B1A94EC30006B9693 /* ActivityIndicatorHelper.swift in Sources */,
 				75117C4A1BA22F6200A0CE68 /* RecipientView.swift in Sources */,
 				7518393F1B3DCA3000C714A6 /* EventAPI.swift in Sources */,
+				7588BB401BFBE05A00EC8EFD /* SecureStore.swift in Sources */,
 				075E3DEF1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld in Sources */,
 				07CAB7FE1A880B1200C5E347 /* PersistentQueue.swift in Sources */,
 				7567B0771B3387F700A72A1E /* APIServiceRequest.swift in Sources */,
