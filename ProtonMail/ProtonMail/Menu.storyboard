@@ -194,7 +194,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="menu_inbox" highlightedImage="menu_inbox-active" translatesAutoresizingMaskIntoConstraints="NO" id="Lt3-yt-zm4" userLabel="Inbox Image">
-                                                    <rect key="frame" x="0.0" y="14" width="16" height="16"/>
+                                                    <rect key="frame" x="16" y="14" width="16" height="16"/>
                                                     <animations/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
@@ -227,7 +227,7 @@
                                                     </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Inbox" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xd1-8V-NU7" userLabel="Inbox Label">
-                                                    <rect key="frame" x="32" y="8" width="446" height="28"/>
+                                                    <rect key="frame" x="48" y="8" width="430" height="28"/>
                                                     <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="28" id="Mo6-R7-hFh"/>
@@ -249,7 +249,7 @@
                                             <animations/>
                                             <color key="backgroundColor" red="0.31372549019607843" green="0.31372549019607843" blue="0.38039215686274508" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
-                                                <constraint firstItem="Lt3-yt-zm4" firstAttribute="leading" secondItem="RCw-uN-pgW" secondAttribute="leading" id="8TN-Ym-4Tg">
+                                                <constraint firstItem="Lt3-yt-zm4" firstAttribute="leading" secondItem="RCw-uN-pgW" secondAttribute="leading" constant="16" id="8TN-Ym-4Tg">
                                                     <variation key="widthClass=compact" constant="16"/>
                                                 </constraint>
                                                 <constraint firstAttribute="centerY" secondItem="Lt3-yt-zm4" secondAttribute="centerY" id="HEa-U4-CGa"/>
@@ -3280,13 +3280,13 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ddm-eA-erE"/>
-        <segue reference="hZj-FM-cPb"/>
-        <segue reference="YGe-pV-72F"/>
+        <segue reference="LdN-DE-nXL"/>
+        <segue reference="5rJ-hC-fsT"/>
         <segue reference="pf5-Mm-LDI"/>
         <segue reference="A7E-cY-hB0"/>
-        <segue reference="5rJ-hC-fsT"/>
-        <segue reference="fux-iz-qV0"/>
+        <segue reference="hZj-FM-cPb"/>
         <segue reference="zIE-XJ-wkG"/>
+        <segue reference="fux-iz-qV0"/>
+        <segue reference="ddm-eA-erE"/>
     </inferredMetricsTieBreakers>
 </document>
