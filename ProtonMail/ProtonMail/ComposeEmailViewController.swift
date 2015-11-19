@@ -110,6 +110,10 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         }
     }
     
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        self.composeView.notifyViewSize(true)
+    }
+    
     private func dismissKeyboard() {
         self.composeView.toContactPicker.becomeFirstResponder()
         self.composeView.toContactPicker.resignFirstResponder()
