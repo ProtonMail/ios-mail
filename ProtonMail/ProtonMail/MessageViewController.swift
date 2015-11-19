@@ -260,6 +260,9 @@ class MessageViewController: ProtonMailViewController {
     }
     
     
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        self.emailView?.rotate()
+    }
 }
 
 // MARK
