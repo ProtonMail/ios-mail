@@ -192,11 +192,12 @@ class MessageViewController: ProtonMailViewController {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "touchStatusBarClick", object:nil)
         //self.emailView?.contentWebView.userInteractionEnabled = false;
-        self.updateEmailBody(force : true);
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
+        
+        self.updateEmailBody(force : true);
         //self.emailView?.contentWebView.stringByEvaluatingJavaScriptFromString("window.getSelection().removeAllRanges();")
         //self.emailView?.contentWebView.reload()
     }
