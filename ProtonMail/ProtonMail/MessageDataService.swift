@@ -1367,11 +1367,10 @@ class MessageDataService {
     
     
     private func sendMessageID(messageID: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
-        
         let errorBlock: CompletionBlock = { task, response, error in
             // nothing to send, dequeue request
             sharedMessageQueue.remove(elementID: writeQueueUUID)
-            self.dequeueIfNeeded()
+            //self.dequeueIfNeeded()
             completion?(task: task, response: response, error: error)
         }
         
@@ -1384,6 +1383,12 @@ class MessageDataService {
                         if error != nil && error!.code == APIErrorCode.badParameter {
                             errorBlock(task: task, response: response, error: error)
                             return
+                        }
+                        
+                        if message.managedObjectContext == nil {
+                            NSError.alertMessageSentErrorToast()
+                            errorBlock(task: task, response: nil, error: NSError.badDraft())
+                            return ;
                         }
                         
                         // is encrypt outside
@@ -1405,7 +1410,6 @@ class MessageDataService {
                             if error == nil {
                                 //context.deleteObject(message)MOBA-378
                                 if (message.location == MessageLocation.draft) {
-                                    
                                     var isOutsideUser = false
                                     if let keys = reskeys {
                                         for (key, v) in keys{
@@ -1666,5 +1670,14 @@ extension NSFileManager {
             }
         }
         return attachmentDirectory
+    }
+}
+
+extension NSError {
+    class func badDraft() -> NSError {
+        return apiServiceError(
+            code: APIErrorCode.SendErrorCode.draftBad,
+            localizedDescription: NSLocalizedString("Unable to send the email"),
+            localizedFailureReason: NSLocalizedString("The draft format incorrectly sending failed!"))
     }
 }
