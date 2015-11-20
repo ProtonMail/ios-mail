@@ -47,6 +47,11 @@ class MessageViewController: ProtonMailViewController {
         
         self.setupRightButtons()
         
+        if message == nil || message.managedObjectContext == nil {
+            self.navigationController?.popViewControllerAnimated(true)
+            return
+        }
+        
         self.setupFetchedResultsController(message.messageID)
         
         self.updateHeader()
