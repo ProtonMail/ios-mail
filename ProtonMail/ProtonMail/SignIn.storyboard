@@ -320,7 +320,6 @@
                         <outlet property="usernameTextField" destination="sKV-Mt-Vgi" id="fer-Ki-efM"/>
                         <outlet property="usernameView" destination="dVV-Jm-zNh" id="3ck-k6-aZc"/>
                         <segue destination="Zzb-6r-tlP" kind="show" identifier="mailboxSegue" id="xf0-Do-kI6"/>
-                        <segue destination="cMZ-5g-sJh" kind="show" identifier="goSignUpSegue" id="U1E-ha-CpM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GLw-RM-bn5" userLabel="First Responder" sceneMemberID="firstResponder"/>

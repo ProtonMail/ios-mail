@@ -27,8 +27,8 @@ class SignInViewController: UIViewController {
     private let animationDuration: NSTimeInterval = 0.5
     private let keyboardPadding: CGFloat = 12
     private let buttonDisabledAlpha: CGFloat = 0.5
-    private let signUpURL = NSURL(string: "https://protonmail.ch/invite")!
-    private let forgotPasswordURL = NSURL(string: "https://protonmail.ch/support/reset-password")!
+    private let signUpURL = NSURL(string: "https://protonmail.com/invite")!
+    private let forgotPasswordURL = NSURL(string: "https://protonmail.com/help/reset-login-password")!
     
     static var isComeBackFromMailbox = false
     
@@ -316,10 +316,10 @@ class SignInViewController: UIViewController {
     @IBAction func signUpAction(sender: UIButton) {
         dismissKeyboard()
         
-        self.performSegueWithIdentifier("goSignUpSegue", sender: self)
+//        self.performSegueWithIdentifier("goSignUpSegue", sender: self)
+//        
         
-        
-       // UIApplication.sharedApplication().openURL(signUpURL)
+        UIApplication.sharedApplication().openURL(signUpURL)
     }
     
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
