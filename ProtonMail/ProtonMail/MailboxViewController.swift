@@ -447,6 +447,8 @@ class MailboxViewController: ProtonMailViewController {
                     self.tableView.reloadData()
                 }
             }
+        } else {
+            PMLog.D("should not go here!")
         }
     }
     
