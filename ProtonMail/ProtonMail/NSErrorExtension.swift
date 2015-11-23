@@ -152,11 +152,11 @@ extension NSError {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
         var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
-        hud.detailsLabelText = "Message send error";
+        hud.detailsLabelText = "Message sending failed please try again";
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
         hud.yOffset = 250.0
-        hud.hide(true, afterDelay: 1)
+        hud.hide(true, afterDelay: 2)
     }
     
     class func unknowError() -> NSError {

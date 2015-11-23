@@ -33,6 +33,10 @@ class APIErrorCode {
         static let pwdEmpty = 12024
     }
     
+    struct SendErrorCode {
+        static let draftBad = 70
+    }
+    
     struct ErrorCode {
 
     }

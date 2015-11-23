@@ -198,6 +198,10 @@ class MailboxViewController: ProtonMailViewController {
         
     }
     
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        self.tableView.reloadData()
+    }
+    
     // MARK: - Prepare for segue
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -443,6 +447,8 @@ class MailboxViewController: ProtonMailViewController {
                     self.tableView.reloadData()
                 }
             }
+        } else {
+            PMLog.D("should not go here!")
         }
     }
     

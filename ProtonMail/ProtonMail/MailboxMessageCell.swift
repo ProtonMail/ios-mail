@@ -33,14 +33,6 @@ class MailboxMessageCell: MCSwipeTableViewCell {
     @IBOutlet weak var locationWidth: NSLayoutConstraint!
     @IBOutlet weak var loctionRightSpace: NSLayoutConstraint!
     
-    
-    // @IBOutlet weak var sender: UILabel!
-    @IBOutlet weak var label1: LabelDisplayView!
-    @IBOutlet weak var label2: LabelDisplayView!
-    @IBOutlet weak var label3: LabelDisplayView!
-    @IBOutlet weak var label4: LabelDisplayView!
-    @IBOutlet weak var label5: LabelDisplayView!
-    
     //var leftLabel : UILabel?
     @IBOutlet weak var labelsView: LabelsView!
     
@@ -60,57 +52,7 @@ class MailboxMessageCell: MCSwipeTableViewCell {
         // Initialization code
         checkboxWidth.constant = 0.0
         
-        //        label1.mas_updateConstraints { (make) -> Void in
-        //            make.removeExisting = true
-        //            make.right.equalTo()(self.starImage.mas_left)
-        //            make.bottom.equalTo()(self.starImage.mas_bottom)
-        //            make.top.equalTo()(self.starImage.mas_top)
-        //        }
-        //        label1.hidden = true;
-        //
-        //        label2.mas_updateConstraints { (make) -> Void in
-        //            make.removeExisting = true
-        //            make.right.equalTo()(self.label1.mas_left)
-        //            make.bottom.equalTo()(self.label1.mas_bottom)
-        //            make.top.equalTo()(self.label1.mas_top)
-        //        }
-        //
-        //        label2.hidden = true;
-        //
-        //        label3.mas_updateConstraints { (make) -> Void in
-        //            make.removeExisting = true
-        //            make.right.equalTo()(self.label2.mas_left)
-        //            make.bottom.equalTo()(self.label2.mas_bottom)
-        //            make.top.equalTo()(self.label2.mas_top)
-        //        }
-        //        label3.hidden = true;
-        //
-        //        label4.mas_updateConstraints { (make) -> Void in
-        //            make.removeExisting = true
-        //            make.right.equalTo()(self.label3.mas_left)
-        //            make.bottom.equalTo()(self.label3.mas_bottom)
-        //            make.top.equalTo()(self.label3.mas_top)
-        //        }
-        //        label4.hidden = true;
-        //
-        //        label5.mas_updateConstraints { (make) -> Void in
-        //            make.removeExisting = true
-        //            make.right.equalTo()(self.label4.mas_left)
-        //            make.bottom.equalTo()(self.label4.mas_bottom)
-        //            make.top.equalTo()(self.label4.mas_top)
-        //        }
-        //
-        //        label5.hidden = true;
-        //
         locationLabel.layer.cornerRadius = 2;
-        //        sender.hidden = true;
-        //        sender.mas_updateConstraints { (make) -> Void in
-        //            make.removeExisting = true
-        //            make.left.equalTo()(self.checkboxButton.mas_right)
-        //            make.right.equalTo()(self.label5.mas_left)
-        //            make.bottom.equalTo()(self.label5.mas_bottom)
-        //            make.top.equalTo()(self.label5.mas_top)
-        //        }
     }
     
     override func setSelected(selected: Bool, animated: Bool) {
@@ -168,16 +110,7 @@ class MailboxMessageCell: MCSwipeTableViewCell {
     
     func configureCell(message: Message, showLocation : Bool) {
         self.title.text = message.subject
-        
-        //        if leftLabel == nil {
-        //            leftLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 14, height: 14))
-        //            leftLabel!.textAlignment = .Left
-        //            leftLabel!.font = UIFont.robotoLight(size: UIFont.Size.h6)
-        //            leftLabel!.numberOfLines = 0;
-        //            leftLabel!.textColor = UIColor(hexColorCode: "#838897")
-        //            self.addSubview(leftLabel!)
-        //        }
-        
+    
         if showLocation {
             self.locationLabel.text = " \(message.location.title) "
             locationWidth.constant = self.locationLabel.sizeThatFits(CGSizeZero).width

@@ -72,6 +72,13 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
             make.height.equalTo()(self.kButtonsViewHeight)
         }
     }
+    
+    func rotate() {
+        let w = UIScreen.mainScreen().applicationFrame.width;
+        self.emailHeader.frame = CGRect(x: 0, y: 0, width: w, height: self.emailHeader.getHeight())
+        self.emailHeader.makeConstraints()
+        self.emailHeader.updateHeaderLayout()
+    }
 
     // MARK : config values 
     func updateHeaderData (title : String, sender : ContactVO, to:[ContactVO]?, cc : [ContactVO]?, bcc: [ContactVO]?, isStarred:Bool, time : NSDate?, encType: EncryptTypes, labels : [Label]?) {

@@ -47,6 +47,11 @@ class MessageViewController: ProtonMailViewController {
         
         self.setupRightButtons()
         
+        if message == nil || message.managedObjectContext == nil {
+            self.navigationController?.popViewControllerAnimated(true)
+            return
+        }
+        
         self.setupFetchedResultsController(message.messageID)
         
         self.updateHeader()
@@ -149,9 +154,9 @@ class MessageViewController: ProtonMailViewController {
         return true
     }
     
-    override func supportedInterfaceOrientations() -> Int {
-        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
-    }
+//    override func supportedInterfaceOrientations() -> Int {
+//        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
+//    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toCompose" {
@@ -192,12 +197,13 @@ class MessageViewController: ProtonMailViewController {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "touchStatusBarClick", object:nil)
         //self.emailView?.contentWebView.userInteractionEnabled = false;
-        self.updateEmailBody(force : true);
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
-        self.emailView?.contentWebView.stringByEvaluatingJavaScriptFromString("window.getSelection().removeAllRanges();")
+        
+        self.updateEmailBody(force : true);
+        //self.emailView?.contentWebView.stringByEvaluatingJavaScriptFromString("window.getSelection().removeAllRanges();")
         //self.emailView?.contentWebView.reload()
     }
     
@@ -260,6 +266,9 @@ class MessageViewController: ProtonMailViewController {
     }
     
     
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        self.emailView?.rotate()
+    }
 }
 
 // MARK

@@ -31,7 +31,7 @@ class SettingTableViewController: ProtonMailViewController {
     
     
     /// cells
-    let SettingGeneralCell = "setting_general"
+    let SettingGeneralCell = "settings_twolines"
     let SettingDomainsCell = "setting_domains"
     let SettingStorageCell = "setting_storage_cell"
     let HeaderCell = "header_cell"
@@ -139,7 +139,7 @@ class SettingTableViewController: ProtonMailViewController {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if setting_headers.count > indexPath.section {
             if setting_headers[indexPath.section] == .General {
-                let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! GeneralSettingViewCell
+                let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! SettingsCell
                 if setting_general_items.count > indexPath.row {
                     let itme: SGItems = setting_general_items[indexPath.row];
                     cell.LeftText.text = itme.description;
@@ -252,6 +252,7 @@ class SettingTableViewController: ProtonMailViewController {
     {
         return CellHeight;
     }
+    
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if setting_headers[indexPath.section] == SettingSections.General {

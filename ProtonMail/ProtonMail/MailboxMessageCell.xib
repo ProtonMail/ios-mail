@@ -109,18 +109,14 @@
                         <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="iRK-md-p80"/>
-                            <constraint firstAttribute="width" constant="20" id="yaw-js-fIe">
-                                <variation key="widthClass=compact" constant="20"/>
-                            </constraint>
+                            <constraint firstAttribute="width" constant="20" id="yaw-js-fIe"/>
                         </constraints>
                     </imageView>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_replied" translatesAutoresizingMaskIntoConstraints="NO" id="ERi-2M-ccE">
                         <rect key="frame" x="52" y="13" width="20" height="16"/>
                         <animations/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="20" id="DB7-Cd-pNk">
-                                <variation key="widthClass=compact" constant="20"/>
-                            </constraint>
+                            <constraint firstAttribute="width" constant="20" id="DB7-Cd-pNk"/>
                             <constraint firstAttribute="height" constant="16" id="fhd-kT-5Nt"/>
                         </constraints>
                     </imageView>
@@ -195,7 +191,7 @@
                 <outlet property="timeWidth" destination="g31-AH-9IZ" id="YgU-BO-otT"/>
                 <outlet property="title" destination="SIc-09-lb0" id="C1X-fG-0Xu"/>
             </connections>
-            <point key="canvasLocation" x="384" y="258.5"/>
+            <point key="canvasLocation" x="150" y="357.5"/>
         </tableViewCell>
     </objects>
     <resources>

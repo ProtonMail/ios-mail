@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>FMWK</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.4.0</string>
+	<string>3.4.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleSupportedPlatforms</key>
@@ -39,9 +39,9 @@
 	<key>DTSDKName</key>
 	<string>iphoneos9.1</string>
 	<key>DTXcode</key>
-	<string>0710</string>
+	<string>0711</string>
 	<key>DTXcodeBuild</key>
-	<string>7B91b</string>
+	<string>7B1005</string>
 	<key>MinimumOSVersion</key>
 	<string>6.0</string>
 	<key>NSHumanReadableCopyright</key>
