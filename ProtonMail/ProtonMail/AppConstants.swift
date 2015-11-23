@@ -11,7 +11,7 @@ import Foundation
 
 class AppConstants {
     
-    static let CacheVersion : Int = 67
+    static let CacheVersion : Int = 68
     static let AuthCacheVersion : Int = 7
     static let SpaceWarningThreshold: Double = 80
     
