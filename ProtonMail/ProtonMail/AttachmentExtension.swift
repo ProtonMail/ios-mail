@@ -103,11 +103,16 @@ extension UIImage {
         if let fileData = UIImageJPEGRepresentation(self, 0) {
             let attachment = Attachment(context: message.managedObjectContext!)
             attachment.attachmentID = "0"
-            attachment.message = message
             attachment.fileName = fileName
             attachment.mimeType = "image/jpg"
             attachment.fileData = fileData
             attachment.fileSize = fileData.length
+            attachment.isTemp = false
+            attachment.keyPacket = ""
+            attachment.localURL = NSURL();
+            
+            attachment.message = message
+            
             var error: NSError? = nil
             error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
             if error != nil {

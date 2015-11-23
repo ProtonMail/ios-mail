@@ -1232,10 +1232,12 @@ class MessageDataService {
                                 message.isDetailDownloaded = true
                                 
                                 //let attachments = self.attachmentsForMessage(message)
+                                var hasTemp = false;
                                 var attachments = message.mutableSetValueForKey("attachments")
                                 for att in attachments {
                                     if var att = att as? Attachment {
                                         if att.isTemp {
+                                            hasTemp = true;
                                             context.deleteObject(att)
                                         }
                                     }
@@ -1244,13 +1246,16 @@ class MessageDataService {
                                 if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
                                     NSLog("\(__FUNCTION__) error: \(error)")
                                 }
-                                var checkError: NSError?
-                                GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: mess, inManagedObjectContext: message.managedObjectContext!, error: &checkError)
-                                if checkError == nil {
-                                }
                                 
-                                if let error = context.saveUpstreamIfNeeded() {
-                                    NSLog("\(__FUNCTION__) error: \(error)")
+                                if hasTemp {
+                                    var checkError: NSError?
+                                    GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: mess, inManagedObjectContext: context, error: &checkError)
+                                    if checkError == nil {
+                                    }
+                                    
+                                    if let error = context.saveUpstreamIfNeeded() {
+                                        NSLog("\(__FUNCTION__) error: \(error)")
+                                    }
                                 }
                             }
                         }
