@@ -31,14 +31,19 @@ extension APIService {
         
         // 1 : ios dev
         // 2 : ios production
-        // 3 : 
+        // 3 : ios simulator
         
         // 10 : android
         
+        // 20 : ios enterprice dev
+        // 21 : ios enterprice production
+        // 23 : ios enterprice simulator
+        
+    
         #if DEBUG
-            let env = 1
+            let env = 20
         #else
-            let env = 2
+            let env = 21
         #endif
         
         var ver = "1.0.0"
