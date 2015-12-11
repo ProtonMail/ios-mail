@@ -42,7 +42,9 @@ class PushNotificationService {
     
     func registerForRemoteNotifications() {
         if sharedUserDataService.isSignedIn {
-            UIApplication.sharedApplication().registerForRemoteNotifications()
+            let types: UIRemoteNotificationType = .Badge | .Sound | .Alert
+            UIApplication.sharedApplication().registerForRemoteNotificationTypes(types)
+           // UIApplication.sharedApplication().registerForRemoteNotifications()
         }
     }
     
