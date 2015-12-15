@@ -49,6 +49,7 @@ class SignInViewController: UIViewController {
     
     @IBOutlet weak var signInLabel: UILabel!
     @IBOutlet weak var backgroundImage: UIImageView!
+
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

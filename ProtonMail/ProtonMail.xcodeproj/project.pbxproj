@@ -198,7 +198,8 @@
 		75B179501B377748006044D4 /* ContactVOExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B1794F1B377748006044D4 /* ContactVOExtension.swift */; };
 		75BB65761BD5C88800F9432D /* AttachmentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BB65751BD5C88800F9432D /* AttachmentAPI.swift */; };
 		75BF9A521B5F0F500087AD2E /* BugsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF9A511B5F0F500087AD2E /* BugsAPI.swift */; };
-		75C037441C1F86DE0071E04B /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C037431C1F86DE0071E04B /* WelcomeViewController.swift */; };
+		75C037461C1F94D20071E04B /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C037451C1F94D20071E04B /* SplashViewController.swift */; };
+		75C037481C1F9A940071E04B /* SplashSignInSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C037471C1F9A940071E04B /* SplashSignInSegue.swift */; };
 		75C2175A1AD6F1B800978579 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C217581AD6F1B800978579 /* Crashlytics.framework */; };
 		75C2175B1AD6F1B800978579 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C217591AD6F1B800978579 /* Fabric.framework */; };
 		75CFA26F1B223DBB006E4465 /* SharedCacheBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CFA26E1B223DBB006E4465 /* SharedCacheBase.swift */; };
@@ -438,7 +439,8 @@
 		75B1794F1B377748006044D4 /* ContactVOExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactVOExtension.swift; sourceTree = "<group>"; };
 		75BB65751BD5C88800F9432D /* AttachmentAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentAPI.swift; sourceTree = "<group>"; };
 		75BF9A511B5F0F500087AD2E /* BugsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugsAPI.swift; sourceTree = "<group>"; };
-		75C037431C1F86DE0071E04B /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
+		75C037451C1F94D20071E04B /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		75C037471C1F9A940071E04B /* SplashSignInSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashSignInSegue.swift; sourceTree = "<group>"; };
 		75C217581AD6F1B800978579 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		75C217591AD6F1B800978579 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		75CFA26E1B223DBB006E4465 /* SharedCacheBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedCacheBase.swift; sourceTree = "<group>"; };
@@ -487,9 +489,10 @@
 		07009EFD1A659A8000129B07 /* Sign In */ = {
 			isa = PBXGroup;
 			children = (
+				75C037471C1F9A940071E04B /* SplashSignInSegue.swift */,
+				75C037451C1F94D20071E04B /* SplashViewController.swift */,
 				0713237E1A7844390043DB41 /* MailboxPasswordViewController.swift */,
 				07009EFE1A659AD400129B07 /* SignIn.storyboard */,
-				75C037431C1F86DE0071E04B /* WelcomeViewController.swift */,
 				07009F001A65CF4800129B07 /* SignInViewController.swift */,
 				0713238F1A79BD8F0043DB41 /* TextInsetTextField.swift */,
 				754387D81AB35EB40003B0AC /* SignUpViewController.swift */,
@@ -1361,6 +1364,7 @@
 				75FFCACA1B5D70FC0065BFEC /* APIErrors.swift in Sources */,
 				07B1237E1AB8ECEC006EA38C /* AttachmentCollectionViewCell.swift in Sources */,
 				70945E701A8135EC002B6837 /* UILabel+ProtonMail.swift in Sources */,
+				75C037481C1F9A940071E04B /* SplashSignInSegue.swift in Sources */,
 				7567B06D1B334FA400A72A1E /* ViewModelService.swift in Sources */,
 				7508BAC61B87C6EA001A3564 /* UIApplicationExtension.swift in Sources */,
 				701DDE8E1AA64DEB0038149C /* MBContactPicker.m in Sources */,
@@ -1394,7 +1398,7 @@
 				07DD68A71A9815DF00ED130C /* NSURLExtension.swift in Sources */,
 				706932AB1A77BE3D00A75A93 /* SearchViewController.swift in Sources */,
 				071323A01A7C1AB10043DB41 /* NSTimeIntervalExtension.swift in Sources */,
-				75C037441C1F86DE0071E04B /* WelcomeViewController.swift in Sources */,
+				75C037461C1F94D20071E04B /* SplashViewController.swift in Sources */,
 				7564899C1B7F2B1B007EA207 /* LabelboxViewModelImpl.swift in Sources */,
 				701DDE921AA64DEB0038149C /* MBContactCollectionViewEntryCell.m in Sources */,
 				7567B0731B3363D000A72A1E /* ControllerDefined.swift in Sources */,
