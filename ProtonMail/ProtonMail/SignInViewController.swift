@@ -52,9 +52,6 @@ class SignInViewController: UIViewController {
     private let hidePriority : UILayoutPriority = 1.0;
     private let showPriority: UILayoutPriority = 750.0;
     
-    @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var contentView: UIView!
-    
     // Constraints
     @IBOutlet weak var userLeftPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var userTopPaddingConstraint: NSLayoutConstraint!
@@ -103,15 +100,12 @@ class SignInViewController: UIViewController {
     func configConstraint(show : Bool) -> Void {
         let level = show ? showPriority : hidePriority
         
-        
         userLeftPaddingConstraint.priority = level
         userTopPaddingConstraint.priority = level
         logoLeftPaddingConstraint.priority = level
         logoTopPaddingConstraint.priority = level
         
         userNameTopPaddingConstraint.priority = level
-        
-        
     }
     
     @IBAction func showPasswordAction(sender: UIButton) {
@@ -141,7 +135,7 @@ class SignInViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: true)
         NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
         
-       // updateSignInButton(usernameText: usernameTextField.text, passwordText: passwordTextField.text)
+        updateSignInButton(usernameText: usernameTextField.text, passwordText: passwordTextField.text)
         
     }
     

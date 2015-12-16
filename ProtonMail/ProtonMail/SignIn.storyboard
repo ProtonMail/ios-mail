@@ -234,6 +234,9 @@
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="rb7-9h-TvB" id="2p0-on-83u"/>
+                                                        </connections>
                                                     </textField>
                                                 </subviews>
                                                 <animations/>
@@ -265,6 +268,9 @@
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <state key="selected" image="sign_invisiblecharacters"/>
+                                                        <connections>
+                                                            <action selector="showPasswordAction:" destination="rb7-9h-TvB" eventType="touchUpInside" id="hbl-0y-DFm"/>
+                                                        </connections>
                                                     </button>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lrN-n3-M2Q">
                                                         <rect key="frame" x="0.0" y="39" width="544" height="1"/>
@@ -282,6 +288,9 @@
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="rb7-9h-TvB" id="bxb-zI-7Lw"/>
+                                                        </connections>
                                                     </textField>
                                                 </subviews>
                                                 <animations/>
@@ -316,6 +325,9 @@
                                                         <integer key="value" value="6"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="signInAction:" destination="rb7-9h-TvB" eventType="touchUpInside" id="Hmu-kg-X0G"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <animations/>
@@ -365,6 +377,9 @@
                             <constraint firstItem="Sfi-uH-1aX" firstAttribute="top" secondItem="B79-ZV-yWF" secondAttribute="bottom" id="wMO-Ze-6yl"/>
                             <constraint firstItem="B79-ZV-yWF" firstAttribute="top" secondItem="Jgs-h6-fBb" secondAttribute="top" id="zsU-2J-QWi"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="SeG-zI-KGu" appends="YES" id="ydO-6V-5Sh"/>
+                        </connections>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="UC0-zs-LZ5"/>
@@ -384,6 +399,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GLw-RM-bn5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="SeG-zI-KGu">
+                    <connections>
+                        <action selector="tapAction:" destination="rb7-9h-TvB" id="6UY-x1-oVV"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="214" y="190"/>
         </scene>
