@@ -17,7 +17,7 @@
 import Foundation
 
 class TextInsetTextField: UITextField {
-    private let inset: CGFloat = 24
+    private let inset: CGFloat = 0
     
     override func editingRectForBounds(bounds: CGRect) -> CGRect {
         return CGRectInset(super.editingRectForBounds(bounds), inset, 0)

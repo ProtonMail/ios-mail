@@ -23,7 +23,6 @@ class SignInViewController: UIViewController {
     private let kMailboxSegue = "mailboxSegue"
     private let kSignUpKeySegue = "signUpKeySegue"
     
-    
     private let animationDuration: NSTimeInterval = 0.5
     private let keyboardPadding: CGFloat = 12
     private let buttonDisabledAlpha: CGFloat = 0.5
@@ -32,10 +31,8 @@ class SignInViewController: UIViewController {
     
     static var isComeBackFromMailbox = false
     
-    var isRemembered = false
     var isShowpwd = false;
-    
-    @IBOutlet weak var keyboardPaddingConstraint: NSLayoutConstraint!
+    var isRemembered = false;
     
     @IBOutlet weak var usernameView: UIView!
     @IBOutlet weak var passwordView: UIView!
@@ -43,13 +40,29 @@ class SignInViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     
     @IBOutlet weak var signInButton: UIButton!
-    @IBOutlet weak var signUpButton: UIButton!
-    @IBOutlet weak var forgotButton: UIButton!
-    @IBOutlet weak var rememberButton: UIButton!
+    
+    //@IBOutlet weak var signUpButton: UIButton!
+    //@IBOutlet weak var forgotButton: UIButton!
+    //@IBOutlet weak var rememberButton: UIButton!
     
     @IBOutlet weak var signInLabel: UILabel!
     @IBOutlet weak var backgroundImage: UIImageView!
-
+    
+    //define
+    private let hidePriority : UILayoutPriority = 1.0;
+    private let showPriority: UILayoutPriority = 750.0;
+    
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var contentView: UIView!
+    
+    // Constraints
+    @IBOutlet weak var userLeftPaddingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var userTopPaddingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var logoLeftPaddingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var logoTopPaddingConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var userNameTopPaddingConstraint: NSLayoutConstraint!
+    
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -62,10 +75,9 @@ class SignInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupTextFields()
         
-        rememberButton.selected = isRemembered
-        setupTextFields();
         setupSignInButton()
         setupSignUpButton()
         signInIfRememberedCredentials()
@@ -88,7 +100,19 @@ class SignInViewController: UIViewController {
         return  Int(UIInterfaceOrientationMask.Portrait.rawValue)
     }
     
-    
+    func configConstraint(show : Bool) -> Void {
+        let level = show ? showPriority : hidePriority
+        
+        
+        userLeftPaddingConstraint.priority = level
+        userTopPaddingConstraint.priority = level
+        logoLeftPaddingConstraint.priority = level
+        logoTopPaddingConstraint.priority = level
+        
+        userNameTopPaddingConstraint.priority = level
+        
+        
+    }
     
     @IBAction func showPasswordAction(sender: UIButton) {
         isShowpwd = !isShowpwd
@@ -117,8 +141,8 @@ class SignInViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: true)
         NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
         
-        updateSignInButton(usernameText: usernameTextField.text, passwordText: passwordTextField.text)
-
+       // updateSignInButton(usernameText: usernameTextField.text, passwordText: passwordTextField.text)
+        
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -141,13 +165,6 @@ class SignInViewController: UIViewController {
     {
         self.usernameView.alpha = 0.0
         self.passwordView.alpha = 0.0
-        
-        self.rememberButton.alpha = 0.0
-        self.signInButton.alpha = 0.0
-        self.signUpButton.alpha = 0.0
-        self.signInLabel.alpha = 0.0
-        self.forgotButton.alpha = 0.0
-        
     }
     
     private func ShowLoginViews()
@@ -156,12 +173,6 @@ class SignInViewController: UIViewController {
         UIView.animateWithDuration(1.0, animations: { () -> Void in
             self.usernameView.alpha = 1.0
             self.passwordView.alpha = 1.0
-            
-            self.rememberButton.alpha = 1.0
-            self.signInButton.alpha = 1.0
-            self.signUpButton.alpha = 1.0
-            self.signInLabel.alpha = 1.0
-            self.forgotButton.alpha = 1.0
             
             }, completion: { finished in
         })
@@ -173,27 +184,28 @@ class SignInViewController: UIViewController {
     }
     
     internal func setupTextFields() {
-        //UITextField.appearance().tintColor = UIColor.ProtonMail.TextFieldTintColor;
+        usernameTextField.attributedPlaceholder = NSAttributedString(string: "Username", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#cecaca")])
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: "Password", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#cecaca")])
     }
     
     func setupSignInButton() {
         signInButton.layer.borderColor = UIColor.ProtonMail.Login_Button_Border_Color.CGColor;
         signInButton.alpha = buttonDisabledAlpha
     }
-
+    
     func setupSignUpButton() {
         
-//        let needAnAccount = NSLocalizedString("Need an account? ", comment: "Need an account? ")
-//        let signUp = NSLocalizedString("Sign Up.", comment: "Sign Up.")
-//        
-//        let title = NSMutableAttributedString(string: needAnAccount, attributes: [NSUnderlineStyleAttributeName : NSUnderlineStyle.StyleNone.rawValue])
-//        let signUpAttributed = NSAttributedString(string: signUp, attributes: [NSUnderlineStyleAttributeName : NSUnderlineStyle.StyleSingle.rawValue])
-//        
-//        title.appendAttributedString(signUpAttributed)
-//        
-//        title.addAttribute(NSFontAttributeName, value: UIFont.robotoThin(size: 12.5), range: NSMakeRange(0, title.length))
-//        
-//        signUpButton.setAttributedTitle(title, forState: .Normal)
+        //        let needAnAccount = NSLocalizedString("Need an account? ", comment: "Need an account? ")
+        //        let signUp = NSLocalizedString("Sign Up.", comment: "Sign Up.")
+        //
+        //        let title = NSMutableAttributedString(string: needAnAccount, attributes: [NSUnderlineStyleAttributeName : NSUnderlineStyle.StyleNone.rawValue])
+        //        let signUpAttributed = NSAttributedString(string: signUp, attributes: [NSUnderlineStyleAttributeName : NSUnderlineStyle.StyleSingle.rawValue])
+        //
+        //        title.appendAttributedString(signUpAttributed)
+        //
+        //        title.addAttribute(NSFontAttributeName, value: UIFont.robotoThin(size: 12.5), range: NSMakeRange(0, title.length))
+        //
+        //        signUpButton.setAttributedTitle(title, forState: .Normal)
     }
     
     func signIn() {
@@ -224,7 +236,7 @@ class SignInViewController: UIViewController {
         if sharedUserDataService.isUserCredentialStored {
             sharedUserDataService.isSignedIn = true
             isRemembered = true
-            rememberButton.selected = true
+            
             usernameTextField.text = sharedUserDataService.username
             passwordTextField.text = sharedUserDataService.password
             
@@ -243,7 +255,7 @@ class SignInViewController: UIViewController {
             Crashlytics.sharedInstance().setUserName(username)
         }
     }
-
+    
     private func loadContent() {
         logUser()
         if sharedUserDataService.isMailboxPasswordStored {
@@ -252,11 +264,11 @@ class SignInViewController: UIViewController {
             loadContactsAfterInstall()
         } else {
             //if count(AuthCredential.getPrivateKey().trim()) > 10 {
-                self.performSegueWithIdentifier(self.kMailboxSegue, sender: self)
-//            }
-//            else {
-//                self.performSegueWithIdentifier(self.signUpKeySegue, sender: self)
-//            }
+            self.performSegueWithIdentifier(self.kMailboxSegue, sender: self)
+            //            }
+            //            else {
+            //                self.performSegueWithIdentifier(self.signUpKeySegue, sender: self)
+            //            }
         }
     }
     
@@ -283,7 +295,7 @@ class SignInViewController: UIViewController {
     
     func updateSignInButton(#usernameText: String, passwordText: String) {
         signInButton.enabled = !usernameText.isEmpty && !passwordText.isEmpty
-    
+        
         UIView.animateWithDuration(animationDuration, animations: { () -> Void in
             
             if (self.signInButton.alpha != 0.0) {
@@ -299,7 +311,6 @@ class SignInViewController: UIViewController {
         
         isRemembered = true
         
-        rememberButton.selected = isRemembered
     }
     
     
@@ -317,8 +328,8 @@ class SignInViewController: UIViewController {
     @IBAction func signUpAction(sender: UIButton) {
         dismissKeyboard()
         
-//        self.performSegueWithIdentifier("goSignUpSegue", sender: self)
-//        
+        //        self.performSegueWithIdentifier("goSignUpSegue", sender: self)
+        //
         
         UIApplication.sharedApplication().openURL(signUpURL)
     }
@@ -326,6 +337,7 @@ class SignInViewController: UIViewController {
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
         dismissKeyboard()
     }
+    
 }
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
@@ -333,7 +345,7 @@ extension SignInViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(notification: NSNotification) {
         let keyboardInfo = notification.keyboardInfo
         
-        //keyboardPaddingConstraint.constant = 0
+        self.configConstraint(false)
         
         UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
@@ -343,7 +355,7 @@ extension SignInViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillShowNotification(notification: NSNotification) {
         let keyboardInfo = notification.keyboardInfo
         
-       // keyboardPaddingConstraint.constant = keyboardInfo.beginFrame.height + keyboardPadding
+        self.configConstraint(true)
         
         UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
@@ -357,7 +369,7 @@ extension SignInViewController: UITextFieldDelegate {
         updateSignInButton(usernameText: "", passwordText: "")
         return true
     }
-
+    
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         let text = textField.text as NSString
         let changedText = text.stringByReplacingCharactersInRange(range, withString: string)
