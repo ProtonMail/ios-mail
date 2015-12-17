@@ -60,6 +60,7 @@ class SignInViewController: UIViewController {
     
     @IBOutlet weak var userNameTopPaddingConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -321,10 +322,8 @@ class SignInViewController: UIViewController {
     
     @IBAction func signUpAction(sender: UIButton) {
         dismissKeyboard()
-        
         //        self.performSegueWithIdentifier("goSignUpSegue", sender: self)
         //
-        
         UIApplication.sharedApplication().openURL(signUpURL)
     }
     
@@ -338,9 +337,8 @@ class SignInViewController: UIViewController {
 extension SignInViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(notification: NSNotification) {
         let keyboardInfo = notification.keyboardInfo
-        
+        scrollBottomPaddingConstraint.constant = 0.0
         self.configConstraint(false)
-        
         UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
@@ -348,9 +346,11 @@ extension SignInViewController: NSNotificationCenterKeyboardObserverProtocol {
     
     func keyboardWillShowNotification(notification: NSNotification) {
         let keyboardInfo = notification.keyboardInfo
-        
+        let info: NSDictionary = notification.userInfo!
+        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
+            scrollBottomPaddingConstraint.constant = keyboardSize.height;
+        }
         self.configConstraint(true)
-        
         UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)

@@ -183,7 +183,7 @@
                                 <rect key="frame" x="0.0" y="50" width="600" height="550"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ve5-Rb-bXf" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="482"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="442"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="bb6-Ns-GPi">
                                                 <rect key="frame" x="251" y="45" width="98" height="16"/>
@@ -341,7 +341,7 @@
                                             <constraint firstItem="2gx-2z-FDL" firstAttribute="leading" secondItem="ve5-Rb-bXf" secondAttribute="leading" constant="28" id="RtP-fB-V18"/>
                                             <constraint firstItem="MgP-0E-i6P" firstAttribute="top" secondItem="bOD-D6-5za" secondAttribute="bottom" constant="60" id="T8K-JS-l1w"/>
                                             <constraint firstItem="bb6-Ns-GPi" firstAttribute="top" secondItem="ve5-Rb-bXf" secondAttribute="top" priority="500" constant="45" id="Ugn-di-Dly"/>
-                                            <constraint firstAttribute="bottom" secondItem="MgP-0E-i6P" secondAttribute="bottom" priority="500" constant="70" id="aYx-OK-SAm"/>
+                                            <constraint firstAttribute="bottom" secondItem="MgP-0E-i6P" secondAttribute="bottom" priority="500" constant="30" id="aYx-OK-SAm"/>
                                             <constraint firstAttribute="centerX" secondItem="Os0-Xv-V8f" secondAttribute="centerX" priority="500" id="cPe-4N-99R"/>
                                             <constraint firstItem="Os0-Xv-V8f" firstAttribute="leading" secondItem="ve5-Rb-bXf" secondAttribute="leading" priority="1" constant="28" id="i9Z-2s-4GQ"/>
                                             <constraint firstAttribute="trailing" secondItem="bOD-D6-5za" secondAttribute="trailing" constant="28" id="m23-RT-mCf"/>
@@ -389,6 +389,7 @@
                         <outlet property="logoTopPaddingConstraint" destination="uwY-xT-yW3" id="5ab-wo-AMk"/>
                         <outlet property="passwordTextField" destination="BL2-co-jyw" id="Hi0-pL-m9W"/>
                         <outlet property="passwordView" destination="bOD-D6-5za" id="Tz8-k0-WmG"/>
+                        <outlet property="scrollBottomPaddingConstraint" destination="f3K-Vi-4pQ" id="Eaa-cQ-XRp"/>
                         <outlet property="signInButton" destination="MgP-0E-i6P" id="aJo-QJ-EqF"/>
                         <outlet property="userLeftPaddingConstraint" destination="i9Z-2s-4GQ" id="6h5-WQ-M7m"/>
                         <outlet property="userNameTopPaddingConstraint" destination="1ag-zt-4JX" id="10y-1d-egn"/>
