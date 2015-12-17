@@ -24,7 +24,7 @@ class MailboxPasswordViewController: UIViewController {
     @IBOutlet weak var decryptButton: UIButton!
     @IBOutlet weak var keyboardPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet weak var rememberButton: UIButton!
+    //@IBOutlet weak var rememberButton: UIButton!
     @IBOutlet weak var backgroundImage: UIImageView!
     
     struct Notification {
@@ -35,27 +35,59 @@ class MailboxPasswordViewController: UIViewController {
     var isRemembered: Bool = sharedUserDataService.isRememberMailboxPassword
     var isShowpwd : Bool = false;
     
+    //define
+    private let hidePriority : UILayoutPriority = 1.0;
+    private let showPriority: UILayoutPriority = 750.0;
+    
+    @IBOutlet weak var logoTopPaddingConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var logoLeftPaddingConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var titleTopPaddingConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var titleLeftPaddingConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var passwordTopPaddingConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDecryptButton()
-        rememberButton.selected = isRemembered
+        
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: "MAILBOX PASSWORD", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#cecaca")])
+
+        
+        //rememberButton.selected = isRemembered
 //        passwordTextField.roundCorners()
         
 //        configureNavigationBar()
 //        setNeedsStatusBarAppearanceUpdate()
         
         
-        var gradient: CAGradientLayer = CAGradientLayer()
-        gradient.frame = CGRectMake(0.0, 0.0, view.frame.size.width, view.frame.size.height)
-        gradient.colors = [UIColor.ProtonMail.Login_Background_Gradient_Left.CGColor, UIColor.ProtonMail.Login_Background_Gradient_Right.CGColor];
-        
-        gradient.locations = [0.0, 1.0]
-        
-        gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
-        gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
-        
-        backgroundImage.layer.insertSublayer(gradient, atIndex:0)
+//        var gradient: CAGradientLayer = CAGradientLayer()
+//        gradient.frame = CGRectMake(0.0, 0.0, view.frame.size.width, view.frame.size.height)
+//        gradient.colors = [UIColor.ProtonMail.Login_Background_Gradient_Left.CGColor, UIColor.ProtonMail.Login_Background_Gradient_Right.CGColor];
+//        
+//        gradient.locations = [0.0, 1.0]
+//        
+//        gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
+//        gradient.endPoint = CGPoint(x: 1.0, y: 1.0)
+//        
+//        backgroundImage.layer.insertSublayer(gradient, atIndex:0)
     }
+    
+    func configConstraint(show : Bool) -> Void {
+        let level = show ? showPriority : hidePriority
+        
+        logoTopPaddingConstraint.priority = level
+        logoLeftPaddingConstraint.priority = level
+        titleTopPaddingConstraint.priority = level
+        titleLeftPaddingConstraint.priority = level
+        
+        passwordTopPaddingConstraint.priority = level
+    }
+    
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -197,7 +229,7 @@ class MailboxPasswordViewController: UIViewController {
         
         isRemembered = true;
         
-        rememberButton.selected = isRemembered
+       // rememberButton.selected = isRemembered
     }
     
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
@@ -226,9 +258,8 @@ class MailboxPasswordViewController: UIViewController {
 extension MailboxPasswordViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(notification: NSNotification) {
         let keyboardInfo = notification.keyboardInfo
-        
-        //keyboardPaddingConstraint.constant = 0
-        
+        scrollBottomPaddingConstraint.constant = 0.0
+        configConstraint(false)
         UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
@@ -236,9 +267,11 @@ extension MailboxPasswordViewController: NSNotificationCenterKeyboardObserverPro
     
     func keyboardWillShowNotification(notification: NSNotification) {
         let keyboardInfo = notification.keyboardInfo
-        
-        //keyboardPaddingConstraint.constant = keyboardInfo.beginFrame.height + keyboardPadding
-        
+        let info: NSDictionary = notification.userInfo!
+        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
+            scrollBottomPaddingConstraint.constant = keyboardSize.height;
+        }
+        configConstraint(true)
         UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
