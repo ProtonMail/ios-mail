@@ -122,6 +122,8 @@
 		750778CE1BE98900009F516C /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750778CD1BE98900009F516C /* UserAPI.swift */; };
 		7508BAC61B87C6EA001A3564 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7508BAC51B87C6EA001A3564 /* UIApplicationExtension.swift */; };
 		750AAAC41C23E5CF00BAC444 /* SignUpUserNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AAAC31C23E5CF00BAC444 /* SignUpUserNameViewController.swift */; };
+		750AAAC71C2490DB00BAC444 /* SignUpEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AAAC51C2490DB00BAC444 /* SignUpEmailViewController.swift */; };
+		750AAAC81C2490DB00BAC444 /* SignUpPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AAAC61C2490DB00BAC444 /* SignUpPasswordViewController.swift */; };
 		750B00981B7AB91400F180BD /* NotificationDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B00971B7AB91400F180BD /* NotificationDefined.swift */; };
 		7510AE761AB8989E00EF3C41 /* DomainsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7510AE751AB8989E00EF3C41 /* DomainsTableViewCell.swift */; };
 		7510AE7C1AB8D68B00EF3C41 /* SettingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7510AE7B1AB8D68B00EF3C41 /* SettingDetailViewController.swift */; };
@@ -362,6 +364,8 @@
 		750778CD1BE98900009F516C /* UserAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAPI.swift; sourceTree = "<group>"; };
 		7508BAC51B87C6EA001A3564 /* UIApplicationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
 		750AAAC31C23E5CF00BAC444 /* SignUpUserNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpUserNameViewController.swift; sourceTree = "<group>"; };
+		750AAAC51C2490DB00BAC444 /* SignUpEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpEmailViewController.swift; sourceTree = "<group>"; };
+		750AAAC61C2490DB00BAC444 /* SignUpPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpPasswordViewController.swift; sourceTree = "<group>"; };
 		750B00971B7AB91400F180BD /* NotificationDefined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationDefined.swift; sourceTree = "<group>"; };
 		7510AE751AB8989E00EF3C41 /* DomainsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsTableViewCell.swift; sourceTree = "<group>"; };
 		7510AE7B1AB8D68B00EF3C41 /* SettingDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDetailViewController.swift; sourceTree = "<group>"; };
@@ -493,13 +497,14 @@
 			children = (
 				75C037471C1F9A940071E04B /* SplashSignInSegue.swift */,
 				75C037451C1F94D20071E04B /* SplashViewController.swift */,
-				0713237E1A7844390043DB41 /* MailboxPasswordViewController.swift */,
+				0713238F1A79BD8F0043DB41 /* TextInsetTextField.swift */,
 				07009EFE1A659AD400129B07 /* SignIn.storyboard */,
 				07009F001A65CF4800129B07 /* SignInViewController.swift */,
+				0713237E1A7844390043DB41 /* MailboxPasswordViewController.swift */,
 				750AAAC31C23E5CF00BAC444 /* SignUpUserNameViewController.swift */,
-				0713238F1A79BD8F0043DB41 /* TextInsetTextField.swift */,
-				754387D81AB35EB40003B0AC /* SignUpViewController.swift */,
-				754387DA1AB3A54E0003B0AC /* SignUpKeyViewController.swift */,
+				750AAAC51C2490DB00BAC444 /* SignUpEmailViewController.swift */,
+				750AAAC61C2490DB00BAC444 /* SignUpPasswordViewController.swift */,
+				750AAAC91C2491A400BAC444 /* OldViews */,
 			);
 			name = "Sign In";
 			sourceTree = "<group>";
@@ -894,6 +899,15 @@
 				755405B41B164A99003BFC0A /* ComposeViewController.swift */,
 			);
 			name = Compose;
+			sourceTree = "<group>";
+		};
+		750AAAC91C2491A400BAC444 /* OldViews */ = {
+			isa = PBXGroup;
+			children = (
+				754387D81AB35EB40003B0AC /* SignUpViewController.swift */,
+				754387DA1AB3A54E0003B0AC /* SignUpKeyViewController.swift */,
+			);
+			name = OldViews;
 			sourceTree = "<group>";
 		};
 		75230C211B9A392500EC2AC2 /* Cells */ = {
@@ -1395,6 +1409,7 @@
 				073FE01B1A955F4A00825980 /* APIService+ContactExtension.swift in Sources */,
 				750AAAC41C23E5CF00BAC444 /* SignUpUserNameViewController.swift in Sources */,
 				073FD92C1A719B7900EB0CAF /* APIService+UserExtension.swift in Sources */,
+				750AAAC71C2490DB00BAC444 /* SignUpEmailViewController.swift in Sources */,
 				07CC3F931A941C7A0005E39F /* MessageQueue.swift in Sources */,
 				75F906101B1FBECA00107509 /* DebugDetailsViewController.swift in Sources */,
 				07CB234C1AAE9FCB00699068 /* FullHeightWebView.swift in Sources */,
@@ -1431,6 +1446,7 @@
 				75DF17AB1AB9051F008A032B /* StorageViewCell.swift in Sources */,
 				07DD68A51A97DE9F00ED130C /* APIService+AttachmentExtension.swift in Sources */,
 				07411D8E1AAA407A002A4611 /* AttachmentTableViewCell.swift in Sources */,
+				750AAAC81C2490DB00BAC444 /* SignUpPasswordViewController.swift in Sources */,
 				757945D61B66E38D004EEDCA /* MessageViewController.swift in Sources */,
 				07A0E1AB1A9D2D1D005FD04B /* NSStringExtension.swift in Sources */,
 			);
