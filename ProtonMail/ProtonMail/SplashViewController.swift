@@ -18,7 +18,7 @@ class SplashViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.performSegueWithIdentifier("splash_sign_in_no_segue", sender: self)
+        //self.performSegueWithIdentifier("splash_sign_in_no_segue", sender: self)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -30,6 +30,10 @@ class SplashViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         
         super.viewDidAppear(animated)
+    }
+    
+    @IBAction func signUpAction(sender: UIButton) {
+        self.performSegueWithIdentifier("splash_sign_up_segue", sender: self)
     }
     
     @IBAction func signInAction(sender: UIButton) {
