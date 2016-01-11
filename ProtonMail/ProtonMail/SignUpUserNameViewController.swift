@@ -122,10 +122,14 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate {
     
     func webViewDidFinishLoad(webView: UIWebView) {
         if startVerify {
-            webViewHeightConstraint.constant = 500;
+            
+            if let result = webView.stringByEvaluatingJavaScriptFromString("document.body.scrollHeight;")?.toInt()  {
+                let height = CGFloat(result)
+                webViewHeightConstraint.constant = height;
+            }
+            
         }
     }
-    
     
     func webViewDidStartLoad(webView: UIWebView) {
         PMLog.D("")
