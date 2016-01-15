@@ -27,6 +27,7 @@
 #import <NSDate+Helper/NSDate+Helper.h>
 //#import <OpenPGP.h>
 #import <PMNOpenPgp.h>
+#import <SwiftTryCatch.h>
 #import <RHAddressBook/AddressBook.h>
 #import <RHAddressBook/RHMultiValue.h>
 #import <SplunkMint-iOS/SplunkMint-iOS.h>
