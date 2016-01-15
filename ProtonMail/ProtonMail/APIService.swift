@@ -109,6 +109,7 @@ class APIService {
                         sharedUserDataService.signOut(true);
                     }
                     else {
+                        //TODO :: need add error handling here pass the respones if has error.
                         completion(task: task, response: responseDictionary, error: nil)
                     }
                 } else if responseObject == nil {

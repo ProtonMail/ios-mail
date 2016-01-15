@@ -11,7 +11,7 @@ import UIKit
 class SettingTableViewController: ProtonMailViewController {
     
     var setting_headers = [SettingSections.General, SettingSections.MultiDomain, SettingSections.SwipeAction, SettingSections.Storage, SettingSections.Version] //SettingSections.Debug,
-    var setting_general_items = [SGItems.NotifyEmail, SGItems.DisplayName, SGItems.Signature, SGItems.LoginPWD, SGItems.MBP, SGItems.CleanCache]
+    var setting_general_items = [SGItems.NotifyEmail, SGItems.DisplayName, SGItems.Signature, SGItems.LoginPWD, SGItems.CleanCache]  //SGItems.MBP,
     var setting_debug_items = [SDebugItem.Queue, SDebugItem.ErrorLogs, SDebugItem.CleanCache]
     
     var setting_swipe_action_items = [SSwipeActionItems.left, SSwipeActionItems.right]

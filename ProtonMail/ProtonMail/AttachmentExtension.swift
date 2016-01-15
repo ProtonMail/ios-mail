@@ -58,8 +58,8 @@ extension Attachment {
     
     // Mark : public functions
     
-    func encryptAttachment(error: NSErrorPointer?) -> NSMutableDictionary? {
-        let out = fileData?.encryptWithPublicKeys(["self" : publicKey], fileName: self.fileName, error: error)
+    func encryptAttachment(error: NSErrorPointer?) -> PMNEncryptPackage? {
+        let out = fileData?.encryptWithPublicKey(publicKey, fileName: self.fileName, error: error)
         if out == nil {
             return nil
         }

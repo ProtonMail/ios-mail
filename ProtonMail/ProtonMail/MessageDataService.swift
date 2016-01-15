@@ -1298,8 +1298,8 @@ class MessageDataService {
                     
                     let encrypt_data = attachment.encryptAttachment(nil)
                     //TODO:: here need check is encryptdata is nil and return the error to user.
-                    let keyPacket = encrypt_data?["self"] as? NSData
-                    let dataPacket = encrypt_data?["DataPacket"] as? NSData
+                    let keyPacket = encrypt_data?.keyPackage
+                    let dataPacket = encrypt_data?.dataPackage
                     
                     let completionWrapper: CompletionBlock = { task, response, error in
                         if error == nil {
