@@ -64,128 +64,32 @@ extension PMNOpenPgp {
 // MARK: - OpenPGP String extension
 
 extension String {
-    
     func decryptWithPrivateKey(privateKey: String, passphrase: String, error: NSErrorPointer?) -> String? {
-        //TODO:: need do migrate
-       // sharedOpenPGP.decryptMessage(<#encryptText: String#>, passphras: <#String#>)
-//        if !openPGP.CheckPassphrase(privateKey, pass: passphrase, error: nil) {
-//            return nil
-//        }
-//        
-//        var anError: NSError?
-//        if let decrypt = openPGP.decrypt_message(privateKey, pass: passphrase, encrypted: self, error: &anError) {
-//            return decrypt
-//        }
-//        
-//        if let error = error {
-//            error.memory = anError
-//        }
-        
-        return nil
-    }
-    
-    func decryptWithPrivateKey(forLogin privateKey: String, passphrase: String, error: NSErrorPointer?) -> String? {
-        
-        //TODO:: need do migrate
-//        if !openPGP.checkPassphrase(passphrase, forPrivateKey: privateKey, error: error) {
-//            return nil
-//        }
-//        
-//        var anError: NSError?
-//        if let decrypt = openPGP.decrypt_message(self, error: &anError) {
-//            return decrypt
-//        }
-//        
-//        if let error = error {
-//            error.memory = anError
-//        }
-//        
-        return nil
-    }
-    
-    func decryptWithPrivateKey(privateKey: String, passphrase: String, publicKey: String, error: NSErrorPointer?) -> String? {
-
-         var anError: NSError?
-
-        //TODO:: need do migrate
-        
-//        if !openPGP.SetupKeys(privateKey, pubKey: publicKey, pass: passphrase, error: &anError) {
-//            if let error = error {
-//                error.memory = anError
-//            }
-//            return nil
-//        }
-//        
-//        if let decrypt = openPGP.decrypt_message(self, error: &anError) {
-//            return decrypt
-//        }
-//        
-//        if let error = error {
-//            error.memory = anError
-//        }
-        
-        return nil
+        let decrypt = sharedOpenPGP.decryptMessageSingleKey(self, privateKey: privateKey, passphras: passphrase)
+        return decrypt
     }
     
     func encryptWithPublicKey(publicKey: String, error: NSErrorPointer?) -> String? {
-        //TODO:: need do migrate
-        var anError: NSError?
-//        if let encrypt = OpenPGP().encrypt_message(self, pub_key: publicKey, error: &anError) {
-//            return encrypt
-//        }
-//        
-//        if let error = error {
-//            error.memory = anError
-//        }
-        
-        return nil
+        let encrypt = sharedOpenPGP.encryptMessageSingleKey(publicKey, plainText: self)
+        return encrypt
     }
     
     func encryptWithPassphrase(passphrase: String, error: NSErrorPointer?) -> String? {
-        //TODO:: need do migrate
-        var anError: NSError?
-//        if let encrypt = OpenPGP().encrypt_message_aes(self, pwd: passphrase, error: &anError) {
-//            return encrypt
-//        }
-//        
-//        if let error = error {
-//            error.memory = anError
-//        }
-        
-        return nil
+        let encrypt = sharedOpenPGP.encryptMessageAes(self, password: passphrase)
+        return encrypt
     }
     
     func decryptWithPassphrase(passphrase: String, error: NSErrorPointer?) -> String? {
-        //TODO:: need do migrate
-        var anError: NSError?
-//        if let encrypt = OpenPGP().decrypt_message_aes(self, pwd: passphrase, error: &anError) {
-//            return encrypt
-//        }
-//        
-//        if let error = error {
-//            error.memory = anError
-//        }
-        
-        return nil
+        let encrypt = sharedOpenPGP.decryptMessageAes(self, password: passphrase)
+        return encrypt
     }
 }
 
-
-
 extension NSData {
     
-    func encryptWithPublicKey(publicKey: String, fileName:String, error: NSErrorPointer?) -> NSMutableDictionary? {
-        //TODO:: need do migrate
-        var anError: NSError?
-//        if let encrypt = OpenPGP().encrypt_attachment(self, fileNam: fileName, pub_key: publicKey, error: &anError) {
-//            return encrypt
-//        }
-//        
-//        if let error = error {
-//            error.memory = anError
-//        }
-//        
-        return nil
+    func encryptWithPublicKey(publicKey: String, fileName:String, error: NSErrorPointer?) -> PMNEncryptPackage? {
+        let out_enc_out = sharedOpenPGP.encryptAttachmentSingleKey(publicKey, unencryptData: self, fileName: fileName)
+        return out_enc_out
     }
     
     func encryptWithPublicKeys(publicKeys: NSMutableDictionary, fileName:String, error: NSErrorPointer?) -> NSMutableDictionary? {
@@ -200,78 +104,54 @@ extension NSData {
 //            error.memory = anError
 //        }
         
+        
+        
+//        - (NSMutableDictionary*) encrypt_attachments:(NSData *)unencrypt_att fileNam:(NSString*)name pub_keys:(NSMutableDictionary*)pub_keys error:(NSError**) err
+//        {
+//            NSMutableDictionary *dictX = [[NSMutableDictionary alloc] init];
+//            
+//            std::string unencrypt_attachment = std::string((char* )[unencrypt_att bytes], [unencrypt_att length]);
+//            std::string session_key = generat_session_key();
+//            std::string fileName = [name UTF8String];
+//            
+//            for(id key in pub_keys)
+//            {
+//                std::string user_pub_key = [pub_keys[key] UTF8String];
+//                PGPPublicKey pub(user_pub_key);
+//                PGPMessage enrypted_session_key = encrypt_pka_only_session(pub, session_key);
+//                std::string enrypted_session_key_data = enrypted_session_key.write(1);
+//                [dictX setObject:[NSData dataWithBytes: enrypted_session_key_data.c_str() length:enrypted_session_key_data.length()] forKey:key];
+//            }
+//            
+//            PGPMessage encrypted_att = encrypt_pka_only_data(session_key, unencrypt_attachment, fileName, 9, 0);
+//            std::string endryp_dat = encrypted_att.write(1);
+//            [dictX setObject:[NSData dataWithBytes: endryp_dat.c_str() length:endryp_dat.length()] forKey:@"DataPacket"];
+//            
+//            return dictX;
+//        }
         return nil
     }
 
     func getSessionKeyFromPubKeyPackage(privateKey: String, passphrase: String, publicKey: String, error: NSErrorPointer?) -> NSData? {
-        //TODO:: need do migrate
-        var anError: NSError?
-//        let openPGP = OpenPGP()
-//        
-//        if !openPGP.SetupKeys(privateKey, pubKey: publicKey, pass: passphrase, error: &anError) {
-//            return nil
-//        }
-//
-//        if let encrypt = openPGP.getPublicKeySessionKey(self, error: &anError) {
-//            return encrypt
-//        }
-//        
-//        if let error = error {
-//            error.memory = anError
-//        }
-        
-        return nil
+        let key_session_out = sharedOpenPGP.getPublicKeySessionKey(self, privateKey: privateKey, passphrase: passphrase)
+        return key_session_out
     }
     
     func getPublicSessionKeyPackage(publicKey: String, error: NSErrorPointer?) -> NSData? {
-        //TODO:: need do migrate
-        var anError: NSError?
-//        let openPGP = OpenPGP()
-//
-//        if let encrypt = openPGP.getNewPublicKeyPackage(self, pub_key: publicKey, error: &anError) {
-//            return encrypt
-//        }
-//        
-//        if let error = error {
-//            error.memory = anError
-//        }
-        
-        return nil
+        let out_nwe_key = sharedOpenPGP.getNewPublicKeyPackage(self, publicKey: publicKey)
+        return out_nwe_key;
     }
     
     func getSymmetricSessionKeyPackage(pwd: String, error: NSErrorPointer?) -> NSData? {
-        //TODO:: need do migrate
-        var anError: NSError?
-//        let openPGP = OpenPGP()
-//        
-//        if let encrypt = openPGP.getNewSymmetricKeyPackage(self, password: pwd, error: &anError) {
-//            return encrypt
-//        }
-//        
-//        if let error = error {
-//            error.memory = anError
-//        }
+
+        let out_sym_key_package = sharedOpenPGP.getNewSymmetricKeyPackage(self, password: pwd)
         
-        return nil
+        return out_sym_key_package;
     }
     
     func decryptAttachment(keyPackage:NSData!, passphrase: String, publicKey: String, privateKey: String, error: NSErrorPointer?) -> NSData? {
-        //TODO:: need do migrate
-        var anError: NSError?
-//        let openPGP = OpenPGP()
-//        
-//        if !openPGP.SetupKeys(privateKey, pubKey: publicKey, pass: passphrase, error: &anError) {
-//            return nil
-//        }
-//        
-//        if let encrypt = openPGP.decrypt_attachment(keyPackage, data: self, error: &anError) {
-//            return encrypt
-//        }
-//        
-//        if let error = error {
-//            error.memory = anError
-//        }
         
-        return nil
+        let dec_out_att = sharedOpenPGP.decryptAttachmentWithPassword(keyPackage, data: self, password: passphrase)
+        return dec_out_att
     }
 }

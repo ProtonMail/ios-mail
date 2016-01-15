@@ -18,7 +18,7 @@ class SplashViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //self.performSegueWithIdentifier("splash_sign_in_no_segue", sender: self)
+        self.performSegueWithIdentifier("splash_sign_in_no_segue", sender: self)
     }
     
     override func viewWillAppear(animated: Bool) {

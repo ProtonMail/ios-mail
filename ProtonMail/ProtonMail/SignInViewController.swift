@@ -143,6 +143,12 @@ class SignInViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
+        if(SignInViewController.isComeBackFromMailbox)
+        {
+            ShowLoginViews();
+            clean();
+        }
+        
         if(UIDevice.currentDevice().isLargeScreen() && !isRemembered)
         {
             usernameTextField.becomeFirstResponder()
@@ -160,6 +166,7 @@ class SignInViewController: UIViewController {
     {
         self.usernameView.alpha = 0.0
         self.passwordView.alpha = 0.0
+        self.signInButton.alpha = 0.0
     }
     
     private func ShowLoginViews()
@@ -168,6 +175,7 @@ class SignInViewController: UIViewController {
         UIView.animateWithDuration(1.0, animations: { () -> Void in
             self.usernameView.alpha = 1.0
             self.passwordView.alpha = 1.0
+            self.signInButton.alpha = 1.0
             
             }, completion: { finished in
         })
