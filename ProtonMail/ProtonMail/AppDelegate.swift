@@ -166,6 +166,9 @@ extension AppDelegate: UIApplicationDelegate {
     // MARK: Notification methods
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        Answers.logCustomEventWithName("NotificationError", customAttributes:["error" : "\(error)"])
+        
+        // Crashlytics.sharedInstance().core.log(error);
         sharedPushNotificationService.didFailToRegisterForRemoteNotificationsWithError(error)
     }
     

@@ -179,7 +179,7 @@ class UserDataService {
     
     func isMailboxPasswordValid(password: String, privateKey : String) -> Bool {
         var error: NSError?
-        let result = OpenPGP().checkPassphrase(password, forPrivateKey: privateKey, error: &error)
+        let result = sharedOpenPGP.checkPassphrase(password, forPrivateKey: privateKey, error: &error)
         if error == nil {
             return result
         } else {
@@ -247,7 +247,7 @@ class UserDataService {
         
         if let userInfo = userInfo {
             if let mailboxPassword = mailboxPassword {
-                if let newPrivateKey = OpenPGP().updatePassphrase(userInfo.privateKey, publicKey: userInfo.publicKey, old_pass: mailboxPassword, new_pass: newMailboxPassword, error: &error) {
+                if let newPrivateKey = sharedOpenPGP.updatePassphrase(userInfo.privateKey, publicKey: userInfo.publicKey, old_pass: mailboxPassword, new_pass: newMailboxPassword, error: &error) {
                     sharedAPIService.userUpdateKeypair(sharedUserDataService.password!, publicKey: userInfo.publicKey, privateKey: newPrivateKey, completion: { task, response, error in
                         if error == nil {
                             self.mailboxPassword = newMailboxPassword
@@ -274,9 +274,9 @@ class UserDataService {
     func updateNewUserKeys(mbp:String, completion: CompletionBlock?) {
         var error: NSError?
         if let userInfo = userInfo {
-            if let newPrivateKey = OpenPGP().generateKey(mbp, userName: username!, error: &error) {
-                var pubkey = newPrivateKey["public"] as! String
-                var privkey = newPrivateKey["private"] as! String
+            if let newPrivateKey = sharedOpenPGP.generateKey(mbp, userName: username!, error: &error) {
+                var pubkey = newPrivateKey.publicKey
+                var privkey = newPrivateKey.privateKey
                 sharedAPIService.userUpdateKeypair("" , publicKey: pubkey, privateKey: privkey, completion: { task, response, error in
                     if error == nil {
                         self.mailboxPassword = mbp;
@@ -284,7 +284,6 @@ class UserDataService {
                             autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
                             
                             swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight
-
                         )
                         
                         self.userInfo = userInfo
