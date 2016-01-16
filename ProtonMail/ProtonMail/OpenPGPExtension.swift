@@ -156,7 +156,15 @@ extension NSData {
     }
     
     func decryptAttachment(keyPackage:NSData!, passphrase: String, publicKey: String, privateKey: String, error: NSErrorPointer?) -> NSData? {
-        let dec_out_att = sharedOpenPGP.decryptAttachmentSingleKey(keyPackage, data: self, privateKey: privateKey, passphras: passphrase)
+        var dec_out_att : NSData?
+        SwiftTryCatch.tryBlock({ () -> Void in
+            dec_out_att = sharedOpenPGP.decryptAttachmentSingleKey(keyPackage, data: self, privateKey: privateKey, passphras: passphrase)
+            }, catchBlock: { (exc) -> Void in
+                if let error = error {
+                    error.memory = exc.toError()
+                }
+            }) { () -> Void in
+        }
         return dec_out_att
     }
 }
