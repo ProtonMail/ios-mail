@@ -35,8 +35,7 @@
     [info setValue:self.callStackReturnAddresses forKey:@"MONExceptionCallStackReturnAddresses"];
     [info setValue:self.callStackSymbols forKey:@"MONExceptionCallStackSymbols"];
     [info setValue:self.userInfo forKey:@"MONExceptionUserInfo"];
-    
-    return [[NSError alloc] initWithDomain:@"com.protonmail" code:10000 userInfo:info];
+    return [[NSError alloc] initWithDomain:@"com.ProtonMail.OpenPGP" code:1000000 userInfo:info];
 }
 @end
 
