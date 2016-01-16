@@ -92,7 +92,7 @@ class APIService {
                 }
             }
             let success: AFNetworkingSuccessBlock = { task, responseObject in
-                PMLog.D("\(__FUNCTION__) Response: \(responseObject)")
+                //PMLog("\(__FUNCTION__) Response: \(responseObject)")
                 if let responseDictionary = responseObject as? Dictionary<String, AnyObject> {
                     let responseCode = responseDictionary["Code"] as? Int
                     if authenticated && responseCode == 401 {

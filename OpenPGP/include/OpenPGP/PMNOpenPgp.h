@@ -100,7 +100,4 @@
 - (nonnull NSString *)decryptMailboxPwd:(nonnull NSString *)encryptedPwd
                                    salt:(nonnull NSString *)salt;
 
-/**test functions */
-- (int32_t)throwAnException;
-
 @end
