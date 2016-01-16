@@ -137,6 +137,7 @@
 		751562551B68E8050066FE38 /* EmailAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751562541B68E8050066FE38 /* EmailAttachmentView.swift */; };
 		7518393F1B3DCA3000C714A6 /* EventAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518393E1B3DCA3000C714A6 /* EventAPI.swift */; };
 		751B446E1B81245100B68CD6 /* TableCellLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B446D1B81245100B68CD6 /* TableCellLabelView.swift */; };
+		751C5FEA1C49C17700949FBF /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 751C5FE81C49C17700949FBF /* SwiftTryCatch.m */; };
 		751D49F01BE356180008E75C /* LabelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751D49EF1BE356180008E75C /* LabelsView.swift */; };
 		75230C241B9A3A3600EC2AC2 /* MailboxMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75230C221B9A3A3600EC2AC2 /* MailboxMessageCell.swift */; };
 		75230C251B9A3A3600EC2AC2 /* MailboxMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75230C231B9A3A3600EC2AC2 /* MailboxMessageCell.xib */; };
@@ -379,6 +380,8 @@
 		751562541B68E8050066FE38 /* EmailAttachmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailAttachmentView.swift; sourceTree = "<group>"; };
 		7518393E1B3DCA3000C714A6 /* EventAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventAPI.swift; sourceTree = "<group>"; };
 		751B446D1B81245100B68CD6 /* TableCellLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableCellLabelView.swift; sourceTree = "<group>"; };
+		751C5FE81C49C17700949FBF /* SwiftTryCatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwiftTryCatch.m; sourceTree = "<group>"; };
+		751C5FE91C49C17700949FBF /* SwiftTryCatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftTryCatch.h; sourceTree = "<group>"; };
 		751D49EF1BE356180008E75C /* LabelsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelsView.swift; sourceTree = "<group>"; };
 		75230C221B9A3A3600EC2AC2 /* MailboxMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxMessageCell.swift; sourceTree = "<group>"; };
 		75230C231B9A3A3600EC2AC2 /* MailboxMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MailboxMessageCell.xib; sourceTree = "<group>"; };
@@ -564,6 +567,8 @@
 		072AB6A71A8FB0AB00AF45D6 /* Encryption */ = {
 			isa = PBXGroup;
 			children = (
+				751C5FE81C49C17700949FBF /* SwiftTryCatch.m */,
+				751C5FE91C49C17700949FBF /* SwiftTryCatch.h */,
 				078FF4C91A91232D008321D1 /* OpenPGPExtension.swift */,
 			);
 			name = Encryption;
@@ -1291,6 +1296,7 @@
 				754CD4881AB809D60084C54A /* SettingTableViewController.swift in Sources */,
 				07009F091A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift in Sources */,
 				0713239C1A7C0B4C0043DB41 /* NSManagedObjectContextExtension.swift in Sources */,
+				751C5FEA1C49C17700949FBF /* SwiftTryCatch.m in Sources */,
 				706628211A715A0900164117 /* MailboxTableViewCell.swift in Sources */,
 				706961FF1A7136A0001443B2 /* ProtonMailViewController.swift in Sources */,
 				071323811A7846150043DB41 /* UIViewExtension.swift in Sources */,
