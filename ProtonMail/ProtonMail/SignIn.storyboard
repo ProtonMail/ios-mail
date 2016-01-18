@@ -833,18 +833,18 @@
                         <viewControllerLayoutGuide type="bottom" id="hTe-cj-mjb"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="6XP-ZI-vTW">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="1000"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sign_background_new" translatesAutoresizingMaskIntoConstraints="NO" id="j6M-sH-v8L">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="j6M-sH-v8L">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="1000"/>
                                 <animations/>
                             </imageView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t2A-D7-bGy">
-                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
+                                <rect key="frame" x="0.0" y="20" width="600" height="980"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tHO-sZ-3CD" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="426"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="636"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IWK-8f-VFQ">
                                                 <rect key="frame" x="0.0" y="0.0" width="100" height="48"/>
@@ -853,8 +853,10 @@
                                                     <constraint firstAttribute="height" constant="48" id="Ffw-mS-vJ7"/>
                                                     <constraint firstAttribute="width" constant="100" id="fiT-ic-N18"/>
                                                 </constraints>
+                                                <inset key="titleEdgeInsets" minX="25" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                 <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                <state key="normal" image="top_back">
+                                                <state key="normal" title="Back" image="signup_back">
+                                                    <color key="titleColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -862,7 +864,7 @@
                                                     <action selector="backAction:" destination="cQW-e7-4Wy" eventType="touchUpInside" id="WuP-gw-1j3"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create a new account" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jQu-u1-JG1">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create passwords" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jQu-u1-JG1">
                                                 <rect key="frame" x="160" y="120" width="280" height="40"/>
                                                 <animations/>
                                                 <constraints>
@@ -870,23 +872,12 @@
                                                     <constraint firstAttribute="height" constant="40" id="p4D-hN-FDZ"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="30"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="25W-Rr-6em" userLabel="username_view">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="25W-Rr-6em" userLabel="login_password">
                                                 <rect key="frame" x="28" y="228" width="544" height="40"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@protonmail.com" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rvv-gH-tEp">
-                                                        <rect key="frame" x="449" y="0.0" width="95" height="40"/>
-                                                        <animations/>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="95" id="c12-JL-CaB"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
-                                                        <color key="textColor" red="1" green="1" blue="1" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Fk-VX-xe2">
                                                         <rect key="frame" x="0.0" y="39" width="544" height="1"/>
                                                         <animations/>
@@ -895,13 +886,13 @@
                                                             <constraint firstAttribute="height" constant="1" id="7Cu-Hy-1Du"/>
                                                         </constraints>
                                                     </view>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="DuG-Wm-Ubd" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="449" height="40"/>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Login Password" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="DuG-Wm-Ubd" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="110" height="40"/>
                                                         <animations/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
+                                                        <color key="textColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
                                                         <connections>
                                                             <outlet property="delegate" destination="rb7-9h-TvB" id="b74-v5-PTg"/>
@@ -911,19 +902,127 @@
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="bottom" secondItem="DuG-Wm-Ubd" secondAttribute="bottom" id="03u-eD-RFY"/>
-                                                    <constraint firstItem="Rvv-gH-tEp" firstAttribute="top" secondItem="25W-Rr-6em" secondAttribute="top" id="6AT-dL-k4u"/>
-                                                    <constraint firstItem="Rvv-gH-tEp" firstAttribute="leading" secondItem="DuG-Wm-Ubd" secondAttribute="trailing" id="7o4-RV-O3h"/>
                                                     <constraint firstAttribute="trailing" secondItem="6Fk-VX-xe2" secondAttribute="trailing" id="bv8-e7-yPs"/>
                                                     <constraint firstAttribute="bottom" secondItem="6Fk-VX-xe2" secondAttribute="bottom" id="jki-mx-mSF"/>
                                                     <constraint firstItem="DuG-Wm-Ubd" firstAttribute="leading" secondItem="25W-Rr-6em" secondAttribute="leading" id="lF9-3l-oTX"/>
                                                     <constraint firstAttribute="height" constant="40" id="o3Z-nx-g3k"/>
-                                                    <constraint firstAttribute="bottom" secondItem="Rvv-gH-tEp" secondAttribute="bottom" id="qjn-I9-crH"/>
                                                     <constraint firstItem="DuG-Wm-Ubd" firstAttribute="top" secondItem="25W-Rr-6em" secondAttribute="top" id="ss2-Xf-TPY"/>
-                                                    <constraint firstAttribute="trailing" secondItem="Rvv-gH-tEp" secondAttribute="trailing" id="t0x-c4-bbh"/>
                                                     <constraint firstItem="6Fk-VX-xe2" firstAttribute="leading" secondItem="25W-Rr-6em" secondAttribute="leading" id="ybV-eY-8Ph"/>
                                                 </constraints>
                                             </view>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="nih-t4-1mO">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NRg-mq-70r" userLabel="confirm_login_password">
+                                                <rect key="frame" x="28" y="286" width="544" height="40"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XQI-cA-b5S">
+                                                        <rect key="frame" x="0.0" y="39" width="544" height="1"/>
+                                                        <animations/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="1" id="HKc-8v-IT4"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm Login Password" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="hvM-1O-hMa" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="544" height="40"/>
+                                                        <animations/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <color key="textColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="rb7-9h-TvB" id="qjV-E9-r0l"/>
+                                                        </connections>
+                                                    </textField>
+                                                </subviews>
+                                                <animations/>
+                                                <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="hvM-1O-hMa" secondAttribute="trailing" id="4R1-wo-6PU"/>
+                                                    <constraint firstAttribute="bottom" secondItem="XQI-cA-b5S" secondAttribute="bottom" id="7Jp-p4-rB0"/>
+                                                    <constraint firstItem="XQI-cA-b5S" firstAttribute="leading" secondItem="NRg-mq-70r" secondAttribute="leading" id="Fpt-c8-BY6"/>
+                                                    <constraint firstAttribute="trailing" secondItem="XQI-cA-b5S" secondAttribute="trailing" id="KcU-sL-fBV"/>
+                                                    <constraint firstAttribute="height" constant="40" id="LCL-uM-PBs"/>
+                                                    <constraint firstAttribute="bottom" secondItem="hvM-1O-hMa" secondAttribute="bottom" id="LTM-hK-G5s"/>
+                                                    <constraint firstItem="hvM-1O-hMa" firstAttribute="leading" secondItem="NRg-mq-70r" secondAttribute="leading" id="MCg-A5-bIm"/>
+                                                    <constraint firstItem="hvM-1O-hMa" firstAttribute="top" secondItem="NRg-mq-70r" secondAttribute="top" id="Sca-aj-Qdc"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xb4-SA-mwp" userLabel="mailbox_password">
+                                                <rect key="frame" x="28" y="406" width="544" height="40"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qqy-nz-Eac">
+                                                        <rect key="frame" x="0.0" y="39" width="544" height="1"/>
+                                                        <animations/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="1" id="ocN-qD-hln"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Mailbox Password" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="JiU-mW-nmT" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="126" height="40"/>
+                                                        <animations/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <color key="textColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="rb7-9h-TvB" id="Jz0-Au-Ppb"/>
+                                                        </connections>
+                                                    </textField>
+                                                </subviews>
+                                                <animations/>
+                                                <constraints>
+                                                    <constraint firstItem="Qqy-nz-Eac" firstAttribute="leading" secondItem="Xb4-SA-mwp" secondAttribute="leading" id="Caj-Lx-1pb"/>
+                                                    <constraint firstAttribute="height" constant="40" id="Ef8-vl-pq9"/>
+                                                    <constraint firstAttribute="trailing" secondItem="Qqy-nz-Eac" secondAttribute="trailing" id="P8G-PB-sDr"/>
+                                                    <constraint firstItem="JiU-mW-nmT" firstAttribute="top" secondItem="Xb4-SA-mwp" secondAttribute="top" id="YQv-NP-WB8"/>
+                                                    <constraint firstAttribute="bottom" secondItem="Qqy-nz-Eac" secondAttribute="bottom" id="YX1-q7-x8U"/>
+                                                    <constraint firstAttribute="bottom" secondItem="JiU-mW-nmT" secondAttribute="bottom" id="cWJ-0h-Y8f"/>
+                                                    <constraint firstItem="JiU-mW-nmT" firstAttribute="leading" secondItem="Xb4-SA-mwp" secondAttribute="leading" id="xu0-GT-hpa"/>
+                                                </constraints>
+                                                <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                                    <rect key="frame" x="28" y="424" width="544" height="40"/>
+                                                </variation>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zrw-rm-iQP" userLabel="confirm_mailbox_password">
+                                                <rect key="frame" x="28" y="464" width="544" height="40"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2wV-tG-0g9">
+                                                        <rect key="frame" x="0.0" y="39" width="544" height="1"/>
+                                                        <animations/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="1" id="cLZ-cK-gyB"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm Mailbox Password" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="wfn-8h-3cZ" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="182" height="40"/>
+                                                        <animations/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <color key="textColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="rb7-9h-TvB" id="eYM-pW-NoR"/>
+                                                        </connections>
+                                                    </textField>
+                                                </subviews>
+                                                <animations/>
+                                                <constraints>
+                                                    <constraint firstItem="wfn-8h-3cZ" firstAttribute="leading" secondItem="zrw-rm-iQP" secondAttribute="leading" id="1LD-lf-TgZ"/>
+                                                    <constraint firstAttribute="bottom" secondItem="wfn-8h-3cZ" secondAttribute="bottom" id="BvZ-od-TMu"/>
+                                                    <constraint firstItem="wfn-8h-3cZ" firstAttribute="top" secondItem="zrw-rm-iQP" secondAttribute="top" id="COR-JK-ykA"/>
+                                                    <constraint firstAttribute="height" constant="40" id="GSy-yw-0Xn"/>
+                                                    <constraint firstAttribute="trailing" secondItem="2wV-tG-0g9" secondAttribute="trailing" id="fPe-J6-Qm0"/>
+                                                    <constraint firstAttribute="bottom" secondItem="2wV-tG-0g9" secondAttribute="bottom" id="fU0-kR-KFx"/>
+                                                    <constraint firstItem="2wV-tG-0g9" firstAttribute="leading" secondItem="zrw-rm-iQP" secondAttribute="leading" id="sJB-03-Es6"/>
+                                                </constraints>
+                                                <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                                    <rect key="frame" x="28" y="488" width="544" height="40"/>
+                                                </variation>
+                                            </view>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="signup_logo" translatesAutoresizingMaskIntoConstraints="NO" id="nih-t4-1mO">
                                                 <rect key="frame" x="251" y="80" width="98" height="16"/>
                                                 <animations/>
                                                 <constraints>
@@ -931,18 +1030,34 @@
                                                     <constraint firstAttribute="height" constant="16" id="cKm-sx-0DQ"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note: The Username is also your ProtonMail address." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="agB-RC-aUZ">
-                                                <rect key="frame" x="28" y="286" width="544" height="21"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note: The Login password belongs to your unique User account." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="agB-RC-aUZ">
+                                                <rect key="frame" x="28" y="344" width="544" height="40"/>
                                                 <animations/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="21" id="iTY-qi-0eG"/>
+                                                    <constraint firstAttribute="height" constant="40" id="iTY-qi-0eG"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
-                                                <color key="textColor" red="0.78823529410000004" green="0.78823529410000004" blue="0.85098039219999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
+                                                <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                                    <rect key="frame" x="28" y="351" width="344" height="21"/>
+                                                </variation>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note: The Username is also your ProtonMail address." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ed2-QY-tZc">
+                                                <rect key="frame" x="28" y="526" width="544" height="40"/>
+                                                <animations/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="1Cv-5y-sHV"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                                <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                                    <rect key="frame" x="28" y="536" width="344" height="21"/>
+                                                </variation>
                                             </label>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DbH-Ns-wpw">
-                                                <rect key="frame" x="200" y="359" width="200" height="42"/>
+                                                <rect key="frame" x="200" y="584" width="200" height="42"/>
                                                 <animations/>
                                                 <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
@@ -958,6 +1073,12 @@
                                                         <integer key="value" value="6"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
+                                                    <rect key="frame" x="100" y="394" width="200" height="42"/>
+                                                </variation>
+                                                <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                                    <rect key="frame" x="100" y="613" width="200" height="42"/>
+                                                </variation>
                                                 <connections>
                                                     <action selector="createAccountAction:" destination="XYV-2Y-X0C" eventType="touchUpInside" id="oNy-70-3D0"/>
                                                     <action selector="createPasswordAction:" destination="cQW-e7-4Wy" eventType="touchUpInside" id="luh-dG-eeQ"/>
@@ -969,33 +1090,57 @@
                                         <constraints>
                                             <constraint firstItem="nih-t4-1mO" firstAttribute="top" secondItem="tHO-sZ-3CD" secondAttribute="top" priority="500" constant="80" id="Bu2-25-IbG"/>
                                             <constraint firstItem="25W-Rr-6em" firstAttribute="leading" secondItem="tHO-sZ-3CD" secondAttribute="leading" constant="28" id="DC1-wk-Xg3"/>
+                                            <constraint firstItem="Xb4-SA-mwp" firstAttribute="top" secondItem="agB-RC-aUZ" secondAttribute="bottom" priority="500" constant="22" id="DqN-3F-Kqa"/>
                                             <constraint firstAttribute="centerX" secondItem="DbH-Ns-wpw" secondAttribute="centerX" priority="500" id="EiK-zf-EsW"/>
+                                            <constraint firstItem="agB-RC-aUZ" firstAttribute="top" secondItem="NRg-mq-70r" secondAttribute="bottom" priority="500" constant="18" id="Fn4-S8-hmw"/>
                                             <constraint firstItem="IWK-8f-VFQ" firstAttribute="top" secondItem="tHO-sZ-3CD" secondAttribute="top" id="Iic-Xu-Y5V"/>
+                                            <constraint firstItem="Ed2-QY-tZc" firstAttribute="leading" secondItem="tHO-sZ-3CD" secondAttribute="leading" constant="28" id="Jra-7H-gRJ"/>
+                                            <constraint firstItem="zrw-rm-iQP" firstAttribute="leading" secondItem="tHO-sZ-3CD" secondAttribute="leading" constant="28" id="KYJ-vR-JRQ"/>
+                                            <constraint firstAttribute="bottom" secondItem="DbH-Ns-wpw" secondAttribute="bottom" constant="10" id="M5U-yr-CV4"/>
                                             <constraint firstItem="nih-t4-1mO" firstAttribute="leading" secondItem="tHO-sZ-3CD" secondAttribute="leading" priority="1" constant="28" id="Q6j-vZ-P1D"/>
+                                            <constraint firstItem="zrw-rm-iQP" firstAttribute="top" secondItem="Xb4-SA-mwp" secondAttribute="bottom" priority="500" constant="18" id="TIm-QR-26g"/>
+                                            <constraint firstAttribute="trailing" secondItem="NRg-mq-70r" secondAttribute="trailing" constant="28" id="TuM-eN-MIs"/>
+                                            <constraint firstAttribute="trailing" secondItem="zrw-rm-iQP" secondAttribute="trailing" constant="28" id="WhR-xM-BXw"/>
                                             <constraint firstItem="jQu-u1-JG1" firstAttribute="leading" secondItem="tHO-sZ-3CD" secondAttribute="leading" priority="1" constant="28" id="Y1K-Gn-Bms"/>
                                             <constraint firstAttribute="centerX" secondItem="nih-t4-1mO" secondAttribute="centerX" priority="500" id="YNo-cb-cJP"/>
+                                            <constraint firstItem="Xb4-SA-mwp" firstAttribute="leading" secondItem="tHO-sZ-3CD" secondAttribute="leading" constant="28" id="Yuj-Cq-zRD"/>
                                             <constraint firstAttribute="trailing" secondItem="25W-Rr-6em" secondAttribute="trailing" constant="28" id="a88-Cj-0ak"/>
-                                            <constraint firstItem="DbH-Ns-wpw" firstAttribute="top" secondItem="agB-RC-aUZ" secondAttribute="bottom" priority="500" constant="52" id="cnc-jQ-hMG"/>
+                                            <constraint firstItem="NRg-mq-70r" firstAttribute="top" secondItem="25W-Rr-6em" secondAttribute="bottom" priority="500" constant="18" id="cjk-x6-Xvx"/>
                                             <constraint firstItem="jQu-u1-JG1" firstAttribute="top" secondItem="nih-t4-1mO" secondAttribute="bottom" priority="500" constant="24" id="eVR-XJ-pq4"/>
                                             <constraint firstAttribute="trailing" secondItem="agB-RC-aUZ" secondAttribute="trailing" constant="28" id="f9j-a4-lZO"/>
                                             <constraint firstItem="agB-RC-aUZ" firstAttribute="leading" secondItem="tHO-sZ-3CD" secondAttribute="leading" constant="28" id="fP2-ku-JXE"/>
                                             <constraint firstItem="nih-t4-1mO" firstAttribute="top" secondItem="tHO-sZ-3CD" secondAttribute="top" priority="1" constant="55" id="hjs-42-aek"/>
+                                            <constraint firstItem="NRg-mq-70r" firstAttribute="leading" secondItem="tHO-sZ-3CD" secondAttribute="leading" constant="28" id="nIp-oS-DsA"/>
+                                            <constraint firstItem="DbH-Ns-wpw" firstAttribute="top" secondItem="Ed2-QY-tZc" secondAttribute="bottom" priority="500" constant="18" id="ouM-mo-exO"/>
                                             <constraint firstAttribute="centerX" secondItem="jQu-u1-JG1" secondAttribute="centerX" priority="500" id="pkR-gK-QqU"/>
-                                            <constraint firstItem="agB-RC-aUZ" firstAttribute="top" secondItem="25W-Rr-6em" secondAttribute="bottom" priority="500" constant="18" id="tyz-z1-B4E"/>
+                                            <constraint firstAttribute="trailing" secondItem="Ed2-QY-tZc" secondAttribute="trailing" constant="28" id="t2d-ib-tCt"/>
                                             <constraint firstItem="25W-Rr-6em" firstAttribute="top" secondItem="jQu-u1-JG1" secondAttribute="bottom" priority="500" constant="68" id="ubQ-Fg-BIg"/>
+                                            <constraint firstAttribute="trailing" secondItem="Xb4-SA-mwp" secondAttribute="trailing" constant="28" id="uda-3A-jgv"/>
                                             <constraint firstItem="jQu-u1-JG1" firstAttribute="top" secondItem="nih-t4-1mO" secondAttribute="bottom" priority="1" constant="10" id="wW0-FR-tE6"/>
-                                            <constraint firstAttribute="bottom" secondItem="DbH-Ns-wpw" secondAttribute="bottom" priority="500" constant="25" id="x4r-qm-uCZ"/>
                                             <constraint firstItem="IWK-8f-VFQ" firstAttribute="leading" secondItem="tHO-sZ-3CD" secondAttribute="leading" id="xdC-LM-Qqo"/>
+                                            <constraint firstItem="Ed2-QY-tZc" firstAttribute="top" secondItem="zrw-rm-iQP" secondAttribute="bottom" constant="22" id="zJc-q3-VCj"/>
                                         </constraints>
+                                        <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
+                                            <rect key="frame" x="0.0" y="0.0" width="400" height="426"/>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
+                                            <rect key="frame" x="0.0" y="0.0" width="400" height="800"/>
+                                        </variation>
                                     </view>
                                 </subviews>
                                 <animations/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="tHO-sZ-3CD" secondAttribute="bottom" id="0ro-uN-oLc"/>
                                     <constraint firstAttribute="trailing" secondItem="tHO-sZ-3CD" secondAttribute="trailing" id="WHL-RU-hUO"/>
                                     <constraint firstItem="tHO-sZ-3CD" firstAttribute="top" secondItem="t2A-D7-bGy" secondAttribute="top" id="WbS-Wb-g1I"/>
+                                    <constraint firstAttribute="bottom" secondItem="tHO-sZ-3CD" secondAttribute="bottom" id="gVZ-u7-qOy"/>
                                     <constraint firstItem="tHO-sZ-3CD" firstAttribute="leading" secondItem="t2A-D7-bGy" secondAttribute="leading" id="vBk-v9-ZRh"/>
                                 </constraints>
+                                <variation key="widthClass=compact" ambiguous="YES">
+                                    <rect key="frame" x="0.0" y="20" width="400" height="580"/>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact" ambiguous="YES">
+                                    <rect key="frame" x="0.0" y="20" width="400" height="780"/>
+                                </variation>
                             </scrollView>
                         </subviews>
                         <animations/>
@@ -1012,6 +1157,8 @@
                             <constraint firstItem="hTe-cj-mjb" firstAttribute="top" secondItem="j6M-sH-v8L" secondAttribute="bottom" id="zko-sd-Ur7"/>
                         </constraints>
                     </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="600" height="1000"/>
                     <connections>
                         <outlet property="scrollBottomPaddingConstraint" destination="ap7-uQ-UET" id="wtY-QC-ynq"/>
                         <segue destination="YIP-X7-8Un" kind="show" identifier="sign_up_pwd_email_segue" id="Z4S-TQ-RdD"/>
@@ -1030,18 +1177,18 @@
                         <viewControllerLayoutGuide type="bottom" id="qC9-rT-nvM"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="LxC-bW-X5q">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="1000"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sign_background_new" translatesAutoresizingMaskIntoConstraints="NO" id="2oH-br-rTi">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2oH-br-rTi">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="1000"/>
                                 <animations/>
                             </imageView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TG1-Ko-NlW">
-                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
+                                <rect key="frame" x="0.0" y="20" width="600" height="980"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qxc-bG-bH0" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="426"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="505"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Ju-xs-RJb">
                                                 <rect key="frame" x="0.0" y="0.0" width="100" height="48"/>
@@ -1050,8 +1197,10 @@
                                                     <constraint firstAttribute="width" constant="100" id="03l-9Q-twq"/>
                                                     <constraint firstAttribute="height" constant="48" id="MEh-jV-OtZ"/>
                                                 </constraints>
+                                                <inset key="titleEdgeInsets" minX="25" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                 <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                <state key="normal" image="top_back">
+                                                <state key="normal" title="Back" image="signup_back">
+                                                    <color key="titleColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -1059,7 +1208,7 @@
                                                     <action selector="backAction:" destination="Zzb-6r-tlP" eventType="touchUpInside" id="mpO-6C-KBb"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create a new account" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ok8-ED-GBl">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Congratulation" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ok8-ED-GBl">
                                                 <rect key="frame" x="160" y="120" width="280" height="40"/>
                                                 <animations/>
                                                 <constraints>
@@ -1067,23 +1216,12 @@
                                                     <constraint firstAttribute="width" constant="280" id="y1v-3T-VuG"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="30"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="textColor" red="0.24313725489999999" green="0.23921568630000001" blue="0.30588235289999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d5f-Tb-VRE" userLabel="username_view">
                                                 <rect key="frame" x="28" y="228" width="544" height="40"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@protonmail.com" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3g6-MC-D2q">
-                                                        <rect key="frame" x="449" y="0.0" width="95" height="40"/>
-                                                        <animations/>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="95" id="b1v-4w-QlS"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
-                                                        <color key="textColor" red="1" green="1" blue="1" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UHP-od-beh">
                                                         <rect key="frame" x="0.0" y="39" width="544" height="1"/>
                                                         <animations/>
@@ -1092,18 +1230,29 @@
                                                             <constraint firstAttribute="height" constant="1" id="xU3-No-663"/>
                                                         </constraints>
                                                     </view>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="NNw-Zp-1k2" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Recovery email" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="NNw-Zp-1k2" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="449" height="40"/>
                                                         <animations/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
                                                         <connections>
                                                             <outlet property="delegate" destination="rb7-9h-TvB" id="5B0-Er-O4s"/>
                                                         </connections>
                                                     </textField>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*OPTIONAL" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3g6-MC-D2q">
+                                                        <rect key="frame" x="449" y="0.0" width="95" height="40"/>
+                                                        <animations/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="95" id="b1v-4w-QlS"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
+                                                        <color key="textColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
                                                 </subviews>
                                                 <animations/>
                                                 <constraints>
@@ -1120,7 +1269,7 @@
                                                     <constraint firstItem="3g6-MC-D2q" firstAttribute="leading" secondItem="NNw-Zp-1k2" secondAttribute="trailing" id="vqq-YW-xVb"/>
                                                 </constraints>
                                             </view>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="RWb-BN-uze">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="signup_logo" translatesAutoresizingMaskIntoConstraints="NO" id="RWb-BN-uze">
                                                 <rect key="frame" x="251" y="80" width="98" height="16"/>
                                                 <animations/>
                                                 <constraints>
@@ -1128,18 +1277,19 @@
                                                     <constraint firstAttribute="height" constant="16" id="mZ8-Qy-V8o"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note: The Username is also your ProtonMail address." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J33-vv-E3j">
-                                                <rect key="frame" x="28" y="286" width="544" height="21"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J33-vv-E3j">
+                                                <rect key="frame" x="28" y="286" width="544" height="100"/>
                                                 <animations/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="21" id="IyP-gA-cE9"/>
+                                                    <constraint firstAttribute="height" constant="100" id="IyP-gA-cE9"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
-                                                <color key="textColor" red="0.78823529410000004" green="0.78823529410000004" blue="0.85098039219999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                <string key="text">With the optional recovery email address we can contact you in case of login issues.  Note: By loosing your passwords, without a recovery  address, we can not assist you in gettings back toyour account.</string>
+                                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3UG-dE-ZUI">
-                                                <rect key="frame" x="200" y="359" width="200" height="42"/>
+                                                <rect key="frame" x="200" y="438" width="200" height="42"/>
                                                 <animations/>
                                                 <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
