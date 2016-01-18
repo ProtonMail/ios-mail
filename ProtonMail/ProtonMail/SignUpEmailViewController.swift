@@ -30,8 +30,6 @@ class SignUpEmailViewController: UIViewController {
 //        
 //        userNameTopPaddingConstraint.priority = level
     }
-
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()

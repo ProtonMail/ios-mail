@@ -57,7 +57,7 @@ class AuthCredential: NSObject, NSCoding {
     
     
     func setupToken (password:String) {
-        self.plainToken = self.encryptToken.decryptWithPrivateKey(self.privateKey, passphrase: password, error: nil)
+        self.plainToken = self.encryptToken.decryptMessageWithSinglKey(self.privateKey, passphrase: password, error: nil)
         self.password = password;
         self.storeInKeychain()
     }

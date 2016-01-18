@@ -166,7 +166,7 @@ extension Message {
     // MARK: Public methods
     
     func decryptBody(error: NSErrorPointer?) -> String? {
-        return body.decryptWithPrivateKey(privateKey, passphrase: passphrase, error: error)
+        return body.decryptMessage(passphrase, error: error)
     }
     
     func decryptBodyIfNeeded(error: NSErrorPointer?) -> String? {

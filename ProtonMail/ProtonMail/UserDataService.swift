@@ -158,18 +158,21 @@ class UserDataService {
     }
     
     // MARK: - Public methods
-    
     init() {
         cleanUpIfFirstRun()
         launchCleanUp()
     }
 
     func fetchUserInfo(completion: UserInfoBlock? = nil) {
-        sharedAPIService.userInfo() { userInfo, error in
-            if error == nil {
-                self.userInfo = userInfo
+        
+        let getUserInfo = GetUserInfoRequest<GetUserInfoResponse>()
+        
+        getUserInfo.call { (task, response, hasError) -> Void in
+            if !hasError {
+                self.userInfo = response?.userInfo
+                sharedOpenPGP.setAddresses(self.userInfo?.userAddresses.toPMNAddresses())
             }
-            completion?(userInfo, error)
+            completion?(self.userInfo, response?.error)
         }
     }
     

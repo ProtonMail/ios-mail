@@ -27,6 +27,13 @@ extension PMNOpenPgp {
         case badProtonMailPGPMessage = 10006
     }
     
+    func setAddresses (addresses : Array<PMNAddress>!) {
+        self.cleanAddresses();
+        for addr in addresses {
+            self.addAddress(addr)
+        }
+    }
+    
     func checkPassphrase(passphrase: String, forPrivateKey privateKey: String, error: NSErrorPointer?) -> Bool {
         if !checkPassphrase(privateKey, passphrase: passphrase) {
             return false
@@ -72,7 +79,20 @@ extension PMNOpenPgp {
 // MARK: - OpenPGP String extension
 
 extension String {
-    func decryptWithPrivateKey(privateKey: String, passphrase: String, error: NSErrorPointer?) -> String? {
+    func decryptMessage(passphrase: String, error: NSErrorPointer?) -> String? {
+        var out_decrypted : String?;
+        SwiftTryCatch.tryBlock({ () -> Void in
+            out_decrypted = sharedOpenPGP.decryptMessage(self, passphras: passphrase)
+            }, catchBlock: { (exc) -> Void in
+                if let error = error {
+                    error.memory = exc.toError()
+                }
+            }) { () -> Void in
+        }
+        return out_decrypted;
+    }
+    
+    func decryptMessageWithSinglKey(privateKey: String, passphrase: String, error: NSErrorPointer?) -> String? {
         var out_decrypted : String?;
         SwiftTryCatch.tryBlock({ () -> Void in
             out_decrypted = sharedOpenPGP.decryptMessageSingleKey(self, privateKey: privateKey, passphras: passphrase)
@@ -140,45 +160,6 @@ extension NSData {
         return out_enc_data
     }
     
-    //    func encryptWithPublicKeys(publicKeys: NSMutableDictionary, fileName:String, error: NSErrorPointer?) -> NSMutableDictionary? {
-    //        let publicKey = publicKeys["self"] as! String;
-    //
-    //        sharedOpenPGP.encryptAttachmentSingleKey(publicKey, unencryptData: self, fileName: fileName)
-    //
-    ////        var out_packet [String, PMNEncryptPackage] =
-    ////        for (key, value) in publicKeys {
-    ////
-    ////
-    ////            sharedOpenPGP.encryptAttachmentSingleKey(publicKey: String, unencryptData: NSData, fileName: String)
-    ////        }
-    ////
-    //
-    ////        - (NSMutableDictionary*) encrypt_attachments:(NSData *)unencrypt_att fileNam:(NSString*)name pub_keys:(NSMutableDictionary*)pub_keys error:(NSError**) err
-    ////        {
-    ////            NSMutableDictionary *dictX = [[NSMutableDictionary alloc] init];
-    ////
-    ////            std::string unencrypt_attachment = std::string((char* )[unencrypt_att bytes], [unencrypt_att length]);
-    ////            std::string session_key = generat_session_key();
-    ////            std::string fileName = [name UTF8String];
-    ////
-    ////            for(id key in pub_keys)
-    ////            {
-    ////                std::string user_pub_key = [pub_keys[key] UTF8String];
-    ////                PGPPublicKey pub(user_pub_key);
-    ////                PGPMessage enrypted_session_key = encrypt_pka_only_session(pub, session_key);
-    ////                std::string enrypted_session_key_data = enrypted_session_key.write(1);
-    ////                [dictX setObject:[NSData dataWithBytes: enrypted_session_key_data.c_str() length:enrypted_session_key_data.length()] forKey:key];
-    ////            }
-    ////
-    ////            PGPMessage encrypted_att = encrypt_pka_only_data(session_key, unencrypt_attachment, fileName, 9, 0);
-    ////            std::string endryp_dat = encrypted_att.write(1);
-    ////            [dictX setObject:[NSData dataWithBytes: endryp_dat.c_str() length:endryp_dat.length()] forKey:@"DataPacket"];
-    ////
-    ////            return dictX;
-    ////        }
-    //        return nil
-    //    }
-    
     func getSessionKeyFromPubKeyPackage(privateKey: String, passphrase: String, publicKey: String, error: NSErrorPointer?) -> NSData? {
         var key_session_out : NSData?
         SwiftTryCatch.tryBlock({ () -> Void in
@@ -218,7 +199,20 @@ extension NSData {
         return out_sym_key_package
     }
     
-    func decryptAttachment(keyPackage:NSData!, passphrase: String, publicKey: String, privateKey: String, error: NSErrorPointer?) -> NSData? {
+    func decryptAttachment(keyPackage:NSData!, passphrase: String, error: NSErrorPointer?) -> NSData? {
+        var dec_out_att : NSData?
+        SwiftTryCatch.tryBlock({ () -> Void in
+            dec_out_att = sharedOpenPGP.decryptAttachment(keyPackage, data: self, passphras: passphrase)
+            }, catchBlock: { (exc) -> Void in
+                if let error = error {
+                    error.memory = exc.toError()
+                }
+            }) { () -> Void in
+        }
+        return dec_out_att
+    }
+    
+    func decryptAttachmentWithSingleKey(keyPackage:NSData!, passphrase: String, publicKey: String, privateKey: String, error: NSErrorPointer?) -> NSData? {
         var dec_out_att : NSData?
         SwiftTryCatch.tryBlock({ () -> Void in
             dec_out_att = sharedOpenPGP.decryptAttachmentSingleKey(keyPackage, data: self, privateKey: privateKey, passphras: passphrase)

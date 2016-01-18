@@ -302,7 +302,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
         if let data : NSData = NSData(contentsOfURL: localURL) {
             tempFileUri = NSFileManager.defaultManager().attachmentDirectory.URLByAppendingPathComponent(fileName);
             var error: NSError?
-            let decryptData = data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!, publicKey: sharedUserDataService.userInfo!.publicKey, privateKey: sharedUserDataService.userInfo!.privateKey, error: &error)
+            let decryptData = data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!, error: &error)
             if error != nil {
                 var alert = "Cant' decrypt this attachment!".alertController();
                 alert.addOKAction()

@@ -240,6 +240,9 @@ class SignInViewController: UIViewController {
             sharedUserDataService.isSignedIn = true
             isRemembered = true
             
+            let addresses = sharedUserDataService.userInfo?.userAddresses.toPMNAddresses()
+            sharedOpenPGP.setAddresses(addresses);
+            
             usernameTextField.text = sharedUserDataService.username
             passwordTextField.text = sharedUserDataService.password
             

@@ -945,7 +945,7 @@ extension MessageDetailView: UITableViewDelegate {
         
         if let data : NSData = NSData(contentsOfURL: localURL) {
             tempFileUri = NSFileManager.defaultManager().attachmentDirectory.URLByAppendingPathComponent(fileName);
-            let decryptData = data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!, publicKey: sharedUserDataService.userInfo!.publicKey, privateKey: sharedUserDataService.userInfo!.privateKey, error: nil)
+            let decryptData = data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!, error: nil)
             
             decryptData!.writeToURL(tempFileUri!, atomically: true)
             

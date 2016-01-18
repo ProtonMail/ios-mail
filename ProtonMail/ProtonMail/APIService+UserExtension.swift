@@ -27,54 +27,54 @@ extension APIService {
         static let base = AppConstants.BaseAPIPath + "/users"
     }
     
-    func userInfo(completion: UserInfoBlock) {
-        fetchAuthCredential() { authCredential, error in
-            if let authCredential = authCredential {
-                let path = UserPath.base;//.stringByAppendingPathComponent(authCredential.userID)
-                
-                let completionWrapper: CompletionBlock = { task, response, error in
-                    if error != nil {
-                        completion(nil, error)
-                    } else if let response = response {
-                        if let errorres = self.isErrorResponse(response) {
-                            completion(nil, errorres)
-                        }else {
-                            PMLog.D("\(response)")
-                            let userInfo = UserInfo(
-                                response: response["User"] as! Dictionary<String, AnyObject>,
-                                displayNameResponseKey: "DisplayName",
-                                maxSpaceResponseKey: "MaxSpace",
-                                notificationEmailResponseKey: "NotificationEmail",
-                                privateKeyResponseKey: "EncPrivateKey",
-                                publicKeyResponseKey: "PublicKey",
-                                signatureResponseKey: "Signature",
-                                usedSpaceResponseKey: "UsedSpace",
-                                userStatusResponseKey: "UserStatus",
-                                userAddressResponseKey: "Addresses",
-                                
-                                autoSaveContactResponseKey : "AutoSaveContacts",
-                                languageResponseKey : "Language",
-                                maxUploadResponseKey: "MaxUpload",
-                                notifyResponseKey: "Notify",
-                                showImagesResponseKey : "ShowImages",
-                                swipeLeftResponseKey : "SwipeLeft",
-                                swipeRightResponseKey : "SwipeRight"
-                            )
-                            
-                            completion(userInfo, nil)
-                        }
-                    } else {
-                        completion(nil, NSError.unableToParseResponse(response))
-                    }
-                }
-                
-                self.setApiVesion(1, appVersion: 1)
-                self.request(method: .GET, path: path, parameters: nil, completion: completionWrapper)
-            } else {
-                completion(nil, error)
-            }
-        }
-    }
+//    func userInfo(completion: UserInfoBlock) {
+//        fetchAuthCredential() { authCredential, error in
+//            if let authCredential = authCredential {
+//                let path = UserPath.base;//.stringByAppendingPathComponent(authCredential.userID)
+//                
+//                let completionWrapper: CompletionBlock = { task, response, error in
+//                    if error != nil {
+//                        completion(nil, error)
+//                    } else if let response = response {
+//                        if let errorres = self.isErrorResponse(response) {
+//                            completion(nil, errorres)
+//                        }else {
+//                            PMLog.D("\(response)")
+//                            let userInfo = UserInfo(
+//                                response: response["User"] as! Dictionary<String, AnyObject>,
+//                                displayNameResponseKey: "DisplayName",
+//                                maxSpaceResponseKey: "MaxSpace",
+//                                notificationEmailResponseKey: "NotificationEmail",
+//                                privateKeyResponseKey: "EncPrivateKey",
+//                                publicKeyResponseKey: "PublicKey",
+//                                signatureResponseKey: "Signature",
+//                                usedSpaceResponseKey: "UsedSpace",
+//                                userStatusResponseKey: "UserStatus",
+//                                userAddressResponseKey: "Addresses",
+//                                
+//                                autoSaveContactResponseKey : "AutoSaveContacts",
+//                                languageResponseKey : "Language",
+//                                maxUploadResponseKey: "MaxUpload",
+//                                notifyResponseKey: "Notify",
+//                                showImagesResponseKey : "ShowImages",
+//                                swipeLeftResponseKey : "SwipeLeft",
+//                                swipeRightResponseKey : "SwipeRight"
+//                            )
+//                            
+//                            completion(userInfo, nil)
+//                        }
+//                    } else {
+//                        completion(nil, NSError.unableToParseResponse(response))
+//                    }
+//                }
+//                
+//                self.setApiVesion(1, appVersion: 1)
+//                self.request(method: .GET, path: path, parameters: nil, completion: completionWrapper)
+//            } else {
+//                completion(nil, error)
+//            }
+//        }
+//    }
     
     func userPublicKeyForUsername(username: String, completion: CompletionBlock?) {
         let path = UserPath.base.stringByAppendingPathComponent("pubkey").stringByAppendingPathComponent(username)
@@ -161,70 +161,5 @@ extension APIService {
         }
         
         return  NSError.unableToParseResponse(response)
-    }
-}
-
-// MARK: - UserInfo extension
-
-extension UserInfo {
-    
-    /// Initializes the UserInfo with the response data
-    convenience init(
-        response: Dictionary<String, AnyObject>,
-        displayNameResponseKey: String,
-        maxSpaceResponseKey: String,
-        notificationEmailResponseKey: String,
-        privateKeyResponseKey: String,
-        publicKeyResponseKey: String,
-        signatureResponseKey: String,
-        usedSpaceResponseKey: String,
-        userStatusResponseKey:String,
-        userAddressResponseKey:String,
-        
-        autoSaveContactResponseKey : String,
-        languageResponseKey : String,
-        maxUploadResponseKey: String,
-        notifyResponseKey: String,
-        showImagesResponseKey : String,
-        
-        swipeLeftResponseKey : String,
-        swipeRightResponseKey : String
-        ) {
-            var addresses: [Address] = Array<Address>()
-            let address_response = response[userAddressResponseKey] as! Array<Dictionary<String, AnyObject>>
-            for res in address_response
-            {
-                addresses.append(Address(
-                    addressid: res["ID"] as? String,
-                    email:res["Email"] as? String,
-                    send: res["Send"] as? Int,
-                    receive: res["Receive"] as? Int,
-                    mailbox: res["Mailbox"] as? Int,
-                    display_name: res["DisplayName"] as? String,
-                    signature: res["Signature"] as? String))
-            }
-            let usedS = response[usedSpaceResponseKey] as? NSNumber
-            let maxS = response[maxSpaceResponseKey] as? NSNumber
-            self.init(
-                displayName: response[displayNameResponseKey] as? String,
-                maxSpace: maxS?.longLongValue,
-                notificationEmail: response[notificationEmailResponseKey] as? String,
-                privateKey: response[privateKeyResponseKey] as? String,
-                publicKey: response[publicKeyResponseKey] as? String,
-                signature: response[signatureResponseKey] as? String,
-                usedSpace: usedS?.longLongValue,
-                userStatus: response[userStatusResponseKey] as? Int,
-                userAddresses: addresses,
-                
-                autoSC : response[autoSaveContactResponseKey] as? Int,
-                language : response[languageResponseKey] as? String,
-                maxUpload: response[maxUploadResponseKey] as? Int64,
-                notify: response[notifyResponseKey] as? Int,
-                showImage : response[showImagesResponseKey] as? Int,
-                
-                swipeL: response[swipeLeftResponseKey] as? Int,
-                swipeR: response[swipeRightResponseKey] as? Int
-            
-            )
     }
 }

@@ -88,3 +88,12 @@ public struct BugsAPI {
     
     static let V_BugsReportRequest : Int = 1
 }
+
+
+public struct UsersAPI {
+    
+    static let Path : String = AppConstants.BaseAPIPath + "/users"
+    
+    static let V_CreateUsersRequest : Int = 1
+    static let V_GetUserInfoRequest : Int = 1
+}

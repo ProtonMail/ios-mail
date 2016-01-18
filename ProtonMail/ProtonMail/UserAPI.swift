@@ -40,3 +40,54 @@ public class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
         return SettingsAPI.V_SettingsUpdateSwipeRightRequest
     }
 }
+
+
+public class GetUserInfoRequest<T : ApiResponse> : ApiRequest<T> {
+    
+    override init() {
+    }
+    
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+        return nil
+    }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .GET
+    }
+    
+    override public func getRequestPath() -> String {
+        return UsersAPI.Path
+    }
+    
+    override public func getVersion() -> Int {
+        return UsersAPI.V_GetUserInfoRequest
+    }
+}
+
+public class GetUserInfoResponse : ApiResponse {
+    var userInfo : UserInfo?
+    
+    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
+        self.userInfo = UserInfo(
+            response: response["User"] as! Dictionary<String, AnyObject>,
+            displayNameResponseKey: "DisplayName",
+            maxSpaceResponseKey: "MaxSpace",
+            notificationEmailResponseKey: "NotificationEmail",
+            privateKeyResponseKey: "EncPrivateKey",
+            publicKeyResponseKey: "PublicKey",
+            signatureResponseKey: "Signature",
+            usedSpaceResponseKey: "UsedSpace",
+            userStatusResponseKey: "UserStatus",
+            userAddressResponseKey: "Addresses",
+            
+            autoSaveContactResponseKey : "AutoSaveContacts",
+            languageResponseKey : "Language",
+            maxUploadResponseKey: "MaxUpload",
+            notifyResponseKey: "Notify",
+            showImagesResponseKey : "ShowImages",
+            swipeLeftResponseKey : "SwipeLeft",
+            swipeRightResponseKey : "SwipeRight"
+        )
+        return true
+    }
+}
