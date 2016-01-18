@@ -1283,7 +1283,9 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="100" id="IyP-gA-cE9"/>
                                                 </constraints>
-                                                <string key="text">With the optional recovery email address we can contact you in case of login issues.  Note: By loosing your passwords, without a recovery  address, we can not assist you in gettings back toyour account.</string>
+                                                <string key="text">With the optional recovery email address we can contact you in case of login issues.  Note: By loosing your  passwords, without a recovery
+  address, we can not assist you in gettings back to
+your account.</string>
                                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>

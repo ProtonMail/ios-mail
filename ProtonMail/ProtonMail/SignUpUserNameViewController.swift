@@ -32,8 +32,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate {
     @IBOutlet weak var webViewHeightConstraint: NSLayoutConstraint!
     
     
-    private var startVerify : Bool = false;
-    
+    private var startVerify : Bool = false
     
     func configConstraint(show : Bool) -> Void {
         let level = show ? showPriority : hidePriority
@@ -51,10 +50,12 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate {
         
         webView.scrollView.scrollEnabled = false
         
+        NSURLCache.sharedURLCache().removeAllCachedResponses();
+        
         let recptcha = NSURL(string: "http://protonmail.xyz/recaptcha.html")!
         let requestObj = NSURLRequest(URL: recptcha)
         webView.loadRequest(requestObj)
-
+        
         usernameTextField.attributedPlaceholder = NSAttributedString(string: "Username", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
         
         // Do any additional setup after loading the view.
@@ -113,9 +114,26 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate {
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         
         PMLog.D("\(request)")
-        if request.URL?.absoluteString?.contains("https://www.google.com/recaptcha/api2/frame") == true {
+        
+        
+        let urlString = request.URL?.absoluteString;
+        
+        if urlString?.contains("https://www.google.com/recaptcha/api2/frame") == true {
             startVerify = true;
         }
+        
+        if let tmp = urlString?.rangeOfString("recapcha_response://") {
+            resetWebviewHeight()
+            return false
+        }
+        
+        //        if requ else if ([urlString rangeOfString:@"scroll://"].location != NSNotFound) {
+        //
+        //            NSInteger position = [[urlString stringByReplacingOccurrencesOfString:@"scroll://" withString:@""] integerValue];
+        //            [self editorDidScrollWithPosition:position];
+        //
+        //        }
+        
         return true
     }
     
@@ -125,6 +143,14 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate {
                 let height = CGFloat(500)
                 webViewHeightConstraint.constant = height;
             }
+            startVerify = false
+        }
+    }
+    
+    func resetWebviewHeight() {
+        if let result = webView.stringByEvaluatingJavaScriptFromString("document.body.scrollHeight;")?.toInt()  {
+            let height = CGFloat(85)
+            webViewHeightConstraint.constant = height;
         }
     }
     
@@ -133,7 +159,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate {
     }
     
     func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
-         PMLog.D("")
+        PMLog.D("")
     }
 }
 
