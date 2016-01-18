@@ -437,6 +437,8 @@ class UserDataService {
         mailboxPassword = nil
         
         userInfo = nil
+        
+        sharedOpenPGP.cleanAddresses()
     }
     
     private func clearAuthToken() {
