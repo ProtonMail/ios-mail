@@ -55,7 +55,6 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate {
         let requestObj = NSURLRequest(URL: recptcha)
         webView.loadRequest(requestObj)
 
-        
         usernameTextField.attributedPlaceholder = NSAttributedString(string: "Username", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
         
         // Do any additional setup after loading the view.
@@ -122,12 +121,10 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate {
     
     func webViewDidFinishLoad(webView: UIWebView) {
         if startVerify {
-            
             if let result = webView.stringByEvaluatingJavaScriptFromString("document.body.scrollHeight;")?.toInt()  {
-                let height = CGFloat(result)
+                let height = CGFloat(500)
                 webViewHeightConstraint.constant = height;
             }
-            
         }
     }
     
@@ -138,9 +135,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate {
     func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
          PMLog.D("")
     }
-
 }
-
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 extension SignUpUserNameViewController: NSNotificationCenterKeyboardObserverProtocol {

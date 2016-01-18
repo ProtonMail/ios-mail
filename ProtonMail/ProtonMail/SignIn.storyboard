@@ -4,7 +4,6 @@
         <development version="6100" identifier="xcode"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="Roboto-Light.ttf">
@@ -147,11 +146,11 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="vXd-qg-0wm" secondAttribute="trailing" id="6gE-04-Rms"/>
                             <constraint firstAttribute="centerY" secondItem="vXd-qg-0wm" secondAttribute="centerY" constant="20" id="BC4-la-eFd"/>
-                            <constraint firstItem="TKg-rK-Lsf" firstAttribute="top" secondItem="ccQ-Sa-ONH" secondAttribute="topMargin" id="ONT-B9-E5v"/>
+                            <constraint firstItem="TKg-rK-Lsf" firstAttribute="leading" secondItem="ccQ-Sa-ONH" secondAttribute="leading" id="UUf-AZ-EwL"/>
                             <constraint firstItem="vXd-qg-0wm" firstAttribute="leading" secondItem="ccQ-Sa-ONH" secondAttribute="leading" id="ZHo-b6-FGq"/>
-                            <constraint firstItem="EPW-cP-FuY" firstAttribute="top" secondItem="TKg-rK-Lsf" secondAttribute="bottom" id="qAy-w6-LW2"/>
-                            <constraint firstItem="TKg-rK-Lsf" firstAttribute="leading" secondItem="ccQ-Sa-ONH" secondAttribute="leadingMargin" constant="-16" id="quY-sa-Dgj"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="TKg-rK-Lsf" secondAttribute="trailing" constant="-16" id="vI4-Oj-gix"/>
+                            <constraint firstItem="EPW-cP-FuY" firstAttribute="top" secondItem="TKg-rK-Lsf" secondAttribute="bottom" id="bdn-eB-Eaf"/>
+                            <constraint firstItem="TKg-rK-Lsf" firstAttribute="top" secondItem="ccQ-Sa-ONH" secondAttribute="top" id="fJo-Eq-Sm9"/>
+                            <constraint firstAttribute="trailing" secondItem="TKg-rK-Lsf" secondAttribute="trailing" id="pAW-UL-9dw"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="6DB-Db-M7G"/>
@@ -606,15 +605,15 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="1pl-zC-GaG" firstAttribute="top" secondItem="q2W-eQ-QT3" secondAttribute="top" id="4Ct-0h-xwH"/>
+                            <constraint firstItem="mrD-f4-jir" firstAttribute="top" secondItem="1pl-zC-GaG" secondAttribute="bottom" id="HHl-oo-qTo"/>
                             <constraint firstItem="mrD-f4-jir" firstAttribute="top" secondItem="UaR-Wn-XvY" secondAttribute="bottom" id="Hzc-bI-3wt"/>
                             <constraint firstAttribute="trailing" secondItem="UaR-Wn-XvY" secondAttribute="trailing" id="IT5-yw-6F5"/>
                             <constraint firstAttribute="width" secondItem="x5O-eb-fcJ" secondAttribute="width" id="LQ8-Aw-hnb"/>
                             <constraint firstItem="UaR-Wn-XvY" firstAttribute="leading" secondItem="q2W-eQ-QT3" secondAttribute="leading" id="SUa-kH-wPY"/>
-                            <constraint firstItem="mrD-f4-jir" firstAttribute="top" secondItem="1pl-zC-GaG" secondAttribute="bottom" id="UvX-tS-QeA"/>
-                            <constraint firstAttribute="trailing" secondItem="1pl-zC-GaG" secondAttribute="trailing" id="hL0-6i-kPj"/>
+                            <constraint firstAttribute="trailing" secondItem="1pl-zC-GaG" secondAttribute="trailing" id="Y36-kU-UOp"/>
+                            <constraint firstItem="1pl-zC-GaG" firstAttribute="leading" secondItem="q2W-eQ-QT3" secondAttribute="leading" id="ooc-du-K2c"/>
                             <constraint firstItem="UaR-Wn-XvY" firstAttribute="top" secondItem="feB-ed-vnj" secondAttribute="bottom" id="sKh-qO-BRf"/>
-                            <constraint firstItem="1pl-zC-GaG" firstAttribute="top" secondItem="q2W-eQ-QT3" secondAttribute="top" id="xDh-qL-c3c"/>
-                            <constraint firstItem="1pl-zC-GaG" firstAttribute="leading" secondItem="q2W-eQ-QT3" secondAttribute="leading" id="xvh-4Z-fKc"/>
                         </constraints>
                     </view>
                     <connections>
