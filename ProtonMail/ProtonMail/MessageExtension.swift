@@ -191,25 +191,19 @@ extension Message {
     }
     
     func encryptBody(body: String, error: NSErrorPointer?) {
-        self.body = body.encryptWithPublicKey(publicKey, error: error) ?? ""
+        self.body = body.encryptMessage(defaultAddressID, error: error) ?? "" //body.encryptWithPublicKey(publicKey, error: error) ?? ""
     }
     
-    func checkIsEncrypted() -> Bool!
-    {
+    func checkIsEncrypted() -> Bool! {
         let enc_type = EncryptTypes(rawValue: isEncrypted.integerValue) ?? EncryptTypes.Internal
         let checkIsEncrypted:Bool = enc_type.isEncrypted
-        
         return checkIsEncrypted
     }
     
-    var encryptType : EncryptTypes!
-        {
-            let enc_type = EncryptTypes(rawValue: isEncrypted.integerValue) ?? EncryptTypes.Internal
-            
-            return enc_type
+    var encryptType : EncryptTypes! {
+        let enc_type = EncryptTypes(rawValue: isEncrypted.integerValue) ?? EncryptTypes.Internal
+        return enc_type
     }
-    
-    
     
     // MARK: Private variables
     
@@ -217,14 +211,23 @@ extension Message {
         return sharedUserDataService.mailboxPassword ?? ""
     }
     
-    private var privateKey: String {
-        return sharedUserDataService.userInfo?.privateKey ?? ""
+    private var defaultAddressID: String {
+        let count = sharedUserDataService.userAddresses.count
+        if count < 1 {
+            return ""
+        } else {
+            return sharedUserDataService.userAddresses[0].address_id
+        }
     }
     
-    private var publicKey: String {
-        return sharedUserDataService.userInfo?.publicKey ?? ""
-    }
-    
+//    private var privateKey: String {
+//        return sharedUserDataService.userInfo?.privateKey ?? ""
+//    }
+//    
+//    private var publicKey: String {
+//        return sharedUserDataService.userInfo?.publicKey ?? ""
+//    }
+//    
     
     
     func copyMessage (copyAtts : Bool) -> Message {

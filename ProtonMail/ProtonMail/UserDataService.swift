@@ -178,6 +178,7 @@ class UserDataService {
     
     func updateUserInfoFromEventLog (userInfo : UserInfo){
         self.userInfo = userInfo
+        sharedOpenPGP.setAddresses(self.userInfo?.userAddresses.toPMNAddresses())
     }
     
     func isMailboxPasswordValid(password: String, privateKey : String) -> Bool {

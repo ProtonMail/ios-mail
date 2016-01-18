@@ -48,18 +48,27 @@ extension Attachment {
         return sharedUserDataService.mailboxPassword ?? ""
     }
     
-    private var privateKey: String {
-        return sharedUserDataService.userInfo?.privateKey ?? ""
-    }
+//    private var privateKey: String {
+//        return sharedUserDataService.userInfo?.privateKey ?? ""
+//    }
+//    
+//    private var publicKey: String {
+//        return sharedUserDataService.userInfo?.publicKey ?? ""
+//    }
     
-    private var publicKey: String {
-        return sharedUserDataService.userInfo?.publicKey ?? ""
+    private var defaultAddressID: String {
+        let count = sharedUserDataService.userAddresses.count
+        if count < 1 {
+            return ""
+        } else {
+            return sharedUserDataService.userAddresses[0].address_id
+        }
     }
     
     // Mark : public functions
     
     func encryptAttachment(error: NSErrorPointer?) -> PMNEncryptPackage? {
-        let out = fileData?.encryptWithPublicKey(publicKey, fileName: self.fileName, error: error)
+        let out = fileData?.encryptAttachment(defaultAddressID, fileName: self.fileName, error: error)
         if out == nil {
             return nil
         }
@@ -70,11 +79,8 @@ extension Attachment {
         if self.keyPacket == nil {
             return nil
         }
-        
         let data: NSData = NSData(base64EncodedString: self.keyPacket!, options: NSDataBase64DecodingOptions(rawValue: 0))!
-        
-        let sessionKey = data.getSessionKeyFromPubKeyPackage(privateKey, passphrase: passphrase, publicKey:publicKey, error: error) ?? nil
-        
+        let sessionKey = data.getSessionKeyFromPubKeyPackage(passphrase, error: error) ?? nil
         return sessionKey
     }
     
