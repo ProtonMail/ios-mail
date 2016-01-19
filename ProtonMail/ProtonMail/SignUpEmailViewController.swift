@@ -87,7 +87,9 @@ class SignUpEmailViewController: UIViewController {
     @IBAction func doneAction(sender: UIButton) {
         dismissKeyboard()
         viewModel.setRecovery(checkButton.selected, email: recoveryEmailField.text)
+        MBProgressHUD.showHUDAddedTo(view, animated: true)
         viewModel.createNewUser { (isOK, createDone, message, error) -> Void in
+            MBProgressHUD.hideHUDForView(self.view, animated: true)
             if !message.isEmpty {
                 let alert = message.alertController()
                 alert.addOKAction()
@@ -98,9 +100,6 @@ class SignUpEmailViewController: UIViewController {
             }
         }
     }
-    
-    
-    
     
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
         dismissKeyboard()

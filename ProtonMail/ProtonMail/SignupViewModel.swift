@@ -84,24 +84,18 @@ public class SignupViewModelImpl : SignupViewModel {
                         if let error = error {
                             complete(false, true, "Authentication failed please try to login again", nil);
                         } else {
-                            sharedUserDataService.isSignedIn = true
                             if sharedUserDataService.isMailboxPasswordValid(self.mailbox, privateKey: AuthCredential.getPrivateKey()) {
-                                if sharedUserDataService.isSet {
-                                    sharedUserDataService.setMailboxPassword(self.mailbox, isRemembered: true)
-                                    (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
-                                } else {
-                                    AuthCredential.setupToken(self.mailbox, isRememberMailbox: true)
-                                    sharedLabelsDataService.fetchLabels()
-                                    sharedUserDataService.fetchUserInfo() { info, error in
-                                        if error != nil {
-                                            complete(false, true, "Fetch user info failed", error)
-                                        } else if info != nil {
-                                            sharedUserDataService.isNewUser = true
-                                            sharedUserDataService.setMailboxPassword(self.mailbox, isRemembered: true)
-                                            complete(true, true, "", nil)
-                                        } else {
-                                            complete(false, true, "Unknown Error", nil)
-                                        }
+                                AuthCredential.setupToken(self.mailbox, isRememberMailbox: true)
+                                sharedLabelsDataService.fetchLabels()
+                                sharedUserDataService.fetchUserInfo() { info, error in
+                                    if error != nil {
+                                        complete(false, true, "Fetch user info failed", error)
+                                    } else if info != nil {
+                                        sharedUserDataService.isNewUser = true
+                                        sharedUserDataService.setMailboxPassword(self.mailbox, isRemembered: true)
+                                        complete(true, true, "", nil)
+                                    } else {
+                                        complete(false, true, "Unknown Error", nil)
                                     }
                                 }
                             } else {

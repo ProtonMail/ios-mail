@@ -57,7 +57,6 @@ class UserDataService {
         return userInfo?.usedSpace ?? 0
     }
     
-    
     // MARK: - Public variables
     
     var defaultEmail : String {
@@ -79,7 +78,6 @@ class UserDataService {
         }
     }
 
-    
     var userAddresses: Array<Address> { //never be null
         return userInfo?.userAddresses ?? Array<Address>()
     }
