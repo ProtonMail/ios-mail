@@ -11,7 +11,7 @@ import UIKit
 class SettingTableViewController: ProtonMailViewController {
     
     var setting_headers = [SettingSections.General, SettingSections.MultiDomain, SettingSections.SwipeAction, SettingSections.Storage, SettingSections.Version] //SettingSections.Debug,
-    var setting_general_items = [SGItems.NotifyEmail, SGItems.DisplayName, SGItems.Signature, SGItems.LoginPWD, SGItems.CleanCache]  //SGItems.MBP,
+    var setting_general_items = [SGItems.NotifyEmail, SGItems.DisplayName, SGItems.Signature, SGItems.LoginPWD, SGItems.CleanCache, SGItems.DefaultMobilSign]  //SGItems.MBP,
     var setting_debug_items = [SDebugItem.Queue, SDebugItem.ErrorLogs, SDebugItem.CleanCache]
     
     var setting_swipe_action_items = [SSwipeActionItems.left, SSwipeActionItems.right]
@@ -36,6 +36,7 @@ class SettingTableViewController: ProtonMailViewController {
     let SettingStorageCell = "setting_storage_cell"
     let HeaderCell = "header_cell"
     let SingleTextCell = "single_text_cell"
+    let SwitchCell = "switch_table_view_cell"
     
     //
     let CellHeight : CGFloat = 30.0
@@ -139,38 +140,66 @@ class SettingTableViewController: ProtonMailViewController {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if setting_headers.count > indexPath.section {
             if setting_headers[indexPath.section] == .General {
-                let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! SettingsCell
+                var cellout : UITableViewCell!
                 if setting_general_items.count > indexPath.row {
                     let itme: SGItems = setting_general_items[indexPath.row];
-                    cell.LeftText.text = itme.description;
                     switch itme {
                     case SGItems.NotifyEmail:
+                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! SettingsCell
+                        cell.LeftText.text = itme.description;
                         cell.RightText.text = userInfo?.notificationEmail
                         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                        cellout = cell;
                         break;
                     case SGItems.DisplayName:
+                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! SettingsCell
+                        cell.LeftText.text = itme.description;
                         cell.RightText.text = sharedUserDataService.displayName
                         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                        cellout = cell;
                         break;
                     case SGItems.Signature:
+                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! SettingsCell
+                        cell.LeftText.text = itme.description;
                         cell.RightText.text = userInfo?.signature;
                         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                        cellout = cell;
                         break;
                     case SGItems.LoginPWD:
+                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! SettingsCell
+                        cell.LeftText.text = itme.description;
                         cell.RightText.text = "**********"
                         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                        cellout = cell;
                         break;
                     case SGItems.MBP:
+                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! SettingsCell
+                        cell.LeftText.text = itme.description;
                         cell.RightText.text = "**********"
                         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                        cellout = cell;
                         break;
                     case SGItems.CleanCache:
+                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! SettingsCell
+                        cell.LeftText.text = itme.description;
                         cell.RightText.text = ""
                         cell.accessoryType = UITableViewCellAccessoryType.None
+                        cellout = cell;
                         break;
+                    case SGItems.DefaultMobilSign:
+                        let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
+                        cell.accessoryType = UITableViewCellAccessoryType.None
+                        let status = sharedUserDataService.switchCacheOff == false
+                        cell.selectionStyle = UITableViewCellSelectionStyle.None
+                        if sharedUserDataService.userInfo?.role > 0 {
+                            cell.setUpSwitch(true, status: status)
+                        } else {
+                            cell.setUpSwitch(false, status: status)
+                        }
+                        cellout = cell
                     }
                 }
-                return cell
+                return cellout
             }
             else if setting_headers[indexPath.section] == .MultiDomain {
                 let cell = tableView.dequeueReusableCellWithIdentifier(SettingDomainsCell, forIndexPath: indexPath) as! DomainsTableViewCell
@@ -290,6 +319,8 @@ class SettingTableViewController: ProtonMailViewController {
                         self.cleaning = false
                     }
                 }
+                break;
+            default:
                 break;
             }
         }
@@ -459,6 +490,7 @@ extension SettingTableViewController {
         case LoginPWD = 3
         case MBP = 4
         case CleanCache = 5
+        case DefaultMobilSign = 6
         var description : String {
             switch(self){
             case NotifyEmail:
@@ -473,6 +505,8 @@ extension SettingTableViewController {
                 return NSLocalizedString("Mailbox Password")
             case .CleanCache:
                 return NSLocalizedString("Clear Local Message Cache")
+            case .DefaultMobilSign:
+                return NSLocalizedString("Default mobile signature")
             }
         }
     }

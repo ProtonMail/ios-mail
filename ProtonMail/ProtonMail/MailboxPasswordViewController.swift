@@ -77,6 +77,10 @@ class MailboxPasswordViewController: UIViewController {
 //        backgroundImage.layer.insertSublayer(gradient, atIndex:0)
     }
     
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent;
+    }
+    
     func configConstraint(show : Bool) -> Void {
         let level = show ? showPriority : hidePriority
         

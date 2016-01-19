@@ -301,30 +301,24 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     func quickLookAttachment (localURL : NSURL, keyPackage:NSData, fileName:String) {
         if let data : NSData = NSData(contentsOfURL: localURL) {
             tempFileUri = NSFileManager.defaultManager().attachmentDirectory.URLByAppendingPathComponent(fileName);
-            let decryptData = data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!, publicKey: sharedUserDataService.userInfo!.publicKey, privateKey: sharedUserDataService.userInfo!.privateKey, error: nil)
-            
-            decryptData!.writeToURL(tempFileUri!, atomically: true)
-            
-//            NSString *path = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"ics"];
-//            NSURL *url = [NSURL fileURLWithPath:path];
-            
-//            var dc = UIDocumentInteractionController(URL: tempFileUri!)
-//            dc.delegate = self;
-//            
-//            dc.presentPreviewAnimated(true)
-            //[dc presentPreviewAnimated:YES];
-            
-//            NSString *url = @"webcal://url.ics";
-//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
-//            
-            let previewQL = QuickViewViewController()
-            previewQL.dataSource = self
-            
-            //self.navigationController?.pushViewController(previewQL, animated: true)
-            self.presentViewController(previewQL, animated: true, completion: nil)
+            var error: NSError?
+            let decryptData = data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!, error: &error)
+            if error != nil {
+                var alert = "Cant' decrypt this attachment!".alertController();
+                alert.addOKAction()
+                self.presentViewController(alert, animated: true, completion: nil)
+            } else {
+                decryptData!.writeToURL(tempFileUri!, atomically: true)
+
+                let previewQL = QuickViewViewController()
+                previewQL.dataSource = self
+                self.presentViewController(previewQL, animated: true, completion: nil)
+            }
         }
         else{
-            
+            var alert = "Can't find this attachment!".alertController();
+            alert.addOKAction()
+            self.presentViewController(alert, animated: true, completion: nil)
         }
     }
     
@@ -335,6 +329,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
 
 // MARK: - UIDocumentInteractionControllerDelegate
 extension MessageViewController: UIDocumentInteractionControllerDelegate {
+    
 }
 
 extension MessageViewController : QLPreviewControllerDataSource {

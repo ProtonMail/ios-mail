@@ -23,7 +23,6 @@ class UserDataService {
     
     typealias CompletionBlock = APIService.CompletionBlock
     typealias UserInfoBlock = APIService.UserInfoBlock
-    typealias UserNameCheckBlock = APIService.UserNameCheckBlock
     
     struct Key {
         static let isRememberMailboxPassword = "isRememberMailboxPasswordKey"
@@ -32,6 +31,8 @@ class UserDataService {
         static let username = "usernameKey"
         static let password = "passwordKey"
         static let userInfo = "userInfoKey"
+        
+        static let roleSwitchCache = "roleSwitchCache"
     }
     
     struct Notification {
@@ -54,10 +55,16 @@ class UserDataService {
         }
     }
     
+    var switchCacheOff: Bool? = NSUserDefaults.standardUserDefaults().boolForKey(Key.roleSwitchCache) {
+        didSet {
+            NSUserDefaults.standardUserDefaults().setValue(switchCacheOff, forKey: Key.roleSwitchCache)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
     var usedSpace: Int64 {
         return userInfo?.usedSpace ?? 0
     }
-    
     
     // MARK: - Public variables
     
@@ -80,7 +87,6 @@ class UserDataService {
         }
     }
 
-    
     var userAddresses: Array<Address> { //never be null
         return userInfo?.userAddresses ?? Array<Address>()
     }
@@ -111,6 +117,7 @@ class UserDataService {
     }
     
     var isSignedIn: Bool = false
+    var isNewUser : Bool = false
     private(set) var isMailboxPWDOk: Bool = false
     
     var isUserCredentialStored: Bool {
@@ -158,23 +165,31 @@ class UserDataService {
     }
     
     // MARK: - Public methods
-    
     init() {
         cleanUpIfFirstRun()
         launchCleanUp()
     }
 
     func fetchUserInfo(completion: UserInfoBlock? = nil) {
-        sharedAPIService.userInfo() { userInfo, error in
-            if error == nil {
-                self.userInfo = userInfo
+        
+        let getUserInfo = GetUserInfoRequest<GetUserInfoResponse>()
+        
+        getUserInfo.call { (task, response, hasError) -> Void in
+            if !hasError {
+                self.userInfo = response?.userInfo
+                if let addresses = self.userInfo?.userAddresses.toPMNAddresses() {
+                    sharedOpenPGP.setAddresses(addresses);
+                }
             }
-            completion?(userInfo, error)
+            completion?(self.userInfo, response?.error)
         }
     }
     
     func updateUserInfoFromEventLog (userInfo : UserInfo){
         self.userInfo = userInfo
+        if let addresses = self.userInfo?.userAddresses.toPMNAddresses() {
+            sharedOpenPGP.setAddresses(addresses);
+        }
     }
     
     func isMailboxPasswordValid(password: String, privateKey : String) -> Bool {
@@ -214,13 +229,6 @@ class UserDataService {
                 completion(nil, error)
             }
         }
-        
-//        if error == nil {
-//            NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignIn, object: self)
-//        }
-//        //completion(auth, error)
-//        self.fetchUserInfo(completion: completionWrapper)
-
     }
     
     func clean() {
@@ -256,7 +264,7 @@ class UserDataService {
                                 
                                 autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
                                 
-                                swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight
+                                swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role
                             )
                             
                             self.userInfo = userInfo
@@ -271,30 +279,30 @@ class UserDataService {
         }
     }
     
-    func updateNewUserKeys(mbp:String, completion: CompletionBlock?) {
-        var error: NSError?
-        if let userInfo = userInfo {
-            if let newPrivateKey = sharedOpenPGP.generateKey(mbp, userName: username!, error: &error) {
-                var pubkey = newPrivateKey.publicKey
-                var privkey = newPrivateKey.privateKey
-                sharedAPIService.userUpdateKeypair("" , publicKey: pubkey, privateKey: privkey, completion: { task, response, error in
-                    if error == nil {
-                        self.mailboxPassword = mbp;
-                        let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: privkey, publicKey: pubkey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
-                            autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
-                            
-                            swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight
-                        )
-                        
-                        self.userInfo = userInfo
-                    }
-                    completion?(task: task, response: response, error: error)
-                })
-            } else {
-                completion?(task: nil, response: nil, error: error)
-            }
-        }
-    }
+//    func updateNewUserKeys(mbp:String, completion: CompletionBlock?) {
+//        var error: NSError?
+//        if let userInfo = userInfo {
+//            if let newPrivateKey = sharedOpenPGP.generateKey(mbp, userName: username!, error: &error) {
+//                var pubkey = newPrivateKey.publicKey
+//                var privkey = newPrivateKey.privateKey
+//                sharedAPIService.userUpdateKeypair("" , publicKey: pubkey, privateKey: privkey, completion: { task, response, error in
+//                    if error == nil {
+//                        self.mailboxPassword = mbp;
+//                        let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: privkey, publicKey: pubkey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
+//                            autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
+//                            
+//                            swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight
+//                        )
+//                        
+//                        self.userInfo = userInfo
+//                    }
+//                    completion?(task: task, response: response, error: error)
+//                })
+//            } else {
+//                completion?(task: nil, response: nil, error: error)
+//            }
+//        }
+//    }
     
     func updateUserDomiansOrder(email_domains: Array<Address>, newOrder : Array<Int>, completion: CompletionBlock) {
         let domainSetting = UpdateDomainOrder<ApiResponse>(adds: newOrder)
@@ -304,7 +312,7 @@ class UserDataService {
                     let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:email_domains,
                         autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
                         
-                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight
+                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role
                     )
                     self.userInfo = userInfo
                 }
@@ -321,7 +329,7 @@ class UserDataService {
                     let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
                         autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
                         
-                        swipeL: isLeft ? action.rawValue : userInfo.swipeLeft, swipeR: isLeft ? userInfo.swipeRight : action.rawValue
+                        swipeL: isLeft ? action.rawValue : userInfo.swipeLeft, swipeR: isLeft ? userInfo.swipeRight : action.rawValue, role : userInfo.role
                     )
                     self.userInfo = userInfo
                 }
@@ -338,7 +346,7 @@ class UserDataService {
                     let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: newNotificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
                         autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
                         
-                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight
+                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role
                     )
                     self.userInfo = userInfo
                 }
@@ -356,7 +364,7 @@ class UserDataService {
                         let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
                             autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:(isOn ? 1 : 0), showImage:userInfo.showImages,
                             
-                            swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight
+                            swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role
                         )
                         self.userInfo = userInfo
                     }
@@ -404,11 +412,6 @@ class UserDataService {
             }
         }
     }
-
-    func checkUserNameIsExsit(user_name: String, completion: UserNameCheckBlock) {
-        sharedAPIService.userCheckExist(user_name, completion: completion)
-    }
-    
     
     // MARK: - Private methods
     
@@ -434,6 +437,8 @@ class UserDataService {
         mailboxPassword = nil
         
         userInfo = nil
+        
+        sharedOpenPGP.cleanAddresses()
     }
     
     private func clearAuthToken() {

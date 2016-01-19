@@ -38,12 +38,16 @@ final class UserInfo: NSObject {
     let swipeLeft : Int
     let swipeRight : Int
     
+    
+    let role : Int
+    
     required init(
         displayName: String?, maxSpace: Int64?, notificationEmail: String?,
         privateKey: String?, publicKey: String?, signature: String?,
         usedSpace: Int64?, userStatus: Int?, userAddresses: Array<Address>?,
         autoSC:Int?, language:String?, maxUpload:Int64?, notify:Int?, showImage:Int?,  //v1.0.8
-        swipeL:Int?, swipeR:Int? ) //v1.1.4
+        swipeL:Int?, swipeR:Int?,  //v1.1.4
+        role:Int? )
     {
         self.displayName = displayName ?? ""
         self.maxSpace = maxSpace ?? 0
@@ -63,6 +67,8 @@ final class UserInfo: NSObject {
         
         self.swipeLeft = swipeL ?? 3
         self.swipeRight = swipeR ?? 0
+        
+        self.role = role ?? 0
     }
 }
 
@@ -74,8 +80,9 @@ final class Address: NSObject {
     let mailbox: Int
     let display_name: String
     let signature: String
+    let keys: Array<Key>
     
-    required init(addressid: String?, email: String?, send: Int?, receive: Int?, mailbox: Int?, display_name: String?, signature: String?) {
+    required init(addressid: String?, email: String?, send: Int?, receive: Int?, mailbox: Int?, display_name: String?, signature: String?, keys: Array<Key>?) {
         self.address_id = addressid ?? ""
         self.email = email ?? ""
         self.send = send ?? 0
@@ -83,12 +90,100 @@ final class Address: NSObject {
         self.mailbox = mailbox ?? 0
         self.display_name = display_name ?? ""
         self.signature = signature ?? ""
+        self.keys = keys ?? Array<Key>()
+    }
+}
+
+final class Key: NSObject {
+    let key_id: String
+    let public_key: String
+    var private_key : String
+    
+    required init(key_id: String?, public_key: String?, private_key: String?) {
+        self.key_id = key_id ?? ""
+        self.public_key = public_key ?? ""
+        self.private_key = private_key ?? ""
     }
 }
 
 
-// MARK: - NSCoding
+extension UserInfo {
+    /// Initializes the UserInfo with the response data
+    convenience init(
+        response: Dictionary<String, AnyObject>,
+        displayNameResponseKey: String,
+        maxSpaceResponseKey: String,
+        notificationEmailResponseKey: String,
+        privateKeyResponseKey: String,
+        publicKeyResponseKey: String,
+        signatureResponseKey: String,
+        usedSpaceResponseKey: String,
+        userStatusResponseKey:String,
+        userAddressResponseKey:String,
+        
+        autoSaveContactResponseKey : String,
+        languageResponseKey : String,
+        maxUploadResponseKey: String,
+        notifyResponseKey: String,
+        showImagesResponseKey : String,
+        
+        swipeLeftResponseKey : String,
+        swipeRightResponseKey : String,
+        
+        roleResponseKey : String
+        ) {
+            var addresses: [Address] = Array<Address>()
+            let address_response = response[userAddressResponseKey] as! Array<Dictionary<String, AnyObject>>
+            for res in address_response
+            {
+                var keys: [Key] = Array<Key>()
+                let address_keys = res["Keys"] as! Array<Dictionary<String, AnyObject>>
+                for key_res in address_keys {
+                    keys.append(Key(
+                        key_id: key_res["ID"] as? String,
+                        public_key: key_res["PublicKey"] as? String,
+                        private_key: key_res["PrivateKey"] as? String))
+                }
+                
+                addresses.append(Address(
+                    addressid: res["ID"] as? String,
+                    email:res["Email"] as? String,
+                    send: res["Send"] as? Int,
+                    receive: res["Receive"] as? Int,
+                    mailbox: res["Mailbox"] as? Int,
+                    display_name: res["DisplayName"] as? String,
+                    signature: res["Signature"] as? String,
+                    keys : keys ))
+            }
+            let usedS = response[usedSpaceResponseKey] as? NSNumber
+            let maxS = response[maxSpaceResponseKey] as? NSNumber
+            self.init(
+                displayName: response[displayNameResponseKey] as? String,
+                maxSpace: maxS?.longLongValue,
+                notificationEmail: response[notificationEmailResponseKey] as? String,
+                privateKey: "", //response[privateKeyResponseKey] as? String,
+                publicKey: "", //response[publicKeyResponseKey] as? String,
+                signature: response[signatureResponseKey] as? String,
+                usedSpace: usedS?.longLongValue,
+                userStatus: response[userStatusResponseKey] as? Int,
+                userAddresses: addresses,
+                
+                autoSC : response[autoSaveContactResponseKey] as? Int,
+                language : response[languageResponseKey] as? String,
+                maxUpload: response[maxUploadResponseKey] as? Int64,
+                notify: response[notifyResponseKey] as? Int,
+                showImage : response[showImagesResponseKey] as? Int,
+                
+                swipeL: response[swipeLeftResponseKey] as? Int,
+                swipeR: response[swipeRightResponseKey] as? Int,
+                
+                role : response[roleResponseKey] as? Int
+                
+            )
+    }
+}
 
+// MARK: - NSCoding
 extension UserInfo: NSCoding {
     
     private struct CoderKey {
@@ -110,6 +205,8 @@ extension UserInfo: NSCoding {
         
         static let swipeLeft = "swipeLeft"
         static let swipeRight = "swipeRight"
+        
+        static let role = "role"
     }
     
     convenience init(coder aDecoder: NSCoder) {
@@ -117,8 +214,8 @@ extension UserInfo: NSCoding {
             displayName: aDecoder.decodeStringForKey(CoderKey.displayName),
             maxSpace: aDecoder.decodeInt64ForKey(CoderKey.maxSpace),
             notificationEmail: aDecoder.decodeStringForKey(CoderKey.notificationEmail),
-            privateKey: aDecoder.decodeStringForKey(CoderKey.privateKey),
-            publicKey: aDecoder.decodeStringForKey(CoderKey.publicKey),
+            privateKey: "", //aDecoder.decodeStringForKey(CoderKey.privateKey),
+            publicKey: "", //aDecoder.decodeStringForKey(CoderKey.publicKey),
             signature: aDecoder.decodeStringForKey(CoderKey.signature),
             usedSpace: aDecoder.decodeInt64ForKey(CoderKey.usedSpace),
             userStatus: aDecoder.decodeIntegerForKey(CoderKey.userStatus),
@@ -131,9 +228,9 @@ extension UserInfo: NSCoding {
             showImage:aDecoder.decodeIntegerForKey(CoderKey.showImages),
             
             swipeL:aDecoder.decodeIntegerForKey(CoderKey.swipeLeft),
-            swipeR:aDecoder.decodeIntegerForKey(CoderKey.swipeRight)
-
+            swipeR:aDecoder.decodeIntegerForKey(CoderKey.swipeRight),
             
+            role : aDecoder.decodeIntegerForKey(CoderKey.role)
         )
     }
     
@@ -156,6 +253,8 @@ extension UserInfo: NSCoding {
         
         aCoder.encodeInteger(swipeLeft, forKey: CoderKey.swipeLeft)
         aCoder.encodeInteger(swipeRight, forKey: CoderKey.swipeRight)
+        
+        aCoder.encodeInteger(role, forKey: CoderKey.role)
     }
 }
 
@@ -170,6 +269,7 @@ extension Address: NSCoding {
         static let signature = "signature"
         static let usedSpace = "usedSpace"
         static let userStatus = "userStatus"
+        static let userKeys = "userKeys"
     }
     
     convenience init(coder aDecoder: NSCoder) {
@@ -180,7 +280,9 @@ extension Address: NSCoding {
             receive: aDecoder.decodeIntegerForKey(CoderKey.privateKey),
             mailbox: aDecoder.decodeIntegerForKey(CoderKey.publicKey),
             display_name: aDecoder.decodeStringForKey(CoderKey.signature),
-            signature: aDecoder.decodeStringForKey(CoderKey.usedSpace))
+            signature: aDecoder.decodeStringForKey(CoderKey.usedSpace),
+            keys: aDecoder.decodeObjectForKey(CoderKey.userKeys) as?  Array<Key>
+        )
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
@@ -191,5 +293,63 @@ extension Address: NSCoding {
         aCoder.encodeInteger(mailbox, forKey: CoderKey.publicKey)
         aCoder.encodeObject(display_name, forKey: CoderKey.signature)
         aCoder.encodeObject(signature, forKey: CoderKey.usedSpace)
+        aCoder.encodeObject(keys, forKey: CoderKey.userKeys)
     }
 }
+
+extension Key: NSCoding {
+    
+    private struct CoderKey {
+        static let keyID = "keyID"
+        static let publicKey = "publicKey"
+        static let privateKey = "privateKey"
+    }
+    
+    convenience init(coder aDecoder: NSCoder) {
+        self.init(
+            key_id: aDecoder.decodeStringForKey(CoderKey.keyID),
+            public_key: aDecoder.decodeStringForKey(CoderKey.publicKey),
+            private_key: aDecoder.decodeStringForKey(CoderKey.privateKey))
+    }
+    
+    func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(key_id, forKey: CoderKey.keyID)
+        aCoder.encodeObject(public_key, forKey: CoderKey.publicKey)
+        aCoder.encodeObject(private_key, forKey: CoderKey.privateKey)
+    }
+}
+
+extension Address {
+    func toPMNAddress() -> PMNAddress! {
+        return PMNAddress(addressId: self.address_id, addressName: self.email, keys: self.keys.toPMNPgpKeys())
+    }
+}
+
+extension Key {
+    func toPMNPgpKey() -> PMNOpenPgpKey {
+        return PMNOpenPgpKey(publicKey: public_key, privateKey: private_key)
+    }
+}
+
+extension Array {
+    func toPMNPgpKeys <T: Key>() -> Array<PMNOpenPgpKey> {
+        var out_array = Array<PMNOpenPgpKey>()
+        for var i = 0; i < self.count; ++i {
+            var addr = (self[i] as! Key)
+            out_array.append(addr.toPMNPgpKey())
+        }
+        return out_array;
+    }
+    
+    func toPMNAddresses <T: Address>() -> Array<PMNAddress> {
+        var out_array = Array<PMNAddress>()
+        for var i = 0; i < self.count; ++i {
+            var addr = (self[i] as! Address)
+            out_array.append(addr.toPMNAddress())
+        }
+        return out_array;
+    }
+}
+
+
+

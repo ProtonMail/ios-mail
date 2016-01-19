@@ -469,9 +469,11 @@ class MessageDataService {
                 showImagesResponseKey : "ShowImages",
                 
                 swipeLeftResponseKey : "SwipeLeft",
-                swipeRightResponseKey : "SwipeRight"
+                swipeRightResponseKey : "SwipeRight",
+                
+                roleResponseKey:"Role"
             )
-            
+
             sharedUserDataService.updateUserInfoFromEventLog(userInfo);
         }
     }
@@ -1128,7 +1130,6 @@ class MessageDataService {
                         }
                     }
                     else {
-                        
                         // encrypt keys use public key
                         var attPack : [AttachmentKeyPackage] = []
                         for att in tempAtts {
@@ -1137,9 +1138,8 @@ class MessageDataService {
                             let attPacket = AttachmentKeyPackage(attID: att.ID, attKey: newKeyPack)
                             attPack.append(attPacket)
                         }
-                        
                         //create inside packet
-                        if let encryptedBody = body.encryptWithPublicKey(publicKey, error: &error) {
+                        if let encryptedBody = body.encryptMessageWithSingleKey(publicKey, error: &error) {
                             var pack = MessagePackage(address: key, type: 1, body: encryptedBody, attPackets: attPack)
                             out.append(pack)
                         } else {
@@ -1147,7 +1147,6 @@ class MessageDataService {
                         }
                     }
                 }
-                
             }
             
             outRequest.messagePackage = out
@@ -1201,7 +1200,7 @@ class MessageDataService {
                 // encrypt body with each public key
                 for publicKeys in keys {
                     for (email, publicKey) in publicKeys {
-                        if let encryptedBody = body.encryptWithPublicKey(publicKey, error: &error) {
+                        if let encryptedBody = body.encryptMessageWithSingleKey(publicKey, error: &error) {
                             messageBody[email] = encryptedBody
                         } else {
                             NSLog("\(__FUNCTION__) did not add encrypted body for \(email) with error: \(error)")

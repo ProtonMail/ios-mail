@@ -14,34 +14,50 @@ class SplashViewController: UIViewController {
     @IBOutlet weak var createAccountButton: UIButton!
     
     @IBOutlet weak var signInButton: UIButton!
+
+    
+    private let kSegueToSignInWithNoAnimation = "splash_sign_in_no_segue"
+    private let kSegueToSignIn = "splash_sign_in_segue"
+    private let kSegueToSignUp = "splash_sign_up_segue"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.performSegueWithIdentifier("splash_sign_in_no_segue", sender: self)
+        if sharedUserDataService.isUserCredentialStored {
+            self.performSegueWithIdentifier(kSegueToSignInWithNoAnimation, sender: self)
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-       
+        if sharedUserDataService.isNewUser {
+            sharedUserDataService.isNewUser = false
+            if sharedUserDataService.isUserCredentialStored {
+                self.performSegueWithIdentifier(kSegueToSignInWithNoAnimation, sender: self)
+            }
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
-        
         super.viewDidAppear(animated)
     }
     
     @IBAction func signUpAction(sender: UIButton) {
-        self.performSegueWithIdentifier("splash_sign_up_segue", sender: self)
+        self.performSegueWithIdentifier(kSegueToSignUp, sender: self)
     }
     
     @IBAction func signInAction(sender: UIButton) {
-        self.performSegueWithIdentifier("splash_sign_in_segue", sender: self)
+        self.performSegueWithIdentifier(kSegueToSignIn, sender: self)
     }
 
-    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
+        if segue.identifier == kSegueToSignUp {
+            let viewController = segue.destinationViewController as! SignUpUserNameViewController
+            viewController.viewModel = SignupViewModelImpl()
+        }
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent;
     }
 }

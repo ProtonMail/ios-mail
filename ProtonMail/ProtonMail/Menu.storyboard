@@ -2461,6 +2461,47 @@
                                     <outlet property="RightText" destination="hbU-xt-6NE" id="Uer-J3-dND"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="switch_table_view_cell" id="8Mk-M6-89O" customClass="SwitchTableViewCell" customModule="ProtonMail" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8Mk-M6-89O" id="C6u-Y7-O42">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mobile default signature" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z4X-pQ-wmo">
+                                            <rect key="frame" x="16" y="8" width="509" height="33"/>
+                                            <animations/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s6A-4r-ESy">
+                                            <rect key="frame" x="535" y="9" width="51" height="31"/>
+                                            <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="49" id="1Yb-6J-AKu"/>
+                                            </constraints>
+                                            <connections>
+                                                <action selector="switchAction:" destination="8Mk-M6-89O" eventType="valueChanged" id="KDk-f8-s4K"/>
+                                            </connections>
+                                        </switch>
+                                    </subviews>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstItem="s6A-4r-ESy" firstAttribute="leading" secondItem="Z4X-pQ-wmo" secondAttribute="trailing" constant="10" id="Duo-4r-MGQ"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="s6A-4r-ESy" secondAttribute="bottom" constant="1" id="QHz-8I-T85"/>
+                                        <constraint firstItem="Z4X-pQ-wmo" firstAttribute="leading" secondItem="C6u-Y7-O42" secondAttribute="leadingMargin" constant="8" id="XfI-jO-cEg"/>
+                                        <constraint firstItem="Z4X-pQ-wmo" firstAttribute="top" secondItem="C6u-Y7-O42" secondAttribute="topMargin" id="ccz-g9-8Ib"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Z4X-pQ-wmo" secondAttribute="bottom" id="hEF-74-WtQ"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="s6A-4r-ESy" secondAttribute="trailing" constant="8" id="qQ3-qd-OXa"/>
+                                        <constraint firstItem="s6A-4r-ESy" firstAttribute="top" secondItem="C6u-Y7-O42" secondAttribute="topMargin" constant="1" id="zjf-Ys-B2Y"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <animations/>
+                                <connections>
+                                    <outlet property="switchView" destination="s6A-4r-ESy" id="et3-Xl-Kqy"/>
+                                    <outlet property="titleLabel" destination="Z4X-pQ-wmo" id="lCK-2w-AKY"/>
+                                </connections>
+                            </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="setting_storage_cell" id="vqi-cv-zqa" customClass="StorageViewCell" customModule="ProtonMail" customModuleProvider="target">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vqi-cv-zqa" id="nqq-dQ-73h">
