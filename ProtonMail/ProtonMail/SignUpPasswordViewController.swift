@@ -31,10 +31,11 @@ class SignUpPasswordViewController: UIViewController {
     @IBOutlet weak var mailboxPassword: TextInsetTextField!
     @IBOutlet weak var confirmMailboxPassword: TextInsetTextField!
     
-    
     private let kSegueToSignUpEmail = "sign_up_pwd_email_segue"
     
     var viewModel : SignupViewModel!
+    
+    private var stopLoading : Bool = false
     
     func configConstraint(show : Bool) -> Void {
         let level = show ? showPriority : hidePriority
@@ -48,7 +49,6 @@ class SignUpPasswordViewController: UIViewController {
         passwordTopPaddingConstraint.priority = level
     }
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -72,11 +72,9 @@ class SignUpPasswordViewController: UIViewController {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
     }
-    
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     // MARK: - Navigation
@@ -89,6 +87,7 @@ class SignUpPasswordViewController: UIViewController {
     }
 
     @IBAction func backAction(sender: UIButton) {
+        stopLoading = true;
         self.navigationController?.popViewControllerAnimated(true)
     }
     

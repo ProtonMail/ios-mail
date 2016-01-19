@@ -41,7 +41,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     private let kSegueToSignUpPassword = "sign_up_password_segue"
     private var startVerify : Bool = false
     private var checkUserStatus : Bool = false
-    
+    private var stopLoading : Bool = false
     var viewModel : SignupViewModel!
     
     func configConstraint(show : Bool) -> Void {
@@ -109,6 +109,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     }
 
     @IBAction func backAction(sender: UIButton) {
+        stopLoading = true
         self.navigationController?.popViewControllerAnimated(true)
     }
     
@@ -186,6 +187,15 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         if urlString?.contains("https://www.google.com/recaptcha/api2/frame") == true {
             startVerify = true;
         }
+        
+        if urlString?.contains("https://www.google.com/intl/en/policies/privacy") == true {
+            return false
+        }
+        
+        if urlString?.contains("https://www.google.com/intl/en/policies/terms") == true {
+            return false
+        }
+        
         if let tmp = urlString?.rangeOfString("https://secure.protonmail.com/expired_recaptcha_response://") {
             viewModel.setRecaptchaToken("", isExpired: true)
             resetWebviewHeight()
@@ -322,27 +332,25 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     }
     
     @IBAction func editEnd(sender: UITextField) {
-        
-        if !checkUserStatus {
-            let userName = usernameTextField.text
-            if !userName.isEmpty {
-                startChecking()
-                viewModel.checkUserName(userName, complete: { (isOk, error) -> Void in
-                    if error != nil {
-                        self.finishChecking(false)
-                    } else {
-                        if isOk {
-                            self.finishChecking(true)
-                        } else {
+        if !stopLoading {
+            if !checkUserStatus {
+                let userName = usernameTextField.text
+                if !userName.isEmpty {
+                    startChecking()
+                    viewModel.checkUserName(userName, complete: { (isOk, error) -> Void in
+                        if error != nil {
                             self.finishChecking(false)
+                        } else {
+                            if isOk {
+                                self.finishChecking(true)
+                            } else {
+                                self.finishChecking(false)
+                            }
                         }
-                    }
-                })
-                
-            } else {
-                let alert = "The UserName can't empty!".alertController()
-                alert.addOKAction()
-                self.presentViewController(alert, animated: true, completion: nil)
+                    })
+                } else {
+                    
+                }
             }
         }
     }
