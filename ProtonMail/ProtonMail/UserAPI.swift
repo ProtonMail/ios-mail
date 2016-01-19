@@ -111,7 +111,8 @@ public class GetUserInfoResponse : ApiResponse {
             notifyResponseKey: "Notify",
             showImagesResponseKey : "ShowImages",
             swipeLeftResponseKey : "SwipeLeft",
-            swipeRightResponseKey : "SwipeRight"
+            swipeRightResponseKey : "SwipeRight",
+            roleResponseKey : "Role"
         )
         return true
     }

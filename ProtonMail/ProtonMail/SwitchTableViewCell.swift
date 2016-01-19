@@ -19,13 +19,16 @@ class SwitchTableViewCell: UITableViewCell {
     @IBOutlet weak var switchView: UISwitch!
     @IBAction func switchAction(sender: UISwitch) {
         
+        sharedUserDataService.switchCacheOff = !sender.on
+        //sharedUserData.switchCache = sender.on
     }
     
-    func setUpSwitch(show : Bool) {
+    func setUpSwitch(show : Bool, status : Bool) {
         if show {
-           switchView.enabled = false
+           switchView.enabled = true
         } else {
-            switchView.enabled = true
+            switchView.enabled = false
         }
+        switchView.on = status;
     }
 }

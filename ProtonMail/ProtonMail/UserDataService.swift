@@ -31,6 +31,8 @@ class UserDataService {
         static let username = "usernameKey"
         static let password = "passwordKey"
         static let userInfo = "userInfoKey"
+        
+        static let roleSwitchCache = "roleSwitchCache"
     }
     
     struct Notification {
@@ -49,6 +51,13 @@ class UserDataService {
     private(set) var username: String? = NSUserDefaults.standardUserDefaults().stringForKey(Key.username) {
         didSet {
             NSUserDefaults.standardUserDefaults().setValue(username, forKey: Key.username)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
+    var switchCacheOff: Bool? = NSUserDefaults.standardUserDefaults().boolForKey(Key.roleSwitchCache) {
+        didSet {
+            NSUserDefaults.standardUserDefaults().setValue(switchCacheOff, forKey: Key.roleSwitchCache)
             NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
