@@ -8,9 +8,10 @@
 
 import UIKit
 
-class SignUpUserNameViewController: UIViewController, UIWebViewDelegate {
+class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     
     @IBOutlet weak var usernameTextField: TextInsetTextField!
+    @IBOutlet weak var pickedDomainLabel: UILabel!
     
     @IBOutlet weak var webView: UIWebView!
     
@@ -32,6 +33,9 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate {
     @IBOutlet weak var webViewHeightConstraint: NSLayoutConstraint!
     
     
+    let domains : [String] = ["protonmail.com", "protonmail.ch"]
+    var selected : Int = 0;
+    
     private var startVerify : Bool = false
     
     func configConstraint(show : Bool) -> Void {
@@ -52,16 +56,16 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate {
         
         NSURLCache.sharedURLCache().removeAllCachedResponses();
         
-        
-        
-        
         let recptcha = NSURL(string: "http://protonmail.xyz/recaptcha.html")!
         let requestObj = NSURLRequest(URL: recptcha)
         webView.loadRequest(requestObj)
         
         usernameTextField.attributedPlaceholder = NSAttributedString(string: "Username", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
-        
-        // Do any additional setup after loading the view.
+        self.updatePickedDomain()
+    }
+    
+    func updatePickedDomain () {
+        pickedDomainLabel.text = "@\(domains[selected])"
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -119,10 +123,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate {
     }
     
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        
         PMLog.D("\(request)")
-        
-        
         let urlString = request.URL?.absoluteString;
         
         if urlString?.contains("https://www.google.com/recaptcha/api2/frame") == true {
@@ -168,6 +169,97 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate {
     func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
         PMLog.D("")
     }
+    
+    
+    
+    @IBAction func pickDomainName(sender: UIButton) {
+        showPickerInActionSheet()
+    }
+    
+    func showPickerInActionSheet() {
+        var title = ""
+        var message = "\n\n\n\n\n\n\n\n\n\n";
+        var alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.ActionSheet);
+        alert.modalInPopover = true;
+        
+        //Create a frame (placeholder/wrapper) for the picker and then create the picker
+        var pickerFrame: CGRect = CGRectMake(17, 52, 270, 100); // CGRectMake(left), top, width, height) - left and top are like margins
+        var picker: UIPickerView = UIPickerView(frame: pickerFrame);
+        
+        //set the pickers datasource and delegate
+        picker.delegate = self;
+        picker.dataSource = self;
+        
+        //Add the picker to the alert controller
+        alert.view.addSubview(picker);
+        
+        //Create the toolbar view - the view witch will hold our 2 buttons
+        var toolFrame = CGRectMake(17, 5, 270, 45);
+        var toolView: UIView = UIView(frame: toolFrame);
+        
+        //add buttons to the view
+        var buttonCancelFrame: CGRect = CGRectMake(0, 7, 100, 30); //size & position of the button as placed on the toolView
+        
+        //Create the cancel button & set its title
+        var buttonCancel: UIButton = UIButton(frame: buttonCancelFrame);
+        buttonCancel.setTitle("Done", forState: UIControlState.Normal);
+        buttonCancel.setTitleColor(UIColor.blueColor(), forState: UIControlState.Normal);
+        toolView.addSubview(buttonCancel); //add it to the toolView
+        
+        //Add the target - target, function to call, the event witch will trigger the function call
+        buttonCancel.addTarget(self, action: "cancelSelection:", forControlEvents: UIControlEvents.TouchDown);
+        
+        
+//        //add buttons to the view
+//        var buttonOkFrame: CGRect = CGRectMake(170, 7, 100, 30); //size & position of the button as placed on the toolView
+//        
+//        //Create the Select button & set the title
+//        var buttonOk: UIButton = UIButton(frame: buttonOkFrame);
+//        buttonOk.setTitle("Select", forState: UIControlState.Normal);
+//        buttonOk.setTitleColor(UIColor.blueColor(), forState: UIControlState.Normal);
+//        toolView.addSubview(buttonOk); //add to the subview
+//        //Add the tartget. In my case I dynamicly set the target of the select button
+//        buttonOk.addTarget(self, action: "pickedOK:", forControlEvents: UIControlEvents.TouchDown);
+    
+        //add the toolbar to the alert controller
+        alert.view.addSubview(toolView);
+        
+        picker.selectRow(selected, inComponent: 0, animated: true)
+        
+        self.presentViewController(alert, animated: true, completion: nil);
+    }
+    
+    func pickedOK(sender: UIButton){
+        println("OK");
+        self.dismissViewControllerAnimated(true, completion: nil);
+    }
+    
+    func cancelSelection(sender: UIButton){
+        println("Cancel");
+        self.dismissViewControllerAnimated(true, completion: nil);
+        // We dismiss the alert. Here you can add your additional code to execute when cancel is pressed
+    }
+    
+    // Return the title of each row in your picker ... In my case that will be the profile name or the username string
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+        return domains[row]
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        selected = row;
+        updatePickedDomain ()
+    }
+    
+    // returns the number of 'columns' to display.
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    // returns the # of rows in each component..
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return domains.count
+    }
+    
 }
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol

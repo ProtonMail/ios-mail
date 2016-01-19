@@ -498,13 +498,27 @@
                                                             <outlet property="delegate" destination="rb7-9h-TvB" id="Btm-d9-LtL"/>
                                                         </connections>
                                                     </textField>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LKC-d2-PY3">
+                                                        <rect key="frame" x="429" y="0.0" width="115" height="40"/>
+                                                        <animations/>
+                                                        <state key="normal">
+                                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="pickDomainName:" destination="XYV-2Y-X0C" eventType="touchUpInside" id="WD0-Tu-mOs"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="bottom" secondItem="qoo-Cf-Lnz" secondAttribute="bottom" id="6Ho-Y3-ONt"/>
                                                     <constraint firstAttribute="trailing" secondItem="OT5-2v-gGa" secondAttribute="trailing" id="7qi-Ed-Pp7"/>
                                                     <constraint firstItem="xRv-ve-0Nz" firstAttribute="top" secondItem="USb-4I-08G" secondAttribute="top" id="AvA-dk-nGO"/>
+                                                    <constraint firstItem="LKC-d2-PY3" firstAttribute="trailing" secondItem="OT5-2v-gGa" secondAttribute="trailing" id="Fjx-SK-EhZ"/>
                                                     <constraint firstItem="xRv-ve-0Nz" firstAttribute="leading" secondItem="USb-4I-08G" secondAttribute="leading" id="OyB-rr-KQr"/>
+                                                    <constraint firstItem="LKC-d2-PY3" firstAttribute="bottom" secondItem="OT5-2v-gGa" secondAttribute="bottom" id="QHM-NR-EMo"/>
+                                                    <constraint firstItem="LKC-d2-PY3" firstAttribute="top" secondItem="OT5-2v-gGa" secondAttribute="top" id="Qxy-WY-Hop"/>
+                                                    <constraint firstItem="LKC-d2-PY3" firstAttribute="leading" secondItem="OT5-2v-gGa" secondAttribute="leading" id="Xjz-yF-2Yc"/>
                                                     <constraint firstAttribute="bottom" secondItem="xRv-ve-0Nz" secondAttribute="bottom" id="abm-fC-soI"/>
                                                     <constraint firstAttribute="height" constant="40" id="hIa-8Y-TH8"/>
                                                     <constraint firstAttribute="trailing" secondItem="qoo-Cf-Lnz" secondAttribute="trailing" id="hnC-cB-Yrx"/>
@@ -620,6 +634,7 @@
                     <connections>
                         <outlet property="logoLeftPaddingConstraint" destination="GHL-Du-Mmu" id="Fje-OL-L6z"/>
                         <outlet property="logoTopPaddingConstraint" destination="uNL-9j-U9n" id="Qnl-5y-dce"/>
+                        <outlet property="pickedDomainLabel" destination="OT5-2v-gGa" id="Iet-gZ-cPl"/>
                         <outlet property="scrollBottomPaddingConstraint" destination="Hzc-bI-3wt" id="bD2-pi-rxA"/>
                         <outlet property="titleLeftPaddingConstraint" destination="A9T-Rb-jKH" id="d6k-oy-hyE"/>
                         <outlet property="titleTopPaddingConstraint" destination="CrW-rG-lgW" id="Nqf-5o-9UD"/>
@@ -883,7 +898,7 @@
                                                         </constraints>
                                                     </view>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Login Password" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="DuG-Wm-Ubd" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="110" height="40"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="544" height="40"/>
                                                         <animations/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -898,6 +913,7 @@
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="bottom" secondItem="DuG-Wm-Ubd" secondAttribute="bottom" id="03u-eD-RFY"/>
+                                                    <constraint firstAttribute="trailing" secondItem="DuG-Wm-Ubd" secondAttribute="trailing" id="0HG-Oa-LJE"/>
                                                     <constraint firstAttribute="trailing" secondItem="6Fk-VX-xe2" secondAttribute="trailing" id="bv8-e7-yPs"/>
                                                     <constraint firstAttribute="bottom" secondItem="6Fk-VX-xe2" secondAttribute="bottom" id="jki-mx-mSF"/>
                                                     <constraint firstItem="DuG-Wm-Ubd" firstAttribute="leading" secondItem="25W-Rr-6em" secondAttribute="leading" id="lF9-3l-oTX"/>
@@ -1032,21 +1048,21 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="iTY-qi-0eG"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
-                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <color key="textColor" red="0.67843137254901964" green="0.67843137254901964" blue="0.75294117647058822" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                                 <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
                                                     <rect key="frame" x="28" y="351" width="344" height="21"/>
                                                 </variation>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note: The Username is also your ProtonMail address." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ed2-QY-tZc">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note: The Mailbox password decrypt the corresponding User inbox" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ed2-QY-tZc">
                                                 <rect key="frame" x="28" y="526" width="544" height="40"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="1Cv-5y-sHV"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
-                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <color key="textColor" red="0.67843137254901964" green="0.67843137254901964" blue="0.75294117647058822" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                                 <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
                                                     <rect key="frame" x="28" y="536" width="344" height="21"/>

@@ -170,7 +170,9 @@ class UserDataService {
         getUserInfo.call { (task, response, hasError) -> Void in
             if !hasError {
                 self.userInfo = response?.userInfo
-                sharedOpenPGP.setAddresses(self.userInfo?.userAddresses.toPMNAddresses())
+                if let addresses = self.userInfo?.userAddresses.toPMNAddresses() {
+                    sharedOpenPGP.setAddresses(addresses);
+                }
             }
             completion?(self.userInfo, response?.error)
         }
@@ -178,7 +180,9 @@ class UserDataService {
     
     func updateUserInfoFromEventLog (userInfo : UserInfo){
         self.userInfo = userInfo
-        sharedOpenPGP.setAddresses(self.userInfo?.userAddresses.toPMNAddresses())
+        if let addresses = self.userInfo?.userAddresses.toPMNAddresses() {
+            sharedOpenPGP.setAddresses(addresses);
+        }
     }
     
     func isMailboxPasswordValid(password: String, privateKey : String) -> Bool {
