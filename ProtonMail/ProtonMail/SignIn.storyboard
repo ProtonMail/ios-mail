@@ -1062,7 +1062,7 @@
                                                         </constraints>
                                                     </view>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm Mailbox Password" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="wfn-8h-3cZ" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="182" height="40"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="544" height="40"/>
                                                         <animations/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1082,6 +1082,7 @@
                                                     <constraint firstAttribute="bottom" secondItem="wfn-8h-3cZ" secondAttribute="bottom" id="BvZ-od-TMu"/>
                                                     <constraint firstItem="wfn-8h-3cZ" firstAttribute="top" secondItem="zrw-rm-iQP" secondAttribute="top" id="COR-JK-ykA"/>
                                                     <constraint firstAttribute="height" constant="40" id="GSy-yw-0Xn"/>
+                                                    <constraint firstAttribute="trailing" secondItem="wfn-8h-3cZ" secondAttribute="trailing" id="V79-nj-GaO"/>
                                                     <constraint firstAttribute="trailing" secondItem="2wV-tG-0g9" secondAttribute="trailing" id="fPe-J6-Qm0"/>
                                                     <constraint firstAttribute="bottom" secondItem="2wV-tG-0g9" secondAttribute="bottom" id="fU0-kR-KFx"/>
                                                     <constraint firstItem="2wV-tG-0g9" firstAttribute="leading" secondItem="zrw-rm-iQP" secondAttribute="leading" id="sJB-03-Es6"/>

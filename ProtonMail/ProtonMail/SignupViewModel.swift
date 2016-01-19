@@ -104,7 +104,11 @@ public class SignupViewModelImpl : SignupViewModel {
                         }
                     }
                 } else {
-                    complete(false, true, "Create User failed please try again", response!.error);
+                    if response?.error?.code == 7002 {
+                        complete(false, true, "Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.", response!.error);
+                    } else {
+                        complete(false, false, "Create User failed please try again", response!.error);
+                    }
                 }
             })
         } else {
