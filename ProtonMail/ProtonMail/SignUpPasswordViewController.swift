@@ -23,10 +23,7 @@ class SignUpPasswordViewController: UIViewController {
     
     @IBOutlet weak var passwordTopPaddingConstraint: NSLayoutConstraint!
     
-    
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
-    
-    
     
     @IBOutlet weak var loginPasswordField: TextInsetTextField!
     @IBOutlet weak var confirmLoginPasswordField: TextInsetTextField!
@@ -34,9 +31,7 @@ class SignUpPasswordViewController: UIViewController {
     @IBOutlet weak var mailboxPassword: TextInsetTextField!
     @IBOutlet weak var confirmMailboxPassword: TextInsetTextField!
     
-    
-    
-    
+
     func configConstraint(show : Bool) -> Void {
         let level = show ? showPriority : hidePriority
         
@@ -80,7 +75,6 @@ class SignUpPasswordViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
     /*
     // MARK: - Navigation
 
@@ -98,9 +92,18 @@ class SignUpPasswordViewController: UIViewController {
     @IBAction func createPasswordAction(sender: UIButton) {
         self.performSegueWithIdentifier("sign_up_pwd_email_segue", sender: self)
     }
+    
+    @IBAction func tapAction(sender: UITapGestureRecognizer) {
+        dismissKeyboard()
+    }
+    
+    func dismissKeyboard() {
+        loginPasswordField.resignFirstResponder()
+        confirmLoginPasswordField.resignFirstResponder()
+        mailboxPassword.resignFirstResponder()
+        confirmMailboxPassword.resignFirstResponder()
+    }
 }
-
-
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 extension SignUpPasswordViewController: NSNotificationCenterKeyboardObserverProtocol {

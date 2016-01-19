@@ -15,6 +15,10 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     
     @IBOutlet weak var webView: UIWebView!
     
+    @IBOutlet weak var warningView: UIView!
+    @IBOutlet weak var warningLabel: UILabel!
+    @IBOutlet weak var warningIcon: UIImageView!
+    
     //define
     private let hidePriority : UILayoutPriority = 1.0;
     private let showPriority: UILayoutPriority = 750.0;
@@ -56,7 +60,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         
         NSURLCache.sharedURLCache().removeAllCachedResponses();
         
-        let recptcha = NSURL(string: "http://protonmail.xyz/recaptcha.html")!
+        let recptcha = NSURL(string: "https://secure.protonmail.com/mobile.html")!
         let requestObj = NSURLRequest(URL: recptcha)
         webView.loadRequest(requestObj)
         
@@ -130,7 +134,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
             startVerify = true;
         }
         
-        if let tmp = urlString?.rangeOfString("recapcha_response://") {
+        if let tmp = urlString?.rangeOfString("recaptcha_response://") {
             resetWebviewHeight()
             return false
         }
@@ -170,8 +174,6 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         PMLog.D("")
     }
     
-    
-    
     @IBAction func pickDomainName(sender: UIButton) {
         showPickerInActionSheet()
     }
@@ -210,17 +212,17 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         buttonCancel.addTarget(self, action: "cancelSelection:", forControlEvents: UIControlEvents.TouchDown);
         
         
-//        //add buttons to the view
-//        var buttonOkFrame: CGRect = CGRectMake(170, 7, 100, 30); //size & position of the button as placed on the toolView
-//        
-//        //Create the Select button & set the title
-//        var buttonOk: UIButton = UIButton(frame: buttonOkFrame);
-//        buttonOk.setTitle("Select", forState: UIControlState.Normal);
-//        buttonOk.setTitleColor(UIColor.blueColor(), forState: UIControlState.Normal);
-//        toolView.addSubview(buttonOk); //add to the subview
-//        //Add the tartget. In my case I dynamicly set the target of the select button
-//        buttonOk.addTarget(self, action: "pickedOK:", forControlEvents: UIControlEvents.TouchDown);
-    
+        //        //add buttons to the view
+        //        var buttonOkFrame: CGRect = CGRectMake(170, 7, 100, 30); //size & position of the button as placed on the toolView
+        //
+        //        //Create the Select button & set the title
+        //        var buttonOk: UIButton = UIButton(frame: buttonOkFrame);
+        //        buttonOk.setTitle("Select", forState: UIControlState.Normal);
+        //        buttonOk.setTitleColor(UIColor.blueColor(), forState: UIControlState.Normal);
+        //        toolView.addSubview(buttonOk); //add to the subview
+        //        //Add the tartget. In my case I dynamicly set the target of the select button
+        //        buttonOk.addTarget(self, action: "pickedOK:", forControlEvents: UIControlEvents.TouchDown);
+        
         //add the toolbar to the alert controller
         alert.view.addSubview(toolView);
         
@@ -260,6 +262,12 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         return domains.count
     }
     
+    @IBAction func tapAction(sender: UITapGestureRecognizer) {
+        dismissKeyboard()
+    }
+    func dismissKeyboard() {
+        usernameTextField.resignFirstResponder()
+    }
 }
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol

@@ -28,6 +28,8 @@ class SignUpEmailViewController: UIViewController {
     
     @IBOutlet weak var recoveryEmailField: TextInsetTextField!
     
+    @IBOutlet weak var checkButton: UIButton!
+    
     func configConstraint(show : Bool) -> Void {
         let level = show ? showPriority : hidePriority
         
@@ -43,9 +45,7 @@ class SignUpEmailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         recoveryEmailField.attributedPlaceholder = NSAttributedString(string: "Recovery Email", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
-        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -71,13 +71,16 @@ class SignUpEmailViewController: UIViewController {
 
     /*
     // MARK: - Navigation
-
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
     */
+    @IBAction func checkAction(sender: UIButton) {
+        
+        checkButton.selected = !checkButton.selected
+    }
 
     @IBAction func backAction(sender: UIButton) {
         self.navigationController?.popViewControllerAnimated(true)
@@ -85,6 +88,13 @@ class SignUpEmailViewController: UIViewController {
     
     @IBAction func doneAction(sender: UIButton) {
         self.navigationController?.popToRootViewControllerAnimated(true)
+    }
+    
+    @IBAction func tapAction(sender: UITapGestureRecognizer) {
+        dismissKeyboard()
+    }
+    func dismissKeyboard() {
+        recoveryEmailField.resignFirstResponder()
     }
 }
 
