@@ -29,6 +29,13 @@ class SplashViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if sharedUserDataService.isNewUser {
+            sharedUserDataService.isNewUser = false
+            if sharedUserDataService.isUserCredentialStored {
+                self.performSegueWithIdentifier(kSegueToSignInWithNoAnimation, sender: self)
+            }
+        }
     }
     
     override func viewDidAppear(animated: Bool) {

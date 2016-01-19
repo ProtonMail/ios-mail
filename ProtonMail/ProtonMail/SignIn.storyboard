@@ -953,6 +953,8 @@
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
                                                         <connections>
+                                                            <action selector="editingChange:" destination="cQW-e7-4Wy" eventType="editingChanged" id="e3S-bO-F5r"/>
+                                                            <action selector="editingEnd:" destination="cQW-e7-4Wy" eventType="editingDidEnd" id="RUu-ve-Tm4"/>
                                                             <outlet property="delegate" destination="rb7-9h-TvB" id="b74-v5-PTg"/>
                                                         </connections>
                                                     </textField>
@@ -989,6 +991,8 @@
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
                                                         <connections>
+                                                            <action selector="editingChange:" destination="cQW-e7-4Wy" eventType="editingChanged" id="XZv-bl-KV3"/>
+                                                            <action selector="editingEnd:" destination="cQW-e7-4Wy" eventType="editingDidEnd" id="ZkA-Oq-jw8"/>
                                                             <outlet property="delegate" destination="rb7-9h-TvB" id="qjV-E9-r0l"/>
                                                         </connections>
                                                     </textField>
@@ -1025,6 +1029,8 @@
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
                                                         <connections>
+                                                            <action selector="editingChange:" destination="cQW-e7-4Wy" eventType="editingChanged" id="RVF-0w-bky"/>
+                                                            <action selector="editingEnd:" destination="cQW-e7-4Wy" eventType="editingDidEnd" id="Emj-B4-26Y"/>
                                                             <outlet property="delegate" destination="rb7-9h-TvB" id="Jz0-Au-Ppb"/>
                                                         </connections>
                                                     </textField>
@@ -1064,6 +1070,8 @@
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
                                                         <connections>
+                                                            <action selector="editingChange:" destination="cQW-e7-4Wy" eventType="editingChanged" id="dvx-JR-6mB"/>
+                                                            <action selector="editingEnd:" destination="cQW-e7-4Wy" eventType="editingDidEnd" id="Ocs-io-p9G"/>
                                                             <outlet property="delegate" destination="rb7-9h-TvB" id="eYM-pW-NoR"/>
                                                         </connections>
                                                     </textField>

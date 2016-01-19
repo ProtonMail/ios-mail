@@ -30,6 +30,8 @@ class SignUpEmailViewController: UIViewController {
     
     @IBOutlet weak var checkButton: UIButton!
     
+    var viewModel : SignupViewModel!
+    
     func configConstraint(show : Bool) -> Void {
         let level = show ? showPriority : hidePriority
         
@@ -84,8 +86,21 @@ class SignUpEmailViewController: UIViewController {
     
     @IBAction func doneAction(sender: UIButton) {
         dismissKeyboard()
-        self.navigationController?.popToRootViewControllerAnimated(true)
+        viewModel.setRecovery(checkButton.selected, email: recoveryEmailField.text)
+        viewModel.createNewUser { (isOK, createDone, message, error) -> Void in
+            if !message.isEmpty {
+                let alert = message.alertController()
+                alert.addOKAction()
+                self.presentViewController(alert, animated: true, completion: nil)
+            }
+            if isOK || createDone {
+                self.navigationController?.popToRootViewControllerAnimated(true)
+            }
+        }
     }
+    
+    
+    
     
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
         dismissKeyboard()

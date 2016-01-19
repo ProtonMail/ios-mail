@@ -41,10 +41,10 @@ extension PMNOpenPgp {
         return true
     }
     
-    func generateKey(passphrase: String, userName: String, error: NSErrorPointer?) -> PMNOpenPgpKey? {
+    func generateKey(passphrase: String, userName: String, domain:String, error: NSErrorPointer?) -> PMNOpenPgpKey? {
         var out_new_key : PMNOpenPgpKey?
         SwiftTryCatch.tryBlock({ () -> Void in
-            out_new_key = self.generateKey(userName, domain: "protonmail.com", passphrase: passphrase)
+            out_new_key = self.generateKey(userName, domain: domain, passphrase: passphrase)
             if out_new_key!.privateKey.isEmpty || out_new_key!.publicKey.isEmpty {
                 out_new_key = nil
             }

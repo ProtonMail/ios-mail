@@ -82,7 +82,10 @@ class SignUpPasswordViewController: UIViewController {
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
+        if segue.identifier == kSegueToSignUpEmail {
+            let viewController = segue.destinationViewController as! SignUpEmailViewController
+            viewController.viewModel = self.viewModel
+        }
     }
 
     @IBAction func backAction(sender: UIButton) {
@@ -91,7 +94,28 @@ class SignUpPasswordViewController: UIViewController {
     
     @IBAction func createPasswordAction(sender: UIButton) {
         dismissKeyboard()
-        self.performSegueWithIdentifier(kSegueToSignUpEmail, sender: self)
+        
+        let login_pwd = loginPasswordField.text.trim()
+        let confirm_login_pwd = confirmLoginPasswordField.text.trim()
+        
+        let mailbox_pwd = mailboxPassword.text.trim()
+        let confirm_mailbox_pwd = confirmMailboxPassword.text.trim()
+        
+        if !login_pwd.isEmpty && confirm_login_pwd == login_pwd {
+            if !mailbox_pwd.isEmpty && confirm_mailbox_pwd == mailbox_pwd {
+                //create user & login
+                viewModel.setPasswords(login_pwd, mailboxPwd: mailbox_pwd)
+                self.performSegueWithIdentifier(kSegueToSignUpEmail, sender: self)
+            } else {
+                let alert = "Mailbox password doesn't match".alertController()
+                alert.addOKAction()
+                self.presentViewController(alert, animated: true, completion: nil)
+            }
+        } else {
+            let alert = "Login password doesn't match".alertController()
+            alert.addOKAction()
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
     }
     
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
@@ -104,6 +128,13 @@ class SignUpPasswordViewController: UIViewController {
         mailboxPassword.resignFirstResponder()
         confirmMailboxPassword.resignFirstResponder()
     }
+    
+    @IBAction func editingEnd(sender: AnyObject) {
+    }
+    
+    @IBAction func editingChange(sender: AnyObject) {
+    }
+    
 }
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol

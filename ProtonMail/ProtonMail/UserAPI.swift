@@ -10,18 +10,42 @@ import Foundation
 
 
 typealias CheckUserNameBlock = (Bool, NSError?) -> Void
+typealias CreateUserBlock = (Bool, Bool, String, NSError?) -> Void
 
 // MARK : update right swipe action
 public class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
     
-    let token : String!
+    let userName : String!
+    let recaptchaToken : String!
+    let password: String!
+    let email : String!
+    let news : Bool!
+    let publicKey : String!
+    let privateKey : String!
+    let domain: String!
     
-    init(token : String) {
-        self.token = token;
+    init(token : String!, username :String!, password: String!, email:String!, domain:String!, news:Bool!, publicKey:String!, privateKey:String!) {
+        self.recaptchaToken = token
+        self.userName = username
+        self.password = password
+        self.email = email
+        self.news = news
+        self.publicKey = publicKey
+        self.privateKey = privateKey
+        self.domain = domain
     }
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
-        var out : [String : AnyObject] = ["g-recaptcha-response" : token]
+        var out : [String : AnyObject] = ["TokenType" : "recaptcha",
+            "Username" : self.userName,
+            "Password" : self.password,
+            "Domain" : self.domain,
+            "Email" : self.email,
+            "News" : self.news == true ? 1 : 0,
+            "PublicKey" : self.publicKey,
+            "PrivateKey" : self.privateKey,
+            "Token" : self.recaptchaToken
+        ]
         return out
     }
     
@@ -34,11 +58,11 @@ public class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func getRequestPath() -> String {
-        return "http://protonmail.xyz/check.php"
+        return UsersAPI.Path
     }
     
     override public func getVersion() -> Int {
-        return SettingsAPI.V_SettingsUpdateSwipeRightRequest
+        return UsersAPI.V_CreateUsersRequest
     }
 }
 

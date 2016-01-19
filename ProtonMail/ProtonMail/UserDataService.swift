@@ -110,6 +110,7 @@ class UserDataService {
     }
     
     var isSignedIn: Bool = false
+    var isNewUser : Bool = false
     private(set) var isMailboxPWDOk: Bool = false
     
     var isUserCredentialStored: Bool {
@@ -278,30 +279,30 @@ class UserDataService {
         }
     }
     
-    func updateNewUserKeys(mbp:String, completion: CompletionBlock?) {
-        var error: NSError?
-        if let userInfo = userInfo {
-            if let newPrivateKey = sharedOpenPGP.generateKey(mbp, userName: username!, error: &error) {
-                var pubkey = newPrivateKey.publicKey
-                var privkey = newPrivateKey.privateKey
-                sharedAPIService.userUpdateKeypair("" , publicKey: pubkey, privateKey: privkey, completion: { task, response, error in
-                    if error == nil {
-                        self.mailboxPassword = mbp;
-                        let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: privkey, publicKey: pubkey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
-                            autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
-                            
-                            swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight
-                        )
-                        
-                        self.userInfo = userInfo
-                    }
-                    completion?(task: task, response: response, error: error)
-                })
-            } else {
-                completion?(task: nil, response: nil, error: error)
-            }
-        }
-    }
+//    func updateNewUserKeys(mbp:String, completion: CompletionBlock?) {
+//        var error: NSError?
+//        if let userInfo = userInfo {
+//            if let newPrivateKey = sharedOpenPGP.generateKey(mbp, userName: username!, error: &error) {
+//                var pubkey = newPrivateKey.publicKey
+//                var privkey = newPrivateKey.privateKey
+//                sharedAPIService.userUpdateKeypair("" , publicKey: pubkey, privateKey: privkey, completion: { task, response, error in
+//                    if error == nil {
+//                        self.mailboxPassword = mbp;
+//                        let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: privkey, publicKey: pubkey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
+//                            autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
+//                            
+//                            swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight
+//                        )
+//                        
+//                        self.userInfo = userInfo
+//                    }
+//                    completion?(task: task, response: response, error: error)
+//                })
+//            } else {
+//                completion?(task: nil, response: nil, error: error)
+//            }
+//        }
+//    }
     
     func updateUserDomiansOrder(email_domains: Array<Address>, newOrder : Array<Int>, completion: CompletionBlock) {
         let domainSetting = UpdateDomainOrder<ApiResponse>(adds: newOrder)

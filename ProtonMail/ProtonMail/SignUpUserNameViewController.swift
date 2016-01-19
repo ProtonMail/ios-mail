@@ -176,6 +176,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     }
     
     func goPasswordsView() {
+        viewModel.setPickedUserName(usernameTextField.text, domain: domains[selected])
         self.performSegueWithIdentifier(kSegueToSignUpPassword, sender: self)
     }
     
