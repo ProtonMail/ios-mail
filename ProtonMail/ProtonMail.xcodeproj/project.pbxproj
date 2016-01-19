@@ -217,6 +217,7 @@
 		75ECCE021B31F44600A8C800 /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECCE011B31F44600A8C800 /* AuthAPI.swift */; };
 		75ECCE041B31F5F600A8C800 /* AuthAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECCE031B31F5F600A8C800 /* AuthAPITests.swift */; };
 		75F023AF1C4E0271008F6276 /* SignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F023AE1C4E0271008F6276 /* SignupViewModel.swift */; };
+		75F023B11C4E566F008F6276 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F023B01C4E566F008F6276 /* SwitchTableViewCell.swift */; };
 		75F1697E1AF7F43A00BE6E79 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F1697D1AF7F43A00BE6E79 /* Logger.swift */; };
 		75F169811AF80B5900BE6E79 /* UserCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F169801AF80B5900BE6E79 /* UserCachedStatus.swift */; };
 		75F54C651B3B552200290F73 /* LastUpdateCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F54C641B3B552200290F73 /* LastUpdateCacheTests.swift */; };
@@ -464,6 +465,7 @@
 		75ECCE011B31F44600A8C800 /* AuthAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthAPI.swift; sourceTree = "<group>"; };
 		75ECCE031B31F5F600A8C800 /* AuthAPITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthAPITests.swift; sourceTree = "<group>"; };
 		75F023AE1C4E0271008F6276 /* SignupViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewModel.swift; sourceTree = "<group>"; };
+		75F023B01C4E566F008F6276 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		75F1697D1AF7F43A00BE6E79 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		75F169801AF80B5900BE6E79 /* UserCachedStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCachedStatus.swift; sourceTree = "<group>"; };
 		75F54C641B3B552200290F73 /* LastUpdateCacheTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastUpdateCacheTests.swift; sourceTree = "<group>"; };
@@ -932,6 +934,7 @@
 		754CD4891AB80D580084C54A /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				75F023B01C4E566F008F6276 /* SwitchTableViewCell.swift */,
 				754CD48A1AB80D770084C54A /* CustomHeaderView.swift */,
 				750254D91AB8157800050B12 /* GeneralSettingViewCell.swift */,
 				7510AE751AB8989E00EF3C41 /* DomainsTableViewCell.swift */,
@@ -1378,6 +1381,7 @@
 				073FD9341A732C5F00EB0CAF /* AFHTTPRequestSerializerExtension.swift in Sources */,
 				75662BA71B543A5B006C538E /* SettingsAPI.swift in Sources */,
 				07009F011A65CF4800129B07 /* SignInViewController.swift in Sources */,
+				75F023B11C4E566F008F6276 /* SwitchTableViewCell.swift in Sources */,
 				7564899E1B7F2C9F007EA207 /* ComposeViewModelImpl.swift in Sources */,
 				70B28D0A1A9BA0AC002D9EC8 /* AddressBookService.swift in Sources */,
 				07009F0B1A66E36500129B07 /* NSNotification+KeyboardExtension.swift in Sources */,

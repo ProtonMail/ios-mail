@@ -38,12 +38,16 @@ final class UserInfo: NSObject {
     let swipeLeft : Int
     let swipeRight : Int
     
+    
+    let role : Int
+    
     required init(
         displayName: String?, maxSpace: Int64?, notificationEmail: String?,
         privateKey: String?, publicKey: String?, signature: String?,
         usedSpace: Int64?, userStatus: Int?, userAddresses: Array<Address>?,
         autoSC:Int?, language:String?, maxUpload:Int64?, notify:Int?, showImage:Int?,  //v1.0.8
-        swipeL:Int?, swipeR:Int? ) //v1.1.4
+        swipeL:Int?, swipeR:Int?,  //v1.1.4
+        role:Int? )
     {
         self.displayName = displayName ?? ""
         self.maxSpace = maxSpace ?? 0
@@ -63,6 +67,8 @@ final class UserInfo: NSObject {
         
         self.swipeLeft = swipeL ?? 3
         self.swipeRight = swipeR ?? 0
+        
+        self.role = role ?? 0
     }
 }
 
@@ -122,7 +128,9 @@ extension UserInfo {
         showImagesResponseKey : String,
         
         swipeLeftResponseKey : String,
-        swipeRightResponseKey : String
+        swipeRightResponseKey : String,
+        
+        roleResponseKey : String
         ) {
             var addresses: [Address] = Array<Address>()
             let address_response = response[userAddressResponseKey] as! Array<Dictionary<String, AnyObject>>
@@ -167,7 +175,9 @@ extension UserInfo {
                 showImage : response[showImagesResponseKey] as? Int,
                 
                 swipeL: response[swipeLeftResponseKey] as? Int,
-                swipeR: response[swipeRightResponseKey] as? Int
+                swipeR: response[swipeRightResponseKey] as? Int,
+                
+                role : response[roleResponseKey] as? Int
                 
             )
     }
@@ -195,6 +205,8 @@ extension UserInfo: NSCoding {
         
         static let swipeLeft = "swipeLeft"
         static let swipeRight = "swipeRight"
+        
+        static let role = "role"
     }
     
     convenience init(coder aDecoder: NSCoder) {
@@ -216,7 +228,9 @@ extension UserInfo: NSCoding {
             showImage:aDecoder.decodeIntegerForKey(CoderKey.showImages),
             
             swipeL:aDecoder.decodeIntegerForKey(CoderKey.swipeLeft),
-            swipeR:aDecoder.decodeIntegerForKey(CoderKey.swipeRight)
+            swipeR:aDecoder.decodeIntegerForKey(CoderKey.swipeRight),
+            
+            role : aDecoder.decodeIntegerForKey(CoderKey.role)
         )
     }
     
@@ -239,6 +253,8 @@ extension UserInfo: NSCoding {
         
         aCoder.encodeInteger(swipeLeft, forKey: CoderKey.swipeLeft)
         aCoder.encodeInteger(swipeRight, forKey: CoderKey.swipeRight)
+        
+        aCoder.encodeInteger(role, forKey: CoderKey.role)
     }
 }
 

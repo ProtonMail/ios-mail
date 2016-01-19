@@ -469,7 +469,9 @@ class MessageDataService {
                 showImagesResponseKey : "ShowImages",
                 
                 swipeLeftResponseKey : "SwipeLeft",
-                swipeRightResponseKey : "SwipeRight"
+                swipeRightResponseKey : "SwipeRight",
+                
+                roleResponseKey:"Role"
             )
 
             sharedUserDataService.updateUserInfoFromEventLog(userInfo);

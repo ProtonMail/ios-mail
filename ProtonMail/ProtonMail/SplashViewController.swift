@@ -14,7 +14,7 @@ class SplashViewController: UIViewController {
     @IBOutlet weak var createAccountButton: UIButton!
     
     @IBOutlet weak var signInButton: UIButton!
-    
+
     
     private let kSegueToSignInWithNoAnimation = "splash_sign_in_no_segue"
     private let kSegueToSignIn = "splash_sign_in_segue"
