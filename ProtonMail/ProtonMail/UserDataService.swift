@@ -229,13 +229,6 @@ class UserDataService {
                 completion(nil, error)
             }
         }
-        
-//        if error == nil {
-//            NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignIn, object: self)
-//        }
-//        //completion(auth, error)
-//        self.fetchUserInfo(completion: completionWrapper)
-
     }
     
     func clean() {
