@@ -1109,7 +1109,7 @@
 				TargetAttributes = {
 					075E3DE51A5F4ECF00E001A7 = {
 						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = 6UN54H93QT;
+						DevelopmentTeam = 2SB5Z68H26;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1624,7 +1624,8 @@
 			baseConfigurationReference = 132129A26ED76512DB66C024 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Proton Technologies AG";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1731,7 +1732,8 @@
 			baseConfigurationReference = 07009F0C1A6700CF00129B07 /* Pods.distribution.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Proton Technologies AG";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
