@@ -495,6 +495,8 @@
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
                                                         <connections>
+                                                            <action selector="editEnd:" destination="XYV-2Y-X0C" eventType="editingDidEnd" id="eY2-HE-nne"/>
+                                                            <action selector="editingChanged:" destination="XYV-2Y-X0C" eventType="editingChanged" id="Dph-O6-b9h"/>
                                                             <outlet property="delegate" destination="rb7-9h-TvB" id="Btm-d9-LtL"/>
                                                         </connections>
                                                     </textField>
@@ -578,10 +580,10 @@
                                                     <action selector="createAccountAction:" destination="XYV-2Y-X0C" eventType="touchUpInside" id="4yo-aA-nzJ"/>
                                                 </connections>
                                             </button>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lV7-tc-6XJ">
+                                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lV7-tc-6XJ">
                                                 <rect key="frame" x="28" y="220" width="544" height="20"/>
                                                 <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sign_up_check_user_icon" translatesAutoresizingMaskIntoConstraints="NO" id="RSf-a7-5dd">
+                                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sign_up_check_user_icon" translatesAutoresizingMaskIntoConstraints="NO" id="RSf-a7-5dd">
                                                         <rect key="frame" x="0.0" y="2" width="16" height="16"/>
                                                         <animations/>
                                                         <constraints>
@@ -589,7 +591,7 @@
                                                             <constraint firstAttribute="height" constant="16" id="yQr-EV-9qd"/>
                                                         </constraints>
                                                     </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="warning" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cxr-km-sbQ">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cxr-km-sbQ">
                                                         <rect key="frame" x="22" y="0.0" width="522" height="20"/>
                                                         <animations/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>

@@ -9,6 +9,7 @@
 import Foundation
 
 
+typealias CheckUserNameBlock = (Bool, NSError?) -> Void
 
 // MARK : update right swipe action
 public class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
@@ -91,3 +92,47 @@ public class GetUserInfoResponse : ApiResponse {
         return true
     }
 }
+
+
+public class CheckUserExistRequest<T : ApiResponse> : ApiRequest<T> {
+    
+    let userName : String!
+    
+    init(userName : String) {
+        self.userName = userName;
+    }
+    
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+        return nil
+    }
+    
+    override public func getIsAuthFunction() -> Bool {
+        return false
+    }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .GET
+    }
+    
+    override public func getRequestPath() -> String {
+        return UsersAPI.Path + "/available/" + userName
+    }
+    
+    override public func getVersion() -> Int {
+        return UsersAPI.V_CheckUserExistRequest
+    }
+}
+
+public class CheckUserExistResponse : ApiResponse {
+    var isAvailable : Bool?
+    
+    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
+        PMLog.D(response.JSONStringify(prettyPrinted: true))
+        isAvailable =  response["Available"] as? Bool
+        return true
+    }
+}
+
+
+
+

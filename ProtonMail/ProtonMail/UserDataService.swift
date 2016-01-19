@@ -23,7 +23,6 @@ class UserDataService {
     
     typealias CompletionBlock = APIService.CompletionBlock
     typealias UserInfoBlock = APIService.UserInfoBlock
-    typealias UserNameCheckBlock = APIService.UserNameCheckBlock
     
     struct Key {
         static let isRememberMailboxPassword = "isRememberMailboxPasswordKey"
@@ -412,11 +411,6 @@ class UserDataService {
             }
         }
     }
-
-    func checkUserNameIsExsit(user_name: String, completion: UserNameCheckBlock) {
-        sharedAPIService.userCheckExist(user_name, completion: completion)
-    }
-    
     
     // MARK: - Private methods
     

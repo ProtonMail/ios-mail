@@ -84,10 +84,7 @@ class SignUpKeyViewController: UIViewController {
     
     func generateKey() {
         let password = passwordInput.text
-        
         MBProgressHUD.showHUDAddedTo(view, animated: true)
-        
-        
         dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.value), 0)) { // 1
             sharedUserDataService.updateNewUserKeys(password) { _, _, error in
                 dispatch_async(dispatch_get_main_queue()) { // 2

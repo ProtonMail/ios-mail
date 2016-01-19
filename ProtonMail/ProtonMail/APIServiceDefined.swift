@@ -96,4 +96,5 @@ public struct UsersAPI {
     
     static let V_CreateUsersRequest : Int = 1
     static let V_GetUserInfoRequest : Int = 1
+    static let V_CheckUserExistRequest : Int = 1
 }

@@ -31,16 +31,18 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     
     @IBOutlet weak var userNameTopPaddingConstraint: NSLayoutConstraint!
     
-    
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var webViewHeightConstraint: NSLayoutConstraint!
-    
-    
+
     let domains : [String] = ["protonmail.com", "protonmail.ch"]
     var selected : Int = 0;
     
+    private let kSegueToSignUpPassword = "sign_up_password_segue"
     private var startVerify : Bool = false
+    private var checkUserStatus : Bool = false
+    
+    var viewModel : SignupViewModel!
     
     func configConstraint(show : Bool) -> Void {
         let level = show ? showPriority : hidePriority
@@ -56,6 +58,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        resetChecking()
         webView.scrollView.scrollEnabled = false
         
         NSURLCache.sharedURLCache().removeAllCachedResponses();
@@ -76,7 +79,6 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         return UIStatusBarStyle.Default;
     }
     
-    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
@@ -92,60 +94,110 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
     }
     
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     
-    /*
     // MARK: - Navigation
-    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    // Get the new view controller using segue.destinationViewController.
-    // Pass the selected object to the new view controller.
-    }
-    */
-    
-    @IBAction func checkAction(sender: UIButton) {
-        let result = webView.stringByEvaluatingJavaScriptFromString("grecaptcha.getResponse(widgetId1)")
-        if (result != nil) {
-            PMLog.D("\(result)")
-        } else {
+        if segue.identifier == kSegueToSignUpPassword {
+            let viewController = segue.destinationViewController as! SignUpPasswordViewController
+            viewController.viewModel = self.viewModel
         }
     }
-    
+
     @IBAction func backAction(sender: UIButton) {
         self.navigationController?.popViewControllerAnimated(true)
     }
     
+    func startChecking() {
+        warningView.hidden = false
+        warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
+        warningLabel.text = "Checking ...."
+        warningIcon.hidden = true;
+    }
+    
+    func resetChecking() {
+        checkUserStatus = false
+        warningView.hidden = true
+        warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
+        warningLabel.text = ""
+        warningIcon.hidden = true;
+    }
+    
+    func finishChecking(isOk : Bool) {
+        if isOk {
+            checkUserStatus = true
+            warningView.hidden = false
+            warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
+            warningLabel.text = "UserName is avliable!"
+            warningIcon.hidden = false;
+        } else {
+            warningView.hidden = false
+            warningLabel.textColor = UIColor.redColor()
+            warningLabel.text = "UserName not avliable!"
+            warningIcon.hidden = true;
+        }
+    }
+    
     @IBAction func createAccountAction(sender: UIButton) {
         dismissKeyboard()
-        self.performSegueWithIdentifier("sign_up_password_segue", sender: self)
+        if viewModel.isTokenOk() {
+            if checkUserStatus {
+                self.goPasswordsView()
+            } else {
+                let userName = usernameTextField.text
+                if !userName.isEmpty {
+                    startChecking()
+                    viewModel.checkUserName(userName, complete: { (isOk, error) -> Void in
+                        if error != nil {
+                            self.finishChecking(false)
+                        } else {
+                            if isOk {
+                                self.finishChecking(true)
+                            } else {
+                                self.finishChecking(false)
+                            }
+                        }
+                    })
+                } else {
+                    let alert = "The UserName can't empty!".alertController()
+                    alert.addOKAction()
+                    self.presentViewController(alert, animated: true, completion: nil)
+                }
+            }
+        } else {
+            let alert = "The verification failed!".alertController()
+            alert.addOKAction()
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func goPasswordsView() {
+        self.performSegueWithIdentifier(kSegueToSignUpPassword, sender: self)
     }
     
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         PMLog.D("\(request)")
         let urlString = request.URL?.absoluteString;
-        
         if urlString?.contains("https://www.google.com/recaptcha/api2/frame") == true {
             startVerify = true;
         }
-        
-        if let tmp = urlString?.rangeOfString("recaptcha_response://") {
+        if let tmp = urlString?.rangeOfString("https://secure.protonmail.com/expired_recaptcha_response://") {
+            viewModel.setRecaptchaToken("", isExpired: true)
+            resetWebviewHeight()
+            webView.reload()
+            return false
+        }
+        else if let tmp = urlString?.rangeOfString("https://secure.protonmail.com/recaptcha_response://") {
+            if let token = urlString?.stringByReplacingOccurrencesOfString("https://secure.protonmail.com/recaptcha_response://", withString: "", options: NSStringCompareOptions.WidthInsensitiveSearch, range: nil) {
+                viewModel.setRecaptchaToken(token, isExpired: false)
+            }
             resetWebviewHeight()
             return false
         }
-        
-        //        if requ else if ([urlString rangeOfString:@"scroll://"].location != NSNotFound) {
-        //
-        //            NSInteger position = [[urlString stringByReplacingOccurrencesOfString:@"scroll://" withString:@""] integerValue];
-        //            [self editorDidScrollWithPosition:position];
-        //
-        //        }
-        
         return true
     }
     
@@ -239,7 +291,6 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     func cancelSelection(sender: UIButton){
         println("Cancel");
         self.dismissViewControllerAnimated(true, completion: nil);
-        // We dismiss the alert. Here you can add your additional code to execute when cancel is pressed
     }
     
     // Return the title of each row in your picker ... In my case that will be the profile name or the username string
@@ -267,6 +318,36 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     }
     func dismissKeyboard() {
         usernameTextField.resignFirstResponder()
+    }
+    
+    @IBAction func editEnd(sender: UITextField) {
+        
+        if !checkUserStatus {
+            let userName = usernameTextField.text
+            if !userName.isEmpty {
+                startChecking()
+                viewModel.checkUserName(userName, complete: { (isOk, error) -> Void in
+                    if error != nil {
+                        self.finishChecking(false)
+                    } else {
+                        if isOk {
+                            self.finishChecking(true)
+                        } else {
+                            self.finishChecking(false)
+                        }
+                    }
+                })
+                
+            } else {
+                let alert = "The UserName can't empty!".alertController()
+                alert.addOKAction()
+                self.presentViewController(alert, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    @IBAction func editingChanged(sender: AnyObject) {
+        resetChecking()
     }
 }
 

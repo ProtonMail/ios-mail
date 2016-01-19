@@ -31,7 +31,11 @@ class SignUpPasswordViewController: UIViewController {
     @IBOutlet weak var mailboxPassword: TextInsetTextField!
     @IBOutlet weak var confirmMailboxPassword: TextInsetTextField!
     
-
+    
+    private let kSegueToSignUpEmail = "sign_up_pwd_email_segue"
+    
+    var viewModel : SignupViewModel!
+    
     func configConstraint(show : Bool) -> Void {
         let level = show ? showPriority : hidePriority
         
@@ -75,15 +79,11 @@ class SignUpPasswordViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    /*
     // MARK: - Navigation
-
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        
     }
-    */
 
     @IBAction func backAction(sender: UIButton) {
         self.navigationController?.popViewControllerAnimated(true)
@@ -91,7 +91,7 @@ class SignUpPasswordViewController: UIViewController {
     
     @IBAction func createPasswordAction(sender: UIButton) {
         dismissKeyboard()
-        self.performSegueWithIdentifier("sign_up_pwd_email_segue", sender: self)
+        self.performSegueWithIdentifier(kSegueToSignUpEmail, sender: self)
     }
     
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
