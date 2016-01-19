@@ -90,6 +90,7 @@ class SignUpPasswordViewController: UIViewController {
     }
     
     @IBAction func createPasswordAction(sender: UIButton) {
+        dismissKeyboard()
         self.performSegueWithIdentifier("sign_up_pwd_email_segue", sender: self)
     }
     

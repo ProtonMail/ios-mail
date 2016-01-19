@@ -122,7 +122,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     }
     
     @IBAction func createAccountAction(sender: UIButton) {
-        
+        dismissKeyboard()
         self.performSegueWithIdentifier("sign_up_password_segue", sender: self)
     }
     

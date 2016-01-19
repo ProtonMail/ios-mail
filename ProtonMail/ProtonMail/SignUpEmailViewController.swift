@@ -87,6 +87,7 @@ class SignUpEmailViewController: UIViewController {
     }
     
     @IBAction func doneAction(sender: UIButton) {
+        dismissKeyboard()
         self.navigationController?.popToRootViewControllerAnimated(true)
     }
     
