@@ -441,7 +441,6 @@ extension ComposeEmailViewController : ComposeViewDelegate {
                 self.viewModel.bccSelectedContacts.removeAtIndex(contactIndex)
             }
         }
-        
     }
 }
 

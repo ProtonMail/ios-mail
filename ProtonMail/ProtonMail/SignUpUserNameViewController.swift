@@ -52,6 +52,9 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate {
         
         NSURLCache.sharedURLCache().removeAllCachedResponses();
         
+        
+        
+        
         let recptcha = NSURL(string: "http://protonmail.xyz/recaptcha.html")!
         let requestObj = NSURLRequest(URL: recptcha)
         webView.loadRequest(requestObj)
@@ -59,6 +62,10 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate {
         usernameTextField.attributedPlaceholder = NSAttributedString(string: "Username", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
         
         // Do any additional setup after loading the view.
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.Default;
     }
     
     

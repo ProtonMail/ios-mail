@@ -160,6 +160,10 @@ class SignInViewController: UIViewController {
         NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
     }
     
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent;
+    }
+    
     // MARK: - Private methods
     
     private func HideLoginViews()
@@ -240,8 +244,9 @@ class SignInViewController: UIViewController {
             sharedUserDataService.isSignedIn = true
             isRemembered = true
             
-            let addresses = sharedUserDataService.userInfo?.userAddresses.toPMNAddresses()
-            sharedOpenPGP.setAddresses(addresses);
+            if let addresses = sharedUserDataService.userInfo?.userAddresses.toPMNAddresses() {
+                sharedOpenPGP.setAddresses(addresses);
+            }
             
             usernameTextField.text = sharedUserDataService.username
             passwordTextField.text = sharedUserDataService.password

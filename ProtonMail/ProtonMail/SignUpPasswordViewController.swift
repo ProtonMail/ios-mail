@@ -15,26 +15,66 @@ class SignUpPasswordViewController: UIViewController {
     private let showPriority: UILayoutPriority = 750.0;
     
     
+    @IBOutlet weak var logoTopPaddingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var logoLeftPaddingConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var titleTopPaddingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var titleLeftPaddingConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var passwordTopPaddingConstraint: NSLayoutConstraint!
+    
+    
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
+    
+    
+    
+    @IBOutlet weak var loginPasswordField: TextInsetTextField!
+    @IBOutlet weak var confirmLoginPasswordField: TextInsetTextField!
+    
+    @IBOutlet weak var mailboxPassword: TextInsetTextField!
+    @IBOutlet weak var confirmMailboxPassword: TextInsetTextField!
+    
+    
+    
     
     func configConstraint(show : Bool) -> Void {
         let level = show ? showPriority : hidePriority
         
-//        userLeftPaddingConstraint.priority = level
-//        userTopPaddingConstraint.priority = level
-//        logoLeftPaddingConstraint.priority = level
-//        logoTopPaddingConstraint.priority = level
-//        
-//        userNameTopPaddingConstraint.priority = level
+        logoTopPaddingConstraint.priority = level
+        logoLeftPaddingConstraint.priority = level
+        
+        titleTopPaddingConstraint.priority = level
+        titleLeftPaddingConstraint.priority = level
+        
+        passwordTopPaddingConstraint.priority = level
     }
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        loginPasswordField.attributedPlaceholder = NSAttributedString(string: "Login Password", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        confirmLoginPasswordField.attributedPlaceholder = NSAttributedString(string: "Confirm Login Password", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        mailboxPassword.attributedPlaceholder = NSAttributedString(string: "Mailbox Password", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        confirmMailboxPassword.attributedPlaceholder = NSAttributedString(string: "Confirm Mailbox Password", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: true)
+        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
+    }
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
