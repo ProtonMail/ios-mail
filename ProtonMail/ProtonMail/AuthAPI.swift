@@ -25,8 +25,8 @@ struct AuthKey {
 
 struct Constants {
     // FIXME: These values would be obtainable by inspecting the binary code, but to make thins a little more difficult, we probably don't want to these values visible when the source code is distributed.  We will probably want to come up with a way to pass in these values as pre-compiler macros.  Swift doesn't support pre-compiler macros, but we have Objective-C and can still use them.  The values would be passed in by the build scripts at build time.  Or, these values could be cleared before publishing the code.
-    static let clientID = "iOS"
-    static let clientSecret = "db85d1c1a3021b8371ebdedd6f2fe354"
+    static let clientID = "iOSBeta"
+    static let clientSecret = "f53b44a68f9d8bc5d68de62e5e042eec"
     static let rediectURL = "https://protonmail.ch"
 }
 
@@ -53,7 +53,7 @@ public class AuthRequest<T : ApiResponse> : ApiRequest<T> {
             AuthKey.grantType : "password",
             AuthKey.redirectUrl : Constants.rediectURL,
             AuthKey.state : "\(NSUUID().UUIDString)",
-            AuthKey.scope : "full"
+            //AuthKey.scope : "full"
         ]
     
         PMLog.D(self.JSONStringify(out, prettyPrinted: true))
