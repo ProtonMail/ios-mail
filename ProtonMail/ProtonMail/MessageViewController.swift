@@ -181,7 +181,7 @@ class MessageViewController: ProtonMailViewController {
 
         //self.emailView?.contentWebView.hidden = false //
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: "touchStatusBarClick", object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: NotificationDefined.TouchStatusBar, object:nil)
         
         message.isRead = true
         message.needsUpdate = true
@@ -195,7 +195,7 @@ class MessageViewController: ProtonMailViewController {
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "touchStatusBarClick", object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationDefined.TouchStatusBar, object:nil)
         //self.emailView?.contentWebView.userInteractionEnabled = false;
     }
     

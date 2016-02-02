@@ -9,12 +9,24 @@
 import Foundation
 
 
+protocol SignupViewModelDelegate{
+    func verificationCodeChanged(viewModel : SignupViewModel, code : String!)
+}
+
 public class SignupViewModel {
+    func setDelegate (delegate: SignupViewModelDelegate?) {
+        fatalError("This method must be overridden")
+    }
     
     func checkUserName(username: String, complete: CheckUserNameBlock!) -> Void {
         fatalError("This method must be overridden")
     }
     
+    func sendVerifyCode (complete: SendVerificationCodeBlock!) -> Void {
+        fatalError("This method must be overridden")
+    }
+    
+    //
     func setRecaptchaToken (token : String, isExpired : Bool ) {
         fatalError("This method must be overridden")
     }
@@ -44,7 +56,6 @@ public class SignupViewModel {
     }
 }
 
-
 public class SignupViewModelImpl : SignupViewModel {
     private var userName : String = ""
     private var token : String = ""
@@ -55,13 +66,27 @@ public class SignupViewModelImpl : SignupViewModel {
     private var news : Bool = false
     private var login : String = ""
     private var mailbox : String = "";
-    private var agreePolicy : Bool = false;
+    private var agreePolicy : Bool = false
+    
+    private var verifyCode : String = ""
+    private var delegate : SignupViewModelDelegate?
     
     override init() {
+        super.init()
         //register observer
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "notifyReceiveURLSchema:", name: NotificationDefined.CustomizeURLSchema, object:nil)
     }
     deinit {
         //unregister observer
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationDefined.CustomizeURLSchema, object:nil)
+    }
+    
+    internal func notifyReceiveURLSchema (notify: NSNotification) {
+        
+    }
+    
+    override func setDelegate(delegate: SignupViewModelDelegate?) {
+        self.delegate = delegate
     }
 
     override func checkUserName(username: String, complete: CheckUserNameBlock!) {
@@ -125,6 +150,13 @@ public class SignupViewModelImpl : SignupViewModel {
             })
         } else {
             complete(false, false, "Key generation failed please try again", nil);
+        }
+    }
+    
+    override func sendVerifyCode(complete: SendVerificationCodeBlock!) {
+        let api = VerificationCodeRequest(userName: self.userName, emailAddress: email, type: .email)
+        api.call { (task, response, hasError) -> Void in
+            complete(!hasError, response?.error)
         }
     }
     

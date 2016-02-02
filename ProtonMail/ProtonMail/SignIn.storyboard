@@ -1699,8 +1699,8 @@
                                                     <action selector="backAction:" destination="Zzb-6r-tlP" eventType="touchUpInside" id="mpO-6C-KBb"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Congratulations!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ok8-ED-GBl">
-                                                <rect key="frame" x="200" y="120" width="202" height="40"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Congratulations!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ok8-ED-GBl">
+                                                <rect key="frame" x="199" y="120" width="202" height="40"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="hhI-sb-cbL"/>
@@ -2545,7 +2545,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mCl-SB-8ys" userLabel="username_view">
-                                                <rect key="frame" x="28" y="262.5" width="544" height="40"/>
+                                                <rect key="frame" x="28" y="263" width="544" height="40"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HSD-Bm-eHb">
                                                         <rect key="frame" x="0.0" y="39" width="544" height="1"/>
@@ -2591,7 +2591,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                 </constraints>
                                             </imageView>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="05y-zb-VWq">
-                                                <rect key="frame" x="200" y="529.5" width="200" height="42"/>
+                                                <rect key="frame" x="200" y="530" width="200" height="42"/>
                                                 <animations/>
                                                 <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
@@ -2608,11 +2608,11 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="createAccountAction:" destination="KEE-gK-nEU" eventType="touchUpInside" id="AVc-h5-7tN"/>
+                                                    <action selector="verifyCodeAction:" destination="KEE-gK-nEU" eventType="touchUpInside" id="2ul-xK-ArV"/>
                                                 </connections>
                                             </button>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o1J-63-hSp">
-                                                <rect key="frame" x="28" y="481.5" width="544" height="20"/>
+                                                <rect key="frame" x="28" y="482" width="544" height="20"/>
                                                 <subviews>
                                                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sign_up_check_user_icon" translatesAutoresizingMaskIntoConstraints="NO" id="2EP-KP-thW">
                                                         <rect key="frame" x="0.0" y="2" width="16" height="16"/>
@@ -2643,14 +2643,14 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email verification" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vkn-TU-4Dx">
-                                                <rect key="frame" x="28" y="179" width="544" height="20.5"/>
+                                                <rect key="frame" x="28" y="179" width="544" height="21"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                 <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your existin email address." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nPJ-Ai-Bgp">
-                                                <rect key="frame" x="28" y="217.5" width="544" height="17"/>
+                                                <rect key="frame" x="28" y="218" width="544" height="17"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
@@ -2660,7 +2660,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                 </variation>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We will send a verification code to the email address above." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="62s-b4-qQ8">
-                                                <rect key="frame" x="28" y="320.5" width="544" height="16"/>
+                                                <rect key="frame" x="28" y="321" width="544" height="16"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <color key="textColor" red="0.67843137249999996" green="0.67843137249999996" blue="0.75294117650000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -2670,7 +2670,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                 </variation>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BWG-CE-PCA" userLabel="username_view">
-                                                <rect key="frame" x="28" y="434.5" width="544" height="40"/>
+                                                <rect key="frame" x="28" y="435" width="544" height="40"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Re6-u2-sd4">
                                                         <rect key="frame" x="0.0" y="39" width="544" height="1"/>
@@ -2708,7 +2708,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bbK-y4-wPa">
-                                                <rect key="frame" x="200" y="364.5" width="200" height="42"/>
+                                                <rect key="frame" x="200" y="365" width="200" height="42"/>
                                                 <animations/>
                                                 <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
@@ -2725,7 +2725,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="createAccountAction:" destination="KEE-gK-nEU" eventType="touchUpInside" id="QUi-Ud-bvn"/>
+                                                    <action selector="sendCodeAction:" destination="KEE-gK-nEU" eventType="touchUpInside" id="hDz-2B-MNW"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -2752,7 +2752,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                             <constraint firstItem="F77-CM-EOm" firstAttribute="top" secondItem="7o7-3e-eNr" secondAttribute="bottom" priority="500" constant="45" id="agy-6x-7OM"/>
                                             <constraint firstAttribute="trailing" secondItem="62s-b4-qQ8" secondAttribute="trailing" constant="28" id="bUe-iS-NW8"/>
                                             <constraint firstItem="F77-CM-EOm" firstAttribute="leading" secondItem="pe0-rH-dCh" secondAttribute="leading" priority="1" constant="28" id="dzt-HW-boV"/>
-                                            <constraint firstItem="05y-zb-VWq" firstAttribute="top" secondItem="o1J-63-hSp" secondAttribute="bottom" constant="28" id="ehm-j1-wkx"/>
+                                            <constraint firstItem="05y-zb-VWq" firstAttribute="top" secondItem="o1J-63-hSp" secondAttribute="bottom" priority="500" constant="28" id="ehm-j1-wkx"/>
                                             <constraint firstItem="o1J-63-hSp" firstAttribute="top" secondItem="BWG-CE-PCA" secondAttribute="bottom" constant="7" id="fqV-ul-Ng6"/>
                                             <constraint firstItem="qwp-pA-b7V" firstAttribute="top" secondItem="F77-CM-EOm" secondAttribute="bottom" priority="1" constant="6" id="g00-HE-Xaq"/>
                                             <constraint firstItem="qwp-pA-b7V" firstAttribute="top" secondItem="F77-CM-EOm" secondAttribute="bottom" priority="500" constant="12" id="gik-oy-SKn"/>
@@ -2800,7 +2800,9 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                         <outlet property="logoTopPaddingConstraint" destination="Re7-ZX-Vqf" id="Ff3-ao-b1P"/>
                         <outlet property="scrollBottomPaddingConstraint" destination="Npa-HX-Niq" id="Swi-mK-Sex"/>
                         <outlet property="titleLeftPaddingConstraint" destination="i0k-ZJ-MAJ" id="7y5-ef-QLd"/>
+                        <outlet property="titleOneLabel" destination="Vkn-TU-4Dx" id="r5C-aS-Eze"/>
                         <outlet property="titleTopPaddingConstraint" destination="g00-HE-Xaq" id="s4p-yg-5lu"/>
+                        <outlet property="titleTwoLabel" destination="nPJ-Ai-Bgp" id="FqK-iE-Tj9"/>
                         <outlet property="userNameTopPaddingConstraint" destination="qwX-iT-Bhh" id="heG-RX-kpv"/>
                         <outlet property="usernameTextField" destination="xHh-K5-hgF" id="IzI-5u-lD5"/>
                         <outlet property="warningIcon" destination="2EP-KP-thW" id="xSq-XK-Nfm"/>
@@ -2816,7 +2818,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1780" y="111"/>
+            <point key="canvasLocation" x="1780" y="393"/>
         </scene>
     </scenes>
     <resources>

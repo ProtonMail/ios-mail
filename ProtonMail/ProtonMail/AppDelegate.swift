@@ -147,17 +147,8 @@ extension AppDelegate: UIApplicationDelegate {
         print("\(param1)")
         
         
-//        NSMutableDictionary *dict = [[[NSMutableDictionary alloc] initWithCapacity:6] autorelease];
-//        NSArray *pairs = [query componentsSeparatedByString:@"&"];
-//        
-//        for (NSString *pair in pairs) {
-//            NSArray *elements = [pair componentsSeparatedByString:@"="];
-//            NSString *key = [[elements objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//            NSString *val = [[elements objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//            
-//            [dict setObject:val forKey:key];
-//        }
-//        return dict;
+        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: NotificationDefined.CustomizeURLSchema, object: nil, userInfo: nil))
+        
         return true
     }
     
@@ -221,7 +212,7 @@ extension AppDelegate: UIApplicationDelegate {
     }
     
     func touchStatusBar() {
-        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "touchStatusBarClick", object: nil, userInfo: nil))
+        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: NotificationDefined.TouchStatusBar, object: nil, userInfo: nil))
     }
 }
 
