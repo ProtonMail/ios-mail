@@ -11,9 +11,9 @@ import UIKit
 
 class HumanCheckMenuViewController: UIViewController {
     
-    private let kSegueToSignUpPassword = "sign_up_password_segue"
+    private let kSegueToRecaptcha = "check_menu_to_recaptcha_verify_segue"
+    private let kSegueToEmailVerify = "check_menu_to_email_verify_segue"
     
-
     var viewModel : SignupViewModel!
     
     override func viewDidLoad() {
@@ -45,13 +45,24 @@ class HumanCheckMenuViewController: UIViewController {
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        if segue.identifier == kSegueToSignUpPassword {
-//            let viewController = segue.destinationViewController as! SignUpPasswordViewController
-//            viewController.viewModel = self.viewModel
-//        }
+        if segue.identifier == kSegueToRecaptcha {
+            let viewController = segue.destinationViewController as! RecaptchaViewController
+            viewController.viewModel = self.viewModel
+        } else if segue.identifier == kSegueToEmailVerify {
+            let viewController = segue.destinationViewController as! EmailVerifyViewController
+            viewController.viewModel = self.viewModel
+        }
     }
     
     @IBAction func backAction(sender: UIButton) {
         self.navigationController?.popViewControllerAnimated(true)
+    }
+    
+    @IBAction func recaptchaAction(sender: UIButton) {
+        self.performSegueWithIdentifier(kSegueToRecaptcha, sender: self)
+    }
+    
+    @IBAction func emailVerifyAction(sender: UIButton) {
+        self.performSegueWithIdentifier(kSegueToEmailVerify, sender: self)
     }
 }
