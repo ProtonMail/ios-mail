@@ -140,8 +140,9 @@ extension AppDelegate: UIApplicationDelegate {
     
     func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
         let dict = [String, String]()
-        let url = "http://example.com?param1=value1&param2=param2"
-        let urlComponents = NSURLComponents(string: url)
+        //let url = "http://example.com?param1=value1&param2=param2"
+        
+        let urlComponents = NSURLComponents(URL: url, resolvingAgainstBaseURL: true) //NSURLComponents(string: url)
         let queryItems = urlComponents?.queryItems
         let param1 = queryItems?.filter({$0.name == "param1"}).first
         print("\(param1)")

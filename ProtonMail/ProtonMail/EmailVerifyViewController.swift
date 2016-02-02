@@ -10,7 +10,8 @@ import UIKit
 
 class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     
-    @IBOutlet weak var usernameTextField: TextInsetTextField!
+    @IBOutlet weak var emailTextField: TextInsetTextField!
+    @IBOutlet weak var verifyCodeTextField: TextInsetTextField!
     
     @IBOutlet weak var warningView: UIView!
     @IBOutlet weak var warningLabel: UILabel!
@@ -54,7 +55,7 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         resetChecking()
-        usernameTextField.attributedPlaceholder = NSAttributedString(string: "Email address", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        emailTextField.attributedPlaceholder = NSAttributedString(string: "Email address", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -86,7 +87,7 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     
     
     func verificationCodeChanged(viewModel: SignupViewModel, code: String!) {
-        
+        verifyCodeTextField.text = code
     }
     
     
@@ -136,7 +137,9 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     
     @IBAction func sendCodeAction(sender: UIButton) {
         
-        //let emailaddress =
+        let emailaddress = emailTextField.text
+        
+        viewModel.setRecovery(false, email: emailaddress)
        
         self.viewModel.sendVerifyCode { (isOK, error) -> Void in
             
@@ -184,31 +187,31 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
         dismissKeyboard()
     }
     func dismissKeyboard() {
-        usernameTextField.resignFirstResponder()
+        emailTextField.resignFirstResponder()
     }
     
     @IBAction func editEnd(sender: UITextField) {
-        if !stopLoading {
-            if !checkUserStatus {
-                let userName = usernameTextField.text
-                if !userName.isEmpty {
-                    startChecking()
-                    viewModel.checkUserName(userName, complete: { (isOk, error) -> Void in
-                        if error != nil {
-                            self.finishChecking(false)
-                        } else {
-                            if isOk {
-                                self.finishChecking(true)
-                            } else {
-                                self.finishChecking(false)
-                            }
-                        }
-                    })
-                } else {
-                    
-                }
-            }
-        }
+//        if !stopLoading {
+//            if !checkUserStatus {
+//                let userName = emailTextField.text
+//                if !userName.isEmpty {
+//                    startChecking()
+//                    viewModel.checkUserName(userName, complete: { (isOk, error) -> Void in
+//                        if error != nil {
+//                            self.finishChecking(false)
+//                        } else {
+//                            if isOk {
+//                                self.finishChecking(true)
+//                            } else {
+//                                self.finishChecking(false)
+//                            }
+//                        }
+//                    })
+//                } else {
+//                    
+//                }
+//            }
+//        }
     }
     
     @IBAction func editingChanged(sender: AnyObject) {

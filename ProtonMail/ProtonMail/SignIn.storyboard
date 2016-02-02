@@ -2680,7 +2680,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                             <constraint firstAttribute="height" constant="1" id="jgS-G9-phx"/>
                                                         </constraints>
                                                     </view>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email address" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="e5M-as-Fd0" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Verification Code" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="e5M-as-Fd0" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="544" height="40"/>
                                                         <animations/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -2796,6 +2796,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                         </connections>
                     </view>
                     <connections>
+                        <outlet property="emailTextField" destination="xHh-K5-hgF" id="XPE-KB-T95"/>
                         <outlet property="logoLeftPaddingConstraint" destination="dzt-HW-boV" id="qn5-zz-pZ4"/>
                         <outlet property="logoTopPaddingConstraint" destination="Re7-ZX-Vqf" id="Ff3-ao-b1P"/>
                         <outlet property="scrollBottomPaddingConstraint" destination="Npa-HX-Niq" id="Swi-mK-Sex"/>
@@ -2804,7 +2805,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                         <outlet property="titleTopPaddingConstraint" destination="g00-HE-Xaq" id="s4p-yg-5lu"/>
                         <outlet property="titleTwoLabel" destination="nPJ-Ai-Bgp" id="FqK-iE-Tj9"/>
                         <outlet property="userNameTopPaddingConstraint" destination="qwX-iT-Bhh" id="heG-RX-kpv"/>
-                        <outlet property="usernameTextField" destination="xHh-K5-hgF" id="IzI-5u-lD5"/>
+                        <outlet property="verifyCodeTextField" destination="e5M-as-Fd0" id="22g-ka-pPg"/>
                         <outlet property="warningIcon" destination="2EP-KP-thW" id="xSq-XK-Nfm"/>
                         <outlet property="warningLabel" destination="7xZ-WL-TER" id="d4j-If-nZr"/>
                         <outlet property="warningView" destination="o1J-63-hSp" id="WBb-VK-YLb"/>

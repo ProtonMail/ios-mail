@@ -21,15 +21,13 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
-			<key></key>
-			<string></string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
 			<string>ch.protonmail.protonmail</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>protonmailscheme</string>
+				<string>protonmail</string>
 			</array>
 		</dict>
 	</array>
