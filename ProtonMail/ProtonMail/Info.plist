@@ -18,6 +18,21 @@
 	<string>1.2.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key></key>
+			<string></string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>ch.protonmail.protonmail</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>protonmailscheme</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>Debug</string>
 	<key>Fabric</key>

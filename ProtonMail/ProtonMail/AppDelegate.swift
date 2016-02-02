@@ -138,6 +138,29 @@ extension AppDelegate: UIApplicationDelegate {
         return true
     }
     
+    func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
+        let dict = [String, String]()
+        let url = "http://example.com?param1=value1&param2=param2"
+        let urlComponents = NSURLComponents(string: url)
+        let queryItems = urlComponents?.queryItems
+        let param1 = queryItems?.filter({$0.name == "param1"}).first
+        print("\(param1)")
+        
+        
+//        NSMutableDictionary *dict = [[[NSMutableDictionary alloc] initWithCapacity:6] autorelease];
+//        NSArray *pairs = [query componentsSeparatedByString:@"&"];
+//        
+//        for (NSString *pair in pairs) {
+//            NSArray *elements = [pair componentsSeparatedByString:@"="];
+//            NSString *key = [[elements objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//            NSString *val = [[elements objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//            
+//            [dict setObject:val forKey:key];
+//        }
+//        return dict;
+        return true
+    }
+    
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.

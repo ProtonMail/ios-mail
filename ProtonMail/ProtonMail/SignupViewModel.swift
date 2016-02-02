@@ -38,6 +38,10 @@ public class SignupViewModel {
     func setPasswords(loginPwd:String, mailboxPwd:String) {
         fatalError("This method must be overridden")
     }
+    
+    func setAgreePolicy(isAgree : Bool) {
+        fatalError("This method must be overridden")
+    }
 }
 
 
@@ -51,6 +55,14 @@ public class SignupViewModelImpl : SignupViewModel {
     private var news : Bool = false
     private var login : String = ""
     private var mailbox : String = "";
+    private var agreePolicy : Bool = false;
+    
+    override init() {
+        //register observer
+    }
+    deinit {
+        //unregister observer
+    }
 
     override func checkUserName(username: String, complete: CheckUserNameBlock!) {
         let api = CheckUserExistRequest<CheckUserExistResponse>(userName: username)
@@ -124,5 +136,9 @@ public class SignupViewModelImpl : SignupViewModel {
     override func setPasswords(loginPwd: String, mailboxPwd: String) {
         self.login = loginPwd
         self.mailbox = mailboxPwd
+    }
+    
+    override func setAgreePolicy(isAgree: Bool) {
+        self.agreePolicy = isAgree;
     }
 }

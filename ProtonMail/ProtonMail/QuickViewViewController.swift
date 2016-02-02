@@ -18,6 +18,10 @@ class QuickViewViewController: QLPreviewController {
         super.viewDidLoad()
     }
     
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent;
+    }
+    
     func configureNavigationBar(navigationController: UINavigationController) {
         navigationController.navigationBar.barStyle = UIBarStyle.Black
         navigationController.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;

@@ -121,7 +121,7 @@
 		750254DA1AB8157800050B12 /* GeneralSettingViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750254D91AB8157800050B12 /* GeneralSettingViewCell.swift */; };
 		750778CE1BE98900009F516C /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750778CD1BE98900009F516C /* UserAPI.swift */; };
 		7508BAC61B87C6EA001A3564 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7508BAC51B87C6EA001A3564 /* UIApplicationExtension.swift */; };
-		750AAAC41C23E5CF00BAC444 /* SignUpUserNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AAAC31C23E5CF00BAC444 /* SignUpUserNameViewController.swift */; };
+		750AAAC41C23E5CF00BAC444 /* RecaptchaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AAAC31C23E5CF00BAC444 /* RecaptchaViewController.swift */; };
 		750AAAC71C2490DB00BAC444 /* SignUpEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AAAC51C2490DB00BAC444 /* SignUpEmailViewController.swift */; };
 		750AAAC81C2490DB00BAC444 /* SignUpPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AAAC61C2490DB00BAC444 /* SignUpPasswordViewController.swift */; };
 		750B00981B7AB91400F180BD /* NotificationDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750B00971B7AB91400F180BD /* NotificationDefined.swift */; };
@@ -220,6 +220,9 @@
 		75F023B11C4E566F008F6276 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F023B01C4E566F008F6276 /* SwitchTableViewCell.swift */; };
 		75F1697E1AF7F43A00BE6E79 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F1697D1AF7F43A00BE6E79 /* Logger.swift */; };
 		75F169811AF80B5900BE6E79 /* UserCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F169801AF80B5900BE6E79 /* UserCachedStatus.swift */; };
+		75F463881C5FEBF400918B46 /* HumanCheckMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F463871C5FEBF400918B46 /* HumanCheckMenuViewController.swift */; };
+		75F4638A1C60071B00918B46 /* EmailVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F463891C60071B00918B46 /* EmailVerifyViewController.swift */; };
+		75F4638E1C60172300918B46 /* SignUpUserNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F4638D1C60172300918B46 /* SignUpUserNameViewController.swift */; };
 		75F54C651B3B552200290F73 /* LastUpdateCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F54C641B3B552200290F73 /* LastUpdateCacheTests.swift */; };
 		75F906101B1FBECA00107509 /* DebugDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F9060F1B1FBECA00107509 /* DebugDetailsViewController.swift */; };
 		75F9A1121AFD705B007229C7 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F9A1111AFD705B007229C7 /* UIDeviceExtension.swift */; };
@@ -366,7 +369,7 @@
 		750254D91AB8157800050B12 /* GeneralSettingViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralSettingViewCell.swift; sourceTree = "<group>"; };
 		750778CD1BE98900009F516C /* UserAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAPI.swift; sourceTree = "<group>"; };
 		7508BAC51B87C6EA001A3564 /* UIApplicationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
-		750AAAC31C23E5CF00BAC444 /* SignUpUserNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpUserNameViewController.swift; sourceTree = "<group>"; };
+		750AAAC31C23E5CF00BAC444 /* RecaptchaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecaptchaViewController.swift; sourceTree = "<group>"; };
 		750AAAC51C2490DB00BAC444 /* SignUpEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpEmailViewController.swift; sourceTree = "<group>"; };
 		750AAAC61C2490DB00BAC444 /* SignUpPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpPasswordViewController.swift; sourceTree = "<group>"; };
 		750B00971B7AB91400F180BD /* NotificationDefined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationDefined.swift; sourceTree = "<group>"; };
@@ -468,6 +471,9 @@
 		75F023B01C4E566F008F6276 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
 		75F1697D1AF7F43A00BE6E79 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		75F169801AF80B5900BE6E79 /* UserCachedStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCachedStatus.swift; sourceTree = "<group>"; };
+		75F463871C5FEBF400918B46 /* HumanCheckMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanCheckMenuViewController.swift; sourceTree = "<group>"; };
+		75F463891C60071B00918B46 /* EmailVerifyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailVerifyViewController.swift; sourceTree = "<group>"; };
+		75F4638D1C60172300918B46 /* SignUpUserNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpUserNameViewController.swift; sourceTree = "<group>"; };
 		75F54C641B3B552200290F73 /* LastUpdateCacheTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastUpdateCacheTests.swift; sourceTree = "<group>"; };
 		75F9060F1B1FBECA00107509 /* DebugDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugDetailsViewController.swift; sourceTree = "<group>"; };
 		75F9A1111AFD705B007229C7 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
@@ -508,8 +514,11 @@
 				07009EFE1A659AD400129B07 /* SignIn.storyboard */,
 				07009F001A65CF4800129B07 /* SignInViewController.swift */,
 				0713237E1A7844390043DB41 /* MailboxPasswordViewController.swift */,
-				750AAAC31C23E5CF00BAC444 /* SignUpUserNameViewController.swift */,
+				75F4638D1C60172300918B46 /* SignUpUserNameViewController.swift */,
 				750AAAC61C2490DB00BAC444 /* SignUpPasswordViewController.swift */,
+				75F463871C5FEBF400918B46 /* HumanCheckMenuViewController.swift */,
+				75F463891C60071B00918B46 /* EmailVerifyViewController.swift */,
+				750AAAC31C23E5CF00BAC444 /* RecaptchaViewController.swift */,
 				750AAAC51C2490DB00BAC444 /* SignUpEmailViewController.swift */,
 				750AAAC91C2491A400BAC444 /* OldViews */,
 			);
@@ -1295,6 +1304,7 @@
 				756489981B7F2AB3007EA207 /* MailboxViewModel.swift in Sources */,
 				70C9133D1A6D83FA002CBE61 /* UIColor+ProtonMail.swift in Sources */,
 				754BD2071BFA9FCD006CBAE6 /* SettingsCell.swift in Sources */,
+				75F463881C5FEBF400918B46 /* HumanCheckMenuViewController.swift in Sources */,
 				07CF61981A8AE5AA00ED38AE /* MonitorSavesDataService.swift in Sources */,
 				752EEC1C1BB0A9D800770331 /* QuickViewViewController.swift in Sources */,
 				073FD9321A71C60900EB0CAF /* UserDataService.swift in Sources */,
@@ -1317,6 +1327,7 @@
 				07B797C21A6EE50F00244532 /* APIService+AuthenticationExtension.swift in Sources */,
 				756489921B7DC8B8007EA207 /* LabelExtension.swift in Sources */,
 				0713237F1A7844390043DB41 /* MailboxPasswordViewController.swift in Sources */,
+				75F4638A1C60071B00918B46 /* EmailVerifyViewController.swift in Sources */,
 				073FE01D1A9561F600825980 /* Contact.swift in Sources */,
 				073FE01F1A95620D00825980 /* ContactExtension.swift in Sources */,
 				07655BBD1AB1036200CD3883 /* BugDataService.swift in Sources */,
@@ -1358,6 +1369,7 @@
 				75BB65761BD5C88800F9432D /* AttachmentAPI.swift in Sources */,
 				078A3A4C1A7FF4DC002C5FF3 /* MessageDataService.swift in Sources */,
 				75F169811AF80B5900BE6E79 /* UserCachedStatus.swift in Sources */,
+				75F4638E1C60172300918B46 /* SignUpUserNameViewController.swift in Sources */,
 				076758781AA0EB6900F9AC9C /* LoadingView.swift in Sources */,
 				701DDE901AA64DEB0038149C /* MBContactCollectionView.m in Sources */,
 				07CAB8041A894A3B00C5E347 /* MessageDetailView.swift in Sources */,
@@ -1420,7 +1432,7 @@
 				07B797C01A6EDFF400244532 /* APIService.swift in Sources */,
 				755B6A701B38C0B800745872 /* Label.swift in Sources */,
 				073FE01B1A955F4A00825980 /* APIService+ContactExtension.swift in Sources */,
-				750AAAC41C23E5CF00BAC444 /* SignUpUserNameViewController.swift in Sources */,
+				750AAAC41C23E5CF00BAC444 /* RecaptchaViewController.swift in Sources */,
 				073FD92C1A719B7900EB0CAF /* APIService+UserExtension.swift in Sources */,
 				750AAAC71C2490DB00BAC444 /* SignUpEmailViewController.swift in Sources */,
 				07CC3F931A941C7A0005E39F /* MessageQueue.swift in Sources */,
