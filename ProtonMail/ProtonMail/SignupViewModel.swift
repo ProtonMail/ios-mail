@@ -177,6 +177,21 @@ public class SignupViewModelImpl : SignupViewModel {
     override func setRecovery(receiveNews: Bool, email: String) {
         self.recoverEmail = email
         self.news = receiveNews
+        
+        // here need call api to update those fields
+        if !self.recoverEmail.isEmpty {
+            let emailApi = UpdateNotificationEmail(password: "", notificationEmail: self.recoverEmail)
+            emailApi.call { (task, response, hasError) -> Void in
+                
+            }
+        }
+        
+        if self.news {
+            let newsApi = UpdateNewsRequest(news: self.news)
+            newsApi.call { (task, response, hasError) -> Void in
+                
+            }
+        }
     }
     
     override func setCodeEmail(email: String) {

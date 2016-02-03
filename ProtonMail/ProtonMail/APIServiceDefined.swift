@@ -69,6 +69,8 @@ public struct SettingsAPI {
     
     static let V_SettingsUpdateSwipeLeftRequest : Int = 1
     static let V_SettingsUpdateSwipeRightRequest : Int = 1
+    
+    static let V_SettingsUpdateNewsRequest : Int = 1
 }
 
 

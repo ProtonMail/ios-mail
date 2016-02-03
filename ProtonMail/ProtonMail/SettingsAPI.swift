@@ -96,6 +96,32 @@ public class UpdateNotificationEmail<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
+// MARK : update notification email
+public class UpdateNewsRequest<T : ApiResponse> : ApiRequest<T> {
+    let news : Bool!
+    
+    init(news : Bool) {
+        self.news = news
+    }
+    
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+        let receiveNews = self.news == true ? 1 : 0
+        var out : [String : AnyObject] = ["News" : receiveNews]
+        return out
+    }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .PUT
+    }
+    
+    override public func getRequestPath() -> String {
+        return SettingsAPI.Path + "/news" + AppConstants.getDebugOption
+    }
+    
+    override public func getVersion() -> Int {
+        return SettingsAPI.V_SettingsUpdateNewsRequest
+    }
+}
 
 // MARK : update left swipe action
 public class UpdateSwiftLeftAction<T : ApiResponse> : ApiRequest<T> {
