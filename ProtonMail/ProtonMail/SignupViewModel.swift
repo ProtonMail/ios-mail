@@ -99,6 +99,7 @@ public class SignupViewModelImpl : SignupViewModel {
     }
 
     override func checkUserName(username: String, complete: CheckUserNameBlock!) {
+            // need valide user name format
         let api = CheckUserExistRequest<CheckUserExistResponse>(userName: username)
         api.call { (task, response, hasError) -> Void in
             complete(response?.isAvailable ?? false, response?.error)

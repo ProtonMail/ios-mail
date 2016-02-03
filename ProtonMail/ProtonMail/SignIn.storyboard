@@ -2486,7 +2486,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                     <constraint firstAttribute="width" constant="200" id="xTY-Ub-FMB"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                <state key="normal" title="Verify">
+                                                <state key="normal" title="Continue">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
@@ -2729,6 +2729,6 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
     <inferredMetricsTieBreakers>
         <segue reference="gTu-Sh-bol"/>
         <segue reference="lvd-zK-Trc"/>
-        <segue reference="BQ1-JS-Xpb"/>
+        <segue reference="u41-R8-jPf"/>
     </inferredMetricsTieBreakers>
 </document>
