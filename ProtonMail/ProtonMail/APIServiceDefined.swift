@@ -99,3 +99,12 @@ public struct UsersAPI {
     static let V_CheckUserExistRequest : Int = 1
     static let V_SendVerificationCodeRequest : Int = 1
 }
+
+
+
+public struct DomainsAPI {
+    
+    static let Path : String = AppConstants.BaseAPIPath + "/domains"
+    
+    static let V_AvailableDomainsRequest : Int = 1
+}
