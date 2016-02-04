@@ -276,7 +276,6 @@ extension String {
         out = out.preg_replace("<video(.*?)<\\/video>", replaceto: "")
         out = out.preg_replace("<audio(.*?)<\\/audio>", replaceto: "")
         
-        PMLog.D(out)
         return out;
 //        function htmltotxt($str){
 //            $str = preg_replace( "@<script(.*?)</script>@is", "", $str );  //过滤js
