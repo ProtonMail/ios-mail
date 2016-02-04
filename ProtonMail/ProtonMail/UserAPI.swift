@@ -11,6 +11,7 @@ import Foundation
 
 typealias CheckUserNameBlock = (Bool, NSError?) -> Void
 typealias CreateUserBlock = (Bool, Bool, String, NSError?) -> Void
+typealias SendVerificationCodeBlock = (Bool, NSError?) -> Void
 
 // MARK : update right swipe action
 public class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
@@ -159,5 +160,57 @@ public class CheckUserExistResponse : ApiResponse {
 }
 
 
+public enum VerifyCodeType : Int {
+    case email = 0
+    
+    var toString : String {
+        get {
+            switch(self) {
+            case email:
+                return "emial"
+            }
+        }
+    }
+}
 
+public class VerificationCodeRequest<T : ApiResponse> : ApiRequest<T> {
+    
+    let userName : String!
+    let emailAddress : String!
+    let type : VerifyCodeType!
+    let platform : String = "ios"
+    
+    init(userName : String!, emailAddress : String!, type : VerifyCodeType!) {
+        self.userName = userName
+        self.emailAddress = emailAddress
+        self.type = type
+    }
+    
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+        
+        var out : [String : AnyObject] = [
+            "Username" : userName,
+            "Type" : type.toString,
+            "Platform" : platform,
+            "Destination" : ["Address" : emailAddress]
+        ]
+        return out
+    }
+    
+    override public func getIsAuthFunction() -> Bool {
+        return false
+    }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .POST
+    }
+    
+    override public func getRequestPath() -> String {
+        return UsersAPI.Path + "/code"
+    }
+    
+    override public func getVersion() -> Int {
+        return UsersAPI.V_SendVerificationCodeRequest
+    }
+}
 

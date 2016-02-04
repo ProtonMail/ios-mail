@@ -21,13 +21,14 @@ import Crashlytics
 class SignInViewController: UIViewController {
     
     private let kMailboxSegue = "mailboxSegue"
-    private let kSignUpKeySegue = "signUpKeySegue"
+    private let kSignUpKeySegue = "sign_in_to_sign_up_segue"
+
     
     private let animationDuration: NSTimeInterval = 0.5
     private let keyboardPadding: CGFloat = 12
     private let buttonDisabledAlpha: CGFloat = 0.5
     private let signUpURL = NSURL(string: "https://protonmail.com/invite")!
-    private let forgotPasswordURL = NSURL(string: "https://protonmail.com/help/reset-login-password")!
+    private let forgotPasswordURL = NSURL(string: "https://mail.protonmail.com/help/reset-login-password")!
     
     static var isComeBackFromMailbox = false
     
@@ -77,7 +78,6 @@ class SignInViewController: UIViewController {
         setupTextFields()
         
         setupSignInButton()
-        setupSignUpButton()
         signInIfRememberedCredentials()
         
         if(isRemembered)
@@ -164,6 +164,13 @@ class SignInViewController: UIViewController {
         return UIStatusBarStyle.LightContent;
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == kSignUpKeySegue {
+            let viewController = segue.destinationViewController as! SignUpUserNameViewController
+            viewController.viewModel = SignupViewModelImpl()
+        }
+    }
+    
     // MARK: - Private methods
     
     private func HideLoginViews()
@@ -198,21 +205,6 @@ class SignInViewController: UIViewController {
     func setupSignInButton() {
         signInButton.layer.borderColor = UIColor.ProtonMail.Login_Button_Border_Color.CGColor;
         signInButton.alpha = buttonDisabledAlpha
-    }
-    
-    func setupSignUpButton() {
-        
-        //        let needAnAccount = NSLocalizedString("Need an account? ", comment: "Need an account? ")
-        //        let signUp = NSLocalizedString("Sign Up.", comment: "Sign Up.")
-        //
-        //        let title = NSMutableAttributedString(string: needAnAccount, attributes: [NSUnderlineStyleAttributeName : NSUnderlineStyle.StyleNone.rawValue])
-        //        let signUpAttributed = NSAttributedString(string: signUp, attributes: [NSUnderlineStyleAttributeName : NSUnderlineStyle.StyleSingle.rawValue])
-        //
-        //        title.appendAttributedString(signUpAttributed)
-        //
-        //        title.addAttribute(NSFontAttributeName, value: UIFont.robotoThin(size: 12.5), range: NSMakeRange(0, title.length))
-        //
-        //        signUpButton.setAttributedTitle(title, forState: .Normal)
     }
     
     func signIn() {
@@ -261,7 +253,6 @@ class SignInViewController: UIViewController {
     
     func logUser() {
         if  let username = sharedUserDataService.username {
-            //Crashlytics.sharedInstance().setUserEmail("user@fabric.io")
             Crashlytics.sharedInstance().setUserIdentifier(username)
             Crashlytics.sharedInstance().setUserName(username)
         }
@@ -338,9 +329,7 @@ class SignInViewController: UIViewController {
     
     @IBAction func signUpAction(sender: UIButton) {
         dismissKeyboard()
-        //        self.performSegueWithIdentifier("goSignUpSegue", sender: self)
-        //
-        UIApplication.sharedApplication().openURL(signUpURL)
+        self.performSegueWithIdentifier(kSignUpKeySegue, sender: self)
     }
     
     @IBAction func tapAction(sender: UITapGestureRecognizer) {

@@ -181,7 +181,7 @@ class MessageViewController: ProtonMailViewController {
 
         //self.emailView?.contentWebView.hidden = false //
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: "touchStatusBarClick", object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: NotificationDefined.TouchStatusBar, object:nil)
         
         message.isRead = true
         message.needsUpdate = true
@@ -195,7 +195,7 @@ class MessageViewController: ProtonMailViewController {
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "touchStatusBarClick", object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationDefined.TouchStatusBar, object:nil)
         //self.emailView?.contentWebView.userInteractionEnabled = false;
     }
     
@@ -232,8 +232,16 @@ class MessageViewController: ProtonMailViewController {
                 var error: NSError?
                 PMLog.D(self.message!.body);
                 bodyText = self.message.decryptBodyIfNeeded(&error) ?? NSLocalizedString("Unable to decrypt message.")
+                
+                PMLog.D(bodyText);
+                
                 bodyText = bodyText.stringByStrippingStyleHTML()
                 bodyText = bodyText.stringByStrippingBodyStyle()
+                
+                PMLog.D(bodyText);
+                
+                bodyText = bodyText.stringByPurifyHTML()
+                PMLog.D(bodyText);
             }
             //<meta name=\"viewport\" content=\"user-scalable=yes,maximum-scale=5.0,minimum-scale=0.5\" />
             let w = UIScreen.mainScreen().bounds.width * 2

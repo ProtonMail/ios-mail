@@ -196,7 +196,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
         
         let mobileSignature = sharedUserDataService.switchCacheOff == true ? "" : "<br><br> Send from ProtonMail Mobile"
         
-        let htmlString = "<div><br></div><div><br></div><div><br></div>\(signature) \(mobileSignature)<div><br></div>";
+        let htmlString = "<div><br></div><div><br></div>\(signature) \(mobileSignature)<div><br></div>";
         switch messageAction!
         {
         case .OpenDraft:

@@ -138,6 +138,21 @@ extension AppDelegate: UIApplicationDelegate {
         return true
     }
     
+    func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
+        let dict = [String, String]()
+        //let url = "http://example.com?param1=value1&param2=param2"
+        
+        let urlComponents = NSURLComponents(URL: url, resolvingAgainstBaseURL: true) //NSURLComponents(string: url)
+        let queryItems = urlComponents?.queryItems
+        let param1 = queryItems?.filter({$0.name == "param1"}).first
+        print("\(param1)")
+        
+        
+        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: NotificationDefined.CustomizeURLSchema, object: nil, userInfo: nil))
+        
+        return true
+    }
+    
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -198,7 +213,7 @@ extension AppDelegate: UIApplicationDelegate {
     }
     
     func touchStatusBar() {
-        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "touchStatusBarClick", object: nil, userInfo: nil))
+        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: NotificationDefined.TouchStatusBar, object: nil, userInfo: nil))
     }
 }
 

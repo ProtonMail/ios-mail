@@ -9,12 +9,24 @@
 import Foundation
 
 
-public class SignupViewModel {
+protocol SignupViewModelDelegate{
+    func verificationCodeChanged(viewModel : SignupViewModel, code : String!)
+}
+
+public class SignupViewModel : NSObject {
+    func setDelegate (delegate: SignupViewModelDelegate?) {
+        fatalError("This method must be overridden")
+    }
     
     func checkUserName(username: String, complete: CheckUserNameBlock!) -> Void {
         fatalError("This method must be overridden")
     }
     
+    func sendVerifyCode (complete: SendVerificationCodeBlock!) -> Void {
+        fatalError("This method must be overridden")
+    }
+    
+    //
     func setRecaptchaToken (token : String, isExpired : Bool ) {
         fatalError("This method must be overridden")
     }
@@ -35,11 +47,22 @@ public class SignupViewModel {
         fatalError("This method must be overridden")
     }
     
+    func setCodeEmail(email : String) {
+        fatalError("This method must be overridden")
+    }
+    
     func setPasswords(loginPwd:String, mailboxPwd:String) {
         fatalError("This method must be overridden")
     }
+    
+    func setAgreePolicy(isAgree : Bool) {
+        fatalError("This method must be overridden")
+    }
+    
+    func setVerifyCode(code : String ) {
+        fatalError("This method must be overridden")
+    }
 }
-
 
 public class SignupViewModelImpl : SignupViewModel {
     private var userName : String = ""
@@ -47,12 +70,36 @@ public class SignupViewModelImpl : SignupViewModel {
     private var isExpired : Bool = true
     private var newKey : PMNOpenPgpKey?
     private var domain : String = ""
-    private var email : String = ""
-    private var news : Bool = false
+    private var codeEmail : String = ""
+    private var recoverEmail : String = ""
+    private var news : Bool = true
     private var login : String = ""
     private var mailbox : String = "";
+    private var agreePolicy : Bool = false
+    
+    private var verifyCode : String = ""
+    private var delegate : SignupViewModelDelegate?
+    
+    override init() {
+        super.init()
+        //register observer
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "notifyReceiveURLSchema:", name: NotificationDefined.CustomizeURLSchema, object:nil)
+    }
+    deinit {
+        //unregister observer
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationDefined.CustomizeURLSchema, object:nil)
+    }
+    
+    internal func notifyReceiveURLSchema (notify: NSNotification) {
+        delegate?.verificationCodeChanged(self, code: "hello world")
+    }
+    
+    override func setDelegate(delegate: SignupViewModelDelegate?) {
+        self.delegate = delegate
+    }
 
     override func checkUserName(username: String, complete: CheckUserNameBlock!) {
+            // need valide user name format
         let api = CheckUserExistRequest<CheckUserExistResponse>(userName: username)
         api.call { (task, response, hasError) -> Void in
             complete(response?.isAvailable ?? false, response?.error)
@@ -73,11 +120,15 @@ public class SignupViewModelImpl : SignupViewModel {
         return !isExpired
     }
     
+    override func setVerifyCode(code: String) {
+        self.verifyCode = code
+    }
+    
     override func createNewUser(complete: CreateUserBlock) {
         //validation here
         var error: NSError?
         if let key = sharedOpenPGP.generateKey(self.mailbox, userName: self.userName, domain: self.domain, error: &error) {
-            let api = CreateNewUserRequest<ApiResponse>(token: self.token, username: self.userName, password: self.login, email: self.email, domain: self.domain, news: self.news, publicKey: key.publicKey, privateKey: key.privateKey)
+            let api = CreateNewUserRequest<ApiResponse>(token: self.token, username: self.userName, password: self.login, email: self.recoverEmail, domain: self.domain, news: self.news, publicKey: key.publicKey, privateKey: key.privateKey)
             api.call({ (task, response, hasError) -> Void in
                 if !hasError {
                     sharedUserDataService.signIn(self.userName, password: self.login, isRemembered: true) { _, error in
@@ -116,13 +167,45 @@ public class SignupViewModelImpl : SignupViewModel {
         }
     }
     
+    override func sendVerifyCode(complete: SendVerificationCodeBlock!) {
+        let api = VerificationCodeRequest(userName: self.userName, emailAddress: codeEmail, type: .email)
+        api.call { (task, response, hasError) -> Void in
+            complete(!hasError, response?.error)
+        }
+    }
+    
     override func setRecovery(receiveNews: Bool, email: String) {
-        self.email = email
+        self.recoverEmail = email
         self.news = receiveNews
+        
+        // here need call api to update those fields
+        if !self.recoverEmail.isEmpty {
+            let emailApi = UpdateNotificationEmail(password: "", notificationEmail: self.recoverEmail)
+            emailApi.call { (task, response, hasError) -> Void in
+                
+            }
+        }
+        
+        if self.news {
+            let newsApi = UpdateNewsRequest(news: self.news)
+            newsApi.call { (task, response, hasError) -> Void in
+                
+            }
+        }
+    }
+    
+    override func setCodeEmail(email: String) {
+        self.codeEmail = email
+        self.recoverEmail = email
+        self.news = true
     }
     
     override func setPasswords(loginPwd: String, mailboxPwd: String) {
         self.login = loginPwd
         self.mailbox = mailboxPwd
+    }
+    
+    override func setAgreePolicy(isAgree: Bool) {
+        self.agreePolicy = isAgree;
     }
 }
