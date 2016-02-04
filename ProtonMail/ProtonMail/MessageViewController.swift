@@ -232,16 +232,9 @@ class MessageViewController: ProtonMailViewController {
                 var error: NSError?
                 PMLog.D(self.message!.body);
                 bodyText = self.message.decryptBodyIfNeeded(&error) ?? NSLocalizedString("Unable to decrypt message.")
-                
-                PMLog.D(bodyText);
-                
                 bodyText = bodyText.stringByStrippingStyleHTML()
                 bodyText = bodyText.stringByStrippingBodyStyle()
-                
-                PMLog.D(bodyText);
-                
                 bodyText = bodyText.stringByPurifyHTML()
-                PMLog.D(bodyText);
             }
             //<meta name=\"viewport\" content=\"user-scalable=yes,maximum-scale=5.0,minimum-scale=0.5\" />
             let w = UIScreen.mainScreen().bounds.width * 2

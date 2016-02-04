@@ -209,6 +209,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
             
             body = body.stringByStrippingStyleHTML()
             body = body.stringByStrippingBodyStyle()
+            body = body.stringByPurifyHTML()
             
             let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
             let replyHeader = time + ", " + message!.senderName + " <'\(message!.sender)'>"
@@ -230,6 +231,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
             
             body = body.stringByStrippingStyleHTML()
             body = body.stringByStrippingBodyStyle()
+            body = body.stringByPurifyHTML()
             
             return "<br><br><br>\(signature) \(mobileSignature) \(forwardHeader) \(body)"
         case .NewDraft:
