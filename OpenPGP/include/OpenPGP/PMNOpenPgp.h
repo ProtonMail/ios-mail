@@ -106,4 +106,11 @@
 /**test functions */
 - (int32_t)throwAnException;
 
+/**PBE */
+- (nonnull NSString *)encryptHashCbc:(nonnull NSString *)plainText
+                            password:(nonnull NSString *)password;
+
+- (nonnull NSString *)decryptHashCbc:(nonnull NSString *)encryptedText
+                            password:(nonnull NSString *)password;
+
 @end
