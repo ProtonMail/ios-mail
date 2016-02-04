@@ -194,7 +194,7 @@ class SettingTableViewController: ProtonMailViewController {
                         if sharedUserDataService.userInfo?.role > 0 {
                             cell.setUpSwitch(true, status: status)
                         } else {
-                            cell.setUpSwitch(false, status: status)
+                            cell.setUpSwitch(true, status: status) //was false
                         }
                         cellout = cell
                     }

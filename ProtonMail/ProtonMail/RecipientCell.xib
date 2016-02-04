@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
@@ -21,6 +21,7 @@
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Andy Yen" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="319" translatesAutoresizingMaskIntoConstraints="NO" id="RiM-Rv-HcN">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="16"/>
+                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="C1U-ni-8Zh"/>
                         </constraints>
@@ -30,6 +31,7 @@
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;andy@protonmail.ch&gt;" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EjN-Jc-zzM">
                         <rect key="frame" x="0.0" y="16" width="320" height="12"/>
+                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="12" id="Hfh-LN-HnV"/>
                         </constraints>
@@ -38,6 +40,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <animations/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="EjN-Jc-zzM" secondAttribute="trailing" id="3qn-pF-Zt9"/>
                     <constraint firstItem="RiM-Rv-HcN" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="9En-y3-TsE"/>
@@ -47,6 +50,7 @@
                     <constraint firstItem="EjN-Jc-zzM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="pWA-ui-A0b"/>
                 </constraints>
             </tableViewCellContentView>
+            <animations/>
             <connections>
                 <outlet property="email" destination="EjN-Jc-zzM" id="m5n-XM-voT"/>
                 <outlet property="senderName" destination="RiM-Rv-HcN" id="9Iz-2b-QEm"/>
