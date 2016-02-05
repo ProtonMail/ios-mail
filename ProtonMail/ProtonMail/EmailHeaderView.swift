@@ -255,21 +255,23 @@ class EmailHeaderView: UIView {
         let tm = self.date.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? "";
         self.emailDetailDateLabel.text = "Date: \(tm)"
         
-        if encType == EncryptTypes.OutPGPInline || encType == EncryptTypes.OutPGPMime {
-            self.emailIsEncryptedImageView.image = UIImage(named: "mail_lock-pgpmime");
-            self.emailIsEncryptedImageView.highlighted = false;
-        } else {
+        var lockType : LockTypes = encType.lockType
+        switch (lockType) {
+        case .PlainTextLock:
+            self.emailIsEncryptedImageView.image = UIImage(named: "mail_lock");
+            self.emailIsEncryptedImageView.highlighted = true;
+            break
+        case .EncryptLock:
             self.emailIsEncryptedImageView.image = UIImage(named: "mail_lock");
             self.emailIsEncryptedImageView.highlighted = false;
-            if encType == EncryptTypes.Internal {
-                self.emailIsEncryptedImageView.highlighted = false;
-            } else {
-                self.emailIsEncryptedImageView.highlighted = true;
-            }
+            break
+        case .PGPLock:
+            self.emailIsEncryptedImageView.image = UIImage(named: "mail_lock-pgpmime");
+            self.emailIsEncryptedImageView.highlighted = false;
+            break;
         }
         
         self.labels = labels;
-        
         if let labels = labels {
             let lc = labels.count - 1;
             for i in 0 ... 4 {

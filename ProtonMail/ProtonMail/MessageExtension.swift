@@ -205,6 +205,10 @@ extension Message {
         return enc_type
     }
     
+    var lockType : LockTypes! {
+        return self.encryptType.lockType
+    }
+    
     // MARK: Private variables
     
     private var passphrase: String {
