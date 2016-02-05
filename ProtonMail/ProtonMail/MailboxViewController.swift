@@ -387,7 +387,9 @@ class MailboxViewController: ProtonMailViewController {
         if self.fetchedResultsController?.numberOfSections() > indexPath.section {
             if self.fetchedResultsController?.numberOfRowsInSection(indexPath.section) > indexPath.row {
                 if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-                    return message;
+                    if message.managedObjectContext != nil {
+                        return message
+                    }
                 }
             }
         }
