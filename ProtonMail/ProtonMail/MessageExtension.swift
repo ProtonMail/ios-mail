@@ -120,18 +120,18 @@ extension Message {
     }
     
     class func deleteLocation(location : MessageLocation) -> Bool{
-        if let moc = sharedCoreDataService.mainManagedObjectContext {
+        if let mContext = sharedCoreDataService.mainManagedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
             
             if location == .spam || location == .trash {
                 var error : NSError?
                 fetchRequest.predicate = NSPredicate(format: "%K == %i", Message.Attributes.locationNumber, location.rawValue)
                 fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-                if let oldMessages = moc.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
+                if let oldMessages = mContext.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
                     for message in oldMessages {
-                        moc.deleteObject(message)
+                        mContext.deleteObject(message)
                     }
-                    if let error = moc.saveUpstreamIfNeeded() {
+                    if let error = mContext.saveUpstreamIfNeeded() {
                         PMLog.D(" error: \(error)")
                     } else {
                         return true
