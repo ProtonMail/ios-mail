@@ -790,7 +790,6 @@
                                                             <rect key="frame" x="478" y="0.0" width="50" height="45"/>
                                                             <animations/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="Hsf-EX-Doe"/>
                                                                 <constraint firstAttribute="width" constant="50" id="cQL-R8-yRJ"/>
                                                             </constraints>
                                                             <state key="normal" image="mail_check">
