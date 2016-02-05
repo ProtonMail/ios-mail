@@ -492,7 +492,7 @@ class MailboxViewController: ProtonMailViewController {
         if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
             undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
             viewModel.spamMessage(message)
-            showUndoView("Spamed")
+            showUndoView("Spammed")
         }
     }
     
