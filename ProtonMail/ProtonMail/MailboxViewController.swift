@@ -871,22 +871,21 @@ class MailboxViewController: ProtonMailViewController {
     
     private func hideCheckOptions() {
         self.isEditing = false
-        
         let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows() as? [NSIndexPath]
-        
         if let indexPathsForVisibleRows = indexPathsForVisibleRows {
             for indexPath in indexPathsForVisibleRows {
-                let messageCell: MailboxMessageCell = self.tableView.cellForRowAtIndexPath(indexPath) as! MailboxMessageCell
-                messageCell.setCellIsChecked(false)
-                messageCell.hideCheckboxOnLeftSide()
-                
-                UIView.animateWithDuration(0.25, animations: { () -> Void in
-                    messageCell.layoutIfNeeded()
-                })
+                if let messageCell: MailboxMessageCell = self.tableView.cellForRowAtIndexPath(indexPath) as? MailboxMessageCell {
+                    messageCell.setCellIsChecked(false)
+                    messageCell.hideCheckboxOnLeftSide()
+                    
+                    UIView.animateWithDuration(0.25, animations: { () -> Void in
+                        messageCell.layoutIfNeeded()
+                    })
+                }
             }
         }
     }
-    
+
     private func showCheckOptions(longPressGestureRecognizer: UILongPressGestureRecognizer) {
         let point: CGPoint = longPressGestureRecognizer.locationInView(self.tableView)
         let indexPath: NSIndexPath? = self.tableView.indexPathForRowAtPoint(point)
