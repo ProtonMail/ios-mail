@@ -11,7 +11,7 @@ import QuickLook
 import Foundation
 
 
-class MessageViewController: ProtonMailViewController {
+class MessageViewController: ProtonMailViewController, LablesViewControllerDelegate {
     
     /// message info
     var message: Message! {
@@ -86,6 +86,10 @@ class MessageViewController: ProtonMailViewController {
             labels : self.message.labels.allObjects as? [Label])
     }
     
+    func dismissed() {
+        self.updateHeader();
+        self.emailView?.emailHeader.updateHeaderLayout()
+    }
     
     private func setupRightButtons() {
         var rightButtons: [UIBarButtonItem] = []
@@ -154,10 +158,6 @@ class MessageViewController: ProtonMailViewController {
         return true
     }
     
-//    override func supportedInterfaceOrientations() -> Int {
-//        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
-//    }
-    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toCompose" {
             let composeViewController = segue.destinationViewController as! ComposeEmailViewController
@@ -165,6 +165,7 @@ class MessageViewController: ProtonMailViewController {
         } else if segue.identifier == "toApplyLabelsSegue" {
             let popup = segue.destinationViewController as! LablesViewController
             popup.viewModel = LabelViewModelImpl(msg: [self.message])
+            popup.delegate = self
             self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }
@@ -180,9 +181,9 @@ class MessageViewController: ProtonMailViewController {
 //        UIDevice.currentDevice().setValue(value, forKey: "orientation")
 
         //self.emailView?.contentWebView.hidden = false //
-        
+
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: NotificationDefined.TouchStatusBar, object:nil)
-        
+
         message.isRead = true
         message.needsUpdate = true
         if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
@@ -227,7 +228,7 @@ class MessageViewController: ProtonMailViewController {
         
         if (!self.bodyLoaded || forceReload) && self.emailView != nil {
             var bodyText = NSLocalizedString("Loading...")
-            if self.message.isDetailDownloaded {
+            if self.message.isDetailDownloaded {  //&& forceReload == false 
                 self.bodyLoaded = true
                 var error: NSError?
                 PMLog.D(self.message!.body);
