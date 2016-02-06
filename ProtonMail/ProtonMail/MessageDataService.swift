@@ -886,7 +886,7 @@ class MessageDataService {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
             
             if location == .starred {
-                fetchRequest.predicate = NSPredicate(format: "%K == true &&", Message.Attributes.isStarred)
+                fetchRequest.predicate = NSPredicate(format: "%K == true", Message.Attributes.isStarred)
             } else {
                 fetchRequest.predicate = NSPredicate(format: "%K == %i", Message.Attributes.locationNumber, location.rawValue)
             }
