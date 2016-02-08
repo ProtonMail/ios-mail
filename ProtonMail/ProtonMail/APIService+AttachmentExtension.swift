@@ -34,7 +34,7 @@ extension APIService {
     // MARK: - Private methods
     
     private func pathForAttachmentID(attachmentID: String) -> String {
-        return "/attachments/\(attachmentID)"
+        return AppConstants.BaseAPIPath + "/attachments/\(attachmentID)"
     }
     
 }
