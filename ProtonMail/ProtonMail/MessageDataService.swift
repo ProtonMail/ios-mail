@@ -1313,7 +1313,7 @@ class MessageDataService {
                         completion?(task: task, response: response, error: error)
                     }
                     
-                    sharedAPIService.upload( AppConstants.BaseURLString + "/attachments/upload", parameters: params, keyPackets: keyPacket, dataPacket: dataPacket, completion: completionWrapper)
+                    sharedAPIService.upload( AppConstants.BaseURLString + AppConstants.BaseAPIPath + "/attachments/upload", parameters: params, keyPackets: keyPacket, dataPacket: dataPacket, completion: completionWrapper)
                     
                     return
                 }
@@ -1344,7 +1344,7 @@ class MessageDataService {
 //                }
                 completion?(task: task, response: nil, error: nil)
             })
-            //sharedAPIService.upload( AppConstants.BaseURLString + "/attachments/upload", parameters: params, keyPackets: keyPacket, dataPacket: dataPacket, completion: completionWrapper)
+            //sharedAPIService.upload( AppConstants.BaseURLString + AppConstants.BaseAPIPath + "/attachments/upload", parameters: params, keyPackets: keyPacket, dataPacket: dataPacket, completion: completionWrapper)
             return
         }
         
