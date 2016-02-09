@@ -2696,7 +2696,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                         <outlet property="warningIcon" destination="2EP-KP-thW" id="xSq-XK-Nfm"/>
                         <outlet property="warningLabel" destination="7xZ-WL-TER" id="d4j-If-nZr"/>
                         <outlet property="warningView" destination="o1J-63-hSp" id="WBb-VK-YLb"/>
-                        <segue destination="YIP-X7-8Un" kind="show" id="u41-R8-jPf"/>
+                        <segue destination="YIP-X7-8Un" kind="show" identifier="sign_up_pwd_email_segue" id="u41-R8-jPf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dWH-Cr-E8l" userLabel="First Responder" sceneMemberID="firstResponder"/>

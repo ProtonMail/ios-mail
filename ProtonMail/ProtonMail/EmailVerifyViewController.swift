@@ -32,11 +32,12 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     @IBOutlet weak var userNameTopPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
     
-    private let kSegueToSignUpPassword = "sign_up_password_segue"
+    private let kSegueToNotificationEmail = "sign_up_pwd_email_segue"
     private var startVerify : Bool = false
     private var checkUserStatus : Bool = false
     private var stopLoading : Bool = false
     var viewModel : SignupViewModel!
+    private var doneClicked : Bool = false
     
     func configConstraint(show : Bool) -> Void {
         let level = show ? showPriority : hidePriority
@@ -56,6 +57,7 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
         super.viewDidLoad()
         resetChecking()
         emailTextField.attributedPlaceholder = NSAttributedString(string: "Email address", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        verifyCodeTextField.attributedPlaceholder = NSAttributedString(string: "Enter Verification Code", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -94,8 +96,8 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == kSegueToSignUpPassword {
-            let viewController = segue.destinationViewController as! SignUpPasswordViewController
+        if segue.identifier == kSegueToNotificationEmail {
+            let viewController = segue.destinationViewController as! SignUpEmailViewController
             viewController.viewModel = self.viewModel
         }
     }
@@ -136,82 +138,64 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     }
     
     @IBAction func sendCodeAction(sender: UIButton) {
-        
         let emailaddress = emailTextField.text
-        
-        viewModel.setRecovery(false, email: emailaddress)
-       
+        MBProgressHUD.showHUDAddedTo(view, animated: true)
+        viewModel.setCodeEmail(emailaddress)
         self.viewModel.sendVerifyCode { (isOK, error) -> Void in
-            
+            MBProgressHUD.hideHUDForView(self.view, animated: true)
+            if !isOK {
+                let alert = error!.alertController()
+                alert.addOKAction()
+                self.presentViewController(alert, animated: true, completion: nil)
+            } else {
+                let alert = "Please check you email!".alertController()
+                alert.addOKAction()
+                self.presentViewController(alert, animated: true, completion: nil)
+            }
             println("\(isOK),   \(error)")
         }
     }
     
     @IBAction func verifyCodeAction(sender: UIButton) {
+        dismissKeyboard()
         
+        if doneClicked {
+            return
+        }
+        doneClicked = true;
+        MBProgressHUD.showHUDAddedTo(view, animated: true)
+        dismissKeyboard()
+        viewModel.setVerifyCode(verifyCodeTextField.text)
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.viewModel.createNewUser { (isOK, createDone, message, error) -> Void in
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                self.doneClicked = false
+                if !message.isEmpty {
+                    let alert = message.alertController()
+                    alert.addOKAction()
+                    self.presentViewController(alert, animated: true, completion: nil)
+                } else {
+                    if isOK || createDone {
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            self.performSegueWithIdentifier(self.kSegueToNotificationEmail, sender: self)
+                        })
+                    }
+                }
+                
+            }
+        })
     }
-    
-//    @IBAction func createAccountAction(sender: UIButton) {
-//        dismissKeyboard()
-//        if viewModel.isTokenOk() {
-//            if checkUserStatus {
-//            } else {
-//                let userName = usernameTextField.text
-//                if !userName.isEmpty {
-//                    startChecking()
-//                    viewModel.checkUserName(userName, complete: { (isOk, error) -> Void in
-//                        if error != nil {
-//                            self.finishChecking(false)
-//                        } else {
-//                            if isOk {
-//                                self.finishChecking(true)
-//                            } else {
-//                                self.finishChecking(false)
-//                            }
-//                        }
-//                    })
-//                } else {
-//                    let alert = "The UserName can't empty!".alertController()
-//                    alert.addOKAction()
-//                    self.presentViewController(alert, animated: true, completion: nil)
-//                }
-//            }
-//        } else {
-//            let alert = "The verification failed!".alertController()
-//            alert.addOKAction()
-//            self.presentViewController(alert, animated: true, completion: nil)
-//        }
-//    }
     
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
         dismissKeyboard()
     }
     func dismissKeyboard() {
         emailTextField.resignFirstResponder()
+        verifyCodeTextField.resignFirstResponder()
     }
     
     @IBAction func editEnd(sender: UITextField) {
-//        if !stopLoading {
-//            if !checkUserStatus {
-//                let userName = emailTextField.text
-//                if !userName.isEmpty {
-//                    startChecking()
-//                    viewModel.checkUserName(userName, complete: { (isOk, error) -> Void in
-//                        if error != nil {
-//                            self.finishChecking(false)
-//                        } else {
-//                            if isOk {
-//                                self.finishChecking(true)
-//                            } else {
-//                                self.finishChecking(false)
-//                            }
-//                        }
-//                    })
-//                } else {
-//                    
-//                }
-//            }
-//        }
+
     }
     
     @IBAction func editingChanged(sender: AnyObject) {

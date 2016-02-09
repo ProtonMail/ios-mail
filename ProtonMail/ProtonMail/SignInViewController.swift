@@ -143,6 +143,21 @@ class SignInViewController: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
+        if sharedUserDataService.isNewUser {
+            sharedUserDataService.isNewUser = false
+            if sharedUserDataService.isUserCredentialStored {
+                signInIfRememberedCredentials()
+                if(isRemembered)
+                {
+                    HideLoginViews();
+                }
+                else
+                {
+                    ShowLoginViews();
+                }
+            }
+        }
+        
         if(SignInViewController.isComeBackFromMailbox)
         {
             ShowLoginViews();

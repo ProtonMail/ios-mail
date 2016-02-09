@@ -94,28 +94,7 @@ class SignUpEmailViewController: UIViewController {
         dismissKeyboard()
         viewModel.setRecovery(checkButton.selected, email: recoveryEmailField.text)
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.viewModel.createNewUser { (isOK, createDone, message, error) -> Void in
-                MBProgressHUD.hideHUDForView(self.view, animated: true)
-                self.doneClicked = false
-                if !message.isEmpty {
-                    let alert = message.alertController()
-                    alert.addOKAction()
-                    self.presentViewController(alert, animated: true, completion: { () -> Void in
-                        if createDone {
-                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                self.navigationController?.popToRootViewControllerAnimated(true)
-                            })
-                        }
-                    })
-                } else {
-                    if isOK || createDone {
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            self.navigationController?.popToRootViewControllerAnimated(true)
-                        })
-                    }
-                }
-                
-            }
+            self.navigationController?.popToRootViewControllerAnimated(true)
         })
     }
     
