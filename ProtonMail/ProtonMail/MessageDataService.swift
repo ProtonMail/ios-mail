@@ -1612,7 +1612,9 @@ class MessageDataService {
         if action == .saveDraft || action == .send {
             sharedMessageQueue.addMessage(message.objectID.URIRepresentation().absoluteString!, action: action)
         } else {
-            sharedMessageQueue.addMessage(message.messageID, action: action)
+            if message.managedObjectContext != nil {
+                sharedMessageQueue.addMessage(message.messageID, action: action)
+            }
         }
         dequeueIfNeeded()
     }
