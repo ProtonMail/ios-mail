@@ -25,6 +25,11 @@ class UserCachedStatus : SharedCacheBase {
         static let lastFetchMessageTime = "last_fetch_message_time"
         static let lastUpdateTime = "last_update_time"
         static let historyTimeStamp = "history_timestamp"
+        
+        //Global Cache
+        static let lastSplashViersion = "last_splash_viersion"
+        static let lastTourViersion = "last_tour_viersion"
+        
     }
     
     var isCheckSpaceDisabled: Bool {
@@ -34,6 +39,16 @@ class UserCachedStatus : SharedCacheBase {
         set {
             setValue(newValue, forKey: Key.isCheckSpaceDisabled)
         }
+    }
+    
+    func isSplashOk() -> Bool {
+        let splashVersion = getShared().integerForKey(Key.lastSplashViersion)
+        return splashVersion == AppConstants.SplashVersion
+    }
+    
+    func isTourOk() -> Bool {
+        let tourVersion = getShared().integerForKey(Key.lastTourViersion)
+        return tourVersion == AppConstants.TourVersion
     }
     
     func isCacheOk() -> Bool {
@@ -54,8 +69,12 @@ class UserCachedStatus : SharedCacheBase {
         setValue(AppConstants.AuthCacheVersion, forKey: Key.lastAuthCacheVersion)
     }
     
-    func resetTempValue() {
-        
+    func resetSplashCache() -> Void {
+        setValue(AppConstants.SplashVersion, forKey: Key.lastSplashViersion)
+    }
+    
+    func resetTourValue() {
+        setValue(AppConstants.TourVersion, forKey: Key.lastTourViersion)
     }
     
     func signOut()
@@ -67,6 +86,14 @@ class UserCachedStatus : SharedCacheBase {
         getShared().removeObjectForKey(Key.lastCacheVersion);
         getShared().removeObjectForKey(Key.isCheckSpaceDisabled);
         getShared().removeObjectForKey(Key.lastAuthCacheVersion);
+        getShared().removeObjectForKey(Key.lastTourViersion);
+        
+        getShared().synchronize()
+    }
+    
+    func cleanGlobal() {
+        getShared().removeObjectForKey(Key.lastSplashViersion)
+        
         getShared().synchronize()
     }
 }

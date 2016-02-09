@@ -436,8 +436,7 @@
                         <outlet property="usernameTextField" destination="tfu-UO-Zjf" id="Q3M-gO-x4z"/>
                         <outlet property="usernameView" destination="2gx-2z-FDL" id="vP6-0L-GWt"/>
                         <segue destination="Zzb-6r-tlP" kind="show" identifier="mailboxSegue" id="xf0-Do-kI6"/>
-                        <segue destination="HPp-sz-RGE" kind="show" id="oaz-jK-I6S"/>
-                        <segue destination="HPp-sz-RGE" kind="custom" customClass="SplashSignInSegue" customModule="ProtonMail" id="gTu-Sh-bol"/>
+                        <segue destination="HPp-sz-RGE" kind="custom" identifier="sign_in_to_splash_no_segue" customClass="SplashSignInSegue" customModule="ProtonMail" id="gTu-Sh-bol"/>
                         <segue destination="5Bg-GM-4IG" kind="show" identifier="sign_in_to_sign_up_segue" id="lvd-zK-Trc"/>
                     </connections>
                 </viewController>
@@ -2727,7 +2726,6 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
         <image name="welcome_logo" width="188" height="31"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gTu-Sh-bol"/>
         <segue reference="lvd-zK-Trc"/>
         <segue reference="u41-R8-jPf"/>
     </inferredMetricsTieBreakers>
