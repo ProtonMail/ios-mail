@@ -164,7 +164,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
                         }
                     })
                 } else {
-                    let alert = "The UserName can't empty!".alertController()
+                    let alert = "Please pick a user name first!".alertController()
                     alert.addOKAction()
                     self.presentViewController(alert, animated: true, completion: nil)
                 }

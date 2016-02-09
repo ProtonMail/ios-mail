@@ -122,6 +122,7 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
                     if !message.isEmpty {
                         let alert = message.alertController()
                         alert.addOKAction()
+                        self.presentViewController(alert, animated: true, completion: nil)
                     } else {
                         if isOK || createDone {
                             dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -129,13 +130,13 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
                             })
                         }
                     }
-                    
                 }
             })
         } else {
             self.finishChecking(false)
             let alert = "The verification failed!".alertController()
             alert.addOKAction()
+            self.presentViewController(alert, animated: true, completion: nil)
         }
     }
     
