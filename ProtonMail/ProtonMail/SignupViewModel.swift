@@ -77,8 +77,8 @@ public class SignupViewModelImpl : SignupViewModel {
     private var mailbox : String = "";
     private var agreePolicy : Bool = false
     
-    private var verifyCode : String = ""
     private var delegate : SignupViewModelDelegate?
+    private var verifyType : VerifyCodeType = .email
     
     override init() {
         super.init()
@@ -91,7 +91,9 @@ public class SignupViewModelImpl : SignupViewModel {
     }
     
     internal func notifyReceiveURLSchema (notify: NSNotification) {
-        delegate?.verificationCodeChanged(self, code: "hello world")
+        if let verifyCode = notify.userInfo?["verifyCode"] as? String {
+            delegate?.verificationCodeChanged(self, code: verifyCode)
+        }
     }
     
     override func setDelegate(delegate: SignupViewModelDelegate?) {
@@ -109,6 +111,7 @@ public class SignupViewModelImpl : SignupViewModel {
     override func setRecaptchaToken(token: String, isExpired: Bool) {
         self.token = token
         self.isExpired = isExpired
+        self.verifyType = .recaptcha
     }
     
     override func setPickedUserName(username: String, domain:String) {
@@ -121,14 +124,16 @@ public class SignupViewModelImpl : SignupViewModel {
     }
     
     override func setVerifyCode(code: String) {
-        self.verifyCode = code
+        self.token = code
+        self.isExpired = false
+        self.verifyType = .email
     }
     
     override func createNewUser(complete: CreateUserBlock) {
         //validation here
         var error: NSError?
         if let key = sharedOpenPGP.generateKey(self.mailbox, userName: self.userName, domain: self.domain, error: &error) {
-            let api = CreateNewUserRequest<ApiResponse>(token: self.token, username: self.userName, password: self.login, email: self.recoverEmail, domain: self.domain, news: self.news, publicKey: key.publicKey, privateKey: key.privateKey)
+            let api = CreateNewUserRequest<ApiResponse>(token: self.token, type: self.verifyType.toString, username: self.userName, password: self.login, email: self.recoverEmail, domain: self.domain, news: self.news, publicKey: key.publicKey, privateKey: key.privateKey)
             api.call({ (task, response, hasError) -> Void in
                 if !hasError {
                     sharedUserDataService.signIn(self.userName, password: self.login, isRemembered: true) { _, error in
@@ -178,9 +183,8 @@ public class SignupViewModelImpl : SignupViewModel {
         self.recoverEmail = email
         self.news = receiveNews
         
-        // here need call api to update those fields
         if !self.recoverEmail.isEmpty {
-            let emailApi = UpdateNotificationEmail(password: "", notificationEmail: self.recoverEmail)
+            let emailApi = UpdateNotificationEmail(password: self.login, notificationEmail: self.recoverEmail)
             emailApi.call { (task, response, hasError) -> Void in
                 
             }

@@ -194,7 +194,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
     override public func getHtmlBody() -> String {
         let signature = !sharedUserDataService.signature.isEmpty ? "\n\n\(sharedUserDataService.signature)" : ""
         
-        let mobileSignature = sharedUserDataService.switchCacheOff == true ? "" : "<br><br> Send from ProtonMail Mobile"
+        let mobileSignature = sharedUserDataService.switchCacheOff == true ? "" : "<br><br> Sent from ProtonMail Mobile"
         
         let htmlString = "<div><br></div><div><br></div>\(signature) \(mobileSignature)<div><br></div>";
         switch messageAction!
@@ -233,7 +233,8 @@ public class ComposeViewModelImpl : ComposeViewModel {
             body = body.stringByStrippingBodyStyle()
             body = body.stringByPurifyHTML()
             
-            return "<br><br><br>\(signature) \(mobileSignature) \(forwardHeader) \(body)"
+            let sp = "<div>\(forwardHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
+            return "<br><br><br>\(signature) \(mobileSignature) \(sp) \(body)"
         case .NewDraft:
             return htmlString
         default:

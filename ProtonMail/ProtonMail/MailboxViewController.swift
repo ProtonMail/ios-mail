@@ -387,7 +387,9 @@ class MailboxViewController: ProtonMailViewController {
         if self.fetchedResultsController?.numberOfSections() > indexPath.section {
             if self.fetchedResultsController?.numberOfRowsInSection(indexPath.section) > indexPath.row {
                 if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-                    return message;
+                    if message.managedObjectContext != nil {
+                        return message
+                    }
                 }
             }
         }
@@ -396,6 +398,7 @@ class MailboxViewController: ProtonMailViewController {
     
     private func configureCell(mailboxCell: MailboxMessageCell, atIndexPath indexPath: NSIndexPath) {
         if let message = self.messageAtIndexPath(indexPath) {
+            PMLog.D("\(message)")
             mailboxCell.configureCell(message, showLocation: viewModel.showLocation())
             mailboxCell.setCellIsChecked(selectedMessages.containsObject(message.messageID))
             if (self.isEditing) {
@@ -492,7 +495,7 @@ class MailboxViewController: ProtonMailViewController {
         if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
             undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
             viewModel.spamMessage(message)
-            showUndoView("Spamed")
+            showUndoView("Spammed")
         }
     }
     
@@ -868,22 +871,21 @@ class MailboxViewController: ProtonMailViewController {
     
     private func hideCheckOptions() {
         self.isEditing = false
-        
         let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows() as? [NSIndexPath]
-        
         if let indexPathsForVisibleRows = indexPathsForVisibleRows {
             for indexPath in indexPathsForVisibleRows {
-                let messageCell: MailboxMessageCell = self.tableView.cellForRowAtIndexPath(indexPath) as! MailboxMessageCell
-                messageCell.setCellIsChecked(false)
-                messageCell.hideCheckboxOnLeftSide()
-                
-                UIView.animateWithDuration(0.25, animations: { () -> Void in
-                    messageCell.layoutIfNeeded()
-                })
+                if let messageCell: MailboxMessageCell = self.tableView.cellForRowAtIndexPath(indexPath) as? MailboxMessageCell {
+                    messageCell.setCellIsChecked(false)
+                    messageCell.hideCheckboxOnLeftSide()
+                    
+                    UIView.animateWithDuration(0.25, animations: { () -> Void in
+                        messageCell.layoutIfNeeded()
+                    })
+                }
             }
         }
     }
-    
+
     private func showCheckOptions(longPressGestureRecognizer: UILongPressGestureRecognizer) {
         let point: CGPoint = longPressGestureRecognizer.locationInView(self.tableView)
         let indexPath: NSIndexPath? = self.tableView.indexPathForRowAtPoint(point)

@@ -26,10 +26,11 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
     
     @IBOutlet weak var webViewHeightConstraint: NSLayoutConstraint!
 
-    private let kSegueToSignUpPassword = "sign_up_pwd_email_segue"
+    private let kSegueToNotificationEmail = "sign_up_pwd_email_segue"
     private var startVerify : Bool = false
     private var checkUserStatus : Bool = false
     private var stopLoading : Bool = false
+    private var doneClicked : Bool = false
     var viewModel : SignupViewModel!
     
     func configConstraint(show : Bool) -> Void {
@@ -79,7 +80,7 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == kSegueToSignUpPassword {
+        if segue.identifier == kSegueToNotificationEmail {
             let viewController = segue.destinationViewController as! SignUpEmailViewController
             viewController.viewModel = self.viewModel
         }
@@ -109,17 +110,37 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
     @IBAction func createAccountAction(sender: UIButton) {
         if viewModel.isTokenOk() {
             self.finishChecking(true)
-            self.goPasswordsView()
+            if doneClicked {
+                return
+            }
+            doneClicked = true;
+            MBProgressHUD.showHUDAddedTo(view, animated: true)
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.viewModel.createNewUser { (isOK, createDone, message, error) -> Void in
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    self.doneClicked = false
+                    if !message.isEmpty {
+                        let alert = message.alertController()
+                        alert.addOKAction()
+                    } else {
+                        if isOK || createDone {
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                self.goNotificationEmail()
+                            })
+                        }
+                    }
+                    
+                }
+            })
         } else {
             self.finishChecking(false)
             let alert = "The verification failed!".alertController()
             alert.addOKAction()
-            self.presentViewController(alert, animated: true, completion: nil)
         }
     }
     
-    func goPasswordsView() {
-        self.performSegueWithIdentifier(kSegueToSignUpPassword, sender: self)
+    func goNotificationEmail() {
+        self.performSegueWithIdentifier(self.kSegueToNotificationEmail, sender: self)
     }
     
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {

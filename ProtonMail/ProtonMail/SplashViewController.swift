@@ -22,20 +22,20 @@ class SplashViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if sharedUserDataService.isUserCredentialStored {
+        //if sharedUserDataService.isUserCredentialStored {
             self.performSegueWithIdentifier(kSegueToSignInWithNoAnimation, sender: self)
-        }
+        //}
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        if sharedUserDataService.isNewUser {
-            sharedUserDataService.isNewUser = false
-            if sharedUserDataService.isUserCredentialStored {
-                self.performSegueWithIdentifier(kSegueToSignInWithNoAnimation, sender: self)
-            }
-        }
+//        if sharedUserDataService.isNewUser {
+//            sharedUserDataService.isNewUser = false
+//            if sharedUserDataService.isUserCredentialStored {
+//                self.performSegueWithIdentifier(kSegueToSignInWithNoAnimation, sender: self)
+//            }
+//        }
     }
     
     override func viewDidAppear(animated: Bool) {

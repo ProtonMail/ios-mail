@@ -247,36 +247,35 @@ extension String {
     
     func stringByPurifyHTML() -> String {
         var out = self.preg_replace("<script(.*?)<\\/script>", replaceto: "")
+        //out = out.preg_replace("<(script.*?)>(.*?)<(\\/script.*?)>", replaceto: "")
+        out = out.preg_replace("<(\\/?script.*?)>", replaceto: "")
         
-        out = out.preg_replace("<(\\/?meta.*?)>", replaceto: "");
-        out = out.preg_replace("<(object.*?)>(.*?)<(\\/object.*?)>", replaceto: "");
-        out = out.preg_replace("<(\\/?objec.*?)>", replaceto: "");
+        //out = out.4preg_replace("<(\\/?meta.*?)>", replaceto: "");
+        //out = out.preg_replace("<(object.*?)>(.*?)<(\\/object.*?)>", replaceto: "");
+        //out = out.preg_replace("<(\\/?objec.*?)>", replaceto: "");
         
         //remove inline style optinal later
-        out = out.preg_replace("(<[a-z ]*)(style=(\"|\')(.*?)(\"|\'))([a-z ]*>)", replaceto: "");
-        out = out.preg_replace("<(\\/?link.*?)>", replaceto: "");
+        //out = out.preg_replace("(<[a-z ]*)(style=(\"|\')(.*?)(\"|\'))([a-z ]*>)", replaceto: "");
+        //out = out.preg_replace("<(\\/?link.*?)>", replaceto: "");
         
-        out = out.preg_replace("<iframe(.*?)<\\/iframe>", replaceto: "");
-        out = out.preg_replace("<style(.*?)<\\/style>", replaceto: "");
-        out = out.preg_replace("\\s+", replaceto:" ")
-        out = out.preg_replace("<[ ]+", replaceto:"<")
-        out = out.preg_replace("<(style.*?)>(.*?)<(\\/style.*?)>", replaceto: "");
-        out = out.preg_replace("<(\\/?style.*?)>", replaceto: "");
-        out = out.preg_replace("<(script.*?)>(.*?)<(\\/script.*?)>", replaceto: "")
-        out = out.preg_replace("<(\\/?script.*?)>", replaceto: "")
-        out = out.preg_replace("javascript", replaceto: "Javascript")
-        out = out.preg_replace("vbscript", replaceto: "Vbscript")
-        out = out.preg_replace("&#", replaceto: "&＃")
-        out = out.preg_replace("<(noframes.*?)>(.*?)<(\\/noframes.*?)>", replaceto: "")
-        out = out.preg_replace("<(\\/?noframes.*?)>", replaceto: "")
-        out = out.preg_replace("<(i?frame.*?)>(.*?)<(\\/i?frame.*?)>", replaceto: "")
-        out = out.preg_replace("<(\\/?i?frame.*?)>", replaceto: "")
+        //out = out.preg_replace("<iframe(.*?)<\\/iframe>", replaceto: "");
+        //out = out.preg_replace("<style(.*?)<\\/style>", replaceto: "");
+        //out = out.preg_replace("\\s+", replaceto:" ")
+        //out = out.preg_replace("<[ ]+", replaceto:"<")
+        //out = out.preg_replace("<(style.*?)>(.*?)<(\\/style.*?)>", replaceto: "");
+        //out = out.preg_replace("<(\\/?style.*?)>", replaceto: "");
+//        out = out.preg_replace("javascript", replaceto: "Javascript")
+//        out = out.preg_replace("vbscript", replaceto: "Vbscript")
+//        out = out.preg_replace("&#", replaceto: "&＃")
+//        out = out.preg_replace("<(noframes.*?)>(.*?)<(\\/noframes.*?)>", replaceto: "")
+//        out = out.preg_replace("<(\\/?noframes.*?)>", replaceto: "")
+//        out = out.preg_replace("<(i?frame.*?)>(.*?)<(\\/i?frame.*?)>", replaceto: "")
+//        out = out.preg_replace("<(\\/?i?frame.*?)>", replaceto: "")
         
         //optional later
-        out = out.preg_replace("<video(.*?)<\\/video>", replaceto: "")
-        out = out.preg_replace("<audio(.*?)<\\/audio>", replaceto: "")
+//        out = out.preg_replace("<video(.*?)<\\/video>", replaceto: "")
+//        out = out.preg_replace("<audio(.*?)<\\/audio>", replaceto: "")
         
-        PMLog.D(out)
         return out;
 //        function htmltotxt($str){
 //            $str = preg_replace( "@<script(.*?)</script>@is", "", $str );  //过滤js
