@@ -2289,13 +2289,13 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                     <action selector="recaptchaAction:" destination="D1E-h7-WYp" eventType="touchUpInside" id="Fyz-u0-4xd"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To Prevent abuse of ProtonMail,  we need to verify that you are hume." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K7E-d0-nk1">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To Prevent abuse of ProtonMail,  we need to verify that you are human." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K7E-d0-nk1">
                                                 <rect key="frame" x="28" y="179" width="544" height="45"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="45" id="kvT-UR-YnL"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                 <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
