@@ -55,7 +55,6 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        resetChecking()
         emailTextField.attributedPlaceholder = NSAttributedString(string: "Email address", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
         verifyCodeTextField.attributedPlaceholder = NSAttributedString(string: "Enter Verification Code", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
     }
@@ -107,36 +106,6 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
         self.navigationController?.popViewControllerAnimated(true)
     }
     
-    func startChecking() {
-        warningView.hidden = false
-        warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
-        warningLabel.text = "Checking ...."
-        warningIcon.hidden = true;
-    }
-    
-    func resetChecking() {
-        checkUserStatus = false
-        warningView.hidden = true
-        warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
-        warningLabel.text = ""
-        warningIcon.hidden = true;
-    }
-    
-    func finishChecking(isOk : Bool) {
-        if isOk {
-            checkUserStatus = true
-            warningView.hidden = false
-            warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
-            warningLabel.text = "UserName is avliable!"
-            warningIcon.hidden = false;
-        } else {
-            warningView.hidden = false
-            warningLabel.textColor = UIColor.redColor()
-            warningLabel.text = "UserName not avliable!"
-            warningIcon.hidden = true;
-        }
-    }
-    
     @IBAction func sendCodeAction(sender: UIButton) {
         let emailaddress = emailTextField.text
         MBProgressHUD.showHUDAddedTo(view, animated: true)
@@ -148,7 +117,7 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
                 alert.addOKAction()
                 self.presentViewController(alert, animated: true, completion: nil)
             } else {
-                let alert = "Please check you email!".alertController()
+                let alert = "Please check your email!".alertController()
                 alert.addOKAction()
                 self.presentViewController(alert, animated: true, completion: nil)
             }
@@ -181,7 +150,6 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
                         })
                     }
                 }
-                
             }
         })
     }
@@ -199,7 +167,7 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     }
     
     @IBAction func editingChanged(sender: AnyObject) {
-        resetChecking()
+        
     }
 }
 
