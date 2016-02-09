@@ -133,12 +133,12 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
             checkUserStatus = true
             warningView.hidden = false
             warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
-            warningLabel.text = "UserName is avliable!"
+            warningLabel.text = "User is available!"
             warningIcon.hidden = false;
         } else {
             warningView.hidden = false
             warningLabel.textColor = UIColor.redColor()
-            warningLabel.text = "UserName not avliable!"
+            warningLabel.text = "User already exist!"
             warningIcon.hidden = true;
         }
     }
