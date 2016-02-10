@@ -24,8 +24,8 @@ class PushNotificationService {
     private var launchOptions: [NSObject: AnyObject]? = nil
     
     init() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didSignInNotification:", name: UserDataService.Notification.didSignIn, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didSignOutNotification:", name: UserDataService.Notification.didSignOut, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didSignInNotification:", name: NotificationDefined.didSignIn, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didSignOutNotification:", name: NotificationDefined.didSignOut, object: nil)
     }
     
     deinit {

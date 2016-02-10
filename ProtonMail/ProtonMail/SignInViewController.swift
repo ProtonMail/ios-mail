@@ -23,7 +23,6 @@ class SignInViewController: UIViewController {
     private let kMailboxSegue = "mailboxSegue"
     private let kSignUpKeySegue = "sign_in_to_sign_up_segue"
 
-    
     private let animationDuration: NSTimeInterval = 0.5
     private let keyboardPadding: CGFloat = 12
     private let buttonDisabledAlpha: CGFloat = 0.5
@@ -67,11 +66,6 @@ class SignInViewController: UIViewController {
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-    }
-    
-    struct Notification {
-        static let didSignOut = "UserDataServiceDidSignOutNotification"
-        static let didSignIn = "UserDataServiceDidSignInNotification"
     }
     
     override func viewDidLoad() {
@@ -281,7 +275,7 @@ class SignInViewController: UIViewController {
     private func loadContent() {
         logUser()
         if sharedUserDataService.isMailboxPasswordStored {
-            NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignIn, object: self)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)
             (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
             loadContactsAfterInstall()
         } else {

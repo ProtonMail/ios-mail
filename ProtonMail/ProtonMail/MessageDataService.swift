@@ -1513,7 +1513,7 @@ class MessageDataService {
     // MARK: Notifications
     
     private func setupNotifications() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didSignOutNotification:", name: UserDataService.Notification.didSignOut, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didSignOutNotification:", name: NotificationDefined.didSignOut, object: nil)
         
         // TODO: add monitoring for didBecomeActive
         

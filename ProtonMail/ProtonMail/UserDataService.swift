@@ -35,11 +35,6 @@ class UserDataService {
         static let roleSwitchCache = "roleSwitchCache"
     }
     
-    struct Notification {
-        static let didSignOut = "UserDataServiceDidSignOutNotification"
-        static let didSignIn = "UserDataServiceDidSignInNotification"
-    }
-    
     // MARK: - Private variables
     private(set) var userInfo: UserInfo? = NSUserDefaults.standardUserDefaults().customObjectForKey(Key.userInfo) as? UserInfo {
         didSet {
@@ -240,7 +235,7 @@ class UserDataService {
         clearAll()
         clearAuthToken()
         
-        NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignOut, object: self)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignOut, object: self)
         
         (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: animated)
     }
@@ -399,7 +394,7 @@ class UserDataService {
                 
                 let completionWrapper: UserInfoBlock = { auth, error in
                     if error == nil {
-                        NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignIn, object: self)
+                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)
                     }
                     
                     completion(auth, error)

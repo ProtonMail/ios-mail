@@ -26,12 +26,7 @@ class MailboxPasswordViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     //@IBOutlet weak var rememberButton: UIButton!
     @IBOutlet weak var backgroundImage: UIImageView!
-    
-    struct Notification {
-        static let didSignOut = "UserDataServiceDidSignOutNotification"
-        static let didSignIn = "UserDataServiceDidSignInNotification"
-    }
-    
+
     var isRemembered: Bool = sharedUserDataService.isRememberMailboxPassword
     var isShowpwd : Bool = false;
     
@@ -175,7 +170,7 @@ class MailboxPasswordViewController: UIViewController {
                 }
             }
             
-            NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignIn, object: self)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)
             
         } else {
             let alert = UIAlertController(title: NSLocalizedString("Incorrect password"), message: NSLocalizedString("The mailbox password is incorrect."), preferredStyle: .Alert)

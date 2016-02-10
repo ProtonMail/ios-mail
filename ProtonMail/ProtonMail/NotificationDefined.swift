@@ -14,4 +14,7 @@ public struct NotificationDefined {
     static let CustomizeURLSchema = "customize_url_schema"
     static let TouchStatusBar = "touchStatusBarClick"
     
+    static let didSignOut = "UserDataServiceDidSignOutNotification"
+    static let didSignIn = "UserDataServiceDidSignInNotification"
+    
 }

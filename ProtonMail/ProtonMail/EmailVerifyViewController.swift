@@ -17,7 +17,6 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     @IBOutlet weak var warningLabel: UILabel!
     @IBOutlet weak var warningIcon: UIImageView!
     
-    @IBOutlet weak var titleOneLabel: UILabel!
     @IBOutlet weak var titleTwoLabel: UILabel!
     
     @IBOutlet weak var sendCodeButton: UIButton!
@@ -53,7 +52,6 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
         
         userNameTopPaddingConstraint.priority = level
         
-        titleOneLabel.hidden = show
         titleTwoLabel.hidden = show
     }
     
@@ -150,7 +148,7 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
                 alert.addOKAction()
                 self.presentViewController(alert, animated: true, completion: nil)
             } else {
-                let alert = "Please check your email!".alertController()
+                let alert = UIAlertController(title: "Verification code sent", message: "Please check your email for the verification code.", preferredStyle: .Alert)
                 alert.addOKAction()
                 self.presentViewController(alert, animated: true, completion: nil)
             }

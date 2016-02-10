@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Fabric
+import Crashlytics
 
 class SignUpEmailViewController: UIViewController {
     
@@ -94,9 +96,46 @@ class SignUpEmailViewController: UIViewController {
         dismissKeyboard()
         viewModel.setRecovery(checkButton.selected, email: recoveryEmailField.text)
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.navigationController?.popToRootViewControllerAnimated(true)
+            self.moveToInbox()
         })
     }
+    
+    private func moveToInbox() {
+        if sharedUserDataService.isUserCredentialStored {
+            sharedUserDataService.isSignedIn = true
+            if let addresses = sharedUserDataService.userInfo?.userAddresses.toPMNAddresses() {
+                sharedOpenPGP.setAddresses(addresses);
+            }
+            self.loadContent()
+        }
+    }
+    
+    private func loadContent() {
+        logUser()
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)
+        (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
+        loadContactsAfterInstall()
+    }
+    
+    func logUser() {
+        if  let username = sharedUserDataService.username {
+            Crashlytics.sharedInstance().setUserIdentifier(username)
+            Crashlytics.sharedInstance().setUserName(username)
+        }
+    }
+    
+    func loadContactsAfterInstall()
+    {
+        sharedUserDataService.fetchUserInfo()
+        sharedContactDataService.fetchContacts({ (contacts, error) -> Void in
+            if error != nil {
+                NSLog("\(error)")
+            } else {
+                NSLog("Contacts count: \(contacts!.count)")
+            }
+        })
+    }
+
     
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
         dismissKeyboard()
