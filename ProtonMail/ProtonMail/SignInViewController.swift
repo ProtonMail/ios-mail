@@ -355,7 +355,6 @@ class SignInViewController: UIViewController {
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
         dismissKeyboard()
     }
-    
 }
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
