@@ -45,6 +45,8 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     private var checkUserStatus : Bool = false
     private var stopLoading : Bool = false
     private var agreePolicy : Bool = true
+    private var moveAfterCheck : Bool = false
+    
     var viewModel : SignupViewModel!
     
     func configConstraint(show : Bool) -> Void {
@@ -124,8 +126,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         warningView.hidden = true
         warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
         warningLabel.text = ""
-        warningIcon.hidden = true;
-        createAccountButton.enabled = false
+        warningIcon.hidden = true
     }
     
     func finishChecking(isOk : Bool) {
@@ -135,43 +136,47 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
             warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
             warningLabel.text = "User is available!"
             warningIcon.hidden = false
-            createAccountButton.enabled = true
         } else {
             warningView.hidden = false
             warningLabel.textColor = UIColor.redColor()
             warningLabel.text = "User already exist!"
-            warningIcon.hidden = true;
-            createAccountButton.enabled = false
+            warningIcon.hidden = true
         }
     }
     
     @IBAction func createAccountAction(sender: UIButton) {
         dismissKeyboard()
+        MBProgressHUD.showHUDAddedTo(view, animated: true)
         if agreePolicy {
             if checkUserStatus {
+                MBProgressHUD.hideHUDForView(view, animated: true)
                 self.goPasswordsView()
             } else {
                 let userName = usernameTextField.text
                 if !userName.isEmpty {
                     startChecking()
                     viewModel.checkUserName(userName, complete: { (isOk, error) -> Void in
+                        MBProgressHUD.hideHUDForView(self.view, animated: true)
                         if error != nil {
                             self.finishChecking(false)
                         } else {
                             if isOk {
                                 self.finishChecking(true)
+                                self.goPasswordsView()
                             } else {
                                 self.finishChecking(false)
                             }
                         }
                     })
                 } else {
+                    MBProgressHUD.hideHUDForView(view, animated: true)
                     let alert = "Please pick a user name first!".alertController()
                     alert.addOKAction()
                     self.presentViewController(alert, animated: true, completion: nil)
                 }
             }
         } else {
+            MBProgressHUD.hideHUDForView(view, animated: true)
             let alert = "In order to use our services, you must agree to ProtonMail's Terms of Service.".alertController()
             alert.addOKAction()
             self.presentViewController(alert, animated: true, completion: nil)
