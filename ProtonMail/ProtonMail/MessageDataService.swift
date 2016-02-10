@@ -416,10 +416,10 @@ class MessageDataService {
                         NSLog("\(__FUNCTION__) unknown type in contact: \(contact)")
                     }
                 }
-            }
-            error = context.saveUpstreamIfNeeded()
-            if error != nil  {
-                NSLog("\(__FUNCTION__) error: \(error)")
+                error = context.saveUpstreamIfNeeded()
+                if error != nil  {
+                    NSLog("\(__FUNCTION__) error: \(error)")
+                }
             }
         }
     }
