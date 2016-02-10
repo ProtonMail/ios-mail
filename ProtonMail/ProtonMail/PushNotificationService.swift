@@ -48,7 +48,9 @@ class PushNotificationService {
     
     func unregisterForRemoteNotifications() {
         UIApplication.sharedApplication().unregisterForRemoteNotifications()
-        sharedAPIService.deviceUnregister()
+        sharedAPIService.deviceUnregister { (task, response, error) -> Void in
+            
+        }
     }
     
     

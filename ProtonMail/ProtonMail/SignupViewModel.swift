@@ -43,7 +43,7 @@ public class SignupViewModel : NSObject {
         fatalError("This method must be overridden")
     }
     
-    func setRecovery(receiveNews:Bool, email : String) {
+    func setRecovery(receiveNews:Bool, email : String, displayName : String) {
         fatalError("This method must be overridden")
     }
     
@@ -80,6 +80,7 @@ public class SignupViewModelImpl : SignupViewModel {
     private var login : String = ""
     private var mailbox : String = "";
     private var agreePolicy : Bool = false
+    private var displayName : String = ""
     
     private var lastSendTime : NSDate?
     
@@ -188,10 +189,10 @@ public class SignupViewModelImpl : SignupViewModel {
         }
     }
     
-    override func setRecovery(receiveNews: Bool, email: String) {
+    override func setRecovery(receiveNews: Bool, email: String, displayName : String) {
         self.recoverEmail = email
         self.news = receiveNews
-        
+        self.displayName = displayName
         if !self.recoverEmail.isEmpty {
             let emailApi = UpdateNotificationEmail(password: self.login, notificationEmail: self.recoverEmail)
             emailApi.call { (task, response, hasError) -> Void in
@@ -202,6 +203,13 @@ public class SignupViewModelImpl : SignupViewModel {
         if self.news {
             let newsApi = UpdateNewsRequest(news: self.news)
             newsApi.call { (task, response, hasError) -> Void in
+                
+            }
+        }
+        
+        if !self.displayName.isEmpty {
+            let emailApi = UpdateNotificationEmail(password: self.login, notificationEmail: self.recoverEmail)
+            emailApi.call { (task, response, hasError) -> Void in
                 
             }
         }

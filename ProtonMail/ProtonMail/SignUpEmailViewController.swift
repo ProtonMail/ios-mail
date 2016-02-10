@@ -29,6 +29,7 @@ class SignUpEmailViewController: UIViewController {
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var recoveryEmailField: TextInsetTextField!
+    @IBOutlet weak var displayNameField: TextInsetTextField!
     
     @IBOutlet weak var checkButton: UIButton!
     
@@ -94,7 +95,7 @@ class SignUpEmailViewController: UIViewController {
         doneClicked = true;
         MBProgressHUD.showHUDAddedTo(view, animated: true)
         dismissKeyboard()
-        viewModel.setRecovery(checkButton.selected, email: recoveryEmailField.text)
+        viewModel.setRecovery(checkButton.selected, email: recoveryEmailField.text, displayName: displayNameField.text)
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.moveToInbox()
         })

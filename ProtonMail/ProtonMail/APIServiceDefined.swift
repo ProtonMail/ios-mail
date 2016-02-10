@@ -71,6 +71,7 @@ public struct SettingsAPI {
     static let V_SettingsUpdateSwipeRightRequest : Int = 1
     
     static let V_SettingsUpdateNewsRequest : Int = 1
+    static let V_SettingsUpdateDisplayNameRequest : Int = 1
 }
 
 
@@ -110,3 +111,13 @@ public struct DomainsAPI {
     
     static let V_AvailableDomainsRequest : Int = 1
 }
+
+public struct DeviceAPI {
+    
+    static let Path : String = AppConstants.BaseAPIPath + "/device"
+    
+    static let V_RegisterDeviceRequest : Int = 1
+    static let V_UnRegisterDeviceRequest : Int = 1
+}
+
+
