@@ -470,7 +470,7 @@
                                 <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x5O-eb-fcJ" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="399"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="340"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b8d-qE-UH9">
                                                 <rect key="frame" x="0.0" y="0.0" width="100" height="48"/>
@@ -509,7 +509,7 @@
                                                 </constraints>
                                             </imageView>
                                             <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dlP-lx-EdD">
-                                                <rect key="frame" x="28" y="238" width="544" height="85"/>
+                                                <rect key="frame" x="28" y="179" width="544" height="85"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -520,7 +520,7 @@
                                                 </connections>
                                             </webView>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uOc-mm-9Q7">
-                                                <rect key="frame" x="200" y="347" width="200" height="42"/>
+                                                <rect key="frame" x="200" y="288" width="200" height="42"/>
                                                 <animations/>
                                                 <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
@@ -543,22 +543,13 @@
                                                     <action selector="createAccountAction:" destination="XYV-2Y-X0C" eventType="touchUpInside" id="4yo-aA-nzJ"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email verification" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9S3-YS-oms">
-                                                <rect key="frame" x="28" y="179" width="544" height="21"/>
-                                                <animations/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
                                         </subviews>
                                         <animations/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="centerX" secondItem="dx5-WV-bep" secondAttribute="centerX" priority="500" id="469-tF-9ga"/>
-                                            <constraint firstItem="9S3-YS-oms" firstAttribute="top" secondItem="dx5-WV-bep" secondAttribute="bottom" constant="18" id="6UE-bP-EZX"/>
                                             <constraint firstAttribute="trailing" secondItem="dlP-lx-EdD" secondAttribute="trailing" constant="28" id="9e8-AJ-6IQ"/>
                                             <constraint firstItem="dx5-WV-bep" firstAttribute="leading" secondItem="x5O-eb-fcJ" secondAttribute="leading" priority="1" constant="28" id="A9T-Rb-jKH"/>
-                                            <constraint firstItem="9S3-YS-oms" firstAttribute="leading" secondItem="x5O-eb-fcJ" secondAttribute="leading" constant="28" id="BQG-84-79I"/>
                                             <constraint firstItem="dx5-WV-bep" firstAttribute="top" secondItem="TOy-0T-PLz" secondAttribute="bottom" priority="1" constant="6" id="CrW-rG-lgW"/>
                                             <constraint firstItem="TOy-0T-PLz" firstAttribute="leading" secondItem="x5O-eb-fcJ" secondAttribute="leading" priority="1" constant="28" id="GHL-Du-Mmu"/>
                                             <constraint firstAttribute="centerX" secondItem="TOy-0T-PLz" secondAttribute="centerX" priority="500" id="KiB-HO-tAR"/>
@@ -569,8 +560,7 @@
                                             <constraint firstAttribute="bottom" secondItem="uOc-mm-9Q7" secondAttribute="bottom" priority="500" constant="10" id="YzV-NY-wfX"/>
                                             <constraint firstItem="b8d-qE-UH9" firstAttribute="leading" secondItem="x5O-eb-fcJ" secondAttribute="leading" id="cmC-jP-jI9"/>
                                             <constraint firstItem="dx5-WV-bep" firstAttribute="top" secondItem="TOy-0T-PLz" secondAttribute="bottom" priority="500" constant="12" id="d1p-cD-FDS"/>
-                                            <constraint firstItem="dlP-lx-EdD" firstAttribute="top" secondItem="9S3-YS-oms" secondAttribute="bottom" priority="500" constant="38" id="lWe-Kw-MZ7"/>
-                                            <constraint firstAttribute="trailing" secondItem="9S3-YS-oms" secondAttribute="trailing" constant="28" id="nNC-zk-aGU"/>
+                                            <constraint firstItem="dlP-lx-EdD" firstAttribute="top" secondItem="dx5-WV-bep" secondAttribute="bottom" constant="18" id="eP2-PM-DN1"/>
                                             <constraint firstItem="TOy-0T-PLz" firstAttribute="top" secondItem="b8d-qE-UH9" secondAttribute="bottom" priority="500" constant="45" id="u6J-tC-aLC"/>
                                             <constraint firstItem="TOy-0T-PLz" firstAttribute="top" secondItem="b8d-qE-UH9" secondAttribute="bottom" priority="1" constant="18" id="uNL-9j-U9n"/>
                                         </constraints>
@@ -1203,7 +1193,7 @@
                                 <rect key="frame" x="0.0" y="20" width="600" height="980"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tHO-sZ-3CD" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="590"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="606"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IWK-8f-VFQ">
                                                 <rect key="frame" x="0.0" y="0.0" width="100" height="48"/>
@@ -1223,8 +1213,8 @@
                                                     <action selector="backAction:" destination="cQW-e7-4Wy" eventType="touchUpInside" id="WuP-gw-1j3"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create passwords" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jQu-u1-JG1">
-                                                <rect key="frame" x="186" y="120" width="228" height="40"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Set passwords" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jQu-u1-JG1">
+                                                <rect key="frame" x="207" y="120" width="188" height="40"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="p4D-hN-FDZ"/>
@@ -1399,7 +1389,7 @@
                                                     <constraint firstAttribute="height" constant="16" id="cKm-sx-0DQ"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note: The Login password belongs to your unique User account." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="agB-RC-aUZ">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note: This is used to log you into your account." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="agB-RC-aUZ">
                                                 <rect key="frame" x="28" y="344" width="544" height="17"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1409,8 +1399,8 @@
                                                     <rect key="frame" x="28" y="351" width="344" height="21"/>
                                                 </variation>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note: The Mailbox password decrypt the corresponding User inbox" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ed2-QY-tZc">
-                                                <rect key="frame" x="28" y="503" width="544" height="17"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ed2-QY-tZc">
+                                                <rect key="frame" x="28" y="503" width="544" height="34"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="textColor" red="0.67843137254901964" green="0.67843137254901964" blue="0.75294117647058822" alpha="1" colorSpace="calibratedRGB"/>
@@ -1420,15 +1410,15 @@
                                                 </variation>
                                             </label>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DbH-Ns-wpw">
-                                                <rect key="frame" x="200" y="538" width="200" height="42"/>
+                                                <rect key="frame" x="200" y="554" width="200" height="42"/>
                                                 <animations/>
                                                 <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="42" id="Qzo-Y8-mta"/>
                                                     <constraint firstAttribute="width" constant="200" id="YAx-1q-9fw"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="16"/>
-                                                <state key="normal" title="Create Passwords">
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <state key="normal" title="Create Account">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <state key="disabled">
@@ -2294,7 +2284,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                     <action selector="recaptchaAction:" destination="D1E-h7-WYp" eventType="touchUpInside" id="Fyz-u0-4xd"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To Prevent abuse of ProtonMail,  we need to verify that you are human." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K7E-d0-nk1">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To prevent abuse of ProtonMail,  we need to verify that you are human." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K7E-d0-nk1">
                                                 <rect key="frame" x="28" y="179" width="544" height="36"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
@@ -2402,7 +2392,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                 <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pe0-rH-dCh" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="582"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="543"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7o7-3e-eNr">
                                                 <rect key="frame" x="0.0" y="0.0" width="100" height="48"/>
@@ -2433,7 +2423,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mCl-SB-8ys" userLabel="username_view">
-                                                <rect key="frame" x="28" y="263" width="544" height="40"/>
+                                                <rect key="frame" x="28" y="224" width="544" height="40"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HSD-Bm-eHb">
                                                         <rect key="frame" x="0.0" y="39" width="544" height="1"/>
@@ -2479,7 +2469,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                 </constraints>
                                             </imageView>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="05y-zb-VWq">
-                                                <rect key="frame" x="200" y="530" width="200" height="42"/>
+                                                <rect key="frame" x="200" y="491" width="200" height="42"/>
                                                 <animations/>
                                                 <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
@@ -2503,7 +2493,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                 </connections>
                                             </button>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o1J-63-hSp">
-                                                <rect key="frame" x="28" y="482" width="544" height="20"/>
+                                                <rect key="frame" x="28" y="443" width="544" height="20"/>
                                                 <subviews>
                                                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sign_up_check_user_icon" translatesAutoresizingMaskIntoConstraints="NO" id="2EP-KP-thW">
                                                         <rect key="frame" x="0.0" y="2" width="16" height="16"/>
@@ -2533,15 +2523,8 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                     <constraint firstAttribute="trailing" secondItem="7xZ-WL-TER" secondAttribute="trailing" id="pCN-yE-RCf"/>
                                                 </constraints>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email verification" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vkn-TU-4Dx">
-                                                <rect key="frame" x="28" y="179" width="544" height="21"/>
-                                                <animations/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your exist email address." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nPJ-Ai-Bgp">
-                                                <rect key="frame" x="28" y="218" width="544" height="17"/>
+                                                <rect key="frame" x="28" y="179" width="544" height="17"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
@@ -2551,7 +2534,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                 </variation>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We will send a verification code to the email address above." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="62s-b4-qQ8">
-                                                <rect key="frame" x="28" y="321" width="544" height="16"/>
+                                                <rect key="frame" x="28" y="282" width="544" height="16"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <color key="textColor" red="0.67843137249999996" green="0.67843137249999996" blue="0.75294117650000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -2561,7 +2544,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                 </variation>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BWG-CE-PCA" userLabel="username_view">
-                                                <rect key="frame" x="28" y="435" width="544" height="40"/>
+                                                <rect key="frame" x="28" y="396" width="544" height="40"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Re6-u2-sd4">
                                                         <rect key="frame" x="0.0" y="39" width="544" height="1"/>
@@ -2599,7 +2582,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bbK-y4-wPa">
-                                                <rect key="frame" x="200" y="365" width="200" height="42"/>
+                                                <rect key="frame" x="200" y="326" width="200" height="42"/>
                                                 <animations/>
                                                 <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
@@ -2632,17 +2615,14 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                             <constraint firstAttribute="trailing" secondItem="o1J-63-hSp" secondAttribute="trailing" constant="28" id="4Qc-MR-OPw"/>
                                             <constraint firstItem="nPJ-Ai-Bgp" firstAttribute="leading" secondItem="pe0-rH-dCh" secondAttribute="leading" constant="28" id="AcD-mF-kjJ"/>
                                             <constraint firstAttribute="trailing" secondItem="mCl-SB-8ys" secondAttribute="trailing" constant="28" id="EZB-Kg-Xi7"/>
+                                            <constraint firstItem="nPJ-Ai-Bgp" firstAttribute="top" secondItem="qwp-pA-b7V" secondAttribute="bottom" constant="18" id="GEL-R5-i4W"/>
                                             <constraint firstItem="bbK-y4-wPa" firstAttribute="top" secondItem="62s-b4-qQ8" secondAttribute="bottom" priority="500" constant="28" id="Ith-w7-e3z"/>
                                             <constraint firstItem="mCl-SB-8ys" firstAttribute="leading" secondItem="pe0-rH-dCh" secondAttribute="leading" constant="28" id="J1o-5u-n2k"/>
                                             <constraint firstAttribute="trailing" secondItem="nPJ-Ai-Bgp" secondAttribute="trailing" constant="28" id="Jgh-1f-cOi"/>
-                                            <constraint firstItem="Vkn-TU-4Dx" firstAttribute="leading" secondItem="pe0-rH-dCh" secondAttribute="leading" constant="28" id="PCe-j6-Rdr"/>
                                             <constraint firstItem="BWG-CE-PCA" firstAttribute="top" secondItem="bbK-y4-wPa" secondAttribute="bottom" priority="500" constant="28" id="Qgq-4M-Paj"/>
-                                            <constraint firstAttribute="trailing" secondItem="Vkn-TU-4Dx" secondAttribute="trailing" constant="28" id="QwD-IG-LYL"/>
                                             <constraint firstItem="F77-CM-EOm" firstAttribute="top" secondItem="7o7-3e-eNr" secondAttribute="bottom" priority="1" constant="18" id="Re7-ZX-Vqf"/>
                                             <constraint firstItem="o1J-63-hSp" firstAttribute="leading" secondItem="pe0-rH-dCh" secondAttribute="leading" constant="28" id="SZU-fH-y4C"/>
-                                            <constraint firstItem="nPJ-Ai-Bgp" firstAttribute="top" secondItem="Vkn-TU-4Dx" secondAttribute="bottom" constant="18" id="UxG-jp-UJT"/>
                                             <constraint firstAttribute="centerX" secondItem="F77-CM-EOm" secondAttribute="centerX" priority="500" id="YEZ-3m-qQh"/>
-                                            <constraint firstItem="Vkn-TU-4Dx" firstAttribute="top" secondItem="qwp-pA-b7V" secondAttribute="bottom" constant="18" id="YjG-6f-9pG"/>
                                             <constraint firstItem="F77-CM-EOm" firstAttribute="top" secondItem="7o7-3e-eNr" secondAttribute="bottom" priority="500" constant="45" id="agy-6x-7OM"/>
                                             <constraint firstAttribute="trailing" secondItem="62s-b4-qQ8" secondAttribute="trailing" constant="28" id="bUe-iS-NW8"/>
                                             <constraint firstItem="F77-CM-EOm" firstAttribute="leading" secondItem="pe0-rH-dCh" secondAttribute="leading" priority="1" constant="28" id="dzt-HW-boV"/>
@@ -2697,7 +2677,6 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                         <outlet property="scrollBottomPaddingConstraint" destination="Npa-HX-Niq" id="Swi-mK-Sex"/>
                         <outlet property="sendCodeButton" destination="bbK-y4-wPa" id="gNI-mN-Kt8"/>
                         <outlet property="titleLeftPaddingConstraint" destination="i0k-ZJ-MAJ" id="7y5-ef-QLd"/>
-                        <outlet property="titleOneLabel" destination="Vkn-TU-4Dx" id="r5C-aS-Eze"/>
                         <outlet property="titleTopPaddingConstraint" destination="g00-HE-Xaq" id="s4p-yg-5lu"/>
                         <outlet property="titleTwoLabel" destination="nPJ-Ai-Bgp" id="FqK-iE-Tj9"/>
                         <outlet property="userNameTopPaddingConstraint" destination="qwX-iT-Bhh" id="heG-RX-kpv"/>
@@ -2737,6 +2716,6 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="lvd-zK-Trc"/>
-        <segue reference="u41-R8-jPf"/>
+        <segue reference="BQ1-JS-Xpb"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -49,7 +49,7 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
         webView.scrollView.scrollEnabled = false
         
         NSURLCache.sharedURLCache().removeAllCachedResponses();
-        
+        MBProgressHUD.showHUDAddedTo(webView, animated: true)
         let recptcha = NSURL(string: "https://secure.protonmail.com/mobile.html")!
         let requestObj = NSURLRequest(URL: recptcha)
         webView.loadRequest(requestObj)
@@ -183,6 +183,8 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
             }
             startVerify = false
         }
+        
+        MBProgressHUD.hideHUDForView(self.webView, animated: true)
     }
     
     func resetWebviewHeight() {
