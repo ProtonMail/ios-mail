@@ -436,8 +436,7 @@
                         <outlet property="usernameTextField" destination="tfu-UO-Zjf" id="Q3M-gO-x4z"/>
                         <outlet property="usernameView" destination="2gx-2z-FDL" id="vP6-0L-GWt"/>
                         <segue destination="Zzb-6r-tlP" kind="show" identifier="mailboxSegue" id="xf0-Do-kI6"/>
-                        <segue destination="HPp-sz-RGE" kind="show" id="oaz-jK-I6S"/>
-                        <segue destination="HPp-sz-RGE" kind="custom" customClass="SplashSignInSegue" customModule="ProtonMail" id="gTu-Sh-bol"/>
+                        <segue destination="HPp-sz-RGE" kind="custom" identifier="sign_in_to_splash_no_segue" customClass="SplashSignInSegue" customModule="ProtonMail" id="gTu-Sh-bol"/>
                         <segue destination="5Bg-GM-4IG" kind="show" identifier="sign_in_to_sign_up_segue" id="lvd-zK-Trc"/>
                     </connections>
                 </viewController>
@@ -531,6 +530,9 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <state key="normal" title="Continue">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <state key="disabled">
+                                                    <color key="titleColor" cocoaTouchSystemColor="lightTextColor"/>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -700,11 +702,11 @@
                                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <color key="textColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                         <connections>
                                                             <action selector="editEnd:" destination="5Bg-GM-4IG" eventType="editingDidEnd" id="MS0-LN-hIa"/>
                                                             <action selector="editingChanged:" destination="5Bg-GM-4IG" eventType="editingChanged" id="dun-sk-7gG"/>
-                                                            <outlet property="delegate" destination="rb7-9h-TvB" id="Dv7-lU-qcg"/>
+                                                            <outlet property="delegate" destination="5Bg-GM-4IG" id="JrM-vG-ORK"/>
                                                         </connections>
                                                     </textField>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rDi-wT-bHe">
@@ -766,6 +768,9 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <state key="normal" title="Create Account">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <state key="disabled">
+                                                    <color key="titleColor" cocoaTouchSystemColor="lightTextColor"/>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -968,6 +973,7 @@
                     </view>
                     <connections>
                         <outlet property="agreeCheck" destination="ICf-l2-Ci6" id="5AH-HH-9rf"/>
+                        <outlet property="createAccountButton" destination="RYu-Gf-dyX" id="bn3-kx-0I5"/>
                         <outlet property="logoLeftPaddingConstraint" destination="ERs-ST-8NF" id="n2l-ar-N8t"/>
                         <outlet property="logoTopPaddingConstraint" destination="lje-rf-gHK" id="Xl8-57-IKc"/>
                         <outlet property="pickedDomainLabel" destination="Peb-mh-rN0" id="xKK-Gz-Cqb"/>
@@ -1197,7 +1203,7 @@
                                 <rect key="frame" x="0.0" y="20" width="600" height="980"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tHO-sZ-3CD" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="636"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="590"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IWK-8f-VFQ">
                                                 <rect key="frame" x="0.0" y="0.0" width="100" height="48"/>
@@ -1249,7 +1255,7 @@
                                                         <connections>
                                                             <action selector="editingChange:" destination="cQW-e7-4Wy" eventType="editingChanged" id="e3S-bO-F5r"/>
                                                             <action selector="editingEnd:" destination="cQW-e7-4Wy" eventType="editingDidEnd" id="RUu-ve-Tm4"/>
-                                                            <outlet property="delegate" destination="rb7-9h-TvB" id="b74-v5-PTg"/>
+                                                            <outlet property="delegate" destination="cQW-e7-4Wy" id="YYf-Yx-2BU"/>
                                                         </connections>
                                                     </textField>
                                                 </subviews>
@@ -1287,7 +1293,7 @@
                                                         <connections>
                                                             <action selector="editingChange:" destination="cQW-e7-4Wy" eventType="editingChanged" id="XZv-bl-KV3"/>
                                                             <action selector="editingEnd:" destination="cQW-e7-4Wy" eventType="editingDidEnd" id="ZkA-Oq-jw8"/>
-                                                            <outlet property="delegate" destination="rb7-9h-TvB" id="qjV-E9-r0l"/>
+                                                            <outlet property="delegate" destination="cQW-e7-4Wy" id="6uw-yL-3v6"/>
                                                         </connections>
                                                     </textField>
                                                 </subviews>
@@ -1304,7 +1310,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xb4-SA-mwp" userLabel="mailbox_password">
-                                                <rect key="frame" x="28" y="406" width="544" height="40"/>
+                                                <rect key="frame" x="28" y="383" width="544" height="40"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qqy-nz-Eac">
                                                         <rect key="frame" x="0.0" y="39" width="544" height="1"/>
@@ -1325,7 +1331,7 @@
                                                         <connections>
                                                             <action selector="editingChange:" destination="cQW-e7-4Wy" eventType="editingChanged" id="RVF-0w-bky"/>
                                                             <action selector="editingEnd:" destination="cQW-e7-4Wy" eventType="editingDidEnd" id="Emj-B4-26Y"/>
-                                                            <outlet property="delegate" destination="rb7-9h-TvB" id="Jz0-Au-Ppb"/>
+                                                            <outlet property="delegate" destination="cQW-e7-4Wy" id="V77-HU-Xox"/>
                                                         </connections>
                                                     </textField>
                                                 </subviews>
@@ -1345,7 +1351,7 @@
                                                 </variation>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zrw-rm-iQP" userLabel="confirm_mailbox_password">
-                                                <rect key="frame" x="28" y="464" width="544" height="40"/>
+                                                <rect key="frame" x="28" y="441" width="544" height="40"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2wV-tG-0g9">
                                                         <rect key="frame" x="0.0" y="39" width="544" height="1"/>
@@ -1366,7 +1372,7 @@
                                                         <connections>
                                                             <action selector="editingChange:" destination="cQW-e7-4Wy" eventType="editingChanged" id="dvx-JR-6mB"/>
                                                             <action selector="editingEnd:" destination="cQW-e7-4Wy" eventType="editingDidEnd" id="Ocs-io-p9G"/>
-                                                            <outlet property="delegate" destination="rb7-9h-TvB" id="eYM-pW-NoR"/>
+                                                            <outlet property="delegate" destination="cQW-e7-4Wy" id="fI3-4S-RjY"/>
                                                         </connections>
                                                     </textField>
                                                 </subviews>
@@ -1393,12 +1399,9 @@
                                                     <constraint firstAttribute="height" constant="16" id="cKm-sx-0DQ"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note: The Login password belongs to your unique User account." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="agB-RC-aUZ">
-                                                <rect key="frame" x="28" y="344" width="544" height="40"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note: The Login password belongs to your unique User account." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="agB-RC-aUZ">
+                                                <rect key="frame" x="28" y="344" width="544" height="17"/>
                                                 <animations/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="iTY-qi-0eG"/>
-                                                </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="textColor" red="0.67843137254901964" green="0.67843137254901964" blue="0.75294117647058822" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -1406,12 +1409,9 @@
                                                     <rect key="frame" x="28" y="351" width="344" height="21"/>
                                                 </variation>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note: The Mailbox password decrypt the corresponding User inbox" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ed2-QY-tZc">
-                                                <rect key="frame" x="28" y="526" width="544" height="40"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Note: The Mailbox password decrypt the corresponding User inbox" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ed2-QY-tZc">
+                                                <rect key="frame" x="28" y="503" width="544" height="17"/>
                                                 <animations/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="1Cv-5y-sHV"/>
-                                                </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="textColor" red="0.67843137254901964" green="0.67843137254901964" blue="0.75294117647058822" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -1420,7 +1420,7 @@
                                                 </variation>
                                             </label>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DbH-Ns-wpw">
-                                                <rect key="frame" x="200" y="584" width="200" height="42"/>
+                                                <rect key="frame" x="200" y="538" width="200" height="42"/>
                                                 <animations/>
                                                 <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
@@ -1430,6 +1430,9 @@
                                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="16"/>
                                                 <state key="normal" title="Create Passwords">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <state key="disabled">
+                                                    <color key="titleColor" cocoaTouchSystemColor="lightTextColor"/>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -1526,6 +1529,7 @@
                     <connections>
                         <outlet property="confirmLoginPasswordField" destination="hvM-1O-hMa" id="WoU-4T-gJW"/>
                         <outlet property="confirmMailboxPassword" destination="wfn-8h-3cZ" id="jeq-9N-1sK"/>
+                        <outlet property="createPasswordButton" destination="DbH-Ns-wpw" id="OXN-yx-i0x"/>
                         <outlet property="loginPasswordField" destination="DuG-Wm-Ubd" id="jjA-dt-rPY"/>
                         <outlet property="logoLeftPaddingConstraint" destination="Q6j-vZ-P1D" id="SL1-bG-aaa"/>
                         <outlet property="logoTopPaddingConstraint" destination="hjs-42-aek" id="EMg-LS-6rV"/>
@@ -2211,7 +2215,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                 <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SLB-rw-zME" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="442"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="433"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fDh-xH-qmf">
                                                 <rect key="frame" x="0.0" y="0.0" width="100" height="48"/>
@@ -2249,7 +2253,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                 </constraints>
                                             </imageView>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oEd-L3-e9c">
-                                                <rect key="frame" x="200" y="390" width="200" height="42"/>
+                                                <rect key="frame" x="200" y="381" width="200" height="42"/>
                                                 <animations/>
                                                 <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
@@ -2270,7 +2274,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                 </connections>
                                             </button>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZwP-bW-2uu">
-                                                <rect key="frame" x="200" y="320" width="200" height="42"/>
+                                                <rect key="frame" x="200" y="311" width="200" height="42"/>
                                                 <animations/>
                                                 <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
@@ -2290,18 +2294,15 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                     <action selector="recaptchaAction:" destination="D1E-h7-WYp" eventType="touchUpInside" id="Fyz-u0-4xd"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To Prevent abuse of ProtonMail,  we need to verify that you are hume." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K7E-d0-nk1">
-                                                <rect key="frame" x="28" y="179" width="544" height="45"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To Prevent abuse of ProtonMail,  we need to verify that you are human." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K7E-d0-nk1">
+                                                <rect key="frame" x="28" y="179" width="544" height="36"/>
                                                 <animations/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="45" id="kvT-UR-YnL"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                 <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please select one of the following options:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Med-83-8hd">
-                                                <rect key="frame" x="28" y="242" width="544" height="40"/>
+                                                <rect key="frame" x="28" y="233" width="544" height="40"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="XEi-xZ-KOQ"/>
@@ -2453,7 +2454,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                         <connections>
                                                             <action selector="editEnd:" destination="KEE-gK-nEU" eventType="editingDidEnd" id="zjx-Xs-8Cl"/>
                                                             <action selector="editingChanged:" destination="KEE-gK-nEU" eventType="editingChanged" id="D4A-js-t6K"/>
-                                                            <outlet property="delegate" destination="rb7-9h-TvB" id="CgQ-8p-gKT"/>
+                                                            <outlet property="delegate" destination="KEE-gK-nEU" id="GAT-uk-btv"/>
                                                         </connections>
                                                     </textField>
                                                 </subviews>
@@ -2488,6 +2489,9 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <state key="normal" title="Continue">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <state key="disabled">
+                                                    <color key="titleColor" cocoaTouchSystemColor="lightTextColor"/>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -2536,7 +2540,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                 <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your existin email address." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nPJ-Ai-Bgp">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your exist email address." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nPJ-Ai-Bgp">
                                                 <rect key="frame" x="28" y="218" width="544" height="17"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -2578,7 +2582,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                         <connections>
                                                             <action selector="editEnd:" destination="KEE-gK-nEU" eventType="editingDidEnd" id="0Zk-sX-h30"/>
                                                             <action selector="editingChanged:" destination="KEE-gK-nEU" eventType="editingChanged" id="PcR-KR-mTx"/>
-                                                            <outlet property="delegate" destination="rb7-9h-TvB" id="7F0-ww-YJG"/>
+                                                            <outlet property="delegate" destination="KEE-gK-nEU" id="f0B-OI-qSx"/>
                                                         </connections>
                                                     </textField>
                                                 </subviews>
@@ -2594,7 +2598,7 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                     <constraint firstAttribute="trailing" secondItem="Re6-u2-sd4" secondAttribute="trailing" id="vme-G0-wkL"/>
                                                 </constraints>
                                             </view>
-                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bbK-y4-wPa">
+                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bbK-y4-wPa">
                                                 <rect key="frame" x="200" y="365" width="200" height="42"/>
                                                 <animations/>
                                                 <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -2605,6 +2609,9 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <state key="normal" title="Send Verification Code">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <state key="disabled">
+                                                    <color key="titleColor" cocoaTouchSystemColor="lightTextColor"/>
                                                 </state>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -2683,10 +2690,12 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
                         </connections>
                     </view>
                     <connections>
+                        <outlet property="continueButton" destination="05y-zb-VWq" id="6F4-5Y-OX7"/>
                         <outlet property="emailTextField" destination="xHh-K5-hgF" id="XPE-KB-T95"/>
                         <outlet property="logoLeftPaddingConstraint" destination="dzt-HW-boV" id="qn5-zz-pZ4"/>
                         <outlet property="logoTopPaddingConstraint" destination="Re7-ZX-Vqf" id="Ff3-ao-b1P"/>
                         <outlet property="scrollBottomPaddingConstraint" destination="Npa-HX-Niq" id="Swi-mK-Sex"/>
+                        <outlet property="sendCodeButton" destination="bbK-y4-wPa" id="gNI-mN-Kt8"/>
                         <outlet property="titleLeftPaddingConstraint" destination="i0k-ZJ-MAJ" id="7y5-ef-QLd"/>
                         <outlet property="titleOneLabel" destination="Vkn-TU-4Dx" id="r5C-aS-Eze"/>
                         <outlet property="titleTopPaddingConstraint" destination="g00-HE-Xaq" id="s4p-yg-5lu"/>
@@ -2727,7 +2736,6 @@ Note: By loosing your  passwords, without a recovery address, we can not assist 
         <image name="welcome_logo" width="188" height="31"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gTu-Sh-bol"/>
         <segue reference="lvd-zK-Trc"/>
         <segue reference="u41-R8-jPf"/>
     </inferredMetricsTieBreakers>

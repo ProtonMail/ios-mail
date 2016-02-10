@@ -62,6 +62,10 @@ public class SignupViewModel : NSObject {
     func setVerifyCode(code : String ) {
         fatalError("This method must be overridden")
     }
+    
+    func getTimerSet () -> Int {
+        fatalError("This method must be overridden")
+    }
 }
 
 public class SignupViewModelImpl : SignupViewModel {
@@ -76,6 +80,8 @@ public class SignupViewModelImpl : SignupViewModel {
     private var login : String = ""
     private var mailbox : String = "";
     private var agreePolicy : Bool = false
+    
+    private var lastSendTime : NSDate?
     
     private var delegate : SignupViewModelDelegate?
     private var verifyType : VerifyCodeType = .email
@@ -175,6 +181,9 @@ public class SignupViewModelImpl : SignupViewModel {
     override func sendVerifyCode(complete: SendVerificationCodeBlock!) {
         let api = VerificationCodeRequest(userName: self.userName, emailAddress: codeEmail, type: .email)
         api.call { (task, response, hasError) -> Void in
+            if !hasError {
+                self.lastSendTime = NSDate()
+            }
             complete(!hasError, response?.error)
         }
     }
@@ -211,5 +220,20 @@ public class SignupViewModelImpl : SignupViewModel {
     
     override func setAgreePolicy(isAgree: Bool) {
         self.agreePolicy = isAgree;
+    }
+    
+    private var count : Int = 10;
+    override func getTimerSet() -> Int {
+        if let lastTime = lastSendTime {
+            let currentDate = NSDate()
+            let time = NSDate().timeIntervalSinceDate(lastTime)
+            let newCount = 120 - Int(time);
+            if newCount <= 0 {
+                lastSendTime = nil
+            }
+            return newCount > 0 ? newCount : 0;
+        } else {
+            return 0
+        }
     }
 }

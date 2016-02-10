@@ -14,6 +14,7 @@ class SignUpPasswordViewController: UIViewController {
     private let hidePriority : UILayoutPriority = 1.0;
     private let showPriority: UILayoutPriority = 750.0;
     
+    @IBOutlet weak var createPasswordButton: UIButton!
     
     @IBOutlet weak var logoTopPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var logoLeftPaddingConstraint: NSLayoutConstraint!
@@ -56,6 +57,8 @@ class SignUpPasswordViewController: UIViewController {
         confirmLoginPasswordField.attributedPlaceholder = NSAttributedString(string: "Confirm Login Password", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
         mailboxPassword.attributedPlaceholder = NSAttributedString(string: "Mailbox Password", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
         confirmMailboxPassword.attributedPlaceholder = NSAttributedString(string: "Confirm Mailbox Password", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        
+        self.updateButtonStatus()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -118,6 +121,7 @@ class SignUpPasswordViewController: UIViewController {
     }
     
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
+        updateButtonStatus()
         dismissKeyboard()
     }
     
@@ -132,8 +136,47 @@ class SignUpPasswordViewController: UIViewController {
     }
     
     @IBAction func editingChange(sender: AnyObject) {
+        updateButtonStatus();
     }
     
+    func updateButtonStatus () {
+        let login_pwd = loginPasswordField.text.trim()
+        let confirm_login_pwd = confirmLoginPasswordField.text.trim()
+        
+        let mailbox_pwd = mailboxPassword.text.trim()
+        let confirm_mailbox_pwd = confirmMailboxPassword.text.trim()
+        
+        if !login_pwd.isEmpty && !confirm_login_pwd.isEmpty && !mailbox_pwd.isEmpty && !confirm_mailbox_pwd.isEmpty {
+            createPasswordButton.enabled = true
+        } else {
+            createPasswordButton.enabled = false
+        }
+    }
+}
+
+// MARK: - UITextFieldDelegatesf
+extension SignUpPasswordViewController: UITextFieldDelegate {
+    func textFieldShouldClear(textField: UITextField) -> Bool {
+        return true
+    }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        return true
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        updateButtonStatus()
+        if textField == loginPasswordField {
+            confirmLoginPasswordField.becomeFirstResponder()
+        } else if textField == confirmLoginPasswordField {
+            mailboxPassword.becomeFirstResponder()
+        } else if textField == mailboxPassword {
+            confirmMailboxPassword.becomeFirstResponder()
+        } else if textField == confirmMailboxPassword {
+            dismissKeyboard()
+        }
+        return true
+    }
 }
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol

@@ -1313,7 +1313,7 @@ class MessageDataService {
                         completion?(task: task, response: response, error: error)
                     }
                     
-                    sharedAPIService.upload( AppConstants.BaseURLString + "/attachments/upload", parameters: params, keyPackets: keyPacket, dataPacket: dataPacket, completion: completionWrapper)
+                    sharedAPIService.upload( AppConstants.BaseURLString + AppConstants.BaseAPIPath + "/attachments/upload", parameters: params, keyPackets: keyPacket, dataPacket: dataPacket, completion: completionWrapper)
                     
                     return
                 }
@@ -1344,7 +1344,7 @@ class MessageDataService {
 //                }
                 completion?(task: task, response: nil, error: nil)
             })
-            //sharedAPIService.upload( AppConstants.BaseURLString + "/attachments/upload", parameters: params, keyPackets: keyPacket, dataPacket: dataPacket, completion: completionWrapper)
+            //sharedAPIService.upload( AppConstants.BaseURLString + AppConstants.BaseAPIPath + "/attachments/upload", parameters: params, keyPackets: keyPacket, dataPacket: dataPacket, completion: completionWrapper)
             return
         }
         
@@ -1612,7 +1612,9 @@ class MessageDataService {
         if action == .saveDraft || action == .send {
             sharedMessageQueue.addMessage(message.objectID.URIRepresentation().absoluteString!, action: action)
         } else {
-            sharedMessageQueue.addMessage(message.messageID, action: action)
+            if message.managedObjectContext != nil && !message.messageID.isEmpty {
+                sharedMessageQueue.addMessage(message.messageID, action: action)
+            }
         }
         dequeueIfNeeded()
     }

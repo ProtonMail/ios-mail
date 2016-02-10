@@ -30,6 +30,8 @@ class SignInViewController: UIViewController {
     private let signUpURL = NSURL(string: "https://protonmail.com/invite")!
     private let forgotPasswordURL = NSURL(string: "https://mail.protonmail.com/help/reset-login-password")!
     
+    private let kSegueToSignUpWithNoAnimation = "sign_in_to_splash_no_segue"
+    
     static var isComeBackFromMailbox = false
     
     var isShowpwd = false;
@@ -87,6 +89,9 @@ class SignInViewController: UIViewController {
         else
         {
             ShowLoginViews();
+            if !userCachedStatus.isSplashOk() {
+                self.performSegueWithIdentifier(kSegueToSignUpWithNoAnimation, sender: self)
+            }
         }
     }
     
@@ -350,7 +355,6 @@ class SignInViewController: UIViewController {
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
         dismissKeyboard()
     }
-    
 }
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
