@@ -66,6 +66,14 @@ public class SignupViewModel : NSObject {
     func getTimerSet () -> Int {
         fatalError("This method must be overridden")
     }
+    
+    func getCurrentBit() -> Int32 {
+        fatalError("This method must be overridden")
+    }
+    
+    func setBit(bit: Int32) {
+        fatalError("This method must be overridden")
+    }
 }
 
 public class SignupViewModelImpl : SignupViewModel {
@@ -83,6 +91,8 @@ public class SignupViewModelImpl : SignupViewModel {
     private var displayName : String = ""
     
     private var lastSendTime : NSDate?
+    
+    private var bit : Int32 = 4096
     
     private var delegate : SignupViewModelDelegate?
     private var verifyType : VerifyCodeType = .email
@@ -115,6 +125,14 @@ public class SignupViewModelImpl : SignupViewModel {
         }
     }
     
+    override func getCurrentBit() -> Int32 {
+        return self.bit
+    }
+    
+    override func setBit(bit: Int32) {
+        self.bit = bit
+    }
+    
     override func setRecaptchaToken(token: String, isExpired: Bool) {
         self.token = token
         self.isExpired = isExpired
@@ -139,7 +157,7 @@ public class SignupViewModelImpl : SignupViewModel {
     override func createNewUser(complete: CreateUserBlock) {
         //validation here
         var error: NSError?
-        if let key = sharedOpenPGP.generateKey(self.mailbox, userName: self.userName, domain: self.domain, error: &error) {
+        if let key = sharedOpenPGP.generateKey(self.mailbox, userName: self.userName, domain: self.domain, bits: 4096, error: &error) {
             let api = CreateNewUserRequest<ApiResponse>(token: self.token, type: self.verifyType.toString, username: self.userName, password: self.login, email: self.recoverEmail, domain: self.domain, news: self.news, publicKey: key.publicKey, privateKey: key.privateKey)
             api.call({ (task, response, hasError) -> Void in
                 if !hasError {

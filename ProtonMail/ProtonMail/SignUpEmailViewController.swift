@@ -93,7 +93,7 @@ class SignUpEmailViewController: UIViewController {
         
         let email = recoveryEmailField.text
         
-        if (!email.isValidEmail()) {
+        if (!email.isEmpty && !email.isValidEmail()) {
             let alert = "Please input a valid email address.".alertController()
             alert.addOKAction()
             self.presentViewController(alert, animated: true, completion: nil)

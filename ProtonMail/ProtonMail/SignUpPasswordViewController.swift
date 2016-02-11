@@ -32,7 +32,7 @@ class SignUpPasswordViewController: UIViewController {
     @IBOutlet weak var mailboxPassword: TextInsetTextField!
     @IBOutlet weak var confirmMailboxPassword: TextInsetTextField!
     
-    private let kSegueToSignUpVerification = "sign_up_password_to_verification_segue"
+    private let kSegueToEncryptionSetup = "sign_up_password_to_encryption_segue"
     
     var viewModel : SignupViewModel!
     
@@ -83,8 +83,8 @@ class SignUpPasswordViewController: UIViewController {
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == kSegueToSignUpVerification {
-            let viewController = segue.destinationViewController as! HumanCheckMenuViewController
+        if segue.identifier == kSegueToEncryptionSetup {
+            let viewController = segue.destinationViewController as! EncryptionSetupViewController
             viewController.viewModel = self.viewModel
         }
     }
@@ -107,7 +107,7 @@ class SignUpPasswordViewController: UIViewController {
             if !mailbox_pwd.isEmpty && confirm_mailbox_pwd == mailbox_pwd {
                 //create user & login
                 viewModel.setPasswords(login_pwd, mailboxPwd: mailbox_pwd)
-                self.performSegueWithIdentifier(kSegueToSignUpVerification, sender: self)
+                self.performSegueWithIdentifier(kSegueToEncryptionSetup, sender: self)
             } else {
                 let alert = "Mailbox password doesn't match".alertController()
                 alert.addOKAction()
