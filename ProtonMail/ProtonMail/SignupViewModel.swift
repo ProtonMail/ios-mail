@@ -193,23 +193,30 @@ public class SignupViewModelImpl : SignupViewModel {
         self.recoverEmail = email
         self.news = receiveNews
         self.displayName = displayName
+        
+        if !self.displayName.isEmpty {
+            sharedUserDataService.updateDisplayName(displayName) { _, error in
+                if let error = error {
+                    //complete(false, error)
+                } else {
+                    //complete(true, nil)
+                }
+            }
+        }
+        
         if !self.recoverEmail.isEmpty {
-            let emailApi = UpdateNotificationEmail(password: self.login, notificationEmail: self.recoverEmail)
-            emailApi.call { (task, response, hasError) -> Void in
-                
+            sharedUserDataService.updateNotificationEmail(recoverEmail) { _, _, error in
+                if let error = error {
+                    //complete(false, error)
+                } else {
+                    //complete(true, nil)
+                }
             }
         }
         
         if self.news {
             let newsApi = UpdateNewsRequest(news: self.news)
             newsApi.call { (task, response, hasError) -> Void in
-                
-            }
-        }
-        
-        if !self.displayName.isEmpty {
-            let emailApi = UpdateNotificationEmail(password: self.login, notificationEmail: self.recoverEmail)
-            emailApi.call { (task, response, hasError) -> Void in
                 
             }
         }

@@ -171,7 +171,7 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
                 MBProgressHUD.hideHUDForView(self.view, animated: true)
                 self.doneClicked = false
                 if !message.isEmpty {
-                    let alert = message.alertController()
+                    let alert = error!.alertController()
                     alert.addOKAction()
                     self.presentViewController(alert, animated: true, completion: nil)
                 } else {

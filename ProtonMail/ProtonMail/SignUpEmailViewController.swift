@@ -90,18 +90,27 @@ class SignUpEmailViewController: UIViewController {
     
     private var doneClicked : Bool = false
     @IBAction func doneAction(sender: UIButton) {
-        if doneClicked {
-            return
+        
+        let email = recoveryEmailField.text
+        
+        if (!email.isValidEmail()) {
+            let alert = "Please input a valid email address.".alertController()
+            alert.addOKAction()
+            self.presentViewController(alert, animated: true, completion: nil)
+        } else {
+            if doneClicked {
+                return
+            }
+            doneClicked = true
+            MBProgressHUD.showHUDAddedTo(view, animated: true)
+            dismissKeyboard()
+            viewModel.setRecovery(checkButton.selected, email: recoveryEmailField.text, displayName: displayNameField.text)
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                self.doneClicked = false
+                self.moveToInbox()
+            })
         }
-        doneClicked = true
-        MBProgressHUD.showHUDAddedTo(view, animated: true)
-        dismissKeyboard()
-        viewModel.setRecovery(checkButton.selected, email: recoveryEmailField.text, displayName: displayNameField.text)
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            MBProgressHUD.hideHUDForView(self.view, animated: true)
-            self.doneClicked = false
-            self.moveToInbox()
-        })
     }
     
     private func moveToInbox() {
