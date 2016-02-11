@@ -60,6 +60,21 @@ extension NSError {
         return UIAlertController(title: localizedDescription, message: message, preferredStyle: .Alert)
     }
     
+    func alertController(title : String) -> UIAlertController {
+        var message = localizedFailureReason
+        
+        if localizedRecoverySuggestion != nil {
+            if message != nil {
+                message = message! + "\n\n"
+            } else {
+                message = ""
+            }
+            
+            message = message! + localizedRecoverySuggestion!
+        }
+        return UIAlertController(title: title, message: localizedDescription, preferredStyle: .Alert)
+    }
+    
     class func alertUpdatedToast() ->Void {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
         var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
