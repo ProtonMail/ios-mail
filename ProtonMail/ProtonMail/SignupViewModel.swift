@@ -43,6 +43,10 @@ public class SignupViewModel : NSObject {
         fatalError("This method must be overridden")
     }
     
+    func generateKey(complete : GenerateKey) {
+        fatalError("This method must be overridden")
+    }
+    
     func setRecovery(receiveNews:Bool, email : String, displayName : String) {
         fatalError("This method must be overridden")
     }
@@ -154,10 +158,26 @@ public class SignupViewModelImpl : SignupViewModel {
         self.verifyType = .email
     }
     
+    override func generateKey(complete: GenerateKey) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            // do some async stuff
+            var error: NSError?
+            self.newKey = sharedOpenPGP.generateKey(self.mailbox, userName: self.userName, domain: self.domain, bits: self.bit, error: &error)
+
+            NSOperationQueue.mainQueue().addOperationWithBlock {
+                if error == nil {
+                    complete(true, nil, nil)
+                } else {
+                    complete(false, "Key generation failed please try again", error);
+                }
+            }
+        }
+    }
+    
     override func createNewUser(complete: CreateUserBlock) {
         //validation here
         var error: NSError?
-        if let key = sharedOpenPGP.generateKey(self.mailbox, userName: self.userName, domain: self.domain, bits: 4096, error: &error) {
+        if let key = self.newKey { // sharedOpenPGP.generateKey(self.mailbox, userName: self.userName, domain: self.domain, bits: 4096, error: &error) {
             let api = CreateNewUserRequest<ApiResponse>(token: self.token, type: self.verifyType.toString, username: self.userName, password: self.login, email: self.recoverEmail, domain: self.domain, news: self.news, publicKey: key.publicKey, privateKey: key.privateKey)
             api.call({ (task, response, hasError) -> Void in
                 if !hasError {
@@ -193,7 +213,7 @@ public class SignupViewModelImpl : SignupViewModel {
                 }
             })
         } else {
-            complete(false, false, "Key generation failed please try again", nil);
+            complete(false, false, "Key invalid please go back try again", nil);
         }
     }
     

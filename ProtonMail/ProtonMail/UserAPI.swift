@@ -11,6 +11,7 @@ import Foundation
 
 typealias CheckUserNameBlock = (Bool, NSError?) -> Void
 typealias CreateUserBlock = (Bool, Bool, String, NSError?) -> Void
+typealias GenerateKey = (Bool, String?, NSError?) -> Void
 typealias SendVerificationCodeBlock = (Bool, NSError?) -> Void
 
 // MARK : update right swipe action

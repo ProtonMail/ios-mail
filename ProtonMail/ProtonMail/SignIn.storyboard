@@ -2883,6 +2883,7 @@
                                                 </variation>
                                                 <connections>
                                                     <action selector="checkAction:" destination="YIP-X7-8Un" eventType="touchUpInside" id="EcN-nW-PXt"/>
+                                                    <action selector="switchAction:" destination="hqf-60-ZdQ" eventType="touchUpInside" id="hem-1A-0Fd"/>
                                                     <action selector="updateMeNewsAction:" destination="Oxb-Ai-gED" eventType="touchUpInside" id="ScA-24-DYZ"/>
                                                 </connections>
                                             </button>
@@ -2921,6 +2922,7 @@
                                                 </variation>
                                                 <connections>
                                                     <action selector="checkAction:" destination="YIP-X7-8Un" eventType="touchUpInside" id="wVa-EH-bCQ"/>
+                                                    <action selector="switchAction:" destination="hqf-60-ZdQ" eventType="touchUpInside" id="45f-Qv-5yC"/>
                                                     <action selector="updateMeNewsAction:" destination="Oxb-Ai-gED" eventType="touchUpInside" id="zLU-ZL-9VU"/>
                                                 </connections>
                                             </button>
@@ -3001,6 +3003,8 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="600" height="600"/>
                     <connections>
+                        <outlet property="highBitLevel" destination="Re1-Mr-qNC" id="nRR-cQ-5fx"/>
+                        <outlet property="normalBitLevel" destination="Ycl-bi-69d" id="1Se-dt-DvC"/>
                         <segue destination="D1E-h7-WYp" kind="show" identifier="encryption_to_verification_segue" id="VFp-K2-fzd"/>
                     </connections>
                 </viewController>
@@ -3029,6 +3033,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="lvd-zK-Trc"/>
-        <segue reference="u41-R8-jPf"/>
+        <segue reference="BQ1-JS-Xpb"/>
     </inferredMetricsTieBreakers>
 </document>
