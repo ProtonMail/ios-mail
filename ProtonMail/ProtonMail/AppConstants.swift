@@ -18,16 +18,16 @@ class AppConstants {
     static let TourVersion : Int = 0
     
     static var AppVersion : Int = 1;
-    //static let BaseURLString : String = "https://api.protonmail.ch"
+    static let BaseURLString : String = "https://api.protonmail.ch"
     //static let BaseURLString : String = "http://protonmail.blue/api"
     //static let BaseURLString : String = "https://test-api.protonmail.ch"
     //static let BaseURLString : String = "http://feng.api.com"
     //static let BaseURLString : String = "https://dev-api.protonmail.ch"
     //static let BaseURLString : String = "http://protonmail.xyz"
-    static let BaseURLString : String = "https://dev.protonmail.com"     //need - api path
+    //static let BaseURLString : String = "https://dev.protonmail.com"     //need - api path
 
-    static let BaseAPIPath : String = "/api"
-    //static let BaseAPIPath : String = ""
+    //static let BaseAPIPath : String = "/api"
+    static let BaseAPIPath : String = ""
 
     static var getDebugOption : String {
         get {
