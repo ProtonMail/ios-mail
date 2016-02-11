@@ -120,7 +120,31 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
                     MBProgressHUD.hideHUDForView(self.view, animated: true)
                     self.doneClicked = false
                     if !message.isEmpty {
-                        let alert = message.alertController()
+                        var alert :  UIAlertController!
+                        var title = "Create user failed"
+                        var message = ""
+                        if error?.code == 12081 { //USER_CREATE_NAME_INVALID = 12081
+                            title = "User name invalid"
+                            message = "Please try a different user name."
+                        } else if error?.code == 12082 { //USER_CREATE_PWD_INVALID = 12082
+                            title = "Account password invalid"
+                            message = "Please try a different password."
+                        } else if error?.code == 12083 { //USER_CREATE_EMAIL_INVALID = 12083
+                            title = "The verification email invalid"
+                            message = "Please try a different email address."
+                        } else if error?.code == 12084 { //USER_CREATE_EXISTS = 12084
+                            title = "User name exist"
+                            message = "Please try a different user name."
+                        } else if error?.code == 12085 { //USER_CREATE_DOMAIN_INVALID = 12085
+                            title = "Email domain invalid"
+                            message = "Please try a different domain."
+                        } else if error?.code == 12087 { //USER_CREATE_TOKEN_INVALID = 12087
+                            title = "reCAPTCHA verification failed"
+                            message = "Please try again."
+                        } else {
+                            message = error!.localizedDescription
+                        }
+                        alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
                         alert.addOKAction()
                         self.presentViewController(alert, animated: true, completion: nil)
                     } else {
