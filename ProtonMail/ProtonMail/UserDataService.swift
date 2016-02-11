@@ -232,11 +232,9 @@ class UserDataService {
     }
     
     func signOut(animated: Bool) {
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignOut, object: self)
         clearAll()
         clearAuthToken()
-        
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignOut, object: self)
-        
         (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: animated)
     }
     

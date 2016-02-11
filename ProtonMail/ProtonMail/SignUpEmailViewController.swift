@@ -51,6 +51,7 @@ class SignUpEmailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         recoveryEmailField.attributedPlaceholder = NSAttributedString(string: "Recovery Email", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        displayNameField.attributedPlaceholder = NSAttributedString(string: "Display Name", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -92,23 +93,25 @@ class SignUpEmailViewController: UIViewController {
         if doneClicked {
             return
         }
-        doneClicked = true;
+        doneClicked = true
         MBProgressHUD.showHUDAddedTo(view, animated: true)
         dismissKeyboard()
         viewModel.setRecovery(checkButton.selected, email: recoveryEmailField.text, displayName: displayNameField.text)
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            MBProgressHUD.hideHUDForView(self.view, animated: true)
+            self.doneClicked = false
             self.moveToInbox()
         })
     }
     
     private func moveToInbox() {
-        if sharedUserDataService.isUserCredentialStored {
+        //if sharedUserDataService.isUserCredentialStored {
             sharedUserDataService.isSignedIn = true
             if let addresses = sharedUserDataService.userInfo?.userAddresses.toPMNAddresses() {
                 sharedOpenPGP.setAddresses(addresses);
             }
             self.loadContent()
-        }
+        //}
     }
     
     private func loadContent() {

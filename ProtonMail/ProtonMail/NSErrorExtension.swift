@@ -42,7 +42,6 @@ extension NSError {
         if let subdomain = subdomain {
             domain += ".\(subdomain)"
         }
-        
         return domain
     }
     

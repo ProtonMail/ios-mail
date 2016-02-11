@@ -47,7 +47,6 @@ class MenuViewController: UIViewController {
     private var lastSegue: String = "toMailboxSegue"
     private var lastMenuItem: MenuItem = MenuItem.inbox
     
-    
     // private data
     
     required init(coder aDecoder: NSCoder) {

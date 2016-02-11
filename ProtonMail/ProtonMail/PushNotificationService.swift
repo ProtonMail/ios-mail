@@ -48,9 +48,7 @@ class PushNotificationService {
     
     func unregisterForRemoteNotifications() {
         UIApplication.sharedApplication().unregisterForRemoteNotifications()
-        sharedAPIService.deviceUnregister { (task, response, error) -> Void in
-            
-        }
+        sharedAPIService.deviceUnregister()
     }
     
     
@@ -140,6 +138,7 @@ class PushNotificationService {
     }
     
     func didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: NSData) {
+        sharedAPIService.cleanBadKey(deviceToken)
         sharedAPIService.deviceRegisterWithToken(deviceToken, completion: { (_, _, error) -> Void in
             if let error = error {
                 NSLog("\(__FUNCTION__) error: \(error)")
