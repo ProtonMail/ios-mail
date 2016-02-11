@@ -12,11 +12,11 @@ class EncryptionSetupViewController: UIViewController {
     
     private let kSegueToSignUpVerification = "encryption_to_verification_segue"
     
-    @IBOutlet weak var highBitLevel: UIButton!
-    @IBOutlet weak var normalBitLevel: UIButton!
+    @IBOutlet weak var highBitLevel: UIButton! //low
+    @IBOutlet weak var normalBitLevel: UIButton! //high
     
-    let hight : Int32 = 4096
-    let low : Int32 = 2048
+    let hight : Int32 = 2048
+    let low : Int32 = 4096
     
     
     var viewModel : SignupViewModel!

@@ -96,7 +96,7 @@ public class SignupViewModelImpl : SignupViewModel {
     
     private var lastSendTime : NSDate?
     
-    private var bit : Int32 = 4096
+    private var bit : Int32 = 2048
     
     private var delegate : SignupViewModelDelegate?
     private var verifyType : VerifyCodeType = .email
@@ -159,12 +159,11 @@ public class SignupViewModelImpl : SignupViewModel {
     }
     
     override func generateKey(complete: GenerateKey) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            // do some async stuff
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
             var error: NSError?
             self.newKey = sharedOpenPGP.generateKey(self.mailbox, userName: self.userName, domain: self.domain, bits: self.bit, error: &error)
-
             NSOperationQueue.mainQueue().addOperationWithBlock {
+                // do some async stuff
                 if error == nil {
                     complete(true, nil, nil)
                 } else {
