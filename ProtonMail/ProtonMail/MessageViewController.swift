@@ -19,7 +19,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             message.fetchDetailIfNeeded() { _, _, msg, error in
                 if error != nil {
                     NSLog("\(__FUNCTION__) error: \(error)")
-                    self.updateEmailBodyWithError(error?.localizedDescription ?? "Unknow error .")
+                    self.updateEmailBodyWithError("Can't download message body, please try again.")
                 }
                 else
                 {
