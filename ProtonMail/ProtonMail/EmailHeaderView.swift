@@ -1097,7 +1097,6 @@ class EmailHeaderView: UIView {
 }
 
 
-
 extension EmailHeaderView: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

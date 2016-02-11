@@ -17,9 +17,10 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     @IBOutlet weak var warningLabel: UILabel!
     @IBOutlet weak var warningIcon: UIImageView!
     
-    @IBOutlet weak var titleOneLabel: UILabel!
     @IBOutlet weak var titleTwoLabel: UILabel!
     
+    @IBOutlet weak var sendCodeButton: UIButton!
+    @IBOutlet weak var continueButton: UIButton!
     
     //define
     private let hidePriority : UILayoutPriority = 1.0;
@@ -39,6 +40,8 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     var viewModel : SignupViewModel!
     private var doneClicked : Bool = false
     
+    private var timer : NSTimer!
+    
     func configConstraint(show : Bool) -> Void {
         let level = show ? showPriority : hidePriority
         
@@ -49,15 +52,15 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
         
         userNameTopPaddingConstraint.priority = level
         
-        titleOneLabel.hidden = show
         titleTwoLabel.hidden = show
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        resetChecking()
         emailTextField.attributedPlaceholder = NSAttributedString(string: "Email address", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
         verifyCodeTextField.attributedPlaceholder = NSAttributedString(string: "Enter Verification Code", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        
+        self.updateButtonStatus()
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -68,8 +71,9 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
         NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
-        
         self.viewModel.setDelegate(self)
+        //register timer
+        self.startAutoFetch()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -79,8 +83,9 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
-        
         self.viewModel.setDelegate(nil)
+        //unregister timer
+        self.stopAutoFetch()
     }
     
     override func didReceiveMemoryWarning() {
@@ -92,6 +97,31 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
         verifyCodeTextField.text = code
     }
     
+    private func startAutoFetch()
+    {
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "countDown", userInfo: nil, repeats: true)
+        self.timer.fire()
+    }
+    private func stopAutoFetch()
+    {
+        if self.timer != nil {
+            self.timer.invalidate()
+            self.timer = nil
+        }
+    }
+    
+    func countDown() {
+        let count = self.viewModel.getTimerSet()
+        UIView.performWithoutAnimation { () -> Void in
+            if count != 0 {
+                self.sendCodeButton.setTitle("Retry after \(count) seconds", forState: UIControlState.Normal)
+            } else {
+                self.sendCodeButton.setTitle("Send Verification Code", forState: UIControlState.Normal)
+            }
+            self.sendCodeButton.layoutIfNeeded()
+        }
+        updateButtonStatus()
+    }
     
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -107,36 +137,6 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
         self.navigationController?.popViewControllerAnimated(true)
     }
     
-    func startChecking() {
-        warningView.hidden = false
-        warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
-        warningLabel.text = "Checking ...."
-        warningIcon.hidden = true;
-    }
-    
-    func resetChecking() {
-        checkUserStatus = false
-        warningView.hidden = true
-        warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
-        warningLabel.text = ""
-        warningIcon.hidden = true;
-    }
-    
-    func finishChecking(isOk : Bool) {
-        if isOk {
-            checkUserStatus = true
-            warningView.hidden = false
-            warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
-            warningLabel.text = "UserName is avliable!"
-            warningIcon.hidden = false;
-        } else {
-            warningView.hidden = false
-            warningLabel.textColor = UIColor.redColor()
-            warningLabel.text = "UserName not avliable!"
-            warningIcon.hidden = true;
-        }
-    }
-    
     @IBAction func sendCodeAction(sender: UIButton) {
         let emailaddress = emailTextField.text
         MBProgressHUD.showHUDAddedTo(view, animated: true)
@@ -144,11 +144,20 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
         self.viewModel.sendVerifyCode { (isOK, error) -> Void in
             MBProgressHUD.hideHUDForView(self.view, animated: true)
             if !isOK {
-                let alert = error!.alertController()
+                var alert :  UIAlertController!
+                var title = "Verification code request failed"
+                var message = ""
+                if error?.code == 12201 { //USER_CODE_EMAIL_INVALID = 12201
+                    title = "Email address invalid"
+                    message = "Please input a valid email address."
+                } else {
+                    message = error!.localizedDescription
+                }
+                alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
                 alert.addOKAction()
                 self.presentViewController(alert, animated: true, completion: nil)
             } else {
-                let alert = "Please check you email!".alertController()
+                let alert = UIAlertController(title: "Verification code sent", message: "Please check your email for the verification code.", preferredStyle: .Alert)
                 alert.addOKAction()
                 self.presentViewController(alert, animated: true, completion: nil)
             }
@@ -171,7 +180,31 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
                 MBProgressHUD.hideHUDForView(self.view, animated: true)
                 self.doneClicked = false
                 if !message.isEmpty {
-                    let alert = message.alertController()
+                    var alert :  UIAlertController!
+                    var title = "Create user failed"
+                    var message = ""
+                    if error?.code == 12081 { //USER_CREATE_NAME_INVALID = 12081
+                        title = "User name invalid"
+                        message = "Please try a different user name."
+                    } else if error?.code == 12082 { //USER_CREATE_PWD_INVALID = 12082
+                        title = "Account password invalid"
+                        message = "Please try a different password."
+                    } else if error?.code == 12083 { //USER_CREATE_EMAIL_INVALID = 12083
+                        title = "The verification email invalid"
+                        message = "Please try a different email address."
+                    } else if error?.code == 12084 { //USER_CREATE_EXISTS = 12084
+                        title = "User name exist"
+                        message = "Please try a different user name."
+                    } else if error?.code == 12085 { //USER_CREATE_DOMAIN_INVALID = 12085
+                        title = "Email domain invalid"
+                        message = "Please try a different domain."
+                    } else if error?.code == 12087 { //USER_CREATE_TOKEN_INVALID = 12087
+                        title = "Wrong verification code"
+                        message = "Please try again."
+                    } else {
+                        message = error!.localizedDescription
+                    }
+                    alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
                     alert.addOKAction()
                     self.presentViewController(alert, animated: true, completion: nil)
                 } else {
@@ -181,12 +214,12 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
                         })
                     }
                 }
-                
             }
         })
     }
     
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
+        updateButtonStatus()
         dismissKeyboard()
     }
     func dismissKeyboard() {
@@ -199,7 +232,41 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     }
     
     @IBAction func editingChanged(sender: AnyObject) {
-        resetChecking()
+        updateButtonStatus();
+    }
+    
+    func updateButtonStatus() {
+        let emailaddress = emailTextField.text
+        //need add timer
+        if emailaddress.isEmpty || self.viewModel.getTimerSet() > 0 {
+            sendCodeButton.enabled = false
+        } else {
+            sendCodeButton.enabled = true
+        }
+        
+        let verifyCode = verifyCodeTextField.text
+        if verifyCode.isEmpty {
+            continueButton.enabled = false
+        } else {
+            continueButton.enabled = true
+        }
+    }
+}
+
+// MARK: - UITextFieldDelegatesf
+extension EmailVerifyViewController: UITextFieldDelegate {
+    func textFieldShouldClear(textField: UITextField) -> Bool {
+        return true
+    }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        return true
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        updateButtonStatus()
+        dismissKeyboard()
+        return true
     }
 }
 

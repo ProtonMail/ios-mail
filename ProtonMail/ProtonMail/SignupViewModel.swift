@@ -43,7 +43,11 @@ public class SignupViewModel : NSObject {
         fatalError("This method must be overridden")
     }
     
-    func setRecovery(receiveNews:Bool, email : String) {
+    func generateKey(complete : GenerateKey) {
+        fatalError("This method must be overridden")
+    }
+    
+    func setRecovery(receiveNews:Bool, email : String, displayName : String) {
         fatalError("This method must be overridden")
     }
     
@@ -62,6 +66,18 @@ public class SignupViewModel : NSObject {
     func setVerifyCode(code : String ) {
         fatalError("This method must be overridden")
     }
+    
+    func getTimerSet () -> Int {
+        fatalError("This method must be overridden")
+    }
+    
+    func getCurrentBit() -> Int32 {
+        fatalError("This method must be overridden")
+    }
+    
+    func setBit(bit: Int32) {
+        fatalError("This method must be overridden")
+    }
 }
 
 public class SignupViewModelImpl : SignupViewModel {
@@ -76,6 +92,11 @@ public class SignupViewModelImpl : SignupViewModel {
     private var login : String = ""
     private var mailbox : String = "";
     private var agreePolicy : Bool = false
+    private var displayName : String = ""
+    
+    private var lastSendTime : NSDate?
+    
+    private var bit : Int32 = 2048
     
     private var delegate : SignupViewModelDelegate?
     private var verifyType : VerifyCodeType = .email
@@ -108,6 +129,14 @@ public class SignupViewModelImpl : SignupViewModel {
         }
     }
     
+    override func getCurrentBit() -> Int32 {
+        return self.bit
+    }
+    
+    override func setBit(bit: Int32) {
+        self.bit = bit
+    }
+    
     override func setRecaptchaToken(token: String, isExpired: Bool) {
         self.token = token
         self.isExpired = isExpired
@@ -129,10 +158,25 @@ public class SignupViewModelImpl : SignupViewModel {
         self.verifyType = .email
     }
     
+    override func generateKey(complete: GenerateKey) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
+            var error: NSError?
+            self.newKey = sharedOpenPGP.generateKey(self.mailbox, userName: self.userName, domain: self.domain, bits: self.bit, error: &error)
+            NSOperationQueue.mainQueue().addOperationWithBlock {
+                // do some async stuff
+                if error == nil {
+                    complete(true, nil, nil)
+                } else {
+                    complete(false, "Key generation failed please try again", error);
+                }
+            }
+        }
+    }
+    
     override func createNewUser(complete: CreateUserBlock) {
         //validation here
         var error: NSError?
-        if let key = sharedOpenPGP.generateKey(self.mailbox, userName: self.userName, domain: self.domain, error: &error) {
+        if let key = self.newKey { // sharedOpenPGP.generateKey(self.mailbox, userName: self.userName, domain: self.domain, bits: 4096, error: &error) {
             let api = CreateNewUserRequest<ApiResponse>(token: self.token, type: self.verifyType.toString, username: self.userName, password: self.login, email: self.recoverEmail, domain: self.domain, news: self.news, publicKey: key.publicKey, privateKey: key.privateKey)
             api.call({ (task, response, hasError) -> Void in
                 if !hasError {
@@ -168,25 +212,42 @@ public class SignupViewModelImpl : SignupViewModel {
                 }
             })
         } else {
-            complete(false, false, "Key generation failed please try again", nil);
+            complete(false, false, "Key invalid please go back try again", nil);
         }
     }
     
     override func sendVerifyCode(complete: SendVerificationCodeBlock!) {
         let api = VerificationCodeRequest(userName: self.userName, emailAddress: codeEmail, type: .email)
         api.call { (task, response, hasError) -> Void in
+            if !hasError {
+                self.lastSendTime = NSDate()
+            }
             complete(!hasError, response?.error)
         }
     }
     
-    override func setRecovery(receiveNews: Bool, email: String) {
+    override func setRecovery(receiveNews: Bool, email: String, displayName : String) {
         self.recoverEmail = email
         self.news = receiveNews
+        self.displayName = displayName
+        
+        if !self.displayName.isEmpty {
+            sharedUserDataService.updateDisplayName(displayName) { _, error in
+                if let error = error {
+                    //complete(false, error)
+                } else {
+                    //complete(true, nil)
+                }
+            }
+        }
         
         if !self.recoverEmail.isEmpty {
-            let emailApi = UpdateNotificationEmail(password: self.login, notificationEmail: self.recoverEmail)
-            emailApi.call { (task, response, hasError) -> Void in
-                
+            sharedUserDataService.updateNotificationEmail(recoverEmail) { _, _, error in
+                if let error = error {
+                    //complete(false, error)
+                } else {
+                    //complete(true, nil)
+                }
             }
         }
         
@@ -211,5 +272,20 @@ public class SignupViewModelImpl : SignupViewModel {
     
     override func setAgreePolicy(isAgree: Bool) {
         self.agreePolicy = isAgree;
+    }
+    
+    private var count : Int = 10;
+    override func getTimerSet() -> Int {
+        if let lastTime = lastSendTime {
+            let currentDate = NSDate()
+            let time = NSDate().timeIntervalSinceDate(lastTime)
+            let newCount = 120 - Int(time);
+            if newCount <= 0 {
+                lastSendTime = nil
+            }
+            return newCount > 0 ? newCount : 0;
+        } else {
+            return 0
+        }
     }
 }

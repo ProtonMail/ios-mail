@@ -416,10 +416,10 @@ class MessageDataService {
                         NSLog("\(__FUNCTION__) unknown type in contact: \(contact)")
                     }
                 }
-            }
-            error = context.saveUpstreamIfNeeded()
-            if error != nil  {
-                NSLog("\(__FUNCTION__) error: \(error)")
+                error = context.saveUpstreamIfNeeded()
+                if error != nil  {
+                    NSLog("\(__FUNCTION__) error: \(error)")
+                }
             }
         }
     }
@@ -1313,7 +1313,7 @@ class MessageDataService {
                         completion?(task: task, response: response, error: error)
                     }
                     
-                    sharedAPIService.upload( AppConstants.BaseURLString + "/attachments/upload", parameters: params, keyPackets: keyPacket, dataPacket: dataPacket, completion: completionWrapper)
+                    sharedAPIService.upload( AppConstants.BaseURLString + AppConstants.BaseAPIPath + "/attachments/upload", parameters: params, keyPackets: keyPacket, dataPacket: dataPacket, completion: completionWrapper)
                     
                     return
                 }
@@ -1344,7 +1344,7 @@ class MessageDataService {
 //                }
                 completion?(task: task, response: nil, error: nil)
             })
-            //sharedAPIService.upload( AppConstants.BaseURLString + "/attachments/upload", parameters: params, keyPackets: keyPacket, dataPacket: dataPacket, completion: completionWrapper)
+            //sharedAPIService.upload( AppConstants.BaseURLString + AppConstants.BaseAPIPath + "/attachments/upload", parameters: params, keyPackets: keyPacket, dataPacket: dataPacket, completion: completionWrapper)
             return
         }
         
@@ -1513,7 +1513,7 @@ class MessageDataService {
     // MARK: Notifications
     
     private func setupNotifications() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didSignOutNotification:", name: UserDataService.Notification.didSignOut, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didSignOutNotification:", name: NotificationDefined.didSignOut, object: nil)
         
         // TODO: add monitoring for didBecomeActive
         
@@ -1612,7 +1612,9 @@ class MessageDataService {
         if action == .saveDraft || action == .send {
             sharedMessageQueue.addMessage(message.objectID.URIRepresentation().absoluteString!, action: action)
         } else {
-            sharedMessageQueue.addMessage(message.messageID, action: action)
+            if message.managedObjectContext != nil && !message.messageID.isEmpty {
+                sharedMessageQueue.addMessage(message.messageID, action: action)
+            }
         }
         dequeueIfNeeded()
     }

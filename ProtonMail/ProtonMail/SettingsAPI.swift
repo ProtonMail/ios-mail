@@ -123,6 +123,32 @@ public class UpdateNewsRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
+//MARK : update display name 
+public class UpdateDisplayNameRequest<T : ApiResponse> : ApiRequest<T> {
+    let displayName : String!
+    
+    init(displayName: String) {
+        self.displayName = displayName
+    }
+    
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+        var out : [String : AnyObject] = ["DisplayName" : displayName]
+        return out
+    }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .PUT
+    }
+    
+    override public func getRequestPath() -> String {
+        return SettingsAPI.Path + "/display" + AppConstants.getDebugOption
+    }
+    
+    override public func getVersion() -> Int {
+        return SettingsAPI.V_SettingsUpdateDisplayNameRequest
+    }
+}
+
 // MARK : update left swipe action
 public class UpdateSwiftLeftAction<T : ApiResponse> : ApiRequest<T> {
     let newAction : MessageSwipeAction!

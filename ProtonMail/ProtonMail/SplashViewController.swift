@@ -23,8 +23,10 @@ class SplashViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //if sharedUserDataService.isUserCredentialStored {
-            self.performSegueWithIdentifier(kSegueToSignInWithNoAnimation, sender: self)
+        //    self.performSegueWithIdentifier(kSegueToSignInWithNoAnimation, sender: self)
         //}
+        
+        userCachedStatus.resetSplashCache()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -47,7 +49,8 @@ class SplashViewController: UIViewController {
     }
     
     @IBAction func signInAction(sender: UIButton) {
-        self.performSegueWithIdentifier(kSegueToSignIn, sender: self)
+        self.navigationController?.popViewControllerAnimated(true)
+        //self.performSegueWithIdentifier(kSegueToSignIn, sender: self)
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

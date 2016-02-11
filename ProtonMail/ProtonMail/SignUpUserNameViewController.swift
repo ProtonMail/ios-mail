@@ -18,6 +18,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     @IBOutlet weak var warningIcon: UIImageView!
     
     @IBOutlet weak var agreeCheck: UIButton!
+    @IBOutlet weak var createAccountButton: UIButton!
     
     //define
     private let hidePriority : UILayoutPriority = 1.0;
@@ -33,8 +34,6 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var webViewHeightConstraint: NSLayoutConstraint!
-    
     let domains : [String] = ["protonmail.com", "protonmail.ch"]
     var selected : Int = 0;
     
@@ -46,6 +45,8 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     private var checkUserStatus : Bool = false
     private var stopLoading : Bool = false
     private var agreePolicy : Bool = true
+    private var moveAfterCheck : Bool = false
+    
     var viewModel : SignupViewModel!
     
     func configConstraint(show : Bool) -> Void {
@@ -125,7 +126,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         warningView.hidden = true
         warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
         warningLabel.text = ""
-        warningIcon.hidden = true;
+        warningIcon.hidden = true
     }
     
     func finishChecking(isOk : Bool) {
@@ -133,43 +134,49 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
             checkUserStatus = true
             warningView.hidden = false
             warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
-            warningLabel.text = "UserName is avliable!"
-            warningIcon.hidden = false;
+            warningLabel.text = "User is available!"
+            warningIcon.hidden = false
         } else {
             warningView.hidden = false
             warningLabel.textColor = UIColor.redColor()
-            warningLabel.text = "UserName not avliable!"
-            warningIcon.hidden = true;
+            warningLabel.text = "User already exist!"
+            warningIcon.hidden = true
         }
     }
     
     @IBAction func createAccountAction(sender: UIButton) {
         dismissKeyboard()
+        MBProgressHUD.showHUDAddedTo(view, animated: true)
         if agreePolicy {
             if checkUserStatus {
+                MBProgressHUD.hideHUDForView(view, animated: true)
                 self.goPasswordsView()
             } else {
                 let userName = usernameTextField.text
                 if !userName.isEmpty {
                     startChecking()
                     viewModel.checkUserName(userName, complete: { (isOk, error) -> Void in
+                        MBProgressHUD.hideHUDForView(self.view, animated: true)
                         if error != nil {
                             self.finishChecking(false)
                         } else {
                             if isOk {
                                 self.finishChecking(true)
+                                self.goPasswordsView()
                             } else {
                                 self.finishChecking(false)
                             }
                         }
                     })
                 } else {
-                    let alert = "The UserName can't empty!".alertController()
+                    MBProgressHUD.hideHUDForView(view, animated: true)
+                    let alert = "Please pick a user name first!".alertController()
                     alert.addOKAction()
                     self.presentViewController(alert, animated: true, completion: nil)
                 }
             }
         } else {
+            MBProgressHUD.hideHUDForView(view, animated: true)
             let alert = "In order to use our services, you must agree to ProtonMail's Terms of Service.".alertController()
             alert.addOKAction()
             self.presentViewController(alert, animated: true, completion: nil)
@@ -275,6 +282,10 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     }
     
     @IBAction func editEnd(sender: UITextField) {
+        checkUserName();
+    }
+    
+    func checkUserName() {
         if !stopLoading {
             if !checkUserStatus {
                 let userName = usernameTextField.text
@@ -298,6 +309,10 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         }
     }
     
+    func updateCreateButton() {
+        
+    }
+    
     @IBAction func editingChanged(sender: AnyObject) {
         resetChecking()
     }
@@ -311,7 +326,23 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         dismissKeyboard()
         UIApplication.sharedApplication().openURL(policyURL)
     }
+}
+
+// MARK: - UITextFieldDelegatesf
+extension SignUpUserNameViewController: UITextFieldDelegate {
+    func textFieldShouldClear(textField: UITextField) -> Bool {
+        return true
+    }
     
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        return true
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        dismissKeyboard()
+        checkUserName();
+        return true
+    }
 }
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol

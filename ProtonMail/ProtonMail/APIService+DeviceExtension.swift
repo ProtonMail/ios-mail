@@ -26,7 +26,8 @@ extension APIService {
     func deviceRegisterWithToken(token: NSData, completion: CompletionBlock?) {
         let tokenString = stringFromToken(token)
         deviceToken = tokenString
-        
+        deviceUID = deviceID
+        PMLog.D("\(tokenString)")
         //UIApplication.sharedApplication().release
         
         // 1 : ios dev
@@ -68,18 +69,60 @@ extension APIService {
         ]
         
         setApiVesion(1, appVersion: 1)
-        request(method: .POST, path: DevicePath.basePath, parameters: parameters, completion: completion)
+        request(method: .POST, path: AppConstants.BaseAPIPath + DevicePath.basePath, parameters: parameters, completion: completion)
     }
     
-    func deviceUnregister(completion: CompletionBlock? = nil) {
-        if let deviceToken = deviceToken {
+    func deviceUnregister() {
+        if !deviceToken.isEmpty {
             let parameters = [
-                "device_uid": deviceID,
-                "device_token": deviceToken
+                "DeviceUID": deviceUID,
+                "DeviceToken": deviceToken
+            ]
+            let completionWrapper: CompletionBlock = {task, response, error in
+                if error != nil {
+                    PMLog.D("\(error)")
+                    self.badToken = self.deviceToken
+                    self.badUID = self.deviceUID
+                } else {
+                    PMLog.D("\(response)")
+                    self.deviceUID = ""
+                    self.deviceToken = ""
+                }
+            }
+            setApiVesion(1, appVersion: 1)
+            request(method: HTTPMethod.POST, path: AppConstants.BaseAPIPath + DevicePath.basePath + "/delete", parameters: parameters, completion: completionWrapper)
+        }
+    }
+    
+    func cleanBadKey(newToken : NSData) {
+        let newTokenString = stringFromToken(newToken)
+        if !self.deviceToken.isEmpty {
+            if deviceUID != deviceID || newTokenString != deviceToken {
+                let parameters = [
+                    "DeviceUID": deviceUID,
+                    "DeviceToken": deviceToken
+                ]
+                
+                let completionWrapper: CompletionBlock = {task, response, error in
+                }
+                setApiVesion(1, appVersion: 1)
+                request(method: HTTPMethod.POST, path: AppConstants.BaseAPIPath + DevicePath.basePath + "/delete", parameters: parameters, completion: completionWrapper)
+            }
+        }
+        
+        if !badUID.isEmpty || !badToken.isEmpty {
+            let parameters = [
+                "DeviceUID": badUID,
+                "DeviceToken": badToken
             ]
             
             setApiVesion(1, appVersion: 1)
-            request(method: .DELETE, path: DevicePath.basePath, parameters: parameters, completion: completion)
+            request(method: HTTPMethod.POST, path: AppConstants.BaseAPIPath + DevicePath.basePath + "/delete", parameters: parameters, completion:{ (task, response, error) -> Void in
+                if error == nil {
+                    self.badToken = ""
+                    self.badUID = ""
+                }
+            })
         }
     }
     
@@ -87,18 +130,47 @@ extension APIService {
     
     private struct DeviceKey {
         static let token = "DeviceTokenKey"
+        static let UID = "DeviceUID"
+        
+        static let badToken = "DeviceBadToken"
+        static let badUID = "DeviceBadUID"
     }
     
     private var deviceID: String {
         return UIDevice.currentDevice().identifierForVendor?.UUIDString ?? ""
     }
     
-    private var deviceToken: String? {
+    private var deviceToken: String {
         get {
-            return NSUserDefaults.standardUserDefaults().stringForKey(DeviceKey.token)
+            return NSUserDefaults.standardUserDefaults().stringForKey(DeviceKey.token) ?? ""
         }
         set {
             NSUserDefaults.standardUserDefaults().setValue(newValue, forKey: DeviceKey.token)
+        }
+    }
+    private var deviceUID: String {
+        get {
+            return NSUserDefaults.standardUserDefaults().stringForKey(DeviceKey.UID) ?? ""
+        }
+        set {
+            NSUserDefaults.standardUserDefaults().setValue(newValue, forKey: DeviceKey.UID)
+        }
+    }
+    
+    private var badToken: String {
+        get {
+            return NSUserDefaults.standardUserDefaults().stringForKey(DeviceKey.badToken) ?? ""
+        }
+        set {
+            NSUserDefaults.standardUserDefaults().setValue(newValue, forKey: DeviceKey.badToken)
+        }
+    }
+    private var badUID: String {
+        get {
+            return NSUserDefaults.standardUserDefaults().stringForKey(DeviceKey.badUID) ?? ""
+        }
+        set {
+            NSUserDefaults.standardUserDefaults().setValue(newValue, forKey: DeviceKey.badUID)
         }
     }
     

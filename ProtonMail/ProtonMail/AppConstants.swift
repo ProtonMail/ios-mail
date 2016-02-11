@@ -14,6 +14,8 @@ class AppConstants {
     static let CacheVersion : Int = 71
     static let AuthCacheVersion : Int = 9
     static let SpaceWarningThreshold: Double = 80
+    static let SplashVersion : Int = 1
+    static let TourVersion : Int = 0
     
     static var AppVersion : Int = 1;
     //static let BaseURLString : String = "https://api.protonmail.ch"

@@ -22,14 +22,7 @@ extension APIService {
     private struct SettingPath {
         static let base = AppConstants.BaseAPIPath + "/settings"
     }
-    
-    func settingUpdateDisplayName(displayName: String, completion: CompletionBlock) {
-        let path = SettingPath.base.stringByAppendingPathComponent("display")
-        let parameters = ["DisplayName" : displayName]
-        
-        setApiVesion(1, appVersion: 1)
-        request(method: .PUT, path: path, parameters: parameters, completion: completion)
-    }
+
     
     func settingUpdatePassword(oldPassword: String, newPassword: String, completion: CompletionBlock) {
         let path = SettingPath.base.stringByAppendingPathComponent("password")
