@@ -2750,7 +2750,7 @@
                                 <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BDM-iR-nBU" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="433.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="434"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fFI-kC-Z9Q">
                                                 <rect key="frame" x="0.0" y="0.0" width="100" height="48"/>
@@ -2813,17 +2813,6 @@
                                                 <animations/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
                                                 <color key="textColor" red="0.67843137249999996" green="0.67843137249999996" blue="0.75294117650000003" alpha="1" colorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                                <size key="shadowOffset" width="0.0" height="0.0"/>
-                                                <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
-                                                    <rect key="frame" x="28" y="351" width="344" height="21"/>
-                                                </variation>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="The highest level of encryption available today, Recommended." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LqI-2U-Uzf">
-                                                <rect key="frame" x="0.0" y="-20" width="408" height="17"/>
-                                                <animations/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                                 <size key="shadowOffset" width="0.0" height="0.0"/>
                                                 <variation key="heightClass=regular-widthClass=compact" ambiguous="YES" misplaced="YES">
