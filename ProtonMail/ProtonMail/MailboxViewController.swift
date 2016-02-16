@@ -45,6 +45,7 @@ class MailboxViewController: ProtonMailViewController {
     private let kSegueToMessageDetailController = "toMessageDetailViewController"
     private let kSegueToLabelsController = "toApplyLabelsSegue"
     private let kSegueToMessageDetailFromNotification = "toMessageDetailViewControllerFromNotification"
+    private let kSegueToTour = "to_onboarding_segue"
     
     
     @IBOutlet weak var undoBottomDistance: NSLayoutConstraint!
@@ -116,6 +117,12 @@ class MailboxViewController: ProtonMailViewController {
         self.addConstraints()
         
         self.updateNavigationController(isEditing)
+        
+        userCachedStatus.showTourNextTime()
+        if !userCachedStatus.isTourOk() {
+            self.performSegueWithIdentifier(self.kSegueToTour, sender: self)
+            userCachedStatus.resetTourValue()
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -259,6 +266,10 @@ class MailboxViewController: ProtonMailViewController {
         } else if segue.identifier == kSegueToCompose {
             let composeViewController = segue.destinationViewController.viewControllers![0] as! ComposeEmailViewController
             composeViewController.viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.NewDraft)
+        } else if segue.identifier == kSegueToTour {
+            let popup = segue.destinationViewController as! OnboardingViewController
+            popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }
     

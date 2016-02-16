@@ -53,6 +53,10 @@ class LablesViewController : UIViewController {
         // self.view.addGestureRecognizer(tapGestureRecognizer)
     }
     
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
+    }
+    
     @IBAction func archiveSelectAction(sender: UIButton) {
         archiveMessage = !archiveMessage
         if archiveMessage {

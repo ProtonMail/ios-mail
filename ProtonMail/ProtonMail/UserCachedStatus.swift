@@ -53,6 +53,10 @@ class UserCachedStatus : SharedCacheBase {
         return tourVersion == AppConstants.TourVersion
     }
     
+    func showTourNextTime() {
+        setValue(0, forKey: Key.lastTourViersion)
+    }
+    
     func isCacheOk() -> Bool {
         let cachedVersion = getShared().integerForKey(Key.lastCacheVersion)
         return cachedVersion == AppConstants.CacheVersion
