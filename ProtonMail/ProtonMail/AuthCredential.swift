@@ -115,6 +115,7 @@ class AuthCredential: NSObject, NSCoding {
     }
     
     func storeInKeychain() {
+        userCachedStatus.isForcedLogout = false
         #if DEBUG
             authDebugCached.setObject(NSKeyedArchiver.archivedDataWithRootObject(self), forKey: Key.keychainStore)
         #else
@@ -142,8 +143,9 @@ class AuthCredential: NSObject, NSCoding {
     
     // MARK - Class methods
     class func clearFromKeychain() {
-            authDebugCached.removeObjectForKey(Key.keychainStore)
-            UICKeyChainStore.removeItemForKey(Key.keychainStore)
+        userCachedStatus.isForcedLogout = true
+        authDebugCached.removeObjectForKey(Key.keychainStore)
+        UICKeyChainStore.removeItemForKey(Key.keychainStore)
     }
     
     class func expireOrClear() {

@@ -73,24 +73,26 @@ extension APIService {
     }
     
     func deviceUnregister() {
-        if !deviceToken.isEmpty {
-            let parameters = [
-                "DeviceUID": deviceUID,
-                "DeviceToken": deviceToken
-            ]
-            let completionWrapper: CompletionBlock = {task, response, error in
-                if error != nil {
-                    PMLog.D("\(error)")
-                    self.badToken = self.deviceToken
-                    self.badUID = self.deviceUID
-                } else {
-                    PMLog.D("\(response)")
-                    self.deviceUID = ""
-                    self.deviceToken = ""
+        if !userCachedStatus.isForcedLogout {
+            if !deviceToken.isEmpty {
+                let parameters = [
+                    "DeviceUID": deviceUID,
+                    "DeviceToken": deviceToken
+                ]
+                let completionWrapper: CompletionBlock = {task, response, error in
+                    if error != nil {
+                        PMLog.D("\(error)")
+                        self.badToken = self.deviceToken
+                        self.badUID = self.deviceUID
+                    } else {
+                        PMLog.D("\(response)")
+                        self.deviceUID = ""
+                        self.deviceToken = ""
+                    }
                 }
+                setApiVesion(1, appVersion: 1)
+                request(method: HTTPMethod.POST, path: AppConstants.BaseAPIPath + DevicePath.basePath + "/delete", parameters: parameters, completion: completionWrapper)
             }
-            setApiVesion(1, appVersion: 1)
-            request(method: HTTPMethod.POST, path: AppConstants.BaseAPIPath + DevicePath.basePath + "/delete", parameters: parameters, completion: completionWrapper)
         }
     }
     

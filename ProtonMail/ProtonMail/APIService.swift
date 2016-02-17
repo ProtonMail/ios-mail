@@ -286,11 +286,10 @@ class APIService {
     }
     
     func request(#method: HTTPMethod, path: String, parameters: AnyObject?, authenticated: Bool = true, completion: CompletionBlock?) {
-        
         let authBlock: AuthCredentialBlock = { _, error in
             if error == nil {
                 let (successBlock, failureBlock) = self.afNetworkingBlocksForRequest(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)
-                
+
                 switch(method) {
                 case .DELETE:
                     self.sessionManager.DELETE(path, parameters: parameters, success: successBlock, failure: failureBlock)

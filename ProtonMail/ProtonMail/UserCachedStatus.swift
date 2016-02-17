@@ -32,6 +32,8 @@ class UserCachedStatus : SharedCacheBase {
         
     }
     
+    var isForcedLogout : Bool = false
+    
     var isCheckSpaceDisabled: Bool {
         get {
             return getShared().boolForKey(Key.isCheckSpaceDisabled)
