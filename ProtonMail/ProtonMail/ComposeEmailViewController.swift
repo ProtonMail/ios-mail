@@ -219,7 +219,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
 
     }
     
-    @IBAction func cancel_clicked(sender: AnyObject) {
+    @IBAction func cancel_clicked(sender: UIBarButtonItem) {
         
         self.dismissKeyboard()
         let dismiss: (() -> Void) = {
@@ -245,6 +245,8 @@ class ComposeEmailViewController: ZSSRichTextEditor {
                 dismiss()
             }))
             
+            alertController.popoverPresentationController?.barButtonItem = sender
+            alertController.popoverPresentationController?.sourceRect = self.view.frame
             presentViewController(alertController, animated: true, completion: nil)
         } else {
             dismiss()

@@ -343,6 +343,8 @@ class MailboxViewController: ProtonMailViewController {
                 }
             }
         }
+        alertController.popoverPresentationController?.barButtonItem = moreBarButtonItem
+        alertController.popoverPresentationController?.sourceRect = self.view.frame
         presentViewController(alertController, animated: true, completion: nil)
     }
     

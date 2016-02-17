@@ -189,10 +189,10 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     }
     
     @IBAction func pickDomainName(sender: UIButton) {
-        showPickerInActionSheet()
+        showPickerInActionSheet(sender)
     }
     
-    func showPickerInActionSheet() {
+    func showPickerInActionSheet(sender : UIButton) {
         var title = ""
         var message = "\n\n\n\n\n\n\n\n\n\n";
         var alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.ActionSheet);
@@ -240,7 +240,8 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         alert.view.addSubview(toolView);
         
         picker.selectRow(selected, inComponent: 0, animated: true)
-        
+        alert.popoverPresentationController?.sourceView = sender
+        alert.popoverPresentationController?.sourceRect = sender.bounds
         self.presentViewController(alert, animated: true, completion: nil);
     }
     

@@ -93,7 +93,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     private func setupRightButtons() {
         var rightButtons: [UIBarButtonItem] = []
-        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_more"), style: UIBarButtonItemStyle.Plain, target: self, action: "moreButtonTapped"))
+        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_more"), style: UIBarButtonItemStyle.Plain, target: self, action: "moreButtonTapped:"))
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_trash"), style: UIBarButtonItemStyle.Plain, target: self, action: "removeButtonTapped"))
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_label"), style: UIBarButtonItemStyle.Plain, target: self, action: "labelButtonTapped"))
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_unread"), style: UIBarButtonItemStyle.Plain, target: self, action: "unreadButtonTapped"))
@@ -130,7 +130,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         self.navigationController?.popViewControllerAnimated(true)
     }
     
-    internal func moreButtonTapped() {
+    internal func moreButtonTapped(sender : UIBarButtonItem) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
 
@@ -143,6 +143,8 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
                 }))
             }
         }
+        alertController.popoverPresentationController?.barButtonItem = sender
+        alertController.popoverPresentationController?.sourceRect = self.view.frame
         presentViewController(alertController, animated: true, completion: nil)
     }
 

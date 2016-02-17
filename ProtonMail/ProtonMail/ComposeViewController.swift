@@ -145,7 +145,7 @@ class ComposeViewController : ProtonMailViewController {
     }
     
     // MARK : - View actions
-    @IBAction func cancelClicked(sender: AnyObject) {
+    @IBAction func cancelClicked(sender: UIBarButtonItem) {
         let dismiss: (() -> Void) = {
             if self.viewModel.messageAction == ComposeMessageAction.OpenDraft {
                 self.navigationController?.popViewControllerAnimated(true)
@@ -168,7 +168,8 @@ class ComposeViewController : ProtonMailViewController {
                 self.viewModel.deleteDraft()
                 dismiss()
             }))
-            
+            alertController.popoverPresentationController?.barButtonItem = sender
+            alertController.popoverPresentationController?.sourceRect = self.view.frame
             presentViewController(alertController, animated: true, completion: nil)
         } else {
             dismiss()

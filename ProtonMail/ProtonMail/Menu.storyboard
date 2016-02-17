@@ -3336,12 +3336,12 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="LdN-DE-nXL"/>
-        <segue reference="5rJ-hC-fsT"/>
         <segue reference="fux-iz-qV0"/>
-        <segue reference="hZj-FM-cPb"/>
+        <segue reference="w5b-0j-26v"/>
         <segue reference="ddm-eA-erE"/>
         <segue reference="xUw-S1-zl5"/>
-        <segue reference="pf5-Mm-LDI"/>
+        <segue reference="5rJ-hC-fsT"/>
         <segue reference="A7E-cY-hB0"/>
+        <segue reference="pf5-Mm-LDI"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -385,6 +385,8 @@ class SettingTableViewController: ProtonMailViewController {
                     }))
                 }
             }
+            alertController.popoverPresentationController?.sourceView = self.view
+            alertController.popoverPresentationController?.sourceRect = self.view.frame
             presentViewController(alertController, animated: true, completion: nil)
             
         }  else if setting_headers[indexPath.section] == SettingSections.SwipeAction {
@@ -415,6 +417,8 @@ class SettingTableViewController: ProtonMailViewController {
                         }))
                     }
                 }
+                alertController.popoverPresentationController?.sourceView = self.view
+                alertController.popoverPresentationController?.sourceRect = self.view.frame
                 presentViewController(alertController, animated: true, completion: nil)
             }
         }
