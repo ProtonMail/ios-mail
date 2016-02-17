@@ -1042,25 +1042,21 @@ extension MailboxViewController: UITableViewDelegate {
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        // verify whether the user is checking messages or not
-        if (self.isEditing) {
-            if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+        if let message = self.messageAtIndexPath(indexPath) {
+            if (self.isEditing) {
                 let messageAlreadySelected: Bool = selectedMessages.containsObject(message.messageID)
-                
                 if (messageAlreadySelected) {
                     selectedMessages.removeObject(message.messageID)
                 } else {
                     selectedMessages.addObject(message.messageID)
                 }
-                
                 // update checkbox state
                 if let mailboxCell: MailboxMessageCell = tableView.cellForRowAtIndexPath(indexPath) as? MailboxMessageCell {
                     mailboxCell.setCellIsChecked(!messageAlreadySelected)
                 }
-            }
-            tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        } else {
-            if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+                
+                tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            } else {
                 self.indexPathForSelectedRow = indexPath
                 performSegueForMessage(message)
             }
