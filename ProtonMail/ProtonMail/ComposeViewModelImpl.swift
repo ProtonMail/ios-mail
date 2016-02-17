@@ -14,23 +14,28 @@ public class ComposeViewModelImpl : ComposeViewModel {
     init(msg: Message?, action : ComposeMessageAction!) {
         super.init()
         userAddress = sharedUserDataService.userAddresses
+        
         if msg == nil || msg?.location == MessageLocation.draft {
             self.message = msg
         }
         else
         {
-            self.message = msg?.copyMessage(action == ComposeMessageAction.Forward)
-            self.message?.action = action.rawValue
-            if action == ComposeMessageAction.Reply || action == ComposeMessageAction.ReplyAll {
-                if let title = self.message?.title {
-                    if !title.hasRe() {
-                        self.message?.title = "Re: \(title)"
+            if msg?.managedObjectContext == nil {
+                self.message = nil
+            } else {
+                self.message = msg?.copyMessage(action == ComposeMessageAction.Forward)
+                self.message?.action = action.rawValue
+                if action == ComposeMessageAction.Reply || action == ComposeMessageAction.ReplyAll {
+                    if let title = self.message?.title {
+                        if !title.hasRe() {
+                            self.message?.title = "Re: \(title)"
+                        }
                     }
-                }
-            } else if action == ComposeMessageAction.Forward {
-                if let title = self.message?.title {
-                    if !title.hasFwd() {
-                        self.message?.title = "Fwd: \(title)"
+                } else if action == ComposeMessageAction.Forward {
+                    if let title = self.message?.title {
+                        if !title.hasFwd() {
+                            self.message?.title = "Fwd: \(title)"
+                        }
                     }
                 }
             }
