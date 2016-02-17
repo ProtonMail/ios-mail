@@ -385,8 +385,10 @@ class SettingTableViewController: ProtonMailViewController {
                     }))
                 }
             }
-            alertController.popoverPresentationController?.sourceView = self.view
-            alertController.popoverPresentationController?.sourceRect = self.view.frame
+            
+            let cell = tableView.cellForRowAtIndexPath(indexPath)
+            alertController.popoverPresentationController?.sourceView = cell ?? self.view
+            alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
             presentViewController(alertController, animated: true, completion: nil)
             
         }  else if setting_headers[indexPath.section] == SettingSections.SwipeAction {
@@ -417,8 +419,9 @@ class SettingTableViewController: ProtonMailViewController {
                         }))
                     }
                 }
-                alertController.popoverPresentationController?.sourceView = self.view
-                alertController.popoverPresentationController?.sourceRect = self.view.frame
+                let cell = tableView.cellForRowAtIndexPath(indexPath)
+                alertController.popoverPresentationController?.sourceView = cell ?? self.view
+                alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
                 presentViewController(alertController, animated: true, completion: nil)
             }
         }
