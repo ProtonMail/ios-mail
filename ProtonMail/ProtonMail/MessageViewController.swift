@@ -109,7 +109,9 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     internal func removeButtonTapped() {
         switch(message.location) {
         case .trash, .spam:
-            self.messagesSetValue(setValue: MessageLocation.deleted.rawValue, forKey: Message.Attributes.locationNumber)
+            if self.message.managedObjectContext != nil {
+                self.messagesSetValue(setValue: MessageLocation.deleted.rawValue, forKey: Message.Attributes.locationNumber)
+            }
         default:
             self.messagesSetValue(setValue: MessageLocation.trash.rawValue, forKey: Message.Attributes.locationNumber)
         }
