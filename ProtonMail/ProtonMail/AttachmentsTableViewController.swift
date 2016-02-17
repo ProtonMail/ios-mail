@@ -69,7 +69,7 @@ class AttachmentsTableViewController: UITableViewController {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
-    @IBAction func addAction(sender: AnyObject) {
+    @IBAction func addAction(sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Photo Library"), style: UIAlertActionStyle.Default, handler: { (action) -> Void in
@@ -87,7 +87,8 @@ class AttachmentsTableViewController: UITableViewController {
                 self.presentViewController(picker, animated: true, completion: nil)
             }
         }))
-        
+        alertController.popoverPresentationController?.barButtonItem = sender
+        alertController.popoverPresentationController?.sourceRect = self.view.frame
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: UIAlertActionStyle.Cancel, handler: nil))
         
         presentViewController(alertController, animated: true, completion: nil)

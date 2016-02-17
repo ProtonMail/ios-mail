@@ -191,7 +191,8 @@ extension MessageDetailViewController: MessageDetailViewDelegate {
                 self.navigationController?.popViewControllerAnimated(true)
             }))
         }
-
+        alertController.popoverPresentationController?.sourceView = self.view
+        alertController.popoverPresentationController?.sourceRect = self.view.frame
         presentViewController(alertController, animated: true, completion: nil)
     }
     

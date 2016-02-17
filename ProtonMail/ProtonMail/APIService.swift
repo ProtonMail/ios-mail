@@ -186,37 +186,13 @@ class APIService {
                 }
             }
         } else {
-            
+            AuthCredential.clearFromKeychain()
             if sharedUserDataService.isSignedIn {
                 completion(nil, NSError.authCacheBad())
                 sharedUserDataService.signOut(true)
                 userCachedStatus.signOut()
                 NSError.alertBadTokenToast()
             }
-            //            let username = sharedUserDataService.username ?? ""
-            //            let password = sharedUserDataService.password ?? ""
-            //
-            //            let completionWrapper: AuthCredentialBlock = { authCredential, error in
-            //                if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.credentialInvalid {
-            //                    sharedUserDataService.signOut(true)
-            //                    userCachedStatus.signOut()
-            //                }
-            //            }
-            //
-            //            let authApi = AuthRequest<AuthResponse>(username: username, password: password)
-            //            authApi.call() { task, res , hasError in
-            //                if hasError {
-            //                    completionWrapper(nil, res?.error)
-            //                }
-            //                else if res?.code == 1000 {
-            //                    let credential = AuthCredential(res: res)
-            //                    credential.storeInKeychain()
-            //                    completionWrapper(credential, nil)
-            //                }
-            //                else {
-            //                    completionWrapper(nil, nil)
-            //                }
-            //            }
         }
     }
     
@@ -286,11 +262,10 @@ class APIService {
     }
     
     func request(#method: HTTPMethod, path: String, parameters: AnyObject?, authenticated: Bool = true, completion: CompletionBlock?) {
-        
         let authBlock: AuthCredentialBlock = { _, error in
             if error == nil {
                 let (successBlock, failureBlock) = self.afNetworkingBlocksForRequest(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)
-                
+
                 switch(method) {
                 case .DELETE:
                     self.sessionManager.DELETE(path, parameters: parameters, success: successBlock, failure: failureBlock)
