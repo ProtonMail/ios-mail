@@ -53,7 +53,7 @@ public class AuthRequest<T : ApiResponse> : ApiRequest<T> {
             AuthKey.grantType : "password",
             AuthKey.redirectUrl : Constants.rediectURL,
             AuthKey.state : "\(NSUUID().UUIDString)",
-            AuthKey.scope : "full"
+            //AuthKey.scope : "full"
         ]
     
         PMLog.D(self.JSONStringify(out, prettyPrinted: true))

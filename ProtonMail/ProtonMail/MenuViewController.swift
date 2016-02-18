@@ -47,7 +47,6 @@ class MenuViewController: UIViewController {
     private var lastSegue: String = "toMailboxSegue"
     private var lastMenuItem: MenuItem = MenuItem.inbox
     
-    
     // private data
     
     required init(coder aDecoder: NSCoder) {
@@ -146,13 +145,15 @@ class MenuViewController: UIViewController {
         return UIStatusBarStyle.LightContent
     }
     
-    func handleSignOut() {
+    func handleSignOut(sender : UIView?) {
         let alertController = UIAlertController(title: NSLocalizedString("Confirm"), message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Sign Out"), style: .Destructive, handler: { (action) -> Void in
             self.signingOut = true
             sharedUserDataService.signOut(true)
             userCachedStatus.signOut()
         }))
+        alertController.popoverPresentationController?.sourceView = sender ?? self.view
+        alertController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.bounds)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
         presentViewController(alertController, animated: true, completion: nil)
     }
@@ -197,7 +198,8 @@ extension MenuViewController: UITableViewDelegate {
             let item = otherItems[indexPath.row]
             if item == .signout {
                 tableView.deselectRowAtIndexPath(indexPath, animated: true)
-                self.handleSignOut()
+                let cell = tableView.cellForRowAtIndexPath(indexPath)
+                self.handleSignOut(cell)
             } else if item == .settings {
                 self.performSegueWithIdentifier(kSegueToSettings, sender: indexPath);
             } else if item == .bugs {

@@ -228,6 +228,93 @@ extension String {
         return self
     }
     
+    func preg_replace (partten: String, replaceto:String) -> String {
+        var options = NSRegularExpressionOptions.allZeros
+        options |= NSRegularExpressionOptions.CaseInsensitive
+        options |= NSRegularExpressionOptions.DotMatchesLineSeparators
+        
+        var error:NSError?
+        if let regex = NSRegularExpression(pattern: partten, options:options, error:&error) {
+            if error == nil {
+                let replacedString = regex.stringByReplacingMatchesInString(self, options: nil, range: NSRange(location: 0, length: count(self)), withTemplate: replaceto)
+                if !replacedString.isEmpty && count(replacedString) > 0 {
+                    return replacedString;
+                }
+            }
+        }
+        return self
+    }
+    
+    func stringByPurifyHTML() -> String {
+        var out = self.preg_replace("<script(.*?)<\\/script>", replaceto: "")
+        //out = out.preg_replace("<(script.*?)>(.*?)<(\\/script.*?)>", replaceto: "")
+        out = out.preg_replace("<(\\/?script.*?)>", replaceto: "")
+        
+        //out = out.4preg_replace("<(\\/?meta.*?)>", replaceto: "");
+        //out = out.preg_replace("<(object.*?)>(.*?)<(\\/object.*?)>", replaceto: "");
+        //out = out.preg_replace("<(\\/?objec.*?)>", replaceto: "");
+        
+        //remove inline style optinal later
+        //out = out.preg_replace("(<[a-z ]*)(style=(\"|\')(.*?)(\"|\'))([a-z ]*>)", replaceto: "");
+        //out = out.preg_replace("<(\\/?link.*?)>", replaceto: "");
+        
+        //out = out.preg_replace("<iframe(.*?)<\\/iframe>", replaceto: "");
+        //out = out.preg_replace("<style(.*?)<\\/style>", replaceto: "");
+        //out = out.preg_replace("\\s+", replaceto:" ")
+        //out = out.preg_replace("<[ ]+", replaceto:"<")
+        //out = out.preg_replace("<(style.*?)>(.*?)<(\\/style.*?)>", replaceto: "");
+        //out = out.preg_replace("<(\\/?style.*?)>", replaceto: "");
+//        out = out.preg_replace("javascript", replaceto: "Javascript")
+//        out = out.preg_replace("vbscript", replaceto: "Vbscript")
+//        out = out.preg_replace("&#", replaceto: "&＃")
+//        out = out.preg_replace("<(noframes.*?)>(.*?)<(\\/noframes.*?)>", replaceto: "")
+//        out = out.preg_replace("<(\\/?noframes.*?)>", replaceto: "")
+//        out = out.preg_replace("<(i?frame.*?)>(.*?)<(\\/i?frame.*?)>", replaceto: "")
+//        out = out.preg_replace("<(\\/?i?frame.*?)>", replaceto: "")
+        
+        //optional later
+//        out = out.preg_replace("<video(.*?)<\\/video>", replaceto: "")
+//        out = out.preg_replace("<audio(.*?)<\\/audio>", replaceto: "")
+        
+        return out;
+//        function htmltotxt($str){
+//            $str = preg_replace( "@<script(.*?)</script>@is", "", $str );  //过滤js
+//            $str = preg_replace( "@<iframe(.*?)</iframe>@is", "", $str ); //过滤frame
+//            $str = preg_replace( "@<style(.*?)</style>@is", "", $str ); //过滤css
+//            $str = preg_replace( "@<(.*?)>@is", "", $str ); //过滤标签
+//            $str=preg_replace("/\s+/", " ", $str); //过滤多余回车
+//            $str=preg_replace("/<[ ]+/si","<",$str); //过滤<__("<"号后面带空格)
+//            $str=preg_replace("/<\!–.*?–>/si","",$str); //注释
+//            $str=preg_replace("/<(\!.*?)>/si","",$str); //过滤DOCTYPE
+//            $str=preg_replace("/<(\/?html.*?)>/si","",$str); //过滤html标签
+//            $str=preg_replace("/<(\/?head.*?)>/si","",$str); //过滤head标签
+//            $str=preg_replace("/<(\/?meta.*?)>/si","",$str); //过滤meta标签
+//            $str=preg_replace("/<(\/?body.*?)>/si","",$str); //过滤body标签
+//            $str=preg_replace("/<(\/?link.*?)>/si","",$str); //过滤link标签
+//            $str=preg_replace("/<(\/?form.*?)>/si","",$str); //过滤form标签
+//            $str=preg_replace("/cookie/si","COOKIE",$str); //过滤COOKIE标签
+//            $str=preg_replace("/<(applet.*?)>(.*?)<(\/applet.*?)>/si","",$str); //过滤applet标签
+//            $str=preg_replace("/<(\/?applet.*?)>/si","",$str); //过滤applet标签
+//            $str=preg_replace("/<(style.*?)>(.*?)<(\/style.*?)>/si","",$str); //过滤style标签
+//            $str=preg_replace("/<(\/?style.*?)>/si","",$str); //过滤style标签
+//            $str=preg_replace("/<(title.*?)>(.*?)<(\/title.*?)>/si","",$str); //过滤title标签
+//            $str=preg_replace("/<(\/?title.*?)>/si","",$str); //过滤title标签
+//            $str=preg_replace("/<(object.*?)>(.*?)<(\/object.*?)>/si","",$str); //过滤object标签
+//            $str=preg_replace("/<(\/?objec.*?)>/si","",$str); //过滤object标签
+//            $str=preg_replace("/<(noframes.*?)>(.*?)<(\/noframes.*?)>/si","",$str); //过滤noframes标签
+//            $str=preg_replace("/<(\/?noframes.*?)>/si","",$str); //过滤noframes标签
+//            $str=preg_replace("/<(i?frame.*?)>(.*?)<(\/i?frame.*?)>/si","",$str); //过滤frame标签
+//            $str=preg_replace("/<(\/?i?frame.*?)>/si","",$str); //过滤frame标签
+//            $str=preg_replace("/<(script.*?)>(.*?)<(\/script.*?)>/si","",$str); //过滤script标签
+//            $str=preg_replace("/<(\/?script.*?)>/si","",$str); //过滤script标签
+//            $str=preg_replace("/javascript/si","Javascript",$str); //过滤script标签 
+//            $str=preg_replace("/vbscript/si","Vbscript",$str); //过滤script标签 
+//            $str=preg_replace("/on([a-z]+)\s*=/si","On\\1=",$str); //过滤script标签 
+//            $str=preg_replace("/&#/si","&＃",$str); //过滤script标签，如javAsCript:alert(
+//            return $str;
+//        }
+    }
+    
     func stringByStrippingBodyStyle() -> String {
         var options = NSRegularExpressionOptions.allZeros
         options |= NSRegularExpressionOptions.CaseInsensitive

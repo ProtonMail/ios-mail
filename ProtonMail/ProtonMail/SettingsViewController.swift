@@ -204,6 +204,8 @@ class SettingsViewController: ProtonMailViewController {
 //                    }
 //                }
 //            }))
+//        alertController.popoverPresentationController?.sourceView = self.view
+//        alertController.popoverPresentationController?.sourceRect = self.view.frame
 //            presentViewController(alertController, animated: true, completion: { () -> Void in
 //                self.dismissKeyboard()
 //            })

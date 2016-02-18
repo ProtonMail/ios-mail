@@ -87,7 +87,8 @@ class AttachmentsViewController: UICollectionViewController {
                 self.presentViewController(picker, animated: true, completion: nil)
             }
         }))
-        
+        alertController.popoverPresentationController?.sourceView = self.view
+        alertController.popoverPresentationController?.sourceRect = self.view.frame
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: UIAlertActionStyle.Cancel, handler: nil))
         
         presentViewController(alertController, animated: true, completion: nil)

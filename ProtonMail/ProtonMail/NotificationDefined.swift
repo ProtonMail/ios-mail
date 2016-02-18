@@ -10,7 +10,11 @@ import Foundation
 
 
 public struct NotificationDefined {
-    static let DefinePassword = "DefinePassword"
-    static let ConfirmPassword = "ConfirmPassword"
-    static let DefineHintPassword = "DefineHintPassword"
+    
+    static let CustomizeURLSchema = "customize_url_schema"
+    static let TouchStatusBar = "touchStatusBarClick"
+    
+    static let didSignOut = "UserDataServiceDidSignOutNotification"
+    static let didSignIn = "UserDataServiceDidSignInNotification"
+    
 }

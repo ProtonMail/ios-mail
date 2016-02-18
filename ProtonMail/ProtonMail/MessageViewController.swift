@@ -11,7 +11,7 @@ import QuickLook
 import Foundation
 
 
-class MessageViewController: ProtonMailViewController {
+class MessageViewController: ProtonMailViewController, LablesViewControllerDelegate {
     
     /// message info
     var message: Message! {
@@ -19,7 +19,7 @@ class MessageViewController: ProtonMailViewController {
             message.fetchDetailIfNeeded() { _, _, msg, error in
                 if error != nil {
                     NSLog("\(__FUNCTION__) error: \(error)")
-                    self.updateEmailBodyWithError(error?.localizedDescription ?? "Unknow error .")
+                    self.updateEmailBodyWithError("Can't download message body, please try again.")
                 }
                 else
                 {
@@ -86,10 +86,14 @@ class MessageViewController: ProtonMailViewController {
             labels : self.message.labels.allObjects as? [Label])
     }
     
+    func dismissed() {
+        self.updateHeader();
+        self.emailView?.emailHeader.updateHeaderLayout()
+    }
     
     private func setupRightButtons() {
         var rightButtons: [UIBarButtonItem] = []
-        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_more"), style: UIBarButtonItemStyle.Plain, target: self, action: "moreButtonTapped"))
+        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_more"), style: UIBarButtonItemStyle.Plain, target: self, action: "moreButtonTapped:"))
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_trash"), style: UIBarButtonItemStyle.Plain, target: self, action: "removeButtonTapped"))
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_label"), style: UIBarButtonItemStyle.Plain, target: self, action: "labelButtonTapped"))
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_unread"), style: UIBarButtonItemStyle.Plain, target: self, action: "unreadButtonTapped"))
@@ -105,7 +109,9 @@ class MessageViewController: ProtonMailViewController {
     internal func removeButtonTapped() {
         switch(message.location) {
         case .trash, .spam:
-            self.messagesSetValue(setValue: MessageLocation.deleted.rawValue, forKey: Message.Attributes.locationNumber)
+            if self.message.managedObjectContext != nil {
+                self.messagesSetValue(setValue: MessageLocation.deleted.rawValue, forKey: Message.Attributes.locationNumber)
+            }
         default:
             self.messagesSetValue(setValue: MessageLocation.trash.rawValue, forKey: Message.Attributes.locationNumber)
         }
@@ -126,7 +132,7 @@ class MessageViewController: ProtonMailViewController {
         self.navigationController?.popViewControllerAnimated(true)
     }
     
-    internal func moreButtonTapped() {
+    internal func moreButtonTapped(sender : UIBarButtonItem) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
 
@@ -139,6 +145,8 @@ class MessageViewController: ProtonMailViewController {
                 }))
             }
         }
+        alertController.popoverPresentationController?.barButtonItem = sender
+        alertController.popoverPresentationController?.sourceRect = self.view.frame
         presentViewController(alertController, animated: true, completion: nil)
     }
 
@@ -154,10 +162,6 @@ class MessageViewController: ProtonMailViewController {
         return true
     }
     
-//    override func supportedInterfaceOrientations() -> Int {
-//        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
-//    }
-    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toCompose" {
             let composeViewController = segue.destinationViewController as! ComposeEmailViewController
@@ -165,6 +169,7 @@ class MessageViewController: ProtonMailViewController {
         } else if segue.identifier == "toApplyLabelsSegue" {
             let popup = segue.destinationViewController as! LablesViewController
             popup.viewModel = LabelViewModelImpl(msg: [self.message])
+            popup.delegate = self
             self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }
@@ -180,9 +185,9 @@ class MessageViewController: ProtonMailViewController {
 //        UIDevice.currentDevice().setValue(value, forKey: "orientation")
 
         //self.emailView?.contentWebView.hidden = false //
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: "touchStatusBarClick", object:nil)
-        
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: NotificationDefined.TouchStatusBar, object:nil)
+
         message.isRead = true
         message.needsUpdate = true
         if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
@@ -195,7 +200,7 @@ class MessageViewController: ProtonMailViewController {
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "touchStatusBarClick", object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationDefined.TouchStatusBar, object:nil)
         //self.emailView?.contentWebView.userInteractionEnabled = false;
     }
     
@@ -227,13 +232,14 @@ class MessageViewController: ProtonMailViewController {
         
         if (!self.bodyLoaded || forceReload) && self.emailView != nil {
             var bodyText = NSLocalizedString("Loading...")
-            if self.message.isDetailDownloaded {
+            if self.message.isDetailDownloaded {  //&& forceReload == false 
                 self.bodyLoaded = true
                 var error: NSError?
                 PMLog.D(self.message!.body);
                 bodyText = self.message.decryptBodyIfNeeded(&error) ?? NSLocalizedString("Unable to decrypt message.")
                 bodyText = bodyText.stringByStrippingStyleHTML()
                 bodyText = bodyText.stringByStrippingBodyStyle()
+                bodyText = bodyText.stringByPurifyHTML()
             }
             //<meta name=\"viewport\" content=\"user-scalable=yes,maximum-scale=5.0,minimum-scale=0.5\" />
             let w = UIScreen.mainScreen().bounds.width * 2

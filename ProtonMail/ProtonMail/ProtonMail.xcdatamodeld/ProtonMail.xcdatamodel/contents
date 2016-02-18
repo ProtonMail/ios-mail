@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="15B42" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="15D21" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Attachment" representedClassName="ProtonMail.Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" syncable="YES">
             <userInfo>
@@ -263,7 +263,7 @@
                 <entry key="JSONKeyPath" value="Attachments"/>
             </userInfo>
         </relationship>
-        <relationship name="labels" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Label" inverseName="messages" inverseEntity="Label" syncable="YES">
+        <relationship name="labels" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Label" inverseName="messages" inverseEntity="Label" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="LabelIDs"/>
                 <entry key="JSONTransformerName" value="TransforDataNoID"/>

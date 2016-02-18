@@ -8,6 +8,9 @@
 
 import Foundation
 
+protocol LablesViewControllerDelegate {
+    func dismissed();
+}
 
 class LablesViewController : UIViewController {
     
@@ -34,6 +37,8 @@ class LablesViewController : UIViewController {
     
     private var archiveMessage = false;
     
+    var delegate : LablesViewControllerDelegate?
+    
     //
     private var fetchedLabels: NSFetchedResultsController?
     
@@ -47,11 +52,11 @@ class LablesViewController : UIViewController {
         //var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
         // self.view.addGestureRecognizer(tapGestureRecognizer)
     }
+    
     @IBAction func archiveSelectAction(sender: UIButton) {
         archiveMessage = !archiveMessage
         if archiveMessage {
             archiveSelectButton.setImage(UIImage(named: "mail_check-active"), forState: UIControlState.Normal)
-            
         } else {
             archiveSelectButton.setImage(UIImage(named: "mail_check"), forState: UIControlState.Normal)
         }
@@ -89,12 +94,10 @@ class LablesViewController : UIViewController {
             //
             //                // show alert
             //            }
-            
-            
-            
         } else {
             self.viewModel.apply(archiveMessage)
             self.dismissViewControllerAnimated(true, completion: nil)
+            delegate?.dismissed()
         }
     }
     
@@ -108,6 +111,7 @@ class LablesViewController : UIViewController {
         } else {
             viewModel.cancel();
             self.dismissViewControllerAnimated(true, completion: nil)
+            delegate?.dismissed()
         }
     }
     

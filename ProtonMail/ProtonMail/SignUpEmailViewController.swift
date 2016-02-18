@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Fabric
+import Crashlytics
 
 class SignUpEmailViewController: UIViewController {
     
@@ -27,6 +29,7 @@ class SignUpEmailViewController: UIViewController {
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var recoveryEmailField: TextInsetTextField!
+    @IBOutlet weak var displayNameField: TextInsetTextField!
     
     @IBOutlet weak var checkButton: UIButton!
     
@@ -48,6 +51,7 @@ class SignUpEmailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         recoveryEmailField.attributedPlaceholder = NSAttributedString(string: "Recovery Email", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        displayNameField.attributedPlaceholder = NSAttributedString(string: "Display Name", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -84,22 +88,67 @@ class SignUpEmailViewController: UIViewController {
         self.navigationController?.popViewControllerAnimated(true)
     }
     
+    private var doneClicked : Bool = false
     @IBAction func doneAction(sender: UIButton) {
-        dismissKeyboard()
-        viewModel.setRecovery(checkButton.selected, email: recoveryEmailField.text)
-        MBProgressHUD.showHUDAddedTo(view, animated: true)
-        viewModel.createNewUser { (isOK, createDone, message, error) -> Void in
-            MBProgressHUD.hideHUDForView(self.view, animated: true)
-            if !message.isEmpty {
-                let alert = message.alertController()
-                alert.addOKAction()
-                self.presentViewController(alert, animated: true, completion: nil)
+        
+        let email = recoveryEmailField.text
+        
+        if (!email.isEmpty && !email.isValidEmail()) {
+            let alert = "Please input a valid email address.".alertController()
+            alert.addOKAction()
+            self.presentViewController(alert, animated: true, completion: nil)
+        } else {
+            if doneClicked {
+                return
             }
-            if isOK || createDone {
-                self.navigationController?.popToRootViewControllerAnimated(true)
-            }
+            doneClicked = true
+            MBProgressHUD.showHUDAddedTo(view, animated: true)
+            dismissKeyboard()
+            viewModel.setRecovery(checkButton.selected, email: recoveryEmailField.text, displayName: displayNameField.text)
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                self.doneClicked = false
+                self.moveToInbox()
+            })
         }
     }
+    
+    private func moveToInbox() {
+        //if sharedUserDataService.isUserCredentialStored {
+            sharedUserDataService.isSignedIn = true
+            if let addresses = sharedUserDataService.userInfo?.userAddresses.toPMNAddresses() {
+                sharedOpenPGP.setAddresses(addresses);
+            }
+            self.loadContent()
+        //}
+    }
+    
+    private func loadContent() {
+        logUser()
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)
+        (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
+        loadContactsAfterInstall()
+    }
+    
+    func logUser() {
+        if  let username = sharedUserDataService.username {
+            Crashlytics.sharedInstance().setUserIdentifier(username)
+            Crashlytics.sharedInstance().setUserName(username)
+        }
+    }
+    
+    func loadContactsAfterInstall()
+    {
+        sharedUserDataService.fetchUserInfo()
+        sharedContactDataService.fetchContacts({ (contacts, error) -> Void in
+            if error != nil {
+                NSLog("\(error)")
+            } else {
+                NSLog("Contacts count: \(contacts!.count)")
+            }
+        })
+    }
+
     
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
         dismissKeyboard()

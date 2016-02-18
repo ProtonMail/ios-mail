@@ -14,23 +14,28 @@ public class ComposeViewModelImpl : ComposeViewModel {
     init(msg: Message?, action : ComposeMessageAction!) {
         super.init()
         userAddress = sharedUserDataService.userAddresses
+        
         if msg == nil || msg?.location == MessageLocation.draft {
             self.message = msg
         }
         else
         {
-            self.message = msg?.copyMessage(action == ComposeMessageAction.Forward)
-            self.message?.action = action.rawValue
-            if action == ComposeMessageAction.Reply || action == ComposeMessageAction.ReplyAll {
-                if let title = self.message?.title {
-                    if !title.hasRe() {
-                        self.message?.title = "Re: \(title)"
+            if msg?.managedObjectContext == nil {
+                self.message = nil
+            } else {
+                self.message = msg?.copyMessage(action == ComposeMessageAction.Forward)
+                self.message?.action = action.rawValue
+                if action == ComposeMessageAction.Reply || action == ComposeMessageAction.ReplyAll {
+                    if let title = self.message?.title {
+                        if !title.hasRe() {
+                            self.message?.title = "Re: \(title)"
+                        }
                     }
-                }
-            } else if action == ComposeMessageAction.Forward {
-                if let title = self.message?.title {
-                    if !title.hasFwd() {
-                        self.message?.title = "Fwd: \(title)"
+                } else if action == ComposeMessageAction.Forward {
+                    if let title = self.message?.title {
+                        if !title.hasFwd() {
+                            self.message?.title = "Fwd: \(title)"
+                        }
                     }
                 }
             }
@@ -194,9 +199,9 @@ public class ComposeViewModelImpl : ComposeViewModel {
     override public func getHtmlBody() -> String {
         let signature = !sharedUserDataService.signature.isEmpty ? "\n\n\(sharedUserDataService.signature)" : ""
         
-        let mobileSignature = sharedUserDataService.switchCacheOff == true ? "" : "<br><br> Send from ProtonMail Mobile"
+        let mobileSignature = sharedUserDataService.switchCacheOff == true ? "" : "<br><br> Sent from ProtonMail Mobile"
         
-        let htmlString = "<div><br></div><div><br></div><div><br></div>\(signature) \(mobileSignature)<div><br></div>";
+        let htmlString = "<div><br></div><div><br></div>\(signature) \(mobileSignature)<div><br></div>";
         switch messageAction!
         {
         case .OpenDraft:
@@ -209,6 +214,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
             
             body = body.stringByStrippingStyleHTML()
             body = body.stringByStrippingBodyStyle()
+            body = body.stringByPurifyHTML()
             
             let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
             let replyHeader = time + ", " + message!.senderName + " <'\(message!.sender)'>"
@@ -230,8 +236,10 @@ public class ComposeViewModelImpl : ComposeViewModel {
             
             body = body.stringByStrippingStyleHTML()
             body = body.stringByStrippingBodyStyle()
+            body = body.stringByPurifyHTML()
             
-            return "<br><br><br>\(signature) \(mobileSignature) \(forwardHeader) \(body)"
+            let sp = "<div>\(forwardHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
+            return "<br><br><br>\(signature) \(mobileSignature) \(sp) \(body)"
         case .NewDraft:
             return htmlString
         default:

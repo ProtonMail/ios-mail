@@ -194,7 +194,7 @@ class SettingTableViewController: ProtonMailViewController {
                         if sharedUserDataService.userInfo?.role > 0 {
                             cell.setUpSwitch(true, status: status)
                         } else {
-                            cell.setUpSwitch(false, status: status)
+                            cell.setUpSwitch(true, status: status) //was false
                         }
                         cellout = cell
                     }
@@ -385,6 +385,10 @@ class SettingTableViewController: ProtonMailViewController {
                     }))
                 }
             }
+            
+            let cell = tableView.cellForRowAtIndexPath(indexPath)
+            alertController.popoverPresentationController?.sourceView = cell ?? self.view
+            alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
             presentViewController(alertController, animated: true, completion: nil)
             
         }  else if setting_headers[indexPath.section] == SettingSections.SwipeAction {
@@ -415,6 +419,9 @@ class SettingTableViewController: ProtonMailViewController {
                         }))
                     }
                 }
+                let cell = tableView.cellForRowAtIndexPath(indexPath)
+                alertController.popoverPresentationController?.sourceView = cell ?? self.view
+                alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
                 presentViewController(alertController, animated: true, completion: nil)
             }
         }

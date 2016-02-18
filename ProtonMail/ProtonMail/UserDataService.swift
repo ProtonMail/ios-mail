@@ -35,11 +35,6 @@ class UserDataService {
         static let roleSwitchCache = "roleSwitchCache"
     }
     
-    struct Notification {
-        static let didSignOut = "UserDataServiceDidSignOutNotification"
-        static let didSignIn = "UserDataServiceDidSignInNotification"
-    }
-    
     // MARK: - Private variables
     private(set) var userInfo: UserInfo? = NSUserDefaults.standardUserDefaults().customObjectForKey(Key.userInfo) as? UserInfo {
         didSet {
@@ -237,17 +232,28 @@ class UserDataService {
     }
     
     func signOut(animated: Bool) {
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignOut, object: self)
         clearAll()
         clearAuthToken()
-        
-        NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignOut, object: self)
-        
         (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: animated)
     }
     
     func updateDisplayName(displayName: String, completion: UserInfoBlock?) {
         let new_displayName = displayName.trim()
-        sharedAPIService.settingUpdateDisplayName(new_displayName, completion: completionForUserInfo(completion))
+        let api = UpdateDisplayNameRequest(displayName: new_displayName)
+        api.call() { task, response, hasError in
+            if !hasError {
+                if let userInfo = self.userInfo {
+                    let userInfo = UserInfo(displayName: new_displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
+                        autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
+                        
+                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role
+                    )
+                    self.userInfo = userInfo
+                }
+            }
+            completion?(self.userInfo, nil)
+        }
     }
     
     func updateMailboxPassword(old_mbp: String, newMailboxPassword: String, completion: CompletionBlock?) {
@@ -399,7 +405,7 @@ class UserDataService {
                 
                 let completionWrapper: UserInfoBlock = { auth, error in
                     if error == nil {
-                        NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignIn, object: self)
+                        NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)
                     }
                     
                     completion(auth, error)

@@ -120,18 +120,20 @@ class MailboxMessageCell: MCSwipeTableViewCell {
             loctionRightSpace.constant = 0.0;
         }
         
-        var encryptedType = message.encryptType
-        if encryptedType == EncryptTypes.OutPGPInline || encryptedType == EncryptTypes.OutPGPMime {
-            self.lockImage.image = UIImage(named: "mail_lock-pgpmime");
-            self.lockImage.highlighted = false;
-        } else {
+        var lockType : LockTypes = message.lockType
+        switch (lockType) {
+        case .PlainTextLock:
+            self.lockImage.image = UIImage(named: "mail_lock");
+            self.lockImage.highlighted = true;
+            break
+        case .EncryptLock:
             self.lockImage.image = UIImage(named: "mail_lock");
             self.lockImage.highlighted = false;
-            if encryptedType == EncryptTypes.Internal {
-                self.lockImage.highlighted = false;
-            } else {
-                self.lockImage.highlighted = true;
-            }
+            break
+        case .PGPLock:
+            self.lockImage.image = UIImage(named: "mail_lock-pgpmime");
+            self.lockImage.highlighted = false;
+            break;
         }
         
         if message.hasAttachments {

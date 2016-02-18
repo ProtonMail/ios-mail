@@ -93,8 +93,6 @@ public enum MessageLocation: Int, Printable {
         default:
             return "INBOX"
         }
-
-        
     }
     
     public var key: String {

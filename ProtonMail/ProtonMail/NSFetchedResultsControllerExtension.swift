@@ -20,10 +20,12 @@ import Foundation
 extension NSFetchedResultsController {
     func numberOfRowsInSection(section: Int) -> Int {
         let sectionInfo = sections?[section] as! NSFetchedResultsSectionInfo
-        return sectionInfo.numberOfObjects ?? 0
+        let n = sectionInfo.numberOfObjects
+        return n ?? 0
     }
     
     func numberOfSections() -> Int {
-        return sections?.count ?? 0
+        let n = sections?.count
+        return n ?? 0
     }
 }

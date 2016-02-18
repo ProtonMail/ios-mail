@@ -127,13 +127,13 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     override func viewWillAppear(animated: Bool) {
         self.updateAttachmentButton()
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: "touchStatusBarClick", object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: NotificationDefined.TouchStatusBar, object:nil)
         setupAutoSave()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "touchStatusBarClick", object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationDefined.TouchStatusBar, object:nil)
         
         stopAutoSave()
     }
@@ -219,7 +219,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
 
     }
     
-    @IBAction func cancel_clicked(sender: AnyObject) {
+    @IBAction func cancel_clicked(sender: UIBarButtonItem) {
         
         self.dismissKeyboard()
         let dismiss: (() -> Void) = {
@@ -245,6 +245,8 @@ class ComposeEmailViewController: ZSSRichTextEditor {
                 dismiss()
             }))
             
+            alertController.popoverPresentationController?.barButtonItem = sender
+            alertController.popoverPresentationController?.sourceRect = self.view.frame
             presentViewController(alertController, animated: true, completion: nil)
         } else {
             dismiss()

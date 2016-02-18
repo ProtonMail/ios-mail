@@ -42,7 +42,6 @@ extension NSError {
         if let subdomain = subdomain {
             domain += ".\(subdomain)"
         }
-        
         return domain
     }
     
@@ -59,6 +58,21 @@ extension NSError {
             message = message! + localizedRecoverySuggestion!
         }
         return UIAlertController(title: localizedDescription, message: message, preferredStyle: .Alert)
+    }
+    
+    func alertController(title : String) -> UIAlertController {
+        var message = localizedFailureReason
+        
+        if localizedRecoverySuggestion != nil {
+            if message != nil {
+                message = message! + "\n\n"
+            } else {
+                message = ""
+            }
+            
+            message = message! + localizedRecoverySuggestion!
+        }
+        return UIAlertController(title: title, message: localizedDescription, preferredStyle: .Alert)
     }
     
     class func alertUpdatedToast() ->Void {

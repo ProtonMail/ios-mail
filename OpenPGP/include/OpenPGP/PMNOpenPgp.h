@@ -26,7 +26,8 @@
 /**generat new key pair */
 - (nonnull PMNOpenPgpKey *)generateKey:(nonnull NSString *)userName
                                 domain:(nonnull NSString *)domain
-                            passphrase:(nonnull NSString *)passphrase;
+                            passphrase:(nonnull NSString *)passphrase
+                                  bits:(int32_t)bits;
 
 /**check is primary key passphrase ok */
 - (BOOL)checkPassphrase:(nonnull NSString *)privateKey
@@ -105,5 +106,12 @@
 
 /**test functions */
 - (int32_t)throwAnException;
+
+/**PBE */
+- (nonnull NSString *)encryptHashCbc:(nonnull NSString *)plainText
+                            password:(nonnull NSString *)password;
+
+- (nonnull NSString *)decryptHashCbc:(nonnull NSString *)encryptedText
+                            password:(nonnull NSString *)password;
 
 @end

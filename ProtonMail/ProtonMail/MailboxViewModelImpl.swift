@@ -61,6 +61,8 @@ public class MailboxViewModelImpl : MailboxViewModel {
             return action != .spam
         case .starred:
             return action != .star
+        case .draft:
+            return action != .spam
         default:
             return true
         }

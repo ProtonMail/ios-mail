@@ -8,16 +8,17 @@
 
 import UIKit
 
-class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
+class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate {
     
     @IBOutlet weak var usernameTextField: TextInsetTextField!
     @IBOutlet weak var pickedDomainLabel: UILabel!
     
-    @IBOutlet weak var webView: UIWebView!
-    
     @IBOutlet weak var warningView: UIView!
     @IBOutlet weak var warningLabel: UILabel!
     @IBOutlet weak var warningIcon: UIImageView!
+    
+    @IBOutlet weak var agreeCheck: UIButton!
+    @IBOutlet weak var createAccountButton: UIButton!
     
     //define
     private let hidePriority : UILayoutPriority = 1.0;
@@ -33,15 +34,19 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var webViewHeightConstraint: NSLayoutConstraint!
-
     let domains : [String] = ["protonmail.com", "protonmail.ch"]
     var selected : Int = 0;
     
     private let kSegueToSignUpPassword = "sign_up_password_segue"
+    private let termsURL = NSURL(string: "https://protonmail.com/terms-and-conditions")!
+    private let policyURL = NSURL(string: "https://protonmail.com/privacy-policy")!
+    
     private var startVerify : Bool = false
     private var checkUserStatus : Bool = false
     private var stopLoading : Bool = false
+    private var agreePolicy : Bool = true
+    private var moveAfterCheck : Bool = false
+    
     var viewModel : SignupViewModel!
     
     func configConstraint(show : Bool) -> Void {
@@ -59,20 +64,12 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         super.viewDidLoad()
         
         resetChecking()
-        webView.scrollView.scrollEnabled = false
-        
-        NSURLCache.sharedURLCache().removeAllCachedResponses();
-        
-        let recptcha = NSURL(string: "https://secure.protonmail.com/mobile.html")!
-        let requestObj = NSURLRequest(URL: recptcha)
-        webView.loadRequest(requestObj)
         
         usernameTextField.attributedPlaceholder = NSAttributedString(string: "Username", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
         self.updatePickedDomain()
     }
     
-    func updatePickedDomain () {
-        pickedDomainLabel.text = "@\(domains[selected])"
+    func updatePickedDomain () { pickedDomainLabel.text = "@\(domains[selected])"
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -98,7 +95,6 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         super.didReceiveMemoryWarning()
     }
     
-    
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -107,7 +103,12 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
             viewController.viewModel = self.viewModel
         }
     }
-
+    @IBAction func checkAction(sender: AnyObject) {
+        dismissKeyboard()
+        agreeCheck.selected = !agreeCheck.selected
+        agreePolicy = agreeCheck.selected 
+    }
+    
     @IBAction func backAction(sender: UIButton) {
         stopLoading = true
         self.navigationController?.popViewControllerAnimated(true)
@@ -125,7 +126,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         warningView.hidden = true
         warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
         warningLabel.text = ""
-        warningIcon.hidden = true;
+        warningIcon.hidden = true
     }
     
     func finishChecking(isOk : Bool) {
@@ -133,44 +134,50 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
             checkUserStatus = true
             warningView.hidden = false
             warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
-            warningLabel.text = "UserName is avliable!"
-            warningIcon.hidden = false;
+            warningLabel.text = "User is available!"
+            warningIcon.hidden = false
         } else {
             warningView.hidden = false
             warningLabel.textColor = UIColor.redColor()
-            warningLabel.text = "UserName not avliable!"
-            warningIcon.hidden = true;
+            warningLabel.text = "User already exist!"
+            warningIcon.hidden = true
         }
     }
     
     @IBAction func createAccountAction(sender: UIButton) {
         dismissKeyboard()
-        if viewModel.isTokenOk() {
+        MBProgressHUD.showHUDAddedTo(view, animated: true)
+        if agreePolicy {
             if checkUserStatus {
+                MBProgressHUD.hideHUDForView(view, animated: true)
                 self.goPasswordsView()
             } else {
                 let userName = usernameTextField.text
                 if !userName.isEmpty {
                     startChecking()
                     viewModel.checkUserName(userName, complete: { (isOk, error) -> Void in
+                        MBProgressHUD.hideHUDForView(self.view, animated: true)
                         if error != nil {
                             self.finishChecking(false)
                         } else {
                             if isOk {
                                 self.finishChecking(true)
+                                self.goPasswordsView()
                             } else {
                                 self.finishChecking(false)
                             }
                         }
                     })
                 } else {
-                    let alert = "The UserName can't empty!".alertController()
+                    MBProgressHUD.hideHUDForView(view, animated: true)
+                    let alert = "Please pick a user name first!".alertController()
                     alert.addOKAction()
                     self.presentViewController(alert, animated: true, completion: nil)
                 }
             }
         } else {
-            let alert = "The verification failed!".alertController()
+            MBProgressHUD.hideHUDForView(view, animated: true)
+            let alert = "In order to use our services, you must agree to ProtonMail's Terms of Service.".alertController()
             alert.addOKAction()
             self.presentViewController(alert, animated: true, completion: nil)
         }
@@ -181,67 +188,11 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         self.performSegueWithIdentifier(kSegueToSignUpPassword, sender: self)
     }
     
-    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        PMLog.D("\(request)")
-        let urlString = request.URL?.absoluteString;
-        if urlString?.contains("https://www.google.com/recaptcha/api2/frame") == true {
-            startVerify = true;
-        }
-        
-        if urlString?.contains("https://www.google.com/intl/en/policies/privacy") == true {
-            return false
-        }
-        
-        if urlString?.contains("https://www.google.com/intl/en/policies/terms") == true {
-            return false
-        }
-        
-        if let tmp = urlString?.rangeOfString("https://secure.protonmail.com/expired_recaptcha_response://") {
-            viewModel.setRecaptchaToken("", isExpired: true)
-            resetWebviewHeight()
-            webView.reload()
-            return false
-        }
-        else if let tmp = urlString?.rangeOfString("https://secure.protonmail.com/recaptcha_response://") {
-            if let token = urlString?.stringByReplacingOccurrencesOfString("https://secure.protonmail.com/recaptcha_response://", withString: "", options: NSStringCompareOptions.WidthInsensitiveSearch, range: nil) {
-                viewModel.setRecaptchaToken(token, isExpired: false)
-            }
-            resetWebviewHeight()
-            return false
-        }
-        return true
-    }
-    
-    func webViewDidFinishLoad(webView: UIWebView) {
-        if startVerify {
-            if let result = webView.stringByEvaluatingJavaScriptFromString("document.body.scrollHeight;")?.toInt()  {
-                let height = CGFloat(500)
-                webViewHeightConstraint.constant = height;
-            }
-            startVerify = false
-        }
-    }
-    
-    func resetWebviewHeight() {
-        if let result = webView.stringByEvaluatingJavaScriptFromString("document.body.scrollHeight;")?.toInt()  {
-            let height = CGFloat(85)
-            webViewHeightConstraint.constant = height;
-        }
-    }
-    
-    func webViewDidStartLoad(webView: UIWebView) {
-        PMLog.D("")
-    }
-    
-    func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
-        PMLog.D("")
-    }
-    
     @IBAction func pickDomainName(sender: UIButton) {
-        showPickerInActionSheet()
+        showPickerInActionSheet(sender)
     }
     
-    func showPickerInActionSheet() {
+    func showPickerInActionSheet(sender : UIButton) {
         var title = ""
         var message = "\n\n\n\n\n\n\n\n\n\n";
         var alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.ActionSheet);
@@ -274,7 +225,6 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         //Add the target - target, function to call, the event witch will trigger the function call
         buttonCancel.addTarget(self, action: "cancelSelection:", forControlEvents: UIControlEvents.TouchDown);
         
-        
         //        //add buttons to the view
         //        var buttonOkFrame: CGRect = CGRectMake(170, 7, 100, 30); //size & position of the button as placed on the toolView
         //
@@ -290,7 +240,8 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         alert.view.addSubview(toolView);
         
         picker.selectRow(selected, inComponent: 0, animated: true)
-        
+        alert.popoverPresentationController?.sourceView = sender
+        alert.popoverPresentationController?.sourceRect = sender.bounds
         self.presentViewController(alert, animated: true, completion: nil);
     }
     
@@ -332,6 +283,10 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     }
     
     @IBAction func editEnd(sender: UITextField) {
+        checkUserName();
+    }
+    
+    func checkUserName() {
         if !stopLoading {
             if !checkUserStatus {
                 let userName = usernameTextField.text
@@ -355,8 +310,39 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         }
     }
     
+    func updateCreateButton() {
+        
+    }
+    
     @IBAction func editingChanged(sender: AnyObject) {
         resetChecking()
+    }
+    
+    @IBAction func termsAction(sender: UIButton) {
+        dismissKeyboard()
+        UIApplication.sharedApplication().openURL(termsURL)
+    }
+    
+    @IBAction func policyAction(sender: UIButton) {
+        dismissKeyboard()
+        UIApplication.sharedApplication().openURL(policyURL)
+    }
+}
+
+// MARK: - UITextFieldDelegatesf
+extension SignUpUserNameViewController: UITextFieldDelegate {
+    func textFieldShouldClear(textField: UITextField) -> Bool {
+        return true
+    }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        return true
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        dismissKeyboard()
+        checkUserName();
+        return true
     }
 }
 
