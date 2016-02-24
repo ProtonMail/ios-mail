@@ -13,20 +13,24 @@ import Foundation
 class OnboardingViewController : UIViewController {
     
     @IBOutlet weak var contentView: UIView!
-    
-    
+    @IBOutlet weak var contentScrollView: UIScrollView!
     
     var viewModel : LabelViewModel!
    
     override func viewDidLoad() {
         super.viewDidLoad()
         contentView.layer.cornerRadius = 4;
-//        inputContentView.layer.cornerRadius = 4;
-//        inputContentView.layer.borderColor = UIColor(hexColorCode: "#DADEE8").CGColor!
-//        inputContentView.layer.borderWidth = 1.0
-//        self.setupFetchedResultsController()
-//        //var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
-//        // self.view.addGestureRecognizer(tapGestureRecognizer)
+    
+        let p = self.view.frame;
+        
+        var boardView = OnboardingView(frame: CGRect(x: 0,y: 0,width: p.width - 40, height: p.height - 84))
+        
+        self.contentScrollView.addSubview(boardView);
+        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        let f = contentView.frame;
         
         
     }

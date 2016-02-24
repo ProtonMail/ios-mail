@@ -1531,25 +1531,6 @@
             </objects>
             <point key="canvasLocation" x="5927" y="3664"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="Zp1-ys-Tof">
-            <objects>
-                <viewController id="acr-ZU-ts8" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="abm-nN-wf0"/>
-                        <viewControllerLayoutGuide type="bottom" id="QbZ-DQ-b2c"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="i4S-B2-qdb">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="bQP-Yx-P6F" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3762" y="-344"/>
-        </scene>
         <!--Search View Controller-->
         <scene sceneID="z3E-8M-2ks">
             <objects>
@@ -3378,29 +3359,38 @@
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0H5-fc-aM9">
                                 <rect key="frame" x="20" y="40" width="560" height="540"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qbd-TF-Dbk">
-                                        <rect key="frame" x="280" y="0.0" width="280" height="44"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qbd-TF-Dbk">
+                                        <rect key="frame" x="440" y="0.0" width="120" height="44"/>
                                         <animations/>
-                                        <color key="backgroundColor" red="0.96862745100000003" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="280" id="22r-xu-Gso"/>
+                                            <constraint firstAttribute="width" constant="120" id="22r-xu-Gso"/>
                                             <constraint firstAttribute="height" constant="44" id="ho9-so-e99"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                        <state key="normal" title="close tour X">
-                                            <color key="titleColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="20" maxY="0.0"/>
+                                        <state key="normal" title="close tour ">
+                                            <color key="titleColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
                                             <action selector="closeAction:" destination="49o-KF-b5x" eventType="touchUpInside" id="92U-oI-YQZ"/>
                                         </connections>
                                     </button>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3hZ-Xv-exa">
+                                        <rect key="frame" x="0.0" y="44" width="560" height="496"/>
+                                        <animations/>
+                                    </scrollView>
                                 </subviews>
                                 <animations/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="3hZ-Xv-exa" firstAttribute="leading" secondItem="0H5-fc-aM9" secondAttribute="leading" id="7lS-Zu-dWw"/>
+                                    <constraint firstAttribute="trailing" secondItem="3hZ-Xv-exa" secondAttribute="trailing" id="K4z-Ok-YL1"/>
                                     <constraint firstAttribute="trailing" secondItem="qbd-TF-Dbk" secondAttribute="trailing" id="Lr2-l6-bPq"/>
                                     <constraint firstItem="qbd-TF-Dbk" firstAttribute="top" secondItem="0H5-fc-aM9" secondAttribute="top" id="poQ-ry-SmC"/>
+                                    <constraint firstAttribute="bottom" secondItem="3hZ-Xv-exa" secondAttribute="bottom" id="qph-r3-pen"/>
+                                    <constraint firstItem="3hZ-Xv-exa" firstAttribute="top" secondItem="qbd-TF-Dbk" secondAttribute="bottom" id="zpG-Ma-hJp"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -3420,20 +3410,13 @@
                     </view>
                     <navigationItem key="navigationItem" id="FuR-k7-Yd0"/>
                     <connections>
+                        <outlet property="contentScrollView" destination="3hZ-Xv-exa" id="ZcJ-QA-AED"/>
                         <outlet property="contentView" destination="0H5-fc-aM9" id="hYg-NN-cbm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M3v-xg-4es" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3065" y="376"/>
-        </scene>
-        <!--Page View Controller-->
-        <scene sceneID="HNI-TL-qrg">
-            <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="qID-FD-Vb4" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="wxe-W5-FQb" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3065" y="-344"/>
         </scene>
     </scenes>
     <resources>
@@ -3465,15 +3448,13 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ddm-eA-erE"/>
-        <segue reference="w5b-0j-26v"/>
         <segue reference="LdN-DE-nXL"/>
-        <segue reference="Lm0-2L-Xlj"/>
-        <segue reference="sPN-i9-NSa"/>
         <segue reference="V9t-nA-fhw"/>
-        <segue reference="zIE-XJ-wkG"/>
+        <segue reference="sPN-i9-NSa"/>
+        <segue reference="Lm0-2L-Xlj"/>
         <segue reference="fux-iz-qV0"/>
-        <segue reference="hZj-FM-cPb"/>
+        <segue reference="zIE-XJ-wkG"/>
+        <segue reference="w5b-0j-26v"/>
         <segue reference="ddm-eA-erE"/>
     </inferredMetricsTieBreakers>
 </document>

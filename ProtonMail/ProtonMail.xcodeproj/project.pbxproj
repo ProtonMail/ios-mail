@@ -162,6 +162,9 @@
 		755405B51B164A99003BFC0A /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755405B41B164A99003BFC0A /* ComposeViewController.swift */; };
 		7558C5481BE82D6300043009 /* LabelsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7558C5471BE82D6300043009 /* LabelsView.xib */; };
 		755B6A701B38C0B800745872 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755B6A6F1B38C0B800745872 /* Label.swift */; };
+		755F92171C7E685700BAEDF9 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755F92161C7E685700BAEDF9 /* OnboardingViewController.swift */; };
+		755F92191C7E6D0D00BAEDF9 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 755F92181C7E6D0D00BAEDF9 /* OnboardingView.swift */; };
+		755F921B1C7E6D1F00BAEDF9 /* OnboardingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 755F921A1C7E6D1F00BAEDF9 /* OnboardingView.xib */; };
 		7564898E1B7DBE64007EA207 /* LabelAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7564898D1B7DBE64007EA207 /* LabelAPI.swift */; };
 		756489901B7DBE8C007EA207 /* LabelsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7564898F1B7DBE8C007EA207 /* LabelsDataService.swift */; };
 		756489921B7DC8B8007EA207 /* LabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756489911B7DC8B8007EA207 /* LabelExtension.swift */; };
@@ -203,7 +206,6 @@
 		75B047B31AE708CC005C6D1A /* ComposeEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B047B21AE708CC005C6D1A /* ComposeEmailViewController.swift */; };
 		75B1794C1B376D2E006044D4 /* AttachmentHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B1794B1B376D2D006044D4 /* AttachmentHelper.swift */; };
 		75B179501B377748006044D4 /* ContactVOExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B1794F1B377748006044D4 /* ContactVOExtension.swift */; };
-		75B1C3A41C73B1D1005904DF /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B1C3A31C73B1D1005904DF /* OnboardingViewController.swift */; };
 		75BB65761BD5C88800F9432D /* AttachmentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BB65751BD5C88800F9432D /* AttachmentAPI.swift */; };
 		75BF9A521B5F0F500087AD2E /* BugsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF9A511B5F0F500087AD2E /* BugsAPI.swift */; };
 		75C037461C1F94D20071E04B /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C037451C1F94D20071E04B /* SplashViewController.swift */; };
@@ -418,6 +420,9 @@
 		755405B41B164A99003BFC0A /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		7558C5471BE82D6300043009 /* LabelsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LabelsView.xib; sourceTree = "<group>"; };
 		755B6A6F1B38C0B800745872 /* Label.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
+		755F92161C7E685700BAEDF9 /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		755F92181C7E6D0D00BAEDF9 /* OnboardingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		755F921A1C7E6D1F00BAEDF9 /* OnboardingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OnboardingView.xib; sourceTree = "<group>"; };
 		7564898D1B7DBE64007EA207 /* LabelAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelAPI.swift; sourceTree = "<group>"; };
 		7564898F1B7DBE8C007EA207 /* LabelsDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelsDataService.swift; sourceTree = "<group>"; };
 		756489911B7DC8B8007EA207 /* LabelExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelExtension.swift; sourceTree = "<group>"; };
@@ -459,7 +464,6 @@
 		75B047B21AE708CC005C6D1A /* ComposeEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeEmailViewController.swift; sourceTree = "<group>"; };
 		75B1794B1B376D2D006044D4 /* AttachmentHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentHelper.swift; sourceTree = "<group>"; };
 		75B1794F1B377748006044D4 /* ContactVOExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactVOExtension.swift; sourceTree = "<group>"; };
-		75B1C3A31C73B1D1005904DF /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		75BB65751BD5C88800F9432D /* AttachmentAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentAPI.swift; sourceTree = "<group>"; };
 		75BF9A511B5F0F500087AD2E /* BugsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugsAPI.swift; sourceTree = "<group>"; };
 		75C037451C1F94D20071E04B /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
@@ -854,7 +858,7 @@
 		706628241A71681300164117 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				75B1C3A21C73AF56005904DF /* Tour */,
+				755F92151C7E67C200BAEDF9 /* Onboarding */,
 				07B123761AB8CD76006EA38C /* Attachments */,
 				07CB23541AB0F20F00699068 /* Bugs */,
 				709FE39E1A977C8400034288 /* Compose */,
@@ -965,6 +969,16 @@
 			name = Cells;
 			sourceTree = "<group>";
 		};
+		755F92151C7E67C200BAEDF9 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				755F92161C7E685700BAEDF9 /* OnboardingViewController.swift */,
+				755F92181C7E6D0D00BAEDF9 /* OnboardingView.swift */,
+				755F921A1C7E6D1F00BAEDF9 /* OnboardingView.xib */,
+			);
+			name = Onboarding;
+			sourceTree = "<group>";
+		};
 		75978BD91B28F5F800D07501 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
@@ -986,14 +1000,6 @@
 				75539CAC1C6BEF2B001DD042 /* NSDataExtension.swift */,
 			);
 			name = General;
-			sourceTree = "<group>";
-		};
-		75B1C3A21C73AF56005904DF /* Tour */ = {
-			isa = PBXGroup;
-			children = (
-				75B1C3A31C73B1D1005904DF /* OnboardingViewController.swift */,
-			);
-			name = Tour;
 			sourceTree = "<group>";
 		};
 		75CFA2701B22544F006E4465 /* Defined */ = {
@@ -1179,6 +1185,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75117C461BA20BF800A0CE68 /* MessageDetailHeaderView.xib in Resources */,
+				755F921B1C7E6D1F00BAEDF9 /* OnboardingView.xib in Resources */,
 				75978BDB1B28F63100D07501 /* editor.css in Resources */,
 				755405B31B1648D2003BFC0A /* ComposeView.xib in Resources */,
 				70C6ABE41A72C1B7006EC400 /* Roboto-Regular.ttf in Resources */,
@@ -1453,11 +1460,12 @@
 				756489961B7E94BB007EA207 /* UIImageExtension.swift in Sources */,
 				0767587A1AA126E400F9AC9C /* StorageLimit.swift in Sources */,
 				759BBDC61BA0D1C8002608B5 /* MultiLabelDisplayView.swift in Sources */,
+				755F92191C7E6D0D00BAEDF9 /* OnboardingView.swift in Sources */,
 				072AB6A11A8EE50000AF45D6 /* ProtonMail-Bridging-Header.cpp in Sources */,
 				071210E61AA91B4000B834F2 /* APIService+DeviceExtension.swift in Sources */,
 				07B797C01A6EDFF400244532 /* APIService.swift in Sources */,
 				755B6A701B38C0B800745872 /* Label.swift in Sources */,
-				75B1C3A41C73B1D1005904DF /* OnboardingViewController.swift in Sources */,
+				755F92171C7E685700BAEDF9 /* OnboardingViewController.swift in Sources */,
 				073FE01B1A955F4A00825980 /* APIService+ContactExtension.swift in Sources */,
 				750AAAC41C23E5CF00BAC444 /* RecaptchaViewController.swift in Sources */,
 				758C44841C6D09FE00E6E867 /* EncryptionSetupViewController.swift in Sources */,
