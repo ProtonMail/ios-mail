@@ -142,7 +142,6 @@ extension Message {
         return false
     }
     
-    
     class func messageForMessageID(messageID: String, inManagedObjectContext context: NSManagedObjectContext) -> Message? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.messageID, matchingValue: messageID) as? Message
     }
@@ -161,18 +160,13 @@ extension Message {
         isStarred = tag.rangeOfString(Constants.starredTag) != nil
     }
     
-    
-    
     // MARK: Public methods
-    
     func decryptBody(error: NSErrorPointer?) -> String? {
         return body.decryptMessage(passphrase, error: error)
     }
     
     func decryptBodyIfNeeded(error: NSErrorPointer?) -> String? {
-        
         //PMLog.D("\(body)")
-        
         if !checkIsEncrypted() {
             return body
         } else {
@@ -210,7 +204,6 @@ extension Message {
     }
     
     // MARK: Private variables
-    
     private var passphrase: String {
         return sharedUserDataService.mailboxPassword ?? ""
     }
@@ -225,19 +218,8 @@ extension Message {
                 return addr_id
             }
         }
-        
         return ""
     }
-    
-    //    private var privateKey: String {
-    //        return sharedUserDataService.userInfo?.privateKey ?? ""
-    //    }
-    //
-    //    private var publicKey: String {
-    //        return sharedUserDataService.userInfo?.publicKey ?? ""
-    //    }
-    //
-    
     
     func copyMessage (copyAtts : Bool) -> Message {
         let message = self

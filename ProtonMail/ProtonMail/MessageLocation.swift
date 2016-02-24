@@ -48,7 +48,7 @@ public enum MessageLocation: Int, Printable {
             }
         }
     }
-
+    
     
     public var description : String {
         get {
