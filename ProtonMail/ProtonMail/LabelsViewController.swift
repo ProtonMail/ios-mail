@@ -38,7 +38,7 @@ class LablesViewController : UIViewController {
     private var archiveMessage = false;
     
     var delegate : LablesViewControllerDelegate?
-    
+
     //
     private var fetchedLabels: NSFetchedResultsController?
     

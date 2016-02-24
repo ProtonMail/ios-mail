@@ -203,17 +203,12 @@ class SettingTableViewController: ProtonMailViewController {
             }
             else if setting_headers[indexPath.section] == .MultiDomain {
                 let cell = tableView.dequeueReusableCellWithIdentifier(SettingDomainsCell, forIndexPath: indexPath) as! DomainsTableViewCell
-                
-                for (var addr) in multi_domains {
-                    if addr.status == 1 && addr.receive == 1 {
-                        cell.domainText.text = addr.email
-                        cell.defaultMark.text = NSLocalizedString("Default")
-                        break
-                    } else {
-                        cell.domainText.text = "Unknown"
-                        cell.defaultMark.text = NSLocalizedString("Default")
-                    }
+                if let addr = multi_domains.getDefaultAddress() {
+                    cell.domainText.text = addr.email
+                } else {
+                    cell.domainText.text = "Unknown"
                 }
+                cell.defaultMark.text = NSLocalizedString("Default")
                 cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator;
                 return cell
             }
@@ -352,15 +347,9 @@ class SettingTableViewController: ProtonMailViewController {
                 break;
             }
         } else if setting_headers[indexPath.section] == SettingSections.MultiDomain {
-            let alertController = UIAlertController(title: NSLocalizedString("Change default domain to .."), message: nil, preferredStyle: .ActionSheet)
+            let alertController = UIAlertController(title: NSLocalizedString("Change default address to .."), message: nil, preferredStyle: .ActionSheet)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
-            var defaultAddress : Address? = nil;
-            for (var addr) in multi_domains {
-                if addr.status == 1 && addr.receive == 1 {
-                    defaultAddress = addr;
-                    break
-                }
-            }
+            var defaultAddress : Address? = multi_domains.getDefaultAddress()
             for (var addr) in multi_domains {
                 if addr.status == 1 && addr.receive == 1 {
                     if defaultAddress != addr {
@@ -565,7 +554,7 @@ extension SettingTableViewController {
             case General:
                 return NSLocalizedString("General Settings")
             case MultiDomain:
-                return NSLocalizedString("Multiple Domains")
+                return NSLocalizedString("Multiple Addresses")
             case Storage:
                 return NSLocalizedString("Storage")
             case Version:

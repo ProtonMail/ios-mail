@@ -142,7 +142,6 @@ extension Message {
         return false
     }
     
-    
     class func messageForMessageID(messageID: String, inManagedObjectContext context: NSManagedObjectContext) -> Message? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.messageID, matchingValue: messageID) as? Message
     }
@@ -161,18 +160,13 @@ extension Message {
         isStarred = tag.rangeOfString(Constants.starredTag) != nil
     }
     
-    
-    
     // MARK: Public methods
-    
     func decryptBody(error: NSErrorPointer?) -> String? {
         return body.decryptMessage(passphrase, error: error)
     }
     
     func decryptBodyIfNeeded(error: NSErrorPointer?) -> String? {
-        
         //PMLog.D("\(body)")
-        
         if !checkIsEncrypted() {
             return body
         } else {
@@ -191,7 +185,7 @@ extension Message {
     }
     
     func encryptBody(body: String, error: NSErrorPointer?) {
-        self.body = body.encryptMessage(defaultAddressID, error: error) ?? "" //body.encryptWithPublicKey(publicKey, error: error) ?? ""
+        self.body = body.encryptMessage(getAddressID, error: error) ?? "" //body.encryptWithPublicKey(publicKey, error: error) ?? ""
     }
     
     func checkIsEncrypted() -> Bool! {
@@ -210,29 +204,22 @@ extension Message {
     }
     
     // MARK: Private variables
-    
     private var passphrase: String {
         return sharedUserDataService.mailboxPassword ?? ""
     }
     
-    private var defaultAddressID: String {
-        let count = sharedUserDataService.userAddresses.count
-        if count < 1 {
-            return ""
+    var getAddressID: String {
+        if let addressID = addressID {
+            if !addressID.isEmpty {
+                return addressID;
+            }
         } else {
-            return sharedUserDataService.userAddresses[0].address_id
+            if let addr_id = sharedUserDataService.userAddresses.getDefaultAddress()?.address_id {
+                return addr_id
+            }
         }
+        return ""
     }
-    
-//    private var privateKey: String {
-//        return sharedUserDataService.userInfo?.privateKey ?? ""
-//    }
-//    
-//    private var publicKey: String {
-//        return sharedUserDataService.userInfo?.publicKey ?? ""
-//    }
-//    
-    
     
     func copyMessage (copyAtts : Bool) -> Message {
         let message = self
@@ -252,6 +239,8 @@ extension Message {
         newMessage.orginalTime = message.time
         newMessage.orginalMessageID = message.messageID
         newMessage.expirationOffset = 0
+        
+        newMessage.addressID = message.addressID
         
         if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D("error: \(error)")
