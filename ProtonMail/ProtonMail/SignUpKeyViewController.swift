@@ -81,7 +81,7 @@ class SignUpKeyViewController: UIViewController {
             NSFontAttributeName: navigationBarTitleFont
         ]
     }
-    
+
     func generateKey() {
 //        let password = passwordInput.text
 //        MBProgressHUD.showHUDAddedTo(view, animated: true)
