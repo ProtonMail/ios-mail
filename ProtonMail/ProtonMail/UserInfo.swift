@@ -366,7 +366,23 @@ extension Array {
         }
         return out_array;
     }
+    
+    func getDefaultAddress <T: Address>() -> Address? {
+        for var i = 0; i < self.count; ++i {
+            var addr = (self[i] as! Address)
+            if addr.status == 1 && addr.receive == 1 {
+                
+                return addr;
+            }
+        }
+        return nil;
+        
+    }
 }
+
+
+
+
 
 
 
