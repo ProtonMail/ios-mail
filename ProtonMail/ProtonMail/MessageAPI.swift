@@ -91,7 +91,7 @@ public class MessageDraftRequest<T: ApiResponse>  : ApiRequest<T> {
     }
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
-        let address_id : String                 = sharedUserDataService.userAddresses.first?.address_id ?? "1000";
+        let address_id : String                 = message.getAddressID
         var messsageDict : [String : AnyObject] = [
             "AddressID" : address_id,
             "Body" : message.body,

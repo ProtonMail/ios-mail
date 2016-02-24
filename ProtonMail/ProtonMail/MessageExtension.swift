@@ -191,7 +191,7 @@ extension Message {
     }
     
     func encryptBody(body: String, error: NSErrorPointer?) {
-        self.body = body.encryptMessage(defaultAddressID, error: error) ?? "" //body.encryptWithPublicKey(publicKey, error: error) ?? ""
+        self.body = body.encryptMessage(getAddressID, error: error) ?? "" //body.encryptWithPublicKey(publicKey, error: error) ?? ""
     }
     
     func checkIsEncrypted() -> Bool! {
@@ -215,23 +215,28 @@ extension Message {
         return sharedUserDataService.mailboxPassword ?? ""
     }
     
-    private var defaultAddressID: String {
-        let count = sharedUserDataService.userAddresses.count
-        if count < 1 {
-            return ""
+    var getAddressID: String {
+        if let addressID = addressID {
+            if !addressID.isEmpty {
+                return addressID;
+            }
         } else {
-            return sharedUserDataService.userAddresses[0].address_id
+            if let addr_id = sharedUserDataService.userAddresses.getDefaultAddress()?.address_id {
+                return addr_id
+            }
         }
+        
+        return ""
     }
     
-//    private var privateKey: String {
-//        return sharedUserDataService.userInfo?.privateKey ?? ""
-//    }
-//    
-//    private var publicKey: String {
-//        return sharedUserDataService.userInfo?.publicKey ?? ""
-//    }
-//    
+    //    private var privateKey: String {
+    //        return sharedUserDataService.userInfo?.privateKey ?? ""
+    //    }
+    //
+    //    private var publicKey: String {
+    //        return sharedUserDataService.userInfo?.publicKey ?? ""
+    //    }
+    //
     
     
     func copyMessage (copyAtts : Bool) -> Message {
@@ -252,6 +257,8 @@ extension Message {
         newMessage.orginalTime = message.time
         newMessage.orginalMessageID = message.messageID
         newMessage.expirationOffset = 0
+        
+        newMessage.addressID = message.addressID
         
         if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D("error: \(error)")
