@@ -8,12 +8,20 @@
 
 import UIKit
 class OnboardingView : PMView {
-
+    
+    
+    @IBOutlet var imageView: UIImageView!
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var descLabel: UILabel!
+    
+    
     override func getNibName() -> String {
         return "OnboardingView"
     }
-    
-    override func awakeFromNib() {
-        
+
+    func configView(board: Onboarding) {
+        imageView.image = UIImage(named: board.image)
+        titleLabel.text = board.title
+        descLabel.text = board.description
     }
 }

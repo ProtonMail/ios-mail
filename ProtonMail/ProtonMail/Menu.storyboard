@@ -3377,7 +3377,7 @@
                                             <action selector="closeAction:" destination="49o-KF-b5x" eventType="touchUpInside" id="92U-oI-YQZ"/>
                                         </connections>
                                     </button>
-                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3hZ-Xv-exa">
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3hZ-Xv-exa">
                                         <rect key="frame" x="0.0" y="44" width="560" height="496"/>
                                         <animations/>
                                     </scrollView>

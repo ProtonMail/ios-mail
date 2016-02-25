@@ -16,6 +16,8 @@ class OnboardingViewController : UIViewController {
     @IBOutlet weak var contentScrollView: UIScrollView!
     
     var viewModel : LabelViewModel!
+    
+    let onboardingList : [Onboarding] = [.welcome, .swipe, .label, .encryption, .expire, .help]
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,18 +25,19 @@ class OnboardingViewController : UIViewController {
     
         let p = self.view.frame;
         
-        var boardView = OnboardingView(frame: CGRect(x: 0,y: 0,width: p.width - 40, height: p.height - 84))
+        let h : CGFloat = p.height - 84
+        let w : CGFloat = p.width - 40
         
-        self.contentScrollView.addSubview(boardView);
-        
+        let count = onboardingList.count
+        for i in 0 ..< count {
+            let board = onboardingList[i]
+            let xPoint : CGFloat =  w * CGFloat(i)
+            var boardView = OnboardingView(frame: CGRect(x:xPoint, y: 0, width: w, height: h))
+            boardView.configView(board)
+            self.contentScrollView.addSubview(boardView);
+        }
+        contentScrollView.contentSize = CGSize (width: w * CGFloat(count), height: contentScrollView.contentSize.height);
     }
-    
-    override func viewWillAppear(animated: Bool) {
-        let f = contentView.frame;
-        
-        
-    }
-    
 
     @IBAction func closeAction(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
