@@ -50,6 +50,7 @@ class SignUpEmailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        userCachedStatus.showTourNextTime()
         recoveryEmailField.attributedPlaceholder = NSAttributedString(string: "Recovery Email", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
         displayNameField.attributedPlaceholder = NSAttributedString(string: "Display Name", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
     }
