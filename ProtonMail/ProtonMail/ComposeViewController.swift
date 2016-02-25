@@ -101,9 +101,7 @@ class ComposeViewController : ProtonMailViewController {
             break
         }
         
-        
         var  rect = self.composeView.bccContactPicker.contactCollectionView.frame;
-        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -286,6 +284,10 @@ class ComposeViewController : ProtonMailViewController {
 
 // MARK : - view extensions
 extension ComposeViewController : ComposeViewDelegate {
+    
+    func composeViewPickFrom(composeView: ComposeView) {
+        
+    }
     
     func ComposeViewDidSizeChanged(size: CGSize) {
         self.composeSize = size

@@ -221,6 +221,23 @@ extension Message {
         return ""
     }
     
+    var defaultAddress : Address? {
+        get {
+            if let addressID = addressID {
+                if !addressID.isEmpty {
+                    if let add = sharedUserDataService.userAddresses.indexOfAddress(addressID) {
+                        return add;
+                    }
+                }
+            } else {
+                if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
+                    return addr
+                }
+            }
+            return nil
+        }
+    }
+    
     func copyMessage (copyAtts : Bool) -> Message {
         let message = self
         let newMessage = Message(context: sharedCoreDataService.mainManagedObjectContext!)

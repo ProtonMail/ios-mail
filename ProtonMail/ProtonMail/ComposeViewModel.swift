@@ -90,6 +90,18 @@ public class ComposeViewModel {
     func getAttachments() -> [Attachment]? {
         fatalError("This method must be overridden")
     }
+    
+    func updateAddressID (address_id : String) {
+        fatalError("This method must be overridden")
+    }
+    
+    func getAddresses () -> Array<Address> {
+        fatalError("This method must be overridden")
+    }
+   
+    func getDefaultAddress () -> Address? {
+        fatalError("This method must be overridden")
+    }
 }
 
 

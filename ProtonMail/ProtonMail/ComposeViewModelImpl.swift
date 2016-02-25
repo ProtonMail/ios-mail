@@ -47,17 +47,35 @@ public class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func uploadAtt(att: Attachment!) {
-        self.updateDraft()
         sharedMessageDataService.uploadAttachment(att)
+        self.updateDraft()
     }
     
     override func deleteAtt(att: Attachment!) {
-        self.updateDraft()
         sharedMessageDataService.deleteAttachment(message?.messageID ?? "", att: att)
+        self.updateDraft()
     }
   
     override func getAttachments() -> [Attachment]? {
         return self.message?.attachments.allObjects as? [Attachment]
+    }
+    
+    override func updateAddressID(address_id: String) {
+        self.message?.addressID = address_id
+        self.updateDraft()
+    }
+    
+    override func getAddresses() -> Array<Address> {
+        return sharedUserDataService.userAddresses
+    }
+    
+    override func getDefaultAddress() -> Address? {
+        if self.message == nil {
+            if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
+                return addr
+            }
+        }
+        return self.message?.defaultAddress
     }
     
     private func updateContacts()

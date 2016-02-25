@@ -23,6 +23,8 @@ protocol ComposeViewDelegate {
     func composeViewCancelExpirationData(composeView: ComposeView)
     func composeViewDidTapExpirationButton(composeView: ComposeView)
     func composeViewCollectExpirationData(composeView: ComposeView)
+    
+    func composeViewPickFrom(composeView: ComposeView)
 }
 
 protocol ComposeViewDataSource {
@@ -102,7 +104,10 @@ class ComposeView: UIViewController {
     @IBOutlet var expirationView: UIView!
     @IBOutlet var expirationDateTextField: UITextField!
     
+    // MARK: - From field
     @IBOutlet weak var fromView: UIView!
+    @IBOutlet weak var fromAddress: UILabel!
+    @IBOutlet weak var fromPickerButton: UIButton!
     
     // MARK: - Delegate and Datasource
     var datasource: ComposeViewDataSource?
@@ -157,7 +162,6 @@ class ComposeView: UIViewController {
         super.viewDidAppear(animated)
         self.notifyViewSize( false )
         
-        
         errorView.mas_makeConstraints { (make) -> Void in
             make.left.equalTo()(self.selfView)
             make.right.equalTo()(self.selfView)
@@ -181,6 +185,15 @@ class ComposeView: UIViewController {
     @IBAction func contactPlusButtonTapped(sender: UIButton) {
         self.plusButtonHandle();
         self.notifyViewSize(true)
+    }
+    
+    @IBAction func fromPickerAction(sender: AnyObject) {
+        self.delegate?.composeViewPickFrom(self)
+    }
+    
+    func updateFromValue (email: String , pickerEnabled : Bool) {
+        fromAddress.text = email
+        fromPickerButton.enabled = pickerEnabled
     }
     
     @IBAction func attachmentButtonTapped(sender: UIButton) {

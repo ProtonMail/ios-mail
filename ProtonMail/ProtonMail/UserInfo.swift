@@ -371,12 +371,20 @@ extension Array {
         for var i = 0; i < self.count; ++i {
             var addr = (self[i] as! Address)
             if addr.status == 1 && addr.receive == 1 {
-                
                 return addr;
             }
         }
         return nil;
-        
+    }
+    
+    func indexOfAddress <T: Address>(addressid : String) -> Address? {
+        for var i = 0; i < self.count; ++i {
+            var addr = (self[i] as! Address)
+            if addr.status == 1 && addr.receive == 1 && addr.address_id == addressid {
+                return addr;
+            }
+        }
+        return nil;
     }
 }
 

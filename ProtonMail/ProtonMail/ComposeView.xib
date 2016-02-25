@@ -10,6 +10,8 @@
         </mutableArray>
         <mutableArray key="Roboto-Regular.ttf">
             <string>Roboto-Regular</string>
+            <string>Roboto-Regular</string>
+            <string>Roboto-Regular</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -24,6 +26,8 @@
                 <outlet property="expirationDateTextField" destination="0cq-9r-3dX" id="Iyw-GC-34o"/>
                 <outlet property="expirationView" destination="Okn-ub-h7D" id="LFA-QV-Pk0"/>
                 <outlet property="fakeContactPickerHeightConstraint" destination="sdc-Ad-iWb" id="j2p-Du-il9"/>
+                <outlet property="fromAddress" destination="Ilt-bS-8Pw" id="GBU-Pz-zPv"/>
+                <outlet property="fromPickerButton" destination="hKt-vn-DC9" id="2uw-Wn-Oiu"/>
                 <outlet property="fromView" destination="lId-3P-n4a" id="gE8-LW-qDX"/>
                 <outlet property="passwordView" destination="f6s-5h-iHn" id="FiQ-AK-GUN"/>
                 <outlet property="showCcBccButton" destination="chC-fW-E4g" id="nEi-tN-jKt"/>
@@ -211,36 +215,55 @@
                     <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="From" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N1Q-LP-p4d">
-                            <rect key="frame" x="8" y="0.0" width="40" height="48"/>
+                            <rect key="frame" x="10" y="0.0" width="33" height="48"/>
                             <animations/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                            <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ilt-bS-8Pw">
-                            <rect key="frame" x="60" y="0.0" width="540" height="48"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ilt-bS-8Pw">
+                            <rect key="frame" x="55" y="0.0" width="545" height="48"/>
                             <animations/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                            <color key="textColor" name="knobColor" catalog="System" colorSpace="catalog"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hKt-vn-DC9">
-                            <rect key="frame" x="483" y="8" width="120" height="30"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hKt-vn-DC9">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
                             <animations/>
-                            <state key="normal" title="Button">
+                            <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="20" maxY="0.0"/>
+                            <state key="normal" image="mail_attachment-closed">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="fromPickerAction:" destination="-1" eventType="touchUpInside" id="5eu-28-hWY"/>
+                            </connections>
                         </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8d8-Tv-c5P">
+                            <rect key="frame" x="0.0" y="47" width="600" height="1"/>
+                            <animations/>
+                            <color key="backgroundColor" red="0.78823529411764703" green="0.80784313725490198" blue="0.83137254901960778" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="WhB-B4-HT4"/>
+                            </constraints>
+                        </view>
                     </subviews>
                     <animations/>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstItem="hKt-vn-DC9" firstAttribute="leading" secondItem="lId-3P-n4a" secondAttribute="leading" id="3XQ-su-mVC"/>
                         <constraint firstItem="Ilt-bS-8Pw" firstAttribute="top" secondItem="lId-3P-n4a" secondAttribute="top" id="6Ac-1u-PZ8"/>
+                        <constraint firstAttribute="bottom" secondItem="hKt-vn-DC9" secondAttribute="bottom" id="6Zo-JK-Z5j"/>
                         <constraint firstAttribute="trailing" secondItem="Ilt-bS-8Pw" secondAttribute="trailing" id="Ajz-pU-wH2"/>
                         <constraint firstItem="N1Q-LP-p4d" firstAttribute="top" secondItem="lId-3P-n4a" secondAttribute="top" id="CTb-Mj-1kp"/>
+                        <constraint firstItem="8d8-Tv-c5P" firstAttribute="leading" secondItem="lId-3P-n4a" secondAttribute="leading" id="Qt1-l9-B4x"/>
                         <constraint firstAttribute="bottom" secondItem="N1Q-LP-p4d" secondAttribute="bottom" id="Tf1-5E-PBw"/>
+                        <constraint firstAttribute="trailing" secondItem="8d8-Tv-c5P" secondAttribute="trailing" id="Zti-GS-xev"/>
+                        <constraint firstAttribute="trailing" secondItem="hKt-vn-DC9" secondAttribute="trailing" id="aR7-nV-qzb"/>
                         <constraint firstAttribute="bottom" secondItem="Ilt-bS-8Pw" secondAttribute="bottom" id="cNI-iV-Xrp"/>
-                        <constraint firstItem="N1Q-LP-p4d" firstAttribute="leading" secondItem="lId-3P-n4a" secondAttribute="leading" constant="8" id="pC9-Oa-n5J"/>
+                        <constraint firstItem="hKt-vn-DC9" firstAttribute="top" secondItem="lId-3P-n4a" secondAttribute="top" id="f4i-ZZ-wo0"/>
+                        <constraint firstAttribute="bottom" secondItem="8d8-Tv-c5P" secondAttribute="bottom" id="gjA-gF-jXR"/>
+                        <constraint firstItem="N1Q-LP-p4d" firstAttribute="leading" secondItem="lId-3P-n4a" secondAttribute="leading" constant="10" id="pC9-Oa-n5J"/>
                         <constraint firstAttribute="height" constant="48" id="q2w-yV-FtO"/>
                         <constraint firstItem="Ilt-bS-8Pw" firstAttribute="leading" secondItem="N1Q-LP-p4d" secondAttribute="trailing" constant="12" id="vLV-tZ-5Rx"/>
                     </constraints>
@@ -279,7 +302,7 @@
                     <exclude reference="VLg-3e-bpA"/>
                 </mask>
             </variation>
-            <point key="canvasLocation" x="532" y="310"/>
+            <point key="canvasLocation" x="615" y="443"/>
         </view>
     </objects>
     <resources>
@@ -289,5 +312,6 @@
         <image name="compose_pluscontact" width="24" height="24"/>
         <image name="encrypted_compose_white" width="20" height="27"/>
         <image name="expiration_compose_white" width="22" height="22"/>
+        <image name="mail_attachment-closed" width="14" height="14"/>
     </resources>
 </document>
