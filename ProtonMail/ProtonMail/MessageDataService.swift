@@ -1601,7 +1601,9 @@ class MessageDataService {
                     sharedMessageQueue.remove(elementID: elementID)
                 }
     
-                self.dequeueIfNeeded()
+                if !isInternetIssue {
+                    self.dequeueIfNeeded()
+                }
             }
         }
     }
