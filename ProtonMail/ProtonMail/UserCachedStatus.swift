@@ -92,13 +92,13 @@ class UserCachedStatus : SharedCacheBase {
         getShared().removeObjectForKey(Key.lastCacheVersion);
         getShared().removeObjectForKey(Key.isCheckSpaceDisabled);
         getShared().removeObjectForKey(Key.lastAuthCacheVersion);
-        getShared().removeObjectForKey(Key.lastTourViersion);
         
         getShared().synchronize()
     }
     
     func cleanGlobal() {
         getShared().removeObjectForKey(Key.lastSplashViersion)
+        getShared().removeObjectForKey(Key.lastTourViersion);
         
         getShared().synchronize()
     }
