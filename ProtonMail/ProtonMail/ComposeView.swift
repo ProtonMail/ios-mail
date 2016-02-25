@@ -80,7 +80,6 @@ class ComposeView: UIViewController {
         return subject.text ?? ""
     }
     
-    
     // MARK : - Outlets
     @IBOutlet var fakeContactPickerHeightConstraint: NSLayoutConstraint!
     @IBOutlet var subject: UITextField!
@@ -103,6 +102,7 @@ class ComposeView: UIViewController {
     @IBOutlet var expirationView: UIView!
     @IBOutlet var expirationDateTextField: UITextField!
     
+    @IBOutlet weak var fromView: UIView!
     
     // MARK: - Delegate and Datasource
     var datasource: ComposeViewDataSource?
@@ -300,7 +300,6 @@ class ComposeView: UIViewController {
             make.height.equalTo()(self.errorTextView.frame.size.height)
             make.top.equalTo()(self.errorView).with().offset()(8)
         }
-        
     }
     
     private func configureContactPickerTemplate() {
@@ -490,7 +489,7 @@ class ComposeView: UIViewController {
         toContactPicker.delegate = self
         
         toContactPicker.mas_makeConstraints { (make) -> Void in
-            make.top.equalTo()(self.selfView).with().offset()(5)
+            make.top.equalTo()(self.fromView.mas_bottom).with().offset()(5)
             make.left.equalTo()(self.selfView)
             make.right.equalTo()(self.selfView)
             make.height.equalTo()(self.kDefaultRecipientHeight)
@@ -533,7 +532,7 @@ class ComposeView: UIViewController {
         if (contactPicker == self.toContactPicker) {
             toContactPicker.mas_updateConstraints({ (make) -> Void in
                 make.removeExisting = true
-                make.top.equalTo()(self.selfView)
+                make.top.equalTo()(self.fromView.mas_bottom)
                 make.left.equalTo()(self.selfView)
                 make.right.equalTo()(self.selfView)
                 make.height.equalTo()(newHeight)
