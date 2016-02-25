@@ -3359,6 +3359,13 @@
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0H5-fc-aM9">
                                 <rect key="frame" x="20" y="40" width="560" height="540"/>
                                 <subviews>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3hZ-Xv-exa">
+                                        <rect key="frame" x="0.0" y="44" width="560" height="496"/>
+                                        <animations/>
+                                        <connections>
+                                            <outlet property="delegate" destination="49o-KF-b5x" id="mYz-EI-XZG"/>
+                                        </connections>
+                                    </scrollView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qbd-TF-Dbk">
                                         <rect key="frame" x="440" y="0.0" width="120" height="44"/>
                                         <animations/>
@@ -3377,18 +3384,24 @@
                                             <action selector="closeAction:" destination="49o-KF-b5x" eventType="touchUpInside" id="92U-oI-YQZ"/>
                                         </connections>
                                     </button>
-                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3hZ-Xv-exa">
-                                        <rect key="frame" x="0.0" y="44" width="560" height="496"/>
+                                    <pageControl opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="clb-GX-hIC">
+                                        <rect key="frame" x="0.0" y="503" width="560" height="37"/>
                                         <animations/>
-                                    </scrollView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="pageIndicatorTintColor" red="0.81176470590000005" green="0.81176470590000005" blue="0.81176470590000005" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="currentPageIndicatorTintColor" name="knobColor" catalog="System" colorSpace="catalog"/>
+                                    </pageControl>
                                 </subviews>
                                 <animations/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="3hZ-Xv-exa" firstAttribute="leading" secondItem="0H5-fc-aM9" secondAttribute="leading" id="7lS-Zu-dWw"/>
+                                    <constraint firstAttribute="trailing" secondItem="clb-GX-hIC" secondAttribute="trailing" id="DO2-EL-Pud"/>
                                     <constraint firstAttribute="trailing" secondItem="3hZ-Xv-exa" secondAttribute="trailing" id="K4z-Ok-YL1"/>
                                     <constraint firstAttribute="trailing" secondItem="qbd-TF-Dbk" secondAttribute="trailing" id="Lr2-l6-bPq"/>
+                                    <constraint firstItem="clb-GX-hIC" firstAttribute="leading" secondItem="0H5-fc-aM9" secondAttribute="leading" id="NOU-2N-Pmc"/>
                                     <constraint firstItem="qbd-TF-Dbk" firstAttribute="top" secondItem="0H5-fc-aM9" secondAttribute="top" id="poQ-ry-SmC"/>
+                                    <constraint firstAttribute="bottom" secondItem="clb-GX-hIC" secondAttribute="bottom" id="q6u-Pl-wfP"/>
                                     <constraint firstAttribute="bottom" secondItem="3hZ-Xv-exa" secondAttribute="bottom" id="qph-r3-pen"/>
                                     <constraint firstItem="3hZ-Xv-exa" firstAttribute="top" secondItem="qbd-TF-Dbk" secondAttribute="bottom" id="zpG-Ma-hJp"/>
                                 </constraints>
@@ -3412,6 +3425,7 @@
                     <connections>
                         <outlet property="contentScrollView" destination="3hZ-Xv-exa" id="ZcJ-QA-AED"/>
                         <outlet property="contentView" destination="0H5-fc-aM9" id="hYg-NN-cbm"/>
+                        <outlet property="pageControlView" destination="clb-GX-hIC" id="des-UY-ZKR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M3v-xg-4es" userLabel="First Responder" sceneMemberID="firstResponder"/>
