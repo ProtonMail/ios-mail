@@ -78,6 +78,10 @@ public class ComposeViewModelImpl : ComposeViewModel {
         return self.message?.defaultAddress
     }
     
+    override func hasAttachment() -> Bool {
+        return true;
+    }
+    
     private func updateContacts()
     {
         if message != nil {

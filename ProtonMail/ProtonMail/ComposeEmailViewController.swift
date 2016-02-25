@@ -295,22 +295,27 @@ class ComposeEmailViewController: ZSSRichTextEditor {
 // MARK : - view extensions
 extension ComposeEmailViewController : ComposeViewDelegate {
     func composeViewPickFrom(composeView: ComposeView) {
-        let alertController = UIAlertController(title: NSLocalizedString("Change sender address to .."), message: nil, preferredStyle: .ActionSheet)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
-        let multi_domains = self.viewModel.getAddresses()
-        let defaultAddr = self.viewModel.getDefaultAddress()
-        for (var addr) in multi_domains {
-            if addr.status == 1 && addr.receive == 1 && defaultAddr != addr {
-                alertController.addAction(UIAlertAction(title: addr.email, style: .Default, handler: { (action) -> Void in
-                    self.viewModel.updateAddressID(addr.address_id)
-                    self.composeView.updateFromValue(addr.email, pickerEnabled: true)
-                    //self.navigationController?.popViewControllerAnimated(true)
-                }))
+        if attachments?.count > 0 {
+            let alertController = "Please remove all attachments before changing sender!".alertController()
+            alertController.addOKAction()
+            self.presentViewController(alertController, animated: true, completion: nil)
+        } else {
+            let alertController = UIAlertController(title: NSLocalizedString("Change sender address to .."), message: nil, preferredStyle: .ActionSheet)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
+            let multi_domains = self.viewModel.getAddresses()
+            let defaultAddr = self.viewModel.getDefaultAddress()
+            for (var addr) in multi_domains {
+                if addr.status == 1 && addr.receive == 1 && defaultAddr != addr {
+                    alertController.addAction(UIAlertAction(title: addr.email, style: .Default, handler: { (action) -> Void in
+                        self.viewModel.updateAddressID(addr.address_id)
+                        self.composeView.updateFromValue(addr.email, pickerEnabled: true)
+                    }))
+                }
             }
+            alertController.popoverPresentationController?.sourceView = self.composeView.fromView
+            alertController.popoverPresentationController?.sourceRect = self.composeView.view.frame
+            presentViewController(alertController, animated: true, completion: nil)
         }
-        alertController.popoverPresentationController?.sourceView = self.composeView.fromView
-        alertController.popoverPresentationController?.sourceRect = self.composeView.view.frame
-        presentViewController(alertController, animated: true, completion: nil)
     }
     
     func ComposeViewDidSizeChanged(size: CGSize) {

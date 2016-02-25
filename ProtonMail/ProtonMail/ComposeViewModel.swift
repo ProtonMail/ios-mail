@@ -102,6 +102,10 @@ public class ComposeViewModel {
     func getDefaultAddress () -> Address? {
         fatalError("This method must be overridden")
     }
+    
+    func hasAttachment () -> Bool {
+        fatalError("This method must be overridden")
+    }
 }
 
 
