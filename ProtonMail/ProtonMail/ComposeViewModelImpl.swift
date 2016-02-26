@@ -13,7 +13,6 @@ public class ComposeViewModelImpl : ComposeViewModel {
     
     init(msg: Message?, action : ComposeMessageAction!) {
         super.init()
-        userAddress = sharedUserDataService.userAddresses
         
         if msg == nil || msg?.location == MessageLocation.draft {
             self.message = msg
@@ -87,34 +86,14 @@ public class ComposeViewModelImpl : ComposeViewModel {
         if message != nil {
             switch messageAction!
             {
-            case .NewDraft, .Forward:
-                break;
-            case .OpenDraft:
-                let sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.sender)
-                
-                if  !sender.isDuplicated(userAddress) {
-                    self.toSelectedContacts.append(sender)
-                }
-                
-                let toContacts = self.toContacts(self.message!.recipientList)
-                for cont in toContacts {
-                    if  !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
-                        self.toSelectedContacts.append(cont)
-                    }
-                }
-
-                let senderContacts = self.toContacts(self.message!.ccList)
-                for cont in senderContacts {
-                    if  !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
-                        self.ccSelectedContacts.append(cont)
-                    }
-                }
+            case .NewDraft, .Forward, .OpenDraft:
                 break;
             case .Reply:
                 let sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.sender)
                 self.toSelectedContacts.append(sender)
                 break;
             case .ReplyAll:
+                let userAddress = sharedUserDataService.userAddresses
                 let sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.sender)
                 
                 if  !sender.isDuplicated(userAddress) {
@@ -138,12 +117,10 @@ public class ComposeViewModelImpl : ComposeViewModel {
                         self.ccSelectedContacts.append(cont)
                     }
                 }
-                
                 break;
             default:
                 break;
             }
-            //self.bccSelectedContacts = toContacts(self.message!.bccList)
         }
     }
     
@@ -153,13 +130,6 @@ public class ComposeViewModelImpl : ComposeViewModel {
         sharedMessageDataService.send(self.message?.messageID)  { task, response, error in
             
         }
-        //        if hasDraft && message != nil {
-        //            //send;
-        //        }
-        //        else {
-        //            //save
-        //            //send
-        //        }
     }
     
     override func collectDraft(title: String, body: String, expir:NSTimeInterval, pwd:String, pwdHit:String) {

@@ -257,7 +257,7 @@ extension Message {
         newMessage.orginalMessageID = message.messageID
         newMessage.expirationOffset = 0
         
-        newMessage.addressID = message.addressID
+        newMessage.addressID = message.getAddressID
         
         if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D("error: \(error)")

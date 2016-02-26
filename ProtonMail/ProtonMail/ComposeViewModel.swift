@@ -33,8 +33,7 @@ public class ComposeViewModel {
     var bccChanged : Bool = false;
     var titleChanged : Bool = false;
     var bodyChanged : Bool = false;
-    var userAddress : Array<Address>!
-
+    
     public init() { }
     
     public func getSubject() -> String {
