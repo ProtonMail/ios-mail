@@ -17,6 +17,8 @@ class OnboardingViewController : UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var pageControlView: UIPageControl!
     @IBOutlet weak var learnmoreButton: UIButton!
     
+     private let upgradePageUrl = NSURL(string: "https://protonmail.com/upgrade")!
+    
     var pageWidth : CGFloat = 0.0;
     
     var viewModel : LabelViewModel!
@@ -62,6 +64,8 @@ class OnboardingViewController : UIViewController, UIScrollViewDelegate {
     }
     
     @IBAction func learnMoreAction(sender: UIButton) {
+        UIApplication.sharedApplication().openURL(upgradePageUrl)
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func closeAction(sender: AnyObject) {

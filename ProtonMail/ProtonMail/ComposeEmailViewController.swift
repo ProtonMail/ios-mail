@@ -94,7 +94,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
             
             switch self.viewModel.messageAction!
             {
-            case .Reply, .ReplyAll:
+            case .OpenDraft, .Reply, .ReplyAll:
                 self.focusTextEditor();
                 self.composeView.notifyViewSize(true)
                 break

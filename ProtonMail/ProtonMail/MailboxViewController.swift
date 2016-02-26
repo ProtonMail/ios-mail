@@ -118,7 +118,6 @@ class MailboxViewController: ProtonMailViewController {
         
         self.updateNavigationController(isEditing)
         
-        userCachedStatus.showTourNextTime()
         if !userCachedStatus.isTourOk() {
             userCachedStatus.resetTourValue()
             self.performSegueWithIdentifier(self.kSegueToTour, sender: self)
