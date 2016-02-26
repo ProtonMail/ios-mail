@@ -11,7 +11,7 @@ import UIKit
 class SettingTableViewController: ProtonMailViewController {
     
     var setting_headers = [SettingSections.General, SettingSections.MultiDomain, SettingSections.SwipeAction, SettingSections.Storage, SettingSections.Version] //SettingSections.Debug,
-    var setting_general_items = [SGItems.NotifyEmail, SGItems.DisplayName, SGItems.Signature, SGItems.LoginPWD, SGItems.CleanCache, SGItems.DefaultMobilSign]  //SGItems.MBP,
+    var setting_general_items = [SGItems.NotifyEmail, SGItems.DisplayName, SGItems.Signature, SGItems.LoginPWD, SGItems.MBP, SGItems.CleanCache, SGItems.DefaultMobilSign]  //
     var setting_debug_items = [SDebugItem.Queue, SDebugItem.ErrorLogs, SDebugItem.CleanCache]
     
     var setting_swipe_action_items = [SSwipeActionItems.left, SSwipeActionItems.right]
@@ -295,7 +295,10 @@ class SettingTableViewController: ProtonMailViewController {
                 self.performSegueWithIdentifier(LoginpwdSegue, sender: self)
                 break;
             case SGItems.MBP:
-                self.performSegueWithIdentifier(MailboxpwdSegue, sender: self)
+                let alert = "Please use the web version of ProtonMail to change your mailbox password!".alertController()
+                alert.addOKAction()
+                presentViewController(alert, animated: true, completion: nil)
+                //self.performSegueWithIdentifier(MailboxpwdSegue, sender: self)
                 break;
             case SGItems.CleanCache:
                 if !cleaning {
