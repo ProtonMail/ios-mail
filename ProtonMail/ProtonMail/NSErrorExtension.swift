@@ -83,7 +83,7 @@ extension NSError {
         hud.labelText = "Alert";
         hud.detailsLabelText = localizedDescription
         hud.removeFromSuperViewOnHide = true
-        hud.hide(true, afterDelay: 2)
+        hud.hide(true, afterDelay: 3)
     }
     
     class func alertUpdatedToast() ->Void {
