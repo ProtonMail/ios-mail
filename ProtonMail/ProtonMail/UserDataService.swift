@@ -64,7 +64,7 @@ class UserDataService {
     // MARK: - Public variables
     
     var defaultEmail : String {
-        if let addr = userAddresses.first {
+        if let addr = userAddresses.getDefaultAddress() {
             return addr.email;
         }
         return "";
