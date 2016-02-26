@@ -313,7 +313,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
                 }
             }
             alertController.popoverPresentationController?.sourceView = self.composeView.fromView
-            alertController.popoverPresentationController?.sourceRect = self.composeView.view.frame
+            alertController.popoverPresentationController?.sourceRect = self.composeView.fromView.frame
             presentViewController(alertController, animated: true, completion: nil)
         }
     }
