@@ -463,7 +463,7 @@ class ComposeView: UIViewController {
     
     func setExpirationValue (day : Int, hour : Int) -> Bool
     {
-        if (day == 0 && hour == 0) {
+        if (day == 0 && hour == 0 && !hasExpirationSchedule) {
             self.expirationDateTextField.shake(3, offset: 10.0)
             
             return false
