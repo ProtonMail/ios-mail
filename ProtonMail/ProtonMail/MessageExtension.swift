@@ -209,16 +209,12 @@ extension Message {
     }
     
     var getAddressID: String {
-        if let addressID = addressID {
-            if !addressID.isEmpty {
-                return addressID;
+        get {
+            if let addr = defaultAddress {
+                return addr.address_id
             }
-        } else {
-            if let addr_id = sharedUserDataService.userAddresses.getDefaultAddress()?.address_id {
-                return addr_id
-            }
+            return ""
         }
-        return ""
     }
     
     var defaultAddress : Address? {
@@ -227,6 +223,10 @@ extension Message {
                 if !addressID.isEmpty {
                     if let add = sharedUserDataService.userAddresses.indexOfAddress(addressID) {
                         return add;
+                    } else {
+                        if let add = sharedUserDataService.userAddresses.getDefaultAddress() {
+                            return add;
+                        }
                     }
                 }
             } else {

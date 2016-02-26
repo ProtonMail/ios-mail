@@ -1302,14 +1302,17 @@ class MessageDataService {
                          "MIMEType" : attachment.mimeType,
                     ]
                     
+                    var default_address_id = sharedUserDataService.userAddresses.getDefaultAddress()?.address_id ?? ""
                     //TODO::here need to fix sometime message is not valid'
                     if attachment.message.managedObjectContext == nil {
                         params["MessageID"] =  ""
                     } else {
                         params["MessageID"] =  attachment.message.messageID ?? ""
+                        default_address_id = attachment.message.getAddressID
                     }
                     
-                    let encrypt_data = attachment.encryptAttachment(nil)
+                    //
+                    let encrypt_data = attachment.encryptAttachment(default_address_id, error: nil)
                     //TODO:: here need check is encryptdata is nil and return the error to user.
                     let keyPacket = encrypt_data?.keyPackage
                     let dataPacket = encrypt_data?.dataPackage
@@ -1597,8 +1600,8 @@ class MessageDataService {
                 
                 if statusCode == 200 && error?.code > 1000 {
                     //show error
-                    error?.alertToast()
                     sharedMessageQueue.remove(elementID: elementID)
+                    error?.alertToast()
                 }
     
                 if !isInternetIssue {

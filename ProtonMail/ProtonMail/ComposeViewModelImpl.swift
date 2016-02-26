@@ -86,7 +86,31 @@ public class ComposeViewModelImpl : ComposeViewModel {
         if message != nil {
             switch messageAction!
             {
-            case .NewDraft, .Forward, .OpenDraft:
+            case .NewDraft, .Forward:
+                break;
+            case .OpenDraft:
+                let userAddress = sharedUserDataService.userAddresses
+                let toContacts = self.toContacts(self.message!.recipientList)
+                for cont in toContacts {
+                    if !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
+                        self.toSelectedContacts.append(cont)
+                    }
+                }
+                
+                let ccContacts = self.toContacts(self.message!.ccList)
+                for cont in ccContacts {
+                    if  !cont.isDuplicatedWithContacts(self.ccSelectedContacts) {
+                        self.ccSelectedContacts.append(cont)
+                    }
+                }
+                
+                let bccContacts = self.toContacts(self.message!.bccList)
+                for cont in bccContacts {
+                    if !cont.isDuplicatedWithContacts(self.bccSelectedContacts) {
+                        self.bccSelectedContacts.append(cont)
+                    }
+                }
+                
                 break;
             case .Reply:
                 let sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.sender)
@@ -95,7 +119,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
             case .ReplyAll:
                 let userAddress = sharedUserDataService.userAddresses
                 let sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.sender)
-                
+
                 if  !sender.isDuplicated(userAddress) {
                     self.toSelectedContacts.append(sender)
                 }

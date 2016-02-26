@@ -48,27 +48,10 @@ extension Attachment {
         return sharedUserDataService.mailboxPassword ?? ""
     }
     
-//    private var privateKey: String {
-//        return sharedUserDataService.userInfo?.privateKey ?? ""
-//    }
-//    
-//    private var publicKey: String {
-//        return sharedUserDataService.userInfo?.publicKey ?? ""
-//    }
-    
-    private var defaultAddressID: String {
-        let count = sharedUserDataService.userAddresses.count
-        if count < 1 {
-            return ""
-        } else {
-            return sharedUserDataService.userAddresses[0].address_id
-        }
-    }
-    
     // Mark : public functions
     
-    func encryptAttachment(error: NSErrorPointer?) -> PMNEncryptPackage? {
-        let out = fileData?.encryptAttachment(defaultAddressID, fileName: self.fileName, error: error)
+    func encryptAttachment(sender_address_id : String, error: NSErrorPointer?) -> PMNEncryptPackage? {
+        let out = fileData?.encryptAttachment(sender_address_id, fileName: self.fileName, error: error)
         if out == nil {
             return nil
         }
