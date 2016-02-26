@@ -1225,7 +1225,7 @@ class MessageDataService {
             if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID) {
                 if let message = context.existingObjectWithID(objectID, error: &error) as? Message {
                     let completionWrapper: CompletionBlock = { task, response, error in
-                        if let mess = response?["Message"] as? Dictionary<String, AnyObject> {
+                        if let mess = response {
                             if let messageID = mess["ID"] as? String {
                                 message.messageID = messageID
                                 message.isDetailDownloaded = true
@@ -1262,9 +1262,23 @@ class MessageDataService {
                     }
                     
                     if message.isDetailDownloaded && message.messageID != "0" {
-                        sharedAPIService.PUT(MessageUpdateDraftRequest<ApiResponse>(message:message), completion: completionWrapper)
+                        let api = MessageUpdateDraftRequest<MessageResponse>(message:message);
+                        api.call({ (task, response, hasError) -> Void in
+                            if hasError {
+                                completionWrapper(task: task, response: nil, error: response?.error)
+                            } else {
+                                completionWrapper(task: task, response: response?.message, error: nil)
+                            }
+                        })
                     } else {
-                        sharedAPIService.POST(MessageDraftRequest<ApiResponse>(message:message), completion: completionWrapper)
+                        let api = MessageDraftRequest<MessageResponse>(message:message)
+                        api.call({ (task, response, hasError) -> Void in
+                            if hasError {
+                                completionWrapper(task: task, response: nil, error: response?.error)
+                            } else {
+                                completionWrapper(task: task, response: response?.message, error: nil)
+                            }
+                        })
                     }
                     return;
                 }
@@ -1466,7 +1480,14 @@ class MessageDataService {
                             completion?(task: task, response: response, error: error)
                             return
                         }
-                        sharedAPIService.POST(sendMessage, completion: completionWrapper)
+                        sendMessage.call({ (task, response, hasError) -> Void in
+                            if hasError {
+                                completionWrapper(task: task, response: nil, error: response?.error)
+                            } else {
+                                completionWrapper(task: task, response: nil, error: nil)
+                            }
+                        })
+                        //sharedAPIService.POST(sendMessage, completion: completionWrapper)
                     })
                     
                     return
@@ -1573,7 +1594,16 @@ class MessageDataService {
                         }
                     }
                 }
-                self.dequeueIfNeeded()
+                
+                if statusCode == 200 && error?.code > 1000 {
+                    //show error
+                    error?.alertToast()
+                    sharedMessageQueue.remove(elementID: elementID)
+                }
+    
+                if !isInternetIssue {
+                    self.dequeueIfNeeded()
+                }
             }
         }
     }

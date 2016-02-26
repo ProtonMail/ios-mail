@@ -168,7 +168,6 @@ class UserDataService {
     func fetchUserInfo(completion: UserInfoBlock? = nil) {
         
         let getUserInfo = GetUserInfoRequest<GetUserInfoResponse>()
-        
         getUserInfo.call { (task, response, hasError) -> Void in
             if !hasError {
                 self.userInfo = response?.userInfo

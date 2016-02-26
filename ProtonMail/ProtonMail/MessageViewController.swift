@@ -258,7 +258,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             self.emailView?.updateEmailAttachment(atts);
         }
         var bodyText = NSLocalizedString(error)
-        let meta1 : String = "<meta name=\"viewport\" content=\"width=\(600)\">"
+        let meta1 : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=0.75\" content=\"yes\">"
         self.emailView?.updateEmailBody(bodyText, meta: meta1)
     }
 

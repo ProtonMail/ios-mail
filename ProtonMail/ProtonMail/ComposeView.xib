@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
@@ -9,6 +9,8 @@
             <string>Roboto-Light</string>
         </mutableArray>
         <mutableArray key="Roboto-Regular.ttf">
+            <string>Roboto-Regular</string>
+            <string>Roboto-Regular</string>
             <string>Roboto-Regular</string>
         </mutableArray>
     </customFonts>
@@ -24,6 +26,9 @@
                 <outlet property="expirationDateTextField" destination="0cq-9r-3dX" id="Iyw-GC-34o"/>
                 <outlet property="expirationView" destination="Okn-ub-h7D" id="LFA-QV-Pk0"/>
                 <outlet property="fakeContactPickerHeightConstraint" destination="sdc-Ad-iWb" id="j2p-Du-il9"/>
+                <outlet property="fromAddress" destination="Ilt-bS-8Pw" id="GBU-Pz-zPv"/>
+                <outlet property="fromPickerButton" destination="hKt-vn-DC9" id="2uw-Wn-Oiu"/>
+                <outlet property="fromView" destination="lId-3P-n4a" id="gE8-LW-qDX"/>
                 <outlet property="passwordView" destination="f6s-5h-iHn" id="FiQ-AK-GUN"/>
                 <outlet property="showCcBccButton" destination="chC-fW-E4g" id="nEi-tN-jKt"/>
                 <outlet property="subject" destination="6W7-2D-2Lf" id="IHs-QH-LuQ"/>
@@ -36,7 +41,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aWx-4S-hlX" userLabel="To Contact Picker" customClass="MBContactPicker" customModule="ProtonMail" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
+                    <rect key="frame" x="0.0" y="48" width="600" height="48"/>
                     <animations/>
                     <color key="backgroundColor" red="0.90980392160000001" green="0.92156862750000001" blue="0.92941176469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
@@ -44,7 +49,7 @@
                     </constraints>
                 </view>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Subject" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="6W7-2D-2Lf">
-                    <rect key="frame" x="0.0" y="48" width="600" height="48"/>
+                    <rect key="frame" x="0.0" y="96" width="600" height="48"/>
                     <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -57,7 +62,7 @@
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="chC-fW-E4g" userLabel="Show CC BCC View">
-                    <rect key="frame" x="551" y="0.0" width="49" height="48"/>
+                    <rect key="frame" x="551" y="48" width="49" height="48"/>
                     <animations/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="Tn1-q8-Z7u">
@@ -76,7 +81,7 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PQh-ZL-ZOh" userLabel="Buttons View">
-                    <rect key="frame" x="0.0" y="96" width="600" height="48"/>
+                    <rect key="frame" x="0.0" y="144" width="600" height="48"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dbl-67-gDP" userLabel="Attachment Button">
                             <rect key="frame" x="400" y="0.0" width="200" height="48"/>
@@ -133,7 +138,7 @@
                     </constraints>
                 </view>
                 <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Okn-ub-h7D" userLabel="Expiration View">
-                    <rect key="frame" x="0.0" y="96" width="600" height="48"/>
+                    <rect key="frame" x="0.0" y="144" width="600" height="48"/>
                     <subviews>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Define Expiration Date" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0cq-9r-3dX" userLabel="Expiration Text Field">
                             <rect key="frame" x="52" y="0.0" width="548" height="48"/>
@@ -171,7 +176,7 @@
                     </constraints>
                 </view>
                 <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f6s-5h-iHn" userLabel="Password View">
-                    <rect key="frame" x="0.0" y="96" width="600" height="48"/>
+                    <rect key="frame" x="0.0" y="144" width="600" height="48"/>
                     <subviews>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Define Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WxL-Ya-BL5" userLabel="Encrypted Password TextField">
                             <rect key="frame" x="52" y="0.0" width="548" height="48"/>
@@ -206,6 +211,63 @@
                         <constraint firstAttribute="bottom" secondItem="w8G-S8-0hr" secondAttribute="bottom" id="vmb-t3-gWi"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lId-3P-n4a">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="From" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N1Q-LP-p4d">
+                            <rect key="frame" x="10" y="0.0" width="33" height="48"/>
+                            <animations/>
+                            <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                            <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ilt-bS-8Pw">
+                            <rect key="frame" x="55" y="0.0" width="545" height="48"/>
+                            <animations/>
+                            <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                            <color key="textColor" name="knobColor" catalog="System" colorSpace="catalog"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hKt-vn-DC9">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
+                            <animations/>
+                            <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="20" maxY="0.0"/>
+                            <state key="normal" image="mail_attachment-closed">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="fromPickerAction:" destination="-1" eventType="touchUpInside" id="5eu-28-hWY"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8d8-Tv-c5P">
+                            <rect key="frame" x="0.0" y="47" width="600" height="1"/>
+                            <animations/>
+                            <color key="backgroundColor" red="0.78823529411764703" green="0.80784313725490198" blue="0.83137254901960778" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="WhB-B4-HT4"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="hKt-vn-DC9" firstAttribute="leading" secondItem="lId-3P-n4a" secondAttribute="leading" id="3XQ-su-mVC"/>
+                        <constraint firstItem="Ilt-bS-8Pw" firstAttribute="top" secondItem="lId-3P-n4a" secondAttribute="top" id="6Ac-1u-PZ8"/>
+                        <constraint firstAttribute="bottom" secondItem="hKt-vn-DC9" secondAttribute="bottom" id="6Zo-JK-Z5j"/>
+                        <constraint firstAttribute="trailing" secondItem="Ilt-bS-8Pw" secondAttribute="trailing" id="Ajz-pU-wH2"/>
+                        <constraint firstItem="N1Q-LP-p4d" firstAttribute="top" secondItem="lId-3P-n4a" secondAttribute="top" id="CTb-Mj-1kp"/>
+                        <constraint firstItem="8d8-Tv-c5P" firstAttribute="leading" secondItem="lId-3P-n4a" secondAttribute="leading" id="Qt1-l9-B4x"/>
+                        <constraint firstAttribute="bottom" secondItem="N1Q-LP-p4d" secondAttribute="bottom" id="Tf1-5E-PBw"/>
+                        <constraint firstAttribute="trailing" secondItem="8d8-Tv-c5P" secondAttribute="trailing" id="Zti-GS-xev"/>
+                        <constraint firstAttribute="trailing" secondItem="hKt-vn-DC9" secondAttribute="trailing" id="aR7-nV-qzb"/>
+                        <constraint firstAttribute="bottom" secondItem="Ilt-bS-8Pw" secondAttribute="bottom" id="cNI-iV-Xrp"/>
+                        <constraint firstItem="hKt-vn-DC9" firstAttribute="top" secondItem="lId-3P-n4a" secondAttribute="top" id="f4i-ZZ-wo0"/>
+                        <constraint firstAttribute="bottom" secondItem="8d8-Tv-c5P" secondAttribute="bottom" id="gjA-gF-jXR"/>
+                        <constraint firstItem="N1Q-LP-p4d" firstAttribute="leading" secondItem="lId-3P-n4a" secondAttribute="leading" constant="10" id="pC9-Oa-n5J"/>
+                        <constraint firstAttribute="height" constant="48" id="q2w-yV-FtO"/>
+                        <constraint firstItem="Ilt-bS-8Pw" firstAttribute="leading" secondItem="N1Q-LP-p4d" secondAttribute="trailing" constant="12" id="vLV-tZ-5Rx"/>
+                    </constraints>
+                </view>
             </subviews>
             <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -214,11 +276,14 @@
                     <variation key="widthClass=compact" constant="10"/>
                 </constraint>
                 <constraint firstItem="PQh-ZL-ZOh" firstAttribute="top" secondItem="6W7-2D-2Lf" secondAttribute="bottom" id="Afc-sd-pei"/>
-                <constraint firstItem="chC-fW-E4g" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="D9P-7a-0Aj"/>
+                <constraint firstAttribute="trailing" secondItem="lId-3P-n4a" secondAttribute="trailing" id="BfA-2A-BgH"/>
                 <constraint firstItem="Okn-ub-h7D" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Ey3-pg-qAo"/>
                 <constraint firstItem="aWx-4S-hlX" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="H8G-DQ-rjr"/>
                 <constraint firstAttribute="trailing" secondItem="aWx-4S-hlX" secondAttribute="trailing" id="KGx-QJ-TrU"/>
                 <constraint firstItem="Okn-ub-h7D" firstAttribute="top" secondItem="6W7-2D-2Lf" secondAttribute="bottom" id="L15-Kd-rkO"/>
+                <constraint firstItem="aWx-4S-hlX" firstAttribute="top" secondItem="lId-3P-n4a" secondAttribute="bottom" id="N9x-xo-nRQ"/>
+                <constraint firstItem="lId-3P-n4a" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="UZV-dJ-o9P"/>
+                <constraint firstItem="chC-fW-E4g" firstAttribute="top" secondItem="lId-3P-n4a" secondAttribute="bottom" id="V63-QO-KeO"/>
                 <constraint firstAttribute="trailing" secondItem="f6s-5h-iHn" secondAttribute="trailing" id="VDJ-kw-Zpd"/>
                 <constraint firstItem="f6s-5h-iHn" firstAttribute="top" secondItem="6W7-2D-2Lf" secondAttribute="bottom" constant="-1" id="VLg-3e-bpA"/>
                 <constraint firstItem="6W7-2D-2Lf" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Vuq-Xg-Tlu"/>
@@ -226,9 +291,9 @@
                 <constraint firstAttribute="trailing" secondItem="PQh-ZL-ZOh" secondAttribute="trailing" id="dLk-az-gmB"/>
                 <constraint firstItem="f6s-5h-iHn" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="jYM-Dz-byF"/>
                 <constraint firstItem="f6s-5h-iHn" firstAttribute="top" secondItem="Okn-ub-h7D" secondAttribute="top" id="kEZ-Iq-5Vy"/>
+                <constraint firstItem="lId-3P-n4a" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="oVi-aI-KHl"/>
                 <constraint firstAttribute="trailing" secondItem="Okn-ub-h7D" secondAttribute="trailing" id="qxU-er-lpB"/>
                 <constraint firstAttribute="trailing" secondItem="6W7-2D-2Lf" secondAttribute="trailing" id="riS-Pg-jLT"/>
-                <constraint firstItem="aWx-4S-hlX" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="txF-9J-8Fm"/>
                 <constraint firstItem="PQh-ZL-ZOh" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="vMI-IJ-gQT"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
@@ -237,7 +302,7 @@
                     <exclude reference="VLg-3e-bpA"/>
                 </mask>
             </variation>
-            <point key="canvasLocation" x="409" y="194"/>
+            <point key="canvasLocation" x="615" y="443"/>
         </view>
     </objects>
     <resources>
@@ -247,5 +312,6 @@
         <image name="compose_pluscontact" width="24" height="24"/>
         <image name="encrypted_compose_white" width="20" height="27"/>
         <image name="expiration_compose_white" width="22" height="22"/>
+        <image name="mail_attachment-closed" width="14" height="14"/>
     </resources>
 </document>

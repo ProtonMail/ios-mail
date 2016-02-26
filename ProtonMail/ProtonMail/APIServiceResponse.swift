@@ -43,7 +43,6 @@ public class ApiResponse {
         if let errorUserInfo = error.userInfo {
             if let detail = errorUserInfo["com.alamofire.serialization.response.error.response"] as? NSHTTPURLResponse {
                 self.code = detail.statusCode
-               
             }
             else {
                 internetCode = error.code
@@ -52,7 +51,6 @@ public class ApiResponse {
             self.errorMessage = error.description
             self.errorDetails = error.debugDescription
         }
-        
         self.error = error
     }
     

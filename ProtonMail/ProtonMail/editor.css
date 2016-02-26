@@ -99,6 +99,10 @@ h6 {
     margin: 2.33em 0;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    line-height: 120%;
+}
+
 abbr[title] {
     border-bottom: 1px dotted;
 }

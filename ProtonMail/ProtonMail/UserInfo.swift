@@ -58,7 +58,7 @@ final class UserInfo: NSObject {
         self.usedSpace = usedSpace ?? 0
         self.userStatus = userStatus ?? 0
         self.userAddresses = userAddresses ?? Array<Address>()
-        
+        PMLog.D("\(userAddresses)")
         self.autoSaveContact  = autoSC ?? 0
         self.language = language ?? "en_US"
         self.maxUpload = maxUpload ?? 0
@@ -297,8 +297,6 @@ extension Address: NSCoding {
             
             status : aDecoder.decodeIntegerForKey(CoderKey.addressStatus),
             type:aDecoder.decodeIntegerForKey(CoderKey.addressType)
-            
-            
         )
     }
     
@@ -311,6 +309,9 @@ extension Address: NSCoding {
         aCoder.encodeObject(display_name, forKey: CoderKey.signature)
         aCoder.encodeObject(signature, forKey: CoderKey.usedSpace)
         aCoder.encodeObject(keys, forKey: CoderKey.userKeys)
+        
+        aCoder.encodeInteger(status, forKey: CoderKey.addressStatus)
+        aCoder.encodeInteger(type, forKey: CoderKey.addressType)
     }
 }
 
@@ -371,12 +372,20 @@ extension Array {
         for var i = 0; i < self.count; ++i {
             var addr = (self[i] as! Address)
             if addr.status == 1 && addr.receive == 1 {
-                
                 return addr;
             }
         }
         return nil;
-        
+    }
+    
+    func indexOfAddress <T: Address>(addressid : String) -> Address? {
+        for var i = 0; i < self.count; ++i {
+            var addr = (self[i] as! Address)
+            if addr.status == 1 && addr.receive == 1 && addr.address_id == addressid {
+                return addr;
+            }
+        }
+        return nil;
     }
 }
 

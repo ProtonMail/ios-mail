@@ -105,7 +105,8 @@ public class ApiRequest<T : ApiResponse> : Package {
             
             if res == nil {
                 // TODO check res
-                complete?(task:task, response:nil, hasError: true)
+                apiRes.error = NSError.badResponse()
+                complete?(task:task, response:apiRes, hasError: true)
                 return
             }
             
