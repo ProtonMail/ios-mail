@@ -1603,6 +1603,12 @@ class MessageDataService {
                     sharedMessageQueue.remove(elementID: elementID)
                     error?.alertToast()
                 }
+                
+                if statusCode != 200 && statusCode != 404 && statusCode != 500 && !isInternetIssue {
+                    //show error
+                    sharedMessageQueue.remove(elementID: elementID)
+                    error?.alertToast()
+                }
     
                 if !isInternetIssue {
                     self.dequeueIfNeeded()
