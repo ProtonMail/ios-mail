@@ -3384,13 +3384,35 @@
                                             <action selector="closeAction:" destination="49o-KF-b5x" eventType="touchUpInside" id="92U-oI-YQZ"/>
                                         </connections>
                                     </button>
-                                    <pageControl opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="clb-GX-hIC">
-                                        <rect key="frame" x="0.0" y="503" width="560" height="37"/>
+                                    <pageControl opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="clb-GX-hIC">
+                                        <rect key="frame" x="0.0" y="532" width="560" height="0.0"/>
                                         <animations/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <color key="pageIndicatorTintColor" red="0.81176470590000005" green="0.81176470590000005" blue="0.81176470590000005" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="currentPageIndicatorTintColor" name="knobColor" catalog="System" colorSpace="catalog"/>
                                     </pageControl>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cIe-rh-Wq5">
+                                        <rect key="frame" x="180" y="470" width="200" height="42"/>
+                                        <animations/>
+                                        <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="42" id="SVQ-Js-ckc"/>
+                                            <constraint firstAttribute="width" constant="200" id="nuL-0e-LYF"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <state key="normal" title="Learn More">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="6"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="learnMoreAction:" destination="49o-KF-b5x" eventType="touchUpInside" id="AZB-vH-7L1"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <animations/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -3400,8 +3422,10 @@
                                     <constraint firstAttribute="trailing" secondItem="3hZ-Xv-exa" secondAttribute="trailing" id="K4z-Ok-YL1"/>
                                     <constraint firstAttribute="trailing" secondItem="qbd-TF-Dbk" secondAttribute="trailing" id="Lr2-l6-bPq"/>
                                     <constraint firstItem="clb-GX-hIC" firstAttribute="leading" secondItem="0H5-fc-aM9" secondAttribute="leading" id="NOU-2N-Pmc"/>
+                                    <constraint firstAttribute="bottom" secondItem="cIe-rh-Wq5" secondAttribute="bottom" constant="28" id="TnX-Or-y8G"/>
+                                    <constraint firstAttribute="centerX" secondItem="cIe-rh-Wq5" secondAttribute="centerX" id="Vru-3W-1Bt"/>
                                     <constraint firstItem="qbd-TF-Dbk" firstAttribute="top" secondItem="0H5-fc-aM9" secondAttribute="top" id="poQ-ry-SmC"/>
-                                    <constraint firstAttribute="bottom" secondItem="clb-GX-hIC" secondAttribute="bottom" id="q6u-Pl-wfP"/>
+                                    <constraint firstAttribute="bottom" secondItem="clb-GX-hIC" secondAttribute="bottom" constant="8" id="q6u-Pl-wfP"/>
                                     <constraint firstAttribute="bottom" secondItem="3hZ-Xv-exa" secondAttribute="bottom" id="qph-r3-pen"/>
                                     <constraint firstItem="3hZ-Xv-exa" firstAttribute="top" secondItem="qbd-TF-Dbk" secondAttribute="bottom" id="zpG-Ma-hJp"/>
                                 </constraints>
@@ -3425,6 +3449,7 @@
                     <connections>
                         <outlet property="contentScrollView" destination="3hZ-Xv-exa" id="ZcJ-QA-AED"/>
                         <outlet property="contentView" destination="0H5-fc-aM9" id="hYg-NN-cbm"/>
+                        <outlet property="learnmoreButton" destination="cIe-rh-Wq5" id="5wo-RK-Jov"/>
                         <outlet property="pageControlView" destination="clb-GX-hIC" id="des-UY-ZKR"/>
                     </connections>
                 </viewController>

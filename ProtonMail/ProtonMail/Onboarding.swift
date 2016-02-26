@@ -16,6 +16,7 @@ public enum Onboarding: Int, Printable {
     case encryption = 3
     case expire = 4
     case help = 5
+    case upgrade = 6
     
     public var image : String {
         get {
@@ -32,6 +33,8 @@ public enum Onboarding: Int, Printable {
                 return "onboarding_expire"
             case help:
                 return "onboarding_help"
+            case upgrade:
+                return "onboarding_upgrade"
             }
         }
     }
@@ -51,6 +54,8 @@ public enum Onboarding: Int, Printable {
                 return NSLocalizedString("Messages you send can be set to auto delete after a certain time period.")
             case help:
                 return NSLocalizedString("You can get help and support at protonmail.com/support. Bugs can also be reported with the app.")
+            case upgrade:
+                return NSLocalizedString("ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail.")
             }
         }
     }
@@ -70,6 +75,8 @@ public enum Onboarding: Int, Printable {
                 return NSLocalizedString("Expiring Messages")
             case help:
                 return NSLocalizedString("Help & Support")
+            case upgrade:
+                return NSLocalizedString("Support ProtonMail")
             }
         }
     }
