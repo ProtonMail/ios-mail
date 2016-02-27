@@ -38,7 +38,7 @@ class LablesViewController : UIViewController {
     private var archiveMessage = false;
     
     var delegate : LablesViewControllerDelegate?
-    
+
     //
     private var fetchedLabels: NSFetchedResultsController?
     
@@ -51,6 +51,10 @@ class LablesViewController : UIViewController {
         self.setupFetchedResultsController()
         //var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
         // self.view.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
     }
     
     @IBAction func archiveSelectAction(sender: UIButton) {

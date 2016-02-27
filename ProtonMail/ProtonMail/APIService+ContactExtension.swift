@@ -25,12 +25,8 @@ extension APIService {
     
     func contactAdd(#name: String, email: String, completion: CompletionBlock?) {
         let path = ContactPath.base
-        
         let contact = [ "Name": name, "Email" : email];
-        
-        
         let parameters = ["Contacts": [contact] ];
-        //parametersForName(name, email: email)
         setApiVesion(1, appVersion: 1)
         request(method: .POST, path: path, parameters: parameters, completion: completion)
     }

@@ -242,9 +242,10 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
                 bodyText = bodyText.stringByPurifyHTML()
             }
             //<meta name=\"viewport\" content=\"user-scalable=yes,maximum-scale=5.0,minimum-scale=0.5\" />
-            let w = UIScreen.mainScreen().bounds.width * 2
-            let meta : String = "<meta name=\"viewport\" content=\"width=\(w)\">\n"
-            let meta1 : String = "<meta name=\"viewport\" content=\"width=\(600)\">"
+            //let w = UIScreen.mainScreen().bounds.width * 2
+            //let meta : String = "<meta name=\"viewport\" content=\"width=\(w)\">\n"
+            let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=0.5\" content=\"yes\">"
+            let meta1 : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=0.75\" content=\"yes\">"// "<meta name=\"viewport\" content=\"width=\(600)\">"
             
             self.emailView?.updateEmailBody(bodyText, meta: self.message.isDetailDownloaded ? meta : meta1)
         }
@@ -257,7 +258,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             self.emailView?.updateEmailAttachment(atts);
         }
         var bodyText = NSLocalizedString(error)
-        let meta1 : String = "<meta name=\"viewport\" content=\"width=\(600)\">"
+        let meta1 : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=0.75\" content=\"yes\">"
         self.emailView?.updateEmailBody(bodyText, meta: meta1)
     }
 

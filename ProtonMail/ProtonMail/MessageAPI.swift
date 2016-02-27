@@ -91,7 +91,7 @@ public class MessageDraftRequest<T: ApiResponse>  : ApiRequest<T> {
     }
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
-        let address_id : String                 = sharedUserDataService.userAddresses.first?.address_id ?? "1000";
+        let address_id : String                 = message.getAddressID
         var messsageDict : [String : AnyObject] = [
             "AddressID" : address_id,
             "Body" : message.body,
@@ -120,6 +120,10 @@ public class MessageDraftRequest<T: ApiResponse>  : ApiRequest<T> {
     override public func getVersion() -> Int {
         return MessageAPI.V_MessageDraftRequest
     }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .POST
+    }
 }
 
 /// message update draft api request
@@ -134,6 +138,20 @@ public class MessageUpdateDraftRequest<T: ApiResponse> : MessageDraftRequest<T> 
     
     override public func getVersion() -> Int {
         return MessageAPI.V_MessageUpdateDraftRequest
+    }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .PUT
+    }
+}
+
+
+public class MessageResponse : ApiResponse {
+    var message : Dictionary<String, AnyObject>?
+    
+    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
+        self.message = response?["Message"] as? Dictionary<String, AnyObject>
+        return true
     }
 }
 
@@ -265,6 +283,10 @@ public class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
     
     override public func getVersion() -> Int {
         return MessageAPI.V_MessageSendRequest
+    }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .POST
     }
 }
 

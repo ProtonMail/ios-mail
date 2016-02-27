@@ -68,8 +68,11 @@ class QuickViewViewController: QLPreviewController {
     }
     
     override func shouldAutorotate() -> Bool {
+        
         return true
     }
+    
+
 
 //    override func supportedInterfaceOrientations() -> Int {
 //        return Int(UIInterfaceOrientationMask.Portrait.rawValue) | Int(UIInterfaceOrientationMask.Landscape.rawValue);

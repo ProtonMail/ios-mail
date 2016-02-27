@@ -94,26 +94,26 @@ public enum MessageSwipeAction : Int, Printable {
         }
     }
     
-//    public var key: String {
-//        switch(self) {
-//        case deleted:
-//            return "Deleted"
-//        case inbox:
-//            return "Inbox"
-//        case draft:
-//            return "Draft"
-//        case outbox:
-//            return "Outbox"
-//        case spam:
-//            return "Spam"
-//        case starred:
-//            return "Starred"
-//        case archive:
-//            return "Archive"
-//        case trash:
-//            return "Trash"
-//        }
-//    }
+    //    public var key: String {
+    //        switch(self) {
+    //        case deleted:
+    //            return "Deleted"
+    //        case inbox:
+    //            return "Inbox"
+    //        case draft:
+    //            return "Draft"
+    //        case outbox:
+    //            return "Outbox"
+    //        case spam:
+    //            return "Spam"
+    //        case starred:
+    //            return "Starred"
+    //        case archive:
+    //            return "Archive"
+    //        case trash:
+    //            return "Trash"
+    //        }
+    //    }
     
     var actionColor: UIColor {
         switch(self) {

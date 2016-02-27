@@ -45,6 +45,7 @@ class MailboxViewController: ProtonMailViewController {
     private let kSegueToMessageDetailController = "toMessageDetailViewController"
     private let kSegueToLabelsController = "toApplyLabelsSegue"
     private let kSegueToMessageDetailFromNotification = "toMessageDetailViewControllerFromNotification"
+    private let kSegueToTour = "to_onboarding_segue"
     
     
     @IBOutlet weak var undoBottomDistance: NSLayoutConstraint!
@@ -116,6 +117,11 @@ class MailboxViewController: ProtonMailViewController {
         self.addConstraints()
         
         self.updateNavigationController(isEditing)
+        
+        if !userCachedStatus.isTourOk() {
+            userCachedStatus.resetTourValue()
+            self.performSegueWithIdentifier(self.kSegueToTour, sender: self)
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -259,6 +265,10 @@ class MailboxViewController: ProtonMailViewController {
         } else if segue.identifier == kSegueToCompose {
             let composeViewController = segue.destinationViewController.viewControllers![0] as! ComposeEmailViewController
             composeViewController.viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.NewDraft)
+        } else if segue.identifier == kSegueToTour {
+            let popup = segue.destinationViewController as! OnboardingViewController
+            popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }
     
@@ -400,7 +410,6 @@ class MailboxViewController: ProtonMailViewController {
     
     private func configureCell(mailboxCell: MailboxMessageCell, atIndexPath indexPath: NSIndexPath) {
         if let message = self.messageAtIndexPath(indexPath) {
-            PMLog.D("\(message)")
             mailboxCell.configureCell(message, showLocation: viewModel.showLocation())
             mailboxCell.setCellIsChecked(selectedMessages.containsObject(message.messageID))
             if (self.isEditing) {

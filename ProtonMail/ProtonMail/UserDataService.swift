@@ -64,7 +64,7 @@ class UserDataService {
     // MARK: - Public variables
     
     var defaultEmail : String {
-        if let addr = userAddresses.first {
+        if let addr = userAddresses.getDefaultAddress() {
             return addr.email;
         }
         return "";
@@ -168,7 +168,6 @@ class UserDataService {
     func fetchUserInfo(completion: UserInfoBlock? = nil) {
         
         let getUserInfo = GetUserInfoRequest<GetUserInfoResponse>()
-        
         getUserInfo.call { (task, response, hasError) -> Void in
             if !hasError {
                 self.userInfo = response?.userInfo

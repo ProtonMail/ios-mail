@@ -625,13 +625,15 @@ zss_editor.focusEditor = function() {
     // the following was taken from http://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity/3866442#3866442
     // and ensures we move the cursor to the end of the editor
     var editor = $('#zss_editor_content');
-    var range = document.createRange();
-    range.selectNodeContents(editor.get(0));
-    range.collapse(true);
-    var selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
-    editor.focus();
+    if (!editor.focus) {
+        var range = document.createRange();
+        range.selectNodeContents(editor.get(0));
+        range.collapse(true);
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        editor.focus();
+    }
 }
 
 zss_editor.removeRanges = function() {

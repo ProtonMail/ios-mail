@@ -75,6 +75,17 @@ extension NSError {
         return UIAlertController(title: title, message: localizedDescription, preferredStyle: .Alert)
     }
     
+    
+    func alertToast() ->Void {
+        let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
+        var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+        hud.mode = MBProgressHUDMode.Text
+        hud.labelText = "Alert";
+        hud.detailsLabelText = localizedDescription
+        hud.removeFromSuperViewOnHide = true
+        hud.hide(true, afterDelay: 3)
+    }
+    
     class func alertUpdatedToast() ->Void {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
         var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)

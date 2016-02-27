@@ -33,8 +33,7 @@ public class ComposeViewModel {
     var bccChanged : Bool = false;
     var titleChanged : Bool = false;
     var bodyChanged : Bool = false;
-    var userAddress : Array<Address>!
-
+    
     public init() { }
     
     public func getSubject() -> String {
@@ -88,6 +87,22 @@ public class ComposeViewModel {
     }
     
     func getAttachments() -> [Attachment]? {
+        fatalError("This method must be overridden")
+    }
+    
+    func updateAddressID (address_id : String) {
+        fatalError("This method must be overridden")
+    }
+    
+    func getAddresses () -> Array<Address> {
+        fatalError("This method must be overridden")
+    }
+   
+    func getDefaultAddress () -> Address? {
+        fatalError("This method must be overridden")
+    }
+    
+    func hasAttachment () -> Bool {
         fatalError("This method must be overridden")
     }
 }

@@ -58,7 +58,7 @@ final class UserInfo: NSObject {
         self.usedSpace = usedSpace ?? 0
         self.userStatus = userStatus ?? 0
         self.userAddresses = userAddresses ?? Array<Address>()
-        
+        PMLog.D("\(userAddresses)")
         self.autoSaveContact  = autoSC ?? 0
         self.language = language ?? "en_US"
         self.maxUpload = maxUpload ?? 0
@@ -74,15 +74,19 @@ final class UserInfo: NSObject {
 
 final class Address: NSObject {
     let address_id: String
-    let email: String
-    var send: Int
-    let receive: Int
-    let mailbox: Int
-    let display_name: String
-    let signature: String
+    var send: Int    // address order
+    let email: String  //email address name
+    let status : Int   // 0 is disabled, 1 is enabled, can be set by user
+    let type : Int  //1 is original PM, 2 is PM alias, 3 is custom domain address
+    let receive: Int // 1 is active address (Status=1 and has key), 0 is inactive (cannot send or receive)
+    
     let keys: Array<Key>
     
-    required init(addressid: String?, email: String?, send: Int?, receive: Int?, mailbox: Int?, display_name: String?, signature: String?, keys: Array<Key>?) {
+    let mailbox: Int   //Not inuse
+    let display_name: String  //not inuse
+    let signature: String //not inuse
+    
+    required init(addressid: String?, email: String?, send: Int?, receive: Int?, mailbox: Int?, display_name: String?, signature: String?, keys: Array<Key>?, status: Int?, type:Int?) {
         self.address_id = addressid ?? ""
         self.email = email ?? ""
         self.send = send ?? 0
@@ -91,6 +95,9 @@ final class Address: NSObject {
         self.display_name = display_name ?? ""
         self.signature = signature ?? ""
         self.keys = keys ?? Array<Key>()
+        
+        self.status = status ?? 0
+        self.type = type ?? 0
     }
 }
 
@@ -153,7 +160,10 @@ extension UserInfo {
                     mailbox: res["Mailbox"] as? Int,
                     display_name: res["DisplayName"] as? String,
                     signature: res["Signature"] as? String,
-                    keys : keys ))
+                    keys : keys,
+                    status: res["Status"] as? Int,
+                    type: res["Type"] as? Int
+                ))
             }
             let usedS = response[usedSpaceResponseKey] as? NSNumber
             let maxS = response[maxSpaceResponseKey] as? NSNumber
@@ -260,7 +270,7 @@ extension UserInfo: NSCoding {
 
 extension Address: NSCoding {
     
-    private struct CoderKey {
+    private struct CoderKey { //the keys all messed up but it works
         static let displayName = "displayName"
         static let maxSpace = "maxSpace"
         static let notificationEmail = "notificationEmail"
@@ -268,8 +278,10 @@ extension Address: NSCoding {
         static let publicKey = "publicKey"
         static let signature = "signature"
         static let usedSpace = "usedSpace"
-        static let userStatus = "userStatus"
         static let userKeys = "userKeys"
+        
+        static let addressStatus = "addressStatus"
+        static let addressType = "addressType"
     }
     
     convenience init(coder aDecoder: NSCoder) {
@@ -281,7 +293,10 @@ extension Address: NSCoding {
             mailbox: aDecoder.decodeIntegerForKey(CoderKey.publicKey),
             display_name: aDecoder.decodeStringForKey(CoderKey.signature),
             signature: aDecoder.decodeStringForKey(CoderKey.usedSpace),
-            keys: aDecoder.decodeObjectForKey(CoderKey.userKeys) as?  Array<Key>
+            keys: aDecoder.decodeObjectForKey(CoderKey.userKeys) as?  Array<Key>,
+            
+            status : aDecoder.decodeIntegerForKey(CoderKey.addressStatus),
+            type:aDecoder.decodeIntegerForKey(CoderKey.addressType)
         )
     }
     
@@ -294,6 +309,9 @@ extension Address: NSCoding {
         aCoder.encodeObject(display_name, forKey: CoderKey.signature)
         aCoder.encodeObject(signature, forKey: CoderKey.usedSpace)
         aCoder.encodeObject(keys, forKey: CoderKey.userKeys)
+        
+        aCoder.encodeInteger(status, forKey: CoderKey.addressStatus)
+        aCoder.encodeInteger(type, forKey: CoderKey.addressType)
     }
 }
 
@@ -349,7 +367,31 @@ extension Array {
         }
         return out_array;
     }
+    
+    func getDefaultAddress <T: Address>() -> Address? {
+        for var i = 0; i < self.count; ++i {
+            var addr = (self[i] as! Address)
+            if addr.status == 1 && addr.receive == 1 {
+                return addr;
+            }
+        }
+        return nil;
+    }
+    
+    func indexOfAddress <T: Address>(addressid : String) -> Address? {
+        for var i = 0; i < self.count; ++i {
+            var addr = (self[i] as! Address)
+            if addr.status == 1 && addr.receive == 1 && addr.address_id == addressid {
+                return addr;
+            }
+        }
+        return nil;
+    }
 }
+
+
+
+
 
 
 

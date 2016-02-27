@@ -28,13 +28,12 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     private var encryptionConfirmPassword: String = ""
     private var encryptionPasswordHint: String = ""
     private var hasAccessToAddressBook: Bool = false
-    private var userAddress : Array<Address>!
     
     private var attachments: [AnyObject]?
     
     @IBOutlet weak var expirationPicker: UIPickerView!
     // offsets
-    private var composeViewSize : CGFloat = 138;
+    private var composeViewSize : CGFloat = 186;
     
     // MARK : const values
     private let kNumberOfColumnsInTimePicker: Int = 2
@@ -59,9 +58,6 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         self.composeView.datasource = self
         self.webView.scrollView.addSubview(composeView.view);
         self.webView.scrollView.bringSubviewToFront(composeView.view)
-        
-        // get user's address
-        userAddress = sharedUserDataService.userAddresses
         
         // update content values
         updateMessageView()
@@ -98,7 +94,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
             
             switch self.viewModel.messageAction!
             {
-            case .Reply, .ReplyAll:
+            case .OpenDraft, .Reply, .ReplyAll:
                 self.focusTextEditor();
                 self.composeView.notifyViewSize(true)
                 break
@@ -106,7 +102,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
                 self.composeView.toContactPicker.becomeFirstResponder()
                 break
             }
-
+            
         }
     }
     
@@ -120,6 +116,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     }
     
     private func updateMessageView() {
+        self.composeView.updateFromValue(self.viewModel.getDefaultAddress()?.email ?? "", pickerEnabled: true)
         self.composeView.subject.text = self.viewModel.getSubject();
         self.setHTML(self.viewModel.getHtmlBody())
     }
@@ -180,7 +177,6 @@ class ComposeEmailViewController: ZSSRichTextEditor {
                 } else if sub is UIImageView {
                     continue
                 } else {
-                    
                     let h : CGFloat = self.composeViewSize
                     sub.frame = CGRect(x: sub.frame.origin.x, y: h, width: sub.frame.width, height: sub.frame.height);
                 }
@@ -188,7 +184,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         })
     }
     
-
+    
     @IBAction func send_clicked(sender: AnyObject) {
         self.dismissKeyboard()
         
@@ -216,7 +212,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         } else {
             navigationController?.popToRootViewControllerAnimated(true)
         }
-
+        
     }
     
     @IBAction func cancel_clicked(sender: UIBarButtonItem) {
@@ -296,11 +292,31 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     }
 }
 
-
-
-
 // MARK : - view extensions
 extension ComposeEmailViewController : ComposeViewDelegate {
+    func composeViewPickFrom(composeView: ComposeView) {
+        if attachments?.count > 0 {
+            let alertController = "Please remove all attachments before changing sender!".alertController()
+            alertController.addOKAction()
+            self.presentViewController(alertController, animated: true, completion: nil)
+        } else {
+            let alertController = UIAlertController(title: NSLocalizedString("Change sender address to .."), message: nil, preferredStyle: .ActionSheet)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
+            let multi_domains = self.viewModel.getAddresses()
+            let defaultAddr = self.viewModel.getDefaultAddress()
+            for (var addr) in multi_domains {
+                if addr.status == 1 && addr.receive == 1 && defaultAddr != addr {
+                    alertController.addAction(UIAlertAction(title: addr.email, style: .Default, handler: { (action) -> Void in
+                        self.viewModel.updateAddressID(addr.address_id)
+                        self.composeView.updateFromValue(addr.email, pickerEnabled: true)
+                    }))
+                }
+            }
+            alertController.popoverPresentationController?.sourceView = self.composeView.fromView
+            alertController.popoverPresentationController?.sourceRect = self.composeView.fromView.frame
+            presentViewController(alertController, animated: true, completion: nil)
+        }
+    }
     
     func ComposeViewDidSizeChanged(size: CGSize) {
         //self.composeSize = size
@@ -478,7 +494,7 @@ extension ComposeEmailViewController: AttachmentsTableViewControllerDelegate {
         self.collectDraft()
         self.viewModel.uploadAtt(attachment)
     }
-
+    
     func attachments(attViewController: AttachmentsTableViewController, didDeletedAttachment attachment: Attachment) {
         self.collectDraft()
         self.viewModel.deleteAtt(attachment)

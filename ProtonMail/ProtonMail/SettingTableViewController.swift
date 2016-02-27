@@ -11,7 +11,7 @@ import UIKit
 class SettingTableViewController: ProtonMailViewController {
     
     var setting_headers = [SettingSections.General, SettingSections.MultiDomain, SettingSections.SwipeAction, SettingSections.Storage, SettingSections.Version] //SettingSections.Debug,
-    var setting_general_items = [SGItems.NotifyEmail, SGItems.DisplayName, SGItems.Signature, SGItems.LoginPWD, SGItems.CleanCache, SGItems.DefaultMobilSign]  //SGItems.MBP,
+    var setting_general_items = [SGItems.NotifyEmail, SGItems.DisplayName, SGItems.Signature, SGItems.LoginPWD, SGItems.MBP, SGItems.CleanCache, SGItems.DefaultMobilSign]  //
     var setting_debug_items = [SDebugItem.Queue, SDebugItem.ErrorLogs, SDebugItem.CleanCache]
     
     var setting_swipe_action_items = [SSwipeActionItems.left, SSwipeActionItems.right]
@@ -203,17 +203,12 @@ class SettingTableViewController: ProtonMailViewController {
             }
             else if setting_headers[indexPath.section] == .MultiDomain {
                 let cell = tableView.dequeueReusableCellWithIdentifier(SettingDomainsCell, forIndexPath: indexPath) as! DomainsTableViewCell
-                if multi_domains.count > indexPath.row {
-                    cell.domainText.text = multi_domains[indexPath.row].email
-                    if indexPath.row == 0
-                    {
-                        cell.defaultMark.text = NSLocalizedString("Default")
-                    }
-                    else
-                    {
-                        cell.defaultMark.text = ""
-                    }
+                if let addr = multi_domains.getDefaultAddress() {
+                    cell.domainText.text = addr.email
+                } else {
+                    cell.domainText.text = "Unknown"
                 }
+                cell.defaultMark.text = NSLocalizedString("Default")
                 cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator;
                 return cell
             }
@@ -300,7 +295,10 @@ class SettingTableViewController: ProtonMailViewController {
                 self.performSegueWithIdentifier(LoginpwdSegue, sender: self)
                 break;
             case SGItems.MBP:
-                self.performSegueWithIdentifier(MailboxpwdSegue, sender: self)
+                let alert = "Please use the web version of ProtonMail to change your mailbox password!".alertController()
+                alert.addOKAction()
+                presentViewController(alert, animated: true, completion: nil)
+                //self.performSegueWithIdentifier(MailboxpwdSegue, sender: self)
                 break;
             case SGItems.CleanCache:
                 if !cleaning {
@@ -352,37 +350,40 @@ class SettingTableViewController: ProtonMailViewController {
                 break;
             }
         } else if setting_headers[indexPath.section] == SettingSections.MultiDomain {
-            let alertController = UIAlertController(title: NSLocalizedString("Change default domain to .."), message: nil, preferredStyle: .ActionSheet)
+            let alertController = UIAlertController(title: NSLocalizedString("Change default address to .."), message: nil, preferredStyle: .ActionSheet)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
+            var defaultAddress : Address? = multi_domains.getDefaultAddress()
             for (var addr) in multi_domains {
-                if multi_domains.first != addr {
-                    alertController.addAction(UIAlertAction(title: addr.email, style: .Default, handler: { (action) -> Void in
-                        self.navigationController?.popViewControllerAnimated(true)
-                        
-                        var newAddrs = Array<Address>()
-                        var newOrder = Array<Int>()
-                        newAddrs.append(addr);
-                        newOrder.append(addr.send);
-                        var order = 1;
-                        addr.send = order++;
-                        for (var oldAddr) in self.multi_domains {
-                            if oldAddr != addr {
-                                newAddrs.append(oldAddr)
-                                newOrder.append(oldAddr.send);
-                                oldAddr.send = order++
+                if addr.status == 1 && addr.receive == 1 {
+                    if defaultAddress != addr {
+                        alertController.addAction(UIAlertAction(title: addr.email, style: .Default, handler: { (action) -> Void in
+                            self.navigationController?.popViewControllerAnimated(true)
+                            
+                            var newAddrs = Array<Address>()
+                            var newOrder = Array<Int>()
+                            newAddrs.append(addr);
+                            newOrder.append(addr.send);
+                            var order = 1;
+                            addr.send = order++;
+                            for (var oldAddr) in self.multi_domains {
+                                if oldAddr != addr {
+                                    newAddrs.append(oldAddr)
+                                    newOrder.append(oldAddr.send);
+                                    oldAddr.send = order++
+                                }
                             }
-                        }
-                        ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
-                        sharedUserDataService.updateUserDomiansOrder(newAddrs,  newOrder:newOrder) { _, _, error in
-                            tableView.reloadData();
-                            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-                            if let error = error {
-                            } else {
-                                self.multi_domains = newAddrs
-                                tableView.reloadData()
+                            ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
+                            sharedUserDataService.updateUserDomiansOrder(newAddrs,  newOrder:newOrder) { _, _, error in
+                                tableView.reloadData();
+                                ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                                if let error = error {
+                                } else {
+                                    self.multi_domains = newAddrs
+                                    tableView.reloadData()
+                                }
                             }
-                        }
-                    }))
+                        }))
+                    }
                 }
             }
             
@@ -556,7 +557,7 @@ extension SettingTableViewController {
             case General:
                 return NSLocalizedString("General Settings")
             case MultiDomain:
-                return NSLocalizedString("Multiple Domains")
+                return NSLocalizedString("Multiple Addresses")
             case Storage:
                 return NSLocalizedString("Storage")
             case Version:

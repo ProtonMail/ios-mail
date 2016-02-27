@@ -53,6 +53,10 @@ class UserCachedStatus : SharedCacheBase {
         return tourVersion == AppConstants.TourVersion
     }
     
+    func showTourNextTime() {
+        setValue(0, forKey: Key.lastTourViersion)
+    }
+    
     func isCacheOk() -> Bool {
         let cachedVersion = getShared().integerForKey(Key.lastCacheVersion)
         return cachedVersion == AppConstants.CacheVersion
@@ -88,13 +92,13 @@ class UserCachedStatus : SharedCacheBase {
         getShared().removeObjectForKey(Key.lastCacheVersion);
         getShared().removeObjectForKey(Key.isCheckSpaceDisabled);
         getShared().removeObjectForKey(Key.lastAuthCacheVersion);
-        getShared().removeObjectForKey(Key.lastTourViersion);
         
         getShared().synchronize()
     }
     
     func cleanGlobal() {
         getShared().removeObjectForKey(Key.lastSplashViersion)
+        getShared().removeObjectForKey(Key.lastTourViersion);
         
         getShared().synchronize()
     }
