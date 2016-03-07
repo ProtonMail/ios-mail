@@ -15,8 +15,15 @@ extension String {
         return UIAlertController(title: "Alert", message: message, preferredStyle: .Alert)
     }
     
-    
-    
+    func alertToast() -> Void {
+        let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
+        var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+        hud.mode = MBProgressHUDMode.Text
+        hud.labelText = "Alert";
+        hud.detailsLabelText = self
+        hud.removeFromSuperViewOnHide = true
+        hud.hide(true, afterDelay: 3)
+    }
     
     func contains(s: String) -> Bool
     {
