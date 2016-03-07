@@ -13,12 +13,17 @@ let userCachedStatus = UserCachedStatus(shared: NSUserDefaults.standardUserDefau
 //the data in there store longer.
 
 class UserCachedStatus : SharedCacheBase {
-    
     struct Key {
         // inuse
-        static let lastCacheVersion = "last_cache_version"
-        static let isCheckSpaceDisabled = "isCheckSpaceDisabledKey"
-        static let lastAuthCacheVersion = "last_auth_cache_version"
+        static let lastCacheVersion = "last_cache_version" //user cache
+        static let isCheckSpaceDisabled = "isCheckSpaceDisabledKey" //user cache
+        static let lastAuthCacheVersion = "last_auth_cache_version" //user cache
+        
+        // touch id 
+        static let isTouchIDEnabled = "isTouchIDEnabled" //global cache
+        static let autoLogoutTime = "autoLogoutTime" //global cache
+        static let touchIDEmail = "touchIDEmail" //user cache
+        static let askEnableTouchID = "askEnableTouchID" //global cache
         
         //wait
         static let lastFetchMessageID = "last_fetch_message_id"
@@ -27,9 +32,8 @@ class UserCachedStatus : SharedCacheBase {
         static let historyTimeStamp = "history_timestamp"
         
         //Global Cache
-        static let lastSplashViersion = "last_splash_viersion"
-        static let lastTourViersion = "last_tour_viersion"
-        
+        static let lastSplashViersion = "last_splash_viersion" //global cache
+        static let lastTourViersion = "last_tour_viersion" //global cache
     }
     
     var isForcedLogout : Bool = false
@@ -93,6 +97,9 @@ class UserCachedStatus : SharedCacheBase {
         getShared().removeObjectForKey(Key.isCheckSpaceDisabled);
         getShared().removeObjectForKey(Key.lastAuthCacheVersion);
         
+        //touch id
+        getShared().removeObjectForKey(Key.touchIDEmail);
+        
         getShared().synchronize()
     }
     
@@ -100,6 +107,67 @@ class UserCachedStatus : SharedCacheBase {
         getShared().removeObjectForKey(Key.lastSplashViersion)
         getShared().removeObjectForKey(Key.lastTourViersion);
         
+        //touch id
+        getShared().removeObjectForKey(Key.isTouchIDEnabled)
+        getShared().removeObjectForKey(Key.autoLogoutTime);
+        getShared().removeObjectForKey(Key.askEnableTouchID)
+        
         getShared().synchronize()
     }
 }
+
+
+// touch id part
+extension UserCachedStatus {
+    var touchIDEmail : String {
+        get {
+            return getShared().stringForKey(Key.touchIDEmail) ?? ""
+        }
+        set {
+            setValue(newValue, forKey: Key.touchIDEmail)
+        }
+    }
+    func resetTouchIDEmail() {
+        setValue("", forKey: Key.touchIDEmail)
+    }
+    
+// static let autoLogoutTime = "autoLogoutTime" //global cache
+// static let askEnableTouchID = "askEnableTouchID" //global cache
+    var isTouchIDEnabled : Bool {
+        get {
+            return getShared().boolForKey(Key.isTouchIDEnabled)
+        }
+        set {
+            setValue(newValue, forKey: Key.isTouchIDEnabled)
+        }
+    }
+    
+    func alreadyAskedEnableTouchID () -> Bool {
+        let code = getShared().integerForKey(Key.askEnableTouchID)
+        return code == AppConstants.AskTouchID
+    }
+    
+    func resetAskedEnableTouchID() {
+        setValue(AppConstants.AskTouchID, forKey: Key.askEnableTouchID)
+    }
+    
+//
+//    func resetCache() -> Void {
+//        setValue(AppConstants.CacheVersion, forKey: Key.lastCacheVersion)
+//    }
+//    
+//    func resetAuthCache() -> Void {
+//        setValue(AppConstants.AuthCacheVersion, forKey: Key.lastAuthCacheVersion)
+//    }
+//    
+//    func resetSplashCache() -> Void {
+//        setValue(AppConstants.SplashVersion, forKey: Key.lastSplashViersion)
+//    }
+//    
+//    func resetTourValue() {
+//        setValue(AppConstants.TourVersion, forKey: Key.lastTourViersion)
+//    }
+    
+    
+}
+

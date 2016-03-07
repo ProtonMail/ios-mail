@@ -122,6 +122,10 @@ class MailboxViewController: ProtonMailViewController {
             userCachedStatus.resetTourValue()
             self.performSegueWithIdentifier(self.kSegueToTour, sender: self)
         }
+        
+        if userCachedStatus.isTouchIDEnabled {
+            userCachedStatus.touchIDEmail = sharedUserDataService.username ?? ""
+        }
     }
     
     override func viewWillAppear(animated: Bool) {

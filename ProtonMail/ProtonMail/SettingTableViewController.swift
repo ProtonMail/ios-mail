@@ -11,7 +11,7 @@ import UIKit
 class SettingTableViewController: ProtonMailViewController {
     
     var setting_headers = [SettingSections.General, SettingSections.MultiDomain, SettingSections.SwipeAction, SettingSections.Storage, SettingSections.Version] //SettingSections.Debug,
-    var setting_general_items = [SGItems.NotifyEmail, SGItems.DisplayName, SGItems.Signature, SGItems.LoginPWD, SGItems.MBP, SGItems.CleanCache, SGItems.DefaultMobilSign]  //
+    var setting_general_items = [SGItems.NotifyEmail, SGItems.DisplayName, SGItems.Signature, SGItems.LoginPWD, SGItems.MBP, SGItems.CleanCache, SGItems.DefaultMobilSign, SGItems.EnableTouchID]  //
     var setting_debug_items = [SDebugItem.Queue, SDebugItem.ErrorLogs, SDebugItem.CleanCache]
     
     var setting_swipe_action_items = [SSwipeActionItems.left, SSwipeActionItems.right]
@@ -37,6 +37,7 @@ class SettingTableViewController: ProtonMailViewController {
     let HeaderCell = "header_cell"
     let SingleTextCell = "single_text_cell"
     let SwitchCell = "switch_table_view_cell"
+    let kTouchIDCell = "touch_id_switch_table_cell"
     
     //
     let CellHeight : CGFloat = 30.0
@@ -93,27 +94,7 @@ class SettingTableViewController: ProtonMailViewController {
             break
         }
     }
-    
-    // MARK: - button acitons
-    @IBAction func editAction(sender: AnyObject) {
-        settingTableView.setEditing(!settingTableView.editing, animated: true)
-        if settingTableView.editing
-        {
-            editBarButton.title = NSLocalizedString("Done")
-        }
-        else
-        {
-            //            ActivityIndicatorHelper.showActivityIndicatorAtView(view)
-            //            editBarButton.title = NSLocalizedString("Edit")
-            //            sharedUserDataService.updateUserDomiansOrder(multi_domains) { _, _, error in
-            //                ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-            //                if let error = error {
-            //                } else {
-            //                }
-            //            }
-        }
-    }
-    
+
     // MARK: - Table view data source
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return setting_headers.count
@@ -197,6 +178,16 @@ class SettingTableViewController: ProtonMailViewController {
                             cell.setUpSwitch(true, status: status) //was false
                         }
                         cellout = cell
+                        break
+                    case SGItems.EnableTouchID:
+                        let cell = tableView.dequeueReusableCellWithIdentifier(kTouchIDCell, forIndexPath: indexPath) as! TouchIDCell
+                        cell.accessoryType = UITableViewCellAccessoryType.None
+                        cell.selectionStyle = UITableViewCellSelectionStyle.None
+                        cell.setUpSwitch(userCachedStatus.isTouchIDEnabled)
+                        cellout = cell
+                        break
+                    case SGItems.AutoLogout:
+                        break
                     }
                 }
                 return cellout
@@ -499,6 +490,9 @@ extension SettingTableViewController {
         case MBP = 4
         case CleanCache = 5
         case DefaultMobilSign = 6
+        case EnableTouchID = 7
+        case AutoLogout = 8
+        
         var description : String {
             switch(self){
             case NotifyEmail:
@@ -515,6 +509,10 @@ extension SettingTableViewController {
                 return NSLocalizedString("Clear Local Message Cache")
             case .DefaultMobilSign:
                 return NSLocalizedString("Default mobile signature")
+            case .EnableTouchID:
+                return NSLocalizedString("Enable TouchID")
+            case .AutoLogout:
+                return NSLocalizedString("Auto Logout")
             }
         }
     }

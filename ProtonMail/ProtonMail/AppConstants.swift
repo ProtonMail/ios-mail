@@ -17,6 +17,8 @@ class AppConstants {
     static let SplashVersion : Int = 1
     static let TourVersion : Int = 2
     
+    static let AskTouchID : Int = 1
+    
     static var AppVersion : Int = 1;
     static let BaseURLString : String = "https://api.protonmail.ch"
     //static let BaseURLString : String = "http://protonmail.blue/api"
