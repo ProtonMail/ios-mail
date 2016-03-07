@@ -192,6 +192,7 @@
 		757945D61B66E38D004EEDCA /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757945D51B66E38D004EEDCA /* MessageViewController.swift */; };
 		757945D81B6702A2004EEDCA /* EmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757945D71B6702A2004EEDCA /* EmailView.swift */; };
 		757945DA1B6702B5004EEDCA /* EmailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757945D91B6702B5004EEDCA /* EmailHeaderView.swift */; };
+		7580D65A1C8E440200A15885 /* OnePasswordExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7580D6591C8E440200A15885 /* OnePasswordExtension.m */; };
 		7582E2F21B015DE400FEA38B /* MessageDetailBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582E2F11B015DE400FEA38B /* MessageDetailBottomView.swift */; };
 		7582E2F41B015DF100FEA38B /* MessageDetailBottomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */; };
 		7588BB401BFBE05A00EC8EFD /* SecureStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7588BB3F1BFBE05A00EC8EFD /* SecureStore.swift */; };
@@ -455,6 +456,8 @@
 		757945D51B66E38D004EEDCA /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		757945D71B6702A2004EEDCA /* EmailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailView.swift; sourceTree = "<group>"; };
 		757945D91B6702B5004EEDCA /* EmailHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailHeaderView.swift; sourceTree = "<group>"; };
+		7580D6581C8E440200A15885 /* OnePasswordExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnePasswordExtension.h; sourceTree = "<group>"; };
+		7580D6591C8E440200A15885 /* OnePasswordExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnePasswordExtension.m; sourceTree = "<group>"; };
 		7582E2F11B015DE400FEA38B /* MessageDetailBottomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDetailBottomView.swift; sourceTree = "<group>"; };
 		7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageDetailBottomView.xib; sourceTree = "<group>"; };
 		7588BB3F1BFBE05A00EC8EFD /* SecureStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureStore.swift; sourceTree = "<group>"; };
@@ -993,6 +996,22 @@
 			name = Onboarding;
 			sourceTree = "<group>";
 		};
+		7580D6561C8E436F00A15885 /* OnePassword */ = {
+			isa = PBXGroup;
+			children = (
+				7580D6581C8E440200A15885 /* OnePasswordExtension.h */,
+				7580D6591C8E440200A15885 /* OnePasswordExtension.m */,
+			);
+			name = OnePassword;
+			sourceTree = "<group>";
+		};
+		7580D6571C8E438800A15885 /* LastPass */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = LastPass;
+			sourceTree = "<group>";
+		};
 		75978BD91B28F5F800D07501 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
@@ -1078,6 +1097,8 @@
 		75F1697F1AF7F49B00BE6E79 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				7580D6571C8E438800A15885 /* LastPass */,
+				7580D6561C8E436F00A15885 /* OnePassword */,
 				076758791AA126E400F9AC9C /* StorageLimit.swift */,
 				75F1697D1AF7F43A00BE6E79 /* Logger.swift */,
 				7546BE541C8D4F9100FCEB0A /* TouchID.swift */,
@@ -1425,6 +1446,7 @@
 				7523E88E1BB1561F00126D62 /* NSData+MultipartResponses.m in Sources */,
 				07CAB8031A894A3B00C5E347 /* MessageDetailViewController.swift in Sources */,
 				7564898E1B7DBE64007EA207 /* LabelAPI.swift in Sources */,
+				7580D65A1C8E440200A15885 /* OnePasswordExtension.m in Sources */,
 				75E652B41B82AC0D0084DDF8 /* LabelsViewController.swift in Sources */,
 				751D49F01BE356180008E75C /* LabelsView.swift in Sources */,
 				75B179501B377748006044D4 /* ContactVOExtension.swift in Sources */,
