@@ -44,6 +44,8 @@ class SignInViewController: UIViewController {
     
     @IBOutlet weak var signInButton: UIButton!
     
+    @IBOutlet weak var onePasswordButton: UIButton!
+    
     //@IBOutlet weak var signUpButton: UIButton!
     //@IBOutlet weak var forgotButton: UIButton!
     //@IBOutlet weak var rememberButton: UIButton!
@@ -65,6 +67,7 @@ class SignInViewController: UIViewController {
     
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var passwordManagerWidthConstraint: NSLayoutConstraint!
     private let secureStore = KeyChainStore()
     
     required init(coder aDecoder: NSCoder) {
@@ -77,7 +80,7 @@ class SignInViewController: UIViewController {
         setupTextFields()
         setupSignInButton()
         
-        //check touch id status 
+        //check touch id status
         if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
             authenticateUser()
         } else {
@@ -141,6 +144,41 @@ class SignInViewController: UIViewController {
         }
     }
     
+    @IBAction func onePasswordAction(sender: UIButton) {
+        OnePasswordExtension.sharedExtension().findLoginForURLString("https://protonmail.com", forViewController: self, sender: sender, completion: { (loginDictionary, error) -> Void in
+            if loginDictionary == nil {
+                if error!.code != Int(AppExtensionErrorCodeCancelledByUser) {
+                    print("Error invoking Password App Extension for find login: \(error)")
+                }
+                return
+            }
+            
+            println("\(loginDictionary)")
+            
+            let username : String! = loginDictionary?[AppExtensionUsernameKey] as? String ?? ""
+            let password : String! = loginDictionary?[AppExtensionPasswordKey] as? String ?? ""
+            
+            self.usernameTextField.text = username
+            self.passwordTextField.text = password
+            
+            //            if let generatedOneTimePassword = loginDictionary?[AppExtensionTOTPKey] as? String {
+            //                //self.oneTimePasswordTextField.hidden = false
+            //                //self.oneTimePasswordTextField.text = generatedOneTimePassword
+            //
+            //                // Important: It is recommended that you submit the OTP/TOTP to your validation server as soon as you receive it, otherwise it may expire.
+            //                let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
+            //                dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
+            //                    self.performSegueWithIdentifier("showThankYouViewController", sender: self)
+            //                })
+            //            }
+            
+            if !username.isEmpty && !password.isEmpty {
+                self.signIn()
+            }
+        })
+        
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
@@ -148,6 +186,13 @@ class SignInViewController: UIViewController {
         
         updateSignInButton(usernameText: usernameTextField.text, passwordText: passwordTextField.text)
         
+        if OnePasswordExtension.sharedExtension().isAppExtensionAvailable() == true {
+            onePasswordButton.hidden = false
+            passwordManagerWidthConstraint.constant = 40
+        } else {
+            onePasswordButton.hidden = true
+            passwordManagerWidthConstraint.constant = 0
+        }
         
         //        let fadeOutTime = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 1.0))
         //        dispatch_after(fadeOutTime, dispatch_get_main_queue()) {
@@ -307,14 +352,12 @@ class SignInViewController: UIViewController {
     }
     
     func signIn() {
-        
+        MBProgressHUD.showHUDAddedTo(view, animated: true)
         isRemembered = true
         if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
             clean();
         }
-        
         SignInViewController.isComeBackFromMailbox = false
-        //MBProgressHUD.showHUDAddedTo(view, animated: true)
         
         var username = (usernameTextField.text ?? "").trim();
         var password = (passwordTextField.text ?? "").trim();

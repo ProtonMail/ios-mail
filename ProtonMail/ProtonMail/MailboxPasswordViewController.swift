@@ -27,6 +27,7 @@ class MailboxPasswordViewController: UIViewController {
     //@IBOutlet weak var rememberButton: UIButton!
     @IBOutlet weak var backgroundImage: UIImageView!
 
+    @IBOutlet weak var passwordManagerButton: UIButton!
     var isRemembered: Bool = sharedUserDataService.isRememberMailboxPassword
     var isShowpwd : Bool = false;
     
@@ -46,6 +47,7 @@ class MailboxPasswordViewController: UIViewController {
     
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var passwordManagerWidthConstraint: NSLayoutConstraint!
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDecryptButton()
@@ -92,6 +94,14 @@ class MailboxPasswordViewController: UIViewController {
         super.viewWillAppear(animated)
         //navigationController?.setNavigationBarHidden(false, animated: true)
         NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
+        
+        if OnePasswordExtension.sharedExtension().isAppExtensionAvailable() == true {
+            passwordManagerButton.hidden = false
+            passwordManagerWidthConstraint.constant = 40
+        } else {
+            passwordManagerButton.hidden = true
+            passwordManagerWidthConstraint.constant = 0
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -126,6 +136,40 @@ class MailboxPasswordViewController: UIViewController {
     
     
     // MARK: - private methods
+    
+    @IBAction func onePasswordAction(sender: UIButton) {
+        OnePasswordExtension.sharedExtension().findLoginForURLString("https://protonmail.com", forViewController: self, sender: sender, completion: { (loginDictionary, error) -> Void in
+            if loginDictionary == nil {
+                if error!.code != Int(AppExtensionErrorCodeCancelledByUser) {
+                    print("Error invoking Password App Extension for find login: \(error)")
+                }
+                return
+            }
+            
+            println("\(loginDictionary)")
+            
+            let username : String! = loginDictionary?[AppExtensionUsernameKey] as? String ?? ""
+            let password : String! = loginDictionary?[AppExtensionPasswordKey] as? String ?? ""
+            
+            self.passwordTextField.text = password
+            
+            //            if let generatedOneTimePassword = loginDictionary?[AppExtensionTOTPKey] as? String {
+            //                //self.oneTimePasswordTextField.hidden = false
+            //                //self.oneTimePasswordTextField.text = generatedOneTimePassword
+            //
+            //                // Important: It is recommended that you submit the OTP/TOTP to your validation server as soon as you receive it, otherwise it may expire.
+            //                let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
+            //                dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
+            //                    self.performSegueWithIdentifier("showThankYouViewController", sender: self)
+            //                })
+            //            }
+            
+            if !username.isEmpty && !password.isEmpty {
+                self.decryptPassword()
+            }
+        })
+        
+    }
     
     func configureNavigationBar() {
         self.navigationController?.navigationBar.barStyle = UIBarStyle.Black
