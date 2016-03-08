@@ -56,10 +56,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sign_background_new" translatesAutoresizingMaskIntoConstraints="NO" id="TKg-rK-Lsf">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <animations/>
-                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vXd-qg-0wm">
                                 <rect key="frame" x="0.0" y="125" width="600" height="310"/>
                                 <subviews>
@@ -141,6 +137,10 @@
                                     <constraint firstAttribute="centerX" secondItem="oGd-mH-yoy" secondAttribute="centerX" id="zCw-lZ-nKZ"/>
                                 </constraints>
                             </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sign_background_new" translatesAutoresizingMaskIntoConstraints="NO" id="TKg-rK-Lsf">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <animations/>
+                            </imageView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -256,7 +256,7 @@
                                                 <rect key="frame" x="28" y="266" width="544" height="40"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="right" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2kl-R3-2ji" userLabel="Show PWD">
-                                                        <rect key="frame" x="484" y="0.0" width="60" height="40"/>
+                                                        <rect key="frame" x="444" y="0.0" width="60" height="40"/>
                                                         <animations/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="60" id="f0G-FH-gQv"/>
@@ -279,7 +279,7 @@
                                                         </constraints>
                                                     </view>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="BL2-co-jyw" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="484" height="40"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="444" height="40"/>
                                                         <animations/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -289,20 +289,36 @@
                                                             <outlet property="delegate" destination="rb7-9h-TvB" id="bxb-zI-7Lw"/>
                                                         </connections>
                                                     </textField>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B6O-Zu-zTa" userLabel="pass manager">
+                                                        <rect key="frame" x="504" y="0.0" width="40" height="39"/>
+                                                        <animations/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="40" id="Wuf-hK-SJT"/>
+                                                        </constraints>
+                                                        <state key="normal" image="onepassword-button">
+                                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="onePasswordAction:" destination="rb7-9h-TvB" eventType="touchUpInside" id="5JK-zs-dpn"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
                                                 <animations/>
                                                 <constraints>
+                                                    <constraint firstItem="B6O-Zu-zTa" firstAttribute="top" secondItem="bOD-D6-5za" secondAttribute="top" id="9RM-Nb-5TA"/>
                                                     <constraint firstAttribute="bottom" secondItem="BL2-co-jyw" secondAttribute="bottom" id="Hj0-vc-tjI"/>
                                                     <constraint firstItem="BL2-co-jyw" firstAttribute="top" secondItem="bOD-D6-5za" secondAttribute="top" id="Idb-d8-2AC"/>
                                                     <constraint firstItem="2kl-R3-2ji" firstAttribute="leading" secondItem="BL2-co-jyw" secondAttribute="trailing" id="NEw-Jl-7Nz"/>
                                                     <constraint firstItem="lrN-n3-M2Q" firstAttribute="leading" secondItem="bOD-D6-5za" secondAttribute="leading" id="Rrc-SH-QPY"/>
                                                     <constraint firstAttribute="bottom" secondItem="2kl-R3-2ji" secondAttribute="bottom" id="aIu-dF-X6p"/>
-                                                    <constraint firstAttribute="trailing" secondItem="2kl-R3-2ji" secondAttribute="trailing" id="eKh-6d-Wna"/>
+                                                    <constraint firstItem="B6O-Zu-zTa" firstAttribute="leading" secondItem="2kl-R3-2ji" secondAttribute="trailing" id="e1Z-fm-cF1"/>
                                                     <constraint firstAttribute="height" constant="40" id="keH-uP-vaC"/>
                                                     <constraint firstItem="2kl-R3-2ji" firstAttribute="top" secondItem="bOD-D6-5za" secondAttribute="top" id="lSf-VY-E1N"/>
                                                     <constraint firstItem="BL2-co-jyw" firstAttribute="leading" secondItem="bOD-D6-5za" secondAttribute="leading" id="mcm-Cj-qDb"/>
                                                     <constraint firstAttribute="bottom" secondItem="lrN-n3-M2Q" secondAttribute="bottom" id="q0q-Vz-tIZ"/>
+                                                    <constraint firstAttribute="trailing" secondItem="B6O-Zu-zTa" secondAttribute="trailing" id="sxe-Lw-olc"/>
                                                     <constraint firstAttribute="trailing" secondItem="lrN-n3-M2Q" secondAttribute="trailing" id="tBd-C1-8id"/>
+                                                    <constraint firstItem="lrN-n3-M2Q" firstAttribute="top" secondItem="B6O-Zu-zTa" secondAttribute="bottom" id="wWQ-Jx-jPe"/>
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MgP-0E-i6P">
@@ -420,6 +436,8 @@
                         <outlet property="backgroundImage" destination="B79-ZV-yWF" id="p2w-gn-VV6"/>
                         <outlet property="logoLeftPaddingConstraint" destination="uel-ce-NZp" id="ykA-9O-VZv"/>
                         <outlet property="logoTopPaddingConstraint" destination="uwY-xT-yW3" id="5ab-wo-AMk"/>
+                        <outlet property="onePasswordButton" destination="B6O-Zu-zTa" id="bWf-9B-5wN"/>
+                        <outlet property="passwordManagerWidthConstraint" destination="Wuf-hK-SJT" id="20L-zN-doe"/>
                         <outlet property="passwordTextField" destination="BL2-co-jyw" id="Hi0-pL-m9W"/>
                         <outlet property="passwordView" destination="bOD-D6-5za" id="Tz8-k0-WmG"/>
                         <outlet property="scrollBottomPaddingConstraint" destination="f3K-Vi-4pQ" id="Eaa-cQ-XRp"/>
@@ -2050,7 +2068,7 @@
                                                 <rect key="frame" x="28" y="241" width="544" height="42"/>
                                                 <subviews>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="MAILBOX PASSWORD" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="8W9-bi-DrJ" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="481" height="42"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="441" height="42"/>
                                                         <animations/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2061,7 +2079,7 @@
                                                         </connections>
                                                     </textField>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dak-er-dwn" userLabel="Show PWD">
-                                                        <rect key="frame" x="481" y="0.0" width="63" height="42"/>
+                                                        <rect key="frame" x="441" y="0.0" width="63" height="42"/>
                                                         <animations/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="Dak-er-dwn" secondAttribute="height" multiplier="1.5:1" id="jEH-KJ-xzx"/>
@@ -2084,20 +2102,36 @@
                                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="hAh-5F-vQk"/>
                                                         </constraints>
                                                     </view>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Exs-ku-Yx8" userLabel="pass manager">
+                                                        <rect key="frame" x="504" y="0.0" width="40" height="41"/>
+                                                        <animations/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="40" id="Khr-pD-gBO"/>
+                                                        </constraints>
+                                                        <state key="normal" image="onepassword-button">
+                                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="onePasswordAction:" destination="Zzb-6r-tlP" eventType="touchUpInside" id="Rxr-u9-opO"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
                                                 <animations/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="trailing" secondItem="Dak-er-dwn" secondAttribute="trailing" id="0D8-PT-nPh"/>
                                                     <constraint firstAttribute="height" constant="42" id="5Mu-pX-4Xh"/>
                                                     <constraint firstItem="8W9-bi-DrJ" firstAttribute="leading" secondItem="5Bn-qy-Efs" secondAttribute="leading" id="ANf-wC-Tga"/>
+                                                    <constraint firstAttribute="trailing" secondItem="Exs-ku-Yx8" secondAttribute="trailing" id="CMB-18-ORa"/>
                                                     <constraint firstItem="Dak-er-dwn" firstAttribute="top" secondItem="5Bn-qy-Efs" secondAttribute="top" id="J25-N2-50I"/>
+                                                    <constraint firstItem="p2c-a0-3Uw" firstAttribute="top" secondItem="Exs-ku-Yx8" secondAttribute="bottom" id="Jkn-h0-cAK"/>
+                                                    <constraint firstItem="Exs-ku-Yx8" firstAttribute="top" secondItem="5Bn-qy-Efs" secondAttribute="top" id="KY7-Y2-IO5"/>
                                                     <constraint firstItem="p2c-a0-3Uw" firstAttribute="leading" secondItem="5Bn-qy-Efs" secondAttribute="leading" id="LfZ-qs-Xsb"/>
                                                     <constraint firstItem="8W9-bi-DrJ" firstAttribute="top" secondItem="5Bn-qy-Efs" secondAttribute="top" id="bLN-nX-yr7"/>
                                                     <constraint firstAttribute="bottom" secondItem="8W9-bi-DrJ" secondAttribute="bottom" id="lhs-iI-vgP"/>
                                                     <constraint firstAttribute="trailing" secondItem="p2c-a0-3Uw" secondAttribute="trailing" id="nR6-ES-u9H"/>
                                                     <constraint firstItem="Dak-er-dwn" firstAttribute="leading" secondItem="8W9-bi-DrJ" secondAttribute="trailing" id="oEl-8E-w7t"/>
                                                     <constraint firstAttribute="bottom" secondItem="Dak-er-dwn" secondAttribute="bottom" id="phh-Ff-qVe"/>
+                                                    <constraint firstItem="Exs-ku-Yx8" firstAttribute="leading" secondItem="Dak-er-dwn" secondAttribute="trailing" id="rvD-E0-wxZ"/>
                                                     <constraint firstAttribute="bottom" secondItem="p2c-a0-3Uw" secondAttribute="bottom" id="tS4-d2-1Rc"/>
                                                 </constraints>
                                             </view>
@@ -2203,6 +2237,8 @@
                         <outlet property="decryptButton" destination="SVX-4t-hlE" id="AdW-AD-PXg"/>
                         <outlet property="logoLeftPaddingConstraint" destination="IYp-kF-Muh" id="JFc-kr-44h"/>
                         <outlet property="logoTopPaddingConstraint" destination="RXP-v4-BIB" id="abB-x6-CUO"/>
+                        <outlet property="passwordManagerButton" destination="Exs-ku-Yx8" id="eOd-NT-SnV"/>
+                        <outlet property="passwordManagerWidthConstraint" destination="Khr-pD-gBO" id="XJ2-Yg-Wy6"/>
                         <outlet property="passwordTextField" destination="8W9-bi-DrJ" id="4Jt-5b-8vY"/>
                         <outlet property="passwordTopPaddingConstraint" destination="vP0-w7-rFc" id="yBB-7Y-35W"/>
                         <outlet property="resetMailboxPasswordAction" destination="DOp-gd-g09" id="BSp-dM-XGH"/>
@@ -3004,6 +3040,7 @@
         <image name="SignIn" width="320" height="568"/>
         <image name="cancel_compose" width="22" height="22"/>
         <image name="checked_signin" width="26" height="27"/>
+        <image name="onepassword-button" width="27" height="27"/>
         <image name="sign_background_new" width="375" height="667"/>
         <image name="sign_invisiblecharacters" width="14" height="14"/>
         <image name="sign_up_check_user_icon" width="16" height="16"/>

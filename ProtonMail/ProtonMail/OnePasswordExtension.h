@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 #define AppExtensionGeneratedPasswordForbiddenCharactersKey @"password_forbidden_characters"
 
 // Errors codes
-#define AppExtensionErrorDomain                             @"OnePasswordExtension"
+#define AppExtensionErrorDomain                             @"PasswordExtension"
 
 #define AppExtensionErrorCodeCancelledByUser                    0
 #define AppExtensionErrorCodeAPINotAvailable                    1
