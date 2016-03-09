@@ -73,14 +73,14 @@ class UserDataService {
     var mobileSignature : String {
         get {
             if userInfo?.role > 0 {
-                return userCachedStatus.mobildSignature
+                return userCachedStatus.mobileSignature
             } else {
                 userCachedStatus.resetMobileSignature()
-                return userCachedStatus.mobildSignature
+                return userCachedStatus.mobileSignature
             }
         }
         set {
-            userCachedStatus.mobildSignature = newValue
+            userCachedStatus.mobileSignature = newValue
         }
     }
     

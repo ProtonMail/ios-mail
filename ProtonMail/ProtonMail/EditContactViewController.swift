@@ -37,6 +37,7 @@ class EditContactViewController: ProtonMailViewController {
     }
     
     @IBAction func didTapCancelButton(sender: UIBarButtonItem) {
+        dismissKeyboard()
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -61,6 +62,13 @@ class EditContactViewController: ProtonMailViewController {
                 })
             }
         }
+    }
+    
+    func dismissKeyboard() {
+        
+        nameTextField.resignFirstResponder()
+        emailTextField.resignFirstResponder()
+        
     }
     
     override func shouldShowSideMenu() -> Bool {
