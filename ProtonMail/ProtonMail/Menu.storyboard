@@ -2511,7 +2511,7 @@
                                                 <action selector="switchAction:" destination="8Mk-M6-89O" eventType="valueChanged" id="KDk-f8-s4K"/>
                                             </connections>
                                         </switch>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable Mobile Signature" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iuJ-l4-JWp">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mobile Signature" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iuJ-l4-JWp">
                                             <rect key="frame" x="16" y="6" width="511" height="16"/>
                                             <animations/>
                                             <constraints>
@@ -2719,6 +2719,7 @@
                         <segue destination="OCS-Qd-wj6" kind="show" identifier="setting_notification" id="sPN-i9-NSa"/>
                         <segue destination="OCS-Qd-wj6" kind="push" identifier="setting_signature" id="A7E-cY-hB0"/>
                         <segue destination="SWZ-VZ-9Rg" kind="show" identifier="setting_debug_queue_segue" id="XyN-LC-jTe"/>
+                        <segue destination="OCS-Qd-wj6" kind="show" identifier="setting_mobile_signature" id="dUE-8e-owj"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7xM-0a-IOr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3531,7 +3532,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="LdN-DE-nXL"/>
         <segue reference="V9t-nA-fhw"/>
-        <segue reference="sPN-i9-NSa"/>
+        <segue reference="dUE-8e-owj"/>
         <segue reference="Lm0-2L-Xlj"/>
         <segue reference="fux-iz-qV0"/>
         <segue reference="zIE-XJ-wkG"/>

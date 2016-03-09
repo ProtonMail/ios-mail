@@ -43,6 +43,7 @@ class SettingDetailViewController: UIViewController {
         if viewModel.isDisplaySwitch() {
             switchLabel.text = viewModel.getSwitchText()
             switcher.on = viewModel.getSwitchStatus()
+            switchView.hidden = false
         }
         else {
             switchView.hidden = true
@@ -62,6 +63,11 @@ class SettingDetailViewController: UIViewController {
             inputTextField.text = viewModel.getCurrentValue()
             inputTextField.placeholder = viewModel.getPlaceholdText()
         }
+        
+
+        switcher.enabled = viewModel.isSwitchEnabled()
+        inputTextView.editable = viewModel.isSwitchEnabled()
+
     }
 
     override func didReceiveMemoryWarning() {

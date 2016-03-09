@@ -24,6 +24,7 @@ class SettingTableViewController: ProtonMailViewController {
     let NotificationSegue:String = "setting_notification"
     let DisplayNameSegue:String = "setting_displayname"
     let SignatureSegue:String = "setting_signature"
+    let MobileSignatureSegue:String = "setting_mobile_signature"
     let LoginpwdSegue:String = "setting_login_pwd"
     let MailboxpwdSegue:String = "setting_mailbox_pwd"
     
@@ -90,6 +91,11 @@ class SettingTableViewController: ProtonMailViewController {
             let changeMBPView = segue.destinationViewController as! SettingDetailViewController;
             changeMBPView.setViewModel(shareViewModelFactoy.getChangeSignature())
             break
+        case MobileSignatureSegue:
+            let changeMBPView = segue.destinationViewController as! SettingDetailViewController;
+            changeMBPView.setViewModel(shareViewModelFactoy.getChangeMobileSignature())
+            break
+
         default:
             break
         }
@@ -169,14 +175,7 @@ class SettingTableViewController: ProtonMailViewController {
                         break;
                     case SGItems.DefaultMobilSign:
                         let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
-                        cell.accessoryType = UITableViewCellAccessoryType.None
-                        let status = sharedUserDataService.switchCacheOff == false
-                        cell.selectionStyle = UITableViewCellSelectionStyle.None
-                        if sharedUserDataService.userInfo?.role > 0 {
-                            cell.setUpSwitch(true, status: status)
-                        } else {
-                            cell.setUpSwitch(true, status: status) //was false
-                        }
+                        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                         cellout = cell
                         break
                     case SGItems.EnableTouchID:
@@ -282,6 +281,9 @@ class SettingTableViewController: ProtonMailViewController {
             case SGItems.Signature:
                 self.performSegueWithIdentifier(SignatureSegue, sender: self)
                 break;
+            case SGItems.DefaultMobilSign:
+                self.performSegueWithIdentifier(MobileSignatureSegue, sender: self)
+                break
             case SGItems.LoginPWD:
                 self.performSegueWithIdentifier(LoginpwdSegue, sender: self)
                 break;

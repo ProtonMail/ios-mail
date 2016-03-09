@@ -22,6 +22,9 @@ protocol SettingDetailsViewModel {
     func getCurrentValue() -> String
     func updateValue(new_value: String, complete:(Bool, NSError?) -> Void)
     func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void)
+    
+    func isSwitchEnabled() -> Bool
+    func isTextEnabled() -> Bool
 }
 
 
@@ -68,6 +71,13 @@ class SettingDetailsViewModelTest : SettingDetailsViewModel{
     
     func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void) {
         complete(true, nil)
+    }
+    
+    func isSwitchEnabled() -> Bool {
+        return true
+    }
+    func isTextEnabled() -> Bool{
+        return true
     }
 }
 
@@ -123,6 +133,12 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
     func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void) {
         complete(true, nil)
     }
+    func isSwitchEnabled() -> Bool {
+        return true
+    }
+    func isTextEnabled() -> Bool {
+        return true
+    }
 }
 
 
@@ -175,6 +191,75 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     
     func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void) {
         complete(true, nil)
+    }
+    
+    func isSwitchEnabled() -> Bool {
+        return true
+    }
+    func isTextEnabled() -> Bool {
+        return true
+    }
+}
+
+class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
+    func getNavigationTitle() -> String {
+        return "Mobile Signature"
+    }
+    
+    func getTopHelpText() -> String {
+        return "Only plus user could modify default mobile signature or turn it off!"
+    }
+    
+    func getSectionTitle() -> String {
+        return "Mobile Signature"
+    }
+    
+    func isDisplaySwitch() -> Bool {
+        return true
+    }
+    
+    func getSwitchText() -> String {
+        return "Enable Mobile Signature"
+    }
+    
+    func getSwitchStatus() -> Bool {
+        return sharedUserDataService.showMobileSignature
+    }
+    
+    func isShowTextView() -> Bool {
+        return true
+    }
+    
+    func getPlaceholdText() -> String {
+        return ""
+    }
+    
+    func getCurrentValue() -> String {
+        return sharedUserDataService.mobileSignature
+    }
+    
+    func updateValue(new_value: String, complete: (Bool, NSError?) -> Void) {
+        if new_value == getCurrentValue() {
+            complete(true, nil)
+        } else {
+            sharedUserDataService.mobileSignature = new_value
+            complete(true, nil)
+        }
+    }
+    
+    func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void) {
+        if isOn == getSwitchStatus() {
+            complete(true, nil)
+        } else {
+            sharedUserDataService.showMobileSignature = isOn
+            complete(true, nil)
+        }
+    }
+    func isSwitchEnabled() -> Bool {
+        return sharedUserDataService.userInfo?.role > 0
+    }
+    func isTextEnabled() -> Bool {
+        return sharedUserDataService.userInfo?.role > 0
     }
 }
 
@@ -242,5 +327,12 @@ class ChangeNotificationEmailViewModel : SettingDetailsViewModel{
                 }
             })
         }
+    }
+    
+    func isSwitchEnabled() -> Bool {
+        return true
+    }
+    func isTextEnabled() -> Bool {
+        return true
     }
 }

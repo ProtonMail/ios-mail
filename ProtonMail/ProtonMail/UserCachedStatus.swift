@@ -34,6 +34,7 @@ class UserCachedStatus : SharedCacheBase {
         //Global Cache
         static let lastSplashViersion = "last_splash_viersion" //global cache
         static let lastTourViersion = "last_tour_viersion" //global cache
+        static let lastLocalMobileSignature = "last_local_mobile_signature" //global cache
     }
     
     var isForcedLogout : Bool = false
@@ -87,6 +88,23 @@ class UserCachedStatus : SharedCacheBase {
         setValue(AppConstants.TourVersion, forKey: Key.lastTourViersion)
     }
     
+    var mobileSignature : String {
+        get {
+            if let s = getShared().stringForKey(Key.lastLocalMobileSignature) {
+                return s
+            }
+            return "Sent from ProtonMail Mobile"
+        }
+        set {
+            setValue(newValue, forKey: Key.lastLocalMobileSignature)
+        }
+    }
+    
+    func resetMobileSignature() {
+        getShared().removeObjectForKey(Key.lastLocalMobileSignature)
+        getShared().synchronize()
+    }
+    
     func signOut()
     {
         getShared().removeObjectForKey(Key.lastFetchMessageID);
@@ -111,6 +129,8 @@ class UserCachedStatus : SharedCacheBase {
         getShared().removeObjectForKey(Key.isTouchIDEnabled)
         getShared().removeObjectForKey(Key.autoLogoutTime);
         getShared().removeObjectForKey(Key.askEnableTouchID)
+        
+        getShared().removeObjectForKey(Key.lastLocalMobileSignature)
         
         getShared().synchronize()
     }

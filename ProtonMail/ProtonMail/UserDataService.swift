@@ -50,10 +50,37 @@ class UserDataService {
         }
     }
     
-    var switchCacheOff: Bool? = NSUserDefaults.standardUserDefaults().boolForKey(Key.roleSwitchCache) {
+    private var switchCacheOff: Bool? = NSUserDefaults.standardUserDefaults().boolForKey(Key.roleSwitchCache) {
         didSet {
             NSUserDefaults.standardUserDefaults().setValue(switchCacheOff, forKey: Key.roleSwitchCache)
             NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
+    var showMobileSignature : Bool {
+        get {
+            if userInfo?.role > 0 {
+                return (switchCacheOff == false) ?? true
+            } else {
+                switchCacheOff = false
+                return true;
+            } }
+        set {
+            switchCacheOff = (newValue == false)
+        }
+    }
+    
+    var mobileSignature : String {
+        get {
+            if userInfo?.role > 0 {
+                return userCachedStatus.mobildSignature
+            } else {
+                userCachedStatus.resetMobileSignature()
+                return userCachedStatus.mobildSignature
+            }
+        }
+        set {
+            userCachedStatus.mobildSignature = newValue
         }
     }
     
