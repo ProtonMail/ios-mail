@@ -269,7 +269,7 @@ class MessageDataService {
     :param: completion complete handler
     */
     
-    func fetchNewMessagesForLocation(location: MessageLocation, Time: Int, completion: CompletionBlock?) {
+    func fetchNewMessagesForLocation(location: MessageLocation, Time: Int, notificationMessageID : String?, completion: CompletionBlock?) {
         queue {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
             eventAPI.call() { task, response, hasError in
@@ -298,7 +298,7 @@ class MessageDataService {
                     }
                 }
                 else if response!.messages != nil {
-                    self.processIncrementalUpdateMessages(response!.messages!, task: task) { task, res, error in
+                    self.processIncrementalUpdateMessages(notificationMessageID, messages: response!.messages!, task: task) { task, res, error in
                         if error == nil {
                             lastUpdatedStore.lastEventID = response!.eventID
                             completion?(task: task, response:nil, error: nil)
@@ -329,7 +329,7 @@ class MessageDataService {
         }
     }
     
-    func fetchNewMessagesForLabels(labelID: String, Time: Int, completion: CompletionBlock?) {
+    func fetchNewMessagesForLabels(labelID: String, Time: Int, notificationMessageID : String?, completion: CompletionBlock?) {
         queue {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
             eventAPI.call() { task, response, hasError in
@@ -357,7 +357,7 @@ class MessageDataService {
                     completion?(task: task, response:nil, error: nil)
                 }
                 else if response!.messages != nil {
-                    self.processIncrementalUpdateMessages(response!.messages!, task: task) { task, res, error in
+                    self.processIncrementalUpdateMessages(notificationMessageID, messages: response!.messages!, task: task) { task, res, error in
                         if error == nil {
                             lastUpdatedStore.lastEventID = response!.eventID
                             completion?(task: task, response:nil, error: nil)
@@ -620,7 +620,7 @@ class MessageDataService {
     :param: task       NSURL session task
     :param: completion complete call back
     */
-    private func processIncrementalUpdateMessages(messages: Array<Dictionary<String, AnyObject>>, task: NSURLSessionDataTask!, completion: CompletionBlock?) {
+    private func processIncrementalUpdateMessages(notificationMessageID: String?, messages: Array<Dictionary<String, AnyObject>>, task: NSURLSessionDataTask!, completion: CompletionBlock?) {
         struct IncrementalUpdateType {
             static let delete = 0
             static let insert = 1
@@ -636,7 +636,7 @@ class MessageDataService {
                 var error: NSError?
                 
                 for message in messages {
-                    let msg = MessageEvent(event: message)
+                    var msg = MessageEvent(event: message)
                     
                     switch(msg.Action) {
                     case .Some(IncrementalUpdateType.delete):
@@ -649,6 +649,14 @@ class MessageDataService {
                             }
                         }
                     case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update1), .Some(IncrementalUpdateType.update2):
+                        if IncrementalUpdateType.insert == msg.Action {
+                            if let notify_msg_id = notificationMessageID {
+                                if notify_msg_id == msg.ID {
+                                    msg.message?.removeValueForKey("IsRead")
+                                }
+                            }
+                        }
+                        
                         if let messageObject = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg.message, inManagedObjectContext: context, error: &error) as? Message {
                             // apply the label changes
                             if let deleted = msg.message?["LabelIDsRemoved"] as? NSArray {

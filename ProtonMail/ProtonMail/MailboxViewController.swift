@@ -658,6 +658,7 @@ class MailboxViewController: ProtonMailViewController {
                 }
                 
                 if error == nil {
+                    self.notificationMessageID = nil
                     //self.checkEmptyMailbox()
                 }
                 
@@ -683,7 +684,7 @@ class MailboxViewController: ProtonMailViewController {
                 }
             } else {
                 //fetch
-                viewModel.fetchNewMessages(Int(updateTime.start.timeIntervalSince1970),  completion: complete)
+                viewModel.fetchNewMessages(notificationMessageID, Time: Int(updateTime.start.timeIntervalSince1970),  completion: complete)
                 self.checkEmptyMailbox()
             }
         }
