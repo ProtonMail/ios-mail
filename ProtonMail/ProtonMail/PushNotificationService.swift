@@ -115,6 +115,9 @@ class PushNotificationService {
                                     if let mailboxViewController: MailboxViewController = front.viewControllers.first as? MailboxViewController {
                                         NSLog("ok2")
                                         mailboxViewController.performSegueForMessageFromNotification(messageid)
+                                    } else {
+                                        
+                                        
                                     }
                                 }
                                 completionHandler(.NewData)
