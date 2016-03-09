@@ -188,6 +188,23 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     @IBAction func send_clicked(sender: AnyObject) {
         self.dismissKeyboard()
         
+        if let suject = self.composeView.subject.text {
+            if !suject.isEmpty {
+                self.sendMessage()
+                return
+            }
+        }
+        
+        let alertController = UIAlertController(title: NSLocalizedString("Compose"), message: "Send message without subject?", preferredStyle: .Alert)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Send"), style: .Destructive, handler: { (action) -> Void in
+            self.sendMessage()
+        }))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
+        presentViewController(alertController, animated: true, completion: nil)
+        
+    }
+    
+    func sendMessage () {
         if self.composeView.expirationTimeInterval > 0 {
             if self.composeView.hasOutSideEmails && count(self.encryptionPassword) <= 0 {
                 self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kExpirationNeedsPWDError)
@@ -212,7 +229,6 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         } else {
             navigationController?.popToRootViewControllerAnimated(true)
         }
-        
     }
     
     @IBAction func cancel_clicked(sender: UIBarButtonItem) {
