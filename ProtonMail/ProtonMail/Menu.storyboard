@@ -1078,13 +1078,13 @@
                                                         <rect key="frame" x="43" y="12" width="188" height="19"/>
                                                     </variation>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7GD-28-QOt">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7GD-28-QOt">
                                                     <rect key="frame" x="16" y="35" width="38" height="14"/>
                                                     <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="14" id="whr-xd-6g3"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
+                                                    <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="10"/>
                                                     <color key="textColor" red="0.51372549019607838" green="0.53333333333333333" blue="0.59215686274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular" misplaced="YES">
@@ -3534,9 +3534,9 @@
         <segue reference="V9t-nA-fhw"/>
         <segue reference="dUE-8e-owj"/>
         <segue reference="Lm0-2L-Xlj"/>
-        <segue reference="fux-iz-qV0"/>
+        <segue reference="hZj-FM-cPb"/>
         <segue reference="zIE-XJ-wkG"/>
-        <segue reference="w5b-0j-26v"/>
+        <segue reference="fux-iz-qV0"/>
         <segue reference="ddm-eA-erE"/>
     </inferredMetricsTieBreakers>
 </document>

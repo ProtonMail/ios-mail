@@ -105,11 +105,8 @@
                     <animations/>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LabelLeft" lineBreakMode="tailTruncation" numberOfLines="0" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="inf-Kc-aWn">
-                    <rect key="frame" x="0.0" y="0.0" width="947" height="16"/>
+                    <rect key="frame" x="0.0" y="0.0" width="947" height="63"/>
                     <animations/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="16" id="DWJ-oH-odg"/>
-                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -156,6 +153,7 @@
                 <constraint firstItem="Y7z-vO-8yy" firstAttribute="leading" secondItem="jfm-5G-7r3" secondAttribute="leading" id="q7l-9r-KrX"/>
                 <constraint firstItem="7mZ-M8-fKU" firstAttribute="leading" secondItem="tvG-FO-mKJ" secondAttribute="leading" id="siP-QF-t6L"/>
                 <constraint firstItem="qbb-SE-UHJ" firstAttribute="leading" secondItem="glr-mk-Uzx" secondAttribute="trailing" constant="1" id="wcl-Zo-W4w"/>
+                <constraint firstAttribute="bottom" secondItem="inf-Kc-aWn" secondAttribute="bottom" id="xWD-5g-7xk"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
