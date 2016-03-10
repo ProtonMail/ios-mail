@@ -164,7 +164,7 @@ class APIService {
                     sharedUserDataService.signOut(true)
                 } else {
                     authRefresh (credential.password  ?? "") { (task, authCredential, error) -> Void in
-                        if error == nil && self.tried < 7 {
+                        if error == nil && self.tried < 8 {
                             self.fetchAuthCredential(completion: completion)
                         } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
                             AuthCredential.clearFromKeychain()
@@ -173,7 +173,7 @@ class APIService {
                             AuthCredential.clearFromKeychain()
                             completion(authCredential, error)
                             sharedUserDataService.signOut(true)
-                        } else if self.tried > 6 {
+                        } else if self.tried > 7 {
                             self.tried = 0
                             AuthCredential.clearFromKeychain()
                             completion(nil, NSError.authCacheBad())
