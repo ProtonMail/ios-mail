@@ -56,6 +56,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sign_background_new" translatesAutoresizingMaskIntoConstraints="NO" id="TKg-rK-Lsf">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <animations/>
+                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vXd-qg-0wm">
                                 <rect key="frame" x="0.0" y="125" width="600" height="310"/>
                                 <subviews>
@@ -137,10 +141,6 @@
                                     <constraint firstAttribute="centerX" secondItem="oGd-mH-yoy" secondAttribute="centerX" id="zCw-lZ-nKZ"/>
                                 </constraints>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sign_background_new" translatesAutoresizingMaskIntoConstraints="NO" id="TKg-rK-Lsf">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <animations/>
-                            </imageView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3054,7 +3054,7 @@
         <image name="welcome_logo" width="188" height="31"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="lvd-zK-Trc"/>
+        <segue reference="C54-0t-rzM"/>
         <segue reference="BQ1-JS-Xpb"/>
     </inferredMetricsTieBreakers>
 </document>
