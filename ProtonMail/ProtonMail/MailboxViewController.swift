@@ -434,35 +434,39 @@ class MailboxViewController: ProtonMailViewController {
             rightCrossView.sizeToFit()
             rightCrossView.textColor = UIColor.whiteColor()
             
-            mailboxCell.setSwipeGestureWithView(leftCrossView, color: leftSwipeAction.actionColor, mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State1 ) { (cell, state, mode) -> Void in
-                if let indexp = self.tableView.indexPathForCell(cell) {
-                    if self.viewModel.isSwipeActionValid(self.leftSwipeAction) {
-                        if !self.processSwipeActions(self.leftSwipeAction, indexPath: indexp) {
-                            mailboxCell.swipeToOriginWithCompletion(nil)
-                        } else if self.viewModel.stayAfterAction(self.leftSwipeAction) {
+            if self.viewModel.isSwipeActionValid(self.leftSwipeAction) {
+                mailboxCell.setSwipeGestureWithView(leftCrossView, color: leftSwipeAction.actionColor, mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State1 ) { (cell, state, mode) -> Void in
+                    if let indexp = self.tableView.indexPathForCell(cell) {
+                        if self.viewModel.isSwipeActionValid(self.leftSwipeAction) {
+                            if !self.processSwipeActions(self.leftSwipeAction, indexPath: indexp) {
+                                mailboxCell.swipeToOriginWithCompletion(nil)
+                            } else if self.viewModel.stayAfterAction(self.leftSwipeAction) {
+                                mailboxCell.swipeToOriginWithCompletion(nil)
+                            }
+                        } else {
                             mailboxCell.swipeToOriginWithCompletion(nil)
                         }
                     } else {
-                        mailboxCell.swipeToOriginWithCompletion(nil)
+                        self.tableView.reloadData()
                     }
-                } else {
-                    self.tableView.reloadData()
                 }
             }
             
-            mailboxCell.setSwipeGestureWithView(rightCrossView, color: rightSwipeAction.actionColor, mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State3  ) { (cell, state, mode) -> Void in
-                if let indexp = self.tableView.indexPathForCell(cell) {
-                    if self.viewModel.isSwipeActionValid(self.rightSwipeAction) {
-                        if !self.processSwipeActions(self.rightSwipeAction, indexPath: indexp) {
-                            mailboxCell.swipeToOriginWithCompletion(nil)
-                        } else if self.viewModel.stayAfterAction(self.rightSwipeAction) {
+            if self.viewModel.isSwipeActionValid(self.rightSwipeAction) {
+                mailboxCell.setSwipeGestureWithView(rightCrossView, color: rightSwipeAction.actionColor, mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State3  ) { (cell, state, mode) -> Void in
+                    if let indexp = self.tableView.indexPathForCell(cell) {
+                        if self.viewModel.isSwipeActionValid(self.rightSwipeAction) {
+                            if !self.processSwipeActions(self.rightSwipeAction, indexPath: indexp) {
+                                mailboxCell.swipeToOriginWithCompletion(nil)
+                            } else if self.viewModel.stayAfterAction(self.rightSwipeAction) {
+                                mailboxCell.swipeToOriginWithCompletion(nil)
+                            }
+                        } else {
                             mailboxCell.swipeToOriginWithCompletion(nil)
                         }
                     } else {
-                        mailboxCell.swipeToOriginWithCompletion(nil)
+                        self.tableView.reloadData()
                     }
-                } else {
-                    self.tableView.reloadData()
                 }
             }
         } else {
