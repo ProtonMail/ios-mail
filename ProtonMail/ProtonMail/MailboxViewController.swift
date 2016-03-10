@@ -1080,4 +1080,13 @@ extension MailboxViewController: UITableViewDelegate {
             }
         }
     }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        let frame = noResultLabel.frame;
+        if scrollView.contentOffset.y <= 0 {
+            self.noResultLabel.frame = CGRect(x: frame.origin.x, y: -scrollView.contentOffset.y, width: frame.width, height: frame.height);
+        } else {
+            self.noResultLabel.frame = CGRect(x: frame.origin.x, y: 0, width: frame.width, height: frame.height);
+        }
+    }
 }
