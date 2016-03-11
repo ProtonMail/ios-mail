@@ -70,6 +70,8 @@ class MailboxViewController: ProtonMailViewController {
     private var isShowUndo : Bool = false
     private var notificationMessageID : String? = nil
     
+    private var ratingMessage : Message?
+    
     // MAKR : - Private views
     internal var refreshControl: UIRefreshControl!
     private var navigationTitleLabel = UILabel()
@@ -100,11 +102,6 @@ class MailboxViewController: ProtonMailViewController {
     private var leftSwipeAction : MessageSwipeAction = .archive
     private var rightSwipeAction : MessageSwipeAction = .trash
     
-    
-    //
-    private var rateReviceIndexPath : NSIndexPath? = nil;
-    
-    
     // MARK: - UIViewController Lifecycle
     
     override func viewDidLoad() {
@@ -131,6 +128,7 @@ class MailboxViewController: ProtonMailViewController {
             userCachedStatus.touchIDEmail = sharedUserDataService.username ?? ""
         }
         
+        cleanRateReviewCell()
         createRateReviewCell()
     }
     
@@ -238,8 +236,7 @@ class MailboxViewController: ProtonMailViewController {
             let messageDetailViewController = segue.destinationViewController as! MessageViewController
             let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
             if let indexPathForSelectedRow = indexPathForSelectedRow {
-                let messageIndex = getRealIndexPath(indexPathForSelectedRow)
-                if let message = self.messageAtIndexPath(messageIndex) {
+                if let message = self.messageAtIndexPath(indexPathForSelectedRow) {
                     messageDetailViewController.message = message
                 } else {
                     let alert = "Can't find the clicked message please try again!".alertController()
@@ -376,24 +373,58 @@ class MailboxViewController: ProtonMailViewController {
     internal func handleLongPress(longPressGestureRecognizer: UILongPressGestureRecognizer) {
         self.showCheckOptions(longPressGestureRecognizer)
         updateNavigationController(isEditing)
-        
-        dismissRateReviewCell()
     }
     
     internal func createRateReviewCell () {
-        if rateReviceIndexPath == nil {
-            let count = fetchedResultsController?.numberOfRowsInSection(0) ?? 0
-            if count > 3 {
-                rateReviceIndexPath = NSIndexPath(forRow: 4, inSection: 0)
+        let count = fetchedResultsController?.numberOfRowsInSection(0) ?? 0
+        if count > 3 {
+            if let message = fetchedResultsController?.objectAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? Message {
+                if let context = message.managedObjectContext {
+                    let newMessage = Message(context: context)
+                    newMessage.messageType = 1
+                    newMessage.title = ""
+                    newMessage.time = message.time ?? NSDate()
+                    if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
+                        PMLog.D("error: \(error)")
+                    }
+                    ratingMessage = newMessage
+                }
             }
         }
     }
     
-    internal func dismissRateReviewCell () {
-        if let index = rateReviceIndexPath {
-            rateReviceIndexPath = nil;
-            tableView.deleteRowsAtIndexPaths([index], withRowAnimation: UITableViewRowAnimation.Fade)
+    internal func cleanRateReviewCell () {
+        if let context = fetchedResultsController?.managedObjectContext {
+            let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
+            fetchRequest.predicate = NSPredicate(format: "%K == 1", Message.Attributes.messageType)
+            var error: NSError?
+            if let messages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
+                for msg in messages {
+                    if msg.managedObjectContext != nil {
+                        context.deleteObject(msg)
+                    }
+                }
+                error = context.saveUpstreamIfNeeded()
+            }
+            if let error = error {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
         }
+
+    }
+    
+    internal func dismissRateReviewCell () {
+//        if let index = rateReviceIndexPath {
+//            rateReviceIndexPath = nil;
+//            tableView.deleteRowsAtIndexPaths([index], withRowAnimation: UITableViewRowAnimation.Fade)
+//            
+//            if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+//                if message.managedObjectContext != nil {
+//                    return message
+//                }
+//            }
+//
+//        }
     }
     
     // MARK: - Private methods
@@ -434,8 +465,7 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     private func configureCell(mailboxCell: MailboxMessageCell, atIndexPath indexPath: NSIndexPath) {
-        var newIndex = getRealIndexPath(indexPath)
-        if let message = self.messageAtIndexPath(newIndex) {
+        if let message = self.messageAtIndexPath(indexPath) {
             mailboxCell.configureCell(message, showLocation: viewModel.showLocation())
             mailboxCell.setCellIsChecked(selectedMessages.containsObject(message.messageID))
             if (self.isEditing) {
@@ -459,9 +489,8 @@ class MailboxViewController: ProtonMailViewController {
             if self.viewModel.isSwipeActionValid(self.leftSwipeAction) {
                 mailboxCell.setSwipeGestureWithView(leftCrossView, color: leftSwipeAction.actionColor, mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State1 ) { (cell, state, mode) -> Void in
                     if let indexp = self.tableView.indexPathForCell(cell) {
-                        var rIndex = self.getRealIndexPath(indexp)
                         if self.viewModel.isSwipeActionValid(self.leftSwipeAction) {
-                            if !self.processSwipeActions(self.leftSwipeAction, indexPath: rIndex) {
+                            if !self.processSwipeActions(self.leftSwipeAction, indexPath: indexp) {
                                 mailboxCell.swipeToOriginWithCompletion(nil)
                             } else if self.viewModel.stayAfterAction(self.leftSwipeAction) {
                                 mailboxCell.swipeToOriginWithCompletion(nil)
@@ -478,9 +507,8 @@ class MailboxViewController: ProtonMailViewController {
             if self.viewModel.isSwipeActionValid(self.rightSwipeAction) {
                 mailboxCell.setSwipeGestureWithView(rightCrossView, color: rightSwipeAction.actionColor, mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State3  ) { (cell, state, mode) -> Void in
                     if let indexp = self.tableView.indexPathForCell(cell) {
-                        var rIndex = self.getRealIndexPath(indexp)
                         if self.viewModel.isSwipeActionValid(self.rightSwipeAction) {
-                            if !self.processSwipeActions(self.rightSwipeAction, indexPath: rIndex) {
+                            if !self.processSwipeActions(self.rightSwipeAction, indexPath: indexp) {
                                 mailboxCell.swipeToOriginWithCompletion(nil)
                             } else if self.viewModel.stayAfterAction(self.rightSwipeAction) {
                                 mailboxCell.swipeToOriginWithCompletion(nil)
@@ -603,8 +631,7 @@ class MailboxViewController: ProtonMailViewController {
     private func fetchMessagesIfNeededForIndexPath(indexPath: NSIndexPath) {
         if let fetchedResultsController = fetchedResultsController {
             if let last = fetchedResultsController.fetchedObjects?.last as? Message {
-                var rIndex = self.getRealIndexPath(indexPath)
-                if let current = self.messageAtIndexPath(rIndex) {
+                if let current = self.messageAtIndexPath(indexPath) {
                     let updateTime = viewModel.lastUpdateTime()
                     if let currentTime = current.time {
                         let isOlderMessage = updateTime.end.compare(currentTime) != NSComparisonResult.OrderedAscending
@@ -773,8 +800,7 @@ class MailboxViewController: ProtonMailViewController {
             if let messages = fetchedResultsController?.fetchedObjects as? [Message] {
                 if let message = messages.filter({ $0.messageID == self.messageID }).first {
                     if let indexPath = fetchedResultsController?.indexPathForObject(message) {
-                        let rIndex = self.getUpdateIndex(indexPath);
-                        tableView.selectRowAtIndexPath(rIndex, animated: true, scrollPosition: .Top)
+                        tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Top)
                     }
                     performSegueForMessage(message)
                     messageID = nil
@@ -928,27 +954,21 @@ class MailboxViewController: ProtonMailViewController {
                 
                 if let indexPathsForVisibleRows = indexPathsForVisibleRows {
                     for visibleIndexPath in indexPathsForVisibleRows {
-                        
-                        if visibleIndexPath == rateReviceIndexPath {
-                            continue
-                        }
-                        
-                        let messageCell: MailboxMessageCell = self.tableView.cellForRowAtIndexPath(visibleIndexPath) as! MailboxMessageCell
-                        messageCell.showCheckboxOnLeftSide()
-                        
-                        // set selected row to checked
-                        if (indexPath.row == visibleIndexPath.row) {
+                        if let messageCell: MailboxMessageCell = self.tableView.cellForRowAtIndexPath(visibleIndexPath) as? MailboxMessageCell {
+                            messageCell.showCheckboxOnLeftSide()
                             
-                            var newIndex = getRealIndexPath(indexPath)
-                            if let message = fetchedResultsController?.objectAtIndexPath(newIndex) as? Message {
-                                selectedMessages.addObject(message.messageID)
+                            // set selected row to checked
+                            if (indexPath.row == visibleIndexPath.row) {
+                                if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+                                    selectedMessages.addObject(message.messageID)
+                                }
+                                messageCell.setCellIsChecked(true)
                             }
-                            messageCell.setCellIsChecked(true)
+                            
+                            UIView.animateWithDuration(0.25, animations: { () -> Void in
+                                messageCell.layoutIfNeeded()
+                            })
                         }
-                        
-                        UIView.animateWithDuration(0.25, animations: { () -> Void in
-                            messageCell.layoutIfNeeded()
-                        })
                     }
                 }
                 PMLog.D("Long press on table view at row \(indexPath.row)")
@@ -981,52 +1001,6 @@ class MailboxViewController: ProtonMailViewController {
             self.title = text
         }
     }
-    
-    func getRealIndexPath(indexPath: NSIndexPath) -> NSIndexPath {
-        var newIndex = indexPath
-        if let rateReviceIndexPath = rateReviceIndexPath {
-            if newIndex.row > rateReviceIndexPath.row {
-                newIndex = NSIndexPath(forRow: newIndex.row - 1, inSection: newIndex.section)
-            }
-        }
-        return newIndex
-    }
-    
-    func correctDeleteIndex(indexPath: NSIndexPath,  offset : Int) {
-        if let rateIndex = rateReviceIndexPath {
-            if indexPath.row < rateIndex.row {
-                rateReviceIndexPath = NSIndexPath(forRow: rateIndex.row + offset, inSection: rateIndex.section)
-            }
-        }
-    }
-    
-    func correctInsertIndex(indexPath: NSIndexPath,  offset : Int) {
-        if let rateIndex = rateReviceIndexPath {
-            if indexPath.row <= rateIndex.row {
-                rateReviceIndexPath = NSIndexPath(forRow: rateIndex.row + offset, inSection: rateIndex.section)
-            }
-        }
-    }
-    
-    func getUpdateIndex(indexPath: NSIndexPath) -> NSIndexPath {
-        var newIndex = indexPath
-        if let rateIndex = rateReviceIndexPath {
-            if newIndex.row >= rateIndex.row {
-                newIndex = NSIndexPath(forRow: newIndex.row + 1, inSection: newIndex.section)
-            }
-        }
-        return newIndex;
-    }
-    
-    func getInsetIndex(indexPath: NSIndexPath) -> NSIndexPath {
-        var newIndex = indexPath
-        if let rateIndex = rateReviceIndexPath {
-            if newIndex.row > rateIndex.row {
-                newIndex = NSIndexPath(forRow: newIndex.row + 1, inSection: newIndex.section)
-            }
-        }
-        return newIndex;
-    }
 }
 
 
@@ -1034,32 +1008,36 @@ class MailboxViewController: ProtonMailViewController {
 
 extension MailboxViewController: UITableViewDataSource {
     
+    func getRatingIndex () -> NSIndexPath?{
+        if let msg = ratingMessage {
+            if let indexPath = fetchedResultsController?.indexPathForObject(msg) {
+                return indexPath
+            }
+        }
+        return nil
+    }
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return fetchedResultsController?.numberOfSections() ?? 1
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        // rating cell here
-        if indexPath == rateReviceIndexPath {
-            var mailboxRateCell = tableView.dequeueReusableCellWithIdentifier(MailboxRateReviewCell.Constant.identifier, forIndexPath: rateReviceIndexPath!) as! MailboxRateReviewCell
-            mailboxRateCell.selectionStyle = .None
-            //configureCell(mailboxCell, atIndexPath: indexPath)
-            return mailboxRateCell
-            
-        } else { //message cell here
-            var mailboxCell = tableView.dequeueReusableCellWithIdentifier(MailboxMessageCell.Constant.identifier, forIndexPath: indexPath) as! MailboxMessageCell
-            configureCell(mailboxCell, atIndexPath: indexPath)
-            return mailboxCell
+
+        if let rIndex = self.getRatingIndex() {
+            if rIndex == indexPath {
+                var mailboxRateCell = tableView.dequeueReusableCellWithIdentifier(MailboxRateReviewCell.Constant.identifier, forIndexPath: rIndex) as! MailboxRateReviewCell
+                mailboxRateCell.selectionStyle = .None
+                return mailboxRateCell
+            }
         }
+        
+        var mailboxCell = tableView.dequeueReusableCellWithIdentifier(MailboxMessageCell.Constant.identifier, forIndexPath: indexPath) as! MailboxMessageCell
+        configureCell(mailboxCell, atIndexPath: indexPath)
+        return mailboxCell
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var count = fetchedResultsController?.numberOfRowsInSection(section) ?? 0
-        
-        if rateReviceIndexPath != nil {
-            count = count + 1
-        }
-        
         return count
     }
     
@@ -1104,19 +1082,14 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         switch(type) {
         case .Delete:
             if let indexPath = indexPath {
-                let rIndex = getUpdateIndex(indexPath)
-                correctDeleteIndex(rIndex, offset: -1);
-                tableView.deleteRowsAtIndexPaths([rIndex], withRowAnimation: UITableViewRowAnimation.Fade)
+                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
             }
         case .Insert:
             if let newIndexPath = newIndexPath {
-                correctInsertIndex(newIndexPath, offset: 1);
-                let rIndex = getInsetIndex(newIndexPath)
-                tableView.insertRowsAtIndexPaths([rIndex], withRowAnimation: UITableViewRowAnimation.Fade)
+                tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: UITableViewRowAnimation.Fade)
             }
         case .Update:
             if let indexPath = indexPath {
-                let indexPath = getUpdateIndex(indexPath)
                 if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MailboxMessageCell {
                     configureCell(cell, atIndexPath: indexPath)
                 }
@@ -1124,7 +1097,6 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         default:
             return
         }
-        //self.showNoResultLabel();
     }
 }
 
@@ -1133,22 +1105,25 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
 
 extension MailboxViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath == rateReviceIndexPath {
-            return kMailboxRateReviewCellHeight
+        if let rIndex = self.getRatingIndex() {
+            if rIndex == indexPath {
+                return kMailboxRateReviewCellHeight
+            }
         }
         return kMailboxCellHeight
     }
     
     func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        if indexPath == rateReviceIndexPath {
-            return nil
+        if let rIndex = self.getRatingIndex() {
+            if rIndex == indexPath {
+                return nil
+            }
         }
         return indexPath
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let newIndexPath = getRealIndexPath(indexPath)
-        if let message = self.messageAtIndexPath(newIndexPath) {
+        if let message = self.messageAtIndexPath(indexPath) {
             if (self.isEditing) {
                 let messageAlreadySelected: Bool = selectedMessages.containsObject(message.messageID)
                 if (messageAlreadySelected) {
