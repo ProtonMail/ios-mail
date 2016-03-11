@@ -67,6 +67,9 @@
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
+                        <variation key="widthClass=compact">
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
+                        </variation>
                     </label>
                 </subviews>
                 <animations/>

@@ -3403,7 +3403,7 @@
                                 <animations/>
                             </imageView>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pnV-Pf-kX1">
-                                <rect key="frame" x="70" y="97" width="460" height="406"/>
+                                <rect key="frame" x="70" y="98" width="460" height="405"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Feedback" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dHi-Ii-fz7">
                                         <rect key="frame" x="26" y="26" width="408" height="20"/>
@@ -3416,7 +3416,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eBx-sm-wX3">
-                                        <rect key="frame" x="0.0" y="360" width="460" height="45"/>
+                                        <rect key="frame" x="0.0" y="361" width="460" height="45"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GRf-rn-4I7">
                                                 <rect key="frame" x="280" y="1" width="180" height="44"/>
@@ -3464,22 +3464,25 @@
                                         </variation>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wNx-Vo-CMQ">
-                                        <rect key="frame" x="0.0" y="123" width="460" height="1"/>
+                                        <rect key="frame" x="0.0" y="124" width="460" height="1"/>
                                         <animations/>
                                         <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="Icf-82-nO1"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You are using now the ProtonMail App since 2 weedks. To improve our services, we would like to know how do you like it." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PB5-sj-cvy">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You are using now the ProtonMail App since 2 weeks. To improve our services, we would like to know how do you like it." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PB5-sj-cvy">
                                         <rect key="frame" x="26" y="72" width="408" height="34"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
+                                        <variation key="widthClass=compact">
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        </variation>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wuX-Y9-MhF">
-                                        <rect key="frame" x="26" y="154" width="408" height="42"/>
+                                        <rect key="frame" x="26" y="155" width="408" height="42"/>
                                         <animations/>
                                         <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
@@ -3500,7 +3503,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UqK-Jt-MMb">
-                                        <rect key="frame" x="26" y="288" width="408" height="42"/>
+                                        <rect key="frame" x="26" y="289" width="408" height="42"/>
                                         <animations/>
                                         <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
@@ -3521,7 +3524,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rj0-lN-bHB">
-                                        <rect key="frame" x="26" y="221" width="408" height="42"/>
+                                        <rect key="frame" x="26" y="222" width="408" height="42"/>
                                         <animations/>
                                         <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
@@ -3579,8 +3582,8 @@
                         <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="pnV-Pf-kX1" firstAttribute="leading" secondItem="Bv1-fD-Xux" secondAttribute="leading" priority="750" constant="36" id="EUM-zo-qZ1"/>
-                            <constraint firstAttribute="trailing" secondItem="pnV-Pf-kX1" secondAttribute="trailing" priority="750" constant="36" id="Mq6-bi-WaP"/>
+                            <constraint firstItem="pnV-Pf-kX1" firstAttribute="leading" secondItem="Bv1-fD-Xux" secondAttribute="leading" priority="750" constant="26" id="EUM-zo-qZ1"/>
+                            <constraint firstAttribute="trailing" secondItem="pnV-Pf-kX1" secondAttribute="trailing" priority="750" constant="26" id="Mq6-bi-WaP"/>
                             <constraint firstItem="f38-OI-dpf" firstAttribute="leading" secondItem="Bv1-fD-Xux" secondAttribute="leading" id="OFz-RQ-hgo"/>
                             <constraint firstAttribute="centerX" secondItem="pnV-Pf-kX1" secondAttribute="centerX" id="iui-Yf-I8f"/>
                             <constraint firstItem="tWi-27-ERD" firstAttribute="top" secondItem="f38-OI-dpf" secondAttribute="bottom" id="iyL-0u-Iap"/>
