@@ -46,6 +46,7 @@ class MailboxViewController: ProtonMailViewController {
     private let kSegueToLabelsController = "toApplyLabelsSegue"
     private let kSegueToMessageDetailFromNotification = "toMessageDetailViewControllerFromNotification"
     private let kSegueToTour = "to_onboarding_segue"
+    private let kSegueToFeedback = "to_feedback_segue"
     
     @IBOutlet weak var undoBottomDistance: NSLayoutConstraint!
     // MARK: - Private attributes
@@ -275,6 +276,10 @@ class MailboxViewController: ProtonMailViewController {
             let popup = segue.destinationViewController as! OnboardingViewController
             popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
             self.setPresentationStyleForSelfController(self, presentingController: popup)
+        } else if segue.identifier == kSegueToFeedback {
+            let popup = segue.destinationViewController as! UIViewController //as! OnboardingViewController
+            //popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }
     
@@ -410,21 +415,7 @@ class MailboxViewController: ProtonMailViewController {
                 NSLog("\(__FUNCTION__) error: \(error)")
             }
         }
-
-    }
-    
-    internal func dismissRateReviewCell () {
-//        if let index = rateReviceIndexPath {
-//            rateReviceIndexPath = nil;
-//            tableView.deleteRowsAtIndexPaths([index], withRowAnimation: UITableViewRowAnimation.Fade)
-//            
-//            if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-//                if message.managedObjectContext != nil {
-//                    return message
-//                }
-//            }
-//
-//        }
+        
     }
     
     // MARK: - Private methods
@@ -433,7 +424,6 @@ class MailboxViewController: ProtonMailViewController {
         self.timer = NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: "refreshPage", userInfo: nil, repeats: true)
         fetchingStopped = false
         self.timer.fire()
-        
     }
     
     private func stopAutoFetch()
@@ -941,7 +931,7 @@ class MailboxViewController: ProtonMailViewController {
             }
         }
     }
-
+    
     private func showCheckOptions(longPressGestureRecognizer: UILongPressGestureRecognizer) {
         let point: CGPoint = longPressGestureRecognizer.locationInView(self.tableView)
         let indexPath: NSIndexPath? = self.tableView.indexPathForRowAtPoint(point)
@@ -1003,6 +993,18 @@ class MailboxViewController: ProtonMailViewController {
     }
 }
 
+// MARK : review delegate
+extension MailboxViewController: MailboxRateReviewCellDelegate {
+    func mailboxRateReviewCell(cell: UITableViewCell, yesORno: Bool) {
+        cleanRateReviewCell()
+        
+        // go to next screen
+        if yesORno == true {
+            self.performSegueWithIdentifier(kSegueToFeedback, sender: self)
+        }
+    }
+}
+
 
 // MARK: - UITableViewDataSource
 
@@ -1022,10 +1024,11 @@ extension MailboxViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-
+        
         if let rIndex = self.getRatingIndex() {
             if rIndex == indexPath {
                 var mailboxRateCell = tableView.dequeueReusableCellWithIdentifier(MailboxRateReviewCell.Constant.identifier, forIndexPath: rIndex) as! MailboxRateReviewCell
+                mailboxRateCell.callback = self
                 mailboxRateCell.selectionStyle = .None
                 return mailboxRateCell
             }
@@ -1121,7 +1124,7 @@ extension MailboxViewController: UITableViewDelegate {
         }
         return indexPath
     }
-
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if let message = self.messageAtIndexPath(indexPath) {
             if (self.isEditing) {

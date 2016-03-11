@@ -191,6 +191,7 @@
 		756A35151B20D9B80033BC7C /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A35141B20D9B80033BC7C /* AppConstants.swift */; };
 		756DAC3F1C922C3800F3486C /* MailboxRateReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DAC3E1C922C3800F3486C /* MailboxRateReviewCell.swift */; };
 		756DAC421C923D4500F3486C /* MailboxRateReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 756DAC401C9236D000F3486C /* MailboxRateReviewCell.xib */; };
+		756DAC451C92B30300F3486C /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DAC441C92B30300F3486C /* FeedbackViewController.swift */; };
 		757945D61B66E38D004EEDCA /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757945D51B66E38D004EEDCA /* MessageViewController.swift */; };
 		757945D81B6702A2004EEDCA /* EmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757945D71B6702A2004EEDCA /* EmailView.swift */; };
 		757945DA1B6702B5004EEDCA /* EmailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757945D91B6702B5004EEDCA /* EmailHeaderView.swift */; };
@@ -457,6 +458,7 @@
 		756A35141B20D9B80033BC7C /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		756DAC3E1C922C3800F3486C /* MailboxRateReviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxRateReviewCell.swift; sourceTree = "<group>"; };
 		756DAC401C9236D000F3486C /* MailboxRateReviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MailboxRateReviewCell.xib; sourceTree = "<group>"; };
+		756DAC441C92B30300F3486C /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		757945D51B66E38D004EEDCA /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		757945D71B6702A2004EEDCA /* EmailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailView.swift; sourceTree = "<group>"; };
 		757945D91B6702B5004EEDCA /* EmailHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailHeaderView.swift; sourceTree = "<group>"; };
@@ -882,6 +884,7 @@
 				07CB23541AB0F20F00699068 /* Bugs */,
 				709FE39E1A977C8400034288 /* Compose */,
 				706962031A713959001443B2 /* Contacts */,
+				756DAC431C92B2B600F3486C /* Review */,
 				70945E681A80F331002B6837 /* Mailbox */,
 				75E652B21B82AA630084DDF8 /* Labels */,
 				701704761A79185D000A90D2 /* Message Detail */,
@@ -1000,6 +1003,14 @@
 				755F921A1C7E6D1F00BAEDF9 /* OnboardingView.xib */,
 			);
 			name = Onboarding;
+			sourceTree = "<group>";
+		};
+		756DAC431C92B2B600F3486C /* Review */ = {
+			isa = PBXGroup;
+			children = (
+				756DAC441C92B30300F3486C /* FeedbackViewController.swift */,
+			);
+			name = Review;
 			sourceTree = "<group>";
 		};
 		7580D6561C8E436F00A15885 /* OnePassword */ = {
@@ -1493,6 +1504,7 @@
 				7508BAC61B87C6EA001A3564 /* UIApplicationExtension.swift in Sources */,
 				701DDE8E1AA64DEB0038149C /* MBContactPicker.m in Sources */,
 				07CC99641A6F076A000FD6F8 /* NSErrorExtension.swift in Sources */,
+				756DAC451C92B30300F3486C /* FeedbackViewController.swift in Sources */,
 				075F0A521ABF5DB500E6B9AE /* MessageLocation.swift in Sources */,
 				751B446E1B81245100B68CD6 /* TableCellLabelView.swift in Sources */,
 				75ECCE021B31F44600A8C800 /* AuthAPI.swift in Sources */,
