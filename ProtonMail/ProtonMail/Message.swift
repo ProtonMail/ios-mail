@@ -58,6 +58,8 @@ public class Message: NSManagedObject {
     
     @NSManaged var addressID : String?
     
+    @NSManaged var messageType : NSNumber
+    
     
     @NSManaged var attachments: NSSet
     @NSManaged var labels: NSSet

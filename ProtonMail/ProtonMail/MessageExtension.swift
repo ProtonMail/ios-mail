@@ -31,6 +31,8 @@ extension Message {
         static let time = "time"
         static let title = "title"
         static let labels = "labels"
+        
+        static let messageType = "messageType"
     }
     
     struct Constants {
