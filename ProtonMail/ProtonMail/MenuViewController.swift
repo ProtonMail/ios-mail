@@ -26,7 +26,7 @@ class MenuViewController: UIViewController {
     // MARK: - Private constants
     
     private let inboxItems = [MenuItem.inbox, MenuItem.starred, MenuItem.drafts, MenuItem.sent, MenuItem.archive, MenuItem.trash, MenuItem.spam]
-    private let otherItems = [MenuItem.contacts, MenuItem.settings, MenuItem.bugs, MenuItem.signout]
+    private let otherItems = [MenuItem.contacts, MenuItem.settings, MenuItem.bugs, MenuItem.feedback, MenuItem.signout]
     private var fetchedLabels: NSFetchedResultsController?
     private var signingOut: Bool = false
     
@@ -39,7 +39,7 @@ class MenuViewController: UIViewController {
     private let kSegueToSettings: String = "toSettingsSegue"
     private let kSegueToBugs: String = "toBugsSegue"
     private let kSegueToContacts: String = "toContactsSegue"
-    
+    private let kSegueToFeedback: String = "toFeedbackSegue"
     private let kMenuTableCellId = "menu_table_cell"
     private let kLabelTableCellId = "menu_label_cell"
     
@@ -124,7 +124,6 @@ class MenuViewController: UIViewController {
         }
     }
     
-    
     // MARK: - Methods
     
     private func setupFetchedResultsController() {
@@ -206,6 +205,8 @@ extension MenuViewController: UITableViewDelegate {
                 self.performSegueWithIdentifier(kSegueToBugs, sender: indexPath);
             } else if item == .contacts {
                 self.performSegueWithIdentifier(kSegueToContacts, sender: indexPath);
+            } else if item == .feedback {
+                self.performSegueWithIdentifier(kSegueToFeedback, sender: indexPath);
             }
         } else if (indexPath.section == 2) {
             //labels
@@ -222,7 +223,6 @@ extension MenuViewController: UITableViewDataSource {
         } else if (section == 1) {
             return otherItems.count
         } else if (section == 2) {
-            //fetchedLabels?.fetchedObjects?.count
             let count = fetchedLabels?.numberOfRowsInSection(0) ?? 0
             return count
         }
