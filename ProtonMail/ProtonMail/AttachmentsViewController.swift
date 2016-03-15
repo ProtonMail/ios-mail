@@ -46,6 +46,13 @@ class AttachmentsViewController: UICollectionViewController {
         }
     }
 
+    
+    
+    override func shouldAutorotate() -> Bool {
+        
+        return true
+    }
+    
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
     }
