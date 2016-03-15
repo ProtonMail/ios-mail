@@ -1558,7 +1558,7 @@
         <!--Search View Controller-->
         <scene sceneID="z3E-8M-2ks">
             <objects>
-                <viewController id="tCC-l6-ucI" customClass="SearchViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="tCC-l6-ucI" customClass="SearchViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="LVg-7A-0tI"/>
                         <viewControllerLayoutGuide type="bottom" id="ebA-AZ-99q"/>
@@ -3391,7 +3391,7 @@
         <!--Navigation Controller-->
         <scene sceneID="arq-ry-cmQ">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xBI-ex-VGk" sceneMemberID="viewController">
+                <navigationController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="xBI-ex-VGk" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="aTD-c0-dRX">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
