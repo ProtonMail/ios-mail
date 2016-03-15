@@ -6,11 +6,18 @@
 //  Copyright (c) 2016 ArcTouch. All rights reserved.
 //
 protocol FeedbackPopViewControllerDelegate {
-    func dismissed();
+    func cancelled();
+    
+    func showRating();
+    
+    func showHelp();
+    
+    func showSupport();
 }
 
 class FeedbackPopViewController : UIViewController {
     
+    var feedbackDelegate : FeedbackPopViewControllerDelegate?;
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,18 +30,21 @@ class FeedbackPopViewController : UIViewController {
     
     @IBAction func ilikeitAction(sender: UIButton) {
         self.dismissViewControllerAnimated(true, completion: nil)
+        feedbackDelegate?.showRating()
     }
     
     @IBAction func itisokAction(sender: UIButton) {
         self.dismissViewControllerAnimated(true, completion: nil)
-    
+        feedbackDelegate?.showHelp()
     }
     @IBAction func dontlikeAction(sender: UIButton) {
         self.dismissViewControllerAnimated(true, completion: nil)
+        feedbackDelegate?.showSupport()
         
     }
     @IBAction func cancelAction(sender: UIButton) {
         self.dismissViewControllerAnimated(true, completion: nil)
+        feedbackDelegate?.cancelled()
     }
     
 } 

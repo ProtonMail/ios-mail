@@ -45,24 +45,6 @@ class FeedbackViewController : ProtonMailViewController, UITableViewDelegate {
         return UIStatusBarStyle.LightContent
     }
     
-    @IBAction func ilikeitAction(sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    @IBAction func itisokAction(sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-        
-    }
-    @IBAction func dontlikeAction(sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-        
-    }
-    @IBAction func cancelAction(sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    
-    
      /**
     tableview
     
@@ -127,7 +109,9 @@ class FeedbackViewController : ProtonMailViewController, UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        self.navigationController?.popToRootViewControllerAnimated(true)
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {

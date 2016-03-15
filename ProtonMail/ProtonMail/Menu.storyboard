@@ -1363,7 +1363,7 @@
                         <segue destination="kWS-aU-yuK" kind="show" identifier="toMessageDetailViewControllerFromNotification" id="hZj-FM-cPb"/>
                         <segue destination="49o-KF-b5x" kind="presentation" identifier="to_onboarding_segue" id="2RB-hE-91p"/>
                         <segue destination="dfv-k3-W8i" kind="presentation" identifier="to_feedback_segue" id="ds1-qU-XbH"/>
-                        <segue destination="PB6-QM-CEf" kind="show" id="0zg-HM-MdK"/>
+                        <segue destination="PB6-QM-CEf" kind="show" identifier="to_feedback_view_segue" id="0zg-HM-MdK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v5f-i5-kem" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1657,7 +1657,7 @@
                                                         <rect key="frame" x="16" y="38" width="215" height="14"/>
                                                     </variation>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="7:36pm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E7k-96-obM">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7:36pm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E7k-96-obM">
                                                     <rect key="frame" x="543" y="10" width="41" height="16"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
@@ -1804,7 +1804,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="63"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r6J-rE-13v">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r6J-rE-13v">
                                                     <rect key="frame" x="16" y="12" width="495" height="22"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
@@ -1823,7 +1823,7 @@
                                                         <rect key="frame" x="16" y="12" width="295" height="19"/>
                                                     </variation>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Sender" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jWm-9z-a5k">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sender" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jWm-9z-a5k">
                                                     <rect key="frame" x="16" y="35" width="495" height="16"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
@@ -1842,7 +1842,7 @@
                                                         <rect key="frame" x="16" y="38" width="295" height="14"/>
                                                     </variation>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="7:36pm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ki4-zi-Jta">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7:36pm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ki4-zi-Jta">
                                                     <rect key="frame" x="543" y="10" width="41" height="16"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
@@ -3405,7 +3405,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iFf-Kh-A8Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3065" y="1519"/>
+            <point key="canvasLocation" x="2861" y="1519"/>
         </scene>
         <!--Feedback Pop View Controller-->
         <scene sceneID="jTQ-aL-n6k">
@@ -3618,7 +3618,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CYN-RA-0iy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3223" y="84"/>
+            <point key="canvasLocation" x="2580" y="-710"/>
         </scene>
         <!--Feedback-->
         <scene sceneID="YSc-zS-fBS">
@@ -3711,31 +3711,18 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Q0I-a2-Fw5" id="icK-gP-CmN">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0wf-eT-LUE">
-                                                    <rect key="frame" x="16" y="0.0" width="568" height="56"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0wf-eT-LUE">
+                                                    <rect key="frame" x="16" y="0.0" width="568" height="42"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nMZ-JC-Z1S">
-                                                    <rect key="frame" x="0.0" y="58" width="600" height="0.0"/>
-                                                    <animations/>
-                                                    <color key="backgroundColor" name="knobColor" catalog="System" colorSpace="catalog"/>
-                                                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                    <rect key="contentStretch" x="0.0" y="0.0" width="1" height="0.49999999999999961"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" id="NuR-hF-iIa"/>
-                                                    </constraints>
-                                                </view>
                                             </subviews>
                                             <animations/>
                                             <constraints>
-                                                <constraint firstItem="nMZ-JC-Z1S" firstAttribute="leading" secondItem="icK-gP-CmN" secondAttribute="leading" id="771-Oj-Xbk"/>
-                                                <constraint firstAttribute="bottom" secondItem="nMZ-JC-Z1S" secondAttribute="bottom" id="GFR-eT-4DM"/>
                                                 <constraint firstAttribute="bottom" secondItem="0wf-eT-LUE" secondAttribute="bottom" constant="2" id="GeW-Gu-wnK"/>
                                                 <constraint firstItem="0wf-eT-LUE" firstAttribute="leading" secondItem="icK-gP-CmN" secondAttribute="leading" constant="16" id="RxF-mY-mXe"/>
-                                                <constraint firstAttribute="trailing" secondItem="nMZ-JC-Z1S" secondAttribute="trailing" id="aV6-xk-XhW"/>
                                                 <constraint firstAttribute="trailing" secondItem="0wf-eT-LUE" secondAttribute="trailing" constant="16" id="fDj-g2-ego"/>
                                                 <constraint firstItem="0wf-eT-LUE" firstAttribute="top" secondItem="icK-gP-CmN" secondAttribute="top" id="roC-2p-g8S"/>
                                             </constraints>
@@ -3774,7 +3761,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UKN-Ia-Sil" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2448" y="84"/>
+            <point key="canvasLocation" x="2861" y="84"/>
         </scene>
         <!--Onboarding View Controller-->
         <scene sceneID="nyg-Wk-JgE">
@@ -3891,7 +3878,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M3v-xg-4es" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3223" y="814"/>
+            <point key="canvasLocation" x="2861" y="803"/>
         </scene>
     </scenes>
     <resources>
@@ -3924,14 +3911,14 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="hZj-FM-cPb"/>
+        <segue reference="0zg-HM-MdK"/>
         <segue reference="F9J-SM-saL"/>
         <segue reference="dUE-8e-owj"/>
         <segue reference="V9t-nA-fhw"/>
         <segue reference="Lm0-2L-Xlj"/>
-        <segue reference="0zg-HM-MdK"/>
-        <segue reference="zIE-XJ-wkG"/>
         <segue reference="fux-iz-qV0"/>
+        <segue reference="zIE-XJ-wkG"/>
+        <segue reference="w5b-0j-26v"/>
         <segue reference="ddm-eA-erE"/>
     </inferredMetricsTieBreakers>
 </document>

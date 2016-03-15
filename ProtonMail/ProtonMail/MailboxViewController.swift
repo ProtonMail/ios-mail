@@ -29,7 +29,6 @@ class MailboxViewController: ProtonMailViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
-    
     // MARK: - Private constants
     
     private let kMailboxCellHeight: CGFloat = 62.0
@@ -47,6 +46,7 @@ class MailboxViewController: ProtonMailViewController {
     private let kSegueToMessageDetailFromNotification = "toMessageDetailViewControllerFromNotification"
     private let kSegueToTour = "to_onboarding_segue"
     private let kSegueToFeedback = "to_feedback_segue"
+    private let kSegueToFeedbackView = "to_feedback_view_segue"
     
     @IBOutlet weak var undoBottomDistance: NSLayoutConstraint!
     // MARK: - Private attributes
@@ -277,9 +277,12 @@ class MailboxViewController: ProtonMailViewController {
             popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
             self.setPresentationStyleForSelfController(self, presentingController: popup)
         } else if segue.identifier == kSegueToFeedback {
-            let popup = segue.destinationViewController as! UIViewController //as! OnboardingViewController
+            let popup = segue.destinationViewController as! FeedbackPopViewController
+            popup.feedbackDelegate = self
             //popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
             self.setPresentationStyleForSelfController(self, presentingController: popup)
+        } else if segue.identifier == kSegueToFeedbackView {
+            
         }
     }
     
@@ -991,6 +994,26 @@ class MailboxViewController: ProtonMailViewController {
             self.title = text
         }
     }
+}
+
+extension MailboxViewController : FeedbackPopViewControllerDelegate {
+    
+    func cancelled() {
+        // just cancelled
+    }
+    
+    func showHelp() {
+        self.performSegueWithIdentifier(kSegueToFeedbackView, sender: self)
+    }
+    
+    func showSupport() {
+        self.performSegueWithIdentifier(kSegueToFeedbackView, sender: self)
+    }
+    
+    func showRating() {
+        self.performSegueWithIdentifier(kSegueToFeedbackView, sender: self)
+    }
+    
 }
 
 // MARK : review delegate
