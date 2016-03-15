@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Social
 
 
 protocol FeedbackViewControllerDelegate {
@@ -68,7 +69,6 @@ class FeedbackViewController : ProtonMailViewController, UITableViewDelegate {
         if key.hasTitle {
             let cell: FeedbackHeadCell = tableView.dequeueReusableCellWithIdentifier("feedback_table_section_header_cell") as! FeedbackHeadCell
             cell.configCell(key.title)
-            //cell.backgroundColor = UIColor.whiteColor()
             return cell;
         } else {
             return nil
@@ -109,9 +109,99 @@ class FeedbackViewController : ProtonMailViewController, UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let key = sectionSource[indexPath.section]
+        let items : [FeedbackItem]? = dataSource[key]
+        if key == .header {
+
+        } else {
+            if let item = items?[indexPath.row] {
+                if item == .rate {
+                    openRating()
+                } else if item == .tweet {
+                    shareMore()
+                } else if item == .facebook {
+                    
+                    shareFacebook()
+                }
+            }
+        }
         
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         self.navigationController?.popToRootViewControllerAnimated(true)
+    }
+    
+    func openRating () {
+        let url :NSURL = NSURL(string: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=979659905")!
+        UIApplication.sharedApplication().openURL(url)
+    }
+    
+    func shareFacebook () {
+        if SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook) {
+            let facebookComposeVC = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
+            let url = "https://protonmail.com";
+            facebookComposeVC.setInitialText("ProtonMail post .... \(url)")
+            
+            self.presentViewController(facebookComposeVC, animated: true, completion: nil)
+        }
+        
+    }
+    
+    func shareMore () {
+        
+        let bounds = UIScreen.mainScreen().bounds
+        UIGraphicsBeginImageContextWithOptions(bounds.size, true, 0.0)
+        self.view.drawViewHierarchyInRect(bounds, afterScreenUpdates: false)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        let URL = NSURL(string: "http://protonmail.com/")!
+        let text = "ProtonMail post default... #ProtonMail \(URL)"
+        
+        let activityViewController = UIActivityViewController(activityItems: [text], applicationActivities: nil)
+        
+        let iTems = self.extensionContext?.inputItems
+        let url = NSURL(string: "https://protonmail.com")!
+//        let image = UIImage(named:"trash")!
+//        let text : String = "ProtonMail post default";
+//        let activityViewController = UIActivityViewController(activityItems: [image, text, url], applicationActivities: nil)
+        
+        activityViewController.excludedActivityTypes = []
+        
+        self.presentViewController(activityViewController, animated: true, completion: nil)
+        
+        
+        
+        
+        
+//        NSDictionary *item = @{ AppExtensionVersionNumberKey: VERSION_NUMBER, AppExtensionURLStringKey: URLString };
+//        
+//        UIActivityViewController *activityViewController = [self activityViewControllerForItem:item viewController:viewController sender:sender typeIdentifier:kUTTypeAppExtensionFindLoginAction];
+//        activityViewController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
+//            if (returnedItems.count == 0) {
+//                NSError *error = nil;
+//                if (activityError) {
+//                    NSLog(@"Failed to findLoginForURLString: %@", activityError);
+//                    error = [OnePasswordExtension failedToContactExtensionErrorWithActivityError:activityError];
+//                }
+//                else {
+//                    error = [OnePasswordExtension extensionCancelledByUserError];
+//                }
+//                
+//                if (completion) {
+//                    completion(nil, error);
+//                }
+//                
+//                return;
+//            }
+//            
+//            [self processExtensionItem:returnedItems.firstObject completion:^(NSDictionary *itemDictionary, NSError *error) {
+//                if (completion) {
+//                completion(itemDictionary, error);
+//                }
+//                }];
+//        };
+//        
+//        [viewController presentViewController:activityViewController animated:YES completion:nil];
+
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
