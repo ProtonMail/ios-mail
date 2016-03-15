@@ -895,8 +895,10 @@ class MessageDataService {
             
             if location == .starred {
                 fetchRequest.predicate = NSPredicate(format: "%K == true", Message.Attributes.isStarred)
+            } else if location == .inbox {
+                fetchRequest.predicate = NSPredicate(format: "(%K == %i) OR (%K == 1)" , Message.Attributes.locationNumber, location.rawValue, Message.Attributes.messageType)
             } else {
-                fetchRequest.predicate = NSPredicate(format: "%K == %i", Message.Attributes.locationNumber, location.rawValue)
+                fetchRequest.predicate = NSPredicate(format: "%K == %i" , Message.Attributes.locationNumber, location.rawValue)
             }
             
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]

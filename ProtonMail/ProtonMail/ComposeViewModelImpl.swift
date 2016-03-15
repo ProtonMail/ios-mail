@@ -42,7 +42,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
         }
         
         self.messageAction = action
-        self.updateContacts()
+        self.updateContacts(msg?.location)
     }
     
     override func uploadAtt(att: Attachment!) {
@@ -81,7 +81,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
         return true;
     }
     
-    private func updateContacts()
+    private func updateContacts(oldLocation : MessageLocation?)
     {
         if message != nil {
             switch messageAction!
@@ -103,45 +103,55 @@ public class ComposeViewModelImpl : ComposeViewModel {
                         self.ccSelectedContacts.append(cont)
                     }
                 }
-                
                 let bccContacts = self.toContacts(self.message!.bccList)
                 for cont in bccContacts {
                     if !cont.isDuplicatedWithContacts(self.bccSelectedContacts) {
                         self.bccSelectedContacts.append(cont)
                     }
                 }
-                
-                break;
             case .Reply:
-                let sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.sender)
-                self.toSelectedContacts.append(sender)
-                break;
-            case .ReplyAll:
-                let userAddress = sharedUserDataService.userAddresses
-                let sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.sender)
-
-                if  !sender.isDuplicated(userAddress) {
-                    self.toSelectedContacts.append(sender)
-                }
-                
-                let toContacts = self.toContacts(self.message!.recipientList)
-                for cont in toContacts {
-                    if  !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
+                if oldLocation == .outbox {
+                    let toContacts = self.toContacts(self.message!.recipientList)
+                    for cont in toContacts {
                         self.toSelectedContacts.append(cont)
                     }
-                }
-                
-                if self.toSelectedContacts.count <= 0 {
+                } else {
+                    let sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.sender)
                     self.toSelectedContacts.append(sender)
                 }
-                
-                let senderContacts = self.toContacts(self.message!.ccList)
-                for cont in senderContacts {
-                    if  !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
+            case .ReplyAll:
+                if oldLocation == .outbox {
+                    let toContacts = self.toContacts(self.message!.recipientList)
+                    for cont in toContacts {
+                        self.toSelectedContacts.append(cont)
+                    }
+                    let senderContacts = self.toContacts(self.message!.ccList)
+                    for cont in senderContacts {
                         self.ccSelectedContacts.append(cont)
                     }
+                } else {
+                    let userAddress = sharedUserDataService.userAddresses
+                    let sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.sender)
+                    
+                    if  !sender.isDuplicated(userAddress) {
+                        self.toSelectedContacts.append(sender)
+                    }
+                    let toContacts = self.toContacts(self.message!.recipientList)
+                    for cont in toContacts {
+                        if  !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
+                            self.toSelectedContacts.append(cont)
+                        }
+                    }
+                    if self.toSelectedContacts.count <= 0 {
+                        self.toSelectedContacts.append(sender)
+                    }
+                    let senderContacts = self.toContacts(self.message!.ccList)
+                    for cont in senderContacts {
+                        if  !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
+                            self.ccSelectedContacts.append(cont)
+                        }
+                    }
                 }
-                break;
             default:
                 break;
             }

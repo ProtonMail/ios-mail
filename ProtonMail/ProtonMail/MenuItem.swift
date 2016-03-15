@@ -23,6 +23,7 @@ enum MenuItem: String {
     case contacts = "Contacts"
     case settings = "Settings"
     case signout = "Logout"
+    case feedback = "Feedback"
     
     var identifier: String { return rawValue }
     
@@ -31,51 +32,41 @@ enum MenuItem: String {
         switch self {
         case inbox, archive, starred, drafts, sent, trash, spam:
             has = true
-            break
         default:
             has = false
         }
         return has;
     }
-    
+
     var image : String {
         var image = "menu_inbox"
         switch self {
         case bugs:
             image = "menu_bugs"
-            break
         case inbox:
             image = "menu_inbox"
-            break
         case archive:
             image = "menu_archive"
-            break
         case starred:
             image = "menu_starred"
-            break
         case drafts:
             image = "menu_draft"
-            break
         case sent:
             image = "menu_sent"
-            break
         case trash:
             image = "menu_trash"
-            break
         case spam:
             image = "menu_spam"
-            break
         case contacts:
             image = "menu_contacts"
-            break
         case settings:
             image = "menu_settings"
-            break
         case signout:
             image = "menu_logout"
-            break
+        case feedback:
+            image = "menu_draft"
         default:
-            break
+            image = "menu_settings"
         }
         return image;
     }
@@ -85,39 +76,30 @@ enum MenuItem: String {
         switch self {
         case bugs:
             image = "menu_bugs-active"
-            break
         case inbox:
             image = "menu_inbox-active"
-            break
         case archive:
             image = "menu_archive-active"
-            break
         case starred:
             image = "menu_starred-active"
-            break
         case drafts:
             image = "menu_draft-active"
-            break
         case sent:
             image = "menu_sent-active"
-            break
         case trash:
             image = "menu_trash-active"
-            break
         case spam:
             image = "menu_spam-active"
-            break
         case contacts:
             image = "menu_contacts-active"
-            break
         case settings:
             image = "menu_settings-active"
-            break
         case signout:
             image = "menu_logout-active"
-            break
+        case feedback:
+            image = "menu_draft-active"
         default:
-            break
+            image = "menu_settings-active"
         }
         return image;
     }
@@ -143,45 +125,34 @@ enum MenuItem: String {
             return .inbox
         }
     }
-    
-    var selectedImage : String {
-        var image = "inbox_selected"
-        switch self {
-        case bugs:
-            image = "bug_selected"
-            break
-        case inbox, archive:
-            image = "inbox_selected"
-            break
-        case starred:
-            image = "starred_selected"
-            break
-        case drafts:
-            image = "draft_selected"
-            break
-        case sent:
-            image = "sent_selected"
-            break
-        case trash:
-            image = "trash_selected"
-            break
-        case spam:
-            image = "spam_selected"
-            break
-        case contacts:
-            image = "contact_selected"
-            break
-        case settings:
-            image = "settings_selected"
-            break
-        case signout:
-            image = "signout_selected"
-            break
-        default:
-            image = "inbox_selected"
-            break
-        }
-        return image;
-    }
+//    
+//    var selectedImage : String {
+//        var image = "inbox_selected"
+//        switch self {
+//        case bugs:
+//            image = "bug_selected"
+//        case inbox, archive:
+//            image = "inbox_selected"
+//        case starred:
+//            image = "starred_selected"
+//        case drafts:
+//            image = "draft_selected"
+//        case sent:
+//            image = "sent_selected"
+//        case trash:
+//            image = "trash_selected"
+//        case spam:
+//            image = "spam_selected"
+//        case contacts:
+//            image = "contact_selected"
+//        case settings:
+//            image = "settings_selected"
+//        case signout:
+//            image = "signout_selected"
+//        default:
+//            image = "inbox_selected"
+//        }
+//        return image;
+//    }
     
 }

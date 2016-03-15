@@ -21,7 +21,6 @@ extension PMView {
 class PMView: UIView {
     var pmView: UIView!
     
-    
     override init(frame: CGRect) { // for using CustomView in code
         super.init(frame: frame)
         setupView()

@@ -127,8 +127,7 @@ class ComposeView: UIViewController {
     private let kAnimationDuration = 0.25
     
     //
-    private var errorView: UIView!
-    private var errorTextView: UITextView!
+    private var errorView: ComposeErrorView!
     private var isShowingCcBccView: Bool = false
     private var hasExpirationSchedule: Bool = false
     
@@ -161,20 +160,11 @@ class ComposeView: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.notifyViewSize( false )
-        
         errorView.mas_makeConstraints { (make) -> Void in
             make.left.equalTo()(self.selfView)
             make.right.equalTo()(self.selfView)
-            make.height.equalTo()(0)
+            make.height.equalTo()(self.kErrorMessageHeight)
             make.top.equalTo()(self.passwordView.mas_bottom)
-        }
-        
-        errorTextView.mas_updateConstraints { (make) -> Void in
-            make.removeExisting = true
-            make.left.equalTo()(self.selfView)
-            make.right.equalTo()(self.selfView)
-            make.height.equalTo()(self.errorTextView.frame.size.height)
-            make.top.equalTo()(self.errorView).with().offset()(8)
         }
     }
     
@@ -292,27 +282,11 @@ class ComposeView: UIViewController {
     }
     
     private func configureErrorMessage() {
-        self.errorView = UIView()
+        self.errorView = ComposeErrorView()
         self.errorView.backgroundColor = UIColor.whiteColor()
         self.errorView.clipsToBounds = true
         
-        self.errorTextView = UITextView()
-        self.errorTextView.backgroundColor = UIColor.clearColor()
-        self.errorTextView.font = UIFont.robotoLight(size: UIFont.Size.h4)
-        self.errorTextView.textAlignment = NSTextAlignment.Center
-        self.errorTextView.textColor = UIColor.whiteColor()
-        self.errorTextView.sizeToFit()
-        
         self.view.addSubview(errorView)
-        errorView.addSubview(errorTextView)
-        
-        errorTextView.mas_makeConstraints { (make) -> Void in
-            make.left.equalTo() (self.errorView)
-            make.right.equalTo() (self.errorView)
-            make.bottom.equalTo() (self.errorView)
-            make.height.equalTo()(self.errorTextView.frame.size.height)
-            make.top.equalTo()(self.errorView).with().offset()(8)
-        }
     }
     
     private func configureContactPickerTemplate() {
@@ -425,7 +399,7 @@ class ComposeView: UIViewController {
     
     internal func showPasswordAndConfirmDoesntMatch(error : String) {
         self.errorView.backgroundColor = UIColor.ProtonMail.Red_FF5959
-        self.errorTextView.text = error
+
         self.errorView.mas_updateConstraints { (update) -> Void in
             update.removeExisting = true
             update.left.equalTo()(self.selfView)
@@ -434,10 +408,10 @@ class ComposeView: UIViewController {
             update.top.equalTo()(self.encryptedPasswordTextField.mas_bottom)
         }
         
-        self.errorTextView.shake(3, offset: 10)
+        self.errorView.setError(error, withShake: true)
         
         UIView.animateWithDuration(0.1, animations: { () -> Void in
-            //self.layoutIfNeeded()
+            
         })
     }
     
