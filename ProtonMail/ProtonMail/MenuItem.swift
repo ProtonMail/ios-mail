@@ -63,6 +63,8 @@ enum MenuItem: String {
             image = "menu_settings"
         case signout:
             image = "menu_logout"
+        case feedback:
+            image = "menu_draft"
         default:
             image = "menu_settings"
         }
@@ -94,6 +96,8 @@ enum MenuItem: String {
             image = "menu_settings-active"
         case signout:
             image = "menu_logout-active"
+        case feedback:
+            image = "menu_draft-active"
         default:
             image = "menu_settings-active"
         }
@@ -121,34 +125,34 @@ enum MenuItem: String {
             return .inbox
         }
     }
-    
-    var selectedImage : String {
-        var image = "inbox_selected"
-        switch self {
-        case bugs:
-            image = "bug_selected"
-        case inbox, archive:
-            image = "inbox_selected"
-        case starred:
-            image = "starred_selected"
-        case drafts:
-            image = "draft_selected"
-        case sent:
-            image = "sent_selected"
-        case trash:
-            image = "trash_selected"
-        case spam:
-            image = "spam_selected"
-        case contacts:
-            image = "contact_selected"
-        case settings:
-            image = "settings_selected"
-        case signout:
-            image = "signout_selected"
-        default:
-            image = "inbox_selected"
-        }
-        return image;
-    }
+//    
+//    var selectedImage : String {
+//        var image = "inbox_selected"
+//        switch self {
+//        case bugs:
+//            image = "bug_selected"
+//        case inbox, archive:
+//            image = "inbox_selected"
+//        case starred:
+//            image = "starred_selected"
+//        case drafts:
+//            image = "draft_selected"
+//        case sent:
+//            image = "sent_selected"
+//        case trash:
+//            image = "trash_selected"
+//        case spam:
+//            image = "spam_selected"
+//        case contacts:
+//            image = "contact_selected"
+//        case settings:
+//            image = "settings_selected"
+//        case signout:
+//            image = "signout_selected"
+//        default:
+//            image = "inbox_selected"
+//        }
+//        return image;
+//    }
     
 }
