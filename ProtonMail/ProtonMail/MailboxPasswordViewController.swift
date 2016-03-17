@@ -47,7 +47,9 @@ class MailboxPasswordViewController: UIViewController {
     
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var passwordManagerWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var decryptWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var decryptMidConstraint: NSLayoutConstraint!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDecryptButton()
@@ -97,10 +99,12 @@ class MailboxPasswordViewController: UIViewController {
         
         if OnePasswordExtension.sharedExtension().isAppExtensionAvailable() == true {
             passwordManagerButton.hidden = false
-            passwordManagerWidthConstraint.constant = 40
+            decryptWidthConstraint.constant = 120
+            decryptMidConstraint.constant = -72
         } else {
             passwordManagerButton.hidden = true
-            passwordManagerWidthConstraint.constant = 0
+            decryptWidthConstraint.constant = 200
+            decryptMidConstraint.constant = 0
         }
     }
     
@@ -132,6 +136,9 @@ class MailboxPasswordViewController: UIViewController {
     func setupDecryptButton() {
         decryptButton.layer.borderColor = UIColor.ProtonMail.Login_Button_Border_Color.CGColor;
         decryptButton.alpha = buttonDisabledAlpha
+        
+        passwordManagerButton.layer.borderColor = UIColor.whiteColor().CGColor
+        passwordManagerButton.layer.borderWidth = 2
     }
     
     

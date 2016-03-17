@@ -67,7 +67,10 @@ class SignInViewController: UIViewController {
     
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak var passwordManagerWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var loginMidlineConstraint: NSLayoutConstraint!
+    @IBOutlet weak var loginWidthConstraint: NSLayoutConstraint!
+    
+    
     private let secureStore = KeyChainStore()
     
     required init(coder aDecoder: NSCoder) {
@@ -78,7 +81,7 @@ class SignInViewController: UIViewController {
         super.viewDidLoad()
         
         setupTextFields()
-        setupSignInButton()
+        setupButtons()
         
         //check touch id status
         if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
@@ -188,10 +191,12 @@ class SignInViewController: UIViewController {
         
         if OnePasswordExtension.sharedExtension().isAppExtensionAvailable() == true {
             onePasswordButton.hidden = false
-            passwordManagerWidthConstraint.constant = 40
+            loginWidthConstraint.constant = 120
+            loginMidlineConstraint.constant = -72
         } else {
             onePasswordButton.hidden = true
-            passwordManagerWidthConstraint.constant = 0
+            loginWidthConstraint.constant = 200
+            loginMidlineConstraint.constant = 0
         }
         
         //        let fadeOutTime = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 1.0))
@@ -346,9 +351,12 @@ class SignInViewController: UIViewController {
         passwordTextField.attributedPlaceholder = NSAttributedString(string: "Password", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#cecaca")])
     }
     
-    func setupSignInButton() {
+    func setupButtons() {
         signInButton.layer.borderColor = UIColor.ProtonMail.Login_Button_Border_Color.CGColor;
         signInButton.alpha = buttonDisabledAlpha
+        
+        onePasswordButton.layer.borderColor = UIColor.whiteColor().CGColor
+        onePasswordButton.layer.borderWidth = 2
     }
     
     func signIn() {

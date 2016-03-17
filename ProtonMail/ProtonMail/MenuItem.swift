@@ -8,9 +8,6 @@
 
 import UIKit
 
-
-
-
 enum MenuItem: String {
     case bugs = "Report Bugs"
     case inbox = "Inbox"
@@ -37,7 +34,7 @@ enum MenuItem: String {
         }
         return has;
     }
-
+    
     var image : String {
         var image = "menu_inbox"
         switch self {
@@ -64,7 +61,7 @@ enum MenuItem: String {
         case signout:
             image = "menu_logout"
         case feedback:
-            image = "menu_draft"
+            image = "menu_feedback"
         default:
             image = "menu_settings"
         }
@@ -97,13 +94,13 @@ enum MenuItem: String {
         case signout:
             image = "menu_logout-active"
         case feedback:
-            image = "menu_draft-active"
+            image = "menu_feedback-active"
         default:
             image = "menu_settings-active"
         }
         return image;
     }
-
+    
     
     var menuToLocation : MessageLocation {
         switch self {
@@ -125,34 +122,5 @@ enum MenuItem: String {
             return .inbox
         }
     }
-//    
-//    var selectedImage : String {
-//        var image = "inbox_selected"
-//        switch self {
-//        case bugs:
-//            image = "bug_selected"
-//        case inbox, archive:
-//            image = "inbox_selected"
-//        case starred:
-//            image = "starred_selected"
-//        case drafts:
-//            image = "draft_selected"
-//        case sent:
-//            image = "sent_selected"
-//        case trash:
-//            image = "trash_selected"
-//        case spam:
-//            image = "spam_selected"
-//        case contacts:
-//            image = "contact_selected"
-//        case settings:
-//            image = "settings_selected"
-//        case signout:
-//            image = "signout_selected"
-//        default:
-//            image = "inbox_selected"
-//        }
-//        return image;
-//    }
     
 }
