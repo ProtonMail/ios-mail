@@ -20,7 +20,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ABA-TD-b8t">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="64"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pNX-v4-Ibn">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pNX-v4-Ibn">
                             <rect key="frame" x="262" y="0.0" width="77" height="64"/>
                             <animations/>
                             <constraints>
@@ -50,7 +50,7 @@
                                 <action selector="replyAllClicked:" destination="iN0-l3-epB" eventType="touchUpInside" id="NOA-iq-8BL"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zGm-o3-9Wz">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zGm-o3-9Wz">
                             <rect key="frame" x="490" y="0.0" width="72" height="64"/>
                             <animations/>
                             <constraints>
@@ -80,7 +80,7 @@
                                 <action selector="forwardClicked:" destination="iN0-l3-epB" eventType="touchUpInside" id="hpX-fi-hQZ"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sa8-eL-P2l">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sa8-eL-P2l">
                             <rect key="frame" x="41" y="0.0" width="58" height="64"/>
                             <animations/>
                             <constraints>

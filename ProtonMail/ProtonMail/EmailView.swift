@@ -29,6 +29,8 @@ import QuickLook
 
 class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     
+    static let kDefautWebViewScale : CGFloat = 0.70
+    
     //
     private let kMoreOptionsViewHeight: CGFloat = 123.0
     
@@ -92,14 +94,17 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         let css = String(contentsOfFile: path!, encoding: NSUTF8StringEncoding)!
         let htmlString = "<style>\(css)</style>\(meta)<div id='pm-body' class='inbox-body'>\(body)</div>"
         self.contentWebView.loadHTMLString(htmlString, baseURL: nil)
-        
+
+//        if let sub = subWebview {
+//            sub.hidden = true;
+//        }
     }
     
     func updateEmailAttachment (atts : [Attachment]?) {
         self.emailHeader.updateAttachmentData(atts)
     }
     
-    required init() {
+    required override init(frame : CGRect) {
         super.init(frame: CGRectZero)
         self.backgroundColor = UIColor.whiteColor()
         
@@ -108,8 +113,6 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         self.setupContentView()
         self.setupHeaderView()
         
-        //self.setupAttachmentView()
-        //updateAttachments()
         self.updateContentLayout(false)
     }
     
@@ -156,24 +159,20 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         self.contentWebView.delegate = self
         self.contentWebView.scrollView.delegate = self
         let w = UIScreen.mainScreen().applicationFrame.width;
-        self.contentWebView.frame = CGRect(x: 0, y: 0, width: w, height: 100);
-        // UIView.animateWithDuration(0, delay:0, options: nil, animations: { }, completion: nil)
+        self.contentWebView.frame = CGRect(x: 0, y: 0, width: w, height:100);
     }
     
     private var attY : CGFloat = 0;
     private func updateContentLayout(animation: Bool) {
         if !emailLoaded {
-            return
+           return
         }
-        PMLog.D("\(self.contentWebView.frame)")
         UIView.animateWithDuration(animation ? 0.3 : 0, animations: { () -> Void in
             for subview in self.contentWebView.scrollView.subviews {
                 let sub = subview as! UIView
                 if sub == self.emailHeader {
-//                    //sub.backgroundColor = UIColor.yellowColor()
                     continue
                 } else if subview is UIImageView {
-                    //sub.hidden = true
                     continue
                 } else if sub == self.attachmentView {
                     let y = self.attY
@@ -182,17 +181,17 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
                     size.height = self.attY + 100;
                     self.contentWebView.scrollView.contentSize = size
                 } else {
-                    
                     self.subWebview = sub
-                    let h = self.emailHeader.getHeight()
-                    sub.frame = CGRect(x: sub.frame.origin.x, y: h, width: sub.frame.width, height: sub.frame.height);
-//                    var result = self.contentWebView.stringByEvaluatingJavaScriptFromString("document.getElementById(\"pm-body\").offsetHeight;");
-//                    var height = result?.toInt()
-//                   // self.attY = height != nil ? sub.frame.origin.y + CGFloat(height! / 2) : sub.frame.origin.y + sub.frame.height;
-//                    
-//                    if height != nil {
-//                        println("\(height)")
+                    // new
+//                    if let subOk = self.subWebview {
+//                        if !self.emailLoaded {
+//                            subOk.hidden = true;
+//                        }
 //                    }
+                    let h = self.emailHeader.getHeight()
+//                    PMLog.D("\(sub.frame.height)")
+//                    PMLog.D("\(self.contentWebView.frame)")
+                    sub.frame = CGRect(x: sub.frame.origin.x, y: h, width: sub.frame.width, height: sub.frame.height);
                     self.attY = sub.frame.origin.y + sub.frame.height;
                 }
             }
@@ -209,63 +208,36 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     
     func webViewDidFinishLoad(webView: UIWebView) {
         self.emailLoaded = true;
+        var size = webView.sizeThatFits(CGSizeZero)
+        let scroll = webView.scrollView
+        var zoom = webView.bounds.size.width / scroll.contentSize.width;
+        PMLog.D("\(zoom)")
+        if zoom < 1 {
+            zoom = zoom * EmailView.kDefautWebViewScale
+            PMLog.D("\(zoom)")
+            webView.stringByEvaluatingJavaScriptFromString("document.body.style.zoom = \(zoom);")
+        }
+        
+        self.attachmentView?.hidden = false
         
         self.updateContentLayout(false)
-        var size = webView.sizeThatFits(CGSizeZero)
-        //println ("\(size)")
-//        self.contentWebView.mas_updateConstraints { (make) -> Void in
-//            make.removeExisting = true
-//            make.top.equalTo()(self)
-//            make.left.equalTo()(self)
-//            make.right.equalTo()(self)
-//            make.height.equalTo()(webView.scrollView.contentSize.height)
-//        }
-        
-//        self.contentWebView.scrollView.contentSize = CGSize(width: size.width, height: size.height - 102) ;
-//        self.contentWebView?.frame = CGRect(x: self.subWebview!.frame.origin.x, y: 0, width: webView.frame.width, height: CGFloat (size.height));
-//        self.subWebview?.frame = CGRect(x: self.subWebview!.frame.origin.x, y: self.subWebview!.frame.origin.y, width: webView.frame.width, height: CGFloat (size.height - 102));
-//        
-        
-       // webView.frame = CGRect(x: webView.frame.origin.x, y: webView.frame.origin.y, width: webView.frame.width, height: CGFloat (size.height + 102));
 
-        //println("\(self.contentWebView.frame)")
-
-//        var result = self.contentWebView.stringByEvaluatingJavaScriptFromString("document.getElementById(\"pm-body\").offsetHeight;");
-//        result = self.contentWebView.stringByEvaluatingJavaScriptFromString("document.getElementById(\"pm-body\").scrollHeight;");
-//        var result = self.contentWebView.stringByEvaluatingJavaScriptFromString("document.getElementById(\"pm-body\").clientHeight;");
-//        var height = result!.toInt()! / 2
-//        
-//        if CGFloat(height + 100) <= self.frame.height {
-//            webView.userInteractionEnabled = false
-//        }
-//        
-//        
-//        webView.frame = CGRect(x: webView.frame.origin.x, y: 100, width: webView.frame.width, height: CGFloat (height));
-//
-//        var mWebViewTextSize = webView.sizeThatFits(CGSize(width: 1.0, height: 1.0))
-//        //        var mWebViewFrame = webView.frame;
-//        //        mWebViewFrame.size.height = mWebViewTextSize.height;
-//        //        webView.frame = mWebViewFrame;
-//        //
-//        //        //Disable bouncing in webview
-//        //        for subview in self.contentWebView.scrollView.subviews {
-//        //            if (subview is UIScrollView) {
-//        //                //subview.bounces = false
-//        //            }
-//        //        }
-//
-        //let cH = webView.scrollView.contentSize.height;
-        self.attachmentView?.hidden = false
-        //self.updateContentLayout(false)
+//        UIView.animateWithDuration(0.3, animations: { () -> Void in
+//            if let subOk = self.subWebview {
+//                if self.emailLoaded {
+//                    subOk.hidden = false;
+//                }
+//            }
+//        })
     }
     
     func scrollViewDidZoom(scrollView: UIScrollView) {
-        //println("\(scrollView.contentSize)")
+        //PMLog.D("\(scrollView.contentSize)")
         self.updateContentLayout(false)
     }
     
     func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView!, atScale scale: CGFloat) {
-        PMLog.D("\(scrollView.contentSize)")
+        //PMLog.D("\(scrollView.contentSize)")
         self.updateContentLayout(false)
     }
 }
