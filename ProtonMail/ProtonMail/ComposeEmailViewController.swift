@@ -316,21 +316,25 @@ extension ComposeEmailViewController : ComposeViewDelegate {
             alertController.addOKAction()
             self.presentViewController(alertController, animated: true, completion: nil)
         } else {
+            var needsShow : Bool = false
             let alertController = UIAlertController(title: NSLocalizedString("Change sender address to .."), message: nil, preferredStyle: .ActionSheet)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
             let multi_domains = self.viewModel.getAddresses()
             let defaultAddr = self.viewModel.getDefaultAddress()
             for (var addr) in multi_domains {
                 if addr.status == 1 && addr.receive == 1 && defaultAddr != addr {
+                    needsShow = true
                     alertController.addAction(UIAlertAction(title: addr.email, style: .Default, handler: { (action) -> Void in
                         self.viewModel.updateAddressID(addr.address_id)
                         self.composeView.updateFromValue(addr.email, pickerEnabled: true)
                     }))
                 }
             }
-            alertController.popoverPresentationController?.sourceView = self.composeView.fromView
-            alertController.popoverPresentationController?.sourceRect = self.composeView.fromView.frame
-            presentViewController(alertController, animated: true, completion: nil)
+            if needsShow {
+                alertController.popoverPresentationController?.sourceView = self.composeView.fromView
+                alertController.popoverPresentationController?.sourceRect = self.composeView.fromView.frame
+                presentViewController(alertController, animated: true, completion: nil)
+            }
         }
     }
     

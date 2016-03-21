@@ -343,12 +343,15 @@ class SettingTableViewController: ProtonMailViewController {
                 break;
             }
         } else if setting_headers[indexPath.section] == SettingSections.MultiDomain {
+            
+            var needsShow : Bool = false
             let alertController = UIAlertController(title: NSLocalizedString("Change default address to .."), message: nil, preferredStyle: .ActionSheet)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
             var defaultAddress : Address? = multi_domains.getDefaultAddress()
             for (var addr) in multi_domains {
                 if addr.status == 1 && addr.receive == 1 {
                     if defaultAddress != addr {
+                        needsShow = true
                         alertController.addAction(UIAlertAction(title: addr.email, style: .Default, handler: { (action) -> Void in
                             self.navigationController?.popViewControllerAnimated(true)
                             
@@ -379,12 +382,12 @@ class SettingTableViewController: ProtonMailViewController {
                     }
                 }
             }
-            
-            let cell = tableView.cellForRowAtIndexPath(indexPath)
-            alertController.popoverPresentationController?.sourceView = cell ?? self.view
-            alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
-            presentViewController(alertController, animated: true, completion: nil)
-            
+            if needsShow {
+                let cell = tableView.cellForRowAtIndexPath(indexPath)
+                alertController.popoverPresentationController?.sourceView = cell ?? self.view
+                alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
+                presentViewController(alertController, animated: true, completion: nil)
+            }
         }  else if setting_headers[indexPath.section] == SettingSections.SwipeAction {
             
             if indexPath.row < setting_swipe_action_items.count {
