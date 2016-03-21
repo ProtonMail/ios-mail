@@ -84,7 +84,7 @@ class EmailHeaderView: UIView {
     private let kEmailBodyTextViewMarginRight: CGFloat = 0//-16.0
     private let kEmailBodyTextViewMarginTop: CGFloat = 16.0
     private let kSeparatorBetweenHeaderAndBodyMarginTop: CGFloat = 16.0
-    private let kHourMinuteFormat = "h:mma"
+    private let kHourMinuteFormat = "h:mm a"
     
     
     private var tempFileUri : NSURL?

@@ -284,7 +284,7 @@ class MessageDetailView: UIView,  MessageDetailBottomViewProtocol{
         self.emailTime.font = UIFont.robotoMediumItalic(size: UIFont.Size.h6)
         self.emailTime.numberOfLines = 1
         
-        let hourMinuteFormat = "h:mma"
+        let hourMinuteFormat = "h:mm a"
         
         if let messageTime = self.message.time {
             self.emailTime.text = "at \(messageTime.stringWithFormat(hourMinuteFormat))".lowercaseString
