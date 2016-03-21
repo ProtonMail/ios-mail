@@ -14,22 +14,7 @@ import Foundation
 class MessageViewController: ProtonMailViewController, LablesViewControllerDelegate {
     
     /// message info
-    var message: Message! {
-        didSet {
-            message.fetchDetailIfNeeded() { _, _, msg, error in
-                if error != nil {
-                    NSLog("\(__FUNCTION__) error: \(error)")
-                    self.updateEmailBodyWithError("Can't download message body, please try again.")
-                }
-                else
-                {
-                    self.updateEmailBody ()
-                    self.updateHeader()
-                    self.emailView?.emailHeader.updateAttConstraints(true)
-                }
-            }
-        }
-    }
+    var message: Message!
     
     ///
     var emailView: EmailView?
@@ -64,8 +49,21 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         self.emailView!.initLayouts()
         self.emailView!.bottomActionView.delegate = self
         self.emailView!.emailHeader.actionsDelegate = self
-       
-        self.updateEmailBody()
+        
+        showEmailLoading()
+        message.fetchDetailIfNeeded() { _, _, msg, error in
+            if error != nil {
+                NSLog("\(__FUNCTION__) error: \(error)")
+                self.updateEmailBodyWithError("Can't download message body, please try again.")
+            }
+            else
+            {
+                self.updateEmailBody ()
+                self.updateHeader()
+                self.emailView?.emailHeader.updateAttConstraints(true)
+            }
+        }
+        //self.updateEmailBody()
     }
     
     override func loadView() {
@@ -180,11 +178,6 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        //UIView.setAnimationsEnabled(false)
-//        let value = UIInterfaceOrientationMask.Portrait.rawValue
-//        UIDevice.currentDevice().setValue(value, forKey: "orientation")
-
-        //self.emailView?.contentWebView.hidden = false //
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: NotificationDefined.TouchStatusBar, object:nil)
 
@@ -201,15 +194,12 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationDefined.TouchStatusBar, object:nil)
-        //self.emailView?.contentWebView.userInteractionEnabled = false;
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         
         self.updateEmailBody(force : true);
-        //self.emailView?.contentWebView.stringByEvaluatingJavaScriptFromString("window.getSelection().removeAllRanges();")
-        //self.emailView?.contentWebView.reload()
     }
     
     internal func statusBarHit (notify: NSNotification) {
@@ -226,54 +216,54 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     //
     var purifiedBody :  String? = nil
-    var loadingShowing : Bool = false
-    
     // MARK : private function
     private func updateEmailBody (force forceReload : Bool = false) {
         if (self.message.hasAttachments) {
             let atts = self.message.attachments.allObjects as! [Attachment]
             self.emailView?.updateEmailAttachment(atts);
         }
-        
-        if (!self.bodyLoaded || forceReload) && self.emailView != nil {
-            var bodyText = NSLocalizedString("Loading...")
-            if self.message.isDetailDownloaded {  //&& forceReload == false 
-                self.bodyLoaded = true
-                if loadingShowing {
-                    var error: NSError?
+        let offset = Int64(NSEC_PER_SEC) / 2
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, offset), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+            if (!self.bodyLoaded || forceReload) && self.emailView != nil {
+                if self.message.isDetailDownloaded {  //&& forceReload == false
+                    self.bodyLoaded = true
                     PMLog.D(self.message!.body);
-                    bodyText = self.message.decryptBodyIfNeeded(&error) ?? NSLocalizedString("Unable to decrypt message.")
-                    bodyText = bodyText.stringByStrippingStyleHTML()
-                    bodyText = bodyText.stringByStrippingBodyStyle()
-                    bodyText = bodyText.stringByPurifyHTML()
-                    purifiedBody = bodyText;
-                    loadingShowing = false
-                } else {
-                    if let puriTest = purifiedBody {
-                        bodyText = puriTest
-                    } else {
-                        var error: NSError?
-                        PMLog.D(self.message!.body);
-                        bodyText = self.message.decryptBodyIfNeeded(&error) ?? NSLocalizedString("Unable to decrypt message.")
-                        bodyText = bodyText.stringByStrippingStyleHTML()
-                        bodyText = bodyText.stringByStrippingBodyStyle()
-                        bodyText = bodyText.stringByPurifyHTML()
-                        purifiedBody = bodyText
-                        let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=\(EmailView.kDefautWebViewScale)\" content=\"yes\">"
-                        let meta1 : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=0.8\" content=\"yes\">"// "<meta name=\"viewport\" content=\"width=\(600)\">"
+                    if let body = self.purifiedBody {
                         
-                        self.emailView?.updateEmailBody(bodyText, meta: self.message.isDetailDownloaded ? meta : meta1)
+                    } else {
+                        self.purifiedBody = self.purifyEmailBody(self.message)
                     }
                 }
-            } else {
-                loadingShowing = true
             }
             
-            let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=\(EmailView.kDefautWebViewScale)\" content=\"yes\">"
-            let meta1 : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=0.8\" content=\"yes\">"// "<meta name=\"viewport\" content=\"width=\(600)\">"
-            
-            self.emailView?.updateEmailBody(bodyText, meta: self.message.isDetailDownloaded ? meta : meta1)
-        }
+            if let body = self.purifiedBody {
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.loadEmailBody(self.purifiedBody ?? "")
+                }
+            }
+        })
+    }
+    
+    internal func purifyEmailBody(message : Message!) -> String?
+    {
+        var error: NSError?
+        var bodyText = self.message.decryptBodyIfNeeded(&error) ?? NSLocalizedString("Unable to decrypt message.")
+        bodyText = bodyText.stringByStrippingStyleHTML()
+        bodyText = bodyText.stringByStrippingBodyStyle()
+        bodyText = bodyText.stringByPurifyHTML()
+        return bodyText
+    }
+    
+    internal func showEmailLoading () {
+        var body = NSLocalizedString("Loading...")
+        let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=0.8\" content=\"yes\">"
+        self.emailView?.updateEmailBody(body, meta: meta)
+    }
+
+    var contentLoaded = false
+    internal func loadEmailBody(body : String) {
+        let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=\(EmailView.kDefautWebViewScale)\" content=\"yes\">"
+        self.emailView?.updateEmailBody(body, meta: meta)
     }
     
     // MARK : private function
@@ -296,7 +286,6 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             }
         }
     }
-    
     
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         self.emailView?.rotate()

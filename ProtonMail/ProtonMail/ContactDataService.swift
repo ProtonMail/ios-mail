@@ -140,7 +140,6 @@ class ContactDataService {
     }
 }
 
-
 // MARK: AddressBook contact extension
 
 extension ContactDataService {

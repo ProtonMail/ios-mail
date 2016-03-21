@@ -179,7 +179,6 @@ class SignInViewController: UIViewController {
                 self.signIn()
             }
         })
-        
     }
     
     override func viewWillAppear(animated: Bool) {
