@@ -223,6 +223,11 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         presentingController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
     }
     
+    
+    //
+    var purifiedBody :  String? = nil
+    var loadingShowing : Bool = false
+    
     // MARK : private function
     private func updateEmailBody (force forceReload : Bool = false) {
         if (self.message.hasAttachments) {
@@ -234,16 +239,36 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             var bodyText = NSLocalizedString("Loading...")
             if self.message.isDetailDownloaded {  //&& forceReload == false 
                 self.bodyLoaded = true
-                var error: NSError?
-                PMLog.D(self.message!.body);
-                bodyText = self.message.decryptBodyIfNeeded(&error) ?? NSLocalizedString("Unable to decrypt message.")
-                bodyText = bodyText.stringByStrippingStyleHTML()
-                bodyText = bodyText.stringByStrippingBodyStyle()
-                bodyText = bodyText.stringByPurifyHTML()
+                if loadingShowing {
+                    var error: NSError?
+                    PMLog.D(self.message!.body);
+                    bodyText = self.message.decryptBodyIfNeeded(&error) ?? NSLocalizedString("Unable to decrypt message.")
+                    bodyText = bodyText.stringByStrippingStyleHTML()
+                    bodyText = bodyText.stringByStrippingBodyStyle()
+                    bodyText = bodyText.stringByPurifyHTML()
+                    purifiedBody = bodyText;
+                    loadingShowing = false
+                } else {
+                    if let puriTest = purifiedBody {
+                        bodyText = puriTest
+                    } else {
+                        var error: NSError?
+                        PMLog.D(self.message!.body);
+                        bodyText = self.message.decryptBodyIfNeeded(&error) ?? NSLocalizedString("Unable to decrypt message.")
+                        bodyText = bodyText.stringByStrippingStyleHTML()
+                        bodyText = bodyText.stringByStrippingBodyStyle()
+                        bodyText = bodyText.stringByPurifyHTML()
+                        purifiedBody = bodyText
+                        let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=\(EmailView.kDefautWebViewScale)\" content=\"yes\">"
+                        let meta1 : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=0.8\" content=\"yes\">"// "<meta name=\"viewport\" content=\"width=\(600)\">"
+                        
+                        self.emailView?.updateEmailBody(bodyText, meta: self.message.isDetailDownloaded ? meta : meta1)
+                    }
+                }
+            } else {
+                loadingShowing = true
             }
-            //<meta name=\"viewport\" content=\"user-scalable=yes,maximum-scale=5.0,minimum-scale=0.5\" />
-            //let w = UIScreen.mainScreen().bounds.width * 2
-            //let meta : String = "<meta name=\"viewport\" content=\"width=\(w)\">\n"
+            
             let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=\(EmailView.kDefautWebViewScale)\" content=\"yes\">"
             let meta1 : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=0.8\" content=\"yes\">"// "<meta name=\"viewport\" content=\"width=\(600)\">"
             
