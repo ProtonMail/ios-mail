@@ -222,8 +222,8 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             let atts = self.message.attachments.allObjects as! [Attachment]
             self.emailView?.updateEmailAttachment(atts);
         }
-        let offset = Int64(NSEC_PER_SEC) / 2
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, offset), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+        //let offset = Int64(NSEC_PER_SEC) / 2
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
             if (!self.bodyLoaded || forceReload) && self.emailView != nil {
                 if self.message.isDetailDownloaded {  //&& forceReload == false
                     self.bodyLoaded = true
