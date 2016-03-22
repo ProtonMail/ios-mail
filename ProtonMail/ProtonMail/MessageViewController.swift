@@ -81,7 +81,11 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             isStarred: self.message.isStarred,
             time: self.message.time,
             encType: self.message.encryptType,
-            labels : self.message.labels.allObjects as? [Label])
+            labels : self.message.labels.allObjects as? [Label],
+            
+            isShowedImages: self.message.isShowedImages,
+            expiration: self.message.expirationTime
+        )
     }
     
     func dismissed() {
@@ -189,11 +193,14 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         
         self.emailView?.contentWebView.userInteractionEnabled = true;
         self.emailView?.contentWebView.becomeFirstResponder()
+        
+        self.setupExpirationTimer()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationDefined.TouchStatusBar, object:nil)
+        self.stopExpirationTimer()
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -214,6 +221,40 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     }
     
     
+    
+    private var timer : NSTimer!
+    private func setupExpirationTimer()
+    {
+        if self.message.expirationTime != nil {
+            self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "autoTimer", userInfo: nil, repeats: true)
+            //self.timer.fire()
+        }
+    }
+    
+    private func stopExpirationTimer()
+    {
+        if self.timer != nil {
+            self.timer.invalidate()
+            self.timer = nil
+        }
+    }
+    
+    func autoTimer()
+    {
+        emailView?.emailHeader.updateExpirationDate(self.message.expirationTime)
+        if let time = self.message.expirationTime {
+            let offset = Int(time.timeIntervalSinceDate(NSDate()))
+            if offset <= 0 {
+                if self.message.managedObjectContext != nil {
+                    self.message.isDetailDownloaded = false
+                    self.message.managedObjectContext?.saveUpstreamIfNeeded()
+                    //self.messagesSetValue(setValue: MessageLocation.deleted.rawValue, forKey: Message.Attributes.locationNumber)
+                }
+                self.navigationController?.popViewControllerAnimated(true)
+            }
+        }
+    }
+
     //
     var purifiedBody :  String? = nil
     // MARK : private function

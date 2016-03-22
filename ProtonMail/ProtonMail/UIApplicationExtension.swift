@@ -19,8 +19,6 @@ public enum UIApplicationReleaseMode: Int {
     case Enterprise = 5
 };
 
-
-
 extension UIApplication {
     
     func getMobileProvision() -> Dictionary<String, AnyObject>? {

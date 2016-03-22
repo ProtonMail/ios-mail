@@ -229,8 +229,18 @@ class EmailHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func updateExpirationDate ( expiration : NSDate? ) {
+        if let expirTime = expiration {
+            let offset : Int = Int(expirTime.timeIntervalSinceDate(NSDate()))
+            hasExpiration = true
+            expirationView.setExpirationTime(offset)
+        } else {
+            hasExpiration = false
+        }
+    }
+    
     // MARK : Private functions
-    func updateHeaderData (title : String, sender : ContactVO, to : [ContactVO]?, cc : [ContactVO]?, bcc : [ContactVO]?, isStarred : Bool, time : NSDate?, encType : EncryptTypes, labels : [Label]?) {
+    func updateHeaderData (title : String, sender : ContactVO, to : [ContactVO]?, cc : [ContactVO]?, bcc : [ContactVO]?, isStarred : Bool, time : NSDate?, encType : EncryptTypes, labels : [Label]?, isShowedImages: Bool, expiration : NSDate?) {
         self.title = title
         self.sender = sender
         self.toList = to
@@ -318,7 +328,8 @@ class EmailHeaderView: UIView {
                 }
             }
         }
-        
+        self.updateExpirationDate(expiration)
+
     }
     
     private func updateLablesDetails (labelView : UILabel, label:Label?) {
@@ -347,7 +358,6 @@ class EmailHeaderView: UIView {
             self.emailAttachmentsAmount.hidden = true
             self.emailHasAttachmentsImageView.hidden = true
         }
-        
     }
     
     func updateHeaderLayout () {
