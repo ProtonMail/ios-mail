@@ -286,6 +286,23 @@ class UserDataService {
         }
     }
     
+    func updateAutoLoadImage(status : Int, completion: UserInfoBlock?) {
+        let api = UpdateShowImagesRequest(status: status)
+        api.call() { task, response, hasError in
+            if !hasError {
+                if let userInfo = self.userInfo {
+                    let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
+                        autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:status,
+                        
+                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role
+                    )
+                    self.userInfo = userInfo
+                }
+            }
+            completion?(self.userInfo, nil)
+        }
+    }
+    
     func updateMailboxPassword(old_mbp: String, newMailboxPassword: String, completion: CompletionBlock?) {
         var error: NSError?
         

@@ -955,7 +955,6 @@ class MessageDataService {
                 sharedUserDataService.clean()
                 userCachedStatus.resetAuthCache()
             }
-            
             //need add not clean the important infomation here.
         }
     }

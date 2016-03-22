@@ -106,7 +106,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     @IBAction func checkAction(sender: AnyObject) {
         dismissKeyboard()
         agreeCheck.selected = !agreeCheck.selected
-        agreePolicy = agreeCheck.selected 
+        agreePolicy = agreeCheck.selected
     }
     
     @IBAction func backAction(sender: UIButton) {
