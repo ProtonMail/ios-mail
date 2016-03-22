@@ -21,7 +21,6 @@ class ExpirationView: PMView {
     
     func setExpirationTime(offset : Int) {
         let (d,h,m,s) = durationsBySecond(seconds: offset)
-        println()
         if offset <= 0 {
             expirationLabel.text = "Message expired"
         } else {

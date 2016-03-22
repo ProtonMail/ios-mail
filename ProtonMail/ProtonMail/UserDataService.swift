@@ -88,6 +88,10 @@ class UserDataService {
         return userInfo?.usedSpace ?? 0
     }
     
+    var showShowImageView: Bool {
+        return userInfo?.showImages == 0
+    }
+    
     // MARK: - Public variables
     
     var defaultEmail : String {

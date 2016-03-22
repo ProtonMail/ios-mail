@@ -8,17 +8,20 @@
 
 import Foundation
 
-
+protocol ShowImageViewProtocol {
+    func showImageClicked()
+}
 class ShowImageView: PMView {
+    
+    @IBOutlet weak var showImageButton: UIButton!
+    var actionDelegate : ShowImageViewProtocol?
+    
     override func getNibName() -> String {
         return "ShowImageView"
     }
     
- 
-    @IBOutlet weak var showImageButton: UIButton!
-    
-    
     @IBAction func clickAction(sender: AnyObject) {
+        actionDelegate?.showImageClicked()
     }
     
     override func setup() {

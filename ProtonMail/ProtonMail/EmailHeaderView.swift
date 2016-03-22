@@ -17,6 +17,8 @@ protocol EmailHeaderActionsProtocol {
     func starredChanged(isStarred : Bool)
     
     func quickLookAttachment (tempfile : NSURL, keyPackage:NSData, fileName:String)
+    
+    func showImage()
 }
 
 class EmailHeaderView: UIView {
@@ -116,7 +118,8 @@ class EmailHeaderView: UIView {
     private var date : NSDate!
     private var starred : Bool!
     
-    private var hasExpiration : Bool = true
+    private var hasExpiration : Bool = false
+    private var hasShowImageCheck : Bool = true
     
     private var fromSinglelineAttr : NSMutableAttributedString! {
         get {
@@ -240,7 +243,7 @@ class EmailHeaderView: UIView {
     }
     
     // MARK : Private functions
-    func updateHeaderData (title : String, sender : ContactVO, to : [ContactVO]?, cc : [ContactVO]?, bcc : [ContactVO]?, isStarred : Bool, time : NSDate?, encType : EncryptTypes, labels : [Label]?, isShowedImages: Bool, expiration : NSDate?) {
+    func updateHeaderData (title : String, sender : ContactVO, to : [ContactVO]?, cc : [ContactVO]?, bcc : [ContactVO]?, isStarred : Bool, time : NSDate?, encType : EncryptTypes, labels : [Label]?, showShowImages: Bool, expiration : NSDate?) {
         self.title = title
         self.sender = sender
         self.toList = to
@@ -329,7 +332,7 @@ class EmailHeaderView: UIView {
             }
         }
         self.updateExpirationDate(expiration)
-
+        hasShowImageCheck = showShowImages
     }
     
     private func updateLablesDetails (labelView : UILabel, label:Label?) {
@@ -395,6 +398,7 @@ class EmailHeaderView: UIView {
     
     private func createShowImageView() {
         self.showImageView = ShowImageView()
+        self.showImageView.actionDelegate = self
         self.addSubview(showImageView!)
     }
     
@@ -555,7 +559,7 @@ class EmailHeaderView: UIView {
     }
     
     func updateShowImageConstraints() {
-        let viewHeight = self.hasExpiration ? 36 : 0
+        let viewHeight = self.hasShowImageCheck ? 36 : 0
         self.showImageView.mas_updateConstraints({ (make) -> Void in
             make.removeExisting = true
             make.left.equalTo()(self)
@@ -606,6 +610,9 @@ class EmailHeaderView: UIView {
             make.height.equalTo()(self.emailIsEncryptedImageView.frame.height)
             make.width.equalTo()(self.emailIsEncryptedImageView.frame.width)
         }
+        
+        self.updateExpirationConstraints()
+        self.updateShowImageConstraints()
         
         self.updateSelf(animition)
     }
@@ -1164,6 +1171,13 @@ class EmailHeaderView: UIView {
         }
         
         self.updateSelf(true)
+    }
+}
+
+
+extension EmailHeaderView : ShowImageViewProtocol {
+    func showImageClicked() {
+        actionsDelegate?.showImage()
     }
 }
 

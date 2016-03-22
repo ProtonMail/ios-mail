@@ -27,6 +27,8 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     private var bodyLoaded: Bool = false
     
+    private var showShowImageView : Bool = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -36,7 +38,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             self.navigationController?.popViewControllerAnimated(true)
             return
         }
-        
+        self.showShowImageView = sharedUserDataService.showShowImageView
         self.setupFetchedResultsController(message.messageID)
         
         self.updateHeader()
@@ -58,12 +60,15 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             }
             else
             {
-                self.updateEmailBody ()
-                self.updateHeader()
-                self.emailView?.emailHeader.updateAttConstraints(true)
+                self.updateContent()
             }
         }
-        //self.updateEmailBody()
+    }
+    
+    func updateContent () {
+        self.updateEmailBody ()
+        self.updateHeader()
+        self.emailView?.emailHeader.updateAttConstraints(true)
     }
     
     override func loadView() {
@@ -83,7 +88,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             encType: self.message.encryptType,
             labels : self.message.labels.allObjects as? [Label],
             
-            isShowedImages: self.message.isShowedImages,
+            showShowImages: self.showShowImageView,
             expiration: self.message.expirationTime
         )
     }
@@ -356,6 +361,12 @@ extension MessageViewController : MessageDetailBottomViewProtocol {
 // MARK
 private var tempFileUri : NSURL?
 extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteractionControllerDelegate {
+    
+    func showImage() {
+        self.showShowImageView = false
+        self.updateContent();
+    }
+    
     func starredChanged(isStarred: Bool) {
         self.messagesSetValue(setValue: isStarred, forKey: Message.Attributes.isStarred)
     }

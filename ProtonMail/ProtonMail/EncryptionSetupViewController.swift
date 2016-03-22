@@ -23,8 +23,6 @@ class EncryptionSetupViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
         updateButtonsStatus()
     }
     
