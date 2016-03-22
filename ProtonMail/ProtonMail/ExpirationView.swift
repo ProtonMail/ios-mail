@@ -17,8 +17,6 @@ class ExpirationView: PMView {
     
     @IBOutlet weak var expirationLabel: UILabel!
     
-    
-    
     func setExpirationTime(offset : Int) {
         let (d,h,m,s) = durationsBySecond(seconds: offset)
         if offset <= 0 {
