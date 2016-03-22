@@ -59,8 +59,8 @@ class EmailHeaderView: UIView {
     
     private var attachmentView : UITableView?
     
-    private var expirationView : UIView!
-    private var showImageView : UIView!
+    private var expirationView : ExpirationView!
+    private var showImageView : ShowImageView!
     
     //separators
     private var separatorHeader : UIView!
@@ -379,14 +379,12 @@ class EmailHeaderView: UIView {
     }
     
     private func createExpirationView() {
-        self.expirationView = UIView()
-        self.expirationView.backgroundColor = UIColor(RRGGBB: UInt(0x505061))
+        self.expirationView = ExpirationView()
         self.addSubview(expirationView!)
     }
     
     private func createShowImageView() {
-        self.showImageView = UIView()
-        self.showImageView.backgroundColor = UIColor(RRGGBB: UInt(0x505061))
+        self.showImageView = ShowImageView()
         self.addSubview(showImageView!)
     }
     
