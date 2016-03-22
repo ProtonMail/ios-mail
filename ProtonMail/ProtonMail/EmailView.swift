@@ -40,9 +40,6 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     // Message content
     var contentWebView: UIWebView!
     
-    // Message attachment view
-    var attachmentView : EmailAttachmentView?
-    
     // Message bottom actions view
     var bottomActionView : MessageDetailBottomView!
     
@@ -126,17 +123,6 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         self.addSubview(bottomActionView)
     }
     
-    private func setupAttachmentView() {
-        
-        self.attachmentView = EmailAttachmentView()
-        self.attachmentView!.backgroundColor = UIColor.redColor()
-        //self.attachmentView.delegate = self
-        self.contentWebView.scrollView.addSubview(self.attachmentView!)
-        self.attachmentView!.hidden = true;
-        let w = UIScreen.mainScreen().applicationFrame.width;
-        self.attachmentView!.frame = CGRect(x: 0, y: 0, width: w, height: 100)
-    }
-    
     private func setupHeaderView () {
         self.emailHeader = EmailHeaderView()
         self.emailHeader.backgroundColor = UIColor.whiteColor()
@@ -174,12 +160,6 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
                     continue
                 } else if subview is UIImageView {
                     continue
-                } else if sub == self.attachmentView {
-                    let y = self.attY
-                    sub.frame = CGRect(x: sub.frame.origin.x, y:y, width: sub.frame.width, height: 100);
-                    var size = self.contentWebView.scrollView.contentSize;
-                    size.height = self.attY + 100;
-                    self.contentWebView.scrollView.contentSize = size
                 } else {
                     self.subWebview = sub
                     // new
@@ -217,8 +197,6 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
             PMLog.D("\(zoom)")
             webView.stringByEvaluatingJavaScriptFromString("document.body.style.zoom = \(zoom);")
         }
-        
-        self.attachmentView?.hidden = false
         
         self.updateContentLayout(false)
 

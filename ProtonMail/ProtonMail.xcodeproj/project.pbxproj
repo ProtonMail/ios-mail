@@ -62,10 +62,7 @@
 		07B797C51A6EE5FF00244532 /* AuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B797C41A6EE5FF00244532 /* AuthCredential.swift */; };
 		07CAB7FE1A880B1200C5E347 /* PersistentQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB7FD1A880B1200C5E347 /* PersistentQueue.swift */; };
 		07CAB8021A8815DF00C5E347 /* NSFileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB8011A8815DF00C5E347 /* NSFileManagerExtension.swift */; };
-		07CAB8031A894A3B00C5E347 /* MessageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701704741A791856000A90D2 /* MessageDetailViewController.swift */; };
-		07CAB8041A894A3B00C5E347 /* MessageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9C3201A7BA8F400A45DF3 /* MessageDetailView.swift */; };
 		07CAB8061A894F8600C5E347 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CAB8051A894F8600C5E347 /* CoreDataService.swift */; };
-		07CB234C1AAE9FCB00699068 /* FullHeightWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CB234B1AAE9FCB00699068 /* FullHeightWebView.swift */; };
 		07CB23561AB0F24700699068 /* ReportBugsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CB23551AB0F24700699068 /* ReportBugsViewController.swift */; };
 		07CC3F931A941C7A0005E39F /* MessageQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC3F921A941C7A0005E39F /* MessageQueue.swift */; };
 		07CC99641A6F076A000FD6F8 /* NSErrorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CC99631A6F076A000FD6F8 /* NSErrorExtension.swift */; };
@@ -326,7 +323,6 @@
 		07CAB7FD1A880B1200C5E347 /* PersistentQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentQueue.swift; sourceTree = "<group>"; };
 		07CAB8011A8815DF00C5E347 /* NSFileManagerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSFileManagerExtension.swift; sourceTree = "<group>"; };
 		07CAB8051A894F8600C5E347 /* CoreDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
-		07CB234B1AAE9FCB00699068 /* FullHeightWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullHeightWebView.swift; sourceTree = "<group>"; };
 		07CB23551AB0F24700699068 /* ReportBugsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportBugsViewController.swift; sourceTree = "<group>"; };
 		07CC3F921A941C7A0005E39F /* MessageQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageQueue.swift; sourceTree = "<group>"; };
 		07CC99631A6F076A000FD6F8 /* NSErrorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSErrorExtension.swift; sourceTree = "<group>"; };
@@ -349,7 +345,6 @@
 		07E6C8271A9CF36400D4C8D4 /* NSManagedObjectExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSManagedObjectExtension.swift; sourceTree = "<group>"; };
 		07FBA7A41A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSFetchedResultsControllerExtension.swift; sourceTree = "<group>"; };
 		132129A26ED76512DB66C024 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		701704741A791856000A90D2 /* MessageDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MessageDetailViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		701704771A794C69000A90D2 /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-MediumItalic.ttf"; sourceTree = "<group>"; };
 		701704791A794C9F000A90D2 /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
 		701DDE7F1AA64DEB0038149C /* MBContactPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBContactPicker.m; sourceTree = "<group>"; };
@@ -386,7 +381,6 @@
 		709FE39C1A9643CF00034288 /* UIScrollViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIScrollViewExtension.swift; sourceTree = "<group>"; };
 		70B28D091A9BA0AC002D9EC8 /* AddressBookService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressBookService.swift; sourceTree = "<group>"; };
 		70C9133C1A6D83FA002CBE61 /* UIColor+ProtonMail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+ProtonMail.swift"; sourceTree = "<group>"; };
-		70F9C3201A7BA8F400A45DF3 /* MessageDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MessageDetailView.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		70FC90D91A9BC11F00498B42 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		70FD2BCB1A6FDC9B0086ADC5 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		750254D91AB8157800050B12 /* GeneralSettingViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralSettingViewCell.swift; sourceTree = "<group>"; };
@@ -828,11 +822,8 @@
 				752EEC1B1BB0A9D800770331 /* QuickViewViewController.swift */,
 				07411D8D1AAA407A002A4611 /* AttachmentTableViewCell.swift */,
 				07411D8B1AAA3F1B002A4611 /* AttachmentTableViewCell.xib */,
-				07CB234B1AAE9FCB00699068 /* FullHeightWebView.swift */,
-				70F9C3201A7BA8F400A45DF3 /* MessageDetailView.swift */,
-				701704741A791856000A90D2 /* MessageDetailViewController.swift */,
-				7582E2F11B015DE400FEA38B /* MessageDetailBottomView.swift */,
 				757945D51B66E38D004EEDCA /* MessageViewController.swift */,
+				7582E2F11B015DE400FEA38B /* MessageDetailBottomView.swift */,
 				7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */,
 				757945D71B6702A2004EEDCA /* EmailView.swift */,
 				757945D91B6702B5004EEDCA /* EmailHeaderView.swift */,
@@ -1486,9 +1477,7 @@
 				75F4638E1C60172300918B46 /* SignUpUserNameViewController.swift in Sources */,
 				076758781AA0EB6900F9AC9C /* LoadingView.swift in Sources */,
 				701DDE901AA64DEB0038149C /* MBContactCollectionView.m in Sources */,
-				07CAB8041A894A3B00C5E347 /* MessageDetailView.swift in Sources */,
 				7523E88E1BB1561F00126D62 /* NSData+MultipartResponses.m in Sources */,
-				07CAB8031A894A3B00C5E347 /* MessageDetailViewController.swift in Sources */,
 				7564898E1B7DBE64007EA207 /* LabelAPI.swift in Sources */,
 				7580D65A1C8E440200A15885 /* OnePasswordExtension.m in Sources */,
 				75E652B41B82AC0D0084DDF8 /* LabelsViewController.swift in Sources */,
@@ -1562,7 +1551,6 @@
 				750AAAC71C2490DB00BAC444 /* SignUpEmailViewController.swift in Sources */,
 				07CC3F931A941C7A0005E39F /* MessageQueue.swift in Sources */,
 				75F906101B1FBECA00107509 /* DebugDetailsViewController.swift in Sources */,
-				07CB234C1AAE9FCB00699068 /* FullHeightWebView.swift in Sources */,
 				75B047B31AE708CC005C6D1A /* ComposeEmailViewController.swift in Sources */,
 				07DD68A71A9815DF00ED130C /* NSURLExtension.swift in Sources */,
 				706932AB1A77BE3D00A75A93 /* SearchViewController.swift in Sources */,
