@@ -275,7 +275,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             if (!self.bodyLoaded || forceReload) && self.emailView != nil {
                 if self.message.isDetailDownloaded {  //&& forceReload == false
                     self.bodyLoaded = true
-                    PMLog.D(self.message!.body);
+                    //PMLog.D(self.message!.body);
                     if let body = self.purifiedBody {
                         
                     } else {
@@ -283,7 +283,6 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
                     }
                     
                     if !self.isAutoLoadImage && !self.showedShowImageView && self.purifiedBodyWithoutImage == nil {
-                        println(self.purifiedBody)
                         if let pbody = self.purifiedBody {
                             self.bodyHasImages = pbody.hasImange()
                             if self.bodyHasImages == true {
