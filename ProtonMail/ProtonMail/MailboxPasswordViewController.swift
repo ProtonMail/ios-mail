@@ -193,8 +193,7 @@ class MailboxPasswordViewController: UIViewController {
     
     func decryptPassword() {
         isRemembered = true
-        let password = passwordTextField.text
-        
+        let password = (passwordTextField.text ?? "").trim()
         if sharedUserDataService.isMailboxPasswordValid(password, privateKey: AuthCredential.getPrivateKey()) {
             if sharedUserDataService.isSet {
                 sharedUserDataService.setMailboxPassword(password, isRemembered: self.isRemembered)
