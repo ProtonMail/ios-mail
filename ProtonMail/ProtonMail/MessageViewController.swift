@@ -27,7 +27,9 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     private var bodyLoaded: Bool = false
     
-    private var showShowImageView : Bool = true
+    private var showedShowImageView : Bool = false
+    private var isAutoLoadImage : Bool = false
+    private var needShowShowImageView : Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +40,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             self.navigationController?.popViewControllerAnimated(true)
             return
         }
-        self.showShowImageView = sharedUserDataService.showShowImageView
+        self.isAutoLoadImage = !sharedUserDataService.showShowImageView
         self.setupFetchedResultsController(message.messageID)
         
         self.updateHeader()
@@ -67,8 +69,6 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     func updateContent () {
         self.updateEmailBody ()
-        self.updateHeader()
-        self.emailView?.emailHeader.updateAttConstraints(true)
     }
     
     override func loadView() {
@@ -88,7 +88,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             encType: self.message.encryptType,
             labels : self.message.labels.allObjects as? [Label],
             
-            showShowImages: self.showShowImageView,
+            showShowImages: self.needShowShowImageView,
             expiration: self.message.expirationTime
         )
     }
@@ -262,6 +262,8 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
 
     //
     var purifiedBody :  String? = nil
+    var purifiedBodyWithoutImage :  String? = nil
+    var bodyHasImages : Bool = false
     // MARK : private function
     private func updateEmailBody (force forceReload : Bool = false) {
         if (self.message.hasAttachments) {
@@ -279,12 +281,27 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
                     } else {
                         self.purifiedBody = self.purifyEmailBody(self.message)
                     }
+                    
+                    if !self.isAutoLoadImage && !self.showedShowImageView && self.purifiedBodyWithoutImage == nil {
+                        println(self.purifiedBody)
+                        if let pbody = self.purifiedBody {
+                            self.bodyHasImages = pbody.hasImange()
+                            if self.bodyHasImages == true {
+                                self.purifiedBodyWithoutImage = pbody.stringByPurifyImages()
+                            }
+                        } else {
+                            self.bodyHasImages = false
+                        }
+                        
+                        if self.bodyHasImages {
+                            self.needShowShowImageView = true
+                        }
+                    }
                 }
             }
-            
             if let body = self.purifiedBody {
                 dispatch_async(dispatch_get_main_queue()) {
-                    self.loadEmailBody(self.purifiedBody ?? "")
+                    self.loadEmailBody(self.needShowShowImageView ? (self.purifiedBodyWithoutImage ?? (self.purifiedBody ?? "")) : (self.purifiedBody ?? ""))
                 }
             }
         })
@@ -310,6 +327,9 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     internal func loadEmailBody(body : String) {
         let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=\(EmailView.kDefautWebViewScale)\" content=\"yes\">"
         self.emailView?.updateEmailBody(body, meta: meta)
+        
+        self.updateHeader()
+        self.emailView?.emailHeader.updateAttConstraints(true)
     }
     
     // MARK : private function
@@ -363,7 +383,8 @@ private var tempFileUri : NSURL?
 extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteractionControllerDelegate {
     
     func showImage() {
-        self.showShowImageView = false
+        self.showedShowImageView = true
+        self.needShowShowImageView = false
         self.updateContent();
     }
     
