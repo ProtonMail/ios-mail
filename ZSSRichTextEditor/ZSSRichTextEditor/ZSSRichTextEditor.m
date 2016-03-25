@@ -96,6 +96,7 @@ static Class hackishFixClass = Nil;
 @property (nonatomic, strong) NSMutableArray *customZSSBarButtonItems;
 @property (nonatomic, strong) NSString *internalHTML;
 @property (nonatomic) BOOL editorLoaded;
+@property (nonatomic) CGFloat footerOffset;
 - (NSString *)removeQuotesFromHTML:(NSString *)html;
 - (NSString *)tidyHTML:(NSString *)html;
 - (void)enableToolbarItems:(BOOL)enable;
@@ -604,6 +605,11 @@ static Class hackishFixClass = Nil;
 - (UIWebView *) getWebView {
     
     return self.editorView;
+}
+
+
+- (void) updateFooterOffset: (CGFloat) offset {
+    self.footerOffset = offset;
 }
 
 - (void)dismissKeyboard {
@@ -1225,7 +1231,7 @@ static Class hackishFixClass = Nil;
     
     // Keyboard Size
     //Checks if IOS8, gets correct keyboard height
-    CGFloat keyboardHeight = UIInterfaceOrientationIsLandscape(orientation) ? ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.000000) ? keyboardEnd.size.height : keyboardEnd.size.width : keyboardEnd.size.height;
+    CGFloat keyboardHeight =  UIInterfaceOrientationIsLandscape(orientation) ? ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.000000) ? keyboardEnd.size.height : keyboardEnd.size.width : keyboardEnd.size.height;
     
     // Correct Curve
     UIViewAnimationOptions animationOptions = curve << 16;
@@ -1255,7 +1261,7 @@ static Class hackishFixClass = Nil;
             //self.sourceView.frame = sourceFrame;
             
             // Provide editor with keyboard height and editor view height
-            [self setFooterHeight:(keyboardHeight - 8)];
+            [self setFooterHeight:(keyboardHeight + self.footerOffset - 8)];
             [self setContentHeight: editorFrame.size.height];
             
         } completion:nil];
@@ -1280,7 +1286,8 @@ static Class hackishFixClass = Nil;
             CGRect sourceFrame = self.sourceView.frame;
             sourceFrame.size.height = self.view.frame.size.height;
             //self.sourceView.frame = sourceFrame;
-            
+            [self setFooterHeight:0];
+            [self setContentHeight: editorFrame.size.height];
         } completion:nil];
         
     }//end

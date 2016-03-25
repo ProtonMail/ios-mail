@@ -112,6 +112,8 @@ static NSString * const ZSSRichTextEditorToolbarNone = @"com.zedsaid.toolbaritem
 
 - (UIWebView *) getWebView;
 
+- (void) updateFooterOffset: (CGFloat) offset;
+
 /**
  *  Inserts HTML at the caret position
  *

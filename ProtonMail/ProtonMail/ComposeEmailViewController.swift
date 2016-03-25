@@ -178,6 +178,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
                     continue
                 } else {
                     let h : CGFloat = self.composeViewSize
+                    self.updateFooterOffset(h)
                     sub.frame = CGRect(x: sub.frame.origin.x, y: h, width: sub.frame.width, height: sub.frame.height);
                 }
             }

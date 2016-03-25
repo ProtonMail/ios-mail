@@ -473,7 +473,7 @@ class MessageDataService {
                 
                 roleResponseKey:"Role"
             )
-
+            
             sharedUserDataService.updateUserInfoFromEventLog(userInfo);
         }
     }
@@ -1048,36 +1048,36 @@ class MessageDataService {
     }
     
     func purgeOldMessages() {
-//        if let context = sharedCoreDataService.mainManagedObjectContext {
-//            let cutoffTimeInterval: NSTimeInterval = 3 * 86400 // days converted to seconds
-//            let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
-//            
-//            var error: NSError?
-//            let count = context.countForFetchRequest(fetchRequest, error: &error)
-//            
-//            if error != nil {
-//                NSLog("\(__FUNCTION__) error: \(error)")
-//            } else if count > maximumCachedMessageCount {
-//                 TODO:: disable this need add later
-//                                fetchRequest.predicate = NSPredicate(format: "%K != %@ AND %K < %@", Message.Attributes.locationNumber, MessageLocation.outbox.rawValue, Message.Attributes.time, NSDate(timeIntervalSinceNow: -cutoffTimeInterval))
-//                
-//                                if let oldMessages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
-//                                    for message in oldMessages {
-//                                        context.deleteObject(message)
-//                                    }
-//                
-//                                    NSLog("\(__FUNCTION__) \(oldMessages.count) old messages purged.")
-//                
-//                                    if let error = context.saveUpstreamIfNeeded() {
-//                                        NSLog("\(__FUNCTION__) error: \(error)")
-//                                    }
-//                                } else {
-//                                    NSLog("\(__FUNCTION__) error: \(error)")
-//                                }
-//            } else {
-//                NSLog("\(__FUNCTION__) cached message count: \(count)")
-//            }
-//        }
+        //        if let context = sharedCoreDataService.mainManagedObjectContext {
+        //            let cutoffTimeInterval: NSTimeInterval = 3 * 86400 // days converted to seconds
+        //            let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
+        //
+        //            var error: NSError?
+        //            let count = context.countForFetchRequest(fetchRequest, error: &error)
+        //
+        //            if error != nil {
+        //                NSLog("\(__FUNCTION__) error: \(error)")
+        //            } else if count > maximumCachedMessageCount {
+        //                 TODO:: disable this need add later
+        //                                fetchRequest.predicate = NSPredicate(format: "%K != %@ AND %K < %@", Message.Attributes.locationNumber, MessageLocation.outbox.rawValue, Message.Attributes.time, NSDate(timeIntervalSinceNow: -cutoffTimeInterval))
+        //
+        //                                if let oldMessages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
+        //                                    for message in oldMessages {
+        //                                        context.deleteObject(message)
+        //                                    }
+        //
+        //                                    NSLog("\(__FUNCTION__) \(oldMessages.count) old messages purged.")
+        //
+        //                                    if let error = context.saveUpstreamIfNeeded() {
+        //                                        NSLog("\(__FUNCTION__) error: \(error)")
+        //                                    }
+        //                                } else {
+        //                                    NSLog("\(__FUNCTION__) error: \(error)")
+        //                                }
+        //            } else {
+        //                NSLog("\(__FUNCTION__) cached message count: \(count)")
+        //            }
+        //        }
     }
     
     
@@ -1308,7 +1308,7 @@ class MessageDataService {
                 if let attachment = context.existingObjectWithID(objectID, error: &error) as? Attachment {
                     var params = [
                         "Filename":attachment.fileName,
-                         "MIMEType" : attachment.mimeType,
+                        "MIMEType" : attachment.mimeType,
                     ]
                     
                     var default_address_id = sharedUserDataService.userAddresses.getDefaultAddress()?.address_id ?? ""
@@ -1355,19 +1355,19 @@ class MessageDataService {
     
     private func deleteAttachmentWithAttachmentID (deleteObject: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
         if let context = managedObjectContext {
-
+            
             let api = AttachmentDeleteRequest(body: deleteObject);
             api.call({ (task, response, hasError) -> Void in
                 
-//                if error == nil {
-//                    //if let messageID = response?["AttachmentID"] as? String {
-//                    //attachment.attachmentID = messageID
-//                    //attachment.keyPacket = keyPacket.base64EncodedStringWithOptions(nil)
-//                    //                        if let error = context.saveUpstreamIfNeeded() {
-//                    //                            NSLog("\(__FUNCTION__) error: \(error)")
-//                    //                        }
-//                    //}
-//                }
+                //                if error == nil {
+                //                    //if let messageID = response?["AttachmentID"] as? String {
+                //                    //attachment.attachmentID = messageID
+                //                    //attachment.keyPacket = keyPacket.base64EncodedStringWithOptions(nil)
+                //                    //                        if let error = context.saveUpstreamIfNeeded() {
+                //                    //                            NSLog("\(__FUNCTION__) error: \(error)")
+                //                    //                        }
+                //                    //}
+                //                }
                 completion?(task: task, response: nil, error: nil)
             })
             //sharedAPIService.upload( AppConstants.BaseURLString + AppConstants.BaseAPIPath + "/attachments/upload", parameters: params, keyPackets: keyPacket, dataPacket: dataPacket, completion: completionWrapper)
@@ -1618,7 +1618,7 @@ class MessageDataService {
                     sharedMessageQueue.remove(elementID: elementID)
                     error?.alertToast()
                 }
-    
+                
                 if !isInternetIssue {
                     self.dequeueIfNeeded()
                 }
