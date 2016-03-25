@@ -88,6 +88,10 @@ class UserDataService {
         return userInfo?.usedSpace ?? 0
     }
     
+    var showShowImageView: Bool {
+        return userInfo?.showImages == 0
+    }
+    
     // MARK: - Public variables
     
     var defaultEmail : String {
@@ -272,6 +276,23 @@ class UserDataService {
                 if let userInfo = self.userInfo {
                     let userInfo = UserInfo(displayName: new_displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
                         autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
+                        
+                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role
+                    )
+                    self.userInfo = userInfo
+                }
+            }
+            completion?(self.userInfo, nil)
+        }
+    }
+    
+    func updateAutoLoadImage(status : Int, completion: UserInfoBlock?) {
+        let api = UpdateShowImagesRequest(status: status)
+        api.call() { task, response, hasError in
+            if !hasError {
+                if let userInfo = self.userInfo {
+                    let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
+                        autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:status,
                         
                         swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role
                     )

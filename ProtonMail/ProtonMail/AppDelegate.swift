@@ -122,7 +122,6 @@ extension AppDelegate: UIApplicationDelegate {
         //net work debug option
         AFNetworkActivityLogger.sharedLogger().startLogging()
         AFNetworkActivityLogger.sharedLogger().level = AFHTTPRequestLoggerLevel.AFLoggerLevelDebug
-        AFNetworkActivityLogger.sharedLogger().stopLogging()
         
         setupWindow()
         sharedMessageDataService.launchCleanUpIfNeeded()

@@ -40,9 +40,6 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     // Message content
     var contentWebView: UIWebView!
     
-    // Message attachment view
-    var attachmentView : EmailAttachmentView?
-    
     // Message bottom actions view
     var bottomActionView : MessageDetailBottomView!
     
@@ -83,8 +80,8 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     }
 
     // MARK : config values 
-    func updateHeaderData (title : String, sender : ContactVO, to:[ContactVO]?, cc : [ContactVO]?, bcc: [ContactVO]?, isStarred:Bool, time : NSDate?, encType: EncryptTypes, labels : [Label]?) {
-        emailHeader.updateHeaderData(title, sender:sender, to: to, cc: cc, bcc: bcc, isStarred: isStarred, time: time, encType: encType, labels : labels)
+    func updateHeaderData (title : String, sender : ContactVO, to:[ContactVO]?, cc : [ContactVO]?, bcc: [ContactVO]?, isStarred:Bool, time : NSDate?, encType: EncryptTypes, labels : [Label]?, showShowImages: Bool, expiration : NSDate?) {
+        emailHeader.updateHeaderData(title, sender:sender, to: to, cc: cc, bcc: bcc, isStarred: isStarred, time: time, encType: encType, labels : labels, showShowImages: showShowImages, expiration : expiration)
     }
     
     func updateEmailBody (body : String, meta : String) {
@@ -126,17 +123,6 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         self.addSubview(bottomActionView)
     }
     
-    private func setupAttachmentView() {
-        
-        self.attachmentView = EmailAttachmentView()
-        self.attachmentView!.backgroundColor = UIColor.redColor()
-        //self.attachmentView.delegate = self
-        self.contentWebView.scrollView.addSubview(self.attachmentView!)
-        self.attachmentView!.hidden = true;
-        let w = UIScreen.mainScreen().applicationFrame.width;
-        self.attachmentView!.frame = CGRect(x: 0, y: 0, width: w, height: 100)
-    }
-    
     private func setupHeaderView () {
         self.emailHeader = EmailHeaderView()
         self.emailHeader.backgroundColor = UIColor.whiteColor()
@@ -174,12 +160,6 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
                     continue
                 } else if subview is UIImageView {
                     continue
-                } else if sub == self.attachmentView {
-                    let y = self.attY
-                    sub.frame = CGRect(x: sub.frame.origin.x, y:y, width: sub.frame.width, height: 100);
-                    var size = self.contentWebView.scrollView.contentSize;
-                    size.height = self.attY + 100;
-                    self.contentWebView.scrollView.contentSize = size
                 } else {
                     self.subWebview = sub
                     // new
@@ -218,8 +198,6 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
             webView.stringByEvaluatingJavaScriptFromString("document.body.style.zoom = \(zoom);")
         }
         
-        self.attachmentView?.hidden = false
-        
         self.updateContentLayout(false)
 
 //        UIView.animateWithDuration(0.3, animations: { () -> Void in
@@ -253,4 +231,3 @@ extension EmailView : EmailHeaderViewProtocol {
         
     }
 }
-

@@ -252,6 +252,51 @@ extension String {
         return self
     }
     
+    func preg_match (partten: String) -> Bool {
+        var options = NSRegularExpressionOptions.allZeros
+        options |= NSRegularExpressionOptions.CaseInsensitive
+        options |= NSRegularExpressionOptions.DotMatchesLineSeparators
+        var error:NSError?
+        if let regex = NSRegularExpression(pattern: partten, options:options, error:&error) {
+            if error == nil {
+                return regex.firstMatchInString(self, options: nil, range: NSRange(location: 0, length: count(self))) != nil
+            }
+        }
+        return false
+    }
+    
+    func hasImange () -> Bool {
+        if self.preg_match("\\ssrc='") {
+            return true
+        }
+        if self.preg_match("\\ssrc=\"") {
+            return true
+        }
+        if self.preg_match("xlink:href=") {
+            return true
+        }
+        if self.preg_match("poster=") {
+            return true
+        }
+        if self.preg_match("background=") {
+            return true
+        }
+        if self.preg_match("url\\(") {
+            return true
+        }
+        return false
+    }
+    
+    func stringByPurifyImages () -> String {
+        var out = self.preg_replace("\\ssrc='", replaceto: " data-src='")
+        out = out.preg_replace("\\ssrc=\"", replaceto: " data-src=\"")
+        out = out.preg_replace("xlink:href=", replaceto: " data-xlink:href=");
+        out = out.preg_replace("poster=", replaceto: " data-poster=")
+        out = out.preg_replace("background=", replaceto: " data-background=")
+        out = out.preg_replace("url\\(", replaceto: " data-url(")
+        return out
+    }
+    
     func stringByPurifyHTML() -> String {
         var out = self.preg_replace("<script(.*?)<\\/script>", replaceto: "")
         //out = out.preg_replace("<(script.*?)>(.*?)<(\\/script.*?)>", replaceto: "")

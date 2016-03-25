@@ -179,7 +179,6 @@ class SignInViewController: UIViewController {
                 self.signIn()
             }
         })
-        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -367,8 +366,8 @@ class SignInViewController: UIViewController {
         }
         SignInViewController.isComeBackFromMailbox = false
         
-        var username = (usernameTextField.text ?? "").trim();
-        var password = (passwordTextField.text ?? "").trim();
+        var username = (usernameTextField.text ?? "").trim()
+        var password = (passwordTextField.text ?? "").trim()
         
         
         //        let fadeOutTime = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 1.0))

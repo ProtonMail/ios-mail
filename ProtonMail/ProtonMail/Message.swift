@@ -60,6 +60,7 @@ public class Message: NSManagedObject {
     
     @NSManaged var messageType : NSNumber
     
+    @NSManaged var isShowedImages : Bool
     
     @NSManaged var attachments: NSSet
     @NSManaged var labels: NSSet

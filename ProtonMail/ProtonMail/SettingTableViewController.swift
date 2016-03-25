@@ -10,12 +10,12 @@ import UIKit
 
 class SettingTableViewController: ProtonMailViewController {
     
-    var setting_headers = [SettingSections.General, SettingSections.MultiDomain, SettingSections.SwipeAction, SettingSections.Storage, SettingSections.Version] //SettingSections.Debug,
-    var setting_general_items = [SGItems.NotifyEmail, SGItems.DisplayName, SGItems.Signature, SGItems.LoginPWD, SGItems.MBP, SGItems.CleanCache, SGItems.DefaultMobilSign, SGItems.EnableTouchID]  //
-    var setting_debug_items = [SDebugItem.Queue, SDebugItem.ErrorLogs, SDebugItem.CleanCache]
+    var setting_headers : [SettingSections] = [.General, .MultiDomain, .SwipeAction, .Storage, .Version] //SettingSections.Debug,
+    var setting_general_items : [SGItems] = [.NotifyEmail, .DisplayName, .Signature, .LoginPWD, .MBP, .CleanCache, .DefaultMobilSign, .EnableTouchID, .AutoLoadImage]
+    var setting_debug_items : [SDebugItem] = [.Queue, .ErrorLogs, .CleanCache]
     
-    var setting_swipe_action_items = [SSwipeActionItems.left, SSwipeActionItems.right]
-    var setting_swipe_actions = [MessageSwipeAction.trash, MessageSwipeAction.spam, MessageSwipeAction.star, MessageSwipeAction.archive]
+    var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
+    var setting_swipe_actions : [MessageSwipeAction] = [.trash, .spam, .star, .archive]
     
     var multi_domains: Array<Address>!
     var userInfo = sharedUserDataService.userInfo
@@ -32,7 +32,8 @@ class SettingTableViewController: ProtonMailViewController {
     
     
     /// cells
-    let SettingGeneralCell = "settings_twolines"
+    let SettingSingalLineCell = "settings_general"
+    let SettingTwoLinesCell = "settings_twolines"
     let SettingDomainsCell = "setting_domains"
     let SettingStorageCell = "setting_storage_cell"
     let HeaderCell = "header_cell"
@@ -131,62 +132,90 @@ class SettingTableViewController: ProtonMailViewController {
                 if setting_general_items.count > indexPath.row {
                     let itme: SGItems = setting_general_items[indexPath.row];
                     switch itme {
-                    case SGItems.NotifyEmail:
-                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! SettingsCell
+                    case .NotifyEmail:
+                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingTwoLinesCell, forIndexPath: indexPath) as! SettingsCell
                         cell.LeftText.text = itme.description;
                         cell.RightText.text = userInfo?.notificationEmail
                         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                         cellout = cell;
                         break;
-                    case SGItems.DisplayName:
-                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! SettingsCell
+                    case .DisplayName:
+                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingTwoLinesCell, forIndexPath: indexPath) as! SettingsCell
                         cell.LeftText.text = itme.description;
                         cell.RightText.text = sharedUserDataService.displayName
                         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                         cellout = cell;
                         break;
-                    case SGItems.Signature:
-                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! SettingsCell
+                    case .Signature:
+                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingTwoLinesCell, forIndexPath: indexPath) as! SettingsCell
                         cell.LeftText.text = itme.description;
                         cell.RightText.text = userInfo?.signature;
                         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                         cellout = cell;
                         break;
-                    case SGItems.LoginPWD:
-                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! SettingsCell
+                    case .LoginPWD:
+                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingTwoLinesCell, forIndexPath: indexPath) as! SettingsCell
                         cell.LeftText.text = itme.description;
                         cell.RightText.text = "**********"
                         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                         cellout = cell;
                         break;
-                    case SGItems.MBP:
-                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! SettingsCell
+                    case .MBP:
+                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingTwoLinesCell, forIndexPath: indexPath) as! SettingsCell
                         cell.LeftText.text = itme.description;
                         cell.RightText.text = "**********"
                         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                         cellout = cell;
                         break;
-                    case SGItems.CleanCache:
-                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! SettingsCell
-                        cell.LeftText.text = itme.description;
-                        cell.RightText.text = ""
+                    case .CleanCache:
+                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingSingalLineCell, forIndexPath: indexPath) as! GeneralSettingViewCell
+                        cell.configCell(itme.description, right: "")
                         cell.accessoryType = UITableViewCellAccessoryType.None
-                        cellout = cell;
-                        break;
-                    case SGItems.DefaultMobilSign:
-                        let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
+                        cellout = cell
+                        break
+                    case .DefaultMobilSign:
+                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingSingalLineCell, forIndexPath: indexPath) as! GeneralSettingViewCell
+                        cell.configCell(itme.description, right: "")
                         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                         cellout = cell
                         break
-                    case SGItems.EnableTouchID:
+                    case .EnableTouchID:
                         let cell = tableView.dequeueReusableCellWithIdentifier(kTouchIDCell, forIndexPath: indexPath) as! TouchIDCell
                         cell.accessoryType = UITableViewCellAccessoryType.None
                         cell.selectionStyle = UITableViewCellSelectionStyle.None
                         cell.setUpSwitch(userCachedStatus.isTouchIDEnabled)
                         cellout = cell
                         break
-                    case SGItems.AutoLogout:
+                    case .AutoLogout:
                         break
+                    case .AutoLoadImage:
+                        let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
+                        cell.accessoryType = UITableViewCellAccessoryType.None
+                        cell.selectionStyle = UITableViewCellSelectionStyle.None
+                        cell.configCell(itme.description, bottomLine: "", status: !sharedUserDataService.showShowImageView, complete: { (cell, newStatus, feedback) -> Void in
+                            if let indexp = tableView.indexPathForCell(cell) {
+                                if indexPath == indexp {
+                                    let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
+                                    ActivityIndicatorHelper.showActivityIndicatorAtView(window)
+                                    sharedUserDataService.updateAutoLoadImage(newStatus == true ? 1 : 0) { _, error in
+                                        ActivityIndicatorHelper.hideActivityIndicatorAtView(window)
+                                        if let error = error {
+                                            feedback(isOK: false)
+                                            let alertController = error.alertController()
+                                            alertController.addOKAction()
+                                            self.presentViewController(alertController, animated: true, completion: nil)
+                                        } else {
+                                            feedback(isOK: true)
+                                        }
+                                    }
+                                } else {
+                                    feedback(isOK: false)
+                                }
+                            } else {
+                                feedback(isOK: false)
+                            }
+                        })
+                        cellout = cell
                     }
                 }
                 return cellout
@@ -221,7 +250,7 @@ class SettingTableViewController: ProtonMailViewController {
                 return cell
             }
             else if setting_headers[indexPath.section] == .Debug {
-                let cell = tableView.dequeueReusableCellWithIdentifier(SettingGeneralCell, forIndexPath: indexPath) as! GeneralSettingViewCell
+                let cell = tableView.dequeueReusableCellWithIdentifier(SettingTwoLinesCell, forIndexPath: indexPath) as! GeneralSettingViewCell
                 if indexPath.row < setting_debug_items.count {
                     let itme: SDebugItem = setting_debug_items[indexPath.row]
                     cell.LeftText.text = itme.description
@@ -331,8 +360,6 @@ class SettingTableViewController: ProtonMailViewController {
                     var  hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
                     hud.labelText = "Reseting message cache ..."
                     hud.removeFromSuperViewOnHide = true
-                    //                hud.margin = 10
-                    //                hud.yOffset = 150
                     sharedMessageDataService.cleanLocalMessageCache() { task, res, error in
                         hud.mode = MBProgressHUDMode.Text
                         hud.labelText = "Done"
@@ -343,12 +370,15 @@ class SettingTableViewController: ProtonMailViewController {
                 break;
             }
         } else if setting_headers[indexPath.section] == SettingSections.MultiDomain {
+            
+            var needsShow : Bool = false
             let alertController = UIAlertController(title: NSLocalizedString("Change default address to .."), message: nil, preferredStyle: .ActionSheet)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
             var defaultAddress : Address? = multi_domains.getDefaultAddress()
             for (var addr) in multi_domains {
                 if addr.status == 1 && addr.receive == 1 {
                     if defaultAddress != addr {
+                        needsShow = true
                         alertController.addAction(UIAlertAction(title: addr.email, style: .Default, handler: { (action) -> Void in
                             self.navigationController?.popViewControllerAnimated(true)
                             
@@ -365,10 +395,11 @@ class SettingTableViewController: ProtonMailViewController {
                                     oldAddr.send = order++
                                 }
                             }
-                            ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
+                            let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
+                            ActivityIndicatorHelper.showActivityIndicatorAtView(window)
                             sharedUserDataService.updateUserDomiansOrder(newAddrs,  newOrder:newOrder) { _, _, error in
                                 tableView.reloadData();
-                                ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                                ActivityIndicatorHelper.hideActivityIndicatorAtView(window)
                                 if let error = error {
                                 } else {
                                     self.multi_domains = newAddrs
@@ -379,12 +410,12 @@ class SettingTableViewController: ProtonMailViewController {
                     }
                 }
             }
-            
-            let cell = tableView.cellForRowAtIndexPath(indexPath)
-            alertController.popoverPresentationController?.sourceView = cell ?? self.view
-            alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
-            presentViewController(alertController, animated: true, completion: nil)
-            
+            if needsShow {
+                let cell = tableView.cellForRowAtIndexPath(indexPath)
+                alertController.popoverPresentationController?.sourceView = cell ?? self.view
+                alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
+                presentViewController(alertController, animated: true, completion: nil)
+            }
         }  else if setting_headers[indexPath.section] == SettingSections.SwipeAction {
             
             if indexPath.row < setting_swipe_action_items.count {
@@ -400,10 +431,11 @@ class SettingTableViewController: ProtonMailViewController {
                         alertController.addAction(UIAlertAction(title: swipeAction.description, style: .Default, handler: { (action) -> Void in
                             self.navigationController?.popViewControllerAnimated(true)
                             
-                            ActivityIndicatorHelper.showActivityIndicatorAtView(self.view)
+                            let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
+                            ActivityIndicatorHelper.showActivityIndicatorAtView(window)
                             sharedUserDataService.updateUserSwipeAction(actionItem == .left, action: swipeAction, completion: { (task, response, error) -> Void in
                                 tableView.reloadData()
-                                ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                                ActivityIndicatorHelper.hideActivityIndicatorAtView(window)
                                 if let error = error {
                                 } else {
                                     tableView.reloadData()
@@ -494,6 +526,7 @@ extension SettingTableViewController {
         case DefaultMobilSign = 6
         case EnableTouchID = 7
         case AutoLogout = 8
+        case AutoLoadImage = 9
         
         var description : String {
             switch(self){
@@ -510,11 +543,13 @@ extension SettingTableViewController {
             case .CleanCache:
                 return NSLocalizedString("Clear Local Message Cache")
             case .DefaultMobilSign:
-                return NSLocalizedString("Default mobile signature")
+                return NSLocalizedString("Mobile Signature")
             case .EnableTouchID:
                 return NSLocalizedString("Enable TouchID")
             case .AutoLogout:
                 return NSLocalizedString("Auto Logout")
+            case .AutoLoadImage:
+                return NSLocalizedString("Auto Show Images")
             }
         }
     }

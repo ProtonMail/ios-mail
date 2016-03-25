@@ -43,7 +43,7 @@ public enum Onboarding: Int, Printable {
         get {
             switch(self) {
             case welcome:
-                return NSLocalizedString("Your new encrypted email account has been set up and is ready to send and recieve encrypted messages.")
+                return NSLocalizedString("Your new encrypted email account has been set up and is ready to send and receive encrypted messages.")
             case swipe:
                 return NSLocalizedString("You can customize swipe gestures in the ProtonMail App Settings.")
             case label:

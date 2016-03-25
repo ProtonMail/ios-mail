@@ -72,6 +72,8 @@ public struct SettingsAPI {
     
     static let V_SettingsUpdateNewsRequest : Int = 1
     static let V_SettingsUpdateDisplayNameRequest : Int = 1
+    
+    static let V_SettingsUpdateShowImagesRequest : Int = 1
 }
 
 

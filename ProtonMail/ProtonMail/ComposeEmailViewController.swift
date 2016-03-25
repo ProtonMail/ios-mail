@@ -40,6 +40,8 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     private let kNumberOfDaysInTimePicker: Int = 30
     private let kNumberOfHoursInTimePicker: Int = 24
     
+    private let kPasswordSegue : String = "to_eo_password_segue"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -160,6 +162,22 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         super.didReceiveMemoryWarning()
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == kPasswordSegue {
+            let popup = segue.destinationViewController as! ComposePasswordViewController
+            //popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
+        }
+    }
+    
+    internal func setPresentationStyleForSelfController(selfController : UIViewController,  presentingController: UIViewController)
+    {
+        presentingController.providesPresentationContextTransitionStyle = true;
+        presentingController.definesPresentationContext = true;
+        presentingController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+    }
+
+    
     override func editorDidScrollWithPosition(position: Int) {
         super.editorDidScrollWithPosition(position)
         
@@ -178,6 +196,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
                     continue
                 } else {
                     let h : CGFloat = self.composeViewSize
+                    self.updateFooterOffset(h)
                     sub.frame = CGRect(x: sub.frame.origin.x, y: h, width: sub.frame.width, height: sub.frame.height);
                 }
             }
@@ -316,21 +335,25 @@ extension ComposeEmailViewController : ComposeViewDelegate {
             alertController.addOKAction()
             self.presentViewController(alertController, animated: true, completion: nil)
         } else {
+            var needsShow : Bool = false
             let alertController = UIAlertController(title: NSLocalizedString("Change sender address to .."), message: nil, preferredStyle: .ActionSheet)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
             let multi_domains = self.viewModel.getAddresses()
             let defaultAddr = self.viewModel.getDefaultAddress()
             for (var addr) in multi_domains {
                 if addr.status == 1 && addr.receive == 1 && defaultAddr != addr {
+                    needsShow = true
                     alertController.addAction(UIAlertAction(title: addr.email, style: .Default, handler: { (action) -> Void in
                         self.viewModel.updateAddressID(addr.address_id)
                         self.composeView.updateFromValue(addr.email, pickerEnabled: true)
                     }))
                 }
             }
-            alertController.popoverPresentationController?.sourceView = self.composeView.fromView
-            alertController.popoverPresentationController?.sourceRect = self.composeView.fromView.frame
-            presentViewController(alertController, animated: true, completion: nil)
+            if needsShow {
+                alertController.popoverPresentationController?.sourceView = self.composeView.fromView
+                alertController.popoverPresentationController?.sourceRect = self.composeView.fromView.frame
+                presentViewController(alertController, animated: true, completion: nil)
+            }
         }
     }
     
@@ -383,9 +406,10 @@ extension ComposeEmailViewController : ComposeViewDelegate {
     }
     
     func composeViewDidTapEncryptedButton(composeView: ComposeView) {
-        self.actualEncryptionStep = EncryptionStep.DefinePassword
-        self.composeView.showDefinePasswordView()
-        self.composeView.hidePasswordAndConfirmDoesntMatch()
+        self.performSegueWithIdentifier(kPasswordSegue, sender: self)
+//        self.actualEncryptionStep = EncryptionStep.DefinePassword
+//        self.composeView.showDefinePasswordView()
+//        self.composeView.hidePasswordAndConfirmDoesntMatch()
     }
     
     func composeViewDidTapAttachmentButton(composeView: ComposeView) {

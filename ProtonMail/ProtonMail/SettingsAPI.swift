@@ -149,6 +149,32 @@ public class UpdateDisplayNameRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
+//MARK : update display name
+public class UpdateShowImagesRequest<T : ApiResponse> : ApiRequest<T> {
+    let status : Int!
+    
+    init(status: Int) {
+        self.status = status
+    }
+    
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+        var out : [String : AnyObject] = ["ShowImages" : status]
+        return out
+    }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .PUT
+    }
+    
+    override public func getRequestPath() -> String {
+        return SettingsAPI.Path + "/showimages" + AppConstants.getDebugOption
+    }
+    
+    override public func getVersion() -> Int {
+        return SettingsAPI.V_SettingsUpdateShowImagesRequest
+    }
+}
+
 // MARK : update left swipe action
 public class UpdateSwiftLeftAction<T : ApiResponse> : ApiRequest<T> {
     let newAction : MessageSwipeAction!

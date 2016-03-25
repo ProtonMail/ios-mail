@@ -219,12 +219,12 @@ class ComposeView: UIViewController {
     
     @IBAction func encryptedButtonTapped(sender: UIButton) {
         self.delegate?.composeViewDidTapEncryptedButton(self)
-        self.encryptedPasswordTextField.becomeFirstResponder()
-        UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
-            self.encryptedButton.setImage(UIImage(named: "compose_lock"), forState: UIControlState.Normal)
-            self.passwordView.alpha = 1.0
-            self.buttonView.alpha = 0.0
-        })
+//        self.encryptedPasswordTextField.becomeFirstResponder()
+//        UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
+//            self.encryptedButton.setImage(UIImage(named: "compose_lock"), forState: UIControlState.Normal)
+//            self.passwordView.alpha = 1.0
+//            self.buttonView.alpha = 0.0
+//        })
     }
     
     @IBAction func didTapExpirationDismissButton(sender: UIButton) {

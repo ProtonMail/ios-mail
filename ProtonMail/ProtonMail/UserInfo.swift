@@ -32,7 +32,7 @@ final class UserInfo: NSObject {
     let language : String
     let maxUpload: Int64
     let notify: Int
-    let showImages : Int
+    let showImages : Int  //1 is auto 0 is manual
     
     // new valuse v1.1.4
     let swipeLeft : Int

@@ -23,7 +23,6 @@ extension APIService {
         static let base = AppConstants.BaseAPIPath + "/settings"
     }
 
-    
     func settingUpdatePassword(oldPassword: String, newPassword: String, completion: CompletionBlock) {
         let path = SettingPath.base.stringByAppendingPathComponent("password")
         let parameters = [

@@ -46,7 +46,6 @@ extension APIService {
         // 21 : ios enterprice production
         // 23 : ios enterprice simulator
         
-        
 //        #if DEBUG
 //            let env = 20
 //            #else
