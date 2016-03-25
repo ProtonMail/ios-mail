@@ -40,6 +40,8 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     private let kNumberOfDaysInTimePicker: Int = 30
     private let kNumberOfHoursInTimePicker: Int = 24
     
+    private let kPasswordSegue : String = "to_eo_password_segue"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -159,6 +161,22 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == kPasswordSegue {
+            let popup = segue.destinationViewController as! ComposePasswordViewController
+            //popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
+        }
+    }
+    
+    internal func setPresentationStyleForSelfController(selfController : UIViewController,  presentingController: UIViewController)
+    {
+        presentingController.providesPresentationContextTransitionStyle = true;
+        presentingController.definesPresentationContext = true;
+        presentingController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+    }
+
     
     override func editorDidScrollWithPosition(position: Int) {
         super.editorDidScrollWithPosition(position)
@@ -388,9 +406,10 @@ extension ComposeEmailViewController : ComposeViewDelegate {
     }
     
     func composeViewDidTapEncryptedButton(composeView: ComposeView) {
-        self.actualEncryptionStep = EncryptionStep.DefinePassword
-        self.composeView.showDefinePasswordView()
-        self.composeView.hidePasswordAndConfirmDoesntMatch()
+        self.performSegueWithIdentifier(kPasswordSegue, sender: self)
+//        self.actualEncryptionStep = EncryptionStep.DefinePassword
+//        self.composeView.showDefinePasswordView()
+//        self.composeView.hidePasswordAndConfirmDoesntMatch()
     }
     
     func composeViewDidTapAttachmentButton(composeView: ComposeView) {
