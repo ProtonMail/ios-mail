@@ -116,7 +116,8 @@ public class GetUserInfoResponse : ApiResponse {
             showImagesResponseKey : "ShowImages",
             swipeLeftResponseKey : "SwipeLeft",
             swipeRightResponseKey : "SwipeRight",
-            roleResponseKey : "Role"
+            roleResponseKey : "Role",
+            delinquentResponseKey : "Delinquent"
         )
         return true
     }

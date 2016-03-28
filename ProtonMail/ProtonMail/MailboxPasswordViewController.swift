@@ -207,20 +207,29 @@ class MailboxPasswordViewController: UIViewController {
                     if error != nil {
                         let alertController = error!.alertController()
                         alertController.addOKAction()
+                        self.presentViewController(alertController, animated: true, completion: nil)
                         if error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
                             self.navigationController?.popViewControllerAnimated(true)
                         }
                     } else if info != nil {
-                        sharedUserDataService.setMailboxPassword(password, isRemembered: self.isRemembered)
-                        self.loadContent()
+                        if info!.delinquent < 3 {
+                            sharedUserDataService.setMailboxPassword(password, isRemembered: self.isRemembered)
+                            self.loadContent()
+                            NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)
+                        } else {
+                            let alertController = "Access to this account is disabled due to non-payment. Please visit our knowledge base for more information.".alertController() //here needs change to a clickable link
+                            alertController.addAction(UIAlertAction.okAction(handler: { (action) -> Void in
+                                self.navigationController?.popViewControllerAnimated(true)
+                            }))
+                            self.presentViewController(alertController, animated: true, completion: nil)
+                        }
                     } else {
                         let alertController = NSError.unknowError().alertController()
                         alertController.addOKAction()
+                        self.presentViewController(alertController, animated: true, completion: nil)
                     }
                 }
             }
-            
-            NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)
             
         } else {
             let alert = UIAlertController(title: NSLocalizedString("Incorrect password"), message: NSLocalizedString("The mailbox password is incorrect."), preferredStyle: .Alert)

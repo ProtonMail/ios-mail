@@ -294,7 +294,7 @@ class UserDataService {
                     let userInfo = UserInfo(displayName: new_displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
                         autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
                         
-                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role
+                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role, delinquent : userInfo.delinquent
                     )
                     self.userInfo = userInfo
                 }
@@ -311,7 +311,7 @@ class UserDataService {
                     let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
                         autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:status,
                         
-                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role
+                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role , delinquent : userInfo.delinquent
                     )
                     self.userInfo = userInfo
                 }
@@ -334,7 +334,7 @@ class UserDataService {
                                 
                                 autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
                                 
-                                swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role
+                                swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role, delinquent : userInfo.delinquent
                             )
                             
                             self.userInfo = userInfo
@@ -382,7 +382,7 @@ class UserDataService {
                     let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:email_domains,
                         autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
                         
-                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role
+                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role, delinquent : userInfo.delinquent
                     )
                     self.userInfo = userInfo
                 }
@@ -399,7 +399,7 @@ class UserDataService {
                     let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
                         autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
                         
-                        swipeL: isLeft ? action.rawValue : userInfo.swipeLeft, swipeR: isLeft ? userInfo.swipeRight : action.rawValue, role : userInfo.role
+                        swipeL: isLeft ? action.rawValue : userInfo.swipeLeft, swipeR: isLeft ? userInfo.swipeRight : action.rawValue, role : userInfo.role, delinquent : userInfo.delinquent
                     )
                     self.userInfo = userInfo
                 }
@@ -416,7 +416,7 @@ class UserDataService {
                     let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: newNotificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
                         autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
                         
-                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role
+                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role, delinquent : userInfo.delinquent
                     )
                     self.userInfo = userInfo
                 }
@@ -434,7 +434,7 @@ class UserDataService {
                         let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
                             autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:(isOn ? 1 : 0), showImage:userInfo.showImages,
                             
-                            swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role
+                            swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role, delinquent : userInfo.delinquent
                         )
                         self.userInfo = userInfo
                     }
