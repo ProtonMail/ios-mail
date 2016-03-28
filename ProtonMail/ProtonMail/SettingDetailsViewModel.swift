@@ -156,15 +156,15 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     }
     
     func isDisplaySwitch() -> Bool {
-        return false
+        return true
     }
     
     func getSwitchText() -> String {
-        return ""
+        return "Enable Default Signature"
     }
     
     func getSwitchStatus() -> Bool {
-        return true
+        return sharedUserDataService.showDefaultSignature
     }
 
     func isShowTextView() -> Bool {
@@ -190,6 +190,7 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     }
     
     func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void) {
+        sharedUserDataService.showDefaultSignature = isOn
         complete(true, nil)
     }
     

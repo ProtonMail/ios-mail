@@ -11,7 +11,7 @@ import UIKit
 class SettingTableViewController: ProtonMailViewController {
     
     var setting_headers : [SettingSections] = [.General, .MultiDomain, .SwipeAction, .Storage, .Version] //SettingSections.Debug,
-    var setting_general_items : [SGItems] = [.NotifyEmail, .DisplayName, .Signature, .LoginPWD, .MBP, .CleanCache, .DefaultMobilSign, .EnableTouchID, .AutoLoadImage]
+    var setting_general_items : [SGItems] = [.NotifyEmail, .DisplayName, .LoginPWD, .MBP, .CleanCache, .Signature, .DefaultMobilSign, .EnableTouchID, .AutoLoadImage]
     var setting_debug_items : [SDebugItem] = [.Queue, .ErrorLogs, .CleanCache]
     
     var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
@@ -146,13 +146,6 @@ class SettingTableViewController: ProtonMailViewController {
                         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                         cellout = cell;
                         break;
-                    case .Signature:
-                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingTwoLinesCell, forIndexPath: indexPath) as! SettingsCell
-                        cell.LeftText.text = itme.description;
-                        cell.RightText.text = userInfo?.signature;
-                        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-                        cellout = cell;
-                        break;
                     case .LoginPWD:
                         let cell = tableView.dequeueReusableCellWithIdentifier(SettingTwoLinesCell, forIndexPath: indexPath) as! SettingsCell
                         cell.LeftText.text = itme.description;
@@ -173,6 +166,12 @@ class SettingTableViewController: ProtonMailViewController {
                         cell.accessoryType = UITableViewCellAccessoryType.None
                         cellout = cell
                         break
+                    case .Signature:
+                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingSingalLineCell, forIndexPath: indexPath) as! GeneralSettingViewCell
+                        cell.configCell(itme.description, right: "")
+                        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                        cellout = cell
+                        break;
                     case .DefaultMobilSign:
                         let cell = tableView.dequeueReusableCellWithIdentifier(SettingSingalLineCell, forIndexPath: indexPath) as! GeneralSettingViewCell
                         cell.configCell(itme.description, right: "")

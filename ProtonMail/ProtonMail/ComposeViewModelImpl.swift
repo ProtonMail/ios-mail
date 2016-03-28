@@ -227,7 +227,9 @@ public class ComposeViewModelImpl : ComposeViewModel {
         
         let mobileSignature = sharedUserDataService.showMobileSignature ? "<br><br> \(sharedUserDataService.mobileSignature)" : ""
         
-        let htmlString = "<div><br></div><div><br></div>\(signature) \(mobileSignature)<div><br></div>";
+        let defaultSignature = sharedUserDataService.showDefaultSignature ? signature : ""
+        
+        let htmlString = "<div><br></div><div><br></div>\(defaultSignature) \(mobileSignature)<div><br></div>";
         switch messageAction!
         {
         case .OpenDraft:
@@ -265,7 +267,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
             body = body.stringByPurifyHTML()
             
             let sp = "<div>\(forwardHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
-            return "<br><br><br>\(signature) \(mobileSignature) \(sp) \(body)"
+            return "<br><br><br>\(defaultSignature) \(mobileSignature) \(sp) \(body)"
         case .NewDraft:
             return htmlString
         default:

@@ -33,6 +33,7 @@ class UserDataService {
         static let userInfo = "userInfoKey"
         
         static let roleSwitchCache = "roleSwitchCache"
+        static let defaultSignatureStatus = "defaultSignatureStatus"
     }
     
     // MARK: - Private variables
@@ -54,6 +55,22 @@ class UserDataService {
         didSet {
             NSUserDefaults.standardUserDefaults().setValue(switchCacheOff, forKey: Key.roleSwitchCache)
             NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
+    private var defaultSignatureStauts: Bool = NSUserDefaults.standardUserDefaults().boolForKey(Key.defaultSignatureStatus) {
+        didSet {
+            NSUserDefaults.standardUserDefaults().setValue(defaultSignatureStauts, forKey: Key.defaultSignatureStatus)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
+    var showDefaultSignature : Bool {
+        get {
+            return defaultSignatureStauts
+        }
+        set {
+            defaultSignatureStauts = newValue
         }
     }
     
