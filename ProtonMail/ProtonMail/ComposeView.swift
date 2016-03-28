@@ -377,6 +377,11 @@ class ComposeView: UIViewController {
         self.encryptedButton.setImage(UIImage(named: "compose_lock-active"), forState: UIControlState.Normal)
     }
     
+    internal func showEncryptionRemoved() {
+        didTapEncryptedDismissButton(encryptedButton)
+        self.encryptedButton.setImage(UIImage(named: "compose_lock"), forState: UIControlState.Normal)
+    }
+    
     internal func showExpirationPicker() {
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.delegate?.composeViewDidTapExpirationButton(self)

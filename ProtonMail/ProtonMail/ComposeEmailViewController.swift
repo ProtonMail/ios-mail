@@ -165,6 +165,8 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == kPasswordSegue {
             let popup = segue.destinationViewController as! ComposePasswordViewController
+            popup.pwdDelegate = self
+            popup.setupPasswords(self.encryptionPassword, confirmPassword: self.encryptionConfirmPassword, hint: self.encryptionPasswordHint)
             //popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
             self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
@@ -324,6 +326,31 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         } else {
             self.composeView.updateAttachmentButton(false)
         }
+    }
+}
+
+extension ComposeEmailViewController : ComposePasswordViewControllerDelegate {
+    
+    func Cancelled() {
+        
+    }
+    
+    func Apply(password: String, confirmPassword: String, hint: String) {
+        
+        self.encryptionPassword = password
+        self.encryptionConfirmPassword = confirmPassword
+        self.encryptionPasswordHint = hint
+        self.composeView.showEncryptionDone()
+    }
+    
+    func Removed() {
+        self.encryptionPassword = ""
+        self.encryptionConfirmPassword = ""
+        self.encryptionPasswordHint = ""
+        
+        
+        
+        self.composeView.showEncryptionRemoved()
     }
 }
 

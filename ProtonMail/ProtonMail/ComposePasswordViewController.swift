@@ -8,6 +8,11 @@
 
 import Foundation
 
+protocol ComposePasswordViewControllerDelegate {
+    func Cancelled()
+    func Removed()
+    func Apply(password : String, confirmPassword :String, hint : String)
+}
 
 class ComposePasswordViewController: UIViewController {
 
@@ -22,9 +27,14 @@ class ComposePasswordViewController: UIViewController {
     
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
 
+    @IBOutlet weak var removeButton: UIButton!
     private let upgradePageUrl = NSURL(string: "https://protonmail.com/upgrade")!
     
-    //var viewModel : LabelViewModel!
+    private var pwd : String = ""
+    private var pwdConfirm : String  = ""
+    private var pwdHint : String = ""
+    
+    var pwdDelegate : ComposePasswordViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +46,16 @@ class ComposePasswordViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
+        
+        self.passwordField.text = pwd
+        self.confirmPasswordField.text = pwdConfirm
+        self.hintField.text = pwdHint
+        
+        if (!pwd.isEmpty) {
+            removeButton.hidden = false
+        } else {
+            removeButton.hidden = true
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -49,14 +69,37 @@ class ComposePasswordViewController: UIViewController {
     }
 
     @IBAction func closeAction(sender: AnyObject) {
+        pwdDelegate?.Cancelled()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func removeAction(sender: UIButton) {
+        pwdDelegate?.Removed()
         self.dismissViewControllerAnimated(true, completion: nil)
+        
     }
     
     @IBAction func applyAction(sender: UIButton) {
+        passwordErrorLabel.hidden = true
+        confirmPasswordErrorLabel.hidden = true
+        
+        let pwd = passwordField.text ?? ""
+        let pwdConfirm = confirmPasswordField.text ?? ""
+        let hint = hintField.text ?? ""
+        
+        if pwd.isEmpty {
+            passwordErrorLabel.hidden = false
+            passwordErrorLabel.shake(3, offset: 10)
+            return
+        }
+        
+        if pwd != pwdConfirm {
+            confirmPasswordErrorLabel.hidden = false
+            confirmPasswordErrorLabel.shake(3, offset: 10)
+            return
+        }
+        
+        pwdDelegate?.Apply(pwd, confirmPassword: pwdConfirm, hint: hint)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -70,6 +113,11 @@ class ComposePasswordViewController: UIViewController {
         hintField.resignFirstResponder()
     }
     
+    func setupPasswords(password : String, confirmPassword : String, hint : String) {
+        self.pwd = password
+        self.pwdConfirm = confirmPassword
+        self.pwdHint = hint
+    }
 }
 
 

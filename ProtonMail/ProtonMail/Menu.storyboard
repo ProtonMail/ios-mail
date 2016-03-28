@@ -3730,7 +3730,7 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Liq-qx-Fs6" userLabel="password">
                                                         <rect key="frame" x="26" y="188" width="408" height="49"/>
                                                         <subviews>
-                                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ctc-VL-qc1">
+                                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The message password can't be empty" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ctc-VL-qc1">
                                                                 <rect key="frame" x="0.0" y="31" width="408" height="16"/>
                                                                 <animations/>
                                                                 <constraints>
@@ -3755,7 +3755,7 @@
                                                                     <constraint firstAttribute="height" constant="28" id="gPj-EB-b9y"/>
                                                                 </constraints>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                                <textInputTraits key="textInputTraits"/>
+                                                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                                             </textField>
                                                         </subviews>
                                                         <animations/>
@@ -3776,7 +3776,7 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gwB-PT-vzb" userLabel="confirm pwd">
                                                         <rect key="frame" x="26" y="249" width="408" height="49"/>
                                                         <subviews>
-                                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOo-na-US5">
+                                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The message password didn't match" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOo-na-US5">
                                                                 <rect key="frame" x="0.0" y="31" width="408" height="16"/>
                                                                 <animations/>
                                                                 <constraints>
@@ -3801,7 +3801,7 @@
                                                                     <constraint firstAttribute="height" constant="28" id="rPb-5Y-dco"/>
                                                                 </constraints>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                                <textInputTraits key="textInputTraits"/>
+                                                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                                             </textField>
                                                         </subviews>
                                                         <animations/>
@@ -3961,6 +3961,7 @@
                         <outlet property="hintField" destination="fpg-HV-7Sb" id="4Hp-ht-frj"/>
                         <outlet property="passwordErrorLabel" destination="ctc-VL-qc1" id="t5R-Pw-9NG"/>
                         <outlet property="passwordField" destination="n94-T2-2CO" id="dBw-GO-JD1"/>
+                        <outlet property="removeButton" destination="CTd-8G-IRS" id="PeD-bH-38x"/>
                         <outlet property="scrollBottomPaddingConstraint" destination="cQy-sp-47p" id="dgm-I9-5UR"/>
                     </connections>
                 </viewController>
