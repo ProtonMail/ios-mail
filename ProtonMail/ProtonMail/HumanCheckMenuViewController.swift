@@ -13,6 +13,7 @@ class HumanCheckMenuViewController: UIViewController {
     
     private let kSegueToRecaptcha = "check_menu_to_recaptcha_verify_segue"
     private let kSegueToEmailVerify = "check_menu_to_email_verify_segue"
+    private let kSegueToPhoneVerify = "check_menu_to_phone_verify_segue"
     
     var viewModel : SignupViewModel!
     
@@ -51,6 +52,9 @@ class HumanCheckMenuViewController: UIViewController {
         } else if segue.identifier == kSegueToEmailVerify {
             let viewController = segue.destinationViewController as! EmailVerifyViewController
             viewController.viewModel = self.viewModel
+        } else if segue.identifier == kSegueToPhoneVerify {
+            let viewController = segue.destinationViewController as! PhoneVerifyViewController
+            viewController.viewModel = self.viewModel
         }
     }
     
@@ -65,4 +69,9 @@ class HumanCheckMenuViewController: UIViewController {
     @IBAction func emailVerifyAction(sender: UIButton) {
         self.performSegueWithIdentifier(kSegueToEmailVerify, sender: self)
     }
+    
+    @IBAction func phoneVerifyAction(sender: UIButton) {
+        self.performSegueWithIdentifier(kSegueToPhoneVerify, sender: self)
+    }
+    
 }

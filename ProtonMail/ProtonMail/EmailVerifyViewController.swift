@@ -10,6 +10,7 @@ import UIKit
 
 class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     
+    
     @IBOutlet weak var emailTextField: TextInsetTextField!
     @IBOutlet weak var verifyCodeTextField: TextInsetTextField!
     
@@ -38,6 +39,7 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     private var checkUserStatus : Bool = false
     private var stopLoading : Bool = false
     var viewModel : SignupViewModel!
+    
     private var doneClicked : Bool = false
     
     private var timer : NSTimer!
