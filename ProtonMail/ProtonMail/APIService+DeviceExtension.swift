@@ -34,24 +34,31 @@ extension APIService {
         // 2 : ios production
         // 3 : ios simulator
         
-        #if DEBUG
-            let env = 1
-            #else
-            let env = 2
-        #endif
+
         
         // 10 : android
         
         // 20 : ios enterprice dev
         // 21 : ios enterprice production
         // 23 : ios enterprice simulator
-        
-//        #if DEBUG
-//            let env = 20
-//            #else
-//            let env = 21
-//        #endif
-        
+
+        #if Enterprise
+            
+            #if DEBUG
+            let env = 20
+            #else
+            let env = 21
+            #endif
+            
+        #else
+            
+            #if DEBUG
+                let env = 1
+                #else
+                let env = 2
+            #endif
+            
+        #endif
         
         var ver = "1.0.0"
         if let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String {
