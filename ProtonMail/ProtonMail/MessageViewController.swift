@@ -218,14 +218,6 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         self.emailView?.contentWebView.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
     
-    func setPresentationStyleForSelfController(selfController : UIViewController,  presentingController: UIViewController)
-    {
-        presentingController.providesPresentationContextTransitionStyle = true;
-        presentingController.definesPresentationContext = true;
-        presentingController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
-    }
-    
-    
     
     private var timer : NSTimer!
     private func setupExpirationTimer()

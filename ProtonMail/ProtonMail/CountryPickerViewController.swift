@@ -26,9 +26,29 @@ class CountryPickerViewController : UIViewController {
     @IBOutlet weak var applyButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
 
+    
+    private var countryCodes : [CountryCode]?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         contentView.layer.cornerRadius = 4;
+        self.prepareSource();
+    }
+    
+    func prepareSource () {
+        var country_code : String = ""
+        var bundleInstance = NSBundle(forClass: self.dynamicType)
+        if let localFile = bundleInstance.pathForResource("phone_country_code", ofType: "geojson") {
+            if let content = String(contentsOfFile:localFile, encoding:NSUTF8StringEncoding) {
+                country_code = content
+            }
+        }
+        var parseError: NSError?
+        
+        let parsedObject: AnyObject? = NSJSONSerialization.JSONObjectWithData(country_code.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!, options: NSJSONReadingOptions.AllowFragments, error: &parseError)
+        if let objects = parsedObject as? [Dictionary<String,AnyObject>] {
+            countryCodes = CountryCode.getCountryCodes(objects)
+        }
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -67,16 +87,16 @@ extension CountryPickerViewController: UITableViewDataSource {
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 0
+        return 1
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var labelCell = tableView.dequeueReusableCellWithIdentifier("labelApplyCell", forIndexPath: indexPath) as! LabelTableViewCell
-//        if let label = fetchedLabels?.objectAtIndexPath(indexPath) as? Label {
-//            labelCell.ConfigCell(viewModel.getLabelMessage(label), vc: self)
-//        }
-        return labelCell
+        var countryCell = tableView.dequeueReusableCellWithIdentifier("country_code_table_cell", forIndexPath: indexPath) as! CountryCodeTableViewCell
+        if let country = countryCodes?[indexPath.row] {
+            countryCell.ConfigCell(country, vc: self)
+        }
+        return countryCell
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -86,7 +106,7 @@ extension CountryPickerViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return countryCodes?.count ?? 0
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -105,14 +125,6 @@ extension CountryPickerViewController: UITableViewDataSource {
 extension CountryPickerViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 45.0
-    }
-    
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
-        let trashed: UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: title) { (rowAction, indexPath) -> Void in
-            //self.deleteMessageForIndexPath(indexPath)
-        }
-        trashed.backgroundColor = UIColor.ProtonMail.Red_D74B4B
-        return [trashed]
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

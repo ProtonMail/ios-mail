@@ -55,5 +55,12 @@ class ProtonMailViewController: UIViewController {
     func shouldShowSideMenu() -> Bool {
         return true
     }
+    
+    func setPresentationStyleForSelfController(selfController : UIViewController,  presentingController: UIViewController)
+    {
+        presentingController.providesPresentationContextTransitionStyle = true;
+        presentingController.definesPresentationContext = true;
+        presentingController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+    }
 
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PhoneVerifyViewController: UIViewController, SignupViewModelDelegate {
+class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelegate {
     
     @IBOutlet weak var emailTextField: TextInsetTextField!
     @IBOutlet weak var verifyCodeTextField: TextInsetTextField!
@@ -66,6 +66,10 @@ class PhoneVerifyViewController: UIViewController, SignupViewModelDelegate {
         self.updateButtonStatus()
     }
     
+    override func shouldShowSideMenu() -> Bool {
+        return false
+    }
+    
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.Default;
     }
@@ -94,7 +98,6 @@ class PhoneVerifyViewController: UIViewController, SignupViewModelDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
     
     func verificationCodeChanged(viewModel: SignupViewModel, code: String!) {
         verifyCodeTextField.text = code
@@ -136,6 +139,9 @@ class PhoneVerifyViewController: UIViewController, SignupViewModelDelegate {
         if segue.identifier == kSegueToNotificationEmail {
             let viewController = segue.destinationViewController as! SignUpEmailViewController
             viewController.viewModel = self.viewModel
+        } else if segue.identifier == kSegueToCountryPicker {
+            let popup = segue.destinationViewController as! CountryPickerViewController
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }
     
