@@ -127,6 +127,7 @@ class PhoneVerifyViewController: UIViewController, SignupViewModelDelegate {
     }
     
     @IBAction func pickerAction(sender: UIButton) {
+        self.performSegueWithIdentifier(kSegueToCountryPicker, sender: self)
     }
     
     // MARK: - Navigation

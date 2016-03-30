@@ -7,27 +7,10 @@
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <customFonts key="customFonts">
-        <mutableArray key="Roboto-Light.ttf">
-            <string>Roboto-Light</string>
-        </mutableArray>
         <mutableArray key="Roboto-Regular.ttf">
             <string>Roboto-Regular</string>
             <string>Roboto-Regular</string>
             <string>Roboto-Regular</string>
-            <string>Roboto-Regular</string>
-            <string>Roboto-Regular</string>
-            <string>Roboto-Regular</string>
-            <string>Roboto-Regular</string>
-            <string>Roboto-Regular</string>
-            <string>Roboto-Regular</string>
-            <string>Roboto-Regular</string>
-            <string>Roboto-Regular</string>
-            <string>Roboto-Regular</string>
-            <string>Roboto-Regular</string>
-            <string>Roboto-Regular</string>
-        </mutableArray>
-        <mutableArray key="Roboto-Thin.ttf">
-            <string>Roboto-Thin</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -47,7 +30,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bFp-Ct-li7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1538" y="-179"/>
+            <point key="canvasLocation" x="-3082" y="1357"/>
         </scene>
         <!--Splash View Controller-->
         <scene sceneID="VNp-ym-I6X">
@@ -169,7 +152,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zAc-IJ-WbY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1538" y="749"/>
+            <point key="canvasLocation" x="-3082" y="2285"/>
         </scene>
         <!--Sign In-->
         <scene sceneID="ISM-1u-629">
@@ -455,7 +438,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-661" y="-179"/>
+            <point key="canvasLocation" x="-2205" y="1357"/>
         </scene>
         <!--Recaptcha View Controller-->
         <scene sceneID="kRk-yJ-4cz">
@@ -619,7 +602,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2578" y="1585"/>
+            <point key="canvasLocation" x="1034" y="3121"/>
         </scene>
         <!--Sign Up User Name View Controller-->
         <scene sceneID="9Ih-rw-22I">
@@ -817,7 +800,6 @@
                                                 <connections>
                                                     <action selector="checkAction:" destination="YIP-X7-8Un" eventType="touchUpInside" id="GXs-VT-kfV"/>
                                                     <action selector="checkAction:" destination="5Bg-GM-4IG" eventType="touchUpInside" id="dQ3-yK-nKn"/>
-                                                    <action selector="updateMeNewsAction:" destination="Oxb-Ai-gED" eventType="touchUpInside" id="9ht-vF-F4E"/>
                                                 </connections>
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="saF-n1-0c1">
@@ -993,193 +975,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-661" y="749"/>
-        </scene>
-        <!--Step 1 / 2-->
-        <scene sceneID="OWV-Zk-3XA">
-            <objects>
-                <viewController storyboardIdentifier="SignUpViewController" extendedLayoutIncludesOpaqueBars="YES" id="Oxb-Ai-gED" customClass="SignUpViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="XXT-zE-d3j"/>
-                        <viewControllerLayoutGuide type="bottom" id="WYy-cb-pu3"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="L4a-RF-dlW">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="SignIn" translatesAutoresizingMaskIntoConstraints="NO" id="KVe-MD-RVX">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <animations/>
-                            </imageView>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hlk-SA-ixG" userLabel="CenterView">
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="bCM-Uy-1Vg">
-                                        <rect key="frame" x="186" y="184" width="228" height="37"/>
-                                        <animations/>
-                                        <variation key="widthClass=compact" fixedFrame="YES">
-                                            <rect key="frame" x="29" y="22" width="228" height="37"/>
-                                        </variation>
-                                    </imageView>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rEv-4I-fyG">
-                                        <rect key="frame" x="161" y="434" width="205" height="27"/>
-                                        <animations/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <variation key="widthClass=compact" fixedFrame="YES">
-                                            <rect key="frame" x="39" y="291" width="209" height="27"/>
-                                        </variation>
-                                    </view>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="WT8-cQ-yra" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="161" y="375" width="278" height="44"/>
-                                        <animations/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="textColor" red="0.30980392159999998" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
-                                        <variation key="widthClass=compact" fixedFrame="YES">
-                                            <rect key="frame" x="4" y="175" width="278" height="44"/>
-                                        </variation>
-                                        <connections>
-                                            <outlet property="delegate" destination="Oxb-Ai-gED" id="c8p-Lg-Lrv"/>
-                                        </connections>
-                                    </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Optional Notification Email" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="rqF-Gl-gky" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="161" y="375" width="278" height="44"/>
-                                        <animations/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="textColor" red="0.30980392159999998" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="go" enablesReturnKeyAutomatically="YES"/>
-                                        <variation key="widthClass=compact" fixedFrame="YES">
-                                            <rect key="frame" x="4" y="221" width="278" height="44"/>
-                                        </variation>
-                                        <connections>
-                                            <outlet property="delegate" destination="Oxb-Ai-gED" id="5ed-OE-wKN"/>
-                                        </connections>
-                                    </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="6KX-16-q3y" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="161" y="320" width="278" height="44"/>
-                                        <animations/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="textColor" red="0.30980392159999998" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
-                                        <variation key="widthClass=compact" fixedFrame="YES">
-                                            <rect key="frame" x="4" y="128" width="278" height="44"/>
-                                        </variation>
-                                        <connections>
-                                            <outlet property="delegate" destination="Oxb-Ai-gED" id="thf-I4-sOg"/>
-                                        </connections>
-                                    </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="User name" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Z0p-Ex-OQb" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="161" y="320" width="278" height="44"/>
-                                        <animations/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="textColor" red="0.30980392159999998" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
-                                        <variation key="widthClass=compact" fixedFrame="YES">
-                                            <rect key="frame" x="4" y="81" width="278" height="44"/>
-                                        </variation>
-                                        <connections>
-                                            <outlet property="delegate" destination="Oxb-Ai-gED" id="bq9-Wp-oFh"/>
-                                        </connections>
-                                    </textField>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bri-v1-HCI">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                        <subviews>
-                                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="RMg-OP-CqC">
-                                                <rect key="frame" x="-10" y="-10" width="20" height="20"/>
-                                                <animations/>
-                                                <variation key="widthClass=compact" fixedFrame="YES">
-                                                    <rect key="frame" x="12" y="12" width="20" height="20"/>
-                                                </variation>
-                                            </activityIndicatorView>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="cancel_compose" translatesAutoresizingMaskIntoConstraints="NO" id="vQU-Pc-ufL">
-                                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                                                <animations/>
-                                                <variation key="widthClass=compact" fixedFrame="YES">
-                                                    <rect key="frame" x="12" y="12" width="22" height="22"/>
-                                                </variation>
-                                            </imageView>
-                                        </subviews>
-                                        <animations/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <variation key="widthClass=compact" fixedFrame="YES">
-                                            <rect key="frame" x="238" y="81" width="44" height="44"/>
-                                        </variation>
-                                    </view>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="e3T-xB-Ed6">
-                                        <rect key="frame" x="0.0" y="0.0" width="26" height="27"/>
-                                        <animations/>
-                                        <fontDescription key="fontDescription" name="Roboto-Thin" family="Roboto" pointSize="12"/>
-                                        <inset key="titleEdgeInsets" minX="11" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" image="unchecked_signin"/>
-                                        <state key="selected" image="checked_signin"/>
-                                        <variation key="widthClass=compact" fixedFrame="YES">
-                                            <rect key="frame" x="17" y="269" width="26" height="27"/>
-                                        </variation>
-                                        <connections>
-                                            <action selector="updateMeNewsAction:" destination="Oxb-Ai-gED" eventType="touchUpInside" id="tEf-xq-yyt"/>
-                                        </connections>
-                                    </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Update me about new features." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hdU-rU-aR8">
-                                        <rect key="frame" x="34" y="0.0" width="163" height="27"/>
-                                        <animations/>
-                                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="13"/>
-                                        <color key="textColor" red="0.21960784310000001" green="0.2274509804" blue="0.23137254900000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                        <variation key="widthClass=compact" fixedFrame="YES">
-                                            <rect key="frame" x="50" y="269" width="237" height="27"/>
-                                        </variation>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DKx-tP-pCP">
-                                        <rect key="frame" x="189" y="484" width="223" height="44"/>
-                                        <animations/>
-                                        <color key="backgroundColor" red="0.20784313730000001" green="0.29411764709999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
-                                        <state key="normal" title="Sign Up">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <variation key="widthClass=compact" fixedFrame="YES">
-                                            <rect key="frame" x="32" y="311" width="223" height="44"/>
-                                        </variation>
-                                        <connections>
-                                            <action selector="signUpAction:" destination="Oxb-Ai-gED" eventType="touchUpInside" id="fCz-yu-eYQ"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <animations/>
-                            </view>
-                        </subviews>
-                        <animations/>
-                        <color key="backgroundColor" red="0.13725490200000001" green="0.2274509804" blue="0.37254901959999998" alpha="1" colorSpace="calibratedRGB"/>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="Hmc-nO-UBw" appends="YES" id="6Tz-gB-27Y"/>
-                        </connections>
-                    </view>
-                    <navigationItem key="navigationItem" title="Step 1 / 2" id="7yq-qt-GhL"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <connections>
-                        <outlet property="checkImage" destination="vQU-Pc-ufL" id="gdV-hd-lCP"/>
-                        <outlet property="confirmInput" destination="WT8-cQ-yra" id="Spr-th-dpc"/>
-                        <outlet property="loadingSpanerView" destination="RMg-OP-CqC" id="uZ3-H3-Vg0"/>
-                        <outlet property="loadingView" destination="Bri-v1-HCI" id="73L-sQ-YFz"/>
-                        <outlet property="notificationEmail" destination="rqF-Gl-gky" id="naR-2z-W2h"/>
-                        <outlet property="passwordInput" destination="6KX-16-q3y" id="e2N-WA-1Dd"/>
-                        <outlet property="signUpButton" destination="DKx-tP-pCP" id="nMf-FW-r7i"/>
-                        <outlet property="updateNewsButton" destination="e3T-xB-Ed6" id="VAe-09-NZj"/>
-                        <outlet property="userNameInput" destination="Z0p-Ex-OQb" id="27Z-Ic-0Xj"/>
-                        <segue destination="F7r-Ek-PBO" kind="show" identifier="signUpKeySegue" id="Vjc-UL-fXB"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="CTM-qX-4pb" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="Hmc-nO-UBw">
-                    <connections>
-                        <action selector="tapAction:" destination="Oxb-Ai-gED" id="ovP-dC-Zdr"/>
-                    </connections>
-                </tapGestureRecognizer>
-            </objects>
-            <point key="canvasLocation" x="-2471" y="1686"/>
+            <point key="canvasLocation" x="-2205" y="2285"/>
         </scene>
         <!--Sign Up Password View Controller-->
         <scene sceneID="XWo-Pd-Vec">
@@ -1542,7 +1338,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="112" y="749"/>
+            <point key="canvasLocation" x="-1432" y="2285"/>
         </scene>
         <!--Sign Up Email View Controller-->
         <scene sceneID="uZK-2E-JjV">
@@ -1750,7 +1546,6 @@
                                                 </variation>
                                                 <connections>
                                                     <action selector="checkAction:" destination="YIP-X7-8Un" eventType="touchUpInside" id="9kf-3Z-HrJ"/>
-                                                    <action selector="updateMeNewsAction:" destination="Oxb-Ai-gED" eventType="touchUpInside" id="loW-Kx-l2v"/>
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="When you send an email, this is the name that appears in the sender field." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YyG-M9-XCC">
@@ -1845,175 +1640,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3506" y="752"/>
-        </scene>
-        <!--Step 2 / 2-->
-        <scene sceneID="gfC-q2-gyr">
-            <objects>
-                <viewController storyboardIdentifier="SignUpKeyViewController" extendedLayoutIncludesOpaqueBars="YES" id="F7r-Ek-PBO" customClass="SignUpKeyViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="is7-JW-iqY"/>
-                        <viewControllerLayoutGuide type="bottom" id="Gbu-6B-qIJ"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="No8-Rh-EYl">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="SignIn" translatesAutoresizingMaskIntoConstraints="NO" id="Srq-Aa-xd5">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <animations/>
-                                <variation key="widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="174" y="274" width="52" height="52"/>
-                                </variation>
-                            </imageView>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Ip-37-mLq" userLabel="CenterView">
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="Ql8-un-zq2">
-                                        <rect key="frame" x="186" y="184" width="228" height="37"/>
-                                        <animations/>
-                                        <variation key="widthClass=compact" fixedFrame="YES">
-                                            <rect key="frame" x="29" y="22" width="228" height="37"/>
-                                        </variation>
-                                    </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="CREATE MAILBOX PASSWORD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eCV-43-Yre">
-                                        <rect key="frame" x="221" y="294" width="159" height="22"/>
-                                        <animations/>
-                                        <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="18"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                        <variation key="widthClass=compact" fixedFrame="YES">
-                                            <rect key="frame" x="8" y="132" width="271" height="21"/>
-                                        </variation>
-                                    </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm Mail box password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Wab-0Y-SfU" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="161" y="375" width="278" height="44"/>
-                                        <animations/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="textColor" red="0.30980392159999998" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
-                                        <variation key="widthClass=compact" fixedFrame="YES">
-                                            <rect key="frame" x="4" y="225" width="278" height="44"/>
-                                        </variation>
-                                        <connections>
-                                            <outlet property="delegate" destination="F7r-Ek-PBO" id="pNw-PL-mxh"/>
-                                        </connections>
-                                    </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q2I-Zj-1lz">
-                                        <rect key="frame" x="189" y="484" width="223" height="44"/>
-                                        <animations/>
-                                        <color key="backgroundColor" red="0.20784313730000001" green="0.29411764709999999" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
-                                        <state key="normal" title="Generate Keypair">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <variation key="widthClass=compact" fixedFrame="YES">
-                                            <rect key="frame" x="32" y="311" width="223" height="44"/>
-                                        </variation>
-                                        <connections>
-                                            <action selector="generateKeyAction:" destination="F7r-Ek-PBO" eventType="touchUpInside" id="eOC-rp-uRe"/>
-                                        </connections>
-                                    </button>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Mail box password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="4CM-v1-pmD" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
-                                        <rect key="frame" x="161" y="320" width="278" height="44"/>
-                                        <animations/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="textColor" red="0.30980392159999998" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
-                                        <variation key="widthClass=compact" fixedFrame="YES">
-                                            <rect key="frame" x="4" y="173" width="278" height="44"/>
-                                        </variation>
-                                        <connections>
-                                            <outlet property="delegate" destination="F7r-Ek-PBO" id="vce-u3-t5t"/>
-                                        </connections>
-                                    </textField>
-                                </subviews>
-                                <animations/>
-                            </view>
-                        </subviews>
-                        <animations/>
-                        <color key="backgroundColor" red="0.13725490200000001" green="0.2274509804" blue="0.37254901959999998" alpha="1" colorSpace="calibratedRGB"/>
-                        <variation key="widthClass=compact">
-                            <mask key="subviews">
-                                <include reference="Srq-Aa-xd5"/>
-                            </mask>
-                        </variation>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="rBx-vI-sEf" appends="YES" id="1w3-W2-0X3"/>
-                        </connections>
-                    </view>
-                    <navigationItem key="navigationItem" title="Step 2 / 2" id="ACG-be-t7f"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <connections>
-                        <outlet property="confirmInput" destination="Wab-0Y-SfU" id="MJi-fP-Ct5"/>
-                        <outlet property="generateKeypairButton" destination="q2I-Zj-1lz" id="Pkh-gu-b5e"/>
-                        <outlet property="passwordInput" destination="4CM-v1-pmD" id="jJt-0b-IWX"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="OaF-Hx-zAV" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="rBx-vI-sEf">
-                    <connections>
-                        <action selector="tapAction:" destination="F7r-Ek-PBO" id="42o-zk-U3a"/>
-                    </connections>
-                </tapGestureRecognizer>
-            </objects>
-            <point key="canvasLocation" x="-1538" y="1686"/>
-        </scene>
-        <!--Sign Up View Controller-->
-        <scene sceneID="iym-KR-Gcb">
-            <objects>
-                <viewController id="cMZ-5g-sJh" customClass="SignUpViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="wYk-v4-qSJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="zAG-SY-UIZ"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="rEL-vp-o6q">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TOW-U0-i9S">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <animations/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="delegate" destination="cMZ-5g-sJh" id="Shu-no-aU3"/>
-                                </connections>
-                            </webView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3kf-AF-x7E">
-                                <rect key="frame" x="250" y="550" width="100" height="50"/>
-                                <animations/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="16m-K4-2zm"/>
-                                    <constraint firstAttribute="height" constant="50" id="bBu-3P-NJl"/>
-                                </constraints>
-                                <state key="normal" title="Check Button">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="checkAction:" destination="cMZ-5g-sJh" eventType="touchUpInside" id="hTy-Lx-CWA"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="TOW-U0-i9S" firstAttribute="leading" secondItem="rEL-vp-o6q" secondAttribute="leading" id="Ay7-NK-Jcc"/>
-                            <constraint firstItem="TOW-U0-i9S" firstAttribute="top" secondItem="rEL-vp-o6q" secondAttribute="top" id="NKk-wo-2Mf"/>
-                            <constraint firstItem="zAG-SY-UIZ" firstAttribute="top" secondItem="3kf-AF-x7E" secondAttribute="bottom" id="W50-Mj-ce3"/>
-                            <constraint firstItem="zAG-SY-UIZ" firstAttribute="top" secondItem="TOW-U0-i9S" secondAttribute="bottom" id="fXU-ai-kjY"/>
-                            <constraint firstAttribute="trailing" secondItem="TOW-U0-i9S" secondAttribute="trailing" id="sSu-61-esR"/>
-                            <constraint firstAttribute="centerX" secondItem="3kf-AF-x7E" secondAttribute="centerX" id="sls-ZD-UBN"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="webView" destination="TOW-U0-i9S" id="m6A-ZP-k6P"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="RTT-xm-2wa" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-661" y="1686"/>
+            <point key="canvasLocation" x="1962" y="2288"/>
         </scene>
         <!--Mailbox Password View Controller-->
         <scene sceneID="pHR-Af-VAi">
@@ -2255,7 +1882,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="112" y="-179"/>
+            <point key="canvasLocation" x="-1432" y="1357"/>
         </scene>
         <!--Human Check Menu View Controller-->
         <scene sceneID="18d-cg-BMz">
@@ -2466,7 +2093,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ENF-qx-jxk" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="CRx-XX-hzG"/>
             </objects>
-            <point key="canvasLocation" x="1694" y="749"/>
+            <point key="canvasLocation" x="150" y="2285"/>
         </scene>
         <!--Email Verify View Controller-->
         <scene sceneID="WC9-tU-sDP">
@@ -2789,7 +2416,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2578" y="-145"/>
+            <point key="canvasLocation" x="1034" y="1391"/>
         </scene>
         <!--Phone Verify View Controller-->
         <scene sceneID="uET-gQ-lki">
@@ -2874,7 +2501,7 @@
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <color key="textColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="phonePad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
                                                         <connections>
                                                             <action selector="editEnd:" destination="72v-cj-LoN" eventType="editingDidEnd" id="RZD-SF-D55"/>
                                                             <action selector="editingChanged:" destination="72v-cj-LoN" eventType="editingChanged" id="mdO-sQ-DW6"/>
@@ -2960,7 +2587,7 @@
                                                     <constraint firstItem="XW1-h6-xgs" firstAttribute="leading" secondItem="Zkk-vL-dt9" secondAttribute="leading" id="nj9-fx-uDr"/>
                                                 </constraints>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your existing email address." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q3J-Wb-t9t">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your cell phone nuber" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q3J-Wb-t9t">
                                                 <rect key="frame" x="28" y="179" width="544" height="17"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -3131,7 +2758,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2556" y="749"/>
+            <point key="canvasLocation" x="1012" y="2285"/>
         </scene>
         <!--Encryption Setup View Controller-->
         <scene sceneID="Wz8-Q1-raF">
@@ -3256,7 +2883,6 @@
                                                 <connections>
                                                     <action selector="checkAction:" destination="YIP-X7-8Un" eventType="touchUpInside" id="EcN-nW-PXt"/>
                                                     <action selector="switchAction:" destination="hqf-60-ZdQ" eventType="touchUpInside" id="hem-1A-0Fd"/>
-                                                    <action selector="updateMeNewsAction:" destination="Oxb-Ai-gED" eventType="touchUpInside" id="ScA-24-DYZ"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="wordWrap" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ycl-bi-69d">
@@ -3297,7 +2923,6 @@
                                                 <connections>
                                                     <action selector="checkAction:" destination="YIP-X7-8Un" eventType="touchUpInside" id="wVa-EH-bCQ"/>
                                                     <action selector="switchAction:" destination="hqf-60-ZdQ" eventType="touchUpInside" id="45f-Qv-5yC"/>
-                                                    <action selector="updateMeNewsAction:" destination="Oxb-Ai-gED" eventType="touchUpInside" id="zLU-ZL-9VU"/>
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bhX-BC-wdL">
@@ -3399,7 +3024,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zh8-Ka-ari" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="fSe-hG-4tf"/>
             </objects>
-            <point key="canvasLocation" x="899" y="749"/>
+            <point key="canvasLocation" x="-645" y="2285"/>
         </scene>
         <!--Country Picker View Controller-->
         <scene sceneID="gFH-05-P8X">
@@ -3430,86 +3055,6 @@
                                         <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9RU-4L-iXf">
-                                        <rect key="frame" x="16" y="52" width="528" height="30"/>
-                                        <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="label_addlabel" translatesAutoresizingMaskIntoConstraints="NO" id="Phd-Nz-Bh4">
-                                                <rect key="frame" x="6" y="7" width="16" height="16"/>
-                                                <animations/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="16" id="AML-ps-KEU"/>
-                                                    <constraint firstAttribute="height" constant="16" id="KXt-3Q-cFj"/>
-                                                </constraints>
-                                            </imageView>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Create new label" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bvh-od-E0E">
-                                                <rect key="frame" x="34" y="0.0" width="494" height="30"/>
-                                                <animations/>
-                                                <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
-                                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
-                                                <connections>
-                                                    <action selector="endEditing:" destination="jlT-c5-bVR" eventType="editingDidEnd" id="Au0-U7-3i7"/>
-                                                    <action selector="startEditing:" destination="jlT-c5-bVR" eventType="editingDidBegin" id="Sjy-1u-aC2"/>
-                                                    <action selector="valueChanged:" destination="jlT-c5-bVR" eventType="valueChanged" id="GU1-D3-a7c"/>
-                                                </connections>
-                                            </textField>
-                                        </subviews>
-                                        <animations/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstItem="bvh-od-E0E" firstAttribute="top" secondItem="9RU-4L-iXf" secondAttribute="top" id="2ca-KB-5De"/>
-                                            <constraint firstAttribute="trailing" secondItem="bvh-od-E0E" secondAttribute="trailing" id="7yO-YN-X6e"/>
-                                            <constraint firstItem="Phd-Nz-Bh4" firstAttribute="top" secondItem="9RU-4L-iXf" secondAttribute="top" constant="7" id="WGr-kt-iXe"/>
-                                            <constraint firstAttribute="bottom" secondItem="Phd-Nz-Bh4" secondAttribute="bottom" constant="7" id="eYN-z8-yM8"/>
-                                            <constraint firstItem="bvh-od-E0E" firstAttribute="leading" secondItem="Phd-Nz-Bh4" secondAttribute="trailing" constant="12" id="ng0-u7-tNh"/>
-                                            <constraint firstAttribute="height" constant="30" id="tzC-a8-39r"/>
-                                            <constraint firstItem="Phd-Nz-Bh4" firstAttribute="leading" secondItem="9RU-4L-iXf" secondAttribute="leading" constant="6" id="wDh-lq-EDi"/>
-                                            <constraint firstAttribute="bottom" secondItem="bvh-od-E0E" secondAttribute="bottom" id="zAW-hY-hZY"/>
-                                        </constraints>
-                                    </view>
-                                    <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4QK-nr-eHV">
-                                        <rect key="frame" x="16" y="98" width="528" height="320"/>
-                                        <animations/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="flc-dW-zZV">
-                                            <size key="itemSize" width="50" height="50"/>
-                                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        </collectionViewFlowLayout>
-                                        <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="labelColorCell" id="DSf-G2-pgD">
-                                                <rect key="frame" x="0.0" y="0.0" width="200" height="40"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="40"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <subviews>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a5o-NZ-pgZ">
-                                                            <rect key="frame" x="0.0" y="0.0" width="200" height="40"/>
-                                                            <animations/>
-                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                        </view>
-                                                    </subviews>
-                                                    <animations/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                </view>
-                                                <animations/>
-                                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="trailing" secondItem="a5o-NZ-pgZ" secondAttribute="trailing" id="KuW-gO-7I1"/>
-                                                    <constraint firstItem="a5o-NZ-pgZ" firstAttribute="top" secondItem="DSf-G2-pgD" secondAttribute="top" id="O3e-1r-v7r"/>
-                                                    <constraint firstAttribute="bottom" secondItem="a5o-NZ-pgZ" secondAttribute="bottom" id="cme-Bq-Qwc"/>
-                                                    <constraint firstItem="a5o-NZ-pgZ" firstAttribute="leading" secondItem="DSf-G2-pgD" secondAttribute="leading" id="v7D-lq-GHE"/>
-                                                </constraints>
-                                                <size key="customSize" width="200" height="40"/>
-                                            </collectionViewCell>
-                                        </cells>
-                                        <connections>
-                                            <outlet property="dataSource" destination="jlT-c5-bVR" id="y7Q-sd-273"/>
-                                            <outlet property="delegate" destination="jlT-c5-bVR" id="u7K-5m-fL0"/>
-                                        </connections>
-                                    </collectionView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="1Vx-YJ-aJb">
                                         <rect key="frame" x="16" y="98" width="528" height="320"/>
                                         <animations/>
@@ -3579,9 +3124,6 @@
                                                     <color key="titleColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
-                                                <connections>
-                                                    <action selector="cancelAction:" destination="jlT-c5-bVR" eventType="touchUpInside" id="D5N-bF-xmq"/>
-                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qt8-jt-XRz">
                                                 <rect key="frame" x="281" y="1" width="279" height="44"/>
@@ -3592,9 +3134,6 @@
                                                     <color key="titleColor" red="0.57647058819999997" green="0.59215686270000001" blue="0.80392156859999997" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
-                                                <connections>
-                                                    <action selector="applyAction:" destination="jlT-c5-bVR" eventType="touchUpInside" id="tjz-lt-t1o"/>
-                                                </connections>
                                             </button>
                                         </subviews>
                                         <animations/>
@@ -3611,67 +3150,20 @@
                                             <constraint firstAttribute="bottom" secondItem="lq9-2T-Q4L" secondAttribute="bottom" id="nJg-V6-z6O"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SGI-ta-X09">
-                                        <rect key="frame" x="16" y="434" width="528" height="45"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Also Archive" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="61W-vu-dic">
-                                                <rect key="frame" x="0.0" y="0.0" width="478" height="45"/>
-                                                <animations/>
-                                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
-                                                <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j26-po-iGA">
-                                                <rect key="frame" x="478" y="0.0" width="50" height="45"/>
-                                                <animations/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="50" id="TE1-kb-gor"/>
-                                                </constraints>
-                                                <state key="normal" image="mail_check">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="archiveSelectAction:" destination="jlT-c5-bVR" eventType="touchUpInside" id="vju-f0-eiv"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                        <animations/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="45" id="DCx-94-2G4"/>
-                                            <constraint firstAttribute="bottom" secondItem="61W-vu-dic" secondAttribute="bottom" id="ED5-7A-Qw0"/>
-                                            <constraint firstItem="61W-vu-dic" firstAttribute="leading" secondItem="SGI-ta-X09" secondAttribute="leading" id="Jy6-59-fB5"/>
-                                            <constraint firstItem="61W-vu-dic" firstAttribute="top" secondItem="SGI-ta-X09" secondAttribute="top" id="T1q-HD-5gE"/>
-                                            <constraint firstAttribute="bottom" secondItem="j26-po-iGA" secondAttribute="bottom" id="d6f-Hp-aSx"/>
-                                            <constraint firstItem="j26-po-iGA" firstAttribute="leading" secondItem="61W-vu-dic" secondAttribute="trailing" id="etu-MQ-Wdl"/>
-                                            <constraint firstAttribute="trailing" secondItem="j26-po-iGA" secondAttribute="trailing" id="lFc-la-5WM"/>
-                                            <constraint firstItem="j26-po-iGA" firstAttribute="top" secondItem="SGI-ta-X09" secondAttribute="top" id="mh7-aS-qDY"/>
-                                        </constraints>
-                                    </view>
                                 </subviews>
                                 <animations/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="1Vx-YJ-aJb" firstAttribute="top" secondItem="9RU-4L-iXf" secondAttribute="bottom" constant="16" id="0dK-7e-xRE"/>
                                     <constraint firstAttribute="bottom" secondItem="zZ7-Hm-NrN" secondAttribute="bottom" id="7eQ-Rp-hjj"/>
+                                    <constraint firstItem="zZ7-Hm-NrN" firstAttribute="top" secondItem="1Vx-YJ-aJb" secondAttribute="bottom" constant="77" id="9nf-Nd-VdV"/>
                                     <constraint firstItem="1Vx-YJ-aJb" firstAttribute="leading" secondItem="gkN-Cf-t1a" secondAttribute="leading" constant="16" id="BPY-tM-9MV"/>
-                                    <constraint firstItem="4QK-nr-eHV" firstAttribute="trailing" secondItem="1Vx-YJ-aJb" secondAttribute="trailing" id="CiW-ji-B0I"/>
-                                    <constraint firstItem="4QK-nr-eHV" firstAttribute="bottom" secondItem="1Vx-YJ-aJb" secondAttribute="bottom" id="EoB-BK-VLs"/>
-                                    <constraint firstItem="SGI-ta-X09" firstAttribute="top" secondItem="1Vx-YJ-aJb" secondAttribute="bottom" constant="16" id="GhE-9l-ZpZ"/>
                                     <constraint firstItem="1Rg-mL-nYy" firstAttribute="leading" secondItem="gkN-Cf-t1a" secondAttribute="leading" constant="16" id="PRf-4N-Zfo"/>
-                                    <constraint firstItem="9RU-4L-iXf" firstAttribute="width" secondItem="1Rg-mL-nYy" secondAttribute="width" id="REq-5A-LeV"/>
                                     <constraint firstItem="zZ7-Hm-NrN" firstAttribute="leading" secondItem="gkN-Cf-t1a" secondAttribute="leading" id="XaI-LN-NqN"/>
-                                    <constraint firstAttribute="trailing" secondItem="SGI-ta-X09" secondAttribute="trailing" constant="16" id="bju-Lf-wYp"/>
                                     <constraint firstAttribute="trailing" secondItem="1Vx-YJ-aJb" secondAttribute="trailing" constant="16" id="cv7-hE-7dJ"/>
-                                    <constraint firstItem="9RU-4L-iXf" firstAttribute="leading" secondItem="1Rg-mL-nYy" secondAttribute="leading" id="gVO-2N-yne"/>
-                                    <constraint firstItem="9RU-4L-iXf" firstAttribute="top" secondItem="1Rg-mL-nYy" secondAttribute="bottom" constant="16" id="iMy-rI-le9"/>
-                                    <constraint firstItem="SGI-ta-X09" firstAttribute="leading" secondItem="gkN-Cf-t1a" secondAttribute="leading" constant="16" id="jHh-G9-45j"/>
+                                    <constraint firstItem="1Vx-YJ-aJb" firstAttribute="top" secondItem="1Rg-mL-nYy" secondAttribute="bottom" constant="62" id="jBt-aY-r2f"/>
                                     <constraint firstAttribute="trailing" secondItem="zZ7-Hm-NrN" secondAttribute="trailing" id="mle-EB-26i"/>
-                                    <constraint firstItem="4QK-nr-eHV" firstAttribute="leading" secondItem="1Vx-YJ-aJb" secondAttribute="leading" id="npw-eR-7Y1"/>
-                                    <constraint firstItem="zZ7-Hm-NrN" firstAttribute="top" secondItem="SGI-ta-X09" secondAttribute="bottom" constant="16" id="sDN-6D-hHa"/>
                                     <constraint firstAttribute="trailing" secondItem="1Rg-mL-nYy" secondAttribute="trailing" constant="16" id="tWj-rw-FRE"/>
                                     <constraint firstItem="1Rg-mL-nYy" firstAttribute="top" secondItem="gkN-Cf-t1a" secondAttribute="top" constant="16" id="xcO-Bi-vgx"/>
-                                    <constraint firstItem="4QK-nr-eHV" firstAttribute="top" secondItem="1Vx-YJ-aJb" secondAttribute="top" id="yCg-ti-wR3"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -3692,28 +3184,20 @@
                     <navigationItem key="navigationItem" id="sge-Ep-Shh"/>
                     <connections>
                         <outlet property="applyButton" destination="qt8-jt-XRz" id="7e8-qd-NK4"/>
-                        <outlet property="archiveSelectButton" destination="j26-po-iGA" id="7k4-hq-L0I"/>
                         <outlet property="backgroundImageView" destination="CNJ-lB-lRs" id="8fK-j8-UVb"/>
                         <outlet property="cancelButton" destination="lq9-2T-Q4L" id="h3O-rJ-GPv"/>
-                        <outlet property="collectionView" destination="4QK-nr-eHV" id="4BM-1r-h77"/>
                         <outlet property="contentView" destination="gkN-Cf-t1a" id="T4o-0n-fnr"/>
-                        <outlet property="inputContentView" destination="9RU-4L-iXf" id="fa6-V4-fdL"/>
-                        <outlet property="newLabelInput" destination="bvh-od-E0E" id="MNY-6P-d39"/>
                         <outlet property="tableView" destination="1Vx-YJ-aJb" id="MZf-DD-Ho7"/>
                         <outlet property="titleLabel" destination="1Rg-mL-nYy" id="kTA-ip-G3v"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SGO-5J-Fcd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3506" y="1506"/>
+            <point key="canvasLocation" x="1962" y="3042"/>
         </scene>
     </scenes>
     <resources>
         <image name="Logo" width="228" height="37"/>
-        <image name="SignIn" width="320" height="568"/>
-        <image name="cancel_compose" width="22" height="22"/>
-        <image name="checked_signin" width="26" height="27"/>
-        <image name="label_addlabel" width="16" height="16"/>
         <image name="login_pwdmanager" width="16" height="16"/>
         <image name="mail_check" width="24" height="24"/>
         <image name="popup_behind_image" width="106" height="153"/>
@@ -3726,11 +3210,10 @@
         <image name="signup_back" width="14" height="22"/>
         <image name="signup_logo" width="98" height="16"/>
         <image name="top_back" width="24" height="24"/>
-        <image name="unchecked_signin" width="26" height="27"/>
         <image name="welcome_logo" width="188" height="31"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="lvd-zK-Trc"/>
-        <segue reference="eJk-as-FW2"/>
+        <segue reference="BQ1-JS-Xpb"/>
     </inferredMetricsTieBreakers>
 </document>
