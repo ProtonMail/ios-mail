@@ -15,10 +15,36 @@ class HumanCheckMenuViewController: UIViewController {
     private let kSegueToEmailVerify = "check_menu_to_email_verify_segue"
     private let kSegueToPhoneVerify = "check_menu_to_phone_verify_segue"
     
+    @IBOutlet weak var recaptchaViewConstraint: NSLayoutConstraint!
+    @IBOutlet weak var emailViewConstraint: NSLayoutConstraint!
+    @IBOutlet weak var phoneViewConstraint: NSLayoutConstraint!
+    
+    private let kButtonHeight : CGFloat = 60.0
+    
     var viewModel : SignupViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.setupSignUpFunctions()
+    }
+    
+    internal func setupSignUpFunctions () {
+        let directs = viewModel.getDirect()
+        if directs.count <= 0 {
+            let alert = "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.".alertController()
+            alert.addOKAction()
+            self.presentViewController(alert, animated: true, completion: nil)
+        } else {
+            for dir in directs {
+                if dir == "recaptcha" {
+                    recaptchaViewConstraint.constant = kButtonHeight
+                } else if dir == "email" {
+                    emailViewConstraint.constant = kButtonHeight
+                } else if dir == "sms" {
+                    phoneViewConstraint.constant = kButtonHeight
+                }
+            }
+        }
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {

@@ -164,6 +164,61 @@ public class CheckUserExistResponse : ApiResponse {
 }
 
 
+public class DirectRequest<T : ApiResponse> : ApiRequest<T> {
+
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+        return nil
+    }
+    
+    override public func getIsAuthFunction() -> Bool {
+        return false
+    }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .GET
+    }
+    
+    override public func getRequestPath() -> String {
+        return UsersAPI.Path + "/direct"
+    }
+    
+    override public func getVersion() -> Int {
+        return UsersAPI.V_DirectRequest
+    }
+}
+
+public class DirectResponse : ApiResponse {
+    var isSignUpAvailable : Int = 1
+    var signupFunctions : [String]?
+    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
+        PMLog.D(response.JSONStringify(prettyPrinted: true))
+        isSignUpAvailable =  response["Direct"] as? Int ?? 1
+        
+        if let functions = response["VerifyMethods"] as? [String] {
+            signupFunctions = functions
+        }
+        return true
+    }
+}
+
+//public enum SignupFunction : Int {
+//    case email = 0
+//    case recaptcha = 1
+//    case sms = 2
+//    var toString : String {
+//        get {
+//            switch(self) {
+//            case email:
+//                return "email"
+//            case recaptcha:
+//                return "recaptcha"
+//            case sms:
+//                return "sms"
+//            }
+//        }
+//    }
+//}
+
 public enum VerifyCodeType : Int {
     case email = 0
     case recaptcha = 1

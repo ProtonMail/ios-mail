@@ -30,6 +30,12 @@ public class SignupViewModelImpl : SignupViewModel {
     private var delegate : SignupViewModelDelegate?
     private var verifyType : VerifyCodeType = .email
     
+    private var direct : [String] = []
+    
+    override func getDirect() -> [String] {
+        return direct
+    }
+    
     override init() {
         super.init()
         //register observer
@@ -191,6 +197,22 @@ public class SignupViewModelImpl : SignupViewModel {
             newsApi.call { (task, response, hasError) -> Void in
                 
             }
+        }
+    }
+    
+    override func fetchDirect(res : (directs:[String]) -> Void) {
+        if direct.count <= 0 {
+            let api = DirectRequest<DirectResponse>()
+            api.call { (task, response, hasError) -> Void in
+                if hasError {
+                    res(directs: [])
+                } else {
+                    self.direct = response?.signupFunctions ?? []
+                    res(directs: self.direct)
+                }
+            }
+        } else {
+            res(directs: self.direct)
         }
     }
     

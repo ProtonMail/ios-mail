@@ -77,10 +77,19 @@ class EncryptionSetupViewController: UIViewController {
     @IBAction func continueAction(sender: UIButton) {
         MBProgressHUD.showHUDAddedTo(view, animated: true)
         self.viewModel.generateKey { (isOk, msg, error) -> Void in
-            MBProgressHUD.hideHUDForView(self.view, animated: true)
             if error == nil {
-                self.performSegueWithIdentifier(self.kSegueToSignUpVerification, sender: self)
+                self.viewModel.fetchDirect { (directs) -> Void in
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    if directs.count > 0 {
+                        self.performSegueWithIdentifier(self.kSegueToSignUpVerification, sender: self)
+                    } else {
+                        let alert = "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.".alertController()
+                        alert.addOKAction()
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    }
+                }
             } else {
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
                 let alert = error!.alertController("Key generation failed")
                 alert.addOKAction()
                 self.presentViewController(alert, animated: true, completion: nil)

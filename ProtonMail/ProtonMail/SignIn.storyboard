@@ -1904,9 +1904,9 @@
                                 <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SLB-rw-zME" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="497"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="314"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fDh-xH-qmf">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fDh-xH-qmf" userLabel="Back button">
                                                 <rect key="frame" x="0.0" y="0.0" width="100" height="48"/>
                                                 <animations/>
                                                 <constraints>
@@ -1941,48 +1941,6 @@
                                                     <constraint firstAttribute="width" constant="98" id="lWj-0F-bON"/>
                                                 </constraints>
                                             </imageView>
-                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xSN-yE-FoB">
-                                                <rect key="frame" x="200" y="431" width="200" height="42"/>
-                                                <animations/>
-                                                <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="42" id="8RP-YN-1UE"/>
-                                                    <constraint firstAttribute="width" constant="200" id="MKJ-QU-yR2"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                <state key="normal" title="Phone Verification">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                        <integer key="value" value="6"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="phoneVerifyAction:" destination="D1E-h7-WYp" eventType="touchUpInside" id="OHE-Xj-UNq"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZwP-bW-2uu">
-                                                <rect key="frame" x="200" y="311" width="200" height="42"/>
-                                                <animations/>
-                                                <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="42" id="kSd-yM-P1q"/>
-                                                    <constraint firstAttribute="width" constant="200" id="u9R-2a-RWR"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                <state key="normal" title="reCAPTCHA">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                        <integer key="value" value="6"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="recaptchaAction:" destination="D1E-h7-WYp" eventType="touchUpInside" id="Fyz-u0-4xd"/>
-                                                </connections>
-                                            </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To prevent abuse of ProtonMail,  we need to verify that you are human." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K7E-d0-nk1">
                                                 <rect key="frame" x="28" y="179" width="544" height="36"/>
                                                 <animations/>
@@ -2003,55 +1961,135 @@
                                                     <rect key="frame" x="28" y="351" width="344" height="21"/>
                                                 </variation>
                                             </label>
-                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oEd-L3-e9c">
-                                                <rect key="frame" x="200" y="371" width="200" height="42"/>
+                                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Aq3-VR-LLt" userLabel="recaptcha_view">
+                                                <rect key="frame" x="150" y="302" width="300" height="0.0"/>
+                                                <subviews>
+                                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZwP-bW-2uu">
+                                                        <rect key="frame" x="50" y="-21" width="200" height="42"/>
+                                                        <animations/>
+                                                        <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="42" id="kSd-yM-P1q"/>
+                                                            <constraint firstAttribute="width" constant="200" id="u9R-2a-RWR"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                        <state key="normal" title="reCAPTCHA">
+                                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                <integer key="value" value="6"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="recaptchaAction:" destination="D1E-h7-WYp" eventType="touchUpInside" id="Fyz-u0-4xd"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
                                                 <animations/>
-                                                <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="200" id="adn-fe-iAO"/>
-                                                    <constraint firstAttribute="height" constant="42" id="ifI-W0-tWb"/>
+                                                    <constraint firstAttribute="centerY" secondItem="ZwP-bW-2uu" secondAttribute="centerY" id="A0c-9g-Rw4"/>
+                                                    <constraint firstAttribute="centerX" secondItem="ZwP-bW-2uu" secondAttribute="centerX" id="HxJ-ab-nIY"/>
+                                                    <constraint firstAttribute="width" constant="300" id="jKA-c5-BBU"/>
+                                                    <constraint firstAttribute="height" id="pNi-Qm-dfz"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                <state key="normal" title="Email Verification">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                        <integer key="value" value="6"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="emailVerifyAction:" destination="D1E-h7-WYp" eventType="touchUpInside" id="tFf-DP-T3V"/>
-                                                </connections>
-                                            </button>
+                                            </view>
+                                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o0O-pA-70q">
+                                                <rect key="frame" x="150" y="302" width="300" height="0.0"/>
+                                                <subviews>
+                                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oEd-L3-e9c">
+                                                        <rect key="frame" x="50" y="-21" width="200" height="42"/>
+                                                        <animations/>
+                                                        <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="200" id="adn-fe-iAO"/>
+                                                            <constraint firstAttribute="height" constant="42" id="ifI-W0-tWb"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                        <state key="normal" title="Email Verification">
+                                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                <integer key="value" value="6"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="emailVerifyAction:" destination="D1E-h7-WYp" eventType="touchUpInside" id="tFf-DP-T3V"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <animations/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="centerY" secondItem="oEd-L3-e9c" secondAttribute="centerY" id="iDF-ep-v2J"/>
+                                                    <constraint firstAttribute="height" id="qjK-GY-BB6"/>
+                                                    <constraint firstAttribute="width" constant="300" id="xdm-rD-WfM"/>
+                                                    <constraint firstAttribute="centerX" secondItem="oEd-L3-e9c" secondAttribute="centerX" id="ys6-dw-BT9"/>
+                                                </constraints>
+                                            </view>
+                                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hmd-Tr-A1H">
+                                                <rect key="frame" x="150" y="302" width="300" height="0.0"/>
+                                                <subviews>
+                                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xSN-yE-FoB">
+                                                        <rect key="frame" x="50" y="-21" width="200" height="42"/>
+                                                        <animations/>
+                                                        <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="42" id="8RP-YN-1UE"/>
+                                                            <constraint firstAttribute="width" constant="200" id="MKJ-QU-yR2"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                        <state key="normal" title="Phone Verification">
+                                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                <integer key="value" value="6"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="phoneVerifyAction:" destination="D1E-h7-WYp" eventType="touchUpInside" id="OHE-Xj-UNq"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <animations/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" id="6Kv-07-EaJ"/>
+                                                    <constraint firstAttribute="centerX" secondItem="xSN-yE-FoB" secondAttribute="centerX" id="KU0-Qa-oYu"/>
+                                                    <constraint firstAttribute="width" constant="300" id="ccW-gB-mnb"/>
+                                                    <constraint firstAttribute="centerY" secondItem="xSN-yE-FoB" secondAttribute="centerY" id="khu-ga-UQW"/>
+                                                </constraints>
+                                            </view>
                                         </subviews>
                                         <animations/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="K7E-d0-nk1" firstAttribute="top" secondItem="ND6-no-hE2" secondAttribute="bottom" priority="500" constant="18" id="6LT-az-aqX"/>
+                                            <constraint firstAttribute="centerX" secondItem="Aq3-VR-LLt" secondAttribute="centerX" id="9mV-j1-gBY"/>
                                             <constraint firstAttribute="trailing" secondItem="K7E-d0-nk1" secondAttribute="trailing" constant="28" id="Asn-Bh-x8s"/>
                                             <constraint firstItem="fDh-xH-qmf" firstAttribute="leading" secondItem="SLB-rw-zME" secondAttribute="leading" id="AyD-br-RXQ"/>
                                             <constraint firstItem="Blc-Gk-tsp" firstAttribute="top" secondItem="fDh-xH-qmf" secondAttribute="bottom" priority="1" constant="18" id="Clg-gg-XL8"/>
                                             <constraint firstAttribute="centerX" secondItem="Blc-Gk-tsp" secondAttribute="centerX" priority="500" id="D0L-F3-8e4"/>
+                                            <constraint firstItem="Hmd-Tr-A1H" firstAttribute="top" secondItem="o0O-pA-70q" secondAttribute="bottom" id="FOD-Ly-BWy"/>
                                             <constraint firstItem="fDh-xH-qmf" firstAttribute="top" secondItem="SLB-rw-zME" secondAttribute="top" id="HdW-sk-Xe5"/>
                                             <constraint firstItem="K7E-d0-nk1" firstAttribute="leading" secondItem="SLB-rw-zME" secondAttribute="leading" constant="28" id="I4e-ic-1u4"/>
                                             <constraint firstAttribute="centerX" secondItem="ND6-no-hE2" secondAttribute="centerX" priority="500" id="IJQ-BI-UHs"/>
-                                            <constraint firstAttribute="bottom" secondItem="xSN-yE-FoB" secondAttribute="bottom" priority="500" constant="24" id="K3T-fg-yx6"/>
-                                            <constraint firstAttribute="centerX" secondItem="ZwP-bW-2uu" secondAttribute="centerX" id="Nzh-xc-J66"/>
+                                            <constraint firstAttribute="centerX" secondItem="o0O-pA-70q" secondAttribute="centerX" id="K6d-n3-axT"/>
                                             <constraint firstItem="ND6-no-hE2" firstAttribute="top" secondItem="Blc-Gk-tsp" secondAttribute="bottom" priority="500" constant="12" id="OiR-G7-BXI"/>
-                                            <constraint firstAttribute="centerX" secondItem="xSN-yE-FoB" secondAttribute="centerX" id="R0x-bx-m8x"/>
-                                            <constraint firstItem="xSN-yE-FoB" firstAttribute="top" secondItem="oEd-L3-e9c" secondAttribute="bottom" constant="18" id="X34-If-0QQ"/>
                                             <constraint firstItem="Med-83-8hd" firstAttribute="top" secondItem="K7E-d0-nk1" secondAttribute="bottom" priority="500" constant="18" id="YMK-Bl-kcz"/>
+                                            <constraint firstAttribute="bottom" secondItem="Hmd-Tr-A1H" secondAttribute="bottom" priority="500" constant="12" id="ZFa-Rx-Rto"/>
                                             <constraint firstItem="Blc-Gk-tsp" firstAttribute="top" secondItem="fDh-xH-qmf" secondAttribute="bottom" priority="500" constant="45" id="cp8-fI-afl"/>
                                             <constraint firstItem="ND6-no-hE2" firstAttribute="top" secondItem="Blc-Gk-tsp" secondAttribute="bottom" priority="1" constant="6" id="dRf-xr-E36"/>
                                             <constraint firstAttribute="trailing" secondItem="Med-83-8hd" secondAttribute="trailing" constant="28" id="fUi-6E-Srd"/>
+                                            <constraint firstItem="o0O-pA-70q" firstAttribute="top" secondItem="Aq3-VR-LLt" secondAttribute="bottom" id="iNz-Ca-rzB"/>
                                             <constraint firstItem="Blc-Gk-tsp" firstAttribute="leading" secondItem="SLB-rw-zME" secondAttribute="leading" priority="1" constant="28" id="kR1-iM-TET"/>
-                                            <constraint firstAttribute="centerX" secondItem="oEd-L3-e9c" secondAttribute="centerX" id="kid-M0-JTY"/>
-                                            <constraint firstAttribute="centerX" secondItem="oEd-L3-e9c" secondAttribute="centerX" priority="500" id="m1Q-Xp-WDg"/>
-                                            <constraint firstItem="oEd-L3-e9c" firstAttribute="top" secondItem="ZwP-bW-2uu" secondAttribute="bottom" priority="500" constant="18" id="nPv-dh-gVC"/>
                                             <constraint firstItem="Med-83-8hd" firstAttribute="leading" secondItem="SLB-rw-zME" secondAttribute="leading" constant="28" id="uU0-3e-a7F"/>
+                                            <constraint firstItem="Aq3-VR-LLt" firstAttribute="top" secondItem="Med-83-8hd" secondAttribute="bottom" priority="500" constant="29" id="vvJ-XC-HdG"/>
                                             <constraint firstItem="ND6-no-hE2" firstAttribute="leading" secondItem="SLB-rw-zME" secondAttribute="leading" priority="1" constant="28" id="x6z-X4-024"/>
-                                            <constraint firstItem="ZwP-bW-2uu" firstAttribute="top" secondItem="Med-83-8hd" secondAttribute="bottom" priority="500" constant="38" id="xee-zZ-EOr"/>
+                                            <constraint firstAttribute="centerX" secondItem="Hmd-Tr-A1H" secondAttribute="centerX" id="xtS-Ln-HFl"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -2084,6 +2122,9 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="600" height="600"/>
                     <connections>
+                        <outlet property="emailViewConstraint" destination="qjK-GY-BB6" id="Tld-VP-nfz"/>
+                        <outlet property="phoneViewConstraint" destination="6Kv-07-EaJ" id="wCP-3I-NhK"/>
+                        <outlet property="recaptchaViewConstraint" destination="pNi-Qm-dfz" id="Vdc-6M-HUw"/>
                         <segue destination="KEE-gK-nEU" kind="show" identifier="check_menu_to_email_verify_segue" id="JLb-ho-vYS"/>
                         <segue destination="XYV-2Y-X0C" kind="show" identifier="check_menu_to_recaptcha_verify_segue" id="YQv-tM-1gb"/>
                         <segue destination="72v-cj-LoN" kind="show" identifier="check_menu_to_phone_verify_segue" id="8fc-ho-WgQ"/>

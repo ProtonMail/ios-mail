@@ -85,4 +85,12 @@ public class SignupViewModel : NSObject {
     func setBit(bit: Int32) {
         fatalError("This method must be overridden")
     }
+    
+    func fetchDirect(res : (directs:[String]) -> Void) {
+        fatalError("This method must be overridden")
+    }
+    
+    func getDirect() -> [String] {
+        fatalError("This method must be overridden")
+    }
 }
