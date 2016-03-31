@@ -11,6 +11,7 @@ import Foundation
 
 protocol CountryPickerViewControllerDelegate {
     func dismissed();
+    func apply(country : CountryCode);
 }
 
 class CountryPickerViewController : UIViewController {
@@ -49,6 +50,9 @@ class CountryPickerViewController : UIViewController {
         if let objects = parsedObject as? [Dictionary<String,AnyObject>] {
             countryCodes = CountryCode.getCountryCodes(objects)
         }
+        countryCodes?.sort({ (v1, v2) -> Bool in
+            return v1.country_en < v2.country_en
+        })
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -95,16 +99,11 @@ extension CountryPickerViewController: UITableViewDataSource {
         var countryCell = tableView.dequeueReusableCellWithIdentifier("country_code_table_cell", forIndexPath: indexPath) as! CountryCodeTableViewCell
         if let country = countryCodes?[indexPath.row] {
             countryCell.ConfigCell(country, vc: self)
+
         }
         return countryCell
     }
-    
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-//        if (editingStyle == .Delete) {
-//            // deleteMessageForIndexPath(indexPath)
-//        }
-    }
-    
+
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return countryCodes?.count ?? 0
     }

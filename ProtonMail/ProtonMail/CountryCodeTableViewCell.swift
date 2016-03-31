@@ -23,39 +23,26 @@ class CountryCodeTableViewCell : UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        imageView?.contentMode = .ScaleAspectFit
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-
-    func updateStatusButton () {
-//        switch self.model.status {
-//        case 0:
-//            selectStatusButton.setImage(UIImage(named:"mail_check"), forState: UIControlState.Normal)
-//            break
-//        case 1:
-//            selectStatusButton.setImage(UIImage(named:"mail_check-neutral"), forState: UIControlState.Normal)
-//            break;
-//        case 2:
-//            selectStatusButton.setImage(UIImage(named:"mail_check-active"), forState: UIControlState.Normal)
-//            break
-//        default:
-//            selectStatusButton.setImage(UIImage(named:"mail_check"), forState: UIControlState.Normal)
-//            break
-//        }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        var frame = imageView?.frame
+        print("\(frame)")
+        frame?.origin.x = 0
+        frame?.size.width = 24
+        imageView?.frame = frame!
     }
     
     func ConfigCell(countryCode : CountryCode!, vc : UIViewController) {
         let image = UIImage(named: "flags.bundle/\(countryCode.country_code!)" )
-        
-        //imageView?.image = image
-      //  imageView?.setImageWithURL(<#url: NSURL!#>, placeholderImage: <#UIImage!#>)
-        
+        imageView?.image = image
         countryLabel.text = countryCode.country_en
-        
         codeLabel.text = "+ \(countryCode.phone_code ?? 1)"
-        
-        self.updateStatusButton()
     }
 }

@@ -3080,31 +3080,31 @@
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="plus_compose" translatesAutoresizingMaskIntoConstraints="NO" id="SVL-aS-MRD">
-                                                            <rect key="frame" x="0.0" y="41" width="24" height="24"/>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="i4U-hZ-YeW">
+                                                            <rect key="frame" x="0.0" y="0.0" width="24" height="106"/>
                                                             <animations/>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" constant="24" id="NUk-c8-kxJ"/>
-                                                                <constraint firstAttribute="width" constant="24" id="pBt-zD-hHt"/>
+                                                                <constraint firstAttribute="width" constant="24" id="atm-hV-Sh6"/>
                                                             </constraints>
                                                         </imageView>
                                                     </subviews>
                                                     <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="trailing" secondItem="PfO-pL-Zk0" secondAttribute="trailing" constant="4" id="2Uk-tV-cej"/>
+                                                        <constraint firstItem="i4U-hZ-YeW" firstAttribute="top" secondItem="znd-i8-G90" secondAttribute="top" id="6Yw-9X-Zhw"/>
                                                         <constraint firstItem="PfO-pL-Zk0" firstAttribute="leading" secondItem="jWm-Zt-clR" secondAttribute="trailing" id="7VY-mp-q7J"/>
+                                                        <constraint firstItem="i4U-hZ-YeW" firstAttribute="leading" secondItem="znd-i8-G90" secondAttribute="leading" id="AKi-Gh-oSc"/>
                                                         <constraint firstAttribute="centerY" secondItem="PfO-pL-Zk0" secondAttribute="centerY" id="Dig-X8-ijy"/>
                                                         <constraint firstAttribute="centerY" secondItem="jWm-Zt-clR" secondAttribute="centerY" id="MNx-ip-TrT"/>
-                                                        <constraint firstItem="jWm-Zt-clR" firstAttribute="leading" secondItem="SVL-aS-MRD" secondAttribute="trailing" constant="4" id="VS1-r4-lrZ"/>
-                                                        <constraint firstItem="SVL-aS-MRD" firstAttribute="leading" secondItem="znd-i8-G90" secondAttribute="leading" id="evA-HF-UIj"/>
-                                                        <constraint firstAttribute="centerY" secondItem="SVL-aS-MRD" secondAttribute="centerY" id="vlt-Ww-GQG"/>
+                                                        <constraint firstAttribute="bottom" secondItem="i4U-hZ-YeW" secondAttribute="bottom" id="tqd-rD-3rd"/>
+                                                        <constraint firstItem="jWm-Zt-clR" firstAttribute="leading" secondItem="i4U-hZ-YeW" secondAttribute="trailing" constant="4" id="vaN-WN-HIY"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <animations/>
                                                 <connections>
                                                     <outlet property="codeLabel" destination="PfO-pL-Zk0" id="iJi-eo-0Yw"/>
                                                     <outlet property="countryLabel" destination="jWm-Zt-clR" id="4U1-8V-WIV"/>
-                                                    <outlet property="flagImage" destination="SVL-aS-MRD" id="JTB-Dq-AsJ"/>
+                                                    <outlet property="flagImage" destination="i4U-hZ-YeW" id="gKC-Dz-ELg"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>
@@ -3117,7 +3117,7 @@
                                         <rect key="frame" x="0.0" y="507" width="568" height="45"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lq9-2T-Q4L">
-                                                <rect key="frame" x="0.0" y="1" width="283.5" height="44"/>
+                                                <rect key="frame" x="0.0" y="1" width="284" height="44"/>
                                                 <animations/>
                                                 <color key="backgroundColor" red="0.96862745100000003" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="18"/>
@@ -3130,7 +3130,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qt8-jt-XRz">
-                                                <rect key="frame" x="284.5" y="1" width="283.5" height="44"/>
+                                                <rect key="frame" x="285" y="1" width="283" height="44"/>
                                                 <animations/>
                                                 <color key="backgroundColor" red="0.96862745100000003" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="18"/>
@@ -3206,7 +3206,6 @@
     <resources>
         <image name="Logo" width="228" height="37"/>
         <image name="login_pwdmanager" width="16" height="16"/>
-        <image name="plus_compose" width="22" height="22"/>
         <image name="popup_behind_image" width="106" height="153"/>
         <image name="sign_background_new" width="375" height="667"/>
         <image name="sign_invisiblecharacters" width="14" height="14"/>
