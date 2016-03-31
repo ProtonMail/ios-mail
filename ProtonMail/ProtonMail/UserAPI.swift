@@ -167,6 +167,7 @@ public class CheckUserExistResponse : ApiResponse {
 public enum VerifyCodeType : Int {
     case email = 0
     case recaptcha = 1
+    case sms = 2
     var toString : String {
         get {
             switch(self) {
@@ -174,6 +175,8 @@ public enum VerifyCodeType : Int {
                 return "email"
             case recaptcha:
                 return "recaptcha"
+            case sms:
+                return "sms"
             }
         }
     }
@@ -182,23 +185,23 @@ public enum VerifyCodeType : Int {
 public class VerificationCodeRequest<T : ApiResponse> : ApiRequest<T> {
     
     let userName : String!
-    let emailAddress : String!
+    let destination : String!
     let type : VerifyCodeType!
     let platform : String = "ios"
     
-    init(userName : String!, emailAddress : String!, type : VerifyCodeType!) {
+    init(userName : String!, destination : String!, type : VerifyCodeType!) {
         self.userName = userName
-        self.emailAddress = emailAddress
+        self.destination = destination
         self.type = type
     }
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
-        
+        let dest = type == .email ? ["Address" : destination] : ["Phone" : destination]
         var out : [String : AnyObject] = [
             "Username" : userName,
             "Type" : type.toString,
             "Platform" : platform,
-            "Destination" : ["Address" : emailAddress]
+            "Destination" : dest
         ]
         return out
     }

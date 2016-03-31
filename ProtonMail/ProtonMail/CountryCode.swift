@@ -11,16 +11,12 @@ import Foundation
 
 class CountryCode {
 
-    var phone_code : Int?
-    var country_en : String?
-    var country_code : String?
+    var phone_code : Int = 0
+    var country_en : String = ""
+    var country_code : String = ""
 
     func isValid() -> Bool {
-        if let pc = phone_code, let ce = country_en, let cc = country_code {
-            return pc > 0 && !ce.isEmpty && !cc.isEmpty
-        }
-        
-        return false
+        return phone_code > 0 && !country_en.isEmpty && !country_code.isEmpty
     }
     
     static func getCountryCodes (content: [Dictionary<String,AnyObject>]!) -> [CountryCode]! {
@@ -37,9 +33,9 @@ class CountryCode {
     }
     
     func parseCountryCode (content: Dictionary<String,AnyObject>!) -> Bool {
-        country_en = content["country_en"] as? String
-        country_code = content["country_code"] as? String
-        phone_code =  content["phone_code"] as? Int
+        country_en = content["country_en"] as? String ?? ""
+        country_code = content["country_code"] as? String ?? ""
+        phone_code =  content["phone_code"] as? Int ?? 0
         
         return isValid()
     }

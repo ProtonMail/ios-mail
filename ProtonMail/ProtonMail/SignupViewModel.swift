@@ -22,7 +22,7 @@ public class SignupViewModel : NSObject {
         fatalError("This method must be overridden")
     }
     
-    func sendVerifyCode (complete: SendVerificationCodeBlock!) -> Void {
+    func sendVerifyCode (type: VerifyCodeType, complete: SendVerificationCodeBlock!) -> Void {
         fatalError("This method must be overridden")
     }
     
@@ -54,6 +54,17 @@ public class SignupViewModel : NSObject {
     func setCodeEmail(email : String) {
         fatalError("This method must be overridden")
     }
+    func setCodePhone(phone : String) {
+        fatalError("This method must be overridden")
+    }
+    
+    func setEmailVerifyCode(code: String) {
+        fatalError("This method must be overridden")
+    }
+    
+    func setPhoneVerifyCode (code: String) {
+        fatalError("This method must be overridden")
+    }
     
     func setPasswords(loginPwd:String, mailboxPwd:String) {
         fatalError("This method must be overridden")
@@ -62,11 +73,7 @@ public class SignupViewModel : NSObject {
     func setAgreePolicy(isAgree : Bool) {
         fatalError("This method must be overridden")
     }
-    
-    func setVerifyCode(code : String ) {
-        fatalError("This method must be overridden")
-    }
-    
+        
     func getTimerSet () -> Int {
         fatalError("This method must be overridden")
     }

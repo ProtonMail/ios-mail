@@ -15,7 +15,7 @@ public class SignupViewModelImpl : SignupViewModel {
     private var isExpired : Bool = true
     private var newKey : PMNOpenPgpKey?
     private var domain : String = ""
-    private var codeEmail : String = ""
+    private var destination : String = ""
     private var recoverEmail : String = ""
     private var news : Bool = true
     private var login : String = ""
@@ -81,10 +81,16 @@ public class SignupViewModelImpl : SignupViewModel {
         return !isExpired
     }
     
-    override func setVerifyCode(code: String) {
+    override func setEmailVerifyCode(code: String) {
         self.token = code
         self.isExpired = false
         self.verifyType = .email
+    }
+    
+    override func setPhoneVerifyCode (code: String) {
+        self.token = code
+        self.isExpired = false
+        self.verifyType = .sms
     }
     
     override func generateKey(complete: GenerateKey) {
@@ -145,8 +151,8 @@ public class SignupViewModelImpl : SignupViewModel {
         }
     }
     
-    override func sendVerifyCode(complete: SendVerificationCodeBlock!) {
-        let api = VerificationCodeRequest(userName: self.userName, emailAddress: codeEmail, type: .email)
+    override func sendVerifyCode(type: VerifyCodeType, complete: SendVerificationCodeBlock!) {
+        let api = VerificationCodeRequest(userName: self.userName, destination: destination, type: type)
         api.call { (task, response, hasError) -> Void in
             if !hasError {
                 self.lastSendTime = NSDate()
@@ -189,9 +195,13 @@ public class SignupViewModelImpl : SignupViewModel {
     }
     
     override func setCodeEmail(email: String) {
-        self.codeEmail = email
+        self.destination = email
         self.recoverEmail = email
         self.news = true
+    }
+    
+    override func setCodePhone(phone: String) {
+        self.destination = phone
     }
     
     override func setPasswords(loginPwd: String, mailboxPwd: String) {

@@ -22,6 +22,8 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
     @IBOutlet weak var sendCodeButton: UIButton!
     @IBOutlet weak var continueButton: UIButton!
     
+    @IBOutlet weak var pickerButton: UIButton!
+    
     //define
     private let hidePriority : UILayoutPriority = 1.0;
     private let showPriority: UILayoutPriority = 750.0;
@@ -45,6 +47,8 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
     
     private var timer : NSTimer!
     
+    private var countryCode : String = "+1"
+    
     func configConstraint(show : Bool) -> Void {
         let level = show ? showPriority : hidePriority
         
@@ -62,8 +66,13 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
         super.viewDidLoad()
         emailTextField.attributedPlaceholder = NSAttributedString(string: "Cell phone number", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
         verifyCodeTextField.attributedPlaceholder = NSAttributedString(string: "Enter Verification Code", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
-        
+        self.updateCountryCode(1)
         self.updateButtonStatus()
+    }
+    
+    func updateCountryCode(code : Int) {
+        countryCode = "+\(code)"
+        pickerButton.setTitle(self.countryCode, forState: UIControlState.Normal)
     }
     
     override func shouldShowSideMenu() -> Bool {
@@ -141,6 +150,7 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
             viewController.viewModel = self.viewModel
         } else if segue.identifier == kSegueToCountryPicker {
             let popup = segue.destinationViewController as! CountryPickerViewController
+            popup.delegate = self
             self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }
@@ -151,18 +161,19 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
     }
     
     @IBAction func sendCodeAction(sender: UIButton) {
-        let emailaddress = emailTextField.text
+        let phonenumber = emailTextField.text ?? ""
+        let buildPhonenumber = "\(countryCode)\(phonenumber)"
         MBProgressHUD.showHUDAddedTo(view, animated: true)
-        viewModel.setCodeEmail(emailaddress)
-        self.viewModel.sendVerifyCode { (isOK, error) -> Void in
+        viewModel.setCodePhone(buildPhonenumber)
+        self.viewModel.sendVerifyCode (.sms) { (isOK, error) -> Void in
             MBProgressHUD.hideHUDForView(self.view, animated: true)
             if !isOK {
                 var alert :  UIAlertController!
                 var title = "Verification code request failed"
                 var message = ""
-                if error?.code == 12201 { //USER_CODE_EMAIL_INVALID = 12201
-                    title = "Email address invalid"
-                    message = "Please input a valid email address."
+                if error?.code == 12231 {
+                    title = "Phone number invalid"
+                    message = "Please input a valid cell phone number."
                 } else {
                     message = error!.localizedDescription
                 }
@@ -170,7 +181,7 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
                 alert.addOKAction()
                 self.presentViewController(alert, animated: true, completion: nil)
             } else {
-                let alert = UIAlertController(title: "Verification code sent", message: "Please check your email for the verification code.", preferredStyle: .Alert)
+                let alert = UIAlertController(title: "Verification code sent", message: "Please check your cell phone for the verification code.", preferredStyle: .Alert)
                 alert.addOKAction()
                 self.presentViewController(alert, animated: true, completion: nil)
             }
@@ -187,7 +198,7 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
         doneClicked = true;
         MBProgressHUD.showHUDAddedTo(view, animated: true)
         dismissKeyboard()
-        viewModel.setVerifyCode(verifyCodeTextField.text)
+        viewModel.setPhoneVerifyCode(verifyCodeTextField.text)
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.viewModel.createNewUser { (isOK, createDone, message, error) -> Void in
                 MBProgressHUD.hideHUDForView(self.view, animated: true)
@@ -263,6 +274,17 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
         } else {
             continueButton.enabled = true
         }
+    }
+}
+
+extension PhoneVerifyViewController : CountryPickerViewControllerDelegate {
+    
+    func dismissed() {
+        
+    }
+    
+    func apply(country: CountryCode) {
+        self.updateCountryCode(country.phone_code)
     }
 }
 

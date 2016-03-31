@@ -2736,6 +2736,7 @@
                         <outlet property="emailTextField" destination="t5M-6y-Nuz" id="20n-Ti-R4k"/>
                         <outlet property="logoLeftPaddingConstraint" destination="C7r-Xw-Htq" id="pbW-iM-BKT"/>
                         <outlet property="logoTopPaddingConstraint" destination="0CI-qW-16f" id="0g6-P4-Q54"/>
+                        <outlet property="pickerButton" destination="QPe-tj-Afs" id="YxZ-Da-d5Z"/>
                         <outlet property="scrollBottomPaddingConstraint" destination="lUw-za-tIZ" id="N3e-iO-CzX"/>
                         <outlet property="sendCodeButton" destination="hpx-h5-Gvz" id="gbN-uZ-KyN"/>
                         <outlet property="titleLeftPaddingConstraint" destination="3c1-jX-33H" id="M4V-th-Mlt"/>
@@ -3220,6 +3221,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="lvd-zK-Trc"/>
-        <segue reference="BQ1-JS-Xpb"/>
+        <segue reference="eJk-as-FW2"/>
     </inferredMetricsTieBreakers>
 </document>

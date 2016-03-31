@@ -33,16 +33,15 @@ class CountryCodeTableViewCell : UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         var frame = imageView?.frame
-        print("\(frame)")
         frame?.origin.x = 0
         frame?.size.width = 24
         imageView?.frame = frame!
     }
     
     func ConfigCell(countryCode : CountryCode!, vc : UIViewController) {
-        let image = UIImage(named: "flags.bundle/\(countryCode.country_code!)" )
+        let image = UIImage(named: "flags.bundle/\(countryCode.country_code)" )
         imageView?.image = image
         countryLabel.text = countryCode.country_en
-        codeLabel.text = "+ \(countryCode.phone_code ?? 1)"
+        codeLabel.text = "+ \(countryCode.phone_code)"
     }
 }
