@@ -152,7 +152,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
                 MBProgressHUD.hideHUDForView(view, animated: true)
                 self.goPasswordsView()
             } else {
-                let userName = usernameTextField.text
+                let userName = (usernameTextField.text ?? "").trim()
                 if !userName.isEmpty {
                     startChecking()
                     viewModel.checkUserName(userName, complete: { (isOk, error) -> Void in
@@ -184,7 +184,8 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     }
     
     func goPasswordsView() {
-        viewModel.setPickedUserName(usernameTextField.text, domain: domains[selected])
+        let username = (usernameTextField.text ?? "").trim()
+        viewModel.setPickedUserName(username, domain: domains[selected])
         self.performSegueWithIdentifier(kSegueToSignUpPassword, sender: self)
     }
     
@@ -289,7 +290,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     func checkUserName() {
         if !stopLoading {
             if !checkUserStatus {
-                let userName = usernameTextField.text
+                let userName = (usernameTextField.text ?? "").trim()
                 if !userName.isEmpty {
                     startChecking()
                     viewModel.checkUserName(userName, complete: { (isOk, error) -> Void in
