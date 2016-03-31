@@ -54,7 +54,6 @@
 		07A0E1AB1A9D2D1D005FD04B /* NSStringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A0E1AA1A9D2D1D005FD04B /* NSStringExtension.swift */; };
 		07A0E1AD1A9D3C64005FD04B /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07A0E1AC1A9D3C64005FD04B /* UserInfo.swift */; };
 		07B123781AB8CD90006EA38C /* Attachments.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07B123771AB8CD90006EA38C /* Attachments.storyboard */; };
-		07B1237A1AB8CE6A006EA38C /* AttachmentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B123791AB8CE6A006EA38C /* AttachmentsViewController.swift */; };
 		07B1237E1AB8ECEC006EA38C /* AttachmentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B1237D1AB8ECEC006EA38C /* AttachmentCollectionViewCell.swift */; };
 		07B797C01A6EDFF400244532 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B797BF1A6EDFF400244532 /* APIService.swift */; };
 		07B797C21A6EE50F00244532 /* APIService+AuthenticationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B797C11A6EE50F00244532 /* APIService+AuthenticationExtension.swift */; };
@@ -131,6 +130,8 @@
 		75150ED11B1E74A20013B476 /* SettingDebugTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75150ED01B1E74A20013B476 /* SettingDebugTableViewController.swift */; };
 		751562551B68E8050066FE38 /* EmailAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751562541B68E8050066FE38 /* EmailAttachmentView.swift */; };
 		7518393F1B3DCA3000C714A6 /* EventAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7518393E1B3DCA3000C714A6 /* EventAPI.swift */; };
+		75187BB11CAC54DD00C84382 /* phone_country_code.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 75E49F0B1CAB23EB00235ACC /* phone_country_code.geojson */; };
+		75187BB21CAC54DD00C84382 /* phone_country_code.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 75E49F0B1CAB23EB00235ACC /* phone_country_code.geojson */; };
 		751B446E1B81245100B68CD6 /* TableCellLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B446D1B81245100B68CD6 /* TableCellLabelView.swift */; };
 		751C5FEA1C49C17700949FBF /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 751C5FE81C49C17700949FBF /* SwiftTryCatch.m */; };
 		751D49F01BE356180008E75C /* LabelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751D49EF1BE356180008E75C /* LabelsView.swift */; };
@@ -297,7 +298,6 @@
 		75DE7CF41CAAEA4900F5443E /* MultipartResponseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7523E8BF1BB182B300126D62 /* MultipartResponseParser.m */; };
 		75DE7CF51CAAEA4900F5443E /* ViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339BF1ABB45C700535F1B /* ViewModelFactory.swift */; };
 		75DE7CF61CAAEA4900F5443E /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F9A1111AFD705B007229C7 /* UIDeviceExtension.swift */; };
-		75DE7CF71CAAEA4900F5443E /* AttachmentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B123791AB8CE6A006EA38C /* AttachmentsViewController.swift */; };
 		75DE7CF81CAAEA4900F5443E /* CustomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754CD48A1AB80D770084C54A /* CustomHeaderView.swift */; };
 		75DE7CF91CAAEA4900F5443E /* MonitorSavesDataServiceMessageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072AB6901A8E89AD00AF45D6 /* MonitorSavesDataServiceMessageExtension.swift */; };
 		75DE7CFA1CAAEA4900F5443E /* RecipientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DCB2051BA2A1560085BE8C /* RecipientCell.swift */; };
@@ -474,7 +474,19 @@
 		75DE7EB31CAAEF9400F5443E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 075E3DF51A5F4ECF00E001A7 /* Images.xcassets */; };
 		75DF17A91AB8FAB8008A032B /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DF17A81AB8FAB8008A032B /* ArrayExtension.swift */; };
 		75DF17AB1AB9051F008A032B /* StorageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DF17AA1AB9051F008A032B /* StorageViewCell.swift */; };
+		75E090501CAC6E8E00751136 /* CountryCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0904F1CAC6E8E00751136 /* CountryCode.swift */; };
+		75E090511CAC722E00751136 /* CountryCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0904F1CAC6E8E00751136 /* CountryCode.swift */; };
+		75E090541CAC7A3A00751136 /* CountryCodeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E090531CAC7A3A00751136 /* CountryCodeTableViewCell.swift */; };
+		75E090551CAC7A3A00751136 /* CountryCodeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E090531CAC7A3A00751136 /* CountryCodeTableViewCell.swift */; };
 		75E49EFB1CAAF47D00235ACC /* InfoDev.plist in Resources */ = {isa = PBXBuildFile; fileRef = 75E49EFA1CAAF47D00235ACC /* InfoDev.plist */; };
+		75E49F091CAB200000235ACC /* flags.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 75E49F081CAB200000235ACC /* flags.bundle */; };
+		75E49F0A1CAB220600235ACC /* flags.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 75E49F081CAB200000235ACC /* flags.bundle */; };
+		75E49F0D1CAB256900235ACC /* PhoneVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E49F0C1CAB256900235ACC /* PhoneVerifyViewController.swift */; };
+		75E49F0F1CAB288F00235ACC /* CountryPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E49F0E1CAB288F00235ACC /* CountryPickerViewController.swift */; };
+		75E49F101CAB296500235ACC /* PhoneVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E49F0C1CAB256900235ACC /* PhoneVerifyViewController.swift */; };
+		75E49F111CAB296900235ACC /* CountryPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E49F0E1CAB288F00235ACC /* CountryPickerViewController.swift */; };
+		75E49F131CAB2D2100235ACC /* SignupViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E49F121CAB2D2100235ACC /* SignupViewModelImpl.swift */; };
+		75E49F141CAB2EA700235ACC /* SignupViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E49F121CAB2D2100235ACC /* SignupViewModelImpl.swift */; };
 		75E652B41B82AC0D0084DDF8 /* LabelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E652B31B82AC0D0084DDF8 /* LabelsViewController.swift */; };
 		75ECC2381AB9F28100B8FC78 /* ChangePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECC2371AB9F28100B8FC78 /* ChangePasswordViewModel.swift */; };
 		75ECCDFE1B31F01000A8C800 /* APIServiceDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECCDFD1B31F01000A8C800 /* APIServiceDefined.swift */; };
@@ -560,7 +572,6 @@
 		07A0E1AA1A9D2D1D005FD04B /* NSStringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSStringExtension.swift; sourceTree = "<group>"; };
 		07A0E1AC1A9D3C64005FD04B /* UserInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		07B123771AB8CD90006EA38C /* Attachments.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Attachments.storyboard; sourceTree = "<group>"; };
-		07B123791AB8CE6A006EA38C /* AttachmentsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsViewController.swift; sourceTree = "<group>"; };
 		07B1237D1AB8ECEC006EA38C /* AttachmentCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentCollectionViewCell.swift; sourceTree = "<group>"; };
 		07B797BF1A6EDFF400244532 /* APIService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = APIService.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		07B797C11A6EE50F00244532 /* APIService+AuthenticationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+AuthenticationExtension.swift"; sourceTree = "<group>"; };
@@ -752,7 +763,14 @@
 		75DE7DAE1CAAEA4900F5443E /* ProtonMail.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProtonMail.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75DF17A81AB8FAB8008A032B /* ArrayExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		75DF17AA1AB9051F008A032B /* StorageViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageViewCell.swift; sourceTree = "<group>"; };
+		75E0904F1CAC6E8E00751136 /* CountryCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryCode.swift; sourceTree = "<group>"; };
+		75E090531CAC7A3A00751136 /* CountryCodeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryCodeTableViewCell.swift; sourceTree = "<group>"; };
 		75E49EFA1CAAF47D00235ACC /* InfoDev.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InfoDev.plist; sourceTree = "<group>"; };
+		75E49F081CAB200000235ACC /* flags.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = flags.bundle; sourceTree = "<group>"; };
+		75E49F0B1CAB23EB00235ACC /* phone_country_code.geojson */ = {isa = PBXFileReference; lastKnownFileType = text; path = phone_country_code.geojson; sourceTree = "<group>"; };
+		75E49F0C1CAB256900235ACC /* PhoneVerifyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhoneVerifyViewController.swift; sourceTree = "<group>"; };
+		75E49F0E1CAB288F00235ACC /* CountryPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryPickerViewController.swift; sourceTree = "<group>"; };
+		75E49F121CAB2D2100235ACC /* SignupViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewModelImpl.swift; sourceTree = "<group>"; };
 		75E652B31B82AC0D0084DDF8 /* LabelsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelsViewController.swift; sourceTree = "<group>"; };
 		75ECC2371AB9F28100B8FC78 /* ChangePasswordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewModel.swift; sourceTree = "<group>"; };
 		75ECCDFD1B31F01000A8C800 /* APIServiceDefined.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIServiceDefined.swift; sourceTree = "<group>"; };
@@ -814,6 +832,7 @@
 		07009EFD1A659A8000129B07 /* Sign In */ = {
 			isa = PBXGroup;
 			children = (
+				75E090521CAC79F500751136 /* Cell */,
 				75C037471C1F9A940071E04B /* SplashSignInSegue.swift */,
 				75C037451C1F94D20071E04B /* SplashViewController.swift */,
 				0713238F1A79BD8F0043DB41 /* TextInsetTextField.swift */,
@@ -825,6 +844,8 @@
 				758C44831C6D09FE00E6E867 /* EncryptionSetupViewController.swift */,
 				75F463871C5FEBF400918B46 /* HumanCheckMenuViewController.swift */,
 				75F463891C60071B00918B46 /* EmailVerifyViewController.swift */,
+				75E49F0C1CAB256900235ACC /* PhoneVerifyViewController.swift */,
+				75E49F0E1CAB288F00235ACC /* CountryPickerViewController.swift */,
 				750AAAC31C23E5CF00BAC444 /* RecaptchaViewController.swift */,
 				750AAAC51C2490DB00BAC444 /* SignUpEmailViewController.swift */,
 				750AAAC91C2491A400BAC444 /* OldViews */,
@@ -897,21 +918,10 @@
 		073FD92D1A71C33B00EB0CAF /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				07CFC9D31A81A2B0007A72B7 /* Attachment.swift */,
-				07CF61911A8988F100ED38AE /* AttachmentExtension.swift */,
-				75B1794B1B376D2D006044D4 /* AttachmentHelper.swift */,
-				073FE01C1A9561F600825980 /* Contact.swift */,
-				073FE01E1A95620D00825980 /* ContactExtension.swift */,
-				071323991A7C02AB0043DB41 /* Message.swift */,
-				07CF61931A89895600ED38AE /* MessageExtension.swift */,
-				075F0A531ABF5E3E00E6B9AE /* MessageAction.swift */,
-				075F0A511ABF5DB500E6B9AE /* MessageLocation.swift */,
-				7567B07A1B338EB900A72A1E /* MessageHelper.swift */,
+				75E0904E1CAC6D7600751136 /* CoreData */,
 				7565998E1AC4809B00C187E4 /* EncryptTypes.swift */,
-				075E3DED1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld */,
 				07A0E1AC1A9D3C64005FD04B /* UserInfo.swift */,
-				755B6A6F1B38C0B800745872 /* Label.swift */,
-				756489911B7DC8B8007EA207 /* LabelExtension.swift */,
+				75E0904F1CAC6E8E00751136 /* CountryCode.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1018,7 +1028,6 @@
 				752D3DC01BD18CA800103DC8 /* AttachmentsTableViewController.swift */,
 				07B1237D1AB8ECEC006EA38C /* AttachmentCollectionViewCell.swift */,
 				07B123771AB8CD90006EA38C /* Attachments.storyboard */,
-				07B123791AB8CE6A006EA38C /* AttachmentsViewController.swift */,
 			);
 			name = Attachments;
 			sourceTree = "<group>";
@@ -1152,6 +1161,7 @@
 		706628241A71681300164117 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				706961FE1A7136A0001443B2 /* ProtonMailViewController.swift */,
 				755F92151C7E67C200BAEDF9 /* Onboarding */,
 				07B123761AB8CD76006EA38C /* Attachments */,
 				07CB23541AB0F20F00699068 /* Bugs */,
@@ -1161,7 +1171,6 @@
 				70945E681A80F331002B6837 /* Mailbox */,
 				75E652B21B82AA630084DDF8 /* Labels */,
 				701704761A79185D000A90D2 /* Message Detail */,
-				706961FE1A7136A0001443B2 /* ProtonMailViewController.swift */,
 				706932A91A77BE2900A75A93 /* Search */,
 				706962041A713960001443B2 /* Settings */,
 				07009EFD1A659A8000129B07 /* Sign In */,
@@ -1314,6 +1323,8 @@
 				07009F101A684BDB00129B07 /* Fonts */,
 				75978BDA1B28F63100D07501 /* editor.css */,
 				7526AC8D1B6C4B3700E1967E /* backup.css */,
+				75E49F081CAB200000235ACC /* flags.bundle */,
+				75E49F0B1CAB23EB00235ACC /* phone_country_code.geojson */,
 			);
 			name = Resource;
 			sourceTree = "<group>";
@@ -1342,6 +1353,43 @@
 			name = Defined;
 			sourceTree = "<group>";
 		};
+		75E0904E1CAC6D7600751136 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				07CFC9D31A81A2B0007A72B7 /* Attachment.swift */,
+				07CF61911A8988F100ED38AE /* AttachmentExtension.swift */,
+				75B1794B1B376D2D006044D4 /* AttachmentHelper.swift */,
+				073FE01C1A9561F600825980 /* Contact.swift */,
+				073FE01E1A95620D00825980 /* ContactExtension.swift */,
+				071323991A7C02AB0043DB41 /* Message.swift */,
+				07CF61931A89895600ED38AE /* MessageExtension.swift */,
+				075F0A531ABF5E3E00E6B9AE /* MessageAction.swift */,
+				075F0A511ABF5DB500E6B9AE /* MessageLocation.swift */,
+				7567B07A1B338EB900A72A1E /* MessageHelper.swift */,
+				075E3DED1A5F4ECF00E001A7 /* ProtonMail.xcdatamodeld */,
+				755B6A6F1B38C0B800745872 /* Label.swift */,
+				756489911B7DC8B8007EA207 /* LabelExtension.swift */,
+			);
+			name = CoreData;
+			sourceTree = "<group>";
+		};
+		75E090521CAC79F500751136 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				75E090531CAC7A3A00751136 /* CountryCodeTableViewCell.swift */,
+			);
+			name = Cell;
+			sourceTree = "<group>";
+		};
+		75E49EFE1CAB07BC00235ACC /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				75F023AE1C4E0271008F6276 /* SignupViewModel.swift */,
+				75E49F121CAB2D2100235ACC /* SignupViewModelImpl.swift */,
+			);
+			name = SignUp;
+			sourceTree = "<group>";
+		};
 		75E652B21B82AA630084DDF8 /* Labels */ = {
 			isa = PBXGroup;
 			children = (
@@ -1354,7 +1402,7 @@
 		75ECC2361AB9F10600B8FC78 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				75F023AE1C4E0271008F6276 /* SignupViewModel.swift */,
+				75E49EFE1CAB07BC00235ACC /* SignUp */,
 				7567B06A1B334AF200A72A1E /* ComposeViewModel.swift */,
 				7564899D1B7F2C9F007EA207 /* ComposeViewModelImpl.swift */,
 				75ECC2371AB9F28100B8FC78 /* ChangePasswordViewModel.swift */,
@@ -1559,6 +1607,7 @@
 				7061A3F51A6E8C9D0006D36C /* Menu.storyboard in Resources */,
 				075E3DF91A5F4ECF00E001A7 /* LaunchScreen.xib in Resources */,
 				07009F131A684C1900129B07 /* Roboto-Light.ttf in Resources */,
+				75E49F091CAB200000235ACC /* flags.bundle in Resources */,
 				7048B9F51A9E385B00D45F57 /* ContactsTableViewCell.xib in Resources */,
 				07B123781AB8CD90006EA38C /* Attachments.storyboard in Resources */,
 				755638C11CA1AE42003FA2D0 /* ShowImageView.xib in Resources */,
@@ -1566,6 +1615,7 @@
 				75E49EFB1CAAF47D00235ACC /* InfoDev.plist in Resources */,
 				07009F141A684C1900129B07 /* Roboto-Thin.ttf in Resources */,
 				7558C5481BE82D6300043009 /* LabelsView.xib in Resources */,
+				75187BB11CAC54DD00C84382 /* phone_country_code.geojson in Resources */,
 				75117C481BA217CE00A0CE68 /* RecipientView.xib in Resources */,
 				7582E2F41B015DF100FEA38B /* MessageDetailBottomView.xib in Resources */,
 				75230C271B9A430F00EC2AC2 /* TempXIB.xib in Resources */,
@@ -1592,6 +1642,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				75DE7D891CAAEA4900F5443E /* MailboxRateReviewCell.xib in Resources */,
+				75187BB21CAC54DD00C84382 /* phone_country_code.geojson in Resources */,
+				75E49F0A1CAB220600235ACC /* flags.bundle in Resources */,
 				75DE7D8A1CAAEA4900F5443E /* ExpirationView.xib in Resources */,
 				75DE7D8B1CAAEA4900F5443E /* OnboardingView.xib in Resources */,
 				75DE7D8C1CAAEA4900F5443E /* editor.css in Resources */,
@@ -1845,7 +1897,6 @@
 				7523E8C01BB182B300126D62 /* MultipartResponseParser.m in Sources */,
 				759339C01ABB45C700535F1B /* ViewModelFactory.swift in Sources */,
 				75F9A1121AFD705B007229C7 /* UIDeviceExtension.swift in Sources */,
-				07B1237A1AB8CE6A006EA38C /* AttachmentsViewController.swift in Sources */,
 				754CD48B1AB80D770084C54A /* CustomHeaderView.swift in Sources */,
 				072AB6911A8E89AD00AF45D6 /* MonitorSavesDataServiceMessageExtension.swift in Sources */,
 				75DCB2071BA2A1560085BE8C /* RecipientCell.swift in Sources */,
@@ -1872,6 +1923,7 @@
 				076758781AA0EB6900F9AC9C /* LoadingView.swift in Sources */,
 				701DDE901AA64DEB0038149C /* MBContactCollectionView.m in Sources */,
 				7523E88E1BB1561F00126D62 /* NSData+MultipartResponses.m in Sources */,
+				75E090501CAC6E8E00751136 /* CountryCode.swift in Sources */,
 				7564898E1B7DBE64007EA207 /* LabelAPI.swift in Sources */,
 				7580D65A1C8E440200A15885 /* OnePasswordExtension.m in Sources */,
 				75E652B41B82AC0D0084DDF8 /* LabelsViewController.swift in Sources */,
@@ -1915,11 +1967,14 @@
 				7508BAC61B87C6EA001A3564 /* UIApplicationExtension.swift in Sources */,
 				701DDE8E1AA64DEB0038149C /* MBContactPicker.m in Sources */,
 				07CC99641A6F076A000FD6F8 /* NSErrorExtension.swift in Sources */,
+				75E49F0D1CAB256900235ACC /* PhoneVerifyViewController.swift in Sources */,
 				756DAC451C92B30300F3486C /* FeedbackPopViewController.swift in Sources */,
 				075F0A521ABF5DB500E6B9AE /* MessageLocation.swift in Sources */,
+				75E090541CAC7A3A00751136 /* CountryCodeTableViewCell.swift in Sources */,
 				751B446E1B81245100B68CD6 /* TableCellLabelView.swift in Sources */,
 				75ECCE021B31F44600A8C800 /* AuthAPI.swift in Sources */,
 				750778CE1BE98900009F516C /* UserAPI.swift in Sources */,
+				75E49F0F1CAB288F00235ACC /* CountryPickerViewController.swift in Sources */,
 				07CC99661A6F1380000FD6F8 /* FoundationExtension.swift in Sources */,
 				751562551B68E8050066FE38 /* EmailAttachmentView.swift in Sources */,
 				073FE0191A955ED900825980 /* ContactDataService.swift in Sources */,
@@ -1927,6 +1982,7 @@
 				07CCCC2B1AA292C200ECA79E /* UITableViewExtension.swift in Sources */,
 				709FE39D1A9643CF00034288 /* UIScrollViewExtension.swift in Sources */,
 				0713239A1A7C02AB0043DB41 /* Message.swift in Sources */,
+				75E49F131CAB2D2100235ACC /* SignupViewModelImpl.swift in Sources */,
 				75539CAD1C6BEF2B001DD042 /* NSDataExtension.swift in Sources */,
 				756489961B7E94BB007EA207 /* UIImageExtension.swift in Sources */,
 				0767587A1AA126E400F9AC9C /* StorageLimit.swift in Sources */,
@@ -2069,7 +2125,6 @@
 				75DE7CF41CAAEA4900F5443E /* MultipartResponseParser.m in Sources */,
 				75DE7CF51CAAEA4900F5443E /* ViewModelFactory.swift in Sources */,
 				75DE7CF61CAAEA4900F5443E /* UIDeviceExtension.swift in Sources */,
-				75DE7CF71CAAEA4900F5443E /* AttachmentsViewController.swift in Sources */,
 				75DE7CF81CAAEA4900F5443E /* CustomHeaderView.swift in Sources */,
 				75DE7CF91CAAEA4900F5443E /* MonitorSavesDataServiceMessageExtension.swift in Sources */,
 				75DE7CFA1CAAEA4900F5443E /* RecipientCell.swift in Sources */,
@@ -2096,6 +2151,7 @@
 				75DE7D0F1CAAEA4900F5443E /* LoadingView.swift in Sources */,
 				75DE7D101CAAEA4900F5443E /* MBContactCollectionView.m in Sources */,
 				75DE7D111CAAEA4900F5443E /* NSData+MultipartResponses.m in Sources */,
+				75E090511CAC722E00751136 /* CountryCode.swift in Sources */,
 				75DE7D121CAAEA4900F5443E /* LabelAPI.swift in Sources */,
 				75DE7D131CAAEA4900F5443E /* OnePasswordExtension.m in Sources */,
 				75DE7D141CAAEA4900F5443E /* LabelsViewController.swift in Sources */,
@@ -2142,9 +2198,11 @@
 				75DE7D3D1CAAEA4900F5443E /* FeedbackPopViewController.swift in Sources */,
 				75DE7D3E1CAAEA4900F5443E /* MessageLocation.swift in Sources */,
 				75DE7D3F1CAAEA4900F5443E /* TableCellLabelView.swift in Sources */,
+				75E090551CAC7A3A00751136 /* CountryCodeTableViewCell.swift in Sources */,
 				75DE7D401CAAEA4900F5443E /* AuthAPI.swift in Sources */,
 				75DE7D411CAAEA4900F5443E /* UserAPI.swift in Sources */,
 				75DE7D421CAAEA4900F5443E /* FoundationExtension.swift in Sources */,
+				75E49F111CAB296900235ACC /* CountryPickerViewController.swift in Sources */,
 				75DE7D431CAAEA4900F5443E /* EmailAttachmentView.swift in Sources */,
 				75DE7D441CAAEA4900F5443E /* ContactDataService.swift in Sources */,
 				75DE7D451CAAEA4900F5443E /* MailboxViewController.swift in Sources */,
@@ -2152,6 +2210,7 @@
 				75DE7D471CAAEA4900F5443E /* UIScrollViewExtension.swift in Sources */,
 				75DE7D481CAAEA4900F5443E /* Message.swift in Sources */,
 				75DE7D491CAAEA4900F5443E /* NSDataExtension.swift in Sources */,
+				75E49F141CAB2EA700235ACC /* SignupViewModelImpl.swift in Sources */,
 				75DE7D4A1CAAEA4900F5443E /* UIImageExtension.swift in Sources */,
 				75DE7D4B1CAAEA4900F5443E /* StorageLimit.swift in Sources */,
 				75DE7D4C1CAAEA4900F5443E /* MultiLabelDisplayView.swift in Sources */,
@@ -2201,6 +2260,7 @@
 				75DE7D781CAAEA4900F5443E /* MessageDetailBottomView.swift in Sources */,
 				75DE7D791CAAEA4900F5443E /* CoreDataService.swift in Sources */,
 				75DE7D7A1CAAEA4900F5443E /* GeneralSettingViewCell.swift in Sources */,
+				75E49F101CAB296500235ACC /* PhoneVerifyViewController.swift in Sources */,
 				75DE7D7B1CAAEA4900F5443E /* StorageViewCell.swift in Sources */,
 				75DE7D7C1CAAEA4900F5443E /* APIService+AttachmentExtension.swift in Sources */,
 				75DE7D7D1CAAEA4900F5443E /* AttachmentTableViewCell.swift in Sources */,

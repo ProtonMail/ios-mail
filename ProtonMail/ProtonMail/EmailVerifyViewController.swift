@@ -10,6 +10,7 @@ import UIKit
 
 class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     
+    
     @IBOutlet weak var emailTextField: TextInsetTextField!
     @IBOutlet weak var verifyCodeTextField: TextInsetTextField!
     
@@ -38,6 +39,7 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     private var checkUserStatus : Bool = false
     private var stopLoading : Bool = false
     var viewModel : SignupViewModel!
+    
     private var doneClicked : Bool = false
     
     private var timer : NSTimer!
@@ -141,7 +143,7 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
         let emailaddress = emailTextField.text
         MBProgressHUD.showHUDAddedTo(view, animated: true)
         viewModel.setCodeEmail(emailaddress)
-        self.viewModel.sendVerifyCode { (isOK, error) -> Void in
+        self.viewModel.sendVerifyCode (.email) { (isOK, error) -> Void in
             MBProgressHUD.hideHUDForView(self.view, animated: true)
             if !isOK {
                 var alert :  UIAlertController!
@@ -174,7 +176,7 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
         doneClicked = true;
         MBProgressHUD.showHUDAddedTo(view, animated: true)
         dismissKeyboard()
-        viewModel.setVerifyCode(verifyCodeTextField.text)
+        viewModel.setEmailVerifyCode(verifyCodeTextField.text)
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.viewModel.createNewUser { (isOK, createDone, message, error) -> Void in
                 MBProgressHUD.hideHUDForView(self.view, animated: true)

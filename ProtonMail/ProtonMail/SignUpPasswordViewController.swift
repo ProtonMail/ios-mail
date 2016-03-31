@@ -59,6 +59,11 @@ class SignUpPasswordViewController: UIViewController {
         confirmMailboxPassword.attributedPlaceholder = NSAttributedString(string: "Confirm Mailbox Password", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
         
         self.updateButtonStatus()
+        
+        self.viewModel.fetchDirect { (directs) -> Void in
+            
+        }
+        
     }
 
     override func viewWillAppear(animated: Bool) {

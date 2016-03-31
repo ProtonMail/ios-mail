@@ -16,6 +16,7 @@
 
 import Foundation
 
+// TODO:: this is not very good need refactor
 final class UserInfo: NSObject {
     let displayName: String
     let maxSpace: Int64
