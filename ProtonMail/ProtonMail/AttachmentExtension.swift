@@ -113,3 +113,27 @@ extension UIImage {
         return nil
     }
 }
+
+extension NSData {
+    func toAttachment (message:Message, fileName : String, type:String) -> Attachment? {
+        let attachment = Attachment(context: message.managedObjectContext!)
+        attachment.attachmentID = "0"
+        attachment.fileName = fileName
+        attachment.mimeType = "image/jpg"
+        attachment.fileData = self
+        attachment.fileSize = self.length
+        attachment.isTemp = false
+        attachment.keyPacket = ""
+        attachment.localURL = NSURL();
+        
+        attachment.message = message
+        
+        var error: NSError? = nil
+        error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
+        if error != nil {
+            NSLog("\(__FUNCTION__) toAttachment () with error: \(error)")
+        }
+        return attachment
+        
+    }
+}

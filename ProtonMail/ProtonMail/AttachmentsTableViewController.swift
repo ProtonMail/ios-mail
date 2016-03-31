@@ -19,17 +19,6 @@ protocol AttachmentsTableViewControllerDelegate {
     func attachments(attViewController: AttachmentsTableViewController, didDeletedAttachment: Attachment) -> Void
 }
 
-class PMImagePickerController : UIImagePickerController {
-    
-    override func supportedInterfaceOrientations() -> Int {
-        return Int(UIInterfaceOrientationMask.Portrait.rawValue) | Int(UIInterfaceOrientationMask.Landscape.rawValue)
-    }
-    
-    override func shouldAutorotate() -> Bool {
-        return true
-    }
-}
-
 
 class AttachmentsTableViewController: UITableViewController {
     
@@ -91,11 +80,12 @@ class AttachmentsTableViewController: UITableViewController {
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Photo Library"), style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             let picker: UIImagePickerController = PMImagePickerController()
             picker.delegate = self
-            picker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+            picker.sourceType = UIImagePickerControllerSourceType.SavedPhotosAlbum
             self.presentViewController(picker, animated: true, completion: nil)
         }))
         
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Take a Photo"), style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+            
             if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)) {
                 let picker: UIImagePickerController = UIImagePickerController()
                 picker.delegate = self
@@ -103,6 +93,21 @@ class AttachmentsTableViewController: UITableViewController {
                 self.presentViewController(picker, animated: true, completion: nil)
             }
         }))
+        
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Others"), style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+            let picker: UIDocumentPickerViewController = UIDocumentPickerViewController(documentTypes: [kUTTypeText as NSString, "public.image", "com.apple.iwork.pages.pages", "com.apple.iwork.numbers.numbers"], inMode: .Import)
+            picker.delegate = self
+            picker.modalPresentationStyle = UIModalPresentationStyle.FormSheet
+            self.presentViewController(picker, animated: true, completion: nil)
+        }))
+
+//        alertController.addAction(UIAlertAction(title: NSLocalizedString("iCloud Menu"), style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+//            let importMenu = UIDocumentMenuViewController(documentTypes: [kUTTypeText as NSString, "public.image"], inMode: .Import)
+//            //importMenu.delegate = self
+//            importMenu.addOptionWithTitle("Create New Document", image: nil, order: .First, handler: { println("New Doc Requested") })
+//            self.presentViewController(importMenu, animated: true, completion: nil)
+//        }))
+
         alertController.popoverPresentationController?.barButtonItem = sender
         alertController.popoverPresentationController?.sourceRect = self.view.frame
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: UIAlertActionStyle.Cancel, handler: nil))
@@ -161,6 +166,35 @@ class AttachmentsTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 44;
     }
+}
+
+extension AttachmentsTableViewController: UIDocumentPickerDelegate {
+    
+    func documentPicker(controller: UIDocumentPickerViewController, didPickDocumentAtURL url: NSURL) {
+        PMLog.D("\(url)")
+        
+        let coordinator : NSFileCoordinator = NSFileCoordinator(filePresenter: nil)
+        var error : NSError?
+        coordinator.coordinateReadingItemAtURL(url, options: NSFileCoordinatorReadingOptions.allZeros, error: &error) { (new_url) -> Void in
+            if let data = NSData(contentsOfURL: new_url) {
+                
+                var fileName = "test.jpg"
+                let mimeType = "image/jpg"
+                
+                let attachment = data.toAttachment(self.message, fileName: fileName, type: mimeType)
+                self.attachments.append(attachment!)
+                self.delegate?.attachments(self, didPickedAttachment: attachment!)
+                //picker.dismissViewControllerAnimated(true, completion: nil)
+                self.tableView.reloadData()
+            }
+            
+        }
+        if error != nil {
+            // Do something else
+        }
+        
+    }
+    
 }
 
 extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
