@@ -21,6 +21,7 @@ protocol AttachmentsTableViewControllerDelegate {
 
 
 class AttachmentsTableViewController: UITableViewController {
+    private let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000
     
     var attachments: [AnyObject] = [] {
         didSet {
@@ -81,7 +82,7 @@ class AttachmentsTableViewController: UITableViewController {
             let picker: UIImagePickerController = PMImagePickerController()
             picker.delegate = self
             picker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-            picker.mediaTypes = [kUTTypeMovie as NSString , kUTTypeVideo as NSString]
+            picker.mediaTypes = [kUTTypeMovie as NSString, kUTTypeImage as NSString] //[kUTTypeMovie as NSString , kUTTypeVideo as NSString]
 
             self.presentViewController(picker, animated: true, completion: nil)
         }))
@@ -197,52 +198,61 @@ extension AttachmentsTableViewController: UIDocumentPickerDelegate {
         
     }
     
+    func documentPickerWasCancelled(controller: UIDocumentPickerViewController) {
+        PMLog.D("")
+    }
+    
 }
 
 extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
-        
-        let tempImage = info[UIImagePickerControllerOriginalImage] as? UIImage
-        let type = info[UIImagePickerControllerMediaType] as? String
         let url = info[UIImagePickerControllerReferenceURL] as? NSURL
-        let img_jpg = UIImage(data:UIImageJPEGRepresentation(tempImage, 1.0))!
-        
         let library = ALAssetsLibrary()
         library.assetForURL(url, resultBlock:
             { (asset: ALAsset!) -> Void in
-                if asset != nil {
-                    var fileName = asset.defaultRepresentation().filename()
-                    let mimeType = asset.defaultRepresentation().UTI()
-                    let attachment = img_jpg.toAttachment(self.message, fileName: fileName, type: mimeType)
-                    self.attachments.append(attachment!)
-                    self.delegate?.attachments(self, didPickedAttachment: attachment!)
-                    picker.dismissViewControllerAnimated(true, completion: nil)
-                    self.tableView.reloadData()
+                var rep = asset.defaultRepresentation()
+                let length = Int(rep.size())
+                if length <= self.kDefaultAttachmentFileSize {
+                    var error: NSError?
+                    let from = Int64(0)
+                    let data = NSMutableData(length: length)!
+                    let numRead = rep.getBytes(UnsafeMutablePointer(data.mutableBytes), fromOffset: from, length: length, error: &error)
+                    if let er = error {
+                        //TODO:: error
+                        
+                        PMLog.D(" Error during copying \(er)")
+                    } else {
+                        if numRead > 0 {
+                            var fileName = rep.filename()
+                            let mimeType = rep.UTI()
+                            
+                            let attachment = data.toAttachment(self.message, fileName: fileName, type: mimeType)
+                            self.attachments.append(attachment!)
+                            self.delegate?.attachments(self, didPickedAttachment: attachment!)
+                        } else {
+                            PMLog.D(" Error during copying size incorrect")
+                            //TODO:: error
+                        }
+                    }
                 } else {
-                    var fileName = "\(NSUUID().UUIDString).jpg"
-                    let mimeType = "image/jpg"
-                    let attachment = img_jpg.toAttachment(self.message, fileName: fileName, type: mimeType)
-                    self.attachments.append(attachment!)
-                    self.delegate?.attachments(self, didPickedAttachment: attachment!)
-                    picker.dismissViewControllerAnimated(true, completion: nil)
-                    self.tableView.reloadData()
+                    PMLog.D(" Size too big Orig: \(length) -- Limit: \(self.kDefaultAttachmentFileSize)")
+                    //TODO::error
                 }
+                picker.dismissViewControllerAnimated(true, completion: nil)
+                self.tableView.reloadData()
             })  { (error:NSError!) -> Void in
-                var fileName = "\(NSUUID().UUIDString).jpg"
-                let mimeType = "image/jpg"
-                let attachment = img_jpg.toAttachment(self.message, fileName: fileName, type: mimeType)
-                self.delegate?.attachments(self, didPickedAttachment: attachment!)
-                self.attachments.append(attachment!)
+                //TODO:: error
+                PMLog.D(" Error during open file \(error)")
                 picker.dismissViewControllerAnimated(true, completion: nil)
                 self.tableView.reloadData()
         }
     }
-    
+
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         picker.dismissViewControllerAnimated(true, completion: nil)
     }
-    
+
     func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: false)
         configureNavigationBar(navigationController)
