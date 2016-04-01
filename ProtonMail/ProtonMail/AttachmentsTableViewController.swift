@@ -80,7 +80,9 @@ class AttachmentsTableViewController: UITableViewController {
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Photo Library"), style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             let picker: UIImagePickerController = PMImagePickerController()
             picker.delegate = self
-            picker.sourceType = UIImagePickerControllerSourceType.SavedPhotosAlbum
+            picker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+            picker.mediaTypes = [kUTTypeMovie as NSString , kUTTypeVideo as NSString]
+
             self.presentViewController(picker, animated: true, completion: nil)
         }))
         
@@ -94,7 +96,7 @@ class AttachmentsTableViewController: UITableViewController {
             }
         }))
         
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Others"), style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Import from ..."), style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             let picker: UIDocumentPickerViewController = UIDocumentPickerViewController(documentTypes: [kUTTypeText as NSString, "public.image", "com.apple.iwork.pages.pages", "com.apple.iwork.numbers.numbers"], inMode: .Import)
             picker.delegate = self
             picker.modalPresentationStyle = UIModalPresentationStyle.FormSheet
