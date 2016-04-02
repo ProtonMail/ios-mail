@@ -160,12 +160,6 @@ class ComposeView: UIViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.notifyViewSize( false )
-        errorView.mas_makeConstraints { (make) -> Void in
-            make.left.equalTo()(self.selfView)
-            make.right.equalTo()(self.selfView)
-            make.height.equalTo()(self.kErrorMessageHeight)
-            make.top.equalTo()(self.passwordView.mas_bottom)
-        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -187,6 +181,7 @@ class ComposeView: UIViewController {
     }
     
     @IBAction func attachmentButtonTapped(sender: UIButton) {
+        self.hidePasswordAndConfirmDoesntMatch()
         self.view.endEditing(true)
         self.delegate?.composeViewDidTapAttachmentButton(self)
     }
@@ -200,6 +195,7 @@ class ComposeView: UIViewController {
     }
     
     @IBAction func expirationButtonTapped(sender: UIButton) {
+        self.hidePasswordAndConfirmDoesntMatch()
         self.view.endEditing(true)
         self.toContactPicker.becomeFirstResponder()
         UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
@@ -218,13 +214,8 @@ class ComposeView: UIViewController {
     }
     
     @IBAction func encryptedButtonTapped(sender: UIButton) {
+        self.hidePasswordAndConfirmDoesntMatch()
         self.delegate?.composeViewDidTapEncryptedButton(self)
-//        self.encryptedPasswordTextField.becomeFirstResponder()
-//        UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
-//            self.encryptedButton.setImage(UIImage(named: "compose_lock"), forState: UIControlState.Normal)
-//            self.passwordView.alpha = 1.0
-//            self.buttonView.alpha = 0.0
-//        })
     }
     
     @IBAction func didTapExpirationDismissButton(sender: UIButton) {
@@ -285,7 +276,7 @@ class ComposeView: UIViewController {
         self.errorView = ComposeErrorView()
         self.errorView.backgroundColor = UIColor.whiteColor()
         self.errorView.clipsToBounds = true
-        
+        self.errorView.backgroundColor = UIColor.darkGrayColor()
         self.view.addSubview(errorView)
     }
     
