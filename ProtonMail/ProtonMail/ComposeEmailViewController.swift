@@ -566,6 +566,12 @@ extension ComposeEmailViewController: AttachmentsTableViewControllerDelegate {
         self.collectDraft()
         self.viewModel.deleteAtt(attachment)
     }
+    
+    func attachments(attViewController: AttachmentsTableViewController, didReachedSizeLimitation: Int) {
+    }
+    
+    func attachments(attViewController: AttachmentsTableViewController, error: String) {
+    }
 }
 
 // MARK: - UIPickerViewDataSource
