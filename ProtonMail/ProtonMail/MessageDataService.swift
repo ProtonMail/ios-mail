@@ -567,6 +567,13 @@ class MessageDataService {
                     }
                 }
             }
+            
+            //MessageLocation
+            var badgeNumber = inboxCount //inboxCount + draftCount + sendCount + spamCount + starCount + trashCount;
+            if  badgeNumber < 0 {
+                badgeNumber = 0
+            }
+            UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
         }
         
         if let locations = unreads?["Labels"] as? [Dictionary<String,AnyObject>] {
@@ -580,13 +587,6 @@ class MessageDataService {
                 }
             }
         }
-        
-        //MessageLocation
-        var badgeNumber = inboxCount //inboxCount + draftCount + sendCount + spamCount + starCount + trashCount;
-        if  badgeNumber < 0 {
-            badgeNumber = 0
-        }
-        UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
         
     }
     
