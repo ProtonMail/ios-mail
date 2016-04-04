@@ -104,11 +104,12 @@ extension APIService {
     
     func cleanBadKey(newToken : NSData) {
         let newTokenString = stringFromToken(newToken)
-        if !self.deviceToken.isEmpty {
-            if deviceUID != deviceID || newTokenString != deviceToken {
+        let oldDeviceToken = self.deviceToken
+        if !oldDeviceToken.isEmpty {
+            if (!deviceUID.isEmpty && !deviceID.isEmpty && deviceUID != deviceID) || newTokenString != oldDeviceToken {
                 let parameters = [
                     "DeviceUID": deviceUID,
-                    "DeviceToken": deviceToken
+                    "DeviceToken": oldDeviceToken
                 ]
                 
                 let completionWrapper: CompletionBlock = {task, response, error in
