@@ -27,20 +27,6 @@ extension APIService {
         let tokenString = stringFromToken(token)
         deviceToken = tokenString
         deviceUID = deviceID
-        PMLog.D("\(tokenString)")
-        //UIApplication.sharedApplication().release
-        
-        // 1 : ios dev
-        // 2 : ios production
-        // 3 : ios simulator
-        
-
-        
-        // 10 : android
-        
-        // 20 : ios enterprice dev
-        // 21 : ios enterprice production
-        // 23 : ios enterprice simulator
 
         #if Enterprise
             
