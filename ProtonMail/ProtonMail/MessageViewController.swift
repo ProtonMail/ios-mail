@@ -384,6 +384,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     }
     
     func quickLookAttachment (localURL : NSURL, keyPackage:NSData, fileName:String) {
+        PMLog.D(localURL)
         if let data : NSData = NSData(contentsOfURL: localURL) {
             tempFileUri = NSFileManager.defaultManager().attachmentDirectory.URLByAppendingPathComponent(fileName);
             var error: NSError?
