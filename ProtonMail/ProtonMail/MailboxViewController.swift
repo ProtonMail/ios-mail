@@ -244,7 +244,7 @@ class MailboxViewController: ProtonMailViewController {
                 if let message = self.messageAtIndexPath(indexPathForSelectedRow) {
                     messageDetailViewController.message = message
                 } else {
-                    let alert = "Can't find the clicked message please try again!".alertController()
+                    let alert = NSLocalizedString("Can't find the clicked message please try again!").alertController()
                     alert.addOKAction()
                     presentViewController(alert, animated: true, completion: nil)
                 }
@@ -259,7 +259,7 @@ class MailboxViewController: ProtonMailViewController {
                 if let message = self.messageAtIndexPath(indexPathForSelectedRow) {
                     composeViewController.viewModel = ComposeViewModelImpl(msg: selectedDraft ?? message, action : ComposeMessageAction.OpenDraft)
                 } else {
-                    let alert = "Can't find the clicked message please try again!".alertController()
+                    let alert = NSLocalizedString("Can't find the clicked message please try again!").alertController()
                     alert.addOKAction()
                     presentViewController(alert, animated: true, completion: nil)
                 }
@@ -335,19 +335,19 @@ class MailboxViewController: ProtonMailViewController {
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
         
         if viewModel.isShowEmptyFolder() {
-            alertController.addAction(UIAlertAction(title: "Empty Folder", style: .Destructive, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Empty Folder"), style: .Destructive, handler: { (action) -> Void in
                 self.viewModel.emptyFolder()
                 self.showNoResultLabel()
                 self.navigationController?.popViewControllerAnimated(true)
             }))
         } else {
-            alertController.addAction(UIAlertAction(title: "Mark Read", style: .Default, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Mark Read"), style: .Default, handler: { (action) -> Void in
                 self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isRead)
                 self.cancelButtonTapped();
                 self.navigationController?.popViewControllerAnimated(true)
             }))
             
-            alertController.addAction(UIAlertAction(title: "Add Star", style: .Default, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Add Star"), style: .Default, handler: { (action) -> Void in
                 self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isStarred)
                 self.cancelButtonTapped();
                 self.navigationController?.popViewControllerAnimated(true)

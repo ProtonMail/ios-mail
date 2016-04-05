@@ -71,11 +71,11 @@ class LablesViewController : UIViewController {
             // start
             viewModel.createLabel(newLabelInput.text, color: titles[selected?.row ?? 0], error: { (code, errorMessage) -> Void in
                 if code == 14005 {
-                    var alert = "The maximum number of labels is 20.".alertController()
+                    var alert = NSLocalizedString("The maximum number of labels is 20.").alertController()
                     alert.addOKAction()
                     self.presentViewController(alert, animated: true, completion: nil)
                 } else if code == 14002 {
-                    var alert = "The label name is duplicate".alertController()
+                    var alert = NSLocalizedString("The label name is duplicate").alertController()
                     alert.addOKAction()
                     self.presentViewController(alert, animated: true, completion: nil)
                 } else {

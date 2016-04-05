@@ -170,7 +170,7 @@ class AttachmentsTableViewController: UITableViewController {
             cell.configCell(att.fileName ?? "unknow file", fileSize:  Int(att.fileSize ?? 0), showDownload: false)
             
             let crossView = UILabel();
-            crossView.text = "Remove"
+            crossView.text = NSLocalizedString("Remove")
             crossView.sizeToFit()
             crossView.textColor = UIColor.whiteColor()
             cell.defaultColor = UIColor.lightGrayColor()

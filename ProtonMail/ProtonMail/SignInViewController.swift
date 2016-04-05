@@ -241,7 +241,7 @@ class SignInViewController: UIViewController {
                     switch evalPolicyError!.code {
                     case LAError.SystemCancel.rawValue:
                         println("Authentication was cancelled by the system")
-                        "Authentication was cancelled by the system".alertToast()
+                        NSLocalizedString("Authentication was cancelled by the system").alertToast()
                     case LAError.UserCancel.rawValue:
                         println("Authentication was cancelled by the user")
                     case LAError.UserFallback.rawValue:
@@ -250,7 +250,7 @@ class SignInViewController: UIViewController {
                     default:
                         println("Authentication failed")
                         //self.showPasswordAlert()
-                        "Authentication failed".alertToast()
+                        NSLocalizedString("Authentication failed").alertToast()
                     }
                 }
             })]
@@ -260,12 +260,12 @@ class SignInViewController: UIViewController {
             // If the security policy cannot be evaluated then show a short message depending on the error.
             switch error!.code{
             case LAError.TouchIDNotEnrolled.rawValue:
-                alertString = "TouchID is not enrolled"
+                alertString = NSLocalizedString("TouchID is not enrolled")
             case LAError.PasscodeNotSet.rawValue:
-                alertString = "A passcode has not been set"
+                alertString = NSLocalizedString("A passcode has not been set")
             default:
                 // The LAError.TouchIDNotAvailable case.
-                alertString = "TouchID not available"
+                alertString = NSLocalizedString("TouchID not available")
             }
             println(alertString)
             println(error?.localizedDescription)
@@ -356,8 +356,8 @@ class SignInViewController: UIViewController {
     }
     
     internal func setupTextFields() {
-        usernameTextField.attributedPlaceholder = NSAttributedString(string: "Username", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#cecaca")])
-        passwordTextField.attributedPlaceholder = NSAttributedString(string: "Password", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#cecaca")])
+        usernameTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Username"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#cecaca")])
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Password"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#cecaca")])
     }
     
     func setupButtons() {

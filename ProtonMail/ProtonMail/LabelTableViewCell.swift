@@ -71,7 +71,7 @@ class LabelTableViewCell: UITableViewCell {
                     }
                 }
                 if labelCount >= 5 {
-                    var alert = "A message cannot have more than 5 labels".alertController();
+                    var alert = NSLocalizedString("A message cannot have more than 5 labels").alertController();
                     alert.addOKAction()
                     vc.presentViewController(alert, animated: true, completion: nil)
                     return;

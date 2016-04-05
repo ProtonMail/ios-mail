@@ -390,7 +390,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
             var error: NSError?
             let decryptData = data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!, error: &error)
             if error != nil {
-                var alert = "Cant' decrypt this attachment!".alertController();
+                var alert = NSLocalizedString("Cant' decrypt this attachment!").alertController();
                 alert.addOKAction()
                 self.presentViewController(alert, animated: true, completion: nil)
             } else {
@@ -402,7 +402,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
             }
         }
         else{
-            var alert = "Can't find this attachment!".alertController();
+            var alert = NSLocalizedString("Can't find this attachment!").alertController();
             alert.addOKAction()
             self.presentViewController(alert, animated: true, completion: nil)
         }
