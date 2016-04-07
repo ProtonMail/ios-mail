@@ -428,6 +428,7 @@
                         <segue destination="Zzb-6r-tlP" kind="show" identifier="mailboxSegue" id="xf0-Do-kI6"/>
                         <segue destination="HPp-sz-RGE" kind="custom" identifier="sign_in_to_splash_no_segue" customClass="SplashSignInSegue" customModule="ProtonMail" id="gTu-Sh-bol"/>
                         <segue destination="5Bg-GM-4IG" kind="show" identifier="sign_in_to_sign_up_segue" id="lvd-zK-Trc"/>
+                        <segue destination="sjf-fW-VP9" kind="custom" identifier="pin_code_segue" customClass="SplashSignInSegue" customModule="ProtonMail" id="laj-lg-cvV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GLw-RM-bn5" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1640,6 +1641,41 @@
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1962" y="2288"/>
+        </scene>
+        <!--Pin View-->
+        <scene sceneID="fxK-BO-32Y">
+            <objects>
+                <viewController title="Pin View" id="sjf-fW-VP9" customClass="PinCodeViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="SJz-6C-Ach"/>
+                        <viewControllerLayoutGuide type="bottom" id="g1e-fN-FVI"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ucv-7o-Ovr">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g2O-1l-TS8" customClass="PinCodeView" customModule="ProtonMail" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <animations/>
+                            </view>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="g2O-1l-TS8" firstAttribute="top" secondItem="Ucv-7o-Ovr" secondAttribute="top" id="813-dh-P35"/>
+                            <constraint firstItem="g1e-fN-FVI" firstAttribute="top" secondItem="g2O-1l-TS8" secondAttribute="bottom" id="IAL-Sw-PSf"/>
+                            <constraint firstAttribute="trailing" secondItem="g2O-1l-TS8" secondAttribute="trailing" id="WBh-yD-9BV"/>
+                            <constraint firstItem="g2O-1l-TS8" firstAttribute="leading" secondItem="Ucv-7o-Ovr" secondAttribute="leading" id="gMH-rv-6gz"/>
+                        </constraints>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <connections>
+                        <outlet property="pinCodeView" destination="g2O-1l-TS8" id="5gA-oa-WXb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="abW-eP-Cjv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1432" y="581"/>
         </scene>
         <!--Mailbox Password View Controller-->
         <scene sceneID="pHR-Af-VAi">

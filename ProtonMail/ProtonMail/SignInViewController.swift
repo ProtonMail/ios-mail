@@ -31,6 +31,7 @@ class SignInViewController: UIViewController {
     private let forgotPasswordURL = NSURL(string: "https://mail.protonmail.com/help/reset-login-password")!
     
     private let kSegueToSignUpWithNoAnimation = "sign_in_to_splash_no_segue"
+    private let kSegueToPinCodeViewNoAnimation = "pin_code_segue"
     
     static var isComeBackFromMailbox = false
     
@@ -79,6 +80,8 @@ class SignInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.performSegueWithIdentifier(kSegueToPinCodeViewNoAnimation, sender: self)
         
         setupTextFields()
         setupButtons()

@@ -143,6 +143,9 @@
 		7526AC8E1B6C4B3700E1967E /* backup.css in Resources */ = {isa = PBXBuildFile; fileRef = 7526AC8D1B6C4B3700E1967E /* backup.css */; };
 		752D3DC11BD18CA800103DC8 /* AttachmentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752D3DC01BD18CA800103DC8 /* AttachmentsTableViewController.swift */; };
 		752EEC1C1BB0A9D800770331 /* QuickViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752EEC1B1BB0A9D800770331 /* QuickViewViewController.swift */; };
+		752FAA101CB5AEAF00F03228 /* PinCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 752FAA0F1CB5AEAF00F03228 /* PinCodeView.xib */; };
+		752FAA121CB5AEC300F03228 /* PinCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752FAA111CB5AEC300F03228 /* PinCodeView.swift */; };
+		752FAA141CB5B14500F03228 /* PinCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752FAA131CB5B14500F03228 /* PinCodeViewController.swift */; };
 		75370A921CA50616005020F9 /* ComposePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75370A911CA50616005020F9 /* ComposePasswordViewController.swift */; };
 		754387D91AB35EB40003B0AC /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754387D81AB35EB40003B0AC /* SignUpViewController.swift */; };
 		754387DB1AB3A54E0003B0AC /* SignUpKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754387DA1AB3A54E0003B0AC /* SignUpKeyViewController.swift */; };
@@ -208,6 +211,9 @@
 		7580D65A1C8E440200A15885 /* OnePasswordExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7580D6591C8E440200A15885 /* OnePasswordExtension.m */; };
 		7582E2F21B015DE400FEA38B /* MessageDetailBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7582E2F11B015DE400FEA38B /* MessageDetailBottomView.swift */; };
 		7582E2F41B015DF100FEA38B /* MessageDetailBottomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */; };
+		75856D6A1CB5B5EC000D9F3B /* PinCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752FAA131CB5B14500F03228 /* PinCodeViewController.swift */; };
+		75856D6B1CB5B5F2000D9F3B /* PinCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 752FAA0F1CB5AEAF00F03228 /* PinCodeView.xib */; };
+		75856D6C1CB5B5F2000D9F3B /* PinCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752FAA111CB5AEC300F03228 /* PinCodeView.swift */; };
 		7588BB401BFBE05A00EC8EFD /* SecureStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7588BB3F1BFBE05A00EC8EFD /* SecureStore.swift */; };
 		758C44841C6D09FE00E6E867 /* EncryptionSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758C44831C6D09FE00E6E867 /* EncryptionSetupViewController.swift */; };
 		7590F08D1C9894E1009C5059 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7590F08C1C9894E1009C5059 /* Social.framework */; };
@@ -676,6 +682,9 @@
 		7526AC8D1B6C4B3700E1967E /* backup.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = backup.css; sourceTree = "<group>"; };
 		752D3DC01BD18CA800103DC8 /* AttachmentsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsTableViewController.swift; sourceTree = "<group>"; };
 		752EEC1B1BB0A9D800770331 /* QuickViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickViewViewController.swift; sourceTree = "<group>"; };
+		752FAA0F1CB5AEAF00F03228 /* PinCodeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PinCodeView.xib; sourceTree = "<group>"; };
+		752FAA111CB5AEC300F03228 /* PinCodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinCodeView.swift; sourceTree = "<group>"; };
+		752FAA131CB5B14500F03228 /* PinCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinCodeViewController.swift; sourceTree = "<group>"; };
 		753480B11CADABCA00964965 /* ProtonMail.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ProtonMail.entitlements; sourceTree = "<group>"; };
 		75370A911CA50616005020F9 /* ComposePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposePasswordViewController.swift; sourceTree = "<group>"; };
 		754387D81AB35EB40003B0AC /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -858,6 +867,7 @@
 				75E49F0E1CAB288F00235ACC /* CountryPickerViewController.swift */,
 				750AAAC31C23E5CF00BAC444 /* RecaptchaViewController.swift */,
 				750AAAC51C2490DB00BAC444 /* SignUpEmailViewController.swift */,
+				752FAA131CB5B14500F03228 /* PinCodeViewController.swift */,
 				750AAAC91C2491A400BAC444 /* OldViews */,
 			);
 			name = "Sign In";
@@ -1089,6 +1099,8 @@
 				759BBDC51BA0D1C8002608B5 /* MultiLabelDisplayView.swift */,
 				759BBDC31BA0D18A002608B5 /* MultiLabelDisplayView.xib */,
 				759BBDC71BA0D1E3002608B5 /* PMView.swift */,
+				752FAA0F1CB5AEAF00F03228 /* PinCodeView.xib */,
+				752FAA111CB5AEC300F03228 /* PinCodeView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1645,6 +1657,7 @@
 				07CC996A1A705BA4000FD6F8 /* Settings.bundle in Resources */,
 				076758761AA0E86400F9AC9C /* LoadingView.xib in Resources */,
 				7526AC8E1B6C4B3700E1967E /* backup.css in Resources */,
+				752FAA101CB5AEAF00F03228 /* PinCodeView.xib in Resources */,
 				7550648E1B9A5ECA006F2D39 /* Roboto-Medium.ttf in Resources */,
 				75A2F44E1C97D6B400BF4306 /* ComposeErrorView.xib in Resources */,
 				701704781A794C69000A90D2 /* Roboto-MediumItalic.ttf in Resources */,
@@ -1676,6 +1689,7 @@
 				75DE7D901CAAEA4900F5443E /* Roboto-LightItalic.ttf in Resources */,
 				75DE7D911CAAEA4900F5443E /* MailboxMessageCell.xib in Resources */,
 				75DE7D921CAAEA4900F5443E /* LabelDisplayView.xib in Resources */,
+				75856D6B1CB5B5F2000D9F3B /* PinCodeView.xib in Resources */,
 				75DE7D931CAAEA4900F5443E /* Menu.storyboard in Resources */,
 				75DE7D941CAAEA4900F5443E /* LaunchScreen.xib in Resources */,
 				75DE7D951CAAEA4900F5443E /* Roboto-Light.ttf in Resources */,
@@ -1890,6 +1904,7 @@
 				07CFC9D41A81A2B0007A72B7 /* Attachment.swift in Sources */,
 				075F0A541ABF5E3E00E6B9AE /* MessageAction.swift in Sources */,
 				75A2F44C1C97D69800BF4306 /* ComposeErrorView.swift in Sources */,
+				752FAA121CB5AEC300F03228 /* PinCodeView.swift in Sources */,
 				750B00981B7AB91400F180BD /* NotificationDefined.swift in Sources */,
 				7567B06B1B334AF200A72A1E /* ComposeViewModel.swift in Sources */,
 				07B797C21A6EE50F00244532 /* APIService+AuthenticationExtension.swift in Sources */,
@@ -1993,6 +2008,7 @@
 				07CC99641A6F076A000FD6F8 /* NSErrorExtension.swift in Sources */,
 				75E49F0D1CAB256900235ACC /* PhoneVerifyViewController.swift in Sources */,
 				756DAC451C92B30300F3486C /* FeedbackPopViewController.swift in Sources */,
+				752FAA141CB5B14500F03228 /* PinCodeViewController.swift in Sources */,
 				075F0A521ABF5DB500E6B9AE /* MessageLocation.swift in Sources */,
 				75E090541CAC7A3A00751136 /* CountryCodeTableViewCell.swift in Sources */,
 				751B446E1B81245100B68CD6 /* TableCellLabelView.swift in Sources */,
@@ -2146,6 +2162,7 @@
 				75DE7CF01CAAEA4900F5443E /* PersistentQueue.swift in Sources */,
 				75DE7CF11CAAEA4900F5443E /* APIServiceRequest.swift in Sources */,
 				75DE7CF21CAAEA4900F5443E /* AppDelegate.swift in Sources */,
+				75856D6C1CB5B5F2000D9F3B /* PinCodeView.swift in Sources */,
 				75DE7CF31CAAEA4900F5443E /* MessageHelper.swift in Sources */,
 				75DE7CF41CAAEA4900F5443E /* MultipartResponseParser.m in Sources */,
 				75DE7CF51CAAEA4900F5443E /* ViewModelFactory.swift in Sources */,
@@ -2203,6 +2220,7 @@
 				75DE7D281CAAEA4900F5443E /* ComposeViewModelImpl.swift in Sources */,
 				75DE7D291CAAEA4900F5443E /* AddressBookService.swift in Sources */,
 				75DE7D2A1CAAEA4900F5443E /* Onboarding.swift in Sources */,
+				75856D6A1CB5B5EC000D9F3B /* PinCodeViewController.swift in Sources */,
 				75DE7D2B1CAAEA4900F5443E /* NSNotification+KeyboardExtension.swift in Sources */,
 				75DE7D2C1CAAEA4900F5443E /* FeedbackTableViewCell.swift in Sources */,
 				75DE7D2D1CAAEA4900F5443E /* ViewModelServiceImpl.swift in Sources */,
