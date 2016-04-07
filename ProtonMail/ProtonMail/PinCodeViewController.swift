@@ -19,16 +19,18 @@ class PinCodeViewController : UIViewController {
     @IBOutlet weak var pinCodeView: PinCodeView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.view.layoutIfNeeded()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        
+        pinCodeView.updateCorner()
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        pinCodeView.updateCorner()
     }
     
     override func viewWillDisappear(animated: Bool) {
