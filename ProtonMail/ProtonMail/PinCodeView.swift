@@ -22,6 +22,12 @@ class PinCodeView : PMView {
     @IBOutlet weak var nineButton: UIButton!
     @IBOutlet weak var zeroButton: UIButton!
     
+    @IBOutlet weak var pinOne: UIImageView!
+    @IBOutlet weak var pinTwo: UIImageView!
+    @IBOutlet weak var pinThree: UIImageView!
+    @IBOutlet weak var pinFour: UIImageView!
+    
+    @IBOutlet weak var pinView: UIView!
     override func getNibName() -> String {
         return "PinCodeView";
     }
@@ -41,16 +47,50 @@ class PinCodeView : PMView {
         self.setCorner(eightButton)
         self.setCorner(nineButton)
         self.setCorner(zeroButton)
+        
+        self.setCorner(pinOne)
+        self.setCorner(pinTwo)
+        self.setCorner(pinThree)
+        self.setCorner(pinFour)
+        
+        self.changePinStatus(pinOne, on: false)
+        self.changePinStatus(pinTwo, on: false)
+        self.changePinStatus(pinThree, on: false)
+        self.changePinStatus(pinFour, on: false)
     }
     
     
-    func setCorner(button : UIButton) {
+    func setCorner(button : UIView) {
         
-        let w = oneButton.frame.size.width
+        let w = button.frame.size.width
         button.layer.cornerRadius = w/2
         button.clipsToBounds = true
         
         button.layer.borderColor = UIColor.whiteColor().CGColor
         button.layer.borderWidth = 1.0
     }
+    
+    @IBAction func buttonActions(sender: UIButton) {
+        pinView.shake(3, offset: 10)
+        
+        self.changePinStatus(pinOne, on: true)
+    }
+    
+    @IBAction func logoutAction(sender: UIButton) {
+        
+    }
+
+
+
+    internal func changePinStatus(pin : UIView, on : Bool) {
+        if on {
+            pin.backgroundColor = UIColor.lightGrayColor()
+            pin.layer.borderWidth = 0.0
+        } else {
+            pin.backgroundColor = UIColor.clearColor()
+            pin.layer.borderWidth = 1.0
+        }
+        
+    }
+
 }
