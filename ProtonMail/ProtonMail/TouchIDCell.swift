@@ -15,6 +15,8 @@ class TouchIDCell: UITableViewCell {
         super.awakeFromNib()
     }
     
+    typealias ActionBlock = (cell: TouchIDCell!, newStatus: Bool) -> Void
+    
     @IBOutlet weak var switchView: UISwitch!
     @IBAction func switchAction(sender: UISwitch) {
         if !userCachedStatus.isTouchIDEnabled {
@@ -51,7 +53,7 @@ class TouchIDCell: UITableViewCell {
         }
     }
     
-    func setUpSwitch(enabled : Bool) {
+    func setUpSwitch(enabled : Bool, complete : ActionBlock) {
         switchView.enabled = true
 
         switchView.on = enabled;

@@ -11,13 +11,13 @@ import UIKit
 class SettingTableViewController: ProtonMailViewController {
     
     var setting_headers : [SettingSections] = [.General, .Protection, .MultiDomain, .SwipeAction, .Storage, .Version] //SettingSections.Debug,
-    var setting_general_items : [SGItems] = [.NotifyEmail, .DisplayName, .LoginPWD, .MBP, .CleanCache, .Signature, .DefaultMobilSign, .EnableTouchID, .AutoLoadImage]
+    var setting_general_items : [SGItems] = [.NotifyEmail, .DisplayName, .LoginPWD, .MBP, .CleanCache, .Signature, .DefaultMobilSign, .AutoLoadImage]
     var setting_debug_items : [SDebugItem] = [.Queue, .ErrorLogs, .CleanCache]
     
     var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
     var setting_swipe_actions : [MessageSwipeAction] = [.trash, .spam, .star, .archive]
     
-    var setting_protection_items : [SProtectionItems] = [.TouchID, .PinCode, .UpdatePin, .AutoLogout]
+    var setting_protection_items : [SProtectionItems] = [.TouchID, .PinCode, .UpdatePin, .AutoLogout, .EnterTime]
     
     var multi_domains: Array<Address>!
     var userInfo = sharedUserDataService.userInfo
@@ -184,13 +184,6 @@ class SettingTableViewController: ProtonMailViewController {
                         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                         cellout = cell
                         break
-                    case .EnableTouchID:
-                        let cell = tableView.dequeueReusableCellWithIdentifier(kTouchIDCell, forIndexPath: indexPath) as! TouchIDCell
-                        cell.accessoryType = UITableViewCellAccessoryType.None
-                        cell.selectionStyle = UITableViewCellSelectionStyle.None
-                        cell.setUpSwitch(userCachedStatus.isTouchIDEnabled)
-                        cellout = cell
-                        break
                     case .AutoLoadImage:
                         let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
                         cell.accessoryType = UITableViewCellAccessoryType.None
@@ -224,22 +217,40 @@ class SettingTableViewController: ProtonMailViewController {
                 return cellout
             }
             else if setting_headers[indexPath.section] == .Protection {
-                let itme : SProtectionItems = setting_protection_items[indexPath.row];
-                let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
-                cell.accessoryType = UITableViewCellAccessoryType.None
-                cell.selectionStyle = UITableViewCellSelectionStyle.None
-                cell.configCell(itme.description, bottomLine: "", status: !sharedUserDataService.showShowImageView, complete: { (cell, newStatus, feedback) -> Void in
-                    if let indexp = tableView.indexPathForCell(cell) {
-                        if indexPath == indexp {
+                var cellout : UITableViewCell!
+                let item : SProtectionItems = setting_protection_items[indexPath.row];
+                if item == .TouchID {
+                    let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
+                    cell.accessoryType = UITableViewCellAccessoryType.None
+                    cell.selectionStyle = UITableViewCellSelectionStyle.None
+                    cell.configCell(item.description, bottomLine: "", status: !sharedUserDataService.showShowImageView, complete: { (cell, newStatus, feedback) -> Void in
+                        if let indexp = tableView.indexPathForCell(cell) {
+                            if indexPath == indexp {
+                            } else {
+                                feedback(isOK: false)
+                            }
                         } else {
                             feedback(isOK: false)
                         }
-                    } else {
-                        feedback(isOK: false)
-                    }
-                })
-                
-                return cell
+                    })
+                    cellout = cell
+                } else {
+                    let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
+                    cell.accessoryType = UITableViewCellAccessoryType.None
+                    cell.selectionStyle = UITableViewCellSelectionStyle.None
+                    cell.configCell(item.description, bottomLine: "", status: !sharedUserDataService.showShowImageView, complete: { (cell, newStatus, feedback) -> Void in
+                        if let indexp = tableView.indexPathForCell(cell) {
+                            if indexPath == indexp {
+                            } else {
+                                feedback(isOK: false)
+                            }
+                        } else {
+                            feedback(isOK: false)
+                        }
+                    })
+                    cellout = cell
+                }
+                return cellout
                 
             }
             else if setting_headers[indexPath.section] == .MultiDomain {
@@ -545,7 +556,6 @@ extension SettingTableViewController {
         case MBP = 4
         case CleanCache = 5
         case DefaultMobilSign = 6
-        case EnableTouchID = 7
         case AutoLoadImage = 9
         
         var description : String {
@@ -564,8 +574,6 @@ extension SettingTableViewController {
                 return NSLocalizedString("Clear Local Message Cache")
             case .DefaultMobilSign:
                 return NSLocalizedString("Mobile Signature")
-            case .EnableTouchID:
-                return NSLocalizedString("Enable TouchID")
             case .AutoLoadImage:
                 return NSLocalizedString("Auto Show Images")
             }
@@ -600,6 +608,7 @@ extension SettingTableViewController {
         case PinCode = 1
         case UpdatePin = 2
         case AutoLogout = 3
+        case EnterTime = 4
         
         var description : String {
             switch(self){
@@ -611,6 +620,8 @@ extension SettingTableViewController {
                 return NSLocalizedString("Change Pin")
             case AutoLogout:
                 return NSLocalizedString("Protection Entire App")
+            case EnterTime:
+                return NSLocalizedString("")
             }
         }
     }
