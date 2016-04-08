@@ -52,13 +52,16 @@ class PinCodeView : PMView {
         self.setCorner(pinTwo)
         self.setCorner(pinThree)
         self.setCorner(pinFour)
+    }
+    
+    internal func resetPin() {
         
         self.changePinStatus(pinOne, on: false)
         self.changePinStatus(pinTwo, on: false)
         self.changePinStatus(pinThree, on: false)
         self.changePinStatus(pinFour, on: false)
+        
     }
-    
     
     func setCorner(button : UIView) {
         

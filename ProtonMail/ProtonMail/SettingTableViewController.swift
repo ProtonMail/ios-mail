@@ -10,12 +10,14 @@ import UIKit
 
 class SettingTableViewController: ProtonMailViewController {
     
-    var setting_headers : [SettingSections] = [.General, .MultiDomain, .SwipeAction, .Storage, .Version] //SettingSections.Debug,
+    var setting_headers : [SettingSections] = [.General, .Protection, .MultiDomain, .SwipeAction, .Storage, .Version] //SettingSections.Debug,
     var setting_general_items : [SGItems] = [.NotifyEmail, .DisplayName, .LoginPWD, .MBP, .CleanCache, .Signature, .DefaultMobilSign, .EnableTouchID, .AutoLoadImage]
     var setting_debug_items : [SDebugItem] = [.Queue, .ErrorLogs, .CleanCache]
     
     var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
     var setting_swipe_actions : [MessageSwipeAction] = [.trash, .spam, .star, .archive]
+    
+    var setting_protection_items : [SProtectionItems] = [.TouchID, .PinCode, .UpdatePin, .AutoLogout]
     
     var multi_domains: Array<Address>!
     var userInfo = sharedUserDataService.userInfo
@@ -96,12 +98,12 @@ class SettingTableViewController: ProtonMailViewController {
             let changeMBPView = segue.destinationViewController as! SettingDetailViewController;
             changeMBPView.setViewModel(shareViewModelFactoy.getChangeMobileSignature())
             break
-
+            
         default:
             break
         }
     }
-
+    
     // MARK: - Table view data source
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return setting_headers.count
@@ -121,6 +123,10 @@ class SettingTableViewController: ProtonMailViewController {
         case .Storage:
             return 1
         case .Version:
+            return 0
+        case .Protection:
+            return setting_protection_items.count
+        case .Language:
             return 0
         }
     }
@@ -185,8 +191,6 @@ class SettingTableViewController: ProtonMailViewController {
                         cell.setUpSwitch(userCachedStatus.isTouchIDEnabled)
                         cellout = cell
                         break
-                    case .AutoLogout:
-                        break
                     case .AutoLoadImage:
                         let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
                         cell.accessoryType = UITableViewCellAccessoryType.None
@@ -218,6 +222,25 @@ class SettingTableViewController: ProtonMailViewController {
                     }
                 }
                 return cellout
+            }
+            else if setting_headers[indexPath.section] == .Protection {
+                let itme : SProtectionItems = setting_protection_items[indexPath.row];
+                let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
+                cell.accessoryType = UITableViewCellAccessoryType.None
+                cell.selectionStyle = UITableViewCellSelectionStyle.None
+                cell.configCell(itme.description, bottomLine: "", status: !sharedUserDataService.showShowImageView, complete: { (cell, newStatus, feedback) -> Void in
+                    if let indexp = tableView.indexPathForCell(cell) {
+                        if indexPath == indexp {
+                        } else {
+                            feedback(isOK: false)
+                        }
+                    } else {
+                        feedback(isOK: false)
+                    }
+                })
+                
+                return cell
+                
             }
             else if setting_headers[indexPath.section] == .MultiDomain {
                 let cell = tableView.dequeueReusableCellWithIdentifier(SettingDomainsCell, forIndexPath: indexPath) as! DomainsTableViewCell
@@ -294,7 +317,6 @@ class SettingTableViewController: ProtonMailViewController {
     {
         return CellHeight;
     }
-    
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if setting_headers[indexPath.section] == SettingSections.General {
@@ -524,7 +546,6 @@ extension SettingTableViewController {
         case CleanCache = 5
         case DefaultMobilSign = 6
         case EnableTouchID = 7
-        case AutoLogout = 8
         case AutoLoadImage = 9
         
         var description : String {
@@ -545,8 +566,6 @@ extension SettingTableViewController {
                 return NSLocalizedString("Mobile Signature")
             case .EnableTouchID:
                 return NSLocalizedString("Enable TouchID")
-            case .AutoLogout:
-                return NSLocalizedString("Auto Logout")
             case .AutoLoadImage:
                 return NSLocalizedString("Auto Show Images")
             }
@@ -576,6 +595,26 @@ extension SettingTableViewController {
         }
     }
     
+    enum SProtectionItems : Int, Printable {
+        case TouchID = 0
+        case PinCode = 1
+        case UpdatePin = 2
+        case AutoLogout = 3
+        
+        var description : String {
+            switch(self){
+            case TouchID:
+                return NSLocalizedString("Enable TouchID")
+            case PinCode:
+                return NSLocalizedString("Enable Pin Protection")
+            case UpdatePin:
+                return NSLocalizedString("Change Pin")
+            case AutoLogout:
+                return NSLocalizedString("Protection Entire App")
+            }
+        }
+    }
+    
     enum SettingSections: Int, Printable {
         case Debug = 0
         case General = 1
@@ -583,6 +622,8 @@ extension SettingTableViewController {
         case Storage = 3
         case Version = 4
         case SwipeAction = 5
+        case Protection = 6
+        case Language = 7
         
         var description : String {
             switch(self){
@@ -598,6 +639,10 @@ extension SettingTableViewController {
                 return NSLocalizedString("")
             case SwipeAction:
                 return NSLocalizedString("Message Swipe Actions")
+            case Protection:
+                return NSLocalizedString("Protection")
+            case Language:
+                return NSLocalizedString("Language")
             }
         }
     }

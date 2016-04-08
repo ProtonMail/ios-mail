@@ -867,7 +867,6 @@
 				75E49F0E1CAB288F00235ACC /* CountryPickerViewController.swift */,
 				750AAAC31C23E5CF00BAC444 /* RecaptchaViewController.swift */,
 				750AAAC51C2490DB00BAC444 /* SignUpEmailViewController.swift */,
-				752FAA131CB5B14500F03228 /* PinCodeViewController.swift */,
 				750AAAC91C2491A400BAC444 /* OldViews */,
 			);
 			name = "Sign In";
@@ -1092,6 +1091,7 @@
 		07CCCC2C1AA2962200ECA79E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				752FAA131CB5B14500F03228 /* PinCodeViewController.swift */,
 				076758751AA0E86400F9AC9C /* LoadingView.xib */,
 				076758771AA0EB6900F9AC9C /* LoadingView.swift */,
 				759BBDBF1BA0C55E002608B5 /* LabelDisplayView.swift */,

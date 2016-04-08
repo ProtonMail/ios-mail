@@ -81,7 +81,7 @@ class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.performSegueWithIdentifier(kSegueToPinCodeViewNoAnimation, sender: self)
+        //self.performSegueWithIdentifier(kSegueToPinCodeViewNoAnimation, sender: self)
         
         setupTextFields()
         setupButtons()
