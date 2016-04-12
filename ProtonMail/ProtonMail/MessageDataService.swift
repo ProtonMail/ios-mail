@@ -1028,7 +1028,6 @@ class MessageDataService {
     }
     
     func saveDraft(message : Message!) {
-        //if let context = sharedCoreDataService.mainManagedObjectContext {
         if let context = message.managedObjectContext {
             if let error = context.saveUpstreamIfNeeded() {
                 NSLog("\(__FUNCTION__) error: \(error)")
