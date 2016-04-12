@@ -28,7 +28,7 @@ class ComposePasswordViewController: UIViewController {
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
 
     @IBOutlet weak var removeButton: UIButton!
-    private let upgradePageUrl = NSURL(string: "https://protonmail.com/upgrade")!
+    private let upgradePageUrl = NSURL(string: "https://protonmail.com/support/knowledge-base/encrypt-for-outside-users/")!
     
     private var pwd : String = ""
     private var pwdConfirm : String  = ""

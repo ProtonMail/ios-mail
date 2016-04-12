@@ -165,6 +165,41 @@
             </objects>
             <point key="canvasLocation" x="-454" y="4426"/>
         </scene>
+        <!--Pin Code View Controller-->
+        <scene sceneID="JOj-m3-KRQ">
+            <objects>
+                <viewController id="tMn-Uv-JDd" customClass="PinCodeViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2qW-hG-7EF"/>
+                        <viewControllerLayoutGuide type="bottom" id="MFb-ys-qdz"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Maa-Hc-5hF">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="492"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vqL-9M-AAl" customClass="PinCodeView" customModule="ProtonMail" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="492"/>
+                                <animations/>
+                            </view>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="vqL-9M-AAl" firstAttribute="top" secondItem="Maa-Hc-5hF" secondAttribute="top" id="6bv-Rv-o4r"/>
+                            <constraint firstAttribute="bottom" secondItem="vqL-9M-AAl" secondAttribute="bottom" id="WQx-sX-Ans"/>
+                            <constraint firstAttribute="trailing" secondItem="vqL-9M-AAl" secondAttribute="trailing" id="bNo-O4-MhY"/>
+                            <constraint firstItem="vqL-9M-AAl" firstAttribute="leading" secondItem="Maa-Hc-5hF" secondAttribute="leading" id="pQR-E2-rGz"/>
+                        </constraints>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <connections>
+                        <outlet property="pinCodeView" destination="vqL-9M-AAl" id="9Kn-Md-0P4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="a2q-1X-21m" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-454" y="5222"/>
+        </scene>
         <!--Menu View Controller-->
         <scene sceneID="CA9-P3-QyV">
             <objects>
@@ -2486,6 +2521,7 @@
                         <segue destination="OCS-Qd-wj6" kind="show" identifier="setting_signature" id="A7E-cY-hB0"/>
                         <segue destination="SWZ-VZ-9Rg" kind="show" identifier="setting_debug_queue_segue" id="XyN-LC-jTe"/>
                         <segue destination="OCS-Qd-wj6" kind="show" identifier="setting_mobile_signature" id="dUE-8e-owj"/>
+                        <segue destination="tMn-Uv-JDd" kind="show" identifier="setting_setup_pingcode" id="XQx-Pm-sNq"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7xM-0a-IOr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4002,14 +4038,14 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="w5b-0j-26v"/>
         <segue reference="YGe-pV-72F"/>
-        <segue reference="V9t-nA-fhw"/>
-        <segue reference="A7E-cY-hB0"/>
-        <segue reference="5rJ-hC-fsT"/>
-        <segue reference="0zg-HM-MdK"/>
         <segue reference="fux-iz-qV0"/>
+        <segue reference="0zg-HM-MdK"/>
         <segue reference="uj7-oW-fwS"/>
+        <segue reference="w5b-0j-26v"/>
         <segue reference="xUw-S1-zl5"/>
+        <segue reference="5rJ-hC-fsT"/>
+        <segue reference="V9t-nA-fhw"/>
+        <segue reference="3FM-PP-oeV"/>
     </inferredMetricsTieBreakers>
 </document>

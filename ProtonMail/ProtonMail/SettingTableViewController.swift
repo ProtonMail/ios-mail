@@ -7,15 +7,20 @@
 //
 
 import UIKit
+import LocalAuthentication
 
 class SettingTableViewController: ProtonMailViewController {
     
-    var setting_headers : [SettingSections] = [.General, .MultiDomain, .SwipeAction, .Storage, .Version] //SettingSections.Debug,
-    var setting_general_items : [SGItems] = [.NotifyEmail, .DisplayName, .LoginPWD, .MBP, .CleanCache, .Signature, .DefaultMobilSign, .EnableTouchID, .AutoLoadImage]
+    var setting_headers : [SettingSections] = [.General, .Protection, .MultiDomain, .SwipeAction, .Storage, .Version] //SettingSections.Debug,
+    var setting_general_items : [SGItems] = [.NotifyEmail, .DisplayName, .LoginPWD, .MBP, .CleanCache, .Signature, .DefaultMobilSign, .AutoLoadImage]
     var setting_debug_items : [SDebugItem] = [.Queue, .ErrorLogs, .CleanCache]
     
     var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
     var setting_swipe_actions : [MessageSwipeAction] = [.trash, .spam, .star, .archive]
+    
+    var setting_protection_items : [SProtectionItems] = [.TouchID, .PinCode] // [.TouchID, .PinCode, .UpdatePin, .AutoLogout, .EnterTime]
+    
+    var protection_auto_logout : [Int] = [-1, 0, 1, 2, 5, 10, 15, 30, 60]
     
     var multi_domains: Array<Address>!
     var userInfo = sharedUserDataService.userInfo
@@ -29,6 +34,8 @@ class SettingTableViewController: ProtonMailViewController {
     let MailboxpwdSegue:String = "setting_mailbox_pwd"
     
     let DebugQueueSegue : String = "setting_debug_queue_segue"
+    
+    let kSetupPinCodeSegue : String = "setting_setup_pingcode"
     
     
     /// cells
@@ -61,11 +68,17 @@ class SettingTableViewController: ProtonMailViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
+            setting_protection_items = [.TouchID, .PinCode, .EnterTime]
+        }
+        
         userInfo = sharedUserDataService.userInfo
         multi_domains = sharedUserDataService.userAddresses
         UIView.setAnimationsEnabled(false)
         settingTableView.reloadData();
         UIView.setAnimationsEnabled(true)
+        navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -75,33 +88,29 @@ class SettingTableViewController: ProtonMailViewController {
         case LoginpwdSegue:
             let changeLoginPwdView = segue.destinationViewController as! ChangePasswordViewController;
             changeLoginPwdView.setViewModel(shareViewModelFactoy.getChangeLoginPassword())
-            break
         case MailboxpwdSegue:
             let changeMBPView = segue.destinationViewController as! ChangePasswordViewController;
             changeMBPView.setViewModel(shareViewModelFactoy.getChangeMailboxPassword())
-            break
         case NotificationSegue:
             let changeMBPView = segue.destinationViewController as! SettingDetailViewController;
             changeMBPView.setViewModel(shareViewModelFactoy.getChangeNotificationEmail())
-            break
         case DisplayNameSegue:
             let changeMBPView = segue.destinationViewController as! SettingDetailViewController;
             changeMBPView.setViewModel(shareViewModelFactoy.getChangeDisplayName())
-            break
         case SignatureSegue:
             let changeMBPView = segue.destinationViewController as! SettingDetailViewController;
             changeMBPView.setViewModel(shareViewModelFactoy.getChangeSignature())
-            break
         case MobileSignatureSegue:
             let changeMBPView = segue.destinationViewController as! SettingDetailViewController;
             changeMBPView.setViewModel(shareViewModelFactoy.getChangeMobileSignature())
-            break
-
+        case kSetupPinCodeSegue:
+            let vc = segue.destinationViewController as! PinCodeViewController;
+            vc.viewModel = SetPinCodeModelImpl()
         default:
             break
         }
     }
-
+    
     // MARK: - Table view data source
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return setting_headers.count
@@ -121,6 +130,10 @@ class SettingTableViewController: ProtonMailViewController {
         case .Storage:
             return 1
         case .Version:
+            return 0
+        case .Protection:
+            return setting_protection_items.count
+        case .Language:
             return 0
         }
     }
@@ -178,15 +191,6 @@ class SettingTableViewController: ProtonMailViewController {
                         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                         cellout = cell
                         break
-                    case .EnableTouchID:
-                        let cell = tableView.dequeueReusableCellWithIdentifier(kTouchIDCell, forIndexPath: indexPath) as! TouchIDCell
-                        cell.accessoryType = UITableViewCellAccessoryType.None
-                        cell.selectionStyle = UITableViewCellSelectionStyle.None
-                        cell.setUpSwitch(userCachedStatus.isTouchIDEnabled)
-                        cellout = cell
-                        break
-                    case .AutoLogout:
-                        break
                     case .AutoLoadImage:
                         let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
                         cell.accessoryType = UITableViewCellAccessoryType.None
@@ -217,6 +221,136 @@ class SettingTableViewController: ProtonMailViewController {
                         cellout = cell
                     }
                 }
+                return cellout
+            }
+            else if setting_headers[indexPath.section] == .Protection {
+                var cellout : UITableViewCell!
+                let item : SProtectionItems = setting_protection_items[indexPath.row];
+                if item == .TouchID {
+                    let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
+                    cell.accessoryType = UITableViewCellAccessoryType.None
+                    cell.selectionStyle = UITableViewCellSelectionStyle.None
+                    cell.configCell(item.description, bottomLine: "", status: userCachedStatus.isTouchIDEnabled, complete: { (cell, newStatus, feedback) -> Void in
+                        if let indexp = tableView.indexPathForCell(cell) {
+                            if indexPath == indexp {
+                                if !userCachedStatus.isTouchIDEnabled {
+                                    // try to enable touch id
+                                    let context = LAContext()
+                                    // Declare a NSError variable.
+                                    var error: NSError?
+                                    // Check if the device can evaluate the policy.
+                                    if context.canEvaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, error: &error) {
+                                        userCachedStatus.isTouchIDEnabled = true
+                                        userCachedStatus.touchIDEmail = sharedUserDataService.username ?? ""
+                                    }
+                                    else{
+                                        var alertString : String = "";
+                                        // If the security policy cannot be evaluated then show a short message depending on the error.
+                                        switch error!.code{
+                                        case LAError.TouchIDNotEnrolled.rawValue:
+                                            alertString = "TouchID is not enrolled"
+                                        case LAError.PasscodeNotSet.rawValue:
+                                            alertString = "A passcode has not been set"
+                                        default:
+                                            // The LAError.TouchIDNotAvailable case.
+                                            alertString = "TouchID not available"
+                                        }
+                                        println(alertString)
+                                        println(error?.localizedDescription)
+                                        alertString.alertToast()
+                                        feedback(isOK: false)
+                                    }
+                                } else {
+                                    userCachedStatus.isTouchIDEnabled = false
+                                    userCachedStatus.touchIDEmail = ""
+                                }
+                            } else {
+                                feedback(isOK: false)
+                            }
+                        } else {
+                            feedback(isOK: false)
+                        }
+                    })
+                    cellout = cell
+                } else if item == .PinCode {
+                    let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
+                    cell.accessoryType = UITableViewCellAccessoryType.None
+                    cell.selectionStyle = UITableViewCellSelectionStyle.None
+                    cell.configCell(item.description, bottomLine: "", status: userCachedStatus.isPinCodeEnabled, complete: { (cell, newStatus, feedback) -> Void in
+                        if let indexp = tableView.indexPathForCell(cell) {
+                            if indexPath == indexp {
+                                if !userCachedStatus.isPinCodeEnabled {
+                                    self.performSegueWithIdentifier(self.kSetupPinCodeSegue, sender: self)
+                                } else {
+                                    userCachedStatus.isPinCodeEnabled = false
+                                    feedback(isOK: true)
+                                }
+                            } else {
+                                feedback(isOK: false)
+                            }
+                        } else {
+                            feedback(isOK: false)
+                        }
+                    })
+                    cellout = cell
+                } else if item == .UpdatePin {
+                    let cell = tableView.dequeueReusableCellWithIdentifier(SettingSingalLineCell, forIndexPath: indexPath) as! GeneralSettingViewCell
+                    cell.configCell(item.description, right: "")
+                    cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                    cellout = cell
+                } else if item == .AutoLogout {
+                    let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
+                    cell.accessoryType = UITableViewCellAccessoryType.None
+                    cell.selectionStyle = UITableViewCellSelectionStyle.None
+                    cell.configCell(item.description, bottomLine: "", status: userCachedStatus.isPinCodeEnabled, complete: { (cell, newStatus, feedback) -> Void in
+                        if let indexp = tableView.indexPathForCell(cell) {
+                            if indexPath == indexp {
+                                
+                            } else {
+                                feedback(isOK: false)
+                            }
+                        } else {
+                            feedback(isOK: false)
+                        }
+                    })
+                    cellout = cell
+                } else if item == .EnterTime {
+                    var timeIndex : Int = -1
+                    if let t = userCachedStatus.lockTime.toInt() {
+                        timeIndex = t
+                    }
+                    
+                    var text = "\(timeIndex) Minutes"
+                    if timeIndex == -1 {
+                        text = "None"
+                    } else if timeIndex == 0 {
+                        text = "Every time enter app"
+                    } else if timeIndex == 1{
+                        text = "\(timeIndex) Minute"
+                    }
+                    
+                    let cell = tableView.dequeueReusableCellWithIdentifier(SettingTwoLinesCell, forIndexPath: indexPath) as! SettingsCell
+                    cell.LeftText.text = item.description;
+                    cell.RightText.text = text
+                    cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                    cellout = cell;
+                }
+//                else {
+//                    let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
+//                    cell.accessoryType = UITableViewCellAccessoryType.None
+//                    cell.selectionStyle = UITableViewCellSelectionStyle.None
+//                    cell.configCell(item.description, bottomLine: "", status: !sharedUserDataService.showShowImageView, complete: { (cell, newStatus, feedback) -> Void in
+//                        if let indexp = tableView.indexPathForCell(cell) {
+//                            if indexPath == indexp {
+//                            } else {
+//                                feedback(isOK: false)
+//                            }
+//                        } else {
+//                            feedback(isOK: false)
+//                        }
+//                    })
+//                    cellout = cell
+//                }
                 return cellout
             }
             else if setting_headers[indexPath.section] == .MultiDomain {
@@ -295,7 +429,6 @@ class SettingTableViewController: ProtonMailViewController {
         return CellHeight;
     }
     
-    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if setting_headers[indexPath.section] == SettingSections.General {
             let itme: SGItems = setting_general_items[indexPath.row];
@@ -367,6 +500,44 @@ class SettingTableViewController: ProtonMailViewController {
                     }
                 }
                 break;
+            }
+        } else if setting_headers[indexPath.section] == SettingSections.Protection {
+            let itme: SProtectionItems = setting_protection_items[indexPath.row];
+            switch itme {
+            case .TouchID:
+                break
+            case .PinCode:
+                break
+            case .UpdatePin:
+                break
+            case .AutoLogout:
+                break
+            case .EnterTime:
+                let alertController = UIAlertController(title: NSLocalizedString("Auto Lock Time"), message: nil, preferredStyle: .ActionSheet)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
+                for (var timeIndex) in protection_auto_logout {
+                    var text = "\(timeIndex) Minutes"
+                    if timeIndex == -1 {
+                        text = "None"
+                    } else if timeIndex == 0 {
+                        text = "Every time enter app"
+                    } else if timeIndex == 1{
+                        text = "\(timeIndex) Minute"
+                    }
+                    alertController.addAction(UIAlertAction(title: text, style: .Default, handler: { (action) -> Void in
+                        self.navigationController?.popViewControllerAnimated(true)
+                        userCachedStatus.lockTime = "\(timeIndex)"
+                        tableView.reloadData()
+                    }))
+                }
+                
+                let cell = tableView.cellForRowAtIndexPath(indexPath)
+                alertController.popoverPresentationController?.sourceView = cell ?? self.view
+                alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
+                presentViewController(alertController, animated: true, completion: nil)
+
+                break
+                
             }
         } else if setting_headers[indexPath.section] == SettingSections.MultiDomain {
             
@@ -523,8 +694,6 @@ extension SettingTableViewController {
         case MBP = 4
         case CleanCache = 5
         case DefaultMobilSign = 6
-        case EnableTouchID = 7
-        case AutoLogout = 8
         case AutoLoadImage = 9
         
         var description : String {
@@ -543,10 +712,6 @@ extension SettingTableViewController {
                 return NSLocalizedString("Clear Local Message Cache")
             case .DefaultMobilSign:
                 return NSLocalizedString("Mobile Signature")
-            case .EnableTouchID:
-                return NSLocalizedString("Enable TouchID")
-            case .AutoLogout:
-                return NSLocalizedString("Auto Logout")
             case .AutoLoadImage:
                 return NSLocalizedString("Auto Show Images")
             }
@@ -576,6 +741,29 @@ extension SettingTableViewController {
         }
     }
     
+    enum SProtectionItems : Int, Printable {
+        case TouchID = 0
+        case PinCode = 1
+        case UpdatePin = 2
+        case AutoLogout = 3
+        case EnterTime = 4
+        
+        var description : String {
+            switch(self){
+            case TouchID:
+                return NSLocalizedString("Enable TouchID")
+            case PinCode:
+                return NSLocalizedString("Enable Pin Protection")
+            case UpdatePin:
+                return NSLocalizedString("Change Pin")
+            case AutoLogout:
+                return NSLocalizedString("Protection Entire App")
+            case EnterTime:
+                return NSLocalizedString("Auto Lock Time")
+            }
+        }
+    }
+    
     enum SettingSections: Int, Printable {
         case Debug = 0
         case General = 1
@@ -583,6 +771,8 @@ extension SettingTableViewController {
         case Storage = 3
         case Version = 4
         case SwipeAction = 5
+        case Protection = 6
+        case Language = 7
         
         var description : String {
             switch(self){
@@ -598,6 +788,10 @@ extension SettingTableViewController {
                 return NSLocalizedString("")
             case SwipeAction:
                 return NSLocalizedString("Message Swipe Actions")
+            case Protection:
+                return NSLocalizedString("Protection")
+            case Language:
+                return NSLocalizedString("Language")
             }
         }
     }

@@ -25,6 +25,13 @@ class UserCachedStatus : SharedCacheBase {
         static let touchIDEmail = "touchIDEmail" //user cache
         static let askEnableTouchID = "askEnableTouchID" //global cache
         
+        // pin code
+        static let isPinCodeEnabled = "isPinCodeEnabled" //user cache but could restore
+        static let pinCodeCache = "pinCodeCache" //user cache but could restore
+        static let autoLockTime = "autoLockTime"
+        static let enterBackgroundTime = "enterBackgroundTime"
+        static let lastLoggedInUser = "lastLoggedInUser" //user cache but could restore
+        
         //wait
         static let lastFetchMessageID = "last_fetch_message_id"
         static let lastFetchMessageTime = "last_fetch_message_time"
@@ -118,6 +125,13 @@ class UserCachedStatus : SharedCacheBase {
         //touch id
         getShared().removeObjectForKey(Key.touchIDEmail);
         
+        //pin code
+        getShared().removeObjectForKey(Key.isPinCodeEnabled)
+        UICKeyChainStore.removeItemForKey(Key.pinCodeCache)
+        UICKeyChainStore.removeItemForKey(Key.lastLoggedInUser)
+        UICKeyChainStore.removeItemForKey(Key.autoLockTime)
+        UICKeyChainStore.removeItemForKey(Key.enterBackgroundTime)
+        
         getShared().synchronize()
     }
     
@@ -130,6 +144,9 @@ class UserCachedStatus : SharedCacheBase {
         getShared().removeObjectForKey(Key.autoLogoutTime);
         getShared().removeObjectForKey(Key.askEnableTouchID)
         
+        //
+        
+        //
         getShared().removeObjectForKey(Key.lastLocalMobileSignature)
         
         getShared().synchronize()
@@ -151,14 +168,58 @@ extension UserCachedStatus {
         setValue("", forKey: Key.touchIDEmail)
     }
     
-// static let autoLogoutTime = "autoLogoutTime" //global cache
-// static let askEnableTouchID = "askEnableTouchID" //global cache
     var isTouchIDEnabled : Bool {
         get {
             return getShared().boolForKey(Key.isTouchIDEnabled)
         }
         set {
             setValue(newValue, forKey: Key.isTouchIDEnabled)
+        }
+    }
+    
+    var isPinCodeEnabled : Bool {
+        get {
+            return getShared().boolForKey(Key.isPinCodeEnabled)
+        }
+        set {
+            setValue(newValue, forKey: Key.isPinCodeEnabled)
+        }
+    }
+    
+    /// Value is only stored in the keychain
+    var pinCode : String {
+        get {
+            return UICKeyChainStore.stringForKey(Key.pinCodeCache) ?? ""
+        }
+        set {
+            UICKeyChainStore.setString(newValue, forKey: Key.pinCodeCache)
+        }
+    }
+    
+    var lockTime : String {
+        get {
+            return UICKeyChainStore.stringForKey(Key.autoLockTime) ?? "-1"
+        }
+        set {
+            UICKeyChainStore.setString(newValue, forKey: Key.autoLockTime)
+        }
+    }
+    
+    var exitTime : String {
+        get {
+            return UICKeyChainStore.stringForKey(Key.enterBackgroundTime) ?? "0"
+        }
+        set {
+            UICKeyChainStore.setString(newValue, forKey: Key.enterBackgroundTime)
+        }
+    }
+    
+    var lastLoggedInUser : String? {
+        get {
+            return UICKeyChainStore.stringForKey(Key.lastLoggedInUser)
+        }
+        set {
+            UICKeyChainStore.setString(newValue, forKey: Key.lastLoggedInUser)
         }
     }
     
@@ -170,24 +231,6 @@ extension UserCachedStatus {
     func resetAskedEnableTouchID() {
         setValue(AppConstants.AskTouchID, forKey: Key.askEnableTouchID)
     }
-    
-//
-//    func resetCache() -> Void {
-//        setValue(AppConstants.CacheVersion, forKey: Key.lastCacheVersion)
-//    }
-//    
-//    func resetAuthCache() -> Void {
-//        setValue(AppConstants.AuthCacheVersion, forKey: Key.lastAuthCacheVersion)
-//    }
-//    
-//    func resetSplashCache() -> Void {
-//        setValue(AppConstants.SplashVersion, forKey: Key.lastSplashViersion)
-//    }
-//    
-//    func resetTourValue() {
-//        setValue(AppConstants.TourVersion, forKey: Key.lastTourViersion)
-//    }
-    
     
 }
 

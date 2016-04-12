@@ -129,7 +129,7 @@ class UserDataService {
             return MessageSwipeAction(rawValue: userInfo?.swipeRight ?? 0) ?? .trash
         }
     }
-
+    
     var userAddresses: Array<Address> { //never be null
         return userInfo?.userAddresses ?? Array<Address>()
     }
@@ -212,7 +212,7 @@ class UserDataService {
         cleanUpIfFirstRun()
         launchCleanUp()
     }
-
+    
     func fetchUserInfo(completion: UserInfoBlock? = nil) {
         
         let getUserInfo = GetUserInfoRequest<GetUserInfoResponse>()
@@ -349,30 +349,30 @@ class UserDataService {
         }
     }
     
-//    func updateNewUserKeys(mbp:String, completion: CompletionBlock?) {
-//        var error: NSError?
-//        if let userInfo = userInfo {
-//            if let newPrivateKey = sharedOpenPGP.generateKey(mbp, userName: username!, error: &error) {
-//                var pubkey = newPrivateKey.publicKey
-//                var privkey = newPrivateKey.privateKey
-//                sharedAPIService.userUpdateKeypair("" , publicKey: pubkey, privateKey: privkey, completion: { task, response, error in
-//                    if error == nil {
-//                        self.mailboxPassword = mbp;
-//                        let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: privkey, publicKey: pubkey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
-//                            autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
-//                            
-//                            swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight
-//                        )
-//                        
-//                        self.userInfo = userInfo
-//                    }
-//                    completion?(task: task, response: response, error: error)
-//                })
-//            } else {
-//                completion?(task: nil, response: nil, error: error)
-//            }
-//        }
-//    }
+    //    func updateNewUserKeys(mbp:String, completion: CompletionBlock?) {
+    //        var error: NSError?
+    //        if let userInfo = userInfo {
+    //            if let newPrivateKey = sharedOpenPGP.generateKey(mbp, userName: username!, error: &error) {
+    //                var pubkey = newPrivateKey.publicKey
+    //                var privkey = newPrivateKey.privateKey
+    //                sharedAPIService.userUpdateKeypair("" , publicKey: pubkey, privateKey: privkey, completion: { task, response, error in
+    //                    if error == nil {
+    //                        self.mailboxPassword = mbp;
+    //                        let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: privkey, publicKey: pubkey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
+    //                            autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
+    //
+    //                            swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight
+    //                        )
+    //
+    //                        self.userInfo = userInfo
+    //                    }
+    //                    completion?(task: task, response: response, error: error)
+    //                })
+    //            } else {
+    //                completion?(task: nil, response: nil, error: error)
+    //            }
+    //        }
+    //    }
     
     func updateUserDomiansOrder(email_domains: Array<Address>, newOrder : Array<Int>, completion: CompletionBlock) {
         let domainSetting = UpdateDomainOrder<ApiResponse>(adds: newOrder)
@@ -407,7 +407,7 @@ class UserDataService {
             completion(task: task, response: nil, error: nil)
         }
     }
-
+    
     func updateNotificationEmail(newNotificationEmail: String, completion: CompletionBlock) {
         let emailSetting = UpdateNotificationEmail<ApiResponse>(password: self.password!, notificationEmail: newNotificationEmail)
         emailSetting.call() { task, response, hasError in
@@ -450,11 +450,11 @@ class UserDataService {
             
             if error == nil {
                 self.password = newPassword
-            }            
+            }
             completion(task: task, response: responseDict, error: error)
         })
     }
-
+    
     func updateSignature(signature: String, completion: UserInfoBlock?) {
         sharedAPIService.settingUpdateSignature(signature, completion: completionForUserInfo(completion))
     }
@@ -541,5 +541,5 @@ class UserDataService {
 
 extension Message {
     
-
+    
 }

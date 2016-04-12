@@ -31,6 +31,7 @@ class SignInViewController: UIViewController {
     private let forgotPasswordURL = NSURL(string: "https://mail.protonmail.com/help/reset-login-password")!
     
     private let kSegueToSignUpWithNoAnimation = "sign_in_to_splash_no_segue"
+    private let kSegueToPinCodeViewNoAnimation = "pin_code_segue"
     
     static var isComeBackFromMailbox = false
     
@@ -80,15 +81,20 @@ class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //
         setupTextFields()
         setupButtons()
         
-        //check touch id status
-        if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
-            authenticateUser()
+        if userCachedStatus.isPinCodeEnabled && !userCachedStatus.pinCode.isEmpty {
+            self.performSegueWithIdentifier(kSegueToPinCodeViewNoAnimation, sender: self)
         } else {
-            signInIfRememberedCredentials()
-            setupView();
+            //check touch id status
+            if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+                authenticateUser()
+            } else {
+                signInIfRememberedCredentials()
+                setupView();
+            }
         }
     }
     
@@ -316,6 +322,10 @@ class SignInViewController: UIViewController {
         if segue.identifier == kSignUpKeySegue {
             let viewController = segue.destinationViewController as! SignUpUserNameViewController
             viewController.viewModel = SignupViewModelImpl()
+        } else if segue.identifier == kSegueToPinCodeViewNoAnimation {
+            let viewController = segue.destinationViewController as! PinCodeViewController
+            viewController.viewModel = UnlockPinCodeModelImpl()
+            viewController.delegate = self
         }
     }
     
@@ -512,6 +522,18 @@ class SignInViewController: UIViewController {
     
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
         dismissKeyboard()
+    }
+}
+
+extension SignInViewController : PinCodeViewControllerDelegate {
+    
+    func Cancel() {
+        clean()
+    }
+    
+    func Next() {
+        signInIfRememberedCredentials()
+        setupView();
     }
 }
 
