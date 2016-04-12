@@ -71,6 +71,7 @@ class SettingTableViewController: ProtonMailViewController {
         UIView.setAnimationsEnabled(false)
         settingTableView.reloadData();
         UIView.setAnimationsEnabled(true)
+        navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -80,28 +81,24 @@ class SettingTableViewController: ProtonMailViewController {
         case LoginpwdSegue:
             let changeLoginPwdView = segue.destinationViewController as! ChangePasswordViewController;
             changeLoginPwdView.setViewModel(shareViewModelFactoy.getChangeLoginPassword())
-            break
         case MailboxpwdSegue:
             let changeMBPView = segue.destinationViewController as! ChangePasswordViewController;
             changeMBPView.setViewModel(shareViewModelFactoy.getChangeMailboxPassword())
-            break
         case NotificationSegue:
             let changeMBPView = segue.destinationViewController as! SettingDetailViewController;
             changeMBPView.setViewModel(shareViewModelFactoy.getChangeNotificationEmail())
-            break
         case DisplayNameSegue:
             let changeMBPView = segue.destinationViewController as! SettingDetailViewController;
             changeMBPView.setViewModel(shareViewModelFactoy.getChangeDisplayName())
-            break
         case SignatureSegue:
             let changeMBPView = segue.destinationViewController as! SettingDetailViewController;
             changeMBPView.setViewModel(shareViewModelFactoy.getChangeSignature())
-            break
         case MobileSignatureSegue:
             let changeMBPView = segue.destinationViewController as! SettingDetailViewController;
             changeMBPView.setViewModel(shareViewModelFactoy.getChangeMobileSignature())
-            break
-            
+        case kSetupPinCodeSegue:
+            let vc = segue.destinationViewController as! PinCodeViewController;
+            vc.viewModel = SetPinCodeModelImpl()
         default:
             break
         }

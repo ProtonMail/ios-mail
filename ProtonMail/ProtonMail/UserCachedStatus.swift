@@ -27,6 +27,8 @@ class UserCachedStatus : SharedCacheBase {
         
         // pin code
         static let isPinCodeEnabled = "isPinCodeEnabled" //global cache
+        static let pinCodeCache = "pinCodeCache" //global cache
+        static let lastLoggedInUser = "lastLoggedInUser" //global cache
         
         //wait
         static let lastFetchMessageID = "last_fetch_message_id"
@@ -136,6 +138,9 @@ class UserCachedStatus : SharedCacheBase {
         //pin code
         getShared().removeObjectForKey(Key.isPinCodeEnabled)
         
+        UICKeyChainStore.removeItemForKey(Key.pinCodeCache)
+        UICKeyChainStore.removeItemForKey(Key.lastLoggedInUser)
+        
         
         getShared().removeObjectForKey(Key.lastLocalMobileSignature)
         
@@ -178,6 +183,25 @@ extension UserCachedStatus {
         }
     }
     
+    /// Value is only stored in the keychain
+    var pinCode : String {
+        get {
+            return UICKeyChainStore.stringForKey(Key.pinCodeCache) ?? ""
+        }
+        set {
+            UICKeyChainStore.setString(newValue, forKey: Key.pinCodeCache)
+        }
+    }
+    
+    var lastLoggedInUser : String? {
+        get {
+            return UICKeyChainStore.stringForKey(Key.lastLoggedInUser)
+        }
+        set {
+            UICKeyChainStore.setString(newValue, forKey: Key.lastLoggedInUser)
+        }
+    }
+    
     func alreadyAskedEnableTouchID () -> Bool {
         let code = getShared().integerForKey(Key.askEnableTouchID)
         return code == AppConstants.AskTouchID
@@ -186,24 +210,6 @@ extension UserCachedStatus {
     func resetAskedEnableTouchID() {
         setValue(AppConstants.AskTouchID, forKey: Key.askEnableTouchID)
     }
-    
-//
-//    func resetCache() -> Void {
-//        setValue(AppConstants.CacheVersion, forKey: Key.lastCacheVersion)
-//    }
-//    
-//    func resetAuthCache() -> Void {
-//        setValue(AppConstants.AuthCacheVersion, forKey: Key.lastAuthCacheVersion)
-//    }
-//    
-//    func resetSplashCache() -> Void {
-//        setValue(AppConstants.SplashVersion, forKey: Key.lastSplashViersion)
-//    }
-//    
-//    func resetTourValue() {
-//        setValue(AppConstants.TourVersion, forKey: Key.lastTourViersion)
-//    }
-    
     
 }
 

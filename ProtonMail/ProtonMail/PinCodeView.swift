@@ -10,7 +10,7 @@ import Foundation
 
 protocol PinCodeViewDelegate {
     func Cancel()
-    func Next()
+    func Next(code : String)
 }
 
 class PinCodeView : PMView {
@@ -44,9 +44,12 @@ class PinCodeView : PMView {
     override func setup() {
     }
     
-    func updateViewText(title : String, cancelText : String) {
+    func updateViewText(title : String, cancelText : String, resetPin : Bool) {
         titleLabel.text = title
         logoutButton.setTitle(cancelText, forState: UIControlState.Normal)
+        if resetPin {
+            self.resetPin()
+        }
     }
     
     func updateCorner() {
@@ -111,7 +114,7 @@ class PinCodeView : PMView {
     }
     
     @IBAction func goAction(sender: UIButton) {
-        delegate?.Next()
+        delegate?.Next(pinCode)
     }
     
     internal func changePinStatus(pin : UIView, on : Bool) {

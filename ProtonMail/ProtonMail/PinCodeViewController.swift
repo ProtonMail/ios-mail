@@ -20,20 +20,18 @@ class PinCodeViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.layoutIfNeeded()
+        self.pinCodeView.delegate = self
         
-        
-        
+        self.setUpView(true)
     }
     
-    internal func setUpView() {
-        pinCodeView.updateViewText(viewModel.title(), cancelText: viewModel.cancel())
+    internal func setUpView(reset: Bool) {
+        pinCodeView.updateViewText(viewModel.title(), cancelText: viewModel.cancel(), resetPin: reset)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
         navigationController?.setNavigationBarHidden(true, animated: true)
-        
         pinCodeView.updateCorner()
     }
     
@@ -53,4 +51,35 @@ class PinCodeViewController : UIViewController {
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent;
     }
+}
+
+
+extension PinCodeViewController : PinCodeViewDelegate {
+    
+    func Cancel() {
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
+    func Next(code : String) {
+        if code.isEmpty {
+            var alert = "Pin code can't be empty.".alertController()
+            alert.addOKAction()
+            self.presentViewController(alert, animated: true, completion: nil)
+        } else {
+            var step : PinCodeStep = self.viewModel.setCode(code)
+            if step != .Done {
+                self.setUpView(true)
+            } else {
+                if self.viewModel.isPinMatched() {
+                    self.viewModel.done()
+                    self.navigationController?.popViewControllerAnimated(true)
+                } else {
+                    var alert = "Pin code doesn't match.".alertController()
+                    alert.addOKAction()
+                    self.presentViewController(alert, animated: true, completion: nil)
+                }
+            }
+        }
+    }
+    
 }
