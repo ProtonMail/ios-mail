@@ -528,7 +528,7 @@ class SignInViewController: UIViewController {
 extension SignInViewController : PinCodeViewControllerDelegate {
     
     func Cancel() {
-        
+        clean()
     }
     
     func Next() {

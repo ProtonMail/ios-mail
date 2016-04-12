@@ -286,6 +286,38 @@ class SettingTableViewController: ProtonMailViewController {
                         }
                     })
                     cellout = cell
+                } else if item == .UpdatePin {
+                    let cell = tableView.dequeueReusableCellWithIdentifier(SettingSingalLineCell, forIndexPath: indexPath) as! GeneralSettingViewCell
+                    cell.configCell(item.description, right: "")
+                    cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                    cellout = cell
+                } else if item == .AutoLogout {
+                    let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
+                    cell.accessoryType = UITableViewCellAccessoryType.None
+                    cell.selectionStyle = UITableViewCellSelectionStyle.None
+                    cell.configCell(item.description, bottomLine: "", status: userCachedStatus.isPinCodeEnabled, complete: { (cell, newStatus, feedback) -> Void in
+                        if let indexp = tableView.indexPathForCell(cell) {
+                            if indexPath == indexp {
+                                if !userCachedStatus.isPinCodeEnabled {
+                                    self.performSegueWithIdentifier(self.kSetupPinCodeSegue, sender: self)
+                                } else {
+                                    userCachedStatus.isPinCodeEnabled = false
+                                    feedback(isOK: true)
+                                }
+                            } else {
+                                feedback(isOK: false)
+                            }
+                        } else {
+                            feedback(isOK: false)
+                        }
+                    })
+                    cellout = cell
+                } else if item == .EnterTime {
+                    let cell = tableView.dequeueReusableCellWithIdentifier(SettingTwoLinesCell, forIndexPath: indexPath) as! SettingsCell
+                    cell.LeftText.text = item.description;
+                    cell.RightText.text = "every time"
+                    cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                    cellout = cell;
                 }
                 else {
                     let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
@@ -304,7 +336,6 @@ class SettingTableViewController: ProtonMailViewController {
                     cellout = cell
                 }
                 return cellout
-                
             }
             else if setting_headers[indexPath.section] == .MultiDomain {
                 let cell = tableView.dequeueReusableCellWithIdentifier(SettingDomainsCell, forIndexPath: indexPath) as! DomainsTableViewCell
@@ -674,7 +705,7 @@ extension SettingTableViewController {
             case AutoLogout:
                 return NSLocalizedString("Protection Entire App")
             case EnterTime:
-                return NSLocalizedString("")
+                return NSLocalizedString("Auto Lock Time")
             }
         }
     }

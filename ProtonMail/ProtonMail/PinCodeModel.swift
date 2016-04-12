@@ -45,6 +45,10 @@ public class PinCodeViewModel : NSObject {
     }
     
     func done() {
-        fatalError("This method must be overridden")
+        
+    }
+    
+    func checkTouchID() -> Bool {
+        return false
     }
 }

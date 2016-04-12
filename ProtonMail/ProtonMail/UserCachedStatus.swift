@@ -26,9 +26,9 @@ class UserCachedStatus : SharedCacheBase {
         static let askEnableTouchID = "askEnableTouchID" //global cache
         
         // pin code
-        static let isPinCodeEnabled = "isPinCodeEnabled" //global cache
-        static let pinCodeCache = "pinCodeCache" //global cache
-        static let lastLoggedInUser = "lastLoggedInUser" //global cache
+        static let isPinCodeEnabled = "isPinCodeEnabled" //user cache but could restore
+        static let pinCodeCache = "pinCodeCache" //user cache but could restore
+        static let lastLoggedInUser = "lastLoggedInUser" //user cache but could restore
         
         //wait
         static let lastFetchMessageID = "last_fetch_message_id"
@@ -123,6 +123,11 @@ class UserCachedStatus : SharedCacheBase {
         //touch id
         getShared().removeObjectForKey(Key.touchIDEmail);
         
+        //pin code
+        getShared().removeObjectForKey(Key.isPinCodeEnabled)
+        UICKeyChainStore.removeItemForKey(Key.pinCodeCache)
+        UICKeyChainStore.removeItemForKey(Key.lastLoggedInUser)
+        
         getShared().synchronize()
     }
     
@@ -135,13 +140,9 @@ class UserCachedStatus : SharedCacheBase {
         getShared().removeObjectForKey(Key.autoLogoutTime);
         getShared().removeObjectForKey(Key.askEnableTouchID)
         
-        //pin code
-        getShared().removeObjectForKey(Key.isPinCodeEnabled)
+        //
         
-        UICKeyChainStore.removeItemForKey(Key.pinCodeCache)
-        UICKeyChainStore.removeItemForKey(Key.lastLoggedInUser)
-        
-        
+        //
         getShared().removeObjectForKey(Key.lastLocalMobileSignature)
         
         getShared().synchronize()

@@ -56,9 +56,4 @@ class UnlockPinCodeModelImpl : PinCodeViewModel {
             return false
         }
     }
-    
-    override func done() {
-        
-    }
-
 }

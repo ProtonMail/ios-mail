@@ -70,4 +70,8 @@ class SetPinCodeModelImpl : PinCodeViewModel {
             userCachedStatus.pinCode = self.enterPin
         }
     }
+    
+    override func checkTouchID() -> Bool {
+        return true
+    }
 }
