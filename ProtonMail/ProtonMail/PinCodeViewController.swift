@@ -20,11 +20,19 @@ class PinCodeViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.layoutIfNeeded()
+        
+        
+        
+    }
+    
+    internal func setUpView() {
+        pinCodeView.updateViewText(viewModel.title(), cancelText: viewModel.cancel())
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        navigationController?.setNavigationBarHidden(true, animated: true)
         
         pinCodeView.updateCorner()
     }

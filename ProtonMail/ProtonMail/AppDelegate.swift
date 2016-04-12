@@ -169,6 +169,9 @@ extension AppDelegate: UIApplicationDelegate {
     
     func applicationWillEnterForeground(application: UIApplication) {
         Snapshot().willEnterForeground(application)
+        
+        // check the auto logout status
+        (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: false)
     }
     
     func applicationDidBecomeActive(application: UIApplication) {

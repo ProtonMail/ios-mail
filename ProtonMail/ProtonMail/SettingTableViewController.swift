@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import LocalAuthentication
 
 class SettingTableViewController: ProtonMailViewController {
     
@@ -31,6 +32,8 @@ class SettingTableViewController: ProtonMailViewController {
     let MailboxpwdSegue:String = "setting_mailbox_pwd"
     
     let DebugQueueSegue : String = "setting_debug_queue_segue"
+    
+    let kSetupPinCodeSegue : String = "setting_setup_pingcode"
     
     
     /// cells
@@ -223,9 +226,40 @@ class SettingTableViewController: ProtonMailViewController {
                     let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
                     cell.accessoryType = UITableViewCellAccessoryType.None
                     cell.selectionStyle = UITableViewCellSelectionStyle.None
-                    cell.configCell(item.description, bottomLine: "", status: !sharedUserDataService.showShowImageView, complete: { (cell, newStatus, feedback) -> Void in
+                    cell.configCell(item.description, bottomLine: "", status: userCachedStatus.isTouchIDEnabled, complete: { (cell, newStatus, feedback) -> Void in
                         if let indexp = tableView.indexPathForCell(cell) {
                             if indexPath == indexp {
+                                if !userCachedStatus.isTouchIDEnabled {
+                                    // try to enable touch id
+                                    let context = LAContext()
+                                    // Declare a NSError variable.
+                                    var error: NSError?
+                                    // Check if the device can evaluate the policy.
+                                    if context.canEvaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, error: &error) {
+                                        userCachedStatus.isTouchIDEnabled = true
+                                        userCachedStatus.touchIDEmail = sharedUserDataService.username ?? ""
+                                    }
+                                    else{
+                                        var alertString : String = "";
+                                        // If the security policy cannot be evaluated then show a short message depending on the error.
+                                        switch error!.code{
+                                        case LAError.TouchIDNotEnrolled.rawValue:
+                                            alertString = "TouchID is not enrolled"
+                                        case LAError.PasscodeNotSet.rawValue:
+                                            alertString = "A passcode has not been set"
+                                        default:
+                                            // The LAError.TouchIDNotAvailable case.
+                                            alertString = "TouchID not available"
+                                        }
+                                        println(alertString)
+                                        println(error?.localizedDescription)
+                                        alertString.alertToast()
+                                        feedback(isOK: false)
+                                    }
+                                } else {
+                                    userCachedStatus.isTouchIDEnabled = false
+                                    userCachedStatus.touchIDEmail = ""
+                                }
                             } else {
                                 feedback(isOK: false)
                             }
@@ -234,7 +268,29 @@ class SettingTableViewController: ProtonMailViewController {
                         }
                     })
                     cellout = cell
-                } else {
+                } else if item == .PinCode {
+                    let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
+                    cell.accessoryType = UITableViewCellAccessoryType.None
+                    cell.selectionStyle = UITableViewCellSelectionStyle.None
+                    cell.configCell(item.description, bottomLine: "", status: userCachedStatus.isPinCodeEnabled, complete: { (cell, newStatus, feedback) -> Void in
+                        if let indexp = tableView.indexPathForCell(cell) {
+                            if indexPath == indexp {
+                                if !userCachedStatus.isPinCodeEnabled {
+                                    self.performSegueWithIdentifier(self.kSetupPinCodeSegue, sender: self)
+                                } else {
+                                    userCachedStatus.isPinCodeEnabled = false
+                                    feedback(isOK: true)
+                                }
+                            } else {
+                                feedback(isOK: false)
+                            }
+                        } else {
+                            feedback(isOK: false)
+                        }
+                    })
+                    cellout = cell
+                }
+                else {
                     let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
                     cell.accessoryType = UITableViewCellAccessoryType.None
                     cell.selectionStyle = UITableViewCellSelectionStyle.None

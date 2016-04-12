@@ -31,6 +31,7 @@ class PinCodeView : PMView {
     @IBOutlet weak var pinDisplayView: UITextField!
     
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var logoutButton: UIButton!
     
     var delegate : PinCodeViewDelegate?
     
@@ -41,6 +42,11 @@ class PinCodeView : PMView {
     }
     
     override func setup() {
+    }
+    
+    func updateViewText(title : String, cancelText : String) {
+        titleLabel.text = title
+        logoutButton.setTitle(cancelText, forState: UIControlState.Normal)
     }
     
     func updateCorner() {

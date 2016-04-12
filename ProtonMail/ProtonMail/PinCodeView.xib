@@ -11,6 +11,7 @@
                 <outlet property="fiveButton" destination="ut4-0g-D6Q" id="6b2-qF-yJu"/>
                 <outlet property="fourButton" destination="dG0-wX-hWt" id="UbF-dr-eFo"/>
                 <outlet property="goButton" destination="cgw-dA-i9G" id="xKE-RO-DAI"/>
+                <outlet property="logoutButton" destination="hCt-xR-6Bd" id="Amn-jJ-sx5"/>
                 <outlet property="nineButton" destination="bNG-Ml-gC9" id="Lwe-TE-kw1"/>
                 <outlet property="oneButton" destination="ruA-EE-Yxr" id="ObA-jk-a1f"/>
                 <outlet property="pinDisplayView" destination="plR-r3-cPc" id="7Ln-Ha-vQf"/>

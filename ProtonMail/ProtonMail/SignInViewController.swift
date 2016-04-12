@@ -81,7 +81,7 @@ class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.performSegueWithIdentifier(kSegueToPinCodeViewNoAnimation, sender: self)
+        //self.performSegueWithIdentifier(kSegueToPinCodeViewNoAnimation, sender: self)
         
         setupTextFields()
         setupButtons()
@@ -89,7 +89,10 @@ class SignInViewController: UIViewController {
         //check touch id status
         if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
             authenticateUser()
-        } else {
+        } else if !userCachedStatus.touchIDEmail.isEmpty {
+        
+        }
+        else {
             signInIfRememberedCredentials()
             setupView();
         }

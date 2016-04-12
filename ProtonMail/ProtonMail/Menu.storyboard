@@ -165,20 +165,20 @@
             </objects>
             <point key="canvasLocation" x="-454" y="4426"/>
         </scene>
-        <!--View Controller-->
+        <!--Pin Code View Controller-->
         <scene sceneID="JOj-m3-KRQ">
             <objects>
-                <viewController id="tMn-Uv-JDd" sceneMemberID="viewController">
+                <viewController id="tMn-Uv-JDd" customClass="PinCodeViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="2qW-hG-7EF"/>
                         <viewControllerLayoutGuide type="bottom" id="MFb-ys-qdz"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Maa-Hc-5hF">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="492"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vqL-9M-AAl" customClass="PinCodeView" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="492"/>
                                 <animations/>
                             </view>
                         </subviews>
@@ -191,6 +191,10 @@
                             <constraint firstItem="vqL-9M-AAl" firstAttribute="leading" secondItem="Maa-Hc-5hF" secondAttribute="leading" id="pQR-E2-rGz"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <connections>
+                        <outlet property="pinCodeView" destination="vqL-9M-AAl" id="9Kn-Md-0P4"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a2q-1X-21m" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2517,7 +2521,7 @@
                         <segue destination="OCS-Qd-wj6" kind="show" identifier="setting_signature" id="A7E-cY-hB0"/>
                         <segue destination="SWZ-VZ-9Rg" kind="show" identifier="setting_debug_queue_segue" id="XyN-LC-jTe"/>
                         <segue destination="OCS-Qd-wj6" kind="show" identifier="setting_mobile_signature" id="dUE-8e-owj"/>
-                        <segue destination="tMn-Uv-JDd" kind="show" identifier="setting_pingcode" id="XQx-Pm-sNq"/>
+                        <segue destination="tMn-Uv-JDd" kind="show" identifier="setting_setup_pingcode" id="XQx-Pm-sNq"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7xM-0a-IOr" userLabel="First Responder" sceneMemberID="firstResponder"/>
