@@ -28,6 +28,8 @@ class UserCachedStatus : SharedCacheBase {
         // pin code
         static let isPinCodeEnabled = "isPinCodeEnabled" //user cache but could restore
         static let pinCodeCache = "pinCodeCache" //user cache but could restore
+        static let autoLockTime = "autoLockTime"
+        static let enterBackgroundTime = "enterBackgroundTime"
         static let lastLoggedInUser = "lastLoggedInUser" //user cache but could restore
         
         //wait
@@ -127,6 +129,8 @@ class UserCachedStatus : SharedCacheBase {
         getShared().removeObjectForKey(Key.isPinCodeEnabled)
         UICKeyChainStore.removeItemForKey(Key.pinCodeCache)
         UICKeyChainStore.removeItemForKey(Key.lastLoggedInUser)
+        UICKeyChainStore.removeItemForKey(Key.autoLockTime)
+        UICKeyChainStore.removeItemForKey(Key.enterBackgroundTime)
         
         getShared().synchronize()
     }
@@ -164,8 +168,6 @@ extension UserCachedStatus {
         setValue("", forKey: Key.touchIDEmail)
     }
     
-// static let autoLogoutTime = "autoLogoutTime" //global cache
-// static let askEnableTouchID = "askEnableTouchID" //global cache
     var isTouchIDEnabled : Bool {
         get {
             return getShared().boolForKey(Key.isTouchIDEnabled)
@@ -191,6 +193,24 @@ extension UserCachedStatus {
         }
         set {
             UICKeyChainStore.setString(newValue, forKey: Key.pinCodeCache)
+        }
+    }
+    
+    var lockTime : String {
+        get {
+            return UICKeyChainStore.stringForKey(Key.autoLockTime) ?? "-1"
+        }
+        set {
+            UICKeyChainStore.setString(newValue, forKey: Key.autoLockTime)
+        }
+    }
+    
+    var exitTime : String {
+        get {
+            return UICKeyChainStore.stringForKey(Key.enterBackgroundTime) ?? "0"
+        }
+        set {
+            UICKeyChainStore.setString(newValue, forKey: Key.enterBackgroundTime)
         }
     }
     

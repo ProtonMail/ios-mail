@@ -18,7 +18,9 @@ class SettingTableViewController: ProtonMailViewController {
     var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
     var setting_swipe_actions : [MessageSwipeAction] = [.trash, .spam, .star, .archive]
     
-    var setting_protection_items : [SProtectionItems] = [.TouchID, .PinCode, .UpdatePin, .AutoLogout, .EnterTime]
+    var setting_protection_items : [SProtectionItems] = [.TouchID, .PinCode] // [.TouchID, .PinCode, .UpdatePin, .AutoLogout, .EnterTime]
+    
+    var protection_auto_logout : [Int] = [-1, 0, 1, 2, 5, 10, 15, 30, 60]
     
     var multi_domains: Array<Address>!
     var userInfo = sharedUserDataService.userInfo
@@ -66,6 +68,11 @@ class SettingTableViewController: ProtonMailViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
+            setting_protection_items = [.TouchID, .PinCode, .EnterTime]
+        }
+        
         userInfo = sharedUserDataService.userInfo
         multi_domains = sharedUserDataService.userAddresses
         UIView.setAnimationsEnabled(false)
@@ -298,12 +305,7 @@ class SettingTableViewController: ProtonMailViewController {
                     cell.configCell(item.description, bottomLine: "", status: userCachedStatus.isPinCodeEnabled, complete: { (cell, newStatus, feedback) -> Void in
                         if let indexp = tableView.indexPathForCell(cell) {
                             if indexPath == indexp {
-                                if !userCachedStatus.isPinCodeEnabled {
-                                    self.performSegueWithIdentifier(self.kSetupPinCodeSegue, sender: self)
-                                } else {
-                                    userCachedStatus.isPinCodeEnabled = false
-                                    feedback(isOK: true)
-                                }
+                                
                             } else {
                                 feedback(isOK: false)
                             }
@@ -313,28 +315,42 @@ class SettingTableViewController: ProtonMailViewController {
                     })
                     cellout = cell
                 } else if item == .EnterTime {
+                    var timeIndex : Int = -1
+                    if let t = userCachedStatus.lockTime.toInt() {
+                        timeIndex = t
+                    }
+                    
+                    var text = "\(timeIndex) Minutes"
+                    if timeIndex == -1 {
+                        text = "None"
+                    } else if timeIndex == 0 {
+                        text = "Every time enter app"
+                    } else if timeIndex == 1{
+                        text = "\(timeIndex) Minute"
+                    }
+                    
                     let cell = tableView.dequeueReusableCellWithIdentifier(SettingTwoLinesCell, forIndexPath: indexPath) as! SettingsCell
                     cell.LeftText.text = item.description;
-                    cell.RightText.text = "every time"
+                    cell.RightText.text = text
                     cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                     cellout = cell;
                 }
-                else {
-                    let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
-                    cell.accessoryType = UITableViewCellAccessoryType.None
-                    cell.selectionStyle = UITableViewCellSelectionStyle.None
-                    cell.configCell(item.description, bottomLine: "", status: !sharedUserDataService.showShowImageView, complete: { (cell, newStatus, feedback) -> Void in
-                        if let indexp = tableView.indexPathForCell(cell) {
-                            if indexPath == indexp {
-                            } else {
-                                feedback(isOK: false)
-                            }
-                        } else {
-                            feedback(isOK: false)
-                        }
-                    })
-                    cellout = cell
-                }
+//                else {
+//                    let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
+//                    cell.accessoryType = UITableViewCellAccessoryType.None
+//                    cell.selectionStyle = UITableViewCellSelectionStyle.None
+//                    cell.configCell(item.description, bottomLine: "", status: !sharedUserDataService.showShowImageView, complete: { (cell, newStatus, feedback) -> Void in
+//                        if let indexp = tableView.indexPathForCell(cell) {
+//                            if indexPath == indexp {
+//                            } else {
+//                                feedback(isOK: false)
+//                            }
+//                        } else {
+//                            feedback(isOK: false)
+//                        }
+//                    })
+//                    cellout = cell
+//                }
                 return cellout
             }
             else if setting_headers[indexPath.section] == .MultiDomain {
@@ -484,6 +500,44 @@ class SettingTableViewController: ProtonMailViewController {
                     }
                 }
                 break;
+            }
+        } else if setting_headers[indexPath.section] == SettingSections.Protection {
+            let itme: SProtectionItems = setting_protection_items[indexPath.row];
+            switch itme {
+            case .TouchID:
+                break
+            case .PinCode:
+                break
+            case .UpdatePin:
+                break
+            case .AutoLogout:
+                break
+            case .EnterTime:
+                let alertController = UIAlertController(title: NSLocalizedString("Auto Lock Time"), message: nil, preferredStyle: .ActionSheet)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
+                for (var timeIndex) in protection_auto_logout {
+                    var text = "\(timeIndex) Minutes"
+                    if timeIndex == -1 {
+                        text = "None"
+                    } else if timeIndex == 0 {
+                        text = "Every time enter app"
+                    } else if timeIndex == 1{
+                        text = "\(timeIndex) Minute"
+                    }
+                    alertController.addAction(UIAlertAction(title: text, style: .Default, handler: { (action) -> Void in
+                        self.navigationController?.popViewControllerAnimated(true)
+                        userCachedStatus.lockTime = "\(timeIndex)"
+                        tableView.reloadData()
+                    }))
+                }
+                
+                let cell = tableView.cellForRowAtIndexPath(indexPath)
+                alertController.popoverPresentationController?.sourceView = cell ?? self.view
+                alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
+                presentViewController(alertController, animated: true, completion: nil)
+
+                break
+                
             }
         } else if setting_headers[indexPath.section] == SettingSections.MultiDomain {
             
