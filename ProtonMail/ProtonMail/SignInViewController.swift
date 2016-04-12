@@ -325,7 +325,7 @@ class SignInViewController: UIViewController {
         } else if segue.identifier == kSegueToPinCodeViewNoAnimation {
             let viewController = segue.destinationViewController as! PinCodeViewController
             viewController.viewModel = UnlockPinCodeModelImpl()
-            
+            viewController.delegate = self
         }
     }
     
@@ -522,6 +522,18 @@ class SignInViewController: UIViewController {
     
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
         dismissKeyboard()
+    }
+}
+
+extension SignInViewController : PinCodeViewControllerDelegate {
+    
+    func Cancel() {
+        
+    }
+    
+    func Next() {
+        signInIfRememberedCredentials()
+        setupView();
     }
 }
 

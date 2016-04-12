@@ -12,9 +12,16 @@ import UIKit
 import Fabric
 import Crashlytics
 
+protocol PinCodeViewControllerDelegate {
+    func Cancel()
+    func Next()
+}
+
+
 class PinCodeViewController : UIViewController {
     
     var viewModel : PinCodeViewModel!
+    var delegate : PinCodeViewControllerDelegate?
     
     @IBOutlet weak var pinCodeView: PinCodeView!
     override func viewDidLoad() {
@@ -57,6 +64,7 @@ class PinCodeViewController : UIViewController {
 extension PinCodeViewController : PinCodeViewDelegate {
     
     func Cancel() {
+        delegate?.Cancel()
         self.navigationController?.popViewControllerAnimated(true)
     }
     
@@ -72,11 +80,13 @@ extension PinCodeViewController : PinCodeViewDelegate {
             } else {
                 if self.viewModel.isPinMatched() {
                     self.viewModel.done()
+                    self.delegate?.Next()
                     self.navigationController?.popViewControllerAnimated(true)
                 } else {
-                    var alert = "Pin code doesn't match.".alertController()
-                    alert.addOKAction()
-                    self.presentViewController(alert, animated: true, completion: nil)
+                    self.pinCodeView.showError()
+//                    var alert = "Pin code doesn't match.".alertController()
+//                    alert.addOKAction()
+//                    self.presentViewController(alert, animated: true, completion: nil)
                 }
             }
         }

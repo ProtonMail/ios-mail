@@ -87,6 +87,10 @@ class PinCodeView : PMView {
         pinDisplayView.text = pinCode
     }
     
+    func showError() {
+        pinView.shake(3, offset: 10)
+    }
+    
     func setCorner(button : UIView) {
         let w = button.frame.size.width
         button.layer.cornerRadius = w/2
