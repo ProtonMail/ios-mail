@@ -81,7 +81,7 @@ class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //self.performSegueWithIdentifier(kSegueToPinCodeViewNoAnimation, sender: self)
+        self.performSegueWithIdentifier(kSegueToPinCodeViewNoAnimation, sender: self)
         
         setupTextFields()
         setupButtons()
@@ -319,6 +319,10 @@ class SignInViewController: UIViewController {
         if segue.identifier == kSignUpKeySegue {
             let viewController = segue.destinationViewController as! SignUpUserNameViewController
             viewController.viewModel = SignupViewModelImpl()
+        } else if segue.identifier == kSegueToPinCodeViewNoAnimation {
+            let viewController = segue.destinationViewController as! PinCodeViewController
+            viewController.viewModel = UnlockPinCodeModelImpl()
+            
         }
     }
     

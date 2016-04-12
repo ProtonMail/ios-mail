@@ -8,13 +8,13 @@
 
 import Foundation
 
-
-
 import UIKit
 import Fabric
 import Crashlytics
 
 class PinCodeViewController : UIViewController {
+    
+    var viewModel : PinCodeViewModel!
     
     @IBOutlet weak var pinCodeView: PinCodeView!
     override func viewDidLoad() {

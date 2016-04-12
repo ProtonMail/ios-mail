@@ -8,8 +8,12 @@
 
 import Foundation
 
+protocol PinCodeViewDelegate {
+    func Cancel()
+    func Next()
+}
+
 class PinCodeView : PMView {
-    
     
     @IBOutlet weak var oneButton: UIButton!
     @IBOutlet weak var twoButton: UIButton!
@@ -21,19 +25,22 @@ class PinCodeView : PMView {
     @IBOutlet weak var eightButton: UIButton!
     @IBOutlet weak var nineButton: UIButton!
     @IBOutlet weak var zeroButton: UIButton!
-    
-    @IBOutlet weak var pinOne: UIImageView!
-    @IBOutlet weak var pinTwo: UIImageView!
-    @IBOutlet weak var pinThree: UIImageView!
-    @IBOutlet weak var pinFour: UIImageView!
+    @IBOutlet weak var goButton: UIButton!
     
     @IBOutlet weak var pinView: UIView!
+    @IBOutlet weak var pinDisplayView: UITextField!
+    
+    @IBOutlet weak var titleLabel: UILabel!
+    
+    var delegate : PinCodeViewDelegate?
+    
+    var pinCode : String = ""
+    
     override func getNibName() -> String {
         return "PinCodeView";
     }
     
     override func setup() {
-
     }
     
     func updateCorner() {
@@ -47,24 +54,31 @@ class PinCodeView : PMView {
         self.setCorner(eightButton)
         self.setCorner(nineButton)
         self.setCorner(zeroButton)
-        
-        self.setCorner(pinOne)
-        self.setCorner(pinTwo)
-        self.setCorner(pinThree)
-        self.setCorner(pinFour)
+        self.setCorner(goButton)
+    }
+    
+    internal func add(number : Int) {
+        pinCode = pinCode + String(number)
+        self.updateCodeDisplay()
+    }
+    
+    internal func remove() {
+        if !pinCode.isEmpty {
+            pinCode =  pinCode.substringToIndex(pinCode.endIndex.predecessor())
+            self.updateCodeDisplay()
+        }
     }
     
     internal func resetPin() {
-        
-        self.changePinStatus(pinOne, on: false)
-        self.changePinStatus(pinTwo, on: false)
-        self.changePinStatus(pinThree, on: false)
-        self.changePinStatus(pinFour, on: false)
-        
+        pinCode = ""
+        self.updateCodeDisplay()
+    }
+    
+    internal func updateCodeDisplay() {
+        pinDisplayView.text = pinCode
     }
     
     func setCorner(button : UIView) {
-        
         let w = button.frame.size.width
         button.layer.cornerRadius = w/2
         button.clipsToBounds = true
@@ -74,17 +88,26 @@ class PinCodeView : PMView {
     }
     
     @IBAction func buttonActions(sender: UIButton) {
-        pinView.shake(3, offset: 10)
         
-        self.changePinStatus(pinOne, on: true)
+        var numberClicked = sender.tag
+        
+        self.add(numberClicked)
+        
+        //pinView.shake(3, offset: 10)
+        
+    }
+    @IBAction func deleteAction(sender: UIButton) {
+        self.remove()
     }
     
     @IBAction func logoutAction(sender: UIButton) {
-        
+         delegate?.Cancel()
     }
-
-
-
+    
+    @IBAction func goAction(sender: UIButton) {
+        delegate?.Next()
+    }
+    
     internal func changePinStatus(pin : UIView, on : Bool) {
         if on {
             pin.backgroundColor = UIColor.lightGrayColor()
@@ -95,5 +118,5 @@ class PinCodeView : PMView {
         }
         
     }
-
+    
 }
