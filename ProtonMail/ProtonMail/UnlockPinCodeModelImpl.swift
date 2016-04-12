@@ -56,4 +56,8 @@ class UnlockPinCodeModelImpl : PinCodeViewModel {
             return false
         }
     }
+    
+    override func checkTouchID() -> Bool {
+        return true
+    }
 }
