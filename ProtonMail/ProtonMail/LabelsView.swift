@@ -104,7 +104,7 @@ class LabelsView: PMView {
         
         leftLabelView.textAlignment = .Left
         leftLabelView.font = UIFont.robotoLight(size: UIFont.Size.h6)
-        leftLabelView.numberOfLines = 0;
+        leftLabelView.numberOfLines = 1;
         leftLabelView.textColor = UIColor(hexColorCode: "#838897")
         leftLabelView.lineBreakMode = .ByTruncatingTail
     }
