@@ -188,17 +188,17 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     
     func webViewDidFinishLoad(webView: UIWebView) {
         self.emailLoaded = true;
-        var size = webView.sizeThatFits(CGSizeZero)
-        let scroll = webView.scrollView
-        var zoom = webView.bounds.size.width / scroll.contentSize.width;
-        PMLog.D("\(zoom)")
-        if zoom < 1 {
-            zoom = zoom * EmailView.kDefautWebViewScale
-            PMLog.D("\(zoom)")
-            webView.stringByEvaluatingJavaScriptFromString("document.body.style.zoom = \(zoom);")
-        }
-        
-        self.updateContentLayout(false)
+//        var size = webView.sizeThatFits(CGSizeZero)
+//        let scroll = webView.scrollView
+//        var zoom = webView.bounds.size.width / scroll.contentSize.width;
+//        PMLog.D("\(zoom)")
+//        if zoom < 1 {
+//            zoom = zoom * EmailView.kDefautWebViewScale
+//            PMLog.D("\(zoom)")
+//            webView.stringByEvaluatingJavaScriptFromString("document.body.style.zoom = \(zoom);")
+//        }
+//        
+//        self.updateContentLayout(false)
 
 //        UIView.animateWithDuration(0.3, animations: { () -> Void in
 //            if let subOk = self.subWebview {
