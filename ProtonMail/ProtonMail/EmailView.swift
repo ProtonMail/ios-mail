@@ -29,7 +29,7 @@ import QuickLook
 
 class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     
-    static let kDefautWebViewScale : CGFloat = 0.70
+    public var kDefautWebViewScale : CGFloat = 0.70
     
     //
     private let kMoreOptionsViewHeight: CGFloat = 123.0
@@ -187,36 +187,26 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     }
     
     func webViewDidFinishLoad(webView: UIWebView) {
+        var contentSize = webView.scrollView.contentSize
+        var viewSize = webView.bounds.size
+        var zoom = viewSize.width / contentSize.width
+        if zoom < 1 {
+            zoom = zoom * self.kDefautWebViewScale - 0.05
+            self.kDefautWebViewScale = zoom
+            PMLog.D("\(zoom)")
+            let js = "var t=document.createElement('meta'); t.name=\"viewport\"; t.content=\"target-densitydpi=device-dpi, width=device-width, initial-scale=\(self.kDefautWebViewScale), maximum-scale=3.0\"; document.getElementsByTagName('head')[0].appendChild(t);";
+            webView.stringByEvaluatingJavaScriptFromString(js);
+        }
         self.emailLoaded = true
-        
-//        var contentSize = webView.scrollView.contentSize
-//        var viewSize = webView.bounds.size
-//        var rw = viewSize.width / contentSize.width
-//        
-////        webView.scrollView.minimumZoomScale = rw;
-////        webView.scrollView.maximumZoomScale = rw;
-//        webView.scrollView.zoomScale = rw;
-//        webView.layoutIfNeeded()
-//        var size = webView.sizeThatFits(CGSizeZero)
-//        let scroll = webView.scrollView
-//        var zoom = webView.bounds.size.width / scroll.contentSize.width;
-//        PMLog.D("\(zoom)")
-//        if zoom < 1 {
-//            zoom = zoom * EmailView.kDefautWebViewScale
-//            PMLog.D("\(zoom)")
-//            webView.stringByEvaluatingJavaScriptFromString("document.body.style.zoom = \(zoom);")
-//        }
-        //
-       
-        //self.updateContentLayout(false)
-
+        self.updateContentLayout(false)
 //        UIView.animateWithDuration(0.3, animations: { () -> Void in
-//            if let subOk = self.subWebview {
-//                if self.emailLoaded {
-//                    subOk.hidden = false;
-//                }
-//            }
+////            if let subOk = self.subWebview {
+////                if self.emailLoaded {
+////                    subOk.hidden = false;
+////                }
+////            }
 //        })
+        
     }
     
     func scrollViewDidZoom(scrollView: UIScrollView) {
