@@ -141,34 +141,32 @@ class MessageDataService {
                             self.cleanMessage()
                             context.saveUpstreamIfNeeded()
                         }
-                        var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
-                        if error == nil {
-                            error = context.saveUpstreamIfNeeded()
-                        }
-                        if error != nil  {
-                            NSLog("\(__FUNCTION__) error: \(error)")
-                        }
-                        
-                        if (messages != nil && messages.last != nil && messages.first != nil) {
-                            var updateTime = lastUpdatedStore.inboxLastForKey(location)
-                            
-                            if (updateTime.isNew) {
-                                let mf = messages.first as! Message
-                                updateTime.start = mf.time!
-                                updateTime.total = Int32(messcount)
+                        if var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error) as? [Message] {
+                            for message in messages {
+                                message.messageStatus = 1
                             }
-                            let ml = messages.last as! Message
-                            updateTime.end = ml.time!
-                            updateTime.update = NSDate()
                             
-                            lastUpdatedStore.updateInboxForKey(location, updateTime: updateTime)
+                            if error == nil {
+                                error = context.saveUpstreamIfNeeded()
+                            } else {
+                                NSLog("\(__FUNCTION__) error: \(error)")
+                            }
+                            
+                            if let lastMsg = messages.last, let firstMsg = messages.first {
+                                var updateTime = lastUpdatedStore.inboxLastForKey(location)
+                                
+                                if (updateTime.isNew) {
+                                    updateTime.start = firstMsg.time!
+                                    updateTime.total = Int32(messcount)
+                                }
+                                updateTime.end = lastMsg.time!
+                                updateTime.update = NSDate()
+                                
+                                lastUpdatedStore.updateInboxForKey(location, updateTime: updateTime)
+                            }
                         }
-                        
+
                         dispatch_async(dispatch_get_main_queue()) {
-                            if MessageID == "0" && Time == 0 {
-                                //TODO : fix the last update
-                                //self.lastUpdatedStore[location.key] = lastUpdated
-                            }
                             completion?(task: task, response: responseDict, error: error)
                         }
                     }
@@ -187,9 +185,7 @@ class MessageDataService {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 // TODO :: need abstract the respons error checking
                 if let messagesArray = responseDict?["Messages"] as? [Dictionary<String,AnyObject>] {
-                    
                     let messcount = responseDict?["Total"] as? Int ?? 0
-                    
                     let context = sharedCoreDataService.newMainManagedObjectContext()
                     context.performBlock() {
                         var error: NSError?
@@ -197,34 +193,36 @@ class MessageDataService {
                             self.cleanMessage()
                             context.saveUpstreamIfNeeded()
                         }
-                        var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error)
-                        if error == nil {
-                            error = context.saveUpstreamIfNeeded()
-                        }
-                        if error != nil  {
-                            NSLog("\(__FUNCTION__) error: \(error)")
-                        }
                         
-                        if (messages != nil && messages.last != nil && messages.first != nil) {
-                            var updateTime = lastUpdatedStore.labelsLastForKey(labelID)
-                            
-                            if (updateTime.isNew) {
-                                let mf = messages.first as! Message
-                                updateTime.start = mf.time!
-                                updateTime.total = Int32(messcount)
+                        if var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error) as? [Message] {
+                            for message in messages {
+                                message.messageStatus = 1
                             }
-                            let ml = messages.last as! Message
-                            updateTime.end = ml.time!
-                            updateTime.update = NSDate()
                             
-                            lastUpdatedStore.updateLabelsForKey(labelID, updateTime: updateTime)
+                            if error == nil {
+                                error = context.saveUpstreamIfNeeded()
+                            } else {
+                                NSLog("\(__FUNCTION__) error: \(error)")
+                            }
+                            
+                            if let lastMsg = messages.last, let firstMsg = messages.first {
+                                var updateTime = lastUpdatedStore.labelsLastForKey(labelID)
+                                if (updateTime.isNew) {
+                                    updateTime.start = firstMsg.time!
+                                    updateTime.total = Int32(messcount)
+                                }
+                                updateTime.end = lastMsg.time!
+                                updateTime.update = NSDate()
+                                
+                                lastUpdatedStore.updateLabelsForKey(labelID, updateTime: updateTime)
+                            }
                         }
                         
                         dispatch_async(dispatch_get_main_queue()) {
-                            if MessageID == "0" && Time == 0 {
-                                //TODO : fix the last update
-                                //self.lastUpdatedStore[location.key] = lastUpdated
-                            }
+                            completion?(task: task, response: responseDict, error: error)
+                        }
+                        
+                        dispatch_async(dispatch_get_main_queue()) {
                             completion?(task: task, response: responseDict, error: error)
                         }
                     }
@@ -896,11 +894,11 @@ class MessageDataService {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
             
             if location == .starred {
-                fetchRequest.predicate = NSPredicate(format: "%K == true", Message.Attributes.isStarred)
+                fetchRequest.predicate = NSPredicate(format: "(%K == true) AND (%K > 0)", Message.Attributes.isStarred, Message.Attributes.messageStatus)
             } else if location == .inbox {
-                fetchRequest.predicate = NSPredicate(format: "(%K == %i) OR (%K == 1)" , Message.Attributes.locationNumber, location.rawValue, Message.Attributes.messageType)
+                fetchRequest.predicate = NSPredicate(format: "((%K == %i) OR (%K == 1)) AND (%K > 0)" , Message.Attributes.locationNumber, location.rawValue, Message.Attributes.messageType, Message.Attributes.messageStatus)
             } else {
-                fetchRequest.predicate = NSPredicate(format: "%K == %i" , Message.Attributes.locationNumber, location.rawValue)
+                fetchRequest.predicate = NSPredicate(format: "(%K == %i) AND (%K > 0)" , Message.Attributes.locationNumber, location.rawValue, Message.Attributes.messageStatus)
             }
             
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
@@ -913,7 +911,7 @@ class MessageDataService {
     func fetchedResultsControllerForLabels(label: Label) -> NSFetchedResultsController? {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "ANY labels.labelID =[cd] %@", label.labelID)
+            fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)", label.labelID, Message.Attributes.messageStatus)
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         }
@@ -1001,21 +999,26 @@ class MessageDataService {
                 }
                 
                 if let context = sharedCoreDataService.mainManagedObjectContext {
-                    
                     if let messagesArray = response?["Messages"] as? [Dictionary<String,AnyObject>] {
                         context.performBlock() {
                             var error: NSError?
-                            var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error) as! [Message]
-                            
-                            if let completion = completion {
+                            if var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error) as? [Message] {
+                                for message in messages {
+                                    message.messageStatus = 1
+                                }
+                                if error == nil {
+                                    context.saveUpstreamIfNeeded()
+                                }
                                 dispatch_async(dispatch_get_main_queue()) {
                                     if error != nil  {
                                         NSLog("\(__FUNCTION__) error: \(error)")
-                                        completion(nil, error)
+                                        completion?(nil, error)
                                     } else {
-                                        completion(messages, error)
+                                        completion?(messages, error)
                                     }
                                 }
+                            } else {
+                                completion?(nil, error)
                             }
                         }
                     }

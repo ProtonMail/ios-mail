@@ -33,6 +33,7 @@ extension Message {
         static let labels = "labels"
         
         static let messageType = "messageType"
+        static let messageStatus = "messageStatus"
     }
     
     struct Constants {
