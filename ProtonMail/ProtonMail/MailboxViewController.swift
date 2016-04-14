@@ -386,6 +386,9 @@ class MailboxViewController: ProtonMailViewController {
 //                    let newMessage = Message(context: context)
 //                    newMessage.messageType = 1
 //                    newMessage.title = ""
+    
+//    newMessage.messageStatus = 1
+
 //                    newMessage.time = message.time ?? NSDate()
 //                    if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
 //                        PMLog.D("error: \(error)")

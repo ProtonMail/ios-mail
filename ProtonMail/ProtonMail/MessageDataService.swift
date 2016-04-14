@@ -585,10 +585,8 @@ class MessageDataService {
                 }
             }
         }
-        
     }
-    
-    
+
     func cleanLocalMessageCache(completion: CompletionBlock?) {
         let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
         getLatestEventID.call() { task, response, hasError in
@@ -634,7 +632,7 @@ class MessageDataService {
             
             context.performBlock { () -> Void in
                 var error: NSError?
-                
+                var messagesNoCache : [Message] = [];
                 for message in messages {
                     var msg = MessageEvent(event: message)
                     
@@ -655,6 +653,7 @@ class MessageDataService {
                                     msg.message?.removeValueForKey("IsRead")
                                 }
                             }
+                            msg.message?["messageStatus"] = 1
                         }
                         
                         if let messageObject = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg.message, inManagedObjectContext: context, error: &error) as? Message {
@@ -685,6 +684,13 @@ class MessageDataService {
                                 //TODO : add later need to know whne it is happending
                             }
                             
+                            if messageObject.messageStatus == 0 {
+                                if messageObject.subject.isEmpty {
+                                    messagesNoCache.append(messageObject)
+                                } else {
+                                    messageObject.messageStatus = 1
+                                }
+                            }
                         } else {
                             NSLog("\(__FUNCTION__) error: \(error)")
                         }
@@ -692,17 +698,51 @@ class MessageDataService {
                         NSLog("\(__FUNCTION__) unknown type in message: \(message)")
                     }
                 }
-                
                 error = context.saveUpstreamIfNeeded()
                 
                 if error != nil  {
                     NSLog("\(__FUNCTION__) error: \(error)")
                 }
                 
+                self.fetchMessagesWithIDs(messagesNoCache);
+
+                
                 dispatch_async(dispatch_get_main_queue()) {
                     completion?(task: task, response:nil, error: error)
                     return
                 }
+            }
+        }
+    }
+    
+    
+    func fetchMessagesWithIDs (messages : [Message]) {
+        if messages.count > 0 {
+            queue {
+                let completionWrapper: CompletionBlock = { task, responseDict, error in
+                    if let messagesArray = responseDict?["Messages"] as? [Dictionary<String,AnyObject>] {
+                        let context = sharedCoreDataService.newMainManagedObjectContext()
+                        context.performBlock() {
+                            var error: NSError?
+                            if var messages = GRTJSONSerialization.mergeObjectsForEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inManagedObjectContext: context, error: &error) as? [Message] {
+                                for message in messages {
+                                    message.messageStatus = 1
+                                }
+                                error = context.saveUpstreamIfNeeded()
+                                if error != nil {
+                                    PMLog.D("GRTJSONSerialization.mergeObjectsForEntityName saveUpstreamIfNeeded failed \(error)")
+                                }
+                            } else {
+                                PMLog.D("GRTJSONSerialization.mergeObjectsForEntityName failed \(error)")
+                            }
+                        }
+                    } else {
+                        PMLog.D("fetchMessagesWithIDs can't get the response Messages")
+                    }
+                }
+                
+                let request = MessageFetchByIDsRequest(messages: messages)
+                sharedAPIService.GET(request, completion: completionWrapper)
             }
         }
     }

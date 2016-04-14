@@ -11,7 +11,7 @@ import Foundation
 
 class AppConstants {
     
-    static let CacheVersion : Int = 72
+    static let CacheVersion : Int = 73
     static let AuthCacheVersion : Int = 9
     static let SpaceWarningThreshold: Double = 80
     static let SplashVersion : Int = 1
@@ -20,11 +20,11 @@ class AppConstants {
     static let AskTouchID : Int = 1
     
     static var AppVersion : Int = 1;
-    static let BaseURLString : String = "https://api.protonmail.ch"
+    //static let BaseURLString : String = "https://api.protonmail.ch"
     //static let BaseURLString : String = "http://protonmail.blue/api"
     //static let BaseURLString : String = "https://test-api.protonmail.ch"
     //static let BaseURLString : String = "http://feng.api.com"
-    //static let BaseURLString : String = "https://dev-api.protonmail.ch"
+    static let BaseURLString : String = "https://dev-api.protonmail.ch"
     //static let BaseURLString : String = "http://protonmail.xyz"
     //static let BaseURLString : String = "https://dev.protonmail.com"     //need - api path
 
