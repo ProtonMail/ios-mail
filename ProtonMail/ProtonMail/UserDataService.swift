@@ -76,7 +76,13 @@ class UserDataService {
     
     var showMobileSignature : Bool {
         get {
-            if userInfo?.role > 0 {
+            #if Enterprise
+                var isEnterprise = true
+            #else
+                var isEnterprise = false
+            #endif
+            
+            if userInfo?.role > 0 || isEnterprise {
                 return (switchCacheOff == false) ?? true
             } else {
                 switchCacheOff = false
