@@ -1092,6 +1092,18 @@ class MessageDataService {
     }
     
     func purgeOldMessages() {
+        // need fetch status bad messages 
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
+            fetchRequest.predicate = NSPredicate(format: "%K == 0", Message.Attributes.messageStatus)
+            var error: NSError?
+            if let badMessages = context.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
+                self.fetchMessagesWithIDs(badMessages);
+            }
+        }
+        
+        //clean old messags
+        
         //        if let context = sharedCoreDataService.mainManagedObjectContext {
         //            let cutoffTimeInterval: NSTimeInterval = 3 * 86400 // days converted to seconds
         //            let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
