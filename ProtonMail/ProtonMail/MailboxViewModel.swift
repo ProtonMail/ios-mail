@@ -102,4 +102,12 @@ public class MailboxViewModel {
     func fetchMessagesForLocationWithEventReset(MessageID : String, Time: Int, completion: CompletionBlock?) {
         //fatalError("This method must be overridden")
     }
+    
+    func getNotificationMessage() -> String? {
+        fatalError("This method must be overridden")
+    }
+    
+    func resetNotificationMessage() -> Void {
+        fatalError("This method must be overridden")
+    }
 }

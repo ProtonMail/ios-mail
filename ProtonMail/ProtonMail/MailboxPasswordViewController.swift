@@ -215,6 +215,7 @@ class MailboxPasswordViewController: UIViewController {
                         if info!.delinquent < 3 {
                             sharedUserDataService.setMailboxPassword(password, isRemembered: self.isRemembered)
                             self.loadContent()
+                            self.restoreBackup();
                             NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)
                         } else {
                             let alertController = "Access to this account is disabled due to non-payment. Please visit our knowledge base for more information.".alertController() //here needs change to a clickable link
@@ -230,12 +231,16 @@ class MailboxPasswordViewController: UIViewController {
                     }
                 }
             }
-            
         } else {
             let alert = UIAlertController(title: NSLocalizedString("Incorrect password"), message: NSLocalizedString("The mailbox password is incorrect."), preferredStyle: .Alert)
             alert.addAction((UIAlertAction.okAction()))
             presentViewController(alert, animated: true, completion: nil)
         }
+    }
+    
+    func restoreBackup () {
+        UserTempCachedStatus.restore()
+        
     }
     
     private func loadContent() {

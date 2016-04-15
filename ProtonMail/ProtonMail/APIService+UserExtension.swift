@@ -39,12 +39,16 @@ extension APIService {
     }
     
     func userPublicKeysForEmails(emails: String, completion: CompletionBlock?) {
+        PMLog.D("userPublicKeysForEmails -- \(emails)")
         if !emails.isEmpty {
             if let base64Emails = emails.base64Encoded() {
                 var escapedValue : String? = base64Emails.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet(charactersInString: "/+=\n").invertedSet)
                 let path = UserPath.base.stringByAppendingPathComponent("pubkeys").stringByAppendingPathComponent(escapedValue ?? base64Emails)
                 setApiVesion(2, appVersion: 1)
                 request(method: .GET, path: path, parameters: nil, completion: { task, response, error in
+                    
+                    PMLog.D("userPublicKeysForEmails -- res \(response) || error -- \(error)")
+                    
                     var error = error
                     var response = response
                     

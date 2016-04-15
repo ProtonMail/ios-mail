@@ -164,6 +164,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
         sharedMessageDataService.send(self.message?.messageID)  { task, response, error in
             
         }
+        
     }
     
     override func collectDraft(title: String, body: String, expir:NSTimeInterval, pwd:String, pwdHit:String) {
@@ -171,7 +172,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
         PMLog.D(self.ccSelectedContacts)
         PMLog.D(self.bccSelectedContacts)
         
-        if message == nil {
+        if message == nil || message?.managedObjectContext == nil {
             self.message = MessageHelper.messageWithLocation(MessageLocation.draft,
                 recipientList: toJsonString(self.toSelectedContacts),
                 bccList: toJsonString(self.bccSelectedContacts),

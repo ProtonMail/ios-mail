@@ -148,6 +148,7 @@ class MenuViewController: UIViewController {
         let alertController = UIAlertController(title: NSLocalizedString("Confirm"), message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Sign Out"), style: .Destructive, handler: { (action) -> Void in
             self.signingOut = true
+            UserTempCachedStatus.backup()
             sharedUserDataService.signOut(true)
             userCachedStatus.signOut()
         }))

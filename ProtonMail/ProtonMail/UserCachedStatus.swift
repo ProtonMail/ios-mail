@@ -28,7 +28,7 @@ class UserCachedStatus : SharedCacheBase {
         // pin code
         static let isPinCodeEnabled = "isPinCodeEnabled" //user cache but could restore
         static let pinCodeCache = "pinCodeCache" //user cache but could restore
-        static let autoLockTime = "autoLockTime"
+        static let autoLockTime = "autoLockTime" ///user cache but could restore
         static let enterBackgroundTime = "enterBackgroundTime"
         static let lastLoggedInUser = "lastLoggedInUser" //user cache but could restore
         
@@ -41,7 +41,7 @@ class UserCachedStatus : SharedCacheBase {
         //Global Cache
         static let lastSplashViersion = "last_splash_viersion" //global cache
         static let lastTourViersion = "last_tour_viersion" //global cache
-        static let lastLocalMobileSignature = "last_local_mobile_signature" //global cache
+        static let lastLocalMobileSignature = "last_local_mobile_signature" //user cache but could restore
     }
     
     var isForcedLogout : Bool = false

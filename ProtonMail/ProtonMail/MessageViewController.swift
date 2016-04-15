@@ -316,7 +316,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
 
     var contentLoaded = false
     internal func loadEmailBody(body : String) {
-        let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=\(EmailView.kDefautWebViewScale)\" content=\"yes\">"
+        let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=\(emailView?.kDefautWebViewScale ?? 0.7)\" content=\"yes\">"
         self.emailView?.updateEmailBody(body, meta: meta)
         
         self.updateHeader()

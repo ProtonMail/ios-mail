@@ -185,6 +185,23 @@ img {
     max-width: 100%;
 }
 
+td {
+    width: auto;
+    max-width: 100%;
+}
+
+/*table {*/
+/*    width: 100%;*/
+/*    table-layout: auto;*/
+/*}*/
+/**/
+/*table td {*/
+/*}*/
+/**/
+/*table td.absorbing-column {*/
+/*    width: 100%;*/
+/*}*/
+
 table img {
     max-width: none;
 }

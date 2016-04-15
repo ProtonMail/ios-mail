@@ -36,6 +36,7 @@ public class MessageHelper {
             message.time = NSDate()
             message.isEncrypted = 1
             message.expirationOffset = Int32(expirationTimeInterval)
+            message.messageStatus = 1
             
             if expirationTimeInterval > 0 {
                 message.expirationTime = NSDate(timeIntervalSinceNow: expirationTimeInterval)

@@ -58,7 +58,8 @@ public class Message: NSManagedObject {
     
     @NSManaged var addressID : String?
     
-    @NSManaged var messageType : NSNumber
+    @NSManaged var messageType : NSNumber  // 0 message 1 rate
+    @NSManaged var messageStatus : NSNumber  // bit 0x00000000 no metadata  0x00000001 has
     
     @NSManaged var isShowedImages : Bool
     

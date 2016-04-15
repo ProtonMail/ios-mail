@@ -69,7 +69,7 @@ class MailboxViewController: ProtonMailViewController {
     private var undoMessage : UndoMessage?
     
     private var isShowUndo : Bool = false
-    private var notificationMessageID : String? = nil
+    //private var notificationMessageID : String? = nil
     
     private var ratingMessage : Message?
     
@@ -147,6 +147,10 @@ class MailboxViewController: ProtonMailViewController {
             self.tableView.deselectRowAtIndexPath(selectedItem, animated: true)
         }
         self.startAutoFetch()
+        
+        if self.viewModel.getNotificationMessage() != nil {
+            performSegueWithIdentifier(kSegueToMessageDetailFromNotification, sender: self)
+        }
     }
     
     @IBAction func undoAction(sender: UIButton) {
@@ -222,11 +226,11 @@ class MailboxViewController: ProtonMailViewController {
         if segue.identifier == kSegueToMessageDetailFromNotification {
             self.cancelButtonTapped()
             let messageDetailViewController = segue.destinationViewController as! MessageViewController
-            if let msgID = self.notificationMessageID {
+            if let msgID = self.viewModel.getNotificationMessage() {
                 if let context = fetchedResultsController?.managedObjectContext {
                     if let message = Message.messageForMessageID(msgID, inManagedObjectContext: context) {
                         messageDetailViewController.message = message
-                        self.notificationMessageID = nil;
+                        self.viewModel.resetNotificationMessage()
                     }
                 }
             } else {
@@ -302,8 +306,7 @@ class MailboxViewController: ProtonMailViewController {
         self.performSegueWithIdentifier(kSegueToLabelsController, sender: self)
     }
     
-    func performSegueForMessageFromNotification(messageID: String) {
-        self.notificationMessageID = messageID;
+    func performSegueForMessageFromNotification() {
         performSegueWithIdentifier(kSegueToMessageDetailFromNotification, sender: self)
     }
     
@@ -386,6 +389,9 @@ class MailboxViewController: ProtonMailViewController {
 //                    let newMessage = Message(context: context)
 //                    newMessage.messageType = 1
 //                    newMessage.title = ""
+    
+//    newMessage.messageStatus = 1
+
 //                    newMessage.time = message.time ?? NSDate()
 //                    if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
 //                        PMLog.D("error: \(error)")
@@ -700,7 +706,7 @@ class MailboxViewController: ProtonMailViewController {
                 }
                 
                 if error == nil {
-                    self.notificationMessageID = nil
+                    self.viewModel.resetNotificationMessage()
                     //self.checkEmptyMailbox()
                 }
                 
@@ -726,7 +732,7 @@ class MailboxViewController: ProtonMailViewController {
                 }
             } else {
                 //fetch
-                viewModel.fetchNewMessages(notificationMessageID, Time: Int(updateTime.start.timeIntervalSince1970),  completion: complete)
+                viewModel.fetchNewMessages(self.viewModel.getNotificationMessage(), Time: Int(updateTime.start.timeIntervalSince1970),  completion: complete)
                 self.checkEmptyMailbox()
             }
         }

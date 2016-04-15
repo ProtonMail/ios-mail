@@ -25,6 +25,8 @@ protocol SettingDetailsViewModel {
     
     func isSwitchEnabled() -> Bool
     func isTextEnabled() -> Bool
+    
+    func getNotes() -> String
 }
 
 
@@ -78,6 +80,10 @@ class SettingDetailsViewModelTest : SettingDetailsViewModel{
     }
     func isTextEnabled() -> Bool{
         return true
+    }
+    
+    func getNotes() -> String {
+        return ""
     }
 }
 
@@ -138,6 +144,10 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
     }
     func isTextEnabled() -> Bool {
         return true
+    }
+    
+    func getNotes() -> String {
+        return ""
     }
 }
 
@@ -200,6 +210,10 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     func isTextEnabled() -> Bool {
         return true
     }
+    
+    func getNotes() -> String {
+        return ""
+    }
 }
 
 class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
@@ -257,10 +271,24 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
         }
     }
     func isSwitchEnabled() -> Bool {
-        return sharedUserDataService.userInfo?.role > 0
+        return self.getRole()
     }
     func isTextEnabled() -> Bool {
-        return sharedUserDataService.userInfo?.role > 0
+        return self.getRole()
+    }
+    
+    func getNotes() -> String {
+        return self.getRole() ? "" : "ProtonMail Plus is required to customize your mobile signature"
+    }
+    
+    internal func getRole() -> Bool {
+        #if Enterprise
+            var isEnterprise = true
+        #else
+            var isEnterprise = false
+        #endif
+        
+        return sharedUserDataService.userInfo?.role > 0 || isEnterprise
     }
 }
 
@@ -335,5 +363,9 @@ class ChangeNotificationEmailViewModel : SettingDetailsViewModel{
     }
     func isTextEnabled() -> Bool {
         return true
+    }
+    
+    func getNotes() -> String {
+        return ""
     }
 }

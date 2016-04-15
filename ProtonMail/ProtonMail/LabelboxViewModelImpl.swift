@@ -79,4 +79,11 @@ public class LabelboxViewModelImpl : MailboxViewModel {
         sharedMessageDataService.fetchNewMessagesForLabels(self.getLabelID(), Time: Time, notificationMessageID: notificationMessageID, completion: completion)
     }
     
+    override func getNotificationMessage() -> String? {
+        return sharedMessageDataService.pushNotificationMessageID
+    }
+    
+    override func resetNotificationMessage() -> Void {
+        sharedMessageDataService.pushNotificationMessageID = nil
+    }
 }

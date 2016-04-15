@@ -145,4 +145,10 @@ public class MailboxViewModelImpl : MailboxViewModel {
         sharedMessageDataService.fetchMessagesForLocationWithEventReset(self.location, MessageID: MessageID, Time: Time, completion: completion)
     }
     
+    override func getNotificationMessage() -> String? {
+        return sharedMessageDataService.pushNotificationMessageID
+    }
+    override func resetNotificationMessage() -> Void {
+        sharedMessageDataService.pushNotificationMessageID = nil
+    }
 }

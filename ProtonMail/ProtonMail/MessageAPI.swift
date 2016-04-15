@@ -46,6 +46,37 @@ public class MessageFetchRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
+public class MessageFetchByIDsRequest<T : ApiResponse> : ApiRequest<T> {
+    let messages : [Message]!
+    init(messages: [Message]) {
+        self.messages = messages
+    }
+    
+    internal func buildURL () -> String {
+        var out = "";
+        
+        for message in self.messages {
+            if !out.isEmpty {
+                out = out + "&"
+            }
+            out = out + "ID[]=\(message.messageID)"
+        }
+        if !out.isEmpty {
+            out = "?" + out
+        }
+        return out;
+    }
+    
+    override public func getRequestPath() -> String {
+        return MessageAPI.Path + self.buildURL()
+    }
+    
+    override public func getVersion() -> Int {
+        return MessageAPI.V_MessageFetchRequest
+    }
+}
+
+
 public class MessageByLabelRequest<T : ApiResponse> : ApiRequest<T> {
     let labelID : String!
     let startTime : Int?

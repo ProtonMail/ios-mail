@@ -213,7 +213,30 @@ extension AppDelegate: UIApplicationDelegate {
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         NSLog("receive \(userInfo)")
-        sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
+        if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
+            var timeIndex : Int = -1
+            if let t = userCachedStatus.lockTime.toInt() {
+                timeIndex = t
+            }
+            if timeIndex == 0 {
+                sharedPushNotificationService.setNotificationOptions(userInfo);
+            } else if timeIndex > 0 {
+                var exitTime : Int = 0
+                if let t = userCachedStatus.exitTime.toInt() {
+                    exitTime = t
+                }
+                let timeInterval : Int = Int(NSDate().timeIntervalSince1970)
+                let diff = timeInterval - exitTime
+                if diff > (timeIndex*60) || diff <= 0 {
+                    sharedPushNotificationService.setNotificationOptions(userInfo);
+                } else {
+                    sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
+                }
+            }
+        } else {
+            sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
+        }
+        
     }
     
     func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
