@@ -24,6 +24,8 @@ class MessageDataService {
     typealias CompletionFetchDetail = APIService.CompletionFetchDetail
     typealias ReadBlock = (() -> Void)
     
+    var pushNotificationMessageID : String? = nil
+    
     struct Key {
         static let read = "read"
         static let total = "total"
