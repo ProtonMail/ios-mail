@@ -70,6 +70,7 @@ extension Message {
             return ""
         }
         
+        PMLog.D("allEmailAddresses  ---  \(lists)" )
         return ",".join(lists)
     }
     

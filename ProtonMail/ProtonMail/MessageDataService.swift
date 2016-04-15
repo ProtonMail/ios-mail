@@ -57,11 +57,11 @@ class MessageDataService {
         if let context = sharedCoreDataService.mainManagedObjectContext {
             if let error = context.saveUpstreamIfNeeded() {
                 NSLog("\(__FUNCTION__) error: \(error)")
+                dequeueIfNeeded()
             } else {
                 queue(att: att, action: .uploadAtt)
             }
         }
-        dequeueIfNeeded()
     }
     
     func deleteAttachment(messageid : String, att: Attachment!)
@@ -656,6 +656,16 @@ class MessageDataService {
                             msg.message?["messageStatus"] = 1
                         }
                         
+                        if let lo = msg.message?["Location"] as? Int {
+                            if lo == 1 {
+                                if var exsitMes = Message.messageForMessageID(msg.ID , inManagedObjectContext: context) {
+                                    if exsitMes.messageStatus == 1 {
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+                        
                         if let messageObject = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg.message, inManagedObjectContext: context, error: &error) as? Message {
                             // apply the label changes
                             if let deleted = msg.message?["LabelIDsRemoved"] as? NSArray {
@@ -790,6 +800,7 @@ class MessageDataService {
                             let message_n = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg, inManagedObjectContext: message.managedObjectContext!, error: &error) as! Message
                             if error == nil {
                                 message.isDetailDownloaded = true
+                                message.messageStatus = 1
                                 message.needsUpdate = true
                                 message.isRead = true
                                 message.managedObjectContext?.saveUpstreamIfNeeded()
@@ -831,6 +842,7 @@ class MessageDataService {
                                 msg.removeValueForKey("test")
                                 let message_n = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg, inManagedObjectContext: message.managedObjectContext!, error: &tempError) as! Message
                                 if tempError == nil {
+                                    message.messageStatus = 1
                                     message.isDetailDownloaded = true
                                     message.needsUpdate = true
                                     message.isRead = true
@@ -879,6 +891,7 @@ class MessageDataService {
                             msg.removeValueForKey("test")
                             let message_n = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg, inManagedObjectContext: context, error: &error) as! Message
                             if error == nil {
+                                message_n.messageStatus = 1
                                 message_n.isDetailDownloaded = true
                                 message_n.needsUpdate = true
                                 message_n.isRead = true
@@ -1136,10 +1149,7 @@ class MessageDataService {
         //        }
     }
     
-    
-    
     // MARK: - Private methods
-    
     private func generatMessagePackage<T : ApiResponse> (message: Message!, keys : [String : AnyObject]?, atts : [Attachment], encrptOutside : Bool) -> MessageSendRequest<T>! {
         
         var tempAtts : [TempAttachment]! = []
@@ -1290,6 +1300,7 @@ class MessageDataService {
             if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID) {
                 if let message = context.existingObjectWithID(objectID, error: &error) as? Message {
                     let completionWrapper: CompletionBlock = { task, response, error in
+                        PMLog.D("SendAttachmentDebug == finish save draft!")
                         if let mess = response {
                             if let messageID = mess["ID"] as? String {
                                 message.messageID = messageID
@@ -1326,6 +1337,7 @@ class MessageDataService {
                         completion?(task: task, response: response, error: error)
                     }
                     
+                    PMLog.D("SendAttachmentDebug == start save draft!")
                     if message.isDetailDownloaded && message.messageID != "0" {
                         let api = MessageUpdateDraftRequest<MessageResponse>(message:message);
                         api.call({ (task, response, hasError) -> Void in
@@ -1383,6 +1395,7 @@ class MessageDataService {
                     let dataPacket = encrypt_data?.dataPackage
                     
                     let completionWrapper: CompletionBlock = { task, response, error in
+                        PMLog.D("SendAttachmentDebug == finish upload att!")
                         if error == nil {
                             if let messageID = response?["AttachmentID"] as? String {
                                 attachment.attachmentID = messageID
@@ -1394,7 +1407,7 @@ class MessageDataService {
                         }
                         completion?(task: task, response: response, error: error)
                     }
-                    
+                    PMLog.D("SendAttachmentDebug == start upload att!")
                     sharedAPIService.upload( AppConstants.BaseURLString + AppConstants.BaseAPIPath + "/attachments/upload", parameters: params, keyPackets: keyPacket, dataPacket: dataPacket, completion: completionWrapper)
                     
                     return
@@ -1465,7 +1478,10 @@ class MessageDataService {
             if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID) {
                 if let message = context.existingObjectWithID(objectID, error: &error) as? Message {
                     let attachments = self.attachmentsForMessage(message)
+                    
+                    PMLog.D("SendAttachmentDebug == start get key!")
                     sharedAPIService.userPublicKeysForEmails(message.allEmailAddresses, completion: { (task, response, error) -> Void in
+                        PMLog.D("SendAttachmentDebug == finish get key!")
                         if error != nil && error!.code == APIErrorCode.badParameter {
                             errorBlock(task: task, response: response, error: error)
                             return
@@ -1492,6 +1508,7 @@ class MessageDataService {
                         let messageBody = self.messageBodyForMessage(message, response: response)
                         
                         let completionWrapper: CompletionBlock = { task, response, error in
+                            PMLog.D("SendAttachmentDebug == finish send email!")
                             // remove successful send from Core Data
                             if error == nil {
                                 //context.deleteObject(message)MOBA-378
@@ -1548,6 +1565,7 @@ class MessageDataService {
                             completion?(task: task, response: response, error: error)
                             return
                         }
+                        PMLog.D("SendAttachmentDebug == start send email!")
                         sendMessage.call({ (task, response, hasError) -> Void in
                             if hasError {
                                 completionWrapper(task: task, response: nil, error: response?.error)
@@ -1684,6 +1702,7 @@ class MessageDataService {
     
     private func dequeueIfNeeded() {
         if let (uuid, messageID, actionString) = sharedMessageQueue.nextMessage() {
+            PMLog.D("SendAttachmentDebug == dequeue --- \(actionString)")
             if let action = MessageAction(rawValue: actionString) {
                 sharedMessageQueue.isInProgress = true
                 switch action {
