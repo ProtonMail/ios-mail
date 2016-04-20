@@ -77,6 +77,13 @@ public class ComposeViewModelImpl : ComposeViewModel {
         return self.message?.defaultAddress
     }
     
+    override func getCurrrentSignature(addr_id : String) -> String? {
+        if let addr = sharedUserDataService.userAddresses.indexOfAddress(addr_id) {
+            return addr.signature
+        }
+        return nil
+    }
+    
     override func hasAttachment() -> Bool {
         return true;
     }
@@ -224,13 +231,17 @@ public class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override public func getHtmlBody() -> String {
-        let signature = !sharedUserDataService.signature.isEmpty ? "\n\n\(sharedUserDataService.signature)" : ""
+        //sharedUserDataService.signature
+        let signature = self.getDefaultAddress()?.signature ?? "\n\n\(sharedUserDataService.signature)"
         
-        let mobileSignature = sharedUserDataService.showMobileSignature ? "<br><br> \(sharedUserDataService.mobileSignature)" : ""
+        let mobileSignature = sharedUserDataService.showMobileSignature ? "<div id=\"protonmail_mobile_signature_block\"><br><br> \(sharedUserDataService.mobileSignature) </div>" : ""
         
-        let defaultSignature = sharedUserDataService.showDefaultSignature ? signature : ""
+        let defaultSignature = sharedUserDataService.showDefaultSignature ? "<div id=\"protonmail_signature_block\"> \(signature)</div>" : ""
         
         let htmlString = "<div><br></div><div><br></div>\(defaultSignature) \(mobileSignature)<div><br></div>";
+        
+        PMLog.D("\(message?.addressID)")
+        
         switch messageAction!
         {
         case .OpenDraft:

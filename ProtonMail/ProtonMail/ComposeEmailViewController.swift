@@ -371,6 +371,9 @@ extension ComposeEmailViewController : ComposeViewDelegate {
                 if addr.status == 1 && addr.receive == 1 && defaultAddr != addr {
                     needsShow = true
                     alertController.addAction(UIAlertAction(title: addr.email, style: .Default, handler: { (action) -> Void in
+                        if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
+                            self.updateSignature("\(signature)")
+                        }
                         self.viewModel.updateAddressID(addr.address_id)
                         self.composeView.updateFromValue(addr.email, pickerEnabled: true)
                     }))

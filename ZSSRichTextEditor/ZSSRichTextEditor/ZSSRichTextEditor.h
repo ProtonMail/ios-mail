@@ -98,6 +98,8 @@ static NSString * const ZSSRichTextEditorToolbarNone = @"com.zedsaid.toolbaritem
  */
 - (void)setHTML:(NSString *)html;
 
+- (void)updateSignature: (NSString *) html;
+
 /**
  *  Returns the HTML from the Rich Text Editor
  *

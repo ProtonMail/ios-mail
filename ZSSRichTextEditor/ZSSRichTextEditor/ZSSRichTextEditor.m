@@ -584,6 +584,12 @@ static Class hackishFixClass = Nil;
     
 }
 
+- (void)updateSignature: (NSString *) html {
+    NSString *cleanedHTML = [self removeQuotesFromHTML:html];
+    NSString *trigger = [NSString stringWithFormat:@"zss_editor.updateSignature(\"%@\");", cleanedHTML];
+    [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
+}
+
 - (NSString *)getHTML {
     NSString *html = [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.getHTML();"];
     html = [self removeQuotesFromHTML:html];
