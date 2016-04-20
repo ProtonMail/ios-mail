@@ -47,11 +47,11 @@ body {
 /*}*/
 
 blockquote {
-    padding: 0 0 0 2rem !important;
+    padding: 0 0 0 0.6rem !important;
     margin: 0 !important;
     border: 1px solid #ccc !important;
     border-width: 0 0 0 1px !important;
-    -webkit-margin-before: 2rem !important;
+    -webkit-margin-before: 1rem !important;
     -webkit-margin-after: 2rem !important;
     -webkit-margin-start: 0 !important;
     -webkit-margin-end: 0 !important;
