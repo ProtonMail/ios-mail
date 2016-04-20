@@ -1205,16 +1205,19 @@ extension EmailHeaderView: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        
         if attachments.count > indexPath.row {
             let attachment = attachmentForIndexPath(indexPath)
             if !attachment.isDownloaded {
                 downloadAttachment(attachment, forIndexPath: indexPath)
             } else if let localURL = attachment.localURL {
                 if NSFileManager.defaultManager().fileExistsAtPath(attachment.localURL!.path!, isDirectory: nil) {
-                    let cell = tableView.cellForRowAtIndexPath(indexPath)
-                    let data: NSData = NSData(base64EncodedString: attachment.keyPacket!, options: NSDataBase64DecodingOptions(rawValue: 0))!
-                    openLocalURL(localURL, keyPackage: data, fileName: attachment.fileName, forCell: cell!)
+                    if let cell = tableView.cellForRowAtIndexPath(indexPath) {
+                        if let key_packet = attachment.keyPacket {
+                            if let data: NSData = NSData(base64EncodedString:key_packet, options: NSDataBase64DecodingOptions(rawValue: 0)) {
+                                openLocalURL(localURL, keyPackage: data, fileName: attachment.fileName, forCell: cell)
+                            }
+                        }
+                    }
                 } else {
                     attachment.localURL = nil
                     let error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
