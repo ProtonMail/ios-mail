@@ -258,7 +258,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
             
             let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
             let replyHeader = time + ", " + message!.senderName + " <'\(message!.sender)'>"
-            let sp = "<div><br><div>\(replyHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
+            let sp = "<div><br><div><div><br></div>\(replyHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
             return "\(htmlString) \(sp) \(body)</blockquote>"
         case .Forward:
             //composeView.subject.text = "Fwd: \(message.title)"
@@ -278,7 +278,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
             body = body.stringByStrippingBodyStyle()
             body = body.stringByPurifyHTML()
             
-            let sp = "<div><br></div>\(forwardHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
+            let sp = "<div><br></div><div><br></div>\(forwardHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
             return "\(defaultSignature) \(mobileSignature) \(sp) \(body)"
         case .NewDraft:
             return htmlString
