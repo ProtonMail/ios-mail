@@ -30,7 +30,8 @@ button,html,input,select,textarea {
 }
 
 body {
-    font: 1.4em/1.6em normal "Roboto-Regular",Helvetica,Arial,sans-serif;
+    font-family: "Roboto-Regular",Helvetica,Arial,sans-serif;
+/*    font-size: 1.1em;*/
     font-weight: 400;
     margin: 0;
     width: 100%;
@@ -40,10 +41,10 @@ body {
     color: #505061;
 }
 
-div,
-span {
-    font-size: 1em !important;
-}
+/*div,*/
+/*span {*/
+/*    font-size: 1em !important;*/
+/*}*/
 
 blockquote {
     padding: 0 0 0 2rem !important;

@@ -28,7 +28,7 @@ import QuickLook
 
 class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     
-    var kDefautWebViewScale : CGFloat = 0.70
+    var kDefautWebViewScale : CGFloat = 0.9
     
     //
     private let kMoreOptionsViewHeight: CGFloat = 123.0
