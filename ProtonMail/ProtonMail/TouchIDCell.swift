@@ -35,9 +35,9 @@ class TouchIDCell: UITableViewCell {
                 // If the security policy cannot be evaluated then show a short message depending on the error.
                 switch error!.code{
                 case LAError.TouchIDNotEnrolled.rawValue:
-                    alertString = NSLocalizedString("TouchID is not enrolled")
+                    alertString = NSLocalizedString("TouchID is not enrolled, enable it in the system Settings")
                 case LAError.PasscodeNotSet.rawValue:
-                    alertString = NSLocalizedString("A passcode has not been set")
+                    alertString = NSLocalizedString("A passcode has not been set, enable it in the system Settings")
                 default:
                     // The LAError.TouchIDNotAvailable case.
                     alertString = NSLocalizedString("TouchID not available")
