@@ -358,7 +358,7 @@ extension ComposeEmailViewController : ComposePasswordViewControllerDelegate {
 extension ComposeEmailViewController : ComposeViewDelegate {
     func composeViewPickFrom(composeView: ComposeView) {
         if attachments?.count > 0 {
-            let alertController = "Please remove all attachments before changing sender!".alertController()
+            let alertController = NSLocalizedString("Please remove all attachments before changing sender!").alertController()
             alertController.addOKAction()
             self.presentViewController(alertController, animated: true, completion: nil)
         } else {
@@ -597,9 +597,9 @@ extension ComposeEmailViewController: UIPickerViewDataSource {
 extension ComposeEmailViewController: UIPickerViewDelegate {
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
         if (component == 0) {
-            return "\(row) days"
+            return "\(row) " + NSLocalizedString("days")
         } else {
-            return "\(row) hours"
+            return "\(row) " + NSLocalizedString("hours")
         }
     }
     
@@ -607,8 +607,8 @@ extension ComposeEmailViewController: UIPickerViewDelegate {
         let selectedDay = pickerView.selectedRowInComponent(0)
         let selectedHour = pickerView.selectedRowInComponent(1)
         
-        let day = "\(selectedDay) days"
-        let hour = "\(selectedHour) hours"
+        let day = "\(selectedDay) " + NSLocalizedString("days")
+        let hour = "\(selectedHour) " + NSLocalizedString("hours")
         self.composeView.updateExpirationValue(((Double(selectedDay) * 24) + Double(selectedHour)) * 3600, text: "\(day) \(hour)")
     }
 }

@@ -170,17 +170,17 @@ class AttachmentsTableViewController: UITableViewController {
             cell.configCell(att.fileName ?? "unknow file", fileSize:  Int(att.fileSize ?? 0), showDownload: false)
             
             let crossView = UILabel();
-            crossView.text = "Remove"
+            crossView.text = NSLocalizedString("Remove")
             crossView.sizeToFit()
             crossView.textColor = UIColor.whiteColor()
             cell.defaultColor = UIColor.lightGrayColor()
             cell.setSwipeGestureWithView(crossView, color: UIColor.ProtonMail.MessageActionTintColor, mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State3  ) { (cell, state, mode) -> Void in
                 if let indexp = self.tableView.indexPathForCell(cell) {
-                    if self.attachments.count > indexPath.row {
-                        let att = self.attachments[indexPath.row] as Attachment
+                    if self.attachments.count > indexp.row {
+                        let att = self.attachments[indexp.row] as Attachment
                         if att.attachmentID != "0" {
                             self.delegate?.attachments(self, didDeletedAttachment: att)
-                            self.attachments.removeAtIndex(indexPath.row)
+                            self.attachments.removeAtIndex(indexp.row)
                             self.tableView.reloadData()
                         } else {
                             cell.swipeToOriginWithCompletion(nil)

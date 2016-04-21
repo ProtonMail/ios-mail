@@ -310,13 +310,13 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     internal func showEmailLoading () {
         var body = NSLocalizedString("Loading...")
-        let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=0.8\" content=\"yes\">"
+        let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=1.0\" content=\"yes\">"
         self.emailView?.updateEmailBody(body, meta: meta)
     }
 
     var contentLoaded = false
     internal func loadEmailBody(body : String) {
-        let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=\(emailView?.kDefautWebViewScale ?? 0.7)\" content=\"yes\">"
+        let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=\(emailView?.kDefautWebViewScale ?? 0.9)\" content=\"yes\">"
         self.emailView?.updateEmailBody(body, meta: meta)
         
         self.updateHeader()
@@ -330,7 +330,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             self.emailView?.updateEmailAttachment(atts);
         }
         var bodyText = NSLocalizedString(error)
-        let meta1 : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=0.8\" content=\"yes\">"
+        let meta1 : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=1.0\" content=\"yes\">"
         self.emailView?.updateEmailBody(bodyText, meta: meta1)
     }
 
@@ -390,7 +390,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
             var error: NSError?
             let decryptData = data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!, error: &error)
             if error != nil {
-                var alert = "Cant' decrypt this attachment!".alertController();
+                var alert = NSLocalizedString("Cant' decrypt this attachment!").alertController();
                 alert.addOKAction()
                 self.presentViewController(alert, animated: true, completion: nil)
             } else {
@@ -402,7 +402,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
             }
         }
         else{
-            var alert = "Can't find this attachment!".alertController();
+            var alert = NSLocalizedString("Can't find this attachment!").alertController();
             alert.addOKAction()
             self.presentViewController(alert, animated: true, completion: nil)
         }

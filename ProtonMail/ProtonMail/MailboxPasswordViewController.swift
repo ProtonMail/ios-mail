@@ -218,7 +218,7 @@ class MailboxPasswordViewController: UIViewController {
                             self.restoreBackup();
                             NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)
                         } else {
-                            let alertController = "Access to this account is disabled due to non-payment. Please visit our knowledge base for more information.".alertController() //here needs change to a clickable link
+                            let alertController = NSLocalizedString("Access to this account is disabled due to non-payment. Please visit our knowledge base for more information.").alertController() //here needs change to a clickable link
                             alertController.addAction(UIAlertAction.okAction(handler: { (action) -> Void in
                                 self.navigationController?.popViewControllerAnimated(true)
                             }))

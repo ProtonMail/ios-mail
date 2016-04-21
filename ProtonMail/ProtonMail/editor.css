@@ -30,7 +30,8 @@ button,html,input,select,textarea {
 }
 
 body {
-    font: 1.4em/1.6em normal "Roboto-Regular",Helvetica,Arial,sans-serif;
+    font-family: "Roboto-Regular",Helvetica,Arial,sans-serif;
+/*    font-size: 1.1em;*/
     font-weight: 400;
     margin: 0;
     width: 100%;
@@ -40,17 +41,17 @@ body {
     color: #505061;
 }
 
-div,
-span {
-    font-size: 1em !important;
-}
+/*div,*/
+/*span {*/
+/*    font-size: 1em !important;*/
+/*}*/
 
 blockquote {
-    padding: 0 0 0 2rem !important;
+    padding: 0 0 0 0.6rem !important;
     margin: 0 !important;
     border: 1px solid #ccc !important;
     border-width: 0 0 0 1px !important;
-    -webkit-margin-before: 2rem !important;
+    -webkit-margin-before: 1rem !important;
     -webkit-margin-after: 2rem !important;
     -webkit-margin-start: 0 !important;
     -webkit-margin-end: 0 !important;

@@ -19,7 +19,7 @@ extension String {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
         var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
-        hud.labelText = "Alert";
+        hud.labelText = NSLocalizedString("Alert");
         hud.detailsLabelText = self
         hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)

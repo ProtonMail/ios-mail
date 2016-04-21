@@ -162,14 +162,14 @@ class SettingTableViewController: ProtonMailViewController {
                     case .LoginPWD:
                         let cell = tableView.dequeueReusableCellWithIdentifier(SettingTwoLinesCell, forIndexPath: indexPath) as! SettingsCell
                         cell.LeftText.text = itme.description;
-                        cell.RightText.text = "**********"
+                        cell.RightText.text = NSLocalizedString("**********")
                         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                         cellout = cell;
                         break;
                     case .MBP:
                         let cell = tableView.dequeueReusableCellWithIdentifier(SettingTwoLinesCell, forIndexPath: indexPath) as! SettingsCell
                         cell.LeftText.text = itme.description;
-                        cell.RightText.text = "**********"
+                        cell.RightText.text = NSLocalizedString("**********")
                         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                         cellout = cell;
                         break;
@@ -248,9 +248,9 @@ class SettingTableViewController: ProtonMailViewController {
                                         // If the security policy cannot be evaluated then show a short message depending on the error.
                                         switch error!.code{
                                         case LAError.TouchIDNotEnrolled.rawValue:
-                                            alertString = "TouchID is not enrolled"
+                                            alertString = "TouchID is not enrolled, enable it in the system Settings"
                                         case LAError.PasscodeNotSet.rawValue:
-                                            alertString = "A passcode has not been set"
+                                            alertString = "A passcode has not been set, enable it in the system Settings"
                                         default:
                                             // The LAError.TouchIDNotAvailable case.
                                             alertString = "TouchID not available"
@@ -358,7 +358,7 @@ class SettingTableViewController: ProtonMailViewController {
                 if let addr = multi_domains.getDefaultAddress() {
                     cell.domainText.text = addr.email
                 } else {
-                    cell.domainText.text = "Unknown"
+                    cell.domainText.text = NSLocalizedString("Unknown")
                 }
                 cell.defaultMark.text = NSLocalizedString("Default")
                 cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator;
@@ -449,7 +449,7 @@ class SettingTableViewController: ProtonMailViewController {
                 self.performSegueWithIdentifier(LoginpwdSegue, sender: self)
                 break;
             case SGItems.MBP:
-                let alert = "Please use the web version of ProtonMail to change your mailbox password!".alertController()
+                let alert = NSLocalizedString("Please use the web version of ProtonMail to change your mailbox password!").alertController()
                 alert.addOKAction()
                 presentViewController(alert, animated: true, completion: nil)
                 //self.performSegueWithIdentifier(MailboxpwdSegue, sender: self)
@@ -460,13 +460,13 @@ class SettingTableViewController: ProtonMailViewController {
                     
                     let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
                     var  hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
-                    hud.labelText = "Reseting message cache ..."
+                    hud.labelText = NSLocalizedString("Reseting message cache ...")
                     hud.removeFromSuperViewOnHide = true
                     //                hud.margin = 10
                     //                hud.yOffset = 150
                     sharedMessageDataService.cleanLocalMessageCache() { task, res, error in
                         hud.mode = MBProgressHUDMode.Text
-                        hud.labelText = "Done"
+                        hud.labelText = NSLocalizedString("Done")
                         hud.hide(true, afterDelay: 1)
                         self.cleaning = false
                     }

@@ -80,7 +80,7 @@ extension NSError {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
         var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
-        hud.labelText = "Alert";
+        hud.labelText = NSLocalizedString("Alert");
         hud.detailsLabelText = localizedDescription
         hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)
@@ -90,8 +90,8 @@ extension NSError {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
         var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
-        hud.labelText = "Alert";
-        hud.detailsLabelText = "A new version of ProtonMail app is available, please update to latest version.";
+        hud.labelText = NSLocalizedString("Alert");
+        hud.detailsLabelText = NSLocalizedString("A new version of ProtonMail app is available, please update to latest version.");
         hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)
         //                    hud.mode = MBProgressHUDMode.Text
@@ -105,8 +105,8 @@ extension NSError {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
         var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
-        hud.labelText = "Alert";
-        hud.detailsLabelText = "Invalid access token please relogin";
+        hud.labelText = NSLocalizedString("Alert");
+        hud.detailsLabelText = NSLocalizedString("Invalid access token please relogin");
         hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)
         //                    hud.mode = MBProgressHUDMode.Text
@@ -120,8 +120,8 @@ extension NSError {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
         var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
-        hud.labelText = "Alert";
-        hud.detailsLabelText = "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail";
+        hud.labelText = NSLocalizedString("Alert");
+        hud.detailsLabelText = NSLocalizedString("ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail");
         hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)
 
@@ -155,7 +155,7 @@ extension NSError {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
         var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
-        hud.detailsLabelText = "Sending Message";
+        hud.detailsLabelText = NSLocalizedString("Sending Message");
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
         hud.yOffset = 250.0
@@ -166,7 +166,7 @@ extension NSError {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
         var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
-        hud.detailsLabelText = "Message sent";
+        hud.detailsLabelText = NSLocalizedString("Message sent");
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
         hud.yOffset = 250.0
@@ -177,7 +177,7 @@ extension NSError {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
         var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
-        hud.detailsLabelText = "Message sending failed please try again";
+        hud.detailsLabelText = NSLocalizedString("Message sending failed please try again");
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
         hud.yOffset = 250.0

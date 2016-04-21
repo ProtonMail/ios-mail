@@ -112,9 +112,9 @@ class PinCodeViewController : UIViewController {
             // If the security policy cannot be evaluated then show a short message depending on the error.
             switch error!.code{
             case LAError.TouchIDNotEnrolled.rawValue:
-                alertString = "TouchID is not enrolled"
+                alertString = "TouchID is not enrolled, enable it in the system Settings"
             case LAError.PasscodeNotSet.rawValue:
-                alertString = "A passcode has not been set"
+                alertString = "A passcode has not been set, enable it in the system Settings"
             default:
                 // The LAError.TouchIDNotAvailable case.
                 alertString = "TouchID not available"

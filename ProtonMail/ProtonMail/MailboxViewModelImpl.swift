@@ -29,7 +29,7 @@ public class MailboxViewModelImpl : MailboxViewModel {
         if let fetchedResultsController = fetchedResultsController {
             var error: NSError?
             if !fetchedResultsController.performFetch(&error) {
-                NSLog("\(__FUNCTION__) error: \(error)")
+                PMLog.D("error: \(error)")
             }
         }
         return fetchedResultsController

@@ -31,7 +31,7 @@ class HumanCheckMenuViewController: UIViewController {
     internal func setupSignUpFunctions () {
         let directs = viewModel.getDirect()
         if directs.count <= 0 {
-            let alert = "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.".alertController()
+            let alert = NSLocalizedString("Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.").alertController()
             alert.addOKAction()
             self.presentViewController(alert, animated: true, completion: nil)
         } else {

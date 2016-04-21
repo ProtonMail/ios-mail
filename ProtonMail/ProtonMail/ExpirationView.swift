@@ -20,9 +20,9 @@ class ExpirationView: PMView {
     func setExpirationTime(offset : Int) {
         let (d,h,m,s) = durationsBySecond(seconds: offset)
         if offset <= 0 {
-            expirationLabel.text = "Message expired"
+            expirationLabel.text = NSLocalizedString("Message expired")
         } else {
-            expirationLabel.text = "Expires in \(d) days \(h) hours \(m) mins \(s) seconds"
+            expirationLabel.text = "Expires in \(d) days \(h) hours \(m) mins \(s) seconds" //NSLocalizedString(
         }
     }
     

@@ -53,10 +53,10 @@ class SignUpPasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loginPasswordField.attributedPlaceholder = NSAttributedString(string: "Login Password", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
-        confirmLoginPasswordField.attributedPlaceholder = NSAttributedString(string: "Confirm Login Password", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
-        mailboxPassword.attributedPlaceholder = NSAttributedString(string: "Mailbox Password", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
-        confirmMailboxPassword.attributedPlaceholder = NSAttributedString(string: "Confirm Mailbox Password", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        loginPasswordField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Login Password"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        confirmLoginPasswordField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Confirm Login Password"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        mailboxPassword.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Mailbox Password"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        confirmMailboxPassword.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Confirm Mailbox Password"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
         
         self.updateButtonStatus()
         
@@ -114,12 +114,12 @@ class SignUpPasswordViewController: UIViewController {
                 viewModel.setPasswords(login_pwd, mailboxPwd: mailbox_pwd)
                 self.performSegueWithIdentifier(kSegueToEncryptionSetup, sender: self)
             } else {
-                let alert = "Mailbox password doesn't match".alertController()
+                let alert = NSLocalizedString("Mailbox password doesn't match").alertController()
                 alert.addOKAction()
                 self.presentViewController(alert, animated: true, completion: nil)
             }
         } else {
-            let alert = "Login password doesn't match".alertController()
+            let alert = NSLocalizedString("Login password doesn't match").alertController()
             alert.addOKAction()
             self.presentViewController(alert, animated: true, completion: nil)
         }
