@@ -24,7 +24,7 @@ class SetPinCodeModelImpl : PinCodeViewModel {
     }
     
     override func cancel() -> String {
-        return "Cancel"
+        return currentStep == .EnterPin ? "CREATE" : "CONFIRM"
     }
     
     override func showConfirm() -> Bool {

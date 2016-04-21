@@ -32,6 +32,7 @@ class PinCodeView : PMView {
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var logoutButton: UIButton!
+    @IBOutlet weak var backButton: UIButton!
     
     var delegate : PinCodeViewDelegate?
     
@@ -64,6 +65,12 @@ class PinCodeView : PMView {
         self.setCorner(nineButton)
         self.setCorner(zeroButton)
         self.setCorner(goButton)
+        
+        
+        
+        logoutButton.transform = CGAffineTransformMakeScale(-1.0, 1.0);
+        logoutButton.titleLabel?.transform = CGAffineTransformMakeScale(-1.0, 1.0);
+        logoutButton.imageView?.transform = CGAffineTransformMakeScale(-1.0, 1.0);
     }
     
     internal func add(number : Int) {
@@ -114,8 +121,13 @@ class PinCodeView : PMView {
     }
     
     @IBAction func logoutAction(sender: UIButton) {
-         delegate?.Cancel()
+        delegate?.Next(pinCode)
     }
+    
+    @IBAction func backAction(sender: UIButton) {
+        delegate?.Cancel()
+    }
+    
     
     @IBAction func goAction(sender: UIButton) {
         delegate?.Next(pinCode)
