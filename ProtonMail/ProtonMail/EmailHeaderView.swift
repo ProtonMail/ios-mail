@@ -1266,9 +1266,13 @@ extension EmailHeaderView: UITableViewDelegate {
                         cell.progressView.hidden = true
                         if let localURL = attachment.localURL {
                             if NSFileManager.defaultManager().fileExistsAtPath(attachment.localURL!.path!, isDirectory: nil) {
-                                let cell = self.attachmentView!.cellForRowAtIndexPath(indexPath)
-                                let data: NSData = NSData(base64EncodedString: attachment.keyPacket!, options: NSDataBase64DecodingOptions(rawValue: 0))!
-                                self.openLocalURL(localURL, keyPackage: data, fileName: attachment.fileName, forCell: cell!)
+                                if let cell = self.attachmentView!.cellForRowAtIndexPath(indexPath) {
+                                    if let key_packet = attachment.keyPacket {
+                                        if let data: NSData = NSData(base64EncodedString:key_packet, options: NSDataBase64DecodingOptions(rawValue: 0)) {
+                                            self.openLocalURL(localURL, keyPackage: data, fileName: attachment.fileName, forCell: cell)
+                                        }
+                                    }
+                                }
                             }
                         }
                     })
