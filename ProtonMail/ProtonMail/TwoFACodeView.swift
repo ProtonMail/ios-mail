@@ -63,8 +63,10 @@ class TwoFACodeView : PMView {
         
         let toolbarDone = UIToolbar.init()
         toolbarDone.sizeToFit()
-        let barBtnDone = UIBarButtonItem.init(title: "Recovery Code", style: UIBarButtonItemStyle.done,
-                                              target: self, action: #selector(TwoFACodeView.doneButtonAction))
+        let barBtnDone = UIBarButtonItem.init(title: NSLocalizedString("Recovery Code", comment: "Title"),
+                                              style: UIBarButtonItemStyle.done,
+                                              target: self,
+                                              action: #selector(TwoFACodeView.doneButtonAction))
         toolbarDone.items = [barBtnDone]
         twoFactorCodeField.inputAccessoryView = toolbarDone
         

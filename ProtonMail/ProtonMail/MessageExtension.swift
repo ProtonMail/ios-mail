@@ -573,7 +573,6 @@ extension String {
                 break
             }
             //get data
-            
             let text = data.subdata(with: NSMakeRange(1, secondboundaryRange.location - 1))
             
             let plainFound = contentType.range(of: textplainType!, options: NSData.SearchOptions(rawValue: 0), in: NSMakeRange(0, contentType.length))

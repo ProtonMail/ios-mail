@@ -31,11 +31,11 @@ open class LabelApplyViewModelImpl : LabelViewModel {
     }
     
     open override func getApplyButtonText() -> String {
-        return NSLocalizedString("Apply")
+        return NSLocalizedString("Apply", comment: "Action")
     }
     
     open override func getCancelButtonText() -> String {
-        return NSLocalizedString("Cancel")
+        return NSLocalizedString("Cancel", comment: "Action")
     }
     
     override open func getLabelMessage( _ label : Label!) -> LabelMessageModel! {
@@ -197,7 +197,7 @@ open class LabelApplyViewModelImpl : LabelViewModel {
     }
     
     override open func getTitle() -> String {
-        return NSLocalizedString("Apply Labels")
+        return NSLocalizedString("Apply Labels", comment: "Title")
     }
     
     override open func cancel() {

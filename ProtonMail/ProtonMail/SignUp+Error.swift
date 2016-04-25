@@ -25,21 +25,21 @@ enum SignUpCreateUserError : Int, Error, CustomErrorVar {
     }
     
     var desc : String {
-        return NSLocalizedString("Update Notification Email") //TODO:: check with jason for localization
+        return NSLocalizedString("Update Notification Email", comment: "update notification email error title when signup")
     }
     
     var reason : String {
         switch self {
         case .invalidModulsID:
-            return NSLocalizedString("Can't get a Moduls ID!")
+            return NSLocalizedString("Can't get a Moduls ID!", comment: "sign up user error when can't get moduls id")
         case .invalidModuls:
-            return NSLocalizedString("Can't get a Moduls!")
+            return NSLocalizedString("Can't get a Moduls!", comment: "sign up user error")
         case .cantHashPassword:
-            return NSLocalizedString("Invalid hashed password!")
+            return NSLocalizedString("Invalid hashed password!", comment: "sign up user error")
         case .cantGenerateVerifier:
-            return NSLocalizedString("Can't create a SRP verifier!")
+            return NSLocalizedString("Can't create a SRP verifier!", comment: "sign up user error")
         case .default:
-            return NSLocalizedString("Create user failed")
+            return NSLocalizedString("Create user failed", comment: "sign up user error")
         }
     }
 }

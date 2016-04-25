@@ -65,21 +65,21 @@ class MoreOptionsView: UIView {
         self.tagButton.addTarget(self, action: #selector(MoreOptionsView.tagAction(_:)), for: .touchUpInside)
         self.addSubview(tagButton)
         
-        self.tagLabel = UILabel.labelWith(labelFont, text: NSLocalizedString("Label as..."), textColor: labelColor)
+        self.tagLabel = UILabel.labelWith(labelFont, text: NSLocalizedString("Label as...", comment: "Title"), textColor: labelColor)
         self.addSubview(tagLabel)
         
         self.moveButton = UIButton.buttonWithImage(UIImage(named: "move")!)
         self.moveButton.addTarget(self, action: #selector(MoreOptionsView.moveAction(_:)), for: .touchUpInside)
         self.addSubview(moveButton)
 
-        self.moveLabel = UILabel.labelWith(labelFont, text: NSLocalizedString("Move to..."), textColor: labelColor)
+        self.moveLabel = UILabel.labelWith(labelFont, text: NSLocalizedString("Move to...", comment: "Title"), textColor: labelColor)
         self.addSubview(moveLabel)
         
         self.markButton = UIButton.buttonWithImage(UIImage(named: "mark")!)
         self.markButton.addTarget(self, action: #selector(MoreOptionsView.markAction(_:)), for: .touchUpInside)
         self.addSubview(markButton)
         
-        self.markLabel = UILabel.labelWith(labelFont, text: NSLocalizedString("Mark as unread"), textColor: labelColor)
+        self.markLabel = UILabel.labelWith(labelFont, text: NSLocalizedString("Mark as unread", comment: "Action"), textColor: labelColor)
         self.addSubview(markLabel)
     }
     

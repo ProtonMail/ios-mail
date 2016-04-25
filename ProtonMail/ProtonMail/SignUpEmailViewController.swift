@@ -51,8 +51,8 @@ class SignUpEmailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         userCachedStatus.showTourNextTime()
-        recoveryEmailField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Recovery Email"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
-        displayNameField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Display Name"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        recoveryEmailField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Recovery Email", comment: "Title"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        displayNameField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Display Name", comment: "Title"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -95,15 +95,15 @@ class SignUpEmailViewController: UIViewController {
         if email.isEmpty {
             // show a warning
             let alertController = UIAlertController(
-                title: NSLocalizedString("Recovery Email Warning"),
-                message: NSLocalizedString("Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?"),
+                title: NSLocalizedString("Recovery Email Warning", comment: "Title"),
+                message: NSLocalizedString("Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?", comment: "Description"),
                 preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .default, handler: { action in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Title"), style: .default, handler: { action in
                 
             }))
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Confirm"), style: .destructive, handler: { action in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Confirm", comment: "Title"), style: .destructive, handler: { action in
                 if (!email.isEmpty && !email.isValidEmail()) {
-                    let alert = NSLocalizedString("Please input a valid email address.").alertController()
+                    let alert = NSLocalizedString("Please input a valid email address.", comment: "Description").alertController()
                     alert.addOKAction()
                     self.present(alert, animated: true, completion: nil)
                 } else {
@@ -124,7 +124,7 @@ class SignUpEmailViewController: UIViewController {
             self.present(alertController, animated: true, completion: nil)
         } else {
             if (!email.isValidEmail()) {
-                let alert = NSLocalizedString("Please input a valid email address.").alertController()
+                let alert = NSLocalizedString("Please input a valid email address.", comment: "Description").alertController()
                 alert.addOKAction()
                 self.present(alert, animated: true, completion: nil)
             } else {

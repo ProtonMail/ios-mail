@@ -64,7 +64,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     override func viewDidLoad() {
         super.viewDidLoad()
         resetChecking()
-        usernameTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Username"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        usernameTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Username", comment: "Title"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
         MBProgressHUD.showAdded(to: view, animated: true)
         pickerButton.isHidden = true
         pickedDomainLabel.isHidden = true
@@ -126,7 +126,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     func startChecking() {
         warningView.isHidden = false
         warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
-        warningLabel.text = NSLocalizedString("Checking ....")
+        warningLabel.text = NSLocalizedString("Checking ....", comment: "loading message")
         warningIcon.isHidden = true;
     }
     
@@ -143,12 +143,12 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
             checkUserStatus = true
             warningView.isHidden = false
             warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
-            warningLabel.text = NSLocalizedString("User is available!")
+            warningLabel.text = NSLocalizedString("User is available!", comment: "")
             warningIcon.isHidden = false
         } else {
             warningView.isHidden = false
             warningLabel.textColor = UIColor.red
-            warningLabel.text = NSLocalizedString("User already exist!")
+            warningLabel.text = NSLocalizedString("User already exist!", comment: "error when user already exist")
             warningIcon.isHidden = true
         }
     }
@@ -179,14 +179,14 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
                     })
                 } else {
                     MBProgressHUD.hide(for: self.view, animated: true)
-                    let alert = NSLocalizedString("Please pick a user name first!").alertController()
+                    let alert = NSLocalizedString("Please pick a user name first!", comment: "Error").alertController()
                     alert.addOKAction()
                     self.present(alert, animated: true, completion: nil)
                 }
             }
         } else {
             MBProgressHUD.hide(for: view, animated: true)
-            let alert = NSLocalizedString("In order to use our services, you must agree to ProtonMail's Terms of Service.").alertController()
+            let alert = NSLocalizedString("In order to use our services, you must agree to ProtonMail's Terms of Service.", comment: "Error").alertController()
             alert.addOKAction()
             self.present(alert, animated: true, completion: nil)
         }
@@ -228,7 +228,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         
         //Create the cancel button & set its title
         let buttonCancel: UIButton = UIButton(frame: buttonCancelFrame);
-        buttonCancel.setTitle(NSLocalizedString("Done"), for: UIControlState());
+        buttonCancel.setTitle(NSLocalizedString("Done", comment: "Title"), for: UIControlState());
         
         buttonCancel.setTitleColor(UIColor.blue, for: UIControlState());
         toolView.addSubview(buttonCancel); //add it to the toolView

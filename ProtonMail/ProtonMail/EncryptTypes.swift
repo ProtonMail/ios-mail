@@ -20,26 +20,27 @@ enum EncryptTypes: Int, CustomStringConvertible {
     case outPGPInline = 7    // out side pgp inline
     case outPGPMime = 8    // out pgp mime
     
+    // didn't in localizable string because no place show this yet
     var description : String {
         switch(self){
         case .plain:
-            return NSLocalizedString("Plain text")
+            return NSLocalizedString("Plain text", comment: "Title")
         case .inner:
-            return NSLocalizedString("ProtonMail encrypted emails")
+            return NSLocalizedString("ProtonMail encrypted emails", comment: "Title")
         case .external:
-            return NSLocalizedString("Encrypted from outside")
+            return NSLocalizedString("Encrypted from outside", comment: "Title")
         case .outEnc:
-            return NSLocalizedString("Encrypted for outside")
+            return NSLocalizedString("Encrypted for outside", comment: "Title")
         case .outPlain:
-            return NSLocalizedString("Send plain but stored enc")
+            return NSLocalizedString("Send plain but stored enc", comment: "Title")
         case .draftStoreEnc:
-            return NSLocalizedString("Draft")
+            return NSLocalizedString("Draft", comment: "Title")
         case .outEncReply:
-            return NSLocalizedString("Encrypted for outside reply")
+            return NSLocalizedString("Encrypted for outside reply", comment: "Title")
         case .outPGPInline:
-            return NSLocalizedString("Encrypted from outside pgp inline")
+            return NSLocalizedString("Encrypted from outside pgp inline", comment: "Title")
         case .outPGPMime:
-            return NSLocalizedString("Encrypted from outside pgp mime")
+            return NSLocalizedString("Encrypted from outside pgp mime", comment: "Title")
         }
     }
     

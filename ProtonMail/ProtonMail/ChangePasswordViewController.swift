@@ -39,8 +39,8 @@ class ChangePasswordViewController: UIViewController {
         doneButton = self.editButtonItem
         doneButton.target = self;
         doneButton.action = #selector(ChangePasswordViewController.doneAction(_:))
-        doneButton.title = "Save"
-        
+        doneButton.title = NSLocalizedString("Save", comment: "Title")
+
         self.navigationItem.title = viewModel.getNavigationTitle()
         self.titleLable.text = viewModel.getSectionTitle()
         self.labelOne.text = viewModel.getLabelOne()

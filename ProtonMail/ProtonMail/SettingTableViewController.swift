@@ -184,7 +184,7 @@ class SettingTableViewController: ProtonMailViewController {
                     case .loginPWD, .mbp, .singlePWD:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingTwoLinesCell, for: indexPath) as! SettingsCell
                         cell.LeftText.text = itme.description
-                        cell.RightText.text = NSLocalizedString("**********")
+                        cell.RightText.text = NSLocalizedString("**********", comment: "")
                         cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
                         cellout = cell
                     case .cleanCache:
@@ -249,12 +249,12 @@ class SettingTableViewController: ProtonMailViewController {
                                             // If the security policy cannot be evaluated then show a short message depending on the error.
                                             switch error!.code{
                                             case LAError.Code.touchIDNotEnrolled.rawValue:
-                                                alertString = "TouchID is not enrolled, enable it in the system Settings"
+                                                alertString = NSLocalizedString("TouchID is not enrolled, enable it in the system Settings", comment: "settings touchid error")
                                             case LAError.Code.passcodeNotSet.rawValue:
-                                                alertString = "A passcode has not been set, enable it in the system Settings"
+                                                alertString = NSLocalizedString("A passcode has not been set, enable it in the system Settings", comment: "settings touchid error")
                                             default:
                                                 // The LAError.TouchIDNotAvailable case.
-                                                alertString = "TouchID not available"
+                                                alertString = NSLocalizedString("TouchID not available", comment: "settings touchid error")
                                             }
                                             PMLog.D(alertString)
                                             PMLog.D("\(String(describing: error?.localizedDescription))")
@@ -322,14 +322,13 @@ class SettingTableViewController: ProtonMailViewController {
                         if let t = Int(userCachedStatus.lockTime) {
                             timeIndex = t
                         }
-                        
-                        var text = "\(timeIndex) Minutes"
+                        var text = String(format: NSLocalizedString("%d Minutes", comment: ""), timeIndex)
                         if timeIndex == -1 {
-                            text = "None"
+                            text = NSLocalizedString("None", comment: "")
                         } else if timeIndex == 0 {
-                            text = "Every time enter app"
+                            text = NSLocalizedString("Every time enter app", comment: "")
                         } else if timeIndex == 1{
-                            text = "\(timeIndex) Minute"
+                            text = String(format: NSLocalizedString("%d Minute", comment: ""), timeIndex)
                         }
                         
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingTwoLinesCell, for: indexPath) as! SettingsCell
@@ -356,9 +355,9 @@ class SettingTableViewController: ProtonMailViewController {
                         if let addr = multi_domains.getDefaultAddress() {
                             cell.domainText.text = addr.email
                         } else {
-                            cell.domainText.text = NSLocalizedString("Unknown")
+                            cell.domainText.text = NSLocalizedString("Unknown", comment: "")
                         }
-                        cell.defaultMark.text = NSLocalizedString("Default")
+                        cell.defaultMark.text = NSLocalizedString("Default", comment: "Title")
                         cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
                         cellout = cell
                     case .displayName:
@@ -426,19 +425,19 @@ class SettingTableViewController: ProtonMailViewController {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerCell = tableView.dequeueReusableCell(withIdentifier: HeaderCell) as! CustomHeaderView
         if(setting_headers[section] == SettingSections.version){
-            var appVersion = "Unkonw Version"
-            var libVersion = "| LibVersion: 1.0.0"
+            var appVersion = NSLocalizedString("Unkonw Version", comment: "")
+            var libVersion = "| \(NSLocalizedString("LibVersion", comment: "lib version text")): 1.0.0"
             
             if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-                appVersion = "AppVersion: \(version)"
+                appVersion = "\(NSLocalizedString("AppVersion", comment: "")): \(version)"
             }
             if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
                 appVersion = appVersion + " (\(build))"
             }
             
             let lib_v = PMNLibVersion.getLibVersion()
-            libVersion = "| LibVersion: \(lib_v)"
-            headerCell.headerText.text = NSLocalizedString(appVersion + " " + libVersion)
+            libVersion = "| \(NSLocalizedString("LibVersion", comment: "")): \(lib_v)"
+            headerCell.headerText.text = appVersion + " " + libVersion
         }
         else
         {
@@ -465,7 +464,7 @@ class SettingTableViewController: ProtonMailViewController {
                     case .loginPWD:
                        // if shard
                         if sharedUserDataService.passwordMode == 1 {
-                            let alert = NSLocalizedString("Please use the web version of ProtonMail to change your passwords.!").alertController()
+                            let alert = NSLocalizedString("Please use the web version of ProtonMail to change your passwords.!", comment: "Alert").alertController()
                             alert.addOKAction()
                             present(alert, animated: true, completion: nil)
                         } else {
@@ -480,11 +479,11 @@ class SettingTableViewController: ProtonMailViewController {
                             cleaning = true
                             let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
                             let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
-                            hud.labelText = NSLocalizedString("Resetting message cache ...")
+                            hud.labelText = NSLocalizedString("Resetting message cache ...", comment: "Title")
                             hud.removeFromSuperViewOnHide = true
                             sharedMessageDataService.cleanLocalMessageCache() { task, res, error in
                                 hud.mode = MBProgressHUDMode.text
-                                hud.labelText = NSLocalizedString("Done")
+                                hud.labelText = NSLocalizedString("Done", comment: "Title")
                                 hud.hide(true, afterDelay: 1)
                                 self.cleaning = false
                             }
@@ -517,16 +516,16 @@ class SettingTableViewController: ProtonMailViewController {
                     case .autoLogout:
                         break
                     case .enterTime:
-                        let alertController = UIAlertController(title: NSLocalizedString("Auto Lock Time"), message: nil, preferredStyle: .actionSheet)
-                        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .cancel, handler: nil))
+                        let alertController = UIAlertController(title: NSLocalizedString("Auto Lock Time", comment: "Title"), message: nil, preferredStyle: .actionSheet)
+                        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
                         for timeIndex in protection_auto_logout {
-                            var text = "\(timeIndex) Minutes"
+                            var text = String(format: NSLocalizedString("%d Minutes", comment: ""), timeIndex)
                             if timeIndex == -1 {
-                                text = "None"
+                                text = NSLocalizedString("None", comment: "")
                             } else if timeIndex == 0 {
-                                text = "Every time enter app"
+                                text = NSLocalizedString("Every time enter app", comment: "")
                             } else if timeIndex == 1{
-                                text = "\(timeIndex) Minute"
+                                text = String(format: NSLocalizedString("%d Minute", comment: ""), timeIndex)
                             }
                             alertController.addAction(UIAlertAction(title: text, style: .default, handler: { (action) -> Void in
                                 let _ = self.navigationController?.popViewController(animated: true)
@@ -546,8 +545,8 @@ class SettingTableViewController: ProtonMailViewController {
                     switch address_item {
                     case .addresses:
                         var needsShow : Bool = false
-                        let alertController = UIAlertController(title: NSLocalizedString("Change default address to .."), message: nil, preferredStyle: .actionSheet)
-                        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .cancel, handler: nil))
+                        let alertController = UIAlertController(title: NSLocalizedString("Change default address to ..", comment: "Title"), message: nil, preferredStyle: .actionSheet)
+                        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
                         let defaultAddress : Address? = multi_domains.getDefaultAddress()
                         for addr in multi_domains {
                             if addr.status == 1 && addr.receive == 1 {
@@ -602,7 +601,7 @@ class SettingTableViewController: ProtonMailViewController {
                 if setting_swipe_action_items.count > indexPath.row {
                     let action_item = setting_swipe_action_items[indexPath.row]
                     let alertController = UIAlertController(title: action_item.actionDescription, message: nil, preferredStyle: .actionSheet)
-                    alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .cancel, handler: nil))
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: .cancel, handler: nil))
                     
                     let currentAction = action_item == .left ? sharedUserDataService.swiftLeft : sharedUserDataService.swiftRight
                     for swipeAction in setting_swipe_actions {
@@ -686,9 +685,9 @@ extension SettingTableViewController {
         var description : String {
             switch(self){
             case .queue:
-                return NSLocalizedString("Message Queue")
+                return NSLocalizedString("Message Queue", comment: "settings debug section title")
             case .errorLogs:
-                return NSLocalizedString("Error Logs")
+                return NSLocalizedString("Error Logs", comment: "settings debug section title")
             }
         }
     }
@@ -706,17 +705,17 @@ extension SettingTableViewController {
         var description : String {
             switch(self){
             case .notifyEmail:
-                return NSLocalizedString("Notification Email")
+                return NSLocalizedString("Notification Email", comment: "settings general section title")
             case .loginPWD:
-                return NSLocalizedString("Login Password")
+                return NSLocalizedString("Login Password", comment: "settings general section title")
             case .mbp:
-                return NSLocalizedString("Mailbox Password")
+                return NSLocalizedString("Mailbox Password", comment: "settings general section title")
             case .singlePWD:
-                return NSLocalizedString("Single Password")
+                return NSLocalizedString("Single Password", comment: "settings general section title")
             case .cleanCache:
-                return NSLocalizedString("Clear Local Message Cache")
+                return NSLocalizedString("Clear Local Message Cache", comment: "settings general section title")
             case .autoLoadImage:
-                return NSLocalizedString("Auto Show Images")
+                return NSLocalizedString("Auto Show Images", comment: "settings general section title")
             }
         }
     }
@@ -728,18 +727,18 @@ extension SettingTableViewController {
         var description : String {
             switch(self){
             case .left:
-                return NSLocalizedString("Swipe Left to Right")
+                return NSLocalizedString("Swipe Left to Right", comment: "settings swipe actions section title")
             case .right:
-                return NSLocalizedString("Swipe Right to Left")
+                return NSLocalizedString("Swipe Right to Left", comment: "settings swipe actions section title")
             }
         }
         
         var actionDescription : String {
             switch(self){
             case .left:
-                return NSLocalizedString("Change left swipe action")
+                return NSLocalizedString("Change left swipe action", comment: "settings swipe actions section action description")
             case .right:
-                return NSLocalizedString("Change right swipe action")
+                return NSLocalizedString("Change right swipe action", comment: "settings swipe actions section action description")
             }
         }
     }
@@ -754,15 +753,15 @@ extension SettingTableViewController {
         var description : String {
             switch(self){
             case .touchID:
-                return NSLocalizedString("Enable TouchID")
+                return NSLocalizedString("Enable TouchID", comment: "settings protection section title")
             case .pinCode:
-                return NSLocalizedString("Enable Pin Protection")
+                return NSLocalizedString("Enable Pin Protection", comment: "settings protection section title")
             case .updatePin:
-                return NSLocalizedString("Change Pin")
+                return NSLocalizedString("Change Pin", comment: "settings protection section title")
             case .autoLogout:
-                return NSLocalizedString("Protection Entire App")
+                return NSLocalizedString("Protection Entire App", comment: "settings protection section title")
             case .enterTime:
-                return NSLocalizedString("Auto Lock Time")
+                return NSLocalizedString("Auto Lock Time", comment: "settings protection section title")
             }
         }
     }
@@ -776,13 +775,13 @@ extension SettingTableViewController {
         var description : String {
             switch(self){
             case .addresses:
-                return NSLocalizedString("")
+                return NSLocalizedString("", comment: "")
             case .displayName:
-                return NSLocalizedString("Display Name")
+                return NSLocalizedString("Display Name", comment: "Title")
             case .signature:
-                return NSLocalizedString("Signature")
+                return NSLocalizedString("Signature", comment: "Title")
             case .defaultMobilSign:
-                return NSLocalizedString("Mobile Signature")
+                return NSLocalizedString("Mobile Signature", comment: "Title")
             }
         }
     }
@@ -792,7 +791,7 @@ extension SettingTableViewController {
         var description : String {
             switch(self){
             case .labelFolderManager:
-                return NSLocalizedString("Manage Labels/Folders")
+                return NSLocalizedString("Manage Labels/Folders", comment: "Title")
             }
         }
     }
@@ -811,23 +810,23 @@ extension SettingTableViewController {
         var description : String {
             switch(self){
             case .debug:
-                return NSLocalizedString("Debug")
+                return NSLocalizedString("Debug", comment: "Title")
             case .general:
-                return NSLocalizedString("General Settings")
+                return NSLocalizedString("General Settings", comment: "Title")
             case .multiDomain:
-                return NSLocalizedString("Multiple Addresses")
+                return NSLocalizedString("Multiple Addresses", comment: "Title")
             case .storage:
-                return NSLocalizedString("Storage")
+                return NSLocalizedString("Storage", comment: "Title")
             case .version:
-                return NSLocalizedString("")
+                return NSLocalizedString("", comment: "")
             case .swipeAction:
-                return NSLocalizedString("Message Swipe Actions")
+                return NSLocalizedString("Message Swipe Actions", comment: "Title")
             case .protection:
-                return NSLocalizedString("Protection")
+                return NSLocalizedString("Protection", comment: "Title")
             case .language:
-                return NSLocalizedString("Language")
+                return NSLocalizedString("Language", comment: "Title")
             case .labels:
-                return NSLocalizedString("Labels/Folders")
+                return NSLocalizedString("Labels/Folders", comment: "Title")
             }
         }
     }

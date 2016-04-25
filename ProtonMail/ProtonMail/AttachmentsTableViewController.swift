@@ -33,9 +33,9 @@ public enum AttachmentSections: Int {
         get {
             switch(self) {
             case .normal:
-                return NSLocalizedString("normal attachments")
+                return NSLocalizedString("normal attachments", comment: "Title")
             case .inline:
-                return NSLocalizedString("inline attachments")
+                return NSLocalizedString("inline attachments", comment: "Title")
             }
         }
     }
@@ -141,7 +141,7 @@ class AttachmentsTableViewController: UITableViewController {
     @IBAction func addAction(_ sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Photo Library"), style: UIAlertActionStyle.default, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Photo Library", comment: "Title"), style: UIAlertActionStyle.default, handler: { (action) -> Void in
             let picker: UIImagePickerController = PMImagePickerController()
             picker.delegate = self
             picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
@@ -150,7 +150,7 @@ class AttachmentsTableViewController: UITableViewController {
             self.present(picker, animated: true, completion: nil)
         }))
         
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Take a Photo"), style: UIAlertActionStyle.default, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Take a Photo", comment: "Title"), style: UIAlertActionStyle.default, handler: { (action) -> Void in
             if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)) {
                 let picker: UIImagePickerController = UIImagePickerController()
                 picker.delegate = self
@@ -159,7 +159,7 @@ class AttachmentsTableViewController: UITableViewController {
             }
         }))
         
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Import File From..."), style: UIAlertActionStyle.default, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Import File From...", comment: "Title"), style: UIAlertActionStyle.default, handler: { (action) -> Void in
             let types = [
                 kUTTypeMovie as String,
                 kUTTypeImage as String,
@@ -182,19 +182,18 @@ class AttachmentsTableViewController: UITableViewController {
         
         alertController.popoverPresentationController?.barButtonItem = sender
         alertController.popoverPresentationController?.sourceRect = self.view.frame
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: UIAlertActionStyle.cancel, handler: nil))
-        
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Action"), style: UIAlertActionStyle.cancel, handler: nil))
         present(alertController, animated: true, completion: nil)
     }
     
     func showSizeErrorAlert( _ didReachedSizeLimitation: Int) {
-        let alert = NSLocalizedString("The total attachment size can't be bigger than 25MB").alertController()
+        let alert = NSLocalizedString("The total attachment size can't be bigger than 25MB", comment: "Description").alertController()
         alert.addOKAction()
         present(alert, animated: true, completion: nil)
     }
     
     func showErrorAlert( _ error: String) {
-        let alert = NSLocalizedString(error).alertController()
+        let alert = NSLocalizedString(error, comment: "").alertController()
         alert.addOKAction()
         present(alert, animated: true, completion: nil)
     }
@@ -232,9 +231,8 @@ class AttachmentsTableViewController: UITableViewController {
         
         if let att = attachment {
             cell.configCell(att.fileName, fileSize:  Int(att.fileSize), showDownload: false)
-            
             let crossView = UILabel();
-            crossView.text = NSLocalizedString("Remove")
+            crossView.text = NSLocalizedString("Remove", comment: "Action")
             crossView.sizeToFit()
             crossView.textColor = UIColor.white
             cell.defaultColor = UIColor.lightGray
@@ -330,15 +328,15 @@ extension AttachmentsTableViewController: UIDocumentPickerDelegate {
                 }
             } else {
                 DispatchQueue.main.async {
-                    self.showErrorAlert("Can't load the file")
-                    self.delegate?.attachments(self, error:"Can't load the file")
+                    self.showErrorAlert(NSLocalizedString("Can't load the file", comment: "Error"))
+                    self.delegate?.attachments(self, error: NSLocalizedString("Can't load the file", comment: "Error"))
                 }
             }
         }
         if error != nil {
             DispatchQueue.main.async {
-                self.showErrorAlert("Can't copy the file")
-                self.delegate?.attachments(self, error:"Can't copy the file")
+                self.showErrorAlert(NSLocalizedString("Can't copy the file", comment: "Error"))
+                self.delegate?.attachments(self, error: NSLocalizedString("Can't copy the file", comment: "Error"))
             }
         }
     }
@@ -390,8 +388,8 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                                 self.delegate?.attachments(self, didPickedAttachment: attachment!)
                             } else {
                                 PMLog.D(" Error during copying size incorrect")
-                                self.showErrorAlert("System can't copy the file")
-                                self.delegate?.attachments(self, error:"System can't copy the file")
+                                self.showErrorAlert(NSLocalizedString("System can't copy the file", comment: "Error"))
+                                self.delegate?.attachments(self, error: NSLocalizedString("System can't copy the file", comment: "Error"))
                             }
                         }
                     } else {
@@ -417,8 +415,8 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                     guard let image_data = imagedata, /* let _ = dataUTI,*/ let info = info, image_data.count > 0 else {
                         DispatchQueue.main.async() {
                             picker.dismiss(animated: true, completion: nil)
-                            self.showErrorAlert("Can't open the file")
-                            self.delegate?.attachments(self, error:"Can't open the file")
+                            self.showErrorAlert(NSLocalizedString("Can't open the file", comment: "Error"))
+                            self.delegate?.attachments(self, error: NSLocalizedString("Can't open the file", comment: "Error"))
                         }
                         return
                     }
@@ -437,8 +435,8 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                                 self.delegate?.attachments(self, didPickedAttachment: attachment!)
                             } else {
                                 PMLog.D(" Error during copying size incorrect")
-                                self.showErrorAlert("Can't copy the file")
-                                self.delegate?.attachments(self, error:"Can't copy the file")
+                                self.showErrorAlert(NSLocalizedString("Can't copy the file", comment: "Error"))
+                                self.delegate?.attachments(self, error: NSLocalizedString("Can't copy the file", comment: "Error"))
                             }
                         }
                     } else {
@@ -463,8 +461,8 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                     self.delegate?.attachments(self, didPickedAttachment: attachment!)
                 } else {
                     PMLog.D(" Error during copying size incorrect")
-                    self.showErrorAlert("Can't copy the file")
-                    self.delegate?.attachments(self, error:"Can't copy the file")
+                    self.showErrorAlert(NSLocalizedString("Can't copy the file", comment: "Error"))
+                    self.delegate?.attachments(self, error: NSLocalizedString("Can't copy the file", comment: "Error"))
                 }
             } else {
                 self.showSizeErrorAlert(0)
@@ -475,8 +473,8 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
             self.tableView.reloadData()
         } else {
             picker.dismiss(animated: true, completion: nil)
-            self.showErrorAlert("Can't copy the file")
-            self.delegate?.attachments(self, error:"Can't copy the file")
+            self.showErrorAlert(NSLocalizedString("Can't copy the file", comment: "Error"))
+            self.delegate?.attachments(self, error: NSLocalizedString("Can't copy the file", comment: "Error"))
             self.buildAttachments()
             self.tableView.reloadData()
         }

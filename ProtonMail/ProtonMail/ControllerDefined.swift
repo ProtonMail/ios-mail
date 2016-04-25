@@ -28,15 +28,15 @@ enum ComposeMessageAction: Int, CustomStringConvertible {
         get {
             switch(self) {
             case .reply:
-                return NSLocalizedString("Reply")
+                return NSLocalizedString("Reply", comment: "Action")
             case .replyAll:
-                return NSLocalizedString("ReplyAll")
+                return NSLocalizedString("ReplyAll", comment: "Action")
             case .forward:
-                return NSLocalizedString("Forward")
+                return NSLocalizedString("Forward", comment: "Action")
             case .newDraft:
-                return NSLocalizedString("Draft")
+                return NSLocalizedString("Draft", comment: "Action")
             case .openDraft:
-                return NSLocalizedString("OpenDraft")
+                return NSLocalizedString("OpenDraft", comment: "Action")
             }
         }
     }

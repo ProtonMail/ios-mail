@@ -10,7 +10,7 @@ import Foundation
 
 class UnlockPinCodeModelImpl : PinCodeViewModel {
     
-    let titleText : String = "Enter your PIN to unlock your inbox."
+    let titleText : String = NSLocalizedString("Enter your PIN to unlock your inbox.", comment: "Title")
     
     var currentStep : PinCodeStep = .enterPin
     
@@ -21,7 +21,7 @@ class UnlockPinCodeModelImpl : PinCodeViewModel {
     }
     
     override func cancel() -> String {
-        return "CONFIRM"
+        return NSLocalizedString("CONFIRM", comment: "Action")
     }
     
     override func showConfirm() -> Bool {
@@ -33,7 +33,6 @@ class UnlockPinCodeModelImpl : PinCodeViewModel {
     }
     
     override func setCode (_ code : String) -> PinCodeStep {
-        
         switch currentStep {
         case .enterPin:
             enterPin = code
@@ -66,11 +65,11 @@ class UnlockPinCodeModelImpl : PinCodeViewModel {
     override func getPinFailedError() -> String {
         let c = 10 - userCachedStatus.pinFailedCount
         if c <= 1 {
-            return "\(c) attempt remaining until secure data wipe!"
+            return "\(c) \(NSLocalizedString("attempt remaining until secure data wipe!", comment: "Error"))"
         } else if c < 4 {
-            return "\(c) attempts remaining until secure data wipe!"
+            return "\(c) \(NSLocalizedString("attempts remaining until secure data wipe!", comment: "Error"))"
         }
-        return "Incorrect PIN, \(c) attempts remaining"
+        return "\(NSLocalizedString("Incorrect PIN,", comment: "Error")) \(c) \(NSLocalizedString("attempts remaining", comment: "Description"))"
     }
     
     override func checkTouchID() -> Bool {

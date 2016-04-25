@@ -85,7 +85,7 @@ class SearchViewController: ProtonMailViewController {
         searchTextField.font = UIFont.robotoRegular(size: UIFont.Size.h4)
         searchTextField.textColor = UIColor.white
         searchTextField.tintColor = UIColor.white
-        searchTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Search"), attributes:
+        searchTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Search", comment: "Title"), attributes:
             [
                 NSForegroundColorAttributeName: UIColor.white,
                 NSFontAttributeName: UIFont.robotoLight(size: UIFont.Size.h3)

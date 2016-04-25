@@ -187,6 +187,10 @@
 		754713191DCD616D0084BF34 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754713171DCD616D0084BF34 /* SignInViewModel.swift */; };
 		7547131B1DCD61850084BF34 /* SignInViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7547131A1DCD61850084BF34 /* SignInViewModelImpl.swift */; };
 		7547131C1DCD61850084BF34 /* SignInViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7547131A1DCD61850084BF34 /* SignInViewModelImpl.swift */; };
+		75475EA71CCEB97400588D41 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75475EA61CCEB97400588D41 /* BaseViewController.swift */; };
+		75475EA81CCEB97400588D41 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75475EA61CCEB97400588D41 /* BaseViewController.swift */; };
+		75475EAB1CCEE21C00588D41 /* NSBundle+Language.m in Sources */ = {isa = PBXBuildFile; fileRef = 75475EAA1CCEE21C00588D41 /* NSBundle+Language.m */; };
+		75475EAC1CCEE21C00588D41 /* NSBundle+Language.m in Sources */ = {isa = PBXBuildFile; fileRef = 75475EAA1CCEE21C00588D41 /* NSBundle+Language.m */; };
 		75484B8B1AF29EBF00B97472 /* NSDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */; };
 		7548D0961CC10DFB001C3AEC /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */; };
 		7548D0971CC11876001C3AEC /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */; };
@@ -249,8 +253,6 @@
 		756DAC421C923D4500F3486C /* MailboxRateReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 756DAC401C9236D000F3486C /* MailboxRateReviewCell.xib */; };
 		756DAC451C92B30300F3486C /* FeedbackPopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DAC441C92B30300F3486C /* FeedbackPopViewController.swift */; };
 		756DAC471C93691900F3486C /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DAC461C93691900F3486C /* FeedbackViewController.swift */; };
-		7576355D1D0B6D8E00DF46DC /* LabelManagerViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7576355C1D0B6D8E00DF46DC /* LabelManagerViewModelImpl.swift */; };
-		7576355E1D0B6EB400DF46DC /* LabelManagerViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7576355C1D0B6D8E00DF46DC /* LabelManagerViewModelImpl.swift */; };
 		7578B7831CADD1EA006B523B /* PMImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B7821CADD1EA006B523B /* PMImagePickerController.swift */; };
 		7578B7841CADD1EA006B523B /* PMImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B7821CADD1EA006B523B /* PMImagePickerController.swift */; };
 		7578B7861CADD20A006B523B /* PMDocumentPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B7851CADD20A006B523B /* PMDocumentPickerViewController.swift */; };
@@ -294,8 +296,8 @@
 		75978BDB1B28F63100D07501 /* editor.css in Resources */ = {isa = PBXBuildFile; fileRef = 75978BDA1B28F63100D07501 /* editor.css */; };
 		7597B6841DEE37E800511AFF /* PHAssetExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7597B6831DEE37E800511AFF /* PHAssetExtension.swift */; };
 		7597B6851DEE37E800511AFF /* PHAssetExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7597B6831DEE37E800511AFF /* PHAssetExtension.swift */; };
-		7599B1721CC8124300B2CB8D /* localization.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7599B1741CC8124300B2CB8D /* localization.strings */; };
-		7599B1761CC8124C00B2CB8D /* localization.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7599B1741CC8124300B2CB8D /* localization.strings */; };
+		7599B1721CC8124300B2CB8D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7599B1741CC8124300B2CB8D /* Localizable.strings */; };
+		7599B1761CC8124C00B2CB8D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7599B1741CC8124300B2CB8D /* Localizable.strings */; };
 		7599B17D1CC8247E00B2CB8D /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7599B17C1CC8247E00B2CB8D /* Localization.swift */; };
 		7599B17E1CC8247E00B2CB8D /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7599B17C1CC8247E00B2CB8D /* Localization.swift */; };
 		759BBDC01BA0C55E002608B5 /* LabelDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759BBDBF1BA0C55E002608B5 /* LabelDisplayView.swift */; };
@@ -326,6 +328,8 @@
 		75BA55A71D087F6A0081DD88 /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 75BA55A61D087F6A0081DD88 /* Readme.txt */; };
 		75BA55A81D087F6A0081DD88 /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 75BA55A61D087F6A0081DD88 /* Readme.txt */; };
 		75BB65761BD5C88800F9432D /* AttachmentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BB65751BD5C88800F9432D /* AttachmentAPI.swift */; };
+		75BDCCF21EC4E35C00EF04C5 /* LabelManagerViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BDCCF11EC4E35C00EF04C5 /* LabelManagerViewModelImpl.swift */; };
+		75BDCCF31EC4E4B900EF04C5 /* LabelManagerViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BDCCF11EC4E35C00EF04C5 /* LabelManagerViewModelImpl.swift */; };
 		75BDECA91CBCCE4400982089 /* PinCodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BDECA81CBCCE4400982089 /* PinCodeModel.swift */; };
 		75BDECAB1CBCCE5B00982089 /* SetPinCodeModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BDECAA1CBCCE5B00982089 /* SetPinCodeModelImpl.swift */; };
 		75BDECAD1CBCCE8B00982089 /* UnlockPinCodeModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BDECAC1CBCCE8B00982089 /* UnlockPinCodeModelImpl.swift */; };
@@ -837,6 +841,9 @@
 		754713131DCD51B30084BF34 /* General2FAViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = General2FAViewModelImpl.swift; sourceTree = "<group>"; };
 		754713171DCD616D0084BF34 /* SignInViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		7547131A1DCD61850084BF34 /* SignInViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewModelImpl.swift; sourceTree = "<group>"; };
+		75475EA61CCEB97400588D41 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		75475EA91CCEE21C00588D41 /* NSBundle+Language.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Language.h"; sourceTree = "<group>"; };
+		75475EAA1CCEE21C00588D41 /* NSBundle+Language.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Language.m"; sourceTree = "<group>"; };
 		75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateExtension.swift; sourceTree = "<group>"; };
 		7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTempCachedStatus.swift; sourceTree = "<group>"; };
 		7549F0B01D07827A00643C64 /* AddressAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressAPI.swift; sourceTree = "<group>"; };
@@ -892,7 +899,7 @@
 		756DAC401C9236D000F3486C /* MailboxRateReviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MailboxRateReviewCell.xib; sourceTree = "<group>"; };
 		756DAC441C92B30300F3486C /* FeedbackPopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackPopViewController.swift; sourceTree = "<group>"; };
 		756DAC461C93691900F3486C /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
-		7576355C1D0B6D8E00DF46DC /* LabelManagerViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelManagerViewModelImpl.swift; sourceTree = "<group>"; };
+		757824A41CCFE0D900136CF3 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7578B7821CADD1EA006B523B /* PMImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMImagePickerController.swift; sourceTree = "<group>"; };
 		7578B7851CADD20A006B523B /* PMDocumentPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMDocumentPickerViewController.swift; sourceTree = "<group>"; };
 		757945D51B66E38D004EEDCA /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
@@ -921,11 +928,11 @@
 		759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDetailsViewModel.swift; sourceTree = "<group>"; };
 		75978BDA1B28F63100D07501 /* editor.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = editor.css; sourceTree = "<group>"; };
 		7597B6831DEE37E800511AFF /* PHAssetExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PHAssetExtension.swift; sourceTree = "<group>"; };
-		7599B1731CC8124300B2CB8D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/localization.strings; sourceTree = "<group>"; };
-		7599B1751CC8124A00B2CB8D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/localization.strings; sourceTree = "<group>"; };
-		7599B1771CC812CD00B2CB8D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/localization.strings"; sourceTree = "<group>"; };
-		7599B1781CC8130600B2CB8D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/localization.strings; sourceTree = "<group>"; };
-		7599B1791CC8132700B2CB8D /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/localization.strings"; sourceTree = "<group>"; };
+		7599B1731CC8124300B2CB8D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		7599B1751CC8124A00B2CB8D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		7599B1771CC812CD00B2CB8D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		7599B1781CC8130600B2CB8D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		7599B1791CC8132700B2CB8D /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		7599B17C1CC8247E00B2CB8D /* Localization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
 		759BBDBF1BA0C55E002608B5 /* LabelDisplayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelDisplayView.swift; sourceTree = "<group>"; };
 		759BBDC11BA0C586002608B5 /* LabelDisplayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LabelDisplayView.xib; sourceTree = "<group>"; };
@@ -950,6 +957,7 @@
 		75BA199E1EC6474D00153A1A /* MessageSpamScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSpamScore.swift; sourceTree = "<group>"; };
 		75BA55A61D087F6A0081DD88 /* Readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.txt; sourceTree = "<group>"; };
 		75BB65751BD5C88800F9432D /* AttachmentAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentAPI.swift; sourceTree = "<group>"; };
+		75BDCCF11EC4E35C00EF04C5 /* LabelManagerViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelManagerViewModelImpl.swift; sourceTree = "<group>"; };
 		75BDECA81CBCCE4400982089 /* PinCodeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinCodeModel.swift; sourceTree = "<group>"; };
 		75BDECAA1CBCCE5B00982089 /* SetPinCodeModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPinCodeModelImpl.swift; sourceTree = "<group>"; };
 		75BDECAC1CBCCE8B00982089 /* UnlockPinCodeModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlockPinCodeModelImpl.swift; sourceTree = "<group>"; };
@@ -1224,7 +1232,7 @@
 				07009EF91A64AA6A00129B07 /* ProtonMail-Bridging-Header.h */,
 				072AB6A01A8EE50000AF45D6 /* ProtonMail-Bridging-Header.cpp */,
 				07CC99691A705BA4000FD6F8 /* Settings.bundle */,
-				7599B1741CC8124300B2CB8D /* localization.strings */,
+				7599B1741CC8124300B2CB8D /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1418,6 +1426,7 @@
 		706628241A71681300164117 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				75475EA61CCEB97400588D41 /* BaseViewController.swift */,
 				706961FE1A7136A0001443B2 /* ProtonMailViewController.swift */,
 				755F92151C7E67C200BAEDF9 /* Onboarding */,
 				07B123761AB8CD76006EA38C /* Attachments */,
@@ -1626,7 +1635,7 @@
 				75510BAC1B82F990001348FF /* LabelViewModel.swift */,
 				752A9EBC1DB80E40008D4392 /* LabelApplyViewModelImpl.swift */,
 				757F4A0B1E68F3A4001CDE71 /* FolderApplyViewModelImpl.swift */,
-				7576355C1D0B6D8E00DF46DC /* LabelManagerViewModelImpl.swift */,
+				75BDCCF11EC4E35C00EF04C5 /* LabelManagerViewModelImpl.swift */,
 				757F4A081E68F37E001CDE71 /* LabelEditViewModel.swift */,
 				757F4A0E1E68F3F3001CDE71 /* LabelEditingViewModelImpl.swift */,
 				75AD87311E975CC600B8265B /* FolderEditingViewModelImpl .swift */,
@@ -1842,13 +1851,15 @@
 		75F1697F1AF7F49B00BE6E79 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				756CDE3B1D9C754D004455F6 /* SRP */,
+				75B549E31D02730100F21A30 /* Reachability */,
+				7580D6571C8E438800A15885 /* LastPass */,
 				7523E88C1BB1561F00126D62 /* NSData+MultipartResponses.h */,
 				7523E88D1BB1561F00126D62 /* NSData+MultipartResponses.m */,
 				7523E8BE1BB182B300126D62 /* MultipartResponseParser.h */,
 				7523E8BF1BB182B300126D62 /* MultipartResponseParser.m */,
-				756CDE3B1D9C754D004455F6 /* SRP */,
-				75B549E31D02730100F21A30 /* Reachability */,
-				7580D6571C8E438800A15885 /* LastPass */,
+				75475EA91CCEE21C00588D41 /* NSBundle+Language.h */,
+				75475EAA1CCEE21C00588D41 /* NSBundle+Language.m */,
 				7580D6561C8E436F00A15885 /* OnePassword */,
 				076758791AA126E400F9AC9C /* StorageLimit.swift */,
 				751CE0251DDFBD0600D5EC66 /* ServerNotice.swift */,
@@ -2012,6 +2023,7 @@
 				"zh-Hans",
 				fr,
 				"zh-Hant",
+				de,
 			);
 			mainGroup = 075E3DDD1A5F4ECF00E001A7;
 			productRefGroup = 075E3DE71A5F4ECF00E001A7 /* Products */;
@@ -2045,7 +2057,7 @@
 				759BBDC21BA0C586002608B5 /* LabelDisplayView.xib in Resources */,
 				7061A3F51A6E8C9D0006D36C /* Menu.storyboard in Resources */,
 				075E3DF91A5F4ECF00E001A7 /* LaunchScreen.xib in Resources */,
-				7599B1721CC8124300B2CB8D /* localization.strings in Resources */,
+				7599B1721CC8124300B2CB8D /* Localizable.strings in Resources */,
 				07009F131A684C1900129B07 /* Roboto-Light.ttf in Resources */,
 				75E49F091CAB200000235ACC /* flags.bundle in Resources */,
 				7048B9F51A9E385B00D45F57 /* ContactsTableViewCell.xib in Resources */,
@@ -2103,7 +2115,7 @@
 				7582CFBD1D024E2900F521D4 /* TopMessageView.xib in Resources */,
 				75DE7D901CAAEA4900F5443E /* Roboto-LightItalic.ttf in Resources */,
 				75DE7D911CAAEA4900F5443E /* MailboxMessageCell.xib in Resources */,
-				7599B1761CC8124C00B2CB8D /* localization.strings in Resources */,
+				7599B1761CC8124C00B2CB8D /* Localizable.strings in Resources */,
 				75DE7D921CAAEA4900F5443E /* LabelDisplayView.xib in Resources */,
 				75856D6B1CB5B5F2000D9F3B /* PinCodeView.xib in Resources */,
 				75DE7D931CAAEA4900F5443E /* Menu.storyboard in Resources */,
@@ -2426,6 +2438,7 @@
 				701DDE971AA651100038149C /* ContactVO.swift in Sources */,
 				7510AE7C1AB8D68B00EF3C41 /* SettingDetailViewController.swift in Sources */,
 				75E220321DDA642500078D6C /* DataService+Error.swift in Sources */,
+				75475EAB1CCEE21C00588D41 /* NSBundle+Language.m in Sources */,
 				75370A921CA50616005020F9 /* ComposePasswordViewController.swift in Sources */,
 				7537450A1D6BA85B00682C5A /* APIService+ErrorExtension.swift in Sources */,
 				07E6C8281A9CF36400D4C8D4 /* NSManagedObjectExtension.swift in Sources */,
@@ -2507,6 +2520,7 @@
 				757F4A051E677E1D001CDE71 /* LabelEditViewController.swift in Sources */,
 				752FAA141CB5B14500F03228 /* PinCodeViewController.swift in Sources */,
 				075F0A521ABF5DB500E6B9AE /* MessageLocation.swift in Sources */,
+				75475EA71CCEB97400588D41 /* BaseViewController.swift in Sources */,
 				75E090541CAC7A3A00751136 /* CountryCodeTableViewCell.swift in Sources */,
 				751B446E1B81245100B68CD6 /* TableCellLabelView.swift in Sources */,
 				75ECCE021B31F44600A8C800 /* AuthAPI.swift in Sources */,
@@ -2556,6 +2570,7 @@
 				758DB00E1DDBBCA8007B83D3 /* OrganizationsAPI.swift in Sources */,
 				7578B7831CADD1EA006B523B /* PMImagePickerController.swift in Sources */,
 				7567B0731B3363D000A72A1E /* ControllerDefined.swift in Sources */,
+				75BDCCF21EC4E35C00EF04C5 /* LabelManagerViewModelImpl.swift in Sources */,
 				75BF9A521B5F0F500087AD2E /* BugsAPI.swift in Sources */,
 				751CE0261DDFBD0600D5EC66 /* ServerNotice.swift in Sources */,
 				755405B21B1648D2003BFC0A /* ComposeView.swift in Sources */,
@@ -2570,7 +2585,6 @@
 				7027B02B1A700F0200D28F52 /* MenuTableViewCell.swift in Sources */,
 				075675591AB135F500449905 /* UIAlertActionExtension.swift in Sources */,
 				753745041D6B7E8F00682C5A /* APIError+Auth.swift in Sources */,
-				7576355D1D0B6D8E00DF46DC /* LabelManagerViewModelImpl.swift in Sources */,
 				754B70C81C975271004F991A /* FeedbackItem.swift in Sources */,
 				75FFC65F1B45C549007FB75A /* DictionaryExtension.swift in Sources */,
 				07DD68A11A96BCDD00ED130C /* NSUserDefaultsExtension.swift in Sources */,
@@ -2684,6 +2698,7 @@
 				757F4A131E68F409001CDE71 /* LabelCreatingViewModelImple.swift in Sources */,
 				754508421E149B6600265CD0 /* HumanCheckViewModel.swift in Sources */,
 				75DE7CEB1CAAEA4900F5443E /* RecipientView.swift in Sources */,
+				75BDCCF31EC4E4B900EF04C5 /* LabelManagerViewModelImpl.swift in Sources */,
 				75DE7CEC1CAAEA4900F5443E /* EventAPI.swift in Sources */,
 				75DE7CED1CAAEA4900F5443E /* SecureStore.swift in Sources */,
 				75DE7CEE1CAAEA4900F5443E /* FeedbackHeadCell.swift in Sources */,
@@ -2706,6 +2721,7 @@
 				7549F0B21D07827A00643C64 /* AddressAPI.swift in Sources */,
 				75DE7CFD1CAAEA4900F5443E /* ContactVO.swift in Sources */,
 				75DE7CFE1CAAEA4900F5443E /* SettingDetailViewController.swift in Sources */,
+				75475EAC1CCEE21C00588D41 /* NSBundle+Language.m in Sources */,
 				75DE7CFF1CAAEA4900F5443E /* ComposePasswordViewController.swift in Sources */,
 				75DE7D001CAAEA4900F5443E /* NSManagedObjectExtension.swift in Sources */,
 				75DE7D011CAAEA4900F5443E /* APIServiceDefined.swift in Sources */,
@@ -2787,6 +2803,7 @@
 				75DE7D3E1CAAEA4900F5443E /* MessageLocation.swift in Sources */,
 				75DE7D3F1CAAEA4900F5443E /* TableCellLabelView.swift in Sources */,
 				75BF8F471DA6E49E000F350F /* SRPClient.swift in Sources */,
+				75475EA81CCEB97400588D41 /* BaseViewController.swift in Sources */,
 				75E090551CAC7A3A00751136 /* CountryCodeTableViewCell.swift in Sources */,
 				75DE7D401CAAEA4900F5443E /* AuthAPI.swift in Sources */,
 				75DE7D411CAAEA4900F5443E /* UserAPI.swift in Sources */,
@@ -2859,7 +2876,6 @@
 				75DE7D711CAAEA4900F5443E /* NSUserDefaultsExtension.swift in Sources */,
 				75DE7D721CAAEA4900F5443E /* MoreOptionsView.swift in Sources */,
 				75BDECB01CBCD0FA00982089 /* UnlockPinCodeModelImpl.swift in Sources */,
-				7576355E1D0B6EB400DF46DC /* LabelManagerViewModelImpl.swift in Sources */,
 				75DE7D731CAAEA4900F5443E /* NSFetchedResultsControllerExtension.swift in Sources */,
 				75DE7D741CAAEA4900F5443E /* EncryptTypes.swift in Sources */,
 				75DE7D751CAAEA4900F5443E /* UIFontExtension.swift in Sources */,
@@ -2904,7 +2920,7 @@
 			name = LaunchScreen.xib;
 			sourceTree = "<group>";
 		};
-		7599B1741CC8124300B2CB8D /* localization.strings */ = {
+		7599B1741CC8124300B2CB8D /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				7599B1731CC8124300B2CB8D /* Base */,
@@ -2912,8 +2928,9 @@
 				7599B1771CC812CD00B2CB8D /* zh-Hans */,
 				7599B1781CC8130600B2CB8D /* fr */,
 				7599B1791CC8132700B2CB8D /* zh-Hant */,
+				757824A41CCFE0D900136CF3 /* de */,
 			);
-			name = localization.strings;
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

@@ -1,0 +1,1085 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+  <file original="ProtonMail/Base.lproj/LaunchScreen.xib" source-language="en" datatype="plaintext" target-language="zh-Hans">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="6.4" build-num="6E35b"/>
+    </header>
+    <body>
+      <trans-unit id="L1Q-fd-6fr.text">
+        <source>ENCRYPTED EMAIL</source>
+        <note>Class = "UILabel"; text = "ENCRYPTED EMAIL"; ObjectID = "L1Q-fd-6fr";</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/Info.plist" source-language="en" datatype="plaintext" target-language="zh-Hans">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="6.4" build-num="6E35b"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName">
+        <source>$(PRODUCT_NAME)</source>
+      </trans-unit>
+      <trans-unit id="CFBundleShortVersionString">
+        <source>1.2.3</source>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/InfoDev.plist" source-language="en" datatype="plaintext" target-language="zh-Hans">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="6.4" build-num="6E35b"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName">
+        <source>$(PRODUCT_NAME)</source>
+      </trans-unit>
+      <trans-unit id="CFBundleShortVersionString">
+        <source>1.2.3</source>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/PasswordExtension.strings" source-language="en" datatype="plaintext" target-language="zh-Hans">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="6.4" build-num="6E35b"/>
+    </header>
+    <body>
+      <trans-unit id="App Extension API is not available in this version of iOS">
+        <source>App Extension API is not available in this version of iOS</source>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to contact the Password Extension">
+        <source>Failed to contact the Password Extension</source>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to execute script that collects web page information">
+        <source>Failed to execute script that collects web page information</source>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to fill web page because script could not be evaluated">
+        <source>Failed to fill web page because script could not be evaluated</source>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to fill web page because script is missing">
+        <source>Failed to fill web page because script is missing</source>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to obtain URL String from web view. The web view must be loaded completely when calling the Password Extension">
+        <source>Failed to obtain URL String from web view. The web view must be loaded completely when calling the Password Extension</source>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to parse information returned by Password Extension">
+        <source>Failed to parse information returned by Password Extension</source>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Password Extension was cancelled by the user">
+        <source>Password Extension was cancelled by the user</source>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/en.lproj/Localizable.strings" source-language="en" datatype="plaintext" target-language="zh-Hans">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="6.4" build-num="6E35b"/>
+    </header>
+    <body>
+      <trans-unit id="%d Minute">
+        <source>%d Minute</source>
+        <target>%d 分钟</target>
+      </trans-unit>
+      <trans-unit id="%d Minutes">
+        <source>%d Minutes</source>
+        <target>%d 分钟</target>
+      </trans-unit>
+      <trans-unit id="&lt;no object&gt;">
+        <source>&lt;no object&gt;</source>
+        <target>&lt;no object&gt;</target>
+      </trans-unit>
+      <trans-unit id="A message cannot have more than 5 labels">
+        <source>A message cannot have more than 5 labels</source>
+        <target>A message cannot have more than 5 labels</target>
+      </trans-unit>
+      <trans-unit id="A new version of ProtonMail app is available, please update to latest version.">
+        <source>A new version of ProtonMail app is available, please update to latest version.</source>
+        <target>A new version of ProtonMail app is available, please update to latest version.</target>
+      </trans-unit>
+      <trans-unit id="A passcode has not been set, enable it in the system Settings">
+        <source>A passcode has not been set, enable it in the system Settings</source>
+        <target>A passcode has not been set, enable it in the system Settings</target>
+      </trans-unit>
+      <trans-unit id="ARCHIVE">
+        <source>ARCHIVE</source>
+        <target>归档邮件</target>
+      </trans-unit>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please visit our knowledge base for more information.">
+        <source>Access to this account is disabled due to non-payment. Please visit our knowledge base for more information.</source>
+        <target>由于未付款您的帐户被禁用. 请登录我们的网站获取更多信息</target>
+      </trans-unit>
+      <trans-unit id="Account password invalid">
+        <source>Account password invalid</source>
+        <target>Account password invalid</target>
+      </trans-unit>
+      <trans-unit id="Add">
+        <source>Add</source>
+        <target>Add</target>
+      </trans-unit>
+      <trans-unit id="Add Star">
+        <source>Add Star</source>
+        <target>标记星</target>
+      </trans-unit>
+      <trans-unit id="Alert">
+        <source>Alert</source>
+        <target>Alert</target>
+      </trans-unit>
+      <trans-unit id="All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!">
+        <source>All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+
+THIS ACTION CANNOT BE UNDONE!</source>
+        <target>All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+
+THIS ACTION CANNOT BE UNDONE!</target>
+      </trans-unit>
+      <trans-unit id="Apply">
+        <source>Apply</source>
+        <target>Apply</target>
+      </trans-unit>
+      <trans-unit id="Archive">
+        <source>Archive</source>
+        <target>归档邮件</target>
+      </trans-unit>
+      <trans-unit id="Archived">
+        <source>Archived</source>
+        <target>已归档</target>
+      </trans-unit>
+      <trans-unit id="Authentication Failed Wrong username or password">
+        <source>Authentication Failed Wrong username or password</source>
+        <target>Authentication Failed Wrong username or password</target>
+      </trans-unit>
+      <trans-unit id="Auto Lock Time">
+        <source>Auto Lock Time</source>
+        <target>Auto Lock Time</target>
+      </trans-unit>
+      <trans-unit id="Auto Show Images">
+        <source>Auto Show Images</source>
+        <target>自动显示图片</target>
+      </trans-unit>
+      <trans-unit id="Bad parameter">
+        <source>Bad parameter</source>
+        <target>Bad parameter</target>
+      </trans-unit>
+      <trans-unit id="Bad parameter: %@">
+        <source>Bad parameter: %@</source>
+        <target>Bad parameter: %@</target>
+      </trans-unit>
+      <trans-unit id="Bad path">
+        <source>Bad path</source>
+        <target>Bad path</target>
+      </trans-unit>
+      <trans-unit id="Bad response">
+        <source>Bad response</source>
+        <target>Bad response</target>
+      </trans-unit>
+      <trans-unit id="Bcc:">
+        <source>Bcc:</source>
+        <target>密送:</target>
+      </trans-unit>
+      <trans-unit id="Bug Report Received">
+        <source>Bug Report Received</source>
+        <target>Bug Report Received</target>
+      </trans-unit>
+      <trans-unit id="Can't download message body, please try again.">
+        <source>Can't download message body, please try again.</source>
+        <target>Can't download message body, please try again.</target>
+      </trans-unit>
+      <trans-unit id="Can't find the clicked message please try again!">
+        <source>Can't find the clicked message please try again!</source>
+        <target>找不到你选择的邮件,请重试</target>
+      </trans-unit>
+      <trans-unit id="Can't not find the value from the response body">
+        <source>Can't not find the value from the response body</source>
+        <target>Can't not find the value from the response body</target>
+      </trans-unit>
+      <trans-unit id="Cancel">
+        <source>Cancel</source>
+        <target>取消</target>
+      </trans-unit>
+      <trans-unit id="Cant' decrypt this attachment!">
+        <source>Cant' decrypt this attachment!</source>
+        <target>Cant' decrypt this attachment!</target>
+      </trans-unit>
+      <trans-unit id="Cc:">
+        <source>Cc:</source>
+        <target>抄送:</target>
+      </trans-unit>
+      <trans-unit id="Cell phone number">
+        <source>Cell phone number</source>
+        <target>Cell phone number</target>
+      </trans-unit>
+      <trans-unit id="Change Password">
+        <source>Change Password</source>
+        <target>Change Password</target>
+      </trans-unit>
+      <trans-unit id="Change Pin">
+        <source>Change Pin</source>
+        <target>Change Pin</target>
+      </trans-unit>
+      <trans-unit id="Change default address to ..">
+        <source>Change default address to ..</source>
+        <target>选择默认的邮件地址 ..</target>
+      </trans-unit>
+      <trans-unit id="Change left swipe action">
+        <source>Change left swipe action</source>
+        <target>更改左滑动事件</target>
+      </trans-unit>
+      <trans-unit id="Change right swipe action">
+        <source>Change right swipe action</source>
+        <target>更改右滑动事件</target>
+      </trans-unit>
+      <trans-unit id="Change sender address to ..">
+        <source>Change sender address to ..</source>
+        <target>选择发件人地址 ..</target>
+      </trans-unit>
+      <trans-unit id="Checking ....">
+        <source>Checking ....</source>
+        <target>Checking ....</target>
+      </trans-unit>
+      <trans-unit id="Clear Local Message Cache">
+        <source>Clear Local Message Cache</source>
+        <target>重置</target>
+      </trans-unit>
+      <trans-unit id="Close">
+        <source>Close</source>
+        <target>Close</target>
+      </trans-unit>
+      <trans-unit id="Compose">
+        <source>Compose</source>
+        <target>新邮件</target>
+      </trans-unit>
+      <trans-unit id="Confirm">
+        <source>Confirm</source>
+        <target>确认</target>
+      </trans-unit>
+      <trans-unit id="Confirm Login Password">
+        <source>Confirm Login Password</source>
+        <target>Confirm Login Password</target>
+      </trans-unit>
+      <trans-unit id="Confirm Mailbox Password">
+        <source>Confirm Mailbox Password</source>
+        <target>Confirm Mailbox Password</target>
+      </trans-unit>
+      <trans-unit id="Confirm Password">
+        <source>Confirm Password</source>
+        <target>确认密码</target>
+      </trans-unit>
+      <trans-unit id="Confirmation">
+        <source>Confirmation</source>
+        <target>确认信息</target>
+      </trans-unit>
+      <trans-unit id="Create and add Labels to organize your inbox. Press and hold down on a message for all options.">
+        <source>Create and add Labels to organize your inbox. Press and hold down on a message for all options.</source>
+        <target>Create and add Labels to organize your inbox. Press and hold down on a message for all options.</target>
+      </trans-unit>
+      <trans-unit id="Create user failed">
+        <source>Create user failed</source>
+        <target>Create user failed</target>
+      </trans-unit>
+      <trans-unit id="DRAFTS">
+        <source>DRAFTS</source>
+        <target>草稿箱</target>
+      </trans-unit>
+      <trans-unit id="Date: %@">
+        <source>Date: %@</source>
+        <target>日期: %@</target>
+      </trans-unit>
+      <trans-unit id="Debug">
+        <source>Debug</source>
+        <target>调试</target>
+      </trans-unit>
+      <trans-unit id="Default">
+        <source>Default</source>
+        <target>默认</target>
+      </trans-unit>
+      <trans-unit id="Define Hint (Optional)">
+        <source>Define Hint (Optional)</source>
+        <target>密码提示 (可选)</target>
+      </trans-unit>
+      <trans-unit id="Define Password">
+        <source>Define Password</source>
+        <target>设置密码</target>
+      </trans-unit>
+      <trans-unit id="Delete">
+        <source>Delete</source>
+        <target>删除</target>
+      </trans-unit>
+      <trans-unit id="Deleted">
+        <source>Deleted</source>
+        <target>已删除</target>
+      </trans-unit>
+      <trans-unit id="Details">
+        <source>Details</source>
+        <target>详细信息</target>
+      </trans-unit>
+      <trans-unit id="Discard draft">
+        <source>Discard draft</source>
+        <target>舍弃草稿</target>
+      </trans-unit>
+      <trans-unit id="Display Name">
+        <source>Display Name</source>
+        <target>Display Name</target>
+      </trans-unit>
+      <trans-unit id="Display Name Updated">
+        <source>Display Name Updated</source>
+        <target>Display Name Updated</target>
+      </trans-unit>
+      <trans-unit id="Done">
+        <source>Done</source>
+        <target>Done</target>
+      </trans-unit>
+      <trans-unit id="Draft">
+        <source>Draft</source>
+        <target>Draft</target>
+      </trans-unit>
+      <trans-unit id="Edit">
+        <source>Edit</source>
+        <target>修改</target>
+      </trans-unit>
+      <trans-unit id="Edit Contact">
+        <source>Edit Contact</source>
+        <target>Edit Contact</target>
+      </trans-unit>
+      <trans-unit id="Email address">
+        <source>Email address</source>
+        <target>Email address</target>
+      </trans-unit>
+      <trans-unit id="Email address invalid">
+        <source>Email address invalid</source>
+        <target>Email address invalid</target>
+      </trans-unit>
+      <trans-unit id="Email domain invalid">
+        <source>Email domain invalid</source>
+        <target>Email domain invalid</target>
+      </trans-unit>
+      <trans-unit id="Empty Folder">
+        <source>Empty Folder</source>
+        <target>清空</target>
+      </trans-unit>
+      <trans-unit id="Enable Pin Protection">
+        <source>Enable Pin Protection</source>
+        <target>开启邮件保护</target>
+      </trans-unit>
+      <trans-unit id="Enable TouchID">
+        <source>Enable TouchID</source>
+        <target>开启TouchID</target>
+      </trans-unit>
+      <trans-unit id="End-to-End Encryption">
+        <source>End-to-End Encryption</source>
+        <target>End-to-End Encryption</target>
+      </trans-unit>
+      <trans-unit id="Enter Verification Code">
+        <source>Enter Verification Code</source>
+        <target>Enter Verification Code</target>
+      </trans-unit>
+      <trans-unit id="Error Logs">
+        <source>Error Logs</source>
+        <target>错误信息</target>
+      </trans-unit>
+      <trans-unit id="Every time enter app">
+        <source>Every time enter app</source>
+        <target>很次进入程度</target>
+      </trans-unit>
+      <trans-unit id="Expires in %d days %d hours %d mins %d seconds">
+        <source>Expires in %d days %d hours %d mins %d seconds</source>
+        <target>Expires in %d days %d hours %d mins %d seconds</target>
+      </trans-unit>
+      <trans-unit id="Expiring Messages">
+        <source>Expiring Messages</source>
+        <target>Expiring Messages</target>
+      </trans-unit>
+      <trans-unit id="FORGOT PASSWORD?">
+        <source>FORGOT PASSWORD?</source>
+        <target>忘记了密码?</target>
+      </trans-unit>
+      <trans-unit id="Failed to initialize the application's saved data">
+        <source>Failed to initialize the application's saved data</source>
+        <target>Failed to initialize the application's saved data</target>
+      </trans-unit>
+      <trans-unit id="Forward">
+        <source>Forward</source>
+        <target>转发</target>
+      </trans-unit>
+      <trans-unit id="General Settings">
+        <source>General Settings</source>
+        <target>常规设置</target>
+      </trans-unit>
+      <trans-unit id="Help &amp; Support">
+        <source>Help &amp; Support</source>
+        <target>Help &amp; Support</target>
+      </trans-unit>
+      <trans-unit id="Hide">
+        <source>Hide</source>
+        <target>Hide</target>
+      </trans-unit>
+      <trans-unit id="Hide Details">
+        <source>Hide Details</source>
+        <target>隐藏详细</target>
+      </trans-unit>
+      <trans-unit id="INBOX">
+        <source>INBOX</source>
+        <target>收件箱</target>
+      </trans-unit>
+      <trans-unit id="Import File From...">
+        <source>Import File From...</source>
+        <target>从其它地方导入...</target>
+      </trans-unit>
+      <trans-unit id="In order to use our services, you must agree to ProtonMail's Terms of Service.">
+        <source>In order to use our services, you must agree to ProtonMail's Terms of Service.</source>
+        <target>In order to use our services, you must agree to ProtonMail's Terms of Service.</target>
+      </trans-unit>
+      <trans-unit id="Inbox">
+        <source>Inbox</source>
+        <target>收件箱</target>
+      </trans-unit>
+      <trans-unit id="Incorrect password">
+        <source>Incorrect password</source>
+        <target>密码错误</target>
+      </trans-unit>
+      <trans-unit id="Invalid UserName">
+        <source>Invalid UserName</source>
+        <target>Invalid UserName</target>
+      </trans-unit>
+      <trans-unit id="Invalid access token please relogin">
+        <source>Invalid access token please relogin</source>
+        <target>Invalid access token please relogin</target>
+      </trans-unit>
+      <trans-unit id="Invalid credential">
+        <source>Invalid credential</source>
+        <target>Invalid credential</target>
+      </trans-unit>
+      <trans-unit id="Key generation failed">
+        <source>Key generation failed</source>
+        <target>Key generation failed</target>
+      </trans-unit>
+      <trans-unit id="LOGIN">
+        <source>LOGIN</source>
+        <target>登录</target>
+      </trans-unit>
+      <trans-unit id="Label Management">
+        <source>Label Management</source>
+        <target>Label Management</target>
+      </trans-unit>
+      <trans-unit id="Label as...">
+        <source>Label as...</source>
+        <target>Label as...</target>
+      </trans-unit>
+      <trans-unit id="Language">
+        <source>Language</source>
+        <target>语言</target>
+      </trans-unit>
+      <trans-unit id="Loading...">
+        <source>Loading...</source>
+        <target>Loading...</target>
+      </trans-unit>
+      <trans-unit id="Localizable.strings">
+        <source>English</source>
+        <target>Chinese (Simplified)</target>
+      </trans-unit>
+      <trans-unit id="Login Password">
+        <source>Login Password</source>
+        <target>登录密码</target>
+      </trans-unit>
+      <trans-unit id="Login password doesn't match">
+        <source>Login password doesn't match</source>
+        <target>Login password doesn't match</target>
+      </trans-unit>
+      <trans-unit id="MAILBOX PASSWORD">
+        <source>MAILBOX PASSWORD</source>
+        <target>邮箱密码</target>
+      </trans-unit>
+      <trans-unit id="MBContactPickerPrompt">
+        <source>MBContactPickerPrompt</source>
+        <note>Prompt text shown in the prompt cell</note>
+      </trans-unit>
+      <trans-unit id="Mailbox Password">
+        <source>Mailbox Password</source>
+        <target>邮箱密码</target>
+      </trans-unit>
+      <trans-unit id="Mailbox password doesn't match">
+        <source>Mailbox password doesn't match</source>
+        <target>Mailbox password doesn't match</target>
+      </trans-unit>
+      <trans-unit id="Mark Read">
+        <source>Mark Read</source>
+        <target>标为已读</target>
+      </trans-unit>
+      <trans-unit id="Mark as unread">
+        <source>Mark as unread</source>
+        <target>Mark as unread</target>
+      </trans-unit>
+      <trans-unit id="Message Queue">
+        <source>Message Queue</source>
+        <target>消息队列</target>
+      </trans-unit>
+      <trans-unit id="Message Swipe Actions">
+        <source>Message Swipe Actions</source>
+        <target>邮件滑动事件</target>
+      </trans-unit>
+      <trans-unit id="Message expired">
+        <source>Message expired</source>
+        <target>邮件已过期</target>
+      </trans-unit>
+      <trans-unit id="Message password does not match.">
+        <source>Message password does not match.</source>
+        <target>邮件设置的密码不一至</target>
+      </trans-unit>
+      <trans-unit id="Message sending failed please try again">
+        <source>Message sending failed please try again</source>
+        <target>Message sending failed please try again</target>
+      </trans-unit>
+      <trans-unit id="Messages you send can be set to auto delete after a certain time period.">
+        <source>Messages you send can be set to auto delete after a certain time period.</source>
+        <target>Messages you send can be set to auto delete after a certain time period.</target>
+      </trans-unit>
+      <trans-unit id="Mobile Signature">
+        <source>Mobile Signature</source>
+        <target>本地签名</target>
+      </trans-unit>
+      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.">
+        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.</source>
+        <target>Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.</target>
+      </trans-unit>
+      <trans-unit id="Move to Archive">
+        <source>Move to Archive</source>
+        <target>移动至归档邮件</target>
+      </trans-unit>
+      <trans-unit id="Move to Draft">
+        <source>Move to Draft</source>
+        <target>移动至抄稿箱</target>
+      </trans-unit>
+      <trans-unit id="Move to Inbox">
+        <source>Move to Inbox</source>
+        <target>移动至收件箱</target>
+      </trans-unit>
+      <trans-unit id="Move to Outbox">
+        <source>Move to Outbox</source>
+        <target>移动至已发邮件</target>
+      </trans-unit>
+      <trans-unit id="Move to Spam">
+        <source>Move to Spam</source>
+        <target>移动至垃圾邮件</target>
+      </trans-unit>
+      <trans-unit id="Move to Trash">
+        <source>Move to Trash</source>
+        <target>移动至已删邮件</target>
+      </trans-unit>
+      <trans-unit id="Move to...">
+        <source>Move to...</source>
+        <target>Move to...</target>
+      </trans-unit>
+      <trans-unit id="Multiple Addresses">
+        <source>Multiple Addresses</source>
+        <target>多邮箱地址</target>
+      </trans-unit>
+      <trans-unit id="NEED AN ACCOUNT? SIGN UP.">
+        <source>NEED AN ACCOUNT? SIGN UP.</source>
+        <target>需要帐号? 请注册.</target>
+      </trans-unit>
+      <trans-unit id="No managed object context">
+        <source>No managed object context</source>
+        <target>No managed object context</target>
+      </trans-unit>
+      <trans-unit id="No managedObjectContext">
+        <source>No managedObjectContext</source>
+        <target>No managedObjectContext</target>
+      </trans-unit>
+      <trans-unit id="None">
+        <source>None</source>
+        <target>无</target>
+      </trans-unit>
+      <trans-unit id="Notification Email">
+        <source>Notification Email</source>
+        <target>Notification Email</target>
+      </trans-unit>
+      <trans-unit id="OK">
+        <source>OK</source>
+        <target>OK</target>
+      </trans-unit>
+      <trans-unit id="OpenDraft">
+        <source>OpenDraft</source>
+        <target>OpenDraft</target>
+      </trans-unit>
+      <trans-unit id="Outbox">
+        <source>Outbox</source>
+        <target>已发邮件</target>
+      </trans-unit>
+      <trans-unit id="Password">
+        <source>Password</source>
+        <target>密码</target>
+      </trans-unit>
+      <trans-unit id="Password Mismatch">
+        <source>Password Mismatch</source>
+        <target>Password Mismatch</target>
+      </trans-unit>
+      <trans-unit id="Password Updated">
+        <source>Password Updated</source>
+        <target>Password Updated</target>
+      </trans-unit>
+      <trans-unit id="Password cannot be empty.">
+        <source>Password cannot be empty.</source>
+        <target>密码不能是空的</target>
+      </trans-unit>
+      <trans-unit id="Phone number invalid">
+        <source>Phone number invalid</source>
+        <target>Phone number invalid</target>
+      </trans-unit>
+      <trans-unit id="Photo Library">
+        <source>Photo Library</source>
+        <target>图片库</target>
+      </trans-unit>
+      <trans-unit id="Please check your cell phone for the verification code.">
+        <source>Please check your cell phone for the verification code.</source>
+        <target>Please check your cell phone for the verification code.</target>
+      </trans-unit>
+      <trans-unit id="Please check your email for the verification code.">
+        <source>Please check your email for the verification code.</source>
+        <target>Please check your email for the verification code.</target>
+      </trans-unit>
+      <trans-unit id="Please input a valid cell phone number.">
+        <source>Please input a valid cell phone number.</source>
+        <target>Please input a valid cell phone number.</target>
+      </trans-unit>
+      <trans-unit id="Please input a valid email address.">
+        <source>Please input a valid email address.</source>
+        <target>Please input a valid email address.</target>
+      </trans-unit>
+      <trans-unit id="Please pick a user name first!">
+        <source>Please pick a user name first!</source>
+        <target>Please pick a user name first!</target>
+      </trans-unit>
+      <trans-unit id="Please remove all attachments before changing sender!">
+        <source>Please remove all attachments before changing sender!</source>
+        <target>Please remove all attachments before changing sender!</target>
+      </trans-unit>
+      <trans-unit id="Please set a password.">
+        <source>Please set a password.</source>
+        <target>请设置一个密码</target>
+      </trans-unit>
+      <trans-unit id="Please try a different domain.">
+        <source>Please try a different domain.</source>
+        <target>Please try a different domain.</target>
+      </trans-unit>
+      <trans-unit id="Please try a different email address.">
+        <source>Please try a different email address.</source>
+        <target>Please try a different email address.</target>
+      </trans-unit>
+      <trans-unit id="Please try a different password.">
+        <source>Please try a different password.</source>
+        <target>Please try a different password.</target>
+      </trans-unit>
+      <trans-unit id="Please try a different user name.">
+        <source>Please try a different user name.</source>
+        <target>Please try a different user name.</target>
+      </trans-unit>
+      <trans-unit id="Please try again.">
+        <source>Please try again.</source>
+        <target>Please try again.</target>
+      </trans-unit>
+      <trans-unit id="Please use the web version of ProtonMail to change your mailbox password!">
+        <source>Please use the web version of ProtonMail to change your mailbox password!</source>
+        <target>请登录网站修改邮箱密码.</target>
+      </trans-unit>
+      <trans-unit id="Please use your new password when signing in.">
+        <source>Please use your new password when signing in.</source>
+        <target>Please use your new password when signing in.</target>
+      </trans-unit>
+      <trans-unit id="Please, manage it in your phone.">
+        <source>Please, manage it in your phone.</source>
+        <target>Please, manage it in your phone.</target>
+      </trans-unit>
+      <trans-unit id="Protection">
+        <source>Protection</source>
+        <target>帐号保护</target>
+      </trans-unit>
+      <trans-unit id="Protection Entire App">
+        <source>Protection Entire App</source>
+        <target>Protection Entire App</target>
+      </trans-unit>
+      <trans-unit id="ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail.">
+        <source>ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail.</source>
+        <target>ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail.</target>
+      </trans-unit>
+      <trans-unit id="ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail">
+        <source>ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail</source>
+        <target>ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail</target>
+      </trans-unit>
+      <trans-unit id="Quick swipe actions">
+        <source>Quick swipe actions</source>
+        <target>Quick swipe actions</target>
+      </trans-unit>
+      <trans-unit id="Recovery Email">
+        <source>Recovery Email</source>
+        <target>Recovery Email</target>
+      </trans-unit>
+      <trans-unit id="Remove">
+        <source>Remove</source>
+        <target>移除</target>
+      </trans-unit>
+      <trans-unit id="Reply">
+        <source>Reply</source>
+        <target>回复</target>
+      </trans-unit>
+      <trans-unit id="Reply message">
+        <source>Reply message</source>
+        <target>回复邮件</target>
+      </trans-unit>
+      <trans-unit id="ReplyAll">
+        <source>ReplyAll</source>
+        <target>回复所有</target>
+      </trans-unit>
+      <trans-unit id="Reseting message cache ...">
+        <source>Reseting message cache ...</source>
+        <target>Reseting message cache ...</target>
+      </trans-unit>
+      <trans-unit id="Retry after %d seconds">
+        <source>Retry after %d seconds</source>
+        <target>Retry after %d seconds</target>
+      </trans-unit>
+      <trans-unit id="SENT">
+        <source>SENT</source>
+        <target>已发邮件</target>
+      </trans-unit>
+      <trans-unit id="SPAM">
+        <source>SPAM</source>
+        <target>垃圾邮件</target>
+      </trans-unit>
+      <trans-unit id="STARRED">
+        <source>STARRED</source>
+        <target>加星邮件</target>
+      </trans-unit>
+      <trans-unit id="Save draft">
+        <source>Save draft</source>
+        <target>保存草稿</target>
+      </trans-unit>
+      <trans-unit id="Search">
+        <source>Search</source>
+        <target>Search</target>
+      </trans-unit>
+      <trans-unit id="Select your language">
+        <source>Select your language</source>
+        <target>选择语言</target>
+      </trans-unit>
+      <trans-unit id="Send">
+        <source>Send</source>
+        <target>发送</target>
+      </trans-unit>
+      <trans-unit id="Send Verification Code">
+        <source>Send Verification Code</source>
+        <target>Send Verification Code</target>
+      </trans-unit>
+      <trans-unit id="Send message without subject?">
+        <source>Send message without subject?</source>
+        <target>还没有主题, 确定发送?</target>
+      </trans-unit>
+      <trans-unit id="Sending Message">
+        <source>Sending Message</source>
+        <target>Sending Message</target>
+      </trans-unit>
+      <trans-unit id="Sign Out">
+        <source>Sign Out</source>
+        <target>登出</target>
+      </trans-unit>
+      <trans-unit id="Signature">
+        <source>Signature</source>
+        <target>邮件签名</target>
+      </trans-unit>
+      <trans-unit id="Signature Updated">
+        <source>Signature Updated</source>
+        <target>Signature Updated</target>
+      </trans-unit>
+      <trans-unit id="Space Warning">
+        <source>Space Warning</source>
+        <target>Space Warning</target>
+      </trans-unit>
+      <trans-unit id="Spam">
+        <source>Spam</source>
+        <target>垃圾邮件</target>
+      </trans-unit>
+      <trans-unit id="Spammed">
+        <source>Spammed</source>
+        <target>垃圾邮件</target>
+      </trans-unit>
+      <trans-unit id="Star">
+        <source>Star</source>
+        <target>加星邮件</target>
+      </trans-unit>
+      <trans-unit id="Starred">
+        <source>Starred</source>
+        <target>加星邮件</target>
+      </trans-unit>
+      <trans-unit id="Storage">
+        <source>Storage</source>
+        <target>空间</target>
+      </trans-unit>
+      <trans-unit id="Support ProtonMail">
+        <source>Support ProtonMail</source>
+        <target>Support ProtonMail</target>
+      </trans-unit>
+      <trans-unit id="Swipe Left to Right">
+        <source>Swipe Left to Right</source>
+        <target>至左向右滑动</target>
+      </trans-unit>
+      <trans-unit id="Swipe Right to Left">
+        <source>Swipe Right to Left</source>
+        <target>至右向左滑动</target>
+      </trans-unit>
+      <trans-unit id="TRASH">
+        <source>TRASH</source>
+        <target>已删邮件</target>
+      </trans-unit>
+      <trans-unit id="Take a Photo">
+        <source>Take a Photo</source>
+        <target>拍个照片</target>
+      </trans-unit>
+      <trans-unit id="Thank you for submitting a bug report.  We have added your report to our bug tracking system.">
+        <source>Thank you for submitting a bug report.  We have added your report to our bug tracking system.</source>
+        <target>Thank you for submitting a bug report.  We have added your report to our bug tracking system.</target>
+      </trans-unit>
+      <trans-unit id="The Password is wrong.">
+        <source>The Password is wrong.</source>
+        <target>The Password is wrong.</target>
+      </trans-unit>
+      <trans-unit id="The UserName have been taken.">
+        <source>The UserName have been taken.</source>
+        <target>The UserName have been taken.</target>
+      </trans-unit>
+      <trans-unit id="The authentication credentials are invalid.">
+        <source>The authentication credentials are invalid.</source>
+        <target>The authentication credentials are invalid.</target>
+      </trans-unit>
+      <trans-unit id="The authentication token has expired.">
+        <source>The authentication token has expired.</source>
+        <target>The authentication token has expired.</target>
+      </trans-unit>
+      <trans-unit id="The display name is now %@.">
+        <source>The display name is now %@.</source>
+        <target>The display name is now %@.</target>
+      </trans-unit>
+      <trans-unit id="The draft format incorrectly sending failed!">
+        <source>The draft format incorrectly sending failed!</source>
+        <target>The draft format incorrectly sending failed!</target>
+      </trans-unit>
+      <trans-unit id="The label name is duplicate">
+        <source>The label name is duplicate</source>
+        <target>The label name is duplicate</target>
+      </trans-unit>
+      <trans-unit id="The mailbox password is incorrect.">
+        <source>The mailbox password is incorrect.</source>
+        <target>邮箱密码错误</target>
+      </trans-unit>
+      <trans-unit id="The maximum number of labels is %d.">
+        <source>The maximum number of labels is %d.</source>
+        <target>The maximum number of labels is %d.</target>
+      </trans-unit>
+      <trans-unit id="The new password can't empty">
+        <source>The new password can't empty</source>
+        <target>The new password can't empty</target>
+      </trans-unit>
+      <trans-unit id="The new password not match">
+        <source>The new password not match</source>
+        <target>The new password not match</target>
+      </trans-unit>
+      <trans-unit id="The password you entered does not match the current password.">
+        <source>The password you entered does not match the current password.</source>
+        <target>The password you entered does not match the current password.</target>
+      </trans-unit>
+      <trans-unit id="The total attachment size can't be bigger than 25MB">
+        <source>The total attachment size can't be bigger than 25MB</source>
+        <target>附件总大小不能超过25MB</target>
+      </trans-unit>
+      <trans-unit id="The verification email invalid">
+        <source>The verification email invalid</source>
+        <target>The verification email invalid</target>
+      </trans-unit>
+      <trans-unit id="The verification failed!">
+        <source>The verification failed!</source>
+        <target>The verification failed!</target>
+      </trans-unit>
+      <trans-unit id="There was an error creating or loading the application's saved data.">
+        <source>There was an error creating or loading the application's saved data.</source>
+        <target>There was an error creating or loading the application's saved data.</target>
+      </trans-unit>
+      <trans-unit id="This contact belongs to your Address Book.">
+        <source>This contact belongs to your Address Book.</source>
+        <target>This contact belongs to your Address Book.</target>
+      </trans-unit>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch</source>
+        <target>请登录protonmail.com去重置你的邮箱密码.</target>
+      </trans-unit>
+      <trans-unit id="To:">
+        <source>To:</source>
+        <target>收件人:</target>
+      </trans-unit>
+      <trans-unit id="Token expired">
+        <source>Token expired</source>
+        <target>Token expired</target>
+      </trans-unit>
+      <trans-unit id="TouchID is not enrolled, enable it in the system Settings">
+        <source>TouchID is not enrolled, enable it in the system Settings</source>
+        <target>TouchID is not enrolled, enable it in the system Settings</target>
+      </trans-unit>
+      <trans-unit id="TouchID not available">
+        <source>TouchID not available</source>
+        <target>TouchID not available</target>
+      </trans-unit>
+      <trans-unit id="Trash">
+        <source>Trash</source>
+        <target>已删邮件</target>
+      </trans-unit>
+      <trans-unit id="USER LOGIN">
+        <source>USER LOGIN</source>
+        <target>用户登录</target>
+      </trans-unit>
+      <trans-unit id="Unable to connect to the server">
+        <source>Unable to connect to the server</source>
+        <target>Unable to connect to the server</target>
+      </trans-unit>
+      <trans-unit id="Unable to construct a valid URL with the following path: %@">
+        <source>Unable to construct a valid URL with the following path: %@</source>
+        <target>Unable to construct a valid URL with the following path: %@</target>
+      </trans-unit>
+      <trans-unit id="Unable to decrypt message.">
+        <source>Unable to decrypt message.</source>
+        <target>Unable to decrypt message.</target>
+      </trans-unit>
+      <trans-unit id="Unable to parse authentication token!">
+        <source>Unable to parse authentication token!</source>
+        <target>Unable to parse authentication token!</target>
+      </trans-unit>
+      <trans-unit id="Unable to parse response">
+        <source>Unable to parse response</source>
+        <target>Unable to parse response</target>
+      </trans-unit>
+      <trans-unit id="Unable to parse the response object:\n%@">
+        <source>Unable to parse the response object:
+%@</source>
+        <target>Unable to parse the response object:
+%@</target>
+      </trans-unit>
+      <trans-unit id="Unable to parse token">
+        <source>Unable to parse token</source>
+        <target>Unable to parse token</target>
+      </trans-unit>
+      <trans-unit id="Unable to send the email">
+        <source>Unable to send the email</source>
+        <target>Unable to send the email</target>
+      </trans-unit>
+      <trans-unit id="Unknow Error">
+        <source>Unknow Error</source>
+        <target>未知错误</target>
+      </trans-unit>
+      <trans-unit id="Unknow file">
+        <source>Unknow file</source>
+        <target>未知文件</target>
+      </trans-unit>
+      <trans-unit id="Unknown">
+        <source>Unknown</source>
+        <target>未知</target>
+      </trans-unit>
+      <trans-unit id="Unkonw Version">
+        <source>Unkonw Version</source>
+        <target>未知版本</target>
+      </trans-unit>
+      <trans-unit id="User already exist!">
+        <source>User already exist!</source>
+        <target>User already exist!</target>
+      </trans-unit>
+      <trans-unit id="User is available!">
+        <source>User is available!</source>
+        <target>User is available!</target>
+      </trans-unit>
+      <trans-unit id="User name exist">
+        <source>User name exist</source>
+        <target>User name exist</target>
+      </trans-unit>
+      <trans-unit id="User name invalid">
+        <source>User name invalid</source>
+        <target>User name invalid</target>
+      </trans-unit>
+      <trans-unit id="Username">
+        <source>Username</source>
+        <target>用户名</target>
+      </trans-unit>
+      <trans-unit id="Verification code request failed">
+        <source>Verification code request failed</source>
+        <target>Verification code request failed</target>
+      </trans-unit>
+      <trans-unit id="Verification code sent">
+        <source>Verification code sent</source>
+        <target>Verification code sent</target>
+      </trans-unit>
+      <trans-unit id="Version %@ %@">
+        <source>Version %@ %@</source>
+        <target>版本号 %@ %@</target>
+      </trans-unit>
+      <trans-unit id="Welcome to ProtonMail!">
+        <source>Welcome to ProtonMail!</source>
+        <target>Welcome to ProtonMail!</target>
+      </trans-unit>
+      <trans-unit id="Wrong verification code">
+        <source>Wrong verification code</source>
+        <target>Wrong verification code</target>
+      </trans-unit>
+      <trans-unit id="You can customize swipe gestures in the ProtonMail App Settings.">
+        <source>You can customize swipe gestures in the ProtonMail App Settings.</source>
+        <target>You can customize swipe gestures in the ProtonMail App Settings.</target>
+      </trans-unit>
+      <trans-unit id="You can get help and support at protonmail.com/support. Bugs can also be reported with the app.">
+        <source>You can get help and support at protonmail.com/support. Bugs can also be reported with the app.</source>
+        <target>You can get help and support at protonmail.com/support. Bugs can also be reported with the app.</target>
+      </trans-unit>
+      <trans-unit id="You have used %d%% of your storage space (%@).">
+        <source>You have used %d%% of your storage space (%@).</source>
+        <target>You have used %d%% of your storage space (%@).</target>
+      </trans-unit>
+      <trans-unit id="You have used up all of your storage space (%@).">
+        <source>You have used up all of your storage space (%@).</source>
+        <target>You have used up all of your storage space (%@).</target>
+      </trans-unit>
+      <trans-unit id="You need at least one recipient to send">
+        <source>You need at least one recipient to send</source>
+        <target>至少需要一个收件人</target>
+      </trans-unit>
+      <trans-unit id="Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail.">
+        <source>Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail.</source>
+        <target>Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail.</target>
+      </trans-unit>
+      <trans-unit id="Your new encrypted email account has been set up and is ready to send and receive encrypted messages.">
+        <source>Your new encrypted email account has been set up and is ready to send and receive encrypted messages.</source>
+        <target>Your new encrypted email account has been set up and is ready to send and receive encrypted messages.</target>
+      </trans-unit>
+      <trans-unit id="Your signature has been updated.">
+        <source>Your signature has been updated.</source>
+        <target>Your signature has been updated.</target>
+      </trans-unit>
+      <trans-unit id="days">
+        <source>days</source>
+        <target>天</target>
+      </trans-unit>
+      <trans-unit id="hours">
+        <source>hours</source>
+        <target>小时</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMailTests/Info.plist" source-language="en" datatype="plaintext" target-language="zh-Hans">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="6.4" build-num="6E35b"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName">
+        <source>$(PRODUCT_NAME)</source>
+      </trans-unit>
+      <trans-unit id="CFBundleShortVersionString">
+        <source>1.0</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

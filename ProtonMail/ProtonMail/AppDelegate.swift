@@ -147,9 +147,16 @@ extension AppDelegate: UIApplicationDelegate {
         if tmp != .dev && tmp != .sim {
             AFNetworkActivityLogger.shared().stopLogging()
         }
+
+        Localization.restoreLanguage()
         sharedPushNotificationService.setLaunchOptions(launchOptions)
         
         return true
+    }
+    
+    func languageWillChange(notification:NSNotification){
+        let targetLang = notification.object as! String
+        Localization.setCurrentLanguage(language: targetLang)
     }
     
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool {

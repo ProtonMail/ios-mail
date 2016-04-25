@@ -253,7 +253,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         self.navigationTitleLabel.font = UIFont.robotoRegular(size: UIFont.Size.h2)
         self.navigationTitleLabel.textAlignment = NSTextAlignment.center
         self.navigationTitleLabel.textColor = UIColor.white
-        self.navigationTitleLabel.text = self.title ?? NSLocalizedString("INBOX")
+        self.navigationTitleLabel.text = self.title ?? NSLocalizedString("INBOX", comment: "Title")
         self.navigationTitleLabel.sizeToFit()
         self.navigationItem.titleView = navigationTitleLabel
         
@@ -309,7 +309,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                 if let message = self.messageAtIndexPath(indexPathForSelectedRow) {
                     messageDetailViewController.message = message
                 } else {
-                    let alert = NSLocalizedString("Can't find the clicked message please try again!").alertController()
+                    let alert = NSLocalizedString("Can't find the clicked message please try again!", comment: "Description").alertController()
                     alert.addOKAction()
                     present(alert, animated: true, completion: nil)
                 }
@@ -323,7 +323,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                 if let message = self.messageAtIndexPath(indexPathForSelectedRow) {
                     sharedVMService.openDraftViewModel(composeViewController, msg: selectedDraft ?? message)
                 } else {
-                    let alert = NSLocalizedString("Can't find the clicked message please try again!").alertController()
+                    let alert = NSLocalizedString("Can't find the clicked message please try again!", comment: "Description").alertController()
                     alert.addOKAction()
                     present(alert, animated: true, completion: nil)
                 }
@@ -418,29 +418,29 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     
     internal func moreButtonTapped() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel",  comment: "Action"), style: .cancel, handler: nil))
         
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Mark Read"), style: .default, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Mark Read",  comment: "Action"), style: .default, handler: { (action) -> Void in
             self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isRead)
             self.cancelButtonTapped();
             self.navigationController?.popViewController(animated: true)
         }))
-        
         if viewModel.isShowEmptyFolder() {
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Empty Folder"), style: .destructive, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Empty Folder",  comment: "Action"), style: .destructive, handler: { (action) -> Void in
+
                 self.viewModel.emptyFolder()
                 self.showNoResultLabel()
                 self.navigationController?.popViewController(animated: true)
             }))
         } else {
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Add Star"), style: .default, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Add Star",  comment: "Action"), style: .default, handler: { (action) -> Void in
                 self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isStarred)
                 self.selectedMessagesSetStar()
                 self.cancelButtonTapped();
                 self.navigationController?.popViewController(animated: true)
             }))
             
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Remove Star"), style: .default, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Remove Star",  comment: "Action"), style: .default, handler: { (action) -> Void in
                 self.selectedMessagesSetValue(setValue: false, forKey: Message.Attributes.isStarred)
                 self.selectedMessagesSetUnStar()
                 self.cancelButtonTapped();
@@ -684,7 +684,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         if let message = self.messageAtIndexPath(indexPath) {
             undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
             viewModel.archiveMessage(message)
-            showUndoView("Archived")
+            showUndoView(NSLocalizedString("Archived", comment: "Description"))
         }
     }
     
@@ -692,7 +692,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         if let message = self.messageAtIndexPath(indexPath) {
             undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
             if viewModel.deleteMessage(message) {
-                showUndoView("Deleted")
+                showUndoView(NSLocalizedString("Deleted", comment: "Description"))
             }
         }
     }
@@ -701,7 +701,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         if let message = self.messageAtIndexPath(indexPath) {
             undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
             viewModel.spamMessage(message)
-            showUndoView("Spammed")
+            showUndoView(NSLocalizedString("Spammed", comment: "Description"))
         }
     }
     

@@ -32,7 +32,7 @@ class EditContactViewController: ProtonMailViewController {
         if (contact != nil) {
             nameTextField.text = contact.name
             emailTextField.text = contact.email
-            self.title = NSLocalizedString("Edit Contact")
+            self.title = NSLocalizedString("Edit Contact", comment: "edit contact navigation title")
         }
     }
     

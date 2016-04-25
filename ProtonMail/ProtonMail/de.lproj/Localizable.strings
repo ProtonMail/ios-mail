@@ -1,0 +1,25 @@
+/* 
+  localization.strings
+  ProtonMail
+
+  Created by Yanfeng Zhang on 4/20/16.
+  Copyright (c) 2016 ProtonMail. All rights reserved.
+*/
+
+/**
+ *  file string type
+ */
+"Localizable.strings" = "base";
+
+
+
+/**
+ *  Login View
+ */
+"Username" = "Username";
+"Password" = "Password";
+
+"USER LOGIN" = "USER LOGIN";
+"LOGIN" = "LOGIN";
+"NEED AN ACCOUNT? SIGN UP." = "NEED AN ACCOUNT? SIGN UP.";
+"FORGOT PASSWORD?" = "FORGOT PASSWORD?";

@@ -41,15 +41,15 @@ enum FeedbackItem: String {
         case .header:
             return ""
         case .rate:
-            return "Rate & Review"
+            return NSLocalizedString("Rate & Review", comment: "Title")
         case .tweet:
-            return "Tweet about ProtonMail"
+            return NSLocalizedString("Tweet about ProtonMail", comment: "Title")
         case .facebook:
-            return "Share it with your friends"
+            return NSLocalizedString("Share it with your friends", comment: "Title")
         case .contact:
-            return "Contact the ProtonMail team"
+            return NSLocalizedString("Contact the ProtonMail team", comment: "Title")
         case .guide:
-            return "Trouble shooting guide"
+            return NSLocalizedString("Trouble shooting guide", comment: "Title")
         }
     }
 }
@@ -79,11 +79,11 @@ enum FeedbackSection: Int {
         case .header:
             return ""
         case .reviews:
-            return "Help us to make privacy the default in the web."
+            return NSLocalizedString("Help us to make privacy the default in the web.", comment: "Title")
         case .guid:
-            return "Help us to improve ProtonMail with your input."
+            return NSLocalizedString("Help us to improve ProtonMail with your input.", comment: "Title")
         case .helping:
-            return "We would like to know what we can do better."
+            return NSLocalizedString("We would like to know what we can do better.", comment: "Title")
         }
     }
 }

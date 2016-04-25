@@ -41,6 +41,6 @@
 #import "OnePasswordExtension.h"
 #import "Reachability.h"
 #import <CommonCrypto/CommonCrypto.h>
-
+#import "NSBundle+Language.h"
 
 #endif

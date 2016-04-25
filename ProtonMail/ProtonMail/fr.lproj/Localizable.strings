@@ -1,0 +1,22 @@
+/* 
+  localization.strings
+  ProtonMail
+
+  Created by Yanfeng Zhang on 4/20/16.
+  Copyright (c) 2016 ProtonMail. All rights reserved.
+*/
+
+
+/**
+ *  file string type
+ */
+"Localizable.strings" = "French";
+
+
+
+/**
+ *  Login View
+ */
+
+"Username" = "fr %@ --- Username %@";
+"Password" = "fr Password";

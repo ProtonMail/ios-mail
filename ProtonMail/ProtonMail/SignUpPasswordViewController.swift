@@ -50,8 +50,8 @@ class SignUpPasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loginPasswordField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Choose a Password"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
-        confirmLoginPasswordField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Confirm Password"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        loginPasswordField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Choose a Password", comment: "place holder"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        confirmLoginPasswordField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Confirm Password", comment: "place holder"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
 
         self.updateButtonStatus()
         
@@ -104,7 +104,7 @@ class SignUpPasswordViewController: UIViewController {
             viewModel.setSinglePassword(login_pwd)
             self.performSegue(withIdentifier: kSegueToEncryptionSetup, sender: self)
         } else {
-            let alert = NSLocalizedString("Login password doesn't match").alertController()
+            let alert = NSLocalizedString("Login password doesn't match", comment: "Error").alertController()
             alert.addOKAction()
             self.present(alert, animated: true, completion: nil)
         }

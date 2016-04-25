@@ -16,12 +16,8 @@ class ToastMessageView : PMView {
     }
     
     override func setup() {
+    
     }
-    
-    
-    
-    
-    
 }
 
 

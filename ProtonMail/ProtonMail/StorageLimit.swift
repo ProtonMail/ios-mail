@@ -30,7 +30,7 @@ class StorageLimit {
         
         let maxSpace = Double(maxSpace)
         let usedSpace = Double(usedSpace)
-        let threshold = AppConstants.SpaceWarningThreshold/100.0 * maxSpace
+        let threshold = Double(AppConstants.SpaceWarningThreshold)/100.0 * maxSpace
         
         if maxSpace == 0 || usedSpace < threshold {
             return
@@ -40,17 +40,17 @@ class StorageLimit {
         var message = ""
         
         if usedSpace >= maxSpace {
-            message = NSLocalizedString("You have used up all of your storage space (\(formattedMaxSpace)).")
+            message = String(format: NSLocalizedString("You have used up all of your storage space (%@).", comment: "Description"), formattedMaxSpace);
         } else {
-            message = NSLocalizedString("You have used \(AppConstants.SpaceWarningThreshold)% of your storage space (\(formattedMaxSpace)).")
+            message =  String(format: NSLocalizedString("You have used %d%% of your storage space (%@).", comment: "Description"), AppConstants.SpaceWarningThreshold, formattedMaxSpace);
         }
         
         let alertController = UIAlertController(
-            title: NSLocalizedString("Space Warning"),
+            title: NSLocalizedString("Space Warning", comment: "Title"),
             message: message,
             preferredStyle: .alert)
         alertController.addOKAction()
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Hide"), style: .destructive, handler: { action in
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Hide", comment: "Action"), style: .destructive, handler: { action in
             userCachedStatus.isCheckSpaceDisabled = true
         }))
         

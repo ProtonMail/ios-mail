@@ -123,8 +123,8 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
                         MBProgressHUD.hide(for: self.view, animated: true)
                         self.doneClicked = false
                         if !message.isEmpty {
-                            let title = NSLocalizedString("Create user failed")
-                            var message = NSLocalizedString("Default error, please try again.")
+                            let title =  NSLocalizedString("Create user failed", comment: "Title")
+                            var message = NSLocalizedString("Default error, please try again.", comment: "Error")
                             if let error = error {
                                 message = error.localizedDescription
                             }
@@ -141,7 +141,7 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
             })
         } else {
             self.finishChecking(false)
-            let alert = NSLocalizedString("The verification failed!").alertController()
+            let alert = NSLocalizedString("The verification failed!", comment: "Error").alertController()
             alert.addOKAction()
             self.present(alert, animated: true, completion: nil)
         }
