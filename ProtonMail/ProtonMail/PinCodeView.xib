@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PinCodeView" customModule="ProtonMail" customModuleProvider="target">
             <connections>
+                <outlet property="backButton" destination="AAk-Af-Ice" id="gjU-WJ-AOS"/>
                 <outlet property="eightButton" destination="cJW-Pp-nUw" id="3au-KO-4xf"/>
                 <outlet property="fiveButton" destination="ut4-0g-D6Q" id="6b2-qF-yJu"/>
                 <outlet property="fourButton" destination="dG0-wX-hWt" id="UbF-dr-eFo"/>
@@ -34,6 +35,21 @@
                     <animations/>
                     <color key="backgroundColor" red="0.24313725490196078" green="0.23921568627450979" blue="0.30588235294117649" alpha="1" colorSpace="calibratedRGB"/>
                 </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AAk-Af-Ice">
+                    <rect key="frame" x="0.0" y="24" width="100" height="48"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="HW6-XL-WL0"/>
+                        <constraint firstAttribute="width" constant="100" id="u94-I0-Gz6"/>
+                    </constraints>
+                    <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" image="top_back">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="backAction:" destination="-1" eventType="touchUpInside" id="zp7-nH-334"/>
+                    </connections>
+                </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your PIN to unlock your inbox." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mMX-jV-nmJ">
                     <rect key="frame" x="0.0" y="64" width="600" height="21"/>
                     <animations/>
@@ -64,10 +80,10 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mzr-Tn-Lq9">
-                            <rect key="frame" x="40" y="0.0" width="464" height="49"/>
+                            <rect key="frame" x="60" y="0.0" width="424" height="49"/>
                             <subviews>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="plR-r3-cPc">
-                                    <rect key="frame" x="0.0" y="8" width="464" height="41"/>
+                                    <rect key="frame" x="0.0" y="8" width="424" height="41"/>
                                     <animations/>
                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
@@ -83,28 +99,32 @@
                                 <constraint firstAttribute="trailing" secondItem="plR-r3-cPc" secondAttribute="trailing" id="w1U-ed-NHC"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Viu-ok-AzR">
-                            <rect key="frame" x="504" y="15" width="40" height="30"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Viu-ok-AzR">
+                            <rect key="frame" x="484" y="0.0" width="60" height="49"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="OL3-e0-7U5"/>
-                                <constraint firstAttribute="width" constant="40" id="uhn-bp-a6N"/>
+                                <constraint firstAttribute="width" constant="60" id="uhn-bp-a6N"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
-                            <state key="normal" title="Del">
+                            <state key="normal" image="pin_code_del">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="OL3-e0-7U5"/>
+                                </mask>
+                            </variation>
                             <connections>
                                 <action selector="deleteAction:" destination="-1" eventType="touchUpInside" id="l00-06-gxj"/>
                             </connections>
                         </button>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jI2-Da-rNx">
-                            <rect key="frame" x="0.0" y="15" width="40" height="30"/>
+                            <rect key="frame" x="0.0" y="15" width="60" height="30"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="Fdu-V0-hCX"/>
-                                <constraint firstAttribute="width" constant="40" id="ggh-db-zZN"/>
+                                <constraint firstAttribute="width" constant="60" id="ggh-db-zZN"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                             <state key="normal" title="Del">
@@ -119,13 +139,14 @@
                         <constraint firstItem="B78-0p-iWm" firstAttribute="leading" secondItem="Ium-WR-J5s" secondAttribute="leading" id="9Xs-DU-Sq6"/>
                         <constraint firstAttribute="trailing" secondItem="Viu-ok-AzR" secondAttribute="trailing" id="AbM-Js-Zsv"/>
                         <constraint firstAttribute="height" constant="60" id="Gd2-XE-NZy"/>
+                        <constraint firstItem="B78-0p-iWm" firstAttribute="top" secondItem="Viu-ok-AzR" secondAttribute="bottom" id="RRo-Qq-rYx"/>
                         <constraint firstAttribute="trailing" secondItem="B78-0p-iWm" secondAttribute="trailing" id="WJc-w2-JeW"/>
                         <constraint firstItem="mzr-Tn-Lq9" firstAttribute="leading" secondItem="jI2-Da-rNx" secondAttribute="trailing" id="Z68-Qo-N7v"/>
                         <constraint firstAttribute="centerY" secondItem="jI2-Da-rNx" secondAttribute="centerY" id="aay-eg-f7V"/>
+                        <constraint firstItem="Viu-ok-AzR" firstAttribute="top" secondItem="Ium-WR-J5s" secondAttribute="top" id="e9E-f6-Xe0"/>
                         <constraint firstAttribute="bottom" secondItem="B78-0p-iWm" secondAttribute="bottom" constant="10" id="fQ1-Vn-bfA"/>
                         <constraint firstItem="mzr-Tn-Lq9" firstAttribute="top" secondItem="Ium-WR-J5s" secondAttribute="top" id="mQV-WB-IoS"/>
                         <constraint firstItem="Viu-ok-AzR" firstAttribute="leading" secondItem="mzr-Tn-Lq9" secondAttribute="trailing" id="n4P-ku-pnv"/>
-                        <constraint firstAttribute="centerY" secondItem="Viu-ok-AzR" secondAttribute="centerY" id="opK-GA-mj6"/>
                         <constraint firstItem="B78-0p-iWm" firstAttribute="top" secondItem="mzr-Tn-Lq9" secondAttribute="bottom" id="zHK-CT-iAQ"/>
                     </constraints>
                 </view>
@@ -234,7 +255,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nq3-iq-nRl">
                             <rect key="frame" x="306" y="0.0" width="83" height="83"/>
                             <subviews>
-                                <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cgw-dA-i9G">
+                                <button hidden="YES" opaque="NO" tag="11" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cgw-dA-i9G">
                                     <rect key="frame" x="10" y="10" width="63" height="63"/>
                                     <animations/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -308,14 +329,20 @@
                         <constraint firstItem="gdH-CX-apo" firstAttribute="top" secondItem="zM2-1N-P6W" secondAttribute="top" id="xI5-SB-aWC"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hCt-xR-6Bd">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hCt-xR-6Bd">
                     <rect key="frame" x="0.0" y="525" width="600" height="75"/>
                     <animations/>
                     <constraints>
                         <constraint firstAttribute="height" constant="75" id="b6W-T6-1ie"/>
                     </constraints>
-                    <state key="normal" title="Logout">
+                    <state key="normal" title="Logout" image="pin_code_confirm">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="selected">
+                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="highlighted">
+                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
                         <action selector="logoutAction:" destination="-1" eventType="touchUpInside" id="45x-75-69e"/>
@@ -533,12 +560,14 @@
                 <constraint firstAttribute="trailing" secondItem="hCt-xR-6Bd" secondAttribute="trailing" id="GgN-N0-Wcw"/>
                 <constraint firstItem="f6l-IW-foE" firstAttribute="top" secondItem="EcD-l5-JfY" secondAttribute="bottom" id="H3o-dY-v1O"/>
                 <constraint firstAttribute="bottom" secondItem="jCN-hH-fG9" secondAttribute="bottom" id="K2o-XY-5E5"/>
+                <constraint firstItem="xxc-2K-jwj" firstAttribute="centerY" secondItem="AAk-Af-Ice" secondAttribute="centerY" id="Lmj-zr-qOa"/>
                 <constraint firstItem="jCN-hH-fG9" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Lxj-uk-pm3"/>
                 <constraint firstItem="B8u-Fp-tL4" firstAttribute="top" secondItem="f6l-IW-foE" secondAttribute="bottom" id="ORU-cH-ymv"/>
                 <constraint firstAttribute="trailing" secondItem="f6l-IW-foE" secondAttribute="trailing" constant="36" id="Pkz-x7-hEC"/>
                 <constraint firstItem="f6l-IW-foE" firstAttribute="height" secondItem="B8u-Fp-tL4" secondAttribute="height" id="Q66-gL-flA"/>
                 <constraint firstItem="mMX-jV-nmJ" firstAttribute="top" secondItem="xxc-2K-jwj" secondAttribute="bottom" constant="8" id="X7S-7W-MNF"/>
                 <constraint firstItem="mMX-jV-nmJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="bT5-XV-pNb"/>
+                <constraint firstItem="AAk-Af-Ice" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="gXF-zh-hpn"/>
                 <constraint firstAttribute="bottom" secondItem="hCt-xR-6Bd" secondAttribute="bottom" id="kOm-2Y-tBO"/>
                 <constraint firstItem="zM2-1N-P6W" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="36" id="l0r-CF-Zy2"/>
                 <constraint firstItem="EcD-l5-JfY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="36" id="mgm-Wi-qPN"/>
@@ -562,5 +591,8 @@
     </objects>
     <resources>
         <image name="Logo" width="228" height="37"/>
+        <image name="pin_code_confirm" width="24" height="24"/>
+        <image name="pin_code_del" width="32" height="32"/>
+        <image name="top_back" width="24" height="24"/>
     </resources>
 </document>

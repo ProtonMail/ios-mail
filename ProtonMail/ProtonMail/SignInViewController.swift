@@ -477,6 +477,7 @@ class SignInViewController: UIViewController {
     
     func clean()
     {
+        UserTempCachedStatus.backup()
         sharedUserDataService.signOut(true)
         userCachedStatus.signOut()
         sharedMessageDataService.launchCleanUpIfNeeded();

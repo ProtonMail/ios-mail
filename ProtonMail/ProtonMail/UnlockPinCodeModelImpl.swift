@@ -21,7 +21,7 @@ class UnlockPinCodeModelImpl : PinCodeViewModel {
     }
     
     override func cancel() -> String {
-        return "Log Out"
+        return "CONFIRM"
     }
     
     override func showConfirm() -> Bool {
