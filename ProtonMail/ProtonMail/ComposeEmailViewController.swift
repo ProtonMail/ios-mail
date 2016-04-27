@@ -40,6 +40,8 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     private let kNumberOfDaysInTimePicker: Int = 30
     private let kNumberOfHoursInTimePicker: Int = 24
     
+    private let kPasswordSegue : String = "to_eo_password_segue"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -160,6 +162,24 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         super.didReceiveMemoryWarning()
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == kPasswordSegue {
+            let popup = segue.destinationViewController as! ComposePasswordViewController
+            popup.pwdDelegate = self
+            popup.setupPasswords(self.encryptionPassword, confirmPassword: self.encryptionConfirmPassword, hint: self.encryptionPasswordHint)
+            //popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
+        }
+    }
+    
+    internal func setPresentationStyleForSelfController(selfController : UIViewController,  presentingController: UIViewController)
+    {
+        presentingController.providesPresentationContextTransitionStyle = true;
+        presentingController.definesPresentationContext = true;
+        presentingController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+    }
+
+    
     override func editorDidScrollWithPosition(position: Int) {
         super.editorDidScrollWithPosition(position)
         
@@ -178,6 +198,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
                     continue
                 } else {
                     let h : CGFloat = self.composeViewSize
+                    self.updateFooterOffset(h)
                     sub.frame = CGRect(x: sub.frame.origin.x, y: h, width: sub.frame.width, height: sub.frame.height);
                 }
             }
@@ -188,6 +209,23 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     @IBAction func send_clicked(sender: AnyObject) {
         self.dismissKeyboard()
         
+        if let suject = self.composeView.subject.text {
+            if !suject.isEmpty {
+                self.sendMessage()
+                return
+            }
+        }
+        
+        let alertController = UIAlertController(title: NSLocalizedString("Compose"), message: "Send message without subject?", preferredStyle: .Alert)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Send"), style: .Destructive, handler: { (action) -> Void in
+            self.sendMessage()
+        }))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
+        presentViewController(alertController, animated: true, completion: nil)
+        
+    }
+    
+    func sendMessage () {
         if self.composeView.expirationTimeInterval > 0 {
             if self.composeView.hasOutSideEmails && count(self.encryptionPassword) <= 0 {
                 self.composeView.showPasswordAndConfirmDoesntMatch(self.composeView.kExpirationNeedsPWDError)
@@ -212,7 +250,6 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         } else {
             navigationController?.popToRootViewControllerAnimated(true)
         }
-        
     }
     
     @IBAction func cancel_clicked(sender: UIBarButtonItem) {
@@ -292,29 +329,61 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     }
 }
 
+extension ComposeEmailViewController : ComposePasswordViewControllerDelegate {
+    
+    func Cancelled() {
+        
+    }
+    
+    func Apply(password: String, confirmPassword: String, hint: String) {
+        
+        self.encryptionPassword = password
+        self.encryptionConfirmPassword = confirmPassword
+        self.encryptionPasswordHint = hint
+        self.composeView.showEncryptionDone()
+    }
+    
+    func Removed() {
+        self.encryptionPassword = ""
+        self.encryptionConfirmPassword = ""
+        self.encryptionPasswordHint = ""
+        
+        
+        
+        self.composeView.showEncryptionRemoved()
+    }
+}
+
 // MARK : - view extensions
 extension ComposeEmailViewController : ComposeViewDelegate {
     func composeViewPickFrom(composeView: ComposeView) {
         if attachments?.count > 0 {
-            let alertController = "Please remove all attachments before changing sender!".alertController()
+            let alertController = NSLocalizedString("Please remove all attachments before changing sender!").alertController()
             alertController.addOKAction()
             self.presentViewController(alertController, animated: true, completion: nil)
         } else {
+            var needsShow : Bool = false
             let alertController = UIAlertController(title: NSLocalizedString("Change sender address to .."), message: nil, preferredStyle: .ActionSheet)
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
             let multi_domains = self.viewModel.getAddresses()
             let defaultAddr = self.viewModel.getDefaultAddress()
             for (var addr) in multi_domains {
                 if addr.status == 1 && addr.receive == 1 && defaultAddr != addr {
+                    needsShow = true
                     alertController.addAction(UIAlertAction(title: addr.email, style: .Default, handler: { (action) -> Void in
+                        if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
+                            self.updateSignature("\(signature)")
+                        }
                         self.viewModel.updateAddressID(addr.address_id)
                         self.composeView.updateFromValue(addr.email, pickerEnabled: true)
                     }))
                 }
             }
-            alertController.popoverPresentationController?.sourceView = self.composeView.fromView
-            alertController.popoverPresentationController?.sourceRect = self.composeView.fromView.frame
-            presentViewController(alertController, animated: true, completion: nil)
+            if needsShow {
+                alertController.popoverPresentationController?.sourceView = self.composeView.fromView
+                alertController.popoverPresentationController?.sourceRect = self.composeView.fromView.frame
+                presentViewController(alertController, animated: true, completion: nil)
+            }
         }
     }
     
@@ -367,9 +436,10 @@ extension ComposeEmailViewController : ComposeViewDelegate {
     }
     
     func composeViewDidTapEncryptedButton(composeView: ComposeView) {
-        self.actualEncryptionStep = EncryptionStep.DefinePassword
-        self.composeView.showDefinePasswordView()
-        self.composeView.hidePasswordAndConfirmDoesntMatch()
+        self.performSegueWithIdentifier(kPasswordSegue, sender: self)
+//        self.actualEncryptionStep = EncryptionStep.DefinePassword
+//        self.composeView.showDefinePasswordView()
+//        self.composeView.hidePasswordAndConfirmDoesntMatch()
     }
     
     func composeViewDidTapAttachmentButton(composeView: ComposeView) {
@@ -499,6 +569,12 @@ extension ComposeEmailViewController: AttachmentsTableViewControllerDelegate {
         self.collectDraft()
         self.viewModel.deleteAtt(attachment)
     }
+    
+    func attachments(attViewController: AttachmentsTableViewController, didReachedSizeLimitation: Int) {
+    }
+    
+    func attachments(attViewController: AttachmentsTableViewController, error: String) {
+    }
 }
 
 // MARK: - UIPickerViewDataSource
@@ -521,9 +597,9 @@ extension ComposeEmailViewController: UIPickerViewDataSource {
 extension ComposeEmailViewController: UIPickerViewDelegate {
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
         if (component == 0) {
-            return "\(row) days"
+            return "\(row) " + NSLocalizedString("days")
         } else {
-            return "\(row) hours"
+            return "\(row) " + NSLocalizedString("hours")
         }
     }
     
@@ -531,8 +607,8 @@ extension ComposeEmailViewController: UIPickerViewDelegate {
         let selectedDay = pickerView.selectedRowInComponent(0)
         let selectedHour = pickerView.selectedRowInComponent(1)
         
-        let day = "\(selectedDay) days"
-        let hour = "\(selectedHour) hours"
+        let day = "\(selectedDay) " + NSLocalizedString("days")
+        let hour = "\(selectedHour) " + NSLocalizedString("hours")
         self.composeView.updateExpirationValue(((Double(selectedDay) * 24) + Double(selectedHour)) * 3600, text: "\(day) \(hour)")
     }
 }

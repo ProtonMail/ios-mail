@@ -72,6 +72,8 @@ public struct SettingsAPI {
     
     static let V_SettingsUpdateNewsRequest : Int = 1
     static let V_SettingsUpdateDisplayNameRequest : Int = 1
+    
+    static let V_SettingsUpdateShowImagesRequest : Int = 1
 }
 
 
@@ -101,6 +103,7 @@ public struct UsersAPI {
     static let V_GetUserInfoRequest : Int = 1
     static let V_CheckUserExistRequest : Int = 1
     static let V_SendVerificationCodeRequest : Int = 1
+    static let V_DirectRequest : Int = 1
 }
 
 

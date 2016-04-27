@@ -16,6 +16,7 @@
 
 import Foundation
 
+// TODO:: this is not very good need refactor
 final class UserInfo: NSObject {
     let displayName: String
     let maxSpace: Int64
@@ -32,14 +33,15 @@ final class UserInfo: NSObject {
     let language : String
     let maxUpload: Int64
     let notify: Int
-    let showImages : Int
+    let showImages : Int  //1 is auto 0 is manual
     
     // new valuse v1.1.4
     let swipeLeft : Int
     let swipeRight : Int
     
-    
     let role : Int
+    
+    let delinquent : Int
     
     required init(
         displayName: String?, maxSpace: Int64?, notificationEmail: String?,
@@ -47,7 +49,8 @@ final class UserInfo: NSObject {
         usedSpace: Int64?, userStatus: Int?, userAddresses: Array<Address>?,
         autoSC:Int?, language:String?, maxUpload:Int64?, notify:Int?, showImage:Int?,  //v1.0.8
         swipeL:Int?, swipeR:Int?,  //v1.1.4
-        role:Int? )
+        role:Int?,
+        delinquent : Int?)
     {
         self.displayName = displayName ?? ""
         self.maxSpace = maxSpace ?? 0
@@ -69,6 +72,8 @@ final class UserInfo: NSObject {
         self.swipeRight = swipeR ?? 0
         
         self.role = role ?? 0
+        
+        self.delinquent = delinquent ?? 0
     }
 }
 
@@ -137,7 +142,9 @@ extension UserInfo {
         swipeLeftResponseKey : String,
         swipeRightResponseKey : String,
         
-        roleResponseKey : String
+        roleResponseKey : String,
+        
+        delinquentResponseKey : String
         ) {
             var addresses: [Address] = Array<Address>()
             let address_response = response[userAddressResponseKey] as! Array<Dictionary<String, AnyObject>>
@@ -187,8 +194,9 @@ extension UserInfo {
                 swipeL: response[swipeLeftResponseKey] as? Int,
                 swipeR: response[swipeRightResponseKey] as? Int,
                 
-                role : response[roleResponseKey] as? Int
+                role : response[roleResponseKey] as? Int,
                 
+                delinquent : response[delinquentResponseKey] as? Int
             )
     }
 }
@@ -217,6 +225,8 @@ extension UserInfo: NSCoding {
         static let swipeRight = "swipeRight"
         
         static let role = "role"
+        
+        static let delinquent = "delinquent"
     }
     
     convenience init(coder aDecoder: NSCoder) {
@@ -240,7 +250,10 @@ extension UserInfo: NSCoding {
             swipeL:aDecoder.decodeIntegerForKey(CoderKey.swipeLeft),
             swipeR:aDecoder.decodeIntegerForKey(CoderKey.swipeRight),
             
-            role : aDecoder.decodeIntegerForKey(CoderKey.role)
+            role : aDecoder.decodeIntegerForKey(CoderKey.role),
+            
+            
+            delinquent : aDecoder.decodeIntegerForKey(CoderKey.delinquent)
         )
     }
     

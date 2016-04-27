@@ -15,8 +15,15 @@ extension String {
         return UIAlertController(title: "Alert", message: message, preferredStyle: .Alert)
     }
     
-    
-    
+    func alertToast() -> Void {
+        let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
+        var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+        hud.mode = MBProgressHUDMode.Text
+        hud.labelText = NSLocalizedString("Alert");
+        hud.detailsLabelText = self
+        hud.removeFromSuperViewOnHide = true
+        hud.hide(true, afterDelay: 3)
+    }
     
     func contains(s: String) -> Bool
     {
@@ -95,6 +102,12 @@ extension String {
         
         let data : NSData! = self.dataUsingEncoding(NSUTF8StringEncoding)
         let decoded = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error:  &error) as! [[String:String]]
+        
+        
+        if error != nil {
+            PMLog.D(" func parseJson() -> error error \(error)")
+        }
+        
         return decoded
     }
     
@@ -245,20 +258,69 @@ extension String {
         return self
     }
     
+    func preg_match (partten: String) -> Bool {
+        var options = NSRegularExpressionOptions.allZeros
+        options |= NSRegularExpressionOptions.CaseInsensitive
+        options |= NSRegularExpressionOptions.DotMatchesLineSeparators
+        var error:NSError?
+        if let regex = NSRegularExpression(pattern: partten, options:options, error:&error) {
+            if error == nil {
+                return regex.firstMatchInString(self, options: nil, range: NSRange(location: 0, length: count(self))) != nil
+            }
+        }
+        return false
+    }
+    
+    func hasImange () -> Bool {
+        if self.preg_match("\\ssrc='") {
+            return true
+        }
+        if self.preg_match("\\ssrc=\"") {
+            return true
+        }
+        if self.preg_match("xlink:href=") {
+            return true
+        }
+        if self.preg_match("poster=") {
+            return true
+        }
+        if self.preg_match("background=") {
+            return true
+        }
+        if self.preg_match("url\\(") {
+            return true
+        }
+        return false
+    }
+    
+    func stringByPurifyImages () -> String {
+        var out = self.preg_replace("\\ssrc='", replaceto: " data-src='")
+        out = out.preg_replace("\\ssrc=\"", replaceto: " data-src=\"")
+        out = out.preg_replace("xlink:href=", replaceto: " data-xlink:href=");
+        out = out.preg_replace("poster=", replaceto: " data-poster=")
+        out = out.preg_replace("background=", replaceto: " data-background=")
+        out = out.preg_replace("url\\(", replaceto: " data-url(")
+        return out
+    }
+    
     func stringByPurifyHTML() -> String {
         var out = self.preg_replace("<script(.*?)<\\/script>", replaceto: "")
         //out = out.preg_replace("<(script.*?)>(.*?)<(\\/script.*?)>", replaceto: "")
         out = out.preg_replace("<(\\/?script.*?)>", replaceto: "")
         
-        //out = out.4preg_replace("<(\\/?meta.*?)>", replaceto: "");
+        out = out.preg_replace("<(\\/?meta.*?)>", replaceto: "");
+        out = out.preg_replace("<object(.*?)<\\/object>", replaceto: "")
+        out = out.preg_replace("<(\\/?object.*?)>", replaceto: "")
         //out = out.preg_replace("<(object.*?)>(.*?)<(\\/object.*?)>", replaceto: "");
         //out = out.preg_replace("<(\\/?objec.*?)>", replaceto: "");
+        out = out.preg_replace("<input(.*?)<\\/input>", replaceto: "")
+        out = out.preg_replace("<(\\/?input.*?)>", replaceto: "");
         
         //remove inline style optinal later
         //out = out.preg_replace("(<[a-z ]*)(style=(\"|\')(.*?)(\"|\'))([a-z ]*>)", replaceto: "");
-        //out = out.preg_replace("<(\\/?link.*?)>", replaceto: "");
+        out = out.preg_replace("<(\\/?link.*?)>", replaceto: "");
         
-        //out = out.preg_replace("<iframe(.*?)<\\/iframe>", replaceto: "");
+        out = out.preg_replace("<iframe(.*?)<\\/iframe>", replaceto: "");
         //out = out.preg_replace("<style(.*?)<\\/style>", replaceto: "");
         //out = out.preg_replace("\\s+", replaceto:" ")
         //out = out.preg_replace("<[ ]+", replaceto:"<")
@@ -273,8 +335,8 @@ extension String {
 //        out = out.preg_replace("<(\\/?i?frame.*?)>", replaceto: "")
         
         //optional later
-//        out = out.preg_replace("<video(.*?)<\\/video>", replaceto: "")
-//        out = out.preg_replace("<audio(.*?)<\\/audio>", replaceto: "")
+        out = out.preg_replace("<video(.*?)<\\/video>", replaceto: "")
+        out = out.preg_replace("<audio(.*?)<\\/audio>", replaceto: "")
         
         return out;
 //        function htmltotxt($str){

@@ -11,11 +11,13 @@ import Foundation
 
 class AppConstants {
     
-    static let CacheVersion : Int = 72
+    static let CacheVersion : Int = 74
     static let AuthCacheVersion : Int = 9
     static let SpaceWarningThreshold: Double = 80
     static let SplashVersion : Int = 1
     static let TourVersion : Int = 2
+    
+    static let AskTouchID : Int = 1
     
     static var AppVersion : Int = 1;
     static let BaseURLString : String = "https://api.protonmail.ch"

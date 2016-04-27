@@ -96,10 +96,18 @@ public class MailboxViewModel {
     func fetchMessages(MessageID : String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
         fatalError("This method must be overridden")
     }
-    func fetchNewMessages(Time: Int, completion: CompletionBlock?) {
+    func fetchNewMessages(notificationMessageID:String?, Time: Int, completion: CompletionBlock?) {
         fatalError("This method must be overridden")
     }
     func fetchMessagesForLocationWithEventReset(MessageID : String, Time: Int, completion: CompletionBlock?) {
         //fatalError("This method must be overridden")
+    }
+    
+    func getNotificationMessage() -> String? {
+        fatalError("This method must be overridden")
+    }
+    
+    func resetNotificationMessage() -> Void {
+        fatalError("This method must be overridden")
     }
 }

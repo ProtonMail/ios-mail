@@ -33,6 +33,7 @@ class UserDataService {
         static let userInfo = "userInfoKey"
         
         static let roleSwitchCache = "roleSwitchCache"
+        static let defaultSignatureStatus = "defaultSignatureStatus"
     }
     
     // MARK: - Private variables
@@ -50,15 +51,68 @@ class UserDataService {
         }
     }
     
-    var switchCacheOff: Bool? = NSUserDefaults.standardUserDefaults().boolForKey(Key.roleSwitchCache) {
+    private var switchCacheOff: Bool? = NSUserDefaults.standardUserDefaults().boolForKey(Key.roleSwitchCache) {
         didSet {
             NSUserDefaults.standardUserDefaults().setValue(switchCacheOff, forKey: Key.roleSwitchCache)
             NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
     
+    private var defaultSignatureStauts: Bool = NSUserDefaults.standardUserDefaults().boolForKey(Key.defaultSignatureStatus) {
+        didSet {
+            NSUserDefaults.standardUserDefaults().setValue(defaultSignatureStauts, forKey: Key.defaultSignatureStatus)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
+    var showDefaultSignature : Bool {
+        get {
+            return defaultSignatureStauts
+        }
+        set {
+            defaultSignatureStauts = newValue
+        }
+    }
+    
+    var showMobileSignature : Bool {
+        get {
+            #if Enterprise
+                var isEnterprise = true
+            #else
+                var isEnterprise = false
+            #endif
+            
+            if userInfo?.role > 0 || isEnterprise {
+                return (switchCacheOff == false) ?? true
+            } else {
+                switchCacheOff = false
+                return true;
+            } }
+        set {
+            switchCacheOff = (newValue == false)
+        }
+    }
+    
+    var mobileSignature : String {
+        get {
+            if userInfo?.role > 0 {
+                return userCachedStatus.mobileSignature
+            } else {
+                userCachedStatus.resetMobileSignature()
+                return userCachedStatus.mobileSignature
+            }
+        }
+        set {
+            userCachedStatus.mobileSignature = newValue
+        }
+    }
+    
     var usedSpace: Int64 {
         return userInfo?.usedSpace ?? 0
+    }
+    
+    var showShowImageView: Bool {
+        return userInfo?.showImages == 0
     }
     
     // MARK: - Public variables
@@ -81,7 +135,7 @@ class UserDataService {
             return MessageSwipeAction(rawValue: userInfo?.swipeRight ?? 0) ?? .trash
         }
     }
-
+    
     var userAddresses: Array<Address> { //never be null
         return userInfo?.userAddresses ?? Array<Address>()
     }
@@ -164,7 +218,7 @@ class UserDataService {
         cleanUpIfFirstRun()
         launchCleanUp()
     }
-
+    
     func fetchUserInfo(completion: UserInfoBlock? = nil) {
         
         let getUserInfo = GetUserInfoRequest<GetUserInfoResponse>()
@@ -246,7 +300,24 @@ class UserDataService {
                     let userInfo = UserInfo(displayName: new_displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
                         autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
                         
-                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role
+                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role, delinquent : userInfo.delinquent
+                    )
+                    self.userInfo = userInfo
+                }
+            }
+            completion?(self.userInfo, nil)
+        }
+    }
+    
+    func updateAutoLoadImage(status : Int, completion: UserInfoBlock?) {
+        let api = UpdateShowImagesRequest(status: status)
+        api.call() { task, response, hasError in
+            if !hasError {
+                if let userInfo = self.userInfo {
+                    let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
+                        autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:status,
+                        
+                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role , delinquent : userInfo.delinquent
                     )
                     self.userInfo = userInfo
                 }
@@ -269,7 +340,7 @@ class UserDataService {
                                 
                                 autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
                                 
-                                swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role
+                                swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role, delinquent : userInfo.delinquent
                             )
                             
                             self.userInfo = userInfo
@@ -284,30 +355,30 @@ class UserDataService {
         }
     }
     
-//    func updateNewUserKeys(mbp:String, completion: CompletionBlock?) {
-//        var error: NSError?
-//        if let userInfo = userInfo {
-//            if let newPrivateKey = sharedOpenPGP.generateKey(mbp, userName: username!, error: &error) {
-//                var pubkey = newPrivateKey.publicKey
-//                var privkey = newPrivateKey.privateKey
-//                sharedAPIService.userUpdateKeypair("" , publicKey: pubkey, privateKey: privkey, completion: { task, response, error in
-//                    if error == nil {
-//                        self.mailboxPassword = mbp;
-//                        let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: privkey, publicKey: pubkey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
-//                            autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
-//                            
-//                            swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight
-//                        )
-//                        
-//                        self.userInfo = userInfo
-//                    }
-//                    completion?(task: task, response: response, error: error)
-//                })
-//            } else {
-//                completion?(task: nil, response: nil, error: error)
-//            }
-//        }
-//    }
+    //    func updateNewUserKeys(mbp:String, completion: CompletionBlock?) {
+    //        var error: NSError?
+    //        if let userInfo = userInfo {
+    //            if let newPrivateKey = sharedOpenPGP.generateKey(mbp, userName: username!, error: &error) {
+    //                var pubkey = newPrivateKey.publicKey
+    //                var privkey = newPrivateKey.privateKey
+    //                sharedAPIService.userUpdateKeypair("" , publicKey: pubkey, privateKey: privkey, completion: { task, response, error in
+    //                    if error == nil {
+    //                        self.mailboxPassword = mbp;
+    //                        let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: privkey, publicKey: pubkey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
+    //                            autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
+    //
+    //                            swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight
+    //                        )
+    //
+    //                        self.userInfo = userInfo
+    //                    }
+    //                    completion?(task: task, response: response, error: error)
+    //                })
+    //            } else {
+    //                completion?(task: nil, response: nil, error: error)
+    //            }
+    //        }
+    //    }
     
     func updateUserDomiansOrder(email_domains: Array<Address>, newOrder : Array<Int>, completion: CompletionBlock) {
         let domainSetting = UpdateDomainOrder<ApiResponse>(adds: newOrder)
@@ -317,7 +388,7 @@ class UserDataService {
                     let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:email_domains,
                         autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
                         
-                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role
+                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role, delinquent : userInfo.delinquent
                     )
                     self.userInfo = userInfo
                 }
@@ -334,7 +405,7 @@ class UserDataService {
                     let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
                         autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
                         
-                        swipeL: isLeft ? action.rawValue : userInfo.swipeLeft, swipeR: isLeft ? userInfo.swipeRight : action.rawValue, role : userInfo.role
+                        swipeL: isLeft ? action.rawValue : userInfo.swipeLeft, swipeR: isLeft ? userInfo.swipeRight : action.rawValue, role : userInfo.role, delinquent : userInfo.delinquent
                     )
                     self.userInfo = userInfo
                 }
@@ -342,7 +413,7 @@ class UserDataService {
             completion(task: task, response: nil, error: nil)
         }
     }
-
+    
     func updateNotificationEmail(newNotificationEmail: String, completion: CompletionBlock) {
         let emailSetting = UpdateNotificationEmail<ApiResponse>(password: self.password!, notificationEmail: newNotificationEmail)
         emailSetting.call() { task, response, hasError in
@@ -351,7 +422,7 @@ class UserDataService {
                     let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: newNotificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
                         autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
                         
-                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role
+                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role, delinquent : userInfo.delinquent
                     )
                     self.userInfo = userInfo
                 }
@@ -369,7 +440,7 @@ class UserDataService {
                         let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
                             autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:(isOn ? 1 : 0), showImage:userInfo.showImages,
                             
-                            swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role
+                            swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role, delinquent : userInfo.delinquent
                         )
                         self.userInfo = userInfo
                     }
@@ -385,11 +456,11 @@ class UserDataService {
             
             if error == nil {
                 self.password = newPassword
-            }            
+            }
             completion(task: task, response: responseDict, error: error)
         })
     }
-
+    
     func updateSignature(signature: String, completion: UserInfoBlock?) {
         sharedAPIService.settingUpdateSignature(signature, completion: completionForUserInfo(completion))
     }
@@ -476,5 +547,5 @@ class UserDataService {
 
 extension Message {
     
-
+    
 }

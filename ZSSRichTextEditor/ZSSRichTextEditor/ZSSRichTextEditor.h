@@ -98,6 +98,8 @@ static NSString * const ZSSRichTextEditorToolbarNone = @"com.zedsaid.toolbaritem
  */
 - (void)setHTML:(NSString *)html;
 
+- (void)updateSignature: (NSString *) html;
+
 /**
  *  Returns the HTML from the Rich Text Editor
  *
@@ -111,6 +113,8 @@ static NSString * const ZSSRichTextEditorToolbarNone = @"com.zedsaid.toolbaritem
 - (NSString *)getText;
 
 - (UIWebView *) getWebView;
+
+- (void) updateFooterOffset: (CGFloat) offset;
 
 /**
  *  Inserts HTML at the caret position

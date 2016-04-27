@@ -453,6 +453,12 @@ zss_editor.setHTML = function(html) {
     zss_editor.setScrollPosition();
 }
 
+zss_editor.updateSignature = function(html) {
+    var editor = $('#protonmail_signature_block');
+    editor.html(html);
+    zss_editor.enabledEditingItems();
+}
+
 zss_editor.insertHTML = function(html) {
     document.execCommand('insertHTML', false, html);
     zss_editor.enabledEditingItems();

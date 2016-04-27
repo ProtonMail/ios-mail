@@ -102,6 +102,10 @@ public class ComposeViewModel {
         fatalError("This method must be overridden")
     }
     
+    func getCurrrentSignature(addr_id : String) -> String? {
+        fatalError("This method must be overridden")
+    }
+    
     func hasAttachment () -> Bool {
         fatalError("This method must be overridden")
     }

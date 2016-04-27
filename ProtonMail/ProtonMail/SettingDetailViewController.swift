@@ -22,6 +22,8 @@ class SettingDetailViewController: UIViewController {
     @IBOutlet weak var inputTextView: UITextView!
     @IBOutlet weak var inputTextField: UITextField!
     
+    @IBOutlet weak var notesLabel: UILabel!
+    
     private var doneButton: UIBarButtonItem!
     private var viewModel : SettingDetailsViewModel!
     func setViewModel(vm:SettingDetailsViewModel) -> Void
@@ -43,6 +45,7 @@ class SettingDetailViewController: UIViewController {
         if viewModel.isDisplaySwitch() {
             switchLabel.text = viewModel.getSwitchText()
             switcher.on = viewModel.getSwitchStatus()
+            switchView.hidden = false
         }
         else {
             switchView.hidden = true
@@ -62,6 +65,11 @@ class SettingDetailViewController: UIViewController {
             inputTextField.text = viewModel.getCurrentValue()
             inputTextField.placeholder = viewModel.getPlaceholdText()
         }
+        
+        switcher.enabled = viewModel.isSwitchEnabled()
+        inputTextView.editable = viewModel.isSwitchEnabled()
+        
+        notesLabel.text = viewModel.getNotes()
     }
 
     override func didReceiveMemoryWarning() {
@@ -73,7 +81,6 @@ class SettingDetailViewController: UIViewController {
     }
     
     @IBAction func swiitchAction(sender: AnyObject) {
-
         if viewModel.getCurrentValue() == inputTextField.text && viewModel.getSwitchStatus() == self.switcher.on {
             self.navigationItem.rightBarButtonItem = nil;
         }

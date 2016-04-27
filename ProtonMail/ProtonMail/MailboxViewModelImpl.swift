@@ -29,7 +29,7 @@ public class MailboxViewModelImpl : MailboxViewModel {
         if let fetchedResultsController = fetchedResultsController {
             var error: NSError?
             if !fetchedResultsController.performFetch(&error) {
-                NSLog("\(__FUNCTION__) error: \(error)")
+                PMLog.D("error: \(error)")
             }
         }
         return fetchedResultsController
@@ -63,6 +63,8 @@ public class MailboxViewModelImpl : MailboxViewModel {
             return action != .star
         case .draft:
             return action != .spam
+        case .trash:
+            return action != .trash
         default:
             return true
         }
@@ -135,12 +137,18 @@ public class MailboxViewModelImpl : MailboxViewModel {
         sharedMessageDataService.fetchMessagesForLocation(self.location, MessageID: MessageID, Time:Time, foucsClean: foucsClean, completion:completion)
     }
     
-    override func fetchNewMessages(Time: Int, completion: CompletionBlock?) {
-        sharedMessageDataService.fetchNewMessagesForLocation(self.location, Time: Time, completion: completion)
+    override func fetchNewMessages(notificationMessageID:String?, Time: Int, completion: CompletionBlock?) {
+        sharedMessageDataService.fetchNewMessagesForLocation(self.location, Time: Time, notificationMessageID: notificationMessageID, completion: completion)
     }
     
     override func fetchMessagesForLocationWithEventReset(MessageID: String, Time: Int, completion: CompletionBlock?) {
         sharedMessageDataService.fetchMessagesForLocationWithEventReset(self.location, MessageID: MessageID, Time: Time, completion: completion)
     }
     
+    override func getNotificationMessage() -> String? {
+        return sharedMessageDataService.pushNotificationMessageID
+    }
+    override func resetNotificationMessage() -> Void {
+        sharedMessageDataService.pushNotificationMessageID = nil
+    }
 }

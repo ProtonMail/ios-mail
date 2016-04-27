@@ -31,6 +31,9 @@ extension Message {
         static let time = "time"
         static let title = "title"
         static let labels = "labels"
+        
+        static let messageType = "messageType"
+        static let messageStatus = "messageStatus"
     }
     
     struct Constants {
@@ -67,6 +70,7 @@ extension Message {
             return ""
         }
         
+        PMLog.D("allEmailAddresses  ---  \(lists)" )
         return ",".join(lists)
     }
     
@@ -258,6 +262,7 @@ extension Message {
         newMessage.expirationOffset = 0
         
         newMessage.addressID = message.getAddressID
+        newMessage.messageStatus = message.messageStatus
         
         if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D("error: \(error)")

@@ -42,7 +42,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
         }
         
         self.messageAction = action
-        self.updateContacts()
+        self.updateContacts(msg?.location)
     }
     
     override func uploadAtt(att: Attachment!) {
@@ -77,11 +77,18 @@ public class ComposeViewModelImpl : ComposeViewModel {
         return self.message?.defaultAddress
     }
     
+    override func getCurrrentSignature(addr_id : String) -> String? {
+        if let addr = sharedUserDataService.userAddresses.indexOfAddress(addr_id) {
+            return addr.signature
+        }
+        return nil
+    }
+    
     override func hasAttachment() -> Bool {
         return true;
     }
     
-    private func updateContacts()
+    private func updateContacts(oldLocation : MessageLocation?)
     {
         if message != nil {
             switch messageAction!
@@ -103,45 +110,55 @@ public class ComposeViewModelImpl : ComposeViewModel {
                         self.ccSelectedContacts.append(cont)
                     }
                 }
-                
                 let bccContacts = self.toContacts(self.message!.bccList)
                 for cont in bccContacts {
                     if !cont.isDuplicatedWithContacts(self.bccSelectedContacts) {
                         self.bccSelectedContacts.append(cont)
                     }
                 }
-                
-                break;
             case .Reply:
-                let sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.sender)
-                self.toSelectedContacts.append(sender)
-                break;
-            case .ReplyAll:
-                let userAddress = sharedUserDataService.userAddresses
-                let sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.sender)
-
-                if  !sender.isDuplicated(userAddress) {
-                    self.toSelectedContacts.append(sender)
-                }
-                
-                let toContacts = self.toContacts(self.message!.recipientList)
-                for cont in toContacts {
-                    if  !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
+                if oldLocation == .outbox {
+                    let toContacts = self.toContacts(self.message!.recipientList)
+                    for cont in toContacts {
                         self.toSelectedContacts.append(cont)
                     }
-                }
-                
-                if self.toSelectedContacts.count <= 0 {
+                } else {
+                    let sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.sender)
                     self.toSelectedContacts.append(sender)
                 }
-                
-                let senderContacts = self.toContacts(self.message!.ccList)
-                for cont in senderContacts {
-                    if  !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
+            case .ReplyAll:
+                if oldLocation == .outbox {
+                    let toContacts = self.toContacts(self.message!.recipientList)
+                    for cont in toContacts {
+                        self.toSelectedContacts.append(cont)
+                    }
+                    let senderContacts = self.toContacts(self.message!.ccList)
+                    for cont in senderContacts {
                         self.ccSelectedContacts.append(cont)
                     }
+                } else {
+                    let userAddress = sharedUserDataService.userAddresses
+                    let sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.sender)
+                    
+                    if  !sender.isDuplicated(userAddress) {
+                        self.toSelectedContacts.append(sender)
+                    }
+                    let toContacts = self.toContacts(self.message!.recipientList)
+                    for cont in toContacts {
+                        if  !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
+                            self.toSelectedContacts.append(cont)
+                        }
+                    }
+                    if self.toSelectedContacts.count <= 0 {
+                        self.toSelectedContacts.append(sender)
+                    }
+                    let senderContacts = self.toContacts(self.message!.ccList)
+                    for cont in senderContacts {
+                        if  !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
+                            self.ccSelectedContacts.append(cont)
+                        }
+                    }
                 }
-                break;
             default:
                 break;
             }
@@ -154,6 +171,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
         sharedMessageDataService.send(self.message?.messageID)  { task, response, error in
             
         }
+        
     }
     
     override func collectDraft(title: String, body: String, expir:NSTimeInterval, pwd:String, pwdHit:String) {
@@ -161,7 +179,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
         PMLog.D(self.ccSelectedContacts)
         PMLog.D(self.bccSelectedContacts)
         
-        if message == nil {
+        if message == nil || message?.managedObjectContext == nil {
             self.message = MessageHelper.messageWithLocation(MessageLocation.draft,
                 recipientList: toJsonString(self.toSelectedContacts),
                 bccList: toJsonString(self.bccSelectedContacts),
@@ -213,11 +231,17 @@ public class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override public func getHtmlBody() -> String {
-        let signature = !sharedUserDataService.signature.isEmpty ? "\n\n\(sharedUserDataService.signature)" : ""
+        //sharedUserDataService.signature
+        let signature = self.getDefaultAddress()?.signature ?? "\(sharedUserDataService.signature)"
         
-        let mobileSignature = sharedUserDataService.switchCacheOff == true ? "" : "<br><br> Sent from ProtonMail Mobile"
+        let mobileSignature = sharedUserDataService.showMobileSignature ? "<div><br></div><div><br></div><div id=\"protonmail_mobile_signature_block\">\(sharedUserDataService.mobileSignature)" : ""
         
-        let htmlString = "<div><br></div><div><br></div>\(signature) \(mobileSignature)<div><br></div>";
+        let defaultSignature = sharedUserDataService.showDefaultSignature ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\">\(signature)" : ""
+        
+        let htmlString = "\(defaultSignature) \(mobileSignature)";
+        
+        PMLog.D("\(message?.addressID)")
+        
         switch messageAction!
         {
         case .OpenDraft:
@@ -234,12 +258,12 @@ public class ComposeViewModelImpl : ComposeViewModel {
             
             let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
             let replyHeader = time + ", " + message!.senderName + " <'\(message!.sender)'>"
-            let sp = "<div>\(replyHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
+            let sp = "<div><br><div><div><br></div>\(replyHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
             return "\(htmlString) \(sp) \(body)</blockquote>"
         case .Forward:
             //composeView.subject.text = "Fwd: \(message.title)"
             let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
-            var forwardHeader = "<br><br><br>---------- Forwarded message ----------<br>From: \(message!.senderName)<br>Date: \(time)<br>Subject: \(message!.title)<br>"
+            var forwardHeader = "---------- Forwarded message ----------<br>From: \(message!.senderName)<br>Date: \(time)<br>Subject: \(message!.title)<br>"
             if message!.recipientList != "" {
                 forwardHeader += "To: \(message!.recipientList.formatJsonContact())<br>"
             }
@@ -247,15 +271,15 @@ public class ComposeViewModelImpl : ComposeViewModel {
             if message!.ccList != "" {
                 forwardHeader += "CC: \(message!.ccList.formatJsonContact())<br>"
             }
-            forwardHeader += "<br><br><br>"
+            forwardHeader += "<br><br>"
             var body = message!.decryptBodyIfNeeded(nil) ?? ""
             
             body = body.stringByStrippingStyleHTML()
             body = body.stringByStrippingBodyStyle()
             body = body.stringByPurifyHTML()
             
-            let sp = "<div>\(forwardHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
-            return "<br><br><br>\(signature) \(mobileSignature) \(sp) \(body)"
+            let sp = "<div><br></div><div><br></div>\(forwardHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
+            return "\(defaultSignature) \(mobileSignature) \(sp) \(body)"
         case .NewDraft:
             return htmlString
         default:

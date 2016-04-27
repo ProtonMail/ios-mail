@@ -117,48 +117,48 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
             MBProgressHUD.showHUDAddedTo(view, animated: true)
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self.viewModel.createNewUser { (isOK, createDone, message, error) -> Void in
-                    MBProgressHUD.hideHUDForView(self.view, animated: true)
-                    self.doneClicked = false
-                    if !message.isEmpty {
-                        var alert :  UIAlertController!
-                        var title = "Create user failed"
-                        var message = ""
-                        if error?.code == 12081 { //USER_CREATE_NAME_INVALID = 12081
-                            title = "User name invalid"
-                            message = "Please try a different user name."
-                        } else if error?.code == 12082 { //USER_CREATE_PWD_INVALID = 12082
-                            title = "Account password invalid"
-                            message = "Please try a different password."
-                        } else if error?.code == 12083 { //USER_CREATE_EMAIL_INVALID = 12083
-                            title = "The verification email invalid"
-                            message = "Please try a different email address."
-                        } else if error?.code == 12084 { //USER_CREATE_EXISTS = 12084
-                            title = "User name exist"
-                            message = "Please try a different user name."
-                        } else if error?.code == 12085 { //USER_CREATE_DOMAIN_INVALID = 12085
-                            title = "Email domain invalid"
-                            message = "Please try a different domain."
-                        } else if error?.code == 12087 { //USER_CREATE_TOKEN_INVALID = 12087
-                            title = "reCAPTCHA verification failed"
-                            message = "Please try again."
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        MBProgressHUD.hideHUDForView(self.view, animated: true)
+                        self.doneClicked = false
+                        if !message.isEmpty {
+                            var alert :  UIAlertController!
+                            var title = NSLocalizedString("Create user failed")
+                            var message = ""
+                            if error?.code == 12081 { //USER_CREATE_NAME_INVALID = 12081
+                                title = NSLocalizedString("User name invalid")
+                                message = NSLocalizedString("Please try a different user name.")
+                            } else if error?.code == 12082 { //USER_CREATE_PWD_INVALID = 12082
+                                title = NSLocalizedString("Account password invalid")
+                                message = NSLocalizedString("Please try a different password.")
+                            } else if error?.code == 12083 { //USER_CREATE_EMAIL_INVALID = 12083
+                                title = NSLocalizedString("The verification email invalid")
+                                message = NSLocalizedString("Please try a different email address.")
+                            } else if error?.code == 12084 { //USER_CREATE_EXISTS = 12084
+                                title = NSLocalizedString("User name exist")
+                                message = NSLocalizedString("Please try a different user name.")
+                            } else if error?.code == 12085 { //USER_CREATE_DOMAIN_INVALID = 12085
+                                title = NSLocalizedString("Email domain invalid")
+                                message = NSLocalizedString("Please try a different domain.")
+                            } else if error?.code == 12087 { //USER_CREATE_TOKEN_INVALID = 12087
+                                title = NSLocalizedString("reCAPTCHA verification failed")
+                                message = NSLocalizedString("Please try again.")
+                            } else {
+                                message = error!.localizedDescription
+                            }
+                            alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+                            alert.addOKAction()
+                            self.presentViewController(alert, animated: true, completion: nil)
                         } else {
-                            message = error!.localizedDescription
-                        }
-                        alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-                        alert.addOKAction()
-                        self.presentViewController(alert, animated: true, completion: nil)
-                    } else {
-                        if isOK || createDone {
-                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            if isOK || createDone {
                                 self.goNotificationEmail()
-                            })
+                            }
                         }
-                    }
+                    })
                 }
             })
         } else {
             self.finishChecking(false)
-            let alert = "The verification failed!".alertController()
+            let alert = NSLocalizedString("The verification failed!").alertController()
             alert.addOKAction()
             self.presentViewController(alert, animated: true, completion: nil)
         }

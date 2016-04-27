@@ -69,6 +69,10 @@ class PushNotificationService {
         }
     }
     
+    func setNotificationOptions (userInfo: [NSObject : AnyObject]?) {
+        self.launchOptions = userInfo;
+    }
+    
     func processCachedLaunchOptions() {
         
         NSLog("process options1 : \(self.launchOptions)")
@@ -94,16 +98,11 @@ class PushNotificationService {
             
             let application = UIApplication.sharedApplication()
             if let messageid = messageIDForUserInfo(userInfo) {
-                
                 NSLog("message \(messageid)")
-                
                 NSLog("static \(application.applicationState)")
-                
                 // if the app is in the background, then switch to the inbox and load the message detail
                 if application.applicationState == UIApplicationState.Inactive || application.applicationState == UIApplicationState.Background || forceProcess {
-                    
                     NSLog("ok1 \(messageid)")
-                    
                     if let revealViewController = application.keyWindow?.rootViewController as? SWRevealViewController {
                         //revealViewController
                         
@@ -114,7 +113,9 @@ class PushNotificationService {
                                 if let front = revealViewController.frontViewController as? UINavigationController {
                                     if let mailboxViewController: MailboxViewController = front.viewControllers.first as? MailboxViewController {
                                         NSLog("ok2")
-                                        mailboxViewController.performSegueForMessageFromNotification(messageid)
+                                        sharedMessageDataService.pushNotificationMessageID = messageid
+                                        mailboxViewController.performSegueForMessageFromNotification()
+                                    } else {
                                     }
                                 }
                                 completionHandler(.NewData)

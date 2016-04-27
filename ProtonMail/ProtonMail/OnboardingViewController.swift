@@ -23,7 +23,7 @@ class OnboardingViewController : UIViewController, UIScrollViewDelegate {
     
     var viewModel : LabelViewModel!
     
-    let onboardingList : [Onboarding] = [.welcome, .swipe, .label, .encryption, .expire, .help, .upgrade]
+    let onboardingList : [Onboarding] = [.welcome, .swipe, .label, .encryption, .expire, .help] //, .upgrade]
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,7 +54,7 @@ class OnboardingViewController : UIViewController, UIScrollViewDelegate {
     }
 
     func updateStatusForLastPage () {
-        if pageControlView.currentPage + 1 == pageControlView.numberOfPages {
+        if onboardingList[pageControlView.currentPage] == Onboarding.upgrade {
             pageControlView.hidden = true
             learnmoreButton.hidden = false
         } else {

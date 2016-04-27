@@ -13,9 +13,9 @@
 static NSMutableDictionary *parseHeaders(const char *headers)
 {
     NSMutableDictionary *dict=[NSMutableDictionary dictionary];
-    int max=strlen(headers);
-    int start=0;
-    int cursor=0;
+    unsigned long max = strlen(headers);
+    unsigned long start = 0;
+    unsigned long cursor =0;
     while(cursor<max)
     {
         while((headers[cursor]!=':')&&(headers[cursor]!='='))
@@ -71,16 +71,16 @@ static NSMutableDictionary *parseHeaders(const char *headers)
     const char *bytes=(const char *)[self bytes];
     const char *pattern=[boundary cStringUsingEncoding:NSUTF8StringEncoding];
     
-    int cursor=0;
-    int start=0;
-    int max=[self length];
-    int keyNo=0;
+    unsigned long cursor=0;
+    unsigned long start=0;
+    unsigned long max=[self length];
+    int keyNo = 0;
     while(cursor<max)
     {
         if(bytes[cursor]==pattern[0])
         {
             int i;
-            int patternLength=strlen(pattern);
+            unsigned long patternLength = strlen(pattern);
             BOOL match=YES;
             for(i=0; i<patternLength; i++)
             {
@@ -94,8 +94,8 @@ static NSMutableDictionary *parseHeaders(const char *headers)
             {
                 if(start!=0)
                 {
-                    int startOfHeaders=start+2;
-                    int cursor2=startOfHeaders;
+                    unsigned long startOfHeaders=start+2;
+                    unsigned long cursor2=startOfHeaders;
                     while((bytes[cursor2]!=(char)0x0d)||(bytes[cursor2+1]!=(char)0x0a)||(bytes[cursor2+2]!=(char)0x0d)||(bytes[cursor2+3]!=(char)0x0a))
                     {
                         cursor2++;
@@ -110,15 +110,15 @@ static NSMutableDictionary *parseHeaders(const char *headers)
                     }
                     else
                     {
-                        int lengthOfHeaders=cursor2-startOfHeaders;
+                        unsigned long lengthOfHeaders=cursor2-startOfHeaders;
                         char *headers=(char *)malloc((lengthOfHeaders+1)*sizeof(char));
                         strncpy(headers, bytes+startOfHeaders, lengthOfHeaders);
                         headers[lengthOfHeaders]=0;
                         
                         NSMutableDictionary *item=parseHeaders(headers);
                         
-                        int startOfData=cursor2+4;
-                        int lengthOfData=cursor-startOfData-2;
+                        unsigned long startOfData=cursor2+4;
+                        unsigned long lengthOfData=cursor-startOfData-2;
                         
                         if(([item valueForKey:@"Content-Type"]==nil)&&([item valueForKey:@"filename"]==nil))
                         {
@@ -160,8 +160,8 @@ static NSMutableDictionary *parseHeaders(const char *headers)
 - (NSDictionary *)multipartDictionary
 {
     const char *bytes=(const char *)[self bytes];
-    int cursor=0;
-    int max=[self length];
+    unsigned long cursor=0;
+    unsigned long max=[self length];
     while(cursor<max)
     {
         if(bytes[cursor]==0x0d)

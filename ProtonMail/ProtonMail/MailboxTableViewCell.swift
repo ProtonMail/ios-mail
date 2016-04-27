@@ -75,14 +75,6 @@ class MailboxTableViewCell: UITableViewCell {
     
     private var isChecked: Bool = false
     
-    
-//    private var isStarred: Bool = false {
-//        didSet {
-//            let image = UIImage(named: isStarred ? "mail_starred-active" : "mail_starred")
-//            self.starredImage.image = image
-//        }
-//    }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         checkboxButton.addTarget(self, action: "checkboxTapped", forControlEvents: UIControlEvents.TouchUpInside)
@@ -101,11 +93,6 @@ class MailboxTableViewCell: UITableViewCell {
     // MARK: - Actions
     
     @IBAction func favoriteButtonAction(sender: UIButton) {
-//        self.isStarred = !self.isStarred
-//        
-//        // TODO: display activity indicator
-//        
-//        delegate?.mailboxTableViewCell(self, didChangeStarred: isStarred)
     }
     
     func checkboxTapped() {

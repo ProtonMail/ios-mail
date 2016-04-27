@@ -10,43 +10,38 @@ import UIKit
 
 class SwitchTableViewCell: UITableViewCell {
     
+    typealias switchActionBlock = (cell: SwitchTableViewCell!, newStatus: Bool, feedback: ActionStatus) -> Void
+    typealias ActionStatus = (isOK: Bool) -> Void
     override func awakeFromNib() {
         super.awakeFromNib()
     }
     
+    var callback : switchActionBlock?
+    
     @IBOutlet weak var centerConstraint: NSLayoutConstraint!
-    
-    
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var topLineLabel: UILabel!
+    @IBOutlet weak var bottomLineLabel: UILabel!
     
     @IBOutlet weak var switchView: UISwitch!
     @IBAction func switchAction(sender: UISwitch) {
-        sharedUserDataService.switchCacheOff = !sender.on
-        self.updateStatus()
-    }
-    
-    func setUpSwitch(show : Bool, status : Bool) {
-        if show {
-            switchView.enabled = true
-        } else {
-            switchView.enabled = false
-        }
-        switchView.on = status;
-        self.updateStatus()
-    }
-    
-    func updateStatus() {
-        if let isOff = sharedUserDataService.switchCacheOff {
-            if !isOff {
-                centerConstraint.priority = 1.0;
-                titleLabel.hidden = false
-            } else {
-                centerConstraint.priority = 750.0;
-                titleLabel.hidden = true
+        let status = sender.on
+        callback?(cell: self, newStatus : status, feedback: { (isOK ) -> Void in
+            if isOK == false {
+                self.switchView.on = !status
             }
-        }
-        UIView.animateWithDuration(0.25, animations: { () -> Void in
+        })
+    }
+    
+    func configCell(topline : String, bottomLine : String, status : Bool, complete : switchActionBlock?) {
+        topLineLabel.text = topline
+        bottomLineLabel.text = bottomLine
+        switchView.on = status
+        callback = complete
+        
+        if bottomLine.isEmpty {
+            centerConstraint.priority = 750.0;
+            bottomLineLabel.hidden = true
             self.layoutIfNeeded()
-            }, completion: nil)
+        }
     }
 }

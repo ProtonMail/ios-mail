@@ -54,9 +54,9 @@ enum EncryptTypes: Int, Printable {
     
     var lockType : LockTypes {
         switch(self) {
-        case Plain, OutPlain:
+        case Plain, OutPlain, External:
             return .PlainTextLock
-        case Internal, External, OutEnc, DraftStoreEnc, OutEncReply:
+        case Internal, OutEnc, DraftStoreEnc, OutEncReply:
             return .EncryptLock
         case OutPGPInline, OutPGPMime:
             return .PGPLock

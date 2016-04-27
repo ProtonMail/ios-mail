@@ -51,8 +51,8 @@ class SignUpEmailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         userCachedStatus.showTourNextTime()
-        recoveryEmailField.attributedPlaceholder = NSAttributedString(string: "Recovery Email", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
-        displayNameField.attributedPlaceholder = NSAttributedString(string: "Display Name", attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        recoveryEmailField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Recovery Email"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        displayNameField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Display Name"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -95,7 +95,7 @@ class SignUpEmailViewController: UIViewController {
         let email = recoveryEmailField.text
         
         if (!email.isEmpty && !email.isValidEmail()) {
-            let alert = "Please input a valid email address.".alertController()
+            let alert = NSLocalizedString("Please input a valid email address.").alertController()
             alert.addOKAction()
             self.presentViewController(alert, animated: true, completion: nil)
         } else {

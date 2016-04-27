@@ -17,6 +17,8 @@ protocol EmailHeaderActionsProtocol {
     func starredChanged(isStarred : Bool)
     
     func quickLookAttachment (tempfile : NSURL, keyPackage:NSData, fileName:String)
+    
+    func showImage()
 }
 
 class EmailHeaderView: UIView {
@@ -56,11 +58,17 @@ class EmailHeaderView: UIView {
     private var emailIsEncryptedImageView: UIImageView!
     private var emailHasAttachmentsImageView: UIImageView!
     private var emailAttachmentsAmount: UILabel!
-    private var separatorBetweenHeaderAndBodyView: UIView!
-    private var separatorBetweenHeaderAndAttView: UIView!
     
     private var attachmentView : UITableView?
     
+    private var expirationView : ExpirationView!
+    private var showImageView : ShowImageView!
+    
+    //separators
+    private var separatorHeader : UIView!
+    private var separatorExpiration : UIView!
+    private var separatorAttachment : UIView!
+    private var separatorShowImage : UIView!
     
     // const header view
     private let kEmailHeaderViewMarginTop: CGFloat = 12.0
@@ -84,19 +92,18 @@ class EmailHeaderView: UIView {
     private let kEmailBodyTextViewMarginRight: CGFloat = 0//-16.0
     private let kEmailBodyTextViewMarginTop: CGFloat = 16.0
     private let kSeparatorBetweenHeaderAndBodyMarginTop: CGFloat = 16.0
-    private let kHourMinuteFormat = "h:mma"
-    
+    private let kHourMinuteFormat = "h:mm a"
     
     private var tempFileUri : NSURL?
     
     func getHeight () -> CGFloat {
         
-        let y = (self.attachmentView != nil) ? self.attachmentView!.frame.origin.y : 0;
-        
-        let h = (self.attachmentView != nil) ? self.attachmentView!.frame.height : 0;
-        
-        return y + h + 10;
-        //return separatorBetweenHeaderAndBodyView.frame.origin.y + 10;
+//        let y = (self.attachmentView != nil) ? self.attachmentView!.frame.origin.y : 0;
+//        
+//        let h = (self.attachmentView != nil) ? self.attachmentView!.frame.height : 0;
+//        
+//        return y + h + 10;
+        return separatorShowImage.frame.origin.y + 6;
     }
     
     private var title : String!
@@ -110,6 +117,9 @@ class EmailHeaderView: UIView {
     
     private var date : NSDate!
     private var starred : Bool!
+    
+    private var hasExpiration : Bool = false
+    private var hasShowImageCheck : Bool = true
     
     private var fromSinglelineAttr : NSMutableAttributedString! {
         get {
@@ -222,8 +232,18 @@ class EmailHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func updateExpirationDate ( expiration : NSDate? ) {
+        if let expirTime = expiration {
+            let offset : Int = Int(expirTime.timeIntervalSinceDate(NSDate()))
+            hasExpiration = true
+            expirationView.setExpirationTime(offset)
+        } else {
+            hasExpiration = false
+        }
+    }
+    
     // MARK : Private functions
-    func updateHeaderData (title : String, sender : ContactVO, to : [ContactVO]?, cc : [ContactVO]?, bcc : [ContactVO]?, isStarred : Bool, time : NSDate?, encType : EncryptTypes, labels : [Label]?) {
+    func updateHeaderData (title : String, sender : ContactVO, to : [ContactVO]?, cc : [ContactVO]?, bcc : [ContactVO]?, isStarred : Bool, time : NSDate?, encType : EncryptTypes, labels : [Label]?, showShowImages: Bool, expiration : NSDate?) {
         self.title = title
         self.sender = sender
         self.toList = to
@@ -311,7 +331,8 @@ class EmailHeaderView: UIView {
                 }
             }
         }
-        
+        self.updateExpirationDate(expiration)
+        hasShowImageCheck = showShowImages
     }
     
     private func updateLablesDetails (labelView : UILabel, label:Label?) {
@@ -340,7 +361,6 @@ class EmailHeaderView: UIView {
             self.emailAttachmentsAmount.hidden = true
             self.emailHasAttachmentsImageView.hidden = true
         }
-        
     }
     
     func updateHeaderLayout () {
@@ -355,7 +375,9 @@ class EmailHeaderView: UIView {
     // MARK: - Subviews
     func addSubviews() {
         self.createHeaderView()
+        self.createExpirationView()
         self.createAttachmentView()
+        self.createShowImageView()
         self.createSeparator()
     }
     
@@ -369,14 +391,30 @@ class EmailHeaderView: UIView {
         self.addSubview(attachmentView!)
     }
     
+    private func createExpirationView() {
+        self.expirationView = ExpirationView()
+        self.addSubview(expirationView!)
+    }
+    
+    private func createShowImageView() {
+        self.showImageView = ShowImageView()
+        self.showImageView.actionDelegate = self
+        self.addSubview(showImageView!)
+    }
+    
     private func createSeparator() {
-        self.separatorBetweenHeaderAndBodyView = UIView()
-        self.separatorBetweenHeaderAndBodyView.backgroundColor = UIColor.ProtonMail.Gray_C9CED4
-        self.addSubview(separatorBetweenHeaderAndBodyView)
-        
-        self.separatorBetweenHeaderAndAttView = UIView()
-        self.separatorBetweenHeaderAndAttView.backgroundColor = UIColor.ProtonMail.Gray_C9CED4
-        self.addSubview(separatorBetweenHeaderAndAttView)
+        self.separatorHeader = UIView()
+        self.separatorHeader.backgroundColor = UIColor.ProtonMail.Gray_C9CED4
+        self.addSubview(separatorHeader)
+        self.separatorExpiration = UIView()
+        self.separatorExpiration.backgroundColor = UIColor.ProtonMail.Gray_C9CED4
+        self.addSubview(separatorExpiration)
+        self.separatorAttachment = UIView()
+        self.separatorAttachment.backgroundColor = UIColor.ProtonMail.Gray_C9CED4
+        self.addSubview(separatorAttachment)
+        self.separatorShowImage = UIView()
+        self.separatorShowImage.backgroundColor = UIColor.ProtonMail.Gray_C9CED4
+        self.addSubview(separatorShowImage)
     }
     
     private func createHeaderView() {
@@ -486,32 +524,79 @@ class EmailHeaderView: UIView {
     // MARK: - Subview constraints
     
     func makeConstraints() {
-        
         self.makeHeaderConstraints()
-        
+        self.updateExpirationConstraints()
+        self.updateShowImageConstraints()
         self.updateAttConstraints(false)
     }
     
-    func updateAttConstraints (animition : Bool) {
-        attachmentView!.reloadData()
-        attachmentView!.layoutIfNeeded();
-        
-        let h = self.attachmentCount > 0 ? attachmentView!.contentSize.height : 0;
-        self.separatorBetweenHeaderAndAttView.hidden = self.attachmentCount == 0
-        
-        separatorBetweenHeaderAndBodyView.mas_updateConstraints { (make) -> Void in
+    func updateExpirationConstraints() {
+        separatorHeader.mas_updateConstraints { (make) -> Void in
             make.removeExisting = true
             make.left.equalTo()(self)
             make.right.equalTo()(self)
             make.top.equalTo()(self.LabelOne.mas_bottom).with().offset()(self.kSeparatorBetweenHeaderAndBodyMarginTop)
             make.height.equalTo()(1)
         }
+        
+        let viewHeight = self.hasExpiration ? 26 : 0
+        self.expirationView.mas_updateConstraints({ (make) -> Void in
+            make.removeExisting = true
+            make.left.equalTo()(self)
+            make.right.equalTo()(self)
+            make.top.equalTo()(self.separatorHeader.mas_bottom)
+            make.height.equalTo()(viewHeight)
+        })
+        
+        let separatorHeight = self.hasExpiration ? 1 : 0
+        separatorExpiration.mas_updateConstraints { (make) -> Void in
+            make.removeExisting = true
+            make.left.equalTo()(self)
+            make.right.equalTo()(self)
+            make.top.equalTo()(self.expirationView.mas_bottom).with()
+            make.height.equalTo()(separatorHeight)
+        }
+    }
+    
+    func updateShowImageConstraints() {
+        let viewHeight = self.hasShowImageCheck ? 36 : 0
+        self.showImageView.mas_updateConstraints({ (make) -> Void in
+            make.removeExisting = true
+            make.left.equalTo()(self)
+            make.right.equalTo()(self)
+            make.top.equalTo()(self.separatorAttachment.mas_bottom)
+            make.height.equalTo()(viewHeight)
+        })
+
+        self.separatorShowImage.mas_updateConstraints({ (make) -> Void in
+            make.removeExisting = true
+            make.left.equalTo()(self)
+            make.right.equalTo()(self)
+            make.top.equalTo()(self.showImageView!.mas_bottom)
+            make.height.equalTo()(0)
+        })
+    }
+    
+    func updateAttConstraints (animition : Bool) {
+        attachmentView!.reloadData()
+        attachmentView!.layoutIfNeeded();
+        
+        let viewHeight = self.attachmentCount > 0 ? attachmentView!.contentSize.height : 0
         self.attachmentView!.mas_updateConstraints { (make) -> Void in
             make.removeExisting = true
             make.left.equalTo()(self)
             make.right.equalTo()(self)
-            make.top.equalTo()(self.separatorBetweenHeaderAndBodyView.mas_bottom)
-            make.height.equalTo()(h)
+            make.top.equalTo()(self.separatorExpiration.mas_bottom)
+            make.height.equalTo()(viewHeight)
+        }
+        
+        let separatorHeight = self.attachmentCount == 0 ? 0 : 1
+        separatorAttachment.mas_updateConstraints { (make) -> Void in
+            make.removeExisting = true
+            make.left.equalTo()(self)
+            make.right.equalTo()(self)
+            make.top.equalTo()(self.attachmentView!.mas_bottom)
+            make.height.equalTo()(separatorHeight)
         }
         
         emailIsEncryptedImageView.mas_updateConstraints { (make) -> Void in
@@ -521,19 +606,13 @@ class EmailHeaderView: UIView {
             } else {
                 make.right.equalTo()(self.emailHeaderView).offset()(-16)
             }
-            
             make.bottom.equalTo()(self.emailAttachmentsAmount)
             make.height.equalTo()(self.emailIsEncryptedImageView.frame.height)
             make.width.equalTo()(self.emailIsEncryptedImageView.frame.width)
         }
         
-        separatorBetweenHeaderAndAttView.mas_updateConstraints { (make) -> Void in
-            make.removeExisting = true
-            make.left.equalTo()(self)
-            make.right.equalTo()(self)
-            make.top.equalTo()(self.attachmentView!.mas_bottom)//.with().offset()(self.kSeparatorBetweenHeaderAndBodyMarginTop)
-            make.height.equalTo()(1)
-        }
+        self.updateExpirationConstraints()
+        self.updateShowImageConstraints()
         
         self.updateSelf(animition)
     }
@@ -784,7 +863,6 @@ class EmailHeaderView: UIView {
         self.actionsDelegate?.starredChanged(self.starred)
         self.emailFavoriteButton.selected = self.starred
     }
-    
     
     private func updateSelf(anim : Bool) {
         UIView.animateWithDuration(anim == true ? 0.3 : 0.0, animations: { () -> Void in
@@ -1097,6 +1175,13 @@ class EmailHeaderView: UIView {
 }
 
 
+extension EmailHeaderView : ShowImageViewProtocol {
+    func showImageClicked() {
+        actionsDelegate?.showImage()
+    }
+}
+
+
 extension EmailHeaderView: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -1120,16 +1205,19 @@ extension EmailHeaderView: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        
         if attachments.count > indexPath.row {
             let attachment = attachmentForIndexPath(indexPath)
             if !attachment.isDownloaded {
                 downloadAttachment(attachment, forIndexPath: indexPath)
             } else if let localURL = attachment.localURL {
                 if NSFileManager.defaultManager().fileExistsAtPath(attachment.localURL!.path!, isDirectory: nil) {
-                    let cell = tableView.cellForRowAtIndexPath(indexPath)
-                    let data: NSData = NSData(base64EncodedString: attachment.keyPacket!, options: NSDataBase64DecodingOptions(rawValue: 0))!
-                    openLocalURL(localURL, keyPackage: data, fileName: attachment.fileName, forCell: cell!)
+                    if let cell = tableView.cellForRowAtIndexPath(indexPath) {
+                        if let key_packet = attachment.keyPacket {
+                            if let data: NSData = NSData(base64EncodedString:key_packet, options: NSDataBase64DecodingOptions(rawValue: 0)) {
+                                openLocalURL(localURL, keyPackage: data, fileName: attachment.fileName, forCell: cell)
+                            }
+                        }
+                    }
                 } else {
                     attachment.localURL = nil
                     let error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
@@ -1178,9 +1266,13 @@ extension EmailHeaderView: UITableViewDelegate {
                         cell.progressView.hidden = true
                         if let localURL = attachment.localURL {
                             if NSFileManager.defaultManager().fileExistsAtPath(attachment.localURL!.path!, isDirectory: nil) {
-                                let cell = self.attachmentView!.cellForRowAtIndexPath(indexPath)
-                                let data: NSData = NSData(base64EncodedString: attachment.keyPacket!, options: NSDataBase64DecodingOptions(rawValue: 0))!
-                                self.openLocalURL(localURL, keyPackage: data, fileName: attachment.fileName, forCell: cell!)
+                                if let cell = self.attachmentView!.cellForRowAtIndexPath(indexPath) {
+                                    if let key_packet = attachment.keyPacket {
+                                        if let data: NSData = NSData(base64EncodedString:key_packet, options: NSDataBase64DecodingOptions(rawValue: 0)) {
+                                            self.openLocalURL(localURL, keyPackage: data, fileName: attachment.fileName, forCell: cell)
+                                        }
+                                    }
+                                }
                             }
                         }
                     })

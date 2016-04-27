@@ -10,6 +10,7 @@ import UIKit
 
 class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     
+    
     @IBOutlet weak var emailTextField: TextInsetTextField!
     @IBOutlet weak var verifyCodeTextField: TextInsetTextField!
     
@@ -38,6 +39,7 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     private var checkUserStatus : Bool = false
     private var stopLoading : Bool = false
     var viewModel : SignupViewModel!
+    
     private var doneClicked : Bool = false
     
     private var timer : NSTimer!
@@ -116,7 +118,7 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
             if count != 0 {
                 self.sendCodeButton.setTitle("Retry after \(count) seconds", forState: UIControlState.Normal)
             } else {
-                self.sendCodeButton.setTitle("Send Verification Code", forState: UIControlState.Normal)
+                self.sendCodeButton.setTitle(NSLocalizedString("Send Verification Code"), forState: UIControlState.Normal)
             }
             self.sendCodeButton.layoutIfNeeded()
         }
@@ -141,15 +143,15 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
         let emailaddress = emailTextField.text
         MBProgressHUD.showHUDAddedTo(view, animated: true)
         viewModel.setCodeEmail(emailaddress)
-        self.viewModel.sendVerifyCode { (isOK, error) -> Void in
+        self.viewModel.sendVerifyCode (.email) { (isOK, error) -> Void in
             MBProgressHUD.hideHUDForView(self.view, animated: true)
             if !isOK {
                 var alert :  UIAlertController!
-                var title = "Verification code request failed"
+                var title = NSLocalizedString("Verification code request failed")
                 var message = ""
                 if error?.code == 12201 { //USER_CODE_EMAIL_INVALID = 12201
-                    title = "Email address invalid"
-                    message = "Please input a valid email address."
+                    title = NSLocalizedString("Email address invalid")
+                    message = NSLocalizedString("Please input a valid email address.")
                 } else {
                     message = error!.localizedDescription
                 }
@@ -157,7 +159,7 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
                 alert.addOKAction()
                 self.presentViewController(alert, animated: true, completion: nil)
             } else {
-                let alert = UIAlertController(title: "Verification code sent", message: "Please check your email for the verification code.", preferredStyle: .Alert)
+                let alert = UIAlertController(title: NSLocalizedString("Verification code sent"), message: NSLocalizedString("Please check your email for the verification code."), preferredStyle: .Alert)
                 alert.addOKAction()
                 self.presentViewController(alert, animated: true, completion: nil)
             }
@@ -174,46 +176,46 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
         doneClicked = true;
         MBProgressHUD.showHUDAddedTo(view, animated: true)
         dismissKeyboard()
-        viewModel.setVerifyCode(verifyCodeTextField.text)
+        viewModel.setEmailVerifyCode(verifyCodeTextField.text)
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.viewModel.createNewUser { (isOK, createDone, message, error) -> Void in
-                MBProgressHUD.hideHUDForView(self.view, animated: true)
-                self.doneClicked = false
-                if !message.isEmpty {
-                    var alert :  UIAlertController!
-                    var title = "Create user failed"
-                    var message = ""
-                    if error?.code == 12081 { //USER_CREATE_NAME_INVALID = 12081
-                        title = "User name invalid"
-                        message = "Please try a different user name."
-                    } else if error?.code == 12082 { //USER_CREATE_PWD_INVALID = 12082
-                        title = "Account password invalid"
-                        message = "Please try a different password."
-                    } else if error?.code == 12083 { //USER_CREATE_EMAIL_INVALID = 12083
-                        title = "The verification email invalid"
-                        message = "Please try a different email address."
-                    } else if error?.code == 12084 { //USER_CREATE_EXISTS = 12084
-                        title = "User name exist"
-                        message = "Please try a different user name."
-                    } else if error?.code == 12085 { //USER_CREATE_DOMAIN_INVALID = 12085
-                        title = "Email domain invalid"
-                        message = "Please try a different domain."
-                    } else if error?.code == 12087 { //USER_CREATE_TOKEN_INVALID = 12087
-                        title = "Wrong verification code"
-                        message = "Please try again."
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    self.doneClicked = false
+                    if !message.isEmpty {
+                        var alert :  UIAlertController!
+                        var title = NSLocalizedString("Create user failed")
+                        var message = ""
+                        if error?.code == 12081 { //USER_CREATE_NAME_INVALID = 12081
+                            title = NSLocalizedString("User name invalid")
+                            message = NSLocalizedString("Please try a different user name.")
+                        } else if error?.code == 12082 { //USER_CREATE_PWD_INVALID = 12082
+                            title = NSLocalizedString("Account password invalid")
+                            message = NSLocalizedString("Please try a different password.")
+                        } else if error?.code == 12083 { //USER_CREATE_EMAIL_INVALID = 12083
+                            title = NSLocalizedString("The verification email invalid")
+                            message = NSLocalizedString("Please try a different email address.")
+                        } else if error?.code == 12084 { //USER_CREATE_EXISTS = 12084
+                            title = NSLocalizedString("User name exist")
+                            message = NSLocalizedString("Please try a different user name.")
+                        } else if error?.code == 12085 { //USER_CREATE_DOMAIN_INVALID = 12085
+                            title = NSLocalizedString("Email domain invalid")
+                            message = NSLocalizedString("Please try a different domain.")
+                        } else if error?.code == 12087 { //USER_CREATE_TOKEN_INVALID = 12087
+                            title = NSLocalizedString("Wrong verification code")
+                            message = NSLocalizedString("Please try again.")
+                        } else {
+                            message = error!.localizedDescription
+                        }
+                        alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+                        alert.addOKAction()
+                        self.presentViewController(alert, animated: true, completion: nil)
                     } else {
-                        message = error!.localizedDescription
-                    }
-                    alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-                    alert.addOKAction()
-                    self.presentViewController(alert, animated: true, completion: nil)
-                } else {
-                    if isOK || createDone {
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        if isOK || createDone {
                             self.performSegueWithIdentifier(self.kSegueToNotificationEmail, sender: self)
-                        })
+                        }
                     }
-                }
+                })
             }
         })
     }

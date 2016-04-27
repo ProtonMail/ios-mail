@@ -20,4 +20,10 @@ class GeneralSettingViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
 
+    
+    func configCell(left:String, right:String) {
+        LeftText.text = left
+        RightText.text = right
+    }
+    
 }

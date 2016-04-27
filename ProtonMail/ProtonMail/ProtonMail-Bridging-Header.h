@@ -38,6 +38,6 @@
 #import "NSData+MultipartResponses.h"
 #import "MultipartResponseParser.h"
 #import <MCSwipeTableViewCell.h>
-
+#import "OnePasswordExtension.h"
 
 #endif

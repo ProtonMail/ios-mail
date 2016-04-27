@@ -31,6 +31,10 @@ class ViewModelFactory {
     func getChangeSignature() -> SettingDetailsViewModel {
         fatalError("This method must be overridden")
     }
+    
+    func getChangeMobileSignature() -> SettingDetailsViewModel {
+        fatalError("This method must be overridden")
+    }
 }
 
 class ViewModelFactoryTest : ViewModelFactory {
@@ -63,6 +67,10 @@ class ViewModelFactoryProduction : ViewModelFactory {
     
     override func getChangeSignature() -> SettingDetailsViewModel {
         return ChangeSignatureViewModel()
+    }
+    
+    override func getChangeMobileSignature() -> SettingDetailsViewModel {
+        return ChangeMobileSignatureViewModel()
     }
 
 }

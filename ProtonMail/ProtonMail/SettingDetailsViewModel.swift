@@ -22,6 +22,11 @@ protocol SettingDetailsViewModel {
     func getCurrentValue() -> String
     func updateValue(new_value: String, complete:(Bool, NSError?) -> Void)
     func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void)
+    
+    func isSwitchEnabled() -> Bool
+    func isTextEnabled() -> Bool
+    
+    func getNotes() -> String
 }
 
 
@@ -68,6 +73,17 @@ class SettingDetailsViewModelTest : SettingDetailsViewModel{
     
     func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void) {
         complete(true, nil)
+    }
+    
+    func isSwitchEnabled() -> Bool {
+        return true
+    }
+    func isTextEnabled() -> Bool{
+        return true
+    }
+    
+    func getNotes() -> String {
+        return ""
     }
 }
 
@@ -123,6 +139,16 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
     func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void) {
         complete(true, nil)
     }
+    func isSwitchEnabled() -> Bool {
+        return true
+    }
+    func isTextEnabled() -> Bool {
+        return true
+    }
+    
+    func getNotes() -> String {
+        return ""
+    }
 }
 
 
@@ -140,15 +166,15 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     }
     
     func isDisplaySwitch() -> Bool {
-        return false
+        return true
     }
     
     func getSwitchText() -> String {
-        return ""
+        return "Enable Default Signature"
     }
     
     func getSwitchStatus() -> Bool {
-        return true
+        return sharedUserDataService.showDefaultSignature
     }
 
     func isShowTextView() -> Bool {
@@ -174,7 +200,95 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     }
     
     func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void) {
+        sharedUserDataService.showDefaultSignature = isOn
         complete(true, nil)
+    }
+    
+    func isSwitchEnabled() -> Bool {
+        return true
+    }
+    func isTextEnabled() -> Bool {
+        return true
+    }
+    
+    func getNotes() -> String {
+        return ""
+    }
+}
+
+class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
+    func getNavigationTitle() -> String {
+        return "Mobile Signature"
+    }
+    
+    func getTopHelpText() -> String {
+        return "Only plus user could modify default mobile signature or turn it off!"
+    }
+    
+    func getSectionTitle() -> String {
+        return "Mobile Signature"
+    }
+    
+    func isDisplaySwitch() -> Bool {
+        return true
+    }
+    
+    func getSwitchText() -> String {
+        return "Enable Mobile Signature"
+    }
+    
+    func getSwitchStatus() -> Bool {
+        return sharedUserDataService.showMobileSignature
+    }
+    
+    func isShowTextView() -> Bool {
+        return true
+    }
+    
+    func getPlaceholdText() -> String {
+        return ""
+    }
+    
+    func getCurrentValue() -> String {
+        return sharedUserDataService.mobileSignature
+    }
+    
+    func updateValue(new_value: String, complete: (Bool, NSError?) -> Void) {
+        if new_value == getCurrentValue() {
+            complete(true, nil)
+        } else {
+            sharedUserDataService.mobileSignature = new_value
+            complete(true, nil)
+        }
+    }
+    
+    func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void) {
+        if isOn == getSwitchStatus() {
+            complete(true, nil)
+        } else {
+            sharedUserDataService.showMobileSignature = isOn
+            complete(true, nil)
+        }
+    }
+    func isSwitchEnabled() -> Bool {
+        return self.getRole()
+    }
+    func isTextEnabled() -> Bool {
+        return self.getRole()
+    }
+    
+    func getNotes() -> String {
+        return self.getRole() ? "" : "ProtonMail Plus is required to customize your mobile signature"
+    }
+    
+    internal func getRole() -> Bool {
+        #if Enterprise
+            var isEnterprise = true
+        #else
+            var isEnterprise = false
+        #endif
+        
+        return sharedUserDataService.userInfo?.role > 0 || isEnterprise
     }
 }
 
@@ -242,5 +356,16 @@ class ChangeNotificationEmailViewModel : SettingDetailsViewModel{
                 }
             })
         }
+    }
+    
+    func isSwitchEnabled() -> Bool {
+        return true
+    }
+    func isTextEnabled() -> Bool {
+        return true
+    }
+    
+    func getNotes() -> String {
+        return ""
     }
 }

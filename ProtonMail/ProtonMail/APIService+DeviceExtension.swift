@@ -27,32 +27,24 @@ extension APIService {
         let tokenString = stringFromToken(token)
         deviceToken = tokenString
         deviceUID = deviceID
-        PMLog.D("\(tokenString)")
-        //UIApplication.sharedApplication().release
-        
-        // 1 : ios dev
-        // 2 : ios production
-        // 3 : ios simulator
-        
-        #if DEBUG
-            let env = 1
+
+        #if Enterprise
+            
+            #if DEBUG
+            let env = 20
             #else
-            let env = 2
+            let env = 21
+            #endif
+            
+        #else
+            
+            #if DEBUG
+                let env = 1
+                #else
+                let env = 2
+            #endif
+            
         #endif
-        
-        // 10 : android
-        
-        // 20 : ios enterprice dev
-        // 21 : ios enterprice production
-        // 23 : ios enterprice simulator
-        
-        
-//        #if DEBUG
-//            let env = 20
-//            #else
-//            let env = 21
-//        #endif
-        
         
         var ver = "1.0.0"
         if let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String {
@@ -98,11 +90,12 @@ extension APIService {
     
     func cleanBadKey(newToken : NSData) {
         let newTokenString = stringFromToken(newToken)
-        if !self.deviceToken.isEmpty {
-            if deviceUID != deviceID || newTokenString != deviceToken {
+        let oldDeviceToken = self.deviceToken
+        if !oldDeviceToken.isEmpty {
+            if (!deviceUID.isEmpty && !deviceID.isEmpty && deviceUID != deviceID) || newTokenString != oldDeviceToken {
                 let parameters = [
                     "DeviceUID": deviceUID,
-                    "DeviceToken": deviceToken
+                    "DeviceToken": oldDeviceToken
                 ]
                 
                 let completionWrapper: CompletionBlock = {task, response, error in
