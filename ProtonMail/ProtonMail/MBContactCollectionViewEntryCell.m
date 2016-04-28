@@ -50,7 +50,8 @@
     textField.delegate = self.delegate;
     textField.text = @" ";
     textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    textField.autocorrectionType = UITextAutocorrectionTypeDefault;
+    textField.autocorrectionType = UITextAutocorrectionTypeNo;
+    textField.spellCheckingType = UITextSpellCheckingTypeNo;
     textField.keyboardType =UIKeyboardTypeEmailAddress;
     
     UIFont *font = [[self.class appearance] font];
