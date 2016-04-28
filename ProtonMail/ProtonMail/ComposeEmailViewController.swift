@@ -114,7 +114,7 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     
     private func dismissKeyboard() {
         self.composeView.toContactPicker.becomeFirstResponder()
-        self.composeView.toContactPicker.resignFirstResponder()
+        //self.composeView.toContactPicker.resignFirstResponder()
     }
     
     private func updateMessageView() {
