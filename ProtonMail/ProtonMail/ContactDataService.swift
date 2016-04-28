@@ -193,8 +193,11 @@ extension ContactDataService {
             // merge address book and core data contacts
             let context = sharedCoreDataService.newManagedObjectContext()
             context.performBlockAndWait() {
-                for contact in sharedContactDataService.allContactsInManagedObjectContext(context) {
-                    contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: contact.email, isProtonMailContact: true))
+                let contactesCache = sharedContactDataService.allContactsInManagedObjectContext(context)
+                for contact in contactesCache {
+                    if contact.managedObjectContext != nil {
+                        contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: contact.email, isProtonMailContact: true))
+                    }
                 }
             }
             contacts.sort { $0.name.lowercaseString == $1.name.lowercaseString ?  $0.email.lowercaseString < $1.email.lowercaseString : $0.name.lowercaseString < $1.name.lowercaseString}
