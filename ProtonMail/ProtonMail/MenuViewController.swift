@@ -46,6 +46,7 @@ class MenuViewController: UIViewController {
     // temp vars
     private var lastSegue: String = "toMailboxSegue"
     private var lastMenuItem: MenuItem = MenuItem.inbox
+    private var sectionClicked : Bool = false
     
     // private data
     
@@ -90,6 +91,8 @@ class MenuViewController: UIViewController {
         self.revealViewController().frontViewController.view.userInteractionEnabled = false
         self.revealViewController().view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         
+        self.sectionClicked = false
+        
         updateEmailLabel()
         updateDisplayNameLabel()
         tableView.reloadData()
@@ -106,6 +109,7 @@ class MenuViewController: UIViewController {
             if (firstViewController.isKindOfClass(MailboxViewController)) {
                 let mailboxViewController: MailboxViewController = navigationController.viewControllers.first as! MailboxViewController
                 if let indexPath = sender as? NSIndexPath {
+                    PMLog.D("Menu Table Clicked -- Done")
                     let count = fetchedLabels?.fetchedObjects?.count
                     //self.lastSegue = segue.identifier!
                     if indexPath.section == 0 {
@@ -124,8 +128,12 @@ class MenuViewController: UIViewController {
         }
     }
     
-    // MARK: - Methods
+    override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
+        PMLog.D("Menu Table Clicked -- Checked")
+        return true
+    }
     
+    // MARK: - Methods
     private func setupFetchedResultsController() {
         self.fetchedLabels = sharedLabelsDataService.fetchedResultsController()
         self.fetchedLabels?.delegate = self
@@ -180,6 +188,10 @@ class MenuViewController: UIViewController {
 
 extension MenuViewController: UITableViewDelegate {
     
+    func closeMenu() {
+        self.revealViewController().revealToggleAnimated(true)
+    }
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 3
     }
@@ -190,8 +202,14 @@ extension MenuViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        if indexPath.section == 0 {
-            //inbox
+        if !self.sectionClicked {
+            self.sectionClicked = true
+        } else {
+            return
+        }
+        
+        PMLog.D("Menu Table Clicked")
+        if indexPath.section == 0 { //inbox
             self.performSegueWithIdentifier(kSegueToMailbox, sender: indexPath);
         } else if (indexPath.section == 1) {
             //others
