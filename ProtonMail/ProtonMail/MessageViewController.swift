@@ -77,20 +77,23 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     }
     
     private func updateHeader() {
-        var a = self.message.labels.allObjects
-        self.emailView?.updateHeaderData(self.message.subject,
-            sender: ContactVO(id: "", name: self.message.senderName, email: self.message.sender),
-            to: self.message.recipientList.toContacts(),
-            cc: self.message.ccList.toContacts(),
-            bcc: self.message.bccList.toContacts(),
-            isStarred: self.message.isStarred,
-            time: self.message.time,
-            encType: self.message.encryptType,
-            labels : self.message.labels.allObjects as? [Label],
-            
-            showShowImages: self.needShowShowImageView,
-            expiration: self.message.expirationTime
-        )
+        if let context = self.message.managedObjectContext {
+            var a = self.message.labels.allObjects
+            self.emailView?.updateHeaderData(self.message.subject,
+                sender: ContactVO(id: "", name: self.message.senderName, email: self.message.sender),
+                to: self.message.recipientList.toContacts(),
+                cc: self.message.ccList.toContacts(),
+                bcc: self.message.bccList.toContacts(),
+                isStarred: self.message.isStarred,
+                time: self.message.time,
+                encType: self.message.encryptType,
+                labels : self.message.labels.allObjects as? [Label],
+                showShowImages: self.needShowShowImageView,
+                expiration: self.message.expirationTime
+            )
+        } else {
+            PMLog.D(" MessageViewController self.message.managedObjectContext == nil")
+        }
     }
     
     func dismissed() {
