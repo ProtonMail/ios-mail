@@ -244,8 +244,7 @@ extension Message {
     
     func copyMessage (copyAtts : Bool) -> Message {
         let message = self
-        
-        let newMessage = Message(context: sharedCoreDataService.newMainManagedObjectContext())
+        let newMessage = Message(context: sharedCoreDataService.mainManagedObjectContext!)
         newMessage.location = MessageLocation.draft
         newMessage.recipientList = message.recipientList
         newMessage.bccList = message.bccList
@@ -267,7 +266,6 @@ extension Message {
         if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D("error: \(error)")
         }
-        
         if copyAtts {
             for (index, attachment) in enumerate(message.attachments) {
                 if let att = attachment as? Attachment {
@@ -282,11 +280,9 @@ extension Message {
                     if let error = attachment.managedObjectContext?.saveUpstreamIfNeeded() {
                         PMLog.D("error: \(error)")
                     }
-                    
                 }
             }
         }
-        
         return newMessage
     }
     
