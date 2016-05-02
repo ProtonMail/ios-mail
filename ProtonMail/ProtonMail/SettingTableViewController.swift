@@ -460,7 +460,7 @@ class SettingTableViewController: ProtonMailViewController {
                     
                     let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
                     var  hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
-                    hud.labelText = NSLocalizedString("Reseting message cache ...")
+                    hud.labelText = NSLocalizedString("Resetting message cache ...")
                     hud.removeFromSuperViewOnHide = true
                     //                hud.margin = 10
                     //                hud.yOffset = 150
