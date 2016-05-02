@@ -106,6 +106,11 @@ class MailboxPasswordViewController: UIViewController {
             decryptWidthConstraint.constant = 200
             decryptMidConstraint.constant = 0
         }
+        
+        if let pwdTxt = passwordTextField.text {
+            decryptButton.enabled = !pwdTxt.isEmpty
+            updateButton(decryptButton)
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
