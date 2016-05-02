@@ -481,7 +481,6 @@ class SignInViewController: UIViewController {
     
     func clean()
     {
-        UserTempCachedStatus.backup()
         sharedUserDataService.signOut(true)
         userCachedStatus.signOut()
         sharedMessageDataService.launchCleanUpIfNeeded();
@@ -533,6 +532,7 @@ class SignInViewController: UIViewController {
 extension SignInViewController : PinCodeViewControllerDelegate {
     
     func Cancel() {
+        UserTempCachedStatus.backup()
         clean()
     }
     

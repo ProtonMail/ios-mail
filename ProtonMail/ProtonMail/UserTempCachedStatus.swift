@@ -76,7 +76,6 @@ class UserTempCachedStatus: NSObject, NSCoding {
             autoLockTime: userCachedStatus.lockTime,
             showMobileSignature: sharedUserDataService.showMobileSignature,
             localMobileSignature: userCachedStatus.mobileSignature)
-        
         u.storeInKeychain()
     }
     
