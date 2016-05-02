@@ -163,6 +163,7 @@ class MenuViewController: UIViewController {
         alertController.popoverPresentationController?.sourceView = sender ?? self.view
         alertController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.bounds)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
+        self.sectionClicked = false
         presentViewController(alertController, animated: true, completion: nil)
     }
     

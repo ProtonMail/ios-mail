@@ -182,6 +182,7 @@ class SignInViewController: UIViewController {
             //            }
             
             if !username.isEmpty && !password.isEmpty {
+                self.updateSignInButton(usernameText: self.usernameTextField.text, passwordText: self.passwordTextField.text)
                 self.signIn()
             }
         })
@@ -340,6 +341,7 @@ class SignInViewController: UIViewController {
         self.usernameView.alpha = 0.0
         self.passwordView.alpha = 0.0
         self.signInButton.alpha = 0.0
+        self.onePasswordButton.alpha = 0.0
     }
     
     private func ShowLoginViews()
@@ -349,6 +351,7 @@ class SignInViewController: UIViewController {
             self.usernameView.alpha = 1.0
             self.passwordView.alpha = 1.0
             self.signInButton.alpha = 1.0
+            self.onePasswordButton.alpha = 1.0
             
             }, completion: { finished in
         })
@@ -409,6 +412,7 @@ class SignInViewController: UIViewController {
         //        }
         
         //        self.secureStore.secret = "This is a test secret";
+        
         sharedUserDataService.signIn(username, password: password, isRemembered: isRemembered) { _, error in
             MBProgressHUD.hideHUDForView(self.view, animated: true)
             if let error = error {

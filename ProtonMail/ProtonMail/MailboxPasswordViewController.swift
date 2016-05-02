@@ -176,7 +176,9 @@ class MailboxPasswordViewController: UIViewController {
             //                })
             //            }
             
-            if !username.isEmpty && !password.isEmpty {
+            if !password.isEmpty {
+                self.decryptButton.enabled = !password.isEmpty
+                self.updateButton(self.decryptButton)
                 self.decryptPassword()
             }
         })
