@@ -84,6 +84,7 @@ public class MailboxViewModelImpl : MailboxViewModel {
         case .trash, .spam:
             msg.location = .deleted
         default:
+            self.updateBadgeNumberMoveOutInbox(msg)
             msg.location = .trash
         }
         msg.needsUpdate = true

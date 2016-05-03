@@ -575,8 +575,10 @@ class MailboxViewController: ProtonMailViewController {
         if undoMessage != nil {
             if let context = fetchedResultsController?.managedObjectContext {
                 if let message = Message.messageForMessageID(undoMessage!.messageID, inManagedObjectContext: context) {
+                    viewModel.updateBadgeNumberMoveOutInbox(message)
                     message.location = undoMessage!.oldLocation
                     message.needsUpdate = true
+                    viewModel.updateBadgeNumberMoveInInbox(message)
                     if let error = context.saveUpstreamIfNeeded() {
                         NSLog("\(__FUNCTION__) error: \(error)")
                     }

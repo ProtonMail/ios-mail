@@ -35,6 +35,7 @@ public class MailboxViewModel {
     }
     
     public func archiveMessage(msg: Message) {
+        self.updateBadgeNumberMoveOutInbox(msg)
         msg.location = .archive
         msg.needsUpdate = true
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
@@ -43,6 +44,7 @@ public class MailboxViewModel {
     }
     
     public func spamMessage(msg: Message) {
+        self.updateBadgeNumberMoveOutInbox(msg)
         msg.location = .spam
         msg.needsUpdate = true
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
@@ -55,6 +57,32 @@ public class MailboxViewModel {
         msg.needsUpdate = true
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
             NSLog("\(__FUNCTION__) error: \(error)")
+        }
+    }
+    
+    func updateBadgeNumberMoveOutInbox(message : Message) {
+        if message.location == .inbox {
+            var count = lastUpdatedStore.unreadCountForKey(.inbox)
+            let offset = message.isRead ? 0 : -1
+            count = count + offset
+            if count < 0 {
+                count = 0
+            }
+            lastUpdatedStore.updateUnreadCountForKey(.inbox, count: count)
+            UIApplication.sharedApplication().applicationIconBadgeNumber = count
+        }
+    }
+    
+    func updateBadgeNumberMoveInInbox(message : Message) {
+        if message.location == .inbox {
+            var count = lastUpdatedStore.unreadCountForKey(.inbox)
+            let offset = message.isRead ? 0 : 1
+            count = count + offset
+            if count < 0 {
+                count = 0
+            }
+            lastUpdatedStore.updateUnreadCountForKey(.inbox, count: count)
+            UIApplication.sharedApplication().applicationIconBadgeNumber = count
         }
     }
     
