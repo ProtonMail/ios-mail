@@ -90,20 +90,24 @@ class PinCodeViewController : UIViewController {
                     }
                 }
                 else{
-                    println(evalPolicyError?.localizedDescription)
-                    switch evalPolicyError!.code {
-                    case LAError.SystemCancel.rawValue:
-                        println("Authentication was cancelled by the system")
-                        "Authentication was cancelled by the system".alertToast()
-                    case LAError.UserCancel.rawValue:
-                        println("Authentication was cancelled by the user")
-                    case LAError.UserFallback.rawValue:
-                        println("User selected to enter custom password")
-                        //self.showPasswordAlert()
-                    default:
-                        println("Authentication failed")
-                        //self.showPasswordAlert()
-                        "Authentication failed".alertToast()
+                    dispatch_async(dispatch_get_main_queue()) {
+                        
+                        println(evalPolicyError?.localizedDescription)
+                        switch evalPolicyError!.code {
+                        case LAError.SystemCancel.rawValue:
+                            println("Authentication was cancelled by the system")
+                            "Authentication was cancelled by the system".alertToast()
+                        case LAError.UserCancel.rawValue:
+                            println("Authentication was cancelled by the user")
+                        case LAError.UserFallback.rawValue:
+                            println("User selected to enter custom password")
+                            //self.showPasswordAlert()
+                        default:
+                            println("Authentication failed")
+                            //self.showPasswordAlert()
+                            "Authentication failed".alertToast()
+                        }
+                        
                     }
                 }
             })]
