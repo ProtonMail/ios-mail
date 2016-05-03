@@ -357,18 +357,36 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
 extension MessageViewController : MessageDetailBottomViewProtocol {
     
     func replyClicked() {
-        self.actionTapped = ComposeMessageAction.Reply
-        self.performSegueWithIdentifier("toCompose", sender: self)
+        if self.message.isDetailDownloaded {
+            self.actionTapped = ComposeMessageAction.Reply
+            self.performSegueWithIdentifier("toCompose", sender: self)
+        } else {
+            self.showAlertWhenNoDetails()
+        }
     }
     
     func replyAllClicked() {
-        actionTapped = ComposeMessageAction.ReplyAll
-        self.performSegueWithIdentifier("toCompose", sender: self)
+        if self.message.isDetailDownloaded {
+            actionTapped = ComposeMessageAction.ReplyAll
+            self.performSegueWithIdentifier("toCompose", sender: self)
+        } else {
+            self.showAlertWhenNoDetails()
+        }
     }
     
     func forwardClicked() {
-        actionTapped = ComposeMessageAction.Forward
-        self.performSegueWithIdentifier("toCompose", sender: self)
+        if self.message.isDetailDownloaded {
+            actionTapped = ComposeMessageAction.Forward
+            self.performSegueWithIdentifier("toCompose", sender: self)
+        } else {
+            self.showAlertWhenNoDetails()
+        }
+    }
+    
+    func showAlertWhenNoDetails() {
+        var alert = NSLocalizedString("Please wait until the email downloaded!").alertController();
+        alert.addOKAction()
+        self.presentViewController(alert, animated: true, completion: nil)
     }
 }
 
