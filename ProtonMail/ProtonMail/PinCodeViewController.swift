@@ -45,13 +45,15 @@ class PinCodeViewController : UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        let value = UIInterfaceOrientation.Portrait.rawValue
+        UIDevice.currentDevice().setValue(value, forKey: "orientation")
         navigationController?.setNavigationBarHidden(true, animated: true)
-        pinCodeView.updateCorner()
-        
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        self.view.layoutIfNeeded()
+        pinCodeView.updateCorner()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -66,7 +68,6 @@ class PinCodeViewController : UIViewController {
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent;
     }
-    
     
     func authenticateUser() {
         let savedEmail = userCachedStatus.touchIDEmail
