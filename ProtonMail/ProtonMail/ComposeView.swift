@@ -395,7 +395,7 @@ class ComposeView: UIViewController {
     
     internal func showPasswordAndConfirmDoesntMatch(error : String) {
         self.errorView.backgroundColor = UIColor.ProtonMail.Red_FF5959
-
+        
         self.errorView.mas_updateConstraints { (update) -> Void in
             update.removeExisting = true
             update.left.equalTo()(self.selfView)

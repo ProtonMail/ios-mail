@@ -54,7 +54,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
         sharedMessageDataService.deleteAttachment(message?.messageID ?? "", att: att)
         self.updateDraft()
     }
-  
+    
     override func getAttachments() -> [Attachment]? {
         return self.message?.attachments.allObjects as? [Attachment]
     }
@@ -123,7 +123,17 @@ public class ComposeViewModelImpl : ComposeViewModel {
                         self.toSelectedContacts.append(cont)
                     }
                 } else {
-                    let sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.sender)
+                    var sender : ContactVO!
+                    if let replyToContact = self.toContact(self.message!.replyTo ?? "") {
+                        sender = replyToContact
+                    } else {
+                        if let newSender = self.toContact(self.message!.senderObject ?? "") {
+                            sender = newSender
+                        } else {
+                            sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.senderAddress)
+                        }
+                    }
+                    
                     self.toSelectedContacts.append(sender)
                 }
             case .ReplyAll:
@@ -138,11 +148,21 @@ public class ComposeViewModelImpl : ComposeViewModel {
                     }
                 } else {
                     let userAddress = sharedUserDataService.userAddresses
-                    let sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.sender)
+                    var sender : ContactVO!
+                    if let replyToContact = self.toContact(self.message!.replyTo ?? "") {
+                        sender = replyToContact
+                    } else {
+                        if let newSender = self.toContact(self.message!.senderObject ?? "") {
+                            sender = newSender
+                        } else {
+                            sender = ContactVO(id: "", name: self.message!.senderName, email: self.message!.senderAddress)
+                        }
+                    }
                     
                     if  !sender.isDuplicated(userAddress) {
                         self.toSelectedContacts.append(sender)
                     }
+                    
                     let toContacts = self.toContacts(self.message!.recipientList)
                     for cont in toContacts {
                         if  !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
@@ -257,13 +277,13 @@ public class ComposeViewModelImpl : ComposeViewModel {
             body = body.stringByPurifyHTML()
             
             let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
-            let replyHeader = time + ", " + message!.senderName + " <'\(message!.sender)'>"
+            let replyHeader = time + ", " + message!.senderContactVO.name + " <'\(message!.senderContactVO.email)'>"
             let sp = "<div><br><div><div><br></div>\(replyHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
             return "\(htmlString) \(sp) \(body)</blockquote>"
         case .Forward:
             //composeView.subject.text = "Fwd: \(message.title)"
             let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
-            var forwardHeader = "---------- Forwarded message ----------<br>From: \(message!.senderName)<br>Date: \(time)<br>Subject: \(message!.title)<br>"
+            var forwardHeader = "---------- Forwarded message ----------<br>From: \( message!.senderContactVO.name) <'\(message!.senderContactVO.email)'> <br>Date: \(time)<br>Subject: \(message!.title)<br>"
             if message!.recipientList != "" {
                 forwardHeader += "To: \(message!.recipientList.formatJsonContact())<br>"
             }
@@ -285,7 +305,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
         default:
             return htmlString
         }
-
+        
     }
     
 }
@@ -307,11 +327,43 @@ extension ComposeViewModelImpl {
     func toContacts(json : String) -> [ContactVO] {
         
         var out : [ContactVO] = [ContactVO]();
+        
         let recipients : [[String : String]] = json.parseJson()!
         for dict:[String : String] in recipients {
             out.append(ContactVO(id: "", name: dict["Name"], email: dict["Address"]))
         }
         return out
+    }
+    
+    func toContact(json : String) -> ContactVO? {
+        var out : ContactVO? = nil
+        let recipients : [String : String] = self.parse(json)
+        
+        let name = recipients["Name"] ?? ""
+        let address = recipients["Address"] ?? ""
+        
+        if !address.isEmpty {
+            out = ContactVO(id: "", name: name, email: address)
+        }
+        return out
+    }
+    
+    func parse (json : String) -> [String:String] {
+        var error: NSError?
+        if json.isEmpty {
+            return ["" : ""];
+        }
+        
+        let data : NSData! = json.dataUsingEncoding(NSUTF8StringEncoding)
+        let decoded = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error:  &error) as? [String:String]
+        
+        
+        if error != nil {
+            PMLog.D(" func parseJson() -> error error \(error)")
+            return ["":""]
+        }
+        
+        return decoded!
     }
 }
 

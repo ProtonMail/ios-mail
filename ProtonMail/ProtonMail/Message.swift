@@ -39,9 +39,11 @@ public class Message: NSManagedObject {
     @NSManaged var passwordEncryptedBody: String
     @NSManaged var password: String
     @NSManaged var passwordHint: String
+    @NSManaged var replyTo: String?
+    @NSManaged var senderObject: String?
     @NSManaged var recipientList: String
     @NSManaged var recipientNameList: String
-    @NSManaged var sender: String
+    @NSManaged var senderAddress: String
     @NSManaged var senderName: String
     @NSManaged var spamScore: NSNumber
     @NSManaged var tag: String

@@ -223,7 +223,13 @@
                 <entry key="JSONKeyPath" value="RecipientNameList"/>
             </userInfo>
         </attribute>
-        <attribute name="sender" attributeType="String" syncable="YES">
+        <attribute name="replyTo" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="ReplyTo"/>
+                <entry key="JSONTransformerName" value="JsonToObjectTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="senderAddress" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="SenderAddress"/>
             </userInfo>
@@ -231,6 +237,12 @@
         <attribute name="senderName" attributeType="String" indexed="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="SenderName"/>
+            </userInfo>
+        </attribute>
+        <attribute name="senderObject" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Sender"/>
+                <entry key="JSONTransformerName" value="JsonToObjectTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="spamScore" attributeType="Integer 32" defaultValueString="0" syncable="YES">
@@ -280,6 +292,6 @@
         <element name="Attachment" positionX="1989" positionY="-3666" width="128" height="180"/>
         <element name="Contact" positionX="1521" positionY="-3564" width="128" height="90"/>
         <element name="Label" positionX="2095" positionY="-3357" width="128" height="135"/>
-        <element name="Message" positionX="1717" positionY="-3867" width="128" height="690"/>
+        <element name="Message" positionX="1717" positionY="-3867" width="128" height="720"/>
     </elements>
 </model>

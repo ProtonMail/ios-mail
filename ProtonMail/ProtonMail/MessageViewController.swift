@@ -79,8 +79,9 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     private func updateHeader() {
         if let context = self.message.managedObjectContext {
             var a = self.message.labels.allObjects
+            
             self.emailView?.updateHeaderData(self.message.subject,
-                sender: ContactVO(id: "", name: self.message.senderName, email: self.message.sender),
+                sender: self.message.senderContactVO,
                 to: self.message.recipientList.toContacts(),
                 cc: self.message.ccList.toContacts(),
                 bcc: self.message.bccList.toContacts(),

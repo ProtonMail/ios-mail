@@ -28,6 +28,7 @@ extension Message {
         static let messageID = "messageID"
         static let recipientList = "recipientList"
         static let senderName = "senderName"
+        static let newSenderName = "newSender"
         static let time = "time"
         static let title = "title"
         static let labels = "labels"
@@ -84,12 +85,13 @@ extension Message {
     }
     
     var subject : String {
-        return title //.decodeHtml()
+        return title
     }
     
     var displaySender : String {
         get {
-            return senderName.isEmpty ?  sender : senderName
+            let sc = senderContactVO
+            return sc.name.isEmpty ?  sc.email : sc.name
         }
         
     }
@@ -242,6 +244,16 @@ extension Message {
         }
     }
     
+    var senderContactVO : ContactVO! {
+        var sender : ContactVO!
+//        if let beforeParsed = self.newSender, paserdNewSender = beforeParsed.toContact() {
+//            sender = paserdNewSender
+//        } else {
+            sender = ContactVO(id: "", name: self.senderName, email: self.senderAddress)
+//        }
+        return sender
+    }
+    
     func copyMessage (copyAtts : Bool) -> Message {
         let message = self
         let newMessage = Message(context: sharedCoreDataService.mainManagedObjectContext!)
@@ -253,8 +265,10 @@ extension Message {
         newMessage.time = NSDate()
         newMessage.body = message.body
         newMessage.isEncrypted = message.isEncrypted
-        newMessage.sender = message.sender
+        newMessage.senderAddress = message.senderAddress
         newMessage.senderName = message.senderName
+        newMessage.senderObject = message.senderObject
+        newMessage.replyTo = message.replyTo
         
         newMessage.orginalTime = message.time
         newMessage.orginalMessageID = message.messageID
