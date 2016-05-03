@@ -39,7 +39,17 @@ extension APIService {
                 if let error = res?.error {
                     if error.isInternetError() {
                         completion?(task: task, hasError: NSError.internetError())
-                        return;
+                        return
+                    } else {
+                        if let errorUserInfo = error.userInfo {
+                            if let detail = errorUserInfo["com.alamofire.serialization.response.error.response"] as? NSHTTPURLResponse {
+                                let code = detail.statusCode
+                                if code != 200 {
+                                    completion?(task: task, hasError: error)
+                                    return
+                                }
+                            }
+                        }
                     }
                 }
                 completion?(task: task, hasError: NSError.authInvalidGrant())
