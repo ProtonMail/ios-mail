@@ -111,6 +111,15 @@ class SettingTableViewController: ProtonMailViewController {
         }
     }
     
+    internal func updateTableProtectionSection() {
+        if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
+            setting_protection_items = [.TouchID, .PinCode, .EnterTime]
+        } else {
+            setting_protection_items = [.TouchID, .PinCode]
+        }
+        self.settingTableView.reloadData()
+    }
+    
     // MARK: - Table view data source
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return setting_headers.count
@@ -242,6 +251,7 @@ class SettingTableViewController: ProtonMailViewController {
                                     if context.canEvaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, error: &error) {
                                         userCachedStatus.isTouchIDEnabled = true
                                         userCachedStatus.touchIDEmail = sharedUserDataService.username ?? ""
+                                        self.updateTableProtectionSection();
                                     }
                                     else{
                                         var alertString : String = "";
@@ -263,6 +273,7 @@ class SettingTableViewController: ProtonMailViewController {
                                 } else {
                                     userCachedStatus.isTouchIDEnabled = false
                                     userCachedStatus.touchIDEmail = ""
+                                    self.updateTableProtectionSection();
                                 }
                             } else {
                                 feedback(isOK: false)
@@ -284,6 +295,7 @@ class SettingTableViewController: ProtonMailViewController {
                                 } else {
                                     userCachedStatus.isPinCodeEnabled = false
                                     feedback(isOK: true)
+                                    self.updateTableProtectionSection();
                                 }
                             } else {
                                 feedback(isOK: false)
