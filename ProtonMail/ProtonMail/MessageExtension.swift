@@ -28,7 +28,7 @@ extension Message {
         static let messageID = "messageID"
         static let recipientList = "recipientList"
         static let senderName = "senderName"
-        static let newSenderName = "newSender"
+        static let senderObject = "senderObject"
         static let time = "time"
         static let title = "title"
         static let labels = "labels"
