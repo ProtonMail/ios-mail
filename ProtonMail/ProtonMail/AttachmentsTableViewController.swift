@@ -127,6 +127,8 @@ class AttachmentsTableViewController: UITableViewController {
             ]
             let importMenu = UIDocumentMenuViewController(documentTypes: types, inMode: .Import)
             importMenu.delegate = self
+            importMenu.popoverPresentationController?.barButtonItem = sender
+            importMenu.popoverPresentationController?.sourceRect = self.view.frame
             // importMenu.addOptionWithTitle("Create New Document", image: nil, order: .First, handler: { println("New Doc Requested") })
             self.presentViewController(importMenu, animated: true, completion: nil)
         }))
