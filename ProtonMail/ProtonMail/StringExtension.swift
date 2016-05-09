@@ -475,6 +475,35 @@ extension String {
         return out
     }
     
+    func toContact() -> ContactVO? {
+        var out : ContactVO? = nil
+        let recipients : [String : String] = self.parseObject()
+        
+        let name = recipients["Name"] ?? ""
+        let address = recipients["Address"] ?? ""
+        
+        if !address.isEmpty {
+            out = ContactVO(id: "", name: name, email: address)
+        }
+        return out
+    }
+    
+    func parseObject () -> [String:String] {
+        var error: NSError?
+        if self.isEmpty {
+            return ["" : ""];
+        }
+        
+        let data : NSData! = self.dataUsingEncoding(NSUTF8StringEncoding)
+        let decoded = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error:  &error) as? [String:String]
+        
+        
+        if error != nil {
+            PMLog.D(" func parseJson() -> error error \(error)")
+            return ["":""]
+        }
+        return decoded!
+    }
 }
 
 

@@ -79,8 +79,9 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     private func updateHeader() {
         if let context = self.message.managedObjectContext {
             var a = self.message.labels.allObjects
+            
             self.emailView?.updateHeaderData(self.message.subject,
-                sender: ContactVO(id: "", name: self.message.senderName, email: self.message.sender),
+                sender: self.message.senderContactVO,
                 to: self.message.recipientList.toContacts(),
                 cc: self.message.ccList.toContacts(),
                 bcc: self.message.bccList.toContacts(),
@@ -356,18 +357,36 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
 extension MessageViewController : MessageDetailBottomViewProtocol {
     
     func replyClicked() {
-        self.actionTapped = ComposeMessageAction.Reply
-        self.performSegueWithIdentifier("toCompose", sender: self)
+        if self.message.isDetailDownloaded {
+            self.actionTapped = ComposeMessageAction.Reply
+            self.performSegueWithIdentifier("toCompose", sender: self)
+        } else {
+            self.showAlertWhenNoDetails()
+        }
     }
     
     func replyAllClicked() {
-        actionTapped = ComposeMessageAction.ReplyAll
-        self.performSegueWithIdentifier("toCompose", sender: self)
+        if self.message.isDetailDownloaded {
+            actionTapped = ComposeMessageAction.ReplyAll
+            self.performSegueWithIdentifier("toCompose", sender: self)
+        } else {
+            self.showAlertWhenNoDetails()
+        }
     }
     
     func forwardClicked() {
-        actionTapped = ComposeMessageAction.Forward
-        self.performSegueWithIdentifier("toCompose", sender: self)
+        if self.message.isDetailDownloaded {
+            actionTapped = ComposeMessageAction.Forward
+            self.performSegueWithIdentifier("toCompose", sender: self)
+        } else {
+            self.showAlertWhenNoDetails()
+        }
+    }
+    
+    func showAlertWhenNoDetails() {
+        var alert = NSLocalizedString("Please wait until the email downloaded!").alertController();
+        alert.addOKAction()
+        self.presentViewController(alert, animated: true, completion: nil)
     }
 }
 

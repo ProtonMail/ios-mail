@@ -842,17 +842,21 @@ class MessageDataService {
                                 msg.removeValueForKey("Location")
                                 msg.removeValueForKey("Starred")
                                 msg.removeValueForKey("test")
-                                let message_n = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg, inManagedObjectContext: message.managedObjectContext!, error: &tempError) as! Message
-                                if tempError == nil {
-                                    message.messageStatus = 1
-                                    message.isDetailDownloaded = true
-                                    message.needsUpdate = true
-                                    message.isRead = true
-                                    message.managedObjectContext?.saveUpstreamIfNeeded()
+                                if let message_n = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg, inManagedObjectContext: context, error: &tempError) as? Message {
+                                    message_n.messageStatus = 1
+                                    message_n.isDetailDownloaded = true
+                                    message_n.needsUpdate = true
+                                    message_n.isRead = true
+                                    //message_n.managedObjectContext?.saveUpstreamIfNeeded()
                                     tempError = context.saveUpstreamIfNeeded()
                                     dispatch_async(dispatch_get_main_queue()) {
-                                        completion(task: task, response: response, message: message, error: tempError)
+                                        completion(task: task, response: response, message: message_n, error: tempError)
                                     }
+                                } else {
+                                    if tempError != nil {
+                                        completion(task: task, response: response, message:nil, error: tempError)
+                                    }
+                                    PMLog.D("fetchMessageDetailForMessage error")
                                 }
                             } else {
                                 completion(task: task, response: response, message:nil, error: NSError.badResponse())

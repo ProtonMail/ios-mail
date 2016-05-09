@@ -104,7 +104,6 @@ class ComposeEmailViewController: ZSSRichTextEditor {
                 self.composeView.toContactPicker.becomeFirstResponder()
                 break
             }
-            
         }
     }
     
@@ -254,8 +253,8 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     
     @IBAction func cancel_clicked(sender: UIBarButtonItem) {
         
-        self.dismissKeyboard()
         let dismiss: (() -> Void) = {
+            self.dismissKeyboard()
             if self.presentingViewController != nil {
                 self.dismissViewControllerAnimated(true, completion: nil)
             } else {

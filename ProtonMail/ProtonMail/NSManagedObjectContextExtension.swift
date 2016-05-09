@@ -27,7 +27,9 @@ extension NSManagedObjectContext {
             var error: NSError?
             if let objects = self.executeFetchRequest(fetchRequest, error: &error) {
                 for object in objects as! [NSManagedObject] {
-                    self.deleteObject(object)
+                    if object.managedObjectContext != nil {
+                        self.deleteObject(object)
+                    }
                 }
                 NSLog("\(__FUNCTION__) Deleted \(objects.count) objects.")
                 if let error = self.saveUpstreamIfNeeded() {

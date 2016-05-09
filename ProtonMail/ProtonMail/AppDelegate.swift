@@ -96,18 +96,32 @@ extension SWRevealViewController {
 // MARK: - UIApplicationDelegate
 
 extension AppDelegate: UIApplicationDelegate {
-//    func application(application: UIApplication, supportedInterfaceOrientationsForWindow window: UIWindow?) -> Int {
-//        if self.window?.rootViewController?.presentedViewController is QuickViewViewController {
-//            let secondController = self.window!.rootViewController!.presentedViewController as! QuickViewViewController
-//            if secondController.isPresented {
-//                return Int(UIInterfaceOrientationMask.All.rawValue);
-//            } else {
-//                return Int(UIInterfaceOrientationMask.Portrait.rawValue);
-//            }
-//        } else {
-//            return Int(UIInterfaceOrientationMask.Portrait.rawValue | UIInterfaceOrientationMask.PortraitUpsideDown.rawValue);
-//        }
-//    }
+    func application(application: UIApplication, supportedInterfaceOrientationsForWindow window: UIWindow?) -> Int {
+        return self.checkOrientation(self.window?.rootViewController)
+    }
+    
+    func checkOrientation (viewController: UIViewController?) -> Int {
+        if viewController == nil {
+            return Int(UIInterfaceOrientationMask.All.rawValue)
+        } else if (viewController is UINavigationController) {
+            if let nav = viewController as? UINavigationController {
+                if (nav.topViewController.isKindOfClass(PinCodeViewController)) {
+                    return Int(UIInterfaceOrientationMask.Portrait.rawValue)
+                }
+            }
+            return Int(UIInterfaceOrientationMask.All.rawValue)
+        }
+        else {
+            if let sw = viewController as? SWRevealViewController {
+                if let nav = sw.frontViewController as? UINavigationController {
+                    if (nav.topViewController.isKindOfClass(PinCodeViewController)) {
+                        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
+                    }
+                }
+            }
+            return  Int(UIInterfaceOrientationMask.All.rawValue)
+        }
+    }
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         Fabric.with([Crashlytics()])
