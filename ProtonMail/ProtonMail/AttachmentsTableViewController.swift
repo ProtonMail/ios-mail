@@ -262,52 +262,57 @@ extension AttachmentsTableViewController: UIDocumentPickerDelegate {
 extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
-        let url = info[UIImagePickerControllerReferenceURL] as? NSURL
-        let library = ALAssetsLibrary()
-        library.assetForURL(url, resultBlock:
-            { (asset: ALAsset!) -> Void in
-                var rep = asset.defaultRepresentation()
-                let length = Int(rep.size())
-                if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
-                    var error: NSError?
-                    let from = Int64(0)
-                    let data = NSMutableData(length: length)!
-                    let numRead = rep.getBytes(UnsafeMutablePointer(data.mutableBytes), fromOffset: from, length: length, error: &error)
-                    
-                    picker.dismissViewControllerAnimated(true, completion: nil)
-                    
-                    if let er = error {
-                        self.showErrorAlert("Can't copy the file")
-                        self.delegate?.attachments(self, error:"Can't copy the file")
-                        PMLog.D(" Error during copying \(er)")
-                    } else {
-                        if numRead > 0 {
-                            var fileName = rep.filename()
-                            let mimeType = rep.UTI()
-                            
-                            let attachment = data.toAttachment(self.message, fileName: fileName, type: mimeType)
-                            self.attachments.append(attachment!)
-                            self.delegate?.attachments(self, didPickedAttachment: attachment!)
-                        } else {
-                            PMLog.D(" Error during copying size incorrect")
+        if let url = info[UIImagePickerControllerReferenceURL] as? NSURL {
+            let library = ALAssetsLibrary()
+            library.assetForURL(url, resultBlock:
+                { (asset: ALAsset!) -> Void in
+                    var rep = asset.defaultRepresentation()
+                    let length = Int(rep.size())
+                    if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
+                        var error: NSError?
+                        let from = Int64(0)
+                        let data = NSMutableData(length: length)!
+                        let numRead = rep.getBytes(UnsafeMutablePointer(data.mutableBytes), fromOffset: from, length: length, error: &error)
+                        picker.dismissViewControllerAnimated(true, completion: nil)
+                        if let er = error {
                             self.showErrorAlert("Can't copy the file")
                             self.delegate?.attachments(self, error:"Can't copy the file")
+                            PMLog.D(" Error during copying \(er)")
+                        } else {
+                            if numRead > 0 {
+                                var fileName = rep.filename()
+                                let mimeType = rep.UTI()
+                                
+                                let attachment = data.toAttachment(self.message, fileName: fileName, type: mimeType)
+                                self.attachments.append(attachment!)
+                                self.delegate?.attachments(self, didPickedAttachment: attachment!)
+                            } else {
+                                PMLog.D(" Error during copying size incorrect")
+                                self.showErrorAlert("Can't copy the file")
+                                self.delegate?.attachments(self, error:"Can't copy the file")
+                            }
                         }
+                        
+                    } else {
+                        picker.dismissViewControllerAnimated(true, completion: nil)
+                        self.showSizeErrorAlert(0)
+                        self.delegate?.attachments(self, didReachedSizeLimitation:0)
+                        PMLog.D(" Size too big Orig: \(length) -- Limit: \(self.kDefaultAttachmentFileSize)")
                     }
-                    
-                } else {
+                    self.tableView.reloadData()
+                })  { (error:NSError!) -> Void in
                     picker.dismissViewControllerAnimated(true, completion: nil)
-                    self.showSizeErrorAlert(0)
-                    self.delegate?.attachments(self, didReachedSizeLimitation:0)
-                    PMLog.D(" Size too big Orig: \(length) -- Limit: \(self.kDefaultAttachmentFileSize)")
-                }
-                self.tableView.reloadData()
-            })  { (error:NSError!) -> Void in
-                picker.dismissViewControllerAnimated(true, completion: nil)
-                self.showErrorAlert("Can't copy the file")
-                self.delegate?.attachments(self, error:"Can't copy the file")
-                PMLog.D(" Error during open file \(error)")
-                self.tableView.reloadData()
+                    self.showErrorAlert("Can't copy the file")
+                    self.delegate?.attachments(self, error:"Can't copy the file")
+                    PMLog.D(" Error during open file \(error)")
+                    self.tableView.reloadData()
+            }
+        } else {
+            picker.dismissViewControllerAnimated(true, completion: nil)
+            self.showErrorAlert("Can't copy the file")
+            self.delegate?.attachments(self, error:"Can't copy the file")
+            PMLog.D(" Error during open file \(error)")
+            self.tableView.reloadData()
         }
     }
     
