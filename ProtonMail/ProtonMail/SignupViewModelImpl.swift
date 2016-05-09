@@ -119,11 +119,11 @@ public class SignupViewModelImpl : SignupViewModel {
         var error: NSError?
         if let key = self.newKey { // sharedOpenPGP.generateKey(self.mailbox, userName: self.userName, domain: self.domain, bits: 4096, error: &error) {
             let api = CreateNewUserRequest<ApiResponse>(token: self.token, type: self.verifyType.toString, username: self.userName, password: self.login, email: self.recoverEmail, domain: self.domain, news: self.news, publicKey: key.publicKey, privateKey: key.privateKey)
-            api.call({ (task, response, hasError) -> Void in
+                api.call({ (task, response, hasError) -> Void in
                 if !hasError {
                     sharedUserDataService.signIn(self.userName, password: self.login, isRemembered: true) { _, error in
                         if let error = error {
-                            complete(false, true, "Authentication failed please try to login again", nil);
+                            complete(false, true, "Authentication failed please try to login again", error);
                         } else {
                             if sharedUserDataService.isMailboxPasswordValid(self.mailbox, privateKey: AuthCredential.getPrivateKey()) {
                                 AuthCredential.setupToken(self.mailbox, isRememberMailbox: true)
