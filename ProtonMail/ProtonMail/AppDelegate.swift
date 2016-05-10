@@ -192,6 +192,7 @@ extension AppDelegate: UIApplicationDelegate {
             }
             if timeIndex == 0 {
                 (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: false)
+                sharedVMService.resetComposerView()
             } else if timeIndex > 0 {
                 var exitTime : Int = 0
                 if let t = userCachedStatus.exitTime.toInt() {
@@ -201,6 +202,7 @@ extension AppDelegate: UIApplicationDelegate {
                 let diff = timeInterval - exitTime
                 if diff > (timeIndex*60) || diff <= 0 {
                     (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: false)
+                    sharedVMService.resetComposerView()
                 }
             }
         }

@@ -18,6 +18,15 @@ class ViewModelServiceImpl: ViewModelService {
         
     }
     
+    override func resetComposerView() {
+        if latestComposerViewController != nil {
+            latestComposerViewController?.inactiveViewModel()
+            latestComposerViewController = nil
+        }
+        
+        latestComposerViewModel = nil
+    }
+    
     override func newDraftViewModel(vmp : ViewModelProtocol) {
         if latestComposerViewModel != nil {
             //latestComposerViewModel.inactive

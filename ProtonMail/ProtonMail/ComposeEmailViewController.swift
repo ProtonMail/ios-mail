@@ -19,6 +19,10 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         self.viewModel = vm as! ComposeViewModel
     }
     
+    func inactiveViewModel() {
+        self.stopAutoSave()
+    }
+    
     // private views
     private var webView : UIWebView!
     private var composeView : ComposeView!

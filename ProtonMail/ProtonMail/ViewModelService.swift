@@ -31,9 +31,14 @@ class ViewModelService {
     func actionDraftViewModel(vmp : ViewModelProtocol, msg: Message!, action: ComposeMessageAction) {
         fatalError("This method must be overridden")
     }
+    
+    func resetComposerView() {
+        fatalError("This method must be overridden")
+    }
 }
 
 
 protocol ViewModelProtocol {
     func setViewModel(vm: AnyObject)
+    func inactiveViewModel()
 }
