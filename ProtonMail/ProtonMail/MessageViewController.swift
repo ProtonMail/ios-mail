@@ -194,10 +194,12 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: NotificationDefined.TouchStatusBar, object:nil)
 
-        message.isRead = true
-        message.needsUpdate = true
-        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
-            NSLog("\(__FUNCTION__) error: \(error)")
+        if let context = message.managedObjectContext {
+            message.isRead = true
+            message.needsUpdate = true
+            if let error = context.saveUpstreamIfNeeded() {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
         }
         
         self.emailView?.contentWebView.userInteractionEnabled = true;
