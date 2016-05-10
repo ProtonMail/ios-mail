@@ -45,6 +45,10 @@ public class ComposeViewModelImpl : ComposeViewModel {
         self.updateContacts(msg?.location)
     }
     
+    deinit {
+        PMLog.D("ComposeViewModelImpl deinit")
+    }
+    
     override func uploadAtt(att: Attachment!) {
         sharedMessageDataService.uploadAttachment(att)
         self.updateDraft()

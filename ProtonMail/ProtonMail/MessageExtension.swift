@@ -191,7 +191,11 @@ extension Message {
     }
     
     func encryptBody(body: String, error: NSErrorPointer?) {
-        self.body = body.encryptMessage(getAddressID, error: error) ?? "" //body.encryptWithPublicKey(publicKey, error: error) ?? ""
+        let address_id = self.getAddressID;
+        if address_id.isEmpty {
+            return
+        }
+        self.body = body.encryptMessage(address_id, error: error) ?? "" //body.encryptWithPublicKey(publicKey, error: error) ?? ""
     }
     
     func checkIsEncrypted() -> Bool! {

@@ -9,11 +9,15 @@
 import UIKit
 
 
-class ComposeEmailViewController: ZSSRichTextEditor {
+class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     
     // view model
-    var viewModel : ComposeViewModel!
+    private var viewModel : ComposeViewModel!
+    
+    func setViewModel(vm: AnyObject) {
+        self.viewModel = vm as! ComposeViewModel
+    }
     
     // private views
     private var webView : UIWebView!

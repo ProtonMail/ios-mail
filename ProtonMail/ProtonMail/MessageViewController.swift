@@ -176,7 +176,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toCompose" {
             let composeViewController = segue.destinationViewController as! ComposeEmailViewController
-            composeViewController.viewModel = ComposeViewModelImpl(msg: message, action: self.actionTapped)
+            sharedVMService.actionDraftViewModel(composeViewController, msg: message, action: self.actionTapped)
         } else if segue.identifier == "toApplyLabelsSegue" {
             let popup = segue.destinationViewController as! LablesViewController
             popup.viewModel = LabelViewModelImpl(msg: [self.message])
