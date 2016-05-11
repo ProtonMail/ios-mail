@@ -433,8 +433,10 @@ class MailboxViewController: ProtonMailViewController {
     private func stopAutoFetch()
     {
         fetchingStopped = true
-        self.timer.invalidate()
-        self.timer = nil
+        if self.timer != nil {
+            self.timer.invalidate()
+            self.timer = nil
+        }
     }
     
     func refreshPage()
