@@ -21,6 +21,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     func inactiveViewModel() {
         self.stopAutoSave()
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillResignActiveNotification, object:nil)
     }
     
     // private views
@@ -134,14 +135,21 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         self.updateAttachmentButton()
         super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: NotificationDefined.TouchStatusBar, object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "willResignActiveNotification:", name: UIApplicationWillResignActiveNotification, object:nil)
         setupAutoSave()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationDefined.TouchStatusBar, object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillResignActiveNotification, object:nil)
         
         stopAutoSave()
+    }
+    
+    internal func willResignActiveNotification (notify: NSNotification) {
+        self.autoSaveTimer()
+        dismissKeyboard()
     }
     
     internal func statusBarHit (notify: NSNotification) {
