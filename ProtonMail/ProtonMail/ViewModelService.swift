@@ -35,6 +35,10 @@ class ViewModelService {
     func resetComposerView() {
         fatalError("This method must be overridden")
     }
+    
+    func signOut() {
+        
+    }
 }
 
 

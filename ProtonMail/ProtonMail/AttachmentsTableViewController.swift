@@ -307,6 +307,21 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                     PMLog.D(" Error during open file \(error)")
                     self.tableView.reloadData()
             }
+        }
+//        else if let mediaUrl = info[UIImagePickerControllerMediaURL]  as? NSURL  {
+//            picker.dismissViewControllerAnimated(true, completion: nil)
+//            PMLog.D(" UIImagePickerControllerMediaURL: \(mediaUrl)")
+//        }
+        else if let originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            picker.dismissViewControllerAnimated(true, completion: nil)
+            let type = info[UIImagePickerControllerMediaType] as? String
+            let url = info[UIImagePickerControllerReferenceURL] as? NSURL
+            let fileName = "\(NSUUID().UUIDString).PNG"
+            let mimeType = "image/png"
+            let attachment = originalImage.toAttachment(self.message, fileName: fileName, type: mimeType)
+            self.attachments.append(attachment!)
+            self.delegate?.attachments(self, didPickedAttachment: attachment!)
+            self.tableView.reloadData()
         } else {
             picker.dismissViewControllerAnimated(true, completion: nil)
             self.showErrorAlert("Can't copy the file")

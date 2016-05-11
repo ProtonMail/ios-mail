@@ -14,6 +14,11 @@ class ViewModelServiceImpl: ViewModelService {
     private var latestComposerViewModel : ComposeViewModel?
     private var latestComposerViewController : ViewModelProtocol?
     
+    
+    override func signOut() {
+        self.resetComposerView()
+    }
+    
     override func changeIndex() {
         
     }
@@ -23,7 +28,6 @@ class ViewModelServiceImpl: ViewModelService {
             latestComposerViewController?.inactiveViewModel()
             latestComposerViewController = nil
         }
-        
         latestComposerViewModel = nil
     }
     
