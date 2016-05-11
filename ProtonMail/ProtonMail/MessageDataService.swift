@@ -1160,10 +1160,11 @@ class MessageDataService {
         
         var tempAtts : [TempAttachment]! = []
         for att in atts {
-            
-            let sessionKey = att.getSessionKey(nil)
-            
-            tempAtts.append(TempAttachment(id: att.attachmentID, key: sessionKey!))
+            if att.managedObjectContext != nil {
+                if let sessionKey = att.getSessionKey(nil) {
+                    tempAtts.append(TempAttachment(id: att.attachmentID, key: sessionKey))
+                }
+            }
         }
         
         var out : [MessagePackage] = []
