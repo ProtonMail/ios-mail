@@ -315,7 +315,7 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
         else if let originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             picker.dismissViewControllerAnimated(true, completion: nil)
             let type = info[UIImagePickerControllerMediaType] as? String
-            let url = info[UIImagePickerControllerReferenceURL] as? NSURL
+            //let url = info[UIImagePickerControllerReferenceURL] as? NSURL
             let fileName = "\(NSUUID().UUIDString).PNG"
             let mimeType = "image/png"
             let attachment = originalImage.toAttachment(self.message, fileName: fileName, type: mimeType)

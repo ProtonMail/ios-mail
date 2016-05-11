@@ -162,10 +162,12 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     }
 
     private func messagesSetValue(setValue value: AnyObject?, forKey key: String) {
-        message.setValue(value, forKey: key)
-        message.setValue(true, forKey: "needsUpdate")
-        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
-            NSLog("\(__FUNCTION__) error: \(error)")
+        if let context = message.managedObjectContext {
+            message.setValue(value, forKey: key)
+            message.setValue(true, forKey: "needsUpdate")
+            if let error = context.saveUpstreamIfNeeded() {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
         }
     }
     
