@@ -329,9 +329,11 @@ extension MenuViewController: NSFetchedResultsControllerDelegate {
                     let index = NSIndexPath(forRow: indexPath.row, inSection: 2)
                     PMLog.D(index)
                     if let cell = tableView.cellForRowAtIndexPath(index) as? MenuLabelViewCell {
-                        if let label = fetchedLabels?.objectAtIndexPath(indexPath) as? Label {
-                            cell.configCell(label);
-                            cell.configUnreadCount()
+                        if  fetchedLabels?.fetchedObjects?.count ?? 0 > indexPath.row {
+                            if let label = fetchedLabels?.objectAtIndexPath(indexPath) as? Label {
+                                cell.configCell(label);
+                                cell.configUnreadCount()
+                            }
                         }
                     }
                 }
