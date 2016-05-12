@@ -281,7 +281,11 @@ public class ComposeViewModelImpl : ComposeViewModel {
             body = body.stringByPurifyHTML()
             
             let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
-            let replyHeader = time + ", " + message!.senderContactVO.name + " <'\(message!.senderContactVO.email)'>"
+            
+            let sn = message?.managedObjectContext != nil ? message!.senderContactVO.name : "unknow"
+            let se = message?.managedObjectContext != nil ? message!.senderContactVO.email : "unknow"
+            
+            let replyHeader = time + ", " + sn + " <'\(se)'>"
             let sp = "<div><br><div><div><br></div>\(replyHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
             return "\(htmlString) \(sp) \(body)</blockquote>"
         case .Forward:
