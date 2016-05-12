@@ -59,16 +59,14 @@ class AddressBookService {
             let emails: RHMultiValue = contact.emails
             
             for (var emailIndex: UInt = 0; Int(emailIndex) < Int(emails.count()); emailIndex++) {
-                let emailAsString = emails.valueAtIndex(emailIndex) as! String
-                
-                if (emailAsString.isValidEmail()) {
-                    let email = emailAsString
-                    
-                    if (name == nil) {
-                        name = email
+                if let emailAsString = emails.valueAtIndex(emailIndex) as? String {
+                    if (emailAsString.isValidEmail()) {
+                        let email = emailAsString
+                        if (name == nil) {
+                            name = email
+                        }
+                        contactVOs.append(ContactVO(name: name, email: email, isProtonMailContact: false))
                     }
-                    
-                    contactVOs.append(ContactVO(name: name, email: email, isProtonMailContact: false))
                 }
             }
         }
