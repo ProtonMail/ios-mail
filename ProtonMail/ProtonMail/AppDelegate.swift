@@ -228,7 +228,7 @@ extension AppDelegate: UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-        NSLog("receive \(userInfo)")
+        //NSLog("receive \(userInfo)")
         if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
             var timeIndex : Int = -1
             if let t = userCachedStatus.lockTime.toInt() {
