@@ -216,6 +216,7 @@
 		75856D6A1CB5B5EC000D9F3B /* PinCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752FAA131CB5B14500F03228 /* PinCodeViewController.swift */; };
 		75856D6B1CB5B5F2000D9F3B /* PinCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 752FAA0F1CB5AEAF00F03228 /* PinCodeView.xib */; };
 		75856D6C1CB5B5F2000D9F3B /* PinCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752FAA111CB5AEC300F03228 /* PinCodeView.swift */; };
+		758625D31CD80C6D0037DFA7 /* SettingsNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758625D21CD80C6D0037DFA7 /* SettingsNavigationController.swift */; };
 		7588BB401BFBE05A00EC8EFD /* SecureStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7588BB3F1BFBE05A00EC8EFD /* SecureStore.swift */; };
 		758C44841C6D09FE00E6E867 /* EncryptionSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758C44831C6D09FE00E6E867 /* EncryptionSetupViewController.swift */; };
 		7590F08D1C9894E1009C5059 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7590F08C1C9894E1009C5059 /* Social.framework */; };
@@ -762,6 +763,7 @@
 		7580D6591C8E440200A15885 /* OnePasswordExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnePasswordExtension.m; sourceTree = "<group>"; };
 		7582E2F11B015DE400FEA38B /* MessageDetailBottomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageDetailBottomView.swift; sourceTree = "<group>"; };
 		7582E2F31B015DF100FEA38B /* MessageDetailBottomView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageDetailBottomView.xib; sourceTree = "<group>"; };
+		758625D21CD80C6D0037DFA7 /* SettingsNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsNavigationController.swift; sourceTree = "<group>"; };
 		7588BB3F1BFBE05A00EC8EFD /* SecureStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureStore.swift; sourceTree = "<group>"; };
 		758C44831C6D09FE00E6E867 /* EncryptionSetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionSetupViewController.swift; sourceTree = "<group>"; };
 		7590F08C1C9894E1009C5059 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
@@ -1256,6 +1258,7 @@
 			children = (
 				754CD4891AB80D580084C54A /* Cells */,
 				754CD4871AB809D60084C54A /* SettingTableViewController.swift */,
+				758625D21CD80C6D0037DFA7 /* SettingsNavigationController.swift */,
 				7069620A1A7139C8001443B2 /* SettingsViewController.swift */,
 				7510AE7B1AB8D68B00EF3C41 /* SettingDetailViewController.swift */,
 				7510AE7D1AB8D69B00EF3C41 /* ChangePasswordViewController.swift */,
@@ -2036,6 +2039,7 @@
 				75F1697E1AF7F43A00BE6E79 /* Logger.swift in Sources */,
 				7514FC291B79825F00DDD297 /* MenuItem.swift in Sources */,
 				7069620B1A7139C8001443B2 /* SettingsViewController.swift in Sources */,
+				758625D31CD80C6D0037DFA7 /* SettingsNavigationController.swift in Sources */,
 				07520CFC1AA67D38000D2175 /* PushNotificationService.swift in Sources */,
 				75510BAB1B82BDEB001348FF /* LabelTableViewCell.swift in Sources */,
 				75FFCACA1B5D70FC0065BFEC /* APIErrors.swift in Sources */,

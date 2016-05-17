@@ -187,7 +187,7 @@ class SearchViewController: ProtonMailViewController {
     }
     
     func predicateForSearch(query: String) -> NSPredicate? {
-        return NSPredicate(format: "(%K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@) AND (%K != -1) AND (%K != 1)", Message.Attributes.title, query, Message.Attributes.senderName, query, Message.Attributes.recipientList, query, Message.Attributes.locationNumber, Message.Attributes.locationNumber)
+        return NSPredicate(format: "(%K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@) AND (%K != -1) AND (%K != 1)", Message.Attributes.title, query, Message.Attributes.senderName, query, Message.Attributes.recipientList, query, Message.Attributes.senderObject, query, Message.Attributes.locationNumber, Message.Attributes.locationNumber)
     }
     
     func fetchMessagesIfNeededForIndexPath(indexPath: NSIndexPath) {
@@ -290,8 +290,10 @@ extension SearchViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var mailboxCell = tableView.dequeueReusableCellWithIdentifier(MailboxMessageCell.Constant.identifier, forIndexPath: indexPath) as! MailboxMessageCell
-        if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-            mailboxCell.configureCell(message, showLocation: true)
+        if self.fetchedResultsController?.numberOfRowsInSection(indexPath.section) > indexPath.row {
+            if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+                mailboxCell.configureCell(message, showLocation: true)
+            }
         }
         return mailboxCell
     }
@@ -315,10 +317,10 @@ extension SearchViewController: UITableViewDataSource {
 extension SearchViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        NSLog("\(__FUNCTION__) \(indexPath)")
-        
-        if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-            self.performSegueWithIdentifier(kSegueToMessageDetailController, sender: self)
+        if self.fetchedResultsController?.numberOfRowsInSection(indexPath.section) > indexPath.row {
+            if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+                self.performSegueWithIdentifier(kSegueToMessageDetailController, sender: self)
+            }
         }
     }
     

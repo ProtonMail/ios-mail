@@ -77,20 +77,24 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     }
     
     private func updateHeader() {
-        var a = self.message.labels.allObjects
-        self.emailView?.updateHeaderData(self.message.subject,
-            sender: ContactVO(id: "", name: self.message.senderName, email: self.message.sender),
-            to: self.message.recipientList.toContacts(),
-            cc: self.message.ccList.toContacts(),
-            bcc: self.message.bccList.toContacts(),
-            isStarred: self.message.isStarred,
-            time: self.message.time,
-            encType: self.message.encryptType,
-            labels : self.message.labels.allObjects as? [Label],
+        if let context = self.message.managedObjectContext {
+            var a = self.message.labels.allObjects
             
-            showShowImages: self.needShowShowImageView,
-            expiration: self.message.expirationTime
-        )
+            self.emailView?.updateHeaderData(self.message.subject,
+                sender: self.message.senderContactVO,
+                to: self.message.recipientList.toContacts(),
+                cc: self.message.ccList.toContacts(),
+                bcc: self.message.bccList.toContacts(),
+                isStarred: self.message.isStarred,
+                time: self.message.time,
+                encType: self.message.encryptType,
+                labels : self.message.labels.allObjects as? [Label],
+                showShowImages: self.needShowShowImageView,
+                expiration: self.message.expirationTime
+            )
+        } else {
+            PMLog.D(" MessageViewController self.message.managedObjectContext == nil")
+        }
     }
     
     func dismissed() {
@@ -158,10 +162,12 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     }
 
     private func messagesSetValue(setValue value: AnyObject?, forKey key: String) {
-        message.setValue(value, forKey: key)
-        message.setValue(true, forKey: "needsUpdate")
-        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
-            NSLog("\(__FUNCTION__) error: \(error)")
+        if let context = message.managedObjectContext {
+            message.setValue(value, forKey: key)
+            message.setValue(true, forKey: "needsUpdate")
+            if let error = context.saveUpstreamIfNeeded() {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
         }
     }
     
@@ -172,7 +178,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toCompose" {
             let composeViewController = segue.destinationViewController as! ComposeEmailViewController
-            composeViewController.viewModel = ComposeViewModelImpl(msg: message, action: self.actionTapped)
+            sharedVMService.actionDraftViewModel(composeViewController, msg: message, action: self.actionTapped)
         } else if segue.identifier == "toApplyLabelsSegue" {
             let popup = segue.destinationViewController as! LablesViewController
             popup.viewModel = LabelViewModelImpl(msg: [self.message])
@@ -190,10 +196,12 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: NotificationDefined.TouchStatusBar, object:nil)
 
-        message.isRead = true
-        message.needsUpdate = true
-        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
-            NSLog("\(__FUNCTION__) error: \(error)")
+        if let context = message.managedObjectContext {
+            message.isRead = true
+            message.needsUpdate = true
+            if let error = context.saveUpstreamIfNeeded() {
+                NSLog("\(__FUNCTION__) error: \(error)")
+            }
         }
         
         self.emailView?.contentWebView.userInteractionEnabled = true;
@@ -353,18 +361,36 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
 extension MessageViewController : MessageDetailBottomViewProtocol {
     
     func replyClicked() {
-        self.actionTapped = ComposeMessageAction.Reply
-        self.performSegueWithIdentifier("toCompose", sender: self)
+        if self.message.isDetailDownloaded {
+            self.actionTapped = ComposeMessageAction.Reply
+            self.performSegueWithIdentifier("toCompose", sender: self)
+        } else {
+            self.showAlertWhenNoDetails()
+        }
     }
     
     func replyAllClicked() {
-        actionTapped = ComposeMessageAction.ReplyAll
-        self.performSegueWithIdentifier("toCompose", sender: self)
+        if self.message.isDetailDownloaded {
+            actionTapped = ComposeMessageAction.ReplyAll
+            self.performSegueWithIdentifier("toCompose", sender: self)
+        } else {
+            self.showAlertWhenNoDetails()
+        }
     }
     
     func forwardClicked() {
-        actionTapped = ComposeMessageAction.Forward
-        self.performSegueWithIdentifier("toCompose", sender: self)
+        if self.message.isDetailDownloaded {
+            actionTapped = ComposeMessageAction.Forward
+            self.performSegueWithIdentifier("toCompose", sender: self)
+        } else {
+            self.showAlertWhenNoDetails()
+        }
+    }
+    
+    func showAlertWhenNoDetails() {
+        var alert = NSLocalizedString("Please wait until the email downloaded!").alertController();
+        alert.addOKAction()
+        self.presentViewController(alert, animated: true, completion: nil)
     }
 }
 

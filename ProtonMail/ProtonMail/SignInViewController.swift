@@ -44,6 +44,7 @@ class SignInViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     
     @IBOutlet weak var signInButton: UIButton!
+    @IBOutlet weak var signInLabel: UILabel!
     
     @IBOutlet weak var onePasswordButton: UIButton!
     
@@ -51,7 +52,6 @@ class SignInViewController: UIViewController {
     //@IBOutlet weak var forgotButton: UIButton!
     //@IBOutlet weak var rememberButton: UIButton!
     
-    @IBOutlet weak var signInLabel: UILabel!
     @IBOutlet weak var backgroundImage: UIImageView!
     
     //define
@@ -182,6 +182,7 @@ class SignInViewController: UIViewController {
             //            }
             
             if !username.isEmpty && !password.isEmpty {
+                self.updateSignInButton(usernameText: self.usernameTextField.text, passwordText: self.passwordTextField.text)
                 self.signIn()
             }
         })
@@ -203,6 +204,10 @@ class SignInViewController: UIViewController {
             loginWidthConstraint.constant = 200
             loginMidlineConstraint.constant = 0
         }
+        
+        
+        
+        
         
         //        let fadeOutTime = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 1.0))
         //        dispatch_after(fadeOutTime, dispatch_get_main_queue()) {
@@ -237,20 +242,22 @@ class SignInViewController: UIViewController {
                     }
                 }
                 else{
-                    println(evalPolicyError?.localizedDescription)
-                    switch evalPolicyError!.code {
-                    case LAError.SystemCancel.rawValue:
-                        println("Authentication was cancelled by the system")
-                        NSLocalizedString("Authentication was cancelled by the system").alertToast()
-                    case LAError.UserCancel.rawValue:
-                        println("Authentication was cancelled by the user")
-                    case LAError.UserFallback.rawValue:
-                        println("User selected to enter custom password")
-                        //self.showPasswordAlert()
-                    default:
-                        println("Authentication failed")
-                        //self.showPasswordAlert()
-                        NSLocalizedString("Authentication failed").alertToast()
+                    dispatch_async(dispatch_get_main_queue()) {
+                        println(evalPolicyError?.localizedDescription)
+                        switch evalPolicyError!.code {
+                        case LAError.SystemCancel.rawValue:
+                            println("Authentication was cancelled by the system")
+                            NSLocalizedString("Authentication was cancelled by the system").alertToast()
+                        case LAError.UserCancel.rawValue:
+                            println("Authentication was cancelled by the user")
+                        case LAError.UserFallback.rawValue:
+                            println("User selected to enter custom password")
+                            //self.showPasswordAlert()
+                        default:
+                            println("Authentication failed")
+                            //self.showPasswordAlert()
+                            NSLocalizedString("Authentication failed").alertToast()
+                        }
                     }
                 }
             })]
@@ -336,6 +343,7 @@ class SignInViewController: UIViewController {
         self.usernameView.alpha = 0.0
         self.passwordView.alpha = 0.0
         self.signInButton.alpha = 0.0
+        self.onePasswordButton.alpha = 0.0
     }
     
     private func ShowLoginViews()
@@ -345,6 +353,7 @@ class SignInViewController: UIViewController {
             self.usernameView.alpha = 1.0
             self.passwordView.alpha = 1.0
             self.signInButton.alpha = 1.0
+            self.onePasswordButton.alpha = 1.0
             
             }, completion: { finished in
         })
@@ -405,6 +414,7 @@ class SignInViewController: UIViewController {
         //        }
         
         //        self.secureStore.secret = "This is a test secret";
+        
         sharedUserDataService.signIn(username, password: password, isRemembered: isRemembered) { _, error in
             MBProgressHUD.hideHUDForView(self.view, animated: true)
             if let error = error {
@@ -477,7 +487,6 @@ class SignInViewController: UIViewController {
     
     func clean()
     {
-        UserTempCachedStatus.backup()
         sharedUserDataService.signOut(true)
         userCachedStatus.signOut()
         sharedMessageDataService.launchCleanUpIfNeeded();
@@ -529,6 +538,7 @@ class SignInViewController: UIViewController {
 extension SignInViewController : PinCodeViewControllerDelegate {
     
     func Cancel() {
+        UserTempCachedStatus.backup()
         clean()
     }
     

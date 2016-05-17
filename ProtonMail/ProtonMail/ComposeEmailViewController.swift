@@ -9,11 +9,20 @@
 import UIKit
 
 
-class ComposeEmailViewController: ZSSRichTextEditor {
+class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     
     // view model
-    var viewModel : ComposeViewModel!
+    private var viewModel : ComposeViewModel!
+    
+    func setViewModel(vm: AnyObject) {
+        self.viewModel = vm as! ComposeViewModel
+    }
+    
+    func inactiveViewModel() {
+        self.stopAutoSave()
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillResignActiveNotification, object:nil)
+    }
     
     // private views
     private var webView : UIWebView!
@@ -104,7 +113,6 @@ class ComposeEmailViewController: ZSSRichTextEditor {
                 self.composeView.toContactPicker.becomeFirstResponder()
                 break
             }
-            
         }
     }
     
@@ -127,14 +135,21 @@ class ComposeEmailViewController: ZSSRichTextEditor {
         self.updateAttachmentButton()
         super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarHit:", name: NotificationDefined.TouchStatusBar, object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "willResignActiveNotification:", name: UIApplicationWillResignActiveNotification, object:nil)
         setupAutoSave()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationDefined.TouchStatusBar, object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillResignActiveNotification, object:nil)
         
         stopAutoSave()
+    }
+    
+    internal func willResignActiveNotification (notify: NSNotification) {
+        self.autoSaveTimer()
+        dismissKeyboard()
     }
     
     internal func statusBarHit (notify: NSNotification) {
@@ -254,8 +269,8 @@ class ComposeEmailViewController: ZSSRichTextEditor {
     
     @IBAction func cancel_clicked(sender: UIBarButtonItem) {
         
-        self.dismissKeyboard()
         let dismiss: (() -> Void) = {
+            self.dismissKeyboard()
             if self.presentingViewController != nil {
                 self.dismissViewControllerAnimated(true, completion: nil)
             } else {

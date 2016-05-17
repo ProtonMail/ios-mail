@@ -349,6 +349,16 @@ class APIService {
         }
         NSValueTransformer.setValueTransformer(JsonStringTransformer, forName: "JsonStringTransformer")
         
+        let JsonToObjectTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
+            if let tag = value as? [String:String] {
+                let bytes : NSData = NSJSONSerialization.dataWithJSONObject(tag, options: NSJSONWritingOptions.allZeros, error: nil)!
+                let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
+                return strJson
+            }
+            return "";
+        }
+        NSValueTransformer.setValueTransformer(JsonToObjectTransformer, forName: "JsonToObjectTransformer")
+        
         let encodedDataTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> NSData! in
             if let tag = value as? String {
                 if let data: NSData = NSData(base64EncodedString: tag, options: NSDataBase64DecodingOptions(rawValue: 0)) {

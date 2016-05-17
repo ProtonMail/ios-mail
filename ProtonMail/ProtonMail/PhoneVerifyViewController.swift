@@ -226,7 +226,7 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
                         title = NSLocalizedString("Wrong verification code")
                         message = NSLocalizedString("Please try again.")
                     } else {
-                        message = error!.localizedDescription
+                        message = error?.localizedDescription ?? NSLocalizedString("Default error, please try again.");
                     }
                     alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
                     alert.addOKAction()

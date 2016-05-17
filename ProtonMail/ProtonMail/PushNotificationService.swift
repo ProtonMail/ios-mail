@@ -64,7 +64,7 @@ class PushNotificationService {
                 
                 self.launchOptions = option;
                 
-                NSLog("options : \(self.launchOptions)")
+                //NSLog("options : \(self.launchOptions)")
             }
         }
     }

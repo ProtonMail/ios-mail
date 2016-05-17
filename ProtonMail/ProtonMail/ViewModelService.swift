@@ -12,9 +12,37 @@ import Foundation
 // this is abstract ViewModel service
 class ViewModelService {
     
-    
-    func test(){
-        
+    func changeIndex() {
+        fatalError("This method must be overridden")
     }
     
+    func newDraftViewModel(vmp : ViewModelProtocol) {
+        fatalError("This method must be overridden")
+    }
+    
+    func newDraftViewModelWithContact(vmp : ViewModelProtocol, contact: ContactVO!) {
+        fatalError("This method must be overridden")
+    }
+    
+    func openDraftViewModel(vmp : ViewModelProtocol, msg: Message!) {
+        fatalError("This method must be overridden")
+    }
+    
+    func actionDraftViewModel(vmp : ViewModelProtocol, msg: Message!, action: ComposeMessageAction) {
+        fatalError("This method must be overridden")
+    }
+    
+    func resetComposerView() {
+        fatalError("This method must be overridden")
+    }
+    
+    func signOut() {
+        
+    }
+}
+
+
+protocol ViewModelProtocol {
+    func setViewModel(vm: AnyObject)
+    func inactiveViewModel()
 }

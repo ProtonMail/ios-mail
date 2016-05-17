@@ -257,7 +257,7 @@ class MailboxViewController: ProtonMailViewController {
             let composeViewController = segue.destinationViewController.viewControllers![0] as! ComposeEmailViewController
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 if let message = self.messageAtIndexPath(indexPathForSelectedRow) {
-                    composeViewController.viewModel = ComposeViewModelImpl(msg: selectedDraft ?? message, action : ComposeMessageAction.OpenDraft)
+                    sharedVMService.openDraftViewModel(composeViewController, msg: selectedDraft ?? message)
                 } else {
                     let alert = NSLocalizedString("Can't find the clicked message please try again!").alertController()
                     alert.addOKAction()
@@ -275,7 +275,7 @@ class MailboxViewController: ProtonMailViewController {
             self.cancelButtonTapped()
         } else if segue.identifier == kSegueToCompose {
             let composeViewController = segue.destinationViewController.viewControllers![0] as! ComposeEmailViewController
-            composeViewController.viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.NewDraft)
+            sharedVMService.newDraftViewModel(composeViewController)
         } else if segue.identifier == kSegueToTour {
             let popup = segue.destinationViewController as! OnboardingViewController
             popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
@@ -433,8 +433,10 @@ class MailboxViewController: ProtonMailViewController {
     private func stopAutoFetch()
     {
         fetchingStopped = true
-        self.timer.invalidate()
-        self.timer = nil
+        if self.timer != nil {
+            self.timer.invalidate()
+            self.timer = nil
+        }
     }
     
     func refreshPage()
@@ -575,8 +577,10 @@ class MailboxViewController: ProtonMailViewController {
         if undoMessage != nil {
             if let context = fetchedResultsController?.managedObjectContext {
                 if let message = Message.messageForMessageID(undoMessage!.messageID, inManagedObjectContext: context) {
+                    viewModel.updateBadgeNumberMoveOutInbox(message)
                     message.location = undoMessage!.oldLocation
                     message.needsUpdate = true
+                    viewModel.updateBadgeNumberMoveInInbox(message)
                     if let error = context.saveUpstreamIfNeeded() {
                         NSLog("\(__FUNCTION__) error: \(error)")
                     }

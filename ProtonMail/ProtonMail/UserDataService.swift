@@ -285,6 +285,7 @@ class UserDataService {
     }
     
     func signOut(animated: Bool) {
+        sharedVMService.signOut()
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignOut, object: self)
         clearAll()
         clearAuthToken()

@@ -56,10 +56,12 @@ public class MessageFetchByIDsRequest<T : ApiResponse> : ApiRequest<T> {
         var out = "";
         
         for message in self.messages {
-            if !out.isEmpty {
-                out = out + "&"
+            if message.managedObjectContext != nil {
+                if !out.isEmpty {
+                    out = out + "&"
+                }
+                out = out + "ID[]=\(message.messageID)"
             }
-            out = out + "ID[]=\(message.messageID)"
         }
         if !out.isEmpty {
             out = "?" + out
