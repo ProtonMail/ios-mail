@@ -44,6 +44,7 @@ class SignInViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     
     @IBOutlet weak var signInButton: UIButton!
+    @IBOutlet weak var signInLabel: UILabel!
     
     @IBOutlet weak var onePasswordButton: UIButton!
     
@@ -51,7 +52,6 @@ class SignInViewController: UIViewController {
     //@IBOutlet weak var forgotButton: UIButton!
     //@IBOutlet weak var rememberButton: UIButton!
     
-    @IBOutlet weak var signInLabel: UILabel!
     @IBOutlet weak var backgroundImage: UIImageView!
     
     //define
