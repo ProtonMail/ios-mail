@@ -109,9 +109,11 @@ class LabelTableViewCell: UITableViewCell {
     func ConfigCell(model : LabelMessageModel!, vc : UIViewController) {
         self.vc = vc;
         self.model = model;
-        let w = labelView.setText(model.label.name, color: UIColor(hexString: model.label.color, alpha: 1.0))
-        let check = self.frame.width - 50
-        labelWidth.constant = w > check ? check : w
+        if model.label.managedObjectContext != nil {
+            let w = labelView.setText(model.label.name, color: UIColor(hexString: model.label.color, alpha: 1.0))
+            let check = self.frame.width - 50
+            labelWidth.constant = w > check ? check : w
+        }
         self.updateStatusButton()
     }
 }
