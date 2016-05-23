@@ -80,7 +80,8 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
 
     // MARK : config values 
     func updateHeaderData (title : String, sender : ContactVO, to:[ContactVO]?, cc : [ContactVO]?, bcc: [ContactVO]?, isStarred:Bool, time : NSDate?, encType: EncryptTypes, labels : [Label]?, showShowImages: Bool, expiration : NSDate?) {
-        emailHeader.updateHeaderData(title, sender:sender, to: to, cc: cc, bcc: bcc, isStarred: isStarred, time: time, encType: encType, labels : labels, showShowImages: showShowImages, expiration : expiration)
+        self.emailHeader.updateHeaderData(title, sender:sender, to: to, cc: cc, bcc: bcc, isStarred: isStarred, time: time, encType: encType, labels : labels, showShowImages: showShowImages, expiration : expiration)
+        self.emailHeader.updateHeaderLayout()
     }
     
     func updateEmailBody (body : String, meta : String) {

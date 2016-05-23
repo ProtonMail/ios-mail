@@ -167,7 +167,7 @@ class MessageDataService {
                                 lastUpdatedStore.updateInboxForKey(location, updateTime: updateTime)
                             }
                         }
-
+                        
                         dispatch_async(dispatch_get_main_queue()) {
                             completion?(task: task, response: responseDict, error: error)
                         }
@@ -588,7 +588,7 @@ class MessageDataService {
             }
         }
     }
-
+    
     func cleanLocalMessageCache(completion: CompletionBlock?) {
         let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
         getLatestEventID.call() { task, response, hasError in
@@ -717,7 +717,7 @@ class MessageDataService {
                 }
                 
                 self.fetchMessagesWithIDs(messagesNoCache);
-
+                
                 
                 dispatch_async(dispatch_get_main_queue()) {
                     completion?(task: task, response:nil, error: error)
@@ -833,44 +833,52 @@ class MessageDataService {
         if !message.isDetailDownloaded {
             queue {
                 let completionWrapper: CompletionBlock = { task, response, error in
-                    let context = sharedCoreDataService.newMainManagedObjectContext()
-                    context.performBlock() {
-                        var tempError: NSError?
-                        if response != nil {
-                            //TODO need check the respons code
-                            if var msg: Dictionary<String,AnyObject> = response?["Message"] as? Dictionary<String,AnyObject> {
-                                msg.removeValueForKey("Location")
-                                msg.removeValueForKey("Starred")
-                                msg.removeValueForKey("test")
-                                if let message_n = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg, inManagedObjectContext: context, error: &tempError) as? Message {
-                                    message_n.messageStatus = 1
-                                    message_n.isDetailDownloaded = true
-                                    message_n.needsUpdate = true
-                                    message_n.isRead = true
-                                    //message_n.managedObjectContext?.saveUpstreamIfNeeded()
-                                    tempError = context.saveUpstreamIfNeeded()
-                                    dispatch_async(dispatch_get_main_queue()) {
-                                        completion(task: task, response: response, message: message_n, error: tempError)
+                    if let context = message.managedObjectContext {
+                        context.performBlock() {
+                            var tempError: NSError?
+                            if response != nil {
+                                //TODO need check the respons code
+                                if var msg: Dictionary<String,AnyObject> = response?["Message"] as? Dictionary<String,AnyObject> {
+                                    msg.removeValueForKey("Location")
+                                    msg.removeValueForKey("Starred")
+                                    msg.removeValueForKey("test")
+                                    if let message_n = GRTJSONSerialization.mergeObjectForEntityName(Message.Attributes.entityName, fromJSONDictionary: msg, inManagedObjectContext: context, error: &tempError) as? Message {
+                                        message_n.messageStatus = 1
+                                        message_n.isDetailDownloaded = true
+                                        message_n.needsUpdate = true
+                                        message_n.isRead = true
+                                        //message_n.managedObjectContext?.saveUpstreamIfNeeded()
+                                        tempError = context.saveUpstreamIfNeeded()
+                                        dispatch_async(dispatch_get_main_queue()) {
+                                            completion(task: task, response: response, message: message_n, error: tempError)
+                                        }
+                                    } else {
+                                        if tempError != nil {
+                                            dispatch_async(dispatch_get_main_queue()) {
+                                                completion(task: task, response: response, message:nil, error: tempError)
+                                            }
+                                        }
+                                        PMLog.D("fetchMessageDetailForMessage error")
                                     }
                                 } else {
-                                    if tempError != nil {
-                                        completion(task: task, response: response, message:nil, error: tempError)
+                                    dispatch_async(dispatch_get_main_queue()) {
+                                        completion(task: task, response: response, message:nil, error: NSError.badResponse())
                                     }
-                                    PMLog.D("fetchMessageDetailForMessage error")
                                 }
                             } else {
-                                completion(task: task, response: response, message:nil, error: NSError.badResponse())
+                                
+                                tempError = error;
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    completion(task: task, response: response, message:nil, error: tempError)
+                                }
                             }
-                        } else {
-                            
-                            tempError = error;
-                            //error = NSError.unableToParseResponse(response)
-                            dispatch_async(dispatch_get_main_queue()) {
-                                completion(task: task, response: response, message:nil, error: tempError)
+                            if tempError != nil  {
+                                NSLog("\(__FUNCTION__) error: \(error)")
                             }
                         }
-                        if tempError != nil  {
-                            NSLog("\(__FUNCTION__) error: \(error)")
+                    } else {
+                        dispatch_async(dispatch_get_main_queue()) {
+                            completion(task: task, response: response, message:nil, error: NSError.badResponse()) // the message have been deleted
                         }
                     }
                 }
@@ -1111,7 +1119,7 @@ class MessageDataService {
     }
     
     func purgeOldMessages() {
-        // need fetch status bad messages 
+        // need fetch status bad messages
         if let context = sharedCoreDataService.mainManagedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
             fetchRequest.predicate = NSPredicate(format: "%K == 0", Message.Attributes.messageStatus)

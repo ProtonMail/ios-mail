@@ -282,10 +282,15 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                             if numRead > 0 {
                                 var fileName = rep.filename()
                                 let mimeType = rep.UTI()
-                                
-                                let attachment = data.toAttachment(self.message, fileName: fileName, type: mimeType)
-                                self.attachments.append(attachment!)
-                                self.delegate?.attachments(self, didPickedAttachment: attachment!)
+                                if self.message.managedObjectContext != nil {
+                                    let attachment = data.toAttachment(self.message, fileName: fileName, type: mimeType)
+                                    self.attachments.append(attachment!)
+                                    self.delegate?.attachments(self, didPickedAttachment: attachment!)
+                                } else {
+                                    PMLog.D(" Error during copying size incorrect")
+                                    self.showErrorAlert("Can't copy the file")
+                                    self.delegate?.attachments(self, error:"Can't copy the file")
+                                }
                             } else {
                                 PMLog.D(" Error during copying size incorrect")
                                 self.showErrorAlert("Can't copy the file")
