@@ -1310,16 +1310,16 @@ class MessageDataService {
     private func saveDraftWithMessageID(messageID: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
         if let context = managedObjectContext {
             if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID) {
-                if let message = try! context.existingObjectWithID(objectID) as? Message {
+                if let message = try? context.existingObjectWithID(objectID) as? Message {
                     let completionWrapper: CompletionBlock = { task, response, error in
                         PMLog.D("SendAttachmentDebug == finish save draft!")
                         if let mess = response {
                             if let messageID = mess["ID"] as? String {
-                                message.messageID = messageID
-                                message.isDetailDownloaded = true
+                                message!.messageID = messageID
+                                message!.isDetailDownloaded = true
                                 
                                 var hasTemp = false;
-                                let attachments = message.mutableSetValueForKey("attachments")
+                                let attachments = message!.mutableSetValueForKey("attachments")
                                 for att in attachments {
                                     if let att = att as? Attachment {
                                         if att.isTemp {
@@ -1329,7 +1329,7 @@ class MessageDataService {
                                     }
                                 }
                                 
-                                if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
+                                if let error = message!.managedObjectContext?.saveUpstreamIfNeeded() {
                                     PMLog.D(" error: \(error)")
                                 }
                                 
@@ -1351,7 +1351,7 @@ class MessageDataService {
                     }
                     
                     PMLog.D("SendAttachmentDebug == start save draft!")
-                    if message.isDetailDownloaded && message.messageID != "0" {
+                    if message!.isDetailDownloaded && message!.messageID != "0" {
                         let api = MessageUpdateDraftRequest<MessageResponse>(message: message);
                         api.call({ (task, response, hasError) -> Void in
                             if hasError {

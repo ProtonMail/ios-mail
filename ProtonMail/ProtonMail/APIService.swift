@@ -312,20 +312,27 @@ class APIService {
         }
         
         NSValueTransformer.grt_setValueTransformerWithName("JsonStringTransformer") { (value) -> AnyObject? in
-            if let tag = value as? NSArray {
-                let bytes : NSData = try! NSJSONSerialization.dataWithJSONObject(tag, options: NSJSONWritingOptions())
-                let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
-                return strJson
+            do {
+                if let tag = value as? NSArray {
+                    let bytes : NSData = try NSJSONSerialization.dataWithJSONObject(tag, options: NSJSONWritingOptions())
+                    let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
+                    return strJson
+                }
+            } catch let ex as NSError {
+                PMLog.D("\(ex)")
             }
             return "";
         }
         
         NSValueTransformer.grt_setValueTransformerWithName("JsonToObjectTransformer") { (value) -> AnyObject? in
-            
-            if let tag = value as? [String:String] {
-                let bytes : NSData = try! NSJSONSerialization.dataWithJSONObject(tag, options: NSJSONWritingOptions())
-                let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
-                return strJson
+            do {
+                if let tag = value as? [String:String] {
+                    let bytes : NSData = try NSJSONSerialization.dataWithJSONObject(tag, options: NSJSONWritingOptions())
+                    let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
+                    return strJson
+                }
+            } catch let ex as NSError {
+                PMLog.D("\(ex)")
             }
             return "";
         }
