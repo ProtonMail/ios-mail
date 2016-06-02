@@ -258,8 +258,12 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         stopAutoSave()
         self.collectDraft()
         self.viewModel.sendMessage()
-        // show message
-        NSError.alertMessageSendingToast();
+        
+        // show messagex
+        delay(0.5) {
+            NSError.alertMessageSendingToast();
+        }
+        
         if presentingViewController != nil {
             dismissViewControllerAnimated(true, completion: nil)
         } else {

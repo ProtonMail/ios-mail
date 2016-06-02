@@ -124,7 +124,7 @@ extension NSError {
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
         hud.yOffset = 250.0
-        hud.hide(true, afterDelay: 1.0)
+        hud.hide(true, afterDelay: 1)
     }
     
     class func alertMessageSentToast() ->Void {

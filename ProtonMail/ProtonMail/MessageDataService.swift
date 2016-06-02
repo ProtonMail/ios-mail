@@ -1310,66 +1310,77 @@ class MessageDataService {
     private func saveDraftWithMessageID(messageID: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
         if let context = managedObjectContext {
             if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID) {
-                if let message = try? context.existingObjectWithID(objectID) as? Message {
-                    let completionWrapper: CompletionBlock = { task, response, error in
-                        PMLog.D("SendAttachmentDebug == finish save draft!")
-                        if let mess = response {
-                            if let messageID = mess["ID"] as? String {
-                                message!.messageID = messageID
-                                message!.isDetailDownloaded = true
-                                
-                                var hasTemp = false;
-                                let attachments = message!.mutableSetValueForKey("attachments")
-                                for att in attachments {
-                                    if let att = att as? Attachment {
-                                        if att.isTemp {
-                                            hasTemp = true;
-                                            context.deleteObject(att)
+                do {
+                    if let message = try context.existingObjectWithID(objectID) as? Message {
+                        let completionWrapper: CompletionBlock = { task, response, error in
+                            PMLog.D("SendAttachmentDebug == finish save draft!")
+                            if let mess = response {
+                                if let messageID = mess["ID"] as? String {
+                                    message.messageID = messageID
+                                    message.isDetailDownloaded = true
+                                    
+                                    var hasTemp = false;
+                                    let attachments = message.mutableSetValueForKey("attachments")
+                                    for att in attachments {
+                                        if let att = att as? Attachment {
+                                            if att.isTemp {
+                                                hasTemp = true;
+                                                context.deleteObject(att)
+                                            }
                                         }
                                     }
-                                }
-                                
-                                if let error = message!.managedObjectContext?.saveUpstreamIfNeeded() {
-                                    PMLog.D(" error: \(error)")
-                                }
-                                
-                                if hasTemp {
-                                    do {
-                                        try GRTJSONSerialization.objectWithEntityName(Message.Attributes.entityName, fromJSONDictionary: mess, inContext: context)
-                                        if let save_error = context.saveUpstreamIfNeeded() {
-                                            PMLog.D(" error: \(save_error)")
-                                        }
-                                    } catch let exc as NSError {
-                                        completion?(task: task, response: response, error: exc)
+                                    
+                                    if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
+                                        PMLog.D(" error: \(error)")
                                     }
+                                    
+                                    if hasTemp {
+                                        do {
+                                            try GRTJSONSerialization.objectWithEntityName(Message.Attributes.entityName, fromJSONDictionary: mess, inContext: context)
+                                            if let save_error = context.saveUpstreamIfNeeded() {
+                                                PMLog.D(" error: \(save_error)")
+                                            }
+                                        } catch let exc as NSError {
+                                            completion?(task: task, response: response, error: exc)
+                                            return
+                                        }
+                                    }
+                                    completion?(task: task, response: response, error: error)
+                                    return
+                                } else {//error
+                                    completion?(task: task, response: response, error: error)
+                                    return
                                 }
+                            } else {//error
                                 completion?(task: task, response: response, error: error)
-                            }//error
-                        }//error
+                                return
+                            }
+                        }
                         
-                        completion?(task: task, response: response, error: error)
+                        PMLog.D("SendAttachmentDebug == start save draft!")
+                        if message.isDetailDownloaded && message.messageID != "0" {
+                            let api = MessageUpdateDraftRequest<MessageResponse>(message: message);
+                            api.call({ (task, response, hasError) -> Void in
+                                if hasError {
+                                    completionWrapper(task: task, response: nil, error: response?.error)
+                                } else {
+                                    completionWrapper(task: task, response: response?.message, error: nil)
+                                }
+                            })
+                        } else {
+                            let api = MessageDraftRequest<MessageResponse>(message: message)
+                            api.call({ (task, response, hasError) -> Void in
+                                if hasError {
+                                    completionWrapper(task: task, response: nil, error: response?.error)
+                                } else {
+                                    completionWrapper(task: task, response: response?.message, error: nil)
+                                }
+                            })
+                        }
+                        return;
                     }
-                    
-                    PMLog.D("SendAttachmentDebug == start save draft!")
-                    if message!.isDetailDownloaded && message!.messageID != "0" {
-                        let api = MessageUpdateDraftRequest<MessageResponse>(message: message);
-                        api.call({ (task, response, hasError) -> Void in
-                            if hasError {
-                                completionWrapper(task: task, response: nil, error: response?.error)
-                            } else {
-                                completionWrapper(task: task, response: response?.message, error: nil)
-                            }
-                        })
-                    } else {
-                        let api = MessageDraftRequest<MessageResponse>(message: message)
-                        api.call({ (task, response, hasError) -> Void in
-                            if hasError {
-                                completionWrapper(task: task, response: nil, error: response?.error)
-                            } else {
-                                completionWrapper(task: task, response: response?.message, error: nil)
-                            }
-                        })
-                    }
+                } catch let ex as NSError {
+                    completion?(task: nil, response: nil, error: ex)
                     return;
                 }
             }
