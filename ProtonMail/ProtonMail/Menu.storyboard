@@ -193,7 +193,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a2q-1X-21m" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-454" y="5222"/>
+            <point key="canvasLocation" x="-790" y="5222"/>
         </scene>
         <!--Menu View Controller-->
         <scene sceneID="CA9-P3-QyV">
@@ -1108,8 +1108,8 @@
                                                         <rect key="frame" x="343" y="10" width="41" height="14"/>
                                                     </variation>
                                                 </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="mail_attachment" translatesAutoresizingMaskIntoConstraints="NO" id="eZS-fQ-wdc">
-                                                    <rect key="frame" x="550" y="36" width="22" height="14"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_attachment" translatesAutoresizingMaskIntoConstraints="NO" id="eZS-fQ-wdc">
+                                                    <rect key="frame" x="550" y="35" width="22" height="14"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="22" id="EtL-jI-Rnw"/>
                                                         <constraint firstAttribute="height" constant="14" id="gHL-Pl-38E"/>
@@ -1806,37 +1806,37 @@
                                                         </constraint>
                                                     </constraints>
                                                 </imageView>
-                                                <view clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pl7-Yh-jmF" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
-                                                    <rect key="frame" x="484" y="36" width="42" height="14"/>
+                                                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pl7-Yh-jmF" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
+                                                    <rect key="frame" x="484" y="35" width="42" height="14"/>
                                                     <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="42" id="MJa-Wd-EFi"/>
                                                         <constraint firstAttribute="height" constant="14" id="YWR-gP-4yC"/>
                                                     </constraints>
                                                 </view>
-                                                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uy5-Ic-WWr" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
-                                                    <rect key="frame" x="427" y="36" width="57" height="14"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uy5-Ic-WWr" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
+                                                    <rect key="frame" x="427" y="35" width="57" height="14"/>
                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="57" id="gdt-Uy-MW8"/>
                                                     </constraints>
                                                 </view>
-                                                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NEY-VA-Xex" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
-                                                    <rect key="frame" x="370" y="36" width="57" height="14"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NEY-VA-Xex" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
+                                                    <rect key="frame" x="370" y="35" width="57" height="14"/>
                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="57" id="EL2-or-Y1H"/>
                                                     </constraints>
                                                 </view>
-                                                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7qD-WU-NdH" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
-                                                    <rect key="frame" x="313" y="36" width="57" height="14"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7qD-WU-NdH" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
+                                                    <rect key="frame" x="313" y="35" width="57" height="14"/>
                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="57" id="iUJ-Yz-D5a"/>
                                                     </constraints>
                                                 </view>
-                                                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IRw-vo-csE" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
-                                                    <rect key="frame" x="256" y="36" width="57" height="14"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IRw-vo-csE" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
+                                                    <rect key="frame" x="256" y="35" width="57" height="14"/>
                                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="57" id="9Fq-tD-IRQ"/>
@@ -1865,8 +1865,8 @@
                                                         <rect key="frame" x="343" y="10" width="41" height="14"/>
                                                     </variation>
                                                 </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="mail_attachment" translatesAutoresizingMaskIntoConstraints="NO" id="wXe-sO-S1K">
-                                                    <rect key="frame" x="550" y="36" width="22" height="14"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_attachment" translatesAutoresizingMaskIntoConstraints="NO" id="wXe-sO-S1K">
+                                                    <rect key="frame" x="550" y="35" width="22" height="14"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="14" id="5Hy-CO-5kM"/>
                                                         <constraint firstAttribute="width" constant="22" id="UGc-zP-vam"/>
@@ -2081,14 +2081,14 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="49.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EF9-yy-qmv">
-                                            <rect key="frame" x="15" y="15" width="518" height="16"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EF9-yy-qmv">
+                                            <rect key="frame" x="15" y="15" width="517" height="16"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Default" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pp2-aY-1Zz">
-                                            <rect key="frame" x="533" y="14" width="43" height="18"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Default" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pp2-aY-1Zz">
+                                            <rect key="frame" x="532" y="14" width="44" height="18"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="18" id="Tus-88-Erx"/>
                                             </constraints>
@@ -2394,10 +2394,10 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d8J-r1-ETb">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d8J-r1-ETb">
                                 <rect key="frame" x="4" y="105" width="592" height="44"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Switch Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ix-UV-Qx3">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Switch Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ix-UV-Qx3">
                                         <rect key="frame" x="20" y="12" width="553" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="PM3-ZJ-q50"/>
@@ -2406,7 +2406,7 @@
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bKT-mv-fYH">
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bKT-mv-fYH">
                                         <rect key="frame" x="525" y="6" width="51" height="31"/>
                                         <connections>
                                             <action selector="swiitchAction:" destination="OCS-Qd-wj6" eventType="valueChanged" id="Zp8-az-66O"/>
@@ -2484,6 +2484,7 @@
                             <constraint firstItem="e6J-MB-cYe" firstAttribute="leading" secondItem="3MX-Ff-Apb" secondAttribute="leadingMargin" constant="-8" id="R42-yE-lUC"/>
                             <constraint firstItem="xwX-fw-gA4" firstAttribute="leading" secondItem="3MX-Ff-Apb" secondAttribute="leadingMargin" constant="-16" id="Tzk-XU-ppw"/>
                             <constraint firstItem="xwX-fw-gA4" firstAttribute="top" secondItem="e6J-MB-cYe" secondAttribute="bottom" constant="68" id="Umc-6Z-w9D"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="d8J-r1-ETb" secondAttribute="trailing" constant="-16" id="Umt-mf-AVf"/>
                             <constraint firstItem="d8J-r1-ETb" firstAttribute="top" secondItem="e6J-MB-cYe" secondAttribute="bottom" constant="12" id="vMI-nr-BSV"/>
                         </constraints>
                         <variation key="default">
@@ -2508,7 +2509,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7FU-gH-cCp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="337" y="5222"/>
+            <point key="canvasLocation" x="-31" y="5384"/>
         </scene>
         <!--Setting Debug View Controller-->
         <scene sceneID="LVh-aS-EOZ">
@@ -3806,14 +3807,14 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="uj7-oW-fwS"/>
-        <segue reference="fux-iz-qV0"/>
         <segue reference="YGe-pV-72F"/>
-        <segue reference="5rJ-hC-fsT"/>
-        <segue reference="3FM-PP-oeV"/>
         <segue reference="V9t-nA-fhw"/>
+        <segue reference="3FM-PP-oeV"/>
+        <segue reference="5rJ-hC-fsT"/>
+        <segue reference="zIE-XJ-wkG"/>
         <segue reference="0zg-HM-MdK"/>
+        <segue reference="fux-iz-qV0"/>
         <segue reference="w5b-0j-26v"/>
-        <segue reference="xUw-S1-zl5"/>
+        <segue reference="uj7-oW-fwS"/>
     </inferredMetricsTieBreakers>
 </document>
