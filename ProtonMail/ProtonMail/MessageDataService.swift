@@ -277,7 +277,7 @@ class MessageDataService {
                                     lastUpdatedStore.clear();
                                     lastUpdatedStore.lastEventID = response!.eventID
                                 }
-                                completion?(task: task, response:nil, error: error)
+                                completion?(task: task, response:responseDict, error: error)
                             }
                             self.cleanMessage()
                             sharedContactDataService.cleanUp()
@@ -293,7 +293,15 @@ class MessageDataService {
                     self.processIncrementalUpdateMessages(notificationMessageID, messages: response!.messages!, task: task) { task, res, error in
                         if error == nil {
                             lastUpdatedStore.lastEventID = response!.eventID
-                            completion?(task: task, response:nil, error: nil)
+
+                            var outMessages : [AnyObject] = [];
+                            for message in response!.messages! {
+                                let msg = MessageEvent(event: message)
+                                if msg.Action == 1 {
+                                    outMessages.append(msg)
+                                }
+                            }
+                            completion?(task: task, response:["Messages": outMessages], error: nil)
                         }
                         else {
                             completion?(task: task, response:nil, error: error)
@@ -315,7 +323,11 @@ class MessageDataService {
                         self.processIncrementalUpdateLabels(response!.labels)
                         self.processIncrementalUpdateContacts(response!.contacts)
                     }
-                    completion?(task: task, response:nil, error: nil)
+                    if hasError {
+                        completion?(task: task, response:nil, error: response?.error)
+                    } else {
+                        completion?(task: task, response:nil, error: nil)
+                    }
                 }
             }
         }

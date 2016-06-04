@@ -1228,6 +1228,13 @@
                                     <constraint firstItem="IgK-Na-2zA" firstAttribute="top" secondItem="3pf-Hd-Pee" secondAttribute="top" id="tbO-J8-tRc"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3XD-vE-N5P" customClass="TopMessageView" customModule="ProtonMail" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="-38" width="600" height="38"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="38" id="uTf-2c-n01"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -1235,12 +1242,15 @@
                             <constraint firstItem="7Zx-Yy-VI3" firstAttribute="leading" secondItem="OTG-Sc-6eN" secondAttribute="leading" id="6aH-UA-ezI"/>
                             <constraint firstItem="3pf-Hd-Pee" firstAttribute="leading" secondItem="OTG-Sc-6eN" secondAttribute="leadingMargin" constant="-16" id="KOu-fu-6Rs"/>
                             <constraint firstAttribute="trailing" secondItem="7Zx-Yy-VI3" secondAttribute="trailing" id="Sxx-a1-umD"/>
+                            <constraint firstItem="3XD-vE-N5P" firstAttribute="leading" secondItem="OTG-Sc-6eN" secondAttribute="leading" id="TnQ-Od-06q"/>
                             <constraint firstAttribute="trailingMargin" secondItem="3pf-Hd-Pee" secondAttribute="trailing" constant="-16" id="aAc-DK-rxb"/>
-                            <constraint firstItem="Q7u-jG-CGT" firstAttribute="top" secondItem="vYi-81-AYM" secondAttribute="bottom" id="aTw-Lo-DLO"/>
-                            <constraint firstItem="7Zx-Yy-VI3" firstAttribute="top" secondItem="vYi-81-AYM" secondAttribute="bottom" id="dQc-GT-Q7X"/>
+                            <constraint firstItem="7Zx-Yy-VI3" firstAttribute="top" secondItem="3XD-vE-N5P" secondAttribute="bottom" id="adY-64-03P"/>
+                            <constraint firstItem="Q7u-jG-CGT" firstAttribute="top" secondItem="3XD-vE-N5P" secondAttribute="bottom" id="eTj-Za-hPc"/>
                             <constraint firstAttribute="bottomMargin" secondItem="3pf-Hd-Pee" secondAttribute="bottom" constant="-44" id="i67-ZP-Yjt"/>
+                            <constraint firstAttribute="trailing" secondItem="3XD-vE-N5P" secondAttribute="trailing" id="lLc-Gg-B68"/>
                             <constraint firstItem="Jzd-SW-ZeK" firstAttribute="top" secondItem="7Zx-Yy-VI3" secondAttribute="bottom" id="p9A-ps-8sY"/>
                             <constraint firstAttribute="trailing" secondItem="Q7u-jG-CGT" secondAttribute="trailing" id="rKq-q2-7Ov"/>
+                            <constraint firstItem="3XD-vE-N5P" firstAttribute="top" secondItem="vYi-81-AYM" secondAttribute="bottom" constant="-38" id="uay-dK-UbD"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
@@ -1252,6 +1262,8 @@
                         <outlet property="menuButton" destination="MGt-Hd-KyR" id="g5E-fz-E2f"/>
                         <outlet property="noResultLabel" destination="Q7u-jG-CGT" id="p9K-UZ-b7h"/>
                         <outlet property="tableView" destination="7Zx-Yy-VI3" id="xAI-ZE-pMC"/>
+                        <outlet property="topMessageView" destination="3XD-vE-N5P" id="bUR-14-1Ku"/>
+                        <outlet property="topMsgTopConstraint" destination="uay-dK-UbD" id="IWZ-bW-MiQ"/>
                         <outlet property="undoBottomDistance" destination="i67-ZP-Yjt" id="mP5-Zd-Jeb"/>
                         <outlet property="undoLabel" destination="IgK-Na-2zA" id="33M-Ke-Aut"/>
                         <segue destination="xBI-ex-VGk" kind="presentation" identifier="toSearchViewController" id="6qA-ON-8KL"/>
@@ -3808,13 +3820,13 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="YGe-pV-72F"/>
-        <segue reference="V9t-nA-fhw"/>
         <segue reference="3FM-PP-oeV"/>
+        <segue reference="V9t-nA-fhw"/>
         <segue reference="5rJ-hC-fsT"/>
-        <segue reference="zIE-XJ-wkG"/>
         <segue reference="0zg-HM-MdK"/>
         <segue reference="fux-iz-qV0"/>
-        <segue reference="w5b-0j-26v"/>
+        <segue reference="hZj-FM-cPb"/>
+        <segue reference="zIE-XJ-wkG"/>
         <segue reference="uj7-oW-fwS"/>
     </inferredMetricsTieBreakers>
 </document>

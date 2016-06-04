@@ -36,5 +36,6 @@
 #import "MultipartResponseParser.h"
 #import <MCSwipeTableViewCell.h>
 #import "OnePasswordExtension.h"
+#import "Reachability.h"
 
 #endif

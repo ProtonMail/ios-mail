@@ -103,6 +103,15 @@ class MailboxViewController: ProtonMailViewController {
     private var leftSwipeAction : MessageSwipeAction = .archive
     private var rightSwipeAction : MessageSwipeAction = .trash
     
+    
+    // MARK: TopMessage
+    @IBOutlet weak var topMessageView: TopMessageView!
+    @IBOutlet weak var topMsgTopConstraint: NSLayoutConstraint!
+    
+    private let kDefaultSpaceHide : CGFloat = -38.0
+    private let kDefaultSpaceShow : CGFloat = 0.0
+    
+    
     // MARK: - UIViewController Lifecycle
     
     override func viewDidLoad() {
@@ -128,14 +137,14 @@ class MailboxViewController: ProtonMailViewController {
         if userCachedStatus.isTouchIDEnabled {
             userCachedStatus.touchIDEmail = sharedUserDataService.username ?? ""
         }
-        
+        self.topMessageView.delegate = self
         cleanRateReviewCell()
-        //createRateReviewCell()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
+        self.hideTopMessage()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MailboxViewController.reachabilityChanged(_:)), name: kReachabilityChangedNotification, object: nil)
         leftSwipeAction = sharedUserDataService.swiftLeft
         rightSwipeAction = sharedUserDataService.swiftRight
         
@@ -160,6 +169,7 @@ class MailboxViewController: ProtonMailViewController {
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: kReachabilityChangedNotification, object:nil)
         self.stopAutoFetch()
     }
     
@@ -171,6 +181,9 @@ class MailboxViewController: ProtonMailViewController {
         let usedStorageSpace = sharedUserDataService.usedSpace
         let maxStorageSpace = sharedUserDataService.maxSpace
         StorageLimit().checkSpace(usedSpace: usedStorageSpace, maxSpace: maxStorageSpace)
+        
+        
+        self.updateInterfaceWithReachability(sharedInternetReachability)
     }
     
     override func viewDidLayoutSubviews() {
@@ -272,11 +285,11 @@ class MailboxViewController: ProtonMailViewController {
             popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
             self.setPresentationStyleForSelfController(self, presentingController: popup)
             self.cancelButtonTapped()
-
+            
         } else if segue.identifier == kSegueToCompose {
             let composeViewController = segue.destinationViewController.childViewControllers[0] as! ComposeEmailViewController
             sharedVMService.newDraftViewModel(composeViewController)
-
+            
         } else if segue.identifier == kSegueToTour {
             let popup = segue.destinationViewController as! OnboardingViewController
             popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
@@ -381,26 +394,26 @@ class MailboxViewController: ProtonMailViewController {
         updateNavigationController(isEditing)
     }
     
-//    internal func createRateReviewCell () {
-//        let count = fetchedResultsController?.numberOfRowsInSection(0) ?? 0
-//        if count > 3 {
-//            if let message = fetchedResultsController?.objectAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? Message {
-//                if let context = message.managedObjectContext {
-//                    let newMessage = Message(context: context)
-//                    newMessage.messageType = 1
-//                    newMessage.title = ""
+    //    internal func createRateReviewCell () {
+    //        let count = fetchedResultsController?.numberOfRowsInSection(0) ?? 0
+    //        if count > 3 {
+    //            if let message = fetchedResultsController?.objectAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? Message {
+    //                if let context = message.managedObjectContext {
+    //                    let newMessage = Message(context: context)
+    //                    newMessage.messageType = 1
+    //                    newMessage.title = ""
     
-//    newMessage.messageStatus = 1
-
-//                    newMessage.time = message.time ?? NSDate()
-//                    if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
-//                        PMLog.D("error: \(error)")
-//                    }
-//                    ratingMessage = newMessage
-//                }
-//            }
-//        }
-//    }
+    //    newMessage.messageStatus = 1
+    
+    //                    newMessage.time = message.time ?? NSDate()
+    //                    if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
+    //                        PMLog.D("error: \(error)")
+    //                    }
+    //                    ratingMessage = newMessage
+    //                }
+    //            }
+    //        }
+    //    }
     
     internal func cleanRateReviewCell () {
         if let context = fetchedResultsController?.managedObjectContext {
@@ -696,7 +709,7 @@ class MailboxViewController: ProtonMailViewController {
             
             self.refreshControl.beginRefreshing()
             let updateTime = viewModel.lastUpdateTime()
-            let complete : APIService.CompletionBlock = { (task, messages, error) -> Void in
+            let complete : APIService.CompletionBlock = { (task, res, error) -> Void in
                 self.fetchingMessage = false
                 
                 if self.fetchingStopped! == true {
@@ -704,12 +717,17 @@ class MailboxViewController: ProtonMailViewController {
                 }
                 
                 if let error = error {
+                    self.showErrorMessage(error)
                     NSLog("error: \(error)")
                 }
                 
                 if error == nil {
                     self.viewModel.resetNotificationMessage()
-                    //self.checkEmptyMailbox()
+                    if !updateTime.isNew {
+                        if let messages = res?["Messages"] as? [AnyObject] {
+                            self.showNewMessageCount(messages.count ?? 0)
+                        }
+                    }
                 }
                 
                 delay(1.0, closure: {
@@ -992,6 +1010,87 @@ class MailboxViewController: ProtonMailViewController {
             self.title = ""
             self.navigationTitleLabel.text = ""
         }
+    }
+}
+
+extension MailboxViewController : TopMessageViewDelegate {
+    
+    internal func showErrorMessage(error: NSError?) {
+        if error != nil {
+            self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
+            self.topMessageView.updateMessage(error: error!)
+            self.updateViewConstraints()
+            
+            UIView.animateWithDuration(0.25, animations: { () -> Void in
+                self.view.layoutIfNeeded()
+            })
+        }
+    }
+    
+    internal func showNewMessageCount(count : Int) {
+        if count > 0 {
+            self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
+            if count == 1 {
+                self.topMessageView.updateMessage(newMessage: "You have a new email!")
+            } else {
+                self.topMessageView.updateMessage(newMessage: "You have \(count) new emails!")
+            }
+            self.updateViewConstraints()
+            UIView.animateWithDuration(0.25, animations: { () -> Void in
+                self.view.layoutIfNeeded()
+            })
+        }
+    }
+    
+    internal func reachabilityChanged(note : NSNotification) {
+        if let curReach = note.object as? Reachability {
+            self.updateInterfaceWithReachability(curReach)
+        }
+    }
+    
+    internal func updateInterfaceWithReachability(reachability : Reachability) {
+        let netStatus = reachability.currentReachabilityStatus()
+        let connectionRequired = reachability.connectionRequired()
+        PMLog.D("connectionRequired : \(connectionRequired)")
+        switch (netStatus)
+        {
+        case NotReachable:
+            PMLog.D("Access Not Available")
+            self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
+            self.topMessageView.updateMessage(noInternet: "The internet connection appears to be offline.")
+            self.updateViewConstraints()
+        case ReachableViaWWAN:
+            PMLog.D("Reachable WWAN")
+            self.topMsgTopConstraint.constant = self.kDefaultSpaceHide
+            self.updateViewConstraints()
+        case ReachableViaWiFi:
+            PMLog.D("Reachable WiFi")
+            self.topMsgTopConstraint.constant = self.kDefaultSpaceHide
+            self.updateViewConstraints()
+        default:
+            PMLog.D("Reachable default unknow")
+        }
+        
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    internal func hideTopMessage() {
+        
+        self.topMsgTopConstraint.constant = self.kDefaultSpaceHide
+        self.updateViewConstraints()
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    func close() {
+        self.hideTopMessage()
+    }
+    
+    func retry() {
+        
     }
 }
 
