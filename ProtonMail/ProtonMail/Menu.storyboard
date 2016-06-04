@@ -3647,7 +3647,7 @@
                                                     </view>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cmx-xE-Ipy">
                                                         <rect key="frame" x="26" y="117" width="408" height="30"/>
-                                                        <state key="normal" title="Get more infomation">
+                                                        <state key="normal" title="Get more information">
                                                             <color key="titleColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="calibratedRGB"/>
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
