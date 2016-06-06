@@ -49,6 +49,7 @@ zss_editor.init = function() {
     $(document).on('selectionchange',function(e){
                    zss_editor.calculateEditorHeightWithCaretPosition();
                    zss_editor.setScrollPosition();
+                   //zss_editor.enabledEditingItems(e);
                    });
     
     $(window).on('scroll', function(e) {
@@ -60,12 +61,13 @@ zss_editor.init = function() {
                  zss_editor.isDragging = true;
                  zss_editor.updateScrollOffset = true;
                  zss_editor.setScrollPosition();
+                 //zss_editor.enabledEditingItems(e);
                  });
     $(window).on('touchstart', function(e) {
                  zss_editor.isDragging = false;
                  });
     $(window).on('touchend', function(e) {
-                 if (!zss_editor.isDragging) {
+                 if (!zss_editor.isDragging && (e.target.id == "zss_editor_footer"||e.target.nodeName.toLowerCase() == "html")) {
                  zss_editor.focusEditor();
                  }
                  });
@@ -365,6 +367,11 @@ zss_editor.insertLink = function(url, title) {
             sel.addRange(range);
         }
     }
+    else
+    {
+        document.execCommand("insertHTML",false,"<a href='"+url+"'>"+title+"</a>");
+    }
+    
     zss_editor.enabledEditingItems();
 }
 
@@ -449,14 +456,6 @@ zss_editor.insertImage = function(url, alt) {
 zss_editor.setHTML = function(html) {
     var editor = $('#zss_editor_content');
     editor.html(html);
-    window.scrollTo(0, 0);
-    zss_editor.setScrollPosition();
-}
-
-zss_editor.updateSignature = function(html) {
-    var editor = $('#protonmail_signature_block');
-    editor.html(html);
-    zss_editor.enabledEditingItems();
 }
 
 zss_editor.insertHTML = function(html) {
@@ -566,7 +565,8 @@ zss_editor.enabledEditingItems = function(e) {
     if (typeof(e) != "undefined") {
         
         // The target element
-        var t = $(e.target);
+        var s = zss_editor.getSelectedNode();
+        var t = $(s);
         var nodeName = e.target.nodeName.toLowerCase();
         
         // Background Color
@@ -634,20 +634,13 @@ zss_editor.focusEditor = function() {
     if (!editor.focus) {
         var range = document.createRange();
         range.selectNodeContents(editor.get(0));
-        range.collapse(true);
+        range.collapse(false);
         var selection = window.getSelection();
         selection.removeAllRanges();
         selection.addRange(range);
         editor.focus();
     }
 }
-
-zss_editor.removeRanges = function() {
-    var selection = window.getSelection();
-    selection.removeAllRanges();
-}
-
-
 zss_editor.blurEditor = function() {
     $('#zss_editor_content').blur();
 }//end

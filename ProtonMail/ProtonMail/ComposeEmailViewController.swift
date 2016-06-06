@@ -128,6 +128,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     private func updateMessageView() {
         self.composeView.updateFromValue(self.viewModel.getDefaultAddress()?.email ?? "", pickerEnabled: true)
         self.composeView.subject.text = self.viewModel.getSubject();
+        self.shouldShowKeyboard = false
         self.setHTML(self.viewModel.getHtmlBody())
     }
     
