@@ -281,6 +281,9 @@ class UserDataService {
     
     func signOut(animated: Bool) {
         sharedVMService.signOut()
+        if let authCredential = AuthCredential.fetchFromKeychain(), token = authCredential.token where !token.isEmpty {
+            AuthDeleteRequest().call { (task, response, hasError) in }
+        }
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignOut, object: self)
         clearAll()
         clearAuthToken()

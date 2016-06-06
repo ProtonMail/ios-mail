@@ -339,8 +339,8 @@ class SignInViewController: UIViewController {
     }
     
     internal func setupTextFields() {
-        usernameTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Username"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#cecaca")])
-        passwordTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Password"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#cecaca")])
+        usernameTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Username", "Title"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#cecaca")])
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Password", "Title"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#cecaca")])
     }
     
     func setupButtons() {

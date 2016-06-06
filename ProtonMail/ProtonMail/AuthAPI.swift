@@ -113,8 +113,29 @@ public class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
 }
 
 
-// MARK : Response part
 
+// MARK : Get messages part
+public class AuthDeleteRequest<T : ApiResponse> : ApiRequest<T> {
+    
+    override init() {
+    }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .DELETE
+    }
+    
+    override public func getRequestPath() -> String {
+        return AuthAPI.Path + AppConstants.getDebugOption
+    }
+    
+    override public func getIsAuthFunction() -> Bool {
+        return false
+    }
+}
+
+
+
+// MARK : Response part
 
 public class AuthResponse : ApiResponse {
     
