@@ -61,10 +61,10 @@ class MenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let w = UIScreen.mainScreen().applicationFrame.width;
         
         setupFetchedResultsController()
         
+        let w = UIScreen.mainScreen().applicationFrame.width;
         self.revealViewController().rearViewRevealWidth = w - kMenuOptionsWidthOffset
         
         tableView.dataSource = self
@@ -88,6 +88,10 @@ class MenuViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        let w = UIScreen.mainScreen().applicationFrame.width;
+        self.revealViewController().rearViewRevealWidth = w - kMenuOptionsWidthOffset
+        
         
         self.revealViewController().frontViewController.view.userInteractionEnabled = false
         self.revealViewController().view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
