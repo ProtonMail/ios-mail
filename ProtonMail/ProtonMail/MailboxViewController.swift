@@ -711,6 +711,7 @@ class MailboxViewController: ProtonMailViewController {
             self.refreshControl.beginRefreshing()
             let updateTime = viewModel.lastUpdateTime()
             let complete : APIService.CompletionBlock = { (task, res, error) -> Void in
+                self.needToShowNewMessage = false
                 self.fetchingMessage = false
                 
                 if self.fetchingStopped! == true {
@@ -1029,7 +1030,7 @@ extension MailboxViewController : TopMessageViewDelegate {
     }
     
     internal func showNewMessageCount(count : Int) {
-        if self.needToShowNewMessage {
+        if self.needToShowNewMessage == true {
             self.needToShowNewMessage = false
             self.self.newMessageCount = 0
             if count > 0 {
