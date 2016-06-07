@@ -308,6 +308,35 @@ class UserDataService {
         }
     }
     
+    func updateAddress(addressId: String, displayName: String, signature: String, completion: UserInfoBlock?) {
+        let new_displayName = displayName.trim()
+        let new_signature = signature.trim()
+        
+        let api = UpdateAddressRequest(id: addressId, displayName: new_displayName, signature: new_signature)
+        api.call() { task, response, hasError in
+            if !hasError {
+                if let userInfo = self.userInfo {
+                    let addresses = userInfo.userAddresses
+                    for addr in addresses {
+                        if addr.address_id == addressId {
+                            addr.display_name = new_displayName
+                            addr.signature = new_signature
+                            break
+                        }
+                    }
+                    let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:addresses,
+                        autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
+                        
+                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role, delinquent : userInfo.delinquent
+                    )
+                    self.userInfo = userInfo
+                    
+                }
+            }
+            completion?(self.userInfo, nil)
+        }
+    }
+    
     func updateAutoLoadImage(status : Int, completion: UserInfoBlock?) {
         let api = UpdateShowImagesRequest(status: status)
         api.call() { task, response, hasError in

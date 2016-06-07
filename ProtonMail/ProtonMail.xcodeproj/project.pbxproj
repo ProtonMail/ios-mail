@@ -156,6 +156,8 @@
 		75484B8B1AF29EBF00B97472 /* NSDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */; };
 		7548D0961CC10DFB001C3AEC /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */; };
 		7548D0971CC11876001C3AEC /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */; };
+		7549F0B11D07827A00643C64 /* AddressAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7549F0B01D07827A00643C64 /* AddressAPI.swift */; };
+		7549F0B21D07827A00643C64 /* AddressAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7549F0B01D07827A00643C64 /* AddressAPI.swift */; };
 		754B70C81C975271004F991A /* FeedbackItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754B70C71C975271004F991A /* FeedbackItem.swift */; };
 		754BD2071BFA9FCD006CBAE6 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754BD2061BFA9FCD006CBAE6 /* SettingsCell.swift */; };
 		754BD9A51CB31DB300913A5C /* DeviceInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754BD9A41CB31DB300913A5C /* DeviceInfoCache.swift */; };
@@ -719,6 +721,7 @@
 		7546BE561C8D557C00FCEB0A /* TouchIDCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchIDCell.swift; sourceTree = "<group>"; };
 		75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateExtension.swift; sourceTree = "<group>"; };
 		7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTempCachedStatus.swift; sourceTree = "<group>"; };
+		7549F0B01D07827A00643C64 /* AddressAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressAPI.swift; sourceTree = "<group>"; };
 		754B70C71C975271004F991A /* FeedbackItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackItem.swift; sourceTree = "<group>"; };
 		754BD2061BFA9FCD006CBAE6 /* SettingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		754BD9A41CB31DB300913A5C /* DeviceInfoCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceInfoCache.swift; sourceTree = "<group>"; };
@@ -1538,13 +1541,14 @@
 		75ECCDFC1B31EF3600A8C800 /* APIService */ = {
 			isa = PBXGroup;
 			children = (
-				75ECCE011B31F44600A8C800 /* AuthAPI.swift */,
-				7567B0741B3383F900A72A1E /* MessageAPI.swift */,
-				7518393E1B3DCA3000C714A6 /* EventAPI.swift */,
 				7567B0761B3387F700A72A1E /* APIServiceRequest.swift */,
 				7567B0781B33880500A72A1E /* APIServiceResponse.swift */,
-				75662BA61B543A5B006C538E /* SettingsAPI.swift */,
 				75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */,
+				75ECCE011B31F44600A8C800 /* AuthAPI.swift */,
+				7549F0B01D07827A00643C64 /* AddressAPI.swift */,
+				7567B0741B3383F900A72A1E /* MessageAPI.swift */,
+				7518393E1B3DCA3000C714A6 /* EventAPI.swift */,
+				75662BA61B543A5B006C538E /* SettingsAPI.swift */,
 				75BF9A511B5F0F500087AD2E /* BugsAPI.swift */,
 				7564898D1B7DBE64007EA207 /* LabelAPI.swift */,
 				75BB65751BD5C88800F9432D /* AttachmentAPI.swift */,
@@ -2023,6 +2027,7 @@
 				75510BAD1B82F990001348FF /* LabelViewModel.swift in Sources */,
 				756DAC471C93691900F3486C /* FeedbackViewController.swift in Sources */,
 				7564899A1B7F2ACA007EA207 /* MailboxViewModelImpl.swift in Sources */,
+				7549F0B11D07827A00643C64 /* AddressAPI.swift in Sources */,
 				07CF61921A8988F100ED38AE /* AttachmentExtension.swift in Sources */,
 				071323901A79BD8F0043DB41 /* TextInsetTextField.swift in Sources */,
 				75A021A41C617D3F00A22A25 /* DomainAPI.swift in Sources */,
@@ -2333,6 +2338,7 @@
 				75BDECAF1CBCD0FA00982089 /* SetPinCodeModelImpl.swift in Sources */,
 				75DE7CFA1CAAEA4900F5443E /* RecipientCell.swift in Sources */,
 				75DE7CFB1CAAEA4900F5443E /* LabelsDataService.swift in Sources */,
+				7549F0B21D07827A00643C64 /* AddressAPI.swift in Sources */,
 				75DE7CFC1CAAEA4900F5443E /* SignUpViewController.swift in Sources */,
 				75DE7CFD1CAAEA4900F5443E /* ContactVO.swift in Sources */,
 				75DE7CFE1CAAEA4900F5443E /* SettingDetailViewController.swift in Sources */,

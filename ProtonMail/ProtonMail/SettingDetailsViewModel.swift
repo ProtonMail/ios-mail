@@ -123,15 +123,28 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
     }
     
     func getCurrentValue() -> String {
+        if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
+            return addr.display_name
+        }
         return sharedUserDataService.displayName
     }
     
     func updateValue(new_value: String, complete: (Bool, NSError?) -> Void) {
-        sharedUserDataService.updateDisplayName(new_value) { _, error in
-            if let error = error {
-                 complete(false, error)
-            } else {
-                complete(true, nil)
+        if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
+            sharedUserDataService.updateAddress(addr.address_id, displayName: new_value, signature: addr.signature, completion: { (_, error) in
+                if let error = error {
+                    complete(false, error)
+                } else {
+                    complete(true, nil)
+                }
+            })
+        } else {
+            sharedUserDataService.updateDisplayName(new_value) { _, error in
+                if let error = error {
+                    complete(false, error)
+                } else {
+                    complete(true, nil)
+                }
             }
         }
     }
@@ -186,15 +199,28 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     }
     
     func getCurrentValue() -> String {
+        if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
+            return addr.signature
+        }
         return sharedUserDataService.signature
     }
     
     func updateValue(new_value: String, complete: (Bool, NSError?) -> Void) {
-        sharedUserDataService.updateSignature(new_value) { _, error in
-            if let error = error {
-                complete(false, error)
-            } else {
-                complete(true, nil)
+        if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
+            sharedUserDataService.updateAddress(addr.address_id, displayName: addr.display_name, signature: new_value, completion: { (_, error) in
+                if let error = error {
+                    complete(false, error)
+                } else {
+                    complete(true, nil)
+                }
+            })
+        } else {
+            sharedUserDataService.updateSignature(new_value) { _, error in
+                if let error = error {
+                    complete(false, error)
+                } else {
+                    complete(true, nil)
+                }
             }
         }
     }

@@ -88,8 +88,8 @@ final class Address: NSObject {
     let keys: Array<Key>
     
     let mailbox: Int   //Not inuse
-    let display_name: String  //not inuse
-    let signature: String //not inuse
+    var display_name: String  //not inuse
+    var signature: String //not inuse
     
     required init(addressid: String?, email: String?, send: Int?, receive: Int?, mailbox: Int?, display_name: String?, signature: String?, keys: Array<Key>?, status: Int?, type:Int?) {
         self.address_id = addressid ?? ""

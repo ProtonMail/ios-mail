@@ -76,6 +76,14 @@ public struct SettingsAPI {
     static let V_SettingsUpdateShowImagesRequest : Int = 1
 }
 
+public struct AddressesAPI {
+    /// base message api path
+    static let Path :String = AppConstants.BaseAPIPath + "/addresses"
+    
+    /// fetch message request version
+    static let V_AddressesUpdateRequest : Int = 1
+
+}
 
 public struct EventAPI {
     /// base event api path

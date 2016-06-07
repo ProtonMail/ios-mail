@@ -12,13 +12,14 @@ import LocalAuthentication
 class SettingTableViewController: ProtonMailViewController {
     
     var setting_headers : [SettingSections] = [.General, .Protection, .MultiDomain, .SwipeAction, .Storage, .Version] //SettingSections.Debug,
-    var setting_general_items : [SGItems] = [.NotifyEmail, .DisplayName, .LoginPWD, .MBP, .CleanCache, .Signature, .DefaultMobilSign, .AutoLoadImage]
+    var setting_general_items : [SGItems] = [.NotifyEmail, .LoginPWD, .MBP, .DefaultMobilSign, .AutoLoadImage, .CleanCache]
     var setting_debug_items : [SDebugItem] = [.Queue, .ErrorLogs, .CleanCache]
     
     var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
     var setting_swipe_actions : [MessageSwipeAction] = [.trash, .spam, .star, .archive]
     
     var setting_protection_items : [SProtectionItems] = [.TouchID, .PinCode] // [.TouchID, .PinCode, .UpdatePin, .AutoLogout, .EnterTime]
+    var setting_addresses_items : [SAddressItems] = [.Addresses, .DisplayName, .Signature]
     
     var protection_auto_logout : [Int] = [-1, 0, 1, 2, 5, 10, 15, 30, 60]
     
@@ -133,7 +134,7 @@ class SettingTableViewController: ProtonMailViewController {
         case .General:
             return setting_general_items.count
         case .MultiDomain:
-            return 1
+            return setting_addresses_items.count
         case .SwipeAction:
             return setting_swipe_action_items.count
         case .Storage:
@@ -161,13 +162,6 @@ class SettingTableViewController: ProtonMailViewController {
                         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                         cellout = cell;
                         break;
-                    case .DisplayName:
-                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingTwoLinesCell, forIndexPath: indexPath) as! SettingsCell
-                        cell.LeftText.text = itme.description;
-                        cell.RightText.text = sharedUserDataService.displayName
-                        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-                        cellout = cell;
-                        break;
                     case .LoginPWD:
                         let cell = tableView.dequeueReusableCellWithIdentifier(SettingTwoLinesCell, forIndexPath: indexPath) as! SettingsCell
                         cell.LeftText.text = itme.description;
@@ -188,12 +182,6 @@ class SettingTableViewController: ProtonMailViewController {
                         cell.accessoryType = UITableViewCellAccessoryType.None
                         cellout = cell
                         break
-                    case .Signature:
-                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingSingalLineCell, forIndexPath: indexPath) as! GeneralSettingViewCell
-                        cell.configCell(itme.description, right: "")
-                        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-                        cellout = cell
-                        break;
                     case .DefaultMobilSign:
                         let cell = tableView.dequeueReusableCellWithIdentifier(SettingSingalLineCell, forIndexPath: indexPath) as! GeneralSettingViewCell
                         cell.configCell(itme.description, right: "")
@@ -366,15 +354,38 @@ class SettingTableViewController: ProtonMailViewController {
                 return cellout
             }
             else if setting_headers[indexPath.section] == .MultiDomain {
-                let cell = tableView.dequeueReusableCellWithIdentifier(SettingDomainsCell, forIndexPath: indexPath) as! DomainsTableViewCell
-                if let addr = multi_domains.getDefaultAddress() {
-                    cell.domainText.text = addr.email
-                } else {
-                    cell.domainText.text = NSLocalizedString("Unknown")
+                var cellout : UITableViewCell!
+                if setting_addresses_items.count > indexPath.row {
+                    let itme: SAddressItems = setting_addresses_items[indexPath.row];
+                    switch itme {
+                    case .Addresses:
+                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingDomainsCell, forIndexPath: indexPath) as! DomainsTableViewCell
+                        if let addr = multi_domains.getDefaultAddress() {
+                            cell.domainText.text = addr.email
+                        } else {
+                            cell.domainText.text = NSLocalizedString("Unknown")
+                        }
+                        cell.defaultMark.text = NSLocalizedString("Default")
+                        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator;
+                        cellout = cell
+                    case .DisplayName:
+                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingTwoLinesCell, forIndexPath: indexPath) as! SettingsCell
+                        cell.LeftText.text = itme.description;
+                        if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
+                            cell.RightText.text = addr.display_name
+                        } else {
+                            cell.RightText.text = sharedUserDataService.displayName
+                        }
+                        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                        cellout = cell;
+                    case .Signature:
+                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingSingalLineCell, forIndexPath: indexPath) as! GeneralSettingViewCell
+                        cell.configCell(itme.description, right: "")
+                        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                        cellout = cell
+                    }
                 }
-                cell.defaultMark.text = NSLocalizedString("Default")
-                cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator;
-                return cell
+                return cellout
             }
             else if setting_headers[indexPath.section] == .SwipeAction {
                 let cell = tableView.dequeueReusableCellWithIdentifier(SettingDomainsCell, forIndexPath: indexPath) as! DomainsTableViewCell
@@ -448,12 +459,6 @@ class SettingTableViewController: ProtonMailViewController {
             switch itme {
             case SGItems.NotifyEmail:
                 self.performSegueWithIdentifier(NotificationSegue, sender: self)
-                break;
-            case SGItems.DisplayName:
-                self.performSegueWithIdentifier(DisplayNameSegue, sender: self)
-                break;
-            case SGItems.Signature:
-                self.performSegueWithIdentifier(SignatureSegue, sender: self)
                 break;
             case SGItems.DefaultMobilSign:
                 self.performSegueWithIdentifier(MobileSignatureSegue, sender: self)
@@ -552,53 +557,60 @@ class SettingTableViewController: ProtonMailViewController {
                 
             }
         } else if setting_headers[indexPath.section] == SettingSections.MultiDomain {
-            
-            var needsShow : Bool = false
-            let alertController = UIAlertController(title: NSLocalizedString("Change default address to .."), message: nil, preferredStyle: .ActionSheet)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
-            let defaultAddress : Address? = multi_domains.getDefaultAddress()
-            for addr in multi_domains {
-                if addr.status == 1 && addr.receive == 1 {
-                    if defaultAddress != addr {
-                        needsShow = true
-                        alertController.addAction(UIAlertAction(title: addr.email, style: .Default, handler: { (action) -> Void in
-                            self.navigationController?.popViewControllerAnimated(true)
-                            
-                            var newAddrs = Array<Address>()
-                            var newOrder = Array<Int>()
-                            newAddrs.append(addr)
-                            newOrder.append(addr.send)
-                            var order = 1
-                            addr.send = order
-                            order += 1
-                            for oldAddr in self.multi_domains {
-                                if oldAddr != addr {
-                                    newAddrs.append(oldAddr)
-                                    newOrder.append(oldAddr.send);
-                                    oldAddr.send = order
-                                    order += 1
+            let item: SAddressItems = setting_addresses_items[indexPath.row];
+            switch item {
+            case .Addresses:
+                var needsShow : Bool = false
+                let alertController = UIAlertController(title: NSLocalizedString("Change default address to .."), message: nil, preferredStyle: .ActionSheet)
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
+                let defaultAddress : Address? = multi_domains.getDefaultAddress()
+                for addr in multi_domains {
+                    if addr.status == 1 && addr.receive == 1 {
+                        if defaultAddress != addr {
+                            needsShow = true
+                            alertController.addAction(UIAlertAction(title: addr.email, style: .Default, handler: { (action) -> Void in
+                                self.navigationController?.popViewControllerAnimated(true)
+                                
+                                var newAddrs = Array<Address>()
+                                var newOrder = Array<Int>()
+                                newAddrs.append(addr)
+                                newOrder.append(addr.send)
+                                var order = 1
+                                addr.send = order
+                                order += 1
+                                for oldAddr in self.multi_domains {
+                                    if oldAddr != addr {
+                                        newAddrs.append(oldAddr)
+                                        newOrder.append(oldAddr.send);
+                                        oldAddr.send = order
+                                        order += 1
+                                    }
                                 }
-                            }
-                            
-                            let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
-                            ActivityIndicatorHelper.showActivityIndicatorAtView(window)
-                            sharedUserDataService.updateUserDomiansOrder(newAddrs,  newOrder:newOrder) { _, _, error in
-                                tableView.reloadData();
-                                ActivityIndicatorHelper.hideActivityIndicatorAtView(window)
-                                if error == nil {
-                                    self.multi_domains = newAddrs
-                                    tableView.reloadData()
+                                
+                                let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
+                                ActivityIndicatorHelper.showActivityIndicatorAtView(window)
+                                sharedUserDataService.updateUserDomiansOrder(newAddrs,  newOrder:newOrder) { _, _, error in
+                                    tableView.reloadData();
+                                    ActivityIndicatorHelper.hideActivityIndicatorAtView(window)
+                                    if error == nil {
+                                        self.multi_domains = newAddrs
+                                        tableView.reloadData()
+                                    }
                                 }
-                            }
-                        }))
+                            }))
+                        }
                     }
                 }
-            }
-            if needsShow {
-                let cell = tableView.cellForRowAtIndexPath(indexPath)
-                alertController.popoverPresentationController?.sourceView = cell ?? self.view
-                alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
-                presentViewController(alertController, animated: true, completion: nil)
+                if needsShow {
+                    let cell = tableView.cellForRowAtIndexPath(indexPath)
+                    alertController.popoverPresentationController?.sourceView = cell ?? self.view
+                    alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
+                    presentViewController(alertController, animated: true, completion: nil)
+                }
+            case .DisplayName:
+                self.performSegueWithIdentifier(DisplayNameSegue, sender: self)
+            case .Signature:
+                self.performSegueWithIdentifier(SignatureSegue, sender: self)
             }
         }  else if setting_headers[indexPath.section] == SettingSections.SwipeAction {
             if indexPath.row < setting_swipe_action_items.count {
@@ -697,8 +709,8 @@ extension SettingTableViewController {
     
     enum SGItems: Int, CustomStringConvertible {
         case NotifyEmail = 0
-        case DisplayName = 1
-        case Signature = 2
+//        case DisplayName = 1
+//        case Signature = 2
         case LoginPWD = 3
         case MBP = 4
         case CleanCache = 5
@@ -709,10 +721,10 @@ extension SettingTableViewController {
             switch(self){
             case NotifyEmail:
                 return NSLocalizedString("Notification Email")
-            case DisplayName:
-                return NSLocalizedString("Display Name")
-            case Signature:
-                return NSLocalizedString("Signature")
+//            case DisplayName:
+//                return NSLocalizedString("Display Name")
+//            case Signature:
+//                return NSLocalizedString("Signature")
             case LoginPWD:
                 return NSLocalizedString("Login Password")
             case MBP:
@@ -769,6 +781,23 @@ extension SettingTableViewController {
                 return NSLocalizedString("Protection Entire App")
             case EnterTime:
                 return NSLocalizedString("Auto Lock Time")
+            }
+        }
+    }
+    
+    enum SAddressItems: Int, CustomStringConvertible {
+        case Addresses = 0
+        case DisplayName = 1
+        case Signature = 2
+        
+        var description : String {
+            switch(self){
+            case Addresses:
+                return NSLocalizedString("")
+            case DisplayName:
+                return NSLocalizedString("Display Name")
+            case Signature:
+                return NSLocalizedString("Signature")
             }
         }
     }
