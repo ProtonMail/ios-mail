@@ -53,6 +53,10 @@ class PinCodeView : PMView {
         }
     }
     
+    func updateTitle(title : String) {
+        titleLabel.text = title
+    }
+    
     func updateCorner() {
         self.setCorner(oneButton)
         self.setCorner(twoButton)

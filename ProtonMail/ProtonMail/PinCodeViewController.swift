@@ -153,6 +153,13 @@ extension PinCodeViewController : PinCodeViewDelegate {
                     self.delegate?.Next()
                     self.navigationController?.popViewControllerAnimated(true)
                 } else {
+                    if self.viewModel.getPinFailedRemainingCount() < 10 {
+                        if self.viewModel.getPinFailedRemainingCount() <= 0 {
+                            Cancel()
+                        } else {
+                            self.pinCodeView.updateTitle(self.viewModel.getPinFailedError())
+                        }
+                    }
                     self.pinCodeView.showError()
                 }
             }

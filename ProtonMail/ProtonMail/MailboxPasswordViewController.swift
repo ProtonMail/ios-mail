@@ -186,6 +186,7 @@ class MailboxPasswordViewController: UIViewController {
                             }
                         } else if info != nil {
                             if info!.delinquent < 3 {
+                                userCachedStatus.pinFailedCount = 0;
                                 sharedUserDataService.setMailboxPassword(password, isRemembered: self.isRemembered)
                                 self.loadContent()
                                 self.restoreBackup();
