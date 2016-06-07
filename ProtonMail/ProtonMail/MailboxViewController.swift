@@ -97,7 +97,8 @@ class MailboxViewController: ProtonMailViewController {
     private var menuBarButtonItem: UIBarButtonItem!
     private var fetchingMessage : Bool! = false
     private var fetchingStopped : Bool! = true
-    
+    private var needToShowNewMessage : Bool = false
+    private var newMessageCount = 0
     
     // MARK: swipactions
     private var leftSwipeAction : MessageSwipeAction = .archive
@@ -724,9 +725,8 @@ class MailboxViewController: ProtonMailViewController {
                 if error == nil {
                     self.viewModel.resetNotificationMessage()
                     if !updateTime.isNew {
-                        if let messages = res?["Messages"] as? [AnyObject] {
-                            self.showNewMessageCount(messages.count ?? 0)
-                        }
+//                        if let messages = res?["Messages"] as? [AnyObject] {
+//                        }
                     }
                 }
                 
@@ -752,6 +752,7 @@ class MailboxViewController: ProtonMailViewController {
                 }
             } else {
                 //fetch
+                self.needToShowNewMessage = true
                 viewModel.fetchNewMessages(self.viewModel.getNotificationMessage(), Time: Int(updateTime.start.timeIntervalSince1970),  completion: complete)
                 self.checkEmptyMailbox()
             }
@@ -1028,17 +1029,21 @@ extension MailboxViewController : TopMessageViewDelegate {
     }
     
     internal func showNewMessageCount(count : Int) {
-        if count > 0 {
-            self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
-            if count == 1 {
-                self.topMessageView.updateMessage(newMessage: "You have a new email!")
-            } else {
-                self.topMessageView.updateMessage(newMessage: "You have \(count) new emails!")
+        if self.needToShowNewMessage {
+            self.needToShowNewMessage = false
+            self.self.newMessageCount = 0
+            if count > 0 {
+                self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
+                if count == 1 {
+                    self.topMessageView.updateMessage(newMessage: "You have a new email!")
+                } else {
+                    self.topMessageView.updateMessage(newMessage: "You have \(count) new emails!")
+                }
+                self.updateViewConstraints()
+                UIView.animateWithDuration(0.25, animations: { () -> Void in
+                    self.view.layoutIfNeeded()
+                })
             }
-            self.updateViewConstraints()
-            UIView.animateWithDuration(0.25, animations: { () -> Void in
-                self.view.layoutIfNeeded()
-            })
         }
     }
     
@@ -1183,6 +1188,7 @@ extension MailboxViewController: UITableViewDataSource {
 extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
+        self.showNewMessageCount(self.newMessageCount)
         selectMessageIDIfNeeded()
     }
     
@@ -1210,6 +1216,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         case .Insert:
             if let newIndexPath = newIndexPath {
                 tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+                self.newMessageCount += 1
             }
         case .Update:
             if let indexPath = indexPath {
