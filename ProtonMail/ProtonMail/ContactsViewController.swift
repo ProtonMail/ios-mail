@@ -214,14 +214,14 @@ extension ContactsViewController: UITableViewDelegate {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "toEditContact") {
-            let editContactViewController: EditContactViewController = segue.destinationViewController as! EditContactViewController
+            let editContactViewController: EditContactViewController = segue.destinationViewController.childViewControllers[0] as! EditContactViewController
             editContactViewController.contact = self.selectedContact
             
             PMLog.D("tableView.indexPathForSelectedRow() = \(tableView.indexPathForSelectedRow)")
         }
         
         if (segue.identifier == "toCompose") {
-            let composeViewController = segue.destinationViewController as! ComposeEmailViewController
+            let composeViewController = segue.destinationViewController.childViewControllers[0] as! ComposeEmailViewController
             sharedVMService.newDraftViewModelWithContact(composeViewController, contact: self.selectedContact)
         }
     }
