@@ -65,7 +65,8 @@ class MenuViewController: UIViewController {
         setupFetchedResultsController()
         
         let w = UIScreen.mainScreen().applicationFrame.width;
-        self.revealViewController().rearViewRevealWidth = w - kMenuOptionsWidthOffset
+        let offset =  (w - kMenuOptionsWidthOffset)
+        self.revealViewController().rearViewRevealWidth = kMenuOptionsWidth > offset ? offset : kMenuOptionsWidth
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -90,8 +91,8 @@ class MenuViewController: UIViewController {
         super.viewWillAppear(animated)
         
         let w = UIScreen.mainScreen().applicationFrame.width;
-        self.revealViewController().rearViewRevealWidth = w - kMenuOptionsWidthOffset
-        
+        let offset =  (w - kMenuOptionsWidthOffset)
+        self.revealViewController().rearViewRevealWidth = kMenuOptionsWidth > offset ? offset : kMenuOptionsWidth
         
         self.revealViewController().frontViewController.view.userInteractionEnabled = false
         self.revealViewController().view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
