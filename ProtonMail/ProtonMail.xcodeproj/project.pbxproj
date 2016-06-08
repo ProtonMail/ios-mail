@@ -250,6 +250,8 @@
 		75B179501B377748006044D4 /* ContactVOExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B1794F1B377748006044D4 /* ContactVOExtension.swift */; };
 		75B549E61D02731300F21A30 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 75B549E51D02731300F21A30 /* Reachability.m */; };
 		75B549E71D02731300F21A30 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 75B549E51D02731300F21A30 /* Reachability.m */; };
+		75BA55A71D087F6A0081DD88 /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 75BA55A61D087F6A0081DD88 /* Readme.txt */; };
+		75BA55A81D087F6A0081DD88 /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 75BA55A61D087F6A0081DD88 /* Readme.txt */; };
 		75BB65761BD5C88800F9432D /* AttachmentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BB65751BD5C88800F9432D /* AttachmentAPI.swift */; };
 		75BDECA91CBCCE4400982089 /* PinCodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BDECA81CBCCE4400982089 /* PinCodeModel.swift */; };
 		75BDECAB1CBCCE5B00982089 /* SetPinCodeModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BDECAA1CBCCE5B00982089 /* SetPinCodeModelImpl.swift */; };
@@ -809,6 +811,7 @@
 		75B1794F1B377748006044D4 /* ContactVOExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactVOExtension.swift; sourceTree = "<group>"; };
 		75B549E41D02731300F21A30 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		75B549E51D02731300F21A30 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		75BA55A61D087F6A0081DD88 /* Readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.txt; sourceTree = "<group>"; };
 		75BB65751BD5C88800F9432D /* AttachmentAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentAPI.swift; sourceTree = "<group>"; };
 		75BDECA81CBCCE4400982089 /* PinCodeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinCodeModel.swift; sourceTree = "<group>"; };
 		75BDECAA1CBCCE5B00982089 /* SetPinCodeModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPinCodeModelImpl.swift; sourceTree = "<group>"; };
@@ -1022,6 +1025,7 @@
 		075E3DDD1A5F4ECF00E001A7 = {
 			isa = PBXGroup;
 			children = (
+				75BA55A61D087F6A0081DD88 /* Readme.txt */,
 				075E3DE81A5F4ECF00E001A7 /* ProtonMail */,
 				075E3DF51A5F4ECF00E001A7 /* Images.xcassets */,
 				075E3DF71A5F4ECF00E001A7 /* LaunchScreen.xib */,
@@ -1753,6 +1757,7 @@
 				07B123781AB8CD90006EA38C /* Attachments.storyboard in Resources */,
 				755638C11CA1AE42003FA2D0 /* ShowImageView.xib in Resources */,
 				75DCB2081BA2A1560085BE8C /* RecipientCell.xib in Resources */,
+				75BA55A71D087F6A0081DD88 /* Readme.txt in Resources */,
 				75E49EFB1CAAF47D00235ACC /* InfoDev.plist in Resources */,
 				07009F141A684C1900129B07 /* Roboto-Thin.ttf in Resources */,
 				7558C5481BE82D6300043009 /* LabelsView.xib in Resources */,
@@ -1792,6 +1797,7 @@
 				75DE7D8C1CAAEA4900F5443E /* editor.css in Resources */,
 				75DE7D8D1CAAEA4900F5443E /* ComposeView.xib in Resources */,
 				75DE7EB21CAAEF9000F5443E /* Images.xcassets in Resources */,
+				75BA55A81D087F6A0081DD88 /* Readme.txt in Resources */,
 				75DE7D8E1CAAEA4900F5443E /* Roboto-Regular.ttf in Resources */,
 				75DE7D8F1CAAEA4900F5443E /* SignIn.storyboard in Resources */,
 				7582CFBD1D024E2900F521D4 /* TopMessageView.xib in Resources */,
