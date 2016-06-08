@@ -110,7 +110,7 @@ class MailboxViewController: ProtonMailViewController {
     @IBOutlet weak var topMsgTopConstraint: NSLayoutConstraint!
     
     private let kDefaultSpaceHide : CGFloat = -38.0
-    private let kDefaultSpaceShow : CGFloat = 0.0
+    private let kDefaultSpaceShow : CGFloat = 4.0
     
     
     // MARK: - UIViewController Lifecycle
@@ -645,7 +645,7 @@ class MailboxViewController: ProtonMailViewController {
                     let updateTime = viewModel.lastUpdateTime()
                     if let currentTime = current.time {
                         let isOlderMessage = updateTime.end.compare(currentTime) != NSComparisonResult.OrderedAscending
-                        let isLastMessage = last == current
+                        let isLastMessage = (last == current)
                         if  (isOlderMessage || isLastMessage) && !fetching {
                             let sectionCount = fetchedResultsController.numberOfRowsInSection(0) ?? 0
                             let recordedCount = Int(updateTime.total)
@@ -712,6 +712,7 @@ class MailboxViewController: ProtonMailViewController {
             let updateTime = viewModel.lastUpdateTime()
             let complete : APIService.CompletionBlock = { (task, res, error) -> Void in
                 self.needToShowNewMessage = false
+                self.newMessageCount = 0
                 self.fetchingMessage = false
                 
                 if self.fetchingStopped! == true {
@@ -719,6 +720,7 @@ class MailboxViewController: ProtonMailViewController {
                 }
                 
                 if let error = error {
+                    //No connectivity detected...
                     self.showErrorMessage(error)
                     NSLog("error: \(error)")
                 }
@@ -1216,8 +1218,19 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             }
         case .Insert:
             if let newIndexPath = newIndexPath {
+                PMLog.D("Section: \(newIndexPath.section) Row: \(newIndexPath.row) ")
                 tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: UITableViewRowAnimation.Fade)
-                self.newMessageCount += 1
+                if self.needToShowNewMessage == true {
+                    if let newMsg = anObject as? Message {
+                        if let msgTime = newMsg.time where !newMsg.isRead {
+                            let updateTime = viewModel.lastUpdateTime()
+                            if msgTime.compare(updateTime.start) != NSComparisonResult.OrderedAscending {
+                                self.newMessageCount += 1
+                            }
+                            
+                        }
+                    }
+                }
             }
         case .Update:
             if let indexPath = indexPath {
