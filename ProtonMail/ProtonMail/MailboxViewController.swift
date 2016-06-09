@@ -109,7 +109,7 @@ class MailboxViewController: ProtonMailViewController {
     @IBOutlet weak var topMessageView: TopMessageView!
     @IBOutlet weak var topMsgTopConstraint: NSLayoutConstraint!
     
-    private let kDefaultSpaceHide : CGFloat = -38.0
+    private let kDefaultSpaceHide : CGFloat = -34.0
     private let kDefaultSpaceShow : CGFloat = 4.0
     
     
@@ -703,8 +703,19 @@ class MailboxViewController: ProtonMailViewController {
         }
     }
     
+    func handleRequestError (error : NSError) {
+        if error.code == NSURLErrorTimedOut {
+            self.showTimeOutErrorMessage()
+        } else if error.code == NSURLErrorNotConnectedToInternet || error.code == NSURLErrorCannotConnectToHost {
+            self.showNoInternetErrorMessage()
+        } else {
+            self.showNoInternetErrorMessage()
+        }
+        PMLog.D("error: \(error)")
+    }
+    
     internal func getLatestMessages() {
-        
+        self.hideTopMessage()
         if !fetchingMessage {
             fetchingMessage = true
             
@@ -720,9 +731,7 @@ class MailboxViewController: ProtonMailViewController {
                 }
                 
                 if let error = error {
-                    //No connectivity detected...
-                    self.showErrorMessage(error)
-                    NSLog("error: \(error)")
+                    self.handleRequestError(error)
                 }
                 
                 if error == nil {
@@ -1031,6 +1040,27 @@ extension MailboxViewController : TopMessageViewDelegate {
         }
     }
     
+    internal func showTimeOutErrorMessage() {
+        self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
+        self.topMessageView.updateMessage(timeOut: "The request timed out.")
+        self.updateViewConstraints()
+        
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    internal func showNoInternetErrorMessage() {
+        self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
+        self.topMessageView.updateMessage(noInternet : "No connectivity detected...")
+        self.updateViewConstraints()
+        
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    
     internal func showNewMessageCount(count : Int) {
         if self.needToShowNewMessage == true {
             self.needToShowNewMessage = false
@@ -1065,7 +1095,7 @@ extension MailboxViewController : TopMessageViewDelegate {
         case NotReachable:
             PMLog.D("Access Not Available")
             self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
-            self.topMessageView.updateMessage(noInternet: "The internet connection appears to be offline.")
+            self.topMessageView.updateMessage(noInternet: "No connectivity detected...")
             self.updateViewConstraints()
         case ReachableViaWWAN:
             PMLog.D("Reachable WWAN")
@@ -1098,7 +1128,7 @@ extension MailboxViewController : TopMessageViewDelegate {
     }
     
     func retry() {
-        
+        self.getLatestMessages()
     }
 }
 

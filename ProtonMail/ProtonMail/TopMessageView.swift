@@ -52,18 +52,17 @@ class TopMessageView : PMView {
     func updateMessage(timeOut message: String) {
         messageLabel.text = message
         messageLabel.textColor = UIColor.whiteColor()
-        backgroundView.backgroundColor = UIColor.lightGrayColor()
+        backgroundView.backgroundColor = UIColor.redColor()
         backgroundView.alpha = 0.9
-        
-        closeButton.hidden = true
+        closeButton.hidden = false
     }
     
     func updateMessage(noInternet message : String) {
         messageLabel.text = message
         messageLabel.textColor = UIColor.whiteColor()
-        backgroundView.backgroundColor = UIColor.lightGrayColor()
+        backgroundView.backgroundColor = UIColor.redColor()
         backgroundView.alpha = 0.9
-        closeButton.hidden = true
+        closeButton.hidden = false
     }
     
     func updateMessage(errorMsg message : String) {
@@ -83,7 +82,8 @@ class TopMessageView : PMView {
     }
     
     @IBAction func closeAction(sender: UIButton) {
-        delegate?.close()
+        delegate?.retry()
+        //delegate?.close()
     }
 
 }
