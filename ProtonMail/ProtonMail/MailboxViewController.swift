@@ -185,6 +185,7 @@ class MailboxViewController: ProtonMailViewController {
         
         
         self.updateInterfaceWithReachability(sharedInternetReachability)
+        //self.updateInterfaceWithReachability(sharedRemoteReachability)
     }
     
     override func viewDidLayoutSubviews() {
@@ -687,18 +688,16 @@ class MailboxViewController: ProtonMailViewController {
                     let recordedCount = Int(updateTime.total)
                     if updateTime.isNew || recordedCount > sectionCount {
                         self.fetching = true
-                        viewModel.fetchMessages("", Time: 0, foucsClean: false, completion:
-                            { (task, messages, error) -> Void in
-                                self.fetching = false
-                                if error != nil {
-                                    PMLog.D("search error: \(error)")
-                                } else {
-                                    
-                                }
+                        viewModel.fetchMessages("", Time: 0, foucsClean: false, completion: { (task, messages, error) -> Void in
+                            self.fetching = false
+                            if error != nil {
+                                PMLog.D("search error: \(error)")
+                            } else {
+                                
+                            }
                         })
                     }
                 }
-                
             }
         }
     }
@@ -1012,10 +1011,7 @@ class MailboxViewController: ProtonMailViewController {
         let animation = CATransition()
         animation.duration = 0.25
         animation.type = kCATransitionFade
-        
         self.navigationController?.navigationBar.layer.addAnimation(animation, forKey: "fadeText")
-        
-        
         if let t = text where t.characters.count > 0 {
             self.title = t
             self.navigationTitleLabel.text = t
@@ -1083,6 +1079,15 @@ extension MailboxViewController : TopMessageViewDelegate {
     internal func reachabilityChanged(note : NSNotification) {
         if let curReach = note.object as? Reachability {
             self.updateInterfaceWithReachability(curReach)
+        } else {
+            if let status = note.object as? Int {
+                PMLog.D("\(status)")
+                if status == 0 { //time out
+                    showTimeOutErrorMessage()
+                } else if status == 1 { //not reachable
+                    showNoInternetErrorMessage()
+                }
+            }
         }
     }
     
@@ -1114,8 +1119,7 @@ extension MailboxViewController : TopMessageViewDelegate {
         })
     }
     
-    internal func hideTopMessage() {
-        
+    func hideTopMessage() {
         self.topMsgTopConstraint.constant = self.kDefaultSpaceHide
         self.updateViewConstraints()
         UIView.animateWithDuration(0.25, animations: { () -> Void in

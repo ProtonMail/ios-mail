@@ -892,7 +892,7 @@ class MessageDataService {
                                 }
                             } else {
                                 dispatch_async(dispatch_get_main_queue()) {
-                                    completion(task: task, response: response, message:nil, error: NSError.badResponse())
+                                    completion(task: task, response: response, message:nil, error: error)
                                 }
                             }
                         }
@@ -1673,6 +1673,11 @@ class MessageDataService {
                         //                            // request timed out
                         //                        }
                         if error?.code == -1009 || error?.code == -1004 || error?.code == -1001 { //internet issue
+                            if error?.code == -1001 {
+                                NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kReachabilityChangedNotification, object: 0, userInfo: nil))
+                            } else {
+                                NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kReachabilityChangedNotification, object: 1, userInfo: nil))
+                            }
                             isInternetIssue = true
                         }
                     }
@@ -1715,6 +1720,12 @@ class MessageDataService {
                 
                 if !isInternetIssue {
                     self.dequeueIfNeeded()
+                } else {
+                    if !sharedMessageQueue.isBlocked && self.readQueue.count > 0 {
+                        PMLog.D("left redaQueue count : \(self.readQueue.count)")
+                        self.readQueue.removeAtIndex(0)()
+                        self.dequeueIfNeeded()
+                    }
                 }
             }
         }

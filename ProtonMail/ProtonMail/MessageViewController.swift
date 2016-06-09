@@ -54,24 +54,33 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         self.emailView!.initLayouts()
         self.emailView!.bottomActionView.delegate = self
         self.emailView!.emailHeader.actionsDelegate = self
-        
+        self.emailView!.topMessageView.delegate = self
         
         showEmailLoading()
-        message.fetchDetailIfNeeded() { _, _, msg, error in
-            if error != nil {
-                PMLog.D(" error: \(error)")
-                self.updateEmailBodyWithError("Can't download message body, please try again.")
-            }
-            else
-            {
-                self.updateContent()
+        loadMessageDetailes()
+    }
+
+    func loadMessageDetailes () {
+        if !message.isDetailDownloaded && sharedInternetReachability.currentReachabilityStatus() == NotReachable {
+            self.emailView?.showNoInternetErrorMessage()
+            self.updateEmailBodyWithError("No connectivity detected...")
+        } else {
+            message.fetchDetailIfNeeded() { _, _, msg, error in
+                if error != nil {
+                    PMLog.D(" error: \(error)")
+                    self.updateEmailBodyWithError("Can't download message body, please try again.")
+                }
+                else
+                {
+                    self.updateContent()
+                }
             }
         }
     }
     
     func updateContent () {
         self.updateEmailBody ()
-        
+    
     }
     
     override func loadView() {
@@ -306,7 +315,6 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     internal func purifyEmailBody(message : Message!) -> String?
     {
-        
         var bodyText = try! self.message.decryptBodyIfNeeded() ?? NSLocalizedString("Unable to decrypt message.")
         bodyText = bodyText.stringByStrippingStyleHTML()
         bodyText = bodyText.stringByStrippingBodyStyle()
@@ -354,6 +362,20 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         self.emailView?.rotate()
+    }
+}
+
+extension MessageViewController : TopMessageViewDelegate {
+    
+    func close() {
+        self.emailView?.hideTopMessage()
+    }
+    
+    func retry() {
+        self.emailView?.hideTopMessage()
+        delay(0.5) {
+            self.loadMessageDetailes()
+        }
     }
 }
 

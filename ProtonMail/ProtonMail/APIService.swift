@@ -54,7 +54,7 @@ class APIService {
     init() {
         sessionManager = AFHTTPSessionManager(baseURL: NSURL(string: AppConstants.BaseURLString)!)
         sessionManager.requestSerializer = AFJSONRequestSerializer() as AFHTTPRequestSerializer
-        sessionManager.requestSerializer.timeoutInterval = 30.0;
+        sessionManager.requestSerializer.timeoutInterval = 20.0;
         #if DEBUG
             sessionManager.securityPolicy.allowInvalidCertificates = true
         #endif

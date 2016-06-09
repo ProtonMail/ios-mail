@@ -97,6 +97,7 @@ extension SWRevealViewController {
 
 //move to a manager class later
 let sharedInternetReachability : Reachability = Reachability.reachabilityForInternetConnection()
+let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.BaseURLString)
 
 extension AppDelegate: UIApplicationDelegate {
     func application(application: UIApplication, supportedInterfaceOrientationsForWindow window: UIWindow?) -> UIInterfaceOrientationMask {
@@ -140,7 +141,7 @@ extension AppDelegate: UIApplicationDelegate {
         AFNetworkActivityLogger.sharedLogger().startLogging()
         AFNetworkActivityLogger.sharedLogger().level = AFHTTPRequestLoggerLevel.AFLoggerLevelDebug
         
-        
+        //sharedRemoteReachability.startNotifier()
         sharedInternetReachability.startNotifier()
 
         

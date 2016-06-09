@@ -134,7 +134,6 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     private func setTopMessageView() {
         self.topMessageView = TopMessageView()
         self.topMessageView.backgroundColor = UIColor.whiteColor()
-        self.topMessageView.delegate = self
         self.addSubview(topMessageView);
         let w = UIScreen.mainScreen().applicationFrame.width;
         self.topMessageView.frame = CGRect(x: 0, y: 0, width: w, height:34);
@@ -225,7 +224,7 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     }
 }
 
-extension EmailView : TopMessageViewDelegate {
+extension EmailView {
     
     internal func showErrorMessage(error: NSError?) {
         if error != nil {
@@ -249,7 +248,7 @@ extension EmailView : TopMessageViewDelegate {
         })
     }
     
-    internal func showNoInternetErrorMessage() {
+    func showNoInternetErrorMessage() {
         topMessageView.mas_updateConstraints { (make) in
             make.top.equalTo()(self).offset()(self.self.kDefaultSpaceShow)
         }
@@ -304,14 +303,7 @@ extension EmailView : TopMessageViewDelegate {
            self.layoutIfNeeded()
         })
     }
-    
-    func close() {
-        self.hideTopMessage()
-    }
-    
-    func retry() {
-        self.hideTopMessage()
-    }
+
 }
 
 //
