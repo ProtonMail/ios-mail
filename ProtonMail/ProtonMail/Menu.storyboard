@@ -1292,7 +1292,19 @@
                     <view key="view" contentMode="scaleToFill" id="iHo-JM-gJu">
                         <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gvk-Br-Xxh">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="gvk-Br-Xxh" firstAttribute="top" secondItem="Dhe-kT-scI" secondAttribute="bottom" id="54y-Ad-Rn5"/>
+                            <constraint firstItem="gvk-Br-Xxh" firstAttribute="leading" secondItem="iHo-JM-gJu" secondAttribute="leading" id="8r5-0O-Z7J"/>
+                            <constraint firstAttribute="trailing" secondItem="gvk-Br-Xxh" secondAttribute="trailing" id="MYd-dV-pTZ"/>
+                            <constraint firstItem="3gu-uZ-r12" firstAttribute="top" secondItem="gvk-Br-Xxh" secondAttribute="bottom" id="e42-z2-1wh"/>
+                        </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="juN-ES-tqQ">
@@ -1302,6 +1314,7 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="backButton" destination="IrE-60-aCv" id="eWw-9W-awV"/>
+                        <outlet property="ev" destination="gvk-Br-Xxh" id="qqM-WR-dO8"/>
                         <segue destination="3qu-iX-9kV" kind="show" identifier="toCompose" id="ddm-eA-erE"/>
                         <segue destination="C6e-Un-S8J" kind="presentation" identifier="toApplyLabelsSegue" id="xUw-S1-zl5"/>
                     </connections>
@@ -3819,14 +3832,14 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="5rJ-hC-fsT"/>
         <segue reference="YGe-pV-72F"/>
-        <segue reference="fux-iz-qV0"/>
-        <segue reference="zIE-XJ-wkG"/>
-        <segue reference="0zg-HM-MdK"/>
-        <segue reference="hZj-FM-cPb"/>
-        <segue reference="uj7-oW-fwS"/>
         <segue reference="3FM-PP-oeV"/>
         <segue reference="V9t-nA-fhw"/>
+        <segue reference="5rJ-hC-fsT"/>
+        <segue reference="hZj-FM-cPb"/>
+        <segue reference="0zg-HM-MdK"/>
+        <segue reference="fux-iz-qV0"/>
+        <segue reference="xUw-S1-zl5"/>
+        <segue reference="ddm-eA-erE"/>
     </inferredMetricsTieBreakers>
 </document>

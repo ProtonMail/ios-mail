@@ -42,9 +42,18 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     // Message bottom actions view
     var bottomActionView : MessageDetailBottomView!
     
+    var topMessageView : TopMessageView!
+    
+    private let kDefaultSpaceHide : CGFloat = -34.0
+    private let kDefaultSpaceShow : CGFloat = 4.0
+    private let kDefaultTopMessageHeight : CGFloat = 34
+    
+    private let kLeftOffset : CGFloat = 4.0
+    private let kRightOffset : CGFloat = -4.0
+    
+    private let kAnimationDuration : NSTimeInterval = 0.25
     //
     var subWebview : UIView?
-    
     
     private var isViewingMoreOptions: Bool = false
 
@@ -64,16 +73,25 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         }
         
         bottomActionView.mas_makeConstraints { (make) -> Void in
+            make.removeExisting = true
             make.bottom.equalTo()(self)
             make.left.equalTo()(self)
             make.right.equalTo()(self)
             make.height.equalTo()(self.kButtonsViewHeight)
         }
+        
+        topMessageView.mas_makeConstraints { (make) in
+            make.removeExisting = true
+            make.top.equalTo()(self).offset()(self.kDefaultSpaceHide)
+            make.left.equalTo()(self).offset()(self.kLeftOffset)
+            make.right.equalTo()(self).offset()(self.kRightOffset)
+            make.height.equalTo()(self.kDefaultTopMessageHeight)
+        }
     }
     
     func rotate() {
         let w = UIScreen.mainScreen().applicationFrame.width;
-        self.emailHeader.frame = CGRect(x: 0, y: 0, width: w, height: self.emailHeader.getHeight())
+        self.emailHeader.frame = CGRect(x: 0, y: self.kDefaultSpaceHide, width: w, height: self.emailHeader.getHeight())
         self.emailHeader.makeConstraints()
         self.emailHeader.updateHeaderLayout()
     }
@@ -104,12 +122,22 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         self.setupBottomView()
         self.setupContentView()
         self.setupHeaderView()
+        self.setTopMessageView();
         
         self.updateContentLayout(false)
     }
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setTopMessageView() {
+        self.topMessageView = TopMessageView()
+        self.topMessageView.backgroundColor = UIColor.whiteColor()
+        self.topMessageView.delegate = self
+        self.addSubview(topMessageView);
+        let w = UIScreen.mainScreen().applicationFrame.width;
+        self.topMessageView.frame = CGRect(x: 0, y: 0, width: w, height:34);
     }
     
     private func setupBottomView() {
@@ -148,7 +176,7 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         if !emailLoaded {
            return
         }
-        UIView.animateWithDuration(animation ? 0.3 : 0, animations: { () -> Void in
+        UIView.animateWithDuration(animation ? self.kAnimationDuration : 0, animations: { () -> Void in
             for subview in self.contentWebView.scrollView.subviews {
                 let sub = subview 
                 if sub == self.emailHeader {
@@ -157,15 +185,7 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
                     continue
                 } else {
                     self.subWebview = sub
-                    // new
-//                    if let subOk = self.subWebview {
-//                        if !self.emailLoaded {
-//                            subOk.hidden = true;
-//                        }
-//                    }
                     let h = self.emailHeader.getHeight()
-//                    PMLog.D("\(sub.frame.height)")
-//                    PMLog.D("\(self.contentWebView.frame)")
                     sub.frame = CGRect(x: sub.frame.origin.x, y: h, width: sub.frame.width, height: sub.frame.height);
                     self.attY = sub.frame.origin.y + sub.frame.height;
                 }
@@ -205,9 +225,97 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     }
 }
 
+extension EmailView : TopMessageViewDelegate {
+    
+    internal func showErrorMessage(error: NSError?) {
+        if error != nil {
+            self.topMessageView.updateMessage(error: error!)
+            topMessageView.mas_updateConstraints { (make) in
+                make.top.equalTo()(self).offset()(self.kDefaultSpaceShow)
+            }
+            UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
+                self.layoutIfNeeded()
+            })
+        }
+    }
+    
+    internal func showTimeOutErrorMessage() {
+        topMessageView.mas_updateConstraints { (make) in
+            make.top.equalTo()(self).offset()(self.self.kDefaultSpaceShow)
+        }
+        self.topMessageView.updateMessage(timeOut: "The request timed out.")
+        UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
+            self.layoutIfNeeded()
+        })
+    }
+    
+    internal func showNoInternetErrorMessage() {
+        topMessageView.mas_updateConstraints { (make) in
+            make.top.equalTo()(self).offset()(self.self.kDefaultSpaceShow)
+        }
+        self.topMessageView.updateMessage(noInternet : "No connectivity detected...")
+        UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
+            self.layoutIfNeeded()
+        })
+    }
+    
+    internal func reachabilityChanged(note : NSNotification) {
+        if let curReach = note.object as? Reachability {
+            self.updateInterfaceWithReachability(curReach)
+        }
+    }
+    
+    internal func updateInterfaceWithReachability(reachability : Reachability) {
+        let netStatus = reachability.currentReachabilityStatus()
+        let connectionRequired = reachability.connectionRequired()
+        PMLog.D("connectionRequired : \(connectionRequired)")
+        switch (netStatus)
+        {
+        case NotReachable:
+            PMLog.D("Access Not Available")
+            topMessageView.mas_updateConstraints { (make) in
+                make.top.equalTo()(self).offset()(self.self.kDefaultSpaceShow)
+            }
+            self.topMessageView.updateMessage(noInternet: "No connectivity detected...")
+        case ReachableViaWWAN:
+            PMLog.D("Reachable WWAN")
+            topMessageView.mas_updateConstraints { (make) in
+                make.top.equalTo()(self).offset()(self.kDefaultSpaceHide)
+            }
+        case ReachableViaWiFi:
+            PMLog.D("Reachable WiFi")
+            topMessageView.mas_updateConstraints { (make) in
+                make.top.equalTo()(self).offset()(self.kDefaultSpaceHide)
+            }
+        default:
+            PMLog.D("Reachable default unknow")
+        }
+        
+        UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
+            self.layoutIfNeeded()
+        })
+    }
+    
+    internal func hideTopMessage() {
+        topMessageView.mas_updateConstraints { (make) in
+            make.top.equalTo()(self).offset()(self.kDefaultSpaceHide)
+        }
+        UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
+           self.layoutIfNeeded()
+        })
+    }
+    
+    func close() {
+        self.hideTopMessage()
+    }
+    
+    func retry() {
+        self.hideTopMessage()
+    }
+}
+
 //
 extension EmailView : EmailHeaderViewProtocol {
-    
     func updateSize() {
         self.updateContentLayout(false)
     }
