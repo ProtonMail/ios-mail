@@ -56,25 +56,83 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         self.emailView!.emailHeader.actionsDelegate = self
         self.emailView!.topMessageView.delegate = self
         
-        showEmailLoading()
         loadMessageDetailes()
     }
 
-    func loadMessageDetailes () {
+    internal func loadMessageDetailes () {
+        showEmailLoading()
         if !message.isDetailDownloaded && sharedInternetReachability.currentReachabilityStatus() == NotReachable {
             self.emailView?.showNoInternetErrorMessage()
             self.updateEmailBodyWithError("No connectivity detected...")
         } else {
             message.fetchDetailIfNeeded() { _, _, msg, error in
-                if error != nil {
-                    PMLog.D(" error: \(error)")
-                    self.updateEmailBodyWithError("Can't download message body, please try again.")
+                if let error = error {
+                    if error.code == NSURLErrorTimedOut {
+                        self.emailView?.showTimeOutErrorMessage()
+                        self.updateEmailBodyWithError("The request timed out.")
+                    } else if error.code == NSURLErrorNotConnectedToInternet || error.code == NSURLErrorCannotConnectToHost {
+                        self.emailView?.showNoInternetErrorMessage()
+                        self.updateEmailBodyWithError("No connectivity detected...")
+                    } else if error.code < 0{
+                        self.emailView?.showErrorMessage("Can't download message body, please try again.")
+                        self.updateEmailBodyWithError("Can't download message body, please try again.")
+                    } else {
+                        self.emailView?.showErrorMessage("Save message body failed, please try again.")
+                        self.updateEmailBodyWithError("Save message body failed, please try again.")
+                    }
+                    PMLog.D("error: \(error)")
                 }
                 else
                 {
                     self.updateContent()
                 }
             }
+        }
+    }
+    
+    internal func recheckMessageDetails () {
+        self.emailView?.hideTopMessage()
+        delay(0.5) {
+            if !self.message.isDetailDownloaded {
+                self.loadMessageDetailes ()
+            }
+        }
+    }
+    
+    internal func reachabilityChanged(note : NSNotification) {
+        if let curReach = note.object as? Reachability {
+            self.updateInterfaceWithReachability(curReach)
+        } else {
+//            if let status = note.object as? Int {
+//                PMLog.D("\(status)")
+//                if status == 0 { //time out
+//                    showTimeOutErrorMessage()
+//                } else if status == 1 { //not reachable
+//                    showNoInternetErrorMessage()
+//                }
+//            }
+        }
+    }
+    
+    internal func updateInterfaceWithReachability(reachability : Reachability) {
+        let netStatus = reachability.currentReachabilityStatus()
+        let connectionRequired = reachability.connectionRequired()
+        PMLog.D("connectionRequired : \(connectionRequired)")
+        switch (netStatus)
+        {
+        case NotReachable:
+            PMLog.D("Access Not Available")
+            if !message.isDetailDownloaded {
+                self.emailView?.showNoInternetErrorMessage()
+            }
+        case ReachableViaWWAN:
+            PMLog.D("Reachable WWAN")
+            recheckMessageDetails ()
+        case ReachableViaWiFi:
+            PMLog.D("Reachable WiFi")
+            recheckMessageDetails ()
+        default:
+            PMLog.D("Reachable default unknow")
         }
     }
     
@@ -202,9 +260,8 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MessageViewController.statusBarHit(_:)), name: NotificationDefined.TouchStatusBar, object:nil)
-
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MailboxViewController.reachabilityChanged(_:)), name: kReachabilityChangedNotification, object: nil)
         if let context = message.managedObjectContext {
             message.isRead = true
             message.needsUpdate = true
@@ -222,6 +279,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationDefined.TouchStatusBar, object:nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: kReachabilityChangedNotification, object:nil)
         self.stopExpirationTimer()
     }
     
@@ -372,10 +430,8 @@ extension MessageViewController : TopMessageViewDelegate {
     }
     
     func retry() {
-        self.emailView?.hideTopMessage()
-        delay(0.5) {
-            self.loadMessageDetailes()
-        }
+
+            self.recheckMessageDetails ()
     }
 }
 

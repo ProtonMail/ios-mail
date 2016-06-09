@@ -226,18 +226,6 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
 
 extension EmailView {
     
-    internal func showErrorMessage(error: NSError?) {
-        if error != nil {
-            self.topMessageView.updateMessage(error: error!)
-            topMessageView.mas_updateConstraints { (make) in
-                make.top.equalTo()(self).offset()(self.kDefaultSpaceShow)
-            }
-            UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
-                self.layoutIfNeeded()
-            })
-        }
-    }
-    
     internal func showTimeOutErrorMessage() {
         topMessageView.mas_updateConstraints { (make) in
             make.top.equalTo()(self).offset()(self.self.kDefaultSpaceShow)
@@ -253,6 +241,16 @@ extension EmailView {
             make.top.equalTo()(self).offset()(self.self.kDefaultSpaceShow)
         }
         self.topMessageView.updateMessage(noInternet : "No connectivity detected...")
+        UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
+            self.layoutIfNeeded()
+        })
+    }
+    
+    func showErrorMessage(errorMsg : String) {
+        topMessageView.mas_updateConstraints { (make) in
+            make.top.equalTo()(self).offset()(self.self.kDefaultSpaceShow)
+        }
+        self.topMessageView.updateMessage(errorMsg : errorMsg)
         UIView.animateWithDuration(self.kAnimationDuration, animations: { () -> Void in
             self.layoutIfNeeded()
         })
