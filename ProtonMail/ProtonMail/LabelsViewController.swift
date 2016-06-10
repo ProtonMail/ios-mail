@@ -38,7 +38,12 @@ class LablesViewController : UIViewController {
     
     private var archiveMessage = false;
     
+    @IBOutlet weak var archiveView: UIView!
+    @IBOutlet weak var archiveConstrains: NSLayoutConstraint!
+    
+    
     var delegate : LablesViewControllerDelegate?
+    var applyButtonText : String!
     
     //
     private var fetchedLabels: NSFetchedResultsController?
@@ -50,8 +55,19 @@ class LablesViewController : UIViewController {
         inputContentView.layer.borderColor = UIColor(hexColorCode: "#DADEE8").CGColor
         inputContentView.layer.borderWidth = 1.0
         self.setupFetchedResultsController()
-        //var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
-        // self.view.addGestureRecognizer(tapGestureRecognizer)
+        
+        titleLabel.text = viewModel.getTitle()
+        
+        if viewModel.showArchiveOption() {
+            archiveView.hidden = false
+            archiveConstrains.constant = 45.0
+        } else {
+            archiveView.hidden = true
+            archiveConstrains.constant = 0
+        }
+        
+        applyButtonText = viewModel.getApplyButtonText()
+        applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -92,7 +108,7 @@ class LablesViewController : UIViewController {
             tableView.hidden = false;
             isCreateView = false
             collectionView.hidden = true;
-            applyButton.setTitle("Apply", forState: UIControlState.Normal)
+            applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
         } else {
             self.viewModel.apply(archiveMessage)
             self.dismissViewControllerAnimated(true, completion: nil)
@@ -106,7 +122,7 @@ class LablesViewController : UIViewController {
             tableView.hidden = false;
             isCreateView = false
             collectionView.hidden = true;
-            applyButton.setTitle("Apply", forState: UIControlState.Normal)
+            applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
         } else {
             viewModel.cancel();
             self.dismissViewControllerAnimated(true, completion: nil)
@@ -148,7 +164,7 @@ class LablesViewController : UIViewController {
             tableView.hidden = false;
             isCreateView = false
             collectionView.hidden = true;
-            applyButton.setTitle("Apply", forState: UIControlState.Normal)
+            applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
         }
     }
     
@@ -184,12 +200,6 @@ extension LablesViewController: UITableViewDataSource {
         return labelCell
     }
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if (editingStyle == .Delete) {
-            // deleteMessageForIndexPath(indexPath)
-        }
-    }
-    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count = fetchedLabels?.numberOfRowsInSection(section) ?? 0
         return count
@@ -211,14 +221,6 @@ extension LablesViewController: UITableViewDataSource {
 extension LablesViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 45.0
-    }
-    
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let trashed: UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: title) { (rowAction, indexPath) -> Void in
-            //self.deleteMessageForIndexPath(indexPath)
-        }
-        trashed.backgroundColor = UIColor.ProtonMail.Red_D74B4B
-        return [trashed]
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -250,8 +252,6 @@ extension LablesViewController: UICollectionViewDelegateFlowLayout, UICollection
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        
-        
         if let index = selected {
             let oldCell = collectionView.cellForItemAtIndexPath(index)
             oldCell?.layer.borderWidth = 0
@@ -274,8 +274,6 @@ extension LablesViewController: UICollectionViewDelegateFlowLayout, UICollection
     {
         return CGSize(width: collectionView.frame.size.width/2, height: 30)
     }
-    
-    
 }
 
 

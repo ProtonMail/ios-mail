@@ -41,6 +41,18 @@ public class LabelViewModel {
     public func getLabelMessage(label : Label!) -> LabelMessageModel! {
         fatalError("This method must be overridden")
     }
+    
+    public func getTitle() -> String {
+        fatalError("This method must be overridden")
+    }
+    
+    public func showArchiveOption() -> Bool {
+        fatalError("This method must be overridden")
+    }
+    
+    public func getApplyButtonText() -> String {
+        fatalError("This method must be overridden")
+    }
 }
 
 public class LabelViewModelImpl : LabelViewModel {
@@ -51,6 +63,14 @@ public class LabelViewModelImpl : LabelViewModel {
         self.messages = msg
         self.labelMessages = Dictionary<String, LabelMessageModel>()
         super.init()
+    }
+    
+    override public func showArchiveOption() -> Bool {
+        return true
+    }
+    
+    public override func getApplyButtonText() -> String {
+        return NSLocalizedString("Apply")
     }
     
     override public func getLabelMessage( label : Label!) -> LabelMessageModel! {
@@ -132,6 +152,10 @@ public class LabelViewModelImpl : LabelViewModel {
             let api = MessageActionRequest<ApiResponse>(action: "archive", ids: ids)
             api.call(nil)
         }
+    }
+    
+    override public func getTitle() -> String {
+        return NSLocalizedString("Apply Labels")
     }
     
     override public func cancel() {

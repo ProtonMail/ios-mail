@@ -936,7 +936,9 @@
                     <navigationItem key="navigationItem" id="iLS-Gu-LeZ"/>
                     <connections>
                         <outlet property="applyButton" destination="aea-99-bTG" id="Q1B-oa-G2p"/>
+                        <outlet property="archiveConstrains" destination="igJ-Er-OqR" id="bQk-gE-aGk"/>
                         <outlet property="archiveSelectButton" destination="E7L-cs-KEo" id="Gnz-6e-ZRi"/>
+                        <outlet property="archiveView" destination="jzF-8V-78C" id="Cys-C2-dQT"/>
                         <outlet property="backgroundImageView" destination="viD-Nu-yL2" id="K8Q-uQ-41x"/>
                         <outlet property="cancelButton" destination="yPS-fX-Gy3" id="Q8N-Y4-xDx"/>
                         <outlet property="collectionView" destination="jza-Nd-HPW" id="eG1-dh-oGD"/>
@@ -2067,10 +2069,10 @@
                         <gestureRecognizers/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="header_cell" rowHeight="30" id="E3e-0h-Zqm" customClass="CustomHeaderView" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="113.5" width="600" height="30"/>
+                                <rect key="frame" x="0.0" y="114" width="600" height="30"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="E3e-0h-Zqm" id="NX9-5U-hjU">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="29.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="30"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FN6-jl-69h">
@@ -2100,10 +2102,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="setting_domains" id="26K-rv-bch" customClass="DomainsTableViewCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="143.5" width="600" height="50"/>
+                                <rect key="frame" x="0.0" y="144" width="600" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="26K-rv-bch" id="riW-AJ-1el">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="49.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EF9-yy-qmv">
@@ -2136,10 +2138,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="settings_general" editingAccessoryType="disclosureIndicator" id="LtS-YL-4v1" customClass="GeneralSettingViewCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="193.5" width="600" height="50"/>
+                                <rect key="frame" x="0.0" y="194" width="600" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LtS-YL-4v1" id="S8h-kh-EJZ">
-                                    <rect key="frame" x="0.0" y="0.0" width="567" height="49.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="567" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hbU-xt-6NE">
@@ -2174,10 +2176,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="switch_table_view_cell" id="8Mk-M6-89O" customClass="SwitchTableViewCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="243.5" width="600" height="50"/>
+                                <rect key="frame" x="0.0" y="244" width="600" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8Mk-M6-89O" id="C6u-Y7-O42">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="49.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z4X-pQ-wmo">
@@ -2229,10 +2231,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="touch_id_switch_table_cell" id="h79-GF-Flw" customClass="TouchIDCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="293.5" width="600" height="50"/>
+                                <rect key="frame" x="0.0" y="294" width="600" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="h79-GF-Flw" id="oy1-X1-srl">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="49.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z8R-KY-muI">
@@ -2267,10 +2269,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="setting_storage_cell" id="vqi-cv-zqa" customClass="StorageViewCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="343.5" width="600" height="50"/>
+                                <rect key="frame" x="0.0" y="344" width="600" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vqi-cv-zqa" id="nqq-dQ-73h">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="49.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="0.80000000298023211" trackImage="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="HCt-6S-bCJ">
@@ -2308,10 +2310,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="single_text_cell" rowHeight="30" id="arS-Un-J0g" customClass="CustomHeaderView" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="393.5" width="600" height="30"/>
+                                <rect key="frame" x="0.0" y="394" width="600" height="30"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="arS-Un-J0g" id="ZmF-be-Psv">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="29.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="30"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i7C-fQ-acK">
@@ -2332,10 +2334,10 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="settings_twolines" rowHeight="120" id="7Jh-rt-PYs" customClass="SettingsCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="423.5" width="600" height="120"/>
+                                <rect key="frame" x="0.0" y="424" width="600" height="120"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7Jh-rt-PYs" id="Pat-mZ-FC0">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="119.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="120"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ISn-Zt-jSU">
@@ -2391,6 +2393,7 @@
                         <segue destination="SWZ-VZ-9Rg" kind="show" identifier="setting_debug_queue_segue" id="XyN-LC-jTe"/>
                         <segue destination="OCS-Qd-wj6" kind="show" identifier="setting_mobile_signature" id="dUE-8e-owj"/>
                         <segue destination="tMn-Uv-JDd" kind="show" identifier="setting_setup_pingcode" id="XQx-Pm-sNq"/>
+                        <segue destination="C6e-Un-S8J" kind="presentation" identifier="toManagerLabelsSegue" id="GgS-nT-ctf"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7xM-0a-IOr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3833,13 +3836,13 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="YGe-pV-72F"/>
-        <segue reference="3FM-PP-oeV"/>
         <segue reference="V9t-nA-fhw"/>
+        <segue reference="GgS-nT-ctf"/>
+        <segue reference="3FM-PP-oeV"/>
         <segue reference="5rJ-hC-fsT"/>
-        <segue reference="hZj-FM-cPb"/>
-        <segue reference="0zg-HM-MdK"/>
         <segue reference="fux-iz-qV0"/>
-        <segue reference="xUw-S1-zl5"/>
+        <segue reference="0zg-HM-MdK"/>
+        <segue reference="hZj-FM-cPb"/>
         <segue reference="ddm-eA-erE"/>
     </inferredMetricsTieBreakers>
 </document>

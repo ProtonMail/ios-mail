@@ -48,6 +48,8 @@ public struct LabelAPI {
     static let V_LabelFetchRequest : Int = 1
     static let V_ApplyLabelToMessageRequest : Int = 1
     static let V_RemoveLabelFromMessageRequest : Int = 1
+    static let V_CreateLabelRequest : Int = 1
+    static let V_DeleteLabelRequest : Int = 1
 }
 
 public struct AuthAPI {
