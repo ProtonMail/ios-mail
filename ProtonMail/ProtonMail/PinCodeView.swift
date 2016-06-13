@@ -89,7 +89,7 @@ class PinCodeView : PMView {
     }
     
     @IBAction func touchIDAction(sender: AnyObject) {
-        
+        delegate?.TouchID()
     }
     
     internal func add(number : Int) {
