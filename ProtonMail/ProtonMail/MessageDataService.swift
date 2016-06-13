@@ -1155,8 +1155,8 @@ class MessageDataService {
                 if let badMessages = try context.executeFetchRequest(fetchRequest) as? [Message] {
                     self.fetchMessagesWithIDs(badMessages);
                 }
-            } catch {
-                
+            } catch let ex as NSError {
+                PMLog.D("error : \(ex)")
             }
         }
         

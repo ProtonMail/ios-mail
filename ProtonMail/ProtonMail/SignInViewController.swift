@@ -67,6 +67,9 @@ class SignInViewController: UIViewController {
     @IBOutlet weak var loginMidlineConstraint: NSLayoutConstraint!
     @IBOutlet weak var loginWidthConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var signUpTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var touchIDButton: UIButton!
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
     }
@@ -74,7 +77,7 @@ class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //
+        hideTouchID(false)
         setupTextFields()
         setupButtons()
         
@@ -83,6 +86,7 @@ class SignInViewController: UIViewController {
         } else {
             //check touch id status
             if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+                showTouchID(false)
                 authenticateUser()
             } else {
                 signInIfRememberedCredentials()
@@ -109,6 +113,24 @@ class SignInViewController: UIViewController {
         return false
     }
     
+    internal func showTouchID(animated : Bool = true) {
+        touchIDButton.layer.cornerRadius = 25
+        touchIDButton.hidden = false
+        signUpTopConstraint.priority = 1
+        UIView.animateWithDuration(animated ? 0.25 : 0, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
+            self.view.layoutIfNeeded()
+            }, completion: nil)
+    }
+    
+    internal func hideTouchID(animated : Bool = true) {
+        touchIDButton.layer.cornerRadius = 25
+        touchIDButton.hidden = true
+        signUpTopConstraint.priority = 750
+        UIView.animateWithDuration(animated ? 0.25 : 0, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
+            self.view.layoutIfNeeded()
+            }, completion: nil)
+    }
+    
     func configConstraint(show : Bool) -> Void {
         let level = show ? showPriority : hidePriority
         
@@ -128,6 +150,14 @@ class SignInViewController: UIViewController {
             self.passwordTextField.secureTextEntry = false;
         } else {
             self.passwordTextField.secureTextEntry = true;
+        }
+    }
+    
+    @IBAction func touchIDAction(sender: UIButton) {
+        if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+            authenticateUser()
+        } else {
+            hideTouchID()
         }
     }
     
