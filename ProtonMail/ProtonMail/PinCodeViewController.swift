@@ -34,6 +34,7 @@ class PinCodeViewController : UIViewController {
         
         if self.viewModel.checkTouchID() {
             if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+                pinCodeView.showTouchID()
                 authenticateUser()
             }
         }
@@ -132,6 +133,16 @@ class PinCodeViewController : UIViewController {
 
 
 extension PinCodeViewController : PinCodeViewDelegate {
+    
+    func TouchID() {
+        if self.viewModel.checkTouchID() {
+            if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+                authenticateUser()
+                return
+            }
+        }
+        pinCodeView.hideTouchID()
+    }
     
     func Cancel() {
         delegate?.Cancel()

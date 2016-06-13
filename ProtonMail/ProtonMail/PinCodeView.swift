@@ -11,6 +11,7 @@ import Foundation
 protocol PinCodeViewDelegate {
     func Cancel()
     func Next(code : String)
+    func TouchID()
 }
 
 class PinCodeView : PMView {
@@ -34,6 +35,8 @@ class PinCodeView : PMView {
     @IBOutlet weak var logoutButton: UIButton!
     @IBOutlet weak var backButton: UIButton!
     
+    @IBOutlet weak var touchIDButton: UIButton!
+    
     var delegate : PinCodeViewDelegate?
     
     var pinCode : String = ""
@@ -42,7 +45,17 @@ class PinCodeView : PMView {
         return "PinCodeView";
     }
     
+    func showTouchID() {
+        touchIDButton.hidden = false
+    }
+    
+    func hideTouchID() {
+        touchIDButton.hidden = true
+    }
+    
     override func setup() {
+        touchIDButton.layer.cornerRadius = 25
+        touchIDButton.hidden = true
     }
     
     func updateViewText(title : String, cancelText : String, resetPin : Bool) {
@@ -70,11 +83,13 @@ class PinCodeView : PMView {
         self.setCorner(zeroButton)
         self.setCorner(goButton)
         
-        
-        
         logoutButton.transform = CGAffineTransformMakeScale(-1.0, 1.0);
         logoutButton.titleLabel?.transform = CGAffineTransformMakeScale(-1.0, 1.0);
         logoutButton.imageView?.transform = CGAffineTransformMakeScale(-1.0, 1.0);
+    }
+    
+    @IBAction func touchIDAction(sender: AnyObject) {
+        
     }
     
     internal func add(number : Int) {
