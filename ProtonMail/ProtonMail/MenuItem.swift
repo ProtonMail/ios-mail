@@ -21,6 +21,7 @@ enum MenuItem: String {
     case settings = "Settings"
     case signout = "Logout"
     case feedback = "Feedback"
+    case lockapp = "Lock The App"
     
     var identifier: String { return rawValue }
     
@@ -62,6 +63,8 @@ enum MenuItem: String {
             image = "menu_logout"
         case feedback:
             image = "menu_feedback"
+        case .lockapp:
+            image = "menu_lockapp"
         }
         return image;
     }
@@ -93,6 +96,8 @@ enum MenuItem: String {
             image = "menu_logout-active"
         case feedback:
             image = "menu_feedback-active"
+        case .lockapp:
+            image = "menu_lockapp"
         }
         return image;
     }

@@ -27,7 +27,7 @@ class MenuViewController: UIViewController {
     // MARK: - Private constants
     
     private let inboxItems = [MenuItem.inbox, MenuItem.drafts, MenuItem.sent, MenuItem.starred, MenuItem.archive, MenuItem.spam, MenuItem.trash]
-    private let otherItems = [MenuItem.contacts, MenuItem.settings, MenuItem.bugs, /*MenuItem.feedback,*/ MenuItem.signout]
+    private var otherItems = [MenuItem.contacts, MenuItem.settings, MenuItem.bugs, /*MenuItem.feedback,*/ MenuItem.signout]
     private var fetchedLabels: NSFetchedResultsController?
     private var signingOut: Bool = false
     
@@ -98,6 +98,13 @@ class MenuViewController: UIViewController {
         self.revealViewController().view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         
         self.sectionClicked = false
+        
+        if ((userCachedStatus.isPinCodeEnabled && !userCachedStatus.pinCode.isEmpty) || (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled)) {
+            otherItems = [.contacts, .settings, .bugs, /*MenuItem.feedback,*/ .lockapp, .signout]
+        } else {
+            otherItems = [MenuItem.contacts, MenuItem.settings, MenuItem.bugs, /*MenuItem.feedback,*/ MenuItem.signout]
+        }
+        
         
         updateEmailLabel()
         updateDisplayNameLabel()
@@ -230,6 +237,9 @@ extension MenuViewController: UITableViewDelegate {
                 self.performSegueWithIdentifier(kSegueToContacts, sender: indexPath);
             } else if item == .feedback {
                 self.performSegueWithIdentifier(kSegueToFeedback, sender: indexPath);
+            } else if item == .lockapp {
+                (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: true)
+                sharedVMService.resetComposerView()
             }
         } else if (indexPath.section == 2) {
             //labels
