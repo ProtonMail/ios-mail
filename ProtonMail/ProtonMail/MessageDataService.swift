@@ -785,18 +785,22 @@ class MessageDataService {
         
         // TODO: check for existing download tasks and return that task rather than start a new download
         queue { () -> Void in
-            sharedAPIService.attachmentForAttachmentID(attachment.attachmentID, destinationDirectoryURL: NSFileManager.defaultManager().attachmentDirectory, downloadTask: downloadTask, completion: { task, fileURL, error in
-                var error = error
-                if let fileURL = fileURL {
-                    attachment.localURL = fileURL
-                    
-                    error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
-                    if error != nil  {
-                        PMLog.D(" error: \(error)")
+            if attachment.managedObjectContext != nil {
+                sharedAPIService.attachmentForAttachmentID(attachment.attachmentID, destinationDirectoryURL: NSFileManager.defaultManager().attachmentDirectory, downloadTask: downloadTask, completion: { task, fileURL, error in
+                    var error = error
+                    if let fileURL = fileURL {
+                        attachment.localURL = fileURL
+                        error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
+                        if error != nil  {
+                            PMLog.D(" error: \(error)")
+                        }
                     }
-                }
-                completion?(task, fileURL, error)
-            })
+                    completion?(task, fileURL, error)
+                })
+            } else {
+                PMLog.D("The attachment not exist") //TODO:: need add log here
+                completion?(nil, nil, nil)
+            }
         }
     }
     
