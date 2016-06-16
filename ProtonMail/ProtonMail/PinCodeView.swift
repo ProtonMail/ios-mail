@@ -37,6 +37,9 @@ class PinCodeView : PMView {
     
     @IBOutlet weak var touchIDButton: UIButton!
     
+    @IBOutlet weak var attempsLabel: UILabel!
+    @IBOutlet weak var whiteLineView: UIView!
+    
     var delegate : PinCodeViewDelegate?
     
     var pinCode : String = ""
@@ -92,6 +95,28 @@ class PinCodeView : PMView {
         delegate?.TouchID()
     }
     
+    func showAttempError(error:String, low : Bool) {
+        pinDisplayView.textColor = UIColor.redColor()
+        whiteLineView.backgroundColor = UIColor.redColor()
+        attempsLabel.hidden = false
+        attempsLabel.text = error
+        if low {
+            attempsLabel.backgroundColor = UIColor.redColor()
+            attempsLabel.textColor = UIColor.whiteColor()
+        } else {
+            attempsLabel.backgroundColor = UIColor.clearColor()
+            attempsLabel.textColor = UIColor.redColor()
+        }
+    }
+    
+    func hideAttempError(reset : Bool) {
+        pinDisplayView.textColor = UIColor.lightGrayColor()
+        whiteLineView.backgroundColor = UIColor.whiteColor()
+        if reset {
+            attempsLabel.hidden = false
+        }
+    }
+    
     internal func add(number : Int) {
         pinCode = pinCode + String(number)
         self.updateCodeDisplay()
@@ -127,11 +152,13 @@ class PinCodeView : PMView {
     }
     
     @IBAction func buttonActions(sender: UIButton) {
+        self.hideAttempError(false)
         let numberClicked = sender.tag
         self.add(numberClicked)
     }
     
     @IBAction func deleteAction(sender: UIButton) {
+        self.hideAttempError(false)
         self.remove()
     }
     

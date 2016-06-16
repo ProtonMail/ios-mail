@@ -65,6 +65,11 @@ class UnlockPinCodeModelImpl : PinCodeViewModel {
     
     override func getPinFailedError() -> String {
         let c = 10 - userCachedStatus.pinFailedCount
+        if c <= 1 {
+            return "\(c) attempt remaining until secure data wipe!"
+        } else if c < 4 {
+            return "\(c) attempts remaining until secure data wipe!"
+        }
         return "Incorrect PIN, \(c) attempts remaining"
     }
     

@@ -160,15 +160,17 @@ extension PinCodeViewController : PinCodeViewDelegate {
                 self.setUpView(true)
             } else {
                 if self.viewModel.isPinMatched() {
+                    self.pinCodeView.hideAttempError(true)
                     self.viewModel.done()
                     self.delegate?.Next()
                     self.navigationController?.popViewControllerAnimated(true)
                 } else {
-                    if self.viewModel.getPinFailedRemainingCount() < 10 {
-                        if self.viewModel.getPinFailedRemainingCount() <= 0 {
+                    let count = self.viewModel.getPinFailedRemainingCount()
+                    if count < 10 {
+                        if count <= 0 {
                             Cancel()
                         } else {
-                            self.pinCodeView.updateTitle(self.viewModel.getPinFailedError())
+                            self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: count < 4)
                         }
                     }
                     self.pinCodeView.showError()
