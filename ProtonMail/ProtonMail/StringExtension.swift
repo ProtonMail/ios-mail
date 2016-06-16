@@ -253,49 +253,55 @@ extension String {
     }
     
     func stringByPurifyImages () -> String {
-        var out = self.preg_replace("\\ssrc='", replaceto: " data-src='")
-        out = out.preg_replace("\\ssrc=\"", replaceto: " data-src=\"")
-        out = out.preg_replace("xlink:href=", replaceto: " data-xlink:href=");
-        out = out.preg_replace("poster=", replaceto: " data-poster=")
-        out = out.preg_replace("background=", replaceto: " data-background=")
-        out = out.preg_replace("url\\(", replaceto: " data-url(")
+
+         let out = self.preg_replace("src=\"(.*?)(^|>|\"|\\s)|srcset=\"(.*?)(^|>|\"|\\s)|src='(.*?)(^|>|'|\\s)|xlink:href=\"(.*?)(^|>|\"|\\s)|poster=\"(.*?)(^|>|\"|\\s)|background=\"(.*?)(^|>|\"|\\s)|url\\((.*?)(^|>|\\)|\\s)", replaceto: " ")
+        
+//add this will break html layout. |<img(.*?)<\\/img>|<(\\/?img.*?)>|<picture(.*?)<\\/picture>|<(\\/?picture.*?)>
+//        out = out.preg_replace("\\ssrc='", replaceto: " data-src='")
+//        out = out.preg_replace("\\ssrc=\"", replaceto: " data-src=\"")
+//        out = out.preg_replace("xlink:href=", replaceto: " data-xlink:href=");
+//        out = out.preg_replace("poster=", replaceto: " data-poster=")
+//        out = out.preg_replace("background=", replaceto: " data-background=")
+//        out = out.preg_replace("url\\(", replaceto: " data-url(")
         return out
     }
     
     func stringByPurifyHTML() -> String {
-        var out = self.preg_replace("<script(.*?)<\\/script>", replaceto: "")
-        //out = out.preg_replace("<(script.*?)>(.*?)<(\\/script.*?)>", replaceto: "")
-        out = out.preg_replace("<(\\/?script.*?)>", replaceto: "")
+        let out = self.preg_replace("<style[^>]*?>.*?</style>|<script(.*?)<\\/script>|<(\\/?script.*?)>|<(\\/?meta.*?)>|<object(.*?)<\\/object>|<(\\/?object.*?)>|<input(.*?)<\\/input>|<(\\/?input.*?)>|<(\\/?link.*?)>|<iframe(.*?)<\\/iframe>|<video(.*?)<\\/video>|<audio(.*?)<\\/audio>", replaceto: " ")
         
-        out = out.preg_replace("<(\\/?meta.*?)>", replaceto: "");
-        out = out.preg_replace("<object(.*?)<\\/object>", replaceto: "")
-        out = out.preg_replace("<(\\/?object.*?)>", replaceto: "")
-        //out = out.preg_replace("<(object.*?)>(.*?)<(\\/object.*?)>", replaceto: "");
-        //out = out.preg_replace("<(\\/?objec.*?)>", replaceto: "");
-        out = out.preg_replace("<input(.*?)<\\/input>", replaceto: "")
-        out = out.preg_replace("<(\\/?input.*?)>", replaceto: "");
-        
-        //remove inline style optinal later
-        //out = out.preg_replace("(<[a-z ]*)(style=(\"|\')(.*?)(\"|\'))([a-z ]*>)", replaceto: "");
-        out = out.preg_replace("<(\\/?link.*?)>", replaceto: "");
-        
-        out = out.preg_replace("<iframe(.*?)<\\/iframe>", replaceto: "");
-        //out = out.preg_replace("<style(.*?)<\\/style>", replaceto: "");
-        //out = out.preg_replace("\\s+", replaceto:" ")
-        //out = out.preg_replace("<[ ]+", replaceto:"<")
-        //out = out.preg_replace("<(style.*?)>(.*?)<(\\/style.*?)>", replaceto: "");
-        //out = out.preg_replace("<(\\/?style.*?)>", replaceto: "");
-        //        out = out.preg_replace("javascript", replaceto: "Javascript")
-        //        out = out.preg_replace("vbscript", replaceto: "Vbscript")
-        //        out = out.preg_replace("&#", replaceto: "&＃")
-        //        out = out.preg_replace("<(noframes.*?)>(.*?)<(\\/noframes.*?)>", replaceto: "")
-        //        out = out.preg_replace("<(\\/?noframes.*?)>", replaceto: "")
-        //        out = out.preg_replace("<(i?frame.*?)>(.*?)<(\\/i?frame.*?)>", replaceto: "")
-        //        out = out.preg_replace("<(\\/?i?frame.*?)>", replaceto: "")
-        
-        //optional later
-        out = out.preg_replace("<video(.*?)<\\/video>", replaceto: "")
-        out = out.preg_replace("<audio(.*?)<\\/audio>", replaceto: "")
+//        var out = self.preg_replace("<script(.*?)<\\/script>", replaceto: "")
+//        //out = out.preg_replace("<(script.*?)>(.*?)<(\\/script.*?)>", replaceto: "")
+//        out = out.preg_replace("<(\\/?script.*?)>", replaceto: "")
+//        
+//        out = out.preg_replace("<(\\/?meta.*?)>", replaceto: "");
+//        out = out.preg_replace("<object(.*?)<\\/object>", replaceto: "")
+//        out = out.preg_replace("<(\\/?object.*?)>", replaceto: "")
+//        //out = out.preg_replace("<(object.*?)>(.*?)<(\\/object.*?)>", replaceto: "");
+//        //out = out.preg_replace("<(\\/?objec.*?)>", replaceto: "");
+//        out = out.preg_replace("<input(.*?)<\\/input>", replaceto: "")
+//        out = out.preg_replace("<(\\/?input.*?)>", replaceto: "");
+//        
+//        //remove inline style optinal later
+//        //out = out.preg_replace("(<[a-z ]*)(style=(\"|\')(.*?)(\"|\'))([a-z ]*>)", replaceto: "");
+//        out = out.preg_replace("<(\\/?link.*?)>", replaceto: "");
+//        
+//        out = out.preg_replace("<iframe(.*?)<\\/iframe>", replaceto: "");
+//        //out = out.preg_replace("<style(.*?)<\\/style>", replaceto: "");
+//        //out = out.preg_replace("\\s+", replaceto:" ")
+//        //out = out.preg_replace("<[ ]+", replaceto:"<")
+//        //out = out.preg_replace("<(style.*?)>(.*?)<(\\/style.*?)>", replaceto: "");
+//        //out = out.preg_replace("<(\\/?style.*?)>", replaceto: "");
+//        //        out = out.preg_replace("javascript", replaceto: "Javascript")
+//        //        out = out.preg_replace("vbscript", replaceto: "Vbscript")
+//        //        out = out.preg_replace("&#", replaceto: "&＃")
+//        //        out = out.preg_replace("<(noframes.*?)>(.*?)<(\\/noframes.*?)>", replaceto: "")
+//        //        out = out.preg_replace("<(\\/?noframes.*?)>", replaceto: "")
+//        //        out = out.preg_replace("<(i?frame.*?)>(.*?)<(\\/i?frame.*?)>", replaceto: "")
+//        //        out = out.preg_replace("<(\\/?i?frame.*?)>", replaceto: "")
+//        
+//        //optional later
+//        out = out.preg_replace("<video(.*?)<\\/video>", replaceto: "")
+//        out = out.preg_replace("<audio(.*?)<\\/audio>", replaceto: "")
         
         
         return out;
