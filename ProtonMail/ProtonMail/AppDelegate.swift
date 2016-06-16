@@ -105,7 +105,7 @@ extension AppDelegate: UIApplicationDelegate {
     }
     
     func checkOrientation (viewController: UIViewController?) -> UIInterfaceOrientationMask {
-        if viewController == nil {
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad || viewController == nil {
             return UIInterfaceOrientationMask.All
         } else if (viewController is UINavigationController) {
             if let nav = viewController as? UINavigationController {
@@ -156,7 +156,7 @@ extension AppDelegate: UIApplicationDelegate {
         sharedPushNotificationService.setLaunchOptions(launchOptions)
         
         
-        
+        PMLog.D("\(UIScreen.mainScreen().bounds)")
         
         return true
     }
