@@ -275,6 +275,9 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         self.emailView?.contentWebView.becomeFirstResponder()
         
         self.setupExpirationTimer()
+        
+        self.updateHeader()
+        self.emailView?.emailHeader.updateAttConstraints(false)
     }
     
     override func viewWillDisappear(animated: Bool) {
