@@ -438,6 +438,15 @@ class MailboxViewController: ProtonMailViewController {
         }
     }
     
+    internal func beginRefreshingManually() {
+        self.refreshControl.beginRefreshing()
+        if (self.tableView.contentOffset.y == 0) {
+            UIView.animateWithDuration(0.25, animations: { 
+                self.tableView.contentOffset = CGPointMake(0, -self.refreshControl.frame.size.height);
+            })
+        }
+    }
+
     // MARK: - Private methods
     private func startAutoFetch()
     {
@@ -718,7 +727,7 @@ class MailboxViewController: ProtonMailViewController {
         if !fetchingMessage {
             fetchingMessage = true
             
-            self.refreshControl.beginRefreshing()
+            self.beginRefreshingManually()
             let updateTime = viewModel.lastUpdateTime()
             let complete : APIService.CompletionBlock = { (task, res, error) -> Void in
                 self.needToShowNewMessage = false
@@ -1277,7 +1286,6 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         }
     }
 }
-
 
 // MARK: - UITableViewDelegate
 
