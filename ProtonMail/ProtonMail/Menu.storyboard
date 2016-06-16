@@ -1286,7 +1286,7 @@
         <!--Message View Controller-->
         <scene sceneID="ysU-co-vh9">
             <objects>
-                <viewController extendedLayoutIncludesOpaqueBars="YES" id="kWS-aU-yuK" customClass="MessageViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="kWS-aU-yuK" customClass="MessageViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Dhe-kT-scI"/>
                         <viewControllerLayoutGuide type="bottom" id="3gu-uZ-r12"/>
@@ -1302,10 +1302,10 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="gvk-Br-Xxh" firstAttribute="top" secondItem="Dhe-kT-scI" secondAttribute="bottom" id="54y-Ad-Rn5"/>
-                            <constraint firstItem="gvk-Br-Xxh" firstAttribute="leading" secondItem="iHo-JM-gJu" secondAttribute="leading" id="8r5-0O-Z7J"/>
-                            <constraint firstAttribute="trailing" secondItem="gvk-Br-Xxh" secondAttribute="trailing" id="MYd-dV-pTZ"/>
-                            <constraint firstItem="3gu-uZ-r12" firstAttribute="top" secondItem="gvk-Br-Xxh" secondAttribute="bottom" id="e42-z2-1wh"/>
+                            <constraint firstItem="gvk-Br-Xxh" firstAttribute="leading" secondItem="iHo-JM-gJu" secondAttribute="leading" id="P7M-IQ-FKc"/>
+                            <constraint firstItem="gvk-Br-Xxh" firstAttribute="top" secondItem="Dhe-kT-scI" secondAttribute="bottom" id="WIO-0o-Mdu"/>
+                            <constraint firstItem="3gu-uZ-r12" firstAttribute="top" secondItem="gvk-Br-Xxh" secondAttribute="bottom" id="aei-WT-t4Y"/>
+                            <constraint firstAttribute="trailing" secondItem="gvk-Br-Xxh" secondAttribute="trailing" id="urH-B2-pGq"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
@@ -3836,13 +3836,13 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="YGe-pV-72F"/>
-        <segue reference="5rJ-hC-fsT"/>
-        <segue reference="GgS-nT-ctf"/>
-        <segue reference="3FM-PP-oeV"/>
-        <segue reference="V9t-nA-fhw"/>
         <segue reference="fux-iz-qV0"/>
+        <segue reference="hZj-FM-cPb"/>
+        <segue reference="zIE-XJ-wkG"/>
         <segue reference="0zg-HM-MdK"/>
-        <segue reference="w5b-0j-26v"/>
         <segue reference="ddm-eA-erE"/>
+        <segue reference="5rJ-hC-fsT"/>
+        <segue reference="V9t-nA-fhw"/>
+        <segue reference="3FM-PP-oeV"/>
     </inferredMetricsTieBreakers>
 </document>

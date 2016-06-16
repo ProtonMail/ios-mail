@@ -91,7 +91,7 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     
     func rotate() {
         let w = UIScreen.mainScreen().applicationFrame.width;
-        self.emailHeader.frame = CGRect(x: 0, y: self.kDefaultSpaceHide, width: w, height: self.emailHeader.getHeight())
+        self.emailHeader.frame = CGRect(x: 0, y: 0, width: w, height: self.emailHeader.getHeight())
         self.emailHeader.makeConstraints()
         self.emailHeader.updateHeaderLayout()
     }
