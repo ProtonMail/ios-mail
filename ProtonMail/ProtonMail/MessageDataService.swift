@@ -118,13 +118,13 @@ class MessageDataService {
     
     
     /**
-    nonmaly fetching the message from server based on location and time.
-    
-    :param: location   mailbox location
-    :param: MessageID  mesasge id not inuse for now
-    :param: Time       the latest update time
-    :param: completion aync complete handler
-    */
+     nonmaly fetching the message from server based on location and time.
+     
+     :param: location   mailbox location
+     :param: MessageID  mesasge id not inuse for now
+     :param: Time       the latest update time
+     :param: completion aync complete handler
+     */
     func fetchMessagesForLocation(location: MessageLocation, MessageID : String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
         queue {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
@@ -178,7 +178,7 @@ class MessageDataService {
             sharedAPIService.GET(request, completion: completionWrapper)
         }
     }
-
+    
     func fetchMessagesForLabels(labelID : String, MessageID : String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
         queue {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
@@ -293,7 +293,7 @@ class MessageDataService {
                     self.processIncrementalUpdateMessages(notificationMessageID, messages: response!.messages!, task: task) { task, res, error in
                         if error == nil {
                             lastUpdatedStore.lastEventID = response!.eventID
-
+                            
                             var outMessages : [AnyObject] = [];
                             for message in response!.messages! {
                                 let msg = MessageEvent(event: message)
@@ -622,12 +622,12 @@ class MessageDataService {
     
     
     /**
-    this function to process the event logs
-    
-    :param: messages   the message event log
-    :param: task       NSURL session task
-    :param: completion complete call back
-    */
+     this function to process the event logs
+     
+     :param: messages   the message event log
+     :param: task       NSURL session task
+     :param: completion complete call back
+     */
     private func processIncrementalUpdateMessages(notificationMessageID: String?, messages: Array<Dictionary<String, AnyObject>>, task: NSURLSessionDataTask!, completion: CompletionBlock?) {
         struct IncrementalUpdateType {
             static let delete = 0
@@ -721,7 +721,7 @@ class MessageDataService {
                         PMLog.D(" unknown type in message: \(message)")
                     }
                 }
-
+                
                 error = context.saveUpstreamIfNeeded()
                 
                 if error != nil  {
@@ -973,12 +973,12 @@ class MessageDataService {
     // MARK : fuctions for only fetch the local cache
     
     /**
-    fetch the message by location from local cache
-    
-    :param: location message location enum
-    
-    :returns: NSFetchedResultsController
-    */
+     fetch the message by location from local cache
+     
+     :param: location message location enum
+     
+     :returns: NSFetchedResultsController
+     */
     func fetchedResultsControllerForLocation(location: MessageLocation) -> NSFetchedResultsController? {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
@@ -1408,16 +1408,24 @@ class MessageDataService {
         
         completion?(task: nil, response: nil, error: NSError.badParameter(messageID))
     }
-
+    
     
     private func uploadAttachmentWithAttachmentID (addressID: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
         if let context = managedObjectContext {
             if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(addressID) {
-                if let attachment = try! context.existingObjectWithID(objectID) as? Attachment {
+                
+                var msgObject : NSManagedObject?
+                do {
+                    msgObject = try context.existingObjectWithID(objectID)
+                } catch {
+                    msgObject = nil
+                }
+                
+                if let attachment = msgObject as? Attachment {
                     var params = [
                         "Filename":attachment.fileName,
                         "MIMEType" : attachment.mimeType,
-                    ]
+                        ]
                     
                     var default_address_id = sharedUserDataService.userAddresses.getDefaultAddress()?.address_id ?? ""
                     //TODO::here need to fix sometime message is not valid'
@@ -1429,7 +1437,7 @@ class MessageDataService {
                     }
                     
                     //
-                    let encrypt_data = try! attachment.encryptAttachment(default_address_id)
+                    let encrypt_data = attachment.encryptAttachment(default_address_id)
                     //TODO:: here need check is encryptdata is nil and return the error to user.
                     let keyPacket = encrypt_data?.keyPackage
                     let dataPacket = encrypt_data?.dataPackage
@@ -1502,11 +1510,17 @@ class MessageDataService {
         
         if let context = managedObjectContext {
             if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID) {
-                 if let message = try! context.existingObjectWithID(objectID) as? Message {
+                var msgObject : NSManagedObject?
+                do {
+                    msgObject = try context.existingObjectWithID(objectID)
+                } catch {
+                    msgObject = nil
+                }
+                if let message = msgObject as? Message {
                     PMLog.D("SendAttachmentDebug == start get key!")
                     sharedAPIService.userPublicKeysForEmails(message.allEmailAddresses, completion: { (task, response, error) -> Void in
                         PMLog.D("SendAttachmentDebug == finish get key!")
-
+                        
                         if error != nil && error!.code == APIErrorCode.badParameter {
                             errorBlock(task: task, response: response, error: error)
                             return

@@ -52,12 +52,15 @@ extension Attachment {
     
     // Mark : public functions
     
-    func encryptAttachment(sender_address_id : String) throws -> PMNEncryptPackage? {
-        let out = try fileData?.encryptAttachment(sender_address_id, fileName: self.fileName)
-        if out == nil {
+    func encryptAttachment(sender_address_id : String) -> PMNEncryptPackage? {
+        do {
+            guard let out =  try fileData?.encryptAttachment(sender_address_id, fileName: self.fileName) else {
+                return nil
+            }
+            return out
+        } catch {
             return nil
         }
-        return out
     }
     
     func getSessionKey() throws -> NSData? {
@@ -72,7 +75,7 @@ extension Attachment {
     func fetchAttachment(downloadTask: ((NSURLSessionDownloadTask) -> Void)?, completion:((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
         sharedMessageDataService.fetchAttachmentForAttachment(self, downloadTask: downloadTask, completion: completion)
     }
-
+    
 }
 
 extension Attachment {
