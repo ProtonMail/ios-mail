@@ -289,8 +289,6 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
-        
-        self.updateEmailBody(force : true);
     }
     
     internal func statusBarHit (notify: NSNotification) {

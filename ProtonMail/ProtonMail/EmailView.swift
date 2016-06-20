@@ -155,7 +155,7 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     }
     
     private func setupContentView() {
-        self.contentWebView = UIWebView()
+        self.contentWebView = PMWebView()
         self.contentWebView.scalesPageToFit = true;
         self.addSubview(contentWebView)
         self.contentWebView.backgroundColor = UIColor.whiteColor()
@@ -201,6 +201,9 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     }
     
     func webViewDidFinishLoad(webView: UIWebView) {
+        //contentWebView.scrollView.subviews.first?.becomeFirstResponder()
+        contentWebView.becomeFirstResponder()
+        
         let contentSize = webView.scrollView.contentSize
         let viewSize = webView.bounds.size
         var zoom = viewSize.width / contentSize.width
