@@ -202,16 +202,16 @@ public class ComposeViewModelImpl : ComposeViewModel {
         
         if message == nil || message?.managedObjectContext == nil {
             self.message = MessageHelper.messageWithLocation(MessageLocation.draft,
-                recipientList: toJsonString(self.toSelectedContacts),
-                bccList: toJsonString(self.bccSelectedContacts),
-                ccList: toJsonString(self.ccSelectedContacts),
-                title: title,
-                encryptionPassword: "",
-                passwordHint: "",
-                expirationTimeInterval: expir,
-                body: body,
-                attachments: nil,
-                inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext!)
+                                                             recipientList: toJsonString(self.toSelectedContacts),
+                                                             bccList: toJsonString(self.bccSelectedContacts),
+                                                             ccList: toJsonString(self.ccSelectedContacts),
+                                                             title: title,
+                                                             encryptionPassword: "",
+                                                             passwordHint: "",
+                                                             expirationTimeInterval: expir,
+                                                             body: body,
+                                                             attachments: nil,
+                                                             inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext!)
         } else {
             self.message?.recipientList = toJsonString(self.toSelectedContacts)
             self.message?.ccList = toJsonString(self.ccSelectedContacts)
@@ -266,10 +266,22 @@ public class ComposeViewModelImpl : ComposeViewModel {
         switch messageAction!
         {
         case .OpenDraft:
-            let body = try! message!.decryptBodyIfNeeded() ?? ""
-            return body
+            do {
+                let body = try message!.decryptBodyIfNeeded() ?? ""
+                return body
+            } catch let ex as NSError {
+                PMLog.D("getHtmlBody OpenDraft error : \(ex)")
+                return self.message!.bodyToHtml()
+            }
         case .Reply, .ReplyAll:
-            var body = try! message!.decryptBodyIfNeeded() ?? ""
+            
+            var body = ""
+            do {
+                body = try message!.decryptBodyIfNeeded() ?? ""
+            } catch let ex as NSError {
+                PMLog.D("getHtmlBody OpenDraft error : \(ex)")
+                body = self.message!.bodyToHtml()
+            }
             
             body = body.stringByStrippingStyleHTML()
             body = body.stringByStrippingBodyStyle()
@@ -282,7 +294,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
             
             let replyHeader = time + ", " + sn + " <'\(se)'>"
             let sp = "<div><br><div><div><br></div>\(replyHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
-
+            
             return "\(htmlString) \(sp) \(body)</blockquote>"
         case .Forward:
             let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
@@ -295,7 +307,14 @@ public class ComposeViewModelImpl : ComposeViewModel {
                 forwardHeader += "CC: \(message!.ccList.formatJsonContact())<br>"
             }
             forwardHeader += "<br><br>"
-            var body = try! message!.decryptBodyIfNeeded() ?? ""
+            var body = ""
+            
+            do {
+                body = try message!.decryptBodyIfNeeded() ?? ""
+            } catch let ex as NSError {
+                PMLog.D("getHtmlBody OpenDraft error : \(ex)")
+                body = self.message!.bodyToHtml()
+            }
             
             body = body.stringByStrippingStyleHTML()
             body = body.stringByStrippingBodyStyle()

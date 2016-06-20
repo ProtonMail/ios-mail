@@ -173,6 +173,15 @@ extension Message {
         return try body.decryptMessage(passphrase)
     }
     
+    func bodyToHtml() -> String {
+        if lockType == .PlainTextLock {
+            return "<div>" + body.ln2br() + "</div>"
+        } else {
+            let body_without_ln = body.rmln()
+            return "<div><pre>" + body_without_ln.lr2lrln() + "</pre></div>"
+        }
+    }
+    
     func decryptBodyIfNeeded() throws -> String? {
         //PMLog.D("\(body)")
         if !checkIsEncrypted() {

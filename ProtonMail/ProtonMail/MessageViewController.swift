@@ -380,11 +380,16 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     internal func purifyEmailBody(message : Message!) -> String?
     {
-        var bodyText = try! self.message.decryptBodyIfNeeded() ?? NSLocalizedString("Unable to decrypt message.")
-       //bodyText = bodyText.stringByStrippingStyleHTML()
-        bodyText = bodyText.stringByPurifyHTML()
-        bodyText = bodyText.stringByStrippingBodyStyle()
-        return bodyText
+        do {
+            var bodyText = try self.message.decryptBodyIfNeeded() ?? NSLocalizedString("Unable to decrypt message.")
+            //bodyText = bodyText.stringByStrippingStyleHTML()
+            bodyText = bodyText.stringByPurifyHTML()
+            bodyText = bodyText.stringByStrippingBodyStyle()
+            return bodyText
+        } catch let ex as NSError {
+            PMLog.D("purifyEmailBody error : \(ex)")
+            return self.message.bodyToHtml()
+        }
     }
     
     internal func showEmailLoading () {

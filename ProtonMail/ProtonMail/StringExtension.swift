@@ -140,9 +140,16 @@ extension String {
     }
     
     func ln2br() -> String {
-        return  self.stringByReplacingOccurrencesOfString("\n", withString:  "<br />")
+        return  self.stringByReplacingOccurrencesOfString("\n", withString: "<br />")
     }
     
+    func rmln() -> String {
+        return  self.stringByReplacingOccurrencesOfString("\n", withString: "")
+    }
+    
+    func lr2lrln() -> String {
+        return  self.stringByReplacingOccurrencesOfString("\r", withString: "\r\n")
+    }
     
     /**
      String extension formating the Json format contact for forwarding email.
@@ -181,7 +188,6 @@ extension String {
         result = result.stringByReplacingOccurrencesOfString("<", withString: "&lt;", options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil)
         result = result.stringByReplacingOccurrencesOfString(">", withString: "&gt;", options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil)
         return result
-        
     }
     
     func plainText() -> String {
