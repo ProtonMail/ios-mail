@@ -1200,20 +1200,21 @@ class MessageDataService {
     // MARK: - Private methods
     private func generatMessagePackage<T : ApiResponse> (message: Message!, keys : [String : AnyObject]?, atts : [Attachment], encrptOutside : Bool) -> MessageSendRequest<T>! {
         
-        var tempAtts : [TempAttachment]! = []
-        for att in atts {
-            if att.managedObjectContext != nil {
-                if let sessionKey = try? att.getSessionKey() {
-                    tempAtts.append(TempAttachment(id: att.attachmentID, key: sessionKey))
-                }
-            }
-        }
-        
-        var out : [MessagePackage] = []
-        var needsPlainText : Bool = false
         let outRequest : MessageSendRequest = MessageSendRequest<T>(messageID: message.messageID, expirationTime: message.expirationOffset, messagePackage: nil, clearBody: "", attPackages: nil)
         
         do {
+            var tempAtts : [TempAttachment]! = []
+            for att in atts {
+                if att.managedObjectContext != nil {
+                    if let sessionKey = try att.getSessionKey() {
+                        tempAtts.append(TempAttachment(id: att.attachmentID, key: sessionKey))
+                    }
+                }
+            }
+            
+            var out : [MessagePackage] = []
+            var needsPlainText : Bool = false
+            
             if let body = try message.decryptBody() {
                 if let keys = keys {
                     for (key, v) in keys{
@@ -1230,8 +1231,6 @@ class MessageDataService {
                                 let token = String.randomString(32) as String
                                 let based64Token = token.encodeBase64() as String
                                 let encryptedToken = try based64Token.encryptWithPassphrase(message.password)
-                                
-                                token.encodeBase64()
                                 
                                 // encrypt keys use public key
                                 var attPack : [AttachmentKeyPackage] = []

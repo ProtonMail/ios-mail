@@ -379,15 +379,14 @@ extension String {
     }
     
     static func randomString(len:Int) -> String {
-        let charSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        var c = Array(arrayLiteral: charSet)
-        var s:String = ""
-        for _ in (1...len) {
-            let index : Int = Int(UInt32(arc4random()) % UInt32(c.count))
-            let ch = c[index] as String
-            s.appendContentsOf(ch)
+        let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        let randomString : NSMutableString = NSMutableString(capacity: len)
+        let length = UInt32 (letters.length)
+        for _ in 0 ..< len {
+            let rand = arc4random_uniform(length)
+            randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
         }
-        return s
+        return randomString as String
     }
     
     func rangeFromNSRange(nsRange : NSRange) -> Range<String.Index>? {
