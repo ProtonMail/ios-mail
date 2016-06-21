@@ -201,6 +201,7 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     }
     
     func webViewDidFinishLoad(webView: UIWebView) {
+        
         //contentWebView.scrollView.subviews.first?.becomeFirstResponder()
         contentWebView.becomeFirstResponder()
         

@@ -289,6 +289,11 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
+        
+        let systemVersion = Double(UIDevice.currentDevice().systemVersion)
+        if systemVersion < 9.3 && systemVersion > 8.4 {
+            cleanSelector();
+        }
     }
     
     internal func statusBarHit (notify: NSNotification) {
@@ -303,6 +308,10 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(MessageViewController.autoTimer), userInfo: nil, repeats: true)
             //self.timer.fire()
         }
+    }
+    
+    internal func cleanSelector() {
+        self.updateEmailBody(force: true)
     }
     
     private func stopExpirationTimer()
