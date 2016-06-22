@@ -255,9 +255,9 @@ public class ComposeViewModelImpl : ComposeViewModel {
         //sharedUserDataService.signature
         let signature = self.getDefaultAddress()?.signature ?? "\(sharedUserDataService.signature)"
         
-        let mobileSignature = sharedUserDataService.showMobileSignature ? "<div><br></div><div><br></div><div id=\"protonmail_mobile_signature_block\">\(sharedUserDataService.mobileSignature)" : ""
+        let mobileSignature = sharedUserDataService.showMobileSignature ? "<div><br></div><div><br></div><div id=\"protonmail_mobile_signature_block\">\(sharedUserDataService.mobileSignature)</div>" : ""
         
-        let defaultSignature = sharedUserDataService.showDefaultSignature ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\">\(signature)" : ""
+        let defaultSignature = sharedUserDataService.showDefaultSignature ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\">\(signature)</div>" : ""
         
         let htmlString = "\(defaultSignature) \(mobileSignature)";
         

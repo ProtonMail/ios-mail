@@ -458,6 +458,13 @@ zss_editor.setHTML = function(html) {
     editor.html(html);
 }
 
+//this is for update protonmail email signature
+zss_editor.updateSignature = function(html) {
+    var editor = $('#protonmail_signature_block');
+    editor.html(html);
+    zss_editor.enabledEditingItems();
+}
+
 zss_editor.insertHTML = function(html) {
     document.execCommand('insertHTML', false, html);
     zss_editor.enabledEditingItems();
