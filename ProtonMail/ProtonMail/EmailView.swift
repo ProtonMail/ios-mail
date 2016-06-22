@@ -25,6 +25,9 @@ import Foundation
 import UIKit
 import QuickLook
 
+protocol EmailViewProtocol {
+    func mailto(url: NSURL?)
+}
 
 class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     
@@ -35,6 +38,8 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     
     // Message header view
     var emailHeader : EmailHeaderView!
+    
+    var viewDelegate: EmailViewProtocol?
     
     // Message content
     var contentWebView: UIWebView!
@@ -194,8 +199,13 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         if navigationType == .LinkClicked {
-            UIApplication.sharedApplication().openURL(request.URL!)
-            return false
+            if request.URL?.scheme == "mailto" {
+                viewDelegate?.mailto(request.URL)
+                return false
+            } else {
+                UIApplication.sharedApplication().openURL(request.URL!)
+                return false
+            }
         }
         return true
     }

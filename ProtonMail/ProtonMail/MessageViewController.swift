@@ -21,6 +21,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     var emailView: EmailView?
     
     ///
+    private var URL : NSURL?
     private var actionTapped: ComposeMessageAction!
     private var fetchedMessageController: NSFetchedResultsController?
     
@@ -55,7 +56,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         self.emailView!.bottomActionView.delegate = self
         self.emailView!.emailHeader.actionsDelegate = self
         self.emailView!.topMessageView.delegate = self
-        
+        self.emailView?.viewDelegate = self
         self.emailView?.emailHeader.updateAttConstraints(false)
         loadMessageDetailes()
     }
@@ -245,8 +246,13 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toCompose" {
-            let composeViewController = segue.destinationViewController as! ComposeEmailViewController
-            sharedVMService.actionDraftViewModel(composeViewController, msg: message, action: self.actionTapped)
+            if self.actionTapped == .NewDraft {
+                let composeViewController = segue.destinationViewController as! ComposeEmailViewController
+                sharedVMService.newDraftViewModelWithMailTo(composeViewController, url: self.URL)
+            } else {
+                let composeViewController = segue.destinationViewController as! ComposeEmailViewController
+                sharedVMService.actionDraftViewModel(composeViewController, msg: message, action: self.actionTapped)
+            }
         } else if segue.identifier == "toApplyLabelsSegue" {
             let popup = segue.destinationViewController as! LablesViewController
             popup.viewModel = LabelViewModelImpl(msg: [self.message])
@@ -449,8 +455,7 @@ extension MessageViewController : TopMessageViewDelegate {
     }
     
     func retry() {
-
-            self.recheckMessageDetails ()
+        self.recheckMessageDetails ()
     }
 }
 
@@ -488,6 +493,17 @@ extension MessageViewController : MessageDetailBottomViewProtocol {
         let alert = NSLocalizedString("Please wait until the email downloaded!").alertController();
         alert.addOKAction()
         self.presentViewController(alert, animated: true, completion: nil)
+    }
+}
+
+// MARK
+
+extension MessageViewController :  EmailViewProtocol {
+    
+    func mailto(url: NSURL?) {
+        URL = url
+        actionTapped = ComposeMessageAction.NewDraft
+        self.performSegueWithIdentifier("toCompose", sender: self)
     }
 }
 

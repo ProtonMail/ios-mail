@@ -16,6 +16,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
         
         if msg == nil || msg?.location == MessageLocation.draft {
             self.message = msg
+            self.setSubject(self.message?.title ?? "")
         }
         else
         {
@@ -36,11 +37,13 @@ public class ComposeViewModelImpl : ComposeViewModel {
                             self.message?.title = "Fwd: \(title)"
                         }
                     }
+                } else {
                 }
             }
             //PMLog.D(message!);
         }
         
+        self.setSubject(self.message?.title ?? "")
         self.messageAction = action
         self.updateContacts(msg?.location)
     }
@@ -200,12 +203,15 @@ public class ComposeViewModelImpl : ComposeViewModel {
         PMLog.D(self.ccSelectedContacts)
         PMLog.D(self.bccSelectedContacts)
         
+        //self.setBody(body)
+        self.setSubject(title)
+        
         if message == nil || message?.managedObjectContext == nil {
             self.message = MessageHelper.messageWithLocation(MessageLocation.draft,
                                                              recipientList: toJsonString(self.toSelectedContacts),
                                                              bccList: toJsonString(self.bccSelectedContacts),
                                                              ccList: toJsonString(self.ccSelectedContacts),
-                                                             title: title,
+                                                             title: self.subject,
                                                              encryptionPassword: "",
                                                              passwordHint: "",
                                                              expirationTimeInterval: expir,
@@ -216,7 +222,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
             self.message?.recipientList = toJsonString(self.toSelectedContacts)
             self.message?.ccList = toJsonString(self.ccSelectedContacts)
             self.message?.bccList = toJsonString(self.bccSelectedContacts)
-            self.message?.title = title
+            self.message?.title = self.subject
             self.message?.time = NSDate()
             self.message?.password = pwd
             self.message?.passwordHint = pwdHit
@@ -323,6 +329,11 @@ public class ComposeViewModelImpl : ComposeViewModel {
             let sp = "<div><br></div><div><br></div>\(forwardHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
             return "\(defaultSignature) \(mobileSignature) \(sp) \(body)"
         case .NewDraft:
+            if !self.body.isEmpty {
+                let newhtmlString = " \(self.body) \(htmlString)"
+                self.body = ""
+                return newhtmlString
+            }
             return htmlString
         }
         
