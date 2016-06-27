@@ -405,7 +405,6 @@ extension String {
             //get data
             
             let text = data.subdataWithRange(NSMakeRange(1, secondboundaryRange.location - 1))
-            let test = NSString(data: text, encoding: NSUTF8StringEncoding) as! String;
             
             let plainFound = ContentType.rangeOfData(textplainType, options: NSDataSearchOptions(rawValue: 0), range: NSMakeRange(0, ContentType.length))
             if plainFound.location != NSNotFound {

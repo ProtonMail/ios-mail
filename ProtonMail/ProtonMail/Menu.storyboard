@@ -2793,7 +2793,7 @@
         <!--Contacts View Controller-->
         <scene sceneID="4eW-b9-zGJ">
             <objects>
-                <viewController id="dsh-3G-k23" userLabel="Contacts View Controller" customClass="ContactsViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="dsh-3G-k23" userLabel="Contacts View Controller" customClass="ContactsViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="60O-Ao-olg"/>
                         <viewControllerLayoutGuide type="bottom" id="SMa-Y1-qS2"/>
@@ -2805,17 +2805,9 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="RIQ-6S-Rqf">
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <searchBar key="tableHeaderView" contentMode="scaleToFill" showsCancelButton="YES" id="WSg-s3-RV4">
-                                    <rect key="frame" x="0.0" y="64" width="600" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                    <textInputTraits key="textInputTraits"/>
-                                    <connections>
-                                        <outlet property="delegate" destination="dsh-3G-k23" id="mjv-rX-umN"/>
-                                    </connections>
-                                </searchBar>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ContactsCell" id="Ewr-ha-VvA">
-                                        <rect key="frame" x="0.0" y="130" width="600" height="60"/>
+                                        <rect key="frame" x="0.0" y="22" width="600" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ewr-ha-VvA" id="MgU-81-des">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="59.5"/>
@@ -2843,7 +2835,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="menuButton" destination="G3m-Jr-Xhu" id="iLB-dg-whJ"/>
-                        <outlet property="searchBar" destination="WSg-s3-RV4" id="OsS-kR-eKe"/>
                         <outlet property="searchDisplayController" destination="mKK-GV-NK5" id="yU5-XN-CG5"/>
                         <outlet property="tableView" destination="RIQ-6S-Rqf" id="ctQ-AU-tvT"/>
                         <segue destination="d3P-H0-xNt" kind="presentation" identifier="toEditContact" id="Lm0-2L-Xlj"/>
@@ -2854,7 +2845,6 @@
                 <searchDisplayController id="mKK-GV-NK5">
                     <connections>
                         <outlet property="delegate" destination="dsh-3G-k23" id="chL-Nf-Ny6"/>
-                        <outlet property="searchBar" destination="WSg-s3-RV4" id="RXd-YI-vUC"/>
                         <outlet property="searchContentsController" destination="dsh-3G-k23" id="Ebi-JM-MAr"/>
                         <outlet property="searchResultsDataSource" destination="dsh-3G-k23" id="GPY-HT-cDk"/>
                         <outlet property="searchResultsDelegate" destination="dsh-3G-k23" id="acw-oM-YWy"/>
@@ -3836,13 +3826,13 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="YGe-pV-72F"/>
-        <segue reference="fux-iz-qV0"/>
         <segue reference="hZj-FM-cPb"/>
         <segue reference="zIE-XJ-wkG"/>
         <segue reference="0zg-HM-MdK"/>
         <segue reference="ddm-eA-erE"/>
-        <segue reference="5rJ-hC-fsT"/>
         <segue reference="V9t-nA-fhw"/>
         <segue reference="3FM-PP-oeV"/>
+        <segue reference="5rJ-hC-fsT"/>
+        <segue reference="oQx-RX-nff"/>
     </inferredMetricsTieBreakers>
 </document>
