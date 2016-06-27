@@ -187,16 +187,15 @@ extension Message {
         if !checkIsEncrypted() {
             return body
         } else {
-            var body = try decryptBody()
-            if body == nil {
+            if var body = try decryptBody() {
+                if isEncrypted == 8 {
+                    body = body.multipartGetHtmlContent () ?? body
+                } else if isEncrypted == 7 {
+                    body = body.ln2br() ?? body
+                }
                 return body
             }
-            if isEncrypted == 8 {
-                body = body?.multipartGetHtmlContent () ?? ""
-            } else if isEncrypted == 7 {
-                body = body?.ln2br() ?? ""
-            }
-            return body
+            return nil
         }
     }
     
@@ -323,7 +322,7 @@ extension Message {
 extension String {
     
     public func multipartGetHtmlContent() -> String {
-        //PMLog.D(self)
+        PMLog.D(self)
         let textplainType = "text/plain".dataUsingEncoding(NSUTF8StringEncoding)!
         let htmlType = "text/html".dataUsingEncoding(NSUTF8StringEncoding)!
         
@@ -406,6 +405,8 @@ extension String {
             //get data
             
             let text = data.subdataWithRange(NSMakeRange(1, secondboundaryRange.location - 1))
+            let test = NSString(data: text, encoding: NSUTF8StringEncoding) as! String;
+            
             let plainFound = ContentType.rangeOfData(textplainType, options: NSDataSearchOptions(rawValue: 0), range: NSMakeRange(0, ContentType.length))
             if plainFound.location != NSNotFound {
                 plaintext = NSString(data: text, encoding: NSUTF8StringEncoding) as! String;
@@ -422,6 +423,10 @@ extension String {
             firstboundaryRange = secondboundaryRange
             
             PMLog.D(bodyString)
+        }
+        
+        if ( html.isEmpty && plaintext.isEmpty ) {
+            return "<div><pre>" + self.rmln() + "</pre></div>"
         }
         
         return html.isEmpty ? plaintext.ln2br() : html;
