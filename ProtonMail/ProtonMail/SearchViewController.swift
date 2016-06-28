@@ -50,6 +50,11 @@ class SearchViewController: ProtonMailViewController {
         self.tableView.noSeparatorsBelowFooter()
         self.tableView!.RegisterCell(MailboxMessageCell.Constant.identifier)
         
+        self.edgesForExtendedLayout = .None
+        self.extendedLayoutIncludesOpaqueBars=false;
+        automaticallyAdjustsScrollViewInsets = true
+        self.navigationController?.navigationBar.translucent = false;
+        
         searchTextField.autocapitalizationType = UITextAutocapitalizationType.None
         searchTextField.returnKeyType = .Search
         searchTextField.delegate = self
@@ -68,7 +73,6 @@ class SearchViewController: ProtonMailViewController {
             fetchedResultsController = fetchedResultsControllerForSearch(managedObjectContext: context)
             fetchedResultsController?.delegate = self
         }
-        
         
         searchTextField.becomeFirstResponder()
     }
@@ -103,8 +107,6 @@ class SearchViewController: ProtonMailViewController {
     
     override func configureNavigationBar() {
         super.configureNavigationBar()
-        self.searchDisplayController?.displaysSearchBarInNavigationBar = true
-        //self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Blue_5C7A99
         self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;//.Blue_475F77
     }
     
