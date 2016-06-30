@@ -37,4 +37,45 @@ class ContactVO: NSObject, MBContactPickerModelProtocol {
     override var description: String {
         return "\(name) \(email)"
     }
+    
+    override func isEqual(object: AnyObject?) -> Bool {
+        guard let rhs = object as? ContactVO else {
+            return false
+        }
+        let lhs = self
+        
+        return lhs.email == rhs.email
+    }
+}
+
+
+extension Array where Element: ContactVO {
+    mutating func distinctMerge(check : [Element]) {
+        for element in check {
+            if self.contains(element) {
+                
+            } else {
+                self.append(element)
+            }
+        }
+    }
+    
+    internal func uniq() -> [Element] {
+        var arrayCopy = self
+        arrayCopy.uniqInPlace()
+        return arrayCopy
+    }
+    
+    mutating internal func uniqInPlace() {
+        var seen = [Element]()
+        var index = 0
+        for element in self {
+            if seen.contains(element) {
+                removeAtIndex(index)
+            } else {
+                seen.append(element)
+                index+=1
+            }
+        }
+    }
 }
