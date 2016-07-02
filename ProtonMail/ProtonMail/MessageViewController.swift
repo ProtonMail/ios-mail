@@ -296,8 +296,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         
-        let systemVersion = Double(UIDevice.currentDevice().systemVersion)
-        if systemVersion < 9.3 && systemVersion > 8.4 {
+        if NSProcessInfo().operatingSystemVersion.majorVersion == 9 {
             cleanSelector();
         }
     }
