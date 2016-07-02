@@ -12,14 +12,14 @@ import LocalAuthentication
 class SettingTableViewController: ProtonMailViewController {
     
     var setting_headers : [SettingSections] = [.General, .Protection, .Labels, .MultiDomain, .SwipeAction, .Storage, .Version] //SettingSections.Debug,
-    var setting_general_items : [SGItems] = [.NotifyEmail, .LoginPWD, .MBP, .DefaultMobilSign, .AutoLoadImage, .CleanCache]
+    var setting_general_items : [SGItems] = [.NotifyEmail, .LoginPWD, .MBP, .AutoLoadImage, .CleanCache]
     var setting_debug_items : [SDebugItem] = [.Queue, .ErrorLogs]
     
     var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
     var setting_swipe_actions : [MessageSwipeAction] = [.trash, .spam, .star, .archive]
     
     var setting_protection_items : [SProtectionItems] = [.TouchID, .PinCode] // [.TouchID, .PinCode, .UpdatePin, .AutoLogout, .EnterTime]
-    var setting_addresses_items : [SAddressItems] = [.Addresses, .DisplayName, .Signature]
+    var setting_addresses_items : [SAddressItems] = [.Addresses, .DisplayName, .Signature, .DefaultMobilSign]
     
     var setting_labels_items : [SLabelsItems] = [.LabelManager]
     
@@ -188,11 +188,6 @@ class SettingTableViewController: ProtonMailViewController {
                         let cell = tableView.dequeueReusableCellWithIdentifier(SettingSingalLineCell, forIndexPath: indexPath) as! GeneralSettingViewCell
                         cell.configCell(itme.description, right: "")
                         cell.accessoryType = UITableViewCellAccessoryType.None
-                        cellout = cell
-                    case .DefaultMobilSign:
-                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingSingalLineCell, forIndexPath: indexPath) as! GeneralSettingViewCell
-                        cell.configCell(itme.description, right: "")
-                        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                         cellout = cell
                     case .AutoLoadImage:
                         let cell = tableView.dequeueReusableCellWithIdentifier(SwitchCell, forIndexPath: indexPath) as! SwitchTableViewCell
@@ -378,6 +373,11 @@ class SettingTableViewController: ProtonMailViewController {
                         cell.configCell(address_item.description, right: "")
                         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                         cellout = cell
+                    case .DefaultMobilSign:
+                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingSingalLineCell, forIndexPath: indexPath) as! GeneralSettingViewCell
+                        cell.configCell(address_item.description, right: "")
+                        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+                        cellout = cell
                     }
                 }
             case .SwipeAction:
@@ -455,8 +455,6 @@ class SettingTableViewController: ProtonMailViewController {
                     switch general_itme {
                     case .NotifyEmail:
                         self.performSegueWithIdentifier(NotificationSegue, sender: self)
-                    case .DefaultMobilSign:
-                        self.performSegueWithIdentifier(MobileSignatureSegue, sender: self)
                     case .LoginPWD:
                         self.performSegueWithIdentifier(LoginpwdSegue, sender: self)
                     case .MBP:
@@ -582,6 +580,8 @@ class SettingTableViewController: ProtonMailViewController {
                         self.performSegueWithIdentifier(DisplayNameSegue, sender: self)
                     case .Signature:
                         self.performSegueWithIdentifier(SignatureSegue, sender: self)
+                    case .DefaultMobilSign:
+                        self.performSegueWithIdentifier(MobileSignatureSegue, sender: self)
                     }
                 }
             case .SwipeAction:
@@ -686,7 +686,6 @@ extension SettingTableViewController {
         case LoginPWD = 3
         case MBP = 4
         case CleanCache = 5
-        case DefaultMobilSign = 6
         case AutoLoadImage = 9
         
         var description : String {
@@ -703,8 +702,6 @@ extension SettingTableViewController {
                 return NSLocalizedString("Mailbox Password")
             case .CleanCache:
                 return NSLocalizedString("Clear Local Message Cache")
-            case .DefaultMobilSign:
-                return NSLocalizedString("Mobile Signature")
             case .AutoLoadImage:
                 return NSLocalizedString("Auto Show Images")
             }
@@ -761,6 +758,7 @@ extension SettingTableViewController {
         case Addresses = 0
         case DisplayName = 1
         case Signature = 2
+        case DefaultMobilSign = 3
         
         var description : String {
             switch(self){
@@ -770,6 +768,8 @@ extension SettingTableViewController {
                 return NSLocalizedString("Display Name")
             case Signature:
                 return NSLocalizedString("Signature")
+            case DefaultMobilSign:
+                return NSLocalizedString("Mobile Signature")
             }
         }
     }
@@ -779,7 +779,7 @@ extension SettingTableViewController {
         var description : String {
             switch(self){
             case LabelManager:
-                return NSLocalizedString("Manager Labels")
+                return NSLocalizedString("Manage Labels")
             }
         }
     }

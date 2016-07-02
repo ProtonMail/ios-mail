@@ -106,7 +106,13 @@ class UserDataService {
     
     var mobileSignature : String {
         get {
-            if userInfo?.role > 0 {
+            #if Enterprise
+                let isEnterprise = true
+            #else
+                let isEnterprise = false
+            #endif
+            
+            if userInfo?.role > 0 || isEnterprise {
                 return userCachedStatus.mobileSignature
             } else {
                 userCachedStatus.resetMobileSignature()
