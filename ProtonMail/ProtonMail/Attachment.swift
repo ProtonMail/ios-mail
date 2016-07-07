@@ -27,5 +27,7 @@ class Attachment: NSManagedObject {
     @NSManaged var mimeType: String
     @NSManaged var isTemp: Bool
     
+    @NSManaged var headerInfo: String?
+    
     @NSManaged var message: Message
 }

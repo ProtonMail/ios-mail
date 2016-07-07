@@ -393,6 +393,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     {
         do {
             var bodyText = try self.message.decryptBodyIfNeeded() ?? NSLocalizedString("Unable to decrypt message.")
+            PMLog.D(bodyText)
             //bodyText = bodyText.stringByStrippingStyleHTML()
             bodyText = bodyText.stringByPurifyHTML()
             bodyText = bodyText.stringByStrippingBodyStyle()

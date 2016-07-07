@@ -862,6 +862,7 @@ class MessageDataService {
                         context.performBlock() {
                             if response != nil {
                                 //TODO need check the respons code
+                                PMLog.D("\(response)")
                                 if var msg: Dictionary<String,AnyObject> = response?["Message"] as? Dictionary<String,AnyObject> {
                                     msg.removeValueForKey("Location")
                                     msg.removeValueForKey("Starred")
