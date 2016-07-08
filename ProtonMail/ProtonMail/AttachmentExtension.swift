@@ -76,6 +76,36 @@ extension Attachment {
         sharedMessageDataService.fetchAttachmentForAttachment(self, downloadTask: downloadTask, completion: completion)
     }
     
+    func isInline() -> Bool {
+        guard let headerInfo = self.headerInfo else {
+            return false
+        }
+        
+        let headerObject = headerInfo.parseObject()        
+        guard let inlineCheckString = headerObject["content-disposition"] else {
+            return false
+        }
+        
+        if inlineCheckString == "inline" {
+            return true
+        }
+        return false
+    }
+    
+    func getContentID() -> String? {
+        guard let headerInfo = self.headerInfo else {
+            return nil
+        }
+        
+        let headerObject = headerInfo.parseObject()
+        guard let inlineCheckString = headerObject["content-id"] else {
+            return nil
+        }
+        var outString = inlineCheckString.preg_replace("<", replaceto: "")
+        outString = outString.preg_replace(">", replaceto: "")
+
+        return outString
+    }
 }
 
 extension Attachment {

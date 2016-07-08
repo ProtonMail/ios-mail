@@ -498,7 +498,7 @@ extension MessageViewController : MessageDetailBottomViewProtocol {
 // MARK
 
 extension MessageViewController :  EmailViewProtocol {
-    
+
     func mailto(url: NSURL?) {
         URL = url
         actionTapped = ComposeMessageAction.NewDraft
@@ -514,9 +514,61 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     func showImage() {
         self.showedShowImageView = true
         self.needShowShowImageView = false
-        self.updateContent();
+        self.showEmbedImage()
+        self.updateContent()
     }
     
+    func updateEmailEmbedImage(att: Attachment) {
+        //self.purifiedBody.
+        //src="cid:jira-generated-image-avatar-d97f1fd2-bc86-460e-921f-d7a7790c26dc"
+        if let localURL = att.localURL {
+            if let data : NSData = NSData(contentsOfURL: localURL) {
+                do {
+                    if let key_packet = att.keyPacket {
+                        if let keydata: NSData = NSData(base64EncodedString:key_packet, options: NSDataBase64DecodingOptions(rawValue: 0)) {
+                            if let decryptData = try data.decryptAttachment(keydata, passphrase: sharedUserDataService.mailboxPassword!) {
+                                if let content_id = att.getContentID() {
+                                    let strBase64:String = decryptData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+                                    self.purifiedBody = self.purifiedBody?.stringBySetupInlineImage("src=\"cid:\(content_id)\"", to: "src=\"data:\(att.mimeType);base64,\(strBase64)\"" )
+                                    
+                                    self.updateContent()
+                                }
+                            }
+                        }
+                    }
+                    
+                    
+                } catch let ex as NSError{
+                    PMLog.D("\(ex)")
+                }
+            }
+        }
+
+    }
+    
+    func showEmbedImage() {
+        
+        if let atts = self.message.attachments.allObjects as? [Attachment] {
+            for att in atts {
+                if let localURL = att.localURL where NSFileManager.defaultManager().fileExistsAtPath(localURL.path!, isDirectory: nil) {
+                    PMLog.D(localURL)
+                    self.updateEmailEmbedImage(att)
+                } else {
+                    att.localURL = nil
+                    sharedMessageDataService.fetchAttachmentForAttachment(att, downloadTask: { (taskOne : NSURLSessionDownloadTask) -> Void in
+                        }, completion: { (_, url, error) -> Void in
+                            if let localURL = att.localURL {
+                                if NSFileManager.defaultManager().fileExistsAtPath(att.localURL!.path!, isDirectory: nil) {
+                                    PMLog.D("\(localURL)")
+                                    self.updateEmailEmbedImage(att)
+                                }
+                            }
+                    })
+                }
+            }
+        }
+    }
+
     func starredChanged(isStarred: Bool) {
         self.messagesSetValue(setValue: isStarred, forKey: Message.Attributes.isStarred)
     }

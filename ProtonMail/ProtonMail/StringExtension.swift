@@ -272,6 +272,10 @@ extension String {
         return out
     }
     
+    func stringBySetupInlineImage(from : String, to: String) -> String {
+        return self.preg_replace(from, replaceto:to);
+    }
+    
     func stringByPurifyHTML() -> String {
         let out = self.preg_replace("<style[^>]*?>.*?</style>|<script(.*?)<\\/script>|<(\\/?script.*?)>|<(\\/?meta.*?)>|<object(.*?)<\\/object>|<(\\/?object.*?)>|<input(.*?)<\\/input>|<(\\/?input.*?)>|<(\\/?link.*?)>|<iframe(.*?)<\\/iframe>|<video(.*?)<\\/video>|<audio(.*?)<\\/audio>", replaceto: " ")
         
