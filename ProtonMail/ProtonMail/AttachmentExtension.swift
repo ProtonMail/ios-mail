@@ -101,8 +101,8 @@ extension Attachment {
         guard let inlineCheckString = headerObject["content-id"] else {
             return nil
         }
-        var outString = inlineCheckString.preg_replace("<", replaceto: "")
-        outString = outString.preg_replace(">", replaceto: "")
+        
+        let outString = inlineCheckString.preg_replace("[<>]", replaceto: "")
 
         return outString
     }

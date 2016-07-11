@@ -519,8 +519,6 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     }
     
     func updateEmailEmbedImage(att: Attachment) {
-        //self.purifiedBody.
-        //src="cid:jira-generated-image-avatar-d97f1fd2-bc86-460e-921f-d7a7790c26dc"
         if let localURL = att.localURL {
             if let data : NSData = NSData(contentsOfURL: localURL) {
                 do {
@@ -536,14 +534,11 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                             }
                         }
                     }
-                    
-                    
                 } catch let ex as NSError{
                     PMLog.D("\(ex)")
                 }
             }
         }
-
     }
     
     func showEmbedImage() {
