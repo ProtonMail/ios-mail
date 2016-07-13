@@ -80,7 +80,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         
         self.attachments = viewModel.getAttachments()
         
-        updateEmbedImages()
+        //updateEmbedImages()
         
         // update header layous
         updateContentLayout(false)
@@ -118,12 +118,12 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     }
     
     internal func updateEmbedImages() {
-        if let atts = attachments as? [Attachment] {
+        if let atts = viewModel.getAttachments() {
             for att in atts {
                 if let content_id = att.getContentID() where !content_id.isEmpty && att.isInline() {
                     att.base64AttachmentData({ (based64String) in
                         if !based64String.isEmpty {
-                            PMLog.D(based64String)
+                            self.updateEmbedImageByCID("cid:\(content_id)", blob:  "data:\(att.mimeType);base64,\(based64String)");
                         }
                     })
                 }
@@ -367,7 +367,11 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
 extension ComposeEmailViewController : ComposePasswordViewControllerDelegate {
     
     func Cancelled() {
+        updateEmbedImages()
         
+        let test = self.getHTML()
+        
+        PMLog.D(test)
     }
     
     func Apply(password: String, confirmPassword: String, hint: String) {
@@ -382,8 +386,6 @@ extension ComposeEmailViewController : ComposePasswordViewControllerDelegate {
         self.encryptionPassword = ""
         self.encryptionConfirmPassword = ""
         self.encryptionPasswordHint = ""
-        
-        
         
         self.composeView.showEncryptionRemoved()
     }

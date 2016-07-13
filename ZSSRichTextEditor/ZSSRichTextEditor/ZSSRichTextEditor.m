@@ -592,8 +592,10 @@ static Class hackishFixClass = Nil;
 
 
 - (void)updateEmbedImageByCID: (NSString *) cid blob: (NSString *) blobdata {
+    NSString *cleanCid = [self removeQuotesFromHTML:cid];
+    NSString *cleanBlob = [self removeQuotesFromHTML:blobdata];
     
-    NSString *trigger = [NSString stringWithFormat:@"zss_editor.updateSignature(\"%@\", \"%@\");", cid, blobdata];
+    NSString *trigger = [NSString stringWithFormat:@"zss_editor.updateEmbedImage(\"%@\", \"%@\");", cleanCid, cleanBlob];
     [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
     
 }

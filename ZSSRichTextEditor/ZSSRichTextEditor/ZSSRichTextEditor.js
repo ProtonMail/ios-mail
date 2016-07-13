@@ -465,11 +465,18 @@ zss_editor.updateSignature = function(html) {
     zss_editor.enabledEditingItems();
 }
 
-//zss_editor.updateEmbedImage = function(cid, blobdata) {
-//    var editor = $('div[scr="feng"]']);
-//    console.log("test", editor);
-//    zss_editor.enabledEditingItems();
-//}
+zss_editor.updateEmbedImage = function(cid, blobdata) {
+    var editor = $('img[src="' + cid + '"]');
+    console.log("editor-1", editor);
+    if (editor.length) {
+        editor.each(function(index, e) {
+            var image = $(this);
+            image.attr('src-original-pm-cid', cid);
+            image.attr('src', blobdata);
+        });
+        console.log("editor-2", editor);
+    }
+}
 
 zss_editor.insertHTML = function(html) {
     document.execCommand('insertHTML', false, html);
