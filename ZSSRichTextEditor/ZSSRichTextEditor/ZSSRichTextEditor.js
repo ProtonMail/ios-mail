@@ -467,14 +467,12 @@ zss_editor.updateSignature = function(html) {
 
 zss_editor.updateEmbedImage = function(cid, blobdata) {
     var editor = $('img[src="' + cid + '"]');
-    console.log("editor-1", editor);
     if (editor.length) {
         editor.each(function(index, e) {
             var image = $(this);
             image.attr('src-original-pm-cid', cid);
             image.attr('src', blobdata);
         });
-        console.log("editor-2", editor);
     }
 }
 
@@ -516,6 +514,26 @@ zss_editor.getHTML = function() {
     
     // Get the contents
     var h = document.getElementById("zss_editor_content").innerHTML;
+    
+    var outstring = $('<div></div>').append(h);
+    if (outstring.length > 0) {
+        var editor = outstring.find('img');
+        if (editor.length) {
+            editor.each(function(index, e) {
+                var image = $(this);
+                var cid = image.attr('src-original-pm-cid');
+                console.log("old-cid",cid);
+                if (typeof(cid) != "undefined") {
+                    if (cid.length > 0) {
+                        image.attr('src', cid);
+                        image.removeAttr('src-original-pm-cid');
+                    }
+                }
+            });
+        }
+        
+        h = outstring.html();
+    }
     
     return h;
 }

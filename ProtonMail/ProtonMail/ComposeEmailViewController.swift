@@ -80,8 +80,6 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         
         self.attachments = viewModel.getAttachments()
         
-        //updateEmbedImages()
-        
         // update header layous
         updateContentLayout(false)
         
@@ -153,6 +151,9 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ComposeEmailViewController.statusBarHit(_:)), name: NotificationDefined.TouchStatusBar, object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ComposeEmailViewController.willResignActiveNotification(_:)), name: UIApplicationWillResignActiveNotification, object:nil)
         setupAutoSave()
+        
+        
+        updateEmbedImages()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -367,11 +368,11 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
 extension ComposeEmailViewController : ComposePasswordViewControllerDelegate {
     
     func Cancelled() {
-        updateEmbedImages()
-        
-        let test = self.getHTML()
-        
-        PMLog.D(test)
+//        updateEmbedImages()
+//        
+//        let test = self.getHTML()
+//        
+//        PMLog.D(test)
     }
     
     func Apply(password: String, confirmPassword: String, hint: String) {
