@@ -100,6 +100,8 @@ static NSString * const ZSSRichTextEditorToolbarNone = @"com.zedsaid.toolbaritem
 
 - (void)updateSignature: (NSString *) html;
 
+- (void)updateEmbedImageByCID: (NSString *) cid blob: (NSString *) blobdata;
+
 /**
  *  Returns the HTML from the Rich Text Editor
  *

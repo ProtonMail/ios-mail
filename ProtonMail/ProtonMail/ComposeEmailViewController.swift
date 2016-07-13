@@ -11,7 +11,6 @@ import UIKit
 
 class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
-    
     // view model
     private var viewModel : ComposeViewModel!
     
@@ -79,7 +78,9 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         self.expirationPicker.dataSource = self
         self.expirationPicker.delegate = self
         
-        self.attachments = viewModel.getAttachments();
+        self.attachments = viewModel.getAttachments()
+        
+        updateEmbedImages()
         
         // update header layous
         updateContentLayout(false)
@@ -112,6 +113,20 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
             default:
                 self.composeView.toContactPicker.becomeFirstResponder()
                 break
+            }
+        }
+    }
+    
+    internal func updateEmbedImages() {
+        if let atts = attachments as? [Attachment] {
+            for att in atts {
+                if let content_id = att.getContentID() where !content_id.isEmpty && att.isInline() {
+                    att.base64AttachmentData({ (based64String) in
+                        if !based64String.isEmpty {
+                            PMLog.D(based64String)
+                        }
+                    })
+                }
             }
         }
     }

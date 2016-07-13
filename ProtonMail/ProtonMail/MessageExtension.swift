@@ -293,10 +293,11 @@ extension Message {
         if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D("error: \(error)")
         }
-        if copyAtts {
-            for (index, attachment) in message.attachments.enumerate() {
-                PMLog.D("index: \(index)")
-                if let att = attachment as? Attachment {
+
+        for (index, attachment) in message.attachments.enumerate() {
+            PMLog.D("index: \(index)")
+            if let att = attachment as? Attachment {
+                if att.isInline() || copyAtts {
                     let attachment = Attachment(context: newMessage.managedObjectContext!)
                     attachment.attachmentID = "0"
                     attachment.message = newMessage
@@ -304,13 +305,18 @@ extension Message {
                     attachment.mimeType = "image/jpg"
                     attachment.fileData = att.fileData
                     attachment.fileSize = att.fileSize
+                    attachment.headerInfo = att.headerInfo
+                    attachment.localURL = att.localURL
+                    attachment.keyPacket = att.keyPacket
                     attachment.isTemp = true
                     if let error = attachment.managedObjectContext?.saveUpstreamIfNeeded() {
                         PMLog.D("error: \(error)")
                     }
                 }
+
             }
         }
+        
         return newMessage
     }
     

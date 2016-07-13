@@ -14,6 +14,8 @@ import CoreData
 
 class MessageViewController: ProtonMailViewController, LablesViewControllerDelegate {
     
+    private let kToComposerSegue = "toCompose"
+    
     /// message info
     var message: Message!
     
@@ -22,7 +24,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     ///
     private var URL : NSURL?
-    private var actionTapped: ComposeMessageAction!
+    //private var actionTapped: ComposeMessageAction!
     private var fetchedMessageController: NSFetchedResultsController?
     
     @IBOutlet var backButton: UIBarButtonItem!
@@ -87,6 +89,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
                 else
                 {
                     self.updateContent()
+                    self.showEmbedImage()
                 }
             }
         }
@@ -245,13 +248,13 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "toCompose" {
-            if self.actionTapped == .NewDraft {
+        if segue.identifier == kToComposerSegue {
+            if let enumRaw = sender as? Int, tapped = ComposeMessageAction(rawValue: enumRaw) where tapped != .NewDraft{
                 let composeViewController = segue.destinationViewController as! ComposeEmailViewController
-                sharedVMService.newDraftViewModelWithMailTo(composeViewController, url: self.URL)
+                sharedVMService.actionDraftViewModel(composeViewController, msg: message, action: tapped)
             } else {
                 let composeViewController = segue.destinationViewController as! ComposeEmailViewController
-                sharedVMService.actionDraftViewModel(composeViewController, msg: message, action: self.actionTapped)
+                sharedVMService.newDraftViewModelWithMailTo(composeViewController, url: self.URL)
             }
         } else if segue.identifier == "toApplyLabelsSegue" {
             let popup = segue.destinationViewController as! LablesViewController
@@ -460,11 +463,9 @@ extension MessageViewController : TopMessageViewDelegate {
 
 // MARK
 extension MessageViewController : MessageDetailBottomViewProtocol {
-    
     func replyClicked() {
         if self.message.isDetailDownloaded {
-            self.actionTapped = ComposeMessageAction.Reply
-            self.performSegueWithIdentifier("toCompose", sender: self)
+            self.performSegueWithIdentifier(kToComposerSegue, sender: ComposeMessageAction.Reply.rawValue)
         } else {
             self.showAlertWhenNoDetails()
         }
@@ -472,8 +473,7 @@ extension MessageViewController : MessageDetailBottomViewProtocol {
     
     func replyAllClicked() {
         if self.message.isDetailDownloaded {
-            actionTapped = ComposeMessageAction.ReplyAll
-            self.performSegueWithIdentifier("toCompose", sender: self)
+            self.performSegueWithIdentifier(kToComposerSegue, sender: ComposeMessageAction.ReplyAll.rawValue)
         } else {
             self.showAlertWhenNoDetails()
         }
@@ -481,8 +481,7 @@ extension MessageViewController : MessageDetailBottomViewProtocol {
     
     func forwardClicked() {
         if self.message.isDetailDownloaded {
-            actionTapped = ComposeMessageAction.Forward
-            self.performSegueWithIdentifier("toCompose", sender: self)
+            self.performSegueWithIdentifier(kToComposerSegue, sender: ComposeMessageAction.Forward.rawValue)
         } else {
             self.showAlertWhenNoDetails()
         }
@@ -501,8 +500,7 @@ extension MessageViewController :  EmailViewProtocol {
 
     func mailto(url: NSURL?) {
         URL = url
-        actionTapped = ComposeMessageAction.NewDraft
-        self.performSegueWithIdentifier("toCompose", sender: self)
+        self.performSegueWithIdentifier(kToComposerSegue, sender: ComposeMessageAction.NewDraft.rawValue)
     }
 }
 
@@ -514,50 +512,19 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     func showImage() {
         self.showedShowImageView = true
         self.needShowShowImageView = false
-        self.showEmbedImage()
+        //self.showEmbedImage()
         self.updateContent()
     }
-    
-    func updateEmailEmbedImage(att: Attachment) {
-        if let localURL = att.localURL {
-            if let data : NSData = NSData(contentsOfURL: localURL) {
-                do {
-                    if let key_packet = att.keyPacket {
-                        if let keydata: NSData = NSData(base64EncodedString:key_packet, options: NSDataBase64DecodingOptions(rawValue: 0)) {
-                            if let decryptData = try data.decryptAttachment(keydata, passphrase: sharedUserDataService.mailboxPassword!) {
-                                if let content_id = att.getContentID() {
-                                    let strBase64:String = decryptData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
-                                    self.purifiedBody = self.purifiedBody?.stringBySetupInlineImage("src=\"cid:\(content_id)\"", to: "src=\"data:\(att.mimeType);base64,\(strBase64)\"" )
-                                    
-                                    self.updateContent()
-                                }
-                            }
-                        }
-                    }
-                } catch let ex as NSError{
-                    PMLog.D("\(ex)")
-                }
-            }
-        }
-    }
-    
+
     func showEmbedImage() {
-        
         if let atts = self.message.attachments.allObjects as? [Attachment] {
             for att in atts {
-                if let localURL = att.localURL where NSFileManager.defaultManager().fileExistsAtPath(localURL.path!, isDirectory: nil) {
-                    PMLog.D(localURL)
-                    self.updateEmailEmbedImage(att)
-                } else {
-                    att.localURL = nil
-                    sharedMessageDataService.fetchAttachmentForAttachment(att, downloadTask: { (taskOne : NSURLSessionDownloadTask) -> Void in
-                        }, completion: { (_, url, error) -> Void in
-                            if let localURL = att.localURL {
-                                if NSFileManager.defaultManager().fileExistsAtPath(att.localURL!.path!, isDirectory: nil) {
-                                    PMLog.D("\(localURL)")
-                                    self.updateEmailEmbedImage(att)
-                                }
-                            }
+                if let content_id = att.getContentID() where !content_id.isEmpty && att.isInline() {
+                    att.base64AttachmentData({ (based64String) in
+                        if !based64String.isEmpty {
+                            self.purifiedBody = self.purifiedBody?.stringBySetupInlineImage("src=\"cid:\(content_id)\"", to: "src=\"data:\(att.mimeType);base64,\(based64String)\"" )
+                            self.updateContent()
+                        }
                     })
                 }
             }
