@@ -129,6 +129,12 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         }
     }
     
+    override func webViewDidFinishLoad(webView: UIWebView) {
+        super.webViewDidFinishLoad(webView)
+        
+        updateEmbedImages()
+    }
+    
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         self.composeView.notifyViewSize(true)
     }
@@ -151,9 +157,6 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ComposeEmailViewController.statusBarHit(_:)), name: NotificationDefined.TouchStatusBar, object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ComposeEmailViewController.willResignActiveNotification(_:)), name: UIApplicationWillResignActiveNotification, object:nil)
         setupAutoSave()
-        
-        
-        updateEmbedImages()
     }
     
     override func viewWillDisappear(animated: Bool) {
