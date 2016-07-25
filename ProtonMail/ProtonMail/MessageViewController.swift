@@ -349,6 +349,8 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     var purifiedBody :  String? = nil
     var purifiedBodyWithoutImage :  String? = nil
     var bodyHasImages : Bool = false
+    private var purifiedBodyLock: Int = 0
+    
     // MARK : private function
     private func updateEmailBody (force forceReload : Bool = false) {
         if (self.message.hasAttachments) {
@@ -522,7 +524,9 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                 if let content_id = att.getContentID() where !content_id.isEmpty && att.isInline() {
                     att.base64AttachmentData({ (based64String) in
                         if !based64String.isEmpty {
+                            objc_sync_enter(self.purifiedBodyLock)
                             self.purifiedBody = self.purifiedBody?.stringBySetupInlineImage("src=\"cid:\(content_id)\"", to: "src=\"data:\(att.mimeType);base64,\(based64String)\"" )
+                            objc_sync_exit(self.purifiedBodyLock)
                             self.updateContent()
                         }
                     })
@@ -530,7 +534,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
             }
         }
     }
-
+    
     func starredChanged(isStarred: Bool) {
         self.messagesSetValue(setValue: isStarred, forKey: Message.Attributes.isStarred)
     }
