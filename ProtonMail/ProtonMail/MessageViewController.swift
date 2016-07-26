@@ -62,7 +62,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         self.emailView?.emailHeader.updateAttConstraints(false)
         loadMessageDetailes()
     }
-
+    
     internal func loadMessageDetailes () {
         showEmailLoading()
         if !message.isDetailDownloaded && sharedInternetReachability.currentReachabilityStatus() == NotReachable {
@@ -108,14 +108,14 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         if let curReach = note.object as? Reachability {
             self.updateInterfaceWithReachability(curReach)
         } else {
-//            if let status = note.object as? Int {
-//                PMLog.D("\(status)")
-//                if status == 0 { //time out
-//                    showTimeOutErrorMessage()
-//                } else if status == 1 { //not reachable
-//                    showNoInternetErrorMessage()
-//                }
-//            }
+            //            if let status = note.object as? Int {
+            //                PMLog.D("\(status)")
+            //                if status == 0 { //time out
+            //                    showTimeOutErrorMessage()
+            //                } else if status == 1 { //not reachable
+            //                    showNoInternetErrorMessage()
+            //                }
+            //            }
         }
     }
     
@@ -142,8 +142,9 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     }
     
     func updateContent () {
+        
         self.updateEmailBody ()
-    
+        
     }
     
     override func loadView() {
@@ -154,16 +155,16 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     private func updateHeader() {
         if self.message.managedObjectContext != nil {
             self.emailView?.updateHeaderData(self.message.subject,
-                sender: self.message.senderContactVO,
-                to: self.message.recipientList.toContacts(),
-                cc: self.message.ccList.toContacts(),
-                bcc: self.message.bccList.toContacts(),
-                isStarred: self.message.isStarred,
-                time: self.message.time,
-                encType: self.message.encryptType,
-                labels : self.message.labels.allObjects as? [Label],
-                showShowImages: self.needShowShowImageView,
-                expiration: self.message.expirationTime
+                                             sender: self.message.senderContactVO,
+                                             to: self.message.recipientList.toContacts(),
+                                             cc: self.message.ccList.toContacts(),
+                                             bcc: self.message.bccList.toContacts(),
+                                             isStarred: self.message.isStarred,
+                                             time: self.message.time,
+                                             encType: self.message.encryptType,
+                                             labels : self.message.labels.allObjects as? [Label],
+                                             showShowImages: self.needShowShowImageView,
+                                             expiration: self.message.expirationTime
             )
         } else {
             PMLog.D(" MessageViewController self.message.managedObjectContext == nil")
@@ -344,7 +345,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             }
         }
     }
-
+    
     //
     var purifiedBody :  String? = nil
     var purifiedBodyWithoutImage :  String? = nil
@@ -414,7 +415,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=1.0\" content=\"yes\">"
         self.emailView?.updateEmailBody(body, meta: meta)
     }
-
+    
     var contentLoaded = false
     internal func loadEmailBody(body : String) {
         let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=\(emailView?.kDefautWebViewScale ?? 0.9)\" content=\"yes\">"
@@ -432,7 +433,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         }
         let bodyText = NSLocalizedString(error)
         let meta1 : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=1.0\" content=\"yes\">"
-
+        
         self.emailView?.updateEmailBody(bodyText, meta: meta1)
     }
     
@@ -499,7 +500,7 @@ extension MessageViewController : MessageDetailBottomViewProtocol {
 // MARK
 
 extension MessageViewController :  EmailViewProtocol {
-
+    
     func mailto(url: NSURL?) {
         URL = url
         self.performSegueWithIdentifier(kToComposerSegue, sender: ComposeMessageAction.NewDraft.rawValue)
@@ -517,9 +518,10 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
         //self.showEmbedImage()
         self.updateContent()
     }
-
+    
     func showEmbedImage() {
         if let atts = self.message.attachments.allObjects as? [Attachment] {
+            var checkCount = atts.count
             for att in atts {
                 if let content_id = att.getContentID() where !content_id.isEmpty && att.isInline() {
                     att.base64AttachmentData({ (based64String) in
@@ -527,9 +529,19 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                             objc_sync_enter(self.purifiedBodyLock)
                             self.purifiedBody = self.purifiedBody?.stringBySetupInlineImage("src=\"cid:\(content_id)\"", to: "src=\"data:\(att.mimeType);base64,\(based64String)\"" )
                             objc_sync_exit(self.purifiedBodyLock)
+                            
+                            checkCount = checkCount - 1
+                            
+                            //if checkCount == 0 {
                             self.updateContent()
+                            //}
+                            
+                        } else {
+                            checkCount = checkCount - 1
                         }
                     })
+                } else {
+                    checkCount = checkCount - 1
                 }
             }
         }

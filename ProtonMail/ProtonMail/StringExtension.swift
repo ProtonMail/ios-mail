@@ -209,6 +209,10 @@ extension String {
         return self
     }
     
+    func preg_replace_none_regex (partten: String, replaceto:String) -> String {
+        return self.stringByReplacingOccurrencesOfString(partten, withString: replaceto, options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil)
+    }
+    
     func preg_replace (partten: String, replaceto:String) -> String {
         let options : NSRegularExpressionOptions = [.CaseInsensitive, .DotMatchesLineSeparators]
         do {
@@ -273,7 +277,7 @@ extension String {
     }
     
     func stringBySetupInlineImage(from : String, to: String) -> String {
-        return self.preg_replace(from, replaceto:to);
+        return self.preg_replace_none_regex(from, replaceto:to);
     }
     
     func stringByPurifyHTML() -> String {
