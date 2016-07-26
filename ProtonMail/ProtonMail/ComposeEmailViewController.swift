@@ -608,6 +608,11 @@ extension ComposeEmailViewController: AttachmentsTableViewControllerDelegate {
     
     func attachments(attViewController: AttachmentsTableViewController, didDeletedAttachment attachment: Attachment) {
         self.collectDraft()
+        
+        if let content_id = attachment.getContentID() where !content_id.isEmpty && attachment.isInline() {
+            self.removeEmbedImageByCID("cid:\(content_id)")
+        }
+        
         self.viewModel.deleteAtt(attachment)
     }
     

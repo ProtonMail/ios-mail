@@ -476,6 +476,16 @@ zss_editor.updateEmbedImage = function(cid, blobdata) {
     }
 }
 
+zss_editor.removeEmbedImage = function(cid) {
+    var editor = $('img[src-original-pm-cid="' + cid + '"]');
+    if (editor.length) {
+        editor.each(function(index, e) {
+                    var image = $(this);
+                    image.remove();
+                    });
+    }
+}
+
 zss_editor.insertHTML = function(html) {
     document.execCommand('insertHTML', false, html);
     zss_editor.enabledEditingItems();
