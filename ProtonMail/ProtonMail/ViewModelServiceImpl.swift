@@ -25,7 +25,9 @@ class ViewModelServiceImpl: ViewModelService {
     
     override func resetComposerView() {
         if latestComposerViewController != nil {
-            latestComposerViewController?.inactiveViewModel()
+            dispatch_async(dispatch_get_main_queue()) {
+                self.latestComposerViewController?.inactiveViewModel()
+            }
             latestComposerViewController = nil
         }
         latestComposerViewModel = nil
