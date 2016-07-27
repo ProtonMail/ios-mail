@@ -566,14 +566,15 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     private func archiveMessageForIndexPath(indexPath: NSIndexPath) {
-        if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+        
+        if let message = self.messageAtIndexPath(indexPath) {
             undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
             viewModel.archiveMessage(message)
             showUndoView("Archived")
         }
     }
     private func deleteMessageForIndexPath(indexPath: NSIndexPath) {
-        if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+        if let message = self.messageAtIndexPath(indexPath) {
             undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
             viewModel.deleteMessage(message)
             showUndoView("Deleted")
@@ -581,7 +582,7 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     private func spamMessageForIndexPath(indexPath: NSIndexPath) {
-        if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+        if let message = self.messageAtIndexPath(indexPath) {
             undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
             viewModel.spamMessage(message)
             showUndoView("Spammed")
@@ -589,7 +590,7 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     private func starMessageForIndexPath(indexPath: NSIndexPath) {
-        if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+        if let message = self.messageAtIndexPath(indexPath) {
             undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
             viewModel.starMessage(message)
         }
@@ -987,7 +988,7 @@ class MailboxViewController: ProtonMailViewController {
                             
                             // set selected row to checked
                             if (indexPath.row == visibleIndexPath.row) {
-                                if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+                                if let message = self.messageAtIndexPath(indexPath) {
                                     selectedMessages.addObject(message.messageID)
                                 }
                                 messageCell.setCellIsChecked(true)
