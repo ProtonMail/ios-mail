@@ -104,6 +104,13 @@ static NSString * const ZSSRichTextEditorToolbarNone = @"com.zedsaid.toolbaritem
 
 - (void)removeEmbedImageByCID: (NSString *) cid;
 
+
+-(NSString*)getOrignalEmbedImages;
+
+
+-(NSString*)getEditedEmbedImages;
+
+
 /**
  *  Returns the HTML from the Rich Text Editor
  *

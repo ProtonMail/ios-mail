@@ -607,6 +607,19 @@ static Class hackishFixClass = Nil;
     [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
 }
 
+
+
+-(NSString*)getOrignalEmbedImages {
+    NSString *html = [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.getOriginalEmbedImages();"];
+    return html;
+}
+
+
+-(NSString*)getEditedEmbedImages {
+    NSString *html = [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.getEditedEmbedImages();"];
+    return html;
+}
+
 - (NSString *)getHTML {
     NSString *html = [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.getHTML();"];
     html = [self removeQuotesFromHTML:html];

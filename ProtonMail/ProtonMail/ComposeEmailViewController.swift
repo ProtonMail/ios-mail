@@ -350,6 +350,9 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     private func collectDraft()
     {
+        let orignal = self.getOrignalEmbedImages()
+        let edited = self.getEditedEmbedImages()
+        self.checkEmbedImageEdit(orignal, edited: edited)
         self.viewModel.collectDraft(
             self.composeView.subject.text!,
             body: self.getHTML(),
@@ -357,6 +360,22 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
             pwd:self.encryptionPassword,
             pwdHit:self.encryptionPasswordHint
         )
+    }
+    
+    private func checkEmbedImageEdit(orignal: String, edited: String) {
+        PMLog.D(edited)
+        if let atts = viewModel.getAttachments() {
+            for att in atts {
+                if let content_id = att.getContentID() where !content_id.isEmpty && att.isInline() {
+                    PMLog.D(content_id)
+                    if orignal.contains(content_id) {
+                        if !edited.contains(content_id) {
+                            self.viewModel.deleteAtt(att)
+                        }
+                    }
+                }
+            }
+        }
     }
     
     private func updateAttachmentButton () {
