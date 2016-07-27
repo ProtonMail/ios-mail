@@ -944,7 +944,9 @@ class MessageDataService {
                                 }
                             }
                         } else {
-                            completion(task: task, response: response, message:nil, error: NSError.badResponse())
+                            dispatch_async(dispatch_get_main_queue()) {
+                                completion(task: task, response: response, message:nil, error: NSError.badResponse())
+                            }
                         }
                     } else {
                         dispatch_async(dispatch_get_main_queue()) {

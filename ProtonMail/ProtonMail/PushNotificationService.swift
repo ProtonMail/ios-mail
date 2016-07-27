@@ -79,16 +79,11 @@ class PushNotificationService {
     }
     
     func didReceiveRemoteNotification(userInfo: [NSObject : AnyObject], forceProcess : Bool = false, fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-        //NSLog("did options1 : \(self.launchOptions)")
         if sharedUserDataService.isSignedIn && sharedUserDataService.isMailboxPWDOk {
-            //NSLog("did options2 : \(self.launchOptions)")
             let application = UIApplication.sharedApplication()
             if let messageid = messageIDForUserInfo(userInfo) {
-                //NSLog("message \(messageid)")
-                //NSLog("static \(application.applicationState)")
                 // if the app is in the background, then switch to the inbox and load the message detail
                 if application.applicationState == UIApplicationState.Inactive || application.applicationState == UIApplicationState.Background || forceProcess {
-                    // NSLog("ok1 \(messageid)")
                     if let revealViewController = application.keyWindow?.rootViewController as? SWRevealViewController {
                         //revealViewController
                         sharedMessageDataService.fetchNotificationMessageDetail(messageid, completion: { (task, response, message, error) -> Void in
@@ -97,7 +92,6 @@ class PushNotificationService {
                             } else {
                                 if let front = revealViewController.frontViewController as? UINavigationController {
                                     if let mailboxViewController: MailboxViewController = front.viewControllers.first as? MailboxViewController {
-                                        //NSLog("ok2")
                                         sharedMessageDataService.pushNotificationMessageID = messageid
                                         mailboxViewController.performSegueForMessageFromNotification()
                                     } else {
