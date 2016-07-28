@@ -9,8 +9,9 @@
 import UIKit
 
 class LabelTableViewCell: UITableViewCell {
-    var vc : UIViewController!;
+    var vc : UIViewController!
     var model : LabelMessageModel!
+    let maxLabelCount : Int = 100
 
     @IBOutlet weak var labelView: TableCellLabelView!
     @IBOutlet weak var selectStatusButton: UIButton!
@@ -32,18 +33,17 @@ class LabelTableViewCell: UITableViewCell {
     }
 
     @IBAction func buttonAction(sender: UIButton) {
-        var plusCount = 1;
+        var plusCount = 1
         if model.totalMessages.count <= 1 || 0 ==  model.originalSelected.count || model.originalSelected.count ==  model.totalMessages.count {
-            plusCount = 2;
+            plusCount = 2
         }
         
         var tempStatus = self.model.status + plusCount;
         if tempStatus > 2 {
-            tempStatus = 0;
+            tempStatus = 0
         }
         
         if tempStatus == 0 {
-
             for mm in self.model.totalMessages {
                 let labelObjs = mm.mutableSetValueForKey("labels")
                 labelObjs.removeObject(model.label)
@@ -70,8 +70,8 @@ class LabelTableViewCell: UITableViewCell {
                         labelCount += 1
                     }
                 }
-                if labelCount >= 5 {
-                    let alert = NSLocalizedString("A message cannot have more than 5 labels").alertController();
+                if labelCount >= maxLabelCount {
+                    let alert = NSLocalizedString("A message cannot have more than \(maxLabelCount) labels").alertController();
                     alert.addOKAction()
                     vc.presentViewController(alert, animated: true, completion: nil)
                     return;
