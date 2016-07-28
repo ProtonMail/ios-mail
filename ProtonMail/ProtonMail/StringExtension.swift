@@ -97,10 +97,12 @@ extension String {
         if self.isEmpty {
             return [];
         }
-        let data : NSData! = self.dataUsingEncoding(NSUTF8StringEncoding)
+
         do {
-            let decoded = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as! [[String:String]]
-            return decoded
+            if let data = self.dataUsingEncoding(NSUTF8StringEncoding) {
+                let decoded = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as! [[String:String]]
+                return decoded
+            }
         } catch let ex as NSError {
             PMLog.D(" func parseJson() -> error error \(ex)")
         }
