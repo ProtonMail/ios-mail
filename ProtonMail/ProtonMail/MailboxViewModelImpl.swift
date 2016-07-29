@@ -80,16 +80,18 @@ public class MailboxViewModelImpl : MailboxViewModel {
     }
     
     public override func deleteMessage(msg: Message) {
-        switch(self.location!) {
-        case .trash, .spam:
-            msg.location = .deleted
-        default:
-            self.updateBadgeNumberMoveOutInbox(msg)
-            msg.location = .trash
-        }
-        msg.needsUpdate = true
-        if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-            PMLog.D("error: \(error)")
+        if msg.managedObjectContext != nil {
+            switch(self.location!) {
+            case .trash, .spam:
+                msg.location = .deleted
+            default:
+                self.updateBadgeNumberMoveOutInbox(msg)
+                msg.location = .trash
+            }
+            msg.needsUpdate = true
+            if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
+                PMLog.D("error: \(error)")
+            }
         }
     }
     
