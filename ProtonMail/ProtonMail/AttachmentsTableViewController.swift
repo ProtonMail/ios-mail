@@ -264,7 +264,11 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                         let from = Int64(0)
                         let data = NSMutableData(length: length)!
                         let numRead = rep.getBytes(UnsafeMutablePointer(data.mutableBytes), fromOffset: from, length: length, error: &error)
-                        picker.dismissViewControllerAnimated(true, completion: nil)
+                        
+                        dispatch_async(dispatch_get_main_queue()) {
+                           picker.dismissViewControllerAnimated(true, completion: nil)
+                        }
+                            
                         if let er = error {
                             self.showErrorAlert("Can't copy the file")
                             self.delegate?.attachments(self, error:"Can't copy the file")
