@@ -192,7 +192,7 @@ public class SignupViewModelImpl : SignupViewModel {
         }
         
         if !self.recoverEmail.isEmpty {
-            sharedUserDataService.updateNotificationEmail(recoverEmail) { _, _, error in
+            sharedUserDataService.updateNotificationEmail(recoverEmail, password: sharedUserDataService.password ?? "") { _, _, error in
 //                if error != nil {
 //                    //complete(false, error)
 //                } else {
