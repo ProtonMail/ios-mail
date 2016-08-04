@@ -267,13 +267,13 @@ public class ComposeViewModelImpl : ComposeViewModel {
         
         let htmlString = "\(defaultSignature) \(mobileSignature)";
         
-        PMLog.D("\(message?.addressID)")
+        //PMLog.D("\(message?.addressID)")
         
         switch messageAction!
         {
         case .OpenDraft:
             do {
-                let body = try message!.decryptBodyIfNeeded() ?? ""
+                let body = try message?.decryptBodyIfNeeded() ?? ""
                 return body
             } catch let ex as NSError {
                 PMLog.D("getHtmlBody OpenDraft error : \(ex)")
