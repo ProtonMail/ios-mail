@@ -267,76 +267,78 @@ public class ComposeViewModelImpl : ComposeViewModel {
         
         let htmlString = "\(defaultSignature) \(mobileSignature)";
         
-        //PMLog.D("\(message?.addressID)")
-        
-        switch messageAction!
-        {
-        case .OpenDraft:
-            do {
-                let body = try message?.decryptBodyIfNeeded() ?? ""
-                return body
-            } catch let ex as NSError {
-                PMLog.D("getHtmlBody OpenDraft error : \(ex)")
-                return self.message!.bodyToHtml()
+        if let msgAction = messageAction {
+            switch msgAction
+            {
+            case .OpenDraft:
+                do {
+                    let body = try message?.decryptBodyIfNeeded() ?? ""
+                    return body
+                } catch let ex as NSError {
+                    PMLog.D("getHtmlBody OpenDraft error : \(ex)")
+                    return self.message!.bodyToHtml()
+                }
+            case .Reply, .ReplyAll:
+                
+                var body = ""
+                do {
+                    body = try message!.decryptBodyIfNeeded() ?? ""
+                } catch let ex as NSError {
+                    PMLog.D("getHtmlBody OpenDraft error : \(ex)")
+                    body = self.message!.bodyToHtml()
+                }
+                
+                body = body.stringByStrippingStyleHTML()
+                body = body.stringByStrippingBodyStyle()
+                body = body.stringByPurifyHTML()
+                
+                let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
+                
+                let sn = message?.managedObjectContext != nil ? message!.senderContactVO.name : "unknow"
+                let se = message?.managedObjectContext != nil ? message!.senderContactVO.email : "unknow"
+                
+                let replyHeader = time + ", " + sn + " <'\(se)'>"
+                let sp = "<div><br><div><div><br></div>\(replyHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
+                
+                return "\(htmlString) \(sp) \(body)</blockquote>"
+            case .Forward:
+                let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
+                var forwardHeader = "---------- Forwarded message ----------<br>From: \( message!.senderContactVO.name) <'\(message!.senderContactVO.email)'> <br>Date: \(time)<br>Subject: \(message!.title)<br>"
+                if message!.recipientList != "" {
+                    forwardHeader += "To: \(message!.recipientList.formatJsonContact())<br>"
+                }
+                
+                if message!.ccList != "" {
+                    forwardHeader += "CC: \(message!.ccList.formatJsonContact())<br>"
+                }
+                forwardHeader += "<br><br>"
+                var body = ""
+                
+                do {
+                    body = try message!.decryptBodyIfNeeded() ?? ""
+                } catch let ex as NSError {
+                    PMLog.D("getHtmlBody OpenDraft error : \(ex)")
+                    body = self.message!.bodyToHtml()
+                }
+                
+                body = body.stringByStrippingStyleHTML()
+                body = body.stringByStrippingBodyStyle()
+                body = body.stringByPurifyHTML()
+                
+                let sp = "<div><br></div><div><br></div>\(forwardHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
+                return "\(defaultSignature) \(mobileSignature) \(sp) \(body)"
+            case .NewDraft:
+                if !self.body.isEmpty {
+                    let newhtmlString = " \(self.body) \(htmlString)"
+                    self.body = ""
+                    return newhtmlString
+                }
+                return htmlString
             }
-        case .Reply, .ReplyAll:
-            
-            var body = ""
-            do {
-                body = try message!.decryptBodyIfNeeded() ?? ""
-            } catch let ex as NSError {
-                PMLog.D("getHtmlBody OpenDraft error : \(ex)")
-                body = self.message!.bodyToHtml()
-            }
-            
-            body = body.stringByStrippingStyleHTML()
-            body = body.stringByStrippingBodyStyle()
-            body = body.stringByPurifyHTML()
-            
-            let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
-            
-            let sn = message?.managedObjectContext != nil ? message!.senderContactVO.name : "unknow"
-            let se = message?.managedObjectContext != nil ? message!.senderContactVO.email : "unknow"
-            
-            let replyHeader = time + ", " + sn + " <'\(se)'>"
-            let sp = "<div><br><div><div><br></div>\(replyHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
-            
-            return "\(htmlString) \(sp) \(body)</blockquote>"
-        case .Forward:
-            let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
-            var forwardHeader = "---------- Forwarded message ----------<br>From: \( message!.senderContactVO.name) <'\(message!.senderContactVO.email)'> <br>Date: \(time)<br>Subject: \(message!.title)<br>"
-            if message!.recipientList != "" {
-                forwardHeader += "To: \(message!.recipientList.formatJsonContact())<br>"
-            }
-            
-            if message!.ccList != "" {
-                forwardHeader += "CC: \(message!.ccList.formatJsonContact())<br>"
-            }
-            forwardHeader += "<br><br>"
-            var body = ""
-            
-            do {
-                body = try message!.decryptBodyIfNeeded() ?? ""
-            } catch let ex as NSError {
-                PMLog.D("getHtmlBody OpenDraft error : \(ex)")
-                body = self.message!.bodyToHtml()
-            }
-            
-            body = body.stringByStrippingStyleHTML()
-            body = body.stringByStrippingBodyStyle()
-            body = body.stringByPurifyHTML()
-            
-            let sp = "<div><br></div><div><br></div>\(forwardHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
-            return "\(defaultSignature) \(mobileSignature) \(sp) \(body)"
-        case .NewDraft:
-            if !self.body.isEmpty {
-                let newhtmlString = " \(self.body) \(htmlString)"
-                self.body = ""
-                return newhtmlString
-            }
-            return htmlString
+
         }
-        
+        //when goes here , need log error
+        return htmlString
     }
 }
 
