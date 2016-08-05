@@ -788,13 +788,16 @@ class MessageDataService {
             if attachment.managedObjectContext != nil {
                 sharedAPIService.attachmentForAttachmentID(attachment.attachmentID, destinationDirectoryURL: NSFileManager.defaultManager().attachmentDirectory, downloadTask: downloadTask, completion: { task, fileURL, error in
                     var error = error
-                    if let fileURL = fileURL {
-                        attachment.localURL = fileURL
-                        error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
-                        if error != nil  {
-                            PMLog.D(" error: \(error)")
+                    if let context = attachment.managedObjectContext {
+                        if let fileURL = fileURL {
+                            attachment.localURL = fileURL
+                            error = context.saveUpstreamIfNeeded()
+                            if error != nil  {
+                                PMLog.D(" error: \(error)")
+                            }
                         }
                     }
+                    
                     completion?(task, fileURL, error)
                 })
             } else {
