@@ -1333,6 +1333,7 @@ class MessageDataService {
                             PMLog.D("SendAttachmentDebug == finish save draft!")
                             if let mess = response {
                                 if let messageID = mess["ID"] as? String {
+                                    //if message context is invalid let app crash which is fine
                                     message.messageID = messageID
                                     message.isDetailDownloaded = true
                                     
