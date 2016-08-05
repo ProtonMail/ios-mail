@@ -829,7 +829,6 @@ class MessageDataService {
                                     completion(task: task, response: response, message: message, error: error)
                                 }
                             } catch let ex as NSError {
-                                PMLog.D(" error: \(ex)")
                                 dispatch_async(dispatch_get_main_queue()) {
                                     completion(task: task, response: response, message: message, error: ex)
                                 }
