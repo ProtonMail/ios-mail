@@ -113,13 +113,13 @@ extension Attachment {
         
         return ""
     }
-
+    
     func isInline() -> Bool {
         guard let headerInfo = self.headerInfo else {
             return false
         }
         
-        let headerObject = headerInfo.parseObject()        
+        let headerObject = headerInfo.parseObject()
         guard let inlineCheckString = headerObject["content-disposition"] else {
             return false
         }
@@ -141,7 +141,7 @@ extension Attachment {
         }
         
         let outString = inlineCheckString.preg_replace("[<>]", replaceto: "")
-
+        
         return outString
     }
 }
@@ -164,24 +164,26 @@ extension Attachment {
 extension UIImage {
     func toAttachment (message:Message, fileName : String, type:String) -> Attachment? {
         if let fileData = UIImageJPEGRepresentation(self, 0) {
-            let attachment = Attachment(context: message.managedObjectContext!)
-            attachment.attachmentID = "0"
-            attachment.fileName = fileName
-            attachment.mimeType = "image/jpg"
-            attachment.fileData = fileData
-            attachment.fileSize = fileData.length
-            attachment.isTemp = false
-            attachment.keyPacket = ""
-            attachment.localURL = NSURL();
-            
-            attachment.message = message
-            
-            var error: NSError? = nil
-            error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
-            if error != nil {
-                PMLog.D("toAttachment () with error: \(error)")
+            if let context = message.managedObjectContext {
+                let attachment = Attachment(context: context)
+                attachment.attachmentID = "0"
+                attachment.fileName = fileName
+                attachment.mimeType = "image/jpg"
+                attachment.fileData = fileData
+                attachment.fileSize = fileData.length
+                attachment.isTemp = false
+                attachment.keyPacket = ""
+                attachment.localURL = NSURL();
+                
+                attachment.message = message
+                
+                var error: NSError? = nil
+                error = context.saveUpstreamIfNeeded()
+                if error != nil {
+                    PMLog.D("toAttachment () with error: \(error)")
+                }
+                return attachment
             }
-            return attachment
         }
         
         return nil
