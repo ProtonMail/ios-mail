@@ -80,17 +80,25 @@ extension Attachment {
     typealias base64AttachmentDataComplete = (based64String : String) -> Void
     
     func base64AttachmentData(complete : base64AttachmentDataComplete) {
+        
         if let localURL = self.localURL where NSFileManager.defaultManager().fileExistsAtPath(localURL.path!, isDirectory: nil) {
             complete( based64String: self.base64DecryptAttachment() )
-        } else {
-            self.localURL = nil
-            sharedMessageDataService.fetchAttachmentForAttachment(self, downloadTask: { (taskOne : NSURLSessionDownloadTask) -> Void in }, completion: { (_, url, error) -> Void in
-                complete( based64String: self.base64DecryptAttachment() )
-                if error != nil {
-                    PMLog.D("\(error)")
-                }
-            })
+            return
         }
+        
+        if let data = self.fileData where data.length > 0 {
+            complete( based64String: self.base64DecryptAttachment() )
+            return
+        }
+        
+        self.localURL = nil
+        sharedMessageDataService.fetchAttachmentForAttachment(self, downloadTask: { (taskOne : NSURLSessionDownloadTask) -> Void in }, completion: { (_, url, error) -> Void in
+            self.localURL = url;
+            complete( based64String: self.base64DecryptAttachment() )
+            if error != nil {
+                PMLog.D("\(error)")
+            }
+        })
     }
     
     func base64DecryptAttachment() -> String {
@@ -108,6 +116,22 @@ extension Attachment {
                 } catch let ex as NSError{
                     PMLog.D("\(ex)")
                 }
+            }
+        }
+        
+        
+        if let data = self.fileData {
+            do {
+                if let key_packet = self.keyPacket {
+                    if let keydata: NSData = NSData(base64EncodedString:key_packet, options: NSDataBase64DecodingOptions(rawValue: 0)) {
+                        if let decryptData = try data.decryptAttachment(keydata, passphrase: sharedUserDataService.mailboxPassword!) {
+                            let strBase64:String = decryptData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+                            return strBase64
+                        }
+                    }
+                }
+            } catch let ex as NSError{
+                PMLog.D("\(ex)")
             }
         }
         

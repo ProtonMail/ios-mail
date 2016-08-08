@@ -89,7 +89,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
                 else
                 {
                     self.updateContent()
-                    self.showEmbedImage()
+                    //self.showEmbedImage()
                 }
             }
         }
@@ -369,6 +369,9 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
                     //PMLog.D(self.message!.body);
                     if self.purifiedBody == nil {
                         self.purifiedBody = self.purifyEmailBody(self.message)
+                        dispatch_async(dispatch_get_main_queue()) {
+                            self.showEmbedImage()
+                        }
                     }
                     
                     if !self.isAutoLoadImage && !self.showedShowImageView && self.purifiedBodyWithoutImage == nil {
@@ -399,7 +402,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     {
         do {
             var bodyText = try self.message.decryptBodyIfNeeded() ?? NSLocalizedString("Unable to decrypt message.")
-            PMLog.D(bodyText)
+            //PMLog.D(bodyText)
             //bodyText = bodyText.stringByStrippingStyleHTML()
             bodyText = bodyText.stringByPurifyHTML()
             bodyText = bodyText.stringByStrippingBodyStyle()
@@ -532,9 +535,9 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                             
                             checkCount = checkCount - 1
                             
-                            //if checkCount == 0 {
-                            self.updateContent()
-                            //}
+                            if checkCount == 0 {
+                                self.updateContent()
+                            }
                             
                         } else {
                             checkCount = checkCount - 1

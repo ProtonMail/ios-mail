@@ -182,17 +182,17 @@ nav ol,nav ul {
 img {
     border: 0;
     -ms-interpolation-mode: bicubic;
-    /* max-width: 100%; */
+    max-width: 100%; 
     
-    
-    /* Fills image into the parent element so it's fully covered. Contains aspect-ratio. */
-    object-fit: cover;
-    
-    /* Fills image into the parent element so the img is fully shown. Can create letterboxes. */
-    object-fit: contain;
-    
-    /* Fills image into the parent element so it's fully covered. Shrinks image, not respecting aspect-ratio. */
-    object-fit: fill;
+/*    */
+/*    /* Fills image into the parent element so it's fully covered. Contains aspect-ratio. */*/
+/*    object-fit: cover;*/
+/*    */
+/*    /* Fills image into the parent element so the img is fully shown. Can create letterboxes. */*/
+/*    object-fit: contain;*/
+/*    */
+/*    /* Fills image into the parent element so it's fully covered. Shrinks image, not respecting aspect-ratio. */*/
+/*    object-fit: fill;*/
     
 }
 

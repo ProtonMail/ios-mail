@@ -791,6 +791,7 @@ class MessageDataService {
                     if let context = attachment.managedObjectContext {
                         if let fileURL = fileURL {
                             attachment.localURL = fileURL
+                            attachment.fileData = NSData(contentsOfURL: fileURL)
                             error = context.saveUpstreamIfNeeded()
                             if error != nil  {
                                 PMLog.D(" error: \(error)")
