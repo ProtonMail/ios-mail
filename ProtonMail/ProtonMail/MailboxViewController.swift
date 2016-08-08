@@ -368,6 +368,12 @@ class MailboxViewController: ProtonMailViewController {
                 self.navigationController?.popViewControllerAnimated(true)
             }))
             
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Remove Star"), style: .Default, handler: { (action) -> Void in
+                self.selectedMessagesSetValue(setValue: false, forKey: Message.Attributes.isStarred)
+                self.cancelButtonTapped();
+                self.navigationController?.popViewControllerAnimated(true)
+            }))
+            
             let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .archive : .Destructive]
             for (location, style) in locations {
                 if !viewModel.isCurrentLocation(location) {
