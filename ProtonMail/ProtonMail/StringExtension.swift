@@ -266,8 +266,8 @@ extension String {
     }
     
     func stringByPurifyImages () -> String {
-
-         let out = self.preg_replace("src=\"(.*?)(^|>|\"|\\s)|srcset=\"(.*?)(^|>|\"|\\s)|src='(.*?)(^|>|'|\\s)|xlink:href=\"(.*?)(^|>|\"|\\s)|poster=\"(.*?)(^|>|\"|\\s)|background=\"(.*?)(^|>|\"|\\s)|url\\((.*?)(^|>|\\)|\\s)", replaceto: " ")
+        var out = self.preg_replace("src=\"(.*?)(^|>|\"|\\s)", replaceto: "src=\" ")
+        out = self.preg_replace("srcset=\"(.*?)(^|>|\"|\\s)|src='(.*?)(^|>|'|\\s)|xlink:href=\"(.*?)(^|>|\"|\\s)|poster=\"(.*?)(^|>|\"|\\s)|background=\"(.*?)(^|>|\"|\\s)|url\\((.*?)(^|>|\\)|\\s)", replaceto: " ")
         
 //add this will break html layout. |<img(.*?)<\\/img>|<(\\/?img.*?)>|<picture(.*?)<\\/picture>|<(\\/?picture.*?)>
 //        out = out.preg_replace("\\ssrc='", replaceto: " data-src='")
