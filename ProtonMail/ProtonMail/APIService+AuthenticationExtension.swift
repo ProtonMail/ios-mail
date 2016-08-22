@@ -15,8 +15,6 @@
 //
 
 import Foundation
-import Fabric
-import Crashlytics
 
 
 /// Auth extension
@@ -70,14 +68,10 @@ extension APIService {
         if let authCredential = AuthCredential.fetchFromKeychain() {
             AuthRefreshRequest<AuthResponse>(resfresh: authCredential.refreshToken).call() { task, res , hasError in
                 if hasError {
-                    
                     self.refreshTokenFailedCount += 1
-                    
-                    Answers.logCustomEventWithName("AuthRefreshRequest-Error",
-                        customAttributes: [
-                            "name": sharedUserDataService.username ?? "unknow",
-                            "error": "\(res?.error)"])
-                    
+                    if let err = res?.error {
+                        err.uploadFabricAnswer()
+                    }
                     
                     if self.refreshTokenFailedCount > 10 {
                         PMLog.D("self.refreshTokenFailedCount == 10")

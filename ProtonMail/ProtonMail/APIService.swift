@@ -143,7 +143,7 @@ class APIService {
                 PMLog.D("\(credential.description)")
                 
                 if !credential.isExpired { // access token time is valid
-                    if !(credential.password ?? "").isEmpty { // mailbox pwd is empty should show error and logout
+                    if (credential.password ?? "").isEmpty { // mailbox pwd is empty should show error and logout
                         
                         //clean auth cache let user relogin
                         AuthCredential.clearFromKeychain()
@@ -155,6 +155,7 @@ class APIService {
                         dispatch_async(dispatch_get_main_queue()) {
                             completion(nil, NSError.AuthCachePassEmpty())
                             sharedUserDataService.signOut(true) //NOTES:signout + errors
+                            NSError.alertBadTokenToast()
                         }
                     } else {
                         self.sessionManager.requestSerializer.setAuthorizationHeaderFieldWithCredential(credential)
@@ -176,40 +177,30 @@ class APIService {
                         pthread_mutex_unlock(&self.mutex)
                         PMLog.D("Exit Reading!!!!")
                         dispatch_async(dispatch_get_main_queue()) {
-                            completion(nil, NSError.authCacheBad())
+                            completion(nil, NSError.AuthCachePassEmpty())
+                            sharedUserDataService.signOut(true)
+                            NSError.alertBadTokenToast()
                         }
-                        //sharedUserDataService.signOut(true)
                     } else {
                         self.authRefresh (credential.password  ?? "") { (task, authCredential, error) -> Void in
-                            //                            if error == nil {
-                            //                                PMLog.D("check ")
-                            //                                self.fetchAuthCredential(completion: completion)
-                            //
-                            //                            } else
-                            //
                             
                             PMLog.D("Exiting Reading!!!")
                             pthread_mutex_unlock(&self.mutex)
                             PMLog.D("Exit Reading!!!!")
+                            
                             if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
                                 AuthCredential.clearFromKeychain()
                                 dispatch_async(dispatch_get_main_queue()) {
+                                    NSError.alertBadTokenToast()
                                     self.fetchAuthCredential(completion: completion)
                                 }
                             } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
                                 AuthCredential.clearFromKeychain()
                                 dispatch_async(dispatch_get_main_queue()) {
+                                    NSError.alertBadTokenToast()
                                     completion(authCredential, error)
                                 }
-                                //sharedUserDataService.signOut(true)
-                            }
-                                //                        else if self.tried > 7 {
-                                //                            self.tried = 0
-                                //                            AuthCredential.clearFromKeychain()
-                                //                            completion(nil, NSError.authCacheBad())
-                                //                            //sharedUserDataService.signOut(true)
-                                //                        }
-                            else {
+                            } else {
                                 if let credential = AuthCredential.fetchFromKeychain() {
                                     self.sessionManager.requestSerializer.setAuthorizationHeaderFieldWithCredential(credential)
                                 }
@@ -227,18 +218,16 @@ class APIService {
                 pthread_mutex_unlock(&self.mutex)
                 PMLog.D("Exit Reading!!!!")
                 
-                if sharedUserDataService.isSignedIn {
-                    dispatch_async(dispatch_get_main_queue()) {
+                dispatch_async(dispatch_get_main_queue()) {
+                    if sharedUserDataService.isSignedIn {
                         completion(nil, NSError.authCacheBad())
                         sharedUserDataService.signOut(true)
                         userCachedStatus.signOut()
-                        NSError.alertBadTokenToast()
                     }
                 }
             }
-            
         }
-        
+
     }
     // MARK: - Request methods
     

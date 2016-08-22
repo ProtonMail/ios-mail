@@ -153,6 +153,8 @@
 		753745051D6B7E8F00682C5A /* APIError+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745031D6B7E8F00682C5A /* APIError+Auth.swift */; };
 		753745071D6B885500682C5A /* APIService+ResponseTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745061D6B885500682C5A /* APIService+ResponseTransformer.swift */; };
 		753745081D6B885500682C5A /* APIService+ResponseTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745061D6B885500682C5A /* APIService+ResponseTransformer.swift */; };
+		7537450A1D6BA85B00682C5A /* APIService+ErrorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745091D6BA85B00682C5A /* APIService+ErrorExtension.swift */; };
+		7537450B1D6BA85B00682C5A /* APIService+ErrorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745091D6BA85B00682C5A /* APIService+ErrorExtension.swift */; };
 		754387D91AB35EB40003B0AC /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754387D81AB35EB40003B0AC /* SignUpViewController.swift */; };
 		754387DB1AB3A54E0003B0AC /* SignUpKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754387DA1AB3A54E0003B0AC /* SignUpKeyViewController.swift */; };
 		7546BE551C8D4F9100FCEB0A /* TouchID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546BE541C8D4F9100FCEB0A /* TouchID.swift */; };
@@ -731,6 +733,7 @@
 		75370A911CA50616005020F9 /* ComposePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposePasswordViewController.swift; sourceTree = "<group>"; };
 		753745031D6B7E8F00682C5A /* APIError+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIError+Auth.swift"; sourceTree = "<group>"; };
 		753745061D6B885500682C5A /* APIService+ResponseTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+ResponseTransformer.swift"; sourceTree = "<group>"; };
+		753745091D6BA85B00682C5A /* APIService+ErrorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+ErrorExtension.swift"; sourceTree = "<group>"; };
 		754387D81AB35EB40003B0AC /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		754387DA1AB3A54E0003B0AC /* SignUpKeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpKeyViewController.swift; sourceTree = "<group>"; };
 		7546BE541C8D4F9100FCEB0A /* TouchID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchID.swift; sourceTree = "<group>"; };
@@ -1136,6 +1139,7 @@
 				07B797BF1A6EDFF400244532 /* APIService.swift */,
 				75F7756F1D63AA5B00FD3893 /* APIService+DefinedExtension.swift */,
 				753745061D6B885500682C5A /* APIService+ResponseTransformer.swift */,
+				753745091D6BA85B00682C5A /* APIService+ErrorExtension.swift */,
 				75F7756C1D63A9DA00FD3893 /* APIService+TokenManagerExtension.swift */,
 				07B797C11A6EE50F00244532 /* APIService+AuthenticationExtension.swift */,
 				07DD68A41A97DE9F00ED130C /* APIService+AttachmentExtension.swift */,
@@ -2141,6 +2145,7 @@
 				701DDE971AA651100038149C /* ContactVO.swift in Sources */,
 				7510AE7C1AB8D68B00EF3C41 /* SettingDetailViewController.swift in Sources */,
 				75370A921CA50616005020F9 /* ComposePasswordViewController.swift in Sources */,
+				7537450A1D6BA85B00682C5A /* APIService+ErrorExtension.swift in Sources */,
 				07E6C8281A9CF36400D4C8D4 /* NSManagedObjectExtension.swift in Sources */,
 				75ECCDFE1B31F01000A8C800 /* APIServiceDefined.swift in Sources */,
 				754387DB1AB3A54E0003B0AC /* SignUpKeyViewController.swift in Sources */,
@@ -2435,6 +2440,7 @@
 				75DE7D271CAAEA4900F5443E /* SwitchTableViewCell.swift in Sources */,
 				75DE7D281CAAEA4900F5443E /* ComposeViewModelImpl.swift in Sources */,
 				75DE7D291CAAEA4900F5443E /* AddressBookService.swift in Sources */,
+				7537450B1D6BA85B00682C5A /* APIService+ErrorExtension.swift in Sources */,
 				75DE7D2A1CAAEA4900F5443E /* Onboarding.swift in Sources */,
 				75856D6A1CB5B5EC000D9F3B /* PinCodeViewController.swift in Sources */,
 				75DE7D2B1CAAEA4900F5443E /* NSNotification+KeyboardExtension.swift in Sources */,
