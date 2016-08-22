@@ -15,25 +15,16 @@
 //
 
 import Foundation
+import Fabric
+import Crashlytics
+
 
 /// Auth extension
 extension APIService {
-    typealias AuthCredentialBlock = (AuthCredential?, NSError?) -> Void
-    typealias AuthInfo = (accessToken: String?, expiresId: NSTimeInterval?, refreshToken: String?, userID: String?)
-    
-    
-    typealias AuthComplete = (task: NSURLSessionDataTask?, hasError : NSError?) -> Void
-    typealias AuthRefreshComplete = (task: NSURLSessionDataTask?, auth:AuthCredential?, hasError : NSError?) -> Void
 
     
-    struct GeneralResponse {
-        static let errorCode = "Code"
-        static let errorMsg = "Error"
-        static let errorDesc = "ErrorDescription"
-    }
-    
     func auth(username: String, password: String, completion: AuthComplete?) {
-        AuthRequest<AuthResponse>(username: username, password: password).call() { task, res , hasError in
+        AuthRequest<AuthResponse>(username: username, password: password).call() { task, res, hasError in
             if hasError {
                 if let error = res?.error {
                     if error.isInternetError() {
@@ -75,11 +66,23 @@ extension APIService {
             completion?(nil, nil)
         }
     }
-    
     func authRefresh(password:String, completion: AuthRefreshComplete?) {
         if let authCredential = AuthCredential.fetchFromKeychain() {
             AuthRefreshRequest<AuthResponse>(resfresh: authCredential.refreshToken).call() { task, res , hasError in
                 if hasError {
+                    
+                    self.refreshTokenFailedCount += 1
+                    
+                    Answers.logCustomEventWithName("AuthRefreshRequest-Error",
+                        customAttributes: [
+                            "name": sharedUserDataService.username ?? "unknow",
+                            "error": "\(res?.error)"])
+                    
+                    
+                    if self.refreshTokenFailedCount > 10 {
+                        PMLog.D("self.refreshTokenFailedCount == 10")
+                    }
+                    
                     completion?(task: task, auth: nil, hasError: NSError.authInvalidGrant())
                 }
                 else if res?.code == 1000 {
@@ -87,10 +90,16 @@ extension APIService {
                         authCredential.update(res)
                         try authCredential.setupToken(password)
                         authCredential.storeInKeychain()
+                        
+                        PMLog.D("\(authCredential.description)")
+                        
+                        self.refreshTokenFailedCount = 0
                     } catch let ex as NSError {
                         PMLog.D(ex)
                     }
-                    completion?(task: task, auth: authCredential, hasError: nil)
+                    dispatch_async(dispatch_get_main_queue()) {
+                        completion?(task: task, auth: authCredential, hasError: nil)
+                    }
                 }
                 else {
                     completion?(task: task, auth: nil, hasError: NSError.authUnableToParseToken())
