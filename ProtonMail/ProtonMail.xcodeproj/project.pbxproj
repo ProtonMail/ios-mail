@@ -149,6 +149,10 @@
 		752FAA121CB5AEC300F03228 /* PinCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752FAA111CB5AEC300F03228 /* PinCodeView.swift */; };
 		752FAA141CB5B14500F03228 /* PinCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752FAA131CB5B14500F03228 /* PinCodeViewController.swift */; };
 		75370A921CA50616005020F9 /* ComposePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75370A911CA50616005020F9 /* ComposePasswordViewController.swift */; };
+		753745041D6B7E8F00682C5A /* APIError+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745031D6B7E8F00682C5A /* APIError+Auth.swift */; };
+		753745051D6B7E8F00682C5A /* APIError+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745031D6B7E8F00682C5A /* APIError+Auth.swift */; };
+		753745071D6B885500682C5A /* APIService+ResponseTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745061D6B885500682C5A /* APIService+ResponseTransformer.swift */; };
+		753745081D6B885500682C5A /* APIService+ResponseTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745061D6B885500682C5A /* APIService+ResponseTransformer.swift */; };
 		754387D91AB35EB40003B0AC /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754387D81AB35EB40003B0AC /* SignUpViewController.swift */; };
 		754387DB1AB3A54E0003B0AC /* SignUpKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754387DA1AB3A54E0003B0AC /* SignUpKeyViewController.swift */; };
 		7546BE551C8D4F9100FCEB0A /* TouchID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546BE541C8D4F9100FCEB0A /* TouchID.swift */; };
@@ -725,6 +729,8 @@
 		752FAA131CB5B14500F03228 /* PinCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinCodeViewController.swift; sourceTree = "<group>"; };
 		753480B11CADABCA00964965 /* ProtonMail.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ProtonMail.entitlements; sourceTree = "<group>"; };
 		75370A911CA50616005020F9 /* ComposePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposePasswordViewController.swift; sourceTree = "<group>"; };
+		753745031D6B7E8F00682C5A /* APIError+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIError+Auth.swift"; sourceTree = "<group>"; };
+		753745061D6B885500682C5A /* APIService+ResponseTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+ResponseTransformer.swift"; sourceTree = "<group>"; };
 		754387D81AB35EB40003B0AC /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		754387DA1AB3A54E0003B0AC /* SignUpKeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpKeyViewController.swift; sourceTree = "<group>"; };
 		7546BE541C8D4F9100FCEB0A /* TouchID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchID.swift; sourceTree = "<group>"; };
@@ -1129,6 +1135,7 @@
 			children = (
 				07B797BF1A6EDFF400244532 /* APIService.swift */,
 				75F7756F1D63AA5B00FD3893 /* APIService+DefinedExtension.swift */,
+				753745061D6B885500682C5A /* APIService+ResponseTransformer.swift */,
 				75F7756C1D63A9DA00FD3893 /* APIService+TokenManagerExtension.swift */,
 				07B797C11A6EE50F00244532 /* APIService+AuthenticationExtension.swift */,
 				07DD68A41A97DE9F00ED130C /* APIService+AttachmentExtension.swift */,
@@ -1374,6 +1381,15 @@
 			name = Cells;
 			sourceTree = "<group>";
 		};
+		753745021D6B7E7000682C5A /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */,
+				753745031D6B7E8F00682C5A /* APIError+Auth.swift */,
+			);
+			name = Errors;
+			sourceTree = "<group>";
+		};
 		753A1F4D1C52C06000B618D2 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -1561,9 +1577,9 @@
 		75ECCDFC1B31EF3600A8C800 /* APIService */ = {
 			isa = PBXGroup;
 			children = (
+				753745021D6B7E7000682C5A /* Errors */,
 				7567B0761B3387F700A72A1E /* APIServiceRequest.swift */,
 				7567B0781B33880500A72A1E /* APIServiceResponse.swift */,
-				75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */,
 				75ECCE011B31F44600A8C800 /* AuthAPI.swift */,
 				7549F0B01D07827A00643C64 /* AddressAPI.swift */,
 				7567B0741B3383F900A72A1E /* MessageAPI.swift */,
@@ -2232,6 +2248,7 @@
 				706932AB1A77BE3D00A75A93 /* SearchViewController.swift in Sources */,
 				071323A01A7C1AB10043DB41 /* NSTimeIntervalExtension.swift in Sources */,
 				75C037461C1F94D20071E04B /* SplashViewController.swift in Sources */,
+				753745071D6B885500682C5A /* APIService+ResponseTransformer.swift in Sources */,
 				75F023AF1C4E0271008F6276 /* SignupViewModel.swift in Sources */,
 				7564899C1B7F2B1B007EA207 /* LabelboxViewModelImpl.swift in Sources */,
 				701DDE921AA64DEB0038149C /* MBContactCollectionViewEntryCell.m in Sources */,
@@ -2249,6 +2266,7 @@
 				7048B9F41A9E385B00D45F57 /* ContactsTableViewCell.swift in Sources */,
 				7027B02B1A700F0200D28F52 /* MenuTableViewCell.swift in Sources */,
 				075675591AB135F500449905 /* UIAlertActionExtension.swift in Sources */,
+				753745041D6B7E8F00682C5A /* APIError+Auth.swift in Sources */,
 				7576355D1D0B6D8E00DF46DC /* LabelManagerViewModel.swift in Sources */,
 				754B70C81C975271004F991A /* FeedbackItem.swift in Sources */,
 				75FFC65F1B45C549007FB75A /* DictionaryExtension.swift in Sources */,
@@ -2384,6 +2402,7 @@
 				75DE7D091CAAEA4900F5443E /* ShowImageView.swift in Sources */,
 				75DE7D0A1CAAEA4900F5443E /* AttachmentHelper.swift in Sources */,
 				75DE7D0B1CAAEA4900F5443E /* AttachmentAPI.swift in Sources */,
+				753745081D6B885500682C5A /* APIService+ResponseTransformer.swift in Sources */,
 				75DE7D0C1CAAEA4900F5443E /* MessageDataService.swift in Sources */,
 				75DE7D0D1CAAEA4900F5443E /* UserCachedStatus.swift in Sources */,
 				75DE7D0E1CAAEA4900F5443E /* SignUpUserNameViewController.swift in Sources */,
@@ -2471,6 +2490,7 @@
 				75DE7D581CAAEA4900F5443E /* SignUpEmailViewController.swift in Sources */,
 				75DE7D591CAAEA4900F5443E /* MessageQueue.swift in Sources */,
 				75DE7D5A1CAAEA4900F5443E /* DebugDetailsViewController.swift in Sources */,
+				753745051D6B7E8F00682C5A /* APIError+Auth.swift in Sources */,
 				75DE7D5B1CAAEA4900F5443E /* ComposeEmailViewController.swift in Sources */,
 				75DE7D5C1CAAEA4900F5443E /* NSURLExtension.swift in Sources */,
 				75DE7D5D1CAAEA4900F5443E /* SearchViewController.swift in Sources */,

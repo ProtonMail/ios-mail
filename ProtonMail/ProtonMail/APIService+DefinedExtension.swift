@@ -17,9 +17,14 @@ extension APIService {
         case PUT
     }
     
+    struct GeneralResponse {
+        static let errorCode = "Code"
+        static let errorMsg = "Error"
+        static let errorDesc = "ErrorDescription"
+    }
     
-    typealias CompletionBlock = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, error: NSError?) -> Void
-    typealias CompletionFetchDetail = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, message:Message?, error: NSError?) -> Void
+    internal typealias CompletionBlock = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, error: NSError?) -> Void
+    internal typealias CompletionFetchDetail = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, message:Message?, error: NSError?) -> Void
     
     // MARK: - Internal variables
     
@@ -27,18 +32,11 @@ extension APIService {
     internal typealias AFNetworkingSuccessBlock = (NSURLSessionDataTask!, AnyObject!) -> Void
     
     
-    
-    typealias AuthCredentialBlock = (AuthCredential?, NSError?) -> Void
-    typealias AuthInfo = (accessToken: String?, expiresId: NSTimeInterval?, refreshToken: String?, userID: String?)
-    
-    
-    typealias AuthComplete = (task: NSURLSessionDataTask?, hasError : NSError?) -> Void
-    typealias AuthRefreshComplete = (task: NSURLSessionDataTask?, auth:AuthCredential?, hasError : NSError?) -> Void
+    internal typealias AuthCredentialBlock = (AuthCredential?, NSError?) -> Void
+    internal typealias AuthInfo = (accessToken: String?, expiresId: NSTimeInterval?, refreshToken: String?, userID: String?)
     
     
-    struct GeneralResponse {
-        static let errorCode = "Code"
-        static let errorMsg = "Error"
-        static let errorDesc = "ErrorDescription"
-    }
+    internal typealias AuthComplete = (task: NSURLSessionDataTask?, hasError : NSError?) -> Void
+    internal typealias AuthRefreshComplete = (task: NSURLSessionDataTask?, auth:AuthCredential?, hasError : NSError?) -> Void
+
 }

@@ -24,27 +24,34 @@ let sharedAPIService = APIService()
 
 class APIService {
     
-    var refreshTokenFailedCount = 0
-    var mutex = pthread_mutex_t()
-    var tokenRefreshing = false
+    // refresh token failed count
+    internal var refreshTokenFailedCount = 0
     
-    // MARK: - Private variables
+    // synchronize lock
+    internal var mutex = pthread_mutex_t()
+    
+    // api session manager
     private let sessionManager: AFHTTPSessionManager
     
-    func getSession() ->AFHTTPSessionManager{
+    // get session
+    func getSession() -> AFHTTPSessionManager{
         return sessionManager;
     }
     
     // MARK: - Internal methods
     
     init() {
+        // init lock
         pthread_mutex_init(&mutex, nil)
+        
         sessionManager = AFHTTPSessionManager(baseURL: NSURL(string: AppConstants.BaseURLString)!)
         sessionManager.requestSerializer = AFJSONRequestSerializer() as AFHTTPRequestSerializer
         //sessionManager.requestSerializer.timeoutInterval = 20.0;
+        
         #if DEBUG
             sessionManager.securityPolicy.allowInvalidCertificates = true
         #endif
+        
         //NSOperationQueueDefaultMaxConcurrentOperationCount sessionManager.operationQueue.maxConcurrentOperationCount
         //let defaultV = NSOperationQueueDefaultMaxConcurrentOperationCount;
         setupValueTransforms()
@@ -126,9 +133,7 @@ class APIService {
     }
     
     internal func fetchAuthCredential(completion completion: AuthCredentialBlock) {
-        
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            
             PMLog.D("Read Waiting!")
             pthread_mutex_lock(&self.mutex)
             PMLog.D("Enter Reading!!")
@@ -136,24 +141,28 @@ class APIService {
             //fetch auth info
             if let credential = AuthCredential.fetchFromKeychain() {
                 PMLog.D("\(credential.description)")
-                if !credential.isExpired {
-                    if (credential.password ?? "").isEmpty {
+                
+                if !credential.isExpired { // access token time is valid
+                    if !(credential.password ?? "").isEmpty { // mailbox pwd is empty should show error and logout
                         
+                        //clean auth cache let user relogin
                         AuthCredential.clearFromKeychain()
                         
                         PMLog.D("Exiting Reading!!!")
                         pthread_mutex_unlock(&self.mutex)
                         PMLog.D("Exit Reading!!!!")
                         
-                        completion(nil, NSError.authCacheBad())
-                        sharedUserDataService.signOut(true)
+                        dispatch_async(dispatch_get_main_queue()) {
+                            completion(nil, NSError.AuthCachePassEmpty())
+                            sharedUserDataService.signOut(true) //NOTES:signout + errors
+                        }
                     } else {
-                        
                         self.sessionManager.requestSerializer.setAuthorizationHeaderFieldWithCredential(credential)
                         
                         PMLog.D("Exiting Reading!!!")
                         pthread_mutex_unlock(&self.mutex)
                         PMLog.D("Exit Reading!!!!")
+                        
                         dispatch_async(dispatch_get_main_queue()) {
                             completion(credential, nil)
                         }
@@ -311,92 +320,6 @@ class APIService {
         }
     }
     
-    // MARK: - Private methods
-    private func setupValueTransforms() {
-        
-        NSValueTransformer.grt_setValueTransformerWithName("BoolTransformer") { (value) -> AnyObject? in
-            if let bool = value as? NSString {
-                return bool.boolValue
-            } else if let bool = value as? Bool {
-                return bool
-            }
-            return nil
-        }
-        
-        NSValueTransformer.grt_setValueTransformerWithName("DateTransformer") { (value) -> AnyObject? in
-            if let timeString = value as? NSString {
-                let time = timeString.doubleValue as NSTimeInterval
-                if time != 0 {
-                    return time.asDate()
-                }
-            } else if let date = value as? NSDate {
-                return date.timeIntervalSince1970
-            } else if let dateNumber = value as? NSNumber {
-                let time = dateNumber.doubleValue as NSTimeInterval
-                if time != 0 {
-                    return time.asDate()
-                }
-            }
-            
-            return nil
-        }
-        
-        NSValueTransformer.grt_setValueTransformerWithName("NumberTransformer") { (value) -> AnyObject? in
-            if let number = value as? String {
-                return number ?? 0 as NSNumber
-            } else if let number = value as? NSNumber {
-                return number
-            }
-            return nil
-        }
-        
-        NSValueTransformer.grt_setValueTransformerWithName("JsonStringTransformer") { (value) -> AnyObject? in
-            do {
-                if let tag = value as? NSArray {
-                    let bytes : NSData = try NSJSONSerialization.dataWithJSONObject(tag, options: NSJSONWritingOptions())
-                    let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
-                    return strJson
-                }
-            } catch let ex as NSError {
-                PMLog.D("\(ex)")
-            }
-            return "";
-        }
-        
-        NSValueTransformer.grt_setValueTransformerWithName("JsonToObjectTransformer") { (value) -> AnyObject? in
-            do {
-                if let tag = value as? [String:String] {
-                    let bytes : NSData = try NSJSONSerialization.dataWithJSONObject(tag, options: NSJSONWritingOptions())
-                    let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
-                    return strJson
-                }
-            } catch let ex as NSError {
-                PMLog.D("\(ex)")
-            }
-            return "";
-        }
-        
-        NSValueTransformer.grt_setValueTransformerWithName("EncodedDataTransformer") { (value) -> AnyObject? in
-            
-            if let tag = value as? String {
-                if let data: NSData = NSData(base64EncodedString: tag, options: NSDataBase64DecodingOptions(rawValue: 0)) {
-                    return data
-                }
-            }
-            return nil;
-        }
-        
-        //        NSValueTransformer.grt_setValueTransformerWithName("TransforDataNoID") { (value) -> AnyObject? in
-        //            if let idArray = value as? NSArray {
-        //                var fixedArray = [Dictionary<String, AnyObject>]()
-        //                for labelID in idArray {
-        //                    fixedArray.append(["ID" : labelID])
-        //                }
-        //                return fixedArray
-        //            }
-        //            return value;
-        //        }
-        
-    }
+    
 }
 
