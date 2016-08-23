@@ -454,11 +454,14 @@ class MailboxViewController: ProtonMailViewController {
     }
 
     // MARK: - Private methods
-    private func startAutoFetch()
+    private func startAutoFetch(run : BooleanType = true)
     {
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: #selector(MailboxViewController.refreshPage), userInfo: nil, repeats: true)
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(self.timerInterval, target: self, selector: #selector(MailboxViewController.refreshPage), userInfo: nil, repeats: true)
         fetchingStopped = false
-        self.timer.fire()
+        
+        if run {
+            self.timer.fire()
+        }
     }
     
     private func stopAutoFetch()
@@ -475,6 +478,22 @@ class MailboxViewController: ProtonMailViewController {
         if !fetchingStopped {
             getLatestMessages()
         }
+    }
+    
+    private var timerInterval : NSTimeInterval = 30
+    private var failedTimes = 30
+    
+    func offlineTimerReset() {
+        timerInterval = NSTimeInterval(arc4random_uniform(90)) + 30;
+        PMLog.D("next check will be after : \(timerInterval) seconds")
+        stopAutoFetch()
+        startAutoFetch(false)
+    }
+    
+    func onlineTimerReset() {
+        timerInterval = 30
+        stopAutoFetch()
+        startAutoFetch(false)
     }
     
     private func messageAtIndexPath(indexPath: NSIndexPath) -> Message? {
@@ -726,8 +745,10 @@ class MailboxViewController: ProtonMailViewController {
             self.showNoInternetErrorMessage()
         } else if code == APIErrorCode.API_offline {
             self.showOfflineErrorMessage(error)
+            offlineTimerReset()
         } else if code == APIErrorCode.HTTP503 || code == NSURLErrorBadServerResponse {
             self.show503ErrorMessage(error)
+            offlineTimerReset()
         }
         PMLog.D("error: \(error)")
     }
@@ -753,6 +774,7 @@ class MailboxViewController: ProtonMailViewController {
                 }
                 
                 if error == nil {
+                    self.onlineTimerReset()
                     self.viewModel.resetNotificationMessage()
                     if !updateTime.isNew {
 //                        if let messages = res?["Messages"] as? [AnyObject] {
