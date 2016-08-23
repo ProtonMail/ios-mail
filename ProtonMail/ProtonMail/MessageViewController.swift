@@ -354,10 +354,12 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     }
     
     //
-    var purifiedBody :  String? = nil
-    var purifiedBodyWithoutImage :  String? = nil
-    var bodyHasImages : Bool = false
+    //var purifiedBody :  String? = nil
+    //var purifiedBodyWithoutImage :  String? = nil
     private var purifiedBodyLock: Int = 0
+    
+    var fixedBody : String? = nil
+    var bodyHasImages : Bool = false
     
     // MARK : private function
     private func updateEmailBody (force forceReload : Bool = false) {
@@ -373,46 +375,39 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             if (!self.bodyLoaded || forceReload) && self.emailView != nil {
                 if self.message.isDetailDownloaded {  //&& forceReload == false
                     self.bodyLoaded = true
-                    //PMLog.D(self.message!.body);
-                    if self.purifiedBody == nil {
-                        self.purifiedBody = self.purifyEmailBody(self.message)
+                    
+                    if self.fixedBody == nil {
+                        self.fixedBody = self.purifyEmailBody(self.message, autoloadimage: self.isAutoLoadImage)
                         dispatch_async(dispatch_get_main_queue()) {
                             self.showEmbedImage()
                         }
                     }
                     
-                    if !self.isAutoLoadImage && !self.showedShowImageView && self.purifiedBodyWithoutImage == nil {
-                        if let pbody = self.purifiedBody {
-                            self.bodyHasImages = pbody.hasImange()
-                            if self.bodyHasImages == true {
-                                self.purifiedBodyWithoutImage = pbody.stringByPurifyImages()
-                            }
-                        } else {
-                            self.bodyHasImages = false
-                        }
-                        
+                    if !self.isAutoLoadImage && !self.showedShowImageView{
                         if self.bodyHasImages {
                             self.needShowShowImageView = true
                         }
                     }
                 }
             }
-            if self.purifiedBody != nil {
+            if self.fixedBody != nil {
                 dispatch_async(dispatch_get_main_queue()) {
-                    self.loadEmailBody(self.needShowShowImageView ? (self.purifiedBodyWithoutImage ?? (self.purifiedBody ?? "")) : (self.purifiedBody ?? ""))
+                    self.loadEmailBody(self.fixedBody ?? "")
                 }
             }
         })
     }
     
-    internal func purifyEmailBody(message : Message!) -> String?
+    internal func purifyEmailBody(message : Message!, autoloadimage : Bool) -> String?
     {
         do {
             var bodyText = try self.message.decryptBodyIfNeeded() ?? NSLocalizedString("Unable to decrypt message.")
-            //PMLog.D(bodyText)
-            //bodyText = bodyText.stringByStrippingStyleHTML()
-            bodyText = bodyText.stringByPurifyHTML()
             bodyText = bodyText.stringByStrippingBodyStyle()
+            bodyText = bodyText.stringByPurifyHTML()
+            self.bodyHasImages = bodyText.hasImange()
+            if !autoloadimage {
+                 bodyText = bodyText.stringByPurifyImages()
+            }
             return bodyText
         } catch let ex as NSError {
             PMLog.D("purifyEmailBody error : \(ex)")
@@ -525,7 +520,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     func showImage() {
         self.showedShowImageView = true
         self.needShowShowImageView = false
-        //self.showEmbedImage()
+        self.fixedBody = self.fixedBody?.stringFixImages()
         self.updateContent()
     }
     
@@ -537,7 +532,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                     att.base64AttachmentData({ (based64String) in
                         if !based64String.isEmpty {
                             objc_sync_enter(self.purifiedBodyLock)
-                            self.purifiedBody = self.purifiedBody?.stringBySetupInlineImage("src=\"cid:\(content_id)\"", to: "src=\"data:\(att.mimeType);base64,\(based64String)\"" )
+                            self.fixedBody = self.fixedBody?.stringBySetupInlineImage("src=\"cid:\(content_id)\"", to: "src=\"data:\(att.mimeType);base64,\(based64String)\"" )
                             objc_sync_exit(self.purifiedBodyLock)
                             
                             checkCount = checkCount - 1

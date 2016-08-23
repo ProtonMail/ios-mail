@@ -198,6 +198,7 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     }
     
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        
         if navigationType == .LinkClicked {
             if request.URL?.scheme == "mailto" {
                 viewDelegate?.mailto(request.URL)

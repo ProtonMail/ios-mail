@@ -244,10 +244,10 @@ extension String {
     }
     
     func hasImange () -> Bool {
-        if self.preg_match("\\ssrc='") {
+        if self.preg_match("\\ssrc='(?!cid:)") {
             return true
         }
-        if self.preg_match("\\ssrc=\"") {
+        if self.preg_match("\\ssrc=\"(?!cid:)") {
             return true
         }
         if self.preg_match("xlink:href=") {
@@ -266,16 +266,29 @@ extension String {
     }
     
     func stringByPurifyImages () -> String {
-        var out = self.preg_replace("src=\"(.*?)(^|>|\"|\\s)", replaceto: "src=\" ")
-        out = self.preg_replace("srcset=\"(.*?)(^|>|\"|\\s)|src='(.*?)(^|>|'|\\s)|xlink:href=\"(.*?)(^|>|\"|\\s)|poster=\"(.*?)(^|>|\"|\\s)|background=\"(.*?)(^|>|\"|\\s)|url\\((.*?)(^|>|\\)|\\s)", replaceto: " ")
+        //src=\"(?!cid:)(.*?)(^|>|\"|\\s)
+       //let out = self.preg_replace("src=\"(.*?)(^|>|\"|\\s)|srcset=\"(.*?)(^|>|\"|\\s)|src='(.*?)(^|>|'|\\s)|xlink:href=\"(.*?)(^|>|\"|\\s)|poster=\"(.*?)(^|>|\"|\\s)|background=\"(.*?)(^|>|\"|\\s)|url\\((.*?)(^|>|\\)|\\s)", replaceto: " ")
         
-//add this will break html layout. |<img(.*?)<\\/img>|<(\\/?img.*?)>|<picture(.*?)<\\/picture>|<(\\/?picture.*?)>
-//        out = out.preg_replace("\\ssrc='", replaceto: " data-src='")
-//        out = out.preg_replace("\\ssrc=\"", replaceto: " data-src=\"")
-//        out = out.preg_replace("xlink:href=", replaceto: " data-xlink:href=");
-//        out = out.preg_replace("poster=", replaceto: " data-poster=")
-//        out = out.preg_replace("background=", replaceto: " data-background=")
-//        out = out.preg_replace("url\\(", replaceto: " data-url(")
+        var out = self.preg_replace("\\ssrc='(?!cid:)", replaceto: " data-src='")
+        out = out.preg_replace("\\ssrc=\"(?!cid:)", replaceto: " data-src=\"")
+        out = out.preg_replace("srcset=", replaceto: " data-srcset=")
+        out = out.preg_replace("xlink:href=", replaceto: " data-xlink:href=");
+        out = out.preg_replace("poster=", replaceto: " data-poster=")
+        out = out.preg_replace("background=", replaceto: " data-background=")
+        out = out.preg_replace("url\\(", replaceto: " data-url(")
+        
+        return out
+    }
+    
+    func stringFixImages () -> String {
+        var out = self.preg_replace(" data-src='", replaceto: " src='")
+        out = out.preg_replace(" data-src=\"", replaceto: " src=\"")
+        out = out.preg_replace(" data-srcset=", replaceto: " srcset=")
+        out = out.preg_replace(" data-xlink:href=", replaceto: " xlink:href=");
+        out = out.preg_replace(" data-poster=", replaceto: " poster=")
+        out = out.preg_replace(" data-background=", replaceto: " background=")
+        out = out.preg_replace(" data-url(", replaceto: " url(")
+        
         return out
     }
     
