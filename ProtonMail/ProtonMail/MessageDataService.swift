@@ -894,7 +894,7 @@ class MessageDataService {
                                     }
                                 } else {
                                     dispatch_async(dispatch_get_main_queue()) {
-                                        completion(task: task, response: response, message:nil, error: NSError.badResponse())
+                                        completion(task: task, response: response, message:nil, error: error)
                                     }
                                     
                                 }

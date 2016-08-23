@@ -72,6 +72,7 @@ class APIService {
                 if authenticated && errorCode == 401 {
                     AuthCredential.expireOrClear(auth?.token)
                     if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
+                        error.alertToast()
                         sharedUserDataService.signOut(true);
                     }else {
                         self.setApiVesion(1, appVersion: 1)
@@ -84,7 +85,14 @@ class APIService {
             
             let success: AFNetworkingSuccessBlock = { task, responseObject in
                 if let responseDictionary = responseObject as? Dictionary<String, AnyObject> {
+                    var error : NSError?
                     let responseCode = responseDictionary["Code"] as? Int
+                    
+                    if responseCode != 1000 {
+                        let errorMessage = responseDictionary["Error"] as? String
+                        let errorDetails = responseDictionary["ErrorDescription"] as? String
+                        error = NSError.protonMailError(code: responseCode ?? 1000, localizedDescription: errorMessage ?? "", localizedFailureReason: errorDetails, localizedRecoverySuggestion: nil)
+                    }
                     
                     if authenticated && responseCode == 401 {
                         AuthCredential.expireOrClear(auth?.token)
@@ -92,16 +100,13 @@ class APIService {
                         self.request(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)
                     } else if responseCode == 5001 || responseCode == 5002 || responseCode == 5003 || responseCode == 5004 {
                         NSError.alertUpdatedToast()
-                        completion(task: task, response: responseDictionary, error: nil)
+                        completion(task: task, response: responseDictionary, error: error)
                         sharedUserDataService.signOut(true);
-                    } else if responseCode == 7001 { //offline
-                        NSError.alertOfflineToast()
-                        completion(task: task, response: responseDictionary, error: nil)
-                        //sharedUserDataService.signOut(true);
+                    } else if responseCode == APIErrorCode.API_offline {
+                        completion(task: task, response: responseDictionary, error: error)
                     }
                     else {
-                        //TODO :: need add error handling here pass the respones if has error.
-                        completion(task: task, response: responseDictionary, error: nil)
+                        completion(task: task, response: responseDictionary, error: error)
                     }
                 } else if responseObject == nil {
                     completion(task: task, response: [:], error: nil)

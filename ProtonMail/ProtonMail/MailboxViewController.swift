@@ -719,12 +719,15 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     func handleRequestError (error : NSError) {
-        if error.code == NSURLErrorTimedOut {
+        let code = error.code
+        if code == NSURLErrorTimedOut {
             self.showTimeOutErrorMessage()
-        } else if error.code == NSURLErrorNotConnectedToInternet || error.code == NSURLErrorCannotConnectToHost {
+        } else if code == NSURLErrorNotConnectedToInternet || error.code == NSURLErrorCannotConnectToHost {
             self.showNoInternetErrorMessage()
-        } else {
-            self.showNoInternetErrorMessage()
+        } else if code == APIErrorCode.API_offline {
+            self.showOfflineErrorMessage(error)
+        } else if code == APIErrorCode.HTTP503 || code == NSURLErrorBadServerResponse {
+            self.show503ErrorMessage(error)
         }
         PMLog.D("error: \(error)")
     }
@@ -1065,6 +1068,26 @@ extension MailboxViewController : TopMessageViewDelegate {
     internal func showNoInternetErrorMessage() {
         self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
         self.topMessageView.updateMessage(noInternet : "No connectivity detected...")
+        self.updateViewConstraints()
+        
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    internal func showOfflineErrorMessage(error : NSError?) {
+        self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
+        self.topMessageView.updateMessage(noInternet : error?.localizedDescription ?? "The ProtonMail current offline...")
+        self.updateViewConstraints()
+        
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    internal func show503ErrorMessage(error : NSError?) {
+        self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
+        self.topMessageView.updateMessage(noInternet : "API Server not reatchable...")
         self.updateViewConstraints()
         
         UIView.animateWithDuration(0.25, animations: { () -> Void in

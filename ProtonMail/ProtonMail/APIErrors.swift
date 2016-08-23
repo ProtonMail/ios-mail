@@ -11,6 +11,8 @@ import Foundation
 class APIErrorCode {
     static let responseOK = 1000
     
+    static let HTTP503 = 503
+    
     static let badParameter = 1
     static let badPath = 2
     static let unableToParseResponse = 3
@@ -24,12 +26,10 @@ class APIErrorCode {
         static let localCacheBad = 50
         static let networkIusse = 60
         
-        
         static let Cache_PasswordEmpty = 0x10000001
     }
     
-    
-    
+    static let API_offline = 7001
     
     struct UserErrorCode {
         static let userNameExsit = 12011
@@ -43,9 +43,6 @@ class APIErrorCode {
         static let draftBad = 70
     }
     
-    struct ErrorCode {
-
-    }
 }
 
 

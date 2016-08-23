@@ -29,16 +29,12 @@ extension APIService {
                         completion?(task: task, hasError: NSError.internetError())
                         return
                     } else {
-                        if let detail = error.userInfo["com.alamofire.serialization.response.error.response"] as? NSHTTPURLResponse {
-                            let code = detail.statusCode
-                            if code != 200 {
-                                completion?(task: task, hasError: error)
-                                return
-                            }
-                        }
+                        completion?(task: task, hasError: error)
+                        return
                     }
+                } else {
+                    completion?(task: task, hasError: NSError.authInvalidGrant())
                 }
-                completion?(task: task, hasError: NSError.authInvalidGrant())
             }
             else if res?.code == 1000 {
                 let credential = AuthCredential(res: res)

@@ -71,18 +71,25 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         } else {
             message.fetchDetailIfNeeded() { _, _, msg, error in
                 if let error = error {
-                    if error.code == NSURLErrorTimedOut {
+                    let code = error.code
+                    if code == NSURLErrorTimedOut {
                         self.emailView?.showTimeOutErrorMessage()
                         self.updateEmailBodyWithError("The request timed out.")
-                    } else if error.code == NSURLErrorNotConnectedToInternet || error.code == NSURLErrorCannotConnectToHost {
+                    } else if code == NSURLErrorNotConnectedToInternet || error.code == NSURLErrorCannotConnectToHost {
                         self.emailView?.showNoInternetErrorMessage()
                         self.updateEmailBodyWithError("No connectivity detected...")
-                    } else if error.code < 0{
+                    } else if code == APIErrorCode.API_offline {
+                        self.emailView?.showErrorMessage(error.localizedDescription ?? "The ProtonMail current offline...")
+                        self.updateEmailBodyWithError(error.localizedDescription ?? "The ProtonMail current offline...")
+                    } else if code == APIErrorCode.HTTP503 || code == NSURLErrorBadServerResponse {
+                        self.emailView?.showErrorMessage("API Server not reatchable...")
+                        self.updateEmailBodyWithError("API Server not reatchable...")
+                    } else if code < 0{
                         self.emailView?.showErrorMessage("Can't download message body, please try again.")
                         self.updateEmailBodyWithError("Can't download message body, please try again.")
                     } else {
-                        self.emailView?.showErrorMessage("Save message body failed, please try again.")
-                        self.updateEmailBodyWithError("Save message body failed, please try again.")
+                        self.emailView?.showErrorMessage("Can't download message body, please try again.")
+                        self.updateEmailBodyWithError("Can't download message body, please try again.")
                     }
                     PMLog.D("error: \(error)")
                 }
