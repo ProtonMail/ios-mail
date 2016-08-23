@@ -70,7 +70,7 @@ public class EventCheckResponse : ApiResponse {
         self.eventID = response["EventID"] as? String ?? ""
         self.messages =  response["Messages"] as? [Dictionary<String,AnyObject>]
         
-        self.isRefresh = response["Refresh"] as! Bool
+        self.isRefresh = response["Refresh"] as? Bool ?? false
         
         self.userinfo = response["User"] as? Dictionary<String,AnyObject>
         
