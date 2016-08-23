@@ -88,7 +88,7 @@ class APIService {
                     var error : NSError?
                     let responseCode = responseDictionary["Code"] as? Int
                     
-                    if responseCode != 1000 {
+                    if responseCode != 1000 && responseCode != 1001 {
                         let errorMessage = responseDictionary["Error"] as? String
                         let errorDetails = responseDictionary["ErrorDescription"] as? String
                         error = NSError.protonMailError(code: responseCode ?? 1000, localizedDescription: errorMessage ?? "", localizedFailureReason: errorDetails, localizedRecoverySuggestion: nil)
