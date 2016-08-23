@@ -82,8 +82,8 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
                         self.emailView?.showErrorMessage(error.localizedDescription ?? "The ProtonMail current offline...")
                         self.updateEmailBodyWithError(error.localizedDescription ?? "The ProtonMail current offline...")
                     } else if code == APIErrorCode.HTTP503 || code == NSURLErrorBadServerResponse {
-                        self.emailView?.showErrorMessage("API Server not reatchable...")
-                        self.updateEmailBodyWithError("API Server not reatchable...")
+                        self.emailView?.showErrorMessage("API Server not reachable...")
+                        self.updateEmailBodyWithError("API Server not reachable...")
                     } else if code < 0{
                         self.emailView?.showErrorMessage("Can't download message body, please try again.")
                         self.updateEmailBodyWithError("Can't download message body, please try again.")

@@ -1087,7 +1087,7 @@ extension MailboxViewController : TopMessageViewDelegate {
     
     internal func show503ErrorMessage(error : NSError?) {
         self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
-        self.topMessageView.updateMessage(noInternet : "API Server not reatchable...")
+        self.topMessageView.updateMessage(noInternet : "API Server not reachable...")
         self.updateViewConstraints()
         
         UIView.animateWithDuration(0.25, animations: { () -> Void in
