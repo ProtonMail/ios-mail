@@ -374,16 +374,18 @@ class MailboxViewController: ProtonMailViewController {
                 self.navigationController?.popViewControllerAnimated(true)
             }))
             
+            var locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .archive : .Destructive]
             if !viewModel.isCurrentLocation(.outbox) {
-                let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .archive : .Destructive]
-                for (location, style) in locations {
-                    if !viewModel.isCurrentLocation(location) {
-                        alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
-                            self.moveMessagesToLocation(location)
-                            self.cancelButtonTapped();
-                            self.navigationController?.popViewControllerAnimated(true)
-                        }))
-                    }
+                locations = [.spam : .Default, .archive : .Destructive]
+            }
+            
+            for (location, style) in locations {
+                if !viewModel.isCurrentLocation(location) {
+                    alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
+                        self.moveMessagesToLocation(location)
+                        self.cancelButtonTapped();
+                        self.navigationController?.popViewControllerAnimated(true)
+                    }))
                 }
             }
         }
