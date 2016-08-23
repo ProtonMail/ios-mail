@@ -3842,13 +3842,13 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="YGe-pV-72F"/>
+        <segue reference="sPN-i9-NSa"/>
+        <segue reference="V9t-nA-fhw"/>
+        <segue reference="5rJ-hC-fsT"/>
+        <segue reference="oQx-RX-nff"/>
         <segue reference="0zg-HM-MdK"/>
         <segue reference="w5b-0j-26v"/>
         <segue reference="ddm-eA-erE"/>
-        <segue reference="5rJ-hC-fsT"/>
-        <segue reference="oQx-RX-nff"/>
-        <segue reference="sPN-i9-NSa"/>
-        <segue reference="V9t-nA-fhw"/>
-        <segue reference="GgS-nT-ctf"/>
+        <segue reference="xUw-S1-zl5"/>
     </inferredMetricsTieBreakers>
 </document>
