@@ -41,9 +41,9 @@ class ChangeLoginPWDViewModel : ChangePWDViewModel{
     }
     
     func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, complete: (Bool, NSError?) -> Void) {
-        let curr_pwd = current.trim();
-        let newpwd = new_pwd.trim();
-        let confirmpwd = confirm_new_pwd.trim();
+        let curr_pwd = current //.trim();
+        let newpwd = new_pwd //.trim();
+        let confirmpwd = confirm_new_pwd //.trim();
         
         if curr_pwd != sharedUserDataService.password {
             complete(false, NSError.currentPwdWrong())
@@ -91,9 +91,9 @@ class ChangeMailboxPWDViewModel : ChangePWDViewModel{
     
     func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, complete: (Bool, NSError?) -> Void) {
         //remove space.
-        let curr_pwd = current.trim();
-        let newpwd = new_pwd.trim();
-        let confirmpwd = confirm_new_pwd.trim();
+        let curr_pwd = current //.trim();
+        let newpwd = new_pwd//.trim();
+        let confirmpwd = confirm_new_pwd//.trim();
         
         if curr_pwd != sharedUserDataService.mailboxPassword || !sharedOpenPGP.checkPassphrase(curr_pwd, forPrivateKey: sharedUserDataService.userInfo?.privateKey ?? "") {
             complete(false, NSError.currentPwdWrong())
@@ -142,9 +142,9 @@ class ChangePWDViewModelTest : ChangePWDViewModel{
     func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, complete: (Bool, NSError?) -> Void) {
         //add random test case and random
         //remove space.
-        let curr_pwd = current.trim();
-        let newpwd = new_pwd.trim();
-        let confirmpwd = confirm_new_pwd.trim();
+        let curr_pwd = current//.trim();
+        let newpwd = new_pwd//.trim();
+        let confirmpwd = confirm_new_pwd//.trim();
         
         if curr_pwd != sharedUserDataService.mailboxPassword || !sharedUserDataService.isMailboxPasswordValid(curr_pwd, privateKey: sharedUserDataService.userInfo?.privateKey ?? "") {
             complete(false, NSError.currentPwdWrong())

@@ -138,7 +138,7 @@ class MailboxPasswordViewController: UIViewController {
             }
             PMLog.D("\(loginDictionary)")
             //_ = (loginDictionary?[AppExtensionUsernameKey] as? String ?? "").trim()
-            let password : String! = (loginDictionary?[AppExtensionPasswordKey] as? String ?? "").trim()
+            let password : String! = (loginDictionary?[AppExtensionPasswordKey] as? String ?? "") //.trim()
             
             self.passwordTextField.text = password
             
@@ -165,7 +165,7 @@ class MailboxPasswordViewController: UIViewController {
     
     func decryptPassword() {
         isRemembered = true
-        let password = (passwordTextField.text ?? "").trim()
+        let password = (passwordTextField.text ?? "") //.trim()
         if sharedUserDataService.isMailboxPasswordValid(password, privateKey: AuthCredential.getPrivateKey()) {
             if sharedUserDataService.isSet {
                 sharedUserDataService.setMailboxPassword(password, isRemembered: self.isRemembered)
@@ -332,7 +332,7 @@ extension MailboxPasswordViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        let pwd = (passwordTextField.text ?? "").trim()
+        let pwd = (passwordTextField.text ?? "") //.trim()
         if !pwd.isEmpty {
             decryptPassword()
         }

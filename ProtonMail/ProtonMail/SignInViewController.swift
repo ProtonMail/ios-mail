@@ -184,7 +184,7 @@ class SignInViewController: UIViewController {
             PMLog.D("\(loginDictionary)")
             
             let username : String! = (loginDictionary?[AppExtensionUsernameKey] as? String ?? "").trim()
-            let password : String! = (loginDictionary?[AppExtensionPasswordKey] as? String ?? "").trim()
+            let password : String! = (loginDictionary?[AppExtensionPasswordKey] as? String ?? "") //.trim()
             
             self.usernameTextField.text = username
             self.passwordTextField.text = password
@@ -213,7 +213,7 @@ class SignInViewController: UIViewController {
         NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
         
         let uName = (usernameTextField.text ?? "").trim()
-        let pwd = (passwordTextField.text ?? "").trim()
+        let pwd = (passwordTextField.text ?? "") //.trim()
         
         updateSignInButton(usernameText: uName, passwordText: pwd)
         
@@ -391,7 +391,7 @@ class SignInViewController: UIViewController {
         SignInViewController.isComeBackFromMailbox = false
         
         let username = (usernameTextField.text ?? "").trim()
-        let password = (passwordTextField.text ?? "").trim()
+        let password = (passwordTextField.text ?? "") //.trim()
         
         sharedUserDataService.signIn(username, password: password, isRemembered: isRemembered) { _, error in
             MBProgressHUD.hideHUDForView(self.view, animated: true)
@@ -566,7 +566,7 @@ extension SignInViewController: UITextFieldDelegate {
         }
         
         let uName = (usernameTextField.text ?? "").trim()
-        let pwd = (passwordTextField.text ?? "").trim()
+        let pwd = (passwordTextField.text ?? "") //.trim()
         
         if !uName.isEmpty && !pwd.isEmpty {
             signIn()
