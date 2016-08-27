@@ -141,6 +141,13 @@ class UserDataService {
         return "";
     }
     
+    var defaultDisplayName : String {
+        if let addr = userAddresses.getDefaultAddress() {
+            return addr.display_name;
+        }
+        return displayName;
+    }
+    
     var swiftLeft : MessageSwipeAction! {
         get {
             return MessageSwipeAction(rawValue: userInfo?.swipeLeft ?? 3) ?? .archive
