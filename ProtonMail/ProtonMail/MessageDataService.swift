@@ -1733,13 +1733,13 @@ class MessageDataService {
                 if statusCode == 200 && error?.code > 1000 {
                     //show error
                     sharedMessageQueue.remove(elementID: elementID)
-                    error?.alertToast()
+                    error?.uploadFabricAnswer()
                 }
                 
                 if statusCode != 200 && statusCode != 404 && statusCode != 500 && !isInternetIssue {
                     //show error
                     sharedMessageQueue.remove(elementID: elementID)
-                    error?.alertToast()
+                    error?.uploadFabricAnswer()
                 }
                 
                 if !isInternetIssue {
