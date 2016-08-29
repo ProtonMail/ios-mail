@@ -1,6 +1,6 @@
 // NSPropertyDescription+Groot.h
 //
-// Copyright (c) 2014 Guillermo Gonzalez
+// Copyright (c) 2014-2015 Guillermo Gonzalez
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,8 +22,25 @@
 
 #import <CoreData/CoreData.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface NSPropertyDescription (Groot)
 
-- (NSString *)grt_JSONKeyPath;
+/**
+ The JSON key path.
+ */
+- (nullable NSString *)grt_JSONKeyPath;
+
+/**
+ Returns `true` if this property should participate in the JSON serialization process.
+ */
+- (BOOL)grt_JSONSerializable;
+
+/**
+ Returns the untransformed raw value for this property in a given JSON object.
+ */
+- (nullable id)grt_rawValueInJSONDictionary:(NSDictionary *)object;
 
 @end
+
+NS_ASSUME_NONNULL_END

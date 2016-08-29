@@ -114,7 +114,7 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
     
     private func startAutoFetch()
     {
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "countDown", userInfo: nil, repeats: true)
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(PhoneVerifyViewController.countDown), userInfo: nil, repeats: true)
         self.timer.fire()
     }
     private func stopAutoFetch()
@@ -185,7 +185,7 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
                 alert.addOKAction()
                 self.presentViewController(alert, animated: true, completion: nil)
             }
-            println("\(isOK),   \(error)")
+            PMLog.D("\(isOK),   \(error)")
         }
     }
     
@@ -198,7 +198,7 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
         doneClicked = true;
         MBProgressHUD.showHUDAddedTo(view, animated: true)
         dismissKeyboard()
-        viewModel.setPhoneVerifyCode(verifyCodeTextField.text)
+        viewModel.setPhoneVerifyCode(verifyCodeTextField.text!)
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.viewModel.createNewUser { (isOK, createDone, message, error) -> Void in
                 MBProgressHUD.hideHUDForView(self.view, animated: true)
@@ -260,7 +260,7 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
     }
     
     func updateButtonStatus() {
-        let emailaddress = emailTextField.text
+        let emailaddress = (emailTextField.text ?? "").trim()
         //need add timer
         if emailaddress.isEmpty || self.viewModel.getTimerSet() > 0 {
             sendCodeButton.enabled = false
@@ -268,7 +268,7 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
             sendCodeButton.enabled = true
         }
         
-        let verifyCode = verifyCodeTextField.text
+        let verifyCode = (verifyCodeTextField.text ?? "").trim()
         if verifyCode.isEmpty {
             continueButton.enabled = false
         } else {

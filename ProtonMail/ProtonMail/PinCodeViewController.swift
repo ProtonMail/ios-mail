@@ -34,6 +34,7 @@ class PinCodeViewController : UIViewController {
         
         if self.viewModel.checkTouchID() {
             if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+                pinCodeView.showTouchID()
                 authenticateUser()
             }
         }
@@ -62,7 +63,6 @@ class PinCodeViewController : UIViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -77,7 +77,7 @@ class PinCodeViewController : UIViewController {
         var error: NSError?
         context.localizedFallbackTitle = ""
         // Set the reason string that will appear on the authentication alert.
-        var reasonString = "Login: \(savedEmail)"
+        let reasonString = "Login: \(savedEmail)"
         
         // Check if the device can evaluate the policy.
         if context.canEvaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, error: &error) {
@@ -92,18 +92,18 @@ class PinCodeViewController : UIViewController {
                 else{
                     dispatch_async(dispatch_get_main_queue()) {
                         
-                        println(evalPolicyError?.localizedDescription)
+                        PMLog.D("\(evalPolicyError?.localizedDescription)")
                         switch evalPolicyError!.code {
                         case LAError.SystemCancel.rawValue:
-                            println("Authentication was cancelled by the system")
+                            PMLog.D("Authentication was cancelled by the system")
                             "Authentication was cancelled by the system".alertToast()
                         case LAError.UserCancel.rawValue:
-                            println("Authentication was cancelled by the user")
+                            PMLog.D("Authentication was cancelled by the user")
                         case LAError.UserFallback.rawValue:
-                            println("User selected to enter custom password")
+                            PMLog.D("User selected to enter custom password")
                             //self.showPasswordAlert()
                         default:
-                            println("Authentication failed")
+                            PMLog.D("Authentication failed")
                             //self.showPasswordAlert()
                             "Authentication failed".alertToast()
                         }
@@ -124,8 +124,8 @@ class PinCodeViewController : UIViewController {
                 // The LAError.TouchIDNotAvailable case.
                 alertString = "TouchID not available"
             }
-            println(alertString)
-            println(error?.localizedDescription)
+            PMLog.D(alertString)
+            PMLog.D("\(error?.localizedDescription)")
             alertString.alertToast()
         }
     }
@@ -134,6 +134,16 @@ class PinCodeViewController : UIViewController {
 
 extension PinCodeViewController : PinCodeViewDelegate {
     
+    func TouchID() {
+        if self.viewModel.checkTouchID() {
+            if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+                authenticateUser()
+                return
+            }
+        }
+        pinCodeView.hideTouchID()
+    }
+    
     func Cancel() {
         delegate?.Cancel()
         self.navigationController?.popViewControllerAnimated(true)
@@ -141,23 +151,29 @@ extension PinCodeViewController : PinCodeViewDelegate {
     
     func Next(code : String) {
         if code.isEmpty {
-            var alert = "Pin code can't be empty.".alertController()
+            let alert = "Pin code can't be empty.".alertController()
             alert.addOKAction()
             self.presentViewController(alert, animated: true, completion: nil)
         } else {
-            var step : PinCodeStep = self.viewModel.setCode(code)
+            let step : PinCodeStep = self.viewModel.setCode(code)
             if step != .Done {
                 self.setUpView(true)
             } else {
                 if self.viewModel.isPinMatched() {
+                    self.pinCodeView.hideAttempError(true)
                     self.viewModel.done()
                     self.delegate?.Next()
                     self.navigationController?.popViewControllerAnimated(true)
                 } else {
+                    let count = self.viewModel.getPinFailedRemainingCount()
+                    if count < 10 {
+                        if count <= 0 {
+                            Cancel()
+                        } else {
+                            self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: count < 4)
+                        }
+                    }
                     self.pinCodeView.showError()
-//                    var alert = "Pin code doesn't match.".alertController()
-//                    alert.addOKAction()
-//                    self.presentViewController(alert, animated: true, completion: nil)
                 }
             }
         }

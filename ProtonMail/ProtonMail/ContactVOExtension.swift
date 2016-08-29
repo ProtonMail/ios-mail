@@ -21,7 +21,7 @@ extension ContactVO {
     */
     func isDuplicated(addresses : Array<Address>) -> Bool
     {
-        if let found = find(addresses.map({ $0.email }), self.email) {
+        if addresses.map({ $0.email }).indexOf(self.email) != nil {
             return true
         }
         return false
@@ -29,7 +29,7 @@ extension ContactVO {
     
     func isDuplicatedWithContacts(addresses : [ContactVO]) -> Bool
     {
-        if let found = find(addresses.map({ $0.email }), self.email) {
+        if addresses.map({ $0.email }).indexOf(self.email) != nil {
             return true
         }
         return false

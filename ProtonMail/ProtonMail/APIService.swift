@@ -18,7 +18,7 @@ import CoreData
 import Foundation
 
 
-let APIServiceErrorDomain = NSError.protonMailErrorDomain(subdomain: "APIService")
+let APIServiceErrorDomain = NSError.protonMailErrorDomain("APIService")
 
 let sharedAPIService = APIService()
 class APIService {
@@ -54,29 +54,25 @@ class APIService {
     init() {
         sessionManager = AFHTTPSessionManager(baseURL: NSURL(string: AppConstants.BaseURLString)!)
         sessionManager.requestSerializer = AFJSONRequestSerializer() as AFHTTPRequestSerializer
-        
+        //sessionManager.requestSerializer.timeoutInterval = 20.0;
         #if DEBUG
             sessionManager.securityPolicy.allowInvalidCertificates = true
         #endif
-        
         //NSOperationQueueDefaultMaxConcurrentOperationCount sessionManager.operationQueue.maxConcurrentOperationCount
         //let defaultV = NSOperationQueueDefaultMaxConcurrentOperationCount;
         setupValueTransforms()
     }
     
-    internal func afNetworkingBlocksForRequest(#method: HTTPMethod, path: String, parameters: AnyObject?, authenticated: Bool = true, completion: CompletionBlock?) -> (AFNetworkingSuccessBlock?, AFNetworkingFailureBlock?) {
+    internal func afNetworkingBlocksForRequest(method method: HTTPMethod, path: String, parameters: AnyObject?, authenticated: Bool = true, completion: CompletionBlock?) -> (AFNetworkingSuccessBlock?, AFNetworkingFailureBlock?) {
         if let completion = completion {
             let failure: AFNetworkingFailureBlock = { task, error in
-                PMLog.D("\(__FUNCTION__) Error: \(error)")
-                
+                PMLog.D("Error: \(error)")
                 var errorCode : Int = 200;
-                if let errorUserInfo = error.userInfo {
-                    if let detail = errorUserInfo["com.alamofire.serialization.response.error.response"] as? NSHTTPURLResponse {
-                        errorCode = detail.statusCode
-                    }
-                    else {
-                        errorCode = error.code
-                    }
+                if let detail = error.userInfo["com.alamofire.serialization.response.error.response"] as? NSHTTPURLResponse {
+                    errorCode = detail.statusCode
+                }
+                else {
+                    errorCode = error.code
                 }
                 
                 if authenticated && errorCode == 401 {
@@ -92,7 +88,6 @@ class APIService {
                 }
             }
             let success: AFNetworkingSuccessBlock = { task, responseObject in
-                //PMLog("\(__FUNCTION__) Response: \(responseObject)")
                 if let responseDictionary = responseObject as? Dictionary<String, AnyObject> {
                     let responseCode = responseDictionary["Code"] as? Int
                     if authenticated && responseCode == 401 {
@@ -141,7 +136,7 @@ class APIService {
         }
     }
     
-    internal func fetchAuthCredential(#completion: AuthCredentialBlock) {
+    internal func fetchAuthCredential(completion completion: AuthCredentialBlock) {
         if let credential = AuthCredential.fetchFromKeychain() {
             if !credential.isExpired {
                 if (credential.password ?? "").isEmpty {
@@ -199,37 +194,23 @@ class APIService {
     // MARK: - Request methods
     
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
-    internal func download(#path: String, destinationDirectoryURL: NSURL, downloadTask: ((NSURLSessionDownloadTask) -> Void)?, completion: ((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
-        //AuthCredential.expireOrClear()
-        //        fetchAuthCredential() { _, error in
-        //            if error == nil {
+    internal func download(path path: String, destinationDirectoryURL: NSURL, downloadTask: ((NSURLSessionDownloadTask) -> Void)?, completion: ((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
         if let url = NSURL(string: path, relativeToURL: self.sessionManager.baseURL) {
-            var serializeError: NSError?
-            if let request = self.sessionManager.requestSerializer.requestWithMethod("GET", URLString: url.absoluteString!, parameters: nil, error: &serializeError) {
-                if let sessionDownloadTask = self.sessionManager.downloadTaskWithRequest(
-                    request,
-                    progress: nil,
-                    destination: { (targetURL, response) -> NSURL! in
-                        //let fileName = response.suggestedFilename!
-                        return destinationDirectoryURL//.URLByAppendingPathComponent(fileName)
-                    },
-                    completionHandler: completion)
-                {
-                        downloadTask?(sessionDownloadTask)
-                        sessionDownloadTask.resume()
+            do {
+                let request = try self.sessionManager.requestSerializer.requestWithMethod("GET", URLString: url.absoluteString, parameters: nil, error: ())
+                if let sessionDownloadTask = self.sessionManager.downloadTaskWithRequest(request, progress: nil, destination: { (targetURL, response) -> NSURL! in return destinationDirectoryURL }, completionHandler: completion) {
+                    downloadTask?(sessionDownloadTask)
+                    sessionDownloadTask.resume()
+                } else {
+                    PMLog.D("sessionDownloadTask is empty")
+                    completion?(nil, nil, NSError.badPath(path))
                 }
-            } else {
-                completion?(nil, nil, serializeError)
+            } catch let ex as NSError {
+                completion?(nil, nil, ex)
             }
-            
         } else {
             completion?(nil, nil, NSError.badPath(path))
-            return
         }
-        //            } else {
-        //                completion?(nil, nil, error)
-        //            }
-        //        }
     }
     
     internal func setApiVesion(apiVersion:Int, appVersion:Int)
@@ -247,21 +228,23 @@ class APIService {
     :param: dataPacket encrypt attachment data package
     */
     internal func upload (url: String, parameters: AnyObject?, keyPackets : NSData!, dataPacket : NSData!, completion: CompletionBlock?) { //TODO / RUSH : need add respons handling, progress bar later
-        var serializeError: NSError?
-        if let request = sessionManager.requestSerializer.multipartFormRequestWithMethod("POST", URLString: url, parameters: parameters as! [String:String], constructingBodyWithBlock: { formData in
-            let data: AFMultipartFormData = formData
-            data.appendPartWithFileData(keyPackets, name: "KeyPackets", fileName: "KeyPackets.txt", mimeType: "" )
-            data.appendPartWithFileData(dataPacket, name: "DataPacket", fileName: "DataPacket.txt", mimeType: "" )
+        do {
+            let request = try sessionManager.requestSerializer.multipartFormRequestWithMethod("POST", URLString: url, parameters: parameters as! [String:String], constructingBodyWithBlock: { (formData) -> Void in
+                let data: AFMultipartFormData = formData
+                data.appendPartWithFileData(keyPackets, name: "KeyPackets", fileName: "KeyPackets.txt", mimeType: "" )
+                data.appendPartWithFileData(dataPacket, name: "DataPacket", fileName: "DataPacket.txt", mimeType: "" ) }, error: ())
             
-            }, error: &serializeError) {
-                let uploadTask = self.sessionManager.uploadTaskWithStreamedRequest(request, progress: nil) { (response, responseObject, error) -> Void in
-                    completion?(task: nil, response: responseObject as? Dictionary<String,AnyObject>, error: error)
-                }
-                uploadTask.resume()
+            let uploadTask = self.sessionManager.uploadTaskWithStreamedRequest(request, progress: nil) { (response, responseObject, error) -> Void in
+                completion?(task: nil, response: responseObject as? Dictionary<String,AnyObject>, error: error)
+            }
+            
+            uploadTask.resume()
+        } catch let ex as NSError {
+            completion?(task: nil, response: nil, error: ex)
         }
     }
     
-    func request(#method: HTTPMethod, path: String, parameters: AnyObject?, authenticated: Bool = true, completion: CompletionBlock?) {
+    func request(method method: HTTPMethod, path: String, parameters: AnyObject?, authenticated: Bool = true, completion: CompletionBlock?) {
         let authBlock: AuthCredentialBlock = { _, error in
             if error == nil {
                 let (successBlock, failureBlock) = self.afNetworkingBlocksForRequest(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)
@@ -290,18 +273,17 @@ class APIService {
     
     // MARK: - Private methods
     private func setupValueTransforms() {
-        let boolTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
+        
+        NSValueTransformer.grt_setValueTransformerWithName("BoolTransformer") { (value) -> AnyObject? in
             if let bool = value as? NSString {
                 return bool.boolValue
             } else if let bool = value as? Bool {
                 return bool
             }
-            
             return nil
         }
-        NSValueTransformer.setValueTransformer(boolTransformer, forName: "BoolTransformer")
         
-        let dateTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
+        NSValueTransformer.grt_setValueTransformerWithName("DateTransformer") { (value) -> AnyObject? in
             if let timeString = value as? NSString {
                 let time = timeString.doubleValue as NSTimeInterval
                 if time != 0 {
@@ -318,48 +300,44 @@ class APIService {
             
             return nil
         }
-        NSValueTransformer.setValueTransformer(dateTransformer, forName: "DateTransformer")
         
-        let numberTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
+        NSValueTransformer.grt_setValueTransformerWithName("NumberTransformer") { (value) -> AnyObject? in
             if let number = value as? String {
-                return number.toInt() ?? 0 as NSNumber
+                return number ?? 0 as NSNumber
             } else if let number = value as? NSNumber {
                 return number
             }
-            
-            return nil
-        }
-        NSValueTransformer.setValueTransformer(numberTransformer, forName: "NumberTransformer")
-        
-        let tagTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
-            if let tag = value as? String {
-                return tag.rangeOfString(Message.Constants.starredTag) != nil
-            }
-            
             return nil
         }
         
-        let JsonStringTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
-            if let tag = value as? NSArray {
-                let bytes : NSData = NSJSONSerialization.dataWithJSONObject(tag, options: NSJSONWritingOptions.allZeros, error: nil)!
-                let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
-                return strJson
+        NSValueTransformer.grt_setValueTransformerWithName("JsonStringTransformer") { (value) -> AnyObject? in
+            do {
+                if let tag = value as? NSArray {
+                    let bytes : NSData = try NSJSONSerialization.dataWithJSONObject(tag, options: NSJSONWritingOptions())
+                    let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
+                    return strJson
+                }
+            } catch let ex as NSError {
+                PMLog.D("\(ex)")
             }
             return "";
         }
-        NSValueTransformer.setValueTransformer(JsonStringTransformer, forName: "JsonStringTransformer")
         
-        let JsonToObjectTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
-            if let tag = value as? [String:String] {
-                let bytes : NSData = NSJSONSerialization.dataWithJSONObject(tag, options: NSJSONWritingOptions.allZeros, error: nil)!
-                let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
-                return strJson
+        NSValueTransformer.grt_setValueTransformerWithName("JsonToObjectTransformer") { (value) -> AnyObject? in
+            do {
+                if let tag = value as? [String:String] {
+                    let bytes : NSData = try NSJSONSerialization.dataWithJSONObject(tag, options: NSJSONWritingOptions())
+                    let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
+                    return strJson
+                }
+            } catch let ex as NSError {
+                PMLog.D("\(ex)")
             }
             return "";
         }
-        NSValueTransformer.setValueTransformer(JsonToObjectTransformer, forName: "JsonToObjectTransformer")
         
-        let encodedDataTransformer = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> NSData! in
+        NSValueTransformer.grt_setValueTransformerWithName("EncodedDataTransformer") { (value) -> AnyObject? in
+
             if let tag = value as? String {
                 if let data: NSData = NSData(base64EncodedString: tag, options: NSDataBase64DecodingOptions(rawValue: 0)) {
                     return data
@@ -367,19 +345,18 @@ class APIService {
             }
             return nil;
         }
-        NSValueTransformer.setValueTransformer(JsonStringTransformer, forName: "EncodedDataTransformer")
+
+//        NSValueTransformer.grt_setValueTransformerWithName("TransforDataNoID") { (value) -> AnyObject? in
+//            if let idArray = value as? NSArray {
+//                var fixedArray = [Dictionary<String, AnyObject>]()
+//                for labelID in idArray {
+//                    fixedArray.append(["ID" : labelID])
+//                }
+//                return fixedArray
+//            }
+//            return value;
+//        }
         
-        let transforDataNoID = GRTValueTransformer.reversibleTransformerWithBlock { (value) -> AnyObject! in
-            if let idArray = value as? NSArray {
-                var fixedArray = [Dictionary<String, AnyObject>]()
-                for labelID in idArray {
-                    fixedArray.append(["ID" : labelID])
-                }
-                return fixedArray
-            }
-            return value;
-        }
-        NSValueTransformer.setValueTransformer(transforDataNoID, forName: "TransforDataNoID")
     }
 }
 

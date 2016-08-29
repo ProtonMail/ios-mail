@@ -42,7 +42,7 @@ class ContactsViewController: ProtonMailViewController {
         
         refreshControl = UIRefreshControl()
         refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
-        refreshControl.addTarget(self, action: "retrieveAllContacts", forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: #selector(ContactsViewController.retrieveAllContacts), forControlEvents: UIControlEvents.ValueChanged)
         
         tableView.addSubview(self.refreshControl)
         tableView.dataSource = self
@@ -76,12 +76,10 @@ class ContactsViewController: ProtonMailViewController {
     
     
     // MARK: - Private methods
-    
     internal func retrieveAllContacts() {
-        
         sharedContactDataService.getContactVOs { (contacts, error) -> Void in
             if let error = error {
-                NSLog("\(__FUNCTION__) error: \(error)")
+                PMLog.D(" error: \(error)")
                 
                 let alertController = error.alertController()
                 alertController.addOKAction()
@@ -116,7 +114,7 @@ extension ContactsViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: ContactsTableViewCell = tableView.dequeueReusableCellWithIdentifier(kContactCellIdentifier, forIndexPath: indexPath) as! ContactsTableViewCell
+        let cell: ContactsTableViewCell = tableView.dequeueReusableCellWithIdentifier(kContactCellIdentifier, forIndexPath: indexPath) as! ContactsTableViewCell
         
         var contact: ContactVO
         
@@ -152,7 +150,7 @@ extension ContactsViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
     }
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let deleteClosure = { (action: UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
             
             var contact: ContactVO
@@ -169,7 +167,7 @@ extension ContactsViewController: UITableViewDelegate {
                 return
             }
             
-            if (count(contact.contactId) > 0) {
+            if (contact.contactId.characters.count > 0) {
                 sharedContactDataService.deleteContact(contact.contactId, completion: { (contacts, error) -> Void in
                     self.retrieveAllContacts()
                 })
@@ -216,17 +214,15 @@ extension ContactsViewController: UITableViewDelegate {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "toEditContact") {
-            let editContactViewController: EditContactViewController = segue.destinationViewController.viewControllers![0] as! EditContactViewController
+            let editContactViewController: EditContactViewController = segue.destinationViewController.childViewControllers[0] as! EditContactViewController
             editContactViewController.contact = self.selectedContact
             
-            PMLog.D("tableView.indexPathForSelectedRow() = \(tableView.indexPathForSelectedRow())")
+            PMLog.D("tableView.indexPathForSelectedRow() = \(tableView.indexPathForSelectedRow)")
         }
         
         if (segue.identifier == "toCompose") {
-            let composeViewController = segue.destinationViewController.viewControllers![0] as! ComposeEmailViewController
-            
+            let composeViewController = segue.destinationViewController.childViewControllers[0] as! ComposeEmailViewController
             sharedVMService.newDraftViewModelWithContact(composeViewController, contact: self.selectedContact)
-
         }
     }
     
@@ -240,13 +236,11 @@ extension ContactsViewController: UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var contact: ContactVO
         if (tableView == self.tableView) {
             self.selectedContact = self.contacts[indexPath.row]
         } else {
             self.selectedContact = self.searchResults[indexPath.row]
         }
-        
         self.performSegueWithIdentifier("toCompose", sender: self)
     }
 }
@@ -255,8 +249,10 @@ extension ContactsViewController: UITableViewDelegate {
 // MARK: - UISearchDisplayDelegate
 
 extension ContactsViewController: UISearchDisplayDelegate {
-    func searchDisplayController(controller: UISearchDisplayController, shouldReloadTableForSearchString searchString: String!) -> Bool {
-        self.filterContentForSearchText(searchString)
+    func searchDisplayController(controller: UISearchDisplayController, shouldReloadTableForSearchString searchString: String?) -> Bool {
+        if let searchString = searchString {
+            self.filterContentForSearchText(searchString)
+        }
         return true
     }
 }

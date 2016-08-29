@@ -54,7 +54,7 @@ class SignUpKeyViewController: UIViewController {
     
     override func segueForUnwindingToViewController(toViewController: UIViewController, fromViewController: UIViewController, identifier: String?) -> UIStoryboardSegue {
         navigationController?.setNavigationBarHidden(true, animated: true)
-        return super.segueForUnwindingToViewController(toViewController, fromViewController: fromViewController, identifier: identifier)
+        return super.segueForUnwindingToViewController(toViewController, fromViewController: fromViewController, identifier: identifier)!
     }
     
     func setupButtons() {
@@ -83,8 +83,12 @@ class SignUpKeyViewController: UIViewController {
     }
 
     func generateKey() {
-//        let password = passwordInput.text
-//        MBProgressHUD.showHUDAddedTo(view, animated: true)
+
+        //let password = passwordInput.text
+        
+        //MBProgressHUD.showHUDAddedTo(view, animated: true)
+        
+        
 //        dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.value), 0)) { // 1
 //            sharedUserDataService.updateNewUserKeys(password) { _, _, error in
 //                dispatch_async(dispatch_get_main_queue()) { // 2
@@ -112,10 +116,10 @@ class SignUpKeyViewController: UIViewController {
     
     func checkInput() -> Bool {
         
-        if passwordInput.text.isEmpty {
+        if passwordInput.text!.isEmpty {
             return false;
         }
-        if confirmInput.text.isEmpty {
+        if confirmInput.text!.isEmpty {
             return false;
         }
         
@@ -173,11 +177,11 @@ extension SignUpKeyViewController: UITextFieldDelegate {
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        let text = textField.text as NSString
-        let changedText = text.stringByReplacingCharactersInRange(range, withString: string)
-        
-        generateKeypairButton.enabled = checkInput()
-        updateButton(generateKeypairButton)
+//        let text = textField.text! as NSString
+//        let changedText = text.stringByReplacingCharactersInRange(range, withString: string)
+//        
+//        generateKeypairButton.enabled = checkInput()
+//        updateButton(generateKeypairButton)
         
         return true
     }

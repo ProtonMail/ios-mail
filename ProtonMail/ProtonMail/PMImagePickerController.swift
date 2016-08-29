@@ -12,8 +12,8 @@ import Foundation
 
 class PMImagePickerController : UIImagePickerController {
     
-    override func supportedInterfaceOrientations() -> Int {
-        return Int(UIInterfaceOrientationMask.Portrait.rawValue) | Int(UIInterfaceOrientationMask.Landscape.rawValue)
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.All
     }
     
     override func shouldAutorotate() -> Bool {

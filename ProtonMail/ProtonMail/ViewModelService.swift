@@ -24,6 +24,10 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
+    func newDraftViewModelWithMailTo(vmp : ViewModelProtocol, url: NSURL?) {
+        fatalError("This method must be overridden")
+    }
+    
     func openDraftViewModel(vmp : ViewModelProtocol, msg: Message!) {
         fatalError("This method must be overridden")
     }

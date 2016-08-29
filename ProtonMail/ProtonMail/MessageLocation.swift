@@ -16,7 +16,7 @@
 
 import Foundation
 
-public enum MessageLocation: Int, Printable {
+public enum MessageLocation: Int, CustomStringConvertible {
     case deleted = -1
     case draft = 1
     case inbox = 0

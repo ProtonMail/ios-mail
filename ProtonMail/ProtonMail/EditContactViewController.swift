@@ -42,8 +42,8 @@ class EditContactViewController: ProtonMailViewController {
     }
     
     @IBAction func didTapSaveButton(sender: UIBarButtonItem) {
-        let name: String = nameTextField.text
-        let email: String = emailTextField.text
+        let name: String = (nameTextField.text ?? "").trim()
+        let email: String = (emailTextField.text ?? "").trim()
         
         if (!email.isValidEmail()) {
             showInvalidEmailError()

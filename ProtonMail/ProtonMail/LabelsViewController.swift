@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 protocol LablesViewControllerDelegate {
     func dismissed();
@@ -37,7 +38,12 @@ class LablesViewController : UIViewController {
     
     private var archiveMessage = false;
     
+    @IBOutlet weak var archiveView: UIView!
+    @IBOutlet weak var archiveConstrains: NSLayoutConstraint!
+    
+    
     var delegate : LablesViewControllerDelegate?
+    var applyButtonText : String!
     
     //
     private var fetchedLabels: NSFetchedResultsController?
@@ -46,11 +52,22 @@ class LablesViewController : UIViewController {
         super.viewDidLoad()
         contentView.layer.cornerRadius = 4;
         inputContentView.layer.cornerRadius = 4;
-        inputContentView.layer.borderColor = UIColor(hexColorCode: "#DADEE8").CGColor!
+        inputContentView.layer.borderColor = UIColor(hexColorCode: "#DADEE8").CGColor
         inputContentView.layer.borderWidth = 1.0
         self.setupFetchedResultsController()
-        //var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
-        // self.view.addGestureRecognizer(tapGestureRecognizer)
+        
+        titleLabel.text = viewModel.getTitle()
+        
+        if viewModel.showArchiveOption() {
+            archiveView.hidden = false
+            archiveConstrains.constant = 45.0
+        } else {
+            archiveView.hidden = true
+            archiveConstrains.constant = 0
+        }
+        
+        applyButtonText = viewModel.getApplyButtonText()
+        applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -69,17 +86,17 @@ class LablesViewController : UIViewController {
     @IBAction func applyAction(sender: AnyObject) {
         if isCreateView {
             // start
-            viewModel.createLabel(newLabelInput.text, color: titles[selected?.row ?? 0], error: { (code, errorMessage) -> Void in
+            viewModel.createLabel(newLabelInput.text!, color: titles[selected?.row ?? 0], error: { (code, errorMessage) -> Void in
                 if code == 14005 {
-                    var alert = NSLocalizedString("The maximum number of labels is 20.").alertController()
+                    let alert = NSLocalizedString("The maximum number of labels is 20.").alertController()
                     alert.addOKAction()
                     self.presentViewController(alert, animated: true, completion: nil)
                 } else if code == 14002 {
-                    var alert = NSLocalizedString("The label name is duplicate").alertController()
+                    let alert = NSLocalizedString("The label name is duplicate").alertController()
                     alert.addOKAction()
                     self.presentViewController(alert, animated: true, completion: nil)
                 } else {
-                    var alert = errorMessage.alertController()
+                    let alert = errorMessage.alertController()
                     alert.addOKAction()
                     self.presentViewController(alert, animated: true, completion: nil)
                 }
@@ -87,17 +104,11 @@ class LablesViewController : UIViewController {
                     //ok
             })
             
-            //viewModel.createLabel(newLabelInput.text, titles[selected!.row], error)
-            // viewModel.createLabel() {
             newLabelInput.text = ""
             tableView.hidden = false;
             isCreateView = false
             collectionView.hidden = true;
-            applyButton.setTitle("Apply", forState: UIControlState.Normal)
-            //            } else {
-            //
-            //                // show alert
-            //            }
+            applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
         } else {
             self.viewModel.apply(archiveMessage)
             self.dismissViewControllerAnimated(true, completion: nil)
@@ -111,7 +122,7 @@ class LablesViewController : UIViewController {
             tableView.hidden = false;
             isCreateView = false
             collectionView.hidden = true;
-            applyButton.setTitle("Apply", forState: UIControlState.Normal)
+            applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
         } else {
             viewModel.cancel();
             self.dismissViewControllerAnimated(true, completion: nil)
@@ -123,9 +134,10 @@ class LablesViewController : UIViewController {
         self.fetchedLabels = sharedLabelsDataService.fetchedResultsController()
         self.fetchedLabels?.delegate = self
         if let fetchedResultsController = fetchedLabels {
-            var error: NSError?
-            if !fetchedResultsController.performFetch(&error) {
-                NSLog("\(__FUNCTION__) error: \(error)")
+            do {
+                try fetchedResultsController.performFetch()
+            } catch let ex as NSError {
+                 PMLog.D("error: \(ex)")
             }
         }
     }
@@ -148,11 +160,11 @@ class LablesViewController : UIViewController {
     }
     
     @IBAction func endEditing(sender: UITextField) {
-        if sender.text.isEmpty {
+        if  sender.text!.isEmpty {
             tableView.hidden = false;
             isCreateView = false
             collectionView.hidden = true;
-            applyButton.setTitle("Apply", forState: UIControlState.Normal)
+            applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
         }
     }
     
@@ -166,11 +178,11 @@ extension LablesViewController: UITableViewDataSource {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        if (self.tableView.respondsToSelector("setSeparatorInset:")) {
+        if (self.tableView.respondsToSelector(Selector("setSeparatorInset:"))) {
             self.tableView.separatorInset = UIEdgeInsetsZero
         }
         
-        if (self.tableView.respondsToSelector("setLayoutMargins:")) {
+        if (self.tableView.respondsToSelector(Selector("setLayoutMargins:"))) {
             self.tableView.layoutMargins = UIEdgeInsetsZero
         }
     }
@@ -181,17 +193,11 @@ extension LablesViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var labelCell = tableView.dequeueReusableCellWithIdentifier("labelApplyCell", forIndexPath: indexPath) as! LabelTableViewCell
+        let labelCell = tableView.dequeueReusableCellWithIdentifier("labelApplyCell", forIndexPath: indexPath) as! LabelTableViewCell
         if let label = fetchedLabels?.objectAtIndexPath(indexPath) as? Label {
             labelCell.ConfigCell(viewModel.getLabelMessage(label), vc: self)
         }
         return labelCell
-    }
-    
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if (editingStyle == .Delete) {
-            // deleteMessageForIndexPath(indexPath)
-        }
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -200,15 +206,13 @@ extension LablesViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if (cell.respondsToSelector("setSeparatorInset:")) {
+        if (cell.respondsToSelector(Selector("setSeparatorInset:"))) {
             cell.separatorInset = UIEdgeInsetsZero
         }
         
-        if (cell.respondsToSelector("setLayoutMargins:")) {
+        if (cell.respondsToSelector(Selector("setLayoutMargins:"))) {
             cell.layoutMargins = UIEdgeInsetsZero
         }
-        
-        //fetchMessagesIfNeededForIndexPath(indexPath)
     }
 }
 
@@ -217,14 +221,6 @@ extension LablesViewController: UITableViewDataSource {
 extension LablesViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 45.0
-    }
-    
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
-        let trashed: UITableViewRowAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: title) { (rowAction, indexPath) -> Void in
-            //self.deleteMessageForIndexPath(indexPath)
-        }
-        trashed.backgroundColor = UIColor.ProtonMail.Red_D74B4B
-        return [trashed]
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -249,15 +245,13 @@ extension LablesViewController: UICollectionViewDelegateFlowLayout, UICollection
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("labelColorCell", forIndexPath: indexPath) as! UICollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("labelColorCell", forIndexPath: indexPath) 
         let color = titles[indexPath.row]
         cell.backgroundColor = UIColor(hexString: color, alpha: 1.0)
         return cell
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        
-        
         if let index = selected {
             let oldCell = collectionView.cellForItemAtIndexPath(index)
             oldCell?.layer.borderWidth = 0
@@ -280,8 +274,6 @@ extension LablesViewController: UICollectionViewDelegateFlowLayout, UICollection
     {
         return CGSize(width: collectionView.frame.size.width/2, height: 30)
     }
-    
-    
 }
 
 
@@ -319,7 +311,8 @@ extension LablesViewController : NSFetchedResultsControllerDelegate {
                 tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: UITableViewRowAnimation.Fade)
             }
         case .Update:
-            if let indexPath = indexPath {
+            if let _ = indexPath {
+                //TODO:: need check here
                 //if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MailboxTableViewCell {
                 //configureCell(cell, atIndexPath: indexPath)
                 //}

@@ -72,7 +72,7 @@ class SettingsViewController: ProtonMailViewController {
         storageProgressBar.layer.masksToBounds = true
         storageProgressBar.clipsToBounds = true
         
-        var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SettingsViewController.dismissKeyboard))
         self.view.addGestureRecognizer(tapGestureRecognizer)
         
         setupUserInfo()
@@ -120,7 +120,7 @@ class SettingsViewController: ProtonMailViewController {
         dismissKeyboard()
         ActivityIndicatorHelper.showActivityIndicatorAtView(view)
         
-        sharedUserDataService.updateDisplayName(displayNameTextField.text) { _, error in
+        sharedUserDataService.updateDisplayName(displayNameTextField.text!) { _, error in
             ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
             
             if let error = error {
@@ -229,7 +229,7 @@ class SettingsViewController: ProtonMailViewController {
             
             ActivityIndicatorHelper.showActivityIndicatorAtView(view)
             
-            sharedUserDataService.updatePassword(currentLoginPasswordTextField.text, newPassword: newLoginPasswordTextField.text) { _, _, error in
+            sharedUserDataService.updatePassword(currentLoginPasswordTextField.text!, newPassword: newLoginPasswordTextField.text!) { _, _, error in
                 ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
                 
                 if let error = error {
@@ -254,7 +254,7 @@ class SettingsViewController: ProtonMailViewController {
     }
     
     private func validatePasswordTextField(passwordTextField: UITextField, matchesConfirmPasswordTextField confirmPasswordTextField: UITextField) -> Bool {
-        let result = !passwordTextField.text.isEmpty && passwordTextField.text == confirmPasswordTextField.text
+        let result = !passwordTextField.text!.isEmpty && passwordTextField.text == confirmPasswordTextField.text
         
         if !result {
             let alertController = UIAlertController(title: NSLocalizedString("Password Mismatch"), message: NSLocalizedString("The passwords you entered do not match."), preferredStyle: .Alert)

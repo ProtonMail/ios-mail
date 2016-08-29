@@ -172,11 +172,9 @@ extension APIService {
     private func stringFromToken(token: NSData) -> String {
         let tokenChars = UnsafePointer<CChar>(token.bytes)
         var tokenString = ""
-        
-        for var i = 0; i < token.length; i++ {
+        for i in 0 ..< token.length {
             tokenString += String(format: "%02.2hhx", arguments: [tokenChars[i]])
         }
-
         return tokenString
     }
 }

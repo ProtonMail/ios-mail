@@ -65,7 +65,7 @@ class SettingDebugViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("setting_debug_cell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("setting_debug_cell", forIndexPath: indexPath) 
         cell.selectionStyle = UITableViewCellSelectionStyle.None
         
         var element : [String : AnyObject]!
@@ -89,7 +89,7 @@ class SettingDebugViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let  headerCell = tableView.dequeueReusableCellWithIdentifier("setting_debug_cell") as! UITableViewCell
+        let  headerCell = tableView.dequeueReusableCellWithIdentifier("setting_debug_cell") as UITableViewCell!
         headerCell.textLabel!.text = Headers[section]
         return headerCell
     }

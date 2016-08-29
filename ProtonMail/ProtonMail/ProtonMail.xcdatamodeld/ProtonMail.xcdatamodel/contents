@@ -55,6 +55,7 @@
             <entry key="identityAttribute" value="contactID"/>
         </userInfo>
     </entity>
+    <entity name="Conversation" syncable="YES"/>
     <entity name="Label" representedClassName="ProtonMail.Label" syncable="YES">
         <attribute name="color" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
@@ -86,7 +87,6 @@
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="labels" inverseEntity="Message" syncable="YES"/>
         <userInfo>
             <entry key="identityAttribute" value="labelID"/>
-            <entry key="JSONTransformerName" value="TransforDataNoID"/>
         </userInfo>
     </entity>
     <entity name="Message" representedClassName="ProtonMail.Message" syncable="YES">
@@ -162,7 +162,7 @@
         <attribute name="isReplied" attributeType="Boolean" defaultValueString="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="IsReplied"/>
-                <entry key="JSONTransformerName" value="I"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="isRepliedAll" attributeType="Boolean" defaultValueString="NO" syncable="YES">
@@ -281,7 +281,6 @@
         <relationship name="labels" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Label" inverseName="messages" inverseEntity="Label" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="LabelIDs"/>
-                <entry key="JSONTransformerName" value="TransforDataNoID"/>
             </userInfo>
         </relationship>
         <userInfo>
@@ -291,6 +290,7 @@
     <elements>
         <element name="Attachment" positionX="1989" positionY="-3666" width="128" height="180"/>
         <element name="Contact" positionX="1521" positionY="-3564" width="128" height="90"/>
+        <element name="Conversation" positionX="1719" positionY="-3726" width="128" height="45"/>
         <element name="Label" positionX="2095" positionY="-3357" width="128" height="135"/>
         <element name="Message" positionX="1717" positionY="-3867" width="128" height="720"/>
     </elements>

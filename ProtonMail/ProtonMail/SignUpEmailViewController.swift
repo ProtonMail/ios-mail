@@ -92,8 +92,7 @@ class SignUpEmailViewController: UIViewController {
     private var doneClicked : Bool = false
     @IBAction func doneAction(sender: UIButton) {
         
-        let email = recoveryEmailField.text
-        
+        let email = (recoveryEmailField.text ?? "").trim()
         if (!email.isEmpty && !email.isValidEmail()) {
             let alert = NSLocalizedString("Please input a valid email address.").alertController()
             alert.addOKAction()
@@ -105,7 +104,7 @@ class SignUpEmailViewController: UIViewController {
             doneClicked = true
             MBProgressHUD.showHUDAddedTo(view, animated: true)
             dismissKeyboard()
-            viewModel.setRecovery(checkButton.selected, email: recoveryEmailField.text, displayName: displayNameField.text)
+            viewModel.setRecovery(checkButton.selected, email: recoveryEmailField.text!, displayName: displayNameField.text!)
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 MBProgressHUD.hideHUDForView(self.view, animated: true)
                 self.doneClicked = false
@@ -115,17 +114,16 @@ class SignUpEmailViewController: UIViewController {
     }
     
     private func moveToInbox() {
-        //if sharedUserDataService.isUserCredentialStored {
-            sharedUserDataService.isSignedIn = true
-            if let addresses = sharedUserDataService.userInfo?.userAddresses.toPMNAddresses() {
-                sharedOpenPGP.setAddresses(addresses);
-            }
-            self.loadContent()
-        //}
+        sharedUserDataService.isSignedIn = true
+        if let addresses = sharedUserDataService.userInfo?.userAddresses.toPMNAddresses() {
+            sharedOpenPGP.setAddresses(addresses);
+        }
+        self.loadContent()
     }
     
     private func loadContent() {
         logUser()
+        userCachedStatus.pinFailedCount = 0;
         NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)
         (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
         loadContactsAfterInstall()

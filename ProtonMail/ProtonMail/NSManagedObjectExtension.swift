@@ -15,12 +15,14 @@
 //
 
 import Foundation
+import CoreData
+
 
 extension NSManagedObject {
     
     /// Set nil string attributes to ""
     internal func replaceNilStringAttributesWithEmptyString() {
-        for (_, attribute) in entity.attributesByName as! [String : NSAttributeDescription] {
+        for (_, attribute) in entity.attributesByName {
             if attribute.attributeType == .StringAttributeType {
                 if valueForKey(attribute.name) == nil {
                     setValue("", forKey: attribute.name)

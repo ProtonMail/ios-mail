@@ -29,7 +29,7 @@ public class MessageFetchRequest<T : ApiResponse> : ApiRequest<T> {
         }
         if(self.endTime > 0)
         {
-            var newTime = self.endTime - 1
+            let newTime = self.endTime - 1
             out["End"] = newTime
         }
         
@@ -95,7 +95,7 @@ public class MessageByLabelRequest<T : ApiResponse> : ApiRequest<T> {
         out["Label"] = self.labelID
         if(self.endTime > 0)
         {
-            var newTime = self.endTime - 1
+            let newTime = self.endTime - 1
             out["End"] = newTime
         }
         

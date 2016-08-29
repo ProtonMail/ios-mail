@@ -113,13 +113,16 @@
       "idiom" : "ipad",
       "filename" : "ipad_app_76pt@2x.png",
       "scale" : "2x"
+    },
+    {
+      "size" : "83.5x83.5",
+      "idiom" : "ipad",
+      "filename" : "ipad_pro_app_83.5pt@2x.png",
+      "scale" : "2x"
     }
   ],
   "info" : {
     "version" : 1,
     "author" : "xcode"
-  },
-  "properties" : {
-    "pre-rendered" : true
   }
 }

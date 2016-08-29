@@ -10,6 +10,7 @@ import UIKit
 import AssetsLibrary
 
 
+
 protocol AttachmentsTableViewControllerDelegate {
     
     func attachments(attViewController: AttachmentsTableViewController, didFinishPickingAttachments: [AnyObject]) -> Void
@@ -101,7 +102,7 @@ class AttachmentsTableViewController: UITableViewController {
             let picker: UIImagePickerController = PMImagePickerController()
             picker.delegate = self
             picker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-            picker.mediaTypes = [kUTTypeMovie, kUTTypeVideo, kUTTypeImage]
+            picker.mediaTypes = [kUTTypeMovie as String, kUTTypeVideo as String, kUTTypeImage as String]
             
             self.presentViewController(picker, animated: true, completion: nil)
         }))
@@ -117,13 +118,13 @@ class AttachmentsTableViewController: UITableViewController {
         
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Import File From..."), style: UIAlertActionStyle.Default, handler: { (action) -> Void in
             let types = [
-                kUTTypeMovie,
-                kUTTypeImage,
-                kUTTypeText,
-                kUTTypePDF,
-                kUTTypeGNUZipArchive,
-                kUTTypeBzip2Archive,
-                kUTTypeZipArchive,
+                kUTTypeMovie as String,
+                kUTTypeImage as String,
+                kUTTypeText as String,
+                kUTTypePDF as String,
+                kUTTypeGNUZipArchive as String,
+                kUTTypeBzip2Archive as String,
+                kUTTypeZipArchive as String,
             ]
             let importMenu = UIDocumentMenuViewController(documentTypes: types, inMode: .Import)
             importMenu.delegate = self
@@ -208,20 +209,10 @@ class AttachmentsTableViewController: UITableViewController {
 extension AttachmentsTableViewController : UIDocumentMenuDelegate {
     
     func documentMenu(documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
-        let types = [
-            kUTTypeMovie,
-            kUTTypeImage,
-            kUTTypeText,
-            kUTTypePDF,
-            //                kUTTypeGNUZipArchive,
-            //                kUTTypeBzip2Archive,
-            //                kUTTypeZipArchive
-        ]
         documentPicker.delegate = self
         documentPicker.modalPresentationStyle = UIModalPresentationStyle.FormSheet
         self.presentViewController(documentPicker, animated: true, completion: nil)
     }
-    
 }
 
 extension AttachmentsTableViewController: UIDocumentPickerDelegate {
@@ -229,10 +220,10 @@ extension AttachmentsTableViewController: UIDocumentPickerDelegate {
     func documentPicker(controller: UIDocumentPickerViewController, didPickDocumentAtURL url: NSURL) {
         let coordinator : NSFileCoordinator = NSFileCoordinator(filePresenter: nil)
         var error : NSError?
-        coordinator.coordinateReadingItemAtURL(url, options: NSFileCoordinatorReadingOptions.allZeros, error: &error) { (new_url) -> Void in
+        coordinator.coordinateReadingItemAtURL(url, options: NSFileCoordinatorReadingOptions(), error: &error) { (new_url) -> Void in
             if let data = NSData(contentsOfURL: url) {
                 if data.length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
-                    var fileName = url.lastPathComponent ?? "\(NSUUID().UUIDString)"
+                    let fileName = url.lastPathComponent ?? "\(NSUUID().UUIDString)"
                     let attachment = data.toAttachment(self.message, fileName: fileName, type: "application/binary")
                     self.attachments.append(attachment!)
                     self.delegate?.attachments(self, didPickedAttachment: attachment!)
@@ -261,12 +252,12 @@ extension AttachmentsTableViewController: UIDocumentPickerDelegate {
 
 extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         if let url = info[UIImagePickerControllerReferenceURL] as? NSURL {
             let library = ALAssetsLibrary()
             library.assetForURL(url, resultBlock:
                 { (asset: ALAsset!) -> Void in
-                    var rep = asset.defaultRepresentation()
+                    let rep = asset.defaultRepresentation()
                     let length = Int(rep.size())
                     if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
                         var error: NSError?
@@ -280,7 +271,7 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                             PMLog.D(" Error during copying \(er)")
                         } else {
                             if numRead > 0 {
-                                var fileName = rep.filename()
+                                let fileName = rep.filename()
                                 let mimeType = rep.UTI()
                                 if self.message.managedObjectContext != nil {
                                     let attachment = data.toAttachment(self.message, fileName: fileName, type: mimeType)
@@ -305,21 +296,16 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                         PMLog.D(" Size too big Orig: \(length) -- Limit: \(self.kDefaultAttachmentFileSize)")
                     }
                     self.tableView.reloadData()
-                })  { (error:NSError!) -> Void in
-                    picker.dismissViewControllerAnimated(true, completion: nil)
-                    self.showErrorAlert("Can't copy the file")
-                    self.delegate?.attachments(self, error:"Can't copy the file")
-                    PMLog.D(" Error during open file \(error)")
-                    self.tableView.reloadData()
+            })  { (error:NSError!) -> Void in
+                picker.dismissViewControllerAnimated(true, completion: nil)
+                self.showErrorAlert("Can't copy the file")
+                self.delegate?.attachments(self, error:"Can't copy the file")
+                PMLog.D(" Error during open file \(error)")
+                self.tableView.reloadData()
             }
-        }
-//        else if let mediaUrl = info[UIImagePickerControllerMediaURL]  as? NSURL  {
-//            picker.dismissViewControllerAnimated(true, completion: nil)
-//            PMLog.D(" UIImagePickerControllerMediaURL: \(mediaUrl)")
-//        }
-        else if let originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+        }else if let originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             picker.dismissViewControllerAnimated(true, completion: nil)
-            let type = info[UIImagePickerControllerMediaType] as? String
+            //let type = info[UIImagePickerControllerMediaType] as? String
             //let url = info[UIImagePickerControllerReferenceURL] as? NSURL
             let fileName = "\(NSUUID().UUIDString).PNG"
             let mimeType = "image/png"
@@ -331,7 +317,7 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
             picker.dismissViewControllerAnimated(true, completion: nil)
             self.showErrorAlert("Can't copy the file")
             self.delegate?.attachments(self, error:"Can't copy the file")
-            PMLog.D(" Error during open file \(error)")
+            //PMLog.D(" Error during open file \(error)")
             self.tableView.reloadData()
         }
     }

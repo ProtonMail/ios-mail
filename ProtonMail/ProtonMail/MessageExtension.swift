@@ -14,8 +14,8 @@
 // the license agreement.
 //
 
-import CoreData
 import Foundation
+import CoreData
 
 extension Message {
     
@@ -72,7 +72,7 @@ extension Message {
         }
         
         PMLog.D("allEmailAddresses  ---  \(lists)" )
-        return ",".join(lists)
+        return lists.joinWithSeparator(",")
     }
     
     var location: MessageLocation {
@@ -113,14 +113,14 @@ extension Message {
     */
     class func deleteMessage(messageID : String) {
         if let context = sharedCoreDataService.mainManagedObjectContext {
-            if var message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                var labelObjs = message.mutableSetValueForKey("labels")
+            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                let labelObjs = message.mutableSetValueForKey("labels")
                 labelObjs.removeAllObjects()
                 message.setValue(labelObjs, forKey: "labels")
                 context.deleteObject(message)
             }
             if let error = context.saveUpstreamIfNeeded() {
-                NSLog("\(__FUNCTION__) error: \(error)")
+                PMLog.D("error: \(error)")
             }
         }
     }
@@ -128,20 +128,22 @@ extension Message {
     class func deleteLocation(location : MessageLocation) -> Bool{
         if let mContext = sharedCoreDataService.mainManagedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
-            
             if location == .spam || location == .trash {
-                var error : NSError?
                 fetchRequest.predicate = NSPredicate(format: "%K == %i", Message.Attributes.locationNumber, location.rawValue)
                 fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-                if let oldMessages = mContext.executeFetchRequest(fetchRequest, error: &error) as? [Message] {
-                    for message in oldMessages {
-                        mContext.deleteObject(message)
+                do {
+                    if let oldMessages = try mContext.executeFetchRequest(fetchRequest) as? [Message] {
+                        for message in oldMessages {
+                            mContext.deleteObject(message)
+                        }
+                        if let error = mContext.saveUpstreamIfNeeded() {
+                            PMLog.D(" error: \(error)")
+                        } else {
+                            return true
+                        }
                     }
-                    if let error = mContext.saveUpstreamIfNeeded() {
-                        PMLog.D(" error: \(error)")
-                    } else {
-                        return true
-                    }
+                } catch {
+                     PMLog.D(" error: \(error)")
                 }
             }
         }
@@ -167,26 +169,33 @@ extension Message {
     }
     
     // MARK: Public methods
-    func decryptBody(error: NSErrorPointer?) -> String? {
-        return body.decryptMessage(passphrase, error: error)
+    func decryptBody() throws -> String? {
+        return try body.decryptMessage(passphrase)
     }
     
-    func decryptBodyIfNeeded(error: NSErrorPointer?) -> String? {
+    func bodyToHtml() -> String {
+        if lockType == .PlainTextLock {
+            return "<div>" + body.ln2br() + "</div>"
+        } else {
+            let body_without_ln = body.rmln()
+            return "<div><pre>" + body_without_ln.lr2lrln() + "</pre></div>"
+        }
+    }
+    
+    func decryptBodyIfNeeded() throws -> String? {
         //PMLog.D("\(body)")
         if !checkIsEncrypted() {
             return body
         } else {
-            var body = decryptBody(error)
-            if body == nil {
+            if var body = try decryptBody() {
+                if isEncrypted == 8 {
+                    body = body.multipartGetHtmlContent () ?? body
+                } else if isEncrypted == 7 {
+                    body = body.ln2br() ?? body
+                }
                 return body
             }
-            
-            if isEncrypted == 8 {
-                body = body?.multipartGetHtmlContent () ?? ""
-            } else if isEncrypted == 7 {
-                body = body?.ln2br() ?? ""
-            }
-            return body
+            return nil
         }
     }
     
@@ -195,7 +204,7 @@ extension Message {
         if address_id.isEmpty {
             return
         }
-        self.body = body.encryptMessage(address_id, error: error) ?? "" //body.encryptWithPublicKey(publicKey, error: error) ?? ""
+        self.body = try! body.encryptMessage(address_id) ?? ""
     }
     
     func checkIsEncrypted() -> Bool! {
@@ -285,7 +294,8 @@ extension Message {
             PMLog.D("error: \(error)")
         }
         if copyAtts {
-            for (index, attachment) in enumerate(message.attachments) {
+            for (index, attachment) in message.attachments.enumerate() {
+                PMLog.D("index: \(index)")
                 if let att = attachment as? Attachment {
                     let attachment = Attachment(context: newMessage.managedObjectContext!)
                     attachment.attachmentID = "0"
@@ -306,15 +316,13 @@ extension Message {
     
     func fetchDetailIfNeeded(completion: MessageDataService.CompletionFetchDetail) {
         sharedMessageDataService.fetchMessageDetailForMessage(self, completion: completion)
-        
     }
-    
 }
 
 extension String {
     
     public func multipartGetHtmlContent() -> String {
-        //PMLog.D(self)
+        PMLog.D(self)
         let textplainType = "text/plain".dataUsingEncoding(NSUTF8StringEncoding)!
         let htmlType = "text/html".dataUsingEncoding(NSUTF8StringEncoding)!
         
@@ -323,7 +331,7 @@ extension String {
         
         //get boundary=
         let boundarLine = "boundary=".dataUsingEncoding(NSASCIIStringEncoding)!
-        let boundaryRange = data.rangeOfData(boundarLine, options: nil, range: NSMakeRange(0, len))
+        let boundaryRange = data.rangeOfData(boundarLine, options: NSDataSearchOptions.init(rawValue: 0), range: NSMakeRange(0, len))
         if boundaryRange.location == NSNotFound {
             return "";
         }
@@ -332,7 +340,7 @@ extension String {
         len = len - (boundaryRange.location + boundaryRange.length);
         data = data.subdataWithRange(NSMakeRange(boundaryRange.location + boundaryRange.length, len))
         let lineEnd = "\n".dataUsingEncoding(NSASCIIStringEncoding)!;
-        let nextLine = data.rangeOfData(lineEnd, options: nil, range: NSMakeRange(0, len))
+        let nextLine = data.rangeOfData(lineEnd, options: NSDataSearchOptions.init(rawValue: 0), range: NSMakeRange(0, len))
         if nextLine.location == NSNotFound {
             return "";
         }
@@ -350,7 +358,7 @@ extension String {
         
         var count = 0;
         let nextBoundaryLine = boundaryString.dataUsingEncoding(NSASCIIStringEncoding)!
-        var firstboundaryRange = data.rangeOfData(nextBoundaryLine, options: nil, range: NSMakeRange(0, len))
+        var firstboundaryRange = data.rangeOfData(nextBoundaryLine, options: NSDataSearchOptions(rawValue: 0), range: NSMakeRange(0, len))
         
         if firstboundaryRange.location == NSNotFound {
             return "";
@@ -360,7 +368,7 @@ extension String {
             if count >= 10 {
                 break;
             }
-            count++;
+            count += 1;
             len = len - (firstboundaryRange.location + firstboundaryRange.length) - 1;
             data = data.subdataWithRange(NSMakeRange(1 + firstboundaryRange.location + firstboundaryRange.length, len))
             
@@ -370,7 +378,7 @@ extension String {
             
             var bodyString = NSString(data: data, encoding: NSUTF8StringEncoding) as! String
             
-            let ContentEnd = data.rangeOfData(lineEnd, options: nil, range: NSMakeRange(2, len - 2))
+            let ContentEnd = data.rangeOfData(lineEnd, options: NSDataSearchOptions(rawValue: 0), range: NSMakeRange(2, len - 2))
             if ContentEnd.location == NSNotFound {
                 break
             }
@@ -380,7 +388,7 @@ extension String {
             
             bodyString = NSString(data: ContentType, encoding: NSUTF8StringEncoding) as! String
             
-            let EncodingEnd = data.rangeOfData(lineEnd, options: nil, range: NSMakeRange(2, len - 2))
+            let EncodingEnd = data.rangeOfData(lineEnd, options: NSDataSearchOptions(rawValue: 0), range: NSMakeRange(2, len - 2))
             if EncodingEnd.location == NSNotFound {
                 break
             }
@@ -390,28 +398,35 @@ extension String {
             
             bodyString = NSString(data: EncodingType, encoding: NSUTF8StringEncoding) as! String
             
-            var secondboundaryRange = data.rangeOfData(nextBoundaryLine, options: nil, range: NSMakeRange(0, len))
+            let secondboundaryRange = data.rangeOfData(nextBoundaryLine, options: NSDataSearchOptions(rawValue: 0), range: NSMakeRange(0, len))
             if secondboundaryRange.location == NSNotFound {
                 break
             }
             //get data
             
-            var text = data.subdataWithRange(NSMakeRange(1, secondboundaryRange.location - 1))
-            let plainFound = ContentType.rangeOfData(textplainType, options: nil, range: NSMakeRange(0, ContentType.length))
+            let text = data.subdataWithRange(NSMakeRange(1, secondboundaryRange.location - 1))
+            let test = NSString(data: text, encoding: NSUTF8StringEncoding) as! String;
+            
+            let plainFound = ContentType.rangeOfData(textplainType, options: NSDataSearchOptions(rawValue: 0), range: NSMakeRange(0, ContentType.length))
             if plainFound.location != NSNotFound {
                 plaintext = NSString(data: text, encoding: NSUTF8StringEncoding) as! String;
             }
             
-            let htmlFound = ContentType.rangeOfData(htmlType, options: nil, range: NSMakeRange(0, ContentType.length))
+            let htmlFound = ContentType.rangeOfData(htmlType, options: NSDataSearchOptions(rawValue: 0), range: NSMakeRange(0, ContentType.length))
             if htmlFound.location != NSNotFound {
                 html = NSString(data: text, encoding: NSUTF8StringEncoding) as! String;
             }
-            
             
             // check html or plain text
             bodyString = NSString(data: text, encoding: NSUTF8StringEncoding) as! String
             
             firstboundaryRange = secondboundaryRange
+            
+            PMLog.D(bodyString)
+        }
+        
+        if ( html.isEmpty && plaintext.isEmpty ) {
+            return "<div><pre>" + self.rmln() + "</pre></div>"
         }
         
         return html.isEmpty ? plaintext.ln2br() : html;

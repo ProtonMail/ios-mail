@@ -120,7 +120,7 @@ class MailboxMessageCell: MCSwipeTableViewCell {
             loctionRightSpace.constant = 0.0;
         }
         
-        var lockType : LockTypes = message.lockType
+        let lockType : LockTypes = message.lockType
         switch (lockType) {
         case .PlainTextLock:
             self.lockImage.image = UIImage(named: "mail_lock");
@@ -154,15 +154,11 @@ class MailboxMessageCell: MCSwipeTableViewCell {
             self.expirationWidth.constant = 0
         }
         
-        //let labels = message.labels.allObjects as? [Label]
-        
-        
         let predicate = NSPredicate(format: "labelID MATCHES %@", "(?!^\\d+$)^.+$")
-        //labels = labels.sortedArrayUsingDescriptors([NSSortDescriptor(key: Label.Attributes.order, ascending: true)])
         let tempLabels = message.labels.filteredSetUsingPredicate(predicate)
         var labels : [Label] = []
         for vowel in tempLabels {
-            var label = vowel as! Label;
+            let label = vowel as! Label;
             labels.append(label)
         }
         if message.location == MessageLocation.outbox {

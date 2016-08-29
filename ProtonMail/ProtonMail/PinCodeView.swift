@@ -11,6 +11,7 @@ import Foundation
 protocol PinCodeViewDelegate {
     func Cancel()
     func Next(code : String)
+    func TouchID()
 }
 
 class PinCodeView : PMView {
@@ -34,6 +35,11 @@ class PinCodeView : PMView {
     @IBOutlet weak var logoutButton: UIButton!
     @IBOutlet weak var backButton: UIButton!
     
+    @IBOutlet weak var touchIDButton: UIButton!
+    
+    @IBOutlet weak var attempsLabel: UILabel!
+    @IBOutlet weak var whiteLineView: UIView!
+    
     var delegate : PinCodeViewDelegate?
     
     var pinCode : String = ""
@@ -42,7 +48,17 @@ class PinCodeView : PMView {
         return "PinCodeView";
     }
     
+    func showTouchID() {
+        touchIDButton.hidden = false
+    }
+    
+    func hideTouchID() {
+        touchIDButton.hidden = true
+    }
+    
     override func setup() {
+        touchIDButton.layer.cornerRadius = 25
+        touchIDButton.hidden = true
     }
     
     func updateViewText(title : String, cancelText : String, resetPin : Bool) {
@@ -51,6 +67,10 @@ class PinCodeView : PMView {
         if resetPin {
             self.resetPin()
         }
+    }
+    
+    func updateTitle(title : String) {
+        titleLabel.text = title
     }
     
     func updateCorner() {
@@ -66,11 +86,35 @@ class PinCodeView : PMView {
         self.setCorner(zeroButton)
         self.setCorner(goButton)
         
-        
-        
         logoutButton.transform = CGAffineTransformMakeScale(-1.0, 1.0);
         logoutButton.titleLabel?.transform = CGAffineTransformMakeScale(-1.0, 1.0);
         logoutButton.imageView?.transform = CGAffineTransformMakeScale(-1.0, 1.0);
+    }
+    
+    @IBAction func touchIDAction(sender: AnyObject) {
+        delegate?.TouchID()
+    }
+    
+    func showAttempError(error:String, low : Bool) {
+        pinDisplayView.textColor = UIColor.redColor()
+        whiteLineView.backgroundColor = UIColor.redColor()
+        attempsLabel.hidden = false
+        attempsLabel.text = error
+        if low {
+            attempsLabel.backgroundColor = UIColor.redColor()
+            attempsLabel.textColor = UIColor.whiteColor()
+        } else {
+            attempsLabel.backgroundColor = UIColor.clearColor()
+            attempsLabel.textColor = UIColor.redColor()
+        }
+    }
+    
+    func hideAttempError(reset : Bool) {
+        pinDisplayView.textColor = UIColor.lightGrayColor()
+        whiteLineView.backgroundColor = UIColor.whiteColor()
+        if reset {
+            attempsLabel.hidden = false
+        }
     }
     
     internal func add(number : Int) {
@@ -108,15 +152,13 @@ class PinCodeView : PMView {
     }
     
     @IBAction func buttonActions(sender: UIButton) {
-        
-        var numberClicked = sender.tag
-        
+        self.hideAttempError(false)
+        let numberClicked = sender.tag
         self.add(numberClicked)
-        
-        //pinView.shake(3, offset: 10)
-        
     }
+    
     @IBAction func deleteAction(sender: UIButton) {
+        self.hideAttempError(false)
         self.remove()
     }
     

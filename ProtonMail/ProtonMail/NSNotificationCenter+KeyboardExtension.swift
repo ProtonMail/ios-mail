@@ -50,9 +50,9 @@ extension NSNotificationCenter {
         var selector: Selector {
             switch(self) {
             case .WillHide:
-                return "keyboardWillHideNotification:"
+                return #selector(NSNotificationCenterKeyboardObserverProtocol.keyboardWillHideNotification(_:))
             default:
-                return "keyboardWillShowNotification:"
+                return #selector(NSNotificationCenterKeyboardObserverProtocol.keyboardWillShowNotification(_:))
             }
         }
         

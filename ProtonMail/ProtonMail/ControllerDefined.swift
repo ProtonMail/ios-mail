@@ -17,7 +17,7 @@ public struct EncryptionStep {
     static let DefineHintPassword = "DefineHintPassword"
 }
 
-enum ComposeMessageAction: Int, Printable {
+enum ComposeMessageAction: Int, CustomStringConvertible {
     case Reply = 0
     case ReplyAll = 1
     case Forward = 2

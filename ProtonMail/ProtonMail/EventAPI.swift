@@ -19,7 +19,7 @@ public class EventCheckRequest<T : ApiResponse> : ApiRequest<T>{
     }
     
     override public func getRequestPath() -> String {
-        return EventAPI.Path.stringByAppendingPathComponent(self.eventID) + AppConstants.getDebugOption
+        return EventAPI.Path + "/\(self.eventID)" + AppConstants.getDebugOption
     }
     
     override public func getVersion() -> Int {
@@ -31,7 +31,7 @@ public class EventCheckRequest<T : ApiResponse> : ApiRequest<T>{
 public class EventLatestIDRequest<T : ApiResponse> : ApiRequest<T>{
 
     override public func getRequestPath() -> String {
-        return EventAPI.Path.stringByAppendingPathComponent("latest") + AppConstants.getDebugOption
+        return EventAPI.Path + "/latest" + AppConstants.getDebugOption
     }
     
     override public func getVersion() -> Int {
@@ -44,7 +44,7 @@ public class EventLatestIDResponse : ApiResponse {
 
     override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
         
-        PMLog.D(response.JSONStringify(prettyPrinted: true))
+        PMLog.D(response.JSONStringify(true))
         self.eventID = response["EventID"] as? String ?? ""
 
         return true

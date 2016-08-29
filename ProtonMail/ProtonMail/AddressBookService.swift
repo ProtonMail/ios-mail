@@ -25,7 +25,7 @@ class AddressBookService {
     }
     
     func hasAccessToAddressBook() -> Bool {
-        return RHAddressBook.authorizationStatus().value == RHAuthorizationStatusAuthorized.value
+        return RHAddressBook.authorizationStatus() == RHAuthorizationStatusAuthorized
     }
     
     func requestAuthorizationWithCompletion(completion: AuthorizationCompletionBlock) {
@@ -37,7 +37,7 @@ class AddressBookService {
     }
     
     func contactsWith(name: String?, email: String?) -> NSArray {
-        var filteredPeople = NSMutableArray()
+        let filteredPeople = NSMutableArray()
         
         if let name = name {
             filteredPeople.addObjectsFromArray(addressBook.peopleWithName(name))
@@ -57,9 +57,10 @@ class AddressBookService {
         for contact: RHPerson in contacts {
             var name: String? = contact.name
             let emails: RHMultiValue = contact.emails
-            
-            for (var emailIndex: UInt = 0; Int(emailIndex) < Int(emails.count()); emailIndex++) {
-                if let emailAsString = emails.valueAtIndex(emailIndex) as? String {
+            let count = UInt(emails.count())
+            for emailIndex in 0 ..< count {
+                let index = UInt(emailIndex)
+                if let emailAsString = emails.valueAtIndex(index) as? String {
                     if (emailAsString.isValidEmail()) {
                         let email = emailAsString
                         if (name == nil) {

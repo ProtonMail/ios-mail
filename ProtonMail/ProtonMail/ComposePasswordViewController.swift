@@ -83,9 +83,9 @@ class ComposePasswordViewController: UIViewController {
         passwordErrorLabel.hidden = true
         confirmPasswordErrorLabel.hidden = true
         
-        let pwd = passwordField.text ?? ""
-        let pwdConfirm = confirmPasswordField.text ?? ""
-        let hint = hintField.text ?? ""
+        let pwd = (passwordField.text ?? "").trim()
+        let pwdConfirm = (confirmPasswordField.text ?? "").trim()
+        let hint = (hintField.text ?? "").trim()
         
         if pwd.isEmpty {
             passwordErrorLabel.hidden = false

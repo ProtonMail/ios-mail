@@ -271,11 +271,11 @@ class EmailHeaderView: UIView {
         self.emailFavoriteButton.selected = self.starred;
         
         self.emailShortTime.text = "at \(self.date.stringWithFormat(self.kHourMinuteFormat))".lowercaseString
-        
+        //TODO
         let tm = self.date.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? "";
         self.emailDetailDateLabel.text = "Date: \(tm)"
         
-        var lockType : LockTypes = encType.lockType
+        let lockType : LockTypes = encType.lockType
         switch (lockType) {
         case .PlainTextLock:
             self.emailIsEncryptedImageView.image = UIImage(named: "mail_lock");
@@ -435,7 +435,7 @@ class EmailHeaderView: UIView {
         
         // favorite button
         self.emailFavoriteButton = UIButton()
-        self.emailFavoriteButton.addTarget(self, action: "emailFavoriteButtonTapped", forControlEvents: .TouchUpInside)
+        self.emailFavoriteButton.addTarget(self, action: #selector(EmailHeaderView.emailFavoriteButtonTapped), forControlEvents: .TouchUpInside)
         self.emailFavoriteButton.setImage(UIImage(named: "mail_starred")!, forState: .Normal)
         self.emailFavoriteButton.setImage(UIImage(named: "mail_starred-active")!, forState: .Selected)
         self.emailFavoriteButton.selected = self.starred
@@ -483,7 +483,7 @@ class EmailHeaderView: UIView {
         self.emailHeaderView.addSubview(emailShortTime)
         
         self.emailDetailButton = UIButton()
-        self.emailDetailButton.addTarget(self, action: "detailsButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        self.emailDetailButton.addTarget(self, action: #selector(EmailHeaderView.detailsButtonTapped), forControlEvents: UIControlEvents.TouchUpInside)
         self.emailDetailButton.contentEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0)
         self.emailDetailButton.titleLabel?.font = UIFont.robotoMedium(size: UIFont.Size.h6)
         self.emailDetailButton.setTitle(NSLocalizedString("Details"), forState: UIControlState.Normal)
@@ -1224,7 +1224,7 @@ extension EmailHeaderView: UITableViewDelegate {
                     attachment.localURL = nil
                     let error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
                     if error != nil  {
-                        NSLog("\(__FUNCTION__) error: \(error)")
+                        PMLog.D(" error: \(error)")
                     }
                     downloadAttachment(attachment, forIndexPath: indexPath)
                 }
@@ -1282,9 +1282,10 @@ extension EmailHeaderView: UITableViewDelegate {
         })
     }
     
-    override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         
     }
+    
     //    - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
     //    {
     //    if ([keyPath isEqualToString:@"fractionCompleted"]) {

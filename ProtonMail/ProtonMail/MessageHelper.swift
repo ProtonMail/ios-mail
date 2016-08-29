@@ -7,8 +7,7 @@
 //
 
 import Foundation
-
-
+import CoreData
 
 
 public class MessageHelper {
@@ -42,42 +41,37 @@ public class MessageHelper {
                 message.expirationTime = NSDate(timeIntervalSinceNow: expirationTimeInterval)
             }
             
-            var error: NSError?
-            message.encryptBody(body, error: &error)
-            
-            if error != nil {
-                NSLog("\(__FUNCTION__) error: \(error)")
-            }
-            
-            if !encryptionPassword.isEmpty {
-                if let encryptedBody = body.encryptWithPassphrase(encryptionPassword, error: &error) {
-                    message.isEncrypted = true
-                    message.passwordEncryptedBody = encryptedBody
-                } else {
-                    NSLog("\(__FUNCTION__) encryption error: \(error)")
-                }
-            }
-            
-            if let attachments = attachments {
-                for (index, attachment) in enumerate(attachments) {
-                    if let image = attachment as? UIImage {
-                        if let fileData = UIImagePNGRepresentation(image) {
-                            let attachment = Attachment(context: context)
-                            attachment.attachmentID = "0"
-                            attachment.message = message
-                            attachment.fileName = "\(index).png"
-                            attachment.mimeType = "image/png"
-                            attachment.fileData = fileData
-                            attachment.fileSize = fileData.length
-                            continue
-                        }
+            do {
+                message.encryptBody(body, error: nil)
+                if !encryptionPassword.isEmpty {
+                    if let encryptedBody = try body.encryptWithPassphrase(encryptionPassword) {
+                        message.isEncrypted = true
+                        message.passwordEncryptedBody = encryptedBody
                     }
-                    
-                    let description = attachment.description ?? "unknown"
-                    NSLog("\(__FUNCTION__) unsupported attachment type \(description)")
                 }
+                if let attachments = attachments {
+                    for (index, attachment) in attachments.enumerate() {
+                        if let image = attachment as? UIImage {
+                            if let fileData = UIImagePNGRepresentation(image) {
+                                let attachment = Attachment(context: context)
+                                attachment.attachmentID = "0"
+                                attachment.message = message
+                                attachment.fileName = "\(index).png"
+                                attachment.mimeType = "image/png"
+                                attachment.fileData = fileData
+                                attachment.fileSize = fileData.length
+                                continue
+                            }
+                        }
+                        
+                        let description = attachment.description ?? "unknown"
+                        PMLog.D("unsupported attachment type \(description)")
+                    }
+                }
+                
+            } catch {
+                PMLog.D("error: \(error)")
             }
-            
             return message
     }
     
@@ -89,20 +83,18 @@ public class MessageHelper {
         if expirationTimeInterval > 0 {
             message.expirationTime = NSDate(timeIntervalSinceNow: expirationTimeInterval)
         }
+
+            message.encryptBody(body, error: nil)
+ 
+            //PMLog.D(" error: \(error)")
         
-        var error: NSError?
-        message.encryptBody(body, error: &error)
-        
-        if error != nil {
-            NSLog("\(__FUNCTION__) error: \(error)")
-        }
         
         //        if !encryptionPassword.isEmpty {
         //            if let encryptedBody = body.encryptWithPassphrase(encryptionPassword, error: &error) {
         //                message.isEncrypted = true
         //                message.passwordEncryptedBody = encryptedBody
         //            } else {
-        //                NSLog("\(__FUNCTION__) encryption error: \(error)")
+        //                PMLog.D(" encryption error: \(error)")
         //            }
         //        }
         //
@@ -120,13 +112,12 @@ public class MessageHelper {
         //                        continue
         //                    }
         //                }
-        //
         //                let description = attachment.description ?? "unknown"
-        //                NSLog("\(__FUNCTION__) unsupported attachment type \(description)")
+        //                PMLog.D(" unsupported attachment type \(description)")
         //            }
         //        }
     }
-    
+
     
     static func contactsToAddresses (contacts : String!) -> String
     {
@@ -139,6 +130,6 @@ public class MessageHelper {
                 lists.append(to)
             }
         }
-        return ",".join(lists)
+        return lists.joinWithSeparator(",")
     }
 }

@@ -31,6 +31,7 @@ class UserCachedStatus : SharedCacheBase {
         static let autoLockTime = "autoLockTime" ///user cache but could restore
         static let enterBackgroundTime = "enterBackgroundTime"
         static let lastLoggedInUser = "lastLoggedInUser" //user cache but could restore
+        static let lastPinFailedTimes = "lastPinFailedTimes" //user cache can't restore
         
         //wait
         static let lastFetchMessageID = "last_fetch_message_id"
@@ -107,6 +108,15 @@ class UserCachedStatus : SharedCacheBase {
         }
     }
     
+    var pinFailedCount : Int {
+        get {
+            return getShared().integerForKey(Key.lastPinFailedTimes)
+        }
+        set {
+            setValue(newValue, forKey: Key.lastPinFailedTimes)
+        }
+    }
+    
     func resetMobileSignature() {
         getShared().removeObjectForKey(Key.lastLocalMobileSignature)
         getShared().synchronize()
@@ -131,6 +141,7 @@ class UserCachedStatus : SharedCacheBase {
         UICKeyChainStore.removeItemForKey(Key.lastLoggedInUser)
         UICKeyChainStore.removeItemForKey(Key.autoLockTime)
         UICKeyChainStore.removeItemForKey(Key.enterBackgroundTime)
+        getShared().removeObjectForKey(Key.lastPinFailedTimes)
         
         getShared().synchronize()
     }

@@ -17,7 +17,7 @@ class LabelTableViewCell: UITableViewCell {
     
     @IBOutlet weak var labelWidth: NSLayoutConstraint!
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
         self.layoutMargins = UIEdgeInsetsZero;
         self.separatorInset = UIEdgeInsetsZero
     }
@@ -45,33 +45,33 @@ class LabelTableViewCell: UITableViewCell {
         if tempStatus == 0 {
 
             for mm in self.model.totalMessages {
-                var labelObjs = mm.mutableSetValueForKey("labels")
+                let labelObjs = mm.mutableSetValueForKey("labels")
                 labelObjs.removeObject(model.label)
                 mm.setValue(labelObjs, forKey: "labels")
             }
         } else if tempStatus == 1 {
             for mm in self.model.totalMessages {
-                var labelObjs = mm.mutableSetValueForKey("labels")
+                let labelObjs = mm.mutableSetValueForKey("labels")
                 labelObjs.removeObject(model.label)
                 mm.setValue(labelObjs, forKey: "labels")
             }
             
             for mm in self.model.originalSelected {
-                var labelObjs = mm.mutableSetValueForKey("labels")
+                let labelObjs = mm.mutableSetValueForKey("labels")
                 labelObjs.addObject(model.label)
                 mm.setValue(labelObjs, forKey: "labels")
             }
         } else if tempStatus == 2 {
             for mm in self.model.totalMessages {
-                var labelObjs = mm.mutableSetValueForKey("labels")
+                let labelObjs = mm.mutableSetValueForKey("labels")
                 var labelCount = 0
                 for l in labelObjs {
                     if (l as! Label).labelID != model.label.labelID {
-                        labelCount++
+                        labelCount += 1
                     }
                 }
                 if labelCount >= 5 {
-                    var alert = NSLocalizedString("A message cannot have more than 5 labels").alertController();
+                    let alert = NSLocalizedString("A message cannot have more than 5 labels").alertController();
                     alert.addOKAction()
                     vc.presentViewController(alert, animated: true, completion: nil)
                     return;
@@ -79,7 +79,7 @@ class LabelTableViewCell: UITableViewCell {
             }
             
             for mm in self.model.totalMessages {
-                var labelObjs = mm.mutableSetValueForKey("labels")
+                let labelObjs = mm.mutableSetValueForKey("labels")
                 labelObjs.addObject(model.label)
                 mm.setValue(labelObjs, forKey: "labels")
             }

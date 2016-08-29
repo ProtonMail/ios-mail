@@ -44,6 +44,14 @@ public class PinCodeViewModel : NSObject {
         fatalError("This method must be overridden")
     }
     
+    func getPinFailedRemainingCount() -> Int {
+        fatalError("This method must be overridden")
+    }
+    
+    func getPinFailedError() -> String {
+        fatalError("This method must be overridden")
+    }
+    
     func done() {
         
     }

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="Roboto-Medium.ttf">
@@ -19,12 +20,11 @@
             <rect key="frame" x="0.0" y="0.0" width="646" height="77"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="646" height="76.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Here goes the Subject" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SIc-09-lb0">
                         <rect key="frame" x="138" y="12" width="442" height="18"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="18" id="Seu-kN-EFT"/>
                         </constraints>
@@ -37,7 +37,6 @@
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7:36pm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yr1-Vg-xT6">
                         <rect key="frame" x="580" y="13" width="50" height="16"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="50" id="g31-AH-9IZ"/>
                         </constraints>
@@ -53,7 +52,6 @@
                     </label>
                     <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ehh-A8-O8P" userLabel="Checked">
                         <rect key="frame" x="16" y="21" width="36" height="36"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="36" id="Sgz-zJ-w4Y"/>
                             <constraint firstAttribute="height" constant="36" id="ibG-mP-5WN"/>
@@ -65,7 +63,6 @@
                     </button>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_lock" highlightedImage="mail_lock-outside" translatesAutoresizingMaskIntoConstraints="NO" id="I1O-3N-hks">
                         <rect key="frame" x="612" y="51" width="18" height="14"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="3IN-uA-1v1"/>
                             <constraint firstAttribute="width" constant="18" id="DL3-zp-Dz4"/>
@@ -76,7 +73,6 @@
                     </imageView>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_starred-active-small" translatesAutoresizingMaskIntoConstraints="NO" id="GYc-tV-NYw">
                         <rect key="frame" x="558" y="51" width="18" height="14"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="18" id="ITM-Qa-OrE"/>
                             <constraint firstAttribute="height" constant="14" id="bFa-oL-Ehz"/>
@@ -84,7 +80,6 @@
                     </imageView>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_attachment" translatesAutoresizingMaskIntoConstraints="NO" id="MUg-6h-6KQ">
                         <rect key="frame" x="576" y="51" width="18" height="14"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="FfP-xx-02q"/>
                             <constraint firstAttribute="width" constant="18" id="ZQl-7I-b7j"/>
@@ -95,7 +90,6 @@
                     </imageView>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_expiration" translatesAutoresizingMaskIntoConstraints="NO" id="l8F-Fo-5Gz">
                         <rect key="frame" x="594" y="51" width="18" height="14"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="18" id="GgZ-zI-WdS"/>
                             <constraint firstAttribute="height" constant="14" id="T24-bP-EYb"/>
@@ -106,7 +100,6 @@
                     </imageView>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_forwarded" translatesAutoresizingMaskIntoConstraints="NO" id="W87-z9-Lfj">
                         <rect key="frame" x="72" y="13" width="20" height="16"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="iRK-md-p80"/>
                             <constraint firstAttribute="width" constant="20" id="yaw-js-fIe"/>
@@ -114,7 +107,6 @@
                     </imageView>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_replied" translatesAutoresizingMaskIntoConstraints="NO" id="ERi-2M-ccE">
                         <rect key="frame" x="52" y="13" width="20" height="16"/>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="width" constant="20" id="DB7-Cd-pNk"/>
                             <constraint firstAttribute="height" constant="16" id="fhd-kT-5Nt"/>
@@ -122,7 +114,6 @@
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q38-eq-ScR">
                         <rect key="frame" x="92" y="14" width="42" height="14"/>
-                        <animations/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="Zw4-wr-4Ql"/>
@@ -134,14 +125,12 @@
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qih-v7-hfv" customClass="LabelsView" customModule="ProtonMail" customModuleProvider="target">
                         <rect key="frame" x="52" y="51" width="506" height="14"/>
-                        <animations/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="G9G-0u-3jM"/>
                         </constraints>
                     </view>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstItem="W87-z9-Lfj" firstAttribute="leading" secondItem="ERi-2M-ccE" secondAttribute="trailing" id="1Dg-HQ-bF1"/>
                     <constraint firstItem="SIc-09-lb0" firstAttribute="centerY" secondItem="ERi-2M-ccE" secondAttribute="centerY" id="1Mw-sD-RKm"/>
@@ -170,7 +159,6 @@
                     <constraint firstItem="l8F-Fo-5Gz" firstAttribute="leading" secondItem="MUg-6h-6KQ" secondAttribute="trailing" id="vpK-Qa-Iuh"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <connections>
                 <outlet property="attachmentWidth" destination="ZQl-7I-b7j" id="8BV-F3-dgB"/>
                 <outlet property="checkboxButton" destination="ehh-A8-O8P" id="7zz-Yx-j88"/>

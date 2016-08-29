@@ -17,27 +17,27 @@
 import Foundation
 
 extension UIFont {
-    class func robotoThin(#size: CGFloat) -> UIFont {
+    class func robotoThin(size size: CGFloat) -> UIFont {
         return UIFont(name: "Roboto-Thin", size: size)!
     }
     
-    class func robotoRegular(#size: CGFloat) -> UIFont {
+    class func robotoRegular(size size: CGFloat) -> UIFont {
         return UIFont(name: "Roboto-Regular", size: size)!
     }
     
-    class func robotoLight(#size: CGFloat) -> UIFont {
+    class func robotoLight(size size: CGFloat) -> UIFont {
         return UIFont(name: "Roboto-Light", size: size)!
     }
     
-    class func robotoMedium(#size: CGFloat) -> UIFont {
+    class func robotoMedium(size size: CGFloat) -> UIFont {
         return UIFont(name: "Roboto-Medium", size: size)!
     }
     
-    class func robotoMediumItalic(#size: CGFloat) -> UIFont {
+    class func robotoMediumItalic(size size: CGFloat) -> UIFont {
         return UIFont(name: "Roboto-MediumItalic", size: size)!
     }
     
-    class func robotoLightItalic(#size: CGFloat) -> UIFont {
+    class func robotoLightItalic(size size: CGFloat) -> UIFont {
         return UIFont(name: "Roboto-LightItalic", size: size)!
     }
     

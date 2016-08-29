@@ -16,6 +16,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
         
         if msg == nil || msg?.location == MessageLocation.draft {
             self.message = msg
+            self.setSubject(self.message?.title ?? "")
         }
         else
         {
@@ -36,11 +37,13 @@ public class ComposeViewModelImpl : ComposeViewModel {
                             self.message?.title = "Fwd: \(title)"
                         }
                     }
+                } else {
                 }
             }
             //PMLog.D(message!);
         }
         
+        self.setSubject(self.message?.title ?? "")
         self.messageAction = action
         self.updateContacts(msg?.location)
     }
@@ -100,7 +103,6 @@ public class ComposeViewModelImpl : ComposeViewModel {
             case .NewDraft, .Forward:
                 break;
             case .OpenDraft:
-                let userAddress = sharedUserDataService.userAddresses
                 let toContacts = self.toContacts(self.message!.recipientList)
                 for cont in toContacts {
                     if !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
@@ -183,8 +185,6 @@ public class ComposeViewModelImpl : ComposeViewModel {
                         }
                     }
                 }
-            default:
-                break;
             }
         }
     }
@@ -203,30 +203,33 @@ public class ComposeViewModelImpl : ComposeViewModel {
         PMLog.D(self.ccSelectedContacts)
         PMLog.D(self.bccSelectedContacts)
         
+        //self.setBody(body)
+        self.setSubject(title)
+        
         if message == nil || message?.managedObjectContext == nil {
             self.message = MessageHelper.messageWithLocation(MessageLocation.draft,
-                recipientList: toJsonString(self.toSelectedContacts),
-                bccList: toJsonString(self.bccSelectedContacts),
-                ccList: toJsonString(self.ccSelectedContacts),
-                title: title,
-                encryptionPassword: "",
-                passwordHint: "",
-                expirationTimeInterval: expir,
-                body: body,
-                attachments: nil,
-                inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext!)
+                                                             recipientList: toJsonString(self.toSelectedContacts),
+                                                             bccList: toJsonString(self.bccSelectedContacts),
+                                                             ccList: toJsonString(self.ccSelectedContacts),
+                                                             title: self.subject,
+                                                             encryptionPassword: "",
+                                                             passwordHint: "",
+                                                             expirationTimeInterval: expir,
+                                                             body: body,
+                                                             attachments: nil,
+                                                             inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext!)
         } else {
             self.message?.recipientList = toJsonString(self.toSelectedContacts)
             self.message?.ccList = toJsonString(self.ccSelectedContacts)
             self.message?.bccList = toJsonString(self.bccSelectedContacts)
-            self.message?.title = title
+            self.message?.title = self.subject
             self.message?.time = NSDate()
             self.message?.password = pwd
             self.message?.passwordHint = pwdHit
             self.message?.expirationOffset = Int32(expir)
             MessageHelper.updateMessage(self.message!, expirationTimeInterval: expir, body: body, attachments: nil)
             if let error = message!.managedObjectContext?.saveUpstreamIfNeeded() {
-                NSLog("\(__FUNCTION__) error: \(error)")
+                PMLog.D(" error: \(error)")
             }
         }
         
@@ -249,7 +252,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
         if message != nil {
             message?.isRead = true;
             if let error = message!.managedObjectContext?.saveUpstreamIfNeeded() {
-                NSLog("\(__FUNCTION__) error: \(error)")
+                PMLog.D(" error: \(error)")
             }
         }
     }
@@ -258,9 +261,9 @@ public class ComposeViewModelImpl : ComposeViewModel {
         //sharedUserDataService.signature
         let signature = self.getDefaultAddress()?.signature ?? "\(sharedUserDataService.signature)"
         
-        let mobileSignature = sharedUserDataService.showMobileSignature ? "<div><br></div><div><br></div><div id=\"protonmail_mobile_signature_block\">\(sharedUserDataService.mobileSignature)" : ""
+        let mobileSignature = sharedUserDataService.showMobileSignature ? "<div><br></div><div><br></div><div id=\"protonmail_mobile_signature_block\">\(sharedUserDataService.mobileSignature)</div>" : ""
         
-        let defaultSignature = sharedUserDataService.showDefaultSignature ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\">\(signature)" : ""
+        let defaultSignature = sharedUserDataService.showDefaultSignature ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\">\(signature)</div>" : ""
         
         let htmlString = "\(defaultSignature) \(mobileSignature)";
         
@@ -269,12 +272,22 @@ public class ComposeViewModelImpl : ComposeViewModel {
         switch messageAction!
         {
         case .OpenDraft:
-            let body = message!.decryptBodyIfNeeded(nil) ?? ""
-            return body
+            do {
+                let body = try message!.decryptBodyIfNeeded() ?? ""
+                return body
+            } catch let ex as NSError {
+                PMLog.D("getHtmlBody OpenDraft error : \(ex)")
+                return self.message!.bodyToHtml()
+            }
         case .Reply, .ReplyAll:
-            // composeView.subject.text = "Re: " + viewModel.getSubject()
-            let replyMessage = NSLocalizedString("Reply message")
-            var body = message!.decryptBodyIfNeeded(nil) ?? ""
+            
+            var body = ""
+            do {
+                body = try message!.decryptBodyIfNeeded() ?? ""
+            } catch let ex as NSError {
+                PMLog.D("getHtmlBody OpenDraft error : \(ex)")
+                body = self.message!.bodyToHtml()
+            }
             
             body = body.stringByStrippingStyleHTML()
             body = body.stringByStrippingBodyStyle()
@@ -287,9 +300,9 @@ public class ComposeViewModelImpl : ComposeViewModel {
             
             let replyHeader = time + ", " + sn + " <'\(se)'>"
             let sp = "<div><br><div><div><br></div>\(replyHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
+            
             return "\(htmlString) \(sp) \(body)</blockquote>"
         case .Forward:
-            //composeView.subject.text = "Fwd: \(message.title)"
             let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
             var forwardHeader = "---------- Forwarded message ----------<br>From: \( message!.senderContactVO.name) <'\(message!.senderContactVO.email)'> <br>Date: \(time)<br>Subject: \(message!.title)<br>"
             if message!.recipientList != "" {
@@ -300,7 +313,14 @@ public class ComposeViewModelImpl : ComposeViewModel {
                 forwardHeader += "CC: \(message!.ccList.formatJsonContact())<br>"
             }
             forwardHeader += "<br><br>"
-            var body = message!.decryptBodyIfNeeded(nil) ?? ""
+            var body = ""
+            
+            do {
+                body = try message!.decryptBodyIfNeeded() ?? ""
+            } catch let ex as NSError {
+                PMLog.D("getHtmlBody OpenDraft error : \(ex)")
+                body = self.message!.bodyToHtml()
+            }
             
             body = body.stringByStrippingStyleHTML()
             body = body.stringByStrippingBodyStyle()
@@ -309,13 +329,15 @@ public class ComposeViewModelImpl : ComposeViewModel {
             let sp = "<div><br></div><div><br></div>\(forwardHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
             return "\(defaultSignature) \(mobileSignature) \(sp) \(body)"
         case .NewDraft:
-            return htmlString
-        default:
+            if !self.body.isEmpty {
+                let newhtmlString = " \(self.body) \(htmlString)"
+                self.body = ""
+                return newhtmlString
+            }
             return htmlString
         }
         
     }
-    
 }
 
 extension ComposeViewModelImpl {
@@ -327,7 +349,7 @@ extension ComposeViewModelImpl {
             out.append(to)
         }
         
-        let bytes : NSData = NSJSONSerialization.dataWithJSONObject(out, options: NSJSONWritingOptions.allZeros, error: nil)!
+        let bytes : NSData = try! NSJSONSerialization.dataWithJSONObject(out, options: NSJSONWritingOptions())
         let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
         
         return strJson
@@ -357,21 +379,17 @@ extension ComposeViewModelImpl {
     }
     
     func parse (json : String) -> [String:String] {
-        var error: NSError?
         if json.isEmpty {
             return ["" : ""];
         }
-        
-        let data : NSData! = json.dataUsingEncoding(NSUTF8StringEncoding)
-        let decoded = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error:  &error) as? [String:String]
-        
-        
-        if error != nil {
+        do {
+            let data : NSData! = json.dataUsingEncoding(NSUTF8StringEncoding)
+            let decoded = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as? [String:String]
+            return decoded ?? ["" : ""]
+        } catch {
             PMLog.D(" func parseJson() -> error error \(error)")
-            return ["":""]
         }
-        
-        return decoded!
+        return ["":""]
     }
 }
 

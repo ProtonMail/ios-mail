@@ -1,6 +1,6 @@
 // GRTManagedStore.m
 //
-// Copyright (c) 2014 Guillermo Gonzalez
+// Copyright (c) 2014-2015 Guillermo Gonzalez
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,108 +22,114 @@
 
 #import "GRTManagedStore.h"
 
-static NSString *GRTApplicationCachePath() {
-    static dispatch_once_t onceToken;
-    static NSString *path;
+NS_ASSUME_NONNULL_BEGIN
+
+static NSURL *GRTCachesDirectoryURL(NSError **outError) {
+    NSError *error = nil;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSURL *rootURL = [fileManager URLForDirectory:NSCachesDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:&error];
     
-    dispatch_once(&onceToken, ^{
-        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
-        path = [path stringByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+    if (error != nil) {
+        if (outError != nil) *outError = error;
+        return nil;
+    }
+    
+    NSString *bundleIdentifier = [NSBundle bundleForClass:[GRTManagedStore class]].bundleIdentifier;
+    NSURL *cachesDirectoryURL = [rootURL URLByAppendingPathComponent:bundleIdentifier];
+    
+    if (![fileManager fileExistsAtPath:cachesDirectoryURL.path]) {
+        [fileManager createDirectoryAtURL:cachesDirectoryURL withIntermediateDirectories:YES attributes:nil error:&error];
         
-        NSError *error = nil;
-        BOOL success = [[NSFileManager defaultManager] createDirectoryAtPath:path
-                                                 withIntermediateDirectories:YES
-                                                                  attributes:nil
-                                                                       error:&error];
-        
-        if (!success) {
-            NSLog(@"%s Error creating the application cache directory: %@", __PRETTY_FUNCTION__, error);
+        if (error != nil) {
+            if (outError != nil) *outError = error;
+            return nil;
         }
-    });
+    }
     
-    return path;
+    return cachesDirectoryURL;
 }
-
-@interface GRTManagedStore ()
-
-@property (strong, nonatomic, readwrite) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (strong, nonatomic, readwrite) NSManagedObjectModel *managedObjectModel;
-
-@property (copy, nonatomic) NSString *path;
-
-@end
 
 @implementation GRTManagedStore
 
-#pragma mark - Properties
-
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
-    if (!_persistentStoreCoordinator) {
-        _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
-        
-        NSString *storeType = self.path ? NSSQLiteStoreType : NSInMemoryStoreType;
-        NSURL *storeURL = self.path ? [NSURL fileURLWithPath:self.path] : nil;
-        
-        NSDictionary *options = @{
-                                  NSMigratePersistentStoresAutomaticallyOption: @YES,
-                                  NSInferMappingModelAutomaticallyOption: @YES
-                                  };
-        
-        NSError *error = nil;
-        NSPersistentStore *store = [_persistentStoreCoordinator addPersistentStoreWithType:storeType
-                                                                             configuration:nil
-                                                                                       URL:storeURL
-                                                                                   options:options
-                                                                                     error:&error];
-        if (!store) {
-            NSLog(@"%@ Error creating persistent store: %@", self, error);
-        }
-    }
-    
-    return _persistentStoreCoordinator;
-}
-
 - (NSManagedObjectModel *)managedObjectModel {
-    if (!_managedObjectModel) {
-        _managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
-    }
-    
-    return _managedObjectModel;
+    return self.persistentStoreCoordinator.managedObjectModel;
 }
 
-#pragma mark - Lifecycle
-
-+ (instancetype)managedStoreWithModel:(NSManagedObjectModel *)managedObjectModel {
-    return [[self alloc] initWithPath:nil managedObjectModel:managedObjectModel];
+- (NSURL *)URL {
+    NSPersistentStore *store = self.persistentStoreCoordinator.persistentStores[0];
+    return store.URL;
 }
 
-+ (instancetype)temporaryManagedStore {
-    NSString *fileName = [[NSProcessInfo processInfo] globallyUniqueString];
-    NSString *path = [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
-    
-    return [[self alloc] initWithPath:path managedObjectModel:nil];
+- (instancetype)init {
+    return [self initWithURL:nil model:[NSManagedObjectModel mergedModelFromBundles:nil] error:NULL];
 }
 
-+ (instancetype)managedStoreWithCacheName:(NSString *)cacheName {
-    NSParameterAssert(cacheName);
-    
-    NSString *path = [GRTApplicationCachePath() stringByAppendingPathComponent:cacheName];
-    return [[self alloc] initWithPath:path managedObjectModel:nil];
-}
-
-- (id)init {
-    return [self initWithPath:nil managedObjectModel:nil];
-}
-
-- (id)initWithPath:(NSString *)path managedObjectModel:(NSManagedObjectModel *)managedObjectModel {
+- (nullable instancetype)initWithURL:(nullable NSURL *)URL
+                               model:(NSManagedObjectModel *)managedObjectModel
+                               error:(NSError *__autoreleasing  __nullable * __nullable)outError
+{
     self = [super init];
     
     if (self) {
-        _path = [path copy];
-        _managedObjectModel = managedObjectModel;
+        _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:managedObjectModel];
+        
+        NSString *storeType = (URL != nil ? NSSQLiteStoreType : NSInMemoryStoreType);
+        NSDictionary *options = @{
+            NSMigratePersistentStoresAutomaticallyOption: @YES,
+            NSInferMappingModelAutomaticallyOption: @YES
+        };
+        
+        NSError *error = nil;
+        [_persistentStoreCoordinator addPersistentStoreWithType:storeType
+                                                  configuration:nil
+                                                            URL:URL
+                                                        options:options
+                                                          error:&error];
+        
+        if (error != nil) {
+            if (outError != nil) *outError = error;
+            return nil;
+        }
     }
     
     return self;
 }
 
+- (nullable instancetype)initWithCacheName:(NSString *)cacheName
+                                     model:(NSManagedObjectModel *)managedObjectModel
+                                     error:(NSError *__autoreleasing  __nullable * __nullable)outError
+{
+    NSError *error = nil;
+    NSURL *cachesDirectoryURL = GRTCachesDirectoryURL(&error);
+    
+    if (error != nil) {
+        if (outError != nil) *outError = error;
+        return nil;
+    }
+    
+    NSURL *storeURL = [cachesDirectoryURL URLByAppendingPathComponent:cacheName];
+    return [self initWithURL:storeURL model:managedObjectModel error:outError];
+}
+
+- (nullable instancetype)initWithModel:(NSManagedObjectModel *)managedObjectModel error:(NSError *__autoreleasing  __nullable * __nullable)outError {
+    return [self initWithURL:nil model:managedObjectModel error:outError];
+}
+
++ (nullable instancetype)storeWithURL:(NSURL *)URL error:(NSError *__autoreleasing  __nullable * __nullable)outError {
+    return [[self alloc] initWithURL:URL model:[NSManagedObjectModel mergedModelFromBundles:nil] error:outError];
+}
+
++ (nullable instancetype)storeWithCacheName:(NSString *)cacheName error:(NSError *__autoreleasing  __nullable * __nullable)outError {
+    return [[self alloc] initWithCacheName:cacheName model:[NSManagedObjectModel mergedModelFromBundles:nil] error:outError];
+}
+
+- (NSManagedObjectContext *)contextWithConcurrencyType:(NSManagedObjectContextConcurrencyType)concurrencyType {
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:concurrencyType];
+    context.persistentStoreCoordinator = self.persistentStoreCoordinator;
+    
+    return context;
+}
+
 @end
+
+NS_ASSUME_NONNULL_END

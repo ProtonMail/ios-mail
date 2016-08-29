@@ -19,7 +19,7 @@ import Foundation
 class BugDataService {
     
     func reportBug(bug: String, completion: (NSError? -> Void)?) {
-        var systemVersion = UIDevice.currentDevice().systemVersion;
+        let systemVersion = UIDevice.currentDevice().systemVersion;
         let model = UIDevice.currentDevice().model
         let mainBundle = NSBundle.mainBundle()
         let username = sharedUserDataService.username ?? ""

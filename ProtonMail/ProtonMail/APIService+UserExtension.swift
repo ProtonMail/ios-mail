@@ -26,14 +26,14 @@ extension APIService {
     }
 
     func userPublicKeyForUsername(username: String, completion: CompletionBlock?) {
-        let path = UserPath.base.stringByAppendingPathComponent("pubkey").stringByAppendingPathComponent(username)
+        let path = UserPath.base + "/pubkey" + "/\(username)"
         
         setApiVesion(1, appVersion: 1)
         request(method: .GET, path: path, parameters: nil, completion: completion)
     }
     
     func userPublicKeysForEmails(emails: Array<String>, completion: CompletionBlock?) {
-        let emailsString = ",".join(emails)
+        let emailsString = emails.joinWithSeparator(",")
         
         userPublicKeysForEmails(emailsString, completion: completion)
     }
@@ -42,22 +42,18 @@ extension APIService {
         PMLog.D("userPublicKeysForEmails -- \(emails)")
         if !emails.isEmpty {
             if let base64Emails = emails.base64Encoded() {
-                var escapedValue : String? = base64Emails.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet(charactersInString: "/+=\n").invertedSet)
+                let escapedValue : String? = base64Emails.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet(charactersInString: "/+=\n").invertedSet)
                 let path = UserPath.base.stringByAppendingPathComponent("pubkeys").stringByAppendingPathComponent(escapedValue ?? base64Emails)
                 setApiVesion(2, appVersion: 1)
                 request(method: .GET, path: path, parameters: nil, completion: { task, response, error in
-                    
                     PMLog.D("userPublicKeysForEmails -- res \(response) || error -- \(error)")
-                    
-                    var error = error
-                    var response = response
-                    
-                    if (self.isErrorResponse(response) != nil) {
-//                        let errorCode = (response!["Code"] as! Int) ?? 0
-//                        let description = (response!["Error"] as! NSDictionary).description ?? NSLocalizedString("Unknown error")
-//                        error = NSError.protonMailError(code: errorCode, localizedDescription: description)
+                    let error = error
+                    let response = response
+                    if let paserError = self.isErrorResponse(response) {
+                        completion?(task: task, response: response, error: paserError)
+                    } else {
+                        completion?(task: task, response: response, error: error)
                     }
-                    completion?(task: task, response: response, error: error)
                 })
                 return
             }
@@ -66,7 +62,7 @@ extension APIService {
     }
     
     func userUpdateKeypair(pwd: String, publicKey: String, privateKey: String, completion: CompletionBlock?) {
-        let path = UserPath.base.stringByAppendingPathComponent("keys")
+        let path = UserPath.base + "/keys"
         let parameters = [
             "Password" : pwd,
             "PublicKey" : publicKey,
@@ -76,20 +72,14 @@ extension APIService {
         request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
     
-
-    
     // MARK: private mothods
     private func isErrorResponse(response: AnyObject!) -> NSError? {
         if let dict = response as? NSDictionary {
-            let code = dict["Code"] as! Int
-            if (code != 1000)
-            {
-                let error = dict["Error"] as! String;
-                let desc = dict["ErrorDescription"] as! String;
+            if let code = dict["Code"] as? Int where code != 1000 {
+                let error = dict["Error"] as? String ?? ""
+                let desc = dict["ErrorDescription"] as? String ?? ""
                 return NSError.apiServiceError(code: code, localizedDescription: error, localizedFailureReason: desc, localizedRecoverySuggestion: "")
-            }
-            else
-            {
+            } else {
                 return nil
             }
         }

@@ -78,7 +78,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 }
 
 - (void)tintColorDidChange{
-    self.focused = self.focused;
+    self.pickerFocused = self.pickerFocused;
 }
 
 - (void)setModel:(id<MBContactPickerModelProtocol>)model
@@ -94,11 +94,11 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     return ceilf(size.width) + 20;
 }
 
-- (void)setFocused:(BOOL)focused
+-(void)setPickerFocused:(BOOL)pickerFocused
 {
-    _focused = focused;
+    _pickerFocused = pickerFocused;
     
-    if (focused)
+    if (self.pickerFocused)
     {
         self.contactTitleLabel.textColor = [UIColor whiteColor];
         self.contactTitleLabel.backgroundColor = self.tintColor;
