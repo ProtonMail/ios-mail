@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="15E65" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15F34" minimumToolsVersion="Automatic">
     <entity name="Attachment" representedClassName="ProtonMail.Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" syncable="YES">
             <userInfo>
@@ -16,6 +16,12 @@
             <userInfo>
                 <entry key="JSONKeyPath" value="Size"/>
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
+        <attribute name="headerInfo" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Headers"/>
+                <entry key="JSONTransformerName" value="JsonToObjectTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="isTemp" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -288,7 +294,7 @@
         </userInfo>
     </entity>
     <elements>
-        <element name="Attachment" positionX="1989" positionY="-3666" width="128" height="180"/>
+        <element name="Attachment" positionX="1989" positionY="-3666" width="128" height="195"/>
         <element name="Contact" positionX="1521" positionY="-3564" width="128" height="90"/>
         <element name="Conversation" positionX="1719" positionY="-3726" width="128" height="45"/>
         <element name="Label" positionX="2095" positionY="-3357" width="128" height="135"/>

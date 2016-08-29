@@ -60,6 +60,16 @@ extension NSError {
         return UIAlertController(title: localizedDescription, message: message, preferredStyle: .Alert)
     }
     
+    func getCode() -> Int {
+        var defaultCode : Int = code;
+        if defaultCode == Int.max {
+            if let detail = self.userInfo["com.alamofire.serialization.response.error.response"] as? NSHTTPURLResponse {
+                defaultCode = detail.statusCode
+            }
+        }
+        return defaultCode
+    }
+    
     func alertController(title : String) -> UIAlertController {
         var message = localizedFailureReason
         
@@ -82,6 +92,16 @@ extension NSError {
         hud.mode = MBProgressHUDMode.Text
         hud.labelText = NSLocalizedString("Alert");
         hud.detailsLabelText = localizedDescription
+        hud.removeFromSuperViewOnHide = true
+        hud.hide(true, afterDelay: 3)
+    }
+    
+    func alertErrorToast() ->Void {
+        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+        hud.mode = MBProgressHUDMode.Text
+        hud.labelText = NSLocalizedString(localizedDescription);
+        hud.detailsLabelText = description
         hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)
     }

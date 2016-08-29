@@ -21,49 +21,43 @@ import Foundation
 let APIServiceErrorDomain = NSError.protonMailErrorDomain("APIService")
 
 let sharedAPIService = APIService()
+
 class APIService {
     
-    var tried : Int = 0
-    var tokenRefreshing = false
+    // refresh token failed count
+    internal var refreshTokenFailedCount = 0
     
-    typealias CompletionBlock = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, error: NSError?) -> Void
-    typealias CompletionFetchDetail = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, message:Message?, error: NSError?) -> Void
-
-    enum HTTPMethod {
-        case DELETE
-        case GET
-        case POST
-        case PUT
-    }
+    // synchronize lock
+    internal var mutex = pthread_mutex_t()
     
-    // MARK: - Internal variables
-    
-    internal typealias AFNetworkingFailureBlock = (NSURLSessionDataTask!, NSError!) -> Void
-    internal typealias AFNetworkingSuccessBlock = (NSURLSessionDataTask!, AnyObject!) -> Void
-    
-    // MARK: - Private variables
-    
+    // api session manager
     private let sessionManager: AFHTTPSessionManager
     
-    func getSession() ->AFHTTPSessionManager{
+    // get session
+    func getSession() -> AFHTTPSessionManager{
         return sessionManager;
     }
     
     // MARK: - Internal methods
     
     init() {
+        // init lock
+        pthread_mutex_init(&mutex, nil)
+        
         sessionManager = AFHTTPSessionManager(baseURL: NSURL(string: AppConstants.BaseURLString)!)
         sessionManager.requestSerializer = AFJSONRequestSerializer() as AFHTTPRequestSerializer
         //sessionManager.requestSerializer.timeoutInterval = 20.0;
+        
         #if DEBUG
             sessionManager.securityPolicy.allowInvalidCertificates = true
         #endif
+        
         //NSOperationQueueDefaultMaxConcurrentOperationCount sessionManager.operationQueue.maxConcurrentOperationCount
         //let defaultV = NSOperationQueueDefaultMaxConcurrentOperationCount;
         setupValueTransforms()
     }
     
-    internal func afNetworkingBlocksForRequest(method method: HTTPMethod, path: String, parameters: AnyObject?, authenticated: Bool = true, completion: CompletionBlock?) -> (AFNetworkingSuccessBlock?, AFNetworkingFailureBlock?) {
+    internal func afNetworkingBlocksForRequest(method method: HTTPMethod, path: String, parameters: AnyObject?, auth: AuthCredential?, authenticated: Bool = true, completion: CompletionBlock?) -> (AFNetworkingSuccessBlock?, AFNetworkingFailureBlock?) {
         if let completion = completion {
             let failure: AFNetworkingFailureBlock = { task, error in
                 PMLog.D("Error: \(error)")
@@ -76,8 +70,9 @@ class APIService {
                 }
                 
                 if authenticated && errorCode == 401 {
-                    AuthCredential.expireOrClear()
+                    AuthCredential.expireOrClear(auth?.token)
                     if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
+                        error.alertToast()
                         sharedUserDataService.signOut(true);
                     }else {
                         self.setApiVesion(1, appVersion: 1)
@@ -87,25 +82,31 @@ class APIService {
                     completion(task: task, response: nil, error: error)
                 }
             }
+            
             let success: AFNetworkingSuccessBlock = { task, responseObject in
                 if let responseDictionary = responseObject as? Dictionary<String, AnyObject> {
+                    var error : NSError?
                     let responseCode = responseDictionary["Code"] as? Int
+                    
+                    if responseCode != 1000 && responseCode != 1001 {
+                        let errorMessage = responseDictionary["Error"] as? String
+                        let errorDetails = responseDictionary["ErrorDescription"] as? String
+                        error = NSError.protonMailError(code: responseCode ?? 1000, localizedDescription: errorMessage ?? "", localizedFailureReason: errorDetails, localizedRecoverySuggestion: nil)
+                    }
+                    
                     if authenticated && responseCode == 401 {
-                        AuthCredential.expireOrClear()
+                        AuthCredential.expireOrClear(auth?.token)
                         self.setApiVesion(1, appVersion: 1)
                         self.request(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)
                     } else if responseCode == 5001 || responseCode == 5002 || responseCode == 5003 || responseCode == 5004 {
                         NSError.alertUpdatedToast()
-                        completion(task: task, response: responseDictionary, error: nil)
+                        completion(task: task, response: responseDictionary, error: error)
                         sharedUserDataService.signOut(true);
-                    } else if responseCode == 7001 { //offline
-                        NSError.alertOfflineToast()
-                        completion(task: task, response: responseDictionary, error: nil)
-                        sharedUserDataService.signOut(true);
+                    } else if responseCode == APIErrorCode.API_offline {
+                        completion(task: task, response: responseDictionary, error: error)
                     }
                     else {
-                        //TODO :: need add error handling here pass the respones if has error.
-                        completion(task: task, response: responseDictionary, error: nil)
+                        completion(task: task, response: responseDictionary, error: error)
                     }
                 } else if responseObject == nil {
                     completion(task: task, response: [:], error: nil)
@@ -137,60 +138,102 @@ class APIService {
     }
     
     internal func fetchAuthCredential(completion completion: AuthCredentialBlock) {
-        if let credential = AuthCredential.fetchFromKeychain() {
-            if !credential.isExpired {
-                if (credential.password ?? "").isEmpty {
-                    self.tried = 0
-                    AuthCredential.clearFromKeychain()
-                    completion(nil, NSError.authCacheBad())
-                    sharedUserDataService.signOut(true)
-                } else {
-                    
-                    self.tried = 0
-                    self.sessionManager.requestSerializer.setAuthorizationHeaderFieldWithCredential(credential)
-                    completion(credential, nil)
-                }
-            } else {
-                self.tried += 1
-                if (credential.password ?? "").isEmpty {
-                    self.tried = 0
-                    AuthCredential.clearFromKeychain()
-                    completion(nil, NSError.authCacheBad())
-                    sharedUserDataService.signOut(true)
-                } else {
-                    authRefresh (credential.password  ?? "") { (task, authCredential, error) -> Void in
-                        if error == nil && self.tried < 8 {
-                            self.fetchAuthCredential(completion: completion)
-                        } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
-                            AuthCredential.clearFromKeychain()
-                            self.fetchAuthCredential(completion: completion)
-                        } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
-                            AuthCredential.clearFromKeychain()
-                            completion(authCredential, error)
-                            sharedUserDataService.signOut(true)
-                        } else if self.tried > 7 {
-                            self.tried = 0
-                            AuthCredential.clearFromKeychain()
-                            completion(nil, NSError.authCacheBad())
-                            sharedUserDataService.signOut(true)
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            PMLog.D("Read Waiting!")
+            pthread_mutex_lock(&self.mutex)
+            PMLog.D("Enter Reading!!")
+            
+            //fetch auth info
+            if let credential = AuthCredential.fetchFromKeychain() {
+                PMLog.D("\(credential.description)")
+                
+                if !credential.isExpired { // access token time is valid
+                    if (credential.password ?? "").isEmpty { // mailbox pwd is empty should show error and logout
+                        
+                        //clean auth cache let user relogin
+                        AuthCredential.clearFromKeychain()
+                        
+                        PMLog.D("Exiting Reading!!!")
+                        pthread_mutex_unlock(&self.mutex)
+                        PMLog.D("Exit Reading!!!!")
+                        
+                        dispatch_async(dispatch_get_main_queue()) {
+                            completion(nil, NSError.AuthCachePassEmpty())
+                            sharedUserDataService.signOut(true) //NOTES:signout + errors
+                            NSError.alertBadTokenToast()
                         }
-                        else {
-                            completion(authCredential, error)
+                    } else {
+                        self.sessionManager.requestSerializer.setAuthorizationHeaderFieldWithCredential(credential)
+                        
+                        PMLog.D("Exiting Reading!!!")
+                        pthread_mutex_unlock(&self.mutex)
+                        PMLog.D("Exit Reading!!!!")
+                        
+                        dispatch_async(dispatch_get_main_queue()) {
+                            completion(credential, nil)
+                        }
+                    }
+                } else {
+                    if (credential.password ?? "").isEmpty {
+                        
+                        AuthCredential.clearFromKeychain()
+                        
+                        PMLog.D("Exiting Reading!!!")
+                        pthread_mutex_unlock(&self.mutex)
+                        PMLog.D("Exit Reading!!!!")
+                        dispatch_async(dispatch_get_main_queue()) {
+                            completion(nil, NSError.AuthCachePassEmpty())
+                            sharedUserDataService.signOut(true)
+                            NSError.alertBadTokenToast()
+                        }
+                    } else {
+                        self.authRefresh (credential.password  ?? "") { (task, authCredential, error) -> Void in
+                            
+                            PMLog.D("Exiting Reading!!!")
+                            pthread_mutex_unlock(&self.mutex)
+                            PMLog.D("Exit Reading!!!!")
+                            
+                            if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
+                                AuthCredential.clearFromKeychain()
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    NSError.alertBadTokenToast()
+                                    self.fetchAuthCredential(completion: completion)
+                                }
+                            } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
+                                AuthCredential.clearFromKeychain()
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    NSError.alertBadTokenToast()
+                                    completion(authCredential, error)
+                                }
+                            } else {
+                                if let credential = AuthCredential.fetchFromKeychain() {
+                                    self.sessionManager.requestSerializer.setAuthorizationHeaderFieldWithCredential(credential)
+                                }
+                                dispatch_async(dispatch_get_main_queue()) {
+                                    completion(authCredential, error)
+                                }
+                            }
                         }
                     }
                 }
-            }
-        } else {
-            AuthCredential.clearFromKeychain()
-            if sharedUserDataService.isSignedIn {
-                completion(nil, NSError.authCacheBad())
-                sharedUserDataService.signOut(true)
-                userCachedStatus.signOut()
-                NSError.alertBadTokenToast()
+            } else { //the cache have issues
+                AuthCredential.clearFromKeychain()
+                
+                PMLog.D("Exiting Reading!!!")
+                pthread_mutex_unlock(&self.mutex)
+                PMLog.D("Exit Reading!!!!")
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    if sharedUserDataService.isSignedIn {
+                        completion(nil, NSError.authCacheBad())
+                        sharedUserDataService.signOut(true)
+                        userCachedStatus.signOut()
+                    }
+                }
             }
         }
+
     }
-    
     // MARK: - Request methods
     
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
@@ -220,13 +263,13 @@ class APIService {
     
     
     /**
-    this function only for upload attachments for now.
-    
-    :param: url        The content accept endpoint
-    :param: parameters the request body
-    :param: keyPackets encrypt attachment key package
-    :param: dataPacket encrypt attachment data package
-    */
+     this function only for upload attachments for now.
+     
+     :param: url        The content accept endpoint
+     :param: parameters the request body
+     :param: keyPackets encrypt attachment key package
+     :param: dataPacket encrypt attachment data package
+     */
     internal func upload (url: String, parameters: AnyObject?, keyPackets : NSData!, dataPacket : NSData!, completion: CompletionBlock?) { //TODO / RUSH : need add respons handling, progress bar later
         do {
             let request = try sessionManager.requestSerializer.multipartFormRequestWithMethod("POST", URLString: url, parameters: parameters as! [String:String], constructingBodyWithBlock: { (formData) -> Void in
@@ -245,10 +288,10 @@ class APIService {
     }
     
     func request(method method: HTTPMethod, path: String, parameters: AnyObject?, authenticated: Bool = true, completion: CompletionBlock?) {
-        let authBlock: AuthCredentialBlock = { _, error in
+        let authBlock: AuthCredentialBlock = { auth, error in
             if error == nil {
-                let (successBlock, failureBlock) = self.afNetworkingBlocksForRequest(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)
-
+                let (successBlock, failureBlock) = self.afNetworkingBlocksForRequest(method: method, path: path, parameters: parameters, auth:auth, authenticated: authenticated, completion: completion)
+                
                 switch(method) {
                 case .DELETE:
                     self.sessionManager.DELETE(path, parameters: parameters, success: successBlock, failure: failureBlock)
@@ -271,92 +314,6 @@ class APIService {
         }
     }
     
-    // MARK: - Private methods
-    private func setupValueTransforms() {
-        
-        NSValueTransformer.grt_setValueTransformerWithName("BoolTransformer") { (value) -> AnyObject? in
-            if let bool = value as? NSString {
-                return bool.boolValue
-            } else if let bool = value as? Bool {
-                return bool
-            }
-            return nil
-        }
-        
-        NSValueTransformer.grt_setValueTransformerWithName("DateTransformer") { (value) -> AnyObject? in
-            if let timeString = value as? NSString {
-                let time = timeString.doubleValue as NSTimeInterval
-                if time != 0 {
-                    return time.asDate()
-                }
-            } else if let date = value as? NSDate {
-                return date.timeIntervalSince1970
-            } else if let dateNumber = value as? NSNumber {
-                let time = dateNumber.doubleValue as NSTimeInterval
-                if time != 0 {
-                    return time.asDate()
-                }
-            }
-            
-            return nil
-        }
-        
-        NSValueTransformer.grt_setValueTransformerWithName("NumberTransformer") { (value) -> AnyObject? in
-            if let number = value as? String {
-                return number ?? 0 as NSNumber
-            } else if let number = value as? NSNumber {
-                return number
-            }
-            return nil
-        }
-        
-        NSValueTransformer.grt_setValueTransformerWithName("JsonStringTransformer") { (value) -> AnyObject? in
-            do {
-                if let tag = value as? NSArray {
-                    let bytes : NSData = try NSJSONSerialization.dataWithJSONObject(tag, options: NSJSONWritingOptions())
-                    let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
-                    return strJson
-                }
-            } catch let ex as NSError {
-                PMLog.D("\(ex)")
-            }
-            return "";
-        }
-        
-        NSValueTransformer.grt_setValueTransformerWithName("JsonToObjectTransformer") { (value) -> AnyObject? in
-            do {
-                if let tag = value as? [String:String] {
-                    let bytes : NSData = try NSJSONSerialization.dataWithJSONObject(tag, options: NSJSONWritingOptions())
-                    let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
-                    return strJson
-                }
-            } catch let ex as NSError {
-                PMLog.D("\(ex)")
-            }
-            return "";
-        }
-        
-        NSValueTransformer.grt_setValueTransformerWithName("EncodedDataTransformer") { (value) -> AnyObject? in
-
-            if let tag = value as? String {
-                if let data: NSData = NSData(base64EncodedString: tag, options: NSDataBase64DecodingOptions(rawValue: 0)) {
-                    return data
-                }
-            }
-            return nil;
-        }
-
-//        NSValueTransformer.grt_setValueTransformerWithName("TransforDataNoID") { (value) -> AnyObject? in
-//            if let idArray = value as? NSArray {
-//                var fixedArray = [Dictionary<String, AnyObject>]()
-//                for labelID in idArray {
-//                    fixedArray.append(["ID" : labelID])
-//                }
-//                return fixedArray
-//            }
-//            return value;
-//        }
-        
-    }
+    
 }
 

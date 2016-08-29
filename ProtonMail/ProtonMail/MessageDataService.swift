@@ -788,13 +788,17 @@ class MessageDataService {
             if attachment.managedObjectContext != nil {
                 sharedAPIService.attachmentForAttachmentID(attachment.attachmentID, destinationDirectoryURL: NSFileManager.defaultManager().attachmentDirectory, downloadTask: downloadTask, completion: { task, fileURL, error in
                     var error = error
-                    if let fileURL = fileURL {
-                        attachment.localURL = fileURL
-                        error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
-                        if error != nil  {
-                            PMLog.D(" error: \(error)")
+                    if let context = attachment.managedObjectContext {
+                        if let fileURL = fileURL {
+                            attachment.localURL = fileURL
+                            attachment.fileData = NSData(contentsOfURL: fileURL)
+                            error = context.saveUpstreamIfNeeded()
+                            if error != nil  {
+                                PMLog.D(" error: \(error)")
+                            }
                         }
                     }
+                    
                     completion?(task, fileURL, error)
                 })
             } else {
@@ -829,7 +833,6 @@ class MessageDataService {
                                     completion(task: task, response: response, message: message, error: error)
                                 }
                             } catch let ex as NSError {
-                                PMLog.D(" error: \(ex)")
                                 dispatch_async(dispatch_get_main_queue()) {
                                     completion(task: task, response: response, message: message, error: ex)
                                 }
@@ -862,6 +865,7 @@ class MessageDataService {
                         context.performBlock() {
                             if response != nil {
                                 //TODO need check the respons code
+                                PMLog.D("\(response)")
                                 if var msg: Dictionary<String,AnyObject> = response?["Message"] as? Dictionary<String,AnyObject> {
                                     msg.removeValueForKey("Location")
                                     msg.removeValueForKey("Starred")
@@ -890,7 +894,7 @@ class MessageDataService {
                                     }
                                 } else {
                                     dispatch_async(dispatch_get_main_queue()) {
-                                        completion(task: task, response: response, message:nil, error: NSError.badResponse())
+                                        completion(task: task, response: response, message:nil, error: error)
                                     }
                                     
                                 }
@@ -943,7 +947,9 @@ class MessageDataService {
                                 }
                             }
                         } else {
-                            completion(task: task, response: response, message:nil, error: NSError.badResponse())
+                            dispatch_async(dispatch_get_main_queue()) {
+                                completion(task: task, response: response, message:nil, error: NSError.badResponse())
+                            }
                         }
                     } else {
                         dispatch_async(dispatch_get_main_queue()) {
@@ -1331,6 +1337,7 @@ class MessageDataService {
                             PMLog.D("SendAttachmentDebug == finish save draft!")
                             if let mess = response {
                                 if let messageID = mess["ID"] as? String {
+                                    //if message context is invalid let app crash which is fine
                                     message.messageID = messageID
                                     message.isDetailDownloaded = true
                                     
@@ -1726,13 +1733,13 @@ class MessageDataService {
                 if statusCode == 200 && error?.code > 1000 {
                     //show error
                     sharedMessageQueue.remove(elementID: elementID)
-                    error?.alertToast()
+                    error?.uploadFabricAnswer()
                 }
                 
                 if statusCode != 200 && statusCode != 404 && statusCode != 500 && !isInternetIssue {
                     //show error
                     sharedMessageQueue.remove(elementID: elementID)
-                    error?.alertToast()
+                    error?.uploadFabricAnswer()
                 }
                 
                 if !isInternetIssue {

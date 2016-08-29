@@ -31,7 +31,7 @@ class AuthCredential: NSObject, NSCoding {
     var password : String?
     
     override var description: String {
-        return ""//"\n  encToken: \(encryptToken)\n  refreshToken: \(refreshToken)\n  expiration: \(expiration)\n  userID: \(userID)"
+        return "\n  token: \(plainToken)\n  refreshToken: \(refreshToken)\n  expiration: \(expiration)\n  userID: \(userID)"
     }
     
     var isExpired: Bool {
@@ -147,12 +147,14 @@ class AuthCredential: NSObject, NSCoding {
         UICKeyChainStore.removeItemForKey(Key.keychainStore)
     }
     
-    class func expireOrClear() {
+    class func expireOrClear(token : String?) {
         if let credential = AuthCredential.fetchFromKeychain() {
             if !credential.isExpired {
-                credential.expire()
+                if let t = token where t == credential.plainToken {
+                    credential.expire()
+                }
             } else {
-                AuthCredential.clearFromKeychain()
+               // AuthCredential.clearFromKeychain()
             }
         }
     }

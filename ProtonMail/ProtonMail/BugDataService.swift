@@ -23,7 +23,8 @@ class BugDataService {
         let model = UIDevice.currentDevice().model
         let mainBundle = NSBundle.mainBundle()
         let username = sharedUserDataService.username ?? ""
-        let butAPI = BugReportRequest(os: model, osVersion: "\(systemVersion)", clientVersion: mainBundle.appVersion, title: "ProtonMail App bug report", desc: bug, userName: username, email: "\(username)@protonmail.ch")
+        let useremail = sharedUserDataService.defaultEmail ?? "\(username)@protonmail.com"
+        let butAPI = BugReportRequest(os: model, osVersion: "\(systemVersion)", clientVersion: mainBundle.appVersion, title: "ProtonMail App bug report", desc: bug, userName: username, email: useremail)
         
         butAPI.call { (task, response, hasError) -> Void in
             completion?(response?.error)

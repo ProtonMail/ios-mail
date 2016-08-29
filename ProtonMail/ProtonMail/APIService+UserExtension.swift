@@ -75,7 +75,7 @@ extension APIService {
     // MARK: private mothods
     private func isErrorResponse(response: AnyObject!) -> NSError? {
         if let dict = response as? NSDictionary {
-            if let code = dict["Code"] as? Int where code != 1000 {
+            if let code = dict["Code"] as? Int where code != 1000 && code != 1001 {
                 let error = dict["Error"] as? String ?? ""
                 let desc = dict["ErrorDescription"] as? String ?? ""
                 return NSError.apiServiceError(code: code, localizedDescription: error, localizedFailureReason: desc, localizedRecoverySuggestion: "")

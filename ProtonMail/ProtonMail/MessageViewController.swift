@@ -14,6 +14,8 @@ import CoreData
 
 class MessageViewController: ProtonMailViewController, LablesViewControllerDelegate {
     
+    private let kToComposerSegue = "toCompose"
+    
     /// message info
     var message: Message!
     
@@ -22,7 +24,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     ///
     private var URL : NSURL?
-    private var actionTapped: ComposeMessageAction!
+    //private var actionTapped: ComposeMessageAction!
     private var fetchedMessageController: NSFetchedResultsController?
     
     @IBOutlet var backButton: UIBarButtonItem!
@@ -60,7 +62,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         self.emailView?.emailHeader.updateAttConstraints(false)
         loadMessageDetailes()
     }
-
+    
     internal func loadMessageDetailes () {
         showEmailLoading()
         if !message.isDetailDownloaded && sharedInternetReachability.currentReachabilityStatus() == NotReachable {
@@ -69,24 +71,32 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         } else {
             message.fetchDetailIfNeeded() { _, _, msg, error in
                 if let error = error {
-                    if error.code == NSURLErrorTimedOut {
+                    let code = error.code
+                    if code == NSURLErrorTimedOut {
                         self.emailView?.showTimeOutErrorMessage()
                         self.updateEmailBodyWithError("The request timed out.")
-                    } else if error.code == NSURLErrorNotConnectedToInternet || error.code == NSURLErrorCannotConnectToHost {
+                    } else if code == NSURLErrorNotConnectedToInternet || error.code == NSURLErrorCannotConnectToHost {
                         self.emailView?.showNoInternetErrorMessage()
                         self.updateEmailBodyWithError("No connectivity detected...")
-                    } else if error.code < 0{
+                    } else if code == APIErrorCode.API_offline {
+                        self.emailView?.showErrorMessage(error.localizedDescription ?? "The ProtonMail current offline...")
+                        self.updateEmailBodyWithError(error.localizedDescription ?? "The ProtonMail current offline...")
+                    } else if code == APIErrorCode.HTTP503 || code == NSURLErrorBadServerResponse {
+                        self.emailView?.showErrorMessage("API Server not reachable...")
+                        self.updateEmailBodyWithError("API Server not reachable...")
+                    } else if code < 0{
                         self.emailView?.showErrorMessage("Can't download message body, please try again.")
                         self.updateEmailBodyWithError("Can't download message body, please try again.")
                     } else {
-                        self.emailView?.showErrorMessage("Save message body failed, please try again.")
-                        self.updateEmailBodyWithError("Save message body failed, please try again.")
+                        self.emailView?.showErrorMessage("Can't download message body, please try again.")
+                        self.updateEmailBodyWithError("Can't download message body, please try again.")
                     }
                     PMLog.D("error: \(error)")
                 }
                 else
                 {
                     self.updateContent()
+                    //self.showEmbedImage()
                 }
             }
         }
@@ -105,14 +115,14 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         if let curReach = note.object as? Reachability {
             self.updateInterfaceWithReachability(curReach)
         } else {
-//            if let status = note.object as? Int {
-//                PMLog.D("\(status)")
-//                if status == 0 { //time out
-//                    showTimeOutErrorMessage()
-//                } else if status == 1 { //not reachable
-//                    showNoInternetErrorMessage()
-//                }
-//            }
+            //            if let status = note.object as? Int {
+            //                PMLog.D("\(status)")
+            //                if status == 0 { //time out
+            //                    showTimeOutErrorMessage()
+            //                } else if status == 1 { //not reachable
+            //                    showNoInternetErrorMessage()
+            //                }
+            //            }
         }
     }
     
@@ -139,8 +149,9 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     }
     
     func updateContent () {
+        
         self.updateEmailBody ()
-    
+        
     }
     
     override func loadView() {
@@ -151,16 +162,16 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     private func updateHeader() {
         if self.message.managedObjectContext != nil {
             self.emailView?.updateHeaderData(self.message.subject,
-                sender: self.message.senderContactVO,
-                to: self.message.recipientList.toContacts(),
-                cc: self.message.ccList.toContacts(),
-                bcc: self.message.bccList.toContacts(),
-                isStarred: self.message.isStarred,
-                time: self.message.time,
-                encType: self.message.encryptType,
-                labels : self.message.labels.allObjects as? [Label],
-                showShowImages: self.needShowShowImageView,
-                expiration: self.message.expirationTime
+                                             sender: self.message.senderContactVO,
+                                             to: self.message.recipientList.toContacts(),
+                                             cc: self.message.ccList.toContacts(),
+                                             bcc: self.message.bccList.toContacts(),
+                                             isStarred: self.message.isStarred,
+                                             time: self.message.time,
+                                             encType: self.message.encryptType,
+                                             labels : self.message.labels.allObjects as? [Label],
+                                             showShowImages: self.needShowShowImageView,
+                                             expiration: self.message.expirationTime
             )
         } else {
             PMLog.D(" MessageViewController self.message.managedObjectContext == nil")
@@ -245,13 +256,13 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "toCompose" {
-            if self.actionTapped == .NewDraft {
+        if segue.identifier == kToComposerSegue {
+            if let enumRaw = sender as? Int, tapped = ComposeMessageAction(rawValue: enumRaw) where tapped != .NewDraft{
                 let composeViewController = segue.destinationViewController as! ComposeEmailViewController
-                sharedVMService.newDraftViewModelWithMailTo(composeViewController, url: self.URL)
+                sharedVMService.actionDraftViewModel(composeViewController, msg: message, action: tapped)
             } else {
                 let composeViewController = segue.destinationViewController as! ComposeEmailViewController
-                sharedVMService.actionDraftViewModel(composeViewController, msg: message, action: self.actionTapped)
+                sharedVMService.newDraftViewModelWithMailTo(composeViewController, url: self.URL)
             }
         } else if segue.identifier == "toApplyLabelsSegue" {
             let popup = segue.destinationViewController as! LablesViewController
@@ -295,7 +306,6 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
-        
         if NSProcessInfo().operatingSystemVersion.majorVersion == 9 {
             cleanSelector();
         }
@@ -342,11 +352,15 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             }
         }
     }
-
+    
     //
-    var purifiedBody :  String? = nil
-    var purifiedBodyWithoutImage :  String? = nil
+    //var purifiedBody :  String? = nil
+    //var purifiedBodyWithoutImage :  String? = nil
+    private var purifiedBodyLock: Int = 0
+    
+    var fixedBody : String? = nil
     var bodyHasImages : Bool = false
+    
     // MARK : private function
     private func updateEmailBody (force forceReload : Bool = false) {
         if (self.message.hasAttachments) {
@@ -361,42 +375,39 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             if (!self.bodyLoaded || forceReload) && self.emailView != nil {
                 if self.message.isDetailDownloaded {  //&& forceReload == false
                     self.bodyLoaded = true
-                    //PMLog.D(self.message!.body);
-                    if self.purifiedBody == nil {
-                        self.purifiedBody = self.purifyEmailBody(self.message)
+                    
+                    if self.fixedBody == nil {
+                        self.fixedBody = self.purifyEmailBody(self.message, autoloadimage: self.isAutoLoadImage)
+                        dispatch_async(dispatch_get_main_queue()) {
+                            self.showEmbedImage()
+                        }
                     }
                     
-                    if !self.isAutoLoadImage && !self.showedShowImageView && self.purifiedBodyWithoutImage == nil {
-                        if let pbody = self.purifiedBody {
-                            self.bodyHasImages = pbody.hasImange()
-                            if self.bodyHasImages == true {
-                                self.purifiedBodyWithoutImage = pbody.stringByPurifyImages()
-                            }
-                        } else {
-                            self.bodyHasImages = false
-                        }
-                        
+                    if !self.isAutoLoadImage && !self.showedShowImageView{
                         if self.bodyHasImages {
                             self.needShowShowImageView = true
                         }
                     }
                 }
             }
-            if self.purifiedBody != nil {
+            if self.fixedBody != nil {
                 dispatch_async(dispatch_get_main_queue()) {
-                    self.loadEmailBody(self.needShowShowImageView ? (self.purifiedBodyWithoutImage ?? (self.purifiedBody ?? "")) : (self.purifiedBody ?? ""))
+                    self.loadEmailBody(self.fixedBody ?? "")
                 }
             }
         })
     }
     
-    internal func purifyEmailBody(message : Message!) -> String?
+    internal func purifyEmailBody(message : Message!, autoloadimage : Bool) -> String?
     {
         do {
             var bodyText = try self.message.decryptBodyIfNeeded() ?? NSLocalizedString("Unable to decrypt message.")
-            //bodyText = bodyText.stringByStrippingStyleHTML()
-            bodyText = bodyText.stringByPurifyHTML()
             bodyText = bodyText.stringByStrippingBodyStyle()
+            bodyText = bodyText.stringByPurifyHTML()
+            self.bodyHasImages = bodyText.hasImange()
+            if !autoloadimage {
+                 bodyText = bodyText.stringByPurifyImages()
+            }
             return bodyText
         } catch let ex as NSError {
             PMLog.D("purifyEmailBody error : \(ex)")
@@ -409,7 +420,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=1.0\" content=\"yes\">"
         self.emailView?.updateEmailBody(body, meta: meta)
     }
-
+    
     var contentLoaded = false
     internal func loadEmailBody(body : String) {
         let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=\(emailView?.kDefautWebViewScale ?? 0.9)\" content=\"yes\">"
@@ -427,7 +438,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         }
         let bodyText = NSLocalizedString(error)
         let meta1 : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=1.0\" content=\"yes\">"
-
+        
         self.emailView?.updateEmailBody(bodyText, meta: meta1)
     }
     
@@ -460,11 +471,9 @@ extension MessageViewController : TopMessageViewDelegate {
 
 // MARK
 extension MessageViewController : MessageDetailBottomViewProtocol {
-    
     func replyClicked() {
         if self.message.isDetailDownloaded {
-            self.actionTapped = ComposeMessageAction.Reply
-            self.performSegueWithIdentifier("toCompose", sender: self)
+            self.performSegueWithIdentifier(kToComposerSegue, sender: ComposeMessageAction.Reply.rawValue)
         } else {
             self.showAlertWhenNoDetails()
         }
@@ -472,8 +481,7 @@ extension MessageViewController : MessageDetailBottomViewProtocol {
     
     func replyAllClicked() {
         if self.message.isDetailDownloaded {
-            actionTapped = ComposeMessageAction.ReplyAll
-            self.performSegueWithIdentifier("toCompose", sender: self)
+            self.performSegueWithIdentifier(kToComposerSegue, sender: ComposeMessageAction.ReplyAll.rawValue)
         } else {
             self.showAlertWhenNoDetails()
         }
@@ -481,8 +489,7 @@ extension MessageViewController : MessageDetailBottomViewProtocol {
     
     func forwardClicked() {
         if self.message.isDetailDownloaded {
-            actionTapped = ComposeMessageAction.Forward
-            self.performSegueWithIdentifier("toCompose", sender: self)
+            self.performSegueWithIdentifier(kToComposerSegue, sender: ComposeMessageAction.Forward.rawValue)
         } else {
             self.showAlertWhenNoDetails()
         }
@@ -501,8 +508,7 @@ extension MessageViewController :  EmailViewProtocol {
     
     func mailto(url: NSURL?) {
         URL = url
-        actionTapped = ComposeMessageAction.NewDraft
-        self.performSegueWithIdentifier("toCompose", sender: self)
+        self.performSegueWithIdentifier(kToComposerSegue, sender: ComposeMessageAction.NewDraft.rawValue)
     }
 }
 
@@ -514,7 +520,36 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     func showImage() {
         self.showedShowImageView = true
         self.needShowShowImageView = false
-        self.updateContent();
+        self.fixedBody = self.fixedBody?.stringFixImages()
+        self.updateContent()
+    }
+    
+    func showEmbedImage() {
+        if let atts = self.message.attachments.allObjects as? [Attachment] {
+            var checkCount = atts.count
+            for att in atts {
+                if let content_id = att.getContentID() where !content_id.isEmpty && att.isInline() {
+                    att.base64AttachmentData({ (based64String) in
+                        if !based64String.isEmpty {
+                            objc_sync_enter(self.purifiedBodyLock)
+                            self.fixedBody = self.fixedBody?.stringBySetupInlineImage("src=\"cid:\(content_id)\"", to: "src=\"data:\(att.mimeType);base64,\(based64String)\"" )
+                            objc_sync_exit(self.purifiedBodyLock)
+                            
+                            checkCount = checkCount - 1
+                            
+                            if checkCount == 0 {
+                                self.updateContent()
+                            }
+                            
+                        } else {
+                            checkCount = checkCount - 1
+                        }
+                    })
+                } else {
+                    checkCount = checkCount - 1
+                }
+            }
+        }
     }
     
     func starredChanged(isStarred: Bool) {

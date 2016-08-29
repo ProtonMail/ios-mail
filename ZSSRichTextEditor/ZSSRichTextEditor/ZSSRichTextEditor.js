@@ -10,6 +10,9 @@
 var zss_editor = {};
 
 // If we are using iOS or desktop
+zss_editor.cachedEmbedImages = "";
+
+// If we are using iOS or desktop
 zss_editor.isUsingiOS = true;
 
 // If the user is draging
@@ -460,15 +463,56 @@ zss_editor.setHTML = function(html) {
 
 //this is for update protonmail email signature
 zss_editor.updateSignature = function(html) {
-    var editor = $('#protonmail_signature_block');
+    var editor = $('.protonmail_signature_block');
     editor.html(html);
     zss_editor.enabledEditingItems();
+}
+
+zss_editor.updateEmbedImage = function(cid, blobdata) {
+    var editor = $('img[src="' + cid + '"]');
+    if (editor.length) {
+        editor.each(function(index, e) {
+            var image = $(this);
+            image.attr('src-original-pm-cid', cid);
+            zss_editor.cachedEmbedImages += cid;
+            image.attr('src', blobdata);
+        });
+    }
+}
+
+zss_editor.removeEmbedImage = function(cid) {
+    var editor = $('img[src-original-pm-cid="' + cid + '"]');
+    if (editor.length) {
+        editor.each(function(index, e) {
+                    var image = $(this);
+                    image.remove();
+                    });
+    }
 }
 
 zss_editor.insertHTML = function(html) {
     document.execCommand('insertHTML', false, html);
     zss_editor.enabledEditingItems();
 }
+
+
+zss_editor.getOriginalEmbedImages = function() {
+    return zss_editor.cachedEmbedImages;
+}
+
+zss_editor.getEditedEmbedImages = function() {
+    var editedImages = "";
+    var editor = $('img[src-original-pm-cid]');
+    if (editor.length) {
+        editor.each(function(index, e) {
+                    var image = $(this);
+                    var cid = image.attr('src-original-pm-cid');
+                    editedImages += cid;
+                    });
+    }
+    return editedImages;
+}
+
 
 zss_editor.getHTML = function() {
     
@@ -503,6 +547,26 @@ zss_editor.getHTML = function() {
     
     // Get the contents
     var h = document.getElementById("zss_editor_content").innerHTML;
+    
+    var outstring = $('<div></div>').append(h);
+    if (outstring.length > 0) {
+        var editor = outstring.find('img');
+        if (editor.length) {
+            editor.each(function(index, e) {
+                var image = $(this);
+                var cid = image.attr('src-original-pm-cid');
+                console.log("old-cid",cid);
+                if (typeof(cid) != "undefined") {
+                    if (cid.length > 0) {
+                        image.attr('src', cid);
+                        image.removeAttr('src-original-pm-cid');
+                    }
+                }
+            });
+        }
+        
+        h = outstring.html();
+    }
     
     return h;
 }

@@ -17,10 +17,11 @@ protocol SettingDetailsViewModel {
     func getSwitchText() -> String
     func getSwitchStatus() -> Bool
     func isShowTextView() -> Bool
+    func isRequireLoginPassword() -> Bool
     func getPlaceholdText() -> String
     
     func getCurrentValue() -> String
-    func updateValue(new_value: String, complete:(Bool, NSError?) -> Void)
+    func updateValue(new_value: String, password: String, complete:(Bool, NSError?) -> Void)
     func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void)
     
     func isSwitchEnabled() -> Bool
@@ -37,6 +38,10 @@ class SettingDetailsViewModelTest : SettingDetailsViewModel{
     
     func getTopHelpText() -> String {
         return "this is description - Test"
+    }
+    
+    func isRequireLoginPassword() -> Bool {
+        return false
     }
     
     func getSectionTitle() -> String {
@@ -67,7 +72,7 @@ class SettingDetailsViewModelTest : SettingDetailsViewModel{
         return "test value"
     }
     
-    func updateValue(new_value: String, complete: (Bool, NSError?) -> Void) {
+    func updateValue(new_value: String, password: String, complete: (Bool, NSError?) -> Void) {
         complete(true, nil)
     }
     
@@ -118,6 +123,10 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
         return false
     }
     
+    func isRequireLoginPassword() -> Bool {
+        return false
+    }
+    
     func getPlaceholdText() -> String {
         return "Input Display Name ..."
     }
@@ -129,7 +138,7 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
         return sharedUserDataService.displayName
     }
     
-    func updateValue(new_value: String, complete: (Bool, NSError?) -> Void) {
+    func updateValue(new_value: String, password: String, complete: (Bool, NSError?) -> Void) {
         if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
             sharedUserDataService.updateAddress(addr.address_id, displayName: new_value, signature: addr.signature, completion: { (_, error) in
                 if let error = error {
@@ -194,6 +203,10 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
         return true
     }
     
+    func isRequireLoginPassword() -> Bool {
+        return false
+    }
+    
     func getPlaceholdText() -> String {
         return ""
     }
@@ -205,7 +218,7 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
         return sharedUserDataService.signature
     }
     
-    func updateValue(new_value: String, complete: (Bool, NSError?) -> Void) {
+    func updateValue(new_value: String, password: String, complete: (Bool, NSError?) -> Void) {
         if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
             sharedUserDataService.updateAddress(addr.address_id, displayName: addr.display_name, signature: new_value, completion: { (_, error) in
                 if let error = error {
@@ -271,6 +284,10 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
         return true
     }
     
+    func isRequireLoginPassword() -> Bool {
+        return false
+    }
+    
     func getPlaceholdText() -> String {
         return ""
     }
@@ -279,7 +296,7 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
         return sharedUserDataService.mobileSignature
     }
     
-    func updateValue(new_value: String, complete: (Bool, NSError?) -> Void) {
+    func updateValue(new_value: String, password: String, complete: (Bool, NSError?) -> Void) {
         if new_value == getCurrentValue() {
             complete(true, nil)
         } else {
@@ -332,6 +349,10 @@ class ChangeNotificationEmailViewModel : SettingDetailsViewModel{
         return "Notification / Recovery Email"
     }
     
+    func isRequireLoginPassword() -> Bool {
+        return true
+    }
+    
     func isDisplaySwitch() -> Bool {
         return true
     }
@@ -356,11 +377,11 @@ class ChangeNotificationEmailViewModel : SettingDetailsViewModel{
         return sharedUserDataService.notificationEmail
     }
     
-    func updateValue(new_value: String, complete: (Bool, NSError?) -> Void) {
+    func updateValue(new_value: String, password: String, complete: (Bool, NSError?) -> Void) {
         if new_value == getCurrentValue() {
              complete(true, nil)
         } else {
-            sharedUserDataService.updateNotificationEmail(new_value) { _, _, error in
+            sharedUserDataService.updateNotificationEmail(new_value, password: password) { _, _, error in
                 if let error = error {
                     complete(false, error)
                 } else {

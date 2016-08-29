@@ -76,6 +76,98 @@ extension Attachment {
         sharedMessageDataService.fetchAttachmentForAttachment(self, downloadTask: downloadTask, completion: completion)
     }
     
+    
+    typealias base64AttachmentDataComplete = (based64String : String) -> Void
+    
+    func base64AttachmentData(complete : base64AttachmentDataComplete) {
+        
+        if let localURL = self.localURL where NSFileManager.defaultManager().fileExistsAtPath(localURL.path!, isDirectory: nil) {
+            complete( based64String: self.base64DecryptAttachment() )
+            return
+        }
+        
+        if let data = self.fileData where data.length > 0 {
+            complete( based64String: self.base64DecryptAttachment() )
+            return
+        }
+        
+        self.localURL = nil
+        sharedMessageDataService.fetchAttachmentForAttachment(self, downloadTask: { (taskOne : NSURLSessionDownloadTask) -> Void in }, completion: { (_, url, error) -> Void in
+            self.localURL = url;
+            complete( based64String: self.base64DecryptAttachment() )
+            if error != nil {
+                PMLog.D("\(error)")
+            }
+        })
+    }
+    
+    func base64DecryptAttachment() -> String {
+        if let localURL = self.localURL {
+            if let data : NSData = NSData(contentsOfURL: localURL) {
+                do {
+                    if let key_packet = self.keyPacket {
+                        if let keydata: NSData = NSData(base64EncodedString:key_packet, options: NSDataBase64DecodingOptions(rawValue: 0)) {
+                            if let decryptData = try data.decryptAttachment(keydata, passphrase: sharedUserDataService.mailboxPassword!) {
+                                let strBase64:String = decryptData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+                                return strBase64
+                            }
+                        }
+                    }
+                } catch let ex as NSError{
+                    PMLog.D("\(ex)")
+                }
+            }
+        }
+        
+        
+        if let data = self.fileData {
+            do {
+                if let key_packet = self.keyPacket {
+                    if let keydata: NSData = NSData(base64EncodedString:key_packet, options: NSDataBase64DecodingOptions(rawValue: 0)) {
+                        if let decryptData = try data.decryptAttachment(keydata, passphrase: sharedUserDataService.mailboxPassword!) {
+                            let strBase64:String = decryptData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+                            return strBase64
+                        }
+                    }
+                }
+            } catch let ex as NSError{
+                PMLog.D("\(ex)")
+            }
+        }
+        
+        return ""
+    }
+    
+    func isInline() -> Bool {
+        guard let headerInfo = self.headerInfo else {
+            return false
+        }
+        
+        let headerObject = headerInfo.parseObject()
+        guard let inlineCheckString = headerObject["content-disposition"] else {
+            return false
+        }
+        
+        if inlineCheckString.contains("inline") {
+            return true
+        }
+        return false
+    }
+    
+    func getContentID() -> String? {
+        guard let headerInfo = self.headerInfo else {
+            return nil
+        }
+        
+        let headerObject = headerInfo.parseObject()
+        guard let inlineCheckString = headerObject["content-id"] else {
+            return nil
+        }
+        
+        let outString = inlineCheckString.preg_replace("[<>]", replaceto: "")
+        
+        return outString
+    }
 }
 
 extension Attachment {
@@ -96,24 +188,26 @@ extension Attachment {
 extension UIImage {
     func toAttachment (message:Message, fileName : String, type:String) -> Attachment? {
         if let fileData = UIImageJPEGRepresentation(self, 0) {
-            let attachment = Attachment(context: message.managedObjectContext!)
-            attachment.attachmentID = "0"
-            attachment.fileName = fileName
-            attachment.mimeType = "image/jpg"
-            attachment.fileData = fileData
-            attachment.fileSize = fileData.length
-            attachment.isTemp = false
-            attachment.keyPacket = ""
-            attachment.localURL = NSURL();
-            
-            attachment.message = message
-            
-            var error: NSError? = nil
-            error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
-            if error != nil {
-                PMLog.D("toAttachment () with error: \(error)")
+            if let context = message.managedObjectContext {
+                let attachment = Attachment(context: context)
+                attachment.attachmentID = "0"
+                attachment.fileName = fileName
+                attachment.mimeType = "image/jpg"
+                attachment.fileData = fileData
+                attachment.fileSize = fileData.length
+                attachment.isTemp = false
+                attachment.keyPacket = ""
+                attachment.localURL = NSURL();
+                
+                attachment.message = message
+                
+                var error: NSError? = nil
+                error = context.saveUpstreamIfNeeded()
+                if error != nil {
+                    PMLog.D("toAttachment () with error: \(error)")
+                }
+                return attachment
             }
-            return attachment
         }
         
         return nil

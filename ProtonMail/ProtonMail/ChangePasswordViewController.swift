@@ -111,9 +111,9 @@ class ChangePasswordViewController: UIViewController {
     }
     
     private func isInputEmpty() -> Bool {
-        let cPwd = (currentPwdEditor.text ?? "").trim()
-        let nPwd = (newPwdEditor.text ?? "").trim()
-        let cnPwd = (confirmPwdEditor.text ?? "").trim()
+        let cPwd = (currentPwdEditor.text ?? "") //.trim()
+        let nPwd = (newPwdEditor.text ?? "") //.trim()
+        let cnPwd = (confirmPwdEditor.text ?? "") //.trim()
         if !cPwd.isEmpty {
             return false;
         }
@@ -127,9 +127,9 @@ class ChangePasswordViewController: UIViewController {
     }
     
     private func focusFirstEmpty() -> Void {
-        let cPwd = (currentPwdEditor.text ?? "").trim()
-        let nPwd = (newPwdEditor.text ?? "").trim()
-        let cnPwd = (confirmPwdEditor.text ?? "").trim()
+        let cPwd = (currentPwdEditor.text ?? "") //.trim()
+        let nPwd = (newPwdEditor.text ?? "") //.trim()
+        let cnPwd = (confirmPwdEditor.text ?? "") //.trim()
         if cPwd.isEmpty {
             currentPwdEditor.becomeFirstResponder()
         }

@@ -22,6 +22,9 @@ class SettingDetailViewController: UIViewController {
     @IBOutlet weak var inputTextView: UITextView!
     @IBOutlet weak var inputTextField: UITextField!
     
+    @IBOutlet weak var passwordView: UIView!
+    @IBOutlet weak var passwordTextField: UITextField!
+    
     @IBOutlet weak var notesLabel: UILabel!
     
     private var doneButton: UIBarButtonItem!
@@ -64,6 +67,12 @@ class SettingDetailViewController: UIViewController {
             inputTextView.hidden = true
             inputTextField.text = viewModel.getCurrentValue()
             inputTextField.placeholder = viewModel.getPlaceholdText()
+        }
+        
+        if viewModel.isRequireLoginPassword() {
+            passwordView.hidden = false
+        } else {
+            passwordView.hidden = true
         }
         
         switcher.enabled = viewModel.isSwitchEnabled()
@@ -125,6 +134,13 @@ class SettingDetailViewController: UIViewController {
         }
     }
     
+    private func getPasswordValue () -> String {
+        
+        return passwordTextField.text ?? ""
+        
+    }
+    
+    
     private func startUpdateValue () -> Void {
         dismissKeyboard()
         ActivityIndicatorHelper.showActivityIndicatorAtView(view)
@@ -135,7 +151,7 @@ class SettingDetailViewController: UIViewController {
                 alertController.addOKAction()
                 self.presentViewController(alertController, animated: true, completion: nil)
             } else {
-                self.viewModel.updateValue(self.getTextValue(), complete: { value, error in
+                self.viewModel.updateValue(self.getTextValue(), password: self.getPasswordValue(), complete: { value, error in
                     ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
                     if let error = error {
                         let alertController = error.alertController()

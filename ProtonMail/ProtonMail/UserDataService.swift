@@ -141,6 +141,13 @@ class UserDataService {
         return "";
     }
     
+    var defaultDisplayName : String {
+        if let addr = userAddresses.getDefaultAddress() {
+            return addr.display_name;
+        }
+        return displayName;
+    }
+    
     var swiftLeft : MessageSwipeAction! {
         get {
             return MessageSwipeAction(rawValue: userInfo?.swipeLeft ?? 3) ?? .archive
@@ -448,8 +455,8 @@ class UserDataService {
         }
     }
     
-    func updateNotificationEmail(newNotificationEmail: String, completion: CompletionBlock) {
-        let emailSetting = UpdateNotificationEmail<ApiResponse>(password: self.password!, notificationEmail: newNotificationEmail)
+    func updateNotificationEmail(newNotificationEmail: String, password : String, completion: CompletionBlock) {
+        let emailSetting = UpdateNotificationEmail<ApiResponse>(password: password, notificationEmail: newNotificationEmail)
         emailSetting.call() { task, response, hasError in
             if !hasError {
                 if let userInfo = self.userInfo {
@@ -461,7 +468,7 @@ class UserDataService {
                     self.userInfo = userInfo
                 }
             }
-            completion(task: task, response: nil, error: nil)
+            completion(task: task, response: nil, error: response?.error)
         }
         
     }

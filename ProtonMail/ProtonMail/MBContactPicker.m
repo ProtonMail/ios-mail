@@ -400,6 +400,7 @@ static CGFloat const ROW_HEIGHT = 64.0;
 
 - (BOOL)resignFirstResponder
 {
+    [super resignFirstResponder];
     return [self.contactCollectionView resignFirstResponder];
 }
 

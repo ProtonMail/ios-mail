@@ -11,7 +11,6 @@ import UIKit
 
 class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
-    
     // view model
     private var viewModel : ComposeViewModel!
     
@@ -79,7 +78,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         self.expirationPicker.dataSource = self
         self.expirationPicker.delegate = self
         
-        self.attachments = viewModel.getAttachments();
+        self.attachments = viewModel.getAttachments()
         
         // update header layous
         updateContentLayout(false)
@@ -114,6 +113,26 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
                 break
             }
         }
+    }
+    
+    internal func updateEmbedImages() {
+        if let atts = viewModel.getAttachments() {
+            for att in atts {
+                if let content_id = att.getContentID() where !content_id.isEmpty && att.isInline() {
+                    att.base64AttachmentData({ (based64String) in
+                        if !based64String.isEmpty {
+                            self.updateEmbedImageByCID("cid:\(content_id)", blob:  "data:\(att.mimeType);base64,\(based64String)");
+                        }
+                    })
+                }
+            }
+        }
+    }
+    
+    override func webViewDidFinishLoad(webView: UIWebView) {
+        super.webViewDidFinishLoad(webView)
+        
+        updateEmbedImages()
     }
     
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
@@ -331,6 +350,9 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     private func collectDraft()
     {
+        let orignal = self.getOrignalEmbedImages()
+        let edited = self.getEditedEmbedImages()
+        self.checkEmbedImageEdit(orignal, edited: edited)
         self.viewModel.collectDraft(
             self.composeView.subject.text!,
             body: self.getHTML(),
@@ -338,6 +360,22 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
             pwd:self.encryptionPassword,
             pwdHit:self.encryptionPasswordHint
         )
+    }
+    
+    private func checkEmbedImageEdit(orignal: String, edited: String) {
+        PMLog.D(edited)
+        if let atts = viewModel.getAttachments() {
+            for att in atts {
+                if let content_id = att.getContentID() where !content_id.isEmpty && att.isInline() {
+                    PMLog.D(content_id)
+                    if orignal.contains(content_id) {
+                        if !edited.contains(content_id) {
+                            self.viewModel.deleteAtt(att)
+                        }
+                    }
+                }
+            }
+        }
     }
     
     private func updateAttachmentButton () {
@@ -352,7 +390,11 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
 extension ComposeEmailViewController : ComposePasswordViewControllerDelegate {
     
     func Cancelled() {
-        
+//        updateEmbedImages()
+//        
+//        let test = self.getHTML()
+//        
+//        PMLog.D(test)
     }
     
     func Apply(password: String, confirmPassword: String, hint: String) {
@@ -367,8 +409,6 @@ extension ComposeEmailViewController : ComposePasswordViewControllerDelegate {
         self.encryptionPassword = ""
         self.encryptionConfirmPassword = ""
         self.encryptionPasswordHint = ""
-        
-        
         
         self.composeView.showEncryptionRemoved()
     }
@@ -587,6 +627,11 @@ extension ComposeEmailViewController: AttachmentsTableViewControllerDelegate {
     
     func attachments(attViewController: AttachmentsTableViewController, didDeletedAttachment attachment: Attachment) {
         self.collectDraft()
+        
+        if let content_id = attachment.getContentID() where !content_id.isEmpty && attachment.isInline() {
+            self.removeEmbedImageByCID("cid:\(content_id)")
+        }
+        
         self.viewModel.deleteAtt(attachment)
     }
     

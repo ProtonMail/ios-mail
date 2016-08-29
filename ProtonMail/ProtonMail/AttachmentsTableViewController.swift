@@ -24,6 +24,21 @@ protocol AttachmentsTableViewControllerDelegate {
     func attachments(attViewController: AttachmentsTableViewController, error: String) -> Void
 }
 
+public enum AttachmentSections: Int {
+    case Normal = 1
+    case Inline = 2
+    
+    public var actionTitle : String {
+        get {
+            switch(self) {
+            case Normal:
+                return NSLocalizedString("normal attachments")
+            case Inline:
+                return NSLocalizedString("inline attachments")
+            }
+        }
+    }
+}
 
 class AttachmentsTableViewController: UITableViewController {
     private let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000
@@ -32,7 +47,35 @@ class AttachmentsTableViewController: UITableViewController {
     
     var attachments: [Attachment] = [] {
         didSet {
+            buildAttachments()
             tableView?.reloadData()
+        }
+    }
+    
+    var normalAttachments: [Attachment] = []
+    
+    var inlineAttachments: [Attachment] = []
+    
+    var attachmentSections : [AttachmentSections] = []
+    
+    func buildAttachments () {
+        normalAttachments.removeAll()
+        inlineAttachments.removeAll()
+        for att in attachments {
+            if att.isInline() {
+                inlineAttachments.append(att)
+            } else {
+                normalAttachments.append(att)
+            }
+        }
+        attachmentSections.removeAll()
+        
+        if normalAttachments.count > 0 {
+            attachmentSections.append(.Normal)
+        }
+        
+        if inlineAttachments.count > 0 {
+            attachmentSections.append(.Inline)
         }
     }
     
@@ -77,7 +120,6 @@ class AttachmentsTableViewController: UITableViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     internal func updateAttachmentSize () {
@@ -157,17 +199,34 @@ class AttachmentsTableViewController: UITableViewController {
     // MARK: - Table view data source
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        
+        return attachmentSections.count
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return attachments.count;
+        let section = attachmentSections[section]
+        switch section {
+        case .Normal:
+            return normalAttachments.count
+        case .Inline:
+            return inlineAttachments.count
+        }
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(AttachmentTableViewCell.Constant.identifier, forIndexPath: indexPath) as! AttachmentTableViewCell
-        if attachments.count > indexPath.row {
-            let att = attachments[indexPath.row] as Attachment
+        
+        let section = attachmentSections[indexPath.section]
+        var attachment : Attachment?
+        switch section {
+        case .Normal:
+            attachment = normalAttachments[indexPath.row] as Attachment
+            
+        case .Inline:
+            attachment = inlineAttachments[indexPath.row] as Attachment
+        }
+        
+        if let att = attachment {
             PMLog.D("\(att)")
             PMLog.D("\(att.fileName)")
             cell.configCell(att.fileName ?? "unknow file", fileSize:  Int(att.fileSize ?? 0), showDownload: false)
@@ -179,11 +238,23 @@ class AttachmentsTableViewController: UITableViewController {
             cell.defaultColor = UIColor.lightGrayColor()
             cell.setSwipeGestureWithView(crossView, color: UIColor.ProtonMail.MessageActionTintColor, mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State3  ) { (cell, state, mode) -> Void in
                 if let indexp = self.tableView.indexPathForCell(cell) {
-                    if self.attachments.count > indexp.row {
-                        let att = self.attachments[indexp.row] as Attachment
+                    let section = self.attachmentSections[indexp.section]
+                    var cellAtt : Attachment?
+                    switch section {
+                    case .Normal:
+                        cellAtt = self.normalAttachments[indexp.row] as Attachment
+                    case .Inline:
+                        cellAtt = self.inlineAttachments[indexp.row] as Attachment
+                    }
+                    
+                    if let att = cellAtt {
                         if att.attachmentID != "0" {
                             self.delegate?.attachments(self, didDeletedAttachment: att)
-                            self.attachments.removeAtIndex(indexp.row)
+                            if let index = self.attachments.indexOf(att) {
+                                self.attachments.removeAtIndex(index)
+                            }
+                            
+                            self.buildAttachments()
                             self.tableView.reloadData()
                         } else {
                             cell.swipeToOriginWithCompletion(nil)
@@ -192,6 +263,8 @@ class AttachmentsTableViewController: UITableViewController {
                         cell.swipeToOriginWithCompletion(nil)
                     }
                 } else {
+                    
+                    self.buildAttachments()
                     self.tableView.reloadData()
                 }
             }
@@ -203,6 +276,22 @@ class AttachmentsTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 44;
+    }
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let section = attachmentSections[section]
+        return section.actionTitle
+    }
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 20
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
+    {
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.font = UIFont.systemFontOfSize(12)
+        header.textLabel?.textColor = UIColor.grayColor()
     }
 }
 
@@ -228,6 +317,7 @@ extension AttachmentsTableViewController: UIDocumentPickerDelegate {
                     self.attachments.append(attachment!)
                     self.delegate?.attachments(self, didPickedAttachment: attachment!)
                     self.updateAttachmentSize()
+                    self.buildAttachments()
                     self.tableView.reloadData()
                 } else {
                     self.showSizeErrorAlert(0)
@@ -264,7 +354,11 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                         let from = Int64(0)
                         let data = NSMutableData(length: length)!
                         let numRead = rep.getBytes(UnsafeMutablePointer(data.mutableBytes), fromOffset: from, length: length, error: &error)
-                        picker.dismissViewControllerAnimated(true, completion: nil)
+                        
+                        dispatch_async(dispatch_get_main_queue()) {
+                           picker.dismissViewControllerAnimated(true, completion: nil)
+                        }
+                            
                         if let er = error {
                             self.showErrorAlert("Can't copy the file")
                             self.delegate?.attachments(self, error:"Can't copy the file")
@@ -295,12 +389,16 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                         self.delegate?.attachments(self, didReachedSizeLimitation:0)
                         PMLog.D(" Size too big Orig: \(length) -- Limit: \(self.kDefaultAttachmentFileSize)")
                     }
+                    
+                    self.buildAttachments()
                     self.tableView.reloadData()
             })  { (error:NSError!) -> Void in
                 picker.dismissViewControllerAnimated(true, completion: nil)
                 self.showErrorAlert("Can't copy the file")
                 self.delegate?.attachments(self, error:"Can't copy the file")
                 PMLog.D(" Error during open file \(error)")
+                
+                self.buildAttachments()
                 self.tableView.reloadData()
             }
         }else if let originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
@@ -312,12 +410,16 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
             let attachment = originalImage.toAttachment(self.message, fileName: fileName, type: mimeType)
             self.attachments.append(attachment!)
             self.delegate?.attachments(self, didPickedAttachment: attachment!)
+            
+            self.buildAttachments()
             self.tableView.reloadData()
         } else {
             picker.dismissViewControllerAnimated(true, completion: nil)
             self.showErrorAlert("Can't copy the file")
             self.delegate?.attachments(self, error:"Can't copy the file")
             //PMLog.D(" Error during open file \(error)")
+            
+            self.buildAttachments()
             self.tableView.reloadData()
         }
     }

@@ -68,7 +68,8 @@ extension String {
      :returns: true | false
      */
     func isValidEmail() -> Bool {
-        let emailRegEx = "[A-Z0-9a-z]+([._%+-]{1}[A-Z0-9a-z]+)*@[A-Z0-9a-z]+([.-]{1}[A-Z0-9a-z]+)*(\\.[A-Za-z]{2,4}){0,1}"       //"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
+        //"[A-Z0-9a-z]+([._%+-]{1}[A-Z0-9a-z]+)*@[A-Z0-9a-z]+([.-]{1}[A-Z0-9a-z]+)*(\\.[A-Za-z]{2,4}){0,1}"       //"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
+        let emailRegEx = "^(?:(?:(?:(?: )*(?:(?:(?:\\t| )*\\r\\n)?(?:\\t| )+))+(?: )*)|(?: )+)?(?:(?:(?:[-A-Za-z0-9!#$%&’*+/=?^_'{|}~]+(?:\\.[-A-Za-z0-9!#$%&’*+/=?^_'{|}~]+)*)|(?:\"(?:(?:(?:(?: )*(?:(?:[!#-Z^-~]|\\[|\\])|(?:\\\\(?:\\t|[ -~]))))+(?: )*)|(?: )+)\"))(?:@)(?:(?:(?:[A-Za-z0-9](?:[-A-Za-z0-9]{0,61}[A-Za-z0-9])?)(?:\\.[A-Za-z0-9](?:[-A-Za-z0-9]{0,61}[A-Za-z0-9])?)*)|(?:\\[(?:(?:(?:(?:(?:[0-9]|(?:[1-9][0-9])|(?:1[0-9][0-9])|(?:2[0-4][0-9])|(?:25[0-5]))\\.){3}(?:[0-9]|(?:[1-9][0-9])|(?:1[0-9][0-9])|(?:2[0-4][0-9])|(?:25[0-5]))))|(?:(?:(?: )*[!-Z^-~])*(?: )*)|(?:[Vv][0-9A-Fa-f]+\\.[-A-Za-z0-9._~!$&'()*+,;=:]+))\\])))(?:(?:(?:(?: )*(?:(?:(?:\\t| )*\\r\\n)?(?:\\t| )+))+(?: )*)|(?: )+)?$"
         if let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx) as NSPredicate? {
             return emailTest.evaluateWithObject(self)
         }
@@ -97,10 +98,12 @@ extension String {
         if self.isEmpty {
             return [];
         }
-        let data : NSData! = self.dataUsingEncoding(NSUTF8StringEncoding)
+
         do {
-            let decoded = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as! [[String:String]]
-            return decoded
+            if let data = self.dataUsingEncoding(NSUTF8StringEncoding) {
+                let decoded = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as! [[String:String]]
+                return decoded
+            }
         } catch let ex as NSError {
             PMLog.D(" func parseJson() -> error error \(ex)")
         }
@@ -209,6 +212,10 @@ extension String {
         return self
     }
     
+    func preg_replace_none_regex (partten: String, replaceto:String) -> String {
+        return self.stringByReplacingOccurrencesOfString(partten, withString: replaceto, options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil)
+    }
+    
     func preg_replace (partten: String, replaceto:String) -> String {
         let options : NSRegularExpressionOptions = [.CaseInsensitive, .DotMatchesLineSeparators]
         do {
@@ -237,10 +244,10 @@ extension String {
     }
     
     func hasImange () -> Bool {
-        if self.preg_match("\\ssrc='") {
+        if self.preg_match("\\ssrc='(?!cid:)") {
             return true
         }
-        if self.preg_match("\\ssrc=\"") {
+        if self.preg_match("\\ssrc=\"(?!cid:)") {
             return true
         }
         if self.preg_match("xlink:href=") {
@@ -259,17 +266,34 @@ extension String {
     }
     
     func stringByPurifyImages () -> String {
-
-         let out = self.preg_replace("src=\"(.*?)(^|>|\"|\\s)|srcset=\"(.*?)(^|>|\"|\\s)|src='(.*?)(^|>|'|\\s)|xlink:href=\"(.*?)(^|>|\"|\\s)|poster=\"(.*?)(^|>|\"|\\s)|background=\"(.*?)(^|>|\"|\\s)|url\\((.*?)(^|>|\\)|\\s)", replaceto: " ")
+        //src=\"(?!cid:)(.*?)(^|>|\"|\\s)
+       //let out = self.preg_replace("src=\"(.*?)(^|>|\"|\\s)|srcset=\"(.*?)(^|>|\"|\\s)|src='(.*?)(^|>|'|\\s)|xlink:href=\"(.*?)(^|>|\"|\\s)|poster=\"(.*?)(^|>|\"|\\s)|background=\"(.*?)(^|>|\"|\\s)|url\\((.*?)(^|>|\\)|\\s)", replaceto: " ")
         
-//add this will break html layout. |<img(.*?)<\\/img>|<(\\/?img.*?)>|<picture(.*?)<\\/picture>|<(\\/?picture.*?)>
-//        out = out.preg_replace("\\ssrc='", replaceto: " data-src='")
-//        out = out.preg_replace("\\ssrc=\"", replaceto: " data-src=\"")
-//        out = out.preg_replace("xlink:href=", replaceto: " data-xlink:href=");
-//        out = out.preg_replace("poster=", replaceto: " data-poster=")
-//        out = out.preg_replace("background=", replaceto: " data-background=")
-//        out = out.preg_replace("url\\(", replaceto: " data-url(")
+        var out = self.preg_replace("\\ssrc='(?!cid:)", replaceto: " data-src='")
+        out = out.preg_replace("\\ssrc=\"(?!cid:)", replaceto: " data-src=\"")
+        out = out.preg_replace("srcset=", replaceto: " data-srcset=")
+        out = out.preg_replace("xlink:href=", replaceto: " data-xlink:href=");
+        out = out.preg_replace("poster=", replaceto: " data-poster=")
+        out = out.preg_replace("background=", replaceto: " data-background=")
+        out = out.preg_replace("url\\(", replaceto: " data-url(")
+        
         return out
+    }
+    
+    func stringFixImages () -> String {
+        var out = self.preg_replace(" data-src='", replaceto: " src='")
+        out = out.preg_replace(" data-src=\"", replaceto: " src=\"")
+        out = out.preg_replace(" data-srcset=", replaceto: " srcset=")
+        out = out.preg_replace(" data-xlink:href=", replaceto: " xlink:href=");
+        out = out.preg_replace(" data-poster=", replaceto: " poster=")
+        out = out.preg_replace(" data-background=", replaceto: " background=")
+        out = out.preg_replace(" data-url(", replaceto: " url(")
+        
+        return out
+    }
+    
+    func stringBySetupInlineImage(from : String, to: String) -> String {
+        return self.preg_replace_none_regex(from, replaceto:to);
     }
     
     func stringByPurifyHTML() -> String {

@@ -368,7 +368,17 @@ class MailboxViewController: ProtonMailViewController {
                 self.navigationController?.popViewControllerAnimated(true)
             }))
             
-            let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .archive : .Destructive]
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Remove Star"), style: .Default, handler: { (action) -> Void in
+                self.selectedMessagesSetValue(setValue: false, forKey: Message.Attributes.isStarred)
+                self.cancelButtonTapped();
+                self.navigationController?.popViewControllerAnimated(true)
+            }))
+            
+            var locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .archive : .Destructive]
+            if !viewModel.isCurrentLocation(.outbox) {
+                locations = [.spam : .Default, .archive : .Destructive]
+            }
+            
             for (location, style) in locations {
                 if !viewModel.isCurrentLocation(location) {
                     alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
@@ -379,6 +389,7 @@ class MailboxViewController: ProtonMailViewController {
                 }
             }
         }
+        
         alertController.popoverPresentationController?.barButtonItem = moreBarButtonItem
         alertController.popoverPresentationController?.sourceRect = self.view.frame
         presentViewController(alertController, animated: true, completion: nil)
@@ -448,11 +459,14 @@ class MailboxViewController: ProtonMailViewController {
     }
 
     // MARK: - Private methods
-    private func startAutoFetch()
+    private func startAutoFetch(run : BooleanType = true)
     {
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(30, target: self, selector: #selector(MailboxViewController.refreshPage), userInfo: nil, repeats: true)
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(self.timerInterval, target: self, selector: #selector(MailboxViewController.refreshPage), userInfo: nil, repeats: true)
         fetchingStopped = false
-        self.timer.fire()
+        
+        if run {
+            self.timer.fire()
+        }
     }
     
     private func stopAutoFetch()
@@ -469,6 +483,22 @@ class MailboxViewController: ProtonMailViewController {
         if !fetchingStopped {
             getLatestMessages()
         }
+    }
+    
+    private var timerInterval : NSTimeInterval = 30
+    private var failedTimes = 30
+    
+    func offlineTimerReset() {
+        timerInterval = NSTimeInterval(arc4random_uniform(90)) + 30;
+        PMLog.D("next check will be after : \(timerInterval) seconds")
+        stopAutoFetch()
+        startAutoFetch(false)
+    }
+    
+    func onlineTimerReset() {
+        timerInterval = 30
+        stopAutoFetch()
+        startAutoFetch(false)
     }
     
     private func messageAtIndexPath(indexPath: NSIndexPath) -> Message? {
@@ -566,14 +596,15 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     private func archiveMessageForIndexPath(indexPath: NSIndexPath) {
-        if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+        
+        if let message = self.messageAtIndexPath(indexPath) {
             undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
             viewModel.archiveMessage(message)
             showUndoView("Archived")
         }
     }
     private func deleteMessageForIndexPath(indexPath: NSIndexPath) {
-        if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+        if let message = self.messageAtIndexPath(indexPath) {
             undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
             viewModel.deleteMessage(message)
             showUndoView("Deleted")
@@ -581,7 +612,7 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     private func spamMessageForIndexPath(indexPath: NSIndexPath) {
-        if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+        if let message = self.messageAtIndexPath(indexPath) {
             undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
             viewModel.spamMessage(message)
             showUndoView("Spammed")
@@ -589,7 +620,7 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     private func starMessageForIndexPath(indexPath: NSIndexPath) {
-        if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+        if let message = self.messageAtIndexPath(indexPath) {
             undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
             viewModel.starMessage(message)
         }
@@ -712,12 +743,17 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     func handleRequestError (error : NSError) {
-        if error.code == NSURLErrorTimedOut {
+        let code = error.code
+        if code == NSURLErrorTimedOut {
             self.showTimeOutErrorMessage()
-        } else if error.code == NSURLErrorNotConnectedToInternet || error.code == NSURLErrorCannotConnectToHost {
+        } else if code == NSURLErrorNotConnectedToInternet || error.code == NSURLErrorCannotConnectToHost {
             self.showNoInternetErrorMessage()
-        } else {
-            self.showNoInternetErrorMessage()
+        } else if code == APIErrorCode.API_offline {
+            self.showOfflineErrorMessage(error)
+            offlineTimerReset()
+        } else if code == APIErrorCode.HTTP503 || code == NSURLErrorBadServerResponse {
+            self.show503ErrorMessage(error)
+            offlineTimerReset()
         }
         PMLog.D("error: \(error)")
     }
@@ -743,6 +779,7 @@ class MailboxViewController: ProtonMailViewController {
                 }
                 
                 if error == nil {
+                    self.onlineTimerReset()
                     self.viewModel.resetNotificationMessage()
                     if !updateTime.isNew {
 //                        if let messages = res?["Messages"] as? [AnyObject] {
@@ -987,7 +1024,7 @@ class MailboxViewController: ProtonMailViewController {
                             
                             // set selected row to checked
                             if (indexPath.row == visibleIndexPath.row) {
-                                if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+                                if let message = self.messageAtIndexPath(indexPath) {
                                     selectedMessages.addObject(message.messageID)
                                 }
                                 messageCell.setCellIsChecked(true)
@@ -1058,6 +1095,26 @@ extension MailboxViewController : TopMessageViewDelegate {
     internal func showNoInternetErrorMessage() {
         self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
         self.topMessageView.updateMessage(noInternet : "No connectivity detected...")
+        self.updateViewConstraints()
+        
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    internal func showOfflineErrorMessage(error : NSError?) {
+        self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
+        self.topMessageView.updateMessage(noInternet : error?.localizedDescription ?? "The ProtonMail current offline...")
+        self.updateViewConstraints()
+        
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    internal func show503ErrorMessage(error : NSError?) {
+        self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
+        self.topMessageView.updateMessage(noInternet : "API Server not reachable...")
         self.updateViewConstraints()
         
         UIView.animateWithDuration(0.25, animations: { () -> Void in

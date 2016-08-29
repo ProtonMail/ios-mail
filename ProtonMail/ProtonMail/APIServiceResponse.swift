@@ -36,11 +36,11 @@ public class ApiResponse {
             return false
         }
         
-        if code != 1000 {
+        if code != 1000 && code != 1001 {
             self.error = NSError.protonMailError(code: code ?? 1000, localizedDescription: errorMessage ?? "", localizedFailureReason: errorDetails, localizedRecoverySuggestion: nil)
         }
         
-        return code != 1000
+        return code != 1000 && code != 1001
     }
     
     func ParseHttpError (error: NSError) {

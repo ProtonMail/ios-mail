@@ -590,6 +590,36 @@ static Class hackishFixClass = Nil;
     [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
 }
 
+
+- (void)updateEmbedImageByCID: (NSString *) cid blob: (NSString *) blobdata {
+    NSString *cleanCid = [self removeQuotesFromHTML:cid];
+    NSString *cleanBlob = [self removeQuotesFromHTML:blobdata];
+    
+    NSString *trigger = [NSString stringWithFormat:@"zss_editor.updateEmbedImage(\"%@\", \"%@\");", cleanCid, cleanBlob];
+    [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
+    
+}
+
+- (void)removeEmbedImageByCID: (NSString *) cid {
+    NSString *cleanCid = [self removeQuotesFromHTML:cid];
+    
+    NSString *trigger = [NSString stringWithFormat:@"zss_editor.removeEmbedImage(\"%@\");", cleanCid];
+    [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
+}
+
+
+
+-(NSString*)getOrignalEmbedImages {
+    NSString *html = [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.getOriginalEmbedImages();"];
+    return html;
+}
+
+
+-(NSString*)getEditedEmbedImages {
+    NSString *html = [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.getEditedEmbedImages();"];
+    return html;
+}
+
 - (NSString *)getHTML {
     NSString *html = [self.editorView stringByEvaluatingJavaScriptFromString:@"zss_editor.getHTML();"];
     html = [self removeQuotesFromHTML:html];
