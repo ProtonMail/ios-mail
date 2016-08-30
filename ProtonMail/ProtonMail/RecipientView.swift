@@ -64,7 +64,7 @@ extension RecipientView: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(kContactCellIdentifier, forIndexPath: indexPath) as! RecipientCell
         
-        var c = contacts?[indexPath.row]
+        let c = contacts?[indexPath.row]
         let n = (c?.name ?? "")
         let e = (c?.email ?? "")
         cell.senderName.text = n.isEmpty ? e : n

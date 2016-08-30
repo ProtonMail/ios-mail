@@ -17,6 +17,9 @@ public class ComposeViewModel {
     var bccSelectedContacts: [ContactVO]! = [ContactVO]()
     var contacts: [ContactVO]! = [ContactVO]()
     
+    var subject : String! = ""
+    var body : String! = ""
+    
     var hasDraft : Bool {
         get{
             return message?.isDetailDownloaded ?? false
@@ -37,11 +40,28 @@ public class ComposeViewModel {
     public init() { }
     
     public func getSubject() -> String {
-        return self.message?.subject ?? ""
+        return self.subject
+        //return self.message?.subject ?? ""
+    }
+    
+    public func setSubject(sub : String) {
+        self.subject = sub
+    }
+    
+    public func setBody(body : String) {
+        self.body = body
     }
     
     internal func addToContacts(contacts: ContactVO! ) {
         toSelectedContacts.append(contacts)
+    }
+    
+    internal func addCcContacts(contacts: ContactVO! ) {
+        ccSelectedContacts.append(contacts)
+    }
+    
+    internal func addBccContacts(contacts: ContactVO! ) {
+        bccSelectedContacts.append(contacts)
     }
     
     func getActionType() -> ComposeMessageAction {

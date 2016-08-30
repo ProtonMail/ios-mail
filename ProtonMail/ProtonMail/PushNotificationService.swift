@@ -24,8 +24,8 @@ class PushNotificationService {
     private var launchOptions: [NSObject: AnyObject]? = nil
     
     init() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didSignInNotification:", name: NotificationDefined.didSignIn, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didSignOutNotification:", name: NotificationDefined.didSignOut, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushNotificationService.didSignInNotification(_:)), name: NotificationDefined.didSignIn, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushNotificationService.didSignOutNotification(_:)), name: NotificationDefined.didSignOut, object: nil)
     }
     
     deinit {
@@ -35,7 +35,7 @@ class PushNotificationService {
     // MARK: - registration methods
     
     func registerUserNotificationSettings() {
-        let types: UIUserNotificationType = .Badge | .Sound | .Alert
+        let types: UIUserNotificationType = [.Badge , .Sound , .Alert]
         let settings = UIUserNotificationSettings(forTypes: types, categories: nil)
         UIApplication.sharedApplication().registerUserNotificationSettings(settings)
     }
@@ -55,16 +55,13 @@ class PushNotificationService {
     // MARK: - callback methods
     
     func didFailToRegisterForRemoteNotificationsWithError(error: NSError) {
-        NSLog("\(__FUNCTION__) \(error)")
+        PMLog.D(" \(error)")
     }
     
     func setLaunchOptions (launchOptions: [NSObject: AnyObject]?) {
         if let launchoption = launchOptions {
             if let option = launchoption["UIApplicationLaunchOptionsRemoteNotificationKey"] as? [NSObject: AnyObject] {
-                
                 self.launchOptions = option;
-                
-                //NSLog("options : \(self.launchOptions)")
             }
         }
     }
@@ -74,45 +71,27 @@ class PushNotificationService {
     }
     
     func processCachedLaunchOptions() {
-        
-        NSLog("process options1 : \(self.launchOptions)")
-        
         if let options = self.launchOptions {
-            
-            
-            NSLog("process options2 : \(self.launchOptions)")
             sharedPushNotificationService.didReceiveRemoteNotification(options, forceProcess: true, fetchCompletionHandler: { (UIBackgroundFetchResult) -> Void in
-                
             })
-            
             self.launchOptions = nil;
         }
     }
     
     func didReceiveRemoteNotification(userInfo: [NSObject : AnyObject], forceProcess : Bool = false, fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-        
-        NSLog("did options1 : \(self.launchOptions)")
         if sharedUserDataService.isSignedIn && sharedUserDataService.isMailboxPWDOk {
-            
-            NSLog("did options2 : \(self.launchOptions)")
-            
             let application = UIApplication.sharedApplication()
             if let messageid = messageIDForUserInfo(userInfo) {
-                NSLog("message \(messageid)")
-                NSLog("static \(application.applicationState)")
                 // if the app is in the background, then switch to the inbox and load the message detail
                 if application.applicationState == UIApplicationState.Inactive || application.applicationState == UIApplicationState.Background || forceProcess {
-                    NSLog("ok1 \(messageid)")
                     if let revealViewController = application.keyWindow?.rootViewController as? SWRevealViewController {
                         //revealViewController
-                        
                         sharedMessageDataService.fetchNotificationMessageDetail(messageid, completion: { (task, response, message, error) -> Void in
                             if error != nil {
                                 completionHandler(.Failed)
                             } else {
                                 if let front = revealViewController.frontViewController as? UINavigationController {
                                     if let mailboxViewController: MailboxViewController = front.viewControllers.first as? MailboxViewController {
-                                        NSLog("ok2")
                                         sharedMessageDataService.pushNotificationMessageID = messageid
                                         mailboxViewController.performSegueForMessageFromNotification()
                                     } else {
@@ -142,7 +121,7 @@ class PushNotificationService {
         sharedAPIService.cleanBadKey(deviceToken)
         sharedAPIService.deviceRegisterWithToken(deviceToken, completion: { (_, _, error) -> Void in
             if let error = error {
-                NSLog("\(__FUNCTION__) error: \(error)")
+                PMLog.D(" error: \(error)")
             }
         })
     }

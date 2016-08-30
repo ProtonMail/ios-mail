@@ -39,7 +39,7 @@ public class SignupViewModelImpl : SignupViewModel {
     override init() {
         super.init()
         //register observer
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "notifyReceiveURLSchema:", name: NotificationDefined.CustomizeURLSchema, object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignupViewModelImpl.notifyReceiveURLSchema(_:)), name: NotificationDefined.CustomizeURLSchema, object:nil)
     }
     deinit {
         //unregister observer
@@ -101,14 +101,19 @@ public class SignupViewModelImpl : SignupViewModel {
     
     override func generateKey(complete: GenerateKey) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
-            var error: NSError?
-            self.newKey = sharedOpenPGP.generateKey(self.mailbox, userName: self.userName, domain: self.domain, bits: self.bit, error: &error)
-            NSOperationQueue.mainQueue().addOperationWithBlock {
-                // do some async stuff
-                if error == nil {
-                    complete(true, nil, nil)
-                } else {
-                    complete(false, "Key generation failed please try again", error);
+            do {
+                self.newKey = try sharedOpenPGP.generateKey(self.mailbox, userName: self.userName, domain: self.domain, bits: self.bit)
+                NSOperationQueue.mainQueue().addOperationWithBlock {
+                    // do some async stuff
+                    if self.newKey == nil {
+                        complete(true, nil, nil)
+                    } else {
+                        complete(false, "Key generation failed please try again", nil);
+                    }
+                }
+            } catch let ex as NSError {
+                NSOperationQueue.mainQueue().addOperationWithBlock {
+                    complete(false, "Key generation failed please try again", ex);
                 }
             }
         }
@@ -116,7 +121,6 @@ public class SignupViewModelImpl : SignupViewModel {
     
     override func createNewUser(complete: CreateUserBlock) {
         //validation here
-        var error: NSError?
         if let key = self.newKey { // sharedOpenPGP.generateKey(self.mailbox, userName: self.userName, domain: self.domain, bits: 4096, error: &error) {
             let api = CreateNewUserRequest<ApiResponse>(token: self.token, type: self.verifyType.toString, username: self.userName, password: self.login, email: self.recoverEmail, domain: self.domain, news: self.news, publicKey: key.publicKey, privateKey: key.privateKey)
                 api.call({ (task, response, hasError) -> Void in
@@ -125,21 +129,26 @@ public class SignupViewModelImpl : SignupViewModel {
                         if let error = error {
                             complete(false, true, "Authentication failed please try to login again", error);
                         } else {
-                            if sharedUserDataService.isMailboxPasswordValid(self.mailbox, privateKey: AuthCredential.getPrivateKey()) {
-                                AuthCredential.setupToken(self.mailbox, isRememberMailbox: true)
-                                sharedLabelsDataService.fetchLabels()
-                                sharedUserDataService.fetchUserInfo() { info, error in
-                                    if error != nil {
-                                        complete(false, true, "Fetch user info failed", error)
-                                    } else if info != nil {
-                                        sharedUserDataService.isNewUser = true
-                                        sharedUserDataService.setMailboxPassword(self.mailbox, isRemembered: true)
-                                        complete(true, true, "", nil)
-                                    } else {
-                                        complete(false, true, "Unknown Error", nil)
+                            do {
+                                if sharedUserDataService.isMailboxPasswordValid(self.mailbox, privateKey: AuthCredential.getPrivateKey()) {
+                                    try AuthCredential.setupToken(self.mailbox, isRememberMailbox: true)
+                                    sharedLabelsDataService.fetchLabels()
+                                    sharedUserDataService.fetchUserInfo() { info, error in
+                                        if error != nil {
+                                            complete(false, true, "Fetch user info failed", error)
+                                        } else if info != nil {
+                                            sharedUserDataService.isNewUser = true
+                                            sharedUserDataService.setMailboxPassword(self.mailbox, isRemembered: true)
+                                            complete(true, true, "", nil)
+                                        } else {
+                                            complete(false, true, "Unknown Error", nil)
+                                        }
                                     }
+                                } else {
+                                    complete(false, true, "Decrypt token failed please try again", nil);
                                 }
-                            } else {
+                            } catch let ex as NSError {
+                                PMLog.D(ex)
                                 complete(false, true, "Decrypt token failed please try again", nil);
                             }
                         }
@@ -174,21 +183,21 @@ public class SignupViewModelImpl : SignupViewModel {
         
         if !self.displayName.isEmpty {
             sharedUserDataService.updateDisplayName(displayName) { _, error in
-                if let error = error {
-                    //complete(false, error)
-                } else {
-                    //complete(true, nil)
-                }
+//                if error != nil {
+//                    //complete(false, error)
+//                } else {
+//                    //complete(true, nil)
+//                }
             }
         }
         
         if !self.recoverEmail.isEmpty {
-            sharedUserDataService.updateNotificationEmail(recoverEmail) { _, _, error in
-                if let error = error {
-                    //complete(false, error)
-                } else {
-                    //complete(true, nil)
-                }
+            sharedUserDataService.updateNotificationEmail(recoverEmail, password: sharedUserDataService.password ?? "") { _, _, error in
+//                if error != nil {
+//                    //complete(false, error)
+//                } else {
+//                    //complete(true, nil)
+//                }
             }
         }
         
@@ -238,7 +247,6 @@ public class SignupViewModelImpl : SignupViewModel {
     private var count : Int = 10;
     override func getTimerSet() -> Int {
         if let lastTime = lastSendTime {
-            let currentDate = NSDate()
             let time = NSDate().timeIntervalSinceDate(lastTime)
             let newCount = 120 - Int(time);
             if newCount <= 0 {

@@ -42,8 +42,7 @@ class MessageQueue: PersistentQueue {
         if isBlocked || isInProgress {
             return nil
         }
-        
-        if let (uuid, object: AnyObject) = next() {
+        if let (uuid, object) = next() {
             if let element = object as? [String : String] {
                 if let id = element[Key.id] {
                     if let action = element[Key.action] {
@@ -54,7 +53,6 @@ class MessageQueue: PersistentQueue {
             PMLog.D(" Removing invalid networkElement: \(object) from the queue.")
             remove(elementID: uuid)
         }
-        
         return nil
     }
 }

@@ -10,8 +10,8 @@
 // the license agreement.
 //
 
-import CoreData
 import UIKit
+import CoreData
 
 class SearchViewController: ProtonMailViewController {
     
@@ -50,6 +50,11 @@ class SearchViewController: ProtonMailViewController {
         self.tableView.noSeparatorsBelowFooter()
         self.tableView!.RegisterCell(MailboxMessageCell.Constant.identifier)
         
+        self.edgesForExtendedLayout = .None
+        self.extendedLayoutIncludesOpaqueBars=false;
+        automaticallyAdjustsScrollViewInsets = true
+        self.navigationController?.navigationBar.translucent = false;
+        
         searchTextField.autocapitalizationType = UITextAutocapitalizationType.None
         searchTextField.returnKeyType = .Search
         searchTextField.delegate = self
@@ -69,18 +74,17 @@ class SearchViewController: ProtonMailViewController {
             fetchedResultsController?.delegate = self
         }
         
-        
         searchTextField.becomeFirstResponder()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        if (self.tableView.respondsToSelector("setSeparatorInset:")) {
+        if (self.tableView.respondsToSelector(Selector("setSeparatorInset:"))) {
             self.tableView.separatorInset = UIEdgeInsetsZero
         }
         
-        if (self.tableView.respondsToSelector("setLayoutMargins:")) {
+        if (self.tableView.respondsToSelector(Selector("setLayoutMargins:"))) {
             self.tableView.layoutMargins = UIEdgeInsetsZero
         }
     }
@@ -103,8 +107,6 @@ class SearchViewController: ProtonMailViewController {
     
     override func configureNavigationBar() {
         super.configureNavigationBar()
-        self.searchDisplayController?.displaysSearchBarInNavigationBar = true
-        //self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Blue_5C7A99
         self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;//.Blue_475F77
     }
     
@@ -116,14 +118,14 @@ class SearchViewController: ProtonMailViewController {
     }
     
     func handleFromLocal(query: String) {
-        if let context = managedObjectContext {
+        if managedObjectContext != nil {
             if let fetchedResultsController = fetchedResultsController {
                 fetchedResultsController.fetchRequest.predicate = predicateForSearch(query)
                 fetchedResultsController.delegate = nil
-                
-                var error: NSError?
-                if !fetchedResultsController.performFetch(&error) {
-                    NSLog("\(__FUNCTION__) performFetch error: \(error!)")
+                do {
+                    try fetchedResultsController.performFetch()
+                }catch {
+                    PMLog.D(" performFetch error: \(error)")
                 }
                 
                 tableView.reloadData()
@@ -147,14 +149,14 @@ class SearchViewController: ProtonMailViewController {
     }
     
     func handleQuery(query: String) {
-        let context = sharedCoreDataService.newMainManagedObjectContext()
+        //let context = sharedCoreDataService.newMainManagedObjectContext()
 //        if let fetchedResultsController = fetchedResultsController {
 //            fetchedResultsController.fetchRequest.predicate = predicateForSearch(query)
 //            fetchedResultsController.delegate = nil
 //            
 //            var error: NSError?
 //            if !fetchedResultsController.performFetch(&error) {
-//                NSLog("\(__FUNCTION__) performFetch error: \(error!)")
+//                PMLog.D(" performFetch error: \(error!)")
 //            }
 //            
 //            tableView.reloadData()
@@ -174,7 +176,7 @@ class SearchViewController: ProtonMailViewController {
             if messages?.count > 0 {
                 self.currentPage += 1
                 if error != nil {
-                    NSLog("\(__FUNCTION__) search error: \(error)")
+                    PMLog.D(" search error: \(error)")
                 } else {
                     
                 }
@@ -216,7 +218,7 @@ class SearchViewController: ProtonMailViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == kSegueToMessageDetailController) {
             let messageDetailViewController = segue.destinationViewController as! MessageViewController
-            let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow()
+            let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 if let message = fetchedResultsController?.objectAtIndexPath(indexPathForSelectedRow) as? Message {
                     messageDetailViewController.message = message
@@ -289,7 +291,7 @@ extension SearchViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var mailboxCell = tableView.dequeueReusableCellWithIdentifier(MailboxMessageCell.Constant.identifier, forIndexPath: indexPath) as! MailboxMessageCell
+        let mailboxCell = tableView.dequeueReusableCellWithIdentifier(MailboxMessageCell.Constant.identifier, forIndexPath: indexPath) as! MailboxMessageCell
         if self.fetchedResultsController?.numberOfRowsInSection(indexPath.section) > indexPath.row {
             if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
                 mailboxCell.configureCell(message, showLocation: true)
@@ -299,11 +301,11 @@ extension SearchViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if (cell.respondsToSelector("setSeparatorInset:")) {
+        if (cell.respondsToSelector(Selector("setSeparatorInset:"))) {
             cell.separatorInset = UIEdgeInsetsZero
         }
         
-        if (cell.respondsToSelector("setLayoutMargins:")) {
+        if (cell.respondsToSelector(Selector("setLayoutMargins:"))) {
             cell.layoutMargins = UIEdgeInsetsZero
         }
         
@@ -318,7 +320,7 @@ extension SearchViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if self.fetchedResultsController?.numberOfRowsInSection(indexPath.section) > indexPath.row {
-            if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
+            if let _ = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
                 self.performSegueWithIdentifier(kSegueToMessageDetailController, sender: self)
             }
         }
@@ -335,7 +337,7 @@ extension SearchViewController: UITableViewDelegate {
 extension SearchViewController: UITextFieldDelegate {
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        query = (textField.text as NSString).stringByReplacingCharactersInRange(range, withString: string)
+        query = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
         
         return true
     }

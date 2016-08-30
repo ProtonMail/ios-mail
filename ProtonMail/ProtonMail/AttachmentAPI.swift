@@ -17,12 +17,15 @@ public class AttachmentDeleteRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
-        var error:NSError?;
         let data : NSData! = body.dataUsingEncoding(NSUTF8StringEncoding)
-        let decoded = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error:  &error) as? Dictionary<String, AnyObject>
-
-        PMLog.D(self.JSONStringify(body, prettyPrinted: true))
-        return decoded
+        do {
+            let decoded = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as? Dictionary<String, AnyObject>
+            PMLog.D(self.JSONStringify(body, prettyPrinted: true))
+            return decoded
+        } catch let ex as NSError {
+            PMLog.D("\(ex)")
+        }
+        return nil
     }
     
     override public func getRequestPath() -> String {

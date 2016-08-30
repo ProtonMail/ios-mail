@@ -10,6 +10,9 @@
 var zss_editor = {};
 
 // If we are using iOS or desktop
+zss_editor.cachedEmbedImages = "";
+
+// If we are using iOS or desktop
 zss_editor.isUsingiOS = true;
 
 // If the user is draging
@@ -49,6 +52,7 @@ zss_editor.init = function() {
     $(document).on('selectionchange',function(e){
                    zss_editor.calculateEditorHeightWithCaretPosition();
                    zss_editor.setScrollPosition();
+                   //zss_editor.enabledEditingItems(e);
                    });
     
     $(window).on('scroll', function(e) {
@@ -60,12 +64,13 @@ zss_editor.init = function() {
                  zss_editor.isDragging = true;
                  zss_editor.updateScrollOffset = true;
                  zss_editor.setScrollPosition();
+                 //zss_editor.enabledEditingItems(e);
                  });
     $(window).on('touchstart', function(e) {
                  zss_editor.isDragging = false;
                  });
     $(window).on('touchend', function(e) {
-                 if (!zss_editor.isDragging) {
+                 if (!zss_editor.isDragging && (e.target.id == "zss_editor_footer"||e.target.nodeName.toLowerCase() == "html")) {
                  zss_editor.focusEditor();
                  }
                  });
@@ -365,6 +370,11 @@ zss_editor.insertLink = function(url, title) {
             sel.addRange(range);
         }
     }
+    else
+    {
+        document.execCommand("insertHTML",false,"<a href='"+url+"'>"+title+"</a>");
+    }
+    
     zss_editor.enabledEditingItems();
 }
 
@@ -449,20 +459,60 @@ zss_editor.insertImage = function(url, alt) {
 zss_editor.setHTML = function(html) {
     var editor = $('#zss_editor_content');
     editor.html(html);
-    window.scrollTo(0, 0);
-    zss_editor.setScrollPosition();
 }
 
+//this is for update protonmail email signature
 zss_editor.updateSignature = function(html) {
-    var editor = $('#protonmail_signature_block');
+    var editor = $('.protonmail_signature_block');
     editor.html(html);
     zss_editor.enabledEditingItems();
+}
+
+zss_editor.updateEmbedImage = function(cid, blobdata) {
+    var editor = $('img[src="' + cid + '"]');
+    if (editor.length) {
+        editor.each(function(index, e) {
+            var image = $(this);
+            image.attr('src-original-pm-cid', cid);
+            zss_editor.cachedEmbedImages += cid;
+            image.attr('src', blobdata);
+        });
+    }
+}
+
+zss_editor.removeEmbedImage = function(cid) {
+    var editor = $('img[src-original-pm-cid="' + cid + '"]');
+    if (editor.length) {
+        editor.each(function(index, e) {
+                    var image = $(this);
+                    image.remove();
+                    });
+    }
 }
 
 zss_editor.insertHTML = function(html) {
     document.execCommand('insertHTML', false, html);
     zss_editor.enabledEditingItems();
 }
+
+
+zss_editor.getOriginalEmbedImages = function() {
+    return zss_editor.cachedEmbedImages;
+}
+
+zss_editor.getEditedEmbedImages = function() {
+    var editedImages = "";
+    var editor = $('img[src-original-pm-cid]');
+    if (editor.length) {
+        editor.each(function(index, e) {
+                    var image = $(this);
+                    var cid = image.attr('src-original-pm-cid');
+                    editedImages += cid;
+                    });
+    }
+    return editedImages;
+}
+
 
 zss_editor.getHTML = function() {
     
@@ -497,6 +547,26 @@ zss_editor.getHTML = function() {
     
     // Get the contents
     var h = document.getElementById("zss_editor_content").innerHTML;
+    
+    var outstring = $('<div></div>').append(h);
+    if (outstring.length > 0) {
+        var editor = outstring.find('img');
+        if (editor.length) {
+            editor.each(function(index, e) {
+                var image = $(this);
+                var cid = image.attr('src-original-pm-cid');
+                console.log("old-cid",cid);
+                if (typeof(cid) != "undefined") {
+                    if (cid.length > 0) {
+                        image.attr('src', cid);
+                        image.removeAttr('src-original-pm-cid');
+                    }
+                }
+            });
+        }
+        
+        h = outstring.html();
+    }
     
     return h;
 }
@@ -566,7 +636,8 @@ zss_editor.enabledEditingItems = function(e) {
     if (typeof(e) != "undefined") {
         
         // The target element
-        var t = $(e.target);
+        var s = zss_editor.getSelectedNode();
+        var t = $(s);
         var nodeName = e.target.nodeName.toLowerCase();
         
         // Background Color
@@ -634,20 +705,13 @@ zss_editor.focusEditor = function() {
     if (!editor.focus) {
         var range = document.createRange();
         range.selectNodeContents(editor.get(0));
-        range.collapse(true);
+        range.collapse(false);
         var selection = window.getSelection();
         selection.removeAllRanges();
         selection.addRange(range);
         editor.focus();
     }
 }
-
-zss_editor.removeRanges = function() {
-    var selection = window.getSelection();
-    selection.removeAllRanges();
-}
-
-
 zss_editor.blurEditor = function() {
     $('#zss_editor_content').blur();
 }//end

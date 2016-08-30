@@ -157,15 +157,13 @@ typedef NS_ENUM(NSUInteger, MCSwipeTableViewCellDirection) {
     if (_contentScreenshotView) {
         return;
     }
-
+    
     // If the content view background is transparent we get the background color.
     BOOL isContentViewBackgroundClear = !self.contentView.backgroundColor;
     if (isContentViewBackgroundClear) {
         BOOL isBackgroundClear = [self.backgroundColor isEqual:[UIColor clearColor]];
         self.contentView.backgroundColor = isBackgroundClear ? [UIColor whiteColor] :self.backgroundColor;
     }
-    
-     CGSize iS = self.intrinsicContentSize;
     
     UIImage *contentViewScreenshotImage = [self imageWithView:self];
     

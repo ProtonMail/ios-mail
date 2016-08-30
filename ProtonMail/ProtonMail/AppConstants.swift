@@ -11,8 +11,8 @@ import Foundation
 
 class AppConstants {
     
-    static let CacheVersion : Int = 79
-    static let AuthCacheVersion : Int = 9
+    static let CacheVersion : Int = 82
+    static let AuthCacheVersion : Int = 12
     static let SpaceWarningThreshold: Double = 80
     static let SplashVersion : Int = 1
     static let TourVersion : Int = 2
@@ -23,10 +23,10 @@ class AppConstants {
     static let BaseURLString : String = "https://api.protonmail.ch"
     //static let BaseURLString : String = "http://protonmail.blue/api"
     //static let BaseURLString : String = "https://test-api.protonmail.ch"
-    //static let BaseURLString : String = "http://feng.api.com"
+    //static let BaseURLString : String = "http://127.0.0.1"
     //static let BaseURLString : String = "https://dev-api.protonmail.ch"
     //static let BaseURLString : String = "http://protonmail.xyz"
-    //static let BaseURLString : String = "https://dev.protonmail.com"     //need - api path
+    //static let BaseURLString : String = "https://dev.protonmail.com"
 
     //static let BaseAPIPath : String = "/api"
     static let BaseAPIPath : String = ""
@@ -34,7 +34,7 @@ class AppConstants {
     static var getDebugOption : String {
         get {
             #if DEBUG
-                return "?XDEBUG_SESSION_START=\(18073)"
+                return "" //"?XDEBUG_SESSION_START=\(18073)"
             #else
                 return ""
             #endif

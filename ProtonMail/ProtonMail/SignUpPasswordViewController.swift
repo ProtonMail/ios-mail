@@ -102,11 +102,11 @@ class SignUpPasswordViewController: UIViewController {
     @IBAction func createPasswordAction(sender: UIButton) {
         dismissKeyboard()
         
-        let login_pwd = loginPasswordField.text.trim()
-        let confirm_login_pwd = confirmLoginPasswordField.text.trim()
+        let login_pwd = (loginPasswordField.text ?? "") //.trim()
+        let confirm_login_pwd = (confirmLoginPasswordField.text ?? "") //.trim()
         
-        let mailbox_pwd = mailboxPassword.text.trim()
-        let confirm_mailbox_pwd = confirmMailboxPassword.text.trim()
+        let mailbox_pwd = (mailboxPassword.text ?? "") //.trim()
+        let confirm_mailbox_pwd = (confirmMailboxPassword.text ?? "") //.trim()
         
         if !login_pwd.isEmpty && confirm_login_pwd == login_pwd {
             if !mailbox_pwd.isEmpty && confirm_mailbox_pwd == mailbox_pwd {
@@ -145,11 +145,11 @@ class SignUpPasswordViewController: UIViewController {
     }
     
     func updateButtonStatus () {
-        let login_pwd = loginPasswordField.text.trim()
-        let confirm_login_pwd = confirmLoginPasswordField.text.trim()
+        let login_pwd = (loginPasswordField.text ?? "") //.trim()
+        let confirm_login_pwd = (confirmLoginPasswordField.text ?? "") //.trim()
         
-        let mailbox_pwd = mailboxPassword.text.trim()
-        let confirm_mailbox_pwd = confirmMailboxPassword.text.trim()
+        let mailbox_pwd = (mailboxPassword.text ?? "") //.trim()
+        let confirm_mailbox_pwd = (confirmMailboxPassword.text ?? "") //.trim()
         
         if !login_pwd.isEmpty && !confirm_login_pwd.isEmpty && !mailbox_pwd.isEmpty && !confirm_mailbox_pwd.isEmpty {
             createPasswordButton.enabled = true

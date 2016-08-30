@@ -11,11 +11,8 @@ import Foundation
 
 class PMDocumentPickerViewController : UIDocumentPickerViewController {
     
-    
-    
-    
-    override func supportedInterfaceOrientations() -> Int {
-        return Int(UIInterfaceOrientationMask.Portrait.rawValue) | Int(UIInterfaceOrientationMask.Landscape.rawValue)
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.All
     }
     
     override func shouldAutorotate() -> Bool {

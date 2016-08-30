@@ -169,7 +169,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
                         }
                     })
                 } else {
-                    MBProgressHUD.hideHUDForView(view, animated: true)
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
                     let alert = NSLocalizedString("Please pick a user name first!").alertController()
                     alert.addOKAction()
                     self.presentViewController(alert, animated: true, completion: nil)
@@ -194,14 +194,14 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     }
     
     func showPickerInActionSheet(sender : UIButton) {
-        var title = ""
-        var message = "\n\n\n\n\n\n\n\n\n\n";
-        var alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.ActionSheet);
+        let title = ""
+        let message = "\n\n\n\n\n\n\n\n\n\n";
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.ActionSheet);
         alert.modalInPopover = true;
         
         //Create a frame (placeholder/wrapper) for the picker and then create the picker
-        var pickerFrame: CGRect = CGRectMake(17, 52, 270, 100); // CGRectMake(left), top, width, height) - left and top are like margins
-        var picker: UIPickerView = UIPickerView(frame: pickerFrame);
+        let pickerFrame: CGRect = CGRectMake(17, 52, 270, 100); // CGRectMake(left), top, width, height) - left and top are like margins
+        let picker: UIPickerView = UIPickerView(frame: pickerFrame);
         
         //set the pickers datasource and delegate
         picker.delegate = self;
@@ -211,31 +211,21 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         alert.view.addSubview(picker);
         
         //Create the toolbar view - the view witch will hold our 2 buttons
-        var toolFrame = CGRectMake(17, 5, 270, 45);
-        var toolView: UIView = UIView(frame: toolFrame);
+        let toolFrame = CGRectMake(17, 5, 270, 45);
+        let toolView: UIView = UIView(frame: toolFrame);
         
         //add buttons to the view
-        var buttonCancelFrame: CGRect = CGRectMake(0, 7, 100, 30); //size & position of the button as placed on the toolView
+        let buttonCancelFrame: CGRect = CGRectMake(0, 7, 100, 30); //size & position of the button as placed on the toolView
         
         //Create the cancel button & set its title
-        var buttonCancel: UIButton = UIButton(frame: buttonCancelFrame);
+        let buttonCancel: UIButton = UIButton(frame: buttonCancelFrame);
         buttonCancel.setTitle(NSLocalizedString("Done"), forState: UIControlState.Normal);
+
         buttonCancel.setTitleColor(UIColor.blueColor(), forState: UIControlState.Normal);
         toolView.addSubview(buttonCancel); //add it to the toolView
         
         //Add the target - target, function to call, the event witch will trigger the function call
-        buttonCancel.addTarget(self, action: "cancelSelection:", forControlEvents: UIControlEvents.TouchDown);
-        
-        //        //add buttons to the view
-        //        var buttonOkFrame: CGRect = CGRectMake(170, 7, 100, 30); //size & position of the button as placed on the toolView
-        //
-        //        //Create the Select button & set the title
-        //        var buttonOk: UIButton = UIButton(frame: buttonOkFrame);
-        //        buttonOk.setTitle("Select", forState: UIControlState.Normal);
-        //        buttonOk.setTitleColor(UIColor.blueColor(), forState: UIControlState.Normal);
-        //        toolView.addSubview(buttonOk); //add to the subview
-        //        //Add the tartget. In my case I dynamicly set the target of the select button
-        //        buttonOk.addTarget(self, action: "pickedOK:", forControlEvents: UIControlEvents.TouchDown);
+        buttonCancel.addTarget(self, action: #selector(SignUpUserNameViewController.cancelSelection(_:)), forControlEvents: UIControlEvents.TouchDown);
         
         //add the toolbar to the alert controller
         alert.view.addSubview(toolView);
@@ -247,17 +237,17 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     }
     
     func pickedOK(sender: UIButton){
-        println("OK");
+        PMLog.D("OK");
         self.dismissViewControllerAnimated(true, completion: nil);
     }
     
     func cancelSelection(sender: UIButton){
-        println("Cancel");
+        PMLog.D("Cancel");
         self.dismissViewControllerAnimated(true, completion: nil);
     }
     
     // Return the title of each row in your picker ... In my case that will be the profile name or the username string
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return domains[row]
     }
     

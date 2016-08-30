@@ -14,8 +14,8 @@
 // the license agreement.
 //
 
-import CoreData
 import Foundation
+import CoreData
 
 extension Contact {
 

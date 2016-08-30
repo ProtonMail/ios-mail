@@ -21,7 +21,6 @@ protocol ChangePWDViewModel {
 class ChangeLoginPWDViewModel : ChangePWDViewModel{
     
     func getNavigationTitle() -> String {
-        
         return "PASSWORD"
     }
     
@@ -42,9 +41,9 @@ class ChangeLoginPWDViewModel : ChangePWDViewModel{
     }
     
     func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, complete: (Bool, NSError?) -> Void) {
-        let curr_pwd = current.trim();
-        let newpwd = new_pwd.trim();
-        let confirmpwd = confirm_new_pwd.trim();
+        let curr_pwd = current //.trim();
+        let newpwd = new_pwd //.trim();
+        let confirmpwd = confirm_new_pwd //.trim();
         
         if curr_pwd != sharedUserDataService.password {
             complete(false, NSError.currentPwdWrong())
@@ -92,11 +91,11 @@ class ChangeMailboxPWDViewModel : ChangePWDViewModel{
     
     func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, complete: (Bool, NSError?) -> Void) {
         //remove space.
-        let curr_pwd = current.trim();
-        let newpwd = new_pwd.trim();
-        let confirmpwd = confirm_new_pwd.trim();
+        let curr_pwd = current //.trim();
+        let newpwd = new_pwd//.trim();
+        let confirmpwd = confirm_new_pwd//.trim();
         
-        if curr_pwd != sharedUserDataService.mailboxPassword || !sharedUserDataService.isMailboxPasswordValid(curr_pwd, privateKey: sharedUserDataService.userInfo?.privateKey ?? "") {
+        if curr_pwd != sharedUserDataService.mailboxPassword || !sharedOpenPGP.checkPassphrase(curr_pwd, forPrivateKey: sharedUserDataService.userInfo?.privateKey ?? "") {
             complete(false, NSError.currentPwdWrong())
         }
         else if newpwd == "" || confirmpwd == "" {
@@ -119,7 +118,6 @@ class ChangeMailboxPWDViewModel : ChangePWDViewModel{
         }
     }
 }
-
 
 class ChangePWDViewModelTest : ChangePWDViewModel{
     func getNavigationTitle() -> String {
@@ -144,9 +142,9 @@ class ChangePWDViewModelTest : ChangePWDViewModel{
     func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, complete: (Bool, NSError?) -> Void) {
         //add random test case and random
         //remove space.
-        let curr_pwd = current.trim();
-        let newpwd = new_pwd.trim();
-        let confirmpwd = confirm_new_pwd.trim();
+        let curr_pwd = current//.trim();
+        let newpwd = new_pwd//.trim();
+        let confirmpwd = confirm_new_pwd//.trim();
         
         if curr_pwd != sharedUserDataService.mailboxPassword || !sharedUserDataService.isMailboxPasswordValid(curr_pwd, privateKey: sharedUserDataService.userInfo?.privateKey ?? "") {
             complete(false, NSError.currentPwdWrong())

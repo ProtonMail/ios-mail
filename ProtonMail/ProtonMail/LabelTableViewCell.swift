@@ -9,15 +9,16 @@
 import UIKit
 
 class LabelTableViewCell: UITableViewCell {
-    var vc : UIViewController!;
+    var vc : UIViewController!
     var model : LabelMessageModel!
+    let maxLabelCount : Int = 100
 
     @IBOutlet weak var labelView: TableCellLabelView!
     @IBOutlet weak var selectStatusButton: UIButton!
     
     @IBOutlet weak var labelWidth: NSLayoutConstraint!
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
         self.layoutMargins = UIEdgeInsetsZero;
         self.separatorInset = UIEdgeInsetsZero
     }
@@ -32,46 +33,45 @@ class LabelTableViewCell: UITableViewCell {
     }
 
     @IBAction func buttonAction(sender: UIButton) {
-        var plusCount = 1;
+        var plusCount = 1
         if model.totalMessages.count <= 1 || 0 ==  model.originalSelected.count || model.originalSelected.count ==  model.totalMessages.count {
-            plusCount = 2;
+            plusCount = 2
         }
         
         var tempStatus = self.model.status + plusCount;
         if tempStatus > 2 {
-            tempStatus = 0;
+            tempStatus = 0
         }
         
         if tempStatus == 0 {
-
             for mm in self.model.totalMessages {
-                var labelObjs = mm.mutableSetValueForKey("labels")
+                let labelObjs = mm.mutableSetValueForKey("labels")
                 labelObjs.removeObject(model.label)
                 mm.setValue(labelObjs, forKey: "labels")
             }
         } else if tempStatus == 1 {
             for mm in self.model.totalMessages {
-                var labelObjs = mm.mutableSetValueForKey("labels")
+                let labelObjs = mm.mutableSetValueForKey("labels")
                 labelObjs.removeObject(model.label)
                 mm.setValue(labelObjs, forKey: "labels")
             }
             
             for mm in self.model.originalSelected {
-                var labelObjs = mm.mutableSetValueForKey("labels")
+                let labelObjs = mm.mutableSetValueForKey("labels")
                 labelObjs.addObject(model.label)
                 mm.setValue(labelObjs, forKey: "labels")
             }
         } else if tempStatus == 2 {
             for mm in self.model.totalMessages {
-                var labelObjs = mm.mutableSetValueForKey("labels")
+                let labelObjs = mm.mutableSetValueForKey("labels")
                 var labelCount = 0
                 for l in labelObjs {
                     if (l as! Label).labelID != model.label.labelID {
-                        labelCount++
+                        labelCount += 1
                     }
                 }
-                if labelCount >= 5 {
-                    var alert = NSLocalizedString("A message cannot have more than 5 labels").alertController();
+                if labelCount >= maxLabelCount {
+                    let alert = NSLocalizedString("A message cannot have more than \(maxLabelCount) labels").alertController();
                     alert.addOKAction()
                     vc.presentViewController(alert, animated: true, completion: nil)
                     return;
@@ -79,7 +79,7 @@ class LabelTableViewCell: UITableViewCell {
             }
             
             for mm in self.model.totalMessages {
-                var labelObjs = mm.mutableSetValueForKey("labels")
+                let labelObjs = mm.mutableSetValueForKey("labels")
                 labelObjs.addObject(model.label)
                 mm.setValue(labelObjs, forKey: "labels")
             }

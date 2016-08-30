@@ -48,6 +48,8 @@ public struct LabelAPI {
     static let V_LabelFetchRequest : Int = 1
     static let V_ApplyLabelToMessageRequest : Int = 1
     static let V_RemoveLabelFromMessageRequest : Int = 1
+    static let V_CreateLabelRequest : Int = 1
+    static let V_DeleteLabelRequest : Int = 1
 }
 
 public struct AuthAPI {
@@ -76,6 +78,14 @@ public struct SettingsAPI {
     static let V_SettingsUpdateShowImagesRequest : Int = 1
 }
 
+public struct AddressesAPI {
+    /// base message api path
+    static let Path :String = AppConstants.BaseAPIPath + "/addresses"
+    
+    /// fetch message request version
+    static let V_AddressesUpdateRequest : Int = 1
+
+}
 
 public struct EventAPI {
     /// base event api path

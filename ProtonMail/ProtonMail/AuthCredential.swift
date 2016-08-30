@@ -31,33 +31,32 @@ class AuthCredential: NSObject, NSCoding {
     var password : String?
     
     override var description: String {
-        return ""//"\n  encToken: \(encryptToken)\n  refreshToken: \(refreshToken)\n  expiration: \(expiration)\n  userID: \(userID)"
+        return "\n  token: \(plainToken)\n  refreshToken: \(refreshToken)\n  expiration: \(expiration)\n  userID: \(userID)"
     }
     
     var isExpired: Bool {
         return expiration == nil || NSDate().compare(expiration) != .OrderedAscending
     }
     
-    class func setupToken (password:String, isRememberMailbox : Bool = true) {
-        
+    class func setupToken (password:String, isRememberMailbox : Bool = true) throws {
         #if DEBUG
             if let data = authDebugCached.dataForKey(Key.keychainStore) {
                 if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? AuthCredential {
-                    authCredential.setupToken(password)
+                    try authCredential.setupToken(password)
                 }
             }
         #else
             if let data = UICKeyChainStore.dataForKey(Key.keychainStore) {
                 if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? AuthCredential {
-                    authCredential.setupToken(password)
+                    try authCredential.setupToken(password)
                 }
             }
         #endif
     }
     
     
-    func setupToken (password:String) {
-        self.plainToken = self.encryptToken.decryptMessageWithSinglKey(self.privateKey, passphrase: password, error: nil)
+    func setupToken (password:String) throws {
+        self.plainToken = try self.encryptToken.decryptMessageWithSinglKey(self.privateKey, passphrase: password)
         self.password = password;
         self.storeInKeychain()
     }
@@ -110,7 +109,7 @@ class AuthCredential: NSObject, NSCoding {
     }
     
     private func expire() {
-        expiration = NSDate.distantPast() as! NSDate
+        expiration = NSDate.distantPast() 
         storeInKeychain()
     }
     
@@ -148,12 +147,14 @@ class AuthCredential: NSObject, NSCoding {
         UICKeyChainStore.removeItemForKey(Key.keychainStore)
     }
     
-    class func expireOrClear() {
+    class func expireOrClear(token : String?) {
         if let credential = AuthCredential.fetchFromKeychain() {
             if !credential.isExpired {
-                credential.expire()
+                if let t = token where t == credential.plainToken {
+                    credential.expire()
+                }
             } else {
-                AuthCredential.clearFromKeychain()
+               // AuthCredential.clearFromKeychain()
             }
         }
     }

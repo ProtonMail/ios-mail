@@ -57,7 +57,7 @@ class LabelDisplayView: PMView {
     }
     
     override func sizeThatFits(size: CGSize) -> CGSize {
-        var s = super.sizeThatFits(size)
+        let s = super.sizeThatFits(size)
         return  CGSize(width: s.width + 4, height: s.height)
     }
     

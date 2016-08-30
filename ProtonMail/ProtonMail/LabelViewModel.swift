@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 
 public class LabelMessageModel {
@@ -40,6 +41,18 @@ public class LabelViewModel {
     public func getLabelMessage(label : Label!) -> LabelMessageModel! {
         fatalError("This method must be overridden")
     }
+    
+    public func getTitle() -> String {
+        fatalError("This method must be overridden")
+    }
+    
+    public func showArchiveOption() -> Bool {
+        fatalError("This method must be overridden")
+    }
+    
+    public func getApplyButtonText() -> String {
+        fatalError("This method must be overridden")
+    }
 }
 
 public class LabelViewModelImpl : LabelViewModel {
@@ -52,14 +65,22 @@ public class LabelViewModelImpl : LabelViewModel {
         super.init()
     }
     
+    override public func showArchiveOption() -> Bool {
+        return true
+    }
+    
+    public override func getApplyButtonText() -> String {
+        return NSLocalizedString("Apply")
+    }
+    
     override public func getLabelMessage( label : Label!) -> LabelMessageModel! {
         if let outVar = self.labelMessages[label.labelID] {
             return outVar
         } else {
-            var lmm = LabelMessageModel();
+            let lmm = LabelMessageModel();
             lmm.label = label
             lmm.totalMessages = self.messages;
-            for (var m : Message) in self.messages {
+            for  m  in self.messages {
                 let labels = m.mutableSetValueForKey("labels")
                 for lb in labels {
                     if let lb = lb as? Label {
@@ -93,7 +114,7 @@ public class LabelViewModelImpl : LabelViewModel {
                 api.call(nil)
                 context.performBlockAndWait { () -> Void in
                     for mm in self.messages {
-                        var labelObjs = mm.mutableSetValueForKey("labels")
+                        let labelObjs = mm.mutableSetValueForKey("labels")
                         labelObjs.removeObject(value.label)
                         mm.setValue(labelObjs, forKey: "labels")
                     }
@@ -104,7 +125,7 @@ public class LabelViewModelImpl : LabelViewModel {
                 api.call(nil)
                 context.performBlockAndWait { () -> Void in
                     for mm in self.messages {
-                        var labelObjs = mm.mutableSetValueForKey("labels")
+                        let labelObjs = mm.mutableSetValueForKey("labels")
                         labelObjs.addObject(value.label)
                         mm.setValue(labelObjs, forKey: "labels")
                     }
@@ -115,7 +136,7 @@ public class LabelViewModelImpl : LabelViewModel {
             
             let error = context.saveUpstreamIfNeeded()
             if let error = error {
-                NSLog("\(__FUNCTION__) error: \(error)")
+                PMLog.D("error: \(error)")
             }
         }
         
@@ -124,9 +145,8 @@ public class LabelViewModelImpl : LabelViewModel {
                 message.location = .archive
                 message.needsUpdate = false
             }
-            let error = context.saveUpstreamIfNeeded()
-            if let error = error {
-                NSLog("\(__FUNCTION__) error: \(error)")
+            if let error = context.saveUpstreamIfNeeded() {
+                PMLog.D("error: \(error)")
             }
             let ids = self.messages.map { ($0).messageID }
             let api = MessageActionRequest<ApiResponse>(action: "archive", ids: ids)
@@ -134,18 +154,22 @@ public class LabelViewModelImpl : LabelViewModel {
         }
     }
     
+    override public func getTitle() -> String {
+        return NSLocalizedString("Apply Labels")
+    }
+    
     override public func cancel() {
         let context = sharedCoreDataService.newMainManagedObjectContext()
-        for (key, value) in self.labelMessages {
+        for (_, value) in self.labelMessages {
             
             for mm in self.messages {
-                var labelObjs = mm.mutableSetValueForKey("labels")
+                let labelObjs = mm.mutableSetValueForKey("labels")
                 labelObjs.removeObject(value.label)
                 mm.setValue(labelObjs, forKey: "labels")
             }
             
             for mm in value.originalSelected {
-                var labelObjs = mm.mutableSetValueForKey("labels")
+                let labelObjs = mm.mutableSetValueForKey("labels")
                 labelObjs.addObject(value.label)
                 mm.setValue(labelObjs, forKey: "labels")
             }
@@ -153,7 +177,7 @@ public class LabelViewModelImpl : LabelViewModel {
         
         let error = context.saveUpstreamIfNeeded()
         if let error = error {
-            NSLog("\(__FUNCTION__) error: \(error)")
+            PMLog.D("error: \(error)")
         }
     }
     
@@ -164,7 +188,6 @@ public class LabelViewModelImpl : LabelViewModel {
             if hasError {
                 error(code: response?.code ?? 1000, errorMessage: response?.errorMessage ?? "");
             } else {
-                //var label = response["Label"] as? Dictionary<String,AnyObject>
                 sharedLabelsDataService.addNewLabel(response?.label);
                 complete()
             }

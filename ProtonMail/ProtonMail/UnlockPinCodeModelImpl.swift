@@ -50,11 +50,27 @@ class UnlockPinCodeModelImpl : PinCodeViewModel {
     
     override func isPinMatched() -> Bool {
         if !enterPin.isEmpty && !userCachedStatus.pinCode.isEmpty && enterPin == userCachedStatus.pinCode {
+            userCachedStatus.pinFailedCount = 0;
             return true
         } else {
+            userCachedStatus.pinFailedCount += 1
             currentStep = .EnterPin
             return false
         }
+    }
+    
+    override func getPinFailedRemainingCount() -> Int {
+        return 10 - userCachedStatus.pinFailedCount;
+    }
+    
+    override func getPinFailedError() -> String {
+        let c = 10 - userCachedStatus.pinFailedCount
+        if c <= 1 {
+            return "\(c) attempt remaining until secure data wipe!"
+        } else if c < 4 {
+            return "\(c) attempts remaining until secure data wipe!"
+        }
+        return "Incorrect PIN, \(c) attempts remaining"
     }
     
     override func checkTouchID() -> Bool {

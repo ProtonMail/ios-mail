@@ -74,13 +74,17 @@ public class ApiRequest<T : ApiResponse> : Package {
     :returns: String value
     */
     func JSONStringify(value: AnyObject, prettyPrinted: Bool = false) -> String {
-        var options = prettyPrinted ? NSJSONWritingOptions.PrettyPrinted : nil
+        let options = prettyPrinted ? NSJSONWritingOptions.PrettyPrinted : NSJSONWritingOptions()
         if NSJSONSerialization.isValidJSONObject(value) {
-            if let data = NSJSONSerialization.dataWithJSONObject(value, options: options, error: nil) {
+            do {
+                let data = try NSJSONSerialization.dataWithJSONObject(value, options: options)
                 if let string = NSString(data: data, encoding: NSUTF8StringEncoding) {
                     return string as String
                 }
+            } catch let ex as NSError {
+                PMLog.D("\(ex)")
             }
+            
         }
         return ""
     }
@@ -94,7 +98,7 @@ public class ApiRequest<T : ApiResponse> : Package {
         //TODO :: 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
         let completionWrapper:  APIService.CompletionBlock = { task, res, error in
             let realType = T.self
-            var apiRes = realType()
+            let apiRes = realType.init()
             
             if error != nil {
                 //TODO check error

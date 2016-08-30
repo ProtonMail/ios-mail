@@ -7,8 +7,7 @@
 //
 
 import Foundation
-
-
+import CoreData
 
 public class LabelboxViewModelImpl : MailboxViewModel {
     
@@ -45,16 +44,17 @@ public class LabelboxViewModelImpl : MailboxViewModel {
         msg.location = .trash
         msg.needsUpdate = true
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-            NSLog("\(__FUNCTION__) error: \(error)")
+            PMLog.D(" error: \(error)")
         }
     }
 
     public override func getFetchedResultsController() -> NSFetchedResultsController? {
         let fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLabels(self.label)
         if let fetchedResultsController = fetchedResultsController {
-            var error: NSError?
-            if !fetchedResultsController.performFetch(&error) {
-                NSLog("\(__FUNCTION__) error: \(error)")
+            do {
+                try fetchedResultsController.performFetch()
+            } catch let ex as NSError {
+                 PMLog.D(" error: \(ex)")
             }
         }
         return fetchedResultsController

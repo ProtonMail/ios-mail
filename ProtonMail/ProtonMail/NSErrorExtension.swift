@@ -32,7 +32,7 @@ extension NSError {
         self.init(domain: domain, code: code, userInfo: userInfo)
     }
     
-    class func protonMailError(#code: Int, localizedDescription: String, localizedFailureReason: String? = nil, localizedRecoverySuggestion: String? = nil) -> NSError {
+    class func protonMailError(code code: Int, localizedDescription: String, localizedFailureReason: String? = nil, localizedRecoverySuggestion: String? = nil) -> NSError {
         return NSError(domain: protonMailErrorDomain(), code: code, localizedDescription: localizedDescription, localizedFailureReason: localizedFailureReason, localizedRecoverySuggestion: localizedRecoverySuggestion)
     }
     
@@ -60,6 +60,16 @@ extension NSError {
         return UIAlertController(title: localizedDescription, message: message, preferredStyle: .Alert)
     }
     
+    func getCode() -> Int {
+        var defaultCode : Int = code;
+        if defaultCode == Int.max {
+            if let detail = self.userInfo["com.alamofire.serialization.response.error.response"] as? NSHTTPURLResponse {
+                defaultCode = detail.statusCode
+            }
+        }
+        return defaultCode
+    }
+    
     func alertController(title : String) -> UIAlertController {
         var message = localizedFailureReason
         
@@ -77,8 +87,8 @@ extension NSError {
     
     
     func alertToast() ->Void {
-        let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
-        var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
         hud.labelText = NSLocalizedString("Alert");
         hud.detailsLabelText = localizedDescription
@@ -86,85 +96,60 @@ extension NSError {
         hud.hide(true, afterDelay: 3)
     }
     
+    func alertErrorToast() ->Void {
+        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+        hud.mode = MBProgressHUDMode.Text
+        hud.labelText = NSLocalizedString(localizedDescription);
+        hud.detailsLabelText = description
+        hud.removeFromSuperViewOnHide = true
+        hud.hide(true, afterDelay: 3)
+    }
+    
     class func alertUpdatedToast() ->Void {
-        let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
-        var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
         hud.labelText = NSLocalizedString("Alert");
         hud.detailsLabelText = NSLocalizedString("A new version of ProtonMail app is available, please update to latest version.");
         hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)
-        //                    hud.mode = MBProgressHUDMode.Text
-        //                    hud.labelText = "Sending message ..."
-        //                    hud.removeFromSuperViewOnHide = true
-        //                    hud.margin = 10
-        //                    hud.yOffset = 150
     }
     
     class func alertBadTokenToast() ->Void {
-        let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
-        var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
         hud.labelText = NSLocalizedString("Alert");
         hud.detailsLabelText = NSLocalizedString("Invalid access token please relogin");
         hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)
-        //                    hud.mode = MBProgressHUDMode.Text
-        //                    hud.labelText = "Sending message ..."
-        //                    hud.removeFromSuperViewOnHide = true
-        //                    hud.margin = 10
-        //                    hud.yOffset = 150
     }
     
     class func alertOfflineToast() ->Void {
-        let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
-        var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
         hud.labelText = NSLocalizedString("Alert");
         hud.detailsLabelText = NSLocalizedString("ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail");
         hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)
-
-       // let alertController = UIAlertController(title: "Alert", message: "", preferredStyle: .Alert)
-        
-        
-//        alertController.addAction(UIAlertAction(title: NSLocalizedString("Photo Library"), style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-//            let picker: UIImagePickerController = UIImagePickerController()
-//            picker.delegate = self
-//            picker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-//            self.presentViewController(picker, animated: true, completion: nil)
-//        }))
-//        
-//        alertController.addAction(UIAlertAction(title: NSLocalizedString("Take a Photo"), style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-//            if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)) {
-//                let picker: UIImagePickerController = UIImagePickerController()
-//                picker.delegate = self
-//                picker.sourceType = UIImagePickerControllerSourceType.Camera
-//                self.presentViewController(picker, animated: true, completion: nil)
-//            }
-//        }))
-//        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: UIAlertActionStyle.Cancel, handler: nil))
-        
- //       window.addSubview(alertController.view);
-        
-        //window.perse
-       //self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     class func alertMessageSendingToast() ->Void {
-        let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
-        var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
         hud.detailsLabelText = NSLocalizedString("Sending Message");
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
         hud.yOffset = 250.0
-        hud.hide(true, afterDelay: 1.0)
+        hud.hide(true, afterDelay: 1)
     }
     
     class func alertMessageSentToast() ->Void {
-        let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
-        var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
         hud.detailsLabelText = NSLocalizedString("Message sent");
         hud.removeFromSuperViewOnHide = true
@@ -174,8 +159,8 @@ extension NSError {
     }
 
     class func alertMessageSentErrorToast() ->Void {
-        let window : UIWindow = UIApplication.sharedApplication().windows.last as! UIWindow
-        var hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
         hud.detailsLabelText = NSLocalizedString("Message sending failed please try again");
         hud.removeFromSuperViewOnHide = true
@@ -192,22 +177,16 @@ extension NSError {
     }
     
     func isInternetError() -> Bool {
-        
         var isInternetIssue = false
-        if let errorUserInfo = self.userInfo {
-            if let detail = errorUserInfo["com.alamofire.serialization.response.error.response"] as? NSHTTPURLResponse {
-                
-            }
-            else {
-                //                        if(error?.code == -1001) {
-                //                            // request timed out
-                //                        }
-                if self.code == -1009 || self.code == -1004 || self.code == -1001 { //internet issue
-                    isInternetIssue = true
-                }
+        if let _ = self.userInfo ["com.alamofire.serialization.response.error.response"] as? NSHTTPURLResponse {
+        } else {
+            //                        if(error?.code == -1001) {
+            //                            // request timed out
+            //                        }
+            if self.code == -1009 || self.code == -1004 || self.code == -1001 { //internet issue
+                isInternetIssue = true
             }
         }
-        
         return isInternetIssue
     }
     

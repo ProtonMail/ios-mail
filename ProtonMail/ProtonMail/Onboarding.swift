@@ -9,7 +9,7 @@
 import Foundation
 
 
-public enum Onboarding: Int, Printable {
+public enum Onboarding: Int, CustomStringConvertible {
     case welcome = 0
     case swipe = 1
     case label = 2

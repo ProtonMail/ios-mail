@@ -32,30 +32,27 @@ public class ApiResponse {
         errorMessage = response["Error"] as? String
         errorDetails = response["ErrorDescription"] as? String
         
-        if code != 1000 {
-            self.error = NSError.protonMailError(code: code ?? 1000, localizedDescription: errorMessage ?? "", localizedFailureReason: errorDetails, localizedRecoverySuggestion: nil)
-        }
-        
         if code == nil {
             return false
         }
         
-        return code != 1000
+        if code != 1000 && code != 1001 {
+            self.error = NSError.protonMailError(code: code ?? 1000, localizedDescription: errorMessage ?? "", localizedFailureReason: errorDetails, localizedRecoverySuggestion: nil)
+        }
+        
+        return code != 1000 && code != 1001
     }
     
     func ParseHttpError (error: NSError) {
         self.code = 404
-        if let errorUserInfo = error.userInfo {
-            if let detail = errorUserInfo["com.alamofire.serialization.response.error.response"] as? NSHTTPURLResponse {
-                self.code = detail.statusCode
-            }
-            else {
-                internetCode = error.code
-            }
-            
-            self.errorMessage = error.description
-            self.errorDetails = error.debugDescription
+        if let detail = error.userInfo["com.alamofire.serialization.response.error.response"] as? NSHTTPURLResponse {
+            self.code = detail.statusCode
         }
+        else {
+            internetCode = error.code
+        }
+        self.errorMessage = error.description
+        self.errorDetails = error.debugDescription
         self.error = error
     }
     

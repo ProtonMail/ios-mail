@@ -21,7 +21,7 @@ class MenuTableViewCell: UITableViewCell {
     private var item: MenuItem!
     
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
         self.layoutMargins = UIEdgeInsetsZero;
         self.separatorInset = UIEdgeInsetsZero
         

@@ -40,7 +40,7 @@ class AppDelegate: UIResponder {
     }
     
     // MARK: - Public methods
-    func switchTo(#storyboard: UIStoryboard.Storyboard, animated: Bool) {
+    func switchTo(storyboard storyboard: UIStoryboard.Storyboard, animated: Bool) {
         if let window = window {
             if let rootViewController = window.rootViewController {
                 if rootViewController.restorationIdentifier != storyboard.restorationIdentifier {
@@ -54,7 +54,7 @@ class AppDelegate: UIResponder {
                                 
                                 if let oldView = window.rootViewController as? SWRevealViewController {
                                     if let nav = oldView.frontViewController as? UINavigationController {
-                                        if let firstViewController: UIViewController = nav.viewControllers.first as? UIViewController {
+                                        if let firstViewController: UIViewController = nav.viewControllers.first as UIViewController? {
                                             if (firstViewController.isKindOfClass(MailboxViewController)) {
                                                 if let mailboxViewController: MailboxViewController = firstViewController as? MailboxViewController {
                                                     mailboxViewController.resetFetchedResultsController()
@@ -83,7 +83,7 @@ extension SWRevealViewController {
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "sw_front") {
             let navigationController = segue.destinationViewController as! UINavigationController
-            if let firstViewController: UIViewController = navigationController.viewControllers.first as? UIViewController {
+            if let firstViewController: UIViewController = navigationController.viewControllers.first as UIViewController? {
                 if (firstViewController.isKindOfClass(MailboxViewController)) {
                     let mailboxViewController: MailboxViewController = navigationController.viewControllers.first as! MailboxViewController
                     mailboxViewController.viewModel = MailboxViewModelImpl(location: .inbox)
@@ -95,31 +95,35 @@ extension SWRevealViewController {
 
 // MARK: - UIApplicationDelegate
 
+//move to a manager class later
+let sharedInternetReachability : Reachability = Reachability.reachabilityForInternetConnection()
+let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.BaseURLString)
+
 extension AppDelegate: UIApplicationDelegate {
-    func application(application: UIApplication, supportedInterfaceOrientationsForWindow window: UIWindow?) -> Int {
+    func application(application: UIApplication, supportedInterfaceOrientationsForWindow window: UIWindow?) -> UIInterfaceOrientationMask {
         return self.checkOrientation(self.window?.rootViewController)
     }
     
-    func checkOrientation (viewController: UIViewController?) -> Int {
-        if viewController == nil {
-            return Int(UIInterfaceOrientationMask.All.rawValue)
+    func checkOrientation (viewController: UIViewController?) -> UIInterfaceOrientationMask {
+        if UIDevice.currentDevice().userInterfaceIdiom == .Pad || viewController == nil {
+            return UIInterfaceOrientationMask.All
         } else if (viewController is UINavigationController) {
             if let nav = viewController as? UINavigationController {
-                if (nav.topViewController.isKindOfClass(PinCodeViewController)) {
-                    return Int(UIInterfaceOrientationMask.Portrait.rawValue)
+                if (nav.topViewController!.isKindOfClass(PinCodeViewController)) {
+                    return UIInterfaceOrientationMask.Portrait
                 }
             }
-            return Int(UIInterfaceOrientationMask.All.rawValue)
+            return UIInterfaceOrientationMask.All
         }
         else {
             if let sw = viewController as? SWRevealViewController {
                 if let nav = sw.frontViewController as? UINavigationController {
-                    if (nav.topViewController.isKindOfClass(PinCodeViewController)) {
-                        return Int(UIInterfaceOrientationMask.Portrait.rawValue)
+                    if (nav.topViewController!.isKindOfClass(PinCodeViewController)) {
+                        return UIInterfaceOrientationMask.Portrait
                     }
                 }
             }
-            return  Int(UIInterfaceOrientationMask.All.rawValue)
+            return  UIInterfaceOrientationMask.All
         }
     }
     
@@ -137,6 +141,10 @@ extension AppDelegate: UIApplicationDelegate {
         AFNetworkActivityLogger.sharedLogger().startLogging()
         AFNetworkActivityLogger.sharedLogger().level = AFHTTPRequestLoggerLevel.AFLoggerLevelDebug
         
+        //sharedRemoteReachability.startNotifier()
+        sharedInternetReachability.startNotifier()
+
+        
         setupWindow()
         sharedMessageDataService.launchCleanUpIfNeeded()
         sharedPushNotificationService.registerForRemoteNotifications()
@@ -145,24 +153,25 @@ extension AppDelegate: UIApplicationDelegate {
         if tmp != .Dev && tmp != .Sim {
             AFNetworkActivityLogger.sharedLogger().stopLogging()
         }
-        
         sharedPushNotificationService.setLaunchOptions(launchOptions)
+        
+        
+        PMLog.D("\(UIScreen.mainScreen().bounds)")
         
         return true
     }
     
     func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
-        let dict = [String, String]()
+        //let dict = [String, String]
         //let url = "http://example.com?param1=value1&param2=param2"
-        
-        let urlComponents = NSURLComponents(URL: url, resolvingAgainstBaseURL: true) //NSURLComponents(string: url)
+        let urlComponents = NSURLComponents(URL: url, resolvingAgainstBaseURL: true)
         if urlComponents?.host == "signup" {
             if let queryItems = urlComponents?.queryItems {
-                if let verifyObject = queryItems.filter({$0.name == "verifyCode"}).first as? NSURLQueryItem {
+                if let verifyObject = queryItems.filter({$0.name == "verifyCode"}).first {
                     if let code = verifyObject.value {
                         let info : [String:String] = ["verifyCode" : code]
                         NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: NotificationDefined.CustomizeURLSchema, object: nil, userInfo: info))
-                        print("\(code)")
+                        PMLog.D("\(code)")
                     }
                 }
             }
@@ -187,7 +196,7 @@ extension AppDelegate: UIApplicationDelegate {
         
         if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
             var timeIndex : Int = -1
-            if let t = userCachedStatus.lockTime.toInt() {
+            if let t = Int(userCachedStatus.lockTime) {
                 timeIndex = t
             }
             if timeIndex == 0 {
@@ -195,7 +204,7 @@ extension AppDelegate: UIApplicationDelegate {
                 sharedVMService.resetComposerView()
             } else if timeIndex > 0 {
                 var exitTime : Int = 0
-                if let t = userCachedStatus.exitTime.toInt() {
+                if let t = Int(userCachedStatus.exitTime) {
                     exitTime = t
                 }
                 let timeInterval : Int = Int(NSDate().timeIntervalSince1970)
@@ -228,17 +237,17 @@ extension AppDelegate: UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-        //NSLog("receive \(userInfo)")
+        PMLog.D("receive \(userInfo)")
         if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
             var timeIndex : Int = -1
-            if let t = userCachedStatus.lockTime.toInt() {
+            if let t = Int(userCachedStatus.lockTime) {
                 timeIndex = t
             }
             if timeIndex == 0 {
                 sharedPushNotificationService.setNotificationOptions(userInfo);
             } else if timeIndex > 0 {
                 var exitTime : Int = 0
-                if let t = userCachedStatus.exitTime.toInt() {
+                if let t = Int(userCachedStatus.exitTime) {
                     exitTime = t
                 }
                 let timeInterval : Int = Int(NSDate().timeIntervalSince1970)
@@ -263,16 +272,13 @@ extension AppDelegate: UIApplicationDelegate {
         sharedPushNotificationService.didRegisterForRemoteNotificationsWithDeviceToken(deviceToken)
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-        super.touchesBegan(touches, withEvent: event)
-        
-        var touch = touches.first as! UITouch
-        var point = touch.locationInView(self.window)
-        var statusBarFrame = UIApplication.sharedApplication().statusBarFrame
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        let touch = touches.first as UITouch!
+        let point = touch.locationInView(self.window)
+        let statusBarFrame = UIApplication.sharedApplication().statusBarFrame
         if (CGRectContainsPoint(statusBarFrame, point)) {
             self.touchStatusBar()
         }
-        
     }
     
     func touchStatusBar() {

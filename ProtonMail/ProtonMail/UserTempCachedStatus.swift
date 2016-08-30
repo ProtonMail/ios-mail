@@ -68,7 +68,7 @@ class UserTempCachedStatus: NSObject, NSCoding {
     
     
     class func backup () {
-        var u = UserTempCachedStatus(
+        let u = UserTempCachedStatus(
             lastLoggedInUser: sharedUserDataService.username,
             touchIDEmail: userCachedStatus.touchIDEmail,
             isPinCodeEnabled: userCachedStatus.isPinCodeEnabled,

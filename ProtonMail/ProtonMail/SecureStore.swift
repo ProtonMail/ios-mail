@@ -21,79 +21,81 @@ protocol SecureStore {
     var secret: String? { get set }
 }
 
-class KeyChainStore: SecureStore {
-    var serviceIdentifier = "ProtonMailSecureStore"
-    var serviceName = "ProtonMail"
-    
-    
-    // MARK:- SecureStore protocol
-    var secret: String? {
-        get {
-            return load("feng23@protonmail.com")
-        }
-        set {
-            if let newValue = newValue {
-                save(newValue)
-            } else {
-                delete()
-            }
-        }
-    }
-    
-    // MARK:- Utility methods
-    private func save(token: String) {
-        if let data = token.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
-            // Rather than update, just delete and continue
-            delete()
-            // Create the appropriate access controls
-            let accessControl = SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, .UserPresence, nil)
-            
-            let keyChainQuery = [
-                kSecClass as! String             : kSecClassGenericPassword,
-                kSecAttrService as! String       : serviceIdentifier,
-                kSecAttrAccount as! String       : serviceName,
-                kSecValueData as! String         : data,
-                kSecAttrAccessControl as! String : accessControl.takeUnretainedValue()
-            ]
-            SecItemAdd(keyChainQuery, nil)
-        }
-    }
-    
-    private func load(email : String) -> String? {
-        let keyChainQuery = [
-            kSecClass as! String              : kSecClassGenericPassword,
-            kSecAttrService as! String        : serviceIdentifier,
-            kSecAttrAccount as! String        : serviceName,
-            kSecReturnData as! String         : true,
-            kSecMatchLimit as! String         : kSecMatchLimitOne,
-            kSecUseOperationPrompt as! String : "Login: \(email)" //"Authenticate to retrieve your secret!"
-        ]
-        
-        var extractedData: Unmanaged<AnyObject>? = nil
-        let status = SecItemCopyMatching(keyChainQuery, &extractedData)
-        let opaque = extractedData?.toOpaque()
-        var contentsOfKeychain: String?
-        
-        if let opaque = opaque {
-            let retrievedData = Unmanaged<NSData>.fromOpaque(opaque).takeUnretainedValue()
-            // Convert the data retrieved from the keychain into a string
-            contentsOfKeychain = NSString(data: retrievedData, encoding: NSUTF8StringEncoding) as? String
-        } else {
-            println("Nothing was retrieved from the keychain. Status code \(status)")
-        }
-        return contentsOfKeychain
-    }
-    
-    func delete() {
-        // Instantiate a new default keychain query
-        let keyChainQuery = [
-            kSecClass as! String       : kSecClassGenericPassword,
-            kSecAttrService as! String : serviceIdentifier,
-            kSecAttrAccount as! String : serviceName
-        ]
-        SecItemDelete(keyChainQuery)
-    }
-    
-}
+//class KeyChainStore: SecureStore {
+//    var serviceIdentifier = "ProtonMailSecureStore"
+//    var serviceName = "ProtonMail"
+//    
+//    
+//    // MARK:- SecureStore protocol
+//    var secret: String? {
+//        get {
+//            return load("feng23@protonmail.com")
+//        }
+//        set {
+//            if let newValue = newValue {
+//                save(newValue)
+//            } else {
+//                delete()
+//            }
+//        }
+//    }
+//    
+//    // MARK:- Utility methods
+//    private func save(token: String) {
+//        if let data = token.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
+//            // Rather than update, just delete and continue
+//            delete()
+//            // Create the appropriate access controls
+//            let accessControl = SecAccessControlCreateWithFlags(kCFAllocatorDefault, kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly, .UserPresence, nil)
+//            
+//            let keyChainQuery = [
+//                kSecClass as String             : kSecClassGenericPassword,
+//                kSecAttrService as String       : serviceIdentifier,
+//                kSecAttrAccount as String       : serviceName,
+//                kSecValueData as String         : data,
+//                kSecAttrAccessControl as String : accessControl.takeUnretainedValue()
+//            ]
+//            SecItemAdd(keyChainQuery, nil)
+//        }
+//    }
+//    
+//    private func load(email : String) -> String? {
+//        let keyChainQuery = [
+//            kSecClass as! String              : kSecClassGenericPassword,
+//            kSecAttrService as! String        : serviceIdentifier,
+//            kSecAttrAccount as! String        : serviceName,
+//            kSecReturnData as! String         : true,
+//            kSecMatchLimit as! String         : kSecMatchLimitOne,
+//            kSecUseOperationPrompt as! String : "Login: \(email)" //"Authenticate to retrieve your secret!"
+//        ]
+//        
+//        //commented code need to fix if need to use this code
+//        
+////        var extractedData: Unmanaged<AnyObject>? = nil
+////        let status = SecItemCopyMatching(keyChainQuery, &extractedData)
+////        let opaque = extractedData?.toOpaque()
+//        var contentsOfKeychain: String?
+//        
+////        if let opaque = opaque {
+////            let retrievedData = Unmanaged<NSData>.fromOpaque(opaque).takeUnretainedValue()
+////            // Convert the data retrieved from the keychain into a string
+////            contentsOfKeychain = NSString(data: retrievedData, encoding: NSUTF8StringEncoding) as? String
+////        } else {
+////            println("Nothing was retrieved from the keychain. Status code \(status)")
+////        }
+//        return contentsOfKeychain
+//    }
+//    
+//    func delete() {
+//        // Instantiate a new default keychain query
+//        let keyChainQuery = [
+//            kSecClass as! String       : kSecClassGenericPassword,
+//            kSecAttrService as! String : serviceIdentifier,
+//            kSecAttrAccount as! String : serviceName
+//        ]
+//        SecItemDelete(keyChainQuery)
+//    }
+//    
+//}
 
 

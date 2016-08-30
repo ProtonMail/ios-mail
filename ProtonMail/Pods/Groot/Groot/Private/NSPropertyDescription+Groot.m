@@ -1,6 +1,6 @@
 // NSPropertyDescription+Groot.m
 //
-// Copyright (c) 2014 Guillermo Gonzalez
+// Copyright (c) 2014-2015 Guillermo Gonzalez
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -21,22 +21,25 @@
 // THE SOFTWARE.
 
 #import "NSPropertyDescription+Groot.h"
-#import "GRTConstants.h"
-
-static BOOL GRTIsNullKeyPath(NSString *keyPath) {
-    return [keyPath isEqual:NSNull.null] || [keyPath isEqualToString:@"null"];
-}
 
 @implementation NSPropertyDescription (Groot)
 
-- (NSString *)grt_JSONKeyPath {
-    NSString *JSONKeyPath = self.userInfo[GRTJSONKeyPathKey];
+- (nullable NSString *)grt_JSONKeyPath {
+    return self.userInfo[@"JSONKeyPath"];
+}
+
+- (BOOL)grt_JSONSerializable {
+    return [self grt_JSONKeyPath] != nil;
+}
+
+- (nullable id)grt_rawValueInJSONDictionary:(NSDictionary * __nonnull)dictionary {
+    NSString *keyPath = [self grt_JSONKeyPath];
     
-    if (GRTIsNullKeyPath(JSONKeyPath)) {
-        return nil;
+    if (keyPath != nil) {
+        return [dictionary valueForKeyPath:keyPath];
     }
     
-    return JSONKeyPath ? : self.name;
+    return nil;
 }
 
 @end

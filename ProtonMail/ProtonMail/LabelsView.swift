@@ -43,7 +43,6 @@ class LabelsView: PMView {
     var inited : Bool = false;
     
     override func drawRect(rect: CGRect) {
-        let width = self.frame.width
         if  !self.inited {
             self.inited = true;
             self.update();
@@ -51,9 +50,6 @@ class LabelsView: PMView {
     }
     
     override func awakeFromNib() {
-        let width = self.frame.width
-        let defaultFrame = CGRect(x: 0, y: 0, width: self.frame.width, height: 14)
-        
         labelView1.numberOfLines = 0;
         labelView1.layer.borderWidth = 1
         labelView1.layer.cornerRadius = 2
@@ -120,7 +116,7 @@ class LabelsView: PMView {
         let width = self.frame.width
         
         leftLabelView.text =  self.sender
-        var leftLabelSize = leftLabelView.sizeThatFits(CGSizeZero).width
+        let leftLabelSize = leftLabelView.sizeThatFits(CGSizeZero).width
         let sizeLimit : CGFloat = width - leftLabelSize
         
         var labelsSize : [CGFloat] = [];
@@ -159,7 +155,7 @@ class LabelsView: PMView {
         if let labels = self.labels {
             if labels.count > 0 {
                 for i in 0 ... 4 {
-                    var check : CGFloat = labelsSize[0] + labelsSize[1] + labelsSize[2] + labelsSize[3] + labelsSize[4]
+                    let check : CGFloat = labelsSize[0] + labelsSize[1] + labelsSize[2] + labelsSize[3] + labelsSize[4]
                     let labelView = labelViews[i]
                     let imageView = imageViews[i]
                     
@@ -171,10 +167,8 @@ class LabelsView: PMView {
                     } else {
                         if labels.count > i {
                             if check > sizeLimit {
-                                if let text = labelView.text?.trim() {
-                                    if count(text) > 0 {
-                                        labelView.text = "  " + text[0] + "  ";
-                                    }
+                                if let text = labelView.text?.trim() where text.characters.count > 0 {
+                                    labelView.text = "  " + text[0] + "  ";
                                 }
                                 
                                 labelView.hidden = true;

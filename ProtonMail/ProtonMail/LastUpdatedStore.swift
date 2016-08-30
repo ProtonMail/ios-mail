@@ -85,7 +85,7 @@ public class LastUpdatedStore : SharedCacheBase {
         public var unread : Int32
         
         static public func distantPast() -> UpdateTime {
-            return UpdateTime(start: NSDate.distantPast() as! NSDate, end: NSDate.distantPast() as! NSDate, update: NSDate.distantPast() as! NSDate, total: 0, unread: 0)
+            return UpdateTime(start: NSDate.distantPast() , end: NSDate.distantPast() , update: NSDate.distantPast() , total: 0, unread: 0)
         }
     }
 

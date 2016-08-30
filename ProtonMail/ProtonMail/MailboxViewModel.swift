@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 
 public class MailboxViewModel {
@@ -39,7 +40,7 @@ public class MailboxViewModel {
         msg.location = .archive
         msg.needsUpdate = true
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-            NSLog("\(__FUNCTION__) error: \(error)")
+            PMLog.D("error: \(error)")
         }
     }
     
@@ -48,7 +49,7 @@ public class MailboxViewModel {
         msg.location = .spam
         msg.needsUpdate = true
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-            NSLog("\(__FUNCTION__) error: \(error)")
+            PMLog.D("error: \(error)")
         }
     }
     
@@ -56,7 +57,7 @@ public class MailboxViewModel {
         msg.isStarred = true
         msg.needsUpdate = true
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-            NSLog("\(__FUNCTION__) error: \(error)")
+            PMLog.D("error: \(error)")
         }
     }
     

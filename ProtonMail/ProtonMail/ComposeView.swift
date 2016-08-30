@@ -245,7 +245,7 @@ class ComposeView: UIViewController {
         encryptedPasswordTextField.leftViewMode = UITextFieldViewMode.Always
         
         let nextButton = UIButton()
-        nextButton.addTarget(self, action: "didTapNextButton", forControlEvents: UIControlEvents.TouchUpInside)
+        nextButton.addTarget(self, action: #selector(ComposeView.didTapNextButton), forControlEvents: UIControlEvents.TouchUpInside)
         nextButton.setImage(UIImage(named: "next"), forState: UIControlState.Normal)
         nextButton.sizeToFit()
         
@@ -261,7 +261,7 @@ class ComposeView: UIViewController {
         expirationDateTextField.leftViewMode = UITextFieldViewMode.Always
         
         self.confirmExpirationButton = UIButton()
-        confirmExpirationButton.addTarget(self, action: "didTapConfirmExpirationButton", forControlEvents: UIControlEvents.TouchUpInside)
+        confirmExpirationButton.addTarget(self, action: #selector(ComposeView.didTapConfirmExpirationButton), forControlEvents: UIControlEvents.TouchUpInside)
         confirmExpirationButton.setImage(UIImage(named: "next"), forState: UIControlState.Normal)
         confirmExpirationButton.sizeToFit()
         
@@ -290,8 +290,7 @@ class ComposeView: UIViewController {
     ///
     internal func notifyViewSize(animation : Bool)
     {
-        UIView.animateWithDuration(animation ? self.kAnimationDuration : 0, delay:0, options: nil, animations: {
-            //143
+        UIView.animateWithDuration(animation ? self.kAnimationDuration : 0, delay:0, options: UIViewAnimationOptions(), animations: {
             self.updateViewSize()
             PMLog.D("\(self.buttonView.frame)")
             PMLog.D("\(self.expirationView.frame)")
@@ -458,14 +457,14 @@ class ComposeView: UIViewController {
     
     private func updateViewSize()
     {
-        let size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height)
+        //let size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height)
         //self.htmlEditor.view.frame = CGRect(x: 0, y: size.height, width: editorSize.width, height: editorSize.height)
         //self.htmlEditor.setFrame(CGRect(x: 0, y: 0, width: editorSize.width, height: editorSize.height))
     }
     
     private func configureToContactPicker() {
         toContactPicker = MBContactPicker()
-        toContactPicker.setTranslatesAutoresizingMaskIntoConstraints(true)
+        toContactPicker.translatesAutoresizingMaskIntoConstraints = true
         toContactPicker.cellHeight = self.kDefaultRecipientHeight;
         self.view.addSubview(toContactPicker)
         toContactPicker.datasource = self
@@ -548,7 +547,7 @@ class ComposeView: UIViewController {
         
         UIView.animateWithDuration(NSTimeInterval(contactPicker.animationSpeed), animations: { () -> Void in
             self.view.layoutIfNeeded()
-            contactPicker.contactCollectionView.addBorder(.Bottom, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
+            contactPicker.contactCollectionView!.addBorder(.Bottom, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
             //contactPicker.contactCollectionView.addBorder(.Left, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
             //contactPicker.contactCollectionView.addBorder(.Right, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         })
@@ -571,7 +570,6 @@ extension ComposeView: MBContactPickerDataSource {
         
         //contactPickerView.contactCollectionView.addBorder(.Left, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
         //contactPickerView.contactCollectionView.addBorder(.Right, color: UIColor.ProtonMail.Gray_C9CED4, borderWidth: 1.0)
-        
         return self.datasource?.composeViewContactsModelForPicker(self, picker: contactPickerView)
     }
     
@@ -666,7 +664,7 @@ extension MBContactPicker {
         var contactList = ""
         let contactsSelected = NSArray(array: self.contactsSelected)
         if let contacts = contactsSelected.valueForKey(ContactVO.Attributes.email) as? [String] {
-            contactList = ", ".join(contacts)
+            contactList = contacts.joinWithSeparator(",")
         }
         return contactList
     }

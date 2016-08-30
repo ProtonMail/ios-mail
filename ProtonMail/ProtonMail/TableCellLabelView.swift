@@ -14,7 +14,7 @@ class TableCellLabelView: UIView {
     private var textLabel:UILabel!
     private var contentView : UIView!
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
         contentView = UIView(frame: CGRect(x: 0,y: 0, width: 50, height: 13))
         textLabel = UILabel(frame: CGRect(x: 0,y: 0, width: 50, height: 13))
         

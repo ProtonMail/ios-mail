@@ -70,4 +70,12 @@ class SetPinCodeModelImpl : PinCodeViewModel {
             userCachedStatus.pinCode = self.enterPin
         }
     }
+    
+    override func getPinFailedRemainingCount() -> Int {
+        return 10;
+    }
+    
+    override func getPinFailedError() -> String {
+        return ""
+    }
 }

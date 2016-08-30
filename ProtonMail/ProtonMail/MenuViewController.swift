@@ -11,6 +11,7 @@
 //
 
 import UIKit
+import CoreData
 
 class MenuViewController: UIViewController {
     internal static let ObserverSwitchView:String = "Push_Switch_View"
@@ -25,8 +26,8 @@ class MenuViewController: UIViewController {
     
     // MARK: - Private constants
     
-    private let inboxItems = [MenuItem.inbox, MenuItem.starred, MenuItem.drafts, MenuItem.sent, MenuItem.archive, MenuItem.trash, MenuItem.spam]
-    private let otherItems = [MenuItem.contacts, MenuItem.settings, MenuItem.bugs, /*MenuItem.feedback,*/ MenuItem.signout]
+    private let inboxItems = [MenuItem.inbox, MenuItem.drafts, MenuItem.sent, MenuItem.starred, MenuItem.archive, MenuItem.spam, MenuItem.trash]
+    private var otherItems = [MenuItem.contacts, MenuItem.settings, MenuItem.bugs, /*MenuItem.feedback,*/ MenuItem.signout]
     private var fetchedLabels: NSFetchedResultsController?
     private var signingOut: Bool = false
     
@@ -51,7 +52,7 @@ class MenuViewController: UIViewController {
     // private data
     
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
     }
     
     deinit{
@@ -60,17 +61,18 @@ class MenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let w = UIScreen.mainScreen().applicationFrame.width;
         
         setupFetchedResultsController()
         
-        self.revealViewController().rearViewRevealWidth = w - kMenuOptionsWidthOffset
+        let w = UIScreen.mainScreen().applicationFrame.width;
+        let offset =  (w - kMenuOptionsWidthOffset)
+        self.revealViewController().rearViewRevealWidth = kMenuOptionsWidth > offset ? offset : kMenuOptionsWidth
         
         tableView.dataSource = self
         tableView.delegate = self
         NSNotificationCenter.defaultCenter().addObserver(
             self,
-            selector: "performLastSegue:",
+            selector: #selector(MenuViewController.performLastSegue(_:)),
             name: MenuViewController.ObserverSwitchView,
             object: nil)
         
@@ -88,10 +90,21 @@ class MenuViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        let w = UIScreen.mainScreen().applicationFrame.width;
+        let offset =  (w - kMenuOptionsWidthOffset)
+        self.revealViewController().rearViewRevealWidth = kMenuOptionsWidth > offset ? offset : kMenuOptionsWidth
+        
         self.revealViewController().frontViewController.view.userInteractionEnabled = false
         self.revealViewController().view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         
         self.sectionClicked = false
+        
+        if ((userCachedStatus.isPinCodeEnabled && !userCachedStatus.pinCode.isEmpty) || (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled)) {
+            otherItems = [.contacts, .settings, .bugs, /*MenuItem.feedback,*/ .lockapp, .signout]
+        } else {
+            otherItems = [MenuItem.contacts, MenuItem.settings, MenuItem.bugs, /*MenuItem.feedback,*/ MenuItem.signout]
+        }
+        
         
         updateEmailLabel()
         updateDisplayNameLabel()
@@ -105,23 +118,21 @@ class MenuViewController: UIViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let navigationController = segue.destinationViewController as! UINavigationController
-        if let firstViewController: UIViewController = navigationController.viewControllers.first as? UIViewController {
+        if let firstViewController: UIViewController = navigationController.viewControllers.first as UIViewController? {
             if (firstViewController.isKindOfClass(MailboxViewController)) {
                 let mailboxViewController: MailboxViewController = navigationController.viewControllers.first as! MailboxViewController
                 if let indexPath = sender as? NSIndexPath {
                     PMLog.D("Menu Table Clicked -- Done")
-                    let count = fetchedLabels?.fetchedObjects?.count
-                    //self.lastSegue = segue.identifier!
                     if indexPath.section == 0 {
                         self.lastMenuItem = self.itemForIndexPath(indexPath)
                         mailboxViewController.viewModel = MailboxViewModelImpl(location: self.lastMenuItem.menuToLocation)
                     } else if indexPath.section == 1 {
-                        
                     } else if indexPath.section == 2 {
+                        //if indexPath.row < fetchedLabels?.fetchedObjects?.count {
                         let label = self.fetchedLabels?.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as! Label
                         mailboxViewController.viewModel = LabelboxViewModelImpl(label: label)
+                        //}
                     } else {
-                        
                     }
                 }
             }
@@ -137,13 +148,12 @@ class MenuViewController: UIViewController {
     private func setupFetchedResultsController() {
         self.fetchedLabels = sharedLabelsDataService.fetchedResultsController()
         self.fetchedLabels?.delegate = self
-        
-        NSLog("\(__FUNCTION__) INFO: \(fetchedLabels?.sections)")
-        
+        PMLog.D("INFO: \(fetchedLabels?.sections)")
         if let fetchedResultsController = fetchedLabels {
-            var error: NSError?
-            if !fetchedResultsController.performFetch(&error) {
-                NSLog("\(__FUNCTION__) error: \(error)")
+            do {
+                try fetchedResultsController.performFetch()
+            } catch let ex as NSError {
+                PMLog.D("error: \(ex)")
             }
         }
     }
@@ -172,13 +182,11 @@ class MenuViewController: UIViewController {
     }
     
     func updateDisplayNameLabel() {
-        let displayName = sharedUserDataService.displayName
-        
+        let displayName = sharedUserDataService.defaultDisplayName
         if !displayName.isEmpty {
             displayNameLabel.text = displayName
             return
         }
-        
         displayNameLabel.text = emailLabel.text
     }
     
@@ -227,6 +235,9 @@ extension MenuViewController: UITableViewDelegate {
                 self.performSegueWithIdentifier(kSegueToContacts, sender: indexPath);
             } else if item == .feedback {
                 self.performSegueWithIdentifier(kSegueToFeedback, sender: indexPath);
+            } else if item == .lockapp {
+                (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: true)
+                sharedVMService.resetComposerView()
             }
         } else if (indexPath.section == 2) {
             //labels
@@ -251,17 +262,17 @@ extension MenuViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            var cell = tableView.dequeueReusableCellWithIdentifier(kMenuTableCellId, forIndexPath: indexPath) as! MenuTableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier(kMenuTableCellId, forIndexPath: indexPath) as! MenuTableViewCell
             cell.configCell(inboxItems[indexPath.row])
             cell.configUnreadCount()
             return cell
         } else if indexPath.section == 1 {
-            var cell = tableView.dequeueReusableCellWithIdentifier(kMenuTableCellId, forIndexPath: indexPath) as! MenuTableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier(kMenuTableCellId, forIndexPath: indexPath) as! MenuTableViewCell
             cell.configCell(otherItems[indexPath.row])
             cell.hideCount()
             return cell
         } else if indexPath.section == 2 {
-            var cell = tableView.dequeueReusableCellWithIdentifier(kLabelTableCellId, forIndexPath: indexPath) as! MenuLabelViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier(kLabelTableCellId, forIndexPath: indexPath) as! MenuLabelViewCell
             if  fetchedLabels?.fetchedObjects?.count ?? 0 > indexPath.row {
                 if let data = fetchedLabels?.objectAtIndexPath(NSIndexPath(forRow: indexPath.row, inSection: 0)) as? Label {
                     cell.configCell(data)
@@ -270,7 +281,7 @@ extension MenuViewController: UITableViewDataSource {
             }
             return cell
         } else {
-            var cell: MenuTableViewCell = tableView.dequeueReusableCellWithIdentifier(kMenuTableCellId, forIndexPath: indexPath) as! MenuTableViewCell
+            let cell: MenuTableViewCell = tableView.dequeueReusableCellWithIdentifier(kMenuTableCellId, forIndexPath: indexPath) as! MenuTableViewCell
             return cell
         }
     }
@@ -337,8 +348,6 @@ extension MenuViewController: NSFetchedResultsControllerDelegate {
                         }
                     }
                 }
-            default:
-                return
             }
         }
     }

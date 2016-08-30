@@ -14,7 +14,7 @@ extension PMView {
     }
     
     func setup() -> Void {
-       
+        
     }
 }
 
@@ -27,25 +27,32 @@ class PMView: UIView {
     }
     
     required init(coder aDecoder: NSCoder) { // for using CustomView in IB
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
         self.setupView()
     }
     
     func setupView() {
-        pmView = loadViewFromNib()
-        pmView.frame = self.bounds
-        pmView.autoresizingMask = .FlexibleHeight | .FlexibleWidth
-        self.addSubview(pmView)
-        pmView.clipsToBounds = true;
-        self.clipsToBounds = true;
-        self.setup()
+        if let pmView = loadViewFromNib() {
+            pmView.frame = self.bounds
+            pmView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+            self.addSubview(pmView)
+            pmView.clipsToBounds = true;
+            self.clipsToBounds = true;
+            self.setup()
+        } else {
+            PMLog.D("PMView setupView loadViewFromNib failed") //TODO:: add file log
+        }
     }
     
-    private func loadViewFromNib () -> UIView {
+    private func loadViewFromNib () -> UIView? {
         let bundle = NSBundle(forClass: self.dynamicType )
         let nib = UINib(nibName: self.getNibName(), bundle: bundle)
-        var view = nib.instantiateWithOwner(self, options: nil)[0] as! UIView
-        
-        return view;
+        let views = nib.instantiateWithOwner(self, options: nil)
+        if views.count > 0 {
+            if let view = views[0] as? UIView {
+                return view
+            }
+        }
+        return nil
     }
 }

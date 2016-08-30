@@ -19,21 +19,21 @@ import Foundation
 extension NSFileManager {
     
     var applicationSupportDirectoryURL: NSURL {
-        let urls = URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask) as! [NSURL]
+        let urls = URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask) 
         let applicationSupportDirectoryURL = urls.first!
         
-        if !NSFileManager.defaultManager().fileExistsAtPath(applicationSupportDirectoryURL.absoluteString!) {
-            var error: NSError?
-            if !NSFileManager.defaultManager().createDirectoryAtURL(applicationSupportDirectoryURL, withIntermediateDirectories: true, attributes: nil, error: &error) {
-                NSLog("\(__FUNCTION__) Could not create \(applicationSupportDirectoryURL.absoluteString!) with error: \(error)")
+        if !NSFileManager.defaultManager().fileExistsAtPath(applicationSupportDirectoryURL.absoluteString) {
+            do {
+                try NSFileManager.defaultManager().createDirectoryAtURL(applicationSupportDirectoryURL, withIntermediateDirectories: true, attributes: nil)
+            } catch let ex as NSError {
+                PMLog.D("Could not create \(applicationSupportDirectoryURL.absoluteString) with error: \(ex)")
             }
         }
-        
         return applicationSupportDirectoryURL
     }
     
     var cachesDirectoryURL: NSURL {
-        let urls = URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask) as! [NSURL]
+        let urls = URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask) 
         return urls.first!
     }
     

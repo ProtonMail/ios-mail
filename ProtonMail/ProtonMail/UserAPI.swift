@@ -40,7 +40,7 @@ public class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
-        var out : [String : AnyObject] = ["TokenType" : self.tokenType,
+        let out : [String : AnyObject] = ["TokenType" : self.tokenType,
             "Username" : self.userName,
             "Password" : self.password,
             "Domain" : self.domain,
@@ -157,7 +157,7 @@ public class CheckUserExistResponse : ApiResponse {
     var isAvailable : Bool?
     
     override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
-        PMLog.D(response.JSONStringify(prettyPrinted: true))
+        PMLog.D(response.JSONStringify(true))
         isAvailable =  response["Available"] as? Bool
         return true
     }
@@ -191,7 +191,7 @@ public class DirectResponse : ApiResponse {
     var isSignUpAvailable : Int = 1
     var signupFunctions : [String]?
     override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
-        PMLog.D(response.JSONStringify(prettyPrinted: true))
+        PMLog.D(response.JSONStringify(true))
         isSignUpAvailable =  response["Direct"] as? Int ?? 1
         
         if let functions = response["VerifyMethods"] as? [String] {
@@ -252,7 +252,7 @@ public class VerificationCodeRequest<T : ApiResponse> : ApiRequest<T> {
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
         let dest = type == .email ? ["Address" : destination] : ["Phone" : destination]
-        var out : [String : AnyObject] = [
+        let out : [String : AnyObject] = [            
             "Username" : userName,
             "Type" : type.toString,
             "Platform" : platform,

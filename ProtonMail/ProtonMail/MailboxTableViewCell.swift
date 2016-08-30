@@ -77,7 +77,7 @@ class MailboxTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        checkboxButton.addTarget(self, action: "checkboxTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        checkboxButton.addTarget(self, action: #selector(MailboxTableViewCell.checkboxTapped), forControlEvents: UIControlEvents.TouchUpInside)
         
         labelView.backgroundColor = UIColor.clearColor();
         labelView2.backgroundColor = UIColor.clearColor();
@@ -87,7 +87,7 @@ class MailboxTableViewCell: UITableViewCell {
     }
     
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
     }
 
     // MARK: - Actions

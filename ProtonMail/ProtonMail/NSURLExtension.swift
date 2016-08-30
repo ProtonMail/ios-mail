@@ -19,9 +19,10 @@ import Foundation
 extension NSURL {
     
     func excludeFromBackup() {
-        var error: NSError? = nil
-        if !setResourceValue(true, forKey: NSURLIsExcludedFromBackupKey, error: &error) {
-            NSLog("\(__FUNCTION__) path: \(absoluteString) excludeFromBackup error: \(error)")
+        do {
+            try setResourceValue(true, forKey: NSURLIsExcludedFromBackupKey)
+        } catch let ex as NSError {
+            PMLog.D(" path: \(absoluteString) excludeFromBackup error: \(ex)")
         }
     }
 }

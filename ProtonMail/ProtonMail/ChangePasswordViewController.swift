@@ -36,7 +36,7 @@ class ChangePasswordViewController: UIViewController {
         
         doneButton = self.editButtonItem()
         doneButton.target = self;
-        doneButton.action = "doneAction:"
+        doneButton.action = #selector(ChangePasswordViewController.doneAction(_:))
         doneButton.title = "Done"
         
         self.navigationItem.title = viewModel.getNavigationTitle()
@@ -70,8 +70,8 @@ class ChangePasswordViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShowOne:", name: UIKeyboardDidShowNotification, object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChangePasswordViewController.keyboardWillShowOne(_:)), name: UIKeyboardDidShowNotification, object:nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChangePasswordViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object:nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -81,8 +81,8 @@ class ChangePasswordViewController: UIViewController {
     }
 
     func updateView() {
-        var screenHeight = view.frame.height;
-        var offbox = screenHeight - textFieldPoint
+        let screenHeight = view.frame.height;
+        let offbox = screenHeight - textFieldPoint
         if offbox > keyboardHeight {
             topOffset.constant = 8;
         } else {
@@ -105,33 +105,38 @@ class ChangePasswordViewController: UIViewController {
         updateView();
     }
     @IBAction func StartEditing(sender: UITextField) {
-        
-        var frame = sender.convertRect(sender.frame, toView: self.view)
+        let frame = sender.convertRect(sender.frame, toView: self.view)
         textFieldPoint = frame.origin.y + frame.height + 40;
         updateView();
     }
     
     private func isInputEmpty() -> Bool {
-        if !currentPwdEditor.text.isEmpty {
+        let cPwd = (currentPwdEditor.text ?? "") //.trim()
+        let nPwd = (newPwdEditor.text ?? "") //.trim()
+        let cnPwd = (confirmPwdEditor.text ?? "") //.trim()
+        if !cPwd.isEmpty {
             return false;
         }
-        if !newPwdEditor.text.isEmpty {
+        if !nPwd.isEmpty {
             return false;
         }
-        if !confirmPwdEditor.text.isEmpty {
+        if !cnPwd.isEmpty {
             return false;
         }
         return true;
     }
     
     private func focusFirstEmpty() -> Void {
-        if currentPwdEditor.text.isEmpty {
+        let cPwd = (currentPwdEditor.text ?? "") //.trim()
+        let nPwd = (newPwdEditor.text ?? "") //.trim()
+        let cnPwd = (confirmPwdEditor.text ?? "") //.trim()
+        if cPwd.isEmpty {
             currentPwdEditor.becomeFirstResponder()
         }
-        else if newPwdEditor.text.isEmpty {
+        else if nPwd.isEmpty {
             newPwdEditor.becomeFirstResponder()
         }
-        else if confirmPwdEditor.text.isEmpty {
+        else if cnPwd.isEmpty {
             confirmPwdEditor.becomeFirstResponder()
         }
     }
@@ -139,7 +144,7 @@ class ChangePasswordViewController: UIViewController {
     private func startUpdatePwd () -> Void {
         dismissKeyboard()
         ActivityIndicatorHelper.showActivityIndicatorAtView(view)
-        viewModel.setNewPassword(currentPwdEditor.text, new_pwd: newPwdEditor.text, confirm_new_pwd: confirmPwdEditor.text, complete: { value, error in
+        viewModel.setNewPassword(currentPwdEditor.text!, new_pwd: newPwdEditor.text!, confirm_new_pwd: confirmPwdEditor.text!, complete: { value, error in
             ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
             if let error = error {
                 if error.code == APIErrorCode.UserErrorCode.currentWrong {
