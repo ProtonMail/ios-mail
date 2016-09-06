@@ -169,6 +169,17 @@ extension NSError {
         hud.hide(true, afterDelay: 2)
     }
     
+    class func alertLocalCacheErrorToast() ->Void {
+        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+        hud.mode = MBProgressHUDMode.Text
+        hud.detailsLabelText = NSLocalizedString("The draft cache is broken please try again");
+        hud.removeFromSuperViewOnHide = true
+        hud.margin = 10
+        hud.yOffset = 250.0
+        hud.hide(true, afterDelay: 2)
+    }
+    
     class func unknowError() -> NSError {
         return apiServiceError(
             code: -1,

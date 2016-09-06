@@ -66,7 +66,7 @@ extension APIService {
                 if hasError {
                     self.refreshTokenFailedCount += 1
                     if let err = res?.error {
-                        err.uploadFabricAnswer()
+                        err.uploadFabricAnswer(AuthErrorTitle)
                     }
                     
                     if self.refreshTokenFailedCount > 10 {
