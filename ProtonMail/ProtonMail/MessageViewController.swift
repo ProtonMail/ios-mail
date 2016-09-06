@@ -402,6 +402,14 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     {
         do {
             var bodyText = try self.message.decryptBodyIfNeeded() ?? NSLocalizedString("Unable to decrypt message.")
+            
+            
+            let bundle = NSBundle.mainBundle()
+            let path = bundle.pathForResource("test_email", ofType: "html")
+            let css = try! String(contentsOfFile: path!, encoding: NSUTF8StringEncoding)
+            
+            bodyText = css
+            
             bodyText = bodyText.stringByStrippingBodyStyle()
             bodyText = bodyText.stringByPurifyHTML()
             self.bodyHasImages = bodyText.hasImange()
