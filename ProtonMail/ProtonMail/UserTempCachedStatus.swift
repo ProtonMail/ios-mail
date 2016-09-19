@@ -68,15 +68,17 @@ class UserTempCachedStatus: NSObject, NSCoding {
     
     
     class func backup () {
-        let u = UserTempCachedStatus(
-            lastLoggedInUser: sharedUserDataService.username,
-            touchIDEmail: userCachedStatus.touchIDEmail,
-            isPinCodeEnabled: userCachedStatus.isPinCodeEnabled,
-            pinCodeCache: userCachedStatus.pinCode,
-            autoLockTime: userCachedStatus.lockTime,
-            showMobileSignature: sharedUserDataService.showMobileSignature,
-            localMobileSignature: userCachedStatus.mobileSignature)
-        u.storeInKeychain()
+        if UserTempCachedStatus.fetchFromKeychain() == nil && sharedUserDataService.isSignedIn {
+            let u = UserTempCachedStatus(
+                lastLoggedInUser: sharedUserDataService.username,
+                touchIDEmail: userCachedStatus.touchIDEmail,
+                isPinCodeEnabled: userCachedStatus.isPinCodeEnabled,
+                pinCodeCache: userCachedStatus.pinCode,
+                autoLockTime: userCachedStatus.lockTime,
+                showMobileSignature: sharedUserDataService.showMobileSignature,
+                localMobileSignature: userCachedStatus.mobileSignature)
+            u.storeInKeychain()
+        }
     }
     
     class func restore() {
