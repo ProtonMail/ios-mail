@@ -568,8 +568,9 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                     previewQL.dataSource = self
                     self.presentViewController(previewQL, animated: true, completion: nil)
                 }
-            } catch {
-                let alert = NSLocalizedString("Cant' decrypt this attachment!").alertController();
+            } catch let ex as NSError {
+                PMLog.D("quickLookAttachment error : \(ex)")
+                let alert = NSLocalizedString("Can't decrypt this attachment!").alertController();
                 alert.addOKAction()
                 self.presentViewController(alert, animated: true, completion: nil)
             }
