@@ -1533,8 +1533,10 @@ class MessageDataService {
                         }
                         
                         if message.managedObjectContext == nil {
-                            NSError.alertMessageSentErrorToast()
-                            errorBlock(task: task, response: nil, error: NSError.badDraft())
+                            NSError.alertLocalCacheErrorToast()
+                            let err =  NSError.badDraft()
+                            err.uploadFabricAnswer(CacheErrorTitle)
+                            errorBlock(task: task, response: nil, error:err)
                             return ;
                         }
                         
@@ -1604,8 +1606,8 @@ class MessageDataService {
                                 }
                             }
                             else {
-                                NSError.alertMessageSentErrorToast()
-                                //TODO : put a error flag, need handle the response error
+                                //NSError.alertMessageSentErrorToast()
+                                error?.uploadFabricAnswer(SendingErrorTitle)
                             }
                             completion?(task: task, response: response, error: error)
                             return
@@ -1733,13 +1735,13 @@ class MessageDataService {
                 if statusCode == 200 && error?.code > 1000 {
                     //show error
                     sharedMessageQueue.remove(elementID: elementID)
-                    error?.uploadFabricAnswer()
+                    error?.uploadFabricAnswer(QueueErrorTitle)
                 }
                 
                 if statusCode != 200 && statusCode != 404 && statusCode != 500 && !isInternetIssue {
                     //show error
                     sharedMessageQueue.remove(elementID: elementID)
-                    error?.uploadFabricAnswer()
+                    error?.uploadFabricAnswer(QueueErrorTitle)
                 }
                 
                 if !isInternetIssue {

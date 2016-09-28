@@ -220,7 +220,7 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     
     func updateValue(new_value: String, password: String, complete: (Bool, NSError?) -> Void) {
         if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
-            sharedUserDataService.updateAddress(addr.address_id, displayName: addr.display_name, signature: new_value, completion: { (_, error) in
+            sharedUserDataService.updateAddress(addr.address_id, displayName: addr.display_name, signature: new_value.ln2br(), completion: { (_, error) in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -228,7 +228,7 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
                 }
             })
         } else {
-            sharedUserDataService.updateSignature(new_value) { _, error in
+            sharedUserDataService.updateSignature(new_value.ln2br()) { _, error in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -300,7 +300,7 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
         if new_value == getCurrentValue() {
             complete(true, nil)
         } else {
-            sharedUserDataService.mobileSignature = new_value
+            sharedUserDataService.mobileSignature = new_value.ln2br()
             complete(true, nil)
         }
     }

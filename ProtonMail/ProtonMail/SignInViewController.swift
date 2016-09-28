@@ -437,6 +437,7 @@ class SignInViewController: UIViewController {
     private func loadContent() {
         logUser()
         if sharedUserDataService.isMailboxPasswordStored {
+            UserTempCachedStatus.clearFromKeychain()
             userCachedStatus.pinFailedCount = 0;
             NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)
             (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
