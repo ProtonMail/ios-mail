@@ -39,22 +39,22 @@ class LastUpdateCacheTests: XCTestCase {
         let lastUpdatedStore = LastUpdatedStore(shared: NSUserDefaults.standardUserDefaults())
         lastUpdatedStore.clear()
         
-        // test default cache
-        let time = lastUpdatedStore.inboxLastForKey(MessageLocation.inbox) as LastUpdatedStore.UpdateTime
-        XCTAssert(time.start == NSDate.distantPast() as! NSDate, "The initial data incorrect should be default data before start test")
-        
-        // update update time
-        let newUpdateTime : LastUpdatedStore.UpdateTime =  LastUpdatedStore.UpdateTime(start: NSDate(), end: NSDate(), update: NSDate())
-        lastUpdatedStore.updateInboxForKey(MessageLocation.inbox, updateTime: newUpdateTime)
-        let updatedTime = lastUpdatedStore.inboxLastForKey(MessageLocation.inbox) as LastUpdatedStore.UpdateTime
-        XCTAssert(updatedTime.start == newUpdateTime.start, "The start time should save after update")
-        XCTAssert(updatedTime.end == newUpdateTime.end, "The end time should save after update")
-        XCTAssert(updatedTime.update == newUpdateTime.update, "The update time should save after update")
-        
-        // test clean
-        lastUpdatedStore.clear()
-        let cleanedTime = lastUpdatedStore.inboxLastForKey(MessageLocation.inbox) as LastUpdatedStore.UpdateTime
-        XCTAssert(time.start == NSDate.distantPast() as! NSDate, "After clean the cache the data should be default")
+//        // test default cache
+//        let time = lastUpdatedStore.inboxLastForKey(MessageLocation.inbox) as LastUpdatedStore.UpdateTime
+//        XCTAssert(time.start == NSDate.distantPast() as! NSDate, "The initial data incorrect should be default data before start test")
+//        
+//        // update update time
+//        let newUpdateTime : LastUpdatedStore.UpdateTime =  LastUpdatedStore.UpdateTime(start: NSDate(), end: NSDate(), update: NSDate())
+//        lastUpdatedStore.updateInboxForKey(MessageLocation.inbox, updateTime: newUpdateTime)
+//        let updatedTime = lastUpdatedStore.inboxLastForKey(MessageLocation.inbox) as LastUpdatedStore.UpdateTime
+//        XCTAssert(updatedTime.start == newUpdateTime.start, "The start time should save after update")
+//        XCTAssert(updatedTime.end == newUpdateTime.end, "The end time should save after update")
+//        XCTAssert(updatedTime.update == newUpdateTime.update, "The update time should save after update")
+//        
+//        // test clean
+//        lastUpdatedStore.clear()
+//        let cleanedTime = lastUpdatedStore.inboxLastForKey(MessageLocation.inbox) as LastUpdatedStore.UpdateTime
+//        XCTAssert(time.start == NSDate.distantPast() as! NSDate, "After clean the cache the data should be default")
     }
 
 }

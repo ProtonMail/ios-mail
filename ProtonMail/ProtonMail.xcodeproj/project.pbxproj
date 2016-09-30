@@ -211,6 +211,12 @@
 		7567B0791B33880500A72A1E /* APIServiceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0781B33880500A72A1E /* APIServiceResponse.swift */; };
 		7567B07B1B338EB900A72A1E /* MessageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B07A1B338EB900A72A1E /* MessageHelper.swift */; };
 		756A35151B20D9B80033BC7C /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756A35141B20D9B80033BC7C /* AppConstants.swift */; };
+		756CDE3D1D9C763D004455F6 /* PasswordUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756CDE3C1D9C763D004455F6 /* PasswordUtils.swift */; };
+		756CDE3E1D9C763D004455F6 /* PasswordUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756CDE3C1D9C763D004455F6 /* PasswordUtils.swift */; };
+		756CDEF91D9DB374004455F6 /* JKBCrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756CDEF81D9DB374004455F6 /* JKBCrypt.swift */; };
+		756CDEFA1D9DB374004455F6 /* JKBCrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756CDEF81D9DB374004455F6 /* JKBCrypt.swift */; };
+		756CDEFC1D9DB3A0004455F6 /* JKBCryptRandom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756CDEFB1D9DB3A0004455F6 /* JKBCryptRandom.swift */; };
+		756CDEFD1D9DB3A0004455F6 /* JKBCryptRandom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756CDEFB1D9DB3A0004455F6 /* JKBCryptRandom.swift */; };
 		756DAC3F1C922C3800F3486C /* MailboxRateReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DAC3E1C922C3800F3486C /* MailboxRateReviewCell.swift */; };
 		756DAC421C923D4500F3486C /* MailboxRateReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 756DAC401C9236D000F3486C /* MailboxRateReviewCell.xib */; };
 		756DAC451C92B30300F3486C /* FeedbackPopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DAC441C92B30300F3486C /* FeedbackPopViewController.swift */; };
@@ -238,6 +244,7 @@
 		7588BB401BFBE05A00EC8EFD /* SecureStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7588BB3F1BFBE05A00EC8EFD /* SecureStore.swift */; };
 		758C44841C6D09FE00E6E867 /* EncryptionSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758C44831C6D09FE00E6E867 /* EncryptionSetupViewController.swift */; };
 		7590F08D1C9894E1009C5059 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7590F08C1C9894E1009C5059 /* Social.framework */; };
+		759223371D9DD5A70064DAA1 /* SrpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759223361D9DD5A70064DAA1 /* SrpTests.swift */; };
 		759337851D18917400004A3D /* PMWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759337841D18917400004A3D /* PMWebView.swift */; };
 		759337861D18917400004A3D /* PMWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759337841D18917400004A3D /* PMWebView.swift */; };
 		759339C01ABB45C700535F1B /* ViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339BF1ABB45C700535F1B /* ViewModelFactory.swift */; };
@@ -570,6 +577,13 @@
 			remoteGlobalIDString = 075E3DE51A5F4ECF00E001A7;
 			remoteInfo = ProtonMail;
 		};
+		759223381D9DD6D60064DAA1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 075E3DDE1A5F4ECF00E001A7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 75DE7CB21CAAEA4900F5443E;
+			remoteInfo = ProtonMailDev;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -788,6 +802,9 @@
 		7567B0781B33880500A72A1E /* APIServiceResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIServiceResponse.swift; sourceTree = "<group>"; };
 		7567B07A1B338EB900A72A1E /* MessageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageHelper.swift; sourceTree = "<group>"; };
 		756A35141B20D9B80033BC7C /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
+		756CDE3C1D9C763D004455F6 /* PasswordUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordUtils.swift; sourceTree = "<group>"; };
+		756CDEF81D9DB374004455F6 /* JKBCrypt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JKBCrypt.swift; sourceTree = "<group>"; };
+		756CDEFB1D9DB3A0004455F6 /* JKBCryptRandom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JKBCryptRandom.swift; sourceTree = "<group>"; };
 		756DAC3E1C922C3800F3486C /* MailboxRateReviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxRateReviewCell.swift; sourceTree = "<group>"; };
 		756DAC401C9236D000F3486C /* MailboxRateReviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MailboxRateReviewCell.xib; sourceTree = "<group>"; };
 		756DAC441C92B30300F3486C /* FeedbackPopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackPopViewController.swift; sourceTree = "<group>"; };
@@ -808,6 +825,7 @@
 		7588BB3F1BFBE05A00EC8EFD /* SecureStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureStore.swift; sourceTree = "<group>"; };
 		758C44831C6D09FE00E6E867 /* EncryptionSetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionSetupViewController.swift; sourceTree = "<group>"; };
 		7590F08C1C9894E1009C5059 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		759223361D9DD5A70064DAA1 /* SrpTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SrpTests.swift; sourceTree = "<group>"; };
 		759337841D18917400004A3D /* PMWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMWebView.swift; sourceTree = "<group>"; };
 		759339BF1ABB45C700535F1B /* ViewModelFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelFactory.swift; sourceTree = "<group>"; };
 		759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDetailsViewModel.swift; sourceTree = "<group>"; };
@@ -1107,6 +1125,7 @@
 		075E3E011A5F4ECF00E001A7 /* ProtonMailTests */ = {
 			isa = PBXGroup;
 			children = (
+				759223351D9DD55E0064DAA1 /* SrpTest */,
 				75F54C641B3B552200290F73 /* LastUpdateCacheTests.swift */,
 				7567B0701B3351C200A72A1E /* ComposeViewModelTests.swift */,
 				078FF4C11A91032C008321D1 /* OpenPGPTests.swift */,
@@ -1429,6 +1448,16 @@
 			name = Onboarding;
 			sourceTree = "<group>";
 		};
+		756CDE3B1D9C754D004455F6 /* SRP */ = {
+			isa = PBXGroup;
+			children = (
+				756CDE3C1D9C763D004455F6 /* PasswordUtils.swift */,
+				756CDEF81D9DB374004455F6 /* JKBCrypt.swift */,
+				756CDEFB1D9DB3A0004455F6 /* JKBCryptRandom.swift */,
+			);
+			name = SRP;
+			sourceTree = "<group>";
+		};
 		756DAC431C92B2B600F3486C /* Review */ = {
 			isa = PBXGroup;
 			children = (
@@ -1455,6 +1484,14 @@
 			children = (
 			);
 			name = LastPass;
+			sourceTree = "<group>";
+		};
+		759223351D9DD55E0064DAA1 /* SrpTest */ = {
+			isa = PBXGroup;
+			children = (
+				759223361D9DD5A70064DAA1 /* SrpTests.swift */,
+			);
+			name = SrpTest;
 			sourceTree = "<group>";
 		};
 		75978BD91B28F5F800D07501 /* Resource */ = {
@@ -1606,6 +1643,7 @@
 		75F1697F1AF7F49B00BE6E79 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				756CDE3B1D9C754D004455F6 /* SRP */,
 				75B549E31D02730100F21A30 /* Reachability */,
 				7580D6571C8E438800A15885 /* LastPass */,
 				7580D6561C8E436F00A15885 /* OnePassword */,
@@ -1684,6 +1722,7 @@
 			);
 			dependencies = (
 				075E3E001A5F4ECF00E001A7 /* PBXTargetDependency */,
+				759223391D9DD6D60064DAA1 /* PBXTargetDependency */,
 			);
 			name = ProtonMailTests;
 			productName = ProtonMailTests;
@@ -1737,7 +1776,7 @@
 					};
 					075E3DFD1A5F4ECF00E001A7 = {
 						CreatedOnToolsVersion = 6.1.1;
-						TestTargetID = 075E3DE51A5F4ECF00E001A7;
+						TestTargetID = 75DE7CB21CAAEA4900F5443E;
 					};
 					75DE7CB21CAAEA4900F5443E = {
 						DevelopmentTeam = 6UN54H93QT;
@@ -2073,6 +2112,7 @@
 				75F775701D63AA5B00FD3893 /* APIService+DefinedExtension.swift in Sources */,
 				0756755B1AB1369C00449905 /* UIAlertControllerExtension.swift in Sources */,
 				07CCCC2E1AA2BD8800ECA79E /* Snapshot.swift in Sources */,
+				756CDEF91D9DB374004455F6 /* JKBCrypt.swift in Sources */,
 				75510BAD1B82F990001348FF /* LabelViewModel.swift in Sources */,
 				756DAC471C93691900F3486C /* FeedbackViewController.swift in Sources */,
 				7564899A1B7F2ACA007EA207 /* MailboxViewModelImpl.swift in Sources */,
@@ -2094,6 +2134,7 @@
 				752EEC1C1BB0A9D800770331 /* QuickViewViewController.swift in Sources */,
 				073FD9321A71C60900EB0CAF /* UserDataService.swift in Sources */,
 				7546BE571C8D557C00FCEB0A /* TouchIDCell.swift in Sources */,
+				756CDEFC1D9DB3A0004455F6 /* JKBCryptRandom.swift in Sources */,
 				07CCCC301AA4E26000ECA79E /* NSCoderExtension.swift in Sources */,
 				754CD4881AB809D60084C54A /* SettingTableViewController.swift in Sources */,
 				07009F091A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift in Sources */,
@@ -2246,6 +2287,7 @@
 				07B797C01A6EDFF400244532 /* APIService.swift in Sources */,
 				75B549E61D02731300F21A30 /* Reachability.m in Sources */,
 				755B6A701B38C0B800745872 /* Label.swift in Sources */,
+				756CDE3D1D9C763D004455F6 /* PasswordUtils.swift in Sources */,
 				755F92171C7E685700BAEDF9 /* OnboardingViewController.swift in Sources */,
 				073FE01B1A955F4A00825980 /* APIService+ContactExtension.swift in Sources */,
 				750AAAC41C23E5CF00BAC444 /* RecaptchaViewController.swift in Sources */,
@@ -2310,6 +2352,7 @@
 				75F54C651B3B552200290F73 /* LastUpdateCacheTests.swift in Sources */,
 				078FF4C51A9106A3008321D1 /* ProtonMail-Bridging-Header.cpp in Sources */,
 				078FF4CB1A91232D008321D1 /* OpenPGPExtension.swift in Sources */,
+				759223371D9DD5A70064DAA1 /* SrpTests.swift in Sources */,
 				7567B0711B3351C200A72A1E /* ComposeViewModelTests.swift in Sources */,
 				75ECCE041B31F5F600A8C800 /* AuthAPITests.swift in Sources */,
 			);
@@ -2331,8 +2374,10 @@
 				75DE7CBD1CAAEA4900F5443E /* APIService+SettingsExtension.swift in Sources */,
 				75DE7CBE1CAAEA4900F5443E /* MailboxMessageCell.swift in Sources */,
 				75DE7CBF1CAAEA4900F5443E /* APIService+MessagesExtension.swift in Sources */,
+				756CDEFA1D9DB374004455F6 /* JKBCrypt.swift in Sources */,
 				75DE7CC01CAAEA4900F5443E /* OpenPGPExtension.swift in Sources */,
 				75DE7CC11CAAEA4900F5443E /* MBContactCollectionViewFlowLayout.m in Sources */,
+				756CDEFD1D9DB3A0004455F6 /* JKBCryptRandom.swift in Sources */,
 				75DE7CC21CAAEA4900F5443E /* MessageExtension.swift in Sources */,
 				75B549E71D02731300F21A30 /* Reachability.m in Sources */,
 				75DE7CC31CAAEA4900F5443E /* MailboxViewModel.swift in Sources */,
@@ -2503,6 +2548,7 @@
 				75DE7D591CAAEA4900F5443E /* MessageQueue.swift in Sources */,
 				75DE7D5A1CAAEA4900F5443E /* DebugDetailsViewController.swift in Sources */,
 				753745051D6B7E8F00682C5A /* APIError+Auth.swift in Sources */,
+				756CDE3E1D9C763D004455F6 /* PasswordUtils.swift in Sources */,
 				75DE7D5B1CAAEA4900F5443E /* ComposeEmailViewController.swift in Sources */,
 				75DE7D5C1CAAEA4900F5443E /* NSURLExtension.swift in Sources */,
 				75DE7D5D1CAAEA4900F5443E /* SearchViewController.swift in Sources */,
@@ -2557,6 +2603,11 @@
 			isa = PBXTargetDependency;
 			target = 075E3DE51A5F4ECF00E001A7 /* ProtonMail */;
 			targetProxy = 075E3DFF1A5F4ECF00E001A7 /* PBXContainerItemProxy */;
+		};
+		759223391D9DD6D60064DAA1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 75DE7CB21CAAEA4900F5443E /* ProtonMailDev */;
+			targetProxy = 759223381D9DD6D60064DAA1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
