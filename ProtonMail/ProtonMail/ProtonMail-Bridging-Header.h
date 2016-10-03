@@ -37,5 +37,7 @@
 #import <MCSwipeTableViewCell.h>
 #import "OnePasswordExtension.h"
 #import "Reachability.h"
+#import <CommonCrypto/CommonCrypto.h>
+
 
 #endif

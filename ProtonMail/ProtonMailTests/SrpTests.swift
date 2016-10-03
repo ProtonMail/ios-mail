@@ -22,6 +22,7 @@ class SrpTests: XCTestCase {
     }
     
     func testExample() {
+        
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
@@ -35,7 +36,10 @@ class SrpTests: XCTestCase {
     
     
     func testBcryptHashPwd() {
-        //Passowr
+        let cleaned_user_name = PasswordUtils.CleanUserName("afsadfasdf.asklfj.KKK_kajsdf-lkajd")
+        
+
+        
     }
     
     

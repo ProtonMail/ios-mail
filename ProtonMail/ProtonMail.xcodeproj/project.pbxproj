@@ -269,6 +269,8 @@
 		75B179501B377748006044D4 /* ContactVOExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B1794F1B377748006044D4 /* ContactVOExtension.swift */; };
 		75B549E61D02731300F21A30 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 75B549E51D02731300F21A30 /* Reachability.m */; };
 		75B549E71D02731300F21A30 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 75B549E51D02731300F21A30 /* Reachability.m */; };
+		75B9C6081DA2D39A001DE21E /* Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B9C6071DA2D39A001DE21E /* Hash.swift */; };
+		75B9C6091DA2D39A001DE21E /* Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B9C6071DA2D39A001DE21E /* Hash.swift */; };
 		75BA55A71D087F6A0081DD88 /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 75BA55A61D087F6A0081DD88 /* Readme.txt */; };
 		75BA55A81D087F6A0081DD88 /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 75BA55A61D087F6A0081DD88 /* Readme.txt */; };
 		75BB65761BD5C88800F9432D /* AttachmentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BB65751BD5C88800F9432D /* AttachmentAPI.swift */; };
@@ -851,6 +853,7 @@
 		75B1794F1B377748006044D4 /* ContactVOExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactVOExtension.swift; sourceTree = "<group>"; };
 		75B549E41D02731300F21A30 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		75B549E51D02731300F21A30 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		75B9C6071DA2D39A001DE21E /* Hash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hash.swift; sourceTree = "<group>"; };
 		75BA55A61D087F6A0081DD88 /* Readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.txt; sourceTree = "<group>"; };
 		75BB65751BD5C88800F9432D /* AttachmentAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentAPI.swift; sourceTree = "<group>"; };
 		75BDECA81CBCCE4400982089 /* PinCodeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinCodeModel.swift; sourceTree = "<group>"; };
@@ -1451,6 +1454,7 @@
 		756CDE3B1D9C754D004455F6 /* SRP */ = {
 			isa = PBXGroup;
 			children = (
+				75B9C6071DA2D39A001DE21E /* Hash.swift */,
 				756CDE3C1D9C763D004455F6 /* PasswordUtils.swift */,
 				756CDEF81D9DB374004455F6 /* JKBCrypt.swift */,
 				756CDEFB1D9DB3A0004455F6 /* JKBCryptRandom.swift */,
@@ -1625,8 +1629,8 @@
 				753745021D6B7E7000682C5A /* Errors */,
 				7567B0761B3387F700A72A1E /* APIServiceRequest.swift */,
 				7567B0781B33880500A72A1E /* APIServiceResponse.swift */,
-				75ECCE011B31F44600A8C800 /* AuthAPI.swift */,
 				7549F0B01D07827A00643C64 /* AddressAPI.swift */,
+				75ECCE011B31F44600A8C800 /* AuthAPI.swift */,
 				7567B0741B3383F900A72A1E /* MessageAPI.swift */,
 				7518393E1B3DCA3000C714A6 /* EventAPI.swift */,
 				75662BA61B543A5B006C538E /* SettingsAPI.swift */,
@@ -2127,6 +2131,7 @@
 				701DDE931AA64DEB0038149C /* MBContactCollectionViewFlowLayout.m in Sources */,
 				07CF61941A89895600ED38AE /* MessageExtension.swift in Sources */,
 				756489981B7F2AB3007EA207 /* MailboxViewModel.swift in Sources */,
+				75B9C6081DA2D39A001DE21E /* Hash.swift in Sources */,
 				70C9133D1A6D83FA002CBE61 /* UIColor+ProtonMail.swift in Sources */,
 				754BD2071BFA9FCD006CBAE6 /* SettingsCell.swift in Sources */,
 				75F463881C5FEBF400918B46 /* HumanCheckMenuViewController.swift in Sources */,
@@ -2507,6 +2512,7 @@
 				75DE7D351CAAEA4900F5443E /* AttachmentCollectionViewCell.swift in Sources */,
 				75DE7D361CAAEA4900F5443E /* TouchID.swift in Sources */,
 				75DE7D371CAAEA4900F5443E /* UILabel+ProtonMail.swift in Sources */,
+				75B9C6091DA2D39A001DE21E /* Hash.swift in Sources */,
 				75DE7D381CAAEA4900F5443E /* SplashSignInSegue.swift in Sources */,
 				7578B7871CADD20A006B523B /* PMDocumentPickerViewController.swift in Sources */,
 				75DE7D391CAAEA4900F5443E /* ViewModelService.swift in Sources */,

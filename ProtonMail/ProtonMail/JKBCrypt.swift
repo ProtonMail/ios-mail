@@ -526,6 +526,10 @@ class JKBCrypt: NSObject {
         }
     }
     
+    class func based64DotSlash(data: NSData) -> String {
+        return encodeData(data, ofLength: UInt(data.length))
+    }
+    
     // MARK: - Private Class Methods
     
     /**
