@@ -10,7 +10,7 @@ import Foundation
 
 
 // MARK : update right swipe action
-public class CetAvailableDomainsRequest<T : ApiResponse> : ApiRequest<T> {
+public class GetAvailableDomainsRequest<T : ApiResponse> : ApiRequest<T> {
     
     override init() {
     }
@@ -37,24 +37,4 @@ public class CetAvailableDomainsRequest<T : ApiResponse> : ApiRequest<T> {
 }
 
 
-//public class GetUserInfoRequest<T : ApiResponse> : ApiRequest<T> {
-//    
-//    override init() {
-//    }
-//    
-//    override func toDictionary() -> Dictionary<String, AnyObject>? {
-//        return nil
-//    }
-//    
-//    override func getAPIMethod() -> APIService.HTTPMethod {
-//        return .GET
-//    }
-//    
-//    override public func getRequestPath() -> String {
-//        return UsersAPI.Path
-//    }
-//    
-//    override public func getVersion() -> Int {
-//        return UsersAPI.V_GetUserInfoRequest
-//    }
-//}
+

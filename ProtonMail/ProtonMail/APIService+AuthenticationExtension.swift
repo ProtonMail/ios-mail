@@ -22,27 +22,36 @@ extension APIService {
 
     
     func auth(username: String, password: String, completion: AuthComplete?) {
-        AuthRequest<AuthResponse>(username: username, password: password).call() { task, res, hasError in
+        AuthInfoRequest<AuthInfoResponse>(username: username).call() { task, res, hasError in
             if hasError {
-                if let error = res?.error {
-                    if error.isInternetError() {
-                        completion?(task: task, hasError: NSError.internetError())
-                        return
-                    } else {
-                        completion?(task: task, hasError: error)
-                        return
+
+            } else if res?.code == 1000 {
+                
+                // caculate pwd
+                
+                AuthRequest<AuthResponse>(username: username, password: password).call() { task, res, hasError in
+                    if hasError {
+                        if let error = res?.error {
+                            if error.isInternetError() {
+                                completion?(task: task, hasError: NSError.internetError())
+                                return
+                            } else {
+                                completion?(task: task, hasError: error)
+                                return
+                            }
+                        } else {
+                            completion?(task: task, hasError: NSError.authInvalidGrant())
+                        }
                     }
-                } else {
-                    completion?(task: task, hasError: NSError.authInvalidGrant())
+                    else if res?.code == 1000 {
+                        let credential = AuthCredential(res: res)
+                        credential.storeInKeychain()
+                        completion?(task: task, hasError: nil)
+                    }
+                    else {
+                        completion?(task: task, hasError: NSError.authUnableToParseToken())
+                    }
                 }
-            }
-            else if res?.code == 1000 {
-                let credential = AuthCredential(res: res)
-                credential.storeInKeychain()
-                completion?(task: task, hasError: nil)
-            }
-            else {
-                completion?(task: task, hasError: NSError.authUnableToParseToken())
             }
         }
     }

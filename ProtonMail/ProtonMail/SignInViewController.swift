@@ -382,6 +382,9 @@ class SignInViewController: UIViewController {
     }
     
     func signIn() {
+        
+        
+        
         MBProgressHUD.showHUDAddedTo(view, animated: true)
         isRemembered = true
         if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {

@@ -30,6 +30,41 @@ struct Constants {
     static let rediectURL = "https://protonmail.ch"
 }
 
+
+
+// MARK : Get messages part
+public class AuthInfoRequest<T : ApiResponse> : ApiRequest<T> {
+    
+    var username : String!
+    
+    init(username : String) {
+        self.username = username;
+    }
+    
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+        let out : [String : AnyObject] = [
+            AuthKey.clientID : Constants.clientID,
+            AuthKey.clientSecret : Constants.clientSecret,
+            AuthKey.userName : username
+        ]
+        PMLog.D(self.JSONStringify(out, prettyPrinted: true))
+        return out
+    }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .POST
+    }
+    
+    override public func getRequestPath() -> String {
+        return AuthAPI.Path + "/info" + AppConstants.getDebugOption
+    }
+    
+    override public func getIsAuthFunction() -> Bool {
+        return false
+    }
+}
+
+
 // MARK : Get messages part
 public class AuthRequest<T : ApiResponse> : ApiRequest<T> {
     
@@ -163,5 +198,27 @@ public class AuthResponse : ApiResponse {
 
 
 
+public class AuthInfoResponse : ApiResponse {
+    
+    var Modulus : String?
+    var ServerEphemeral : String?
+    var Version : Int = 0
+    var Salt : String?
+    var SRPSession : String?
+    var TwoFactor : Int = 0   //0 is off
+    
+    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
+        
+        PMLog.D(response.JSONStringify(true))
+        
+        self.Modulus = response["Modulus"] as? String
+        self.ServerEphemeral = response["ServerEphemeral"] as? String
+        self.Version = response["Version"] as? Int ?? 0
+        self.Salt = response["Salt"] as? String
+        self.SRPSession = response["SRPSession"] as? String
+        self.TwoFactor = response["TwoFactor"] as? Int ?? 0
 
+        return true
+    }
+}
 
