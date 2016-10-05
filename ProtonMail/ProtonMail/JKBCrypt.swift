@@ -47,21 +47,6 @@
 import Foundation
 
 // MARK: - Class Extensions
-
-//extension String {
-//    subscript (i: Int) -> Character {
-//        return self[self.startIndex.advancedBy(i)]
-//    }
-//    
-//    subscript (i: Int) -> String {
-//        return String(self[i] as Character)
-//    }
-//    
-//    subscript (r: Range<Int>) -> String {
-//        return substringWithRange(startIndex.advancedBy(r.startIndex) ..< startIndex.advancedBy(r.endIndex))
-//    }
-//}
-
 extension Character {
     func utf16Value() -> UInt16 {
         for s in String(self).utf16 {
@@ -405,7 +390,7 @@ class JKBCrypt: NSObject {
      :returns: String    The generated salt
      */
     class func generateSaltWithNumberOfRounds(rounds: UInt) -> String {
-        let randomData : NSData = JKBCryptRandom.generateRandomSignedDataOfLength(BCRYPT_SALT_LEN)
+        var randomData : NSData = JKBCryptRandom.generateRandomSignedDataOfLength(BCRYPT_SALT_LEN)
         
         var salt : String
         salt =  "$2a$" + ((rounds < 10) ? "0" : "") + "\(rounds)" + "$"
@@ -413,6 +398,11 @@ class JKBCrypt: NSObject {
         
         return salt
     }
+    
+    class func based64DotSlash(data: NSData) -> String {
+        return encodeData(data, ofLength: UInt(data.length))
+    }
+    
     
     /**
      Generates a salt with a defaulted set of 10 rounds.
@@ -438,6 +428,7 @@ class JKBCrypt: NSObject {
     class func hashPassword(password: String, withSalt salt: String) -> String? {
         var bCrypt         : JKBCrypt
         var realSalt       : String
+        var hashedData     : NSData
         var minor          : Character = "\000"[0]
         var off            : Int = 0
         
@@ -469,15 +460,15 @@ class JKBCrypt: NSObject {
             return nil
         }
         
-        var range : Range = off ..< off+2
+        var range = salt.startIndex.advancedBy(off) ..< salt.startIndex.advancedBy(off+2)
         let extactedRounds = Int(salt[range])
         if extactedRounds == nil {
             // Invalid number of rounds
             return nil
         }
-        let rounds : Int = extactedRounds!
+        var rounds : Int = extactedRounds!
         
-        range = off + 3 ..< off + 25
+        range = salt.startIndex.advancedBy(off+3) ..< salt.startIndex.advancedBy(off+25)
         realSalt = salt[range]
         
         var passwordPreEncoding : String = password
@@ -485,8 +476,8 @@ class JKBCrypt: NSObject {
             passwordPreEncoding += "\0"
         }
         
-        let passwordData : NSData? = (passwordPreEncoding as NSString).dataUsingEncoding(NSUTF8StringEncoding)
-        let saltData : NSData? = JKBCrypt.decode_base64(realSalt, ofMaxLength: BCRYPT_SALT_LEN)
+        var passwordData : NSData? = (passwordPreEncoding as NSString).dataUsingEncoding(NSUTF8StringEncoding)
+        var saltData : NSData? = JKBCrypt.decode_base64(realSalt, ofMaxLength: BCRYPT_SALT_LEN)
         
         if passwordData != nil && saltData != nil {
             bCrypt = JKBCrypt()
@@ -495,8 +486,8 @@ class JKBCrypt: NSObject {
                 
                 hashedPassword += ((rounds < 10) ? "0" : "") + "\(rounds)" + "$"
                 
-                let saltString = JKBCrypt.encodeData(saltData!, ofLength: UInt(saltData!.length))
-                let hashedString = JKBCrypt.encodeData(hashedData, ofLength: 23)
+                var saltString = JKBCrypt.encodeData(saltData!, ofLength: UInt(saltData!.length))
+                var hashedString = JKBCrypt.encodeData(hashedData, ofLength: 23)
                 
                 return hashedPassword + saltString + hashedString
             }
@@ -524,10 +515,6 @@ class JKBCrypt: NSObject {
         else {
             return nil
         }
-    }
-    
-    class func based64DotSlash(data: NSData) -> String {
-        return encodeData(data, ofLength: UInt(data.length))
     }
     
     // MARK: - Private Class Methods
@@ -562,8 +549,7 @@ class JKBCrypt: NSObject {
         data.getBytes(&dataArray, length:len)
         
         while offset < len {
-            c1 = dataArray[offset] & 0xff
-            offset += 1
+            c1 = dataArray[offset++] & 0xff
             result.append(base64_code[Int((c1 >> 2) & 0x3f)])
             c1 = (c1 & 0x03) << 4
             if offset >= len {
@@ -571,8 +557,7 @@ class JKBCrypt: NSObject {
                 break
             }
             
-            c2 = dataArray[offset] & 0xff
-            offset += 1
+            c2 = dataArray[offset++] & 0xff
             c1 |= (c2 >> 4) & 0x0f
             result.append(base64_code[Int(c1 & 0x3f)])
             c1 = (c2 & 0x0f) << 2
@@ -581,8 +566,7 @@ class JKBCrypt: NSObject {
                 break
             }
             
-            c2 = dataArray[offset] & 0xff
-            offset += 1
+            c2 = dataArray[offset++] & 0xff
             c1 |= (c2 >> 6) & 0x03
             result.append(base64_code[Int(c1 & 0x3f)])
             result.append(base64_code[Int(c2 & 0x3f)])
@@ -599,7 +583,7 @@ class JKBCrypt: NSObject {
      :returns: Int8  The Base64 encoded signed character or -1 if none exists.
      */
     class private func char64of(x: Character) -> Int8 {
-        let xAsInt : Int32 = Int32(x.utf16Value())
+        var xAsInt : Int32 = Int32(x.utf16Value())
         
         if xAsInt < 0 || xAsInt > 128 - 1 {
             // The character would go out of bounds of the pre-calculated array so return -1.
@@ -620,7 +604,7 @@ class JKBCrypt: NSObject {
      */
     class private func decode_base64(s: String, ofMaxLength maxolen: Int) -> NSData? {
         var off : Int = 0
-        let slen : Int = s.characters.count
+        var slen : Int = s.characters.count
         var olen : Int = 0
         var result : [Int8] = [Int8](count: maxolen, repeatedValue: 0)
         
@@ -635,11 +619,12 @@ class JKBCrypt: NSObject {
             return nil
         }
         
+        var v1 : UInt8
+        var v2 : UnicodeScalar
+        
         while off < slen - 1 && olen < maxolen {
-            c1 = JKBCrypt.char64of(s[off])
-            off += 1
-            c2 = JKBCrypt.char64of(s[off])
-            off += 1
+            c1 = JKBCrypt.char64of(s[off++])
+            c2 = JKBCrypt.char64of(s[off++])
             if c1 == -1 || c2 == -1 {
                 break
             }
@@ -647,14 +632,11 @@ class JKBCrypt: NSObject {
             o = c1 << 2
             o |= (c2 & 0x30) >> 4
             result[olen] = o
-            
-            olen += 1
-            if olen >= maxolen || off >= slen {
+            if ++olen >= maxolen || off >= slen {
                 break
             }
             
-            c3 = JKBCrypt.char64of(s[Int(off)])
-            off += 1
+            c3 = JKBCrypt.char64of(s[Int(off++)])
             if c3 == -1 {
                 break
             }
@@ -662,19 +644,15 @@ class JKBCrypt: NSObject {
             o = (c2 & 0x0f) << 4
             o |= (c3 & 0x3c) >> 2
             result[olen] = o
-            
-            olen += 1
-            if olen >= maxolen || off >= slen {
+            if ++olen >= maxolen || off >= slen {
                 break
             }
             
-            c4 = JKBCrypt.char64of(s[off])
-            off += 1
+            c4 = JKBCrypt.char64of(s[off++])
             o = (c3 & 0x03) << 6
             o |= c4
             result[olen] = o
-            
-            olen += 1
+            ++olen
         }
         
         return NSData(bytes: result, length: olen)
@@ -694,10 +672,11 @@ class JKBCrypt: NSObject {
         // var dataArray : [Int8] = [Int8](count:d.length, repeatedValue: 0)
         // data.getBytes(&dataArray, length:dataLength)
         
+        var i : Int
         var word : Int32 = 0
         var off  : Int32 = offp
         
-        for _ in 0 ..< 4 {
+        for i = 0; i < 4; i++ {
             word = (word << 8) | (Int32(data[Int(off)]) & 0xff)
             off = (off + 1) % Int32(length)
         }
@@ -722,8 +701,9 @@ class JKBCrypt: NSObject {
      */
     private func hashPassword(password: NSData, withSalt salt: NSData, numberOfRounds: Int) -> NSData? {
         var rounds : Int
+        var i      : Int
         var j      : Int
-        let clen   : Int = 6
+        var clen   : Int = 6
         var cdata  : [Int32] = bf_crypt_ciphertext
         
         if numberOfRounds < 4 || numberOfRounds > 31 {
@@ -740,13 +720,13 @@ class JKBCrypt: NSObject {
         self.initKey()
         self.enhanceKeyScheduleWithData(salt, key: password)
         
-        for _ in 0 ..< rounds {
+        for i = 0; i < rounds; i++ {
             self.key(password)
             self.key(salt)
         }
         
-        for _ in 0 ..< 64 {
-            for j in 0 ..< (clen >> 1) {
+        for i = 0; i < 64; i++ {
+            for j = 0; j < (clen >> 1); j++ {
                 self.encipher(&cdata, off: j << 1)
             }
         }
@@ -755,14 +735,10 @@ class JKBCrypt: NSObject {
         
         j = 0
         for i in 0..<clen {
-            result[j] = Int8(truncatingBitPattern: (cdata[i] >> 24) & 0xff)
-            j += 1
-            result[j] = Int8(truncatingBitPattern: (cdata[i] >> 16) & 0xff)
-            j += 1
-            result[j] = Int8(truncatingBitPattern: (cdata[i] >> 8) & 0xff)
-            j += 1
-            result[j] = Int8(truncatingBitPattern: cdata[i] & 0xff)
-            j += 1
+            result[j++] = Int8(truncatingBitPattern: (cdata[i] >> 24) & 0xff)
+            result[j++] = Int8(truncatingBitPattern: (cdata[i] >> 16) & 0xff)
+            result[j++] = Int8(truncatingBitPattern: (cdata[i] >> 8) & 0xff)
+            result[j++] = Int8(truncatingBitPattern: cdata[i] & 0xff)
         }
         
         deinitKey()
@@ -796,16 +772,14 @@ class JKBCrypt: NSObject {
             n = n &+ s.advancedBy(Int(0x100 | ((l >> 16) & 0xff))).memory
             n ^= s.advancedBy(Int(0x200 | ((l >> 8) & 0xff))).memory
             n = n &+ s.advancedBy(Int(0x300 | (l & 0xff))).memory
-            i += 1
-            r ^= n ^ p.advancedBy(i).memory
+            r ^= n ^ p.advancedBy(++i).memory
             
             // Feistel substitution on right word
             n = s.advancedBy(Int((r >> 24) & 0xff)).memory
             n = n &+ s.advancedBy(Int(0x100 | ((r >> 16) & 0xff))).memory
             n ^= s.advancedBy(Int(0x200 | ((r >> 8) & 0xff))).memory
             n = n &+ s.advancedBy(Int(0x300 | (r & 0xff))).memory
-            i += 1
-            l ^= n ^ p.advancedBy(i).memory
+            l ^= n ^ p.advancedBy(++i).memory
         }
         
         lr[off] = r ^ p.advancedBy(BLOWFISH_NUM_ROUNDS + 1).memory
@@ -844,27 +818,28 @@ class JKBCrypt: NSObject {
      */
     // private func key(key: NSData) {
     private func key(key: NSData) {
+        var i : Int
         var koffp : Int32 = 0
         var lr    : [Int32] = [0, 0]
         // var lr    : UnsafeMutablePointer<Int32> = UnsafeMutablePointer<Int32>.alloc(2)
         // lr[0] = 0; lr[1] = 0
-        let plen  : Int = 18
-        let slen  : Int = 1024
+        var plen  : Int = 18
+        var slen  : Int = 1024
         
-        let keyPointer : UnsafeMutablePointer<Int8> = UnsafeMutablePointer<Int8>(key.bytes)
-        let keyLength : Int = key.length
+        var keyPointer : UnsafeMutablePointer<Int8> = UnsafeMutablePointer<Int8>(key.bytes)
+        var keyLength : Int = key.length
         
-        for i in 0 ..< plen {
+        for i = 0; i < plen; i++ {
             p[i] = p[i] ^ JKBCrypt.streamToWordWithData(keyPointer, ofLength: keyLength, off: &koffp)
         }
         
-        for i in 0 ..< plen {
+        for i = 0; i < plen; i += 2 {
             self.encipher(&lr, off: 0)
             p[i] = lr[0]
             p[i + 1] = lr[1]
         }
         
-        for i in 0 ..< slen {
+        for i = 0; i < slen; i += 2 {
             self.encipher(&lr, off: 0)
             s[i] = lr[0]
             s[i + 1] = lr[1]
@@ -882,39 +857,38 @@ class JKBCrypt: NSObject {
      :returns: <void>
      */
     private func enhanceKeyScheduleWithData(data: NSData, key: NSData) {
+        var i : Int
         var koffp : Int32 = 0
         var doffp : Int32 = 0
         var lr    : [Int32] = [0, 0]
         // var lr    : UnsafeMutablePointer<Int32> = UnsafeMutablePointer.alloc(2)
         // lr[0] = 0; lr[1] = 0
-        let plen  : Int = 18
-        let slen  : Int = 1024
+        var plen  : Int = 18
+        var slen  : Int = 1024
         
-        let keyPointer : UnsafeMutablePointer<Int8> = UnsafeMutablePointer<Int8>(key.bytes)
-        let keyLength : Int = key.length
-        let dataPointer : UnsafeMutablePointer<Int8> = UnsafeMutablePointer<Int8>(data.bytes)
-        let dataLength : Int = data.length
+        var keyPointer : UnsafeMutablePointer<Int8> = UnsafeMutablePointer<Int8>(key.bytes)
+        var keyLength : Int = key.length
+        var dataPointer : UnsafeMutablePointer<Int8> = UnsafeMutablePointer<Int8>(data.bytes)
+        var dataLength : Int = data.length
         
-        for i in 0 ..< plen {
+        for i = 0; i < plen; i++ {
             p[i] = p[i] ^ JKBCrypt.streamToWordWithData(keyPointer, ofLength: keyLength, off:&koffp)
         }
         
-        for var i in 0 ..< plen {
+        for i = 0; i < plen; i += 2 {
             lr[0] ^= JKBCrypt.streamToWordWithData(dataPointer, ofLength: dataLength, off: &doffp)
             lr[1] ^= JKBCrypt.streamToWordWithData(dataPointer, ofLength: dataLength, off: &doffp)
             self.encipher(&lr, off: 0)
             p[i] = lr[0]
             p[i + 1] = lr[1]
-            i += 2
         }
         
-        for var i in 0 ..< slen {
+        for i = 0; i < slen; i += 2 {
             lr[0] ^= JKBCrypt.streamToWordWithData(dataPointer, ofLength: dataLength, off: &doffp)
             lr[1] ^= JKBCrypt.streamToWordWithData(dataPointer, ofLength: dataLength, off: &doffp)
             self.encipher(&lr, off: 0)
             s[i] = lr[0]
             s[i + 1] = lr[1]
-            i += 2
         }
     }
 }

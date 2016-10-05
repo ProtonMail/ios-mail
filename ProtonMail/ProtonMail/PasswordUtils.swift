@@ -41,6 +41,11 @@ public class PasswordUtils {
         throw PasswordError.HashEmptyEncode
     }
     
+    private static func bcrypt_string(password :String, salt :String) throws -> String {
+        let b = try bcrypt(password, salt: salt)
+        return b
+    }
+    
     
     public static func expandHash(input : NSData) -> NSData {
         
@@ -77,6 +82,9 @@ public class PasswordUtils {
         }
         
         let source = NSData(data: byteArray)
+        
+        let a = source.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+        
         let encodedSalt = JKBCrypt.based64DotSlash(source)
         
         do {
@@ -94,6 +102,29 @@ public class PasswordUtils {
             // check error
         }
         return nil
+    }
+    
+    public static func getMailboxPassword(password : String, salt : NSData) -> String {
+        let byteArray = NSMutableData()
+        byteArray.appendData(salt)
+        if let encodedSalt = "proton".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
+            byteArray.appendData(encodedSalt)
+        }
+        
+        let source = NSData(data: byteArray)
+        let encodedSalt = JKBCrypt.based64DotSlash(source)
+        do {
+            let out = try bcrypt_string(password, salt: encodedSalt)
+            return out
+        } catch PasswordError.HashEmpty {
+            // check error
+        } catch PasswordError.HashSizeWrong {
+            // check error
+        } catch {
+            // check error
+        }
+        return ""
+
     }
 
     public static func hashPasswordVersion2(password : String, username : String, modulus : NSData) -> NSData? {

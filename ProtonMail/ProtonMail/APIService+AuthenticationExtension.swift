@@ -26,8 +26,189 @@ extension APIService {
             if hasError {
 
             } else if res?.code == 1000 {
-                
                 // caculate pwd
+                guard let authVersion = res?.Version else {
+                    // error
+                    return
+                }
+                if (authVersion == 0) {
+                    PMLog.D("")
+                }
+                
+                guard let modulus = res?.Modulus else {
+                    // error
+                    return
+                }
+                
+                guard let salt = res?.Salt else {
+                    // error
+                    return
+                }
+                
+                let encodedModulus = sharedOpenPGP.readClearsignedMessage(modulus)
+                let decodedModulus : NSData = encodedModulus.decodeBase64()
+                let decodedSalt : NSData = salt.decodeBase64()
+                
+                switch authVersion {
+                case 0: break
+                case 1: break
+                case 2: break
+                case 3: break
+                case 4:
+                    let hashedPassword = PasswordUtils.hashPasswordVersion4(password, salt: decodedSalt, modulus: decodedModulus)
+                    
+                    let encoded = hashedPassword?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+                    
+                    let pwd = PasswordUtils.getMailboxPassword(password, salt: decodedSalt)
+                    
+                    PMLog.D("\(pwd)")
+                    PMLog.D("\(hashedPassword)")
+                    PMLog.D("\(encoded)")
+                    break
+                    
+                default: break
+                    
+                }
+                
+                
+//                        final byte[] hashedPassword;
+//                        final OpenPgp openPgp = OpenPgp.createInstance();
+//                        final byte[] modulus = Base64.decode(openPgp.readClearsignedMessage(infoResponse.getModulus()), Base64.DEFAULT);
+//                        switch (authVersion) {
+//                        case 4:
+//                            hashedPassword = PasswordUtils.hashPasswordVersion4(password, Base64.decode(infoResponse.getSalt(), Base64.DEFAULT), modulus);
+//                            break;
+//                        case 3:
+//                            hashedPassword = PasswordUtils.hashPasswordVersion3(password, Base64.decode(infoResponse.getSalt(), Base64.DEFAULT), modulus);
+//                            break;
+//                        case 2:
+//                            if (!PasswordUtils.cleanUserName(username).equals(PasswordUtils.cleanUserName(infoResponse.getUserName()))) {
+//                                return;
+//                            }
+//                            hashedPassword = PasswordUtils.hashPasswordVersion2(password, username, modulus);
+//                            break;
+//                        case 1:
+//                            if (!username.toLowerCase().equals(infoResponse.getUserName().toLowerCase())) {
+//                                return;
+//                            }
+//                            hashedPassword = PasswordUtils.hashPasswordVersion1(password, username, modulus);
+//                            break;
+//                        case 0:
+//                            hashedPassword = PasswordUtils.hashPasswordVersion0(password, username, modulus);
+//                            break;
+//                        default:
+//                            return;
+//                        }
+//                        final SRPClient.Proofs proofs = SRPClient.generateProofs(2048, modulus, Base64.decode(infoResponse.getServerEphemeral(), Base64.DEFAULT), hashedPassword);
+//                        if (proofs != null) {
+//                            final LoginResponse loginResponse = mApi.login(username, infoResponse.getSRPSession(), proofs.clientEphemeral, proofs.clientProof);
+//                            if (ConstantTime.isEqual(proofs.expectedServerProof, Base64.decode(loginResponse.getServerProof(), Base64.DEFAULT))) {
+//                                boolean foundErrorCode = checkForErrorCodes(loginResponse.getCode());
+//                                if (!foundErrorCode && loginResponse.isValid()) {
+//                                    status = LoginStatus.SUCCESS;
+//                                    mUserManager.setUsername(username);
+//                                    mTokenManager.update(loginResponse);
+//                                } else {
+//                                    status = LoginStatus.INVALID_CREDENTIAL;
+//                                }
+//                            } else {
+//                                status = LoginStatus.INVALID_SERVER_PROOF;
+//                            }
+//                        }
+//                    } else {
+//                        status = LoginStatus.NO_NETWORK;
+//                    }
+//  
+//                if (usedFallback && status.equals(LoginStatus.FAILED) && fallbackAuthVersion != 0) {
+//                    final int newFallback;
+//                    if (fallbackAuthVersion == 2 && !PasswordUtils.cleanUserName(username).equals(username.toLowerCase())) {
+//                        newFallback = 1;
+//                    } else {
+//                        newFallback = 0;
+//                    }
+//                    
+//                    startInfo(username, password, rememberMe, newFallback);
+//                } else {
+//                    AppUtil.postEventOnUi(new LoginEvent(status));
+//                }
+//                
+//                private void handleLogin(String username, String password, boolean rememberMe, final LoginInfoResponse infoResponse, final int fallbackAuthVersion) {
+//                    LoginStatus status = LoginStatus.FAILED;
+//                    boolean usedFallback = false;
+//                    try {
+//                        if (mNetworkUtils.hasConnectivity(this)) {
+//                            int authVersion = infoResponse.getAuthVersion();
+//                            if (authVersion == 0) {
+//                                usedFallback = true;
+//                                authVersion = fallbackAuthVersion;
+//                            }
+//                            final byte[] hashedPassword;
+//                            final OpenPgp openPgp = OpenPgp.createInstance();
+//                            final byte[] modulus = Base64.decode(openPgp.readClearsignedMessage(infoResponse.getModulus()), Base64.DEFAULT);
+//                            switch (authVersion) {
+//                            case 4:
+//                                hashedPassword = PasswordUtils.hashPasswordVersion4(password, Base64.decode(infoResponse.getSalt(), Base64.DEFAULT), modulus);
+//                                break;
+//                            case 3:
+//                                hashedPassword = PasswordUtils.hashPasswordVersion3(password, Base64.decode(infoResponse.getSalt(), Base64.DEFAULT), modulus);
+//                                break;
+//                            case 2:
+//                                if (!PasswordUtils.cleanUserName(username).equals(PasswordUtils.cleanUserName(infoResponse.getUserName()))) {
+//                                    return;
+//                                }
+//                                hashedPassword = PasswordUtils.hashPasswordVersion2(password, username, modulus);
+//                                break;
+//                            case 1:
+//                                if (!username.toLowerCase().equals(infoResponse.getUserName().toLowerCase())) {
+//                                    return;
+//                                }
+//                                hashedPassword = PasswordUtils.hashPasswordVersion1(password, username, modulus);
+//                                break;
+//                            case 0:
+//                                hashedPassword = PasswordUtils.hashPasswordVersion0(password, username, modulus);
+//                                break;
+//                            default:
+//                                return;
+//                            }
+//                            final SRPClient.Proofs proofs = SRPClient.generateProofs(2048, modulus, Base64.decode(infoResponse.getServerEphemeral(), Base64.DEFAULT), hashedPassword);
+//                            if (proofs != null) {
+//                                final LoginResponse loginResponse = mApi.login(username, infoResponse.getSRPSession(), proofs.clientEphemeral, proofs.clientProof);
+//                                if (ConstantTime.isEqual(proofs.expectedServerProof, Base64.decode(loginResponse.getServerProof(), Base64.DEFAULT))) {
+//                                    boolean foundErrorCode = checkForErrorCodes(loginResponse.getCode());
+//                                    if (!foundErrorCode && loginResponse.isValid()) {
+//                                        status = LoginStatus.SUCCESS;
+//                                        mUserManager.setUsername(username);
+//                                        mTokenManager.update(loginResponse);
+//                                    } else {
+//                                        status = LoginStatus.INVALID_CREDENTIAL;
+//                                    }
+//                                } else {
+//                                    status = LoginStatus.INVALID_SERVER_PROOF;
+//                                }
+//                            }
+//                        } else {
+//                            status = LoginStatus.NO_NETWORK;
+//                        }
+//                    } catch (Exception e) {
+//                        Logger.doLogException(TAG, "error while login", e);
+//                    }
+//                    
+//                    if (usedFallback && status.equals(LoginStatus.FAILED) && fallbackAuthVersion != 0) {
+//                        final int newFallback;
+//                        if (fallbackAuthVersion == 2 && !PasswordUtils.cleanUserName(username).equals(username.toLowerCase())) {
+//                            newFallback = 1;
+//                        } else {
+//                            newFallback = 0;
+//                        }
+//                        
+//                        startInfo(username, password, rememberMe, newFallback);
+//                    } else {
+//                        AppUtil.postEventOnUi(new LoginEvent(status));
+//                    }
+//                }
+                
+                
+                
                 
                 AuthRequest<AuthResponse>(username: username, password: password).call() { task, res, hasError in
                     if hasError {
