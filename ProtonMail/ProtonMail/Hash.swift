@@ -115,7 +115,7 @@ public struct HMAC {
         return NSData(bytes: hash, length: digestLength)
     }
     
-    private static func hexStringFromData(input: NSData) -> String {
+    public static func hexStringFromData(input: NSData) -> String {
         var bytes = [UInt8](count: input.length, repeatedValue: 0)
         input.getBytes(&bytes, length: input.length)
         

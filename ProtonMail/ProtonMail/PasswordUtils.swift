@@ -49,6 +49,10 @@ public class PasswordUtils {
     
     public static func expandHash(input : NSData) -> NSData {
         
+        let inputHex = HMAC.hexStringFromData(input)
+        PMLog.D(inputHex)
+        
+        
         let ret_data = NSMutableData()
         
         var value: UInt8 = 0x00
@@ -67,7 +71,11 @@ public class PasswordUtils {
         ret_data.appendData(input.sha512_byte)
         ret_data.appendBytes(&value, length: 1)
         
-        return NSData(data: ret_data)
+        let o = NSData(data: ret_data)
+        let oHex = HMAC.hexStringFromData(o)
+        PMLog.D(oHex)
+        
+        return o
     }
     
     public static func hashPasswordVersion4(password : String, salt : NSData, modulus : NSData) -> NSData? {
@@ -82,9 +90,6 @@ public class PasswordUtils {
         }
         
         let source = NSData(data: byteArray)
-        
-        let a = source.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
-        
         let encodedSalt = JKBCrypt.based64DotSlash(source)
         
         do {
@@ -107,15 +112,12 @@ public class PasswordUtils {
     public static func getMailboxPassword(password : String, salt : NSData) -> String {
         let byteArray = NSMutableData()
         byteArray.appendData(salt)
-        if let encodedSalt = "proton".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
-            byteArray.appendData(encodedSalt)
-        }
-        
         let source = NSData(data: byteArray)
         let encodedSalt = JKBCrypt.based64DotSlash(source)
         do {
             let out = try bcrypt_string(password, salt: encodedSalt)
-            return out
+            let index = out.startIndex.advancedBy(29)
+            return out.substringFromIndex(index)
         } catch PasswordError.HashEmpty {
             // check error
         } catch PasswordError.HashSizeWrong {

@@ -59,7 +59,10 @@ extension APIService {
                     
                     let encoded = hashedPassword?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
                     
-                    let pwd = PasswordUtils.getMailboxPassword(password, salt: decodedSalt)
+                    let ks = "rhIDZRVLYFhQPfCD7Hp7bw=="
+                    //4tpmkK5QZJhmQ8UIWZkRWlcVQfBQSSq
+                    //4tpmkK5QZJhmQ8UIWZkRWlcVQfBQSSq
+                    let pwd = PasswordUtils.getMailboxPassword(password, salt: ks.decodeBase64())
                     
                     PMLog.D("\(pwd)")
                     PMLog.D("\(hashedPassword)")

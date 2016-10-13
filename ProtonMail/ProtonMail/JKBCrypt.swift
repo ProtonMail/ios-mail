@@ -390,7 +390,7 @@ class JKBCrypt: NSObject {
      :returns: String    The generated salt
      */
     class func generateSaltWithNumberOfRounds(rounds: UInt) -> String {
-        var randomData : NSData = JKBCryptRandom.generateRandomSignedDataOfLength(BCRYPT_SALT_LEN)
+        let randomData : NSData = JKBCryptRandom.generateRandomSignedDataOfLength(BCRYPT_SALT_LEN)
         
         var salt : String
         salt =  "$2a$" + ((rounds < 10) ? "0" : "") + "\(rounds)" + "$"
@@ -428,7 +428,7 @@ class JKBCrypt: NSObject {
     class func hashPassword(password: String, withSalt salt: String) -> String? {
         var bCrypt         : JKBCrypt
         var realSalt       : String
-        var hashedData     : NSData
+        //var hashedData     : NSData
         var minor          : Character = "\000"[0]
         var off            : Int = 0
         
@@ -466,7 +466,7 @@ class JKBCrypt: NSObject {
             // Invalid number of rounds
             return nil
         }
-        var rounds : Int = extactedRounds!
+        let rounds : Int = extactedRounds!
         
         range = salt.startIndex.advancedBy(off+3) ..< salt.startIndex.advancedBy(off+25)
         realSalt = salt[range]
@@ -476,8 +476,8 @@ class JKBCrypt: NSObject {
             passwordPreEncoding += "\0"
         }
         
-        var passwordData : NSData? = (passwordPreEncoding as NSString).dataUsingEncoding(NSUTF8StringEncoding)
-        var saltData : NSData? = JKBCrypt.decode_base64(realSalt, ofMaxLength: BCRYPT_SALT_LEN)
+        let passwordData : NSData? = (passwordPreEncoding as NSString).dataUsingEncoding(NSUTF8StringEncoding)
+        let saltData : NSData? = JKBCrypt.decode_base64(realSalt, ofMaxLength: BCRYPT_SALT_LEN)
         
         if passwordData != nil && saltData != nil {
             bCrypt = JKBCrypt()
@@ -486,8 +486,8 @@ class JKBCrypt: NSObject {
                 
                 hashedPassword += ((rounds < 10) ? "0" : "") + "\(rounds)" + "$"
                 
-                var saltString = JKBCrypt.encodeData(saltData!, ofLength: UInt(saltData!.length))
-                var hashedString = JKBCrypt.encodeData(hashedData, ofLength: 23)
+                let saltString = JKBCrypt.encodeData(saltData!, ofLength: UInt(saltData!.length))
+                let hashedString = JKBCrypt.encodeData(hashedData, ofLength: 23)
                 
                 return hashedPassword + saltString + hashedString
             }

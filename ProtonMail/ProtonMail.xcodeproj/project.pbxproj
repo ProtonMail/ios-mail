@@ -280,6 +280,8 @@
 		75BDECAE1CBCD0FA00982089 /* PinCodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BDECA81CBCCE4400982089 /* PinCodeModel.swift */; };
 		75BDECAF1CBCD0FA00982089 /* SetPinCodeModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BDECAA1CBCCE5B00982089 /* SetPinCodeModelImpl.swift */; };
 		75BDECB01CBCD0FA00982089 /* UnlockPinCodeModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BDECAC1CBCCE8B00982089 /* UnlockPinCodeModelImpl.swift */; };
+		75BF8F461DA6E49D000F350F /* SRPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF8F451DA6E49D000F350F /* SRPClient.swift */; };
+		75BF8F471DA6E49E000F350F /* SRPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF8F451DA6E49D000F350F /* SRPClient.swift */; };
 		75BF9A521B5F0F500087AD2E /* BugsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BF9A511B5F0F500087AD2E /* BugsAPI.swift */; };
 		75C037461C1F94D20071E04B /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C037451C1F94D20071E04B /* SplashViewController.swift */; };
 		75C037481C1F9A940071E04B /* SplashSignInSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C037471C1F9A940071E04B /* SplashSignInSegue.swift */; };
@@ -859,6 +861,7 @@
 		75BDECA81CBCCE4400982089 /* PinCodeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinCodeModel.swift; sourceTree = "<group>"; };
 		75BDECAA1CBCCE5B00982089 /* SetPinCodeModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPinCodeModelImpl.swift; sourceTree = "<group>"; };
 		75BDECAC1CBCCE8B00982089 /* UnlockPinCodeModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlockPinCodeModelImpl.swift; sourceTree = "<group>"; };
+		75BF8F451DA6E49D000F350F /* SRPClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SRPClient.swift; sourceTree = "<group>"; };
 		75BF9A511B5F0F500087AD2E /* BugsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugsAPI.swift; sourceTree = "<group>"; };
 		75C037451C1F94D20071E04B /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		75C037471C1F9A940071E04B /* SplashSignInSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashSignInSegue.swift; sourceTree = "<group>"; };
@@ -1454,10 +1457,12 @@
 		756CDE3B1D9C754D004455F6 /* SRP */ = {
 			isa = PBXGroup;
 			children = (
+				75BF8F441DA6CCCF000F350F /* Client */,
 				75B9C6071DA2D39A001DE21E /* Hash.swift */,
 				756CDE3C1D9C763D004455F6 /* PasswordUtils.swift */,
 				756CDEF81D9DB374004455F6 /* JKBCrypt.swift */,
 				756CDEFB1D9DB3A0004455F6 /* JKBCryptRandom.swift */,
+				75BF8F451DA6E49D000F350F /* SRPClient.swift */,
 			);
 			name = SRP;
 			sourceTree = "<group>";
@@ -1541,6 +1546,13 @@
 				75BDECAC1CBCCE8B00982089 /* UnlockPinCodeModelImpl.swift */,
 			);
 			name = PinCode;
+			sourceTree = "<group>";
+		};
+		75BF8F441DA6CCCF000F350F /* Client */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Client;
 			sourceTree = "<group>";
 		};
 		75CFA2701B22544F006E4465 /* Defined */ = {
@@ -2245,6 +2257,7 @@
 				755F921D1C7E7FF300BAEDF9 /* Onboarding.swift in Sources */,
 				07009F0B1A66E36500129B07 /* NSNotification+KeyboardExtension.swift in Sources */,
 				75106D0D1C97704B007F8176 /* FeedbackTableViewCell.swift in Sources */,
+				75BF8F461DA6E49D000F350F /* SRPClient.swift in Sources */,
 				7567B06F1B334FD300A72A1E /* ViewModelServiceImpl.swift in Sources */,
 				75F1697E1AF7F43A00BE6E79 /* Logger.swift in Sources */,
 				7514FC291B79825F00DDD297 /* MenuItem.swift in Sources */,
@@ -2522,6 +2535,7 @@
 				75DE7D3D1CAAEA4900F5443E /* FeedbackPopViewController.swift in Sources */,
 				75DE7D3E1CAAEA4900F5443E /* MessageLocation.swift in Sources */,
 				75DE7D3F1CAAEA4900F5443E /* TableCellLabelView.swift in Sources */,
+				75BF8F471DA6E49E000F350F /* SRPClient.swift in Sources */,
 				75E090551CAC7A3A00751136 /* CountryCodeTableViewCell.swift in Sources */,
 				75DE7D401CAAEA4900F5443E /* AuthAPI.swift in Sources */,
 				75DE7D411CAAEA4900F5443E /* UserAPI.swift in Sources */,
