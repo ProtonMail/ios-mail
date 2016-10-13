@@ -19,12 +19,13 @@ import Foundation
 
 /// Auth extension
 extension APIService {
-
+    
     
     func auth(username: String, password: String, completion: AuthComplete?) {
+        
         AuthInfoRequest<AuthInfoResponse>(username: username).call() { task, res, hasError in
             if hasError {
-
+                
             } else if res?.code == 1000 {
                 // caculate pwd
                 guard let authVersion = res?.Version else {
@@ -34,8 +35,15 @@ extension APIService {
                 if (authVersion == 0) {
                     PMLog.D("")
                 }
-                
+
+//                let modulus = "\n-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA256\n\nS/hBgmVXHlpzUxgzOlt4veE3v3BnpaVyRFUUDMmRgcF2yZU5rQcQYHDBGrnQAlGdcsGmZVcZC51JgJtEB6v5bBpxnnsjg8XibZm0GYXODhm7qki5wM5AEKoTKbZKaKuRD297pPTsVdqUdXFNdkDxk3Q3nv3N6ZEJccCS1IabllN+/adVTjUfCMA9pyJavOOj90fhcCQ2npInsxegvlGvREr1JpobdrtbXAOzLH+9ELxpW91ZFWbN0HHaE8+JV8TsZnhY+W0pqL+x18iVBwOCKjqiNVlXsJsd4PV0fyX3Fb/uRTnUuEYe/98xo+qqG/CrhIW7QgiuwemEN7PdHHARnQ==\n-----BEGIN PGP SIGNATURE-----\nVersion: OpenPGP.js v1.2.0\nComment: http://openpgpjs.org\n\n\n=twTO\n-----END PGP SIGNATURE-----\n"
                 guard let modulus = res?.Modulus else {
+                    // error
+                    return
+                }
+                
+ //               let ephemeral = "WgJaHogUuZTCa4vPkLMVbx6PXmkFl+Y2Z9YLWBaQAOXPxDzlajMbqUT0YQWQm6VBkubMBZ/DdH7YQoJ3sr7AFWRIT0AdZ3qskqOAf3Qrrxa4Tp3HZ2n2y2JGG2g1sthR2P+/TdKslkhPRIORgWFNC5IWg8bDNdIKv0VJO9F7Bx2zgRSMtM8zPIQlBjYwZguYjuz4x1TkuiZwUAkYujOdJ9Ykuo3gbykj0Wy33v/cMrpdZV3UUJr8D4R3Rjx+QYMD8JbdK95SY0850u2AGxCVR0aEnj9bkAgypHuTC9NC8dHgu54D6O1P66b7Un56vZEO9P1HaVt0V9m+Us0Tevt9Iw=="
+                guard let ephemeral = res?.ServerEphemeral else {
                     // error
                     return
                 }
@@ -45,6 +53,14 @@ extension APIService {
                     return
                 }
                 
+                guard let session = res?.SRPSession else {
+                    return
+                }
+                
+                //let session = "7c4b3eb9308a58b0a0d27b2d53a7902e"
+                
+               //// "Salt": "rLf2G74r8Xe5HA==",
+               // "SRPSession": "7c4b3eb9308a58b0a0d27b2d53a7902e",
                 let encodedModulus = sharedOpenPGP.readClearsignedMessage(modulus)
                 let decodedModulus : NSData = encodedModulus.decodeBase64()
                 let decodedSalt : NSData = salt.decodeBase64()
@@ -55,191 +71,78 @@ extension APIService {
                 case 2: break
                 case 3: break
                 case 4:
-                    let hashedPassword = PasswordUtils.hashPasswordVersion4(password, salt: decodedSalt, modulus: decodedModulus)
-                    
-                    let encoded = hashedPassword?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
-                    
-                    let ks = "rhIDZRVLYFhQPfCD7Hp7bw=="
-                    //4tpmkK5QZJhmQ8UIWZkRWlcVQfBQSSq
-                    //4tpmkK5QZJhmQ8UIWZkRWlcVQfBQSSq
-                    let pwd = PasswordUtils.getMailboxPassword(password, salt: ks.decodeBase64())
-                    
-                    PMLog.D("\(pwd)")
-                    PMLog.D("\(hashedPassword)")
-                    PMLog.D("\(encoded)")
+                    if let hashedPassword = PasswordUtils.hashPasswordVersion4(password, salt: decodedSalt, modulus: decodedModulus) {
+                        let ServerEphemeral : NSData = ephemeral.decodeBase64()
+                        let srpClient = PMNSrpClient.generateProofs(2048, modulusRepr: decodedModulus, serverEphemeralRepr: ServerEphemeral, hashedPasswordRepr: hashedPassword)
+                        AuthRequest<AuthResponse>(username: username, ephemeral: srpClient.clientEphemeral, proof: srpClient.clientProof, session: session, code: "").call({ (task, res, hasError) in
+                            if hasError {
+                                if let error = res?.error {
+                                    if error.isInternetError() {
+                                        completion?(task: task, hasError: NSError.internetError())
+                                        return
+                                    } else {
+                                        completion?(task: task, hasError: error)
+                                        return
+                                    }
+                                } else {
+                                    completion?(task: task, hasError: NSError.authInvalidGrant())
+                                }
+                            }
+                            else if res?.code == 1000 {
+                                
+               
+//                                    final LoginResponse loginResponse = mApi.login(username, infoResponse.getSRPSession(), proofs.clientEphemeral, proofs.clientProof);
+//                                    if (ConstantTime.isEqual(proofs.expectedServerProof, Base64.decode(loginResponse.getServerProof(), Base64.DEFAULT))) {
+//                                        boolean foundErrorCode = checkForErrorCodes(loginResponse.getCode());
+//                                        if (!foundErrorCode && loginResponse.isValid()) {
+//                                            status = LoginStatus.SUCCESS;
+//                                            mUserManager.setUsername(username);
+//                                            mTokenManager.update(loginResponse);
+//                                        } else {
+//                                            status = LoginStatus.INVALID_CREDENTIAL;
+//                                        }
+//                                    } else {
+//                                        status = LoginStatus.INVALID_SERVER_PROOF;
+//                                    }
+//                            } else {
+//                                status = LoginStatus.NO_NETWORK;
+//                            }
+//                            
+//                            if (usedFallback && status.equals(LoginStatus.FAILED) && fallbackAuthVersion != 0) {
+//                                final int newFallback;
+//                                if (fallbackAuthVersion == 2 && !PasswordUtils.cleanUserName(username).equals(username.toLowerCase())) {
+//                                    newFallback = 1;
+//                                } else {
+//                                    newFallback = 0;
+//                                }
+//                                
+//                                startInfo(username, password, rememberMe, newFallback);
+//                            } else {
+//                                AppUtil.postEventOnUi(new LoginEvent(status));
+//                            }
+                            
+
+                                
+                                
+                                
+                                
+                                let credential = AuthCredential(res: res)
+                                credential.storeInKeychain()
+                                completion?(task: task, hasError: nil)
+                            }
+                            else {
+                                completion?(task: task, hasError: NSError.authUnableToParseToken())
+                            }
+                        })
+                    }
                     break
-                    
                 default: break
                     
-                }
-                
-                
-//                        final byte[] hashedPassword;
-//                        final OpenPgp openPgp = OpenPgp.createInstance();
-//                        final byte[] modulus = Base64.decode(openPgp.readClearsignedMessage(infoResponse.getModulus()), Base64.DEFAULT);
-//                        switch (authVersion) {
-//                        case 4:
-//                            hashedPassword = PasswordUtils.hashPasswordVersion4(password, Base64.decode(infoResponse.getSalt(), Base64.DEFAULT), modulus);
-//                            break;
-//                        case 3:
-//                            hashedPassword = PasswordUtils.hashPasswordVersion3(password, Base64.decode(infoResponse.getSalt(), Base64.DEFAULT), modulus);
-//                            break;
-//                        case 2:
-//                            if (!PasswordUtils.cleanUserName(username).equals(PasswordUtils.cleanUserName(infoResponse.getUserName()))) {
-//                                return;
-//                            }
-//                            hashedPassword = PasswordUtils.hashPasswordVersion2(password, username, modulus);
-//                            break;
-//                        case 1:
-//                            if (!username.toLowerCase().equals(infoResponse.getUserName().toLowerCase())) {
-//                                return;
-//                            }
-//                            hashedPassword = PasswordUtils.hashPasswordVersion1(password, username, modulus);
-//                            break;
-//                        case 0:
-//                            hashedPassword = PasswordUtils.hashPasswordVersion0(password, username, modulus);
-//                            break;
-//                        default:
-//                            return;
-//                        }
-//                        final SRPClient.Proofs proofs = SRPClient.generateProofs(2048, modulus, Base64.decode(infoResponse.getServerEphemeral(), Base64.DEFAULT), hashedPassword);
-//                        if (proofs != null) {
-//                            final LoginResponse loginResponse = mApi.login(username, infoResponse.getSRPSession(), proofs.clientEphemeral, proofs.clientProof);
-//                            if (ConstantTime.isEqual(proofs.expectedServerProof, Base64.decode(loginResponse.getServerProof(), Base64.DEFAULT))) {
-//                                boolean foundErrorCode = checkForErrorCodes(loginResponse.getCode());
-//                                if (!foundErrorCode && loginResponse.isValid()) {
-//                                    status = LoginStatus.SUCCESS;
-//                                    mUserManager.setUsername(username);
-//                                    mTokenManager.update(loginResponse);
-//                                } else {
-//                                    status = LoginStatus.INVALID_CREDENTIAL;
-//                                }
-//                            } else {
-//                                status = LoginStatus.INVALID_SERVER_PROOF;
-//                            }
-//                        }
-//                    } else {
-//                        status = LoginStatus.NO_NETWORK;
-//                    }
-//  
-//                if (usedFallback && status.equals(LoginStatus.FAILED) && fallbackAuthVersion != 0) {
-//                    final int newFallback;
-//                    if (fallbackAuthVersion == 2 && !PasswordUtils.cleanUserName(username).equals(username.toLowerCase())) {
-//                        newFallback = 1;
-//                    } else {
-//                        newFallback = 0;
-//                    }
-//                    
-//                    startInfo(username, password, rememberMe, newFallback);
-//                } else {
-//                    AppUtil.postEventOnUi(new LoginEvent(status));
-//                }
-//                
-//                private void handleLogin(String username, String password, boolean rememberMe, final LoginInfoResponse infoResponse, final int fallbackAuthVersion) {
-//                    LoginStatus status = LoginStatus.FAILED;
-//                    boolean usedFallback = false;
-//                    try {
-//                        if (mNetworkUtils.hasConnectivity(this)) {
-//                            int authVersion = infoResponse.getAuthVersion();
-//                            if (authVersion == 0) {
-//                                usedFallback = true;
-//                                authVersion = fallbackAuthVersion;
-//                            }
-//                            final byte[] hashedPassword;
-//                            final OpenPgp openPgp = OpenPgp.createInstance();
-//                            final byte[] modulus = Base64.decode(openPgp.readClearsignedMessage(infoResponse.getModulus()), Base64.DEFAULT);
-//                            switch (authVersion) {
-//                            case 4:
-//                                hashedPassword = PasswordUtils.hashPasswordVersion4(password, Base64.decode(infoResponse.getSalt(), Base64.DEFAULT), modulus);
-//                                break;
-//                            case 3:
-//                                hashedPassword = PasswordUtils.hashPasswordVersion3(password, Base64.decode(infoResponse.getSalt(), Base64.DEFAULT), modulus);
-//                                break;
-//                            case 2:
-//                                if (!PasswordUtils.cleanUserName(username).equals(PasswordUtils.cleanUserName(infoResponse.getUserName()))) {
-//                                    return;
-//                                }
-//                                hashedPassword = PasswordUtils.hashPasswordVersion2(password, username, modulus);
-//                                break;
-//                            case 1:
-//                                if (!username.toLowerCase().equals(infoResponse.getUserName().toLowerCase())) {
-//                                    return;
-//                                }
-//                                hashedPassword = PasswordUtils.hashPasswordVersion1(password, username, modulus);
-//                                break;
-//                            case 0:
-//                                hashedPassword = PasswordUtils.hashPasswordVersion0(password, username, modulus);
-//                                break;
-//                            default:
-//                                return;
-//                            }
-//                            final SRPClient.Proofs proofs = SRPClient.generateProofs(2048, modulus, Base64.decode(infoResponse.getServerEphemeral(), Base64.DEFAULT), hashedPassword);
-//                            if (proofs != null) {
-//                                final LoginResponse loginResponse = mApi.login(username, infoResponse.getSRPSession(), proofs.clientEphemeral, proofs.clientProof);
-//                                if (ConstantTime.isEqual(proofs.expectedServerProof, Base64.decode(loginResponse.getServerProof(), Base64.DEFAULT))) {
-//                                    boolean foundErrorCode = checkForErrorCodes(loginResponse.getCode());
-//                                    if (!foundErrorCode && loginResponse.isValid()) {
-//                                        status = LoginStatus.SUCCESS;
-//                                        mUserManager.setUsername(username);
-//                                        mTokenManager.update(loginResponse);
-//                                    } else {
-//                                        status = LoginStatus.INVALID_CREDENTIAL;
-//                                    }
-//                                } else {
-//                                    status = LoginStatus.INVALID_SERVER_PROOF;
-//                                }
-//                            }
-//                        } else {
-//                            status = LoginStatus.NO_NETWORK;
-//                        }
-//                    } catch (Exception e) {
-//                        Logger.doLogException(TAG, "error while login", e);
-//                    }
-//                    
-//                    if (usedFallback && status.equals(LoginStatus.FAILED) && fallbackAuthVersion != 0) {
-//                        final int newFallback;
-//                        if (fallbackAuthVersion == 2 && !PasswordUtils.cleanUserName(username).equals(username.toLowerCase())) {
-//                            newFallback = 1;
-//                        } else {
-//                            newFallback = 0;
-//                        }
-//                        
-//                        startInfo(username, password, rememberMe, newFallback);
-//                    } else {
-//                        AppUtil.postEventOnUi(new LoginEvent(status));
-//                    }
-//                }
-                
-                
-                
-                
-                AuthRequest<AuthResponse>(username: username, password: password).call() { task, res, hasError in
-                    if hasError {
-                        if let error = res?.error {
-                            if error.isInternetError() {
-                                completion?(task: task, hasError: NSError.internetError())
-                                return
-                            } else {
-                                completion?(task: task, hasError: error)
-                                return
-                            }
-                        } else {
-                            completion?(task: task, hasError: NSError.authInvalidGrant())
-                        }
-                    }
-                    else if res?.code == 1000 {
-                        let credential = AuthCredential(res: res)
-                        credential.storeInKeychain()
-                        completion?(task: task, hasError: nil)
-                    }
-                    else {
-                        completion?(task: task, hasError: NSError.authUnableToParseToken())
-                    }
                 }
             }
         }
     }
-    
+
     func authRevoke(completion: AuthCredentialBlock?) {
         if let authCredential = AuthCredential.fetchFromKeychain() {
             let path = "/auth/revoke"

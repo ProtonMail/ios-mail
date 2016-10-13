@@ -49,33 +49,35 @@ public class PasswordUtils {
     
     public static func expandHash(input : NSData) -> NSData {
         
-        let inputHex = HMAC.hexStringFromData(input)
-        PMLog.D(inputHex)
+        return PMNSrpClient.expandHash(input);
         
-        
-        let ret_data = NSMutableData()
-        
-        var value: UInt8 = 0x00
-        ret_data.appendData(input.sha512_byte)
-        ret_data.appendBytes(&value, length: 1)
-        
-        value = 0x01
-        ret_data.appendData(input.sha512_byte)
-        ret_data.appendBytes(&value, length: 1)
-        
-        value = 0x02
-        ret_data.appendData(input.sha512_byte)
-        ret_data.appendBytes(&value, length: 1)
-        
-        value = 0x03
-        ret_data.appendData(input.sha512_byte)
-        ret_data.appendBytes(&value, length: 1)
-        
-        let o = NSData(data: ret_data)
-        let oHex = HMAC.hexStringFromData(o)
-        PMLog.D(oHex)
-        
-        return o
+//        let inputHex = HMAC.hexStringFromData(input)
+//        PMLog.D(inputHex)
+//        
+//        
+//        let ret_data = NSMutableData()
+//        
+//        var value: UInt8 = 0x00
+//        ret_data.appendData(input.sha512_byte)
+//        ret_data.appendBytes(&value, length: 1)
+//        
+//        value = 0x01
+//        ret_data.appendData(input.sha512_byte)
+//        ret_data.appendBytes(&value, length: 1)
+//        
+//        value = 0x02
+//        ret_data.appendData(input.sha512_byte)
+//        ret_data.appendBytes(&value, length: 1)
+//        
+//        value = 0x03
+//        ret_data.appendData(input.sha512_byte)
+//        ret_data.appendBytes(&value, length: 1)
+//        
+//        let o = NSData(data: ret_data)
+//        let oHex = HMAC.hexStringFromData(o)
+//        PMLog.D(oHex)
+//        
+//        return o
     }
     
     public static func hashPasswordVersion4(password : String, salt : NSData, modulus : NSData) -> NSData? {
