@@ -48,36 +48,27 @@ public class PasswordUtils {
     
     
     public static func expandHash(input : NSData) -> NSData {
-        
         return PMNSrpClient.expandHash(input);
+    }
+    
+    public static func getMailboxPassword(password : String, salt : NSData) -> String {
+        let byteArray = NSMutableData()
+        byteArray.appendData(salt)
+        let source = NSData(data: byteArray)
+        let encodedSalt = JKBCrypt.based64DotSlash(source)
+        do {
+            let out = try bcrypt_string(password, salt: encodedSalt)
+            let index = out.startIndex.advancedBy(29)
+            return out.substringFromIndex(index)
+        } catch PasswordError.HashEmpty {
+            // check error
+        } catch PasswordError.HashSizeWrong {
+            // check error
+        } catch {
+            // check error
+        }
+        return ""
         
-//        let inputHex = HMAC.hexStringFromData(input)
-//        PMLog.D(inputHex)
-//        
-//        
-//        let ret_data = NSMutableData()
-//        
-//        var value: UInt8 = 0x00
-//        ret_data.appendData(input.sha512_byte)
-//        ret_data.appendBytes(&value, length: 1)
-//        
-//        value = 0x01
-//        ret_data.appendData(input.sha512_byte)
-//        ret_data.appendBytes(&value, length: 1)
-//        
-//        value = 0x02
-//        ret_data.appendData(input.sha512_byte)
-//        ret_data.appendBytes(&value, length: 1)
-//        
-//        value = 0x03
-//        ret_data.appendData(input.sha512_byte)
-//        ret_data.appendBytes(&value, length: 1)
-//        
-//        let o = NSData(data: ret_data)
-//        let oHex = HMAC.hexStringFromData(o)
-//        PMLog.D(oHex)
-//        
-//        return o
     }
     
     public static func hashPasswordVersion4(password : String, salt : NSData, modulus : NSData) -> NSData? {
@@ -109,26 +100,6 @@ public class PasswordUtils {
             // check error
         }
         return nil
-    }
-    
-    public static func getMailboxPassword(password : String, salt : NSData) -> String {
-        let byteArray = NSMutableData()
-        byteArray.appendData(salt)
-        let source = NSData(data: byteArray)
-        let encodedSalt = JKBCrypt.based64DotSlash(source)
-        do {
-            let out = try bcrypt_string(password, salt: encodedSalt)
-            let index = out.startIndex.advancedBy(29)
-            return out.substringFromIndex(index)
-        } catch PasswordError.HashEmpty {
-            // check error
-        } catch PasswordError.HashSizeWrong {
-            // check error
-        } catch {
-            // check error
-        }
-        return ""
-
     }
 
     public static func hashPasswordVersion2(password : String, username : String, modulus : NSData) -> NSData? {
