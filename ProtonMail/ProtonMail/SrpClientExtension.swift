@@ -30,7 +30,7 @@ func generateSrpProofs (bit : Int32, modulus: NSData, serverEphemeral: NSData, h
 
 extension PMNSrpProofs {
     func isValid() -> Bool {
-        guard self.clientEphemeral.length <= 0 && self.clientProof.length <= 0 && self.expectedServerProof.length <= 0  else {
+        guard self.clientEphemeral.length > 0 && self.clientProof.length > 0 && self.expectedServerProof.length > 0  else {
             return false
         }
         return true
