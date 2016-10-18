@@ -25,6 +25,10 @@ class APIErrorCode {
         static let unableToParseToken = 40
         static let localCacheBad = 50
         static let networkIusse = 60
+        static let unableToParseAuthInfo = 70
+        static let authServerSRPInValid = 80
+        static let authUnableToGenerateSRP = 90
+        static let authUnableToGeneratePwd = 100
         
         static let Cache_PasswordEmpty = 0x10000001
     }

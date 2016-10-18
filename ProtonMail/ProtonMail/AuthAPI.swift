@@ -80,12 +80,16 @@ public class AuthRequest<T : ApiResponse> : ApiRequest<T> {
     var srpSession : String!  //hex
     var twoFactorCode : String!
     
-    init(username : String, ephemeral:NSData, proof:NSData, session:String!, code:String!) {
+    //local verify only
+    var serverProof : NSData!
+    
+    init(username : String, ephemeral:NSData, proof:NSData, session:String!, serverProof : NSData!, code:String!) {
         self.username = username
         self.clientEphemeral = ephemeral.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
         self.clientProof = proof.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
         self.srpSession = session
         self.twoFactorCode = code
+        self.serverProof = serverProof
     }
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
@@ -93,19 +97,12 @@ public class AuthRequest<T : ApiResponse> : ApiRequest<T> {
         let out : [String : AnyObject] = [
             AuthKey.clientID : Constants.clientID,
             AuthKey.clientSecret : Constants.clientSecret,
-            //AuthKey.responseType : "token",
             AuthKey.userName : username,
-            //AuthKey.password : password,
-            //AuthKey.hashedPassword : "",
-            //AuthKey.grantType : "password",
-            //AuthKey.redirectUrl : Constants.rediectURL,
-            //AuthKey.state : "\(NSUUID().UUIDString)",
-            //AuthKey.scope : "full"
             
             AuthKey.ephemeral : clientEphemeral,
             AuthKey.proof : clientProof,
             AuthKey.session : srpSession,
-           // AuthKey.twoFactor : twoFactorCode,
+            //AuthKey.twoFactor : twoFactorCode,
         ]
         
         PMLog.D(self.JSONStringify(out, prettyPrinted: true))

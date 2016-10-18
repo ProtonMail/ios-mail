@@ -47,11 +47,39 @@ extension NSError {
             localizedFailureReason: NSLocalizedString("Unable to parse authentication token!"))
     }
     
+    class func authUnableToParseAuthInfo() -> NSError {
+        return apiServiceError(
+            code: APIErrorCode.AuthErrorCode.unableToParseAuthInfo,
+            localizedDescription: NSLocalizedString("Unable to parse token"),
+            localizedFailureReason: NSLocalizedString("Unable to parse authentication info!"))
+    }
+    
+    class func authUnableToGeneratePwd() -> NSError {
+        return apiServiceError(
+            code: APIErrorCode.AuthErrorCode.authUnableToGeneratePwd,
+            localizedDescription: NSLocalizedString("Invalid Password"),
+            localizedFailureReason: NSLocalizedString("Unable to generate hash password!"))
+    }
+    
+    class func authUnableToGenerateSRP() -> NSError {
+        return apiServiceError(
+            code: APIErrorCode.AuthErrorCode.authUnableToGenerateSRP,
+            localizedDescription: NSLocalizedString("SRP Client"),
+            localizedFailureReason: NSLocalizedString("Unable to create SRP Client!"))
+    }
+    
+    class func authServerSRPInValid() -> NSError {
+        return apiServiceError(
+            code: APIErrorCode.AuthErrorCode.unableToParseAuthInfo,
+            localizedDescription: NSLocalizedString("SRP Server"),
+            localizedFailureReason: NSLocalizedString("Server proofs not valid!"))
+    }
+    
     class func authCacheBad() -> NSError {
         return apiServiceError(
             code: APIErrorCode.AuthErrorCode.localCacheBad,
             localizedDescription: NSLocalizedString("Unable to parse token"),
-            localizedFailureReason: NSLocalizedString("Unable to parse authentication token!"))
+            localizedFailureReason: NSLocalizedString("Unable to parse cased authentication token!"))
     }
     
     

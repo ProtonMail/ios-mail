@@ -20,106 +20,112 @@ import Foundation
 /// Auth extension
 extension APIService {
     
+    func getHashedPwd(authVersion: Int , password: String, username: String, decodedSalt : NSData, decodedModulus : NSData) -> NSData? {
+        var hashedPassword : NSData?
+        switch authVersion {
+        case 0:
+            hashedPassword = PasswordUtils.hashPasswordVersion0(password, username: username, modulus: decodedModulus)
+            break
+        case 1:
+            hashedPassword = PasswordUtils.hashPasswordVersion1(password, username: username, modulus: decodedModulus)
+            break
+        case 2:
+            hashedPassword = PasswordUtils.hashPasswordVersion2(password, username: username, modulus: decodedModulus)
+            break
+        case 3:
+            hashedPassword = PasswordUtils.hashPasswordVersion3(password, salt: decodedSalt, modulus: decodedModulus)
+            break
+        case 4:
+            hashedPassword = PasswordUtils.hashPasswordVersion4(password, salt: decodedSalt, modulus: decodedModulus)
+            break
+        default: break
+        }
+        return hashedPassword
+    }
     
-    func auth(username: String, password: String, completion: AuthComplete?) {
+    func auth(username: String, password: String, completion: AuthComplete!) {
         
-        AuthInfoRequest<AuthInfoResponse>(username: username).call() { task, res, hasError in
-            if hasError {
-                //return error
-            } else if res?.code == 1000 {
-                // caculate pwd
-                guard let authVersion = res?.Version else {
-                    // error
-                    return
-                }
-                if (authVersion == 0) {
-                    PMLog.D("")
-                }
-                
-                guard let modulus = res?.Modulus else {
-                    // error
-                    return
-                }
-                
-                guard let ephemeral = res?.ServerEphemeral else {
-                    // error
-                    return
-                }
-                
-                guard let salt = res?.Salt else {
-                    // error
-                    return
-                }
-                
-                guard let session = res?.SRPSession else {
-                    return
-                }
-                
-                let encodedModulus = sharedOpenPGP.readClearsignedMessage(modulus)
-                let decodedModulus : NSData = encodedModulus.decodeBase64()
-                let decodedSalt : NSData = salt.decodeBase64()
-                let serverEphemeral : NSData = ephemeral.decodeBase64()
-                
-                var hashedPassword : NSData?
-                
-                switch authVersion {
-                case 0:
-                    hashedPassword = PasswordUtils.hashPasswordVersion0(password, username: username, modulus: decodedModulus)
-                    break
-                case 1:
-                    hashedPassword = PasswordUtils.hashPasswordVersion1(password, username: username, modulus: decodedModulus)
-                    break
-                case 2:
-                    hashedPassword = PasswordUtils.hashPasswordVersion2(password, username: username, modulus: decodedModulus)
-                    break
-                case 3:
-                    hashedPassword = PasswordUtils.hashPasswordVersion3(password, salt: decodedSalt, modulus: decodedModulus)
-                    break
-                case 4:
-                    hashedPassword = PasswordUtils.hashPasswordVersion4(password, salt: decodedSalt, modulus: decodedModulus)
-                    break
-                default: break
-                }
-                
-                if hashedPassword == nil {
-                    return
-                }
-                
-                let srpClient = PMNSrpClient.generateProofs(2048, modulusRepr: decodedModulus, serverEphemeralRepr: serverEphemeral, hashedPasswordRepr: hashedPassword!)
-                AuthRequest<AuthResponse>(username: username, ephemeral: srpClient.clientEphemeral, proof: srpClient.clientProof, session: session, code: "").call({ (task, res, hasError) in
-                    if hasError {
-                        if let error = res?.error {
-                            if error.isInternetError() {
-                                completion?(task: task, hasError: NSError.internetError())
-                                return
-                            } else {
-                                completion?(task: task, hasError: error)
-                                return
-                            }
-                        } else {
-                            completion?(task: task, hasError: NSError.authInvalidGrant())
-                        }
+        var forceRetry = false
+        var forceRetryVersion = 2
+        
+        func tryAuth() {
+            AuthInfoRequest<AuthInfoResponse>(username: username).call() { task, res, hasError in
+                if hasError {
+                    guard let error = res?.error else {
+                        return completion(task: task, hasError: NSError.authInvalidGrant())
                     }
-                    else if res?.code == 1000 {
-                        guard let serverProof : NSData = res?.serverProof?.decodeBase64() else {
-                            return
+                    if error.isInternetError() {
+                        return completion(task: task, hasError: NSError.internetError())
+                    } else {
+                        return completion(task: task, hasError: error)
+                    }
+                } else if res?.code == 1000 {// caculate pwd
+                    guard let authVersion = res?.Version, let modulus = res?.Modulus, let ephemeral = res?.ServerEphemeral, let salt = res?.Salt, let session = res?.SRPSession else {
+                        return completion(task: task, hasError: NSError.authUnableToParseAuthInfo())
+                    }
+                    
+                    do {
+                        guard let encodedModulus = try modulus.getSignature() else {
+                            return completion(task: task, hasError: NSError.authUnableToParseAuthInfo())
+                        }
+                        let decodedModulus : NSData = encodedModulus.decodeBase64()
+                        let decodedSalt : NSData = salt.decodeBase64()
+                        let serverEphemeral : NSData = ephemeral.decodeBase64()
+                        if authVersion <= 2 && !forceRetry {
+                            forceRetry = true
+                            forceRetryVersion = 2
+                        }
+                        //init api calls
+                        let hashVersion = forceRetry ? forceRetryVersion : authVersion
+                        guard let hashedPassword = self.getHashedPwd(hashVersion, password: password, username: username, decodedSalt: decodedSalt, decodedModulus: decodedModulus) else {
+                            return completion(task: task, hasError: NSError.authUnableToGeneratePwd())
                         }
                         
-                        if srpClient.expectedServerProof.isEqualToData(serverProof) {
-                            let credential = AuthCredential(res: res)
-                            credential.storeInKeychain()
-                            completion?(task: task, hasError: nil)
-                        } else {
-                            // error server proof not match
-                            completion?(task: task, hasError: NSError.authUnableToParseToken())
+                        guard let srpClient = try generateSrpProofs(2048, modulus: decodedModulus, serverEphemeral: serverEphemeral, hashedPassword: hashedPassword) where srpClient.isValid() == true else {
+                            return completion(task: task, hasError: NSError.authUnableToGenerateSRP())
                         }
+                        
+                        let api = AuthRequest<AuthResponse>(username: username, ephemeral: srpClient.clientEphemeral, proof: srpClient.clientProof, session: session, serverProof: srpClient.expectedServerProof, code: "");
+                        let completionWrapper: (task: NSURLSessionDataTask!, res: AuthResponse?, hasError : Bool) -> Void = { (task, res, hasError) in
+                            if hasError {
+                                if let error = res?.error {
+                                    if error.isInternetError() {
+                                        return completion(task: task, hasError: NSError.internetError())
+                                    } else {
+                                        if forceRetry && forceRetryVersion != 0 {
+                                            forceRetryVersion -= 1
+                                            tryAuth()
+                                        } else {
+                                            return completion(task: task, hasError: NSError.authInvalidGrant())
+                                        }
+                                    }
+                                } else {
+                                    return completion(task: task, hasError: NSError.authInvalidGrant())
+                                }
+                            } else if res?.code == 1000 {
+                                guard let serverProof : NSData = res?.serverProof?.decodeBase64() else {
+                                    return completion(task: task, hasError: NSError.authServerSRPInValid())
+                                }
+                                
+                                if api.serverProof.isEqualToData(serverProof) {
+                                    let credential = AuthCredential(res: res)
+                                    credential.storeInKeychain()
+                                    return completion(task: task, hasError: nil)
+                                } else {
+                                    return completion(task: task, hasError: NSError.authServerSRPInValid())
+                                }
+                            } else {
+                                return completion(task: task, hasError: NSError.authUnableToParseToken())
+                            }
+                        }
+                        api.call(completionWrapper)
+                    } catch {
+                        return completion(task: task, hasError: NSError.authUnableToParseAuthInfo())
                     }
-                    else {
-                        completion?(task: task, hasError: NSError.authUnableToParseToken())
-                    }
-                })
+                }
             }
         }
+        tryAuth()
     }
     
     func authRevoke(completion: AuthCredentialBlock?) {
