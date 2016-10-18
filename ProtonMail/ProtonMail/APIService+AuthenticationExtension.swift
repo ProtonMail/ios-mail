@@ -109,6 +109,9 @@ extension APIService {
                                 
                                 if api.serverProof.isEqualToData(serverProof) {
                                     let credential = AuthCredential(res: res)
+                                    
+                                    
+                                    
                                     credential.storeInKeychain()
                                     return completion(task: task, hasError: nil)
                                 } else {

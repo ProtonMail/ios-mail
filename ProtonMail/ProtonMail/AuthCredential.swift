@@ -54,13 +54,11 @@ class AuthCredential: NSObject, NSCoding {
         #endif
     }
     
-    
     func setupToken (password:String) throws {
         self.plainToken = try self.encryptToken.decryptMessageWithSinglKey(self.privateKey, passphrase: password)
         self.password = password;
         self.storeInKeychain()
     }
-    
     
     var token : String? {
         return self.plainToken
@@ -87,7 +85,7 @@ class AuthCredential: NSObject, NSCoding {
     }
     
     required init(accessToken: String!, refreshToken: String!, userID: String!, expiration: NSDate!, key : String!, plain: String?, pwd:String?) {
-        
+
         self.encryptToken = accessToken
         self.refreshToken = refreshToken
         self.userID = userID
