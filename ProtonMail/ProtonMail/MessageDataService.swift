@@ -639,7 +639,6 @@ class MessageDataService {
         // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
         dispatch_sync(self.incrementalUpdateQueue) {
             let context = sharedCoreDataService.newMainManagedObjectContext()
-            
             context.performBlock { () -> Void in
                 var error: NSError?
                 var messagesNoCache : [Message] = [];
@@ -657,6 +656,9 @@ class MessageDataService {
                         }
                     case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update1), .Some(IncrementalUpdateType.update2):
                         if IncrementalUpdateType.insert == msg.Action {
+                            if nil != Message.messageForMessageID(msg.ID, inManagedObjectContext: context) {
+                                continue
+                            }
                             if let notify_msg_id = notificationMessageID {
                                 if notify_msg_id == msg.ID {
                                     msg.message?.removeValueForKey("IsRead")

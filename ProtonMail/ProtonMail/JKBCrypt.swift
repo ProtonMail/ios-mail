@@ -863,13 +863,13 @@ class JKBCrypt: NSObject {
         var lr    : [Int32] = [0, 0]
         // var lr    : UnsafeMutablePointer<Int32> = UnsafeMutablePointer.alloc(2)
         // lr[0] = 0; lr[1] = 0
-        var plen  : Int = 18
-        var slen  : Int = 1024
+        let plen  : Int = 18
+        let slen  : Int = 1024
         
-        var keyPointer : UnsafeMutablePointer<Int8> = UnsafeMutablePointer<Int8>(key.bytes)
-        var keyLength : Int = key.length
-        var dataPointer : UnsafeMutablePointer<Int8> = UnsafeMutablePointer<Int8>(data.bytes)
-        var dataLength : Int = data.length
+        let keyPointer : UnsafeMutablePointer<Int8> = UnsafeMutablePointer<Int8>(key.bytes)
+        let keyLength : Int = key.length
+        let dataPointer : UnsafeMutablePointer<Int8> = UnsafeMutablePointer<Int8>(data.bytes)
+        let dataLength : Int = data.length
         
         for i = 0; i < plen; i++ {
             p[i] = p[i] ^ JKBCrypt.streamToWordWithData(keyPointer, ofLength: keyLength, off:&koffp)
