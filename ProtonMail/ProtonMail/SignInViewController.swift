@@ -19,6 +19,13 @@ import Fabric
 import Crashlytics
 import LocalAuthentication
 
+
+enum SignInUIFlow : Int {
+    case RequirePin = 0
+    case RequireTouchID = 1
+    case Restore = 2
+}
+
 class SignInViewController: UIViewController {
     
     private let kMailboxSegue = "mailboxSegue"
@@ -81,17 +88,36 @@ class SignInViewController: UIViewController {
         setupTextFields()
         setupButtons()
         
-        if userCachedStatus.isPinCodeEnabled && !userCachedStatus.pinCode.isEmpty {
+        let signinFlow = getViewFlow()
+        switch signinFlow {
+        case .RequirePin:
             self.performSegueWithIdentifier(kSegueToPinCodeViewNoAnimation, sender: self)
-        } else {
-            //check touch id status
-            if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
-                showTouchID(false)
-                authenticateUser()
+            break
+        case .RequireTouchID:
+            showTouchID(false)
+            authenticateUser()
+            break
+        case .Restore:
+            signInIfRememberedCredentials()
+            setupView();
+            break
+        }
+    }
+    
+    private func getViewFlow() -> SignInUIFlow {
+        if sharedTouchID.showTouchIDOrPin() {
+            if userCachedStatus.isPinCodeEnabled && !userCachedStatus.pinCode.isEmpty {
+                return SignInUIFlow.RequirePin
             } else {
-                signInIfRememberedCredentials()
-                setupView();
+                //check touch id status
+                if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+                    return SignInUIFlow.RequireTouchID
+                } else {
+                    return SignInUIFlow.Restore
+                }
             }
+        } else {
+            return SignInUIFlow.Restore
         }
     }
     
@@ -199,7 +225,6 @@ class SignInViewController: UIViewController {
             //                    self.performSegueWithIdentifier("showThankYouViewController", sender: self)
             //                })
             //            }
-            
             if !username.isEmpty && !password.isEmpty {
                 self.updateSignInButton(usernameText: username, passwordText: password)
                 self.signIn()
