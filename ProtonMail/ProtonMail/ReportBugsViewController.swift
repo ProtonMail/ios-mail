@@ -24,6 +24,11 @@ class ReportBugsViewController: ProtonMailViewController {
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var textViewBottomConstraint: NSLayoutConstraint!
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        textView.text = cachedBugReport.cachedBug
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         updateSendButtonForText(textView.text)
@@ -41,6 +46,7 @@ class ReportBugsViewController: ProtonMailViewController {
     
     private func reset() {
         textView.text = ""
+        cachedBugReport.cachedBug = ""
         updateSendButtonForText(textView.text)
     }
     
@@ -57,12 +63,10 @@ class ReportBugsViewController: ProtonMailViewController {
                     if let error = error {
                         let alert = error.alertController()
                         alert.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
-                        
                         self.presentViewController(alert, animated: true, completion: nil)
                     } else {
                         let alert = UIAlertController(title: NSLocalizedString("Bug Report Received"), message: NSLocalizedString("Thank you for submitting a bug report.  We have added your report to our bug tracking system."), preferredStyle: .Alert)
                         alert.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
-                        
                         self.presentViewController(alert, animated: true, completion: {
                             self.reset()
                             NSNotificationCenter.defaultCenter().postNotificationName(MenuViewController.ObserverSwitchView, object: nil)
@@ -79,9 +83,7 @@ class ReportBugsViewController: ProtonMailViewController {
 extension ReportBugsViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(notification: NSNotification) {
         let keyboardInfo = notification.keyboardInfo
-        
         textViewBottomConstraint.constant = bottomPadding
-        
         UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
@@ -89,24 +91,20 @@ extension ReportBugsViewController: NSNotificationCenterKeyboardObserverProtocol
     
     func keyboardWillShowNotification(notification: NSNotification) {
         let keyboardInfo = notification.keyboardInfo
-        
         textViewBottomConstraint.constant = keyboardInfo.beginFrame.height + bottomPadding
-        
         UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
     }
 }
 
-
 extension ReportBugsViewController: UITextViewDelegate {
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         let oldText = textView.text as NSString
         let changedText = oldText.stringByReplacingCharactersInRange(range, withString: text)
-
         updateSendButtonForText(changedText)
-        
+        cachedBugReport.cachedBug = changedText
         return true
     }
 }

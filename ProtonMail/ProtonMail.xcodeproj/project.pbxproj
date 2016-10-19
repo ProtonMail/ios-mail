@@ -149,6 +149,8 @@
 		7526AC8E1B6C4B3700E1967E /* backup.css in Resources */ = {isa = PBXBuildFile; fileRef = 7526AC8D1B6C4B3700E1967E /* backup.css */; };
 		752A9EBD1DB80E40008D4392 /* LabelApplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752A9EBC1DB80E40008D4392 /* LabelApplayViewModel.swift */; };
 		752A9EBE1DB80E40008D4392 /* LabelApplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752A9EBC1DB80E40008D4392 /* LabelApplayViewModel.swift */; };
+		752A9EC01DB8286C008D4392 /* BugReportCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752A9EBF1DB8286C008D4392 /* BugReportCache.swift */; };
+		752A9EC11DB8286C008D4392 /* BugReportCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752A9EBF1DB8286C008D4392 /* BugReportCache.swift */; };
 		752D3DC11BD18CA800103DC8 /* AttachmentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752D3DC01BD18CA800103DC8 /* AttachmentsTableViewController.swift */; };
 		752EEC1C1BB0A9D800770331 /* QuickViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752EEC1B1BB0A9D800770331 /* QuickViewViewController.swift */; };
 		752FAA101CB5AEAF00F03228 /* PinCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 752FAA0F1CB5AEAF00F03228 /* PinCodeView.xib */; };
@@ -751,6 +753,7 @@
 		7523E8BF1BB182B300126D62 /* MultipartResponseParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultipartResponseParser.m; sourceTree = "<group>"; };
 		7526AC8D1B6C4B3700E1967E /* backup.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = backup.css; sourceTree = "<group>"; };
 		752A9EBC1DB80E40008D4392 /* LabelApplayViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelApplayViewModel.swift; sourceTree = "<group>"; };
+		752A9EBF1DB8286C008D4392 /* BugReportCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportCache.swift; sourceTree = "<group>"; };
 		752D3DC01BD18CA800103DC8 /* AttachmentsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsTableViewController.swift; sourceTree = "<group>"; };
 		752EEC1B1BB0A9D800770331 /* QuickViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickViewViewController.swift; sourceTree = "<group>"; };
 		752FAA0F1CB5AEAF00F03228 /* PinCodeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PinCodeView.xib; sourceTree = "<group>"; };
@@ -1688,6 +1691,7 @@
 				7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */,
 				07DD68A21A96CFB800ED130C /* LastUpdatedStore.swift */,
 				754BD9A41CB31DB300913A5C /* DeviceInfoCache.swift */,
+				752A9EBF1DB8286C008D4392 /* BugReportCache.swift */,
 			);
 			name = Cache;
 			sourceTree = "<group>";
@@ -2280,6 +2284,7 @@
 				07B1237E1AB8ECEC006EA38C /* AttachmentCollectionViewCell.swift in Sources */,
 				7582CFBF1D024E3A00F521D4 /* TopMessageView.swift in Sources */,
 				7546BE551C8D4F9100FCEB0A /* TouchID.swift in Sources */,
+				752A9EC01DB8286C008D4392 /* BugReportCache.swift in Sources */,
 				70945E701A8135EC002B6837 /* UILabel+ProtonMail.swift in Sources */,
 				75C037481C1F9A940071E04B /* SplashSignInSegue.swift in Sources */,
 				7578B7861CADD20A006B523B /* PMDocumentPickerViewController.swift in Sources */,
@@ -2487,6 +2492,7 @@
 				75DE7D091CAAEA4900F5443E /* ShowImageView.swift in Sources */,
 				75DE7D0A1CAAEA4900F5443E /* AttachmentHelper.swift in Sources */,
 				75DE7D0B1CAAEA4900F5443E /* AttachmentAPI.swift in Sources */,
+				752A9EC11DB8286C008D4392 /* BugReportCache.swift in Sources */,
 				753745081D6B885500682C5A /* APIService+ResponseTransformer.swift in Sources */,
 				75DE7D0C1CAAEA4900F5443E /* MessageDataService.swift in Sources */,
 				75DE7D0D1CAAEA4900F5443E /* UserCachedStatus.swift in Sources */,
