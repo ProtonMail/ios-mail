@@ -80,7 +80,7 @@ class AuthCredential: NSObject, NSCoding {
         self.refreshToken = res.refreshToken
         self.userID = res.userID
         self.expiration = NSDate(timeIntervalSinceNow: res.expiresIn ?? 0)
-        self.privateKey = res.encPrivateKey
+        self.privateKey = res.privateKey
         super.init()
     }
     

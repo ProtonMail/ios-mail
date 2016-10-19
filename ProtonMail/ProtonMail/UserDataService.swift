@@ -243,7 +243,7 @@ class UserDataService {
                     sharedOpenPGP.setAddresses(addresses);
                 }
             }
-            completion?(self.userInfo, response?.error)
+            completion?(self.userInfo, nil, response?.error)
         }
     }
     
@@ -272,7 +272,7 @@ class UserDataService {
     
     func signIn(username: String, password: String, isRemembered: Bool, completion: UserInfoBlock) {
         
-        sharedAPIService.auth(username, password: password) { task, error in
+        sharedAPIService.auth(username, password: password) { task, mpwd, error in
             if error == nil {
                 self.isSignedIn = true
                 self.username = username
@@ -280,10 +280,10 @@ class UserDataService {
                 if isRemembered {
                     self.isRememberUser = isRemembered
                 }
-                completion(nil, nil)
+                completion(nil, mpwd, nil)
             } else {
                 self.signOut(true)
-                completion(nil, error)
+                completion(nil, nil, error)
             }
         }
     }
@@ -318,7 +318,7 @@ class UserDataService {
                     self.userInfo = userInfo
                 }
             }
-            completion?(self.userInfo, nil)
+            completion?(self.userInfo, nil, nil)
         }
     }
     
@@ -347,7 +347,7 @@ class UserDataService {
                     
                 }
             }
-            completion?(self.userInfo, nil)
+            completion?(self.userInfo, nil, nil)
         }
     }
     
@@ -364,7 +364,7 @@ class UserDataService {
                     self.userInfo = userInfo
                 }
             }
-            completion?(self.userInfo, nil)
+            completion?(self.userInfo, nil, nil)
         }
     }
     
@@ -541,7 +541,7 @@ class UserDataService {
             if error == nil {
                 self.fetchUserInfo(completion)
             } else {
-                completion?(nil, error)
+                completion?(nil, nil, error)
             }
         }
     }

@@ -36,7 +36,7 @@ extension APIService {
     internal typealias AuthInfo = (accessToken: String?, expiresId: NSTimeInterval?, refreshToken: String?, userID: String?)
     
     
-    internal typealias AuthComplete = (task: NSURLSessionDataTask?, hasError : NSError?) -> Void
+    internal typealias AuthComplete = (task: NSURLSessionDataTask?, mailpassword: String?, hasError : NSError?) -> Void
     internal typealias AuthRefreshComplete = (task: NSURLSessionDataTask?, auth:AuthCredential?, hasError : NSError?) -> Void
 
 }

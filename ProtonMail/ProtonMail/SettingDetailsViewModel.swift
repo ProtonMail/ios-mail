@@ -140,7 +140,7 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
     
     func updateValue(new_value: String, password: String, complete: (Bool, NSError?) -> Void) {
         if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
-            sharedUserDataService.updateAddress(addr.address_id, displayName: new_value, signature: addr.signature, completion: { (_, error) in
+            sharedUserDataService.updateAddress(addr.address_id, displayName: new_value, signature: addr.signature, completion: { (_, _, error) in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -148,7 +148,7 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
                 }
             })
         } else {
-            sharedUserDataService.updateDisplayName(new_value) { _, error in
+            sharedUserDataService.updateDisplayName(new_value) { _, _, error in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -220,7 +220,7 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     
     func updateValue(new_value: String, password: String, complete: (Bool, NSError?) -> Void) {
         if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
-            sharedUserDataService.updateAddress(addr.address_id, displayName: addr.display_name, signature: new_value.ln2br(), completion: { (_, error) in
+            sharedUserDataService.updateAddress(addr.address_id, displayName: addr.display_name, signature: new_value.ln2br(), completion: { (_, _, error) in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -228,7 +228,7 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
                 }
             })
         } else {
-            sharedUserDataService.updateSignature(new_value.ln2br()) { _, error in
+            sharedUserDataService.updateSignature(new_value.ln2br()) { _, _, error in
                 if let error = error {
                     complete(false, error)
                 } else {

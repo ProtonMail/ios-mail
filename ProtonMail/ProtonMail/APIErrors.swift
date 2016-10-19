@@ -29,6 +29,7 @@ class APIErrorCode {
         static let authServerSRPInValid = 80
         static let authUnableToGenerateSRP = 90
         static let authUnableToGeneratePwd = 100
+        static let authInValidKeySalt = 110
         
         static let Cache_PasswordEmpty = 0x10000001
     }

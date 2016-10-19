@@ -125,7 +125,7 @@ public class SignupViewModelImpl : SignupViewModel {
             let api = CreateNewUserRequest<ApiResponse>(token: self.token, type: self.verifyType.toString, username: self.userName, password: self.login, email: self.recoverEmail, domain: self.domain, news: self.news, publicKey: key.publicKey, privateKey: key.privateKey)
                 api.call({ (task, response, hasError) -> Void in
                 if !hasError {
-                    sharedUserDataService.signIn(self.userName, password: self.login, isRemembered: true) { _, error in
+                    sharedUserDataService.signIn(self.userName, password: self.login, isRemembered: true) { _, _, error in
                         if let error = error {
                             complete(false, true, "Authentication failed please try to login again", error);
                         } else {
@@ -133,7 +133,7 @@ public class SignupViewModelImpl : SignupViewModel {
                                 if sharedUserDataService.isMailboxPasswordValid(self.mailbox, privateKey: AuthCredential.getPrivateKey()) {
                                     try AuthCredential.setupToken(self.mailbox, isRememberMailbox: true)
                                     sharedLabelsDataService.fetchLabels()
-                                    sharedUserDataService.fetchUserInfo() { info, error in
+                                    sharedUserDataService.fetchUserInfo() { info, _, error in
                                         if error != nil {
                                             complete(false, true, "Fetch user info failed", error)
                                         } else if info != nil {
@@ -182,7 +182,7 @@ public class SignupViewModelImpl : SignupViewModel {
         self.displayName = displayName
         
         if !self.displayName.isEmpty {
-            sharedUserDataService.updateDisplayName(displayName) { _, error in
+            sharedUserDataService.updateDisplayName(displayName) { _, _, error in
 //                if error != nil {
 //                    //complete(false, error)
 //                } else {

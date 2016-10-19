@@ -75,6 +75,13 @@ extension NSError {
             localizedFailureReason: NSLocalizedString("Server proofs not valid!"))
     }
     
+    class func authInValidKeySalt() -> NSError {
+        return apiServiceError(
+            code: APIErrorCode.AuthErrorCode.authInValidKeySalt,
+            localizedDescription: NSLocalizedString("Invalid Password"),
+            localizedFailureReason: NSLocalizedString("Srp single password keyslat invalid!"))
+    }
+    
     class func authCacheBad() -> NSError {
         return apiServiceError(
             code: APIErrorCode.AuthErrorCode.localCacheBad,

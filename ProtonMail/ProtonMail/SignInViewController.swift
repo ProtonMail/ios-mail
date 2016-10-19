@@ -382,21 +382,18 @@ class SignInViewController: UIViewController {
     }
     
     func signIn() {
-        
-        
-        
         MBProgressHUD.showHUDAddedTo(view, animated: true)
         isRemembered = true
         if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
             clean();
         }
-
+        
         SignInViewController.isComeBackFromMailbox = false
         
         let username = (usernameTextField.text ?? "").trim()
         let password = (passwordTextField.text ?? "") //.trim()
         
-        sharedUserDataService.signIn(username, password: password, isRemembered: isRemembered) { _, error in
+        sharedUserDataService.signIn(username, password: password, isRemembered: isRemembered) { _, mailboxpwd, error in
             MBProgressHUD.hideHUDForView(self.view, animated: true)
             if let error = error {
                 PMLog.D("error: \(error)")
@@ -405,9 +402,72 @@ class SignInViewController: UIViewController {
                 alertController.addOKAction()
                 self.presentViewController(alertController, animated: true, completion: nil)
             } else {
-                self.loadContent()
+                if mailboxpwd != nil {
+                    self.decryptPassword(mailboxpwd!)
+                } else {
+                    self.loadContent()
+                }
             }
         }
+    }
+    
+    func decryptPassword(mailboxPassword:String!) {
+        isRemembered = true
+        if sharedUserDataService.isMailboxPasswordValid(mailboxPassword, privateKey: AuthCredential.getPrivateKey()) {
+            if sharedUserDataService.isSet {
+                sharedUserDataService.setMailboxPassword(mailboxPassword, isRemembered: self.isRemembered)
+                (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
+            } else {
+                do {
+                    try AuthCredential.setupToken(mailboxPassword, isRememberMailbox: self.isRemembered)
+                    MBProgressHUD.showHUDAddedTo(view, animated: true)
+                    sharedLabelsDataService.fetchLabels()
+                    sharedUserDataService.fetchUserInfo() { info, _, error in
+                        MBProgressHUD.hideHUDForView(self.view, animated: true)
+                        if error != nil {
+                            let alertController = error!.alertController()
+                            alertController.addOKAction()
+                            self.presentViewController(alertController, animated: true, completion: nil)
+                            if error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
+                                self.navigationController?.popViewControllerAnimated(true)
+                            }
+                        } else if info != nil {
+                            if info!.delinquent < 3 {
+                                userCachedStatus.pinFailedCount = 0;
+                                sharedUserDataService.setMailboxPassword(mailboxPassword, isRemembered: self.isRemembered)
+                                self.loadContent()
+                                self.restoreBackup();
+                                NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)
+                            } else {
+                                let alertController = NSLocalizedString("Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.").alertController() //here needs change to a clickable link
+                                alertController.addAction(UIAlertAction.okAction({ (action) -> Void in
+                                    self.navigationController?.popViewControllerAnimated(true)
+                                }))
+                                self.presentViewController(alertController, animated: true, completion: nil)
+                            }
+                        } else {
+                            let alertController = NSError.unknowError().alertController()
+                            alertController.addOKAction()
+                            self.presentViewController(alertController, animated: true, completion: nil)
+                        }
+                    }
+                } catch let ex as NSError {
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    let message = (ex.userInfo["MONExceptionReason"] as? String) ?? NSLocalizedString("The mailbox password is incorrect.")
+                    let alertController = UIAlertController(title: NSLocalizedString("Incorrect password"), message: NSLocalizedString(message),preferredStyle: .Alert)
+                    alertController.addOKAction()
+                    presentViewController(alertController, animated: true, completion: nil)
+                }
+            }
+        } else {
+            let alert = UIAlertController(title: NSLocalizedString("Incorrect password"), message: NSLocalizedString("The mailbox password is incorrect."), preferredStyle: .Alert)
+            alert.addAction((UIAlertAction.okAction()))
+            presentViewController(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func restoreBackup () {
+        UserTempCachedStatus.restore()
     }
     
     func signInIfRememberedCredentials() {

@@ -120,7 +120,7 @@ class SettingsViewController: ProtonMailViewController {
         dismissKeyboard()
         ActivityIndicatorHelper.showActivityIndicatorAtView(view)
         
-        sharedUserDataService.updateDisplayName(displayNameTextField.text!) { _, error in
+        sharedUserDataService.updateDisplayName(displayNameTextField.text!) { _, _, error in
             ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
             
             if let error = error {
@@ -141,7 +141,7 @@ class SettingsViewController: ProtonMailViewController {
         dismissKeyboard()
         ActivityIndicatorHelper.showActivityIndicatorAtView(view)
         
-        sharedUserDataService.updateSignature(signatureTextView.text) { _, error in
+        sharedUserDataService.updateSignature(signatureTextView.text) { _, _, error in
             ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
             
             if let error = error {
