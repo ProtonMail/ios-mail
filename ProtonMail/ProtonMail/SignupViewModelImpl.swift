@@ -125,6 +125,11 @@ public class SignupViewModelImpl : SignupViewModel {
             let api = CreateNewUserRequest<ApiResponse>(token: self.token, type: self.verifyType.toString, username: self.userName, password: self.login, email: self.recoverEmail, domain: self.domain, news: self.news, publicKey: key.publicKey, privateKey: key.privateKey)
                 api.call({ (task, response, hasError) -> Void in
                 if !hasError {
+                    //need clean the cache without ui flow change then signin with a fresh user
+                    sharedUserDataService.signOutAfterSignUp()
+                    userCachedStatus.signOut()
+                    sharedMessageDataService.launchCleanUpIfNeeded()
+                    
                     sharedUserDataService.signIn(self.userName, password: self.login, isRemembered: true) { _, _, error in
                         if let error = error {
                             complete(false, true, "Authentication failed please try to login again", error);

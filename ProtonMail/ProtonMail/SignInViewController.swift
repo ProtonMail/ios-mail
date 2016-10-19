@@ -551,7 +551,7 @@ class SignInViewController: UIViewController {
     {
         sharedUserDataService.signOut(true)
         userCachedStatus.signOut()
-        sharedMessageDataService.launchCleanUpIfNeeded();
+        sharedMessageDataService.launchCleanUpIfNeeded()
     }
     
     func updateSignInButton(usernameText usernameText: String, passwordText: String) {

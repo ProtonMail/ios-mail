@@ -304,6 +304,16 @@ class UserDataService {
         (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: animated)
     }
     
+    func signOutAfterSignUp() {
+        sharedVMService.signOut()
+        if let authCredential = AuthCredential.fetchFromKeychain(), token = authCredential.token where !token.isEmpty {
+            AuthDeleteRequest().call { (task, response, hasError) in }
+        }
+        NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignOut, object: self)
+        clearAll()
+        clearAuthToken()
+    }
+    
     func updateDisplayName(displayName: String, completion: UserInfoBlock?) {
         let new_displayName = displayName.trim()
         let api = UpdateDisplayNameRequest(displayName: new_displayName)
