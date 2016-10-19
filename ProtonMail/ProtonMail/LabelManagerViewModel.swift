@@ -33,7 +33,7 @@ public class LabelManagerViewModelImpl : LabelViewModel {
     }
     
     override public func getTitle() -> String {
-        return NSLocalizedString("Manager Labels")
+        return NSLocalizedString("Manage Labels")
     }
     
     public override func getApplyButtonText() -> String {
