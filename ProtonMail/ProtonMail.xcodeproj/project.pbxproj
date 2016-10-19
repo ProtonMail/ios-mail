@@ -1331,10 +1331,6 @@
 				07009EFD1A659A8000129B07 /* Sign In */,
 				7061A3F11A6E8C4A0006D36C /* Menu */,
 				07CCCC2C1AA2962200ECA79E /* Views */,
-				7523E88C1BB1561F00126D62 /* NSData+MultipartResponses.h */,
-				7523E88D1BB1561F00126D62 /* NSData+MultipartResponses.m */,
-				7523E8BE1BB182B300126D62 /* MultipartResponseParser.h */,
-				7523E8BF1BB182B300126D62 /* MultipartResponseParser.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1667,6 +1663,10 @@
 		75F1697F1AF7F49B00BE6E79 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				7523E88C1BB1561F00126D62 /* NSData+MultipartResponses.h */,
+				7523E88D1BB1561F00126D62 /* NSData+MultipartResponses.m */,
+				7523E8BE1BB182B300126D62 /* MultipartResponseParser.h */,
+				7523E8BF1BB182B300126D62 /* MultipartResponseParser.m */,
 				756CDE3B1D9C754D004455F6 /* SRP */,
 				75B549E31D02730100F21A30 /* Reachability */,
 				7580D6571C8E438800A15885 /* LastPass */,
