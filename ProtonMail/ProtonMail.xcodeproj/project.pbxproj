@@ -147,6 +147,8 @@
 		7523E88E1BB1561F00126D62 /* NSData+MultipartResponses.m in Sources */ = {isa = PBXBuildFile; fileRef = 7523E88D1BB1561F00126D62 /* NSData+MultipartResponses.m */; };
 		7523E8C01BB182B300126D62 /* MultipartResponseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7523E8BF1BB182B300126D62 /* MultipartResponseParser.m */; };
 		7526AC8E1B6C4B3700E1967E /* backup.css in Resources */ = {isa = PBXBuildFile; fileRef = 7526AC8D1B6C4B3700E1967E /* backup.css */; };
+		752A9EBD1DB80E40008D4392 /* LabelApplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752A9EBC1DB80E40008D4392 /* LabelApplayViewModel.swift */; };
+		752A9EBE1DB80E40008D4392 /* LabelApplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752A9EBC1DB80E40008D4392 /* LabelApplayViewModel.swift */; };
 		752D3DC11BD18CA800103DC8 /* AttachmentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752D3DC01BD18CA800103DC8 /* AttachmentsTableViewController.swift */; };
 		752EEC1C1BB0A9D800770331 /* QuickViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752EEC1B1BB0A9D800770331 /* QuickViewViewController.swift */; };
 		752FAA101CB5AEAF00F03228 /* PinCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 752FAA0F1CB5AEAF00F03228 /* PinCodeView.xib */; };
@@ -748,6 +750,7 @@
 		7523E8BE1BB182B300126D62 /* MultipartResponseParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultipartResponseParser.h; sourceTree = "<group>"; };
 		7523E8BF1BB182B300126D62 /* MultipartResponseParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultipartResponseParser.m; sourceTree = "<group>"; };
 		7526AC8D1B6C4B3700E1967E /* backup.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = backup.css; sourceTree = "<group>"; };
+		752A9EBC1DB80E40008D4392 /* LabelApplayViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelApplayViewModel.swift; sourceTree = "<group>"; };
 		752D3DC01BD18CA800103DC8 /* AttachmentsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsTableViewController.swift; sourceTree = "<group>"; };
 		752EEC1B1BB0A9D800770331 /* QuickViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickViewViewController.swift; sourceTree = "<group>"; };
 		752FAA0F1CB5AEAF00F03228 /* PinCodeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PinCodeView.xib; sourceTree = "<group>"; };
@@ -1632,6 +1635,7 @@
 				756489991B7F2ACA007EA207 /* MailboxViewModelImpl.swift */,
 				7564899B1B7F2B1B007EA207 /* LabelboxViewModelImpl.swift */,
 				75510BAC1B82F990001348FF /* LabelViewModel.swift */,
+				752A9EBC1DB80E40008D4392 /* LabelApplayViewModel.swift */,
 				7576355C1D0B6D8E00DF46DC /* LabelManagerViewModel.swift */,
 				755638C81CA1F423003FA2D0 /* MessageViewModel.swift */,
 				755638CA1CA1F446003FA2D0 /* MessageViewModelImpl.swift */,
@@ -2157,6 +2161,7 @@
 				7546BE571C8D557C00FCEB0A /* TouchIDCell.swift in Sources */,
 				756CDEFC1D9DB3A0004455F6 /* JKBCryptRandom.swift in Sources */,
 				07CCCC301AA4E26000ECA79E /* NSCoderExtension.swift in Sources */,
+				752A9EBD1DB80E40008D4392 /* LabelApplayViewModel.swift in Sources */,
 				754CD4881AB809D60084C54A /* SettingTableViewController.swift in Sources */,
 				07009F091A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift in Sources */,
 				0713239C1A7C0B4C0043DB41 /* NSManagedObjectContextExtension.swift in Sources */,
@@ -2478,6 +2483,7 @@
 				75DE7D061CAAEA4900F5443E /* LabelDisplayView.swift in Sources */,
 				75DE7D071CAAEA4900F5443E /* AuthCredential.swift in Sources */,
 				75DE7D081CAAEA4900F5443E /* MBContactCollectionViewContactCell.m in Sources */,
+				752A9EBE1DB80E40008D4392 /* LabelApplayViewModel.swift in Sources */,
 				75DE7D091CAAEA4900F5443E /* ShowImageView.swift in Sources */,
 				75DE7D0A1CAAEA4900F5443E /* AttachmentHelper.swift in Sources */,
 				75DE7D0B1CAAEA4900F5443E /* AttachmentAPI.swift in Sources */,

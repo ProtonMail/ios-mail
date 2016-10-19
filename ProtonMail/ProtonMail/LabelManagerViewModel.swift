@@ -40,6 +40,10 @@ public class LabelManagerViewModelImpl : LabelViewModel {
         return NSLocalizedString("Delete")
     }
     
+    public override func getCancelButtonText() -> String {
+        return NSLocalizedString("Close")
+    }
+    
     override public func apply(archiveMessage : Bool) {
         if let context = sharedCoreDataService.mainManagedObjectContext {
             for (key, value) in self.labelMessages {

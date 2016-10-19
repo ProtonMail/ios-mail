@@ -65,6 +65,7 @@ class LablesViewController : UIViewController {
         }
         applyButtonText = viewModel.getApplyButtonText()
         applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
+        cancelButton.setTitle(viewModel.getCancelButtonText(), forState: UIControlState.Normal)
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
