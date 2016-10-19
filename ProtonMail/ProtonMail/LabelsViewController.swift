@@ -21,6 +21,8 @@ class LablesViewController : UIViewController {
     
     private var selected : NSIndexPath?
     private var isCreateView: Bool = false
+    private var archiveMessage = false;
+    
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -36,11 +38,8 @@ class LablesViewController : UIViewController {
     
     @IBOutlet weak var archiveSelectButton: UIButton!
     
-    private var archiveMessage = false;
-    
     @IBOutlet weak var archiveView: UIView!
     @IBOutlet weak var archiveConstrains: NSLayoutConstraint!
-    
     
     var delegate : LablesViewControllerDelegate?
     var applyButtonText : String!
@@ -54,10 +53,9 @@ class LablesViewController : UIViewController {
         inputContentView.layer.cornerRadius = 4;
         inputContentView.layer.borderColor = UIColor(hexColorCode: "#DADEE8").CGColor
         inputContentView.layer.borderWidth = 1.0
+        newLabelInput.delegate = self
         self.setupFetchedResultsController()
-        
         titleLabel.text = viewModel.getTitle()
-        
         if viewModel.showArchiveOption() {
             archiveView.hidden = false
             archiveConstrains.constant = 45.0
@@ -65,7 +63,6 @@ class LablesViewController : UIViewController {
             archiveView.hidden = true
             archiveConstrains.constant = 0
         }
-        
         applyButtonText = viewModel.getApplyButtonText()
         applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
     }
@@ -137,7 +134,7 @@ class LablesViewController : UIViewController {
             do {
                 try fetchedResultsController.performFetch()
             } catch let ex as NSError {
-                 PMLog.D("error: \(ex)")
+                PMLog.D("error: \(ex)")
             }
         }
     }
@@ -229,6 +226,15 @@ extension LablesViewController: UITableViewDelegate {
 }
 
 
+extension LablesViewController : UITextFieldDelegate {
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        dismissKeyboard()
+        return false
+    }
+}
+
+
 
 
 extension LablesViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
@@ -245,7 +251,7 @@ extension LablesViewController: UICollectionViewDelegateFlowLayout, UICollection
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("labelColorCell", forIndexPath: indexPath) 
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("labelColorCell", forIndexPath: indexPath)
         let color = titles[indexPath.row]
         cell.backgroundColor = UIColor(hexString: color, alpha: 1.0)
         return cell
@@ -261,7 +267,6 @@ extension LablesViewController: UICollectionViewDelegateFlowLayout, UICollection
         newCell?.layer.borderWidth = 4
         newCell?.layer.borderColor = UIColor.whiteColor().CGColor
         self.selected = indexPath
-        
         
         self.dismissKeyboard()
     }
