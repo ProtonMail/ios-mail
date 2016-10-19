@@ -932,12 +932,11 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     private func setupNavigationTitle(editingMode: Bool) {
-        
         // title animation
         if (editingMode) {
-            setNavigationTitleText("")
+            self.setNavigationTitleText("")
         } else {
-            setNavigationTitleText(self.title ?? "INBOX")
+            self.setNavigationTitleText(viewModel.getNavigationTitle())
         }
     }
     

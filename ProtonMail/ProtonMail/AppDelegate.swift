@@ -129,21 +129,15 @@ extension AppDelegate: UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         Fabric.with([Crashlytics()])
-        //
-        //        let sharedCache = NSURLCache(memoryCapacity: 0, diskCapacity: 0, diskPath: nil)
-        //        NSURLCache.setSharedURLCache(sharedCache)
-        //
+
         shareViewModelFactoy = ViewModelFactoryProduction()
-        
         AFNetworkActivityIndicatorManager.sharedManager().enabled = true
         
         //net work debug option
         AFNetworkActivityLogger.sharedLogger().startLogging()
         AFNetworkActivityLogger.sharedLogger().level = AFHTTPRequestLoggerLevel.AFLoggerLevelDebug
         
-        //sharedRemoteReachability.startNotifier()
         sharedInternetReachability.startNotifier()
-
         
         setupWindow()
         sharedMessageDataService.launchCleanUpIfNeeded()
@@ -155,15 +149,12 @@ extension AppDelegate: UIApplicationDelegate {
         }
         sharedPushNotificationService.setLaunchOptions(launchOptions)
         
-        
-        PMLog.D("\(UIScreen.mainScreen().bounds)")
+        //sign in page is default
         
         return true
     }
     
     func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
-        //let dict = [String, String]
-        //let url = "http://example.com?param1=value1&param2=param2"
         let urlComponents = NSURLComponents(URL: url, resolvingAgainstBaseURL: true)
         if urlComponents?.host == "signup" {
             if let queryItems = urlComponents?.queryItems {
