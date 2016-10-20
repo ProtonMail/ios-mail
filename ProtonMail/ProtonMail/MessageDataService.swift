@@ -1793,7 +1793,8 @@ class MessageDataService {
     
     private func queue(message message: Message, action: MessageAction) {
         if action == .saveDraft || action == .send {
-            sharedMessageQueue.addMessage(message.objectID.URIRepresentation().absoluteString, action: action)
+            //TODO:: need to handle the empty instead of !
+            sharedMessageQueue.addMessage(message.objectID.URIRepresentation().absoluteString!, action: action)
         } else {
             if message.managedObjectContext != nil && !message.messageID.isEmpty {
                 sharedMessageQueue.addMessage(message.messageID, action: action)
@@ -1808,7 +1809,8 @@ class MessageDataService {
     }
     
     private func queue(att att: Attachment, action: MessageAction) {
-        sharedMessageQueue.addMessage(att.objectID.URIRepresentation().absoluteString, action: action)
+        //TODO:: need to handle the empty instead of !
+        sharedMessageQueue.addMessage(att.objectID.URIRepresentation().absoluteString!, action: action)
         dequeueIfNeeded()
     }
     
@@ -1861,20 +1863,24 @@ class MessageDataService {
 extension NSFileManager {
     var attachmentDirectory: NSURL {
         let attachmentDirectory = applicationSupportDirectoryURL.URLByAppendingPathComponent("attachments", isDirectory: true)
-        if !self.fileExistsAtPath(attachmentDirectory.absoluteString) {
+        //TODO:: need to handle the empty instead of !
+        if !self.fileExistsAtPath(attachmentDirectory!.absoluteString!) {
             do {
-                try self.createDirectoryAtURL(attachmentDirectory, withIntermediateDirectories: true, attributes: nil)
+                //TODO:: need to handle the empty instead of !
+                try self.createDirectoryAtURL(attachmentDirectory!, withIntermediateDirectories: true, attributes: nil)
             }
             catch let ex as NSError {
                 PMLog.D(" error : \(ex).")
             }
         }
-        return attachmentDirectory
+        //TODO:: need to handle the empty instead of !
+        return attachmentDirectory!
     }
     
     func cleanCachedAtts() {
         let attachmentDirectory = applicationSupportDirectoryURL.URLByAppendingPathComponent("attachments", isDirectory: true)
-        if let path = attachmentDirectory.path {
+        //TODO:: need to handle the empty instead of !
+        if let path = attachmentDirectory!.path {
             do {
                 let filePaths = try self.contentsOfDirectoryAtPath(path)
                 for fileName in filePaths {

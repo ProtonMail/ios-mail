@@ -21,8 +21,8 @@ extension NSFileManager {
     var applicationSupportDirectoryURL: NSURL {
         let urls = URLsForDirectory(.ApplicationSupportDirectory, inDomains: .UserDomainMask) 
         let applicationSupportDirectoryURL = urls.first!
-        
-        if !NSFileManager.defaultManager().fileExistsAtPath(applicationSupportDirectoryURL.absoluteString) {
+        //TODO:: need to handle the ! when empty
+        if !NSFileManager.defaultManager().fileExistsAtPath(applicationSupportDirectoryURL.absoluteString!) {
             do {
                 try NSFileManager.defaultManager().createDirectoryAtURL(applicationSupportDirectoryURL, withIntermediateDirectories: true, attributes: nil)
             } catch let ex as NSError {

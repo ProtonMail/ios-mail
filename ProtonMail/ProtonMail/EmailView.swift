@@ -145,7 +145,8 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     }
     
     private func setupBottomView() {
-        self.bottomActionView = NSBundle.mainBundle().loadNibNamed("MessageDetailBottomView", owner: 0, options: nil)[0] as? MessageDetailBottomView
+        //TODO:: need to handle the empty instead of !
+        self.bottomActionView = NSBundle.mainBundle().loadNibNamed("MessageDetailBottomView", owner: 0, options: nil)![0] as? MessageDetailBottomView
         self.bottomActionView.backgroundColor = UIColor.ProtonMail.Gray_E8EBED
         self.addSubview(bottomActionView)
     }

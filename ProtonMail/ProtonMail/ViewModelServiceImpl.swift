@@ -74,7 +74,7 @@ class ViewModelServiceImpl: ViewModelService {
         latestComposerViewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.NewDraft);
 
         if let checkedUrl : NSURL = url where checkedUrl.scheme == "mailto" {
-            var rawURLparts = checkedUrl.resourceSpecifier.componentsSeparatedByString("?")
+            var rawURLparts = checkedUrl.resourceSpecifier!.componentsSeparatedByString("?")
             if (rawURLparts.count > 2) {
                 
             } else {
