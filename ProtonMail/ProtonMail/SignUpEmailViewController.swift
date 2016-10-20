@@ -91,25 +91,37 @@ class SignUpEmailViewController: UIViewController {
     
     private var doneClicked : Bool = false
     @IBAction func doneAction(sender: UIButton) {
-        
         let email = (recoveryEmailField.text ?? "").trim()
-        if (!email.isEmpty && !email.isValidEmail()) {
-            let alert = NSLocalizedString("Please input a valid email address.").alertController()
-            alert.addOKAction()
-            self.presentViewController(alert, animated: true, completion: nil)
-        } else {
-            if doneClicked {
-                return
-            }
-            doneClicked = true
-            MBProgressHUD.showHUDAddedTo(view, animated: true)
-            dismissKeyboard()
-            viewModel.setRecovery(checkButton.selected, email: recoveryEmailField.text!, displayName: displayNameField.text!)
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                MBProgressHUD.hideHUDForView(self.view, animated: true)
-                self.doneClicked = false
-                self.moveToInbox()
-            })
+        if email.isEmpty {
+            // show a warning
+            let alertController = UIAlertController(
+                title: NSLocalizedString("Recovery Email Warning"),
+                message: NSLocalizedString("Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?"),
+                preferredStyle: .Alert)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Default, handler: { action in
+                
+            }))
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Confirm"), style: .Destructive, handler: { action in
+                if (!email.isEmpty && !email.isValidEmail()) {
+                    let alert = NSLocalizedString("Please input a valid email address.").alertController()
+                    alert.addOKAction()
+                    self.presentViewController(alert, animated: true, completion: nil)
+                } else {
+                    if self.doneClicked {
+                        return
+                    }
+                    self.doneClicked = true
+                    MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+                    self.dismissKeyboard()
+                    self.viewModel.setRecovery(self.checkButton.selected, email: self.recoveryEmailField.text!, displayName: self.displayNameField.text!)
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        MBProgressHUD.hideHUDForView(self.view, animated: true)
+                        self.doneClicked = false
+                        self.moveToInbox()
+                    })
+                }
+            }))
+            self.presentViewController(alertController, animated: true, completion: nil)
         }
     }
     
