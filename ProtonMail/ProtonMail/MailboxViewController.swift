@@ -158,6 +158,8 @@ class MailboxViewController: ProtonMailViewController {
         }
         self.startAutoFetch()
         
+        NSFileManager.defaultManager().cleanCachedAtts()
+        
         if self.viewModel.getNotificationMessage() != nil {
             performSegueWithIdentifier(kSegueToMessageDetailFromNotification, sender: self)
         }

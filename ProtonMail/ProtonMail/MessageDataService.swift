@@ -656,8 +656,10 @@ class MessageDataService {
                         }
                     case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update1), .Some(IncrementalUpdateType.update2):
                         if IncrementalUpdateType.insert == msg.Action {
-                            if nil != Message.messageForMessageID(msg.ID, inManagedObjectContext: context) {
-                                continue
+                            if let cachedMessage = Message.messageForMessageID(msg.ID, inManagedObjectContext: context) {
+                                if cachedMessage.location != MessageLocation.draft && cachedMessage.location != MessageLocation.outbox {
+                                    continue
+                                }
                             }
                             if let notify_msg_id = notificationMessageID {
                                 if notify_msg_id == msg.ID {
@@ -800,7 +802,6 @@ class MessageDataService {
                             }
                         }
                     }
-                    
                     completion?(task, fileURL, error)
                 })
             } else {
@@ -1860,15 +1861,57 @@ class MessageDataService {
 extension NSFileManager {
     var attachmentDirectory: NSURL {
         let attachmentDirectory = applicationSupportDirectoryURL.URLByAppendingPathComponent("attachments", isDirectory: true)
-        if !NSFileManager.defaultManager().fileExistsAtPath(attachmentDirectory.absoluteString) {
+        if !self.fileExistsAtPath(attachmentDirectory.absoluteString) {
             do {
-                try NSFileManager.defaultManager().createDirectoryAtURL(attachmentDirectory, withIntermediateDirectories: true, attributes: nil)
+                try self.createDirectoryAtURL(attachmentDirectory, withIntermediateDirectories: true, attributes: nil)
             }
             catch let ex as NSError {
                 PMLog.D(" error : \(ex).")
             }
         }
         return attachmentDirectory
+    }
+    
+    func cleanCachedAtts() {
+        let attachmentDirectory = applicationSupportDirectoryURL.URLByAppendingPathComponent("attachments", isDirectory: true)
+        if let path = attachmentDirectory.path {
+            do {
+                let filePaths = try self.contentsOfDirectoryAtPath(path)
+                for fileName in filePaths {
+                    let filePathName = "\(path)/\(fileName)"
+                    try self.removeItemAtPath(filePathName)
+                }
+            }
+            catch let ex as NSError {
+                PMLog.D(" error : \(ex).")
+            }
+        }
+//        
+//        let fileManager = NSFileManager.defaultManager()
+//        let documentsUrl =  NSFileManager.defaultManager().URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask).first! as NSURL
+//        let documentsPath = documentsUrl.path
+//        
+//        do {
+//            if let documentPath = documentsPath
+//            {
+//                let fileNames = try fileManager.contentsOfDirectoryAtPath("\(documentPath)")
+//                print("all files in cache: \(fileNames)")
+//                for fileName in fileNames {
+//                    
+//                    if (fileName.hasSuffix(".png"))
+//                    {
+//                        let filePathName = "\(documentPath)/\(fileName)"
+//                        try fileManager.removeItemAtPath(filePathName)
+//                    }
+//                }
+//                
+//                let files = try fileManager.contentsOfDirectoryAtPath("\(documentPath)")
+//                print("all files in cache after deleting images: \(files)")
+//            }
+//            
+//        } catch {
+//            print("Could not clear temp folder: \(error)")
+//        }
     }
 }
 
