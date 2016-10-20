@@ -1886,32 +1886,6 @@ extension NSFileManager {
                 PMLog.D(" error : \(ex).")
             }
         }
-//        
-//        let fileManager = NSFileManager.defaultManager()
-//        let documentsUrl =  NSFileManager.defaultManager().URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask).first! as NSURL
-//        let documentsPath = documentsUrl.path
-//        
-//        do {
-//            if let documentPath = documentsPath
-//            {
-//                let fileNames = try fileManager.contentsOfDirectoryAtPath("\(documentPath)")
-//                print("all files in cache: \(fileNames)")
-//                for fileName in fileNames {
-//                    
-//                    if (fileName.hasSuffix(".png"))
-//                    {
-//                        let filePathName = "\(documentPath)/\(fileName)"
-//                        try fileManager.removeItemAtPath(filePathName)
-//                    }
-//                }
-//                
-//                let files = try fileManager.contentsOfDirectoryAtPath("\(documentPath)")
-//                print("all files in cache after deleting images: \(files)")
-//            }
-//            
-//        } catch {
-//            print("Could not clear temp folder: \(error)")
-//        }
     }
 }
 
