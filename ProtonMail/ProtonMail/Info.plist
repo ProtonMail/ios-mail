@@ -58,6 +58,14 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+    <key>NSAppleMusicUsageDescription</key>
+    <string>$(PRODUCT_NAME) media library use</string>
+    <key>NSCameraUsageDescription</key>
+    <string>$(PRODUCT_NAME) camera use</string>
+    <key>NSContactsUsageDescription</key>
+    <string>$(PRODUCT_NAME) contact use</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>$(PRODUCT_NAME) photo library use</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Roboto-Medium.ttf</string>
