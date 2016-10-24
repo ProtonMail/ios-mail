@@ -25,7 +25,6 @@ class PersistentQueue {
     
     private var queue: [AnyObject] {
         didSet {
-            PMLog.D(" Queue: \(queueName) count: \(queue.count)")
             dispatch_sync(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)) { () -> Void in
                 let data = NSKeyedArchiver.archivedDataWithRootObject(self.queue)
                 if !data.writeToURL(self.queueURL, atomically: true) {
