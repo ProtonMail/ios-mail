@@ -29,6 +29,7 @@ class AuthCredential: NSObject, NSCoding {
     var privateKey : String!
     var plainToken : String?
     var password : String?
+    var passwordKeySalt : String?
     
     override var description: String {
         return "\n  token: \(plainToken)\n  refreshToken: \(refreshToken)\n  expiration: \(expiration)\n  userID: \(userID)"
@@ -72,6 +73,7 @@ class AuthCredential: NSObject, NSCoding {
         self.userID = res.userID
         self.expiration = NSDate(timeIntervalSinceNow: res.expiresIn ?? 0)
         self.privateKey = res.encPrivateKey
+        self.passwordKeySalt = res.keySalt
     }
     
     required init(res : AuthResponse!) {
@@ -81,10 +83,11 @@ class AuthCredential: NSObject, NSCoding {
         self.userID = res.userID
         self.expiration = NSDate(timeIntervalSinceNow: res.expiresIn ?? 0)
         self.privateKey = res.privateKey
+        self.passwordKeySalt = res.keySalt
         super.init()
     }
     
-    required init(accessToken: String!, refreshToken: String!, userID: String!, expiration: NSDate!, key : String!, plain: String?, pwd:String?) {
+    required init(accessToken: String!, refreshToken: String!, userID: String!, expiration: NSDate!, key : String!, plain: String?, pwd:String?, salt:String?) {
 
         self.encryptToken = accessToken
         self.refreshToken = refreshToken
@@ -93,6 +96,7 @@ class AuthCredential: NSObject, NSCoding {
         self.privateKey = key
         self.plainToken = plain
         self.password = pwd
+        self.passwordKeySalt = salt
         super.init()
     }
     
@@ -103,7 +107,8 @@ class AuthCredential: NSObject, NSCoding {
             expiration: aDecoder.decodeObjectForKey(CoderKey.expiration) as? NSDate,
             key: aDecoder.decodeObjectForKey(CoderKey.key) as? String,
             plain: aDecoder.decodeObjectForKey(CoderKey.plainToken) as? String,
-            pwd: aDecoder.decodeObjectForKey(CoderKey.pwd) as? String);
+            pwd: aDecoder.decodeObjectForKey(CoderKey.pwd) as? String,
+            salt : aDecoder.decodeObjectForKey(CoderKey.salt) as? String);
     }
     
     private func expire() {
@@ -132,6 +137,23 @@ class AuthCredential: NSObject, NSCoding {
             if let data = UICKeyChainStore.dataForKey(Key.keychainStore) {
                 if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? AuthCredential {
                     return authCredential.privateKey
+                }
+            }
+        #endif
+        return ""
+    }
+    
+    class func getKeySalt() -> String? {
+        #if DEBUG
+            if let data = authDebugCached.dataForKey(Key.keychainStore) {
+                if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? AuthCredential {
+                    return authCredential.passwordKeySalt
+                }
+            }
+        #else
+            if let data = UICKeyChainStore.dataForKey(Key.keychainStore) {
+                if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? AuthCredential {
+                    return authCredential.passwordKeySalt
                 }
             }
         #endif
@@ -186,6 +208,7 @@ class AuthCredential: NSObject, NSCoding {
         static let key = "privateKeyCoderKey"
         static let plainToken = "plainCoderKey"
         static let pwd = "pwdKey"
+        static let salt = "passwordKeySalt"
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
@@ -196,5 +219,6 @@ class AuthCredential: NSObject, NSCoding {
         aCoder.encodeObject(privateKey, forKey: CoderKey.key)
         aCoder.encodeObject(plainToken, forKey: CoderKey.plainToken)
         aCoder.encodeObject(password, forKey: CoderKey.pwd)
+        aCoder.encodeObject(passwordKeySalt, forKey: CoderKey.salt)
     }
 }

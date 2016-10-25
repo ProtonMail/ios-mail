@@ -271,7 +271,6 @@ class UserDataService {
     
     
     func signIn(username: String, password: String, isRemembered: Bool, completion: UserInfoBlock) {
-        
         sharedAPIService.auth(username, password: password) { task, mpwd, error in
             if error == nil {
                 self.isSignedIn = true
