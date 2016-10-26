@@ -20,16 +20,27 @@ class AppConstants {
     static let AskTouchID : Int = 1
     
     static var AppVersion : Int = 1;
-    //static let BaseURLString : String = "https://api.protonmail.ch"
-    //static let BaseURLString : String = "http://protonmail.blue"
+    
+    //live api
+    static let BaseURLString : String = "https://api.protonmail.ch"
+    
+    //live test api
     //static let BaseURLString : String = "https://test-api.protonmail.ch"
-    //static let BaseURLString : String = "http://127.0.0.1"
+    
+    //live dev api
     //static let BaseURLString : String = "https://dev-api.protonmail.ch"
-    //static let BaseURLString : String = "http://protonmail.xyz"
     //static let BaseURLString : String = "https://dev.protonmail.com"
-    static let BaseURLString : String = "https://midnight.protonmail.blue"
-    static let BaseAPIPath : String = "/api"
-    //static let BaseAPIPath : String = ""
+    
+    //blue test
+    //static let BaseURLString : String = "http://protonmail.blue"
+    //static let BaseURLString : String = "https://midnight.protonmail.blue"
+    
+    //static let BaseURLString : String = "http://127.0.0.1"
+    //static let BaseURLString : String = "http://protonmail.xyz"
+    
+    //api options
+    //static let BaseAPIPath : String = "/api"
+    static let BaseAPIPath : String = ""
     
     static var getDebugOption : String {
         get {
