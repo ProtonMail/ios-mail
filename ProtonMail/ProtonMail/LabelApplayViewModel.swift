@@ -13,9 +13,9 @@ public class LabelViewModelImpl : LabelViewModel {
     private var labelMessages : Dictionary<String, LabelMessageModel>!
     
     init(msg:[Message]!) {
+        super.init()
         self.messages = msg
         self.labelMessages = Dictionary<String, LabelMessageModel>()
-        super.init()
     }
     
     override public func showArchiveOption() -> Bool {

@@ -629,13 +629,14 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     private func undoTheMessage() { //need move into viewModel
-        if undoMessage != nil {
+        if let undoMsg = undoMessage {
             if let context = fetchedResultsController?.managedObjectContext {
-                if let message = Message.messageForMessageID(undoMessage!.messageID, inManagedObjectContext: context) {
-                    viewModel.updateBadgeNumberMoveOutInbox(message)
-                    message.location = undoMessage!.oldLocation
+                if let message = Message.messageForMessageID(undoMsg.messageID, inManagedObjectContext: context) {
+                    //viewModel.updateBadgeNumberMoveOutInbox(message)
+                    viewModel.updateBadgeNumberWhenMove(message, to: undoMsg.oldLocation)
+                    message.location = undoMsg.oldLocation
                     message.needsUpdate = true
-                    viewModel.updateBadgeNumberMoveInInbox(message)
+                    //viewModel.updateBadgeNumberMoveInInbox(message)
                     if let error = context.saveUpstreamIfNeeded() {
                         PMLog.D("error: \(error)")
                     }
@@ -889,6 +890,13 @@ class MailboxViewController: ProtonMailViewController {
             fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selectedMessages)
             do {
                 if let messages = try context.executeFetchRequest(fetchRequest) as? [Message] {
+                    if key == Message.Attributes.isRead {
+                        if let changeto = value as? Bool {
+                            for msg in messages {
+                                viewModel.updateBadgeNumberWhenRead(msg, changeToRead: changeto)
+                            }
+                        }
+                    }
                     NSArray(array: messages).setValue(value, forKey: key)
                     NSArray(array: messages).setValue(true, forKey: "needsUpdate")
                     let error = context.saveUpstreamIfNeeded()

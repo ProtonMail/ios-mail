@@ -12,8 +12,8 @@ import Foundation
 public class LabelManagerViewModelImpl : LabelViewModel {
     private var labelMessages : Dictionary<String, LabelMessageModel>!
     public override init() {
-        self.labelMessages = Dictionary<String, LabelMessageModel>()
         super.init()
+        self.labelMessages = Dictionary<String, LabelMessageModel>()
     }
     
     override public func showArchiveOption() -> Bool {

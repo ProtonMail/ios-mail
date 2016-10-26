@@ -574,6 +574,7 @@ class MessageDataService {
                     }
                 }
             }
+            lastUpdatedStore.updateUnreadCountForKey(MessageLocation.starred, count: starCount ?? 0)
             
             //MessageLocation
             var badgeNumber = inboxCount //inboxCount + draftCount + sendCount + spamCount + starCount + trashCount;
