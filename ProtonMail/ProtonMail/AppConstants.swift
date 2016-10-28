@@ -18,7 +18,6 @@ class AppConstants {
     static let TourVersion : Int = 2
     
     static let AskTouchID : Int = 1
-    
     static var AppVersion : Int = 1;
     
     //live api
