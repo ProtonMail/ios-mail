@@ -26,7 +26,7 @@ enum SignInUIFlow : Int {
     case Restore = 2
 }
 
-class SignInViewController: UIViewController {
+class SignInViewController: ProtonMailViewController {
     
     private let kMailboxSegue = "mailboxSegue"
     private let kSignUpKeySegue = "sign_in_to_sign_up_segue"
@@ -39,6 +39,7 @@ class SignInViewController: UIViewController {
     
     private let kSegueToSignUpWithNoAnimation = "sign_in_to_splash_no_segue"
     private let kSegueToPinCodeViewNoAnimation = "pin_code_segue"
+    private let kSegueTo2FACodeSegue = "2fa_code_segue"
     
     static var isComeBackFromMailbox = false
     
@@ -362,6 +363,10 @@ class SignInViewController: UIViewController {
             let viewController = segue.destinationViewController as! PinCodeViewController
             viewController.viewModel = UnlockPinCodeModelImpl()
             viewController.delegate = self
+        } else if segue.identifier == kSegueTo2FACodeSegue {
+            let popup = segue.destinationViewController as! TwoFACodeViewController
+            //popup.delegate = self
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }
     
@@ -407,7 +412,7 @@ class SignInViewController: UIViewController {
     }
     
     func signIn() {
-        MBProgressHUD.showHUDAddedTo(view, animated: true)
+        //MBProgressHUD.showHUDAddedTo(view, animated: true)
         isRemembered = true
         if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
             clean();
@@ -418,22 +423,24 @@ class SignInViewController: UIViewController {
         let username = (usernameTextField.text ?? "").trim()
         let password = (passwordTextField.text ?? "") //.trim()
         
-        sharedUserDataService.signIn(username, password: password, isRemembered: isRemembered) { _, mailboxpwd, error in
-            MBProgressHUD.hideHUDForView(self.view, animated: true)
-            if let error = error {
-                PMLog.D("error: \(error)")
-                self.ShowLoginViews();
-                let alertController = error.alertController()
-                alertController.addOKAction()
-                self.presentViewController(alertController, animated: true, completion: nil)
-            } else {
-                if mailboxpwd != nil {
-                    self.decryptPassword(mailboxpwd!)
-                } else {
-                    self.loadContent()
-                }
-            }
-        }
+        self.performSegueWithIdentifier(kSegueTo2FACodeSegue, sender: self)
+        
+//        sharedUserDataService.signIn(username, password: password, isRemembered: isRemembered) { _, mailboxpwd, error in
+//            MBProgressHUD.hideHUDForView(self.view, animated: true)
+//            if let error = error {
+//                PMLog.D("error: \(error)")
+//                self.ShowLoginViews();
+//                let alertController = error.alertController()
+//                alertController.addOKAction()
+//                self.presentViewController(alertController, animated: true, completion: nil)
+//            } else {
+//                if mailboxpwd != nil {
+//                    self.decryptPassword(mailboxpwd!)
+//                } else {
+//                    self.loadContent()
+//                }
+//            }
+//        }
     }
     
     func decryptPassword(mailboxPassword:String!) {
