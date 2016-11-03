@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol TwoFACodeViewControllerDelegate {
-    func Cancel()
+    func Cancel2FA()
     func ConfirmedCode(code : String)
 }
 
@@ -22,14 +22,17 @@ class TwoFACodeViewController : UIViewController {
         super.viewDidLoad()
         self.view.layoutIfNeeded()
         self.twoFACodeView.delegate = self
+        self.twoFACodeView.layer.cornerRadius = 8;
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        self.twoFACodeView.showKeyboard()
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -41,8 +44,9 @@ class TwoFACodeViewController : UIViewController {
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent;
+        return UIStatusBarStyle.LightContent
     }
+
 }
 
 
@@ -54,7 +58,7 @@ extension TwoFACodeViewController : TwoFACodeViewDelegate {
     }
     
     func Cancel() {
-        delegate?.Cancel()
+        delegate?.Cancel2FA()
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 }

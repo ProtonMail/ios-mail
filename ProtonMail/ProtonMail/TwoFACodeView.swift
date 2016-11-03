@@ -17,6 +17,9 @@ class TwoFACodeView : PMView {
     
     var delegate : TwoFACodeViewDelegate?
     
+    @IBOutlet weak var twoFactorCodeField: TextInsetTextField!
+    @IBOutlet weak var loginPasswordField: TextInsetTextField!
+    
     override func getNibName() -> String {
         return "TwoFACodeView";
     }
@@ -25,8 +28,24 @@ class TwoFACodeView : PMView {
         
     }
     
+    func showKeyboard() {
+        loginPasswordField.resignFirstResponder()
+    }
+    
+    @IBAction func enterAction(sender: UIButton) {
+        self.dismissKeyboard()
+        delegate?.ConfirmedCode("123")
+    }
+    
     @IBAction func cancelAction(sender: UIButton) {
+        self.dismissKeyboard()
         delegate?.Cancel()
+    }
+    
+    
+    func dismissKeyboard() {
+        twoFactorCodeField.resignFirstResponder()
+        loginPasswordField.resignFirstResponder()
     }
 }
 

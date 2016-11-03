@@ -1444,19 +1444,36 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rON-4z-Gty" customClass="TwoFACodeView" customModule="ProtonMail" customModuleProvider="target">
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="popup_behind_image" translatesAutoresizingMaskIntoConstraints="NO" id="Xfa-go-UrT"/>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rON-4z-Gty" customClass="TwoFACodeView" customModule="ProtonMail" customModuleProvider="target">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" priority="500" constant="335" id="7e1-iS-Ctt"/>
                                     <constraint firstAttribute="height" priority="500" constant="100" id="H7g-hZ-6p7"/>
                                 </constraints>
                             </view>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hm5-jh-Tds">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="JNT-nZ-kqj"/>
+                                    <constraint firstAttribute="width" constant="339" id="YKv-ld-QOA"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Xfa-go-UrT" secondAttribute="trailing" id="47j-SC-jbr"/>
+                            <constraint firstItem="Xfa-go-UrT" firstAttribute="leading" secondItem="06e-Hc-CTu" secondAttribute="leading" id="DNe-0N-j8j"/>
+                            <constraint firstItem="Cba-Lg-q4u" firstAttribute="top" secondItem="Xfa-go-UrT" secondAttribute="bottom" id="JRQ-Vl-6my"/>
+                            <constraint firstAttribute="trailing" secondItem="Xfa-go-UrT" secondAttribute="trailing" id="Kr8-qI-lf4"/>
+                            <constraint firstItem="Cba-Lg-q4u" firstAttribute="top" secondItem="Xfa-go-UrT" secondAttribute="bottom" id="bcj-bc-Guw"/>
                             <constraint firstItem="rON-4z-Gty" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="06e-Hc-CTu" secondAttribute="leading" constant="16" id="gCM-IX-fv7"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="rON-4z-Gty" secondAttribute="trailing" constant="16" id="gEY-Tt-8Sk"/>
+                            <constraint firstItem="hm5-jh-Tds" firstAttribute="top" secondItem="xA5-kv-jwJ" secondAttribute="bottom" constant="47" id="kAD-aA-mW1"/>
                             <constraint firstItem="rON-4z-Gty" firstAttribute="centerX" secondItem="06e-Hc-CTu" secondAttribute="centerX" id="lN9-7U-qFI"/>
+                            <constraint firstItem="hm5-jh-Tds" firstAttribute="centerX" secondItem="06e-Hc-CTu" secondAttribute="centerX" id="qVh-Lt-YsL"/>
+                            <constraint firstItem="Xfa-go-UrT" firstAttribute="top" secondItem="06e-Hc-CTu" secondAttribute="top" id="r54-tE-eRg"/>
+                            <constraint firstItem="Xfa-go-UrT" firstAttribute="leading" secondItem="06e-Hc-CTu" secondAttribute="leading" id="sO1-R0-LeS"/>
                             <constraint firstItem="rON-4z-Gty" firstAttribute="centerY" secondItem="06e-Hc-CTu" secondAttribute="centerY" id="two-NY-1MB"/>
                         </constraints>
                     </view>
@@ -1466,7 +1483,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3KV-cb-mgo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1551.2" y="5.8470764617691158"/>
+            <point key="canvasLocation" x="-1538.4000000000001" y="-174.06296851574214"/>
         </scene>
         <!--Pin View-->
         <scene sceneID="fxK-BO-32Y">

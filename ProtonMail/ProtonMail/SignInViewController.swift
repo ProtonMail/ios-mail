@@ -365,7 +365,7 @@ class SignInViewController: ProtonMailViewController {
             viewController.delegate = self
         } else if segue.identifier == kSegueTo2FACodeSegue {
             let popup = segue.destinationViewController as! TwoFACodeViewController
-            //popup.delegate = self
+            popup.delegate = self
             self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }
@@ -423,8 +423,11 @@ class SignInViewController: ProtonMailViewController {
         let username = (usernameTextField.text ?? "").trim()
         let password = (passwordTextField.text ?? "") //.trim()
         
-        self.performSegueWithIdentifier(kSegueTo2FACodeSegue, sender: self)
         
+        
+        NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
+        
+        self.performSegueWithIdentifier(kSegueTo2FACodeSegue, sender: self)
 //        sharedUserDataService.signIn(username, password: password, isRemembered: isRemembered) { _, mailboxpwd, error in
 //            MBProgressHUD.hideHUDForView(self.view, animated: true)
 //            if let error = error {
@@ -595,6 +598,18 @@ class SignInViewController: ProtonMailViewController {
     
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
         dismissKeyboard()
+    }
+}
+
+extension SignInViewController : TwoFACodeViewControllerDelegate {
+    func ConfirmedCode(code: String) {
+        
+        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
+    }
+
+    func Cancel2FA() {
+        
+        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
     }
 }
 
