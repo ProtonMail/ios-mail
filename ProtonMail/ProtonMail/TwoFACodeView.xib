@@ -15,7 +15,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TwoFACodeView" customModule="ProtonMail" customModuleProvider="target">
             <connections>
                 <outlet property="loginPasswordField" destination="A8V-lM-bgH" id="5Eo-G6-gaO"/>
+                <outlet property="pwdHeight" destination="5Gn-ZK-Cm6" id="qnx-9V-skm"/>
+                <outlet property="pwdTop" destination="NGU-cD-s4H" id="3n5-SG-R8E"/>
                 <outlet property="twoFactorCodeField" destination="6aO-pr-YfA" id="KGy-5p-JVA"/>
+                <outlet property="twofacodeHeight" destination="UfZ-Gb-q1p" id="ihG-Ij-uuA"/>
+                <outlet property="twofacodeTop" destination="RTj-vc-fVn" id="7cm-54-wOZ"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -34,9 +38,9 @@
                     <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zOT-2Z-oOb" userLabel="username_view">
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zOT-2Z-oOb" userLabel="login_pwd_view">
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ul1-oJ-eH8">
+                        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ul1-oJ-eH8">
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="gyy-PF-yYm"/>
@@ -60,7 +64,7 @@
                         <constraint firstAttribute="trailing" secondItem="A8V-lM-bgH" secondAttribute="trailing" id="nQb-xz-frO"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bgx-tn-UTd" userLabel="username_view">
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bgx-tn-UTd" userLabel="2fa_code_view">
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j3p-d3-Ich">
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -96,7 +100,7 @@
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
-                                <action selector="cancelAction:" destination="-1" eventType="touchUpInside" id="fcZ-tc-gYS"/>
+                                <action selector="cancelAction:" destination="-1" eventType="touchUpInside" id="B4o-6D-KTK"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mVZ-Rh-Rc6">
@@ -107,7 +111,7 @@
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
-                                <action selector="enterAction:" destination="-1" eventType="touchUpInside" id="tA8-Zm-9tC"/>
+                                <action selector="enterAction:" destination="-1" eventType="touchUpInside" id="fWd-er-Dwf"/>
                             </connections>
                         </button>
                     </subviews>
@@ -146,7 +150,7 @@
                 <constraint firstItem="RhL-Lz-oHD" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="veN-H3-lbg"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-654" y="-148"/>
+            <point key="canvasLocation" x="-903" y="-231"/>
         </view>
     </objects>
 </document>

@@ -23,16 +23,17 @@ class TwoFACodeViewController : UIViewController {
         self.view.layoutIfNeeded()
         self.twoFACodeView.delegate = self
         self.twoFACodeView.layer.cornerRadius = 8;
+        self.twoFACodeView.showKeyboard()
+        
+        self.twoFACodeView.initViewMode(.TwoFactorCode)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.twoFACodeView.showKeyboard()
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
     }
     
     override func viewWillDisappear(animated: Bool) {
