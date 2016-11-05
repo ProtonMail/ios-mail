@@ -38,6 +38,7 @@ class UserDataService {
         static let password = "passwordKey"
         static let userInfo = "userInfoKey"
         static let twoFAStatus = "twofaKey"
+        static let userPasswordMode = "userPasswordModeKey"
         
         static let roleSwitchCache = "roleSwitchCache"
         static let defaultSignatureStatus = "defaultSignatureStatus"
@@ -85,7 +86,14 @@ class UserDataService {
     
     var twoFactorStatus: Int = NSUserDefaults.standardUserDefaults().integerForKey(Key.twoFAStatus)  {
         didSet {
-            NSUserDefaults.standardUserDefaults().setValue(defaultSignatureStauts, forKey: Key.twoFAStatus)
+            NSUserDefaults.standardUserDefaults().setValue(twoFactorStatus, forKey: Key.twoFAStatus)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
+    var passwordMode: Int = NSUserDefaults.standardUserDefaults().integerForKey(Key.userPasswordMode)  {
+        didSet {
+            NSUserDefaults.standardUserDefaults().setValue(passwordMode, forKey: Key.userPasswordMode)
             NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
@@ -294,6 +302,8 @@ class UserDataService {
                     self.username = username
                     self.password = password
                     self.isRememberUser = true
+                    self.passwordMode = mpwd != nil ? 1 : 2
+                    
                     onSuccess(mpwd: mpwd)
                 } else {
                     self.twoFactorStatus = 0
@@ -516,8 +526,8 @@ class UserDataService {
         }
     }
     
-    func updatePassword(old_pwd: String, newPassword: String, completion: CompletionBlock) {
-        sharedAPIService.settingUpdatePassword(old_pwd, newPassword: newPassword, completion: { task, responseDict, anError in
+    func updatePassword(old_pwd: String, newPassword: String, twoFACode:String?, completion: CompletionBlock) {
+        sharedAPIService.settingUpdatePassword(old_pwd, newPassword: newPassword, twoFACode: twoFACode, completion: { task, responseDict, anError in
             let error = anError
             if error == nil {
                 self.password = newPassword
@@ -537,7 +547,6 @@ class UserDataService {
         
         if NSUserDefaults.standardUserDefaults().objectForKey(firstRunKey) == nil {
             clearAll()
-            
             NSUserDefaults.standardUserDefaults().setObject(NSDate(), forKey: firstRunKey)
             NSUserDefaults.standardUserDefaults().synchronize()
         }
@@ -549,13 +558,12 @@ class UserDataService {
         isRememberUser = false
         password = nil
         username = nil
-        
+
         isRememberMailboxPassword = false
         mailboxPassword = nil
-        
         userInfo = nil
-        
         twoFactorStatus = 0
+        passwordMode = 2
         
         sharedOpenPGP.cleanAddresses()
     }
@@ -579,6 +587,7 @@ class UserDataService {
             username = nil
             password = nil
             twoFactorStatus = 0
+            passwordMode = 2
         }
         
         if !isRememberMailboxPassword {

@@ -457,7 +457,7 @@ class SettingTableViewController: ProtonMailViewController {
                         self.performSegueWithIdentifier(NotificationSegue, sender: self)
                     case .LoginPWD:
                        // if shard
-                        if sharedUserDataService.twoFactorStatus == 1 {
+                        if sharedUserDataService.passwordMode == 1 {
                             let alert = NSLocalizedString("Please use the web version of ProtonMail to change your passwords.!").alertController()
                             alert.addOKAction()
                             presentViewController(alert, animated: true, completion: nil)

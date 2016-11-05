@@ -23,13 +23,17 @@ extension APIService {
         static let base = AppConstants.BaseAPIPath + "/settings"
     }
     
-    func settingUpdatePassword(oldPassword: String, newPassword: String, completion: CompletionBlock) {
+    func settingUpdatePassword(oldPassword: String, newPassword: String, twoFACode:String?, completion: CompletionBlock) {
         let path = SettingPath.base + "/password"
-        let parameters = [
+        var parameters = [
             "OldPassword" : oldPassword,
             "OldHashedPassword" : "",
             "NewPassword" : newPassword
         ]
+        
+        if let code = twoFACode {
+            parameters["TwoFactorCode"] = code
+        }
         
         setApiVesion(1, appVersion: 1)
         request(method: .PUT, path: path, parameters: parameters, completion: completion)
