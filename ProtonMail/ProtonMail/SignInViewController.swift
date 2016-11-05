@@ -366,6 +366,7 @@ class SignInViewController: ProtonMailViewController {
         } else if segue.identifier == kSegueTo2FACodeSegue {
             let popup = segue.destinationViewController as! TwoFACodeViewController
             popup.delegate = self
+            popup.mode = .TwoFactorCode
             self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }
@@ -411,8 +412,9 @@ class SignInViewController: ProtonMailViewController {
         onePasswordButton.layer.borderWidth = 2
     }
     
+    private var cachedTwoCode : String?
     func signIn() {
-        //MBProgressHUD.showHUDAddedTo(view, animated: true)
+        MBProgressHUD.showHUDAddedTo(view, animated: true)
         isRemembered = true
         if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
             clean();
@@ -424,26 +426,34 @@ class SignInViewController: ProtonMailViewController {
         let password = (passwordTextField.text ?? "") //.trim()
         
         
-        
-        NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
-        
-        self.performSegueWithIdentifier(kSegueTo2FACodeSegue, sender: self)
-//        sharedUserDataService.signIn(username, password: password, isRemembered: isRemembered) { _, mailboxpwd, error in
-//            MBProgressHUD.hideHUDForView(self.view, animated: true)
-//            if let error = error {
-//                PMLog.D("error: \(error)")
-//                self.ShowLoginViews();
-//                let alertController = error.alertController()
-//                alertController.addOKAction()
-//                self.presentViewController(alertController, animated: true, completion: nil)
-//            } else {
-//                if mailboxpwd != nil {
-//                    self.decryptPassword(mailboxpwd!)
-//                } else {
-//                    self.loadContent()
-//                }
-//            }
-//        }
+        //need pass twoFACode
+        sharedUserDataService.signIn(username, password: password, twoFACode: cachedTwoCode,
+            ask2fa: {
+            //2fa
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
+                self.performSegueWithIdentifier(self.kSegueTo2FACodeSegue, sender: self)
+            },
+            onError: { (error) in
+                //error
+                self.cachedTwoCode = nil
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                PMLog.D("error: \(error)")
+                self.ShowLoginViews();
+                let alertController = error.alertController()
+                alertController.addOKAction()
+                self.presentViewController(alertController, animated: true, completion: nil)
+            },
+            onSuccess: { (mailboxpwd) in
+                //ok
+                self.cachedTwoCode = nil
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                if mailboxpwd != nil {
+                    self.decryptPassword(mailboxpwd!)
+                } else {
+                    self.loadContent()
+                }
+            })
     }
     
     func decryptPassword(mailboxPassword:String!) {
@@ -602,13 +612,13 @@ class SignInViewController: ProtonMailViewController {
 }
 
 extension SignInViewController : TwoFACodeViewControllerDelegate {
-    func ConfirmedCode(code: String) {
-        
+    func ConfirmedCode(code: String, pwd : String) {
         NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
+        self.cachedTwoCode = code
+        self.signIn()
     }
 
     func Cancel2FA() {
-        
         NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
     }
 }

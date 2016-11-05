@@ -11,21 +11,23 @@ import UIKit
 
 protocol TwoFACodeViewControllerDelegate {
     func Cancel2FA()
-    func ConfirmedCode(code : String)
+    func ConfirmedCode(code : String, pwd:String)
 }
 
 class TwoFACodeViewController : UIViewController {
-    //var viewModel : TwoFACodeViewModel!
+    //var viewModel : TwoFAViewModel!
     @IBOutlet weak var twoFACodeView: TwoFACodeView!
     var delegate : TwoFACodeViewControllerDelegate?
+    
+    var mode : AuthMode!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.layoutIfNeeded()
         self.twoFACodeView.delegate = self
         self.twoFACodeView.layer.cornerRadius = 8;
+        self.twoFACodeView.initViewMode(mode)
         self.twoFACodeView.showKeyboard()
-        
-        self.twoFACodeView.initViewMode(.TwoFactorCode)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -53,8 +55,8 @@ class TwoFACodeViewController : UIViewController {
 
 extension TwoFACodeViewController : TwoFACodeViewDelegate {
 
-    func ConfirmedCode(code: String) {
-        delegate?.ConfirmedCode(code)
+    func ConfirmedCode(code: String, pwd : String) {
+        delegate?.ConfirmedCode(code, pwd:pwd)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     

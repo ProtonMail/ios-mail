@@ -9,7 +9,7 @@
 import Foundation
 
 protocol TwoFACodeViewDelegate {
-    func ConfirmedCode(code : String)
+    func ConfirmedCode(code : String, pwd : String)
     func Cancel()
 }
 
@@ -31,7 +31,7 @@ enum AuthMode : Int
 class TwoFACodeView : PMView {
     
     var delegate : TwoFACodeViewDelegate?
-    var mode : AuthMode?
+    var mode : AuthMode!
     
     @IBOutlet weak var pwdTop: NSLayoutConstraint! //18
     @IBOutlet weak var pwdHeight: NSLayoutConstraint! //40
@@ -67,23 +67,29 @@ class TwoFACodeView : PMView {
     }
     
     override func setup() {
+        
     }
     
     func showKeyboard() {
-        loginPasswordField.becomeFirstResponder()
+        if mode!.check(.LoginPassword) {
+            loginPasswordField.becomeFirstResponder()
+        } else if mode!.check(.TwoFactorCode) {
+            twoFactorCodeField.becomeFirstResponder()
+        }
     }
     
     @IBAction func enterAction(sender: AnyObject) {
-        
+        let pwd = (loginPasswordField.text ?? "")
+        let code = (twoFactorCodeField.text ?? "").trim()
         if mode!.check(.LoginPassword) {
-            
+            //error need
         }
         if mode!.check(.TwoFactorCode) {
-            
+            //error need
         }
         
         self.dismissKeyboard()
-        delegate?.ConfirmedCode("123")
+        delegate?.ConfirmedCode(code, pwd: pwd)
     }
     
     @IBAction func cancelAction(sender: AnyObject) {

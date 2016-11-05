@@ -43,7 +43,7 @@ extension APIService {
         return hashedPassword
     }
     
-    func auth(username: String, password: String, completion: AuthComplete!) {
+    func auth(username: String, password: String, twoFACode: String?, completion: AuthCompleteBlock!) {
         
         var forceRetry = false
         var forceRetryVersion = 2
@@ -52,21 +52,27 @@ extension APIService {
             AuthInfoRequest<AuthInfoResponse>(username: username).call() { task, res, hasError in
                 if hasError {
                     guard let error = res?.error else {
-                        return completion(task: task, mailpassword: nil, hasError: NSError.authInvalidGrant())
+                        return completion(task: task, mailpassword: nil, authStatus: .ResCheck, error: NSError.authInvalidGrant())
                     }
                     if error.isInternetError() {
-                        return completion(task: task, mailpassword: nil, hasError: NSError.internetError())
+                        return completion(task: task, mailpassword: nil, authStatus: .ResCheck, error: NSError.internetError())
                     } else {
-                        return completion(task: task, mailpassword: nil, hasError: error)
+                        return completion(task: task, mailpassword: nil, authStatus: .ResCheck, error: error)
                     }
                 } else if res?.code == 1000 {// caculate pwd
+                    if let code = res?.TwoFactor {
+                        if  code == 1 && twoFACode == nil {
+                            return completion(task: task, mailpassword: nil, authStatus: .Ask2FA, error: nil)
+                        }
+                    }
+                    
                     guard let authVersion = res?.Version, let modulus = res?.Modulus, let ephemeral = res?.ServerEphemeral, let salt = res?.Salt, let session = res?.SRPSession else {
-                        return completion(task: task, mailpassword: nil, hasError: NSError.authUnableToParseAuthInfo())
+                        return completion(task: task, mailpassword: nil, authStatus: .ResCheck, error: NSError.authUnableToParseAuthInfo())
                     }
                     
                     do {
                         guard let encodedModulus = try modulus.getSignature() else {
-                            return completion(task: task, mailpassword: nil, hasError: NSError.authUnableToParseAuthInfo())
+                            return completion(task: task, mailpassword: nil, authStatus: .ResCheck, error: NSError.authUnableToParseAuthInfo())
                         }
                         let decodedModulus : NSData = encodedModulus.decodeBase64()
                         let decodedSalt : NSData = salt.decodeBase64()
@@ -78,33 +84,33 @@ extension APIService {
                         //init api calls
                         let hashVersion = forceRetry ? forceRetryVersion : authVersion
                         guard let hashedPassword = self.getHashedPwd(hashVersion, password: password, username: username, decodedSalt: decodedSalt, decodedModulus: decodedModulus) else {
-                            return completion(task: task, mailpassword: nil, hasError: NSError.authUnableToGeneratePwd())
+                            return completion(task: task, mailpassword: nil, authStatus: .ResCheck, error: NSError.authUnableToGeneratePwd())
                         }
                         
                         guard let srpClient = try generateSrpProofs(2048, modulus: decodedModulus, serverEphemeral: serverEphemeral, hashedPassword: hashedPassword) where srpClient.isValid() == true else {
-                            return completion(task: task, mailpassword: nil, hasError: NSError.authUnableToGenerateSRP())
+                            return completion(task: task, mailpassword: nil, authStatus: .ResCheck, error: NSError.authUnableToGenerateSRP())
                         }
                         
-                        let api = AuthRequest<AuthResponse>(username: username, ephemeral: srpClient.clientEphemeral, proof: srpClient.clientProof, session: session, serverProof: srpClient.expectedServerProof, code: "");
+                        let api = AuthRequest<AuthResponse>(username: username, ephemeral: srpClient.clientEphemeral, proof: srpClient.clientProof, session: session, serverProof: srpClient.expectedServerProof, code: twoFACode);
                         let completionWrapper: (task: NSURLSessionDataTask!, res: AuthResponse?, hasError : Bool) -> Void = { (task, res, hasError) in
                             if hasError {
                                 if let error = res?.error {
                                     if error.isInternetError() {
-                                        return completion(task: task, mailpassword: nil, hasError: NSError.internetError())
+                                        return completion(task: task, mailpassword: nil, authStatus: .ResCheck, error: NSError.internetError())
                                     } else {
                                         if forceRetry && forceRetryVersion != 0 {
                                             forceRetryVersion -= 1
                                             tryAuth()
                                         } else {
-                                            return completion(task: task, mailpassword: nil, hasError: NSError.authInvalidGrant())
+                                            return completion(task: task, mailpassword: nil, authStatus: .ResCheck, error: NSError.authInvalidGrant())
                                         }
                                     }
                                 } else {
-                                    return completion(task: task, mailpassword: nil, hasError: NSError.authInvalidGrant())
+                                    return completion(task: task, mailpassword: nil, authStatus: .ResCheck, error: NSError.authInvalidGrant())
                                 }
                             } else if res?.code == 1000 {
                                 guard let serverProof : NSData = res?.serverProof?.decodeBase64() else {
-                                    return completion(task: task, mailpassword: nil, hasError: NSError.authServerSRPInValid())
+                                    return completion(task: task, mailpassword: nil, authStatus: .ResCheck, error: NSError.authServerSRPInValid())
                                 }
                                 
                                 if api.serverProof.isEqualToData(serverProof) {
@@ -112,23 +118,23 @@ extension APIService {
                                     credential.storeInKeychain()
                                     if res?.passwordMode == 1 {
                                         guard let keysalt : NSData = res?.keySalt?.decodeBase64() else {
-                                            return completion(task: task, mailpassword: nil, hasError: NSError.authInValidKeySalt())
+                                            return completion(task: task, mailpassword: nil, authStatus: .ResCheck, error: NSError.authInValidKeySalt())
                                         }
                                         let mpwd = PasswordUtils.getMailboxPassword(password, salt: keysalt)
-                                        return completion(task: task, mailpassword: mpwd, hasError: nil)
+                                        return completion(task: task, mailpassword: mpwd, authStatus: .ResCheck, error: nil)
                                     } else {
-                                        return completion(task: task, mailpassword: nil, hasError: nil)
+                                        return completion(task: task, mailpassword: nil, authStatus: .ResCheck, error: nil)
                                     }
                                 } else {
-                                    return completion(task: task, mailpassword: nil, hasError: NSError.authServerSRPInValid())
+                                    return completion(task: task, mailpassword: nil, authStatus: .ResCheck, error: NSError.authServerSRPInValid())
                                 }
                             } else {
-                                return completion(task: task, mailpassword: nil, hasError: NSError.authUnableToParseToken())
+                                return completion(task: task, mailpassword: nil, authStatus: .ResCheck, error: NSError.authUnableToParseToken())
                             }
                         }
                         api.call(completionWrapper)
                     } catch {
-                        return completion(task: task, mailpassword: nil, hasError: NSError.authUnableToParseAuthInfo())
+                        return completion(task: task, mailpassword: nil, authStatus: .ResCheck, error: NSError.authUnableToParseAuthInfo())
                     }
                 }
             }

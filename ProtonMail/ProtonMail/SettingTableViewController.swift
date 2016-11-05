@@ -456,6 +456,7 @@ class SettingTableViewController: ProtonMailViewController {
                     case .NotifyEmail:
                         self.performSegueWithIdentifier(NotificationSegue, sender: self)
                     case .LoginPWD:
+                       // if shard
                         self.performSegueWithIdentifier(LoginpwdSegue, sender: self)
                     case .MBP:
                         let alert = NSLocalizedString("Please use the web version of ProtonMail to change your mailbox password!").alertController()

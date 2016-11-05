@@ -167,6 +167,14 @@
 		754387DB1AB3A54E0003B0AC /* SignUpKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754387DA1AB3A54E0003B0AC /* SignUpKeyViewController.swift */; };
 		7546BE551C8D4F9100FCEB0A /* TouchID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546BE541C8D4F9100FCEB0A /* TouchID.swift */; };
 		7546BE571C8D557C00FCEB0A /* TouchIDCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546BE561C8D557C00FCEB0A /* TouchIDCell.swift */; };
+		754713111DCD51A30084BF34 /* TwoFAViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754713101DCD51A30084BF34 /* TwoFAViewModel.swift */; };
+		754713121DCD51A30084BF34 /* TwoFAViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754713101DCD51A30084BF34 /* TwoFAViewModel.swift */; };
+		754713141DCD51B30084BF34 /* General2FAViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754713131DCD51B30084BF34 /* General2FAViewModelImpl.swift */; };
+		754713151DCD51B30084BF34 /* General2FAViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754713131DCD51B30084BF34 /* General2FAViewModelImpl.swift */; };
+		754713181DCD616D0084BF34 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754713171DCD616D0084BF34 /* SignInViewModel.swift */; };
+		754713191DCD616D0084BF34 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754713171DCD616D0084BF34 /* SignInViewModel.swift */; };
+		7547131B1DCD61850084BF34 /* SignInViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7547131A1DCD61850084BF34 /* SignInViewModelImpl.swift */; };
+		7547131C1DCD61850084BF34 /* SignInViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7547131A1DCD61850084BF34 /* SignInViewModelImpl.swift */; };
 		75484B8B1AF29EBF00B97472 /* NSDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */; };
 		7548D0961CC10DFB001C3AEC /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */; };
 		7548D0971CC11876001C3AEC /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */; };
@@ -774,6 +782,10 @@
 		754387DA1AB3A54E0003B0AC /* SignUpKeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpKeyViewController.swift; sourceTree = "<group>"; };
 		7546BE541C8D4F9100FCEB0A /* TouchID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchID.swift; sourceTree = "<group>"; };
 		7546BE561C8D557C00FCEB0A /* TouchIDCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchIDCell.swift; sourceTree = "<group>"; };
+		754713101DCD51A30084BF34 /* TwoFAViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoFAViewModel.swift; sourceTree = "<group>"; };
+		754713131DCD51B30084BF34 /* General2FAViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = General2FAViewModelImpl.swift; sourceTree = "<group>"; };
+		754713171DCD616D0084BF34 /* SignInViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
+		7547131A1DCD61850084BF34 /* SignInViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewModelImpl.swift; sourceTree = "<group>"; };
 		75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateExtension.swift; sourceTree = "<group>"; };
 		7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTempCachedStatus.swift; sourceTree = "<group>"; };
 		7549F0B01D07827A00643C64 /* AddressAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressAPI.swift; sourceTree = "<group>"; };
@@ -1455,6 +1467,24 @@
 			name = Extensions;
 			sourceTree = "<group>";
 		};
+		7547130F1DCD517E0084BF34 /* TwoFA */ = {
+			isa = PBXGroup;
+			children = (
+				754713101DCD51A30084BF34 /* TwoFAViewModel.swift */,
+				754713131DCD51B30084BF34 /* General2FAViewModelImpl.swift */,
+			);
+			name = TwoFA;
+			sourceTree = "<group>";
+		};
+		754713161DCD61510084BF34 /* SignIn */ = {
+			isa = PBXGroup;
+			children = (
+				754713171DCD616D0084BF34 /* SignInViewModel.swift */,
+				7547131A1DCD61850084BF34 /* SignInViewModelImpl.swift */,
+			);
+			name = SignIn;
+			sourceTree = "<group>";
+		};
 		754CD4891AB80D580084C54A /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -1641,6 +1671,8 @@
 		75ECC2361AB9F10600B8FC78 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				754713161DCD61510084BF34 /* SignIn */,
+				7547130F1DCD517E0084BF34 /* TwoFA */,
 				75BDECA71CBCCC5A00982089 /* PinCode */,
 				75E49EFE1CAB07BC00235ACC /* SignUp */,
 				7567B06A1B334AF200A72A1E /* ComposeViewModel.swift */,
@@ -2194,6 +2226,7 @@
 				756CDEFC1D9DB3A0004455F6 /* JKBCryptRandom.swift in Sources */,
 				07CCCC301AA4E26000ECA79E /* NSCoderExtension.swift in Sources */,
 				752A9EBD1DB80E40008D4392 /* LabelApplayViewModel.swift in Sources */,
+				7547131B1DCD61850084BF34 /* SignInViewModelImpl.swift in Sources */,
 				754CD4881AB809D60084C54A /* SettingTableViewController.swift in Sources */,
 				07009F091A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift in Sources */,
 				0713239C1A7C0B4C0043DB41 /* NSManagedObjectContextExtension.swift in Sources */,
@@ -2218,6 +2251,7 @@
 				75F4638A1C60071B00918B46 /* EmailVerifyViewController.swift in Sources */,
 				073FE01D1A9561F600825980 /* Contact.swift in Sources */,
 				073FE01F1A95620D00825980 /* ContactExtension.swift in Sources */,
+				754713181DCD616D0084BF34 /* SignInViewModel.swift in Sources */,
 				07655BBD1AB1036200CD3883 /* BugDataService.swift in Sources */,
 				70FC90DA1A9BC11F00498B42 /* StringExtension.swift in Sources */,
 				07CC996C1A717ABD000FD6F8 /* UIStoryboardExtension.swift in Sources */,
@@ -2304,6 +2338,7 @@
 				7567B06F1B334FD300A72A1E /* ViewModelServiceImpl.swift in Sources */,
 				75F1697E1AF7F43A00BE6E79 /* Logger.swift in Sources */,
 				7514FC291B79825F00DDD297 /* MenuItem.swift in Sources */,
+				754713111DCD51A30084BF34 /* TwoFAViewModel.swift in Sources */,
 				7069620B1A7139C8001443B2 /* SettingsViewController.swift in Sources */,
 				758625D31CD80C6D0037DFA7 /* SettingsNavigationController.swift in Sources */,
 				07520CFC1AA67D38000D2175 /* PushNotificationService.swift in Sources */,
@@ -2343,6 +2378,7 @@
 				0767587A1AA126E400F9AC9C /* StorageLimit.swift in Sources */,
 				759BBDC61BA0D1C8002608B5 /* MultiLabelDisplayView.swift in Sources */,
 				755638C91CA1F423003FA2D0 /* MessageViewModel.swift in Sources */,
+				754713141DCD51B30084BF34 /* General2FAViewModelImpl.swift in Sources */,
 				755F92191C7E6D0D00BAEDF9 /* OnboardingView.swift in Sources */,
 				072AB6A11A8EE50000AF45D6 /* ProtonMail-Bridging-Header.cpp in Sources */,
 				071210E61AA91B4000B834F2 /* APIService+DeviceExtension.swift in Sources */,
@@ -2481,6 +2517,7 @@
 				75DE7CE71CAAEA4900F5443E /* DomainsTableViewCell.swift in Sources */,
 				75DE7CE81CAAEA4900F5443E /* UserInfo.swift in Sources */,
 				75BDECAE1CBCD0FA00982089 /* PinCodeModel.swift in Sources */,
+				754713191DCD616D0084BF34 /* SignInViewModel.swift in Sources */,
 				75DE7CE91CAAEA4900F5443E /* MessageViewModelImpl.swift in Sources */,
 				75DE7CEA1CAAEA4900F5443E /* ActivityIndicatorHelper.swift in Sources */,
 				75DE7CEB1CAAEA4900F5443E /* RecipientView.swift in Sources */,
@@ -2509,6 +2546,7 @@
 				75DE7CFF1CAAEA4900F5443E /* ComposePasswordViewController.swift in Sources */,
 				75DE7D001CAAEA4900F5443E /* NSManagedObjectExtension.swift in Sources */,
 				75DE7D011CAAEA4900F5443E /* APIServiceDefined.swift in Sources */,
+				754713151DCD51B30084BF34 /* General2FAViewModelImpl.swift in Sources */,
 				75DE7D021CAAEA4900F5443E /* SignUpKeyViewController.swift in Sources */,
 				75DE7D031CAAEA4900F5443E /* QueueManager.swift in Sources */,
 				7582CFC01D024E3A00F521D4 /* TopMessageView.swift in Sources */,
@@ -2522,6 +2560,7 @@
 				75DE7D0A1CAAEA4900F5443E /* AttachmentHelper.swift in Sources */,
 				75DE7D0B1CAAEA4900F5443E /* AttachmentAPI.swift in Sources */,
 				752A9EC11DB8286C008D4392 /* BugReportCache.swift in Sources */,
+				754713121DCD51A30084BF34 /* TwoFAViewModel.swift in Sources */,
 				753745081D6B885500682C5A /* APIService+ResponseTransformer.swift in Sources */,
 				75DE7D0C1CAAEA4900F5443E /* MessageDataService.swift in Sources */,
 				75DE7D0D1CAAEA4900F5443E /* UserCachedStatus.swift in Sources */,
@@ -2621,6 +2660,7 @@
 				75DE7D5C1CAAEA4900F5443E /* NSURLExtension.swift in Sources */,
 				75DE7D5D1CAAEA4900F5443E /* SearchViewController.swift in Sources */,
 				75DE7D5E1CAAEA4900F5443E /* NSTimeIntervalExtension.swift in Sources */,
+				7547131C1DCD61850084BF34 /* SignInViewModelImpl.swift in Sources */,
 				75DE7D5F1CAAEA4900F5443E /* SplashViewController.swift in Sources */,
 				75DE7D601CAAEA4900F5443E /* SignupViewModel.swift in Sources */,
 				75DE7D611CAAEA4900F5443E /* LabelboxViewModelImpl.swift in Sources */,

@@ -24,6 +24,12 @@ class UserDataService {
     typealias CompletionBlock = APIService.CompletionBlock
     typealias UserInfoBlock = APIService.UserInfoBlock
     
+    //typealias LoginBlock = (mailboxPwd: String? error: NSError?) -> Void
+    //Login callback blocks
+    typealias LoginAsk2FABlock = () -> Void
+    typealias LoginErrorBlock = (error: NSError) -> Void
+    typealias LoginSuccessBlock = (mpwd: String?) -> Void
+    
     struct Key {
         static let isRememberMailboxPassword = "isRememberMailboxPasswordKey"
         static let isRememberUser = "isRememberUserKey"
@@ -269,20 +275,21 @@ class UserDataService {
         return self.password == password
     }
     
-    
-    func signIn(username: String, password: String, isRemembered: Bool, completion: UserInfoBlock) {
-        sharedAPIService.auth(username, password: password) { task, mpwd, error in
-            if error == nil {
-                self.isSignedIn = true
-                self.username = username
-                self.password = password
-                if isRemembered {
-                    self.isRememberUser = isRemembered
-                }
-                completion(nil, mpwd, nil)
+    func signIn(username: String, password: String, twoFACode: String?, ask2fa: LoginAsk2FABlock, onError:LoginErrorBlock, onSuccess: LoginSuccessBlock) {
+        sharedAPIService.auth(username, password: password, twoFACode: twoFACode) { task, mpwd, status, error in
+            if status == .Ask2FA {
+                ask2fa()
             } else {
-                self.signOut(true)
-                completion(nil, nil, error)
+                if error == nil {
+                    self.isSignedIn = true
+                    self.username = username
+                    self.password = password
+                    self.isRememberUser = true
+                    onSuccess(mpwd: mpwd)
+                } else {
+                    self.signOut(true)
+                    onError(error: error!)
+                }
             }
         }
     }
