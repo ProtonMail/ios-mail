@@ -72,14 +72,12 @@ class ChangePasswordViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChangePasswordViewController.keyboardWillShowOne(_:)), name: UIKeyboardDidShowNotification, object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ChangePasswordViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object:nil)
+        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object:nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object:nil)
+        NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
     }
 
     func updateView() {
@@ -91,22 +89,6 @@ class ChangePasswordViewController: UIViewController {
             topOffset.constant = offbox - keyboardHeight;
         }
     }
-    
-    // MARK: - Private methods
-    func keyboardWillShowOne(sender: NSNotification) {
-        let info: NSDictionary = sender.userInfo!
-        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
-            PMLog.D("\(keyboardSize)")
-            keyboardHeight = keyboardSize.height;
-            updateView();
-        }
-    }
-    
-    func keyboardWillHide(sender: NSNotification) {
-        keyboardHeight = 0;
-        updateView();
-    }
-    
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == kAsk2FASegue {
@@ -124,32 +106,7 @@ class ChangePasswordViewController: UIViewController {
         presentingController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
     }
 
-    
-//    // MARK: - NSNotificationCenterKeyboardObserverProtocol
-//    extension SignInViewController: NSNotificationCenterKeyboardObserverProtocol {
-//        func keyboardWillHideNotification(notification: NSNotification) {
-//            let keyboardInfo = notification.keyboardInfo
-//            scrollBottomPaddingConstraint.constant = 0.0
-//            self.configConstraint(false)
-//            UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
-//                self.view.layoutIfNeeded()
-//                }, completion: nil)
-//        }
-//        
-//        func keyboardWillShowNotification(notification: NSNotification) {
-//            let keyboardInfo = notification.keyboardInfo
-//            let info: NSDictionary = notification.userInfo!
-//            if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
-//                scrollBottomPaddingConstraint.constant = keyboardSize.height;
-//            }
-//            self.configConstraint(true)
-//            UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
-//                self.view.layoutIfNeeded()
-//                }, completion: nil)
-//        }
-//    }
-    
-    
+
     
     @IBAction func StartEditing(sender: UITextField) {
         let frame = sender.convertRect(sender.frame, toView: self.view)
@@ -192,7 +149,7 @@ class ChangePasswordViewController: UIViewController {
     private func startUpdatePwd () -> Void {
         dismissKeyboard()
         if viewModel.needAsk2FA() && cached2faCode == nil {
-            //NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
+            NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
             self.performSegueWithIdentifier(self.kAsk2FASegue, sender: self)
         } else {
             ActivityIndicatorHelper.showActivityIndicatorAtView(view)
@@ -215,10 +172,6 @@ class ChangePasswordViewController: UIViewController {
                 }
             });
         }
-        
-        
-        
-      
     }
 
     // MARK: - Actions
@@ -228,15 +181,31 @@ class ChangePasswordViewController: UIViewController {
 }
 
 
+// MARK: - NSNotificationCenterKeyboardObserverProtocol
+extension ChangePasswordViewController: NSNotificationCenterKeyboardObserverProtocol {
+    func keyboardWillHideNotification(notification: NSNotification) {
+        keyboardHeight = 0;
+        updateView();
+    }
+    
+    func keyboardWillShowNotification(notification: NSNotification) {
+        let info: NSDictionary = notification.userInfo!
+        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
+            keyboardHeight = keyboardSize.height;
+            updateView();
+        }
+    }
+}
+
 extension ChangePasswordViewController : TwoFACodeViewControllerDelegate {
     func ConfirmedCode(code: String, pwd : String) {
-        //NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
+        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
         self.cached2faCode = code
         self.startUpdatePwd()
     }
     
     func Cancel2FA() {
-        //NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
+        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
     }
 }
 

@@ -517,6 +517,7 @@ class SignInViewController: ProtonMailViewController {
     
     func signInIfRememberedCredentials() {
         if sharedUserDataService.isUserCredentialStored {
+            userCachedStatus.lockedApp = false
             sharedUserDataService.isSignedIn = true
             isRemembered = true
             

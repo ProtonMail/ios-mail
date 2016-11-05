@@ -99,7 +99,6 @@ class SettingDetailViewController: UIViewController {
         }
     }
     
-    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == kAsk2FASegue {
             let popup = segue.destinationViewController as! TwoFACodeViewController
@@ -160,7 +159,6 @@ class SettingDetailViewController: UIViewController {
     private func startUpdateValue () -> Void {
         dismissKeyboard()
         if viewModel.needAsk2FA() && cached2faCode == nil {
-            //NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
             self.performSegueWithIdentifier(self.kAsk2FASegue, sender: self)
         } else {
             ActivityIndicatorHelper.showActivityIndicatorAtView(view)
@@ -189,13 +187,11 @@ class SettingDetailViewController: UIViewController {
 
 extension SettingDetailViewController : TwoFACodeViewControllerDelegate {
     func ConfirmedCode(code: String, pwd : String) {
-        //NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
         self.cached2faCode = code
         self.startUpdateValue()
     }
     
     func Cancel2FA() {
-        //NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
     }
 }
 
