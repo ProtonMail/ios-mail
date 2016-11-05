@@ -37,6 +37,7 @@ class UserDataService {
         static let username = "usernameKey"
         static let password = "passwordKey"
         static let userInfo = "userInfoKey"
+        static let twoFAStatus = "twofaKey"
         
         static let roleSwitchCache = "roleSwitchCache"
         static let defaultSignatureStatus = "defaultSignatureStatus"
@@ -78,6 +79,13 @@ class UserDataService {
     private var defaultSignatureStauts: Bool = NSUserDefaults.standardUserDefaults().boolForKey(Key.defaultSignatureStatus) {
         didSet {
             NSUserDefaults.standardUserDefaults().setValue(defaultSignatureStauts, forKey: Key.defaultSignatureStatus)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
+    var twoFactorStatus: Int = NSUserDefaults.standardUserDefaults().integerForKey(Key.twoFAStatus)  {
+        didSet {
+            NSUserDefaults.standardUserDefaults().setValue(defaultSignatureStauts, forKey: Key.twoFAStatus)
             NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
@@ -278,6 +286,7 @@ class UserDataService {
     func signIn(username: String, password: String, twoFACode: String?, ask2fa: LoginAsk2FABlock, onError:LoginErrorBlock, onSuccess: LoginSuccessBlock) {
         sharedAPIService.auth(username, password: password, twoFACode: twoFACode) { task, mpwd, status, error in
             if status == .Ask2FA {
+                self.twoFactorStatus = 1
                 ask2fa()
             } else {
                 if error == nil {
@@ -287,6 +296,7 @@ class UserDataService {
                     self.isRememberUser = true
                     onSuccess(mpwd: mpwd)
                 } else {
+                    self.twoFactorStatus = 0
                     self.signOut(true)
                     onError(error: error!)
                 }
@@ -545,6 +555,8 @@ class UserDataService {
         
         userInfo = nil
         
+        twoFactorStatus = 0
+        
         sharedOpenPGP.cleanAddresses()
     }
     
@@ -566,6 +578,7 @@ class UserDataService {
         if !self.isRememberUser {
             username = nil
             password = nil
+            twoFactorStatus = 0
         }
         
         if !isRememberMailboxPassword {
@@ -574,9 +587,3 @@ class UserDataService {
     }
 }
 
-// MARK: - Message extension
-
-extension Message {
-    
-    
-}
