@@ -492,8 +492,8 @@ class UserDataService {
         }
     }
     
-    func updateNotificationEmail(newNotificationEmail: String, password : String, completion: CompletionBlock) {
-        let emailSetting = UpdateNotificationEmail<ApiResponse>(password: password, notificationEmail: newNotificationEmail)
+    func updateNotificationEmail(newNotificationEmail: String, password : String, tfaCode: String?, completion: CompletionBlock) {
+        let emailSetting = UpdateNotificationEmail<ApiResponse>(password: password, notificationEmail: newNotificationEmail, tfaCode: tfaCode)
         emailSetting.call() { task, response, hasError in
             if !hasError {
                 if let userInfo = self.userInfo {
