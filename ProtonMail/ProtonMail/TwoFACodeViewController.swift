@@ -21,6 +21,8 @@ class TwoFACodeViewController : UIViewController {
     
     var mode : AuthMode!
     
+    @IBOutlet weak var tfaCodeCenterConstraint: NSLayoutConstraint!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.layoutIfNeeded()
@@ -32,6 +34,7 @@ class TwoFACodeViewController : UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -40,6 +43,7 @@ class TwoFACodeViewController : UIViewController {
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
     }
     
     override func didReceiveMemoryWarning() {
@@ -50,6 +54,24 @@ class TwoFACodeViewController : UIViewController {
         return UIStatusBarStyle.LightContent
     }
 
+}
+
+// MARK: - NSNotificationCenterKeyboardObserverProtocol
+extension TwoFACodeViewController: NSNotificationCenterKeyboardObserverProtocol {
+    func keyboardWillHideNotification(notification: NSNotification) {
+        let keyboardInfo = notification.keyboardInfo
+        tfaCodeCenterConstraint.constant = 0.0
+        UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+            }, completion: nil)
+    }
+    
+    func keyboardWillShowNotification(notification: NSNotification) {
+        let info: NSDictionary = notification.userInfo!
+        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
+            tfaCodeCenterConstraint.constant = (keyboardSize.height / 2) * -1.0
+        }
+    }
 }
 
 
