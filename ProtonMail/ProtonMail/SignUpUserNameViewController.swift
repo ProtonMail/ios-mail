@@ -69,7 +69,8 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         self.updatePickedDomain()
     }
     
-    func updatePickedDomain () { pickedDomainLabel.text = "@\(domains[selected])"
+    func updatePickedDomain () {
+        pickedDomainLabel.text = "@\(domains[selected])"
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -220,7 +221,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         //Create the cancel button & set its title
         let buttonCancel: UIButton = UIButton(frame: buttonCancelFrame);
         buttonCancel.setTitle(NSLocalizedString("Done"), forState: UIControlState.Normal);
-
+        
         buttonCancel.setTitleColor(UIColor.blueColor(), forState: UIControlState.Normal);
         toolView.addSubview(buttonCancel); //add it to the toolView
         

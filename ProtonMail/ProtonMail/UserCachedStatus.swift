@@ -33,6 +33,9 @@ class UserCachedStatus : SharedCacheBase {
         static let lastLoggedInUser = "lastLoggedInUser" //user cache but could restore
         static let lastPinFailedTimes = "lastPinFailedTimes" //user cache can't restore
         
+        
+        static let isManuallyLockApp = "isManuallyLockApp"
+        
         //wait
         static let lastFetchMessageID = "last_fetch_message_id"
         static let lastFetchMessageTime = "last_fetch_message_time"
@@ -142,6 +145,8 @@ class UserCachedStatus : SharedCacheBase {
         UICKeyChainStore.removeItemForKey(Key.autoLockTime)
         UICKeyChainStore.removeItemForKey(Key.enterBackgroundTime)
         getShared().removeObjectForKey(Key.lastPinFailedTimes)
+        getShared().removeObjectForKey(Key.isManuallyLockApp)
+        
         
         getShared().synchronize()
     }
@@ -154,6 +159,7 @@ class UserCachedStatus : SharedCacheBase {
         getShared().removeObjectForKey(Key.isTouchIDEnabled)
         getShared().removeObjectForKey(Key.autoLogoutTime);
         getShared().removeObjectForKey(Key.askEnableTouchID)
+        getShared().removeObjectForKey(Key.isManuallyLockApp)
         
         //
         
@@ -222,6 +228,15 @@ extension UserCachedStatus {
         }
         set {
             UICKeyChainStore.setString(newValue, forKey: Key.enterBackgroundTime)
+        }
+    }
+    
+    var lockedApp : Bool {
+        get {
+            return getShared().boolForKey(Key.isManuallyLockApp)
+        }
+        set {
+            setValue(newValue, forKey: Key.isManuallyLockApp)
         }
     }
     

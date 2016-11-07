@@ -442,6 +442,19 @@ extension String {
         return base64Encoded
     }
     
+    func decodeBase64() -> String {
+        let decodedData = NSData(base64EncodedString: self, options: NSDataBase64DecodingOptions(rawValue: 0))
+        let decodedString = NSString(data: decodedData!, encoding: NSUTF8StringEncoding)
+        PMLog.D(decodedString!) // foo
+        
+        return decodedString! as String
+    }
+    
+    func decodeBase64() -> NSData {
+        let decodedData = NSData(base64EncodedString: self, options: NSDataBase64DecodingOptions(rawValue: 0))
+        return decodedData!
+    }
+    
     //
     func toContacts() -> [ContactVO] {
         var out : [ContactVO] = [ContactVO]();

@@ -129,21 +129,15 @@ extension AppDelegate: UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         Fabric.with([Crashlytics()])
-        //
-        //        let sharedCache = NSURLCache(memoryCapacity: 0, diskCapacity: 0, diskPath: nil)
-        //        NSURLCache.setSharedURLCache(sharedCache)
-        //
-        shareViewModelFactoy = ViewModelFactoryProduction()
         
+        shareViewModelFactoy = ViewModelFactoryProduction()
         AFNetworkActivityIndicatorManager.sharedManager().enabled = true
         
         //net work debug option
         AFNetworkActivityLogger.sharedLogger().startLogging()
         AFNetworkActivityLogger.sharedLogger().level = AFHTTPRequestLoggerLevel.AFLoggerLevelDebug
         
-        //sharedRemoteReachability.startNotifier()
         sharedInternetReachability.startNotifier()
-
         
         setupWindow()
         sharedMessageDataService.launchCleanUpIfNeeded()
@@ -155,15 +149,10 @@ extension AppDelegate: UIApplicationDelegate {
         }
         sharedPushNotificationService.setLaunchOptions(launchOptions)
         
-        
-        PMLog.D("\(UIScreen.mainScreen().bounds)")
-        
         return true
     }
     
     func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
-        //let dict = [String, String]
-        //let url = "http://example.com?param1=value1&param2=param2"
         let urlComponents = NSURLComponents(URL: url, resolvingAgainstBaseURL: true)
         if urlComponents?.host == "signup" {
             if let queryItems = urlComponents?.queryItems {
@@ -193,27 +182,9 @@ extension AppDelegate: UIApplicationDelegate {
     
     func applicationWillEnterForeground(application: UIApplication) {
         Snapshot().willEnterForeground(application)
-        
-        if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
-            var timeIndex : Int = -1
-            if let t = Int(userCachedStatus.lockTime) {
-                timeIndex = t
-            }
-            if timeIndex == 0 {
-                (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: false)
-                sharedVMService.resetComposerView()
-            } else if timeIndex > 0 {
-                var exitTime : Int = 0
-                if let t = Int(userCachedStatus.exitTime) {
-                    exitTime = t
-                }
-                let timeInterval : Int = Int(NSDate().timeIntervalSince1970)
-                let diff = timeInterval - exitTime
-                if diff > (timeIndex*60) || diff <= 0 {
-                    (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: false)
-                    sharedVMService.resetComposerView()
-                }
-            }
+        if sharedTouchID.showTouchIDOrPin() {
+            (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: false)
+            sharedVMService.resetComposerView()
         }
     }
     

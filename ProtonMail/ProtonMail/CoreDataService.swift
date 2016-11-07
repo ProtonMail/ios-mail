@@ -76,11 +76,12 @@ class CoreDataService {
         let url = NSFileManager.defaultManager().applicationSupportDirectoryURL.URLByAppendingPathComponent("ProtonMail.sqlite")
         do {
             try coordinator?.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
-            url.excludeFromBackup()
+            url!.excludeFromBackup()
+            //TODO:: need to handle empty instead of !
         } catch let ex as NSError {
             if (ex.domain == "NSCocoaErrorDomain" && ex.code == 134100) {
                 do {
-                    try NSFileManager.defaultManager().removeItemAtURL(url)
+                    try NSFileManager.defaultManager().removeItemAtURL(url!)
                     coordinator = newPersistentStoreCoordinator(managedObjectModel)
                 } catch let error as NSError{
                     coordinator = nil

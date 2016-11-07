@@ -23,27 +23,33 @@ class Snapshot {
         static let snapshot = 101
     }
     
+    // the launchScreen
+    private struct NibName {
+        static let Name = "LaunchScreen"
+    }
+    
     // create a view and overlay the screen
     func didEnterBackground(application: UIApplication) {
         if let window = application.keyWindow {
-            let snapshotView = (NSBundle.mainBundle().loadNibNamed("LaunchScreen", owner: window, options: nil).first as? UIView) ?? {
-                let view = UIView(frame: window.bounds)
-                view.backgroundColor = UIColor.ProtonMail.Blue_85B1DE
-                return view
-                }() as UIView
-            
-            snapshotView.tag = Tag.snapshot
-            window.addSubview(snapshotView)
-            
-            snapshotView.mas_makeConstraints { (make) -> Void in
-                make.top.equalTo()(window)
-                make.left.equalTo()(window)
-                make.right.equalTo()(window)
-                make.bottom.equalTo()(window)
+            if let launchScreen = NSBundle.mainBundle().loadNibNamed(NibName.Name, owner: window, options: nil) {
+                let snapshotView = launchScreen.first as? UIView ?? {
+                    let view = UIView(frame: window.bounds)
+                    view.backgroundColor = UIColor.ProtonMail.Blue_85B1DE
+                    return view
+                    }() as UIView
+                
+                snapshotView.tag = Tag.snapshot
+                window.addSubview(snapshotView)
+                snapshotView.mas_makeConstraints { (make) -> Void in
+                    make.top.equalTo()(window)
+                    make.left.equalTo()(window)
+                    make.right.equalTo()(window)
+                    make.bottom.equalTo()(window)
+                }
             }
         }
     }
-
+    
     func willEnterForeground(application: UIApplication) {
         if let snapshotView = application.keyWindow?.viewWithTag(Tag.snapshot) {
             snapshotView.removeFromSuperview()

@@ -1212,7 +1212,7 @@ extension EmailHeaderView: UITableViewDelegate {
             if !attachment.isDownloaded {
                 downloadAttachment(attachment, forIndexPath: indexPath)
             } else if let localURL = attachment.localURL {
-                if NSFileManager.defaultManager().fileExistsAtPath(attachment.localURL!.path!, isDirectory: nil) {
+                if let path = localURL.path where NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: nil) {
                     if let cell = tableView.cellForRowAtIndexPath(indexPath) {
                         if let key_packet = attachment.keyPacket {
                             if let data: NSData = NSData(base64EncodedString:key_packet, options: NSDataBase64DecodingOptions(rawValue: 0)) {
@@ -1267,7 +1267,7 @@ extension EmailHeaderView: UITableViewDelegate {
                     UIView.animateWithDuration(0.25, animations: { () -> Void in
                         cell.progressView.hidden = true
                         if let localURL = attachment.localURL {
-                            if NSFileManager.defaultManager().fileExistsAtPath(attachment.localURL!.path!, isDirectory: nil) {
+                            if let path = localURL.path where NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: nil) {
                                 if let cell = self.attachmentView!.cellForRowAtIndexPath(indexPath) {
                                     if let key_packet = attachment.keyPacket {
                                         if let data: NSData = NSData(base64EncodedString:key_packet, options: NSDataBase64DecodingOptions(rawValue: 0)) {

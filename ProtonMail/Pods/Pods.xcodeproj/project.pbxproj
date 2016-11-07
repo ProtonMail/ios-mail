@@ -657,6 +657,8 @@
 		72479E61BFDB9367D9F26B6878DE202A /* ZSSunderline@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "ZSSunderline@2x.png"; sourceTree = "<group>"; };
 		72DC14EB5991CD2BFEC1F735DF5EBB09 /* ZSSTextView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ZSSTextView.h; sourceTree = "<group>"; };
 		75986BA0369B43040B84ADAF141A1920 /* ZSSunorderedlist@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = "ZSSunorderedlist@2x.png"; sourceTree = "<group>"; };
+		75BB15941DB005C300F28083 /* PMNSrpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMNSrpClient.h; sourceTree = "<group>"; };
+		75BB15951DB005C300F28083 /* PMNSrpProofs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMNSrpProofs.h; sourceTree = "<group>"; };
 		771995D133D1A73BA1B9B5FC9A335977 /* NSDate+Helper.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "NSDate+Helper.xcconfig"; sourceTree = "<group>"; };
 		7766E4DDBC1FC4528E3F90AAFB5C267C /* NSEntityDescription+Groot.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSEntityDescription+Groot.h"; path = "Groot/Private/NSEntityDescription+Groot.h"; sourceTree = "<group>"; };
 		77C007DFBE3EDB01CE6F15349AA15A04 /* UIAlertView+AFNetworking.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIAlertView+AFNetworking.m"; path = "UIKit+AFNetworking/UIAlertView+AFNetworking.m"; sourceTree = "<group>"; };
@@ -1283,6 +1285,8 @@
 		719D38D4AEA784B29D9811AAFABD2087 /* OpenPGP */ = {
 			isa = PBXGroup;
 			children = (
+				75BB15941DB005C300F28083 /* PMNSrpClient.h */,
+				75BB15951DB005C300F28083 /* PMNSrpProofs.h */,
 				5CE11AEA15F63F18E1F6F78937228541 /* OpenPGP.h */,
 				DC2B9C38FAC248849D6BC2F0F28AB350 /* PMNAddress.h */,
 				2C28CD0A08A520CDF2512EBD92BD97C0 /* PMNEncryptPackage.h */,

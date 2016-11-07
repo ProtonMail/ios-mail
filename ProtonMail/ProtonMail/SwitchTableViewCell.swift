@@ -27,7 +27,7 @@ class SwitchTableViewCell: UITableViewCell {
         let status = sender.on
         callback?(cell: self, newStatus : status, feedback: { (isOK ) -> Void in
             if isOK == false {
-                self.switchView.on = !status
+                self.switchView.on = false
             }
         })
     }

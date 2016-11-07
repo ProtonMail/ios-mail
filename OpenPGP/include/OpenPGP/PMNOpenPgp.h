@@ -104,6 +104,8 @@
 - (nonnull NSString *)decryptMailboxPwd:(nonnull NSString *)encryptedPwd
                                    salt:(nonnull NSString *)salt;
 
+- (nonnull NSString *)readClearsignedMessage:(nonnull NSString *)signedMessage;
+
 /**test functions */
 - (int32_t)throwAnException;
 

@@ -19,7 +19,7 @@ import Foundation
 /// User extensions
 extension APIService {
     
-    typealias UserInfoBlock = (UserInfo?, NSError?) -> Void
+    typealias UserInfoBlock = (UserInfo?, String?, NSError?) -> Void
 
     private struct UserPath {
         static let base = AppConstants.BaseAPIPath + "/users"

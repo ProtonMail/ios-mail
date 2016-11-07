@@ -174,7 +174,7 @@ extension Attachment {
     class func attachmentDelete(attachmentObjectID: NSManagedObjectID, inManagedObjectContext context: NSManagedObjectContext) -> Void {
         do {
             if let att = try context.existingObjectWithID(attachmentObjectID) as? Attachment {
-                context.delete(att);
+                context.deleteObject(att)
                 if let error = context.saveUpstreamIfNeeded() {
                     PMLog.D("error: \(error)")
                 }

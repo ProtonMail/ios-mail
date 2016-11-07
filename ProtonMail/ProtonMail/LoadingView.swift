@@ -21,14 +21,18 @@ class LoadingView: UIView {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var loadingLabel: UILabel!
     
+    private struct NibName {
+        static let Name = "LoadingView"
+    }
+    
     class func viewForOwner(owner: AnyObject?) -> LoadingView {
-        let objects = NSBundle.mainBundle().loadNibNamed("LoadingView", owner: owner, options: nil)
-        for object in objects {
-            if let view = object as? LoadingView {
-                return view
+        if let objects = NSBundle.mainBundle().loadNibNamed(NibName.Name, owner: owner, options: nil) {
+            for object in objects {
+                if let view = object as? LoadingView {
+                    return view
+                }
             }
         }
-        
         assertionFailure("LoadingView did not load from nib!")
         return LoadingView()
     }

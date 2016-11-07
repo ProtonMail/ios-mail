@@ -50,6 +50,7 @@ static CGFloat const ROW_HEIGHT = 64.0;
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
     [self setup];
 }
 

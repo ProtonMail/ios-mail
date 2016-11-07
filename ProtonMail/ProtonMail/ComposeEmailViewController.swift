@@ -353,9 +353,13 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         let orignal = self.getOrignalEmbedImages()
         let edited = self.getEditedEmbedImages()
         self.checkEmbedImageEdit(orignal, edited: edited)
+        var body = self.getHTML()
+        if body.isEmpty {
+            body = "<div><br></div>"
+        }
         self.viewModel.collectDraft(
             self.composeView.subject.text!,
-            body: self.getHTML(),
+            body: body,
             expir: self.composeView.expirationTimeInterval,
             pwd:self.encryptionPassword,
             pwdHit:self.encryptionPasswordHint

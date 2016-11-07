@@ -12,13 +12,13 @@ import CoreData
 
 public class MailboxViewModelImpl : MailboxViewModel {
     
-    private let location : MessageLocation!
+    private var location : MessageLocation!
     
     init(location : MessageLocation) {
         
-        self.location = location
-        
         super.init()
+        
+        self.location = location
     }
     
     override public func getNavigationTitle() -> String {
@@ -85,7 +85,8 @@ public class MailboxViewModelImpl : MailboxViewModel {
             case .trash, .spam:
                 msg.location = .deleted
             default:
-                self.updateBadgeNumberMoveOutInbox(msg)
+                self.updateBadgeNumberWhenMove(msg, to: .deleted)
+                //self.updateBadgeNumberMoveOutInbox(msg)
                 msg.location = .trash
             }
             msg.needsUpdate = true
