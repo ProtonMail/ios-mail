@@ -166,13 +166,19 @@ class MailboxPasswordViewController: UIViewController {
     func decryptPassword() {
         isRemembered = true
         let password = (passwordTextField.text ?? "") //.trim()
-        if sharedUserDataService.isMailboxPasswordValid(password, privateKey: AuthCredential.getPrivateKey()) {
+        var mailbox_password = password
+        if let keysalt = AuthCredential.getKeySalt() where !keysalt.isEmpty {
+            if let keysalt_byte : NSData = keysalt.decodeBase64() {
+                mailbox_password = PasswordUtils.getMailboxPassword(password, salt: keysalt_byte)
+            }
+        }
+        if sharedUserDataService.isMailboxPasswordValid(mailbox_password, privateKey: AuthCredential.getPrivateKey()) {
             if sharedUserDataService.isSet {
-                sharedUserDataService.setMailboxPassword(password, isRemembered: self.isRemembered)
+                sharedUserDataService.setMailboxPassword(mailbox_password, isRemembered: self.isRemembered)
                 (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
             } else {
                 do {
-                    try AuthCredential.setupToken(password, isRememberMailbox: self.isRemembered)
+                    try AuthCredential.setupToken(mailbox_password, isRememberMailbox: self.isRemembered)
                     MBProgressHUD.showHUDAddedTo(view, animated: true)
                     sharedLabelsDataService.fetchLabels()
                     sharedUserDataService.fetchUserInfo() { info, _, error in
@@ -187,7 +193,7 @@ class MailboxPasswordViewController: UIViewController {
                         } else if info != nil {
                             if info!.delinquent < 3 {
                                 userCachedStatus.pinFailedCount = 0;
-                                sharedUserDataService.setMailboxPassword(password, isRemembered: self.isRemembered)
+                                sharedUserDataService.setMailboxPassword(mailbox_password, isRemembered: self.isRemembered)
                                 self.loadContent()
                                 self.restoreBackup();
                                 NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)

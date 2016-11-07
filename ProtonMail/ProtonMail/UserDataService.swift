@@ -24,6 +24,12 @@ class UserDataService {
     typealias CompletionBlock = APIService.CompletionBlock
     typealias UserInfoBlock = APIService.UserInfoBlock
     
+    //typealias LoginBlock = (mailboxPwd: String? error: NSError?) -> Void
+    //Login callback blocks
+    typealias LoginAsk2FABlock = () -> Void
+    typealias LoginErrorBlock = (error: NSError) -> Void
+    typealias LoginSuccessBlock = (mpwd: String?) -> Void
+    
     struct Key {
         static let isRememberMailboxPassword = "isRememberMailboxPasswordKey"
         static let isRememberUser = "isRememberUserKey"
@@ -31,6 +37,8 @@ class UserDataService {
         static let username = "usernameKey"
         static let password = "passwordKey"
         static let userInfo = "userInfoKey"
+        static let twoFAStatus = "twofaKey"
+        static let userPasswordMode = "userPasswordModeKey"
         
         static let roleSwitchCache = "roleSwitchCache"
         static let defaultSignatureStatus = "defaultSignatureStatus"
@@ -72,6 +80,20 @@ class UserDataService {
     private var defaultSignatureStauts: Bool = NSUserDefaults.standardUserDefaults().boolForKey(Key.defaultSignatureStatus) {
         didSet {
             NSUserDefaults.standardUserDefaults().setValue(defaultSignatureStauts, forKey: Key.defaultSignatureStatus)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
+    var twoFactorStatus: Int = NSUserDefaults.standardUserDefaults().integerForKey(Key.twoFAStatus)  {
+        didSet {
+            NSUserDefaults.standardUserDefaults().setValue(twoFactorStatus, forKey: Key.twoFAStatus)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+    
+    var passwordMode: Int = NSUserDefaults.standardUserDefaults().integerForKey(Key.userPasswordMode)  {
+        didSet {
+            NSUserDefaults.standardUserDefaults().setValue(passwordMode, forKey: Key.userPasswordMode)
             NSUserDefaults.standardUserDefaults().synchronize()
         }
     }
@@ -269,21 +291,25 @@ class UserDataService {
         return self.password == password
     }
     
-    
-    func signIn(username: String, password: String, isRemembered: Bool, completion: UserInfoBlock) {
-        
-        sharedAPIService.auth(username, password: password) { task, mpwd, error in
-            if error == nil {
-                self.isSignedIn = true
-                self.username = username
-                self.password = password
-                if isRemembered {
-                    self.isRememberUser = isRemembered
-                }
-                completion(nil, mpwd, nil)
+    func signIn(username: String, password: String, twoFACode: String?, ask2fa: LoginAsk2FABlock, onError:LoginErrorBlock, onSuccess: LoginSuccessBlock) {
+        sharedAPIService.auth(username, password: password, twoFACode: twoFACode) { task, mpwd, status, error in
+            if status == .Ask2FA {
+                self.twoFactorStatus = 1
+                ask2fa()
             } else {
-                self.signOut(true)
-                completion(nil, nil, error)
+                if error == nil {
+                    self.isSignedIn = true
+                    self.username = username
+                    self.password = password
+                    self.isRememberUser = true
+                    self.passwordMode = mpwd != nil ? 1 : 2
+                    
+                    onSuccess(mpwd: mpwd)
+                } else {
+                    self.twoFactorStatus = 0
+                    self.signOut(true)
+                    onError(error: error!)
+                }
             }
         }
     }
@@ -466,8 +492,8 @@ class UserDataService {
         }
     }
     
-    func updateNotificationEmail(newNotificationEmail: String, password : String, completion: CompletionBlock) {
-        let emailSetting = UpdateNotificationEmail<ApiResponse>(password: password, notificationEmail: newNotificationEmail)
+    func updateNotificationEmail(newNotificationEmail: String, password : String, tfaCode: String?, completion: CompletionBlock) {
+        let emailSetting = UpdateNotificationEmail<ApiResponse>(password: password, notificationEmail: newNotificationEmail, tfaCode: tfaCode)
         emailSetting.call() { task, response, hasError in
             if !hasError {
                 if let userInfo = self.userInfo {
@@ -500,8 +526,8 @@ class UserDataService {
         }
     }
     
-    func updatePassword(old_pwd: String, newPassword: String, completion: CompletionBlock) {
-        sharedAPIService.settingUpdatePassword(old_pwd, newPassword: newPassword, completion: { task, responseDict, anError in
+    func updatePassword(old_pwd: String, newPassword: String, twoFACode:String?, completion: CompletionBlock) {
+        sharedAPIService.settingUpdatePassword(old_pwd, newPassword: newPassword, twoFACode: twoFACode, completion: { task, responseDict, anError in
             let error = anError
             if error == nil {
                 self.password = newPassword
@@ -521,7 +547,6 @@ class UserDataService {
         
         if NSUserDefaults.standardUserDefaults().objectForKey(firstRunKey) == nil {
             clearAll()
-            
             NSUserDefaults.standardUserDefaults().setObject(NSDate(), forKey: firstRunKey)
             NSUserDefaults.standardUserDefaults().synchronize()
         }
@@ -533,11 +558,12 @@ class UserDataService {
         isRememberUser = false
         password = nil
         username = nil
-        
+
         isRememberMailboxPassword = false
         mailboxPassword = nil
-        
         userInfo = nil
+        twoFactorStatus = 0
+        passwordMode = 2
         
         sharedOpenPGP.cleanAddresses()
     }
@@ -560,6 +586,8 @@ class UserDataService {
         if !self.isRememberUser {
             username = nil
             password = nil
+            twoFactorStatus = 0
+            passwordMode = 2
         }
         
         if !isRememberMailboxPassword {
@@ -568,9 +596,3 @@ class UserDataService {
     }
 }
 
-// MARK: - Message extension
-
-extension Message {
-    
-    
-}

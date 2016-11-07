@@ -73,11 +73,11 @@ extension APIService {
                 ]
                 let completionWrapper: CompletionBlock = {task, response, error in
                     if error != nil {
-                        PMLog.D("\(error)")
+                        //PMLog.D("\(error)")
                         self.badToken = self.deviceToken
                         self.badUID = self.deviceUID
                     } else {
-                        PMLog.D("\(response)")
+                        //PMLog.D("\(response)")
                         self.deviceUID = ""
                         self.deviceToken = ""
                     }

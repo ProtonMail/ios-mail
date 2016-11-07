@@ -77,6 +77,16 @@ class SearchViewController: ProtonMailViewController {
         searchTextField.becomeFirstResponder()
     }
     
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillResignActiveNotification, object: nil)
+    }
+    
+    // my selector that was defined above
+    func willEnterForeground() {
+        self.dismissViewControllerAnimated(false, completion: nil)
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -97,6 +107,7 @@ class SearchViewController: ProtonMailViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(willEnterForeground), name: UIApplicationWillResignActiveNotification, object: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {

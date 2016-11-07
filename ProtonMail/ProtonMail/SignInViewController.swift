@@ -26,7 +26,7 @@ enum SignInUIFlow : Int {
     case Restore = 2
 }
 
-class SignInViewController: UIViewController {
+class SignInViewController: ProtonMailViewController {
     
     private let kMailboxSegue = "mailboxSegue"
     private let kSignUpKeySegue = "sign_in_to_sign_up_segue"
@@ -39,6 +39,7 @@ class SignInViewController: UIViewController {
     
     private let kSegueToSignUpWithNoAnimation = "sign_in_to_splash_no_segue"
     private let kSegueToPinCodeViewNoAnimation = "pin_code_segue"
+    private let kSegueTo2FACodeSegue = "2fa_code_segue"
     
     static var isComeBackFromMailbox = false
     
@@ -362,6 +363,11 @@ class SignInViewController: UIViewController {
             let viewController = segue.destinationViewController as! PinCodeViewController
             viewController.viewModel = UnlockPinCodeModelImpl()
             viewController.delegate = self
+        } else if segue.identifier == kSegueTo2FACodeSegue {
+            let popup = segue.destinationViewController as! TwoFACodeViewController
+            popup.delegate = self
+            popup.mode = .TwoFactorCode
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }
     
@@ -406,6 +412,7 @@ class SignInViewController: UIViewController {
         onePasswordButton.layer.borderWidth = 2
     }
     
+    private var cachedTwoCode : String?
     func signIn() {
         MBProgressHUD.showHUDAddedTo(view, animated: true)
         isRemembered = true
@@ -418,22 +425,35 @@ class SignInViewController: UIViewController {
         let username = (usernameTextField.text ?? "").trim()
         let password = (passwordTextField.text ?? "") //.trim()
         
-        sharedUserDataService.signIn(username, password: password, isRemembered: isRemembered) { _, mailboxpwd, error in
-            MBProgressHUD.hideHUDForView(self.view, animated: true)
-            if let error = error {
+        
+        //need pass twoFACode
+        sharedUserDataService.signIn(username, password: password, twoFACode: cachedTwoCode,
+            ask2fa: {
+            //2fa
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
+                self.performSegueWithIdentifier(self.kSegueTo2FACodeSegue, sender: self)
+            },
+            onError: { (error) in
+                //error
+                self.cachedTwoCode = nil
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
                 PMLog.D("error: \(error)")
                 self.ShowLoginViews();
                 let alertController = error.alertController()
                 alertController.addOKAction()
                 self.presentViewController(alertController, animated: true, completion: nil)
-            } else {
+            },
+            onSuccess: { (mailboxpwd) in
+                //ok
+                self.cachedTwoCode = nil
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
                 if mailboxpwd != nil {
                     self.decryptPassword(mailboxpwd!)
                 } else {
                     self.loadContent()
                 }
-            }
-        }
+            })
     }
     
     func decryptPassword(mailboxPassword:String!) {
@@ -497,6 +517,7 @@ class SignInViewController: UIViewController {
     
     func signInIfRememberedCredentials() {
         if sharedUserDataService.isUserCredentialStored {
+            userCachedStatus.lockedApp = false
             sharedUserDataService.isSignedIn = true
             isRemembered = true
             
@@ -549,6 +570,7 @@ class SignInViewController: UIViewController {
     
     func clean()
     {
+        UserTempCachedStatus.backup()
         sharedUserDataService.signOut(true)
         userCachedStatus.signOut()
         sharedMessageDataService.launchCleanUpIfNeeded()
@@ -588,6 +610,18 @@ class SignInViewController: UIViewController {
     
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
         dismissKeyboard()
+    }
+}
+
+extension SignInViewController : TwoFACodeViewControllerDelegate {
+    func ConfirmedCode(code: String, pwd : String) {
+        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
+        self.cachedTwoCode = code
+        self.signIn()
+    }
+
+    func Cancel2FA() {
+        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
     }
 }
 

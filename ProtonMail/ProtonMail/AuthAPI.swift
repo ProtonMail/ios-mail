@@ -78,12 +78,12 @@ public class AuthRequest<T : ApiResponse> : ApiRequest<T> {
     var clientEphemeral : String! //base64
     var clientProof : String!  //base64
     var srpSession : String!  //hex
-    var twoFactorCode : String!
+    var twoFactorCode : String?
     
     //local verify only
     var serverProof : NSData!
     
-    init(username : String, ephemeral:NSData, proof:NSData, session:String!, serverProof : NSData!, code:String!) {
+    init(username : String, ephemeral:NSData, proof:NSData, session:String!, serverProof : NSData!, code:String?) {
         self.username = username
         self.clientEphemeral = ephemeral.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
         self.clientProof = proof.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
@@ -94,7 +94,7 @@ public class AuthRequest<T : ApiResponse> : ApiRequest<T> {
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
         
-        let out : [String : AnyObject] = [
+        var out : [String : AnyObject] = [
             AuthKey.clientID : Constants.clientID,
             AuthKey.clientSecret : Constants.clientSecret,
             AuthKey.userName : username,
@@ -102,8 +102,11 @@ public class AuthRequest<T : ApiResponse> : ApiRequest<T> {
             AuthKey.ephemeral : clientEphemeral,
             AuthKey.proof : clientProof,
             AuthKey.session : srpSession,
-            //AuthKey.twoFactor : twoFactorCode,
         ]
+        
+        if let code = self.twoFactorCode {
+            out[AuthKey.twoFactor] = code
+        }
         
         PMLog.D(self.JSONStringify(out, prettyPrinted: true))
         

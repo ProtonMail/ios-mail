@@ -574,6 +574,7 @@ class MessageDataService {
                     }
                 }
             }
+            lastUpdatedStore.updateUnreadCountForKey(MessageLocation.starred, count: starCount ?? 0)
             
             //MessageLocation
             var badgeNumber = inboxCount //inboxCount + draftCount + sendCount + spamCount + starCount + trashCount;
@@ -1793,7 +1794,8 @@ class MessageDataService {
     
     private func queue(message message: Message, action: MessageAction) {
         if action == .saveDraft || action == .send {
-            sharedMessageQueue.addMessage(message.objectID.URIRepresentation().absoluteString, action: action)
+            //TODO:: need to handle the empty instead of !
+            sharedMessageQueue.addMessage(message.objectID.URIRepresentation().absoluteString!, action: action)
         } else {
             if message.managedObjectContext != nil && !message.messageID.isEmpty {
                 sharedMessageQueue.addMessage(message.messageID, action: action)
@@ -1808,7 +1810,8 @@ class MessageDataService {
     }
     
     private func queue(att att: Attachment, action: MessageAction) {
-        sharedMessageQueue.addMessage(att.objectID.URIRepresentation().absoluteString, action: action)
+        //TODO:: need to handle the empty instead of !
+        sharedMessageQueue.addMessage(att.objectID.URIRepresentation().absoluteString!, action: action)
         dequeueIfNeeded()
     }
     
@@ -1861,20 +1864,24 @@ class MessageDataService {
 extension NSFileManager {
     var attachmentDirectory: NSURL {
         let attachmentDirectory = applicationSupportDirectoryURL.URLByAppendingPathComponent("attachments", isDirectory: true)
-        if !self.fileExistsAtPath(attachmentDirectory.absoluteString) {
+        //TODO:: need to handle the empty instead of !
+        if !self.fileExistsAtPath(attachmentDirectory!.absoluteString!) {
             do {
-                try self.createDirectoryAtURL(attachmentDirectory, withIntermediateDirectories: true, attributes: nil)
+                //TODO:: need to handle the empty instead of !
+                try self.createDirectoryAtURL(attachmentDirectory!, withIntermediateDirectories: true, attributes: nil)
             }
             catch let ex as NSError {
                 PMLog.D(" error : \(ex).")
             }
         }
-        return attachmentDirectory
+        //TODO:: need to handle the empty instead of !
+        return attachmentDirectory!
     }
     
     func cleanCachedAtts() {
         let attachmentDirectory = applicationSupportDirectoryURL.URLByAppendingPathComponent("attachments", isDirectory: true)
-        if let path = attachmentDirectory.path {
+        //TODO:: need to handle the empty instead of !
+        if let path = attachmentDirectory!.path {
             do {
                 let filePaths = try self.contentsOfDirectoryAtPath(path)
                 for fileName in filePaths {
@@ -1886,32 +1893,6 @@ extension NSFileManager {
                 PMLog.D(" error : \(ex).")
             }
         }
-//        
-//        let fileManager = NSFileManager.defaultManager()
-//        let documentsUrl =  NSFileManager.defaultManager().URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask).first! as NSURL
-//        let documentsPath = documentsUrl.path
-//        
-//        do {
-//            if let documentPath = documentsPath
-//            {
-//                let fileNames = try fileManager.contentsOfDirectoryAtPath("\(documentPath)")
-//                print("all files in cache: \(fileNames)")
-//                for fileName in fileNames {
-//                    
-//                    if (fileName.hasSuffix(".png"))
-//                    {
-//                        let filePathName = "\(documentPath)/\(fileName)"
-//                        try fileManager.removeItemAtPath(filePathName)
-//                    }
-//                }
-//                
-//                let files = try fileManager.contentsOfDirectoryAtPath("\(documentPath)")
-//                print("all files in cache after deleting images: \(files)")
-//            }
-//            
-//        } catch {
-//            print("Could not clear temp folder: \(error)")
-//        }
     }
 }
 

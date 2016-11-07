@@ -236,6 +236,7 @@ extension MenuViewController: UITableViewDelegate {
             } else if item == .feedback {
                 self.performSegueWithIdentifier(kSegueToFeedback, sender: indexPath);
             } else if item == .lockapp {
+                userCachedStatus.lockedApp = true;
                 (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: true)
                 sharedVMService.resetComposerView()
             }
