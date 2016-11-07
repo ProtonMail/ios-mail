@@ -38,5 +38,14 @@ extension APIService {
     
     internal typealias AuthComplete = (task: NSURLSessionDataTask?, mailpassword: String?, hasError : NSError?) -> Void
     internal typealias AuthRefreshComplete = (task: NSURLSessionDataTask?, auth:AuthCredential?, hasError : NSError?) -> Void
+    
+    
+    
+    enum AuthStatus {
+        case ResCheck
+        case Ask2FA
+    }
+    
+    internal typealias AuthCompleteBlock = (task: NSURLSessionDataTask?, mailpassword: String?, authStatus: AuthStatus, error : NSError?) -> Void
 
 }

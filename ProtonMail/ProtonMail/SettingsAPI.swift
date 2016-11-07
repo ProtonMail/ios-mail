@@ -72,14 +72,19 @@ public class UpdateNotify<T : ApiResponse> : ApiRequest<T> {
 public class UpdateNotificationEmail<T : ApiResponse> : ApiRequest<T> {
     let pwd : String!
     let email : String!
+    let tfaCode : String?
     
-    init(password : String, notificationEmail : String) {
-        self.pwd = password;
-        self.email = notificationEmail;
+    init(password : String, notificationEmail : String, tfaCode : String?) {
+        self.pwd = password
+        self.email = notificationEmail
+        self.tfaCode = tfaCode
     }
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
-        let out : [String : AnyObject] = ["Password" : self.pwd, "NotificationEmail" : self.email]
+        var out : [String : AnyObject] = ["Password" : self.pwd, "NotificationEmail" : self.email]
+        if let code = tfaCode {
+            out["TwoFactorCode"] = code
+        }
         return out
     }
     

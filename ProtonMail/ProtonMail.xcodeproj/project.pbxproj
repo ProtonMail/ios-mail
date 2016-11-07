@@ -167,6 +167,14 @@
 		754387DB1AB3A54E0003B0AC /* SignUpKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754387DA1AB3A54E0003B0AC /* SignUpKeyViewController.swift */; };
 		7546BE551C8D4F9100FCEB0A /* TouchID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546BE541C8D4F9100FCEB0A /* TouchID.swift */; };
 		7546BE571C8D557C00FCEB0A /* TouchIDCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546BE561C8D557C00FCEB0A /* TouchIDCell.swift */; };
+		754713111DCD51A30084BF34 /* TwoFAViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754713101DCD51A30084BF34 /* TwoFAViewModel.swift */; };
+		754713121DCD51A30084BF34 /* TwoFAViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754713101DCD51A30084BF34 /* TwoFAViewModel.swift */; };
+		754713141DCD51B30084BF34 /* General2FAViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754713131DCD51B30084BF34 /* General2FAViewModelImpl.swift */; };
+		754713151DCD51B30084BF34 /* General2FAViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754713131DCD51B30084BF34 /* General2FAViewModelImpl.swift */; };
+		754713181DCD616D0084BF34 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754713171DCD616D0084BF34 /* SignInViewModel.swift */; };
+		754713191DCD616D0084BF34 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754713171DCD616D0084BF34 /* SignInViewModel.swift */; };
+		7547131B1DCD61850084BF34 /* SignInViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7547131A1DCD61850084BF34 /* SignInViewModelImpl.swift */; };
+		7547131C1DCD61850084BF34 /* SignInViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7547131A1DCD61850084BF34 /* SignInViewModelImpl.swift */; };
 		75484B8B1AF29EBF00B97472 /* NSDateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */; };
 		7548D0961CC10DFB001C3AEC /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */; };
 		7548D0971CC11876001C3AEC /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */; };
@@ -559,6 +567,12 @@
 		75ECCE041B31F5F600A8C800 /* AuthAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75ECCE031B31F5F600A8C800 /* AuthAPITests.swift */; };
 		75F023AF1C4E0271008F6276 /* SignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F023AE1C4E0271008F6276 /* SignupViewModel.swift */; };
 		75F023B11C4E566F008F6276 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F023B01C4E566F008F6276 /* SwitchTableViewCell.swift */; };
+		75F1618B1DCBB19300912662 /* TwoFACodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75F1618A1DCBB19300912662 /* TwoFACodeView.xib */; };
+		75F1618C1DCBB19300912662 /* TwoFACodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75F1618A1DCBB19300912662 /* TwoFACodeView.xib */; };
+		75F1618E1DCBB1CA00912662 /* TwoFACodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F1618D1DCBB1CA00912662 /* TwoFACodeView.swift */; };
+		75F1618F1DCBB1CA00912662 /* TwoFACodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F1618D1DCBB1CA00912662 /* TwoFACodeView.swift */; };
+		75F161911DCBB7E600912662 /* TwoFACodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F161901DCBB7E600912662 /* TwoFACodeViewController.swift */; };
+		75F161921DCBB7E600912662 /* TwoFACodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F161901DCBB7E600912662 /* TwoFACodeViewController.swift */; };
 		75F1697E1AF7F43A00BE6E79 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F1697D1AF7F43A00BE6E79 /* Logger.swift */; };
 		75F169811AF80B5900BE6E79 /* UserCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F169801AF80B5900BE6E79 /* UserCachedStatus.swift */; };
 		75F463881C5FEBF400918B46 /* HumanCheckMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F463871C5FEBF400918B46 /* HumanCheckMenuViewController.swift */; };
@@ -768,6 +782,10 @@
 		754387DA1AB3A54E0003B0AC /* SignUpKeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpKeyViewController.swift; sourceTree = "<group>"; };
 		7546BE541C8D4F9100FCEB0A /* TouchID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchID.swift; sourceTree = "<group>"; };
 		7546BE561C8D557C00FCEB0A /* TouchIDCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchIDCell.swift; sourceTree = "<group>"; };
+		754713101DCD51A30084BF34 /* TwoFAViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoFAViewModel.swift; sourceTree = "<group>"; };
+		754713131DCD51B30084BF34 /* General2FAViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = General2FAViewModelImpl.swift; sourceTree = "<group>"; };
+		754713171DCD616D0084BF34 /* SignInViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
+		7547131A1DCD61850084BF34 /* SignInViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewModelImpl.swift; sourceTree = "<group>"; };
 		75484B8A1AF29EBF00B97472 /* NSDateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateExtension.swift; sourceTree = "<group>"; };
 		7548D0951CC10DFB001C3AEC /* UserTempCachedStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTempCachedStatus.swift; sourceTree = "<group>"; };
 		7549F0B01D07827A00643C64 /* AddressAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressAPI.swift; sourceTree = "<group>"; };
@@ -899,6 +917,9 @@
 		75ECCE031B31F5F600A8C800 /* AuthAPITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthAPITests.swift; sourceTree = "<group>"; };
 		75F023AE1C4E0271008F6276 /* SignupViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewModel.swift; sourceTree = "<group>"; };
 		75F023B01C4E566F008F6276 /* SwitchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchTableViewCell.swift; sourceTree = "<group>"; };
+		75F1618A1DCBB19300912662 /* TwoFACodeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TwoFACodeView.xib; sourceTree = "<group>"; };
+		75F1618D1DCBB1CA00912662 /* TwoFACodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoFACodeView.swift; sourceTree = "<group>"; };
+		75F161901DCBB7E600912662 /* TwoFACodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoFACodeViewController.swift; sourceTree = "<group>"; };
 		75F1697D1AF7F43A00BE6E79 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		75F169801AF80B5900BE6E79 /* UserCachedStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCachedStatus.swift; sourceTree = "<group>"; };
 		75F463871C5FEBF400918B46 /* HumanCheckMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanCheckMenuViewController.swift; sourceTree = "<group>"; };
@@ -1210,18 +1231,21 @@
 		07CCCC2C1AA2962200ECA79E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				75F161901DCBB7E600912662 /* TwoFACodeViewController.swift */,
 				752FAA131CB5B14500F03228 /* PinCodeViewController.swift */,
-				076758751AA0E86400F9AC9C /* LoadingView.xib */,
 				076758771AA0EB6900F9AC9C /* LoadingView.swift */,
+				076758751AA0E86400F9AC9C /* LoadingView.xib */,
 				759BBDBF1BA0C55E002608B5 /* LabelDisplayView.swift */,
 				759BBDC11BA0C586002608B5 /* LabelDisplayView.xib */,
 				759BBDC51BA0D1C8002608B5 /* MultiLabelDisplayView.swift */,
 				759BBDC31BA0D18A002608B5 /* MultiLabelDisplayView.xib */,
-				759BBDC71BA0D1E3002608B5 /* PMView.swift */,
-				752FAA0F1CB5AEAF00F03228 /* PinCodeView.xib */,
 				752FAA111CB5AEC300F03228 /* PinCodeView.swift */,
-				7582CFBB1D024E2800F521D4 /* TopMessageView.xib */,
+				752FAA0F1CB5AEAF00F03228 /* PinCodeView.xib */,
 				7582CFBE1D024E3A00F521D4 /* TopMessageView.swift */,
+				7582CFBB1D024E2800F521D4 /* TopMessageView.xib */,
+				75F1618D1DCBB1CA00912662 /* TwoFACodeView.swift */,
+				75F1618A1DCBB19300912662 /* TwoFACodeView.xib */,
+				759BBDC71BA0D1E3002608B5 /* PMView.swift */,
 				759337841D18917400004A3D /* PMWebView.swift */,
 			);
 			name = Views;
@@ -1374,8 +1398,8 @@
 			isa = PBXGroup;
 			children = (
 				75230C211B9A392500EC2AC2 /* Cells */,
-				706628201A715A0900164117 /* MailboxTableViewCell.swift */,
 				70945E691A80F351002B6837 /* MailboxViewController.swift */,
+				706628201A715A0900164117 /* MailboxTableViewCell.swift */,
 				751B446D1B81245100B68CD6 /* TableCellLabelView.swift */,
 			);
 			name = Mailbox;
@@ -1441,6 +1465,24 @@
 			children = (
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		7547130F1DCD517E0084BF34 /* TwoFA */ = {
+			isa = PBXGroup;
+			children = (
+				754713101DCD51A30084BF34 /* TwoFAViewModel.swift */,
+				754713131DCD51B30084BF34 /* General2FAViewModelImpl.swift */,
+			);
+			name = TwoFA;
+			sourceTree = "<group>";
+		};
+		754713161DCD61510084BF34 /* SignIn */ = {
+			isa = PBXGroup;
+			children = (
+				754713171DCD616D0084BF34 /* SignInViewModel.swift */,
+				7547131A1DCD61850084BF34 /* SignInViewModelImpl.swift */,
+			);
+			name = SignIn;
 			sourceTree = "<group>";
 		};
 		754CD4891AB80D580084C54A /* Cells */ = {
@@ -1629,6 +1671,8 @@
 		75ECC2361AB9F10600B8FC78 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				754713161DCD61510084BF34 /* SignIn */,
+				7547130F1DCD517E0084BF34 /* TwoFA */,
 				75BDECA71CBCCC5A00982089 /* PinCode */,
 				75E49EFE1CAB07BC00235ACC /* SignUp */,
 				7567B06A1B334AF200A72A1E /* ComposeViewModel.swift */,
@@ -1896,6 +1940,7 @@
 				75A2F44E1C97D6B400BF4306 /* ComposeErrorView.xib in Resources */,
 				701704781A794C69000A90D2 /* Roboto-MediumItalic.ttf in Resources */,
 				07411D8C1AAA3F1B002A4611 /* AttachmentTableViewCell.xib in Resources */,
+				75F1618B1DCBB19300912662 /* TwoFACodeView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1941,6 +1986,7 @@
 				75DE7D9D1CAAEA4900F5443E /* MessageDetailBottomView.xib in Resources */,
 				75DE7D9E1CAAEA4900F5443E /* TempXIB.xib in Resources */,
 				75DE7D9F1CAAEA4900F5443E /* MultiLabelDisplayView.xib in Resources */,
+				75F1618C1DCBB19300912662 /* TwoFACodeView.xib in Resources */,
 				75DE7DA01CAAEA4900F5443E /* Settings.bundle in Resources */,
 				75DE7DA11CAAEA4900F5443E /* LoadingView.xib in Resources */,
 				75DE7DA21CAAEA4900F5443E /* backup.css in Resources */,
@@ -2159,6 +2205,7 @@
 				7564899A1B7F2ACA007EA207 /* MailboxViewModelImpl.swift in Sources */,
 				7549F0B11D07827A00643C64 /* AddressAPI.swift in Sources */,
 				07CF61921A8988F100ED38AE /* AttachmentExtension.swift in Sources */,
+				75F1618E1DCBB1CA00912662 /* TwoFACodeView.swift in Sources */,
 				071323901A79BD8F0043DB41 /* TextInsetTextField.swift in Sources */,
 				75A021A41C617D3F00A22A25 /* DomainAPI.swift in Sources */,
 				078FF4D01A92CE15008321D1 /* APIService+SettingsExtension.swift in Sources */,
@@ -2179,6 +2226,7 @@
 				756CDEFC1D9DB3A0004455F6 /* JKBCryptRandom.swift in Sources */,
 				07CCCC301AA4E26000ECA79E /* NSCoderExtension.swift in Sources */,
 				752A9EBD1DB80E40008D4392 /* LabelApplayViewModel.swift in Sources */,
+				7547131B1DCD61850084BF34 /* SignInViewModelImpl.swift in Sources */,
 				754CD4881AB809D60084C54A /* SettingTableViewController.swift in Sources */,
 				07009F091A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift in Sources */,
 				0713239C1A7C0B4C0043DB41 /* NSManagedObjectContextExtension.swift in Sources */,
@@ -2203,6 +2251,7 @@
 				75F4638A1C60071B00918B46 /* EmailVerifyViewController.swift in Sources */,
 				073FE01D1A9561F600825980 /* Contact.swift in Sources */,
 				073FE01F1A95620D00825980 /* ContactExtension.swift in Sources */,
+				754713181DCD616D0084BF34 /* SignInViewModel.swift in Sources */,
 				07655BBD1AB1036200CD3883 /* BugDataService.swift in Sources */,
 				70FC90DA1A9BC11F00498B42 /* StringExtension.swift in Sources */,
 				07CC996C1A717ABD000FD6F8 /* UIStoryboardExtension.swift in Sources */,
@@ -2276,6 +2325,7 @@
 				073FD9341A732C5F00EB0CAF /* AFHTTPRequestSerializerExtension.swift in Sources */,
 				75200C041DB6E3B6007E8A29 /* SrpClientExtension.swift in Sources */,
 				75662BA71B543A5B006C538E /* SettingsAPI.swift in Sources */,
+				75F161911DCBB7E600912662 /* TwoFACodeViewController.swift in Sources */,
 				756DAC3F1C922C3800F3486C /* MailboxRateReviewCell.swift in Sources */,
 				07009F011A65CF4800129B07 /* SignInViewController.swift in Sources */,
 				75F023B11C4E566F008F6276 /* SwitchTableViewCell.swift in Sources */,
@@ -2288,6 +2338,7 @@
 				7567B06F1B334FD300A72A1E /* ViewModelServiceImpl.swift in Sources */,
 				75F1697E1AF7F43A00BE6E79 /* Logger.swift in Sources */,
 				7514FC291B79825F00DDD297 /* MenuItem.swift in Sources */,
+				754713111DCD51A30084BF34 /* TwoFAViewModel.swift in Sources */,
 				7069620B1A7139C8001443B2 /* SettingsViewController.swift in Sources */,
 				758625D31CD80C6D0037DFA7 /* SettingsNavigationController.swift in Sources */,
 				07520CFC1AA67D38000D2175 /* PushNotificationService.swift in Sources */,
@@ -2327,6 +2378,7 @@
 				0767587A1AA126E400F9AC9C /* StorageLimit.swift in Sources */,
 				759BBDC61BA0D1C8002608B5 /* MultiLabelDisplayView.swift in Sources */,
 				755638C91CA1F423003FA2D0 /* MessageViewModel.swift in Sources */,
+				754713141DCD51B30084BF34 /* General2FAViewModelImpl.swift in Sources */,
 				755F92191C7E6D0D00BAEDF9 /* OnboardingView.swift in Sources */,
 				072AB6A11A8EE50000AF45D6 /* ProtonMail-Bridging-Header.cpp in Sources */,
 				071210E61AA91B4000B834F2 /* APIService+DeviceExtension.swift in Sources */,
@@ -2465,6 +2517,7 @@
 				75DE7CE71CAAEA4900F5443E /* DomainsTableViewCell.swift in Sources */,
 				75DE7CE81CAAEA4900F5443E /* UserInfo.swift in Sources */,
 				75BDECAE1CBCD0FA00982089 /* PinCodeModel.swift in Sources */,
+				754713191DCD616D0084BF34 /* SignInViewModel.swift in Sources */,
 				75DE7CE91CAAEA4900F5443E /* MessageViewModelImpl.swift in Sources */,
 				75DE7CEA1CAAEA4900F5443E /* ActivityIndicatorHelper.swift in Sources */,
 				75DE7CEB1CAAEA4900F5443E /* RecipientView.swift in Sources */,
@@ -2493,6 +2546,7 @@
 				75DE7CFF1CAAEA4900F5443E /* ComposePasswordViewController.swift in Sources */,
 				75DE7D001CAAEA4900F5443E /* NSManagedObjectExtension.swift in Sources */,
 				75DE7D011CAAEA4900F5443E /* APIServiceDefined.swift in Sources */,
+				754713151DCD51B30084BF34 /* General2FAViewModelImpl.swift in Sources */,
 				75DE7D021CAAEA4900F5443E /* SignUpKeyViewController.swift in Sources */,
 				75DE7D031CAAEA4900F5443E /* QueueManager.swift in Sources */,
 				7582CFC01D024E3A00F521D4 /* TopMessageView.swift in Sources */,
@@ -2506,6 +2560,7 @@
 				75DE7D0A1CAAEA4900F5443E /* AttachmentHelper.swift in Sources */,
 				75DE7D0B1CAAEA4900F5443E /* AttachmentAPI.swift in Sources */,
 				752A9EC11DB8286C008D4392 /* BugReportCache.swift in Sources */,
+				754713121DCD51A30084BF34 /* TwoFAViewModel.swift in Sources */,
 				753745081D6B885500682C5A /* APIService+ResponseTransformer.swift in Sources */,
 				75DE7D0C1CAAEA4900F5443E /* MessageDataService.swift in Sources */,
 				75DE7D0D1CAAEA4900F5443E /* UserCachedStatus.swift in Sources */,
@@ -2593,6 +2648,7 @@
 				75DE7D541CAAEA4900F5443E /* APIService+ContactExtension.swift in Sources */,
 				75DE7D551CAAEA4900F5443E /* RecaptchaViewController.swift in Sources */,
 				75DE7D561CAAEA4900F5443E /* EncryptionSetupViewController.swift in Sources */,
+				75F161921DCBB7E600912662 /* TwoFACodeViewController.swift in Sources */,
 				75DE7D571CAAEA4900F5443E /* APIService+UserExtension.swift in Sources */,
 				75DE7D581CAAEA4900F5443E /* SignUpEmailViewController.swift in Sources */,
 				75DE7D591CAAEA4900F5443E /* MessageQueue.swift in Sources */,
@@ -2604,6 +2660,7 @@
 				75DE7D5C1CAAEA4900F5443E /* NSURLExtension.swift in Sources */,
 				75DE7D5D1CAAEA4900F5443E /* SearchViewController.swift in Sources */,
 				75DE7D5E1CAAEA4900F5443E /* NSTimeIntervalExtension.swift in Sources */,
+				7547131C1DCD61850084BF34 /* SignInViewModelImpl.swift in Sources */,
 				75DE7D5F1CAAEA4900F5443E /* SplashViewController.swift in Sources */,
 				75DE7D601CAAEA4900F5443E /* SignupViewModel.swift in Sources */,
 				75DE7D611CAAEA4900F5443E /* LabelboxViewModelImpl.swift in Sources */,
@@ -2636,6 +2693,7 @@
 				75DE7D781CAAEA4900F5443E /* MessageDetailBottomView.swift in Sources */,
 				75DE7D791CAAEA4900F5443E /* CoreDataService.swift in Sources */,
 				75DE7D7A1CAAEA4900F5443E /* GeneralSettingViewCell.swift in Sources */,
+				75F1618F1DCBB1CA00912662 /* TwoFACodeView.swift in Sources */,
 				75E49F101CAB296500235ACC /* PhoneVerifyViewController.swift in Sources */,
 				75DE7D7B1CAAEA4900F5443E /* StorageViewCell.swift in Sources */,
 				7599B17E1CC8247E00B2CB8D /* Localization.swift in Sources */,

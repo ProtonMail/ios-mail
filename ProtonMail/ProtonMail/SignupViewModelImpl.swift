@@ -130,10 +130,16 @@ public class SignupViewModelImpl : SignupViewModel {
                     userCachedStatus.signOut()
                     sharedMessageDataService.launchCleanUpIfNeeded()
                     
-                    sharedUserDataService.signIn(self.userName, password: self.login, isRemembered: true) { _, _, error in
-                        if let error = error {
+                    //need pass twoFACode
+                    sharedUserDataService.signIn(self.userName, password: self.login, twoFACode: nil,
+                        ask2fa: {
+                            //2fa will show error
+                            complete(false, true, "2fa Authentication failed please try to login again", nil)
+                        },
+                        onError: { (error) in
                             complete(false, true, "Authentication failed please try to login again", error);
-                        } else {
+                        },
+                        onSuccess: { (mailboxpwd) in
                             do {
                                 if sharedUserDataService.isMailboxPasswordValid(self.mailbox, privateKey: AuthCredential.getPrivateKey()) {
                                     try AuthCredential.setupToken(self.mailbox, isRememberMailbox: true)
@@ -156,8 +162,7 @@ public class SignupViewModelImpl : SignupViewModel {
                                 PMLog.D(ex)
                                 complete(false, true, "Decrypt token failed please try again", nil);
                             }
-                        }
-                    }
+                        })
                 } else {
                     if response?.error?.code == 7002 {
                         complete(false, true, "Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.", response!.error);
@@ -197,7 +202,7 @@ public class SignupViewModelImpl : SignupViewModel {
         }
         
         if !self.recoverEmail.isEmpty {
-            sharedUserDataService.updateNotificationEmail(recoverEmail, password: sharedUserDataService.password ?? "") { _, _, error in
+            sharedUserDataService.updateNotificationEmail(recoverEmail, password: sharedUserDataService.password ?? "", tfaCode: nil) { _, _, error in
 //                if error != nil {
 //                    //complete(false, error)
 //                } else {

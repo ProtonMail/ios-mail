@@ -26,6 +26,7 @@ class SettingDetailViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     
     @IBOutlet weak var notesLabel: UILabel!
+    let kAsk2FASegue = "password_to_twofa_code_segue"
     
     private var doneButton: UIBarButtonItem!
     private var viewModel : SettingDetailsViewModel!
@@ -98,6 +99,22 @@ class SettingDetailViewController: UIViewController {
         }
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == kAsk2FASegue {
+            let popup = segue.destinationViewController as! TwoFACodeViewController
+            popup.delegate = self
+            popup.mode = .TwoFactorCode
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
+        }
+    }
+    
+    internal func setPresentationStyleForSelfController(selfController : UIViewController,  presentingController: UIViewController)
+    {
+        presentingController.providesPresentationContextTransitionStyle = true;
+        presentingController.definesPresentationContext = true;
+        presentingController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+    }
+    
     // MARK: private methods
     private func dismissKeyboard() {
         if viewModel.isShowTextView() {
@@ -135,34 +152,46 @@ class SettingDetailViewController: UIViewController {
     }
     
     private func getPasswordValue () -> String {
-        
         return passwordTextField.text ?? ""
-        
     }
     
-    
+    var cached2faCode : String?
     private func startUpdateValue () -> Void {
         dismissKeyboard()
-        ActivityIndicatorHelper.showActivityIndicatorAtView(view)
-        
-        viewModel.updateNotification(self.switcher.on, complete: { (value, error) -> Void in
-            if let error = error {
-                let alertController = error.alertController()
-                alertController.addOKAction()
-                self.presentViewController(alertController, animated: true, completion: nil)
-            } else {
-                self.viewModel.updateValue(self.getTextValue(), password: self.getPasswordValue(), complete: { value, error in
-                    ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-                    if let error = error {
-                        let alertController = error.alertController()
-                        alertController.addOKAction()
-                        self.presentViewController(alertController, animated: true, completion: nil)
-                    } else {
-                        self.navigationController?.popToRootViewControllerAnimated(true)
-                    }
-                });
-            }
-        })
+        if viewModel.needAsk2FA() && cached2faCode == nil {
+            self.performSegueWithIdentifier(self.kAsk2FASegue, sender: self)
+        } else {
+            ActivityIndicatorHelper.showActivityIndicatorAtView(view)
+            viewModel.updateNotification(self.switcher.on, complete: { (value, error) -> Void in
+                if let error = error {
+                    let alertController = error.alertController()
+                    alertController.addOKAction()
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                } else {
+                    self.viewModel.updateValue(self.getTextValue(), password: self.getPasswordValue(), tfaCode: self.cached2faCode, complete: { value, error in
+                        self.cached2faCode = nil
+                        ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+                        if let error = error {
+                            let alertController = error.alertController()
+                            alertController.addOKAction()
+                            self.presentViewController(alertController, animated: true, completion: nil)
+                        } else {
+                            self.navigationController?.popToRootViewControllerAnimated(true)
+                        }
+                    });
+                }
+            })
+        }
+    }
+}
+
+extension SettingDetailViewController : TwoFACodeViewControllerDelegate {
+    func ConfirmedCode(code: String, pwd : String) {
+        self.cached2faCode = code
+        self.startUpdateValue()
+    }
+    
+    func Cancel2FA() {
     }
 }
 

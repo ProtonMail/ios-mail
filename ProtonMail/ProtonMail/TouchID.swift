@@ -14,6 +14,10 @@ public class TouchID {
     
     public func showTouchIDOrPin() -> Bool {
         if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
+            if userCachedStatus.lockedApp {
+                return true
+            }
+            
             var timeIndex : Int = -1
             if let t = Int(userCachedStatus.lockTime) {
                 timeIndex = t

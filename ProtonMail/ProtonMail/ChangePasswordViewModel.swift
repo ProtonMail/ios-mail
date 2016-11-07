@@ -8,14 +8,18 @@
 
 import Foundation
 
+
+typealias ChangePasswordComplete = (Bool, NSError?) -> Void
+
 protocol ChangePWDViewModel {
     
-    func getNavigationTitle() -> String;
-    func getSectionTitle() -> String;
-    func getLabelOne() -> String;
-    func getLabelTwo() -> String;
-    func getLabelThree() -> String;
-    func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, complete:(Bool, NSError?) -> Void)
+    func getNavigationTitle() -> String
+    func getSectionTitle() -> String
+    func getLabelOne() -> String
+    func getLabelTwo() -> String
+    func getLabelThree() -> String
+    func needAsk2FA() -> Bool
+    func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete:ChangePasswordComplete)
 }
 
 class ChangeLoginPWDViewModel : ChangePWDViewModel{
@@ -40,7 +44,12 @@ class ChangeLoginPWDViewModel : ChangePWDViewModel{
         return "Confirm new login password"
     }
     
-    func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, complete: (Bool, NSError?) -> Void) {
+
+    func needAsk2FA() -> Bool {
+        return sharedUserDataService.twoFactorStatus == 1
+    }
+    
+    func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: ChangePasswordComplete) {
         let curr_pwd = current //.trim();
         let newpwd = new_pwd //.trim();
         let confirmpwd = confirm_new_pwd //.trim();
@@ -58,7 +67,7 @@ class ChangeLoginPWDViewModel : ChangePWDViewModel{
             complete(true, nil)
         }
         else {
-            sharedUserDataService.updatePassword(curr_pwd, newPassword: newpwd) { _, _, error in
+            sharedUserDataService.updatePassword(curr_pwd, newPassword: newpwd, twoFACode: tfaCode) { _, _, error in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -89,7 +98,11 @@ class ChangeMailboxPWDViewModel : ChangePWDViewModel{
         return "Confirm new mailbox password"
     }
     
-    func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, complete: (Bool, NSError?) -> Void) {
+    func needAsk2FA() -> Bool {
+        return sharedUserDataService.twoFactorStatus == 1
+    }
+    
+    func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: ChangePasswordComplete) {
         //remove space.
         let curr_pwd = current //.trim();
         let newpwd = new_pwd//.trim();
@@ -139,7 +152,11 @@ class ChangePWDViewModelTest : ChangePWDViewModel{
         return "Confirm new mailbox password - Test"
     }
     
-    func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, complete: (Bool, NSError?) -> Void) {
+    func needAsk2FA() -> Bool {
+        return false
+    }
+    
+    func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: (Bool, NSError?) -> Void) {
         //add random test case and random
         //remove space.
         let curr_pwd = current//.trim();
