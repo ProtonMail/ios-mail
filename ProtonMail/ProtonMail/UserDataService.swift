@@ -346,11 +346,7 @@ class UserDataService {
         api.call() { task, response, hasError in
             if !hasError {
                 if let userInfo = self.userInfo {
-                    let userInfo = UserInfo(displayName: new_displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
-                        autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
-                        
-                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role, delinquent : userInfo.delinquent
-                    )
+                    userInfo.displayName = new_displayName
                     self.userInfo = userInfo
                 }
             }
@@ -374,13 +370,8 @@ class UserDataService {
                             break
                         }
                     }
-                    let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:addresses,
-                        autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
-                        
-                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role, delinquent : userInfo.delinquent
-                    )
+                    userInfo.userAddresses = addresses
                     self.userInfo = userInfo
-                    
                 }
             }
             completion?(self.userInfo, nil, nil)
@@ -392,11 +383,7 @@ class UserDataService {
         api.call() { task, response, hasError in
             if !hasError {
                 if let userInfo = self.userInfo {
-                    let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
-                        autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:status,
-                        
-                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role , delinquent : userInfo.delinquent
-                    )
+                    userInfo.showImages = status
                     self.userInfo = userInfo
                 }
             }
@@ -412,17 +399,11 @@ class UserDataService {
                         sharedAPIService.userUpdateKeypair(sharedUserDataService.password!, publicKey: userInfo.publicKey, privateKey: newPrivateKey, completion: { task, response, error in
                             if error == nil {
                                 self.mailboxPassword = newMailboxPassword
-                                
-                                let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: newPrivateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
-                                    
-                                    autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
-                                    
-                                    swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role, delinquent : userInfo.delinquent
-                                )
-                                
-                                self.userInfo = userInfo
+                                if let userInfo = self.userInfo {
+                                    userInfo.privateKey = newPrivateKey
+                                    self.userInfo = userInfo
+                                }
                             }
-                            
                             completion?(task: task, response: response, error: error)
                         })
                     }
@@ -463,11 +444,7 @@ class UserDataService {
         domainSetting.call() { task, response, hasError in
             if !hasError {
                 if let userInfo = self.userInfo {
-                    let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:email_domains,
-                        autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
-                        
-                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role, delinquent : userInfo.delinquent
-                    )
+                    userInfo.userAddresses = email_domains
                     self.userInfo = userInfo
                 }
             }
@@ -480,11 +457,8 @@ class UserDataService {
         api.call() { task, response, hasError in
             if !hasError {
                 if let userInfo = self.userInfo {
-                    let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
-                        autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
-                        
-                        swipeL: isLeft ? action.rawValue : userInfo.swipeLeft, swipeR: isLeft ? userInfo.swipeRight : action.rawValue, role : userInfo.role, delinquent : userInfo.delinquent
-                    )
+                    userInfo.swipeLeft = isLeft ? action.rawValue : userInfo.swipeLeft
+                    userInfo.swipeRight = isLeft ? userInfo.swipeRight : action.rawValue
                     self.userInfo = userInfo
                 }
             }
@@ -497,28 +471,19 @@ class UserDataService {
         emailSetting.call() { task, response, hasError in
             if !hasError {
                 if let userInfo = self.userInfo {
-                    let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: newNotificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
-                        autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
-                        
-                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role, delinquent : userInfo.delinquent
-                    )
+                    userInfo.notificationEmail = newNotificationEmail
                     self.userInfo = userInfo
                 }
             }
             completion(task: task, response: nil, error: response?.error)
         }
-        
     }
     func updateNotify(isOn: Bool, completion: CompletionBlock) {
         let notifySetting = UpdateNotify<ApiResponse>(notify: isOn ? 1 : 0)
         notifySetting.call() { task, response, hasError in
             if !hasError {
                 if let userInfo = self.userInfo {
-                    let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: userInfo.privateKey, publicKey: userInfo.publicKey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
-                        autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:(isOn ? 1 : 0), showImage:userInfo.showImages,
-                        
-                        swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight, role : userInfo.role, delinquent : userInfo.delinquent
-                    )
+                    userInfo.notify = (isOn ? 1 : 0)
                     self.userInfo = userInfo
                 }
             }

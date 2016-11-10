@@ -59,7 +59,7 @@ class MessageDataService {
                 PMLog.D("error: \(error)")
                 dequeueIfNeeded()
             } else {
-                queue(att: att, action: .uploadAtt)
+                queue(att, action: .uploadAtt)
             }
         }
     }
@@ -88,7 +88,7 @@ class MessageDataService {
                 if error != nil {
                     PMLog.D(" error: \(error)")
                 } else {
-                    queue(message: message, action: .send)
+                    queue(message, action: .send)
                 }
             } else {
                 //TODO:: handle can't find the message error.
@@ -454,34 +454,8 @@ class MessageDataService {
     }
     
     func processIncrementalUpdateUserInfo(userinfo: Dictionary<String, AnyObject>?) {
-        
         if let userData = userinfo {
-            let userInfo = UserInfo(
-                response: userData,
-                displayNameResponseKey: "DisplayName",
-                maxSpaceResponseKey: "MaxSpace",
-                notificationEmailResponseKey: "NotificationEmail",
-                privateKeyResponseKey: "EncPrivateKey",
-                publicKeyResponseKey: "PublicKey",
-                signatureResponseKey: "Signature",
-                usedSpaceResponseKey: "UsedSpace",
-                userStatusResponseKey: "UserStatus",
-                userAddressResponseKey: "Addresses",
-                
-                autoSaveContactResponseKey : "AutoSaveContacts",
-                languageResponseKey : "Language",
-                maxUploadResponseKey: "MaxUpload",
-                notifyResponseKey: "Notify",
-                showImagesResponseKey : "ShowImages",
-                
-                swipeLeftResponseKey : "SwipeLeft",
-                swipeRightResponseKey : "SwipeRight",
-                
-                roleResponseKey:"Role",
-                
-                delinquentResponseKey : "Delinquent"
-            )
-            
+            let userInfo = UserInfo( response: userData )
             sharedUserDataService.updateUserInfoFromEventLog(userInfo);
         }
     }
@@ -1091,7 +1065,7 @@ class MessageDataService {
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
     
-    func search(query query: String, page: Int, completion: (([Message]?, NSError?) -> Void)?) {
+    func search(query: String, page: Int, completion: (([Message]?, NSError?) -> Void)?) {
         queue {
             let completionWrapper: CompletionBlock = {task, response, error in
                 if error != nil {
@@ -1143,7 +1117,7 @@ class MessageDataService {
             if let error = context.saveUpstreamIfNeeded() {
                 PMLog.D(" error: \(error)")
             } else {
-                queue(message: message, action: .saveDraft)
+                queue(message, action: .saveDraft)
             }
         }
     }
@@ -1154,7 +1128,7 @@ class MessageDataService {
             if let error = context.saveUpstreamIfNeeded() {
                 PMLog.D(" error: \(error)")
             } else {
-                queue(message: message, action: .delete)
+                queue(message, action: .delete)
             }
         }
     }
@@ -1792,7 +1766,7 @@ class MessageDataService {
         }
     }
     
-    private func queue(message message: Message, action: MessageAction) {
+    private func queue(message: Message, action: MessageAction) {
         if action == .saveDraft || action == .send {
             //TODO:: need to handle the empty instead of !
             sharedMessageQueue.addMessage(message.objectID.URIRepresentation().absoluteString!, action: action)
@@ -1809,13 +1783,13 @@ class MessageDataService {
         dequeueIfNeeded()
     }
     
-    private func queue(att att: Attachment, action: MessageAction) {
+    private func queue(att: Attachment, action: MessageAction) {
         //TODO:: need to handle the empty instead of !
         sharedMessageQueue.addMessage(att.objectID.URIRepresentation().absoluteString!, action: action)
         dequeueIfNeeded()
     }
     
-    private func queue(readBlock readBlock: ReadBlock) {
+    private func queue(readBlock: ReadBlock) {
         readQueue.append(readBlock)
         dequeueIfNeeded()
     }
@@ -1825,7 +1799,7 @@ class MessageDataService {
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.locationNumber, handler: { message in
             if message.needsUpdate {
                 if let action = message.location.moveAction {
-                    self.queue(message: message, action: action)
+                    self.queue(message, action: action)
                 } else {
                     PMLog.D(" \(message.messageID) move to \(message.location) was not a user initiated move.")
                 }
@@ -1846,14 +1820,14 @@ class MessageDataService {
                     UIApplication.sharedApplication().applicationIconBadgeNumber = count
                 }
                 
-                self.queue(message: message, action: action)
+                self.queue(message, action: action)
             }
         })
         
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isStarred, handler: { message in
             if message.needsUpdate {
                 let action: MessageAction = message.isStarred ? .star : .unstar
-                self.queue(message: message, action: action)
+                self.queue(message, action: action)
             }
         })
     }

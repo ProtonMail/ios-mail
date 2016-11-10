@@ -97,28 +97,7 @@ public class GetUserInfoResponse : ApiResponse {
     var userInfo : UserInfo?
     
     override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
-        self.userInfo = UserInfo(
-            response: response["User"] as! Dictionary<String, AnyObject>,
-            displayNameResponseKey: "DisplayName",
-            maxSpaceResponseKey: "MaxSpace",
-            notificationEmailResponseKey: "NotificationEmail",
-            privateKeyResponseKey: "EncPrivateKey",
-            publicKeyResponseKey: "PublicKey",
-            signatureResponseKey: "Signature",
-            usedSpaceResponseKey: "UsedSpace",
-            userStatusResponseKey: "UserStatus",
-            userAddressResponseKey: "Addresses",
-            
-            autoSaveContactResponseKey : "AutoSaveContacts",
-            languageResponseKey : "Language",
-            maxUploadResponseKey: "MaxUpload",
-            notifyResponseKey: "Notify",
-            showImagesResponseKey : "ShowImages",
-            swipeLeftResponseKey : "SwipeLeft",
-            swipeRightResponseKey : "SwipeRight",
-            roleResponseKey : "Role",
-            delinquentResponseKey : "Delinquent"
-        )
+        self.userInfo = UserInfo( response: response["User"] as! Dictionary<String, AnyObject> )
         return true
     }
 }

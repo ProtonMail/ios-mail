@@ -18,26 +18,27 @@ import Foundation
 
 // TODO:: this is not very good need refactor
 final class UserInfo: NSObject {
-    let displayName: String
+    var displayName: String
     let maxSpace: Int64
-    let notificationEmail: String
-    let privateKey: String
+    var notificationEmail: String
+    var privateKey: String
     let publicKey: String
-    let signature: String
+    var signature: String
     let usedSpace: Int64
     let userStatus: Int
-    let userAddresses: Array<Address>
+    var userAddresses: Array<Address>
+    var userKeys: Array<Key>
     
     // new values v1.0.8
     let autoSaveContact : Int
     let language : String
     let maxUpload: Int64
-    let notify: Int
-    let showImages : Int  //1 is auto 0 is manual
+    var notify: Int
+    var showImages : Int  //1 is auto 0 is manual
     
     // new valuse v1.1.4
-    let swipeLeft : Int
-    let swipeRight : Int
+    var swipeLeft : Int
+    var swipeRight : Int
     
     let role : Int
     
@@ -50,7 +51,8 @@ final class UserInfo: NSObject {
         autoSC:Int?, language:String?, maxUpload:Int64?, notify:Int?, showImage:Int?,  //v1.0.8
         swipeL:Int?, swipeR:Int?,  //v1.1.4
         role:Int?,
-        delinquent : Int?)
+        delinquent : Int?,
+        keys : Array<Key>?)
     {
         self.displayName = displayName ?? ""
         self.maxSpace = maxSpace ?? 0
@@ -74,6 +76,8 @@ final class UserInfo: NSObject {
         self.role = role ?? 0
         
         self.delinquent = delinquent ?? 0
+        
+        self.userKeys = keys ?? Array<Key>()
     }
 }
 
@@ -110,53 +114,46 @@ final class Key : NSObject {
     let key_id: String
     let public_key: String
     var private_key : String
+    var fingerprint : String
     
-    required init(key_id: String?, public_key: String?, private_key: String?) {
+    required init(key_id: String?, public_key: String?, private_key: String?, fingerprint : String?) {
         self.key_id = key_id ?? ""
         self.public_key = public_key ?? ""
         self.private_key = private_key ?? ""
+        self.fingerprint = fingerprint ?? ""
     }
 }
 
 
 extension UserInfo {
     /// Initializes the UserInfo with the response data
-    convenience init(
-        response: Dictionary<String, AnyObject>,
-        displayNameResponseKey: String,
-        maxSpaceResponseKey: String,
-        notificationEmailResponseKey: String,
-        privateKeyResponseKey: String,
-        publicKeyResponseKey: String,
-        signatureResponseKey: String,
-        usedSpaceResponseKey: String,
-        userStatusResponseKey:String,
-        userAddressResponseKey:String,
+    convenience init(response: Dictionary<String, AnyObject>) {
+        //        privateKeyResponseKey: "EncPrivateKey",
+        //        publicKeyResponseKey: "PublicKey",
+        var uKeys: Array<Key> = Array<Key>()
+        if let user_keys = response["Keys"] as? Array<Dictionary<String, AnyObject>> {
+            for key_res in user_keys {
+                uKeys.append(Key(
+                    key_id: key_res["ID"] as? String,
+                    public_key: key_res["PublicKey"] as? String,
+                    private_key: key_res["PrivateKey"] as? String,
+                    fingerprint: key_res["Fingerprint"] as? String))
+            }
+        }
         
-        autoSaveContactResponseKey : String,
-        languageResponseKey : String,
-        maxUploadResponseKey: String,
-        notifyResponseKey: String,
-        showImagesResponseKey : String,
-        
-        swipeLeftResponseKey : String,
-        swipeRightResponseKey : String,
-        
-        roleResponseKey : String,
-        
-        delinquentResponseKey : String
-        ) {
-            var addresses: [Address] = Array<Address>()
-            let address_response = response[userAddressResponseKey] as! Array<Dictionary<String, AnyObject>>
+        var addresses: [Address] = Array<Address>()
+        if let address_response = response["Addresses"] as? Array<Dictionary<String, AnyObject>> {
             for res in address_response
             {
                 var keys: [Key] = Array<Key>()
-                let address_keys = res["Keys"] as! Array<Dictionary<String, AnyObject>>
-                for key_res in address_keys {
-                    keys.append(Key(
-                        key_id: key_res["ID"] as? String,
-                        public_key: key_res["PublicKey"] as? String,
-                        private_key: key_res["PrivateKey"] as? String))
+                if let address_keys = res["Keys"] as? Array<Dictionary<String, AnyObject>> {
+                    for key_res in address_keys {
+                        keys.append(Key(
+                            key_id: key_res["ID"] as? String,
+                            public_key: key_res["PublicKey"] as? String,
+                            private_key: key_res["PrivateKey"] as? String,
+                            fingerprint: key_res["Fingerprint"] as? String))
+                    }
                 }
                 
                 addresses.append(Address(
@@ -170,34 +167,37 @@ extension UserInfo {
                     keys : keys,
                     status: res["Status"] as? Int,
                     type: res["Type"] as? Int
-                ))
+                    ))
             }
-            let usedS = response[usedSpaceResponseKey] as? NSNumber
-            let maxS = response[maxSpaceResponseKey] as? NSNumber
-            self.init(
-                displayName: response[displayNameResponseKey] as? String,
-                maxSpace: maxS?.longLongValue,
-                notificationEmail: response[notificationEmailResponseKey] as? String,
-                privateKey: "", //response[privateKeyResponseKey] as? String,
-                publicKey: "", //response[publicKeyResponseKey] as? String,
-                signature: response[signatureResponseKey] as? String,
-                usedSpace: usedS?.longLongValue,
-                userStatus: response[userStatusResponseKey] as? Int,
-                userAddresses: addresses,
-                
-                autoSC : response[autoSaveContactResponseKey] as? Int,
-                language : response[languageResponseKey] as? String,
-                maxUpload: response[maxUploadResponseKey] as? Int64,
-                notify: response[notifyResponseKey] as? Int,
-                showImage : response[showImagesResponseKey] as? Int,
-                
-                swipeL: response[swipeLeftResponseKey] as? Int,
-                swipeR: response[swipeRightResponseKey] as? Int,
-                
-                role : response[roleResponseKey] as? Int,
-                
-                delinquent : response[delinquentResponseKey] as? Int
-            )
+        }
+        let usedS = response["UsedSpace"] as? NSNumber
+        let maxS = response["MaxSpace"] as? NSNumber
+        self.init(
+            displayName: response["DisplayName"] as? String,
+            maxSpace: maxS?.longLongValue,
+            notificationEmail: response["NotificationEmail"] as? String,
+            privateKey: "", //response[privateKeyResponseKey] as? String,
+            publicKey: "", //response[publicKeyResponseKey] as? String,
+            signature: response["Signature"] as? String,
+            usedSpace: usedS?.longLongValue,
+            userStatus: response["UserStatus"] as? Int,
+            userAddresses: addresses,
+            
+            autoSC : response["AutoSaveContacts"] as? Int,
+            language : response["Language"] as? String,
+            maxUpload: response["MaxUpload"] as? Int64,
+            notify: response["Notify"] as? Int,
+            showImage : response["ShowImages"] as? Int,
+            
+            swipeL: response["SwipeLeft"] as? Int,
+            swipeR: response["SwipeRight"] as? Int,
+            
+            role : response["Role"] as? Int,
+            
+            delinquent : response["Delinquent"] as? Int,
+            
+            keys : uKeys
+        )
     }
 }
 
@@ -227,6 +227,8 @@ extension UserInfo: NSCoding {
         static let role = "role"
         
         static let delinquent = "delinquent"
+        
+        static let userKeys = "userKeys"
     }
     
     convenience init(coder aDecoder: NSCoder) {
@@ -252,8 +254,9 @@ extension UserInfo: NSCoding {
             
             role : aDecoder.decodeIntegerForKey(CoderKey.role),
             
+            delinquent : aDecoder.decodeIntegerForKey(CoderKey.delinquent),
             
-            delinquent : aDecoder.decodeIntegerForKey(CoderKey.delinquent)
+            keys: aDecoder.decodeObjectForKey(CoderKey.userKeys) as? Array<Key>
         )
     }
     
@@ -278,6 +281,10 @@ extension UserInfo: NSCoding {
         aCoder.encodeInteger(swipeRight, forKey: CoderKey.swipeRight)
         
         aCoder.encodeInteger(role, forKey: CoderKey.role)
+        
+        aCoder.encodeInteger(delinquent, forKey: CoderKey.delinquent)
+        
+        aCoder.encodeObject(userKeys, forKey: CoderKey.userKeys)
     }
 }
 
@@ -334,19 +341,22 @@ extension Key: NSCoding {
         static let keyID = "keyID"
         static let publicKey = "publicKey"
         static let privateKey = "privateKey"
+        static let fingerprintKey = "fingerprintKey"
     }
     
     convenience init(coder aDecoder: NSCoder) {
         self.init(
             key_id: aDecoder.decodeStringForKey(CoderKey.keyID),
             public_key: aDecoder.decodeStringForKey(CoderKey.publicKey),
-            private_key: aDecoder.decodeStringForKey(CoderKey.privateKey))
+            private_key: aDecoder.decodeStringForKey(CoderKey.privateKey),
+            fingerprint: aDecoder.decodeStringForKey(CoderKey.fingerprintKey))
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(key_id, forKey: CoderKey.keyID)
         aCoder.encodeObject(public_key, forKey: CoderKey.publicKey)
         aCoder.encodeObject(private_key, forKey: CoderKey.privateKey)
+        aCoder.encodeObject(fingerprint, forKey: CoderKey.fingerprintKey)
     }
 }
 
