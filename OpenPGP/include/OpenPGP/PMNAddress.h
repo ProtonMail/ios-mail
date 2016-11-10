@@ -7,16 +7,16 @@
 @interface PMNAddress : NSObject
 - (nonnull instancetype)initWithAddressId:(nonnull NSString *)addressId
                               addressName:(nonnull NSString *)addressName
-                                     keys:(nonnull NSArray *)keys;
+                                     keys:(nonnull NSArray<PMNOpenPgpKey *> *)keys;
 + (nonnull instancetype)addressWithAddressId:(nonnull NSString *)addressId
                                  addressName:(nonnull NSString *)addressName
-                                        keys:(nonnull NSArray *)keys;
+                                        keys:(nonnull NSArray<PMNOpenPgpKey *> *)keys;
 
 @property (nonatomic, readonly, nonnull) NSString * addressId;
 
 /**optional */
 @property (nonatomic, readonly, nonnull) NSString * addressName;
 
-@property (nonatomic, readonly, nonnull) NSArray * keys;
+@property (nonatomic, readonly, nonnull) NSArray<PMNOpenPgpKey *> * keys;
 
 @end

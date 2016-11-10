@@ -186,11 +186,18 @@ extension ContactsViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let deleteClosure = { (action: UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
             var contact: ContactVO
-            
             if (self.searchController.active) {
-                contact = self.searchResults[indexPath.row]
+                if indexPath.row < self.searchResults.count {
+                    contact = self.searchResults[indexPath.row]
+                } else {
+                    return
+                }
             } else {
-                contact = self.contacts[indexPath.row]
+                if indexPath.row < self.contacts.count {
+                    contact = self.contacts[indexPath.row]
+                } else {
+                    return
+                }
             }
             
             self.selectedContact = contact
@@ -208,8 +215,7 @@ extension ContactsViewController: UITableViewDelegate {
             
             if (self.searchController.active) {
                 self.searchResults.removeAtIndex(indexPath.row)
-                //self.searchDisplayController?.searchResultsTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
-                //self.searchDisplayController?.searchBar.resignFirstResponder()
+                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
             } else {
                 self.contacts.removeAtIndex(indexPath.row)
                 self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)

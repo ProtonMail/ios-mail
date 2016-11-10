@@ -19,7 +19,14 @@ import Fabric
 import Crashlytics
 import LocalAuthentication
 
-class SignInViewController: UIViewController {
+
+enum SignInUIFlow : Int {
+    case RequirePin = 0
+    case RequireTouchID = 1
+    case Restore = 2
+}
+
+class SignInViewController: ProtonMailViewController {
     
     private let kMailboxSegue = "mailboxSegue"
     private let kSignUpKeySegue = "sign_in_to_sign_up_segue"
@@ -32,6 +39,7 @@ class SignInViewController: UIViewController {
     
     private let kSegueToSignUpWithNoAnimation = "sign_in_to_splash_no_segue"
     private let kSegueToPinCodeViewNoAnimation = "pin_code_segue"
+    private let kSegueTo2FACodeSegue = "2fa_code_segue"
     
     static var isComeBackFromMailbox = false
     
@@ -81,17 +89,36 @@ class SignInViewController: UIViewController {
         setupTextFields()
         setupButtons()
         
-        if userCachedStatus.isPinCodeEnabled && !userCachedStatus.pinCode.isEmpty {
+        let signinFlow = getViewFlow()
+        switch signinFlow {
+        case .RequirePin:
             self.performSegueWithIdentifier(kSegueToPinCodeViewNoAnimation, sender: self)
-        } else {
-            //check touch id status
-            if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
-                showTouchID(false)
-                authenticateUser()
+            break
+        case .RequireTouchID:
+            showTouchID(false)
+            authenticateUser()
+            break
+        case .Restore:
+            signInIfRememberedCredentials()
+            setupView();
+            break
+        }
+    }
+    
+    private func getViewFlow() -> SignInUIFlow {
+        if sharedTouchID.showTouchIDOrPin() {
+            if userCachedStatus.isPinCodeEnabled && !userCachedStatus.pinCode.isEmpty {
+                return SignInUIFlow.RequirePin
             } else {
-                signInIfRememberedCredentials()
-                setupView();
+                //check touch id status
+                if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+                    return SignInUIFlow.RequireTouchID
+                } else {
+                    return SignInUIFlow.Restore
+                }
             }
+        } else {
+            return SignInUIFlow.Restore
         }
     }
     
@@ -199,7 +226,6 @@ class SignInViewController: UIViewController {
             //                    self.performSegueWithIdentifier("showThankYouViewController", sender: self)
             //                })
             //            }
-            
             if !username.isEmpty && !password.isEmpty {
                 self.updateSignInButton(usernameText: username, passwordText: password)
                 self.signIn()
@@ -337,6 +363,11 @@ class SignInViewController: UIViewController {
             let viewController = segue.destinationViewController as! PinCodeViewController
             viewController.viewModel = UnlockPinCodeModelImpl()
             viewController.delegate = self
+        } else if segue.identifier == kSegueTo2FACodeSegue {
+            let popup = segue.destinationViewController as! TwoFACodeViewController
+            popup.delegate = self
+            popup.mode = .TwoFactorCode
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }
     
@@ -381,34 +412,112 @@ class SignInViewController: UIViewController {
         onePasswordButton.layer.borderWidth = 2
     }
     
+    private var cachedTwoCode : String?
     func signIn() {
         MBProgressHUD.showHUDAddedTo(view, animated: true)
         isRemembered = true
         if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
             clean();
         }
-
+        
         SignInViewController.isComeBackFromMailbox = false
         
         let username = (usernameTextField.text ?? "").trim()
         let password = (passwordTextField.text ?? "") //.trim()
         
-        sharedUserDataService.signIn(username, password: password, isRemembered: isRemembered) { _, error in
-            MBProgressHUD.hideHUDForView(self.view, animated: true)
-            if let error = error {
+        
+        //need pass twoFACode
+        sharedUserDataService.signIn(username, password: password, twoFACode: cachedTwoCode,
+            ask2fa: {
+            //2fa
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
+                self.performSegueWithIdentifier(self.kSegueTo2FACodeSegue, sender: self)
+            },
+            onError: { (error) in
+                //error
+                self.cachedTwoCode = nil
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
                 PMLog.D("error: \(error)")
                 self.ShowLoginViews();
                 let alertController = error.alertController()
                 alertController.addOKAction()
                 self.presentViewController(alertController, animated: true, completion: nil)
+            },
+            onSuccess: { (mailboxpwd) in
+                //ok
+                self.cachedTwoCode = nil
+                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                if mailboxpwd != nil {
+                    self.decryptPassword(mailboxpwd!)
+                } else {
+                    self.loadContent()
+                }
+            })
+    }
+    
+    func decryptPassword(mailboxPassword:String!) {
+        isRemembered = true
+        if sharedUserDataService.isMailboxPasswordValid(mailboxPassword, privateKey: AuthCredential.getPrivateKey()) {
+            if sharedUserDataService.isSet {
+                sharedUserDataService.setMailboxPassword(mailboxPassword, isRemembered: self.isRemembered)
+                (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
             } else {
-                self.loadContent()
+                do {
+                    try AuthCredential.setupToken(mailboxPassword, isRememberMailbox: self.isRemembered)
+                    MBProgressHUD.showHUDAddedTo(view, animated: true)
+                    sharedLabelsDataService.fetchLabels()
+                    sharedUserDataService.fetchUserInfo() { info, _, error in
+                        MBProgressHUD.hideHUDForView(self.view, animated: true)
+                        if error != nil {
+                            let alertController = error!.alertController()
+                            alertController.addOKAction()
+                            self.presentViewController(alertController, animated: true, completion: nil)
+                            if error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
+                                self.navigationController?.popViewControllerAnimated(true)
+                            }
+                        } else if info != nil {
+                            if info!.delinquent < 3 {
+                                userCachedStatus.pinFailedCount = 0;
+                                sharedUserDataService.setMailboxPassword(mailboxPassword, isRemembered: self.isRemembered)
+                                self.loadContent()
+                                self.restoreBackup();
+                                NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)
+                            } else {
+                                let alertController = NSLocalizedString("Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.").alertController() //here needs change to a clickable link
+                                alertController.addAction(UIAlertAction.okAction({ (action) -> Void in
+                                    self.navigationController?.popViewControllerAnimated(true)
+                                }))
+                                self.presentViewController(alertController, animated: true, completion: nil)
+                            }
+                        } else {
+                            let alertController = NSError.unknowError().alertController()
+                            alertController.addOKAction()
+                            self.presentViewController(alertController, animated: true, completion: nil)
+                        }
+                    }
+                } catch let ex as NSError {
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    let message = (ex.userInfo["MONExceptionReason"] as? String) ?? NSLocalizedString("The mailbox password is incorrect.")
+                    let alertController = UIAlertController(title: NSLocalizedString("Incorrect password"), message: NSLocalizedString(message),preferredStyle: .Alert)
+                    alertController.addOKAction()
+                    presentViewController(alertController, animated: true, completion: nil)
+                }
             }
+        } else {
+            let alert = UIAlertController(title: NSLocalizedString("Incorrect password"), message: NSLocalizedString("The mailbox password is incorrect."), preferredStyle: .Alert)
+            alert.addAction((UIAlertAction.okAction()))
+            presentViewController(alert, animated: true, completion: nil)
         }
+    }
+    
+    func restoreBackup () {
+        UserTempCachedStatus.restore()
     }
     
     func signInIfRememberedCredentials() {
         if sharedUserDataService.isUserCredentialStored {
+            userCachedStatus.lockedApp = false
             sharedUserDataService.isSignedIn = true
             isRemembered = true
             
@@ -461,9 +570,10 @@ class SignInViewController: UIViewController {
     
     func clean()
     {
+        UserTempCachedStatus.backup()
         sharedUserDataService.signOut(true)
         userCachedStatus.signOut()
-        sharedMessageDataService.launchCleanUpIfNeeded();
+        sharedMessageDataService.launchCleanUpIfNeeded()
     }
     
     func updateSignInButton(usernameText usernameText: String, passwordText: String) {
@@ -500,6 +610,18 @@ class SignInViewController: UIViewController {
     
     @IBAction func tapAction(sender: UITapGestureRecognizer) {
         dismissKeyboard()
+    }
+}
+
+extension SignInViewController : TwoFACodeViewControllerDelegate {
+    func ConfirmedCode(code: String, pwd : String) {
+        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
+        self.cachedTwoCode = code
+        self.signIn()
+    }
+
+    func Cancel2FA() {
+        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
     }
 }
 

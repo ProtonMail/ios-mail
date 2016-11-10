@@ -198,7 +198,7 @@ class SettingTableViewController: ProtonMailViewController {
                                 if indexPath == indexp {
                                     let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
                                     ActivityIndicatorHelper.showActivityIndicatorAtView(window)
-                                    sharedUserDataService.updateAutoLoadImage(newStatus == true ? 1 : 0) { _, error in
+                                    sharedUserDataService.updateAutoLoadImage(newStatus == true ? 1 : 0) { _, _, error in
                                         ActivityIndicatorHelper.hideActivityIndicatorAtView(window)
                                         if let error = error {
                                             feedback(isOK: false)
@@ -456,7 +456,15 @@ class SettingTableViewController: ProtonMailViewController {
                     case .NotifyEmail:
                         self.performSegueWithIdentifier(NotificationSegue, sender: self)
                     case .LoginPWD:
-                        self.performSegueWithIdentifier(LoginpwdSegue, sender: self)
+                       // if shard
+                        if sharedUserDataService.passwordMode == 1 {
+                            let alert = NSLocalizedString("Please use the web version of ProtonMail to change your passwords.!").alertController()
+                            alert.addOKAction()
+                            presentViewController(alert, animated: true, completion: nil)
+                        } else {
+                            self.performSegueWithIdentifier(LoginpwdSegue, sender: self)
+                        }
+                        
                     case .MBP:
                         let alert = NSLocalizedString("Please use the web version of ProtonMail to change your mailbox password!").alertController()
                         alert.addOKAction()

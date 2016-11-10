@@ -574,6 +574,7 @@ class MessageDataService {
                     }
                 }
             }
+            lastUpdatedStore.updateUnreadCountForKey(MessageLocation.starred, count: starCount ?? 0)
             
             //MessageLocation
             var badgeNumber = inboxCount //inboxCount + draftCount + sendCount + spamCount + starCount + trashCount;
@@ -639,7 +640,6 @@ class MessageDataService {
         // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
         dispatch_sync(self.incrementalUpdateQueue) {
             let context = sharedCoreDataService.newMainManagedObjectContext()
-            
             context.performBlock { () -> Void in
                 var error: NSError?
                 var messagesNoCache : [Message] = [];
@@ -657,6 +657,11 @@ class MessageDataService {
                         }
                     case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update1), .Some(IncrementalUpdateType.update2):
                         if IncrementalUpdateType.insert == msg.Action {
+                            if let cachedMessage = Message.messageForMessageID(msg.ID, inManagedObjectContext: context) {
+                                if cachedMessage.location != MessageLocation.draft && cachedMessage.location != MessageLocation.outbox {
+                                    continue
+                                }
+                            }
                             if let notify_msg_id = notificationMessageID {
                                 if notify_msg_id == msg.ID {
                                     msg.message?.removeValueForKey("IsRead")
@@ -798,7 +803,6 @@ class MessageDataService {
                             }
                         }
                     }
-                    
                     completion?(task, fileURL, error)
                 })
             } else {
@@ -1790,7 +1794,8 @@ class MessageDataService {
     
     private func queue(message message: Message, action: MessageAction) {
         if action == .saveDraft || action == .send {
-            sharedMessageQueue.addMessage(message.objectID.URIRepresentation().absoluteString, action: action)
+            //TODO:: need to handle the empty instead of !
+            sharedMessageQueue.addMessage(message.objectID.URIRepresentation().absoluteString!, action: action)
         } else {
             if message.managedObjectContext != nil && !message.messageID.isEmpty {
                 sharedMessageQueue.addMessage(message.messageID, action: action)
@@ -1805,7 +1810,8 @@ class MessageDataService {
     }
     
     private func queue(att att: Attachment, action: MessageAction) {
-        sharedMessageQueue.addMessage(att.objectID.URIRepresentation().absoluteString, action: action)
+        //TODO:: need to handle the empty instead of !
+        sharedMessageQueue.addMessage(att.objectID.URIRepresentation().absoluteString!, action: action)
         dequeueIfNeeded()
     }
     
@@ -1858,15 +1864,35 @@ class MessageDataService {
 extension NSFileManager {
     var attachmentDirectory: NSURL {
         let attachmentDirectory = applicationSupportDirectoryURL.URLByAppendingPathComponent("attachments", isDirectory: true)
-        if !NSFileManager.defaultManager().fileExistsAtPath(attachmentDirectory.absoluteString) {
+        //TODO:: need to handle the empty instead of !
+        if !self.fileExistsAtPath(attachmentDirectory!.absoluteString!) {
             do {
-                try NSFileManager.defaultManager().createDirectoryAtURL(attachmentDirectory, withIntermediateDirectories: true, attributes: nil)
+                //TODO:: need to handle the empty instead of !
+                try self.createDirectoryAtURL(attachmentDirectory!, withIntermediateDirectories: true, attributes: nil)
             }
             catch let ex as NSError {
                 PMLog.D(" error : \(ex).")
             }
         }
-        return attachmentDirectory
+        //TODO:: need to handle the empty instead of !
+        return attachmentDirectory!
+    }
+    
+    func cleanCachedAtts() {
+        let attachmentDirectory = applicationSupportDirectoryURL.URLByAppendingPathComponent("attachments", isDirectory: true)
+        //TODO:: need to handle the empty instead of !
+        if let path = attachmentDirectory!.path {
+            do {
+                let filePaths = try self.contentsOfDirectoryAtPath(path)
+                for fileName in filePaths {
+                    let filePathName = "\(path)/\(fileName)"
+                    try self.removeItemAtPath(filePathName)
+                }
+            }
+            catch let ex as NSError {
+                PMLog.D(" error : \(ex).")
+            }
+        }
     }
 }
 

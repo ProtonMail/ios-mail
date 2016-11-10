@@ -125,15 +125,26 @@ public class SignupViewModelImpl : SignupViewModel {
             let api = CreateNewUserRequest<ApiResponse>(token: self.token, type: self.verifyType.toString, username: self.userName, password: self.login, email: self.recoverEmail, domain: self.domain, news: self.news, publicKey: key.publicKey, privateKey: key.privateKey)
                 api.call({ (task, response, hasError) -> Void in
                 if !hasError {
-                    sharedUserDataService.signIn(self.userName, password: self.login, isRemembered: true) { _, error in
-                        if let error = error {
+                    //need clean the cache without ui flow change then signin with a fresh user
+                    sharedUserDataService.signOutAfterSignUp()
+                    userCachedStatus.signOut()
+                    sharedMessageDataService.launchCleanUpIfNeeded()
+                    
+                    //need pass twoFACode
+                    sharedUserDataService.signIn(self.userName, password: self.login, twoFACode: nil,
+                        ask2fa: {
+                            //2fa will show error
+                            complete(false, true, "2fa Authentication failed please try to login again", nil)
+                        },
+                        onError: { (error) in
                             complete(false, true, "Authentication failed please try to login again", error);
-                        } else {
+                        },
+                        onSuccess: { (mailboxpwd) in
                             do {
                                 if sharedUserDataService.isMailboxPasswordValid(self.mailbox, privateKey: AuthCredential.getPrivateKey()) {
                                     try AuthCredential.setupToken(self.mailbox, isRememberMailbox: true)
                                     sharedLabelsDataService.fetchLabels()
-                                    sharedUserDataService.fetchUserInfo() { info, error in
+                                    sharedUserDataService.fetchUserInfo() { info, _, error in
                                         if error != nil {
                                             complete(false, true, "Fetch user info failed", error)
                                         } else if info != nil {
@@ -151,8 +162,7 @@ public class SignupViewModelImpl : SignupViewModel {
                                 PMLog.D(ex)
                                 complete(false, true, "Decrypt token failed please try again", nil);
                             }
-                        }
-                    }
+                        })
                 } else {
                     if response?.error?.code == 7002 {
                         complete(false, true, "Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.", response!.error);
@@ -182,7 +192,7 @@ public class SignupViewModelImpl : SignupViewModel {
         self.displayName = displayName
         
         if !self.displayName.isEmpty {
-            sharedUserDataService.updateDisplayName(displayName) { _, error in
+            sharedUserDataService.updateDisplayName(displayName) { _, _, error in
 //                if error != nil {
 //                    //complete(false, error)
 //                } else {
@@ -192,7 +202,7 @@ public class SignupViewModelImpl : SignupViewModel {
         }
         
         if !self.recoverEmail.isEmpty {
-            sharedUserDataService.updateNotificationEmail(recoverEmail, password: sharedUserDataService.password ?? "") { _, _, error in
+            sharedUserDataService.updateNotificationEmail(recoverEmail, password: sharedUserDataService.password ?? "", tfaCode: nil) { _, _, error in
 //                if error != nil {
 //                    //complete(false, error)
 //                } else {

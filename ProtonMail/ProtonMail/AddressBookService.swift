@@ -51,29 +51,41 @@ class AddressBookService {
     }
     
     func contacts() -> [ContactVO] {
-        let contacts = addressBook.peopleOrderedByUsersPreference() as! [RHPerson]
         var contactVOs: [ContactVO] = []
-        
-        for contact: RHPerson in contacts {
-            var name: String? = contact.name
-            let emails: RHMultiValue = contact.emails
-            let count = UInt(emails.count())
-            for emailIndex in 0 ..< count {
-                let index = UInt(emailIndex)
-                if let emailAsString = emails.valueAtIndex(index) as? String {
-                    if (emailAsString.isValidEmail()) {
-                        let email = emailAsString
-                        if (name == nil) {
-                            name = email
+        if let contacts = self.addressBook.peopleOrderedByUsersPreference() as? [RHPerson] {
+            for contact: RHPerson in contacts {
+                var name: String? = contact.name
+                let emails: RHMultiValue = contact.emails
+                let count = UInt(emails.count())
+                for emailIndex in 0 ..< count {
+                    let index = UInt(emailIndex)
+                    if let emailAsString = emails.valueAtIndex(index) as? String {
+                        
+                        dispatch_sync(dispatch_get_main_queue()) {
+                            if (emailAsString.isValidEmail()) {
+                                let email = emailAsString
+                                if (name == nil) {
+                                    name = email
+                                }
+                                contactVOs.append(ContactVO(name: name, email: email, isProtonMailContact: false))
+                            }
                         }
-                        contactVOs.append(ContactVO(name: name, email: email, isProtonMailContact: false))
                     }
                 }
             }
+        } else {
+            let err =  NSError.getContactsError()
+            err.uploadFabricAnswer(ContactsErrorTitle)
         }
-        
         return contactVOs
-
     }
-    
+}
+
+extension NSError {
+    class func getContactsError() -> NSError {
+        return apiServiceError(
+            code: APIErrorCode.SendErrorCode.draftBad,
+            localizedDescription: NSLocalizedString("Unable to get contacts"),
+            localizedFailureReason: NSLocalizedString("get contacts() failed, peopleOrderedByUsersPreference return null!!"))
+    }
 }

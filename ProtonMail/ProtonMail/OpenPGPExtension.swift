@@ -41,7 +41,6 @@ extension PMNOpenPgp {
         return true
     }
     
-    
     func generateKey(passphrase: String, userName: String, domain:String, bits: Int32) throws -> PMNOpenPgpKey? {
         var error : NSError?
         var out_new_key : PMNOpenPgpKey?
@@ -85,6 +84,23 @@ extension PMNOpenPgp {
 // MARK: - OpenPGP String extension
 
 extension String {
+    
+    func getSignature() throws -> String? {
+        var error : NSError?
+        var dec_out_att : String?
+        SwiftTryCatch.tryBlock({ () -> Void in
+            dec_out_att = sharedOpenPGP.readClearsignedMessage(self)
+            }, catchBlock: { (exc) -> Void in
+                error = exc.toError()
+        }) { () -> Void in
+        }
+        if error == nil {
+            return dec_out_att
+        } else {
+            throw error!
+        }
+    }
+    
     func decryptMessage(passphrase: String) throws -> String? {
         var error : NSError?
         var out_decrypted : String?;
@@ -183,7 +199,6 @@ extension String {
 }
 
 extension NSData {
-    
     func decryptAttachment(keyPackage:NSData!, passphrase: String) throws -> NSData? {
         var error : NSError?
         var dec_out_att : NSData?

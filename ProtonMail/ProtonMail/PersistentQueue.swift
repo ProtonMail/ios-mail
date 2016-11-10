@@ -25,7 +25,6 @@ class PersistentQueue {
     
     private var queue: [AnyObject] {
         didSet {
-            PMLog.D(" Queue: \(queueName) count: \(queue.count)")
             dispatch_sync(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)) { () -> Void in
                 let data = NSKeyedArchiver.archivedDataWithRootObject(self.queue)
                 if !data.writeToURL(self.queueURL, atomically: true) {
@@ -51,16 +50,14 @@ class PersistentQueue {
     
     init(queueName: String) {
         self.queueName = "\(QueueConstant.queueIdentifer).\(queueName)"
-        //PMLog.D(self.queueName)
-        self.queueURL = NSFileManager.defaultManager().applicationSupportDirectoryURL.URLByAppendingPathComponent(self.queueName)
-        //PMLog.D(self.queueURL)
+        //TODO:: need to handle the empty instead of !
+        self.queueURL = NSFileManager.defaultManager().applicationSupportDirectoryURL.URLByAppendingPathComponent(self.queueName)!
         if let data = NSData(contentsOfURL: queueURL) {
             self.queue = (NSKeyedUnarchiver.unarchiveObjectWithData(data) ?? []) as! [AnyObject]
         }
         else {
             self.queue = []
         }
-        //PMLog.D(self.queue)
     }
     
     func add (uuid: NSUUID, object: NSCoding) -> NSUUID {

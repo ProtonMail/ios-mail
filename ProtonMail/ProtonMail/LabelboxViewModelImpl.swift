@@ -11,13 +11,11 @@ import CoreData
 
 public class LabelboxViewModelImpl : MailboxViewModel {
     
-    private let label : Label!
+    private var label : Label!
     
     init(label : Label) {
-        
-        self.label = label
-        
         super.init()
+        self.label = label
     }
     
     public override func showLocation () -> Bool {

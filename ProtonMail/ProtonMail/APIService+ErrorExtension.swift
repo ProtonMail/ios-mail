@@ -17,6 +17,8 @@ let AuthErrorTitle : String = "AuthRefresh-Error"
 let QueueErrorTitle : String = "Queue-Error"
 let CacheErrorTitle : String = "LocalCache-Error"
 let SendingErrorTitle : String = "Sending-Error"
+let ContactsErrorTitle : String = "Contacts-Error"
+
 
 extension NSError {
     

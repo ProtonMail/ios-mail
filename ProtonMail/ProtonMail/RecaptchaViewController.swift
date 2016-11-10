@@ -222,7 +222,7 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
         PMLog.D("")
     }
     
-    func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
+    func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
         PMLog.D("")
     }
     
