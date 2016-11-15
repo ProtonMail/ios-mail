@@ -393,15 +393,17 @@ class UserDataService {
     
     //TODO:: change the errors throw
     func updatePassword(old_pwd: String, newPassword: String, twoFACode:String?, completion: CompletionBlock) {
-        {
+        {//asyn
             do {
+                
+                throw UpdatePasswordError.InvalidUserName.toError()
                 //generate new pwd and verifier
                 guard let _username = self.username else {
                     throw UpdatePasswordError.InvalidUserName.toError()
                 }
                 let authModuls = try AuthModulusRequest<AuthModulusResponse>().syncCall()
                 guard let moduls_id = authModuls?.ModulusID else {
-                    throw UpdatePasswordError.InvalidModuls.toError()
+                    throw UpdatePasswordError.InvalidModulsID.toError()
                 }
                 guard let new_moduls = authModuls?.Modulus, let new_encodedModulus = try new_moduls.getSignature() else {
                     throw UpdatePasswordError.InvalidModuls.toError()
@@ -410,11 +412,11 @@ class UserDataService {
                 let new_decodedModulus : NSData = new_encodedModulus.decodeBase64()
                 let new_salt : NSData = PMNOpenPgp.randomBits(80)
                 guard let new_hashed_password = PasswordUtils.hashPasswordVersion4(newPassword, salt: new_salt, modulus: new_decodedModulus) else {
-                    throw UpdatePasswordError.InvalidModuls.toError()
+                    throw UpdatePasswordError.CantHashPassword.toError()
                 }
                 
                 guard let verifier = try generateVerifier(2048, modulus: new_decodedModulus, hashedPassword: new_hashed_password) else {
-                    throw UpdatePasswordError.InvalidModuls.toError()
+                    throw UpdatePasswordError.CantGenerateVerifier.toError()
                 }
                 
                 //start check exsit srp
@@ -425,10 +427,10 @@ class UserDataService {
                     // get auto info
                     let info = try AuthInfoRequest<AuthInfoResponse>(username: _username).syncCall()
                     guard let authVersion = info?.Version, let modulus = info?.Modulus, let ephemeral = info?.ServerEphemeral, let salt = info?.Salt, let session = info?.SRPSession else {
-                        throw UpdatePasswordError.InvalidModuls.toError()
+                        throw UpdatePasswordError.InvalideAuthInfo.toError()
                     }
                     guard let encodedModulus = try modulus.getSignature() else {
-                        throw UpdatePasswordError.InvalidModuls.toError()
+                        throw UpdatePasswordError.InvalideAuthInfo.toError()
                     }
                     
                     let decodedModulus : NSData = encodedModulus.decodeBase64()
@@ -443,13 +445,11 @@ class UserDataService {
                     //init api calls
                     let hashVersion = forceRetry ? forceRetryVersion : authVersion
                     guard let hashedPassword = PasswordUtils.getHashedPwd(hashVersion, password: old_pwd , username: _username, decodedSalt: decodedSalt, decodedModulus: decodedModulus) else {
-                        
-                        throw UpdatePasswordError.InvalidModuls.toError()
+                        throw UpdatePasswordError.CantHashPassword.toError()
                     }
                     
                     guard let srpClient = try generateSrpProofs(2048, modulus: decodedModulus, serverEphemeral: serverEphemeral, hashedPassword: hashedPassword) where srpClient.isValid() == true else {
-                        
-                        throw UpdatePasswordError.InvalidModuls.toError()
+                        throw UpdatePasswordError.CantGenerateSRPClient.toError()
                     }
                     
                     do {
@@ -464,7 +464,7 @@ class UserDataService {
                             self.password = newPassword
                             forceRetry = false
                         } else {
-                            throw UpdatePasswordError.InvalidModuls.toError()//update failed
+                            throw UpdatePasswordError.UpdatePasswordFailed.toError()
                         }
                     } catch let error as NSError {
                         if error.isInternetError() {
