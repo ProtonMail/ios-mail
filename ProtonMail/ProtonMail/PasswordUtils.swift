@@ -16,6 +16,31 @@ enum PasswordError: ErrorType {
 
 public class PasswordUtils {
     
+    
+    public static func getHashedPwd(authVersion: Int , password: String, username: String, decodedSalt : NSData, decodedModulus : NSData) -> NSData? {
+        var hashedPassword : NSData?
+        switch authVersion {
+        case 0:
+            hashedPassword = PasswordUtils.hashPasswordVersion0(password, username: username, modulus: decodedModulus)
+            break
+        case 1:
+            hashedPassword = PasswordUtils.hashPasswordVersion1(password, username: username, modulus: decodedModulus)
+            break
+        case 2:
+            hashedPassword = PasswordUtils.hashPasswordVersion2(password, username: username, modulus: decodedModulus)
+            break
+        case 3:
+            hashedPassword = PasswordUtils.hashPasswordVersion3(password, salt: decodedSalt, modulus: decodedModulus)
+            break
+        case 4:
+            hashedPassword = PasswordUtils.hashPasswordVersion4(password, salt: decodedSalt, modulus: decodedModulus)
+            break
+        default: break
+        }
+        return hashedPassword
+    }
+    
+    
     public static func CleanUserName(username : String) -> String {
         return username.preg_replace("_|\\.|-", replaceto: "").lowercaseString
     }

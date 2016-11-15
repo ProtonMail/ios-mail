@@ -34,7 +34,7 @@ extension PMNOpenPgp {
         }
     }
     
-    func checkPassphrase(passphrase: String, forPrivateKey privateKey: String) -> Bool {
+    static func checkPassphrase(passphrase: String, forPrivateKey privateKey: String) -> Bool {
         if !checkPassphrase(privateKey, passphrase: passphrase) {
             return false
         }

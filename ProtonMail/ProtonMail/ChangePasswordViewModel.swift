@@ -108,7 +108,62 @@ class ChangeMailboxPWDViewModel : ChangePWDViewModel{
         let newpwd = new_pwd//.trim();
         let confirmpwd = confirm_new_pwd//.trim();
         
-        if curr_pwd != sharedUserDataService.mailboxPassword || !sharedOpenPGP.checkPassphrase(curr_pwd, forPrivateKey: sharedUserDataService.userInfo?.privateKey ?? "") {
+        if curr_pwd != sharedUserDataService.mailboxPassword || !PMNOpenPgp.checkPassphrase(curr_pwd, forPrivateKey: sharedUserDataService.userInfo?.privateKey ?? "") {
+            complete(false, NSError.currentPwdWrong())
+        }
+        else if newpwd == "" || confirmpwd == "" {
+            complete(false, NSError.pwdCantEmpty())
+        }
+        else if newpwd != confirmpwd {
+            complete(false, NSError.newNotMatch())
+        }
+        else if curr_pwd == newpwd {
+            complete(true, nil)
+        }
+        else {
+            sharedUserDataService.updateMailboxPassword(curr_pwd, newMailboxPassword: newpwd) { _, _, error in
+                if let error = error {
+                    complete(false, error)
+                } else {
+                    complete(true, nil)
+                }
+            }
+        }
+    }
+}
+
+
+class ChangeSinglePasswordViewModel : ChangePWDViewModel{
+    func getNavigationTitle() -> String {
+        return "Single Password"
+    }
+    func getSectionTitle() -> String {
+        return "Change Password"
+    }
+    
+    func getLabelOne() -> String {
+        return "Current password"
+    }
+    
+    func getLabelTwo() -> String {
+        return "New password"
+    }
+    
+    func getLabelThree() -> String {
+        return "Confirm new password"
+    }
+    
+    func needAsk2FA() -> Bool {
+        return sharedUserDataService.twoFactorStatus == 1
+    }
+    
+    func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: ChangePasswordComplete) {
+        //remove space.
+        let curr_pwd = current //.trim();
+        let newpwd = new_pwd//.trim();
+        let confirmpwd = confirm_new_pwd//.trim();
+        
+        if curr_pwd != sharedUserDataService.mailboxPassword || !PMNOpenPgp.checkPassphrase(curr_pwd, forPrivateKey: sharedUserDataService.userInfo?.privateKey ?? "") {
             complete(false, NSError.currentPwdWrong())
         }
         else if newpwd == "" || confirmpwd == "" {

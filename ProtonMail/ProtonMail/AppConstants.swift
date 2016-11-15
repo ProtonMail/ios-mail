@@ -22,14 +22,14 @@ class AppConstants {
     static var AppVersion : Int = 1;
     
     //live api
-    static let BaseURLString : String = "https://api.protonmail.ch"
+    //static let BaseURLString : String = "https://api.protonmail.ch"
     
     //live test api
     //static let BaseURLString : String = "https://test-api.protonmail.ch"
     
     //live dev api
     //static let BaseURLString : String = "https://dev-api.protonmail.ch"
-    //static let BaseURLString : String = "https://dev.protonmail.com"
+    static let BaseURLString : String = "https://dev.protonmail.com"
     
     //blue test
     //static let BaseURLString : String = "http://protonmail.blue"
@@ -39,8 +39,8 @@ class AppConstants {
     //static let BaseURLString : String = "http://protonmail.xyz"
     
     //api options
-    //static let BaseAPIPath : String = "/api"
-    static let BaseAPIPath : String = ""
+    static let BaseAPIPath : String = "/api"
+    //static let BaseAPIPath : String = ""
     
     static var getDebugOption : String {
         get {

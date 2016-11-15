@@ -551,6 +551,12 @@
 		75E090511CAC722E00751136 /* CountryCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E0904F1CAC6E8E00751136 /* CountryCode.swift */; };
 		75E090541CAC7A3A00751136 /* CountryCodeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E090531CAC7A3A00751136 /* CountryCodeTableViewCell.swift */; };
 		75E090551CAC7A3A00751136 /* CountryCodeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E090531CAC7A3A00751136 /* CountryCodeTableViewCell.swift */; };
+		75E2202B1DD6728200078D6C /* KeysAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2202A1DD6728200078D6C /* KeysAPI.swift */; };
+		75E2202C1DD6728200078D6C /* KeysAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2202A1DD6728200078D6C /* KeysAPI.swift */; };
+		75E2202E1DDA532900078D6C /* Threading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2202D1DDA532900078D6C /* Threading.swift */; };
+		75E2202F1DDA532900078D6C /* Threading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E2202D1DDA532900078D6C /* Threading.swift */; };
+		75E220321DDA642500078D6C /* DataService+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E220311DDA642500078D6C /* DataService+Error.swift */; };
+		75E220331DDA642500078D6C /* DataService+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E220311DDA642500078D6C /* DataService+Error.swift */; };
 		75E49EFB1CAAF47D00235ACC /* InfoDev.plist in Resources */ = {isa = PBXBuildFile; fileRef = 75E49EFA1CAAF47D00235ACC /* InfoDev.plist */; };
 		75E49F091CAB200000235ACC /* flags.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 75E49F081CAB200000235ACC /* flags.bundle */; };
 		75E49F0A1CAB220600235ACC /* flags.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 75E49F081CAB200000235ACC /* flags.bundle */; };
@@ -904,6 +910,9 @@
 		75DF17AA1AB9051F008A032B /* StorageViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageViewCell.swift; sourceTree = "<group>"; };
 		75E0904F1CAC6E8E00751136 /* CountryCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryCode.swift; sourceTree = "<group>"; };
 		75E090531CAC7A3A00751136 /* CountryCodeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryCodeTableViewCell.swift; sourceTree = "<group>"; };
+		75E2202A1DD6728200078D6C /* KeysAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeysAPI.swift; sourceTree = "<group>"; };
+		75E2202D1DDA532900078D6C /* Threading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Threading.swift; sourceTree = "<group>"; };
+		75E220311DDA642500078D6C /* DataService+Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DataService+Error.swift"; sourceTree = "<group>"; };
 		75E49EFA1CAAF47D00235ACC /* InfoDev.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InfoDev.plist; sourceTree = "<group>"; };
 		75E49F081CAB200000235ACC /* flags.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = flags.bundle; sourceTree = "<group>"; };
 		75E49F0B1CAB23EB00235ACC /* phone_country_code.geojson */ = {isa = PBXFileReference; lastKnownFileType = text; path = phone_country_code.geojson; sourceTree = "<group>"; };
@@ -1081,6 +1090,7 @@
 		073FD9301A71C5F000EB0CAF /* DataServices */ = {
 			isa = PBXGroup;
 			children = (
+				753745021D6B7E7000682C5A /* Errors */,
 				753A1F4D1C52C06000B618D2 /* Extensions */,
 				073FD92D1A71C33B00EB0CAF /* Models */,
 				75ECCDFC1B31EF3600A8C800 /* APIService */,
@@ -1454,6 +1464,7 @@
 		753745021D6B7E7000682C5A /* Errors */ = {
 			isa = PBXGroup;
 			children = (
+				75E220311DDA642500078D6C /* DataService+Error.swift */,
 				75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */,
 				753745031D6B7E8F00682C5A /* APIError+Auth.swift */,
 			);
@@ -1615,7 +1626,6 @@
 			isa = PBXGroup;
 			children = (
 				756A35141B20D9B80033BC7C /* AppConstants.swift */,
-				75ECCDFD1B31F01000A8C800 /* APIServiceDefined.swift */,
 				7567B0721B3363D000A72A1E /* ControllerDefined.swift */,
 				750B00971B7AB91400F180BD /* NotificationDefined.swift */,
 			);
@@ -1697,11 +1707,12 @@
 		75ECCDFC1B31EF3600A8C800 /* APIService */ = {
 			isa = PBXGroup;
 			children = (
-				753745021D6B7E7000682C5A /* Errors */,
+				75ECCDFD1B31F01000A8C800 /* APIServiceDefined.swift */,
 				7567B0761B3387F700A72A1E /* APIServiceRequest.swift */,
 				7567B0781B33880500A72A1E /* APIServiceResponse.swift */,
 				7549F0B01D07827A00643C64 /* AddressAPI.swift */,
 				75ECCE011B31F44600A8C800 /* AuthAPI.swift */,
+				75E2202A1DD6728200078D6C /* KeysAPI.swift */,
 				7567B0741B3383F900A72A1E /* MessageAPI.swift */,
 				7518393E1B3DCA3000C714A6 /* EventAPI.swift */,
 				75662BA61B543A5B006C538E /* SettingsAPI.swift */,
@@ -1730,6 +1741,7 @@
 				75F1697D1AF7F43A00BE6E79 /* Logger.swift */,
 				7546BE541C8D4F9100FCEB0A /* TouchID.swift */,
 				7599B17C1CC8247E00B2CB8D /* Localization.swift */,
+				75E2202D1DDA532900078D6C /* Threading.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -2271,9 +2283,11 @@
 				07CAB7FE1A880B1200C5E347 /* PersistentQueue.swift in Sources */,
 				7567B0771B3387F700A72A1E /* APIServiceRequest.swift in Sources */,
 				075E3DEC1A5F4ECF00E001A7 /* AppDelegate.swift in Sources */,
+				75E2202E1DDA532900078D6C /* Threading.swift in Sources */,
 				7567B07B1B338EB900A72A1E /* MessageHelper.swift in Sources */,
 				7523E8C01BB182B300126D62 /* MultipartResponseParser.m in Sources */,
 				759339C01ABB45C700535F1B /* ViewModelFactory.swift in Sources */,
+				75E2202B1DD6728200078D6C /* KeysAPI.swift in Sources */,
 				75F9A1121AFD705B007229C7 /* UIDeviceExtension.swift in Sources */,
 				754CD48B1AB80D770084C54A /* CustomHeaderView.swift in Sources */,
 				072AB6911A8E89AD00AF45D6 /* MonitorSavesDataServiceMessageExtension.swift in Sources */,
@@ -2283,6 +2297,7 @@
 				754387D91AB35EB40003B0AC /* SignUpViewController.swift in Sources */,
 				701DDE971AA651100038149C /* ContactVO.swift in Sources */,
 				7510AE7C1AB8D68B00EF3C41 /* SettingDetailViewController.swift in Sources */,
+				75E220321DDA642500078D6C /* DataService+Error.swift in Sources */,
 				75370A921CA50616005020F9 /* ComposePasswordViewController.swift in Sources */,
 				7537450A1D6BA85B00682C5A /* APIService+ErrorExtension.swift in Sources */,
 				07E6C8281A9CF36400D4C8D4 /* NSManagedObjectExtension.swift in Sources */,
@@ -2478,6 +2493,7 @@
 				756CDEFD1D9DB3A0004455F6 /* JKBCryptRandom.swift in Sources */,
 				75DE7CC21CAAEA4900F5443E /* MessageExtension.swift in Sources */,
 				75B549E71D02731300F21A30 /* Reachability.m in Sources */,
+				75E220331DDA642500078D6C /* DataService+Error.swift in Sources */,
 				75DE7CC31CAAEA4900F5443E /* MailboxViewModel.swift in Sources */,
 				75DE7CC41CAAEA4900F5443E /* UIColor+ProtonMail.swift in Sources */,
 				75DE7CC51CAAEA4900F5443E /* SettingsCell.swift in Sources */,
@@ -2592,6 +2608,7 @@
 				75DE7D251CAAEA4900F5443E /* MailboxRateReviewCell.swift in Sources */,
 				75DE7D261CAAEA4900F5443E /* SignInViewController.swift in Sources */,
 				75DE7D271CAAEA4900F5443E /* SwitchTableViewCell.swift in Sources */,
+				75E2202F1DDA532900078D6C /* Threading.swift in Sources */,
 				75DE7D281CAAEA4900F5443E /* ComposeViewModelImpl.swift in Sources */,
 				75DE7D291CAAEA4900F5443E /* AddressBookService.swift in Sources */,
 				7537450B1D6BA85B00682C5A /* APIService+ErrorExtension.swift in Sources */,
@@ -2662,6 +2679,7 @@
 				75DE7D5E1CAAEA4900F5443E /* NSTimeIntervalExtension.swift in Sources */,
 				7547131C1DCD61850084BF34 /* SignInViewModelImpl.swift in Sources */,
 				75DE7D5F1CAAEA4900F5443E /* SplashViewController.swift in Sources */,
+				75E2202C1DD6728200078D6C /* KeysAPI.swift in Sources */,
 				75DE7D601CAAEA4900F5443E /* SignupViewModel.swift in Sources */,
 				75DE7D611CAAEA4900F5443E /* LabelboxViewModelImpl.swift in Sources */,
 				75DE7D621CAAEA4900F5443E /* MBContactCollectionViewEntryCell.m in Sources */,

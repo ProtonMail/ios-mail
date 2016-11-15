@@ -4,13 +4,21 @@
 #import <Foundation/Foundation.h>
 
 @interface PMNOpenPgpKey : NSObject
-- (nonnull instancetype)initWithPublicKey:(nonnull NSString *)publicKey
-                               privateKey:(nonnull NSString *)privateKey;
-+ (nonnull instancetype)openPgpKeyWithPublicKey:(nonnull NSString *)publicKey
-                                     privateKey:(nonnull NSString *)privateKey;
+- (nonnull instancetype)initWithKeyId:(nonnull NSString *)keyId
+                            publicKey:(nonnull NSString *)publicKey
+                           privateKey:(nonnull NSString *)privateKey
+                          fingerPrint:(nonnull NSString *)fingerPrint;
++ (nonnull instancetype)openPgpKeyWithKeyId:(nonnull NSString *)keyId
+                                  publicKey:(nonnull NSString *)publicKey
+                                 privateKey:(nonnull NSString *)privateKey
+                                fingerPrint:(nonnull NSString *)fingerPrint;
+
+@property (nonatomic, readonly, nonnull) NSString * keyId;
 
 @property (nonatomic, readonly, nonnull) NSString * publicKey;
 
 @property (nonatomic, readonly, nonnull) NSString * privateKey;
+
+@property (nonatomic, readonly, nonnull) NSString * fingerPrint;
 
 @end

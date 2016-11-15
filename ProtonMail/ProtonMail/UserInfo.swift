@@ -368,7 +368,7 @@ extension Address {
 
 extension Key {
     func toPMNPgpKey<T : PMNOpenPgpKey>() -> T {
-        return T(publicKey: public_key, privateKey: private_key)
+        return T(keyId: key_id, publicKey: public_key, privateKey: private_key, fingerPrint: fingerprint)
     }
 }
 
