@@ -126,6 +126,13 @@ public struct KeysAPI {
     
     //Update private keys only, use for mailbox password/single password updatesPUT
     static let V_UpdatePrivateKeyRequest : Int = 1
+    static let V_GetKeysSaltsRequest : Int = 1
+}
+
+public struct OrganizationsAPI {
+    static let Path : String = AppConstants.BaseAPIPath + "/organizations"
+    
+    static let V_GetOrgKeysRequest : Int = 1
 }
 
 public struct DomainsAPI {

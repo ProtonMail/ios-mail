@@ -34,6 +34,7 @@ class UserDataService {
         static let isRememberMailboxPassword = "isRememberMailboxPasswordKey"
         static let isRememberUser = "isRememberUserKey"
         static let mailboxPassword = "mailboxPasswordKey"
+        static let mailboxPasswordKeySalt = "mailboxPasswordKeySaltKey"
         static let username = "usernameKey"
         static let password = "passwordKey"
         static let userInfo = "userInfoKey"
@@ -228,6 +229,15 @@ class UserDataService {
             UICKeyChainStore.setString(newValue, forKey: Key.mailboxPassword)
         }
     }
+    /// Value is only stored in the keychain
+    private(set) var mailboxPasswordKeysalt: String? {
+        get {
+            return UICKeyChainStore.stringForKey(Key.mailboxPasswordKeySalt)
+        }
+        set {
+            UICKeyChainStore.setString(newValue, forKey: Key.mailboxPasswordKeySalt)
+        }
+    }
     
     var maxSpace: Int64 {
         return userInfo?.maxSpace ?? 0
@@ -281,8 +291,9 @@ class UserDataService {
         return result
     }
     
-    func setMailboxPassword(password: String, isRemembered: Bool) {
+    func setMailboxPassword(password: String, keysalt: String?, isRemembered: Bool) {
         mailboxPassword = password
+        mailboxPasswordKeysalt = keysalt
         isRememberMailboxPassword = isRemembered
         self.isMailboxPWDOk = true;
     }
@@ -391,12 +402,9 @@ class UserDataService {
         }
     }
     
-    //TODO:: change the errors throw
     func updatePassword(old_pwd: String, newPassword: String, twoFACode:String?, completion: CompletionBlock) {
         {//asyn
             do {
-                
-                throw UpdatePasswordError.InvalidUserName.toError()
                 //generate new pwd and verifier
                 guard let _username = self.username else {
                     throw UpdatePasswordError.InvalidUserName.toError()
@@ -410,7 +418,7 @@ class UserDataService {
                 }
                 //generat new verifier
                 let new_decodedModulus : NSData = new_encodedModulus.decodeBase64()
-                let new_salt : NSData = PMNOpenPgp.randomBits(80)
+                let new_salt : NSData = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
                 guard let new_hashed_password = PasswordUtils.hashPasswordVersion4(newPassword, salt: new_salt, modulus: new_decodedModulus) else {
                     throw UpdatePasswordError.CantHashPassword.toError()
                 }
@@ -464,7 +472,7 @@ class UserDataService {
                             self.password = newPassword
                             forceRetry = false
                         } else {
-                            throw UpdatePasswordError.UpdatePasswordFailed.toError()
+                            throw UpdatePasswordError.Default.toError()
                         }
                     } catch let error as NSError {
                         if error.isInternetError() {
@@ -485,68 +493,117 @@ class UserDataService {
         } ~> .Async
     }
     
-    func updateMailboxPassword(old_mbp: String, newMailboxPassword: String, completion: CompletionBlock?) {
-        if let userInfo = userInfo {
-            if let mailboxPassword = mailboxPassword {
-                do {
-                    //check old pwd on address keys,
-                    
-                    //check old pwd on user-level keys
-                    
-                    //check user role if equal 2 try to get the org key.
-                    //if yes check org key old pwd
-                    
-                    //generat keysalt
-                    
-                    //generat new pwd
-                    
-                    
-                    // need update the user kyes with
-                    
-                    
-                    if let newPrivateKey = try sharedOpenPGP.updatePassphrase(userInfo.privateKey, publicKey: userInfo.publicKey, old_pass: mailboxPassword, new_pass: newMailboxPassword) {
-                        sharedAPIService.userUpdateKeypair(sharedUserDataService.password!, publicKey: userInfo.publicKey, privateKey: newPrivateKey, completion: { task, response, error in
-                            if error == nil {
-                                self.mailboxPassword = newMailboxPassword
-                                if let userInfo = self.userInfo {
-                                    userInfo.privateKey = newPrivateKey
-                                    self.userInfo = userInfo
-                                }
-                            }
-                            completion?(task: task, response: response, error: error)
-                        })
-                    }
-                } catch let ex as NSError {
-                    completion?(task: nil, response: nil, error: ex)
+    func updateMailboxPassword(login_password: String, new_mailbox_password: String, completion: CompletionBlock) {
+        {//asyn
+            do {
+                guard let _username = self.username else {
+                    throw UpdatePasswordError.InvalidUserName.toError()
                 }
+                
+                guard let user_info = self.userInfo else {
+                    throw UpdatePasswordError.Default.toError()
+                }
+                
+                guard let old_password = self.mailboxPassword else {
+                    throw UpdatePasswordError.CurrentPasswordWrong.toError()
+                }
+                
+                //generat keysalt
+                let new_mpwd_salt : NSData = PMNOpenPgp.randomBits(128) //mailbox pwd need 128 bits
+                let new_hashed_mpwd = PasswordUtils.getMailboxPassword(new_mailbox_password, salt: new_mpwd_salt)
+                
+                var userlevel_pmn_keys = user_info.userKeys.toPMNPgpKeys()
+                userlevel_pmn_keys = PMNOpenPgp.updateKeysPassphrase(userlevel_pmn_keys, oldPassphrase: old_password, newPassphrase: new_hashed_mpwd)
+                
+                let new_user_level_keys = userlevel_pmn_keys.toKeys()
+                var new_org_key : String?
+                
+                //create a key list for key updates
+                if user_info.role == 2 { //need to get the org keys
+                    //check user role if equal 2 try to get the org key.
+                    let cur_org_key = try GetOrgKeys<OrgKeyResponse>().syncCall()
+                    if let org_priv_key = cur_org_key?.privKey where !org_priv_key.isEmpty {
+                        new_org_key = try PMNOpenPgp.updateKeyPassword(org_priv_key, old_pass: old_password, new_pass: new_hashed_mpwd)
+                    }
+                }
+                
+                var address_keys = user_info.userAddresses.toKeys().toPMNPgpKeys()
+                address_keys = PMNOpenPgp.updateKeysPassphrase(address_keys, oldPassphrase: old_password, newPassphrase: new_hashed_mpwd)
+                let new_address_key = address_keys.toKeys()
+                
+                // get auto info
+                let info = try AuthInfoRequest<AuthInfoResponse>(username: _username).syncCall()
+                guard let authVersion = info?.Version, let modulus = info?.Modulus, let ephemeral = info?.ServerEphemeral, let salt = info?.Salt, let session = info?.SRPSession else {
+                    throw UpdatePasswordError.InvalideAuthInfo.toError()
+                }
+                guard let encodedModulus = try modulus.getSignature() else {
+                    throw UpdatePasswordError.InvalideAuthInfo.toError()
+                }
+                
+                let decodedModulus : NSData = encodedModulus.decodeBase64()
+                let decodedSalt : NSData = salt.decodeBase64()
+                let serverEphemeral : NSData = ephemeral.decodeBase64()
+                
+                guard let hashedPassword = PasswordUtils.getHashedPwd(authVersion, password: login_password , username: _username, decodedSalt: decodedSalt, decodedModulus: decodedModulus) else {
+                    throw UpdatePasswordError.CantHashPassword.toError()
+                }
+                
+                guard let srpClient = try generateSrpProofs(2048, modulus: decodedModulus, serverEphemeral: serverEphemeral, hashedPassword: hashedPassword) where srpClient.isValid() == true else {
+                    throw UpdatePasswordError.CantGenerateSRPClient.toError()
+                }
+
+                
+                let update_res = try UpdatePrivateKeyRequest<ApiResponse>(clientEphemeral: srpClient.clientEphemeral.encodeBase64(),
+                                                     clientProof:srpClient.clientProof.encodeBase64(),
+                                                     SRPSession: session,
+                                                     keySalt: new_mpwd_salt.encodeBase64(),
+                                                     userlevelKeys: new_user_level_keys,
+                                                     addressKeys: new_address_key,
+                                                     tfaCode: nil,
+                                                     orgKey: new_org_key,
+                                                     auth: nil).syncCall()
+                guard update_res?.code == 1000 else {
+                    throw UpdatePasswordError.Default.toError()
+                }
+                
+                return { completion(task: nil, response: nil, error: nil) } ~> .Main
+            } catch let error as NSError {
+                return { completion(task: nil, response: nil, error: error) } ~> .Main
             }
-        }
+        } ~> .Async
+        
+        
+//        if let userInfo = userInfo {
+//            if let mailboxPassword = mailboxPassword {
+//                do {
+//                  
+//
+//                    
+//                    
+//                   
+//                    
+//                    
+//                    // need update the user kyes with
+//                    
+//                    
+//                    if let newPrivateKey = try sharedOpenPGP.updatePassphrase(userInfo.privateKey, publicKey: userInfo.publicKey, old_pass: mailboxPassword, new_pass: newMailboxPassword) {
+//                        sharedAPIService.userUpdateKeypair(sharedUserDataService.password!, publicKey: userInfo.publicKey, privateKey: newPrivateKey, completion: { task, response, error in
+//                            if error == nil {
+//                                self.mailboxPassword = newMailboxPassword
+//                                if let userInfo = self.userInfo {
+//                                    userInfo.privateKey = newPrivateKey
+//                                    self.userInfo = userInfo
+//                                }
+//                            }
+//                            completion(task: task, response: response, error: error)
+//                        })
+//                    }
+//                } catch let ex as NSError {
+//                    completion(task: nil, response: nil, error: ex)
+//                }
+//            }
+//        }
     }
-    
-    //    func updateNewUserKeys(mbp:String, completion: CompletionBlock?) {
-    //        var error: NSError?
-    //        if let userInfo = userInfo {
-    //            if let newPrivateKey = sharedOpenPGP.generateKey(mbp, userName: username!, error: &error) {
-    //                var pubkey = newPrivateKey.publicKey
-    //                var privkey = newPrivateKey.privateKey
-    //                sharedAPIService.userUpdateKeypair("" , publicKey: pubkey, privateKey: privkey, completion: { task, response, error in
-    //                    if error == nil {
-    //                        self.mailboxPassword = mbp;
-    //                        let userInfo = UserInfo(displayName: userInfo.displayName, maxSpace: userInfo.maxSpace, notificationEmail: userInfo.notificationEmail, privateKey: privkey, publicKey: pubkey, signature: userInfo.signature, usedSpace: userInfo.usedSpace, userStatus:userInfo.userStatus, userAddresses:userInfo.userAddresses,
-    //                            autoSC:userInfo.autoSaveContact, language:userInfo.language, maxUpload:userInfo.maxUpload, notify:userInfo.notify, showImage:userInfo.showImages,
-    //
-    //                            swipeL: userInfo.swipeLeft, swipeR: userInfo.swipeRight
-    //                        )
-    //
-    //                        self.userInfo = userInfo
-    //                    }
-    //                    completion?(task: task, response: response, error: error)
-    //                })
-    //            } else {
-    //                completion?(task: nil, response: nil, error: error)
-    //            }
-    //        }
-    //    }
     
     func updateUserDomiansOrder(email_domains: Array<Address>, newOrder : Array<Int>, completion: CompletionBlock) {
         let domainSetting = UpdateDomainOrder<ApiResponse>(adds: newOrder)
@@ -625,6 +682,7 @@ class UserDataService {
         
         isRememberMailboxPassword = false
         mailboxPassword = nil
+        mailboxPasswordKeysalt = nil
         userInfo = nil
         twoFactorStatus = 0
         passwordMode = 2
@@ -656,6 +714,7 @@ class UserDataService {
         
         if !isRememberMailboxPassword {
             mailboxPassword = nil
+            mailboxPasswordKeysalt = nil
         }
     }
 }

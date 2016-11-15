@@ -53,39 +53,50 @@ enum UpdatePasswordError : Int, ErrorType, CustomErrorVar {
     case CantGenerateVerifier = 0x110005
     case CantGenerateSRPClient = 0x110006
     case InvalideAuthInfo = 0x110007
-    case UpdatePasswordFailed = 0x110008
+    
+    // mailbox password part
+    case CurrentPasswordWrong = 0x110008
+    case NewNotMatch = 0x110009
+    case PasswordEmpty = 0x110010
+    
+    case Default = 0x110000
     
     var code : Int {
         return self.rawValue
     }
     
     var desc : String {
-        return NSLocalizedString("Change Password Failed") //TODO:: check with jason for localization
+        return NSLocalizedString("Change Password") //TODO:: check with jason for localization
     }
     
     var reason : String {
         switch self {
-        case InvalidUserName:
+        case .InvalidUserName:
             return NSLocalizedString("Invalid UserName!")
-        case InvalidModulsID:
+        case .InvalidModulsID:
             return NSLocalizedString("Can't get a Moduls ID!")
-        case InvalidModuls:
+        case .InvalidModuls:
             return NSLocalizedString("Can't get a Moduls!")
-        case CantHashPassword:
+        case .CantHashPassword:
             return NSLocalizedString("Invalid hashed password!")
-        case CantGenerateVerifier:
+        case .CantGenerateVerifier:
             return NSLocalizedString("Can't create a SRP verifier!")
-        case CantGenerateSRPClient:
+        case .CantGenerateSRPClient:
             return NSLocalizedString("Can't create a SRP Client")
-        case InvalideAuthInfo:
+        case .InvalideAuthInfo:
             return NSLocalizedString("Can't get user auth info")
-        case UpdatePasswordFailed:
+        case .CurrentPasswordWrong:
+            return NSLocalizedString("The Password is wrong.")
+        case .NewNotMatch:
+            return NSLocalizedString("The new password not match.")
+        case .PasswordEmpty:
+            return NSLocalizedString("The new password can't empty.")
+            
+        case .Default:
             return NSLocalizedString("Password update failed")
         }
     }
 }
-
-
 
 
 

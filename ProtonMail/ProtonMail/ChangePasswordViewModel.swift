@@ -55,13 +55,13 @@ class ChangeLoginPWDViewModel : ChangePWDViewModel{
         let confirmpwd = confirm_new_pwd //.trim();
         
         if curr_pwd != sharedUserDataService.password {
-            complete(false, NSError.currentPwdWrong())
+            complete(false, UpdatePasswordError.CurrentPasswordWrong.toError())
         }
         else if newpwd == "" || confirmpwd == "" {
-            complete(false, NSError.pwdCantEmpty())
+            complete(false, UpdatePasswordError.PasswordEmpty.toError())
         }
         else if newpwd != confirmpwd {
-            complete(false, NSError.newNotMatch())
+            complete(false, UpdatePasswordError.NewNotMatch.toError());
         }
         else if curr_pwd == newpwd {
             complete(true, nil)
@@ -103,25 +103,23 @@ class ChangeMailboxPWDViewModel : ChangePWDViewModel{
     }
     
     func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: ChangePasswordComplete) {
-        //remove space.
-        let curr_pwd = current //.trim();
-        let newpwd = new_pwd//.trim();
-        let confirmpwd = confirm_new_pwd//.trim();
+        //passwords support empty spaces like " 1 1 "
+        let curr_pwd = current
+        let newpwd = new_pwd
+        let confirmpwd = confirm_new_pwd
         
-        if curr_pwd != sharedUserDataService.mailboxPassword || !PMNOpenPgp.checkPassphrase(curr_pwd, forPrivateKey: sharedUserDataService.userInfo?.privateKey ?? "") {
-            complete(false, NSError.currentPwdWrong())
-        }
-        else if newpwd == "" || confirmpwd == "" {
-            complete(false, NSError.pwdCantEmpty())
+
+        if newpwd == "" || confirmpwd == "" {
+            complete(false, UpdatePasswordError.PasswordEmpty.toError())
         }
         else if newpwd != confirmpwd {
-            complete(false, NSError.newNotMatch())
+            complete(false, UpdatePasswordError.NewNotMatch.toError())
         }
-        else if curr_pwd == newpwd {
-            complete(true, nil)
-        }
+//        else if curr_pwd == newpwd {
+//            complete(true, nil)
+//        }
         else {
-            sharedUserDataService.updateMailboxPassword(curr_pwd, newMailboxPassword: newpwd) { _, _, error in
+            sharedUserDataService.updateMailboxPassword(curr_pwd, new_mailbox_password: newpwd) { _, _, error in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -164,19 +162,19 @@ class ChangeSinglePasswordViewModel : ChangePWDViewModel{
         let confirmpwd = confirm_new_pwd//.trim();
         
         if curr_pwd != sharedUserDataService.mailboxPassword || !PMNOpenPgp.checkPassphrase(curr_pwd, forPrivateKey: sharedUserDataService.userInfo?.privateKey ?? "") {
-            complete(false, NSError.currentPwdWrong())
+            complete(false, UpdatePasswordError.CurrentPasswordWrong.toError())
         }
         else if newpwd == "" || confirmpwd == "" {
-            complete(false, NSError.pwdCantEmpty())
+            complete(false, UpdatePasswordError.PasswordEmpty.toError())
         }
         else if newpwd != confirmpwd {
-            complete(false, NSError.newNotMatch())
+            complete(false, UpdatePasswordError.NewNotMatch.toError())
         }
         else if curr_pwd == newpwd {
             complete(true, nil)
         }
         else {
-            sharedUserDataService.updateMailboxPassword(curr_pwd, newMailboxPassword: newpwd) { _, _, error in
+            sharedUserDataService.updateMailboxPassword(curr_pwd, new_mailbox_password: newpwd) { _, _, error in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -219,13 +217,13 @@ class ChangePWDViewModelTest : ChangePWDViewModel{
         let confirmpwd = confirm_new_pwd//.trim();
         
         if curr_pwd != sharedUserDataService.mailboxPassword || !sharedUserDataService.isMailboxPasswordValid(curr_pwd, privateKey: sharedUserDataService.userInfo?.privateKey ?? "") {
-            complete(false, NSError.currentPwdWrong())
+            complete(false, UpdatePasswordError.CurrentPasswordWrong.toError())
         }
         else if newpwd == "" || confirmpwd == "" {
-            complete(false, NSError.pwdCantEmpty())
+            complete(false, UpdatePasswordError.PasswordEmpty.toError())
         }
         else if newpwd != confirmpwd {
-            complete(false, NSError.newNotMatch())
+            complete(false, UpdatePasswordError.NewNotMatch.toError())
         }
         else if curr_pwd == newpwd {
             complete(true, nil)

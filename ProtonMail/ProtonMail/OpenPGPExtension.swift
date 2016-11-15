@@ -60,24 +60,44 @@ extension PMNOpenPgp {
         }
     }
     
-    func updatePassphrase(privateKey: String, publicKey: String, old_pass: String, new_pass: String ) throws -> String? {
-        //  try SetupKeys(privateKey, pubKey: publicKey, pass: old_pass)
-        //  let new_privkey = try update_key_password(old_pass, new_pwd: new_pass)
-        //  return new_privkey
-        //  var anError: NSError?
-        //  if !SetupKeys(privateKey, pubKey: publicKey, pass: old_pass, error: &anError) {
-        //      if let error = error {
-        //      error.memory = anError
-        //  }
-        //  return nil
-        //  }
-        //  if let new_privkey = update_key_password(old_pass, new_pwd: new_pass, error: &anError) {
-        //      return new_privkey
-        //  }
-        //  if let error = error {
-        //      error.memory = anError
-        //  }
-        return nil
+    class func updateKeysPassword(old_keys : Array<Key>, old_pass: String, new_pass: String ) throws -> Array<Key>? {
+        var error : NSError?
+        let pm_keys = old_keys.toPMNPgpKeys()
+        
+        var out_keys : Array<Key>?
+        SwiftTryCatch.tryBlock({ () -> Void in
+            let new_keys = PMNOpenPgp.updateKeysPassphrase(pm_keys, oldPassphrase: old_pass, newPassphrase: new_pass)
+            //TODO:: add check
+            out_keys = new_keys.toKeys()
+            }, catchBlock: { (exc) -> Void in
+                error = exc.toError()
+        }) { () -> Void in
+        }
+        if error == nil {
+            return out_keys
+        } else {
+            throw error!
+        }
+    }
+    
+    class func updateKeyPassword(private_key: String, old_pass: String, new_pass: String ) throws -> String? {
+        var error : NSError?
+        var out_key : String?
+        SwiftTryCatch.tryBlock({ () -> Void in
+            out_key = PMNOpenPgp.updateSinglePassphrase(private_key, oldPassphrase: old_pass, newPassphrase: new_pass)
+            if out_key == nil || out_key!.isEmpty {
+                out_key = nil
+            }
+            }, catchBlock: { (exc) -> Void in
+                error = exc.toError()
+        }) { () -> Void in
+        }
+        if error == nil {
+            return out_key
+        } else {
+            throw error!
+        }
+
     }
 }
 

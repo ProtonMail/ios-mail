@@ -460,7 +460,7 @@ class SignInViewController: ProtonMailViewController {
         isRemembered = true
         if sharedUserDataService.isMailboxPasswordValid(mailboxPassword, privateKey: AuthCredential.getPrivateKey()) {
             if sharedUserDataService.isSet {
-                sharedUserDataService.setMailboxPassword(mailboxPassword, isRemembered: self.isRemembered)
+                sharedUserDataService.setMailboxPassword(mailboxPassword, keysalt: nil, isRemembered: self.isRemembered)
                 (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
             } else {
                 do {
@@ -479,7 +479,7 @@ class SignInViewController: ProtonMailViewController {
                         } else if info != nil {
                             if info!.delinquent < 3 {
                                 userCachedStatus.pinFailedCount = 0;
-                                sharedUserDataService.setMailboxPassword(mailboxPassword, isRemembered: self.isRemembered)
+                                sharedUserDataService.setMailboxPassword(mailboxPassword, keysalt: nil, isRemembered: self.isRemembered)
                                 self.loadContent()
                                 self.restoreBackup();
                                 NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)

@@ -372,12 +372,29 @@ extension Key {
     }
 }
 
+extension PMNOpenPgpKey {
+    func toKey<T : Key>() -> T {
+        return T(key_id: keyId, public_key: publicKey, private_key: privateKey, fingerprint : fingerPrint)
+    }
+}
+
 extension Array where Element : Key {
     func toPMNPgpKeys() -> [PMNOpenPgpKey] {
         var out_array = Array<PMNOpenPgpKey>()
         for i in 0 ..< self.count {
             let addr = self[i]
             out_array.append(addr.toPMNPgpKey())
+        }
+        return out_array;
+    }
+}
+
+extension Array where Element : PMNOpenPgpKey {
+    func toKeys() -> [Key] {
+        var out_array = Array<Key>()
+        for i in 0 ..< self.count {
+            let addr = self[i]
+            out_array.append(addr.toKey())
         }
         return out_array;
     }
@@ -419,6 +436,17 @@ extension Array where Element : Address {
     func getAddressNewOrder() -> Array<Int> {
         let ids = self.map { $0.send }
         return ids;
+    }
+    
+    func toKeys() -> Array<Key> {
+        var out_array = Array<Key>()
+        for i in 0 ..< self.count {
+            let addr = self[i]
+            for k in addr.keys {
+                out_array.append(k)
+            }
+        }
+        return out_array
     }
 }
 

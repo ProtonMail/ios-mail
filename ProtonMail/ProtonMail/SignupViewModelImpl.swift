@@ -149,7 +149,7 @@ public class SignupViewModelImpl : SignupViewModel {
                                             complete(false, true, "Fetch user info failed", error)
                                         } else if info != nil {
                                             sharedUserDataService.isNewUser = true
-                                            sharedUserDataService.setMailboxPassword(self.mailbox, isRemembered: true)
+                                            sharedUserDataService.setMailboxPassword(self.mailbox, keysalt: nil, isRemembered: true)
                                             complete(true, true, "", nil)
                                         } else {
                                             complete(false, true, "Unknown Error", nil)
