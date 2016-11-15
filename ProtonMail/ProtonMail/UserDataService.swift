@@ -391,6 +391,7 @@ class UserDataService {
         }
     }
     
+    //TODO:: change the errors throw
     func updatePassword(old_pwd: String, newPassword: String, twoFACode:String?, completion: CompletionBlock) {
         {
             do {
@@ -415,61 +416,68 @@ class UserDataService {
                 guard let verifier = try generateVerifier(2048, modulus: new_decodedModulus, hashedPassword: new_hashed_password) else {
                     throw UpdatePasswordError.InvalidModuls.toError()
                 }
+                
                 //start check exsit srp
-                
-                //                if let code = res?.TwoFactor {
-                //                    if  code == 1 && twoFACode == nil {
-                //                        return completion(task: task, mailpassword: nil, authStatus: .Ask2FA, error: nil)
-                //                    }
-                //                }
-                
                 var forceRetry = false
                 var forceRetryVersion = 2
                 
-                // get auto info
-                let info = try AuthInfoRequest<AuthInfoResponse>(username: _username).syncCall()
-                guard let authVersion = info?.Version, let modulus = info?.Modulus, let ephemeral = info?.ServerEphemeral, let salt = info?.Salt, let session = info?.SRPSession else {
-                    throw UpdatePasswordError.InvalidModuls.toError()
-                }
-                guard let encodedModulus = try modulus.getSignature() else {
-                    throw UpdatePasswordError.InvalidModuls.toError()
-                }
-                
-                let decodedModulus : NSData = encodedModulus.decodeBase64()
-                let decodedSalt : NSData = salt.decodeBase64()
-                let serverEphemeral : NSData = ephemeral.decodeBase64()
-                
-                if authVersion <= 2 && !forceRetry {
-                    forceRetry = true
-                    forceRetryVersion = 2
-                }
-                
-                //init api calls
-                let hashVersion = forceRetry ? forceRetryVersion : authVersion
-                guard let hashedPassword = PasswordUtils.getHashedPwd(hashVersion, password: old_pwd , username: _username, decodedSalt: decodedSalt, decodedModulus: decodedModulus) else {
+                repeat {
+                    // get auto info
+                    let info = try AuthInfoRequest<AuthInfoResponse>(username: _username).syncCall()
+                    guard let authVersion = info?.Version, let modulus = info?.Modulus, let ephemeral = info?.ServerEphemeral, let salt = info?.Salt, let session = info?.SRPSession else {
+                        throw UpdatePasswordError.InvalidModuls.toError()
+                    }
+                    guard let encodedModulus = try modulus.getSignature() else {
+                        throw UpdatePasswordError.InvalidModuls.toError()
+                    }
                     
-                    throw UpdatePasswordError.InvalidModuls.toError()
-                }
-                
-                guard let srpClient = try generateSrpProofs(2048, modulus: decodedModulus, serverEphemeral: serverEphemeral, hashedPassword: hashedPassword) where srpClient.isValid() == true else {
+                    let decodedModulus : NSData = encodedModulus.decodeBase64()
+                    let decodedSalt : NSData = salt.decodeBase64()
+                    let serverEphemeral : NSData = ephemeral.decodeBase64()
                     
-                    throw UpdatePasswordError.InvalidModuls.toError()
-                }
-                
-                
-                let updatePwd = try UpdateLoginPassword<ApiResponse>(clientEphemeral: srpClient.clientEphemeral.encodeBase64(),
-                                                                 clientProof: srpClient.clientProof.encodeBase64(),
-                                                                 SRPSession: session,
-                                                                 modulusID: moduls_id,
-                                                                 salt: new_salt.encodeBase64(),
-                                                                 verifer: verifier.encodeBase64(),
-                                                                 tfaCode: nil).syncCall()
-                
-                if updatePwd?.code == 1000 {
-                    self.password = newPassword
-                } else {
-                    throw UpdatePasswordError.InvalidModuls.toError()//update failed
-                }
+                    if authVersion <= 2 && !forceRetry {
+                        forceRetry = true
+                        forceRetryVersion = 2
+                    }
+                    
+                    //init api calls
+                    let hashVersion = forceRetry ? forceRetryVersion : authVersion
+                    guard let hashedPassword = PasswordUtils.getHashedPwd(hashVersion, password: old_pwd , username: _username, decodedSalt: decodedSalt, decodedModulus: decodedModulus) else {
+                        
+                        throw UpdatePasswordError.InvalidModuls.toError()
+                    }
+                    
+                    guard let srpClient = try generateSrpProofs(2048, modulus: decodedModulus, serverEphemeral: serverEphemeral, hashedPassword: hashedPassword) where srpClient.isValid() == true else {
+                        
+                        throw UpdatePasswordError.InvalidModuls.toError()
+                    }
+                    
+                    do {
+                        let updatePwd = try UpdateLoginPassword<ApiResponse>(clientEphemeral: srpClient.clientEphemeral.encodeBase64(),
+                                                                             clientProof: srpClient.clientProof.encodeBase64(),
+                                                                             SRPSession: session,
+                                                                             modulusID: moduls_id,
+                                                                             salt: new_salt.encodeBase64(),
+                                                                             verifer: verifier.encodeBase64(),
+                                                                             tfaCode: twoFACode).syncCall()
+                        if updatePwd?.code == 1000 {
+                            self.password = newPassword
+                            forceRetry = false
+                        } else {
+                            throw UpdatePasswordError.InvalidModuls.toError()//update failed
+                        }
+                    } catch let error as NSError {
+                        if error.isInternetError() {
+                            throw error
+                        } else {
+                            if forceRetry && forceRetryVersion != 0 {
+                                forceRetryVersion -= 1
+                            } else {
+                                throw error
+                            }
+                        }
+                    }
+                } while(forceRetry && forceRetryVersion >= 0)
                 return { completion(task: nil, response: nil, error: nil) } ~> .Main
             } catch let error as NSError {
                 return { completion(task: nil, response: nil, error: error) } ~> .Main
