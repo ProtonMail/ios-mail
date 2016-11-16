@@ -34,7 +34,6 @@ class UserDataService {
         static let isRememberMailboxPassword = "isRememberMailboxPasswordKey"
         static let isRememberUser = "isRememberUserKey"
         static let mailboxPassword = "mailboxPasswordKey"
-        static let mailboxPasswordKeySalt = "mailboxPasswordKeySaltKey"
         static let username = "usernameKey"
         static let password = "passwordKey"
         static let userInfo = "userInfoKey"
@@ -229,15 +228,6 @@ class UserDataService {
             UICKeyChainStore.setString(newValue, forKey: Key.mailboxPassword)
         }
     }
-    /// Value is only stored in the keychain
-    private(set) var mailboxPasswordKeysalt: String? {
-        get {
-            return UICKeyChainStore.stringForKey(Key.mailboxPasswordKeySalt)
-        }
-        set {
-            UICKeyChainStore.setString(newValue, forKey: Key.mailboxPasswordKeySalt)
-        }
-    }
     
     var maxSpace: Int64 {
         return userInfo?.maxSpace ?? 0
@@ -293,7 +283,6 @@ class UserDataService {
     
     func setMailboxPassword(password: String, keysalt: String?, isRemembered: Bool) {
         mailboxPassword = password
-        mailboxPasswordKeysalt = keysalt
         isRememberMailboxPassword = isRemembered
         self.isMailboxPWDOk = true;
     }
@@ -512,12 +501,10 @@ class UserDataService {
                 let new_mpwd_salt : NSData = PMNOpenPgp.randomBits(128) //mailbox pwd need 128 bits
                 let new_hashed_mpwd = PasswordUtils.getMailboxPassword(new_mailbox_password, salt: new_mpwd_salt)
                 
-                var userlevel_pmn_keys = user_info.userKeys.toPMNPgpKeys()
-                userlevel_pmn_keys = PMNOpenPgp.updateKeysPassphrase(userlevel_pmn_keys, oldPassphrase: old_password, newPassphrase: new_hashed_mpwd)
-                
-                let new_user_level_keys = userlevel_pmn_keys.toKeys()
+                let updated_address_keys = try PMNOpenPgp.updateAddrKeysPassword(user_info.userAddresses, old_pass: old_password, new_pass: new_hashed_mpwd)
+                let updated_userlevel_keys = try PMNOpenPgp.updateKeysPassword(user_info.userKeys, old_pass: old_password, new_pass: new_hashed_mpwd)
+
                 var new_org_key : String?
-                
                 //create a key list for key updates
                 if user_info.role == 2 { //need to get the org keys
                     //check user role if equal 2 try to get the org key.
@@ -526,11 +513,6 @@ class UserDataService {
                         new_org_key = try PMNOpenPgp.updateKeyPassword(org_priv_key, old_pass: old_password, new_pass: new_hashed_mpwd)
                     }
                 }
-                
-                var address_keys = user_info.userAddresses.toKeys().toPMNPgpKeys()
-                address_keys = PMNOpenPgp.updateKeysPassphrase(address_keys, oldPassphrase: old_password, newPassphrase: new_hashed_mpwd)
-                let new_address_key = address_keys.toKeys()
-                
                 // get auto info
                 let info = try AuthInfoRequest<AuthInfoResponse>(username: _username).syncCall()
                 guard let authVersion = info?.Version, let modulus = info?.Modulus, let ephemeral = info?.ServerEphemeral, let salt = info?.Salt, let session = info?.SRPSession else {
@@ -551,14 +533,13 @@ class UserDataService {
                 guard let srpClient = try generateSrpProofs(2048, modulus: decodedModulus, serverEphemeral: serverEphemeral, hashedPassword: hashedPassword) where srpClient.isValid() == true else {
                     throw UpdatePasswordError.CantGenerateSRPClient.toError()
                 }
-
                 
                 let update_res = try UpdatePrivateKeyRequest<ApiResponse>(clientEphemeral: srpClient.clientEphemeral.encodeBase64(),
                                                      clientProof:srpClient.clientProof.encodeBase64(),
                                                      SRPSession: session,
                                                      keySalt: new_mpwd_salt.encodeBase64(),
-                                                     userlevelKeys: new_user_level_keys,
-                                                     addressKeys: new_address_key,
+                                                     userlevelKeys: updated_userlevel_keys,
+                                                     addressKeys: updated_address_keys.toKeys(),
                                                      tfaCode: nil,
                                                      orgKey: new_org_key,
                                                      auth: nil).syncCall()
@@ -566,43 +547,20 @@ class UserDataService {
                     throw UpdatePasswordError.Default.toError()
                 }
                 
+                //update local keys
+                user_info.userKeys = updated_userlevel_keys
+                user_info.userAddresses = updated_address_keys
+                self.mailboxPassword = new_hashed_mpwd
+                self.userInfo = user_info
+                sharedOpenPGP.cleanAddresses()
+                sharedOpenPGP.setAddresses(user_info.userAddresses.toPMNAddresses());
+                
                 return { completion(task: nil, response: nil, error: nil) } ~> .Main
             } catch let error as NSError {
                 return { completion(task: nil, response: nil, error: error) } ~> .Main
             }
         } ~> .Async
         
-        
-//        if let userInfo = userInfo {
-//            if let mailboxPassword = mailboxPassword {
-//                do {
-//                  
-//
-//                    
-//                    
-//                   
-//                    
-//                    
-//                    // need update the user kyes with
-//                    
-//                    
-//                    if let newPrivateKey = try sharedOpenPGP.updatePassphrase(userInfo.privateKey, publicKey: userInfo.publicKey, old_pass: mailboxPassword, new_pass: newMailboxPassword) {
-//                        sharedAPIService.userUpdateKeypair(sharedUserDataService.password!, publicKey: userInfo.publicKey, privateKey: newPrivateKey, completion: { task, response, error in
-//                            if error == nil {
-//                                self.mailboxPassword = newMailboxPassword
-//                                if let userInfo = self.userInfo {
-//                                    userInfo.privateKey = newPrivateKey
-//                                    self.userInfo = userInfo
-//                                }
-//                            }
-//                            completion(task: task, response: response, error: error)
-//                        })
-//                    }
-//                } catch let ex as NSError {
-//                    completion(task: nil, response: nil, error: ex)
-//                }
-//            }
-//        }
     }
     
     func updateUserDomiansOrder(email_domains: Array<Address>, newOrder : Array<Int>, completion: CompletionBlock) {
@@ -682,7 +640,6 @@ class UserDataService {
         
         isRememberMailboxPassword = false
         mailboxPassword = nil
-        mailboxPasswordKeysalt = nil
         userInfo = nil
         twoFactorStatus = 0
         passwordMode = 2
@@ -714,7 +671,6 @@ class UserDataService {
         
         if !isRememberMailboxPassword {
             mailboxPassword = nil
-            mailboxPasswordKeysalt = nil
         }
     }
 }

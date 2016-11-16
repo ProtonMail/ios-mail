@@ -58,6 +58,7 @@ enum UpdatePasswordError : Int, ErrorType, CustomErrorVar {
     case CurrentPasswordWrong = 0x110008
     case NewNotMatch = 0x110009
     case PasswordEmpty = 0x110010
+    case KeyUpdateFailed = 0x110011
     
     case Default = 0x110000
     
@@ -91,7 +92,8 @@ enum UpdatePasswordError : Int, ErrorType, CustomErrorVar {
             return NSLocalizedString("The new password not match.")
         case .PasswordEmpty:
             return NSLocalizedString("The new password can't empty.")
-            
+        case .KeyUpdateFailed:
+            return NSLocalizedString("The private update failed.")
         case .Default:
             return NSLocalizedString("Password update failed")
         }

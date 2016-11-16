@@ -31,7 +31,7 @@ class APIService {
     internal var mutex = pthread_mutex_t()
     
     // api session manager
-    private let sessionManager: AFHTTPSessionManager
+    private var sessionManager: AFHTTPSessionManager
     
     // get session
     func getSession() -> AFHTTPSessionManager{
