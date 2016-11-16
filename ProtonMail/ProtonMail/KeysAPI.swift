@@ -104,10 +104,14 @@ public class UpdatePrivateKeyRequest<T : ApiResponse> : ApiRequest<T> {
     override func toDictionary() -> Dictionary<String, AnyObject>? {
         var keysDict : [AnyObject] = [AnyObject]()
         for _key in userLevelKeys {
-            keysDict.append( ["ID": _key.key_id, "PrivateKey" : _key.private_key] )
+            if _key.is_updated {
+                keysDict.append( ["ID": _key.key_id, "PrivateKey" : _key.private_key] )
+            }
         }
         for _key in userAddressKeys {
-            keysDict.append( ["ID": _key.key_id, "PrivateKey" : _key.private_key] )
+            if _key.is_updated {
+                keysDict.append( ["ID": _key.key_id, "PrivateKey" : _key.private_key] )
+            }
         }
         
         var out : [String : AnyObject] = [

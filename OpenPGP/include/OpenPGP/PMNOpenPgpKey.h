@@ -7,11 +7,13 @@
 - (nonnull instancetype)initWithKeyId:(nonnull NSString *)keyId
                             publicKey:(nonnull NSString *)publicKey
                            privateKey:(nonnull NSString *)privateKey
-                          fingerPrint:(nonnull NSString *)fingerPrint;
+                          fingerPrint:(nonnull NSString *)fingerPrint
+                            isUpdated:(BOOL)isUpdated;
 + (nonnull instancetype)openPgpKeyWithKeyId:(nonnull NSString *)keyId
                                   publicKey:(nonnull NSString *)publicKey
                                  privateKey:(nonnull NSString *)privateKey
-                                fingerPrint:(nonnull NSString *)fingerPrint;
+                                fingerPrint:(nonnull NSString *)fingerPrint
+                                  isUpdated:(BOOL)isUpdated;
 
 @property (nonatomic, readonly, nonnull) NSString * keyId;
 
@@ -20,5 +22,8 @@
 @property (nonatomic, readonly, nonnull) NSString * privateKey;
 
 @property (nonatomic, readonly, nonnull) NSString * fingerPrint;
+
+/** false default only used when update keys */
+@property (nonatomic, readonly) BOOL isUpdated;
 
 @end

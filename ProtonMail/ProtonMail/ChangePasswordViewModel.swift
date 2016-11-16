@@ -67,7 +67,7 @@ class ChangeLoginPWDViewModel : ChangePWDViewModel{
             complete(true, nil)
         }
         else {
-            sharedUserDataService.updatePassword(curr_pwd, newPassword: newpwd, twoFACode: tfaCode) { _, _, error in
+            sharedUserDataService.updatePassword(curr_pwd, new_password: newpwd, twoFACode: tfaCode) { _, _, error in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -87,7 +87,7 @@ class ChangeMailboxPWDViewModel : ChangePWDViewModel{
     }
     
     func getLabelOne() -> String {
-        return "Current mailbox password"
+        return "Current login password"
     }
     
     func getLabelTwo() -> String {
@@ -119,7 +119,7 @@ class ChangeMailboxPWDViewModel : ChangePWDViewModel{
 //            complete(true, nil)
 //        }
         else {
-            sharedUserDataService.updateMailboxPassword(curr_pwd, new_mailbox_password: newpwd) { _, _, error in
+            sharedUserDataService.updateMailboxPassword(curr_pwd, new_password: newpwd, twoFACode: tfaCode, buildAuth: false) { _, _, error in
                 if let error = error {
                     complete(false, error)
                 } else {
@@ -133,10 +133,10 @@ class ChangeMailboxPWDViewModel : ChangePWDViewModel{
 
 class ChangeSinglePasswordViewModel : ChangePWDViewModel{
     func getNavigationTitle() -> String {
-        return "Single Password"
+        return "PASSWORD"
     }
     func getSectionTitle() -> String {
-        return "Change Password"
+        return "Change Single Password"
     }
     
     func getLabelOne() -> String {
@@ -156,25 +156,23 @@ class ChangeSinglePasswordViewModel : ChangePWDViewModel{
     }
     
     func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: ChangePasswordComplete) {
-        //remove space.
-        let curr_pwd = current //.trim();
-        let newpwd = new_pwd//.trim();
-        let confirmpwd = confirm_new_pwd//.trim();
+        //passwords support empty spaces like " 1 1 "
+        let curr_pwd = current
+        let newpwd = new_pwd
+        let confirmpwd = confirm_new_pwd
         
-        if curr_pwd != sharedUserDataService.mailboxPassword || !PMNOpenPgp.checkPassphrase(curr_pwd, forPrivateKey: sharedUserDataService.userInfo?.privateKey ?? "") {
-            complete(false, UpdatePasswordError.CurrentPasswordWrong.toError())
-        }
-        else if newpwd == "" || confirmpwd == "" {
+        
+        if newpwd == "" || confirmpwd == "" {
             complete(false, UpdatePasswordError.PasswordEmpty.toError())
         }
         else if newpwd != confirmpwd {
             complete(false, UpdatePasswordError.NewNotMatch.toError())
         }
-        else if curr_pwd == newpwd {
-            complete(true, nil)
-        }
+            //        else if curr_pwd == newpwd {
+            //            complete(true, nil)
+            //        }
         else {
-            sharedUserDataService.updateMailboxPassword(curr_pwd, new_mailbox_password: newpwd) { _, _, error in
+            sharedUserDataService.updateMailboxPassword(curr_pwd, new_password: newpwd, twoFACode: tfaCode, buildAuth: true) { _, _, error in
                 if let error = error {
                     complete(false, error)
                 } else {

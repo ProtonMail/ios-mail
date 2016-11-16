@@ -76,7 +76,15 @@ extension PMNOpenPgp {
             guard let outKeys = out_keys where outKeys.count == old_keys.count else {
                 throw UpdatePasswordError.KeyUpdateFailed.toError()
             }
+                
+            guard outKeys.count > 0 && outKeys[0].is_updated == true else {
+                throw UpdatePasswordError.KeyUpdateFailed.toError()
+            }
+            
             for u_k in outKeys {
+                if u_k.is_updated == false {
+                    continue
+                }
                 let result = PMNOpenPgp.checkPassphrase(u_k.private_key, passphrase: new_pass)
                 guard result == true else {
                     throw UpdatePasswordError.KeyUpdateFailed.toError()
@@ -106,7 +114,15 @@ extension PMNOpenPgp {
                 guard let outKeys = out_keys where outKeys.count == addr.keys.count else {
                     throw UpdatePasswordError.KeyUpdateFailed.toError()
                 }
+                
+                guard outKeys.count > 0 && outKeys[0].is_updated == true else {
+                    throw UpdatePasswordError.KeyUpdateFailed.toError()
+                }
+                
                 for u_k in outKeys {
+                    if u_k.is_updated == false {
+                        continue
+                    }
                     let result = PMNOpenPgp.checkPassphrase(u_k.private_key, passphrase: new_pass)
                     guard result == true else {
                         throw UpdatePasswordError.KeyUpdateFailed.toError()
