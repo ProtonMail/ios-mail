@@ -46,6 +46,7 @@ class SignInViewController: ProtonMailViewController {
     var isShowpwd = false;
     var isRemembered = false;
     
+    @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var usernameView: UIView!
     @IBOutlet weak var passwordView: UIView!
     @IBOutlet weak var usernameTextField: UITextField!
@@ -88,6 +89,7 @@ class SignInViewController: ProtonMailViewController {
         hideTouchID(false)
         setupTextFields()
         setupButtons()
+        setupVersionLabel()
         
         let signinFlow = getViewFlow()
         switch signinFlow {
@@ -102,6 +104,19 @@ class SignInViewController: ProtonMailViewController {
             signInIfRememberedCredentials()
             setupView();
             break
+        }
+    }
+    
+    
+    private func setupVersionLabel () {
+        if let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String {
+            if let build = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"] as? String {
+                versionLabel.text = NSLocalizedString("v") + version + "(\(build))"
+            } else {
+                versionLabel.text = NSLocalizedString("v") + version
+            }
+        } else {
+            versionLabel.text = NSLocalizedString("")
         }
     }
     
