@@ -77,18 +77,17 @@ class AuthCredential: NSObject, NSCoding {
     }
     
     required init(res : AuthResponse!) {
-        
+        super.init()
         self.encryptToken = res.accessToken
         self.refreshToken = res.refreshToken
         self.userID = res.userID
         self.expiration = NSDate(timeIntervalSinceNow: res.expiresIn ?? 0)
         self.privateKey = res.privateKey
         self.passwordKeySalt = res.keySalt
-        super.init()
     }
     
     required init(accessToken: String!, refreshToken: String!, userID: String!, expiration: NSDate!, key : String!, plain: String?, pwd:String?, salt:String?) {
-
+        super.init()
         self.encryptToken = accessToken
         self.refreshToken = refreshToken
         self.userID = userID
@@ -97,7 +96,6 @@ class AuthCredential: NSObject, NSCoding {
         self.plainToken = plain
         self.password = pwd
         self.passwordKeySalt = salt
-        super.init()
     }
     
     convenience required init(coder aDecoder: NSCoder) {
