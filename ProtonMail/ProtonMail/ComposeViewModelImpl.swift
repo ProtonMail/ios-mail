@@ -332,6 +332,11 @@ public class ComposeViewModelImpl : ComposeViewModel {
                     let newhtmlString = " \(self.body) \(htmlString)"
                     self.body = ""
                     return newhtmlString
+                } else {
+                    if htmlString.trim().isEmpty {
+                        let ret_body = "<div><br><div><div><br></div><div><br></div><div><br></div>" //add some space
+                        return ret_body
+                    }
                 }
                 return htmlString
             }
