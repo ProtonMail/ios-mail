@@ -227,7 +227,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     internal func moreButtonTapped(sender : UIBarButtonItem) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
-        let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .archive : .Destructive]
+        let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .archive : .Default]
         for (location, style) in locations {
             if message.location != location {
                 alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in

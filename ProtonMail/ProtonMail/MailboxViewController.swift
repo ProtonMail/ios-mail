@@ -376,9 +376,9 @@ class MailboxViewController: ProtonMailViewController {
                 self.navigationController?.popViewControllerAnimated(true)
             }))
             
-            var locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .archive : .Destructive]
+            var locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .archive : .Default]
             if !viewModel.isCurrentLocation(.outbox) {
-                locations = [.spam : .Default, .archive : .Destructive]
+                locations = [.spam : .Default, .archive : .Default]
             }
             
             for (location, style) in locations {
