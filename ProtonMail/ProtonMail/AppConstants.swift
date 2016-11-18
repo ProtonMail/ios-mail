@@ -32,7 +32,7 @@ class AppConstants {
     //static let BaseURLString : String = "https://dev.protonmail.com"
     
     //blue test
-    //static let BaseURLString : String = "http://protonmail.blue"
+    //static let BaseURLString : String = "https://protonmail.blue"
     //static let BaseURLString : String = "https://midnight.protonmail.blue"
     
     //static let BaseURLString : String = "http://127.0.0.1"
