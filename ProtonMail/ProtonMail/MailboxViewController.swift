@@ -184,7 +184,7 @@ class MailboxViewController: ProtonMailViewController {
         
         let usedStorageSpace = sharedUserDataService.usedSpace
         let maxStorageSpace = sharedUserDataService.maxSpace
-        StorageLimit().checkSpace(usedSpace: usedStorageSpace, maxSpace: maxStorageSpace)
+        StorageLimit().checkSpace(usedStorageSpace, maxSpace: maxStorageSpace)
         
         self.updateInterfaceWithReachability(sharedInternetReachability)
         //self.updateInterfaceWithReachability(sharedRemoteReachability)
@@ -784,8 +784,10 @@ class MailboxViewController: ProtonMailViewController {
                     self.onlineTimerReset()
                     self.viewModel.resetNotificationMessage()
                     if !updateTime.isNew {
-//                        if let messages = res?["Messages"] as? [AnyObject] {
-//                        }
+
+                    }
+                    if let notices = res?["Notices"] as? [String] {
+                        serverNotice.check(notices)
                     }
                 }
                 
@@ -809,7 +811,9 @@ class MailboxViewController: ProtonMailViewController {
             } else {
                 //fetch
                 self.needToShowNewMessage = true
-                viewModel.fetchNewMessages(self.viewModel.getNotificationMessage(), Time: Int(updateTime.start.timeIntervalSince1970),  completion: complete)
+                viewModel.fetchNewMessages(self.viewModel.getNotificationMessage(),
+                                           Time: Int(updateTime.start.timeIntervalSince1970),
+                                           completion: complete)
                 self.checkEmptyMailbox()
             }
         }

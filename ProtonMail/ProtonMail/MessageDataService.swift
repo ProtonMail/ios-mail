@@ -301,7 +301,7 @@ class MessageDataService {
                                     outMessages.append(msg)
                                 }
                             }
-                            completion?(task: task, response:["Messages": outMessages], error: nil)
+                            completion?(task: task, response:["Messages": outMessages, "Notices": response?.notices ?? [String]()], error: nil)
                         }
                         else {
                             completion?(task: task, response:nil, error: error)
@@ -326,7 +326,7 @@ class MessageDataService {
                     if hasError {
                         completion?(task: task, response:nil, error: response?.error)
                     } else {
-                        completion?(task: task, response:nil, error: nil)
+                        completion?(task: task, response:["Notices": response?.notices ?? [String]()], error: nil)
                     }
                 }
             }

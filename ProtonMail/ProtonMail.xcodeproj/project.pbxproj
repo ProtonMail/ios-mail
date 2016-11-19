@@ -138,6 +138,8 @@
 		75187BB21CAC54DD00C84382 /* phone_country_code.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 75E49F0B1CAB23EB00235ACC /* phone_country_code.geojson */; };
 		751B446E1B81245100B68CD6 /* TableCellLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751B446D1B81245100B68CD6 /* TableCellLabelView.swift */; };
 		751C5FEA1C49C17700949FBF /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 751C5FE81C49C17700949FBF /* SwiftTryCatch.m */; };
+		751CE0261DDFBD0600D5EC66 /* ServerNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751CE0251DDFBD0600D5EC66 /* ServerNotice.swift */; };
+		751CE0271DDFBD0600D5EC66 /* ServerNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751CE0251DDFBD0600D5EC66 /* ServerNotice.swift */; };
 		751D49F01BE356180008E75C /* LabelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751D49EF1BE356180008E75C /* LabelsView.swift */; };
 		75200C041DB6E3B6007E8A29 /* SrpClientExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75200C031DB6E3B6007E8A29 /* SrpClientExtension.swift */; };
 		75200C051DB6E3B7007E8A29 /* SrpClientExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75200C031DB6E3B6007E8A29 /* SrpClientExtension.swift */; };
@@ -764,6 +766,7 @@
 		751B446D1B81245100B68CD6 /* TableCellLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableCellLabelView.swift; sourceTree = "<group>"; };
 		751C5FE81C49C17700949FBF /* SwiftTryCatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwiftTryCatch.m; sourceTree = "<group>"; };
 		751C5FE91C49C17700949FBF /* SwiftTryCatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftTryCatch.h; sourceTree = "<group>"; };
+		751CE0251DDFBD0600D5EC66 /* ServerNotice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerNotice.swift; sourceTree = "<group>"; };
 		751D49EF1BE356180008E75C /* LabelsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelsView.swift; sourceTree = "<group>"; };
 		75200C031DB6E3B6007E8A29 /* SrpClientExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SrpClientExtension.swift; sourceTree = "<group>"; };
 		75230C221B9A3A3600EC2AC2 /* MailboxMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxMessageCell.swift; sourceTree = "<group>"; };
@@ -1742,6 +1745,7 @@
 				7580D6571C8E438800A15885 /* LastPass */,
 				7580D6561C8E436F00A15885 /* OnePassword */,
 				076758791AA126E400F9AC9C /* StorageLimit.swift */,
+				751CE0251DDFBD0600D5EC66 /* ServerNotice.swift */,
 				75F1697D1AF7F43A00BE6E79 /* Logger.swift */,
 				7546BE541C8D4F9100FCEB0A /* TouchID.swift */,
 				7599B17C1CC8247E00B2CB8D /* Localization.swift */,
@@ -2426,6 +2430,7 @@
 				7578B7831CADD1EA006B523B /* PMImagePickerController.swift in Sources */,
 				7567B0731B3363D000A72A1E /* ControllerDefined.swift in Sources */,
 				75BF9A521B5F0F500087AD2E /* BugsAPI.swift in Sources */,
+				751CE0261DDFBD0600D5EC66 /* ServerNotice.swift in Sources */,
 				755405B21B1648D2003BFC0A /* ComposeView.swift in Sources */,
 				75484B8B1AF29EBF00B97472 /* NSDateExtension.swift in Sources */,
 				701DDE941AA64DEB0038149C /* MBContactCollectionViewPromptCell.m in Sources */,
@@ -2660,6 +2665,7 @@
 				75DE7D4A1CAAEA4900F5443E /* UIImageExtension.swift in Sources */,
 				75DE7D4B1CAAEA4900F5443E /* StorageLimit.swift in Sources */,
 				75DE7D4C1CAAEA4900F5443E /* MultiLabelDisplayView.swift in Sources */,
+				751CE0271DDFBD0600D5EC66 /* ServerNotice.swift in Sources */,
 				75DE7D4D1CAAEA4900F5443E /* MessageViewModel.swift in Sources */,
 				75DE7D4E1CAAEA4900F5443E /* OnboardingView.swift in Sources */,
 				75DE7D4F1CAAEA4900F5443E /* ProtonMail-Bridging-Header.cpp in Sources */,

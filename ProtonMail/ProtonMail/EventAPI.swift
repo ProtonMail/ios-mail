@@ -62,6 +62,7 @@ public class EventCheckResponse : ApiResponse {
     var total : Dictionary<String,AnyObject>?
     var labels : [Dictionary<String,AnyObject>]?
     var usedSpace : String?
+    var notices : [String]?
     
     override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
 
@@ -83,6 +84,8 @@ public class EventCheckResponse : ApiResponse {
         self.labels =  response["Labels"] as? [Dictionary<String,AnyObject>]
         
         self.contacts = response["Contacts"] as? [Dictionary<String,AnyObject>]
+        
+        self.notices = response["Notices"] as? [String]
         
         return true
     }

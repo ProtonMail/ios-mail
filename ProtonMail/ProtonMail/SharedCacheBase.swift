@@ -17,7 +17,8 @@ public class  SharedCacheBase {
         return self.userDefaults
     }
         
-    public init (shared : NSUserDefaults) {
+    public convenience init (shared : NSUserDefaults) {
+        self.init()
         self.userDefaults = shared
     }
     

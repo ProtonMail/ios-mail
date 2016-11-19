@@ -18,6 +18,8 @@ class UserCachedStatus : SharedCacheBase {
         static let lastCacheVersion = "last_cache_version" //user cache
         static let isCheckSpaceDisabled = "isCheckSpaceDisabledKey" //user cache
         static let lastAuthCacheVersion = "last_auth_cache_version" //user cache
+        static let cachedServerNotices = "cachedServerNotices" //user cache
+        static let showServerNoticesNextTime = "showServerNoticesNextTime" //user cache
         
         // touch id 
         static let isTouchIDEnabled = "isTouchIDEnabled" //global cache
@@ -56,6 +58,24 @@ class UserCachedStatus : SharedCacheBase {
         }
         set {
             setValue(newValue, forKey: Key.isCheckSpaceDisabled)
+        }
+    }
+    
+    var serverNotices : [String] {
+        get {
+            return getShared().objectForKey(Key.cachedServerNotices) as? [String] ?? [String]()
+        }
+        set {
+            setValue(newValue, forKey: Key.cachedServerNotices)
+        }
+    }
+    
+    var serverNoticesNextTime : String {
+        get {
+            return getShared().stringForKey(Key.showServerNoticesNextTime) ?? "0"
+        }
+        set {
+            setValue(newValue, forKey: Key.showServerNoticesNextTime)
         }
     }
     
@@ -133,6 +153,8 @@ class UserCachedStatus : SharedCacheBase {
         getShared().removeObjectForKey(Key.historyTimeStamp);
         getShared().removeObjectForKey(Key.lastCacheVersion);
         getShared().removeObjectForKey(Key.isCheckSpaceDisabled);
+        getShared().removeObjectForKey(Key.cachedServerNotices);
+        getShared().removeObjectForKey(Key.showServerNoticesNextTime);
         getShared().removeObjectForKey(Key.lastAuthCacheVersion);
         
         //touch id
