@@ -43,8 +43,10 @@ class MessageDataService {
     private var readQueue: [ReadBlock] = []
     
     init() {
+        
         setupMessageMonitoring()
         setupNotifications()
+    
     }
     
     deinit {
@@ -1588,6 +1590,11 @@ class MessageDataService {
                                 }
                             }
                             else {
+                                if error?.code == 15198 {
+                                    error?.alertSentErrorToast()
+                                } else {
+                                    //error?.alertErrorToast()
+                                }
                                 //NSError.alertMessageSentErrorToast()
                                 error?.uploadFabricAnswer(SendingErrorTitle)
                             }

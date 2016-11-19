@@ -848,7 +848,6 @@ class MailboxViewController: ProtonMailViewController {
             }
         }
     }
-    
     private func performSegueForMessage(message: Message) {
         if viewModel.isDrafts() {
             if !message.messageID.isEmpty {
