@@ -254,6 +254,7 @@ class MessageDataService {
     }
     
     
+    private var tempUnreadAddjustCount = 0
     /**
      fetch the new messages use the events log
      
@@ -526,7 +527,8 @@ class MessageDataService {
                         if let lo = MessageLocation(rawValue: l) {
                             switch lo {
                             case .inbox:
-                                inboxCount = c;
+                                inboxCount = c
+                                inboxCount = inboxCount + tempUnreadAddjustCount
                                 break;
                             case .draft:
                                 draftCount = c
@@ -556,6 +558,7 @@ class MessageDataService {
                 badgeNumber = 0
             }
             UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
+            tempUnreadAddjustCount = 0
         }
         
         if let locations = unreads?["Labels"] as? [Dictionary<String,AnyObject>] {
@@ -633,6 +636,7 @@ class MessageDataService {
                         if IncrementalUpdateType.insert == msg.Action {
                             if let cachedMessage = Message.messageForMessageID(msg.ID, inManagedObjectContext: context) {
                                 if cachedMessage.location != MessageLocation.draft && cachedMessage.location != MessageLocation.outbox {
+                                    self.tempUnreadAddjustCount = cachedMessage.isRead ? -1 : 0
                                     continue
                                 }
                             }
