@@ -1,4 +1,5 @@
 //
+//  ZSSRichTextEditor.m
 //  ZSSRichTextEditorViewController.m
 //  ZSSRichTextEditor
 //
@@ -1334,6 +1335,9 @@ static Class hackishFixClass = Nil;
 #pragma mark - Utilities
 
 - (NSString *)removeQuotesFromHTML:(NSString *)html {
+    if (html == nil) {
+        return html;
+    }
     html = [html stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
     html = [html stringByReplacingOccurrencesOfString:@"“" withString:@"&quot;"];
     html = [html stringByReplacingOccurrencesOfString:@"”" withString:@"&quot;"];
