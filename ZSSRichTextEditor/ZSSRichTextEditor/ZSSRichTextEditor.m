@@ -596,6 +596,10 @@ static Class hackishFixClass = Nil;
     NSString *cleanCid = [self removeQuotesFromHTML:cid];
     NSString *cleanBlob = [self removeQuotesFromHTML:blobdata];
     
+    if (cleanCid == nil || cleanBlob == nil) {
+        return;
+    }
+    
     NSString *trigger = [NSString stringWithFormat:@"zss_editor.updateEmbedImage(\"%@\", \"%@\");", cleanCid, cleanBlob];
     [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
     

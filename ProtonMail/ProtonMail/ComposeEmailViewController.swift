@@ -49,6 +49,11 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     private let kNumberOfHoursInTimePicker: Int = 24
     
     private let kPasswordSegue : String = "to_eo_password_segue"
+
+    deinit {
+        self.webView.delegate = nil
+        self.webView.stopLoading()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,6 +91,8 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         //change message as read
         self.viewModel.markAsRead();
     }
+    
+    
     
     internal func retrieveAllContacts() {
         sharedContactDataService.getContactVOs { (contacts, error) -> Void in
