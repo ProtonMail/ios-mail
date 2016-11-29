@@ -239,19 +239,21 @@ class MessageDataService {
     func fetchMessagesForLocationWithEventReset(location: MessageLocation, MessageID : String, Time: Int, completion: CompletionBlock?) {
         queue {
             let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
-            getLatestEventID.call() { task, response, hasError in
-                if response != nil && !hasError && !response!.eventID.isEmpty {
+            getLatestEventID.call() { task, _IDRes, hasIDError in
+                if let IDRes = _IDRes where !hasIDError && !IDRes.eventID.isEmpty {
                     let completionWrapper: CompletionBlock = { task, responseDict, error in
                         if error == nil {
-                            lastUpdatedStore.lastEventID = response!.eventID
+                            lastUpdatedStore.lastEventID = IDRes.eventID
                         }
-                        completion?(task: task, response:nil, error: error)
+                        completion?(task: task, response:responseDict, error: error)
                     }
                     self.cleanMessage()
                     sharedContactDataService.cleanUp()
                     self.fetchMessagesForLocation(location, MessageID: MessageID, Time: Time, foucsClean: false, completion: completionWrapper)
                     sharedContactDataService.fetchContacts(nil)
                     sharedLabelsDataService.fetchLabels();
+                }  else {
+                    completion?(task: task, response:nil, error: nil)
                 }
             }
         }
@@ -269,70 +271,71 @@ class MessageDataService {
     func fetchNewMessagesForLocation(location: MessageLocation, Time: Int, notificationMessageID : String?, completion: CompletionBlock?) {
         queue {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
-            eventAPI.call() { task, response, hasError in
-                PMLog.D("\(response!)")
-                if response == nil {
-                    completion?(task: task, response:nil, error: nil)
-                } else if response!.isRefresh || (hasError && response!.code == 18001) {
-                    let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
-                    getLatestEventID.call() { task, response, hasError in
-                        if response != nil && !hasError && !response!.eventID.isEmpty {
-                            let completionWrapper: CompletionBlock = { task, responseDict, error in
-                                if error == nil {
-                                    lastUpdatedStore.clear();
-                                    lastUpdatedStore.lastEventID = response!.eventID
+            eventAPI.call() { task, _eventsRes, _hasEventsError in
+                if let eventsRes = _eventsRes {
+                    PMLog.D("\(eventsRes)")
+                    if eventsRes.isRefresh || (_hasEventsError && eventsRes.code == 18001) {
+                        let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
+                        getLatestEventID.call() { task, _IDRes, hasIDError in
+                            if let IDRes = _IDRes where !hasIDError && !IDRes.eventID.isEmpty {
+                                let completionWrapper: CompletionBlock = { task, responseDict, error in
+                                    if error == nil {
+                                        lastUpdatedStore.clear()
+                                        lastUpdatedStore.lastEventID = IDRes.eventID
+                                    }
+                                    completion?(task: task, response:responseDict, error: error)
                                 }
-                                completion?(task: task, response:responseDict, error: error)
+                                self.cleanMessage()
+                                sharedContactDataService.cleanUp()
+                                self.fetchMessagesForLocation(location, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
+                                sharedContactDataService.fetchContacts(nil)
+                                sharedLabelsDataService.fetchLabels();
+                            } else {
+                                completion?(task: task, response:nil, error: nil)
                             }
-                            self.cleanMessage()
-                            sharedContactDataService.cleanUp()
-                            self.fetchMessagesForLocation(location, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
-                            sharedContactDataService.fetchContacts(nil)
-                            sharedLabelsDataService.fetchLabels();
+                        }
+                    }
+                    else if eventsRes.messages != nil {
+                        self.processIncrementalUpdateMessages(notificationMessageID, messages: eventsRes.messages!, task: task) { task, res, error in
+                            if error == nil {
+                                lastUpdatedStore.lastEventID = eventsRes.eventID
+                                self.processIncrementalUpdateUnread(eventsRes.unreads)
+                                self.processIncrementalUpdateTotal(eventsRes.total)
+                                self.processIncrementalUpdateUserInfo(eventsRes.userinfo)
+                                self.processIncrementalUpdateLabels(eventsRes.labels)
+                                self.processIncrementalUpdateContacts(eventsRes.contacts)
+                                
+                                var outMessages : [AnyObject] = [];
+                                for message in eventsRes.messages! {
+                                    let msg = MessageEvent(event: message)
+                                    if msg.Action == 1 {
+                                        outMessages.append(msg)
+                                    }
+                                }
+                                completion?(task: task, response:["Messages": outMessages, "Notices": eventsRes.notices ?? [String]()], error: nil)
+                            }
+                            else {
+                                completion?(task: task, response:nil, error: error)
+                            }
+                        }
+                    }
+                    else {
+                        if eventsRes.code == 1000 {
+                            lastUpdatedStore.lastEventID = eventsRes.eventID
+                            self.processIncrementalUpdateUnread(eventsRes.unreads)
+                            self.processIncrementalUpdateTotal(eventsRes.total)
+                            self.processIncrementalUpdateUserInfo(eventsRes.userinfo)
+                            self.processIncrementalUpdateLabels(eventsRes.labels)
+                            self.processIncrementalUpdateContacts(eventsRes.contacts)
+                        }
+                        if _hasEventsError {
+                            completion?(task: task, response:nil, error: eventsRes.error)
                         } else {
-                            completion?(task: task, response:nil, error: nil)
+                            completion?(task: task, response:["Notices": eventsRes.notices ?? [String]()], error: nil)
                         }
                     }
-                }
-                else if response!.messages != nil {
-                    self.processIncrementalUpdateMessages(notificationMessageID, messages: response!.messages!, task: task) { task, res, error in
-                        if error == nil {
-                            lastUpdatedStore.lastEventID = response!.eventID
-                            
-                            var outMessages : [AnyObject] = [];
-                            for message in response!.messages! {
-                                let msg = MessageEvent(event: message)
-                                if msg.Action == 1 {
-                                    outMessages.append(msg)
-                                }
-                            }
-                            completion?(task: task, response:["Messages": outMessages, "Notices": response?.notices ?? [String]()], error: nil)
-                        }
-                        else {
-                            completion?(task: task, response:nil, error: error)
-                        }
-                    }
-                    
-                    self.processIncrementalUpdateUnread(response!.unreads)
-                    self.processIncrementalUpdateTotal(response!.total)
-                    self.processIncrementalUpdateUserInfo(response!.userinfo)
-                    self.processIncrementalUpdateLabels(response!.labels)
-                    self.processIncrementalUpdateContacts(response!.contacts)
-                }
-                else {
-                    if response!.code == 1000 {
-                        lastUpdatedStore.lastEventID = response!.eventID
-                        self.processIncrementalUpdateUnread(response!.unreads)
-                        self.processIncrementalUpdateTotal(response!.total)
-                        self.processIncrementalUpdateUserInfo(response!.userinfo)
-                        self.processIncrementalUpdateLabels(response!.labels)
-                        self.processIncrementalUpdateContacts(response!.contacts)
-                    }
-                    if hasError {
-                        completion?(task: task, response:nil, error: response?.error)
-                    } else {
-                        completion?(task: task, response:["Notices": response?.notices ?? [String]()], error: nil)
-                    }
+                } else {
+                    completion?(task: task, response:nil, error: nil)
                 }
             }
         }
