@@ -243,6 +243,7 @@ class MessageDataService {
                 if let IDRes = _IDRes where !hasIDError && !IDRes.eventID.isEmpty {
                     let completionWrapper: CompletionBlock = { task, responseDict, error in
                         if error == nil {
+                            lastUpdatedStore.clear()
                             lastUpdatedStore.lastEventID = IDRes.eventID
                         }
                         completion?(task: task, response:responseDict, error: error)
