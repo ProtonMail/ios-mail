@@ -152,7 +152,9 @@ class MessageDataService {
                                         updateTime.start = firstMsg.time!
                                         updateTime.total = Int32(messcount)
                                     }
-                                    updateTime.end = lastMsg.time!
+                                    if let time = lastMsg.time {
+                                        updateTime.end = time
+                                    }
                                     updateTime.update = NSDate()
                                     lastUpdatedStore.updateInboxForKey(location, updateTime: updateTime)
                                 }
@@ -1150,6 +1152,7 @@ class MessageDataService {
                     self.fetchMessagesWithIDs(badMessages);
                 }
             } catch let ex as NSError {
+                ex.uploadFabricAnswer("purgeOldMessages")
                 PMLog.D("error : \(ex)")
             }
         }
