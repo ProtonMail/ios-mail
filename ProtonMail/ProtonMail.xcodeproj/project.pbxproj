@@ -268,6 +268,8 @@
 		759339C01ABB45C700535F1B /* ViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339BF1ABB45C700535F1B /* ViewModelFactory.swift */; };
 		759339C41ABB5EA900535F1B /* SettingDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */; };
 		75978BDB1B28F63100D07501 /* editor.css in Resources */ = {isa = PBXBuildFile; fileRef = 75978BDA1B28F63100D07501 /* editor.css */; };
+		7597B6841DEE37E800511AFF /* PHAssetExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7597B6831DEE37E800511AFF /* PHAssetExtension.swift */; };
+		7597B6851DEE37E800511AFF /* PHAssetExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7597B6831DEE37E800511AFF /* PHAssetExtension.swift */; };
 		7599B1721CC8124300B2CB8D /* localization.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7599B1741CC8124300B2CB8D /* localization.strings */; };
 		7599B1761CC8124C00B2CB8D /* localization.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7599B1741CC8124300B2CB8D /* localization.strings */; };
 		7599B17D1CC8247E00B2CB8D /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7599B17C1CC8247E00B2CB8D /* Localization.swift */; };
@@ -873,6 +875,7 @@
 		759339BF1ABB45C700535F1B /* ViewModelFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelFactory.swift; sourceTree = "<group>"; };
 		759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingDetailsViewModel.swift; sourceTree = "<group>"; };
 		75978BDA1B28F63100D07501 /* editor.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = editor.css; sourceTree = "<group>"; };
+		7597B6831DEE37E800511AFF /* PHAssetExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PHAssetExtension.swift; sourceTree = "<group>"; };
 		7599B1731CC8124300B2CB8D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/localization.strings; sourceTree = "<group>"; };
 		7599B1751CC8124A00B2CB8D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/localization.strings; sourceTree = "<group>"; };
 		7599B1771CC812CD00B2CB8D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/localization.strings"; sourceTree = "<group>"; };
@@ -1053,6 +1056,7 @@
 				756489951B7E94BB007EA207 /* UIImageExtension.swift */,
 				7508BAC51B87C6EA001A3564 /* UIApplicationExtension.swift */,
 				75B1794D1B3775BA006044D4 /* General */,
+				7597B6831DEE37E800511AFF /* PHAssetExtension.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -2238,6 +2242,7 @@
 				75B9C6081DA2D39A001DE21E /* Hash.swift in Sources */,
 				70C9133D1A6D83FA002CBE61 /* UIColor+ProtonMail.swift in Sources */,
 				754BD2071BFA9FCD006CBAE6 /* SettingsCell.swift in Sources */,
+				7597B6841DEE37E800511AFF /* PHAssetExtension.swift in Sources */,
 				75F463881C5FEBF400918B46 /* HumanCheckMenuViewController.swift in Sources */,
 				07CF61981A8AE5AA00ED38AE /* MonitorSavesDataService.swift in Sources */,
 				752EEC1C1BB0A9D800770331 /* QuickViewViewController.swift in Sources */,
@@ -2542,6 +2547,7 @@
 				75DE7CE61CAAEA4900F5443E /* ReportBugsViewController.swift in Sources */,
 				75DE7CE71CAAEA4900F5443E /* DomainsTableViewCell.swift in Sources */,
 				75DE7CE81CAAEA4900F5443E /* UserInfo.swift in Sources */,
+				7597B6851DEE37E800511AFF /* PHAssetExtension.swift in Sources */,
 				75BDECAE1CBCD0FA00982089 /* PinCodeModel.swift in Sources */,
 				754713191DCD616D0084BF34 /* SignInViewModel.swift in Sources */,
 				75DE7CE91CAAEA4900F5443E /* MessageViewModelImpl.swift in Sources */,
