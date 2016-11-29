@@ -804,7 +804,6 @@ class MessageDataService {
                 let context = sharedCoreDataService.newMainManagedObjectContext()
                 context.performBlock() {
                     var error: NSError?
-                    
                     if response != nil {
                         //TODO need check the respons code
                         if var msg: Dictionary<String,AnyObject> = response?["Message"] as? Dictionary<String,AnyObject> {
