@@ -15,7 +15,7 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - Groot/ObjC (2.0)
-  - Masonry (1.0.0)
+  - Masonry (1.0.2)
   - MBProgressHUD (1.0.0)
   - MCSwipeTableViewCell (2.1.4)
   - NSDate+Helper (1.0.4)
@@ -34,14 +34,14 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (= 3.1.0)
   - Groot/ObjC (= 2.0)
-  - Masonry (= 1.0.0)
+  - Masonry (= 1.0.2)
   - MBProgressHUD (= 1.0.0)
   - MCSwipeTableViewCell (~> 2.1.4)
   - NSDate+Helper (= 1.0.4)
   - OpenPGP (from `../OpenPGP`)
   - RHAddressBook (= 1.1.1)
   - SWRevealViewController (= 2.3.0)
-  - UICKeyChainStore
+  - UICKeyChainStore (= 2.1.0)
   - UIColor+Hex
   - ZSSRichTextEditor (from `../ZSSRichTextEditor`)
 
@@ -54,7 +54,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   Groot: 7543f84980bfb1613750818029d9b927d4378211
-  Masonry: b529bb169217897b6354d4b56b1fada6d475b13d
+  Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MCSwipeTableViewCell: 1b303e16c3a26b1982f3a68386e9b8c5fc8344c3
   NSDate+Helper: 78f517ac1c67914096433466fa7d20b812b9d86c
@@ -66,6 +66,6 @@ SPEC CHECKSUMS:
   UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   ZSSRichTextEditor: b61bdcb41a0b5609d523efadc680f0d6b022c3dd
 
-PODFILE CHECKSUM: 5e89f2f3c8edcdbba04405a8adebeee3cbf8b24f
+PODFILE CHECKSUM: 45ae4d1a78f7f5d874feac2ab791bc2737b1916e
 
 COCOAPODS: 1.1.1
