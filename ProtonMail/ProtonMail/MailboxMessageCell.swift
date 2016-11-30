@@ -155,7 +155,7 @@ class MailboxMessageCell: MCSwipeTableViewCell {
         }
         
         let predicate = NSPredicate(format: "labelID MATCHES %@", "(?!^\\d+$)^.+$")
-        let tempLabels = message.labels.filteredSetUsingPredicate(predicate)
+        let tempLabels = message.labels.filteredSetUsingPredicate(predicate) //TODO:: later need add lables exsiting check 
         var labels : [Label] = []
         for vowel in tempLabels {
             let label = vowel as! Label;

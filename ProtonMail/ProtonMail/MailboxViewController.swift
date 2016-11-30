@@ -1,4 +1,4 @@
-//
+// MailboxViewController.swift
 // Copyright 2015 ArcTouch, Inc.
 // All rights reserved.
 //

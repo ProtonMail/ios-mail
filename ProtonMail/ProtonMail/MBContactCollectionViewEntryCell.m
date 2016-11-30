@@ -1,5 +1,5 @@
 //
-//  ContactEntryCollectionViewCell.m
+//  MBContactCollectionViewEntryCell.m
 //  MBContactPicker
 //
 //  Created by Matt Bowman on 11/21/13.
