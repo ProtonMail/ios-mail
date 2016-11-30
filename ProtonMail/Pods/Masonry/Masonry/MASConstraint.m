@@ -208,6 +208,42 @@
     return [self addConstraintWithLayoutAttribute:NSLayoutAttributeBaseline];
 }
 
+#if TARGET_OS_IPHONE || TARGET_OS_TV
+
+- (MASConstraint *)leftMargin {
+    return [self addConstraintWithLayoutAttribute:NSLayoutAttributeLeftMargin];
+}
+
+- (MASConstraint *)rightMargin {
+    return [self addConstraintWithLayoutAttribute:NSLayoutAttributeRightMargin];
+}
+
+- (MASConstraint *)topMargin {
+    return [self addConstraintWithLayoutAttribute:NSLayoutAttributeTopMargin];
+}
+
+- (MASConstraint *)bottomMargin {
+    return [self addConstraintWithLayoutAttribute:NSLayoutAttributeBottomMargin];
+}
+
+- (MASConstraint *)leadingMargin {
+    return [self addConstraintWithLayoutAttribute:NSLayoutAttributeLeadingMargin];
+}
+
+- (MASConstraint *)trailingMargin {
+    return [self addConstraintWithLayoutAttribute:NSLayoutAttributeTrailingMargin];
+}
+
+- (MASConstraint *)centerXWithinMargins {
+    return [self addConstraintWithLayoutAttribute:NSLayoutAttributeCenterXWithinMargins];
+}
+
+- (MASConstraint *)centerYWithinMargins {
+    return [self addConstraintWithLayoutAttribute:NSLayoutAttributeCenterYWithinMargins];
+}
+
+#endif
+
 #pragma mark - Abstract
 
 - (MASConstraint * (^)(CGFloat multiplier))multipliedBy { MASMethodNotImplemented(); }
@@ -228,7 +264,7 @@
 
 - (void)setOffset:(CGFloat __unused)offset { MASMethodNotImplemented(); }
 
-#if TARGET_OS_MAC && !TARGET_OS_IPHONE
+#if TARGET_OS_MAC && !(TARGET_OS_IPHONE || TARGET_OS_TV)
 
 - (MASConstraint *)animator { MASMethodNotImplemented(); }
 

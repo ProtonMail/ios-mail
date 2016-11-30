@@ -16,7 +16,7 @@ def pm_pods
 	pod 'NSDate+Helper', '1.0.0'
 	pod 'UICKeyChainStore'
 	pod 'SWRevealViewController', '2.3.0'
-	pod 'Masonry', '0.6.0'
+	pod 'Masonry', '1.0.0'
 	pod 'RHAddressBook', '1.1.1'
 	pod 'UIColor+Hex'
 	pod 'MCSwipeTableViewCell', '~> 2.1.4'

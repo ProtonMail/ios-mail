@@ -24,7 +24,7 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - Groot/ObjC (1.2)
-  - Masonry (0.6.0)
+  - Masonry (1.0.0)
   - MBProgressHUD (0.9.2)
   - MCSwipeTableViewCell (2.1.4)
   - NSDate+Helper (1.0.0)
@@ -44,7 +44,7 @@ DEPENDENCIES:
   - AFNetworkActivityLogger (= 2.0.4)
   - AFNetworking (= 2.5.4)
   - Groot/ObjC (from `https://github.com/zhj4478/Groot.git`, branch `swift2`)
-  - Masonry (= 0.6.0)
+  - Masonry (= 1.0.0)
   - MBProgressHUD (= 0.9.2)
   - MCSwipeTableViewCell (~> 2.1.4)
   - NSDate+Helper (= 1.0.0)
@@ -73,7 +73,7 @@ SPEC CHECKSUMS:
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   Groot: 86c2c820d619f18586b2d1dcfd90e908339f00bc
-  Masonry: 695dcee5cf90504cc83d85c40e0bd3f4376ed583
+  Masonry: b529bb169217897b6354d4b56b1fada6d475b13d
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   MCSwipeTableViewCell: 1b303e16c3a26b1982f3a68386e9b8c5fc8344c3
   NSDate+Helper: 38676f1c2bd50fcebcebf8fc281276e1f18df18c
@@ -85,6 +85,6 @@ SPEC CHECKSUMS:
   UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   ZSSRichTextEditor: b61bdcb41a0b5609d523efadc680f0d6b022c3dd
 
-PODFILE CHECKSUM: 45a2de10848a5cbd4142b5123c0fa5ecf9689e0a
+PODFILE CHECKSUM: ff7915047d97c7bf9fd13c54d919b7a4dfeb8e88
 
-COCOAPODS: 1.0.0
+COCOAPODS: 1.1.1
