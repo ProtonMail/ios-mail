@@ -7,7 +7,8 @@ inhibit_all_warnings!
 #target 'ProtonMail','ProtonMailDev','ProtonMailTests'
 
 def pm_pods
-	pod 'Groot/ObjC', :git => 'https://github.com/zhj4478/Groot.git', :branch => 'swift2'
+    #pod 'Groot/ObjC', :git => 'https://github.com/zhj4478/Groot.git', :branch => 'swift2'
+	pod 'Groot/ObjC', '2.0'
 	pod 'OpenPGP', :path => '../OpenPGP'
 	pod 'ZSSRichTextEditor', :path => '../ZSSRichTextEditor'
 	pod 'AFNetworking', '2.5.4'
