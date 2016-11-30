@@ -19,7 +19,7 @@ def pm_pods
 	pod 'SWRevealViewController', '2.3.0'
 	pod 'Masonry', '1.0.2'
 	pod 'RHAddressBook', '1.1.1'
-	pod 'UIColor+Hex'
+	pod 'UIColor+Hex', '1.0.1'
 	pod 'MCSwipeTableViewCell', '~> 2.1.4'
 end
 

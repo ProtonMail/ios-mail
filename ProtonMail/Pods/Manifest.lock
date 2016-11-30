@@ -42,7 +42,7 @@ DEPENDENCIES:
   - RHAddressBook (= 1.1.1)
   - SWRevealViewController (= 2.3.0)
   - UICKeyChainStore (= 2.1.0)
-  - UIColor+Hex
+  - UIColor+Hex (= 1.0.1)
   - ZSSRichTextEditor (from `../ZSSRichTextEditor`)
 
 EXTERNAL SOURCES:
@@ -66,6 +66,6 @@ SPEC CHECKSUMS:
   UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   ZSSRichTextEditor: b61bdcb41a0b5609d523efadc680f0d6b022c3dd
 
-PODFILE CHECKSUM: 45ae4d1a78f7f5d874feac2ab791bc2737b1916e
+PODFILE CHECKSUM: 1953b0dc1299a8b22345d3a71d45eb4695e4d740
 
 COCOAPODS: 1.1.1
