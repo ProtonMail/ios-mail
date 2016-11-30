@@ -476,12 +476,12 @@ class SettingTableViewController: ProtonMailViewController {
                             cleaning = true
                             let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
                             let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
-                            hud.labelText = NSLocalizedString("Resetting message cache ...")
+                            hud.label.text = NSLocalizedString("Resetting message cache ...")
                             hud.removeFromSuperViewOnHide = true
                             sharedMessageDataService.cleanLocalMessageCache() { task, res, error in
                                 hud.mode = MBProgressHUDMode.Text
-                                hud.labelText = NSLocalizedString("Done")
-                                hud.hide(true, afterDelay: 1)
+                                hud.label.text = NSLocalizedString("Done")
+                                hud.hideAnimated(true, afterDelay: 1)
                                 self.cleaning = false
                             }
                         }

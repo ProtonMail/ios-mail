@@ -19,10 +19,10 @@ extension String {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
-        hud.labelText = NSLocalizedString("Alert");
-        hud.detailsLabelText = self
+        hud.label.text = NSLocalizedString("Alert");
+        hud.detailsLabel.text = self
         hud.removeFromSuperViewOnHide = true
-        hud.hide(true, afterDelay: 3)
+        hud.hideAnimated(true, afterDelay: 3)
     }
     
     func contains(s: String) -> Bool

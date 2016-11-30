@@ -90,31 +90,31 @@ extension NSError {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
-        hud.labelText = NSLocalizedString("Alert");
-        hud.detailsLabelText = localizedDescription
+        hud.label.text = NSLocalizedString("Alert");
+        hud.detailsLabel.text = localizedDescription
         hud.removeFromSuperViewOnHide = true
-        hud.hide(true, afterDelay: 3)
+        hud.hideAnimated(true, afterDelay: 3)
     }
     
     func alertErrorToast() ->Void {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
-        hud.labelText = NSLocalizedString(localizedDescription);
-        hud.detailsLabelText = description
+        hud.label.text = NSLocalizedString(localizedDescription);
+        hud.detailsLabel.text = description
         hud.removeFromSuperViewOnHide = true
-        hud.hide(true, afterDelay: 3)
+        hud.hideAnimated(true, afterDelay: 3)
     }
     
     func alertSentErrorToast() ->Void {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
-        hud.detailsLabelText = NSLocalizedString("Sent Failed: \(self.localizedDescription)");
+        hud.detailsLabel.text = NSLocalizedString("Sent Failed: \(self.localizedDescription)");
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
-        hud.yOffset = 250.0
-        hud.hide(true, afterDelay: 3)
+        hud.offset.y = 250.0
+        hud.hideAnimated(true, afterDelay: 3)
     }
     
     
@@ -122,74 +122,74 @@ extension NSError {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
-        hud.labelText = NSLocalizedString("Alert");
-        hud.detailsLabelText = NSLocalizedString("A new version of ProtonMail app is available, please update to latest version.");
+        hud.label.text = NSLocalizedString("Alert");
+        hud.detailsLabel.text = NSLocalizedString("A new version of ProtonMail app is available, please update to latest version.");
         hud.removeFromSuperViewOnHide = true
-        hud.hide(true, afterDelay: 3)
+        hud.hideAnimated(true, afterDelay: 3)
     }
     
     class func alertBadTokenToast() ->Void {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
-        hud.labelText = NSLocalizedString("Alert");
-        hud.detailsLabelText = NSLocalizedString("Invalid access token please relogin");
+        hud.label.text = NSLocalizedString("Alert");
+        hud.detailsLabel.text = NSLocalizedString("Invalid access token please relogin");
         hud.removeFromSuperViewOnHide = true
-        hud.hide(true, afterDelay: 3)
+        hud.hideAnimated(true, afterDelay: 3)
     }
     
     class func alertOfflineToast() ->Void {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
-        hud.labelText = NSLocalizedString("Alert");
-        hud.detailsLabelText = NSLocalizedString("ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail");
+        hud.label.text = NSLocalizedString("Alert");
+        hud.detailsLabel.text = NSLocalizedString("ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail");
         hud.removeFromSuperViewOnHide = true
-        hud.hide(true, afterDelay: 3)
+        hud.hideAnimated(true, afterDelay: 3)
     }
     
     class func alertMessageSendingToast() ->Void {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
-        hud.detailsLabelText = NSLocalizedString("Sending Message");
+        hud.detailsLabel.text = NSLocalizedString("Sending Message");
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
-        hud.yOffset = 250.0
-        hud.hide(true, afterDelay: 1)
+        hud.offset.y = 250.0
+        hud.hideAnimated(true, afterDelay: 1)
     }
     
     class func alertMessageSentToast() ->Void {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
-        hud.detailsLabelText = NSLocalizedString("Message sent");
+        hud.detailsLabel.text = NSLocalizedString("Message sent");
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
-        hud.yOffset = 250.0
-        hud.hide(true, afterDelay: 1)
+        hud.offset.y = 250.0
+        hud.hideAnimated(true, afterDelay: 1)
     }
 
     class func alertMessageSentErrorToast() ->Void {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
-        hud.detailsLabelText = NSLocalizedString("Message sending failed please try again");
+        hud.detailsLabel.text = NSLocalizedString("Message sending failed please try again");
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
-        hud.yOffset = 250.0
-        hud.hide(true, afterDelay: 2)
+        hud.offset.y = 250.0
+        hud.hideAnimated(true, afterDelay: 2)
     }
     
     class func alertLocalCacheErrorToast() ->Void {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
         let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
         hud.mode = MBProgressHUDMode.Text
-        hud.detailsLabelText = NSLocalizedString("The draft cache is broken please try again");
+        hud.detailsLabel.text = NSLocalizedString("The draft cache is broken please try again");
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
-        hud.yOffset = 250.0
-        hud.hide(true, afterDelay: 2)
+        hud.offset.y = 250.0
+        hud.hideAnimated(true, afterDelay: 2)
     }
     
     class func unknowError() -> NSError {
