@@ -52,7 +52,7 @@ class MailboxViewController: ProtonMailViewController {
     // MARK: - Private attributes
     
     internal var viewModel: MailboxViewModel!
-    private var fetchedResultsController: NSFetchedResultsController?
+    private var fetchedResultsController: NSFetchedResultsController? //TODO:: this need release the delegate after use
     
     // this is for when user click the notification email
     internal var messageID: String?
@@ -141,6 +141,10 @@ class MailboxViewController: ProtonMailViewController {
         }
         self.topMessageView.delegate = self
         cleanRateReviewCell()
+    }
+    
+    deinit {
+        resetFetchedResultsController()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -1271,10 +1275,10 @@ extension MailboxViewController: UITableViewDataSource {
         
         if let rIndex = self.getRatingIndex() {
             if rIndex == indexPath {
-                let mailboxRateCell = tableView.dequeueReusableCellWithIdentifier(MailboxRateReviewCell.Constant.identifier, forIndexPath: rIndex) as! MailboxRateReviewCell
-                mailboxRateCell.callback = self
-                mailboxRateCell.selectionStyle = .None
-                return mailboxRateCell
+//                let mailboxRateCell = tableView.dequeueReusableCellWithIdentifier(MailboxRateReviewCell.Constant.identifier, forIndexPath: rIndex) as! MailboxRateReviewCell
+//                mailboxRateCell.callback = self
+//                mailboxRateCell.selectionStyle = .None
+//                return mailboxRateCell
             }
         }
         let mailboxCell = tableView.dequeueReusableCellWithIdentifier(MailboxMessageCell.Constant.identifier, forIndexPath: indexPath) as! MailboxMessageCell
