@@ -28,9 +28,9 @@ PODS:
   - MBProgressHUD (0.9.2)
   - MCSwipeTableViewCell (2.1.4)
   - NSDate+Helper (1.0.0)
-  - OpenPGP (1.0.1):
+  - OpenPGP (1.0.2):
     - OpenSSL
-  - OpenSSL (1.0.208)
+  - OpenSSL (1.0.210)
   - RHAddressBook (1.1.1)
   - SWRevealViewController (2.3.0)
   - UICKeyChainStore (2.1.0)
@@ -69,8 +69,8 @@ SPEC CHECKSUMS:
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   MCSwipeTableViewCell: 1b303e16c3a26b1982f3a68386e9b8c5fc8344c3
   NSDate+Helper: 38676f1c2bd50fcebcebf8fc281276e1f18df18c
-  OpenPGP: b0ccf98993b673cca63538c9d067a747d6ad8c1f
-  OpenSSL: b187269d386b07452f56af273764ea0636dd5da8
+  OpenPGP: 7137cb5b16a98dee0c57e39077a6475d97b286f8
+  OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
   RHAddressBook: 870e9e0b34cb917b9c4c600fc3b7d5b530b23b13
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
   UICKeyChainStore: f1cbd42216a113f0165de1e733e62905b8823432

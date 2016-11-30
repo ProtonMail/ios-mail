@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "OpenPGP"
-  s.version      = "1.0.1"
+  s.version      = "1.0.2"
   s.summary      = "OpenPGP iOS library for ProtonMail."
   s.description  = "The OpenPGP iOS library for the ProtonMail app."
   s.homepage     = "http://protonmail.ch"
