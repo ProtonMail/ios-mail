@@ -2,7 +2,7 @@ h2. NSDate (Helper)
 
 This is a category for the @NSDate@ class that provides some convenience methods for working with @NSDate@ objects and displaying formatted and relative strings.
 
-More information can be found at my "initial blog post":http://www.zetetic.net/blog/2009/03/11/nsdate-helper/.
+More information can be found at my "initial blog post":http://www.zetetic.net/blog/2009/3/11/nsdate-helper.html.
 
 Anyone is welcome to use it for anything, and to change it as they see fit. If you'd like to contribute back any changes (woot!), please fork and send a pull request!
 

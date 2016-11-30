@@ -105,7 +105,7 @@ THE SOFTWARE.
 
 ## NSDate+Helper
 
-Copyright © 2009, 2010, ZETETIC LLC
+Copyright © 2009-2016, ZETETIC LLC
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

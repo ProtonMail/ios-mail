@@ -18,7 +18,7 @@ PODS:
   - Masonry (1.0.0)
   - MBProgressHUD (1.0.0)
   - MCSwipeTableViewCell (2.1.4)
-  - NSDate+Helper (1.0.0)
+  - NSDate+Helper (1.0.4)
   - OpenPGP (1.0.2):
     - OpenSSL
   - OpenSSL (1.0.210)
@@ -37,7 +37,7 @@ DEPENDENCIES:
   - Masonry (= 1.0.0)
   - MBProgressHUD (= 1.0.0)
   - MCSwipeTableViewCell (~> 2.1.4)
-  - NSDate+Helper (= 1.0.0)
+  - NSDate+Helper (= 1.0.4)
   - OpenPGP (from `../OpenPGP`)
   - RHAddressBook (= 1.1.1)
   - SWRevealViewController (= 2.3.0)
@@ -57,7 +57,7 @@ SPEC CHECKSUMS:
   Masonry: b529bb169217897b6354d4b56b1fada6d475b13d
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MCSwipeTableViewCell: 1b303e16c3a26b1982f3a68386e9b8c5fc8344c3
-  NSDate+Helper: 38676f1c2bd50fcebcebf8fc281276e1f18df18c
+  NSDate+Helper: 78f517ac1c67914096433466fa7d20b812b9d86c
   OpenPGP: 7137cb5b16a98dee0c57e39077a6475d97b286f8
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
   RHAddressBook: 870e9e0b34cb917b9c4c600fc3b7d5b530b23b13
@@ -66,6 +66,6 @@ SPEC CHECKSUMS:
   UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   ZSSRichTextEditor: b61bdcb41a0b5609d523efadc680f0d6b022c3dd
 
-PODFILE CHECKSUM: 7a3fc0f92ffd137d0a45cf3419b84101b1389827
+PODFILE CHECKSUM: 5e89f2f3c8edcdbba04405a8adebeee3cbf8b24f
 
 COCOAPODS: 1.1.1
