@@ -1,5 +1,5 @@
 //
-//  HtmlEditorViewController.swift
+//  ComposeEmailViewController.swift
 //  ProtonMail
 //
 //  Created by Yanfeng Zhang on 4/21/15.

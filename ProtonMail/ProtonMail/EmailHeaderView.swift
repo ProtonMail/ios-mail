@@ -106,6 +106,8 @@ class EmailHeaderView: UIView {
         return separatorShowImage.frame.origin.y + 6;
     }
     
+    private var visible : Bool = false
+    
     private var title : String!
     private var sender : ContactVO?
     private var toList : [ContactVO]?
@@ -226,6 +228,13 @@ class EmailHeaderView: UIView {
         self.addSubviews()
         
         self.layoutIfNeeded()
+        
+        
+        self.visible = true
+    }
+    
+    deinit {
+        self.visible = false
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -333,6 +342,7 @@ class EmailHeaderView: UIView {
         }
         self.updateExpirationDate(expiration)
         hasShowImageCheck = showShowImages
+        self.layoutIfNeeded()
     }
     
     private func updateLablesDetails (labelView : UILabel, label:Label?) {
@@ -578,6 +588,9 @@ class EmailHeaderView: UIView {
     }
     
     func updateAttConstraints (animition : Bool) {
+        guard self.visible == true else {
+            return
+        }
         attachmentView!.reloadData()
         attachmentView!.layoutIfNeeded();
         
@@ -865,6 +878,9 @@ class EmailHeaderView: UIView {
     }
     
     private func updateSelf(anim : Bool) {
+        guard self.visible == true else {
+            return
+        }
         UIView.animateWithDuration(anim == true ? 0.3 : 0.0, animations: { () -> Void in
             self.layoutIfNeeded()
             var f = self.frame;
@@ -876,6 +892,9 @@ class EmailHeaderView: UIView {
     
     private let kAnimationOption: UIViewAnimationOptions = .TransitionCrossDissolve
     private func updateDetailsView(needsShow : Bool) {
+        guard self.visible == true else {
+            return
+        }
         if (needsShow) {
             // update views value
             UIView.transitionWithView(self.emailFrom, duration: 0.3, options: kAnimationOption, animations: { () -> Void in

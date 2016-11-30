@@ -280,11 +280,13 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MessageViewController.statusBarHit(_:)), name: NotificationDefined.TouchStatusBar, object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MailboxViewController.reachabilityChanged(_:)), name: kReachabilityChangedNotification, object: nil)
-        if let context = message.managedObjectContext {
-            message.isRead = true
-            message.needsUpdate = true
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
+        if message != nil {
+            if let context = message.managedObjectContext {
+                message.isRead = true
+                message.needsUpdate = true
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D(" error: \(error)")
+                }
             }
         }
         
@@ -535,7 +537,6 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                             objc_sync_enter(self.purifiedBodyLock)
                             self.fixedBody = self.fixedBody?.stringBySetupInlineImage("src=\"cid:\(content_id)\"", to: "src=\"data:\(att.mimeType);base64,\(based64String)\"" )
                             objc_sync_exit(self.purifiedBodyLock)
-                            
                             checkCount = checkCount - 1
                             
                             if checkCount == 0 {
