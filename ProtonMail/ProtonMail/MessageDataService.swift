@@ -97,7 +97,7 @@ class MessageDataService {
             }
             
         } else {
-            error = NSError.protonMailError(code: 500, localizedDescription: NSLocalizedString("No managedObjectContext"), localizedFailureReason: nil, localizedRecoverySuggestion: nil)
+            error = NSError.protonMailError(500, localizedDescription: NSLocalizedString("No managedObjectContext"), localizedFailureReason: nil, localizedRecoverySuggestion: nil)
         }
         completion?(task: nil, response: nil, error: error)
     }

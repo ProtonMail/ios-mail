@@ -120,7 +120,7 @@ class CoreDataService {
 extension NSError {
     class func noManagedObjectContext() -> NSError {
         return NSError.protonMailError(
-            code: 10000,
+            10000,
             localizedDescription: NSLocalizedString("No managed object context"),
             localizedFailureReason: NSLocalizedString("No managed object context."))
     }

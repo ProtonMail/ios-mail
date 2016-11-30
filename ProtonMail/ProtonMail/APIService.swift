@@ -97,7 +97,7 @@ class APIService {
                     if responseCode != 1000 && responseCode != 1001 {
                         let errorMessage = responseDictionary["Error"] as? String
                         let errorDetails = responseDictionary["ErrorDescription"] as? String
-                        error = NSError.protonMailError(code: responseCode ?? 1000, localizedDescription: errorMessage ?? "", localizedFailureReason: errorDetails, localizedRecoverySuggestion: nil)
+                        error = NSError.protonMailError(responseCode ?? 1000, localizedDescription: errorMessage ?? "", localizedFailureReason: errorDetails, localizedRecoverySuggestion: nil)
                     }
                     
                     if authenticated && responseCode == 401 {
