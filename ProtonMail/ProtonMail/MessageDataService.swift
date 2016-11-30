@@ -1399,7 +1399,7 @@ class MessageDataService {
         }
         
         // nothing to send, dequeue request
-        sharedMessageQueue.remove(elementID: writeQueueUUID)
+        sharedMessageQueue.remove(writeQueueUUID)
         self.dequeueIfNeeded()
         
         completion?(task: nil, response: nil, error: NSError.badParameter(messageID))
@@ -1460,7 +1460,7 @@ class MessageDataService {
         }
         
         // nothing to send, dequeue request
-        sharedMessageQueue.remove(elementID: writeQueueUUID)
+        sharedMessageQueue.remove(writeQueueUUID)
         self.dequeueIfNeeded()
         
         completion?(task: nil, response: nil, error: NSError.badParameter(addressID))
@@ -1476,7 +1476,7 @@ class MessageDataService {
         }
         
         // nothing to send, dequeue request
-        sharedMessageQueue.remove(elementID: writeQueueUUID)
+        sharedMessageQueue.remove(writeQueueUUID)
         self.dequeueIfNeeded()
         completion?(task: nil, response: nil, error: NSError.badParameter(deleteObject))
     }
@@ -1491,7 +1491,7 @@ class MessageDataService {
         }
         
         // nothing to send, dequeue request
-        sharedMessageQueue.remove(elementID: writeQueueUUID)
+        sharedMessageQueue.remove(writeQueueUUID)
         self.dequeueIfNeeded()
         completion?(task: nil, response: nil, error: NSError.badParameter("\(location)"))
     }
@@ -1500,7 +1500,7 @@ class MessageDataService {
     private func sendMessageID(messageID: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
         let errorBlock: CompletionBlock = { task, response, error in
             // nothing to send, dequeue request
-            sharedMessageQueue.remove(elementID: writeQueueUUID)
+            sharedMessageQueue.remove(writeQueueUUID)
             completion?(task: task, response: response, error: error)
         }
         
@@ -1679,7 +1679,7 @@ class MessageDataService {
                         Message.deleteMessage(messageID)
                     }
                 }
-                sharedMessageQueue.remove(elementID: elementID)
+                sharedMessageQueue.remove(elementID)
                 self.dequeueIfNeeded()
             } else {
                 PMLog.D(" error: \(error)")
@@ -1710,7 +1710,7 @@ class MessageDataService {
                         if let element = object as? [String : String] {
                             let count = element["count"]
                             PMLog.D("message queue count : \(count)")
-                            sharedMessageQueue.remove(elementID: elementID)
+                            sharedMessageQueue.remove(elementID)
                         }
                     }
                 }
@@ -1722,20 +1722,20 @@ class MessageDataService {
                             let count = element["count"]
                             PMLog.D("message queue count : \(count)")
                             sharedFailedQueue.add(uuid, object: element)
-                            sharedMessageQueue.remove(elementID: elementID)
+                            sharedMessageQueue.remove(elementID)
                         }
                     }
                 }
                 
                 if statusCode == 200 && error?.code > 1000 {
                     //show error
-                    sharedMessageQueue.remove(elementID: elementID)
+                    sharedMessageQueue.remove(elementID)
                     error?.uploadFabricAnswer(QueueErrorTitle)
                 }
                 
                 if statusCode != 200 && statusCode != 404 && statusCode != 500 && !isInternetIssue {
                     //show error
-                    sharedMessageQueue.remove(elementID: elementID)
+                    sharedMessageQueue.remove(elementID)
                     error?.uploadFabricAnswer(QueueErrorTitle)
                 }
                 
@@ -1775,7 +1775,7 @@ class MessageDataService {
                 }
             } else {
                 PMLog.D(" Unsupported action \(actionString), removing from queue.")
-                sharedMessageQueue.remove(elementID: uuid)
+                sharedMessageQueue.remove(uuid)
             }
         } else if !sharedMessageQueue.isBlocked && readQueue.count > 0 { //sharedMessageQueue.count == 0 &&
             readQueue.removeAtIndex(0)()
