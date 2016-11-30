@@ -23,13 +23,13 @@ extension APIService {
         static let errorDesc = "ErrorDescription"
     }
     
-    internal typealias CompletionBlock = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, error: NSError?) -> Void
-    internal typealias CompletionFetchDetail = (task: NSURLSessionDataTask!, response: Dictionary<String,AnyObject>?, message:Message?, error: NSError?) -> Void
+    internal typealias CompletionBlock = (task: NSURLSessionDataTask?, response: Dictionary<String,AnyObject>?, error: NSError?) -> Void
+    internal typealias CompletionFetchDetail = (task: NSURLSessionDataTask?, response: Dictionary<String,AnyObject>?, message:Message?, error: NSError?) -> Void
     
     // MARK: - Internal variables
     
-    internal typealias AFNetworkingFailureBlock = (NSURLSessionDataTask!, NSError!) -> Void
-    internal typealias AFNetworkingSuccessBlock = (NSURLSessionDataTask!, AnyObject!) -> Void
+    internal typealias AFNetworkingFailureBlock = (NSURLSessionDataTask?, NSError!) -> Void
+    internal typealias AFNetworkingSuccessBlock = (NSURLSessionDataTask?, AnyObject?) -> Void
     
     
     internal typealias AuthCredentialBlock = (AuthCredential?, NSError?) -> Void

@@ -47,6 +47,8 @@ class APIService {
         sessionManager = AFHTTPSessionManager(baseURL: NSURL(string: AppConstants.BaseURLString)!)
         sessionManager.requestSerializer = AFJSONRequestSerializer() as AFHTTPRequestSerializer
         //sessionManager.requestSerializer.timeoutInterval = 20.0;
+        sessionManager.securityPolicy.validatesDomainName = false
+        sessionManager.securityPolicy.allowInvalidCertificates = false
         
         #if DEBUG
             sessionManager.securityPolicy.allowInvalidCertificates = true
@@ -86,7 +88,9 @@ class APIService {
             }
             
             let success: AFNetworkingSuccessBlock = { task, responseObject in
-                if let responseDictionary = responseObject as? Dictionary<String, AnyObject> {
+                if responseObject == nil {
+                    completion(task: task, response: [:], error: nil)
+                } else if let responseDictionary = responseObject as? Dictionary<String, AnyObject> {
                     var error : NSError?
                     let responseCode = responseDictionary["Code"] as? Int
                     
@@ -112,8 +116,6 @@ class APIService {
                     else {
                         completion(task: task, response: responseDictionary, error: error)
                     }
-                } else if responseObject == nil {
-                    completion(task: task, response: [:], error: nil)
                 } else {
                     completion(task: task, response: nil, error: NSError.unableToParseResponse(responseObject))
                 }
@@ -247,16 +249,37 @@ class APIService {
     
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
     internal func download(path path: String, destinationDirectoryURL: NSURL, downloadTask: ((NSURLSessionDownloadTask) -> Void)?, completion: ((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
-        if let url = NSURL(string: path, relativeToURL: self.sessionManager.baseURL) {
+        if let url = NSURL(string: path, relativeToURL: self.sessionManager.baseURL), let abs_string = url.absoluteString {
             do {
-                let request = try self.sessionManager.requestSerializer.requestWithMethod("GET", URLString: url.absoluteString, parameters: nil, error: ())
-                if let sessionDownloadTask = self.sessionManager.downloadTaskWithRequest(request, progress: nil, destination: { (targetURL, response) -> NSURL! in return destinationDirectoryURL }, completionHandler: completion) {
-                    downloadTask?(sessionDownloadTask)
-                    sessionDownloadTask.resume()
-                } else {
-                    PMLog.D("sessionDownloadTask is empty")
-                    completion?(nil, nil, NSError.badPath(path))
-                }
+                
+                //let request = try self.sessionManager.requestSerializer.requestWithMethod("GET", URLString: abs_string, parameters: nil, error: ())
+                
+                let request = self.sessionManager.requestSerializer.requestWithMethod("GET", URLString: abs_string, parameters: nil, error: nil)
+                let sessionDownloadTask = self.sessionManager.downloadTaskWithRequest(request, progress: nil, destination: { (targetURL, response) -> NSURL in
+                        return destinationDirectoryURL
+                    }, completionHandler: completion )
+
+                downloadTask?(sessionDownloadTask)
+                sessionDownloadTask.resume()
+//                }
+//                else {
+//                    PMLog.D("sessionDownloadTask is empty")
+//                    completion?(nil, nil, NSError.badPath(path))
+//                }
+//                if let sessionDownloadTask = self.sessionManager.downloadTaskWithRequest(request, progress: nil, destination: { (targetURL, response) -> NSURL! in return destinationDirectoryURL }, completionHandler: completion) {
+//                    downloadTask?(sessionDownloadTask)
+//                    sessionDownloadTask.resume()
+//                } else {
+//                    PMLog.D("sessionDownloadTask is empty")
+//                    completion?(nil, nil, NSError.badPath(path))
+//                }
+                
+                
+
+                
+                
+                
+                
             } catch let ex as NSError {
                 completion?(nil, nil, ex)
             }
@@ -284,7 +307,7 @@ class APIService {
             let request = try sessionManager.requestSerializer.multipartFormRequestWithMethod("POST", URLString: url, parameters: parameters as! [String:String], constructingBodyWithBlock: { (formData) -> Void in
                 let data: AFMultipartFormData = formData
                 data.appendPartWithFileData(keyPackets, name: "KeyPackets", fileName: "KeyPackets.txt", mimeType: "" )
-                data.appendPartWithFileData(dataPacket, name: "DataPacket", fileName: "DataPacket.txt", mimeType: "" ) }, error: ())
+                data.appendPartWithFileData(dataPacket, name: "DataPacket", fileName: "DataPacket.txt", mimeType: "" ) }, error: nil)
             
             let uploadTask = self.sessionManager.uploadTaskWithStreamedRequest(request, progress: nil) { (response, responseObject, error) -> Void in
                 completion?(task: nil, response: responseObject as? Dictionary<String,AnyObject>, error: error)
