@@ -44,6 +44,10 @@ extension CustomErrorVar {
 }
 
 
+// settings     0x110000
+// pwds         0x110 000
+// notify email 0x110 100
+
 // code start at 0x110000
 enum UpdatePasswordError : Int, ErrorType, CustomErrorVar {
     case InvalidUserName = 0x110001
@@ -94,6 +98,43 @@ enum UpdatePasswordError : Int, ErrorType, CustomErrorVar {
             return NSLocalizedString("The new password can't empty.")
         case .KeyUpdateFailed:
             return NSLocalizedString("The private update failed.")
+        case .Default:
+            return NSLocalizedString("Password update failed")
+        }
+    }
+}
+
+
+// code start at 0x110000
+enum UpdateNotificationEmailError : Int, ErrorType, CustomErrorVar {
+    case InvalidUserName = 0x110101
+    case CantHashPassword = 0x110102
+    case CantGenerateVerifier = 0x110103
+    case CantGenerateSRPClient = 0x110104
+    case InvalideAuthInfo = 0x110105
+    
+    case Default = 0x110100
+    
+    var code : Int {
+        return self.rawValue
+    }
+    
+    var desc : String {
+        return NSLocalizedString("Update Notification Email") //TODO:: check with jason for localization
+    }
+    
+    var reason : String {
+        switch self {
+        case .InvalidUserName:
+            return NSLocalizedString("Invalid UserName!")
+        case .CantHashPassword:
+            return NSLocalizedString("Invalid hashed password!")
+        case .CantGenerateVerifier:
+            return NSLocalizedString("Can't create a SRP verifier!")
+        case .CantGenerateSRPClient:
+            return NSLocalizedString("Can't create a SRP Client")
+        case .InvalideAuthInfo:
+            return NSLocalizedString("Can't get user auth info")
         case .Default:
             return NSLocalizedString("Password update failed")
         }

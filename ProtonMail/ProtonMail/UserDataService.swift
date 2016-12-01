@@ -642,17 +642,79 @@ class UserDataService {
         }
     }
     
-    func updateNotificationEmail(newNotificationEmail: String, password : String, tfaCode: String?, completion: CompletionBlock) {
-        let emailSetting = UpdateNotificationEmail<ApiResponse>(password: password, notificationEmail: newNotificationEmail, tfaCode: tfaCode)
-        emailSetting.call() { task, response, hasError in
-            if !hasError {
-                if let userInfo = self.userInfo {
-                    userInfo.notificationEmail = newNotificationEmail
-                    self.userInfo = userInfo
+    func updateNotificationEmail(new_notification_email: String, login_password : String, twoFACode: String?, completion: CompletionBlock) {
+        {//asyn
+            do {
+                guard let _username = self.username else {
+                    throw UpdateNotificationEmailError.InvalidUserName.toError()
                 }
+                
+                //start check exsit srp
+                var forceRetry = false
+                var forceRetryVersion = 2
+                
+                repeat {
+                    // get auto info
+                    let info = try AuthInfoRequest<AuthInfoResponse>(username: _username).syncCall()
+                    guard let authVersion = info?.Version, let modulus = info?.Modulus, let ephemeral = info?.ServerEphemeral, let salt = info?.Salt, let session = info?.SRPSession else {
+                        throw UpdateNotificationEmailError.InvalideAuthInfo.toError()
+                    }
+                    guard let encodedModulus = try modulus.getSignature() else {
+                        throw UpdateNotificationEmailError.InvalideAuthInfo.toError()
+                    }
+                    
+                    let decodedModulus : NSData = encodedModulus.decodeBase64()
+                    let decodedSalt : NSData = salt.decodeBase64()
+                    let serverEphemeral : NSData = ephemeral.decodeBase64()
+                    
+                    if authVersion <= 2 && !forceRetry {
+                        forceRetry = true
+                        forceRetryVersion = 2
+                    }
+                    
+                    //init api calls
+                    let hashVersion = forceRetry ? forceRetryVersion : authVersion
+                    guard let hashedPassword = PasswordUtils.getHashedPwd(hashVersion, password: login_password , username: _username, decodedSalt: decodedSalt, decodedModulus: decodedModulus) else {
+                        throw UpdateNotificationEmailError.CantHashPassword.toError()
+                    }
+                    
+                    guard let srpClient = try generateSrpProofs(2048, modulus: decodedModulus, serverEphemeral: serverEphemeral, hashedPassword: hashedPassword) where srpClient.isValid() == true else {
+                        throw UpdateNotificationEmailError.CantGenerateSRPClient.toError()
+                    }
+                    
+                    do {
+                        let updatetNotifyEmailRes = try UpdateNotificationEmail<ApiResponse>(clientEphemeral: srpClient.clientEphemeral.encodeBase64(),
+                                                                                         clientProof: srpClient.clientProof.encodeBase64(),
+                                                                                         sRPSession: session,
+                                                                                         notificationEmail: new_notification_email,
+                                                                                         tfaCode: twoFACode).syncCall()
+                        if updatetNotifyEmailRes?.code == 1000 {
+                            if let userInfo = self.userInfo {
+                                userInfo.notificationEmail = new_notification_email
+                                self.userInfo = userInfo
+                            }
+                            forceRetry = false
+                        } else {
+                            throw UpdateNotificationEmailError.Default.toError()
+                        }
+                    } catch let error as NSError {
+                        if error.isInternetError() {
+                            throw error
+                        } else {
+                            if forceRetry && forceRetryVersion != 0 {
+                                forceRetryVersion -= 1
+                            } else {
+                                throw error
+                            }
+                        }
+                    }
+                } while(forceRetry && forceRetryVersion >= 0)
+                return { completion(task: nil, response: nil, error: nil) } ~> .Main
+            } catch let error as NSError {
+                error.uploadFabricAnswer("UpdateLoginPassword")
+                return { completion(task: nil, response: nil, error: error) } ~> .Main
             }
-            completion(task: task, response: nil, error: response?.error)
-        }
+        } ~> .Async
     }
     func updateNotify(isOn: Bool, completion: CompletionBlock) {
         let notifySetting = UpdateNotify<ApiResponse>(notify: isOn ? 1 : 0)
