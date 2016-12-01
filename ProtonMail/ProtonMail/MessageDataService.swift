@@ -131,6 +131,7 @@ class MessageDataService {
         queue {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 if let messagesArray = responseDict?["Messages"] as? [Dictionary<String,AnyObject>] {
+                    PMLog.D("\(messagesArray)")
                     let messcount = responseDict?["Total"] as? Int ?? 0
                     let context = sharedCoreDataService.newMainManagedObjectContext()
                     context.performBlock() {
@@ -141,6 +142,9 @@ class MessageDataService {
                         do {
                             if let messages = try GRTJSONSerialization.objectsWithEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inContext: context) as? [Message] {
                                 for message in messages {
+                                    if location == .archive {
+                                        message.location = location
+                                    }
                                     message.messageStatus = 1
                                 }
                                 if let error = context.saveUpstreamIfNeeded() {

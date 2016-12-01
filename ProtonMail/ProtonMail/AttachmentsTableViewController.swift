@@ -168,6 +168,9 @@ class AttachmentsTableViewController: UITableViewController {
                 kUTTypeGNUZipArchive as String,
                 kUTTypeBzip2Archive as String,
                 kUTTypeZipArchive as String,
+                kUTTypeData as String,
+                "rar",
+                "RAR"
             ]
             let importMenu = UIDocumentMenuViewController(documentTypes: types, inMode: .Import)
             importMenu.delegate = self
