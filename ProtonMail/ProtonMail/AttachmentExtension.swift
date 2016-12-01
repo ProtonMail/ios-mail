@@ -214,11 +214,15 @@ extension UIImage {
 }
 
 extension NSData {
+    func toAttachment (message:Message, fileName : String) -> Attachment? {
+        return self.toAttachment(message, fileName: fileName, type: "image/jpg")
+    }
+    
     func toAttachment (message:Message, fileName : String, type:String) -> Attachment? {
         let attachment = Attachment(context: message.managedObjectContext!)//TODO:: need check context nil or not instead of !
         attachment.attachmentID = "0"
         attachment.fileName = fileName
-        attachment.mimeType = "image/jpg"
+        attachment.mimeType = type
         attachment.fileData = self
         attachment.fileSize = self.length
         attachment.isTemp = false

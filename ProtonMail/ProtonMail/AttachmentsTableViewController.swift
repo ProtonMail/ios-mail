@@ -313,8 +313,9 @@ extension AttachmentsTableViewController: UIDocumentPickerDelegate {
         coordinator.coordinateReadingItemAtURL(url, options: NSFileCoordinatorReadingOptions(), error: &error) { (new_url) -> Void in
             if let data = NSData(contentsOfURL: url) {
                 if data.length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
+                    let ext = url.mimeType()
                     let fileName = url.lastPathComponent ?? "\(NSUUID().UUIDString)"
-                    let attachment = data.toAttachment(self.message, fileName: fileName, type: "application/binary")
+                    let attachment = data.toAttachment(self.message, fileName: fileName, type: ext)
                     self.attachments.append(attachment!)
                     self.delegate?.attachments(self, didPickedAttachment: attachment!)
                     self.updateAttachmentSize()
@@ -353,7 +354,7 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                     self.buildAttachments()
                     self.tableView.reloadData()
                 }
-                guard let image_data = imagedata, let uti = dataUTI, let info = info where image_data.length > 0 else {
+                guard let image_data = imagedata, let uti_tmp = dataUTI, let info = info where image_data.length > 0 else {
                     self.showErrorAlert("Can't open the file")
                     self.delegate?.attachments(self, error:"Can't open the file")
                     return
@@ -362,6 +363,7 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                 if let url_filename = info["PHImageFileURLKey"]?.lastPathComponent {
                     fileName = url_filename
                 }
+                let uti = fileName.mimeType()
                 let length = image_data.length
                 if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
                     dispatch_async(dispatch_get_main_queue()) {
