@@ -637,6 +637,7 @@ extension SignInViewController : TwoFACodeViewControllerDelegate {
     }
 
     func Cancel2FA() {
+        sharedUserDataService.twoFactorStatus = 0
         NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
     }
 }
