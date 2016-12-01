@@ -271,13 +271,19 @@ public class ComposeViewModelImpl : ComposeViewModel {
             switch msgAction
             {
             case .OpenDraft:
+                var body = ""
                 do {
-                    let body = try message?.decryptBodyIfNeeded() ?? ""
-                    return body
+                    body = try message?.decryptBodyIfNeeded() ?? ""
                 } catch let ex as NSError {
                     PMLog.D("getHtmlBody OpenDraft error : \(ex)")
-                    return self.message!.bodyToHtml()
+                    body = self.message!.bodyToHtml()
                 }
+                
+                body = body.stringByStrippingStyleHTML()
+                body = body.stringByStrippingBodyStyle()
+                body = body.stringByPurifyHTML()
+                return body
+                
             case .Reply, .ReplyAll:
                 
                 var body = ""
@@ -297,7 +303,10 @@ public class ComposeViewModelImpl : ComposeViewModel {
                 let sn = message?.managedObjectContext != nil ? message!.senderContactVO.name : "unknow"
                 let se = message?.managedObjectContext != nil ? message!.senderContactVO.email : "unknow"
                 
-                let replyHeader = time + ", " + sn + " <'\(se)'>"
+                var replyHeader = time + ", " + sn + " <'\(se)'>"
+                replyHeader = replyHeader.stringByStrippingStyleHTML()
+                replyHeader = replyHeader.stringByStrippingBodyStyle()
+                replyHeader = replyHeader.stringByPurifyHTML()
                 let sp = "<div><br><div><div><br></div>\(replyHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
                 
                 return "\(htmlString) \(sp) \(body)</blockquote>"
@@ -325,7 +334,11 @@ public class ComposeViewModelImpl : ComposeViewModel {
                 body = body.stringByStrippingBodyStyle()
                 body = body.stringByPurifyHTML()
                 
-                let sp = "<div><br></div><div><br></div>\(forwardHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
+                var sp = "<div><br></div><div><br></div>\(forwardHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
+                sp = sp.stringByStrippingStyleHTML()
+                sp = sp.stringByStrippingBodyStyle()
+                sp = sp.stringByPurifyHTML()
+                
                 return "\(defaultSignature) \(mobileSignature) \(sp) \(body)"
             case .NewDraft:
                 if !self.body.isEmpty {
