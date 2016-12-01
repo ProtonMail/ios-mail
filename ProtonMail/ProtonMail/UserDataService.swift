@@ -477,6 +477,7 @@ class UserDataService {
                 } while(forceRetry && forceRetryVersion >= 0)
                 return { completion(task: nil, response: nil, error: nil) } ~> .Main
             } catch let error as NSError {
+                error.uploadFabricAnswer("UpdateLoginPassword")
                 return { completion(task: nil, response: nil, error: error) } ~> .Main
             }
         } ~> .Async
@@ -607,6 +608,7 @@ class UserDataService {
                 } while(forceRetry && forceRetryVersion >= 0)
                 return { completion(task: nil, response: nil, error: nil) } ~> .Main
             } catch let error as NSError {
+                error.uploadFabricAnswer("UpdateMailBoxPassword")
                 return { completion(task: nil, response: nil, error: error) } ~> .Main
             }
         } ~> .Async
