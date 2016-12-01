@@ -466,6 +466,7 @@ class SignInViewController: ProtonMailViewController {
                 if mailboxpwd != nil {
                     self.decryptPassword(mailboxpwd!)
                 } else {
+                    self.restoreBackup()
                     self.loadContent()
                 }
             })
@@ -495,8 +496,8 @@ class SignInViewController: ProtonMailViewController {
                             if info!.delinquent < 3 {
                                 userCachedStatus.pinFailedCount = 0;
                                 sharedUserDataService.setMailboxPassword(mailboxPassword, keysalt: nil, isRemembered: self.isRemembered)
+                                self.restoreBackup()
                                 self.loadContent()
-                                self.restoreBackup();
                                 NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)
                             } else {
                                 let alertController = NSLocalizedString("Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.").alertController() //here needs change to a clickable link
