@@ -85,7 +85,7 @@ public struct SettingsAPI {
 
 public struct AddressesAPI {
     /// base message api path
-    static let Path :String = AppConstants.BaseAPIPath + "/keys"
+    static let Path :String = AppConstants.BaseAPIPath + "/addresses"
     
     /// fetch message request version
     static let V_AddressesUpdateRequest : Int = 1
