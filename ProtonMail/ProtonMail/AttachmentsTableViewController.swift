@@ -357,7 +357,7 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                     self.buildAttachments()
                     self.tableView.reloadData()
                 }
-                guard let image_data = imagedata, let uti_tmp = dataUTI, let info = info where image_data.length > 0 else {
+                guard let image_data = imagedata, let _ = dataUTI, let info = info where image_data.length > 0 else {
                     self.showErrorAlert("Can't open the file")
                     self.delegate?.attachments(self, error:"Can't open the file")
                     return

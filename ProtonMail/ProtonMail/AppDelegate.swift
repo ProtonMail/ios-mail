@@ -230,6 +230,8 @@ extension AppDelegate: UIApplicationDelegate {
                 } else {
                     sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
                 }
+            } else {
+                sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
             }
         } else {
             sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
