@@ -511,7 +511,11 @@ class UserDataService {
                     //check user role if equal 2 try to get the org key.
                     let cur_org_key = try GetOrgKeys<OrgKeyResponse>().syncCall()
                     if let org_priv_key = cur_org_key?.privKey where !org_priv_key.isEmpty {
-                        new_org_key = try PMNOpenPgp.updateKeyPassword(org_priv_key, old_pass: old_password, new_pass: new_hashed_mpwd)
+                        do {
+                            new_org_key = try PMNOpenPgp.updateKeyPassword(org_priv_key, old_pass: old_password, new_pass: new_hashed_mpwd)
+                        } catch {
+                            //ignore it for now.
+                        }
                     }
                 }
                 
