@@ -217,8 +217,7 @@ extension AppDelegate: UIApplicationDelegate {
                 timeIndex = t
             }
             if timeIndex == 0 {
-                //sharedPushNotificationService.setNotificationOptions(userInfo);
-                sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
+                sharedPushNotificationService.setNotificationOptions(userInfo);
             } else if timeIndex > 0 {
                 var exitTime : Int = 0
                 if let t = Int(userCachedStatus.exitTime) {
