@@ -577,9 +577,9 @@ class SignInViewController: ProtonMailViewController {
         sharedUserDataService.fetchUserInfo()
         sharedContactDataService.fetchContacts({ (contacts, error) -> Void in
             if error != nil {
-                NSLog("\(error)")
+                PMLog.D("\(error)")
             } else {
-                NSLog("Contacts count: \(contacts!.count)")
+                PMLog.D("Contacts count: \(contacts!.count)")
             }
         })
     }

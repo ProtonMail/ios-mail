@@ -46,7 +46,7 @@ class MessageDataService {
         
         setupMessageMonitoring()
         setupNotifications()
-    
+        
     }
     
     deinit {
@@ -278,7 +278,7 @@ class MessageDataService {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
             eventAPI.call() { task, _eventsRes, _hasEventsError in
                 if let eventsRes = _eventsRes {
-                    PMLog.D("\(eventsRes)")
+                    //PMLog.D("\(eventsRes)")
                     if eventsRes.isRefresh || (_hasEventsError && eventsRes.code == 18001) {
                         let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
                         getLatestEventID.call() { task, _IDRes, hasIDError in
@@ -584,7 +584,7 @@ class MessageDataService {
                 }
             }
         }
-        PMLog.D("\(inboxCount + draftCount + sendCount + spamCount + starCount + trashCount)")
+        //PMLog.D("\(inboxCount + draftCount + sendCount + spamCount + starCount + trashCount)")
     }
     
     func cleanLocalMessageCache(completion: CompletionBlock?) {
@@ -1874,18 +1874,20 @@ extension NSFileManager {
     }
     
     func cleanCachedAtts() {
-        let attachmentDirectory = applicationSupportDirectoryURL.URLByAppendingPathComponent("attachments", isDirectory: true)
-        //TODO:: need to handle the empty instead of !
-        if let path = attachmentDirectory!.path {
-            do {
-                let filePaths = try self.contentsOfDirectoryAtPath(path)
-                for fileName in filePaths {
-                    let filePathName = "\(path)/\(fileName)"
-                    try self.removeItemAtPath(filePathName)
+        if let attachmentDirectory = applicationSupportDirectoryURL.URLByAppendingPathComponent("attachments", isDirectory: true) {
+            if let path = attachmentDirectory.path {
+                do {
+                    if self.fileExistsAtPath(path) {
+                        let filePaths = try self.contentsOfDirectoryAtPath(path)
+                        for fileName in filePaths {
+                            let filePathName = "\(path)/\(fileName)"
+                            try self.removeItemAtPath(filePathName)
+                        }
+                    }
                 }
-            }
-            catch let ex as NSError {
-                PMLog.D(" error : \(ex).")
+                catch let ex as NSError {
+                    PMLog.D("cleanCachedAtts error : \(ex).")
+                }
             }
         }
     }

@@ -1265,11 +1265,10 @@ extension EmailHeaderView: UITableViewDelegate {
                 let totalValue = attachment.fileSize.floatValue;
                 sharedAPIService.getSession().setDownloadTaskDidWriteDataBlock({ (session, taskTwo, bytesWritten, totalBytesWritten, totalBytesExpectedToWrite) -> Void in
                     if taskOne == taskTwo {
-                        NSLog("\(totalValue)")
-                        NSLog("%lld  - %lld - %lld", bytesWritten, totalBytesWritten, totalBytesExpectedToWrite)
-                        
+                        //NSLog("\(totalValue)")
+                        //NSLog("%lld  - %lld - %lld", bytesWritten, totalBytesWritten, totalBytesExpectedToWrite)
                         var progressPercentage =  ( Float(totalBytesWritten) / totalValue )
-                        NSLog("\(progressPercentage)")
+                        //NSLog("\(progressPercentage)")
                         if progressPercentage >= 1.000000000 {
                             progressPercentage = 1.0
                         }

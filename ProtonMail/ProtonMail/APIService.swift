@@ -148,7 +148,7 @@ class APIService {
             pthread_mutex_lock(&self.mutex)
             //fetch auth info
             if let credential = AuthCredential.fetchFromKeychain() {
-                PMLog.D("\(credential.description)")
+                //PMLog.D("\(credential.description)")
                 if !credential.isExpired { // access token time is valid
                     if (credential.password ?? "").isEmpty { // mailbox pwd is empty should show error and logout
                         

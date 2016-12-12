@@ -1175,7 +1175,7 @@ extension MailboxViewController : TopMessageViewDelegate {
     internal func updateInterfaceWithReachability(reachability : Reachability) {
         let netStatus = reachability.currentReachabilityStatus()
         let connectionRequired = reachability.connectionRequired()
-        PMLog.D("connectionRequired : \(connectionRequired)")
+        //PMLog.D("connectionRequired : \(connectionRequired)")
         switch (netStatus)
         {
         case NotReachable:
@@ -1185,12 +1185,12 @@ extension MailboxViewController : TopMessageViewDelegate {
             self.topMsgHeightConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : (self.latestSpaceHide * -1)
             self.updateViewConstraints()
         case ReachableViaWWAN:
-            PMLog.D("Reachable WWAN")
+            //PMLog.D("Reachable WWAN")
             self.topMsgTopConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : self.latestSpaceHide
             self.latestSpaceHide = 0.0
             self.updateViewConstraints()
         case ReachableViaWiFi:
-            PMLog.D("Reachable WiFi")
+            //PMLog.D("Reachable WiFi")
             self.topMsgTopConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : self.latestSpaceHide
             self.latestSpaceHide = 0.0
             self.updateViewConstraints()
