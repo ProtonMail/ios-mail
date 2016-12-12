@@ -299,7 +299,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B6O-Zu-zTa" userLabel="pass manager">
-                                                <rect key="frame" x="-137" y="355" width="201" height="42"/>
+                                                <rect key="frame" x="-136" y="355" width="200" height="42"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <state key="normal" image="login_pwdmanager">
                                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -341,6 +341,12 @@
                                                     <action selector="touchIDAction:" destination="rb7-9h-TvB" eventType="touchUpInside" id="imf-lD-7k3"/>
                                                 </connections>
                                             </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v1.0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kb0-7s-rZ2">
+                                                <rect key="frame" x="173" y="544" width="29.5" height="13.5"/>
+                                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="11"/>
+                                                <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
@@ -358,6 +364,7 @@
                                             <constraint firstItem="2gx-2z-FDL" firstAttribute="leading" secondItem="ve5-Rb-bXf" secondAttribute="leading" constant="28" id="RtP-fB-V18"/>
                                             <constraint firstItem="MgP-0E-i6P" firstAttribute="top" secondItem="bOD-D6-5za" secondAttribute="bottom" constant="48" id="T8K-JS-l1w"/>
                                             <constraint firstItem="bb6-Ns-GPi" firstAttribute="top" secondItem="ve5-Rb-bXf" secondAttribute="top" priority="500" constant="45" id="Ugn-di-Dly"/>
+                                            <constraint firstItem="kb0-7s-rZ2" firstAttribute="top" secondItem="BlP-nl-XPC" secondAttribute="bottom" constant="4" id="bRw-yM-Mc1"/>
                                             <constraint firstAttribute="centerX" secondItem="Os0-Xv-V8f" secondAttribute="centerX" priority="500" id="cPe-4N-99R"/>
                                             <constraint firstAttribute="centerX" secondItem="1qu-T6-Tyc" secondAttribute="centerX" id="ewr-np-AK9"/>
                                             <constraint firstItem="MgP-0E-i6P" firstAttribute="height" secondItem="B6O-Zu-zTa" secondAttribute="height" id="fLM-xv-Xe4"/>
@@ -369,6 +376,7 @@
                                             <constraint firstItem="bOD-D6-5za" firstAttribute="leading" secondItem="ve5-Rb-bXf" secondAttribute="leading" constant="28" id="mHQ-MY-4hz"/>
                                             <constraint firstAttribute="centerX" secondItem="bb6-Ns-GPi" secondAttribute="centerX" priority="500" id="oJL-6W-8Xi"/>
                                             <constraint firstAttribute="trailing" secondItem="2gx-2z-FDL" secondAttribute="trailing" constant="28" id="qAu-zs-eal"/>
+                                            <constraint firstItem="kb0-7s-rZ2" firstAttribute="centerX" secondItem="ve5-Rb-bXf" secondAttribute="centerX" id="tPc-CS-2Be"/>
                                             <constraint firstItem="1qu-T6-Tyc" firstAttribute="top" secondItem="MgP-0E-i6P" secondAttribute="bottom" priority="1" constant="24" id="tPr-d6-uFP"/>
                                             <constraint firstItem="bb6-Ns-GPi" firstAttribute="leading" secondItem="ve5-Rb-bXf" secondAttribute="leading" priority="1" constant="28" id="uel-ce-NZp"/>
                                             <constraint firstItem="bb6-Ns-GPi" firstAttribute="top" secondItem="ve5-Rb-bXf" secondAttribute="top" priority="1" id="uwY-xT-yW3"/>
@@ -421,6 +429,7 @@
                         <outlet property="userTopPaddingConstraint" destination="BsO-XF-yEB" id="axa-HW-qNt"/>
                         <outlet property="usernameTextField" destination="tfu-UO-Zjf" id="Q3M-gO-x4z"/>
                         <outlet property="usernameView" destination="2gx-2z-FDL" id="vP6-0L-GWt"/>
+                        <outlet property="versionLabel" destination="kb0-7s-rZ2" id="wKr-Xy-MmI"/>
                         <segue destination="Zzb-6r-tlP" kind="show" identifier="mailboxSegue" id="xf0-Do-kI6"/>
                         <segue destination="HPp-sz-RGE" kind="custom" identifier="sign_in_to_splash_no_segue" customClass="SplashSignInSegue" customModule="ProtonMail" id="gTu-Sh-bol"/>
                         <segue destination="5Bg-GM-4IG" kind="show" identifier="sign_in_to_sign_up_segue" id="lvd-zK-Trc"/>
@@ -1758,7 +1767,7 @@
                                                 </constraints>
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Exs-ku-Yx8" userLabel="pass manager">
-                                                <rect key="frame" x="-137" y="312" width="201" height="42"/>
+                                                <rect key="frame" x="-136" y="312" width="200" height="42"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <state key="normal" image="login_pwdmanager">
                                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

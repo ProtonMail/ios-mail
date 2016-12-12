@@ -1,6 +1,6 @@
 // GRTManagedStore.h
 //
-// Copyright (c) 2014-2015 Guillermo Gonzalez
+// Copyright (c) 2014-2016 Guillermo Gonzalez
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -92,16 +92,6 @@ NS_ASSUME_NONNULL_BEGIN
  Creates and returns a managed object context for this store.
  */
 - (NSManagedObjectContext *)contextWithConcurrencyType:(NSManagedObjectContextConcurrencyType)concurrencyType;
-
-@end
-
-@interface GRTManagedStore (Deprecated)
-
-+ (instancetype)managedStoreWithModel:(nullable NSManagedObjectModel *)managedObjectModel __attribute__((deprecated("Replaced by -initWithModel:error:")));
-
-+ (instancetype)managedStoreWithCacheName:(NSString *)cacheName __attribute__((deprecated("Replaced by +storeWithCacheName:error:")));
-
-- (id)initWithPath:(nullable NSString *)path managedObjectModel:(nullable NSManagedObjectModel *)managedObjectModel  __attribute__((deprecated("Replaced by -initWithURL:model:error:")));
 
 @end
 

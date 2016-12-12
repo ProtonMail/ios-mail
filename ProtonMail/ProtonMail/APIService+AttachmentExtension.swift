@@ -21,7 +21,7 @@ extension APIService {
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
     func attachmentForAttachmentID(attachmentID: String, destinationDirectoryURL: NSURL, downloadTask: ((NSURLSessionDownloadTask) -> Void)?, completion: ((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
         if let filepath = destinationDirectoryURL.URLByAppendingPathComponent("\(attachmentID)") {
-            download(path: pathForAttachmentID(attachmentID), destinationDirectoryURL: filepath, downloadTask: downloadTask, completion: completion)
+            download(pathForAttachmentID(attachmentID), destinationDirectoryURL: filepath, downloadTask: downloadTask, completion: completion)
         } else {
             //TODO:: need add throw errors
             completion?(nil, nil, NSError.badPath(attachmentID))

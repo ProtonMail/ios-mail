@@ -35,8 +35,8 @@ class PersistentQueue {
             }
         }
     }
-    private let queueURL: NSURL
-    let queueName: String
+    private var queueURL: NSURL
+    private var queueName: String
     
     /// Number of objects in the Queue
     var count: Int {
@@ -87,11 +87,11 @@ class PersistentQueue {
     }
     
     /// Removes an element from the persistent queue
-    func remove(elementID elementID: NSUUID) -> Bool {
+    func remove(elementID: NSUUID) -> Bool {
         PMLog.D(elementID)
         for (index, element) in queue.enumerate() {
             PMLog.D(element)
-            if let elementDict = element as? [String : AnyObject], kID = elementDict[Key.elementID] as? NSUUID{
+            if let elementDict = element as? [String : AnyObject], let kID = elementDict[Key.elementID] as? NSUUID{
                 if kID == elementID {
                     queue.removeAtIndex(index)
                     return true

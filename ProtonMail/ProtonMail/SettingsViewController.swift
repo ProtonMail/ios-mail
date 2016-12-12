@@ -229,7 +229,7 @@ class SettingsViewController: ProtonMailViewController {
             
             ActivityIndicatorHelper.showActivityIndicatorAtView(view)
             
-            sharedUserDataService.updatePassword(currentLoginPasswordTextField.text!, newPassword: newLoginPasswordTextField.text!, twoFACode: "123456") { _, _, error in
+            sharedUserDataService.updatePassword(currentLoginPasswordTextField.text!, new_password: newLoginPasswordTextField.text!, twoFACode: "123456") { _, _, error in
                 ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
                 
                 if let error = error {

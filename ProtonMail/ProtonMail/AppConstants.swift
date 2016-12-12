@@ -12,7 +12,7 @@ import Foundation
 class AppConstants {
     
     
-    static let CacheVersion : Int = 82
+    static let CacheVersion : Int = 83
     static let AuthCacheVersion : Int = 12
     static let SpaceWarningThreshold: Double = 80
     static let SplashVersion : Int = 1
@@ -32,7 +32,7 @@ class AppConstants {
     //static let BaseURLString : String = "https://dev.protonmail.com"
     
     //blue test
-    //static let BaseURLString : String = "http://protonmail.blue"
+    //static let BaseURLString : String = "https://protonmail.blue"
     //static let BaseURLString : String = "https://midnight.protonmail.blue"
     
     //static let BaseURLString : String = "http://127.0.0.1"

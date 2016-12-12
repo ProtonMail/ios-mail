@@ -9,7 +9,6 @@
 import Foundation
 
 
-
 // MARK : update domain order
 public class UpdateDomainOrder<T : ApiResponse> : ApiRequest<T> {
     let newOrder : Array<Int>!
@@ -20,8 +19,6 @@ public class UpdateDomainOrder<T : ApiResponse> : ApiRequest<T> {
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
         let out : [String : AnyObject] = ["Order" : self.newOrder]
-    
-        //self.domains.();
         PMLog.D(self.JSONStringify(out, prettyPrinted: true))
         return out
     }
@@ -50,7 +47,6 @@ public class UpdateNotify<T : ApiResponse> : ApiRequest<T> {
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
         let out : [String : AnyObject] = ["Notify" : self.notify]
-
         return out
     }
     
@@ -67,21 +63,34 @@ public class UpdateNotify<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
-
 // MARK : update notification email
 public class UpdateNotificationEmail<T : ApiResponse> : ApiRequest<T> {
-    let pwd : String!
+
     let email : String!
-    let tfaCode : String?
     
-    init(password : String, notificationEmail : String, tfaCode : String?) {
-        self.pwd = password
+    let clientEphemeral : String! //base64 encoded
+    let clientProof : String! //base64 encoded
+    let SRPSession : String! //hex encoded session id
+    let tfaCode : String? // optional
+
+    
+    init(clientEphemeral : String!, clientProof : String!, sRPSession: String!, notificationEmail : String!, tfaCode : String?) {
+        self.clientEphemeral = clientEphemeral
+        self.clientProof = clientProof
+        self.SRPSession = sRPSession
         self.email = notificationEmail
         self.tfaCode = tfaCode
     }
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
-        var out : [String : AnyObject] = ["Password" : self.pwd, "NotificationEmail" : self.email]
+        
+        var out : [String : AnyObject] = [
+            "ClientEphemeral" : self.clientEphemeral,
+            "ClientProof" : self.clientProof,
+            "SRPSession": self.SRPSession,
+            "NotificationEmail" : email
+        ]
+        
         if let code = tfaCode {
             out["TwoFactorCode"] = code
         }
@@ -229,5 +238,74 @@ public class UpdateSwiftRightAction<T : ApiResponse> : ApiRequest<T> {
     
     override public func getVersion() -> Int {
         return SettingsAPI.V_SettingsUpdateSwipeRightRequest
+    }
+}
+
+
+
+// update login password this is only in two password mode
+public class UpdateLoginPassword<T : ApiResponse> : ApiRequest<T> {
+    let clientEphemeral : String! //base64_encoded_ephemeral
+    let clientProof : String! //base64_encoded_proof
+    let SRPSession : String! //hex_encoded_session_id
+    let tfaCode : String?
+    
+    let modulusID : String! //encrypted_id
+    let salt : String! //base64_encoded_salt
+    let verifer : String! //base64_encoded_verifier
+
+    
+    init(clientEphemeral : String!,
+         clientProof : String!,
+         SRPSession : String!,
+         modulusID : String!,
+         salt : String!,
+         verifer : String!,
+         tfaCode : String?) {
+        
+        self.clientEphemeral = clientEphemeral
+        self.clientProof = clientProof
+        self.SRPSession = SRPSession
+        self.tfaCode = tfaCode
+        self.modulusID = modulusID
+        self.salt = salt
+        self.verifer = verifer
+    }
+    
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+        
+        let auth : [String : AnyObject] = [
+            "Version" : 4,
+            "ModulusID" : self.modulusID,
+            "Salt" : self.salt,
+            "Verifier" : self.verifer
+        ]
+        
+        var out : [String : AnyObject] = [
+            "ClientEphemeral": self.clientEphemeral,
+            "ClientProof": self.clientProof,
+            "SRPSession": self.SRPSession,
+            "Auth": auth
+        ]
+            
+        if let code = tfaCode {
+            out["TwoFactorCode"] = code
+        }
+        
+        PMLog.D(JSONStringify(out))
+        
+        return out
+    }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .PUT
+    }
+    
+    override public func getRequestPath() -> String {
+        return SettingsAPI.Path + "/password" + AppConstants.getDebugOption
+    }
+    
+    override public func getVersion() -> Int {
+        return SettingsAPI.V_SettingsUpdateLoginPasswordRequest
     }
 }

@@ -19,6 +19,7 @@ let CacheErrorTitle : String = "LocalCache-Error"
 let SendingErrorTitle : String = "Sending-Error"
 let ContactsErrorTitle : String = "Contacts-Error"
 
+let FetchUserInfoErrorTitle : String = "UserInfo-Error"
 
 extension NSError {
     

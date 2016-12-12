@@ -181,7 +181,7 @@ class SearchViewController: ProtonMailViewController {
         tableView.showLoadingFooter()
         
         
-        sharedMessageDataService.search(query: query, page: currentPage, completion: { (messages, error) -> Void in
+        sharedMessageDataService.search(query, page: currentPage, completion: { (messages, error) -> Void in
             self.tableView.hideLoadingFooter()
             
             if messages?.count > 0 {

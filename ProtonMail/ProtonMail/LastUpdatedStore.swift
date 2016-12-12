@@ -39,6 +39,12 @@ public class LastUpdatedStore : SharedCacheBase {
     
     public class UpdateTime : NSObject, NSCoding {
         
+        public var start : NSDate
+        public var end : NSDate
+        public var update : NSDate
+        public var total : Int32
+        public var unread : Int32
+        
         private struct CoderKey {
             static let startCode = "start"
             static let endCode = "end"
@@ -77,12 +83,6 @@ public class LastUpdatedStore : SharedCacheBase {
             aCoder.encodeInt32(self.total, forKey: CoderKey.total)
             aCoder.encodeInt32(self.unread, forKey: CoderKey.unread)
         }
-        
-        public var start : NSDate
-        public var end : NSDate
-        public var update : NSDate
-        public var total : Int32
-        public var unread : Int32
         
         static public func distantPast() -> UpdateTime {
             return UpdateTime(start: NSDate.distantPast() , end: NSDate.distantPast() , update: NSDate.distantPast() , total: 0, unread: 0)

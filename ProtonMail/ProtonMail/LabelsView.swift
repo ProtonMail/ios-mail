@@ -50,6 +50,7 @@ class LabelsView: PMView {
     }
     
     override func awakeFromNib() {
+        super.awakeFromNib()
         labelView1.numberOfLines = 0;
         labelView1.layer.borderWidth = 1
         labelView1.layer.cornerRadius = 2
@@ -192,7 +193,7 @@ class LabelsView: PMView {
             self.hideAll()
         }
         self.layoutIfNeeded()
-        self.updateConstraintsIfNeeded()
+        //self.updateConstraintsIfNeeded()
     }
     
     private func hideAll() {

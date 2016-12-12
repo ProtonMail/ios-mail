@@ -227,7 +227,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     internal func moreButtonTapped(sender : UIBarButtonItem) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
-        let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .archive : .Destructive]
+        let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .archive : .Default]
         for (location, style) in locations {
             if message.location != location {
                 alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
@@ -280,11 +280,13 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MessageViewController.statusBarHit(_:)), name: NotificationDefined.TouchStatusBar, object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(MailboxViewController.reachabilityChanged(_:)), name: kReachabilityChangedNotification, object: nil)
-        if let context = message.managedObjectContext {
-            message.isRead = true
-            message.needsUpdate = true
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
+        if message != nil {
+            if let context = message.managedObjectContext {
+                message.isRead = true
+                message.needsUpdate = true
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D(" error: \(error)")
+                }
             }
         }
         
@@ -535,7 +537,6 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                             objc_sync_enter(self.purifiedBodyLock)
                             self.fixedBody = self.fixedBody?.stringBySetupInlineImage("src=\"cid:\(content_id)\"", to: "src=\"data:\(att.mimeType);base64,\(based64String)\"" )
                             objc_sync_exit(self.purifiedBodyLock)
-                            
                             checkCount = checkCount - 1
                             
                             if checkCount == 0 {

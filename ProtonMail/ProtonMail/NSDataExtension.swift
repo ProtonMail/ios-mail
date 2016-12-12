@@ -19,4 +19,10 @@ extension NSData {
         }
         return tokenString
     }
+    
+    
+    
+    func encodeBase64() -> String {
+        return self.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+    }
 }

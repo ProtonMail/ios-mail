@@ -134,8 +134,8 @@ extension AppDelegate: UIApplicationDelegate {
         AFNetworkActivityIndicatorManager.sharedManager().enabled = true
         
         //net work debug option
-        AFNetworkActivityLogger.sharedLogger().startLogging()
-        AFNetworkActivityLogger.sharedLogger().level = AFHTTPRequestLoggerLevel.AFLoggerLevelDebug
+        //AFNetworkActivityLogger.sharedLogger().startLogging()
+        //AFNetworkActivityLogger.sharedLogger().level = AFHTTPRequestLoggerLevel.AFLoggerLevelDebug
         
         sharedInternetReachability.startNotifier()
         
@@ -145,7 +145,7 @@ extension AppDelegate: UIApplicationDelegate {
         
         let tmp = UIApplication.sharedApplication().releaseMode()
         if tmp != .Dev && tmp != .Sim {
-            AFNetworkActivityLogger.sharedLogger().stopLogging()
+            //AFNetworkActivityLogger.sharedLogger().stopLogging()
         }
         sharedPushNotificationService.setLaunchOptions(launchOptions)
         
@@ -209,6 +209,8 @@ extension AppDelegate: UIApplicationDelegate {
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         PMLog.D("receive \(userInfo)")
+        
+        print("receive: \(userInfo)")
         if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
             var timeIndex : Int = -1
             if let t = Int(userCachedStatus.lockTime) {
@@ -228,6 +230,8 @@ extension AppDelegate: UIApplicationDelegate {
                 } else {
                     sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
                 }
+            } else {
+                sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
             }
         } else {
             sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)

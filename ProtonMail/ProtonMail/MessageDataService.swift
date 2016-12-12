@@ -43,8 +43,10 @@ class MessageDataService {
     private var readQueue: [ReadBlock] = []
     
     init() {
+        
         setupMessageMonitoring()
         setupNotifications()
+    
     }
     
     deinit {
@@ -59,7 +61,7 @@ class MessageDataService {
                 PMLog.D("error: \(error)")
                 dequeueIfNeeded()
             } else {
-                queue(att: att, action: .uploadAtt)
+                queue(att, action: .uploadAtt)
             }
         }
     }
@@ -88,14 +90,14 @@ class MessageDataService {
                 if error != nil {
                     PMLog.D(" error: \(error)")
                 } else {
-                    queue(message: message, action: .send)
+                    queue(message, action: .send)
                 }
             } else {
                 //TODO:: handle can't find the message error.
             }
             
         } else {
-            error = NSError.protonMailError(code: 500, localizedDescription: NSLocalizedString("No managedObjectContext"), localizedFailureReason: nil, localizedRecoverySuggestion: nil)
+            error = NSError.protonMailError(500, localizedDescription: NSLocalizedString("No managedObjectContext"), localizedFailureReason: nil, localizedRecoverySuggestion: nil)
         }
         completion?(task: nil, response: nil, error: error)
     }
@@ -129,6 +131,7 @@ class MessageDataService {
         queue {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 if let messagesArray = responseDict?["Messages"] as? [Dictionary<String,AnyObject>] {
+                    PMLog.D("\(messagesArray)")
                     let messcount = responseDict?["Total"] as? Int ?? 0
                     let context = sharedCoreDataService.newMainManagedObjectContext()
                     context.performBlock() {
@@ -139,6 +142,9 @@ class MessageDataService {
                         do {
                             if let messages = try GRTJSONSerialization.objectsWithEntityName(Message.Attributes.entityName, fromJSONArray: messagesArray, inContext: context) as? [Message] {
                                 for message in messages {
+                                    if location == .archive {
+                                        message.location = location
+                                    }
                                     message.messageStatus = 1
                                 }
                                 if let error = context.saveUpstreamIfNeeded() {
@@ -150,7 +156,9 @@ class MessageDataService {
                                         updateTime.start = firstMsg.time!
                                         updateTime.total = Int32(messcount)
                                     }
-                                    updateTime.end = lastMsg.time!
+                                    if let time = lastMsg.time {
+                                        updateTime.end = time
+                                    }
                                     updateTime.update = NSDate()
                                     lastUpdatedStore.updateInboxForKey(location, updateTime: updateTime)
                                 }
@@ -235,25 +243,29 @@ class MessageDataService {
     func fetchMessagesForLocationWithEventReset(location: MessageLocation, MessageID : String, Time: Int, completion: CompletionBlock?) {
         queue {
             let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
-            getLatestEventID.call() { task, response, hasError in
-                if response != nil && !hasError && !response!.eventID.isEmpty {
+            getLatestEventID.call() { task, _IDRes, hasIDError in
+                if let IDRes = _IDRes where !hasIDError && !IDRes.eventID.isEmpty {
                     let completionWrapper: CompletionBlock = { task, responseDict, error in
                         if error == nil {
-                            lastUpdatedStore.lastEventID = response!.eventID
+                            lastUpdatedStore.clear()
+                            lastUpdatedStore.lastEventID = IDRes.eventID
                         }
-                        completion?(task: task, response:nil, error: error)
+                        completion?(task: task, response:responseDict, error: error)
                     }
                     self.cleanMessage()
                     sharedContactDataService.cleanUp()
                     self.fetchMessagesForLocation(location, MessageID: MessageID, Time: Time, foucsClean: false, completion: completionWrapper)
                     sharedContactDataService.fetchContacts(nil)
                     sharedLabelsDataService.fetchLabels();
+                }  else {
+                    completion?(task: task, response:nil, error: nil)
                 }
             }
         }
     }
     
     
+    private var tempUnreadAddjustCount = 0
     /**
      fetch the new messages use the events log
      
@@ -264,70 +276,71 @@ class MessageDataService {
     func fetchNewMessagesForLocation(location: MessageLocation, Time: Int, notificationMessageID : String?, completion: CompletionBlock?) {
         queue {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
-            eventAPI.call() { task, response, hasError in
-                PMLog.D("\(response!)")
-                if response == nil {
-                    completion?(task: task, response:nil, error: nil)
-                } else if response!.isRefresh || (hasError && response!.code == 18001) {
-                    let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
-                    getLatestEventID.call() { task, response, hasError in
-                        if response != nil && !hasError && !response!.eventID.isEmpty {
-                            let completionWrapper: CompletionBlock = { task, responseDict, error in
-                                if error == nil {
-                                    lastUpdatedStore.clear();
-                                    lastUpdatedStore.lastEventID = response!.eventID
+            eventAPI.call() { task, _eventsRes, _hasEventsError in
+                if let eventsRes = _eventsRes {
+                    PMLog.D("\(eventsRes)")
+                    if eventsRes.isRefresh || (_hasEventsError && eventsRes.code == 18001) {
+                        let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
+                        getLatestEventID.call() { task, _IDRes, hasIDError in
+                            if let IDRes = _IDRes where !hasIDError && !IDRes.eventID.isEmpty {
+                                let completionWrapper: CompletionBlock = { task, responseDict, error in
+                                    if error == nil {
+                                        lastUpdatedStore.clear()
+                                        lastUpdatedStore.lastEventID = IDRes.eventID
+                                    }
+                                    completion?(task: task, response:responseDict, error: error)
                                 }
-                                completion?(task: task, response:responseDict, error: error)
+                                self.cleanMessage()
+                                sharedContactDataService.cleanUp()
+                                self.fetchMessagesForLocation(location, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
+                                sharedContactDataService.fetchContacts(nil)
+                                sharedLabelsDataService.fetchLabels();
+                            } else {
+                                completion?(task: task, response:nil, error: nil)
                             }
-                            self.cleanMessage()
-                            sharedContactDataService.cleanUp()
-                            self.fetchMessagesForLocation(location, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
-                            sharedContactDataService.fetchContacts(nil)
-                            sharedLabelsDataService.fetchLabels();
+                        }
+                    }
+                    else if eventsRes.messages != nil {
+                        self.processIncrementalUpdateMessages(notificationMessageID, messages: eventsRes.messages!, task: task) { task, res, error in
+                            if error == nil {
+                                lastUpdatedStore.lastEventID = eventsRes.eventID
+                                self.processIncrementalUpdateUnread(eventsRes.unreads)
+                                self.processIncrementalUpdateTotal(eventsRes.total)
+                                self.processIncrementalUpdateUserInfo(eventsRes.userinfo)
+                                self.processIncrementalUpdateLabels(eventsRes.labels)
+                                self.processIncrementalUpdateContacts(eventsRes.contacts)
+                                
+                                var outMessages : [AnyObject] = [];
+                                for message in eventsRes.messages! {
+                                    let msg = MessageEvent(event: message)
+                                    if msg.Action == 1 {
+                                        outMessages.append(msg)
+                                    }
+                                }
+                                completion?(task: task, response:["Messages": outMessages, "Notices": eventsRes.notices ?? [String]()], error: nil)
+                            }
+                            else {
+                                completion?(task: task, response:nil, error: error)
+                            }
+                        }
+                    }
+                    else {
+                        if eventsRes.code == 1000 {
+                            lastUpdatedStore.lastEventID = eventsRes.eventID
+                            self.processIncrementalUpdateUnread(eventsRes.unreads)
+                            self.processIncrementalUpdateTotal(eventsRes.total)
+                            self.processIncrementalUpdateUserInfo(eventsRes.userinfo)
+                            self.processIncrementalUpdateLabels(eventsRes.labels)
+                            self.processIncrementalUpdateContacts(eventsRes.contacts)
+                        }
+                        if _hasEventsError {
+                            completion?(task: task, response:nil, error: eventsRes.error)
                         } else {
-                            completion?(task: task, response:nil, error: nil)
+                            completion?(task: task, response:["Notices": eventsRes.notices ?? [String]()], error: nil)
                         }
                     }
-                }
-                else if response!.messages != nil {
-                    self.processIncrementalUpdateMessages(notificationMessageID, messages: response!.messages!, task: task) { task, res, error in
-                        if error == nil {
-                            lastUpdatedStore.lastEventID = response!.eventID
-                            
-                            var outMessages : [AnyObject] = [];
-                            for message in response!.messages! {
-                                let msg = MessageEvent(event: message)
-                                if msg.Action == 1 {
-                                    outMessages.append(msg)
-                                }
-                            }
-                            completion?(task: task, response:["Messages": outMessages], error: nil)
-                        }
-                        else {
-                            completion?(task: task, response:nil, error: error)
-                        }
-                    }
-                    
-                    self.processIncrementalUpdateUnread(response!.unreads)
-                    self.processIncrementalUpdateTotal(response!.total)
-                    self.processIncrementalUpdateUserInfo(response!.userinfo)
-                    self.processIncrementalUpdateLabels(response!.labels)
-                    self.processIncrementalUpdateContacts(response!.contacts)
-                }
-                else {
-                    if response!.code == 1000 {
-                        lastUpdatedStore.lastEventID = response!.eventID
-                        self.processIncrementalUpdateUnread(response!.unreads)
-                        self.processIncrementalUpdateTotal(response!.total)
-                        self.processIncrementalUpdateUserInfo(response!.userinfo)
-                        self.processIncrementalUpdateLabels(response!.labels)
-                        self.processIncrementalUpdateContacts(response!.contacts)
-                    }
-                    if hasError {
-                        completion?(task: task, response:nil, error: response?.error)
-                    } else {
-                        completion?(task: task, response:nil, error: nil)
-                    }
+                } else {
+                    completion?(task: task, response:nil, error: nil)
                 }
             }
         }
@@ -454,34 +467,8 @@ class MessageDataService {
     }
     
     func processIncrementalUpdateUserInfo(userinfo: Dictionary<String, AnyObject>?) {
-        
         if let userData = userinfo {
-            let userInfo = UserInfo(
-                response: userData,
-                displayNameResponseKey: "DisplayName",
-                maxSpaceResponseKey: "MaxSpace",
-                notificationEmailResponseKey: "NotificationEmail",
-                privateKeyResponseKey: "EncPrivateKey",
-                publicKeyResponseKey: "PublicKey",
-                signatureResponseKey: "Signature",
-                usedSpaceResponseKey: "UsedSpace",
-                userStatusResponseKey: "UserStatus",
-                userAddressResponseKey: "Addresses",
-                
-                autoSaveContactResponseKey : "AutoSaveContacts",
-                languageResponseKey : "Language",
-                maxUploadResponseKey: "MaxUpload",
-                notifyResponseKey: "Notify",
-                showImagesResponseKey : "ShowImages",
-                
-                swipeLeftResponseKey : "SwipeLeft",
-                swipeRightResponseKey : "SwipeRight",
-                
-                roleResponseKey:"Role",
-                
-                delinquentResponseKey : "Delinquent"
-            )
-            
+            let userInfo = UserInfo( response: userData )
             sharedUserDataService.updateUserInfoFromEventLog(userInfo);
         }
     }
@@ -552,7 +539,8 @@ class MessageDataService {
                         if let lo = MessageLocation(rawValue: l) {
                             switch lo {
                             case .inbox:
-                                inboxCount = c;
+                                inboxCount = c
+                                inboxCount = inboxCount + tempUnreadAddjustCount
                                 break;
                             case .draft:
                                 draftCount = c
@@ -582,6 +570,7 @@ class MessageDataService {
                 badgeNumber = 0
             }
             UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
+            tempUnreadAddjustCount = 0
         }
         
         if let locations = unreads?["Labels"] as? [Dictionary<String,AnyObject>] {
@@ -659,6 +648,7 @@ class MessageDataService {
                         if IncrementalUpdateType.insert == msg.Action {
                             if let cachedMessage = Message.messageForMessageID(msg.ID, inManagedObjectContext: context) {
                                 if cachedMessage.location != MessageLocation.draft && cachedMessage.location != MessageLocation.outbox {
+                                    self.tempUnreadAddjustCount = cachedMessage.isRead ? -1 : 0
                                     continue
                                 }
                             }
@@ -818,7 +808,6 @@ class MessageDataService {
                 let context = sharedCoreDataService.newMainManagedObjectContext()
                 context.performBlock() {
                     var error: NSError?
-                    
                     if response != nil {
                         //TODO need check the respons code
                         if var msg: Dictionary<String,AnyObject> = response?["Message"] as? Dictionary<String,AnyObject> {
@@ -1091,7 +1080,7 @@ class MessageDataService {
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
     
-    func search(query query: String, page: Int, completion: (([Message]?, NSError?) -> Void)?) {
+    func search(query: String, page: Int, completion: (([Message]?, NSError?) -> Void)?) {
         queue {
             let completionWrapper: CompletionBlock = {task, response, error in
                 if error != nil {
@@ -1143,7 +1132,7 @@ class MessageDataService {
             if let error = context.saveUpstreamIfNeeded() {
                 PMLog.D(" error: \(error)")
             } else {
-                queue(message: message, action: .saveDraft)
+                queue(message, action: .saveDraft)
             }
         }
     }
@@ -1154,7 +1143,7 @@ class MessageDataService {
             if let error = context.saveUpstreamIfNeeded() {
                 PMLog.D(" error: \(error)")
             } else {
-                queue(message: message, action: .delete)
+                queue(message, action: .delete)
             }
         }
     }
@@ -1170,6 +1159,7 @@ class MessageDataService {
                     self.fetchMessagesWithIDs(badMessages);
                 }
             } catch let ex as NSError {
+                ex.uploadFabricAnswer("purgeOldMessages")
                 PMLog.D("error : \(ex)")
             }
         }
@@ -1413,7 +1403,7 @@ class MessageDataService {
         }
         
         // nothing to send, dequeue request
-        sharedMessageQueue.remove(elementID: writeQueueUUID)
+        sharedMessageQueue.remove(writeQueueUUID)
         self.dequeueIfNeeded()
         
         completion?(task: nil, response: nil, error: NSError.badParameter(messageID))
@@ -1474,7 +1464,7 @@ class MessageDataService {
         }
         
         // nothing to send, dequeue request
-        sharedMessageQueue.remove(elementID: writeQueueUUID)
+        sharedMessageQueue.remove(writeQueueUUID)
         self.dequeueIfNeeded()
         
         completion?(task: nil, response: nil, error: NSError.badParameter(addressID))
@@ -1490,7 +1480,7 @@ class MessageDataService {
         }
         
         // nothing to send, dequeue request
-        sharedMessageQueue.remove(elementID: writeQueueUUID)
+        sharedMessageQueue.remove(writeQueueUUID)
         self.dequeueIfNeeded()
         completion?(task: nil, response: nil, error: NSError.badParameter(deleteObject))
     }
@@ -1505,7 +1495,7 @@ class MessageDataService {
         }
         
         // nothing to send, dequeue request
-        sharedMessageQueue.remove(elementID: writeQueueUUID)
+        sharedMessageQueue.remove(writeQueueUUID)
         self.dequeueIfNeeded()
         completion?(task: nil, response: nil, error: NSError.badParameter("\(location)"))
     }
@@ -1514,7 +1504,7 @@ class MessageDataService {
     private func sendMessageID(messageID: String, writeQueueUUID: NSUUID, completion: CompletionBlock?) {
         let errorBlock: CompletionBlock = { task, response, error in
             // nothing to send, dequeue request
-            sharedMessageQueue.remove(elementID: writeQueueUUID)
+            sharedMessageQueue.remove(writeQueueUUID)
             completion?(task: task, response: response, error: error)
         }
         
@@ -1610,6 +1600,11 @@ class MessageDataService {
                                 }
                             }
                             else {
+                                if error?.code == 15198 {
+                                    error?.alertSentErrorToast()
+                                } else {
+                                    //error?.alertErrorToast()
+                                }
                                 //NSError.alertMessageSentErrorToast()
                                 error?.uploadFabricAnswer(SendingErrorTitle)
                             }
@@ -1688,7 +1683,7 @@ class MessageDataService {
                         Message.deleteMessage(messageID)
                     }
                 }
-                sharedMessageQueue.remove(elementID: elementID)
+                sharedMessageQueue.remove(elementID)
                 self.dequeueIfNeeded()
             } else {
                 PMLog.D(" error: \(error)")
@@ -1719,7 +1714,7 @@ class MessageDataService {
                         if let element = object as? [String : String] {
                             let count = element["count"]
                             PMLog.D("message queue count : \(count)")
-                            sharedMessageQueue.remove(elementID: elementID)
+                            sharedMessageQueue.remove(elementID)
                         }
                     }
                 }
@@ -1731,20 +1726,20 @@ class MessageDataService {
                             let count = element["count"]
                             PMLog.D("message queue count : \(count)")
                             sharedFailedQueue.add(uuid, object: element)
-                            sharedMessageQueue.remove(elementID: elementID)
+                            sharedMessageQueue.remove(elementID)
                         }
                     }
                 }
                 
                 if statusCode == 200 && error?.code > 1000 {
                     //show error
-                    sharedMessageQueue.remove(elementID: elementID)
+                    sharedMessageQueue.remove(elementID)
                     error?.uploadFabricAnswer(QueueErrorTitle)
                 }
                 
                 if statusCode != 200 && statusCode != 404 && statusCode != 500 && !isInternetIssue {
                     //show error
-                    sharedMessageQueue.remove(elementID: elementID)
+                    sharedMessageQueue.remove(elementID)
                     error?.uploadFabricAnswer(QueueErrorTitle)
                 }
                 
@@ -1784,7 +1779,7 @@ class MessageDataService {
                 }
             } else {
                 PMLog.D(" Unsupported action \(actionString), removing from queue.")
-                sharedMessageQueue.remove(elementID: uuid)
+                sharedMessageQueue.remove(uuid)
             }
         } else if !sharedMessageQueue.isBlocked && readQueue.count > 0 { //sharedMessageQueue.count == 0 &&
             readQueue.removeAtIndex(0)()
@@ -1792,7 +1787,7 @@ class MessageDataService {
         }
     }
     
-    private func queue(message message: Message, action: MessageAction) {
+    private func queue(message: Message, action: MessageAction) {
         if action == .saveDraft || action == .send {
             //TODO:: need to handle the empty instead of !
             sharedMessageQueue.addMessage(message.objectID.URIRepresentation().absoluteString!, action: action)
@@ -1809,13 +1804,13 @@ class MessageDataService {
         dequeueIfNeeded()
     }
     
-    private func queue(att att: Attachment, action: MessageAction) {
+    private func queue(att: Attachment, action: MessageAction) {
         //TODO:: need to handle the empty instead of !
         sharedMessageQueue.addMessage(att.objectID.URIRepresentation().absoluteString!, action: action)
         dequeueIfNeeded()
     }
     
-    private func queue(readBlock readBlock: ReadBlock) {
+    private func queue(readBlock: ReadBlock) {
         readQueue.append(readBlock)
         dequeueIfNeeded()
     }
@@ -1825,7 +1820,7 @@ class MessageDataService {
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.locationNumber, handler: { message in
             if message.needsUpdate {
                 if let action = message.location.moveAction {
-                    self.queue(message: message, action: action)
+                    self.queue(message, action: action)
                 } else {
                     PMLog.D(" \(message.messageID) move to \(message.location) was not a user initiated move.")
                 }
@@ -1846,14 +1841,14 @@ class MessageDataService {
                     UIApplication.sharedApplication().applicationIconBadgeNumber = count
                 }
                 
-                self.queue(message: message, action: action)
+                self.queue(message, action: action)
             }
         })
         
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isStarred, handler: { message in
             if message.needsUpdate {
                 let action: MessageAction = message.isStarred ? .star : .unstar
-                self.queue(message: message, action: action)
+                self.queue(message, action: action)
             }
         })
     }

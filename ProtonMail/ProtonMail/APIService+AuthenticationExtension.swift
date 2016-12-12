@@ -19,30 +19,7 @@ import Foundation
 
 /// Auth extension
 extension APIService {
-    
-    func getHashedPwd(authVersion: Int , password: String, username: String, decodedSalt : NSData, decodedModulus : NSData) -> NSData? {
-        var hashedPassword : NSData?
-        switch authVersion {
-        case 0:
-            hashedPassword = PasswordUtils.hashPasswordVersion0(password, username: username, modulus: decodedModulus)
-            break
-        case 1:
-            hashedPassword = PasswordUtils.hashPasswordVersion1(password, username: username, modulus: decodedModulus)
-            break
-        case 2:
-            hashedPassword = PasswordUtils.hashPasswordVersion2(password, username: username, modulus: decodedModulus)
-            break
-        case 3:
-            hashedPassword = PasswordUtils.hashPasswordVersion3(password, salt: decodedSalt, modulus: decodedModulus)
-            break
-        case 4:
-            hashedPassword = PasswordUtils.hashPasswordVersion4(password, salt: decodedSalt, modulus: decodedModulus)
-            break
-        default: break
-        }
-        return hashedPassword
-    }
-    
+
     func auth(username: String, password: String, twoFACode: String?, completion: AuthCompleteBlock!) {
         
         var forceRetry = false
@@ -59,7 +36,8 @@ extension APIService {
                     } else {
                         return completion(task: task, mailpassword: nil, authStatus: .ResCheck, error: error)
                     }
-                } else if res?.code == 1000 {// caculate pwd
+                }
+                else if res?.code == 1000 {// caculate pwd
                     if let code = res?.TwoFactor {
                         if  code == 1 && twoFACode == nil {
                             return completion(task: task, mailpassword: nil, authStatus: .Ask2FA, error: nil)
@@ -83,7 +61,7 @@ extension APIService {
                         }
                         //init api calls
                         let hashVersion = forceRetry ? forceRetryVersion : authVersion
-                        guard let hashedPassword = self.getHashedPwd(hashVersion, password: password, username: username, decodedSalt: decodedSalt, decodedModulus: decodedModulus) else {
+                        guard let hashedPassword = PasswordUtils.getHashedPwd(hashVersion, password: password, username: username, decodedSalt: decodedSalt, decodedModulus: decodedModulus) else {
                             return completion(task: task, mailpassword: nil, authStatus: .ResCheck, error: NSError.authUnableToGeneratePwd())
                         }
                         
@@ -136,6 +114,9 @@ extension APIService {
                     } catch {
                         return completion(task: task, mailpassword: nil, authStatus: .ResCheck, error: NSError.authUnableToParseAuthInfo())
                     }
+                }
+                else {
+                    return completion(task: task, mailpassword: nil, authStatus: .ResCheck, error: NSError.authUnableToParseToken())
                 }
             }
         }

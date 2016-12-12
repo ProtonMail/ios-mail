@@ -399,7 +399,7 @@ class ChangeNotificationEmailViewModel : SettingDetailsViewModel{
         if new_value == getCurrentValue() {
              complete(true, nil)
         } else {
-            sharedUserDataService.updateNotificationEmail(new_value, password: password, tfaCode: tfaCode) { _, _, error in
+            sharedUserDataService.updateNotificationEmail(new_value, login_password: password, twoFACode: tfaCode) { _, _, error in
                 if let error = error {
                     complete(false, error)
                 } else {

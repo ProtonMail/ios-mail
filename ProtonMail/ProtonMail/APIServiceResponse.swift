@@ -37,7 +37,7 @@ public class ApiResponse {
         }
         
         if code != 1000 && code != 1001 {
-            self.error = NSError.protonMailError(code: code ?? 1000, localizedDescription: errorMessage ?? "", localizedFailureReason: errorDetails, localizedRecoverySuggestion: nil)
+            self.error = NSError.protonMailError(code ?? 1000, localizedDescription: errorMessage ?? "", localizedFailureReason: errorDetails, localizedRecoverySuggestion: nil)
         }
         
         return code != 1000 && code != 1001

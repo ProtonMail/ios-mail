@@ -8,35 +8,67 @@
 @class PMNOpenPgp;
 
 
+/**
+ *open_pgp_key_manager = interface +c {
+ *    static create_instance() : open_pgp_key_manager;
+ *}
+ */
 @interface PMNOpenPgp : NSObject
 
+/**
+ * create and init an instance those instance have addresses manager build in
+ * if want deal with single key should use the static functions
+ */
 + (nullable PMNOpenPgp *)createInstance;
 
-+ (nullable PMNOpenPgp *)createInstanceWithKeys:(nonnull PMNAddress *)address;
+/** create and init an instance with addresses */
++ (nullable PMNOpenPgp *)createInstanceWithAddress:(nonnull PMNAddress *)address;
 
-- (BOOL)addAddress:(nonnull PMNAddress *)address;
++ (nullable PMNOpenPgp *)createInstanceWithAddresses:(nonnull NSArray<PMNAddress *> *)address;
 
-- (BOOL)removeAddress:(nonnull NSString *)addressId;
+/** generate new key  */
++ (nonnull PMNOpenPgpKey *)generateNewKey:(nonnull NSString *)userId
+                                    email:(nonnull NSString *)email
+                               passphrase:(nonnull NSString *)passphrase
+                                     bits:(int32_t)bits;
 
-- (BOOL)cleanAddresses;
+/**update single private key password */
++ (nonnull NSString *)updateSinglePassphrase:(nonnull NSString *)privateKey
+                               oldPassphrase:(nonnull NSString *)oldPassphrase
+                               newPassphrase:(nonnull NSString *)newPassphrase;
 
 /**disable/enable debug model */
-- (void)enableDebug:(BOOL)isDebug;
++ (void)enableDebug:(BOOL)isDebug;
 
-/**generat new key pair */
+/**check is private key passphrase ok */
++ (BOOL)checkPassphrase:(nonnull NSString *)privateKey
+             passphrase:(nonnull NSString *)passphrase;
+
+/**update multiple pgp private keys return are new keys */
++ (nonnull NSArray<PMNOpenPgpKey *> *)updateKeysPassphrase:(nonnull NSArray<PMNOpenPgpKey *> *)privateKeys
+                                             oldPassphrase:(nonnull NSString *)oldPassphrase
+                                             newPassphrase:(nonnull NSString *)newPassphrase;
+
+/**Random bits */
++ (nonnull NSData *)randomBits:(int32_t)bits;
+
+/**add a new address into addresses list */
+- (BOOL)addAddress:(nonnull PMNAddress *)address;
+
+/**remove a exsit address from the list based on address id */
+- (BOOL)removeAddress:(nonnull NSString *)addressId;
+
+/**clean address list */
+- (BOOL)cleanAddresses;
+
+/**
+ * old functions blow
+ *generat new key pair (will be deprecated)
+ */
 - (nonnull PMNOpenPgpKey *)generateKey:(nonnull NSString *)userName
                                 domain:(nonnull NSString *)domain
                             passphrase:(nonnull NSString *)passphrase
                                   bits:(int32_t)bits;
-
-/**check is primary key passphrase ok */
-- (BOOL)checkPassphrase:(nonnull NSString *)privateKey
-             passphrase:(nonnull NSString *)passphrase;
-
-/**update single private key password */
-- (nonnull NSString *)updateSinglePassphrase:(nonnull NSString *)privateKey
-                               oldPassphrase:(nonnull NSString *)oldPassphrase
-                               newPassphrase:(nonnull NSString *)newPassphrase;
 
 /**update the information carried in the packet. //TODO need add more parameters */
 - (void)updatePrivateInfo:(nonnull NSString *)privateKey;

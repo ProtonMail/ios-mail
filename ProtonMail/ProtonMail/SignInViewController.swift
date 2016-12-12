@@ -46,6 +46,7 @@ class SignInViewController: ProtonMailViewController {
     var isShowpwd = false;
     var isRemembered = false;
     
+    @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var usernameView: UIView!
     @IBOutlet weak var passwordView: UIView!
     @IBOutlet weak var usernameTextField: UITextField!
@@ -88,6 +89,7 @@ class SignInViewController: ProtonMailViewController {
         hideTouchID(false)
         setupTextFields()
         setupButtons()
+        setupVersionLabel()
         
         let signinFlow = getViewFlow()
         switch signinFlow {
@@ -102,6 +104,19 @@ class SignInViewController: ProtonMailViewController {
             signInIfRememberedCredentials()
             setupView();
             break
+        }
+    }
+    
+    
+    private func setupVersionLabel () {
+        if let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String {
+            if let build = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"] as? String {
+                versionLabel.text = NSLocalizedString("v") + version + "(\(build))"
+            } else {
+                versionLabel.text = NSLocalizedString("v") + version
+            }
+        } else {
+            versionLabel.text = NSLocalizedString("")
         }
     }
     
@@ -451,6 +466,7 @@ class SignInViewController: ProtonMailViewController {
                 if mailboxpwd != nil {
                     self.decryptPassword(mailboxpwd!)
                 } else {
+                    self.restoreBackup()
                     self.loadContent()
                 }
             })
@@ -460,7 +476,7 @@ class SignInViewController: ProtonMailViewController {
         isRemembered = true
         if sharedUserDataService.isMailboxPasswordValid(mailboxPassword, privateKey: AuthCredential.getPrivateKey()) {
             if sharedUserDataService.isSet {
-                sharedUserDataService.setMailboxPassword(mailboxPassword, isRemembered: self.isRemembered)
+                sharedUserDataService.setMailboxPassword(mailboxPassword, keysalt: nil, isRemembered: self.isRemembered)
                 (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
             } else {
                 do {
@@ -479,9 +495,9 @@ class SignInViewController: ProtonMailViewController {
                         } else if info != nil {
                             if info!.delinquent < 3 {
                                 userCachedStatus.pinFailedCount = 0;
-                                sharedUserDataService.setMailboxPassword(mailboxPassword, isRemembered: self.isRemembered)
+                                sharedUserDataService.setMailboxPassword(mailboxPassword, keysalt: nil, isRemembered: self.isRemembered)
+                                self.restoreBackup()
                                 self.loadContent()
-                                self.restoreBackup();
                                 NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)
                             } else {
                                 let alertController = NSLocalizedString("Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.").alertController() //here needs change to a clickable link
@@ -621,6 +637,7 @@ extension SignInViewController : TwoFACodeViewControllerDelegate {
     }
 
     func Cancel2FA() {
+        sharedUserDataService.twoFactorStatus = 0
         NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
     }
 }
