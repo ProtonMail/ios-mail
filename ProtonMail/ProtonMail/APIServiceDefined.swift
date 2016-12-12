@@ -58,6 +58,9 @@ public struct AuthAPI {
     
     /// fetch message request version
     static let V_AuthRequest : Int = 1
+    
+    
+    static let V_AuthModulusRequest : Int = 1
 }
 
 
@@ -76,6 +79,8 @@ public struct SettingsAPI {
     static let V_SettingsUpdateDisplayNameRequest : Int = 1
     
     static let V_SettingsUpdateShowImagesRequest : Int = 1
+    
+    static let V_SettingsUpdateLoginPasswordRequest : Int = 1
 }
 
 public struct AddressesAPI {
@@ -116,7 +121,19 @@ public struct UsersAPI {
     static let V_DirectRequest : Int = 1
 }
 
+public struct KeysAPI {
+    static let Path : String = AppConstants.BaseAPIPath + "/keys"
+    
+    //Update private keys only, use for mailbox password/single password updatesPUT
+    static let V_UpdatePrivateKeyRequest : Int = 1
+    static let V_GetKeysSaltsRequest : Int = 1
+}
 
+public struct OrganizationsAPI {
+    static let Path : String = AppConstants.BaseAPIPath + "/organizations"
+    
+    static let V_GetOrgKeysRequest : Int = 1
+}
 
 public struct DomainsAPI {
     

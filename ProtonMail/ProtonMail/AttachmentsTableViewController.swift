@@ -8,6 +8,7 @@
 
 import UIKit
 import AssetsLibrary
+import Photos
 
 
 
@@ -167,6 +168,9 @@ class AttachmentsTableViewController: UITableViewController {
                 kUTTypeGNUZipArchive as String,
                 kUTTypeBzip2Archive as String,
                 kUTTypeZipArchive as String,
+                kUTTypeData as String,
+                "rar",
+                "RAR"
             ]
             let importMenu = UIDocumentMenuViewController(documentTypes: types, inMode: .Import)
             importMenu.delegate = self
@@ -311,26 +315,33 @@ extension AttachmentsTableViewController: UIDocumentPickerDelegate {
         var error : NSError?
         coordinator.coordinateReadingItemAtURL(url, options: NSFileCoordinatorReadingOptions(), error: &error) { (new_url) -> Void in
             if let data = NSData(contentsOfURL: url) {
-                if data.length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
-                    let fileName = url.lastPathComponent ?? "\(NSUUID().UUIDString)"
-                    let attachment = data.toAttachment(self.message, fileName: fileName, type: "application/binary")
-                    self.attachments.append(attachment!)
-                    self.delegate?.attachments(self, didPickedAttachment: attachment!)
-                    self.updateAttachmentSize()
-                    self.buildAttachments()
-                    self.tableView.reloadData()
-                } else {
-                    self.showSizeErrorAlert(0)
-                    self.delegate?.attachments(self, didReachedSizeLimitation:0)
+                dispatch_async(dispatch_get_main_queue()) {
+                    if data.length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
+                        let ext = url.mimeType()
+                        let fileName = url.lastPathComponent ?? "\(NSUUID().UUIDString)"
+                        let attachment = data.toAttachment(self.message, fileName: fileName, type: ext)
+                        self.attachments.append(attachment!)
+                        self.delegate?.attachments(self, didPickedAttachment: attachment!)
+                        self.updateAttachmentSize()
+                        self.buildAttachments()
+                        self.tableView.reloadData()
+                    } else {
+                        self.showSizeErrorAlert(0)
+                        self.delegate?.attachments(self, didReachedSizeLimitation:0)
+                    }
                 }
             } else {
-                self.showErrorAlert("Can't load the file")
-                self.delegate?.attachments(self, error:"Can't load the file")
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.showErrorAlert("Can't load the file")
+                    self.delegate?.attachments(self, error:"Can't load the file")
+                }
             }
         }
         if error != nil {
-            self.showErrorAlert("Can't copy the file")
-            self.delegate?.attachments(self, error:"Can't copy the file")
+            dispatch_async(dispatch_get_main_queue()) {
+                self.showErrorAlert("Can't copy the file")
+                self.delegate?.attachments(self, error:"Can't copy the file")
+            }
         }
     }
     
@@ -343,32 +354,32 @@ extension AttachmentsTableViewController: UIDocumentPickerDelegate {
 extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-        if let url = info[UIImagePickerControllerReferenceURL] as? NSURL {
-            let library = ALAssetsLibrary()
-            library.assetForURL(url, resultBlock:
-                { (asset: ALAsset!) -> Void in
-                    let rep = asset.defaultRepresentation()
-                    let length = Int(rep.size())
-                    if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
-                        var error: NSError?
-                        let from = Int64(0)
-                        let data = NSMutableData(length: length)!
-                        let numRead = rep.getBytes(UnsafeMutablePointer(data.mutableBytes), fromOffset: from, length: length, error: &error)
-                        
-                        dispatch_async(dispatch_get_main_queue()) {
-                           picker.dismissViewControllerAnimated(true, completion: nil)
+        if let url = info[UIImagePickerControllerReferenceURL] as? NSURL, let asset = PHAsset.fetchAssetsWithALAssetURLs([url], options: nil).firstObject as? PHAsset {
+            if asset.mediaType == .Video {
+                let options = PHVideoRequestOptions()
+                PHImageManager.defaultManager().requestAVAssetForVideo(asset, options:options, resultHandler:
+                    { (asset: AVAsset?, audioMix: AVAudioMix?, info: [NSObject : AnyObject]?) in
+                        guard let asset = asset as? AVURLAsset, let image_data = NSData(contentsOfURL: asset.URL), let info = info where image_data.length > 0 else {
+                            dispatch_async(dispatch_get_main_queue()) {
+                                picker.dismissViewControllerAnimated(true, completion: nil)
+                                self.showErrorAlert("Can't open the file")
+                                self.delegate?.attachments(self, error:"Can't open the file")
+                            }
+                            return
                         }
-                            
-                        if let er = error {
-                            self.showErrorAlert("Can't copy the file")
-                            self.delegate?.attachments(self, error:"Can't copy the file")
-                            PMLog.D(" Error during copying \(er)")
-                        } else {
-                            if numRead > 0 {
-                                let fileName = rep.filename()
-                                let mimeType = rep.UTI()
+                        
+                        let video_url = asset.URL;
+                        var fileName = "\(NSUUID().UUIDString).mp4"
+                        if let url_filename = video_url.lastPathComponent {
+                            fileName = url_filename
+                        }
+                        let uti = fileName.mimeType()
+                        let length = image_data.length
+                        if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
+                            dispatch_async(dispatch_get_main_queue()) {
+                                picker.dismissViewControllerAnimated(true, completion: nil)
                                 if self.message.managedObjectContext != nil {
-                                    let attachment = data.toAttachment(self.message, fileName: fileName, type: mimeType)
+                                    let attachment = image_data.toAttachment(self.message, fileName: fileName, type: uti)
                                     self.attachments.append(attachment!)
                                     self.delegate?.attachments(self, didPickedAttachment: attachment!)
                                 } else {
@@ -376,49 +387,110 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                                     self.showErrorAlert("Can't copy the file")
                                     self.delegate?.attachments(self, error:"Can't copy the file")
                                 }
-                            } else {
-                                PMLog.D(" Error during copying size incorrect")
-                                self.showErrorAlert("Can't copy the file")
-                                self.delegate?.attachments(self, error:"Can't copy the file")
+                            }
+                        } else {
+                            dispatch_async(dispatch_get_main_queue()) {
+                                self.showSizeErrorAlert(0)
+                                self.delegate?.attachments(self, didReachedSizeLimitation:0)
+                                PMLog.D(" Size too big Orig: \(length) -- Limit: \(self.kDefaultAttachmentFileSize)")
+                                picker.dismissViewControllerAnimated(true, completion: nil)
                             }
                         }
-                        
-                    } else {
-                        picker.dismissViewControllerAnimated(true, completion: nil)
-                        self.showSizeErrorAlert(0)
-                        self.delegate?.attachments(self, didReachedSizeLimitation:0)
-                        PMLog.D(" Size too big Orig: \(length) -- Limit: \(self.kDefaultAttachmentFileSize)")
-                    }
-                    
-                    self.buildAttachments()
-                    self.tableView.reloadData()
-            })  { (error:NSError!) -> Void in
-                picker.dismissViewControllerAnimated(true, completion: nil)
-                self.showErrorAlert("Can't copy the file")
-                self.delegate?.attachments(self, error:"Can't copy the file")
-                PMLog.D(" Error during open file \(error)")
-                
-                self.buildAttachments()
-                self.tableView.reloadData()
+                })
             }
-        }else if let originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+                //            else if asset.mediaType == .Audio {
+                //
+                //            }
+            else {
+                let options = PHImageRequestOptions()
+                PHImageManager.defaultManager().requestImageDataForAsset(asset, options: options, resultHandler:
+                    { (imagedata, dataUTI, orientation, info) in
+                        defer {
+                            dispatch_async(dispatch_get_main_queue()) {
+                                self.buildAttachments()
+                                self.tableView.reloadData()
+                            }
+                        }
+                        guard let image_data = imagedata, /* let _ = dataUTI,*/ let info = info where image_data.length > 0 else {
+                            dispatch_async(dispatch_get_main_queue()) {
+                                picker.dismissViewControllerAnimated(true, completion: nil)
+                                self.showErrorAlert("Can't open the file")
+                                self.delegate?.attachments(self, error:"Can't open the file")
+                            }
+                            return
+                        }
+                        var fileName = "\(NSUUID().UUIDString).jpg"
+                        if let url_filename = info["PHImageFileURLKey"]?.lastPathComponent {
+                            fileName = url_filename
+                        }
+                        let uti = fileName.mimeType()
+                        let length = image_data.length
+                        if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
+                            dispatch_async(dispatch_get_main_queue()) {
+                                picker.dismissViewControllerAnimated(true, completion: nil)
+                                if self.message.managedObjectContext != nil {
+                                    let attachment = image_data.toAttachment(self.message, fileName: fileName, type: uti)
+                                    self.attachments.append(attachment!)
+                                    self.delegate?.attachments(self, didPickedAttachment: attachment!)
+                                } else {
+                                    PMLog.D(" Error during copying size incorrect")
+                                    self.showErrorAlert("Can't copy the file")
+                                    self.delegate?.attachments(self, error:"Can't copy the file")
+                                }
+                            }
+                        } else {
+                            dispatch_async(dispatch_get_main_queue()) {
+                                picker.dismissViewControllerAnimated(true, completion: nil)
+                                self.showSizeErrorAlert(0)
+                                self.delegate?.attachments(self, didReachedSizeLimitation:0)
+                                PMLog.D(" Size too big Orig: \(length) -- Limit: \(self.kDefaultAttachmentFileSize)")
+                            }
+                        }
+                })
+            }
+            //            // Fetch Photos Asset and resize image
+            //            let fetchResult = PHAsset.fetchAssetsWithALAssetURLs([assetURL], options: nil)
+            //            let options = PHImageRequestOptions()
+            //            options.synchronous = false
+            //            options.resizeMode = .Fast
+            //            options.deliveryMode = .HighQualityFormat
+            //
+            //            guard let asset = fetchResult.firstObject as? PHAsset else {
+            //                if let image = dictionary[UIImagePickerControllerOriginalImage] as? UIImage {
+            // TODO Cannot find the associated PhotoKit asset. Resize using one of the techniques discussed on http://nshipster.com/image-resizing/
+            //                }
+            //                return
+            //            }
+            //            // Request resized image
+            //            PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: CGSize(width: 1024, height: 1024), contentMode: .AspectFit, options: options, resultHandler: { (image, _) -> Void in
+            //                // image is the resized image
+            //            })
+        } else if let originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage {//edge case here, may never go here
             picker.dismissViewControllerAnimated(true, completion: nil)
-            //let type = info[UIImagePickerControllerMediaType] as? String
-            //let url = info[UIImagePickerControllerReferenceURL] as? NSURL
             let fileName = "\(NSUUID().UUIDString).PNG"
             let mimeType = "image/png"
             let attachment = originalImage.toAttachment(self.message, fileName: fileName, type: mimeType)
-            self.attachments.append(attachment!)
-            self.delegate?.attachments(self, didPickedAttachment: attachment!)
-            
+            let length = attachment?.fileSize.longValue ?? 0
+            if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
+                if self.message.managedObjectContext != nil {
+                    self.attachments.append(attachment!)
+                    self.delegate?.attachments(self, didPickedAttachment: attachment!)
+                } else {
+                    PMLog.D(" Error during copying size incorrect")
+                    self.showErrorAlert("Can't copy the file")
+                    self.delegate?.attachments(self, error:"Can't copy the file")
+                }
+            } else {
+                self.showSizeErrorAlert(0)
+                self.delegate?.attachments(self, didReachedSizeLimitation:0)
+                PMLog.D(" Size too big Orig: \(length) -- Limit: \(self.kDefaultAttachmentFileSize)")
+            }
             self.buildAttachments()
             self.tableView.reloadData()
         } else {
             picker.dismissViewControllerAnimated(true, completion: nil)
             self.showErrorAlert("Can't copy the file")
             self.delegate?.attachments(self, error:"Can't copy the file")
-            //PMLog.D(" Error during open file \(error)")
-            
             self.buildAttachments()
             self.tableView.reloadData()
         }

@@ -1,4 +1,5 @@
 //
+//  ZSSRichTextEditor.m
 //  ZSSRichTextEditorViewController.m
 //  ZSSRichTextEditor
 //
@@ -594,6 +595,10 @@ static Class hackishFixClass = Nil;
 - (void)updateEmbedImageByCID: (NSString *) cid blob: (NSString *) blobdata {
     NSString *cleanCid = [self removeQuotesFromHTML:cid];
     NSString *cleanBlob = [self removeQuotesFromHTML:blobdata];
+    
+    if (cleanCid == nil || cleanBlob == nil) {
+        return;
+    }
     
     NSString *trigger = [NSString stringWithFormat:@"zss_editor.updateEmbedImage(\"%@\", \"%@\");", cleanCid, cleanBlob];
     [self.editorView stringByEvaluatingJavaScriptFromString:trigger];
@@ -1334,6 +1339,9 @@ static Class hackishFixClass = Nil;
 #pragma mark - Utilities
 
 - (NSString *)removeQuotesFromHTML:(NSString *)html {
+    if (html == nil) {
+        return html;
+    }
     html = [html stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
     html = [html stringByReplacingOccurrencesOfString:@"“" withString:@"&quot;"];
     html = [html stringByReplacingOccurrencesOfString:@"”" withString:@"&quot;"];

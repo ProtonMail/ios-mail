@@ -115,12 +115,14 @@ final class Key : NSObject {
     let public_key: String
     var private_key : String
     var fingerprint : String
+    var is_updated : Bool = false
     
-    required init(key_id: String?, public_key: String?, private_key: String?, fingerprint : String?) {
+    required init(key_id: String?, public_key: String?, private_key: String?, fingerprint : String?, isupdated: Bool) {
         self.key_id = key_id ?? ""
         self.public_key = public_key ?? ""
         self.private_key = private_key ?? ""
         self.fingerprint = fingerprint ?? ""
+        self.is_updated = isupdated
     }
 }
 
@@ -137,7 +139,8 @@ extension UserInfo {
                     key_id: key_res["ID"] as? String,
                     public_key: key_res["PublicKey"] as? String,
                     private_key: key_res["PrivateKey"] as? String,
-                    fingerprint: key_res["Fingerprint"] as? String))
+                    fingerprint: key_res["Fingerprint"] as? String,
+                    isupdated: false))
             }
         }
         
@@ -152,7 +155,8 @@ extension UserInfo {
                             key_id: key_res["ID"] as? String,
                             public_key: key_res["PublicKey"] as? String,
                             private_key: key_res["PrivateKey"] as? String,
-                            fingerprint: key_res["Fingerprint"] as? String))
+                            fingerprint: key_res["Fingerprint"] as? String,
+                            isupdated: false))
                     }
                 }
                 
@@ -349,7 +353,8 @@ extension Key: NSCoding {
             key_id: aDecoder.decodeStringForKey(CoderKey.keyID),
             public_key: aDecoder.decodeStringForKey(CoderKey.publicKey),
             private_key: aDecoder.decodeStringForKey(CoderKey.privateKey),
-            fingerprint: aDecoder.decodeStringForKey(CoderKey.fingerprintKey))
+            fingerprint: aDecoder.decodeStringForKey(CoderKey.fingerprintKey),
+            isupdated: false)
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
@@ -368,7 +373,13 @@ extension Address {
 
 extension Key {
     func toPMNPgpKey<T : PMNOpenPgpKey>() -> T {
-        return T(publicKey: public_key, privateKey: private_key)
+        return T(keyId: key_id, publicKey: public_key, privateKey: private_key, fingerPrint: fingerprint, isUpdated: is_updated)
+    }
+}
+
+extension PMNOpenPgpKey {
+    func toKey<T : Key>() -> T {
+        return T(key_id: keyId, public_key: publicKey, private_key: privateKey, fingerprint : fingerPrint, isupdated: isUpdated)
     }
 }
 
@@ -378,6 +389,17 @@ extension Array where Element : Key {
         for i in 0 ..< self.count {
             let addr = self[i]
             out_array.append(addr.toPMNPgpKey())
+        }
+        return out_array;
+    }
+}
+
+extension Array where Element : PMNOpenPgpKey {
+    func toKeys() -> [Key] {
+        var out_array = Array<Key>()
+        for i in 0 ..< self.count {
+            let addr = self[i]
+            out_array.append(addr.toKey())
         }
         return out_array;
     }
@@ -419,6 +441,17 @@ extension Array where Element : Address {
     func getAddressNewOrder() -> Array<Int> {
         let ids = self.map { $0.send }
         return ids;
+    }
+    
+    func toKeys() -> Array<Key> {
+        var out_array = Array<Key>()
+        for i in 0 ..< self.count {
+            let addr = self[i]
+            for k in addr.keys {
+                out_array.append(k)
+            }
+        }
+        return out_array
     }
 }
 

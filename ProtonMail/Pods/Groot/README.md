@@ -3,7 +3,7 @@
 
 Groot provides a simple way of serializing Core Data object graphs from or into JSON.
 
-Groot uses [annotations](Documentation/Annotations.md) in the Core Data model to perform the serialization and provides the following features:
+It uses [annotations](Documentation/Annotations.md) in the Core Data model to perform the serialization and provides the following features:
 
 1. Attribute and relationship mapping to JSON key paths.
 2. Value transformation using named `NSValueTransformer` objects.
@@ -102,15 +102,15 @@ Groot provides a simple way for creating and registering named value transformer
 ```swift
 // Swift
 
-func toString(value: Int) -> String? {
-    return "\(value)"
+func toString(_ value: Int) -> String? {
+    return String(value)
 }
 
-func toInt(value: String) -> Int? {
-    return value.toInt()
+func toInt(_ value: String) -> Int? {
+    return Int(value)
 }
 
-NSValueTransformer.setValueTransformerWithName("StringToInteger", transform: toString, reverseTransform: toInt)
+ValueTransformer.setValueTransformer(withName: "StringToInteger", transform: toString, reverseTransform: toInt)
 ```
 
 ```objc
@@ -138,7 +138,7 @@ Now that we have our Core Data model ready we can start adding some data.
 ```swift
 // Swift
 
-let batmanJSON: JSONObject = [
+let batmanJSON: JSONDictionary = [
     "name": "Batman",
     "id": "1699",
     "powers": [
@@ -157,7 +157,11 @@ let batmanJSON: JSONObject = [
     ]
 ]
 
-let batman: Character = try objectFromJSONDictionary(batmanJSON, inContext: context)
+do {
+    let batman: Character = try object(fromJSONDictionary: batmanJSON, inContext: context)
+} catch let error as NSError {
+    // handle error
+}
 ```
 
 ```objc
@@ -171,19 +175,20 @@ Character *batman = [GRTJSONSerialization objectWithEntityName:@"Character"
 
 If we want to update the object we just created, Groot can merge the changes for us:
 
-```objc
-// Objective-C
+```swift
+// Swift
 
-NSDictionary *updateJSON = @{
-    @"id": @"1699",
-    @"real_name": @"Bruce Wayne",
-};
+let updateJSON: JSONDictionary = [
+    "id": "1699",
+    "real_name": "Bruce Wayne",
+]
 
-// This will return the previously created managed object
-Character *batman = [GRTJSONSerialization objectWithEntityName:@"Character"
-                                            fromJSONDictionary:updateJSON
-                                                     inContext:self.context
-                                                         error:&error];
+do {
+    // This will return the previously created managed object
+    let batman: Character = try object(fromJSONDictionary: updateJSON, inContext: context)
+} catch let error as NSError {
+    // handle error
+}
 ```
 
 #### Serializing relationships from identifiers
@@ -192,60 +197,58 @@ Suppose that our API does not return full objects for the relationships but only
 
 We don't need to change our model to support this situation:
 
-```objc
-// Objective-C
+```swift
+// Swift
 
-NSDictionary *batmanJSON = @{
-    @"name": @"Batman",
-    @"real_name": @"Bruce Wayne",
-    @"id": @"1699",
-    @"powers": @[@"4", @"9"],
-    @"publisher": @"10"
-};
+let batmanJSON: JSONDictionary = [
+    "name": "Batman",
+    "real_name": "Bruce Wayne",
+    "id": "1699",
+    "powers": ["4", "9"],
+    "publisher": "10"
+]
 
-Character *batman = [GRTJSONSerialization objectWithEntityName:@"Character"
-                                            fromJSONDictionary:batmanJSON
-                                                     inContext:self.context
-                                                         error:&error];
+do {
+    let batman: Character = try object(fromJSONDictionary: batmanJSON, inContext: context)
+} catch let error as NSError {
+    // handle error
+}
 ```
 
 The above code creates a full `Character` object and the corresponding relationships pointing to `Power` and `Publisher` objects that just have the identifier attribute populated.
 
 We can import powers and publisher from different JSON objects and Groot will merge them nicely:
 
-```objc
-// Objective-C
+```swift
+// Swift
 
-NSArray *powersJSON = @[
-    @{
-        @"id": @"4",
-        @"name": @"Agility"
-    },
-    @{
-        @"id": @"9",
-        @"name": @"Insanely Rich"
-    }
-];
+let powersJSON: JSONArray = [
+    [
+        "id": "4",
+        "name": "Agility"
+    ],
+    [
+        "id": "9",
+        "name": "Insanely Rich"
+    ]
+]
 
-[GRTJSONSerialization objectsWithEntityName:@"Power"
-                              fromJSONArray:powersJSON
-                                  inContext:self.context
-                                      error:&error];
+let publisherJSON: JSONDictionary = [
+    "id": "10",
+    "name": "DC Comics"
+]
 
-NSDictionary *publisherJSON = @{
-    @"id": @"10",
-    @"name": @"DC Comics"
-};
-
-[GRTJSONSerialization objectWithEntityName:@"Publisher"
-                        fromJSONDictionary:publisherJSON
-                                 inContext:self.context
-                                     error:&error];
+do {
+    let _: [Power] = try objects(fromJSONArray: powersJSON, inContext: context)
+    let _: Publisher = try object(fromJSONDictionary: publisherJSON, inContext: context)
+} catch let error as NSError {
+    // handle error
+}
 ```
 
 Note that serializing relationships from identifiers only works with entities specifying **only one attribute** as the value of `identityAttributes` annotation.
 
-For more serialization methods check [GRTJSONSerialization.h](Groot/GRTJSONSerialization.h) and [Groot.swift](Groot/Groot.swift).
+For more serialization alternatives check [Groot.swift](Groot/Groot.swift) and [GRTJSONSerialization.h](Groot/GRTJSONSerialization.h).
 
 ### Entity inheritance
 
@@ -260,7 +263,7 @@ Groot provides methods to serialize managed objects back to JSON:
 ```swift
 // Swift
 
-let JSONDictionary = JSONDictionaryFromObject(batman)
+let result = json(fromObject: batman)
 ```
 
 ```objc
@@ -269,7 +272,7 @@ let JSONDictionary = JSONDictionaryFromObject(batman)
 NSDictionary *JSONDictionary = [GRTJSONSerialization JSONDictionaryFromObject:batman];
 ```
 
-For more serialization methods check [GRTJSONSerialization.h](Groot/GRTJSONSerialization.h) and [Groot.swift](Groot/Groot.swift).
+For more serialization alternatives check [Groot.swift](Groot/Groot.swift) and [GRTJSONSerialization.h](Groot/GRTJSONSerialization.h).
 
 ## Contact
 

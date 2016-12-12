@@ -62,26 +62,6 @@ extension NSError {
             localizedFailureReason: NSLocalizedString("The UserName have been taken."))
     }
     
-    class func currentPwdWrong() -> NSError {
-        return apiServiceError(
-            code: APIErrorCode.UserErrorCode.currentWrong,
-            localizedDescription: NSLocalizedString("Change Password"),
-            localizedFailureReason: NSLocalizedString("The Password is wrong."))
-    }
-    
-    class func newNotMatch() -> NSError {
-        return apiServiceError(
-            code: APIErrorCode.UserErrorCode.newNotMatch,
-            localizedDescription: NSLocalizedString("Change Password"),
-            localizedFailureReason: NSLocalizedString("The new password not match"))
-    }
-    
-    class func pwdCantEmpty() -> NSError {
-        return apiServiceError(
-            code: APIErrorCode.UserErrorCode.pwdEmpty,
-            localizedDescription: NSLocalizedString("Change Password"),
-            localizedFailureReason: NSLocalizedString("The new password can't empty"))
-    }
 }
 
 

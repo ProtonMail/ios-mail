@@ -33,12 +33,12 @@ class SettingTableViewController: ProtonMailViewController {
     let DisplayNameSegue:String = "setting_displayname"
     let SignatureSegue:String = "setting_signature"
     let MobileSignatureSegue:String = "setting_mobile_signature"
-    let LoginpwdSegue:String = "setting_login_pwd"
-    let MailboxpwdSegue:String = "setting_mailbox_pwd"
     let DebugQueueSegue : String = "setting_debug_queue_segue"
     let kSetupPinCodeSegue : String = "setting_setup_pingcode"
     let kManagerLabelsSegue : String = "toManagerLabelsSegue"
-    
+    let kLoginpwdSegue:String = "setting_login_pwd"
+    let kMailboxpwdSegue:String = "setting_mailbox_pwd"
+    let kSinglePasswordSegue : String = "setting_single_password_segue"
     /// cells
     let SettingSingalLineCell = "settings_general"
     let SettingTwoLinesCell = "settings_twolines"
@@ -74,6 +74,12 @@ class SettingTableViewController: ProtonMailViewController {
             setting_protection_items = [.TouchID, .PinCode, .EnterTime]
         }
         
+        if sharedUserDataService.passwordMode == 1 {
+            setting_general_items = [.NotifyEmail, .SinglePWD, .AutoLoadImage, .CleanCache]
+        } else {
+            setting_general_items = [.NotifyEmail, .LoginPWD, .MBP, .AutoLoadImage, .CleanCache]
+        }
+        
         userInfo = sharedUserDataService.userInfo
         multi_domains = sharedUserDataService.userAddresses
         UIView.setAnimationsEnabled(false)
@@ -81,17 +87,20 @@ class SettingTableViewController: ProtonMailViewController {
         UIView.setAnimationsEnabled(true)
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
-    
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let segueID:String! = segue.identifier
         switch segueID
         {
-        case LoginpwdSegue:
+        case kLoginpwdSegue:
             let changeLoginPwdView = segue.destinationViewController as! ChangePasswordViewController
             changeLoginPwdView.setViewModel(shareViewModelFactoy.getChangeLoginPassword())
-        case MailboxpwdSegue:
+        case kMailboxpwdSegue:
             let changeMBPView = segue.destinationViewController as! ChangePasswordViewController
             changeMBPView.setViewModel(shareViewModelFactoy.getChangeMailboxPassword())
+        case kSinglePasswordSegue:
+            let changeMBPView = segue.destinationViewController as! ChangePasswordViewController
+            changeMBPView.setViewModel(shareViewModelFactoy.getChangeSinglePassword())
         case NotificationSegue:
             let changeMBPView = segue.destinationViewController as! SettingDetailViewController
             changeMBPView.setViewModel(shareViewModelFactoy.getChangeNotificationEmail())
@@ -172,13 +181,7 @@ class SettingTableViewController: ProtonMailViewController {
                         cell.RightText.text = userInfo?.notificationEmail
                         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
                         cellout = cell
-                    case .LoginPWD:
-                        let cell = tableView.dequeueReusableCellWithIdentifier(SettingTwoLinesCell, forIndexPath: indexPath) as! SettingsCell
-                        cell.LeftText.text = itme.description
-                        cell.RightText.text = NSLocalizedString("**********")
-                        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
-                        cellout = cell
-                    case .MBP:
+                    case .LoginPWD, .MBP, .SinglePWD:
                         let cell = tableView.dequeueReusableCellWithIdentifier(SettingTwoLinesCell, forIndexPath: indexPath) as! SettingsCell
                         cell.LeftText.text = itme.description
                         cell.RightText.text = NSLocalizedString("**********")
@@ -462,13 +465,12 @@ class SettingTableViewController: ProtonMailViewController {
                             alert.addOKAction()
                             presentViewController(alert, animated: true, completion: nil)
                         } else {
-                            self.performSegueWithIdentifier(LoginpwdSegue, sender: self)
+                            self.performSegueWithIdentifier(kLoginpwdSegue, sender: self)
                         }
-                        
                     case .MBP:
-                        let alert = NSLocalizedString("Please use the web version of ProtonMail to change your mailbox password!").alertController()
-                        alert.addOKAction()
-                        presentViewController(alert, animated: true, completion: nil)
+                        self.performSegueWithIdentifier(kMailboxpwdSegue, sender: self)
+                    case .SinglePWD:
+                        self.performSegueWithIdentifier(kSinglePasswordSegue, sender: self)
                     case .CleanCache:
                         if !cleaning {
                             cleaning = true
@@ -695,19 +697,18 @@ extension SettingTableViewController {
         case MBP = 4
         case CleanCache = 5
         case AutoLoadImage = 9
+        case SinglePWD = 10
         
         var description : String {
             switch(self){
             case NotifyEmail:
                 return NSLocalizedString("Notification Email")
-                //            case DisplayName:
-                //                return NSLocalizedString("Display Name")
-                //            case Signature:
-            //                return NSLocalizedString("Signature")
             case LoginPWD:
                 return NSLocalizedString("Login Password")
             case MBP:
                 return NSLocalizedString("Mailbox Password")
+            case SinglePWD:
+                return NSLocalizedString("Single Password")
             case .CleanCache:
                 return NSLocalizedString("Clear Local Message Cache")
             case .AutoLoadImage:

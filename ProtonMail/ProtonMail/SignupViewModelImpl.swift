@@ -149,7 +149,7 @@ public class SignupViewModelImpl : SignupViewModel {
                                             complete(false, true, "Fetch user info failed", error)
                                         } else if info != nil {
                                             sharedUserDataService.isNewUser = true
-                                            sharedUserDataService.setMailboxPassword(self.mailbox, isRemembered: true)
+                                            sharedUserDataService.setMailboxPassword(self.mailbox, keysalt: nil, isRemembered: true)
                                             complete(true, true, "", nil)
                                         } else {
                                             complete(false, true, "Unknown Error", nil)
@@ -202,7 +202,7 @@ public class SignupViewModelImpl : SignupViewModel {
         }
         
         if !self.recoverEmail.isEmpty {
-            sharedUserDataService.updateNotificationEmail(recoverEmail, password: sharedUserDataService.password ?? "", tfaCode: nil) { _, _, error in
+            sharedUserDataService.updateNotificationEmail(recoverEmail, login_password: sharedUserDataService.password ?? "", twoFACode: nil) { _, _, error in
 //                if error != nil {
 //                    //complete(false, error)
 //                } else {

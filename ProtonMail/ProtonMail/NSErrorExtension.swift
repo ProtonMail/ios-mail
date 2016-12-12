@@ -32,7 +32,7 @@ extension NSError {
         self.init(domain: domain, code: code, userInfo: userInfo)
     }
     
-    class func protonMailError(code code: Int, localizedDescription: String, localizedFailureReason: String? = nil, localizedRecoverySuggestion: String? = nil) -> NSError {
+    class func protonMailError(code: Int, localizedDescription: String, localizedFailureReason: String? = nil, localizedRecoverySuggestion: String? = nil) -> NSError {
         return NSError(domain: protonMailErrorDomain(), code: code, localizedDescription: localizedDescription, localizedFailureReason: localizedFailureReason, localizedRecoverySuggestion: localizedRecoverySuggestion)
     }
     
@@ -105,6 +105,18 @@ extension NSError {
         hud.removeFromSuperViewOnHide = true
         hud.hide(true, afterDelay: 3)
     }
+    
+    func alertSentErrorToast() ->Void {
+        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+        hud.mode = MBProgressHUDMode.Text
+        hud.detailsLabelText = NSLocalizedString("Sent Failed: \(self.localizedDescription)");
+        hud.removeFromSuperViewOnHide = true
+        hud.margin = 10
+        hud.yOffset = 250.0
+        hud.hide(true, afterDelay: 3)
+    }
+    
     
     class func alertUpdatedToast() ->Void {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!

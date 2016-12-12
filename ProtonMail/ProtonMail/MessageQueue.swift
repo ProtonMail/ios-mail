@@ -51,7 +51,7 @@ class MessageQueue: PersistentQueue {
                 }
             }
             PMLog.D(" Removing invalid networkElement: \(object) from the queue.")
-            remove(elementID: uuid)
+            remove(uuid)
         }
         return nil
     }

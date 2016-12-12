@@ -27,6 +27,23 @@ func generateSrpProofs (bit : Int32, modulus: NSData, serverEphemeral: NSData, h
     }
 }
 
+func generateVerifier (bit : Int32, modulus: NSData, hashedPassword :NSData) throws -> NSData? {
+    
+    var error : NSError?
+    var data_out : NSData?
+    SwiftTryCatch.tryBlock({ () -> Void in
+        data_out = PMNSrpClient.generateVerifier(bit, modulusRepr: modulus, hashedPasswordRepr: hashedPassword)
+        }, catchBlock: { (exc) -> Void in
+            error = exc.toError()
+    }) { () -> Void in
+    }
+    if error == nil {
+        return data_out
+    } else {
+        throw error!
+    }
+}
+
 
 extension PMNSrpProofs {
     func isValid() -> Bool {

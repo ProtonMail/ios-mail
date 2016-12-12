@@ -38,12 +38,12 @@ struct Constants {
 
 
 
-// MARK : Get messages part
 public class AuthInfoRequest<T : ApiResponse> : ApiRequest<T> {
     
     var username : String!
     
     init(username : String) {
+        super.init()
         self.username = username;
     }
     
@@ -67,6 +67,26 @@ public class AuthInfoRequest<T : ApiResponse> : ApiRequest<T> {
     
     override public func getIsAuthFunction() -> Bool {
         return false
+    }
+}
+
+
+public class AuthModulusRequest<T : ApiResponse> : ApiRequest<T> {
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .GET
+    }
+    
+    override public func getRequestPath() -> String {
+        return AuthAPI.Path + "/modulus" + AppConstants.getDebugOption
+    }
+    
+    override public func getIsAuthFunction() -> Bool {
+        return false
+    }
+    
+    override public func getVersion() -> Int {
+        return AuthAPI.V_AuthModulusRequest
     }
 }
 
@@ -230,8 +250,6 @@ public class AuthResponse : ApiResponse {
     }
 }
 
-
-
 public class AuthInfoResponse : ApiResponse {
     
     var Modulus : String?
@@ -255,4 +273,18 @@ public class AuthInfoResponse : ApiResponse {
         return true
     }
 }
+
+
+public class AuthModulusResponse : ApiResponse {
+    
+    var Modulus : String?
+    var ModulusID : String?
+    
+    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
+        self.Modulus = response["Modulus"] as? String
+        self.ModulusID = response["ModulusID"] as? String
+        return true
+    }
+}
+
 

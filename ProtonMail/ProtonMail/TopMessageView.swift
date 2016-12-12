@@ -32,15 +32,17 @@ class TopMessageView : PMView {
     override func setup() {
     }
     
-    func updateMessage(newMessage message: String) {
+    func updateMessage(newMessage message: String) -> CGFloat {
         messageLabel.text = message
         messageLabel.textColor = UIColor.whiteColor()
         backgroundView.backgroundColor = UIColor(RRGGBB: UInt(0x9199CB))
         backgroundView.alpha = 0.9
+        messageLabel.sizeToFit()
         closeButton.hidden = true
         self.timerAutoDismiss?.invalidate()
         self.timerAutoDismiss = nil
         self.timerAutoDismiss = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(TopMessageView.timerTriggered), userInfo: nil, repeats: false)
+        return (messageLabel.frame.height + 16) * -1
     }
     
     func timerTriggered() {
@@ -49,36 +51,44 @@ class TopMessageView : PMView {
         delegate?.close()
     }
     
-    func updateMessage(timeOut message: String) {
+    func updateMessage(timeOut message: String) -> CGFloat {
         messageLabel.text = message
         messageLabel.textColor = UIColor.whiteColor()
         backgroundView.backgroundColor = UIColor.redColor()
         backgroundView.alpha = 0.9
+        messageLabel.sizeToFit()
         closeButton.hidden = false
+        return (messageLabel.frame.height + 16) * -1
     }
     
-    func updateMessage(noInternet message : String) {
+    func updateMessage(noInternet message : String) -> CGFloat {
         messageLabel.text = message
         messageLabel.textColor = UIColor.whiteColor()
         backgroundView.backgroundColor = UIColor.redColor()
         backgroundView.alpha = 0.9
+        messageLabel.sizeToFit()
         closeButton.hidden = false
+        return (messageLabel.frame.height + 16) * -1
     }
     
-    func updateMessage(errorMsg message : String) {
+    func updateMessage(errorMsg message : String) -> CGFloat {
         messageLabel.text = message
         messageLabel.textColor = UIColor.whiteColor()
         backgroundView.backgroundColor = UIColor.lightGrayColor()
         backgroundView.alpha = 0.9
+        messageLabel.sizeToFit()
         closeButton.hidden = true
+        return (messageLabel.frame.height + 16) * -1
     }
     
-    func updateMessage(error error : NSError) {
+    func updateMessage(error error : NSError) -> CGFloat {
         messageLabel.text = error.localizedDescription
         messageLabel.textColor = UIColor.whiteColor()
         backgroundView.backgroundColor = UIColor.lightGrayColor()
         backgroundView.alpha = 0.9
+        messageLabel.sizeToFit()
         closeButton.hidden = true
+        return (messageLabel.frame.height + 16) * -1
     }
     
     @IBAction func closeAction(sender: UIButton) {

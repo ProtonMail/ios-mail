@@ -34,7 +34,7 @@ extension PMNOpenPgp {
         }
     }
     
-    func checkPassphrase(passphrase: String, forPrivateKey privateKey: String) -> Bool {
+    static func checkPassphrase(passphrase: String, forPrivateKey privateKey: String) -> Bool {
         if !checkPassphrase(privateKey, passphrase: passphrase) {
             return false
         }
@@ -60,24 +60,121 @@ extension PMNOpenPgp {
         }
     }
     
-    func updatePassphrase(privateKey: String, publicKey: String, old_pass: String, new_pass: String ) throws -> String? {
-        //  try SetupKeys(privateKey, pubKey: publicKey, pass: old_pass)
-        //  let new_privkey = try update_key_password(old_pass, new_pwd: new_pass)
-        //  return new_privkey
-        //  var anError: NSError?
-        //  if !SetupKeys(privateKey, pubKey: publicKey, pass: old_pass, error: &anError) {
-        //      if let error = error {
-        //      error.memory = anError
-        //  }
-        //  return nil
-        //  }
-        //  if let new_privkey = update_key_password(old_pass, new_pwd: new_pass, error: &anError) {
-        //      return new_privkey
-        //  }
-        //  if let error = error {
-        //      error.memory = anError
-        //  }
-        return nil
+    class func updateKeysPassword(old_keys : Array<Key>, old_pass: String, new_pass: String ) throws -> Array<Key> {
+        var error : NSError?
+        let pm_keys = old_keys.toPMNPgpKeys()
+        
+        var out_keys : Array<Key>?
+        SwiftTryCatch.tryBlock({ () -> Void in
+            let new_keys = PMNOpenPgp.updateKeysPassphrase(pm_keys, oldPassphrase: old_pass, newPassphrase: new_pass)
+            out_keys = new_keys.toKeys()
+            }, catchBlock: { (exc) -> Void in
+                error = exc.toError()
+        }) { () -> Void in
+        }
+        if error == nil {
+            guard let outKeys = out_keys where outKeys.count == old_keys.count else {
+                throw UpdatePasswordError.KeyUpdateFailed.toError()
+            }
+                
+            guard outKeys.count > 0 && outKeys[0].is_updated == true else {
+                throw UpdatePasswordError.KeyUpdateFailed.toError()
+            }
+            
+            for u_k in outKeys {
+                if u_k.is_updated == false {
+                    continue
+                }
+                let result = PMNOpenPgp.checkPassphrase(u_k.private_key, passphrase: new_pass)
+                guard result == true else {
+                    throw UpdatePasswordError.KeyUpdateFailed.toError()
+                }
+            }
+            return outKeys
+        } else {
+            throw error!
+        }
+    }
+    
+    
+    class func updateAddrKeysPassword(old_addresses : Array<Address>, old_pass: String, new_pass: String ) throws -> Array<Address> {
+        var error : NSError?
+        var out_addresses = Array<Address>()
+        for addr in old_addresses {
+            var out_keys : Array<Key>?
+            let pm_keys = addr.keys.toPMNPgpKeys()
+            SwiftTryCatch.tryBlock({ () -> Void in
+                let new_keys = PMNOpenPgp.updateKeysPassphrase(pm_keys, oldPassphrase: old_pass, newPassphrase: new_pass)
+                out_keys = new_keys.toKeys()
+                }, catchBlock: { (exc) -> Void in
+                    error = exc.toError()
+            }) { () -> Void in
+            }
+            if error == nil {
+                guard let outKeys = out_keys where outKeys.count == addr.keys.count else {
+                    throw UpdatePasswordError.KeyUpdateFailed.toError()
+                }
+                
+                guard outKeys.count > 0 && outKeys[0].is_updated == true else {
+                    throw UpdatePasswordError.KeyUpdateFailed.toError()
+                }
+                
+                for u_k in outKeys {
+                    if u_k.is_updated == false {
+                        continue
+                    }
+                    let result = PMNOpenPgp.checkPassphrase(u_k.private_key, passphrase: new_pass)
+                    guard result == true else {
+                        throw UpdatePasswordError.KeyUpdateFailed.toError()
+                    }
+                }
+                let new_addr = Address(addressid: addr.address_id,
+                                       email: addr.email,
+                                       send: addr.send,
+                                       receive: addr.receive,
+                                       mailbox: addr.mailbox,
+                                       display_name: addr.display_name,
+                                       signature: addr.signature,
+                                       keys: outKeys,
+                                       status: addr.status,
+                                       type: addr.type)
+                
+                out_addresses.append(new_addr)
+            } else {
+                throw error!
+            }
+        }
+        guard out_addresses.count == old_addresses.count else {
+            throw UpdatePasswordError.KeyUpdateFailed.toError()
+        }
+        return out_addresses
+    }
+    
+    class func updateKeyPassword(private_key: String, old_pass: String, new_pass: String ) throws -> String {
+        var error : NSError?
+        var out_key : String?
+        SwiftTryCatch.tryBlock({ () -> Void in
+            out_key = PMNOpenPgp.updateSinglePassphrase(private_key, oldPassphrase: old_pass, newPassphrase: new_pass)
+            if out_key == nil || out_key!.isEmpty {
+                out_key = nil
+            }
+            }, catchBlock: { (exc) -> Void in
+                error = exc.toError()
+        }) { () -> Void in
+        }
+        if error == nil {
+            guard let outKey = out_key else {
+                throw UpdatePasswordError.KeyUpdateFailed.toError()
+            }
+
+            guard PMNOpenPgp.checkPassphrase(outKey, passphrase: new_pass) else {
+                throw UpdatePasswordError.KeyUpdateFailed.toError()
+            }
+            
+            return outKey
+        } else {
+            throw error!
+        }
     }
 }
 

@@ -15,9 +15,7 @@ public class MailboxViewModelImpl : MailboxViewModel {
     private var location : MessageLocation!
     
     init(location : MessageLocation) {
-        
         super.init()
-        
         self.location = location
     }
     

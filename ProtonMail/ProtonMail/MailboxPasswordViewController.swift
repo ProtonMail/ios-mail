@@ -174,7 +174,7 @@ class MailboxPasswordViewController: UIViewController {
         }
         if sharedUserDataService.isMailboxPasswordValid(mailbox_password, privateKey: AuthCredential.getPrivateKey()) {
             if sharedUserDataService.isSet {
-                sharedUserDataService.setMailboxPassword(mailbox_password, isRemembered: self.isRemembered)
+                sharedUserDataService.setMailboxPassword(mailbox_password, keysalt: nil, isRemembered: self.isRemembered)
                 (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
             } else {
                 do {
@@ -193,9 +193,9 @@ class MailboxPasswordViewController: UIViewController {
                         } else if info != nil {
                             if info!.delinquent < 3 {
                                 userCachedStatus.pinFailedCount = 0;
-                                sharedUserDataService.setMailboxPassword(mailbox_password, isRemembered: self.isRemembered)
+                                sharedUserDataService.setMailboxPassword(mailbox_password, keysalt: nil, isRemembered: self.isRemembered)
+                                self.restoreBackup()
                                 self.loadContent()
-                                self.restoreBackup();
                                 NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)
                             } else {
                                 let alertController = NSLocalizedString("Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.").alertController() //here needs change to a clickable link

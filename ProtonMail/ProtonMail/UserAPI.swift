@@ -97,7 +97,12 @@ public class GetUserInfoResponse : ApiResponse {
     var userInfo : UserInfo?
     
     override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
-        self.userInfo = UserInfo( response: response["User"] as! Dictionary<String, AnyObject> )
+        guard let res = response["User"] as? Dictionary<String, AnyObject> else {
+            let err = NSError.badUserInfoResponse("\(response)")
+            err.uploadFabricAnswer(FetchUserInfoErrorTitle)
+            return false
+        }
+        self.userInfo = UserInfo(response: res)
         return true
     }
 }
@@ -257,3 +262,12 @@ public class VerificationCodeRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
+
+extension NSError {
+    class func badUserInfoResponse(error : String) -> NSError {
+        return apiServiceError(
+            code: APIErrorCode.SendErrorCode.draftBad,
+            localizedDescription: NSLocalizedString(error),
+            localizedFailureReason: NSLocalizedString("The user info fetch is wrong"))
+    }
+}

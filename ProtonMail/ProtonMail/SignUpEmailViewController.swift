@@ -122,6 +122,25 @@ class SignUpEmailViewController: UIViewController {
                 }
             }))
             self.presentViewController(alertController, animated: true, completion: nil)
+        } else {
+            if (!email.isValidEmail()) {
+                let alert = NSLocalizedString("Please input a valid email address.").alertController()
+                alert.addOKAction()
+                self.presentViewController(alert, animated: true, completion: nil)
+            } else {
+                if self.doneClicked {
+                    return
+                }
+                self.doneClicked = true
+                MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+                self.dismissKeyboard()
+                self.viewModel.setRecovery(self.checkButton.selected, email: self.recoveryEmailField.text!, displayName: self.displayNameField.text!)
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    self.doneClicked = false
+                    self.moveToInbox()
+                })
+            }
         }
     }
     
