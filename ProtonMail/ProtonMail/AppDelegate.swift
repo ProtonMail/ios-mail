@@ -175,8 +175,10 @@ extension AppDelegate: UIApplicationDelegate {
     
     func applicationDidEnterBackground(application: UIApplication) {
         Snapshot().didEnterBackground(application)
-        let timeInterval : Int = Int(NSDate().timeIntervalSince1970)
-        userCachedStatus.exitTime = "\(timeInterval)";
+        if sharedUserDataService.isSignedIn {
+            let timeInterval : Int = Int(NSDate().timeIntervalSince1970)
+            userCachedStatus.exitTime = "\(timeInterval)";
+        }
         sharedMessageDataService.purgeOldMessages()
     }
     

@@ -535,7 +535,7 @@ class MessageDataService {
             for location:[String : AnyObject] in locations {
                 
                 if let l = location["Location"] as? Int {
-                    if let c = location["Count"] as? Int {
+                    if var c = location["Count"] as? Int {
                         if let lo = MessageLocation(rawValue: l) {
                             switch lo {
                             case .inbox:
@@ -543,6 +543,7 @@ class MessageDataService {
                                 inboxCount = inboxCount + tempUnreadAddjustCount
                                 break;
                             case .draft:
+                                c = 0
                                 draftCount = c
                                 break;
                             case .outbox:
