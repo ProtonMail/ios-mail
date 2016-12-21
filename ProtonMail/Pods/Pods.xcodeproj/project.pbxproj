@@ -493,7 +493,6 @@
 		1B25678B229D247EC6AB183C6F0C980D /* MASConstraint+Private.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "MASConstraint+Private.h"; path = "Masonry/MASConstraint+Private.h"; sourceTree = "<group>"; };
 		1B92355A31EF092CE9389299A91A12B0 /* CYRTextView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CYRTextView.h; sourceTree = "<group>"; };
 		1C9050A43A933BFCA9EC0CDD29E8085A /* objects.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = objects.h; path = opensslIncludes/openssl/objects.h; sourceTree = "<group>"; };
-		1CC02216F6DF525EECE6625EF8548753 /* PMNSrpProofs.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = PMNSrpProofs.h; sourceTree = "<group>"; };
 		1D7BBB217BF7D3B1BDE153E0ABB65B6F /* HRColorPickerViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = HRColorPickerViewController.h; sourceTree = "<group>"; };
 		1D98EE290BA53F7C991525F62B711E4E /* Pods-ProtonMail.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ProtonMail.debug.xcconfig"; sourceTree = "<group>"; };
 		1E92584D392AFDF78526B6B189CEC7D1 /* MASConstraint.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MASConstraint.h; path = Masonry/MASConstraint.h; sourceTree = "<group>"; };
@@ -505,7 +504,6 @@
 		21EE3D0C509754D670F9E20ECB0135EC /* ZSSindent@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; path = "ZSSindent@2x.png"; sourceTree = "<group>"; };
 		227C788D3B6B83A294940508A9A2B98C /* ui.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ui.h; path = opensslIncludes/openssl/ui.h; sourceTree = "<group>"; };
 		22D88CBEB4C3D941E644791BEC95BB5B /* RHGroup.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RHGroup.m; path = RHAddressBook/RHGroup.m; sourceTree = "<group>"; };
-		2300DAE7827577884723D5330461DA10 /* PMNAddress.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = PMNAddress.h; sourceTree = "<group>"; };
 		240EE8EC39F225C8858C104E04802F7C /* Groot.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Groot.h; path = Groot/Groot.h; sourceTree = "<group>"; };
 		25975CD9D71E20272AEE46594DB52C35 /* ZSSpicker.png */ = {isa = PBXFileReference; includeInIndex = 1; path = ZSSpicker.png; sourceTree = "<group>"; };
 		26B698FAE7AD2DA9BA69FDB943517B9C /* GRTUniquingSerializationStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GRTUniquingSerializationStrategy.h; path = Groot/Private/GRTUniquingSerializationStrategy.h; sourceTree = "<group>"; };
@@ -554,7 +552,6 @@
 		43B9EFAB4A62B3844AAAE8B62DF18A2E /* md5.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = md5.h; path = opensslIncludes/openssl/md5.h; sourceTree = "<group>"; };
 		43BD2B87BE8958563A65B16CECD1A11A /* ZSSviewsource@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; path = "ZSSviewsource@2x.png"; sourceTree = "<group>"; };
 		43D20C51E9FC691929C49B35BED89EDD /* NSPropertyDescription+Groot.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSPropertyDescription+Groot.m"; path = "Groot/Private/NSPropertyDescription+Groot.m"; sourceTree = "<group>"; };
-		4413AB79C1DBA287C342AB410D897402 /* PMNOpenPgpKey.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = PMNOpenPgpKey.h; sourceTree = "<group>"; };
 		44C7E6297371997C70C745A17BDDB2AC /* RHAddressBook.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RHAddressBook.m; path = RHAddressBook/RHAddressBook.m; sourceTree = "<group>"; };
 		4559FC579F2E7DFC7E5AC5F0B89D64C3 /* buffer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = buffer.h; path = opensslIncludes/openssl/buffer.h; sourceTree = "<group>"; };
 		468F3851C87A79844C278CB03FF15ECD /* pkcs12.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = pkcs12.h; path = opensslIncludes/openssl/pkcs12.h; sourceTree = "<group>"; };
@@ -566,7 +563,6 @@
 		48B7FE8B706563A8D8F247A556E4C790 /* AFHTTPSessionManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFHTTPSessionManager.m; path = AFNetworking/AFHTTPSessionManager.m; sourceTree = "<group>"; };
 		48D398103863C5BA009DCF89B0F2916E /* ZSSh5.png */ = {isa = PBXFileReference; includeInIndex = 1; path = ZSSh5.png; sourceTree = "<group>"; };
 		493E058EDC5BAAEE3D31C662D29BCE1E /* txt_db.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = txt_db.h; path = opensslIncludes/openssl/txt_db.h; sourceTree = "<group>"; };
-		49A919E31DA4301DEB6C2FD81631510C /* PMNOpenPgp.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = PMNOpenPgp.h; sourceTree = "<group>"; };
 		4ACA70F853D90E848EB1C96AC926674C /* MBProgressHUD.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		4BF328B37DF9F344B2BDF2DFF331C404 /* ocsp.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ocsp.h; path = opensslIncludes/openssl/ocsp.h; sourceTree = "<group>"; };
 		4C4A6CAB09432001282CEFF77A919D01 /* SWRevealViewController-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SWRevealViewController-dummy.m"; sourceTree = "<group>"; };
@@ -668,6 +664,8 @@
 		92B847E3EBCDD1760D9BEF184EC82316 /* Pods-ProtonMailDev-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ProtonMailDev-resources.sh"; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		93B3A94D80C49D32CE82E958611D012D /* libNSDate+Helper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libNSDate+Helper.a"; path = "libNSDate+Helper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		946F8F3C641A1E156B05D63908FED9EF /* PMNSrpClient.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = PMNSrpClient.h; sourceTree = "<group>"; };
+		9492BF899F7332B2D0D31D506A6BA15E /* PMNEncryptPackage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = PMNEncryptPackage.h; sourceTree = "<group>"; };
 		954C202686D5CB8E1E6447FAFF85F090 /* Pods-ProtonMailDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ProtonMailDev.distribution.xcconfig"; sourceTree = "<group>"; };
 		9795BFD95A68BCD52E67AB2C1797C196 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/MobileCoreServices.framework; sourceTree = DEVELOPER_DIR; };
 		98DD94AEA3A1414DE71BEFC9DB7FC0FE /* HRCgUtil.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = HRCgUtil.m; sourceTree = "<group>"; };
@@ -697,6 +695,7 @@
 		A779F9A3ED2E630FD38D62B13ABF993B /* ZSSLargeViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ZSSLargeViewController.m; sourceTree = "<group>"; };
 		A862288C8EDDD0D2C5CD10AC24921A59 /* ZSSRichTextEditor-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "ZSSRichTextEditor-prefix.pch"; sourceTree = "<group>"; };
 		A87EE16DC3CD9DAEB50984B3636CF3D1 /* RHARCSupport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RHARCSupport.h; path = RHAddressBook/RHARCSupport.h; sourceTree = "<group>"; };
+		A89C45280D3D6B337F4192C944563B8E /* OpenPGP.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = OpenPGP.h; sourceTree = "<group>"; };
 		A8D33F5682597E5EA920443D2B2BBF5B /* bio.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = bio.h; path = opensslIncludes/openssl/bio.h; sourceTree = "<group>"; };
 		A96245253AA7B98F59EEE18CB7821C82 /* ZSSCustomButtonsViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ZSSCustomButtonsViewController.m; sourceTree = "<group>"; };
 		AA46A9EAAAD13384DC946AF62D97BBD4 /* AFSecurityPolicy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFSecurityPolicy.h; path = AFNetworking/AFSecurityPolicy.h; sourceTree = "<group>"; };
@@ -743,6 +742,7 @@
 		C1BCA7364E69E351E040C358C69A633F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		C2ADF70F408BB7A50BD7889E8DA0CC77 /* HRColorUtil.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = HRColorUtil.m; sourceTree = "<group>"; };
 		C35C59CE38303E9A8118756967FFBFCB /* ZSSlink@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; path = "ZSSlink@2x.png"; sourceTree = "<group>"; };
+		C3AB8CB5A631AC4B0399778C827AFBC8 /* PMNSrpProofs.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = PMNSrpProofs.h; sourceTree = "<group>"; };
 		C470A9AECCE94EB942FED00BCF24EC9D /* ZSSunlink@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; path = "ZSSunlink@2x.png"; sourceTree = "<group>"; };
 		C4CC15F4116B678A0110C144C6DC3D17 /* ZSSkeyboard.png */ = {isa = PBXFileReference; includeInIndex = 1; path = ZSSkeyboard.png; sourceTree = "<group>"; };
 		C5C2D9606AA1B0F849696CA496A71DC1 /* NSPropertyDescription+Groot.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSPropertyDescription+Groot.h"; path = "Groot/Private/NSPropertyDescription+Groot.h"; sourceTree = "<group>"; };
@@ -759,9 +759,10 @@
 		CD42B613C4F1FDA4AF9F5BF73932A696 /* libGroot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libGroot.a; path = libGroot.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD66B63D221508141864F7073F1D96E9 /* AFHTTPSessionManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFHTTPSessionManager.h; path = AFNetworking/AFHTTPSessionManager.h; sourceTree = "<group>"; };
 		CDD92385759CB9261A800B39D6D71EDB /* AFURLRequestSerialization.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFURLRequestSerialization.m; path = AFNetworking/AFURLRequestSerialization.m; sourceTree = "<group>"; };
+		CEAEE197BA6B3149F5DDA4BE6DFD0EB2 /* PMNAddress.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = PMNAddress.h; sourceTree = "<group>"; };
 		D07DA0F45C26B5A322F6B09EEA60394D /* ZSSunderline.png */ = {isa = PBXFileReference; includeInIndex = 1; path = ZSSunderline.png; sourceTree = "<group>"; };
-		D0A22AD947A9D059EB1701AF0891EFF6 /* PMNSrpClient.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = PMNSrpClient.h; sourceTree = "<group>"; };
 		D2EE820E192C2721DC8551FA2EE38394 /* des_old.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = des_old.h; path = opensslIncludes/openssl/des_old.h; sourceTree = "<group>"; };
+		D2F6594C2B8FC3AB96C1A86C31DE652F /* PMNOpenPgp.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = PMNOpenPgp.h; sourceTree = "<group>"; };
 		D3D05C9281A37622F20D7A5261557F30 /* RHAddressBook-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "RHAddressBook-dummy.m"; sourceTree = "<group>"; };
 		D47050A70895B4C3C7C3D48726DD8666 /* ZSSRichTextEditor.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ZSSRichTextEditor.xcconfig; sourceTree = "<group>"; };
 		D5507F0DCA4BD0036D141E434A4F4A44 /* Pods-ProtonMailDev-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-ProtonMailDev-acknowledgements.plist"; sourceTree = "<group>"; };
@@ -776,7 +777,6 @@
 		DC039A5065EDBE9EAA02EAA30A1CB21A /* Pods-ProtonMailDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ProtonMailDev.release.xcconfig"; sourceTree = "<group>"; };
 		DC2108C39C536725EDDE35D54E6BEFEF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 		DC697A74B4AD1DFFC33A99BA405745EE /* Pods-ProtonMail.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ProtonMail.distribution.xcconfig"; sourceTree = "<group>"; };
-		DC8D141F2EC976F401482B218A123DCA /* PMNEncryptPackage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = PMNEncryptPackage.h; sourceTree = "<group>"; };
 		DD69629DABDBAB3BE990E5D621D16D89 /* ZSSparagraph.png */ = {isa = PBXFileReference; includeInIndex = 1; path = ZSSparagraph.png; sourceTree = "<group>"; };
 		DDAFCB2C2244E54B8B6282958BD7B2F7 /* UIColor+Hex-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Hex-dummy.m"; sourceTree = "<group>"; };
 		DE7E9977075705D6CEB9B410FBB86826 /* ZSSorderedlist@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; path = "ZSSorderedlist@2x.png"; sourceTree = "<group>"; };
@@ -793,6 +793,7 @@
 		E39555853C64648D3331D068DBA7D19E /* AFAutoPurgingImageCache.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFAutoPurgingImageCache.m; path = "UIKit+AFNetworking/AFAutoPurgingImageCache.m"; sourceTree = "<group>"; };
 		E3FB79A7D81027C34C980EF1BBF2ED21 /* ZSSRichTextEditor.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ZSSRichTextEditor.h; sourceTree = "<group>"; };
 		E41EBE049EB200C7154D78F9BE24385B /* ZSSitalic.png */ = {isa = PBXFileReference; includeInIndex = 1; path = ZSSitalic.png; sourceTree = "<group>"; };
+		E48D12770F7A015A3937D8F84ECB1106 /* PMNOpenPgpKey.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = PMNOpenPgpKey.h; sourceTree = "<group>"; };
 		E49A268A103D933DE4EFC151E16DB7B1 /* Pods-ProtonMail-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-ProtonMail-dummy.m"; sourceTree = "<group>"; };
 		E4D07B5F287AF9A163D4946705A4F473 /* libPods-ProtonMail.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-ProtonMail.a"; path = "libPods-ProtonMail.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E54742B0FE46EF439F99751E6DEA2401 /* MASCompositeConstraint.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MASCompositeConstraint.h; path = Masonry/MASCompositeConstraint.h; sourceTree = "<group>"; };
@@ -810,6 +811,7 @@
 		EA62E091A7D759F45E82E9CD01DEF3FC /* NSDate+Helper-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Helper-dummy.m"; sourceTree = "<group>"; };
 		EA81D05086D0224AB377B08017CC38BD /* ZSStextcolor@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; path = "ZSStextcolor@2x.png"; sourceTree = "<group>"; };
 		EAF9E7C615ADE0C510E1FB7DE4B2C94F /* Pods-ProtonMailTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ProtonMailTests.release.xcconfig"; sourceTree = "<group>"; };
+		EB0748334A440437A8E712AAD79B89C2 /* PMNLibVersion.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = PMNLibVersion.h; sourceTree = "<group>"; };
 		EB2071F031982561BD1E48C615EC1435 /* ZSSsuperscript@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; path = "ZSSsuperscript@2x.png"; sourceTree = "<group>"; };
 		EB67EF750E024C882644AC310A48DF0A /* UIImage+AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImage+AFNetworking.h"; path = "UIKit+AFNetworking/UIImage+AFNetworking.h"; sourceTree = "<group>"; };
 		EC1EF44FB0A3DF7E65BFDB538852909C /* RHRecord.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RHRecord.m; path = RHAddressBook/RHRecord.m; sourceTree = "<group>"; };
@@ -823,7 +825,6 @@
 		F093AC5C009A99F11B4ECF508D5F0291 /* AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFNetworking.h; path = AFNetworking/AFNetworking.h; sourceTree = "<group>"; };
 		F20CF22841DB8F8110650CAD62987D57 /* Pods-ProtonMailTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-ProtonMailTests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		F2631A6C3663E294CB1222B8C9C91FFF /* ZSSitalic@2x.png */ = {isa = PBXFileReference; includeInIndex = 1; path = "ZSSitalic@2x.png"; sourceTree = "<group>"; };
-		F26E1AADF0DBAF6D467ECA7A11311C4B /* OpenPGP.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = OpenPGP.h; sourceTree = "<group>"; };
 		F2AFCA3CF24B4D79023743F698BD9A60 /* CYRToken.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CYRToken.h; sourceTree = "<group>"; };
 		F2C1692E4B39D8535386BC474BC640A7 /* pem2.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = pem2.h; path = opensslIncludes/openssl/pem2.h; sourceTree = "<group>"; };
 		F38F46F49F92E400B04E98A84CD48AC2 /* Pods-ProtonMailDev-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ProtonMailDev-frameworks.sh"; sourceTree = "<group>"; };
@@ -1217,15 +1218,6 @@
 			name = NSURLSession;
 			sourceTree = "<group>";
 		};
-		65F747C3A8F34C4D3F164EF5C31AA290 /* include */ = {
-			isa = PBXGroup;
-			children = (
-				8D565A16F781C99493B0C3EE63CB6577 /* OpenPGP */,
-			);
-			name = include;
-			path = include;
-			sourceTree = "<group>";
-		};
 		74BBA17A671596E5EBD0AE442906AD23 /* ZSSRichTextEditor */ = {
 			isa = PBXGroup;
 			children = (
@@ -1394,29 +1386,23 @@
 			name = Reachability;
 			sourceTree = "<group>";
 		};
+		884CC3FDBDD2801933AA6D92F31E817C /* include */ = {
+			isa = PBXGroup;
+			children = (
+				9779F6192A88566E707536E6E31C0D8B /* OpenPGP */,
+			);
+			name = include;
+			path = include;
+			sourceTree = "<group>";
+		};
 		8C2BE50E44EC84F886A3406D34EF8106 /* OpenPGP */ = {
 			isa = PBXGroup;
 			children = (
 				F1D5FB8A7AB9FCE1A3286348445EE75C /* Frameworks */,
-				65F747C3A8F34C4D3F164EF5C31AA290 /* include */,
+				884CC3FDBDD2801933AA6D92F31E817C /* include */,
 			);
 			name = OpenPGP;
 			path = ../../OpenPGP;
-			sourceTree = "<group>";
-		};
-		8D565A16F781C99493B0C3EE63CB6577 /* OpenPGP */ = {
-			isa = PBXGroup;
-			children = (
-				F26E1AADF0DBAF6D467ECA7A11311C4B /* OpenPGP.h */,
-				2300DAE7827577884723D5330461DA10 /* PMNAddress.h */,
-				DC8D141F2EC976F401482B218A123DCA /* PMNEncryptPackage.h */,
-				49A919E31DA4301DEB6C2FD81631510C /* PMNOpenPgp.h */,
-				4413AB79C1DBA287C342AB410D897402 /* PMNOpenPgpKey.h */,
-				D0A22AD947A9D059EB1701AF0891EFF6 /* PMNSrpClient.h */,
-				1CC02216F6DF525EECE6625EF8548753 /* PMNSrpProofs.h */,
-			);
-			name = OpenPGP;
-			path = OpenPGP;
 			sourceTree = "<group>";
 		};
 		9609EB863EA1A9CD6D4188E0F0D02BCD /* SWRevealViewController */ = {
@@ -1428,6 +1414,22 @@
 			);
 			name = SWRevealViewController;
 			path = SWRevealViewController;
+			sourceTree = "<group>";
+		};
+		9779F6192A88566E707536E6E31C0D8B /* OpenPGP */ = {
+			isa = PBXGroup;
+			children = (
+				A89C45280D3D6B337F4192C944563B8E /* OpenPGP.h */,
+				CEAEE197BA6B3149F5DDA4BE6DFD0EB2 /* PMNAddress.h */,
+				9492BF899F7332B2D0D31D506A6BA15E /* PMNEncryptPackage.h */,
+				EB0748334A440437A8E712AAD79B89C2 /* PMNLibVersion.h */,
+				D2F6594C2B8FC3AB96C1A86C31DE652F /* PMNOpenPgp.h */,
+				E48D12770F7A015A3937D8F84ECB1106 /* PMNOpenPgpKey.h */,
+				946F8F3C641A1E156B05D63908FED9EF /* PMNSrpClient.h */,
+				C3AB8CB5A631AC4B0399778C827AFBC8 /* PMNSrpProofs.h */,
+			);
+			name = OpenPGP;
+			path = OpenPGP;
 			sourceTree = "<group>";
 		};
 		9EA57F98D64AAFBBEECAE12AA3CE7AD8 /* Support Files */ = {
