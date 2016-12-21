@@ -26,7 +26,6 @@ class UndoMessage {
 class MailboxViewController: ProtonMailViewController {
     
     // MARK: - View Outlets
-    
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: - Private constants
@@ -37,7 +36,6 @@ class MailboxViewController: ProtonMailViewController {
     private let kMoreOptionsViewHeight: CGFloat = 123.0
     
     private let kCellIdentifier = "MailboxCell"
-    
     private let kSegueToCompose = "toCompose"
     private let kSegueToComposeShow = "toComposeShow"
     private let kSegueToSearchController = "toSearchViewController"
@@ -1061,10 +1059,7 @@ class MailboxViewController: ProtonMailViewController {
         self.setupRightButtons(editingMode)
     }
     
-    
-    
     // MARK: - Public methods
-    
     func setNavigationTitleText(text: String?) {
         let animation = CATransition()
         animation.duration = 0.25
@@ -1174,7 +1169,7 @@ extension MailboxViewController : TopMessageViewDelegate {
     
     internal func updateInterfaceWithReachability(reachability : Reachability) {
         let netStatus = reachability.currentReachabilityStatus()
-        let connectionRequired = reachability.connectionRequired()
+        //let connectionRequired = reachability.connectionRequired()
         //PMLog.D("connectionRequired : \(connectionRequired)")
         switch (netStatus)
         {
@@ -1330,6 +1325,8 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
     }
     
     func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+        //PMLog.D("\()")
+        
         switch(type) {
         case .Delete:
             if let indexPath = indexPath {

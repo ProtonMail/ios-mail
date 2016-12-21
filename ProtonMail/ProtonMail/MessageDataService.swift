@@ -982,19 +982,16 @@ class MessageDataService {
     func fetchedResultsControllerForLocation(location: MessageLocation) -> NSFetchedResultsController? {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
-            
             if location == .starred {
                 fetchRequest.predicate = NSPredicate(format: "(%K == true) AND (%K > 0)", Message.Attributes.isStarred, Message.Attributes.messageStatus)
             } else if location == .inbox {
-                fetchRequest.predicate = NSPredicate(format: "((%K == %i) OR (%K == 1)) AND (%K > 0)" , Message.Attributes.locationNumber, location.rawValue, Message.Attributes.messageType, Message.Attributes.messageStatus)
+                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)" , "\(location.rawValue)", Message.Attributes.messageStatus) //((%K == %i) OR (%K == 1)) AND (%K > 0)
             } else {
-                fetchRequest.predicate = NSPredicate(format: "(%K == %i) AND (%K > 0)" , Message.Attributes.locationNumber, location.rawValue, Message.Attributes.messageStatus)
+                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)", "\(location.rawValue)", Message.Attributes.messageStatus)
             }
-            
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         }
-        
         return nil
     }
     
@@ -1005,7 +1002,6 @@ class MessageDataService {
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         }
-        
         return nil
     }
     
