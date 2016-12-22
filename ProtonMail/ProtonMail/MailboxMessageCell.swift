@@ -167,7 +167,7 @@ class MailboxMessageCell: MCSwipeTableViewCell {
             labelsView.configLables( message.displaySender, labels: labels)
         }
         
-        if (message.isRead || message.location == .draft) {//draft alway show as read #MOBA-2602
+        if (message.isRead) {
             changeStyleToReadDesign()
         } else {
             changeStyleToUnreadDesign()

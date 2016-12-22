@@ -98,8 +98,8 @@ public class MailboxViewModel {
             return
         }
         
-        var fromCount = lastUpdatedStore.unreadCountForKey(fromLocation)
-        var toCount = lastUpdatedStore.unreadCountForKey(toLocation)
+        var fromCount = lastUpdatedStore.UnreadCountForKey(fromLocation)
+        var toCount = lastUpdatedStore.UnreadCountForKey(toLocation)
         
         let offset = message.isRead ? 0 : 1
         
@@ -133,7 +133,7 @@ public class MailboxViewModel {
         if message.isRead == changeToRead {
             return
         }
-        var count = lastUpdatedStore.unreadCountForKey(location)
+        var count = lastUpdatedStore.UnreadCountForKey(location)
         count = count + (changeToRead ? -1 : 1)
         if count < 0 {
             count = 0
@@ -141,14 +141,13 @@ public class MailboxViewModel {
         lastUpdatedStore.updateUnreadCountForKey(location, count: count)
         
         if message.isStarred {
-            var staredCount = lastUpdatedStore.unreadCountForKey(.starred)
+            var staredCount = lastUpdatedStore.UnreadCountForKey(.starred)
             staredCount = staredCount + (changeToRead ? -1 : 1)
             if staredCount < 0 {
                 staredCount = 0
             }
             lastUpdatedStore.updateUnreadCountForKey(.starred, count: staredCount)
         }
-        
         if location == .inbox {
             UIApplication.sharedApplication().applicationIconBadgeNumber = count
         }
