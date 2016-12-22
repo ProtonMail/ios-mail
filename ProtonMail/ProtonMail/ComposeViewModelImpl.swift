@@ -225,6 +225,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
             self.message?.title = self.subject
             self.message?.time = NSDate()
             self.message?.password = pwd
+            self.message?.isRead = true
             self.message?.passwordHint = pwdHit
             self.message?.expirationOffset = Int32(expir)
             MessageHelper.updateMessage(self.message!, expirationTimeInterval: expir, body: body, attachments: nil)

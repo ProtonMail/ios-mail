@@ -148,7 +148,8 @@ public class MessageDraftRequest<T: ApiResponse>  : ApiRequest<T> {
         var messsageDict : [String : AnyObject] = [
             "AddressID" : address_id,
             "Body" : message.body,
-            "Subject" : message.title]
+            "Subject" : message.title,
+            "IsRead" : message.isRead]
         messsageDict["ToList"]                  = message.recipientList.parseJson()
         messsageDict["CCList"]                  = message.ccList.parseJson()
         messsageDict["BCCList"]                 = message.bccList.parseJson()
