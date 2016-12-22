@@ -8,6 +8,26 @@
 
 import Foundation
 
+
+// MARK : Get messages part
+public class MessageCountRequest<T : ApiResponse> : ApiRequest<T> {
+    override public func getRequestPath() -> String {
+        return MessageAPI.Path + "/count" + AppConstants.getDebugOption
+    }
+    override public func getVersion() -> Int {
+        return MessageAPI.V_MessageFetchRequest
+    }
+}
+
+public class MessageCountResponse : ApiResponse {
+    var counts : [Dictionary<String, AnyObject>]?
+    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
+        self.counts = response?["Counts"] as? [Dictionary<String, AnyObject>]
+        return true
+    }
+}
+
+
 // MARK : Get messages part
 public class MessageFetchRequest<T : ApiResponse> : ApiRequest<T> {
     let location : MessageLocation!
@@ -408,9 +428,7 @@ public class AttachmentKeyPackage : Package {
     }
     
     public func toDictionary() -> Dictionary<String,AnyObject>? {
-        var out = [
-            "ID" : self.ID]
-        
+        var out = [ "ID" : self.ID ]
         if !self.algo.isEmpty {
             out["Algo"] = self.algo
             out["Key"] = self.keyPacket

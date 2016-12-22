@@ -133,19 +133,22 @@ extension AppDelegate: UIApplicationDelegate {
         shareViewModelFactoy = ViewModelFactoryProduction()
         AFNetworkActivityIndicatorManager.sharedManager().enabled = true
         
+        let tmp = UIApplication.sharedApplication().releaseMode()
         //net work debug option
-        //AFNetworkActivityLogger.sharedLogger().startLogging()
-        //AFNetworkActivityLogger.sharedLogger().level = AFHTTPRequestLoggerLevel.AFLoggerLevelDebug
+        if let logger = AFNetworkActivityLogger.sharedLogger().loggers.first as? AFNetworkActivityConsoleLogger {
+            logger.level = .AFLoggerLevelDebug;
+        }
+        AFNetworkActivityLogger.sharedLogger().startLogging()
         
+        //
         sharedInternetReachability.startNotifier()
         
         setupWindow()
         sharedMessageDataService.launchCleanUpIfNeeded()
         sharedPushNotificationService.registerForRemoteNotifications()
         
-        let tmp = UIApplication.sharedApplication().releaseMode()
         if tmp != .Dev && tmp != .Sim {
-            //AFNetworkActivityLogger.sharedLogger().stopLogging()
+            AFNetworkActivityLogger.sharedLogger().stopLogging()
         }
         sharedPushNotificationService.setLaunchOptions(launchOptions)
         

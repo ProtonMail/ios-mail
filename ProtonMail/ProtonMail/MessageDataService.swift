@@ -43,10 +43,8 @@ class MessageDataService {
     private var readQueue: [ReadBlock] = []
     
     init() {
-        
         setupMessageMonitoring()
         setupNotifications()
-        
     }
     
     deinit {
@@ -161,6 +159,16 @@ class MessageDataService {
                                     }
                                     updateTime.update = NSDate()
                                     lastUpdatedStore.updateInboxForKey(location, updateTime: updateTime)
+                                }
+                                
+                                //fetch inbox count 
+                                if location == .inbox {
+                                    let counterApi = MessageCountRequest<MessageCountResponse>();
+                                    counterApi.call({ (task, response, hasError) in
+                                        if !hasError {
+                                            self.processMessageCounts(response?.counts)
+                                        }
+                                    })
                                 }
                                 
                                 dispatch_async(dispatch_get_main_queue()) {
@@ -278,7 +286,7 @@ class MessageDataService {
             let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
             eventAPI.call() { task, _eventsRes, _hasEventsError in
                 if let eventsRes = _eventsRes {
-                    //PMLog.D("\(eventsRes)")
+                    PMLog.D("\(eventsRes)")
                     if eventsRes.isRefresh || (_hasEventsError && eventsRes.code == 18001) {
                         let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
                         getLatestEventID.call() { task, _IDRes, hasIDError in
@@ -515,6 +523,112 @@ class MessageDataService {
             
         }
     }
+    
+    func processMessageCounts(msgCounts: [Dictionary<String, AnyObject>]?) {
+        guard let messageCounts = msgCounts where messageCounts.count > 0 else {
+            return
+        }
+        for count in messageCounts {
+            PMLog.D("\(count)")
+//            
+//            //if var c = location["Count"] as? Int {
+//                //                        if let lo = MessageLocation(rawValue: l) {
+//                //                            switch lo {
+//                //                            case .inbox:
+//                //                                inboxCount = c
+//                //                                inboxCount = inboxCount + tempUnreadAddjustCount
+//                //                                break;
+//                //                            case .draft:
+//                //                                c = 0
+//                //                                draftCount = c
+//                //                                break;
+//                //                            case .outbox:
+//                //                                sendCount = c
+//                //                                break;
+//                //                            case .spam:
+//                //                                spamCount = c
+//                //                                break;
+//                //                            case .trash:
+//                //                                trashCount = c
+//                //                                break;
+//                //                            default:
+//                //                                break;
+//                //                            }
+//                //                            lastUpdatedStore.updateUnreadCountForKey(lo, count: c ?? 0)
+//                //                        }
+//                //                    }
+//
+        }
+//
+////        var inboxCount : Int = 0;
+////        var draftCount : Int = 0;
+////        var sendCount : Int = 0;
+////        var spamCount : Int = 0;
+////        var starCount : Int = 0;
+////        var trashCount : Int = 0;
+////        
+////        if let star = unreads?["Starred"] as? Int {
+////            starCount = star;
+////        }
+////        
+////        if let locations = unreads?["Locations"] as? [Dictionary<String,AnyObject>] {
+////            lastUpdatedStore.resetUnreadCounts()
+////            for location:[String : AnyObject] in locations {
+////                
+////                if let l = location["Location"] as? Int {
+////                    if var c = location["Count"] as? Int {
+////                        if let lo = MessageLocation(rawValue: l) {
+////                            switch lo {
+////                            case .inbox:
+////                                inboxCount = c
+////                                inboxCount = inboxCount + tempUnreadAddjustCount
+////                                break;
+////                            case .draft:
+////                                c = 0
+////                                draftCount = c
+////                                break;
+////                            case .outbox:
+////                                sendCount = c
+////                                break;
+////                            case .spam:
+////                                spamCount = c
+////                                break;
+////                            case .trash:
+////                                trashCount = c
+////                                break;
+////                            default:
+////                                break;
+////                            }
+////                            lastUpdatedStore.updateUnreadCountForKey(lo, count: c ?? 0)
+////                        }
+////                    }
+////                }
+////            }
+////            lastUpdatedStore.updateUnreadCountForKey(MessageLocation.starred, count: starCount ?? 0)
+////            
+////            //MessageLocation
+////            var badgeNumber = inboxCount //inboxCount + draftCount + sendCount + spamCount + starCount + trashCount;
+////            if  badgeNumber < 0 {
+////                badgeNumber = 0
+////            }
+////            UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
+////            tempUnreadAddjustCount = 0
+////        }
+////        
+////        if let locations = unreads?["Labels"] as? [Dictionary<String,AnyObject>] {
+////            lastUpdatedStore.resetLabelsUnreadCounts()
+////            for location:[String : AnyObject] in locations {
+////                
+////                if let l = location["LabelID"] as? String {
+////                    if let c = location["Count"] as? Int {
+////                        lastUpdatedStore.updateLabelsUnreadCountForKey(l, count: c)
+////                    }
+////                }
+////            }
+////        }
+//        //PMLog.D("\(inboxCount + draftCount + sendCount + spamCount + starCount + trashCount)")
+    }
+
     
     func processIncrementalUpdateUnread(unreads: Dictionary<String, AnyObject>?) {
         

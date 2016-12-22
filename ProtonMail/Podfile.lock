@@ -1,4 +1,6 @@
 PODS:
+  - AFNetworkActivityLogger (3.0.0):
+    - AFNetworking/NSURLSession (~> 3.0)
   - AFNetworking (3.1.0):
     - AFNetworking/NSURLSession (= 3.1.0)
     - AFNetworking/Reachability (= 3.1.0)
@@ -32,6 +34,7 @@ PODS:
   - ZSSRichTextEditor (0.5.2.1)
 
 DEPENDENCIES:
+  - AFNetworkActivityLogger (from `https://github.com/AFNetworking/AFNetworkActivityLogger.git`, branch `3_0_0`)
   - AFNetworking (= 3.1.0)
   - Groot/ObjC (= 2.0)
   - Masonry (= 1.0.2)
@@ -46,12 +49,21 @@ DEPENDENCIES:
   - ZSSRichTextEditor (from `../ZSSRichTextEditor`)
 
 EXTERNAL SOURCES:
+  AFNetworkActivityLogger:
+    :branch: '3_0_0'
+    :git: https://github.com/AFNetworking/AFNetworkActivityLogger.git
   OpenPGP:
     :path: "../OpenPGP"
   ZSSRichTextEditor:
     :path: "../ZSSRichTextEditor"
 
+CHECKOUT OPTIONS:
+  AFNetworkActivityLogger:
+    :commit: abc565fe804f210dfda3b028c9a64e7c32e44600
+    :git: https://github.com/AFNetworking/AFNetworkActivityLogger.git
+
 SPEC CHECKSUMS:
+  AFNetworkActivityLogger: e77f68d014becb33c4306a23f56a64906ff72670
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   Groot: 7543f84980bfb1613750818029d9b927d4378211
   Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
@@ -66,6 +78,6 @@ SPEC CHECKSUMS:
   UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   ZSSRichTextEditor: b61bdcb41a0b5609d523efadc680f0d6b022c3dd
 
-PODFILE CHECKSUM: 00d6d337987a8a5a27c8a1b28849ff2261ed9e64
+PODFILE CHECKSUM: 655740f344cec3bbabee28859020df921f40346c
 
 COCOAPODS: 1.1.1
