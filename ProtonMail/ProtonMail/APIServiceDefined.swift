@@ -12,7 +12,7 @@ import Foundation
 public struct MessageAPI {
     
     /// base message api path
-    static let Path :String = AppConstants.BaseAPIPath + "/messages"
+    static let Path :String = AppConstants.API_PATH + "/messages"
     
     
     /// fetch message request version
@@ -32,7 +32,7 @@ public struct MessageAPI {
 
 public struct AttachmentAPI {
     /// base message api path
-    static let Path :String = AppConstants.BaseAPIPath + "/attachments"
+    static let Path :String = AppConstants.API_PATH + "/attachments"
     
     
     /// fetch message request version
@@ -42,7 +42,7 @@ public struct AttachmentAPI {
 }
 
 public struct LabelAPI {
-    static let Path :String = AppConstants.BaseAPIPath + "/labels"
+    static let Path :String = AppConstants.API_PATH + "/labels"
     
     //
     static let V_LabelFetchRequest : Int = 1
@@ -54,7 +54,7 @@ public struct LabelAPI {
 
 public struct AuthAPI {
     /// base message api path
-    static let Path :String = AppConstants.BaseAPIPath + "/auth"
+    static let Path :String = AppConstants.API_PATH + "/auth"
     
     /// fetch message request version
     static let V_AuthRequest : Int = 1
@@ -66,7 +66,7 @@ public struct AuthAPI {
 
 public struct SettingsAPI {
     /// base message api path
-    static let Path :String = AppConstants.BaseAPIPath + "/settings"
+    static let Path :String = AppConstants.API_PATH + "/settings"
     
     /// fetch message request version
     static let V_SettingsUpdateDomainRequest : Int = 1
@@ -85,7 +85,7 @@ public struct SettingsAPI {
 
 public struct AddressesAPI {
     /// base message api path
-    static let Path :String = AppConstants.BaseAPIPath + "/addresses"
+    static let Path :String = AppConstants.API_PATH + "/addresses"
     
     /// fetch message request version
     static let V_AddressesUpdateRequest : Int = 1
@@ -94,7 +94,7 @@ public struct AddressesAPI {
 
 public struct EventAPI {
     /// base event api path
-    public static let Path :String = AppConstants.BaseAPIPath + "/events"
+    public static let Path :String = AppConstants.API_PATH + "/events"
     
     /// current event api version
     public static let V_EventCheckRequest : Int = 1
@@ -104,7 +104,7 @@ public struct EventAPI {
 
 
 public struct BugsAPI {
-    static let Path :String = AppConstants.BaseAPIPath + "/bugs"
+    static let Path :String = AppConstants.API_PATH + "/bugs"
     
     static let V_BugsReportRequest : Int = 1
 }
@@ -112,7 +112,7 @@ public struct BugsAPI {
 
 public struct UsersAPI {
     
-    static let Path : String = AppConstants.BaseAPIPath + "/users"
+    static let Path : String = AppConstants.API_PATH + "/users"
     
     static let V_CreateUsersRequest : Int = 1
     static let V_GetUserInfoRequest : Int = 1
@@ -122,7 +122,7 @@ public struct UsersAPI {
 }
 
 public struct KeysAPI {
-    static let Path : String = AppConstants.BaseAPIPath + "/keys"
+    static let Path : String = AppConstants.API_PATH + "/keys"
     
     //Update private keys only, use for mailbox password/single password updatesPUT
     static let V_UpdatePrivateKeyRequest : Int = 1
@@ -130,21 +130,21 @@ public struct KeysAPI {
 }
 
 public struct OrganizationsAPI {
-    static let Path : String = AppConstants.BaseAPIPath + "/organizations"
+    static let Path : String = AppConstants.API_PATH + "/organizations"
     
     static let V_GetOrgKeysRequest : Int = 1
 }
 
 public struct DomainsAPI {
     
-    static let Path : String = AppConstants.BaseAPIPath + "/domains"
+    static let Path : String = AppConstants.API_PATH + "/domains"
     
     static let V_AvailableDomainsRequest : Int = 1
 }
 
 public struct DeviceAPI {
     
-    static let Path : String = AppConstants.BaseAPIPath + "/device"
+    static let Path : String = AppConstants.API_PATH + "/device"
     
     static let V_RegisterDeviceRequest : Int = 1
     static let V_UnRegisterDeviceRequest : Int = 1

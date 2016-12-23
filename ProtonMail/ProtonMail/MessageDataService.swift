@@ -1489,7 +1489,7 @@ class MessageDataService {
                         completion?(task: task, response: response, error: error)
                     }
                     PMLog.D("SendAttachmentDebug == start upload att!")
-                    sharedAPIService.upload( AppConstants.BaseURLString + AppConstants.BaseAPIPath + "/attachments/upload", parameters: params, keyPackets: keyPacket, dataPacket: dataPacket, completion: completionWrapper)
+                    sharedAPIService.upload( AppConstants.API_HOST_URL + AppConstants.API_PATH + "/attachments/upload", parameters: params, keyPackets: keyPacket, dataPacket: dataPacket, completion: completionWrapper)
                     
                     return
                 }

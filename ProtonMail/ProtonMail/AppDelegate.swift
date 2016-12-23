@@ -97,7 +97,7 @@ extension SWRevealViewController {
 
 //move to a manager class later
 let sharedInternetReachability : Reachability = Reachability.reachabilityForInternetConnection()
-let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.BaseURLString)
+let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.API_HOST_URL)
 
 extension AppDelegate: UIApplicationDelegate {
     func application(application: UIApplication, supportedInterfaceOrientationsForWindow window: UIWindow?) -> UIInterfaceOrientationMask {

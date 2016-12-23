@@ -20,10 +20,8 @@ import Foundation
 extension APIService {
     
     private struct SettingPath {
-        static let base = AppConstants.BaseAPIPath + "/settings"
+        static let base = AppConstants.API_PATH + "/settings"
     }
-    
-
     
     func settingUpdateSignature(signature: String, completion: CompletionBlock) {
         let path = SettingPath.base + "/signature"
