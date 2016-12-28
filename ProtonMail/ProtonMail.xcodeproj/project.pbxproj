@@ -119,6 +119,8 @@
 		750729531DEFA52D0021483D /* MimeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750729521DEFA52D0021483D /* MimeTypes.swift */; };
 		750729541DEFA52E0021483D /* MimeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750729521DEFA52D0021483D /* MimeTypes.swift */; };
 		750778CE1BE98900009F516C /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750778CD1BE98900009F516C /* UserAPI.swift */; };
+		7507BBB61E0CAF9600056D66 /* SignUp+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7507BBB51E0CAF9600056D66 /* SignUp+Error.swift */; };
+		7507BBB71E0CAF9600056D66 /* SignUp+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7507BBB51E0CAF9600056D66 /* SignUp+Error.swift */; };
 		7508BAC61B87C6EA001A3564 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7508BAC51B87C6EA001A3564 /* UIApplicationExtension.swift */; };
 		750AAAC41C23E5CF00BAC444 /* RecaptchaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AAAC31C23E5CF00BAC444 /* RecaptchaViewController.swift */; };
 		750AAAC71C2490DB00BAC444 /* SignUpEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750AAAC51C2490DB00BAC444 /* SignUpEmailViewController.swift */; };
@@ -752,6 +754,7 @@
 		750254D91AB8157800050B12 /* GeneralSettingViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralSettingViewCell.swift; sourceTree = "<group>"; };
 		750729521DEFA52D0021483D /* MimeTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MimeTypes.swift; sourceTree = "<group>"; };
 		750778CD1BE98900009F516C /* UserAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAPI.swift; sourceTree = "<group>"; };
+		7507BBB51E0CAF9600056D66 /* SignUp+Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SignUp+Error.swift"; sourceTree = "<group>"; };
 		7508BAC51B87C6EA001A3564 /* UIApplicationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
 		750AAAC31C23E5CF00BAC444 /* RecaptchaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecaptchaViewController.swift; sourceTree = "<group>"; };
 		750AAAC51C2490DB00BAC444 /* SignUpEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpEmailViewController.swift; sourceTree = "<group>"; };
@@ -1478,6 +1481,7 @@
 		753745021D6B7E7000682C5A /* Errors */ = {
 			isa = PBXGroup;
 			children = (
+				7507BBB51E0CAF9600056D66 /* SignUp+Error.swift */,
 				75E220311DDA642500078D6C /* DataService+Error.swift */,
 				75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */,
 				753745031D6B7E8F00682C5A /* APIError+Auth.swift */,
@@ -2358,6 +2362,7 @@
 				75200C041DB6E3B6007E8A29 /* SrpClientExtension.swift in Sources */,
 				75662BA71B543A5B006C538E /* SettingsAPI.swift in Sources */,
 				75F161911DCBB7E600912662 /* TwoFACodeViewController.swift in Sources */,
+				7507BBB61E0CAF9600056D66 /* SignUp+Error.swift in Sources */,
 				756DAC3F1C922C3800F3486C /* MailboxRateReviewCell.swift in Sources */,
 				750729531DEFA52D0021483D /* MimeTypes.swift in Sources */,
 				07009F011A65CF4800129B07 /* SignInViewController.swift in Sources */,
@@ -2503,6 +2508,7 @@
 				75DE7CBA1CAAEA4900F5443E /* AttachmentExtension.swift in Sources */,
 				75F7756E1D63A9DA00FD3893 /* APIService+TokenManagerExtension.swift in Sources */,
 				75DE7CBB1CAAEA4900F5443E /* TextInsetTextField.swift in Sources */,
+				7507BBB71E0CAF9600056D66 /* SignUp+Error.swift in Sources */,
 				75DE7CBC1CAAEA4900F5443E /* DomainAPI.swift in Sources */,
 				75DE7CBD1CAAEA4900F5443E /* APIService+SettingsExtension.swift in Sources */,
 				75DE7CBE1CAAEA4900F5443E /* MailboxMessageCell.swift in Sources */,

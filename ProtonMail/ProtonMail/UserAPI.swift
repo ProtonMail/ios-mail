@@ -19,36 +19,49 @@ public class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
     
     let userName : String!
     let recaptchaToken : String!
-    let password: String!
     let email : String!
     let news : Bool!
-    let publicKey : String!
-    let privateKey : String!
-    let domain: String!
     let tokenType : String!
     
-    init(token : String!, type : String!, username :String!, password: String!, email:String!, domain:String!, news:Bool!, publicKey:String!, privateKey:String!) {
+    let modulusID : String! //encrypted_id
+    let salt : String! //base64_encoded_salt
+    let verifer : String! //base64_encoded_verifier
+    
+    init(token : String!,
+         type : String!,
+         username :String!,
+         email:String!,
+         news:Bool!,
+         
+         modulusID : String!,
+         salt : String!,
+         verifer : String!) {
         self.recaptchaToken = token
         self.tokenType = type
         self.userName = username
-        self.password = password
         self.email = email
         self.news = news
-        self.publicKey = publicKey
-        self.privateKey = privateKey
-        self.domain = domain
+        
+        self.modulusID = modulusID
+        self.salt = salt
+        self.verifer = verifer
     }
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
+        
+        let auth : [String : AnyObject] = [
+            "Version" : 4,
+            "ModulusID" : self.modulusID,
+            "Salt" : self.salt,
+            "Verifier" : self.verifer
+        ]
+        
         let out : [String : AnyObject] = ["TokenType" : self.tokenType,
             "Username" : self.userName,
-            "Password" : self.password,
-            "Domain" : self.domain,
             "Email" : self.email,
             "News" : self.news == true ? 1 : 0,
-            "PublicKey" : self.publicKey,
-            "PrivateKey" : self.privateKey,
-            "Token" : self.recaptchaToken
+            "Token" : self.recaptchaToken,
+            "Auth" : auth
         ]
         return out
     }
@@ -185,24 +198,6 @@ public class DirectResponse : ApiResponse {
     }
 }
 
-//public enum SignupFunction : Int {
-//    case email = 0
-//    case recaptcha = 1
-//    case sms = 2
-//    var toString : String {
-//        get {
-//            switch(self) {
-//            case email:
-//                return "email"
-//            case recaptcha:
-//                return "recaptcha"
-//            case sms:
-//                return "sms"
-//            }
-//        }
-//    }
-//}
-
 public enum VerifyCodeType : Int {
     case email = 0
     case recaptcha = 1
@@ -213,7 +208,7 @@ public enum VerifyCodeType : Int {
             case email:
                 return "email"
             case recaptcha:
-                return "recaptcha"
+                return "captcha"
             case sms:
                 return "sms"
             }

@@ -212,11 +212,6 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
     }
     
     func webViewDidFinishLoad(webView: UIWebView) {
-//        if webView.stringByEvaluatingJavaScriptFromString("document.readyState") == "complete"{
-//            var height = webView.scrollView.contentSize.height
-//            PMLog.D("\(height)")
-//        }
-//        
         if startVerify {
             if let _ = webView.stringByEvaluatingJavaScriptFromString("document.body.scrollHeight;") {
                 let height = CGFloat(500)

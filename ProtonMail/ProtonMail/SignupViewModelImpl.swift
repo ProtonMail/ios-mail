@@ -18,13 +18,13 @@ public class SignupViewModelImpl : SignupViewModel {
     private var destination : String = ""
     private var recoverEmail : String = ""
     private var news : Bool = true
-    private var login : String = ""
-    private var mailbox : String = "";
+    private var plaintext_password : String = ""
     private var agreePolicy : Bool = false
     private var displayName : String = ""
     
     private var lastSendTime : NSDate?
     
+    private var keysalt : NSData?
     private var bit : Int32 = 2048
     
     private var delegate : SignupViewModelDelegate?
@@ -100,77 +100,120 @@ public class SignupViewModelImpl : SignupViewModel {
     }
     
     override func generateKey(complete: GenerateKey) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
+        {
             do {
-                self.newKey = try sharedOpenPGP.generateKey(self.mailbox, userName: self.userName, domain: self.domain, bits: self.bit)
-                NSOperationQueue.mainQueue().addOperationWithBlock {
+                //generate key salt
+                let new_mpwd_salt : NSData = PMNOpenPgp.randomBits(128) //mailbox pwd need 128 bits
+                //generate key hashed password.
+                let new_hashed_mpwd = PasswordUtils.getMailboxPassword(self.plaintext_password, salt: new_mpwd_salt)
+                self.keysalt = new_mpwd_salt
+                //generate new key
+                self.newKey = try sharedOpenPGP.generateKey(new_hashed_mpwd, userName: self.userName, domain: self.domain, bits: self.bit);
+                
+                {
                     // do some async stuff
                     if self.newKey == nil {
-                        complete(true, nil, nil)
+                        complete(true, "Key generation failed please try again", nil)
                     } else {
-                        complete(false, "Key generation failed please try again", nil);
+                        complete(false, nil, nil);
                     }
-                }
-            } catch let ex as NSError {
-                NSOperationQueue.mainQueue().addOperationWithBlock {
-                    complete(false, "Key generation failed please try again", ex);
-                }
+                } ~> .Main
             }
-        }
+            catch let ex as NSError {
+                { complete(false, "Key generation failed please try again", ex) } ~> .Main
+            }
+        } ~> .Async
     }
     
     override func createNewUser(complete: CreateUserBlock) {
         //validation here
-        if let key = self.newKey { // sharedOpenPGP.generateKey(self.mailbox, userName: self.userName, domain: self.domain, bits: 4096, error: &error) {
-            let api = CreateNewUserRequest<ApiResponse>(token: self.token, type: self.verifyType.toString, username: self.userName, password: self.login, email: self.recoverEmail, domain: self.domain, news: self.news, publicKey: key.publicKey, privateKey: key.privateKey)
-                api.call({ (task, response, hasError) -> Void in
-                if !hasError {
-                    //need clean the cache without ui flow change then signin with a fresh user
-                    sharedUserDataService.signOutAfterSignUp()
-                    userCachedStatus.signOut()
-                    sharedMessageDataService.launchCleanUpIfNeeded()
-                    
-                    //need pass twoFACode
-                    sharedUserDataService.signIn(self.userName, password: self.login, twoFACode: nil,
-                        ask2fa: {
-                            //2fa will show error
-                            complete(false, true, "2fa Authentication failed please try to login again", nil)
-                        },
-                        onError: { (error) in
-                            complete(false, true, "Authentication failed please try to login again", error);
-                        },
-                        onSuccess: { (mailboxpwd) in
-                            do {
-                                if sharedUserDataService.isMailboxPasswordValid(self.mailbox, privateKey: AuthCredential.getPrivateKey()) {
-                                    try AuthCredential.setupToken(self.mailbox, isRememberMailbox: true)
-                                    sharedLabelsDataService.fetchLabels()
-                                    sharedUserDataService.fetchUserInfo() { info, _, error in
-                                        if error != nil {
-                                            complete(false, true, "Fetch user info failed", error)
-                                        } else if info != nil {
-                                            sharedUserDataService.isNewUser = true
-                                            sharedUserDataService.setMailboxPassword(self.mailbox, keysalt: nil, isRemembered: true)
-                                            complete(true, true, "", nil)
-                                        } else {
-                                            complete(false, true, "Unknown Error", nil)
-                                        }
-                                    }
-                                } else {
-                                    complete(false, true, "Decrypt token failed please try again", nil);
-                                }
-                            } catch let ex as NSError {
-                                PMLog.D(ex)
-                                complete(false, true, "Decrypt token failed please try again", nil);
-                            }
-                        })
-                } else {
-                    if response?.error?.code == 7002 {
-                        complete(false, true, "Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.", response!.error);
-                    } else {
-                        complete(false, false, "Create User failed please try again", response!.error);
+        if let key = self.newKey {
+            {
+                do {
+                    let authModuls = try AuthModulusRequest<AuthModulusResponse>().syncCall()
+                    guard let moduls_id = authModuls?.ModulusID else {
+                        throw SignUpCreateUserError.InvalidModulsID.toError()
                     }
+                    guard let new_moduls = authModuls?.Modulus, let new_encodedModulus = try new_moduls.getSignature() else {
+                        throw SignUpCreateUserError.InvalidModuls.toError()
+                    }
+                    //generat new verifier
+                    let new_decodedModulus : NSData = new_encodedModulus.decodeBase64()
+                    let new_salt : NSData = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
+                    guard let new_hashed_password = PasswordUtils.hashPasswordVersion4(self.plaintext_password, salt: new_salt, modulus: new_decodedModulus) else {
+                        throw SignUpCreateUserError.CantHashPassword.toError()
+                    }
+                    guard let verifier = try generateVerifier(2048, modulus: new_decodedModulus, hashedPassword: new_hashed_password) else {
+                        throw SignUpCreateUserError.CantGenerateVerifier.toError()
+                    }
+                    
+                    let api = CreateNewUserRequest<ApiResponse>(token: self.token,
+                                                                type: self.verifyType.toString, username: self.userName,
+                                                                email: self.recoverEmail, news: self.news,
+                                                                modulusID: moduls_id,
+                                                                salt: new_salt.encodeBase64(),
+                                                                verifer: verifier.encodeBase64())
+                    api.call({ (task, response, hasError) -> Void in
+                        if !hasError {
+                            //need clean the cache without ui flow change then signin with a fresh user
+                            sharedUserDataService.signOutAfterSignUp()
+                            userCachedStatus.signOut()
+                            sharedMessageDataService.launchCleanUpIfNeeded()
+                            
+                            //need setup address
+                            
+                            //need setup keys
+                            
+                            
+                            
+                            //need pass twoFACode
+//                            sharedUserDataService.signIn(self.userName, password: self.login, twoFACode: nil,
+//                                ask2fa: {
+//                                    //2fa will show error
+//                                    complete(false, true, "2fa Authentication failed please try to login again", nil)
+//                                },
+//                                onError: { (error) in
+//                                    complete(false, true, "Authentication failed please try to login again", error);
+//                                },
+//                                onSuccess: { (mailboxpwd) in
+//                                    do {
+//                                        if sharedUserDataService.isMailboxPasswordValid(self.mailbox, privateKey: AuthCredential.getPrivateKey()) {
+//                                            try AuthCredential.setupToken(self.mailbox, isRememberMailbox: true)
+//                                            sharedLabelsDataService.fetchLabels()
+//                                            sharedUserDataService.fetchUserInfo() { info, _, error in
+//                                                 if error != nil {
+//                                                    complete(false, true, "Fetch user info failed", error)
+//                                                } else if info != nil {
+//                                                    sharedUserDataService.isNewUser = true
+//                                                    sharedUserDataService.setMailboxPassword(self.mailbox, keysalt: nil, isRemembered: true)
+//                                                    complete(true, true, "", nil)
+//                                                } else {
+//                                                    complete(false, true, "Unknown Error", nil)
+//                                                }
+//                                            }
+//                                        } else {
+//                                            complete(false, true, "Decrypt token failed please try again", nil);
+//                                        }
+//                                    } catch let ex as NSError {
+//                                        PMLog.D(ex)
+//                                        complete(false, true, "Decrypt token failed please try again", nil);
+//                                    }
+//                            })
+                        } else {
+                            if response?.error?.code == 7002 {
+                                complete(false, true, "Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.", response!.error);
+                            } else {
+                                complete(false, false, "Create User failed please try again", response!.error);
+                            }
+                        }
+                    })
+                } catch {
+                    //complete(false, true, "Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.", response!.error);
                 }
-            })
+                
+
+            } ~> .Async
+            
         } else {
             complete(false, false, "Key invalid please go back try again", nil);
         }
@@ -193,21 +236,21 @@ public class SignupViewModelImpl : SignupViewModel {
         
         if !self.displayName.isEmpty {
             sharedUserDataService.updateDisplayName(displayName) { _, _, error in
-//                if error != nil {
-//                    //complete(false, error)
-//                } else {
-//                    //complete(true, nil)
-//                }
+                //                if error != nil {
+                //                    //complete(false, error)
+                //                } else {
+                //                    //complete(true, nil)
+                //                }
             }
         }
         
         if !self.recoverEmail.isEmpty {
             sharedUserDataService.updateNotificationEmail(recoverEmail, login_password: sharedUserDataService.password ?? "", twoFACode: nil) { _, _, error in
-//                if error != nil {
-//                    //complete(false, error)
-//                } else {
-//                    //complete(true, nil)
-//                }
+                //                if error != nil {
+                //                    //complete(false, error)
+                //                } else {
+                //                    //complete(true, nil)
+                //                }
             }
         }
         
@@ -245,9 +288,8 @@ public class SignupViewModelImpl : SignupViewModel {
         self.destination = phone
     }
     
-    override func setPasswords(loginPwd: String, mailboxPwd: String) {
-        self.login = loginPwd
-        self.mailbox = mailboxPwd
+    override func setSinglePassword(password: String) {
+        self.plaintext_password = password
     }
     
     override func setAgreePolicy(isAgree: Bool) {
