@@ -1633,9 +1633,13 @@ class MessageDataService {
                                 }
                             }
                             else {
-                                if error?.code == 15198 {
+                                if error?.code == 9001 {
+                                    //here need let user to show the human check.
+                                    sharedMessageQueue.isRequiredHumanCheck = true
                                     error?.alertSentErrorToast()
-                                } else {
+                                } else if error?.code == 15198 {
+                                    error?.alertSentErrorToast()
+                                }  else {
                                     //error?.alertErrorToast()
                                 }
                                 //NSError.alertMessageSentErrorToast()
@@ -1763,8 +1767,9 @@ class MessageDataService {
                         }
                     }
                 }
-                
-                if statusCode == 200 && error?.code > 1000 {
+                if statusCode == 200 && error?.code == 9001 {
+                    
+                } else if statusCode == 200 && error?.code > 1000 {
                     //show error
                     sharedMessageQueue.remove(elementID)
                     error?.uploadFabricAnswer(QueueErrorTitle)

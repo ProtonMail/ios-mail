@@ -117,6 +117,17 @@ extension NSError {
         hud.hide(true, afterDelay: 3)
     }
     
+    func alertHumanCheckErrorToast() ->Void {
+        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
+        hud.mode = MBProgressHUDMode.Text
+        hud.detailsLabelText = NSLocalizedString("Human Check Failed: \(self.localizedDescription)");
+        hud.removeFromSuperViewOnHide = true
+        hud.margin = 10
+        hud.yOffset = 250.0
+        hud.hide(true, afterDelay: 3)
+    }
+    
     
     class func alertUpdatedToast() ->Void {
         let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!

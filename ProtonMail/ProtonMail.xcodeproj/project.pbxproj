@@ -171,6 +171,14 @@
 		7537450B1D6BA85B00682C5A /* APIService+ErrorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753745091D6BA85B00682C5A /* APIService+ErrorExtension.swift */; };
 		754387D91AB35EB40003B0AC /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754387D81AB35EB40003B0AC /* SignUpViewController.swift */; };
 		754387DB1AB3A54E0003B0AC /* SignUpKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754387DA1AB3A54E0003B0AC /* SignUpKeyViewController.swift */; };
+		7545083A1E14860500265CD0 /* MailboxHumanCheckMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754508391E14860500265CD0 /* MailboxHumanCheckMenuVC.swift */; };
+		7545083B1E14860500265CD0 /* MailboxHumanCheckMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754508391E14860500265CD0 /* MailboxHumanCheckMenuVC.swift */; };
+		7545083D1E14861E00265CD0 /* MailboxCaptchaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7545083C1E14861E00265CD0 /* MailboxCaptchaViewController.swift */; };
+		7545083E1E14861E00265CD0 /* MailboxCaptchaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7545083C1E14861E00265CD0 /* MailboxCaptchaViewController.swift */; };
+		754508411E149B6600265CD0 /* HumanCheckViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754508401E149B6600265CD0 /* HumanCheckViewModel.swift */; };
+		754508421E149B6600265CD0 /* HumanCheckViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754508401E149B6600265CD0 /* HumanCheckViewModel.swift */; };
+		754508441E149BD000265CD0 /* CaptchaViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754508431E149BD000265CD0 /* CaptchaViewModelImpl.swift */; };
+		754508451E149BD000265CD0 /* CaptchaViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754508431E149BD000265CD0 /* CaptchaViewModelImpl.swift */; };
 		7546BE551C8D4F9100FCEB0A /* TouchID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546BE541C8D4F9100FCEB0A /* TouchID.swift */; };
 		7546BE571C8D557C00FCEB0A /* TouchIDCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7546BE561C8D557C00FCEB0A /* TouchIDCell.swift */; };
 		754713111DCD51A30084BF34 /* TwoFAViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754713101DCD51A30084BF34 /* TwoFAViewModel.swift */; };
@@ -799,6 +807,10 @@
 		753745091D6BA85B00682C5A /* APIService+ErrorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+ErrorExtension.swift"; sourceTree = "<group>"; };
 		754387D81AB35EB40003B0AC /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		754387DA1AB3A54E0003B0AC /* SignUpKeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpKeyViewController.swift; sourceTree = "<group>"; };
+		754508391E14860500265CD0 /* MailboxHumanCheckMenuVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxHumanCheckMenuVC.swift; sourceTree = "<group>"; };
+		7545083C1E14861E00265CD0 /* MailboxCaptchaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxCaptchaViewController.swift; sourceTree = "<group>"; };
+		754508401E149B6600265CD0 /* HumanCheckViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanCheckViewModel.swift; sourceTree = "<group>"; };
+		754508431E149BD000265CD0 /* CaptchaViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptchaViewModelImpl.swift; sourceTree = "<group>"; };
 		7546BE541C8D4F9100FCEB0A /* TouchID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchID.swift; sourceTree = "<group>"; };
 		7546BE561C8D557C00FCEB0A /* TouchIDCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchIDCell.swift; sourceTree = "<group>"; };
 		754713101DCD51A30084BF34 /* TwoFAViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoFAViewModel.swift; sourceTree = "<group>"; };
@@ -1428,6 +1440,8 @@
 				70945E691A80F351002B6837 /* MailboxViewController.swift */,
 				706628201A715A0900164117 /* MailboxTableViewCell.swift */,
 				751B446D1B81245100B68CD6 /* TableCellLabelView.swift */,
+				7545083C1E14861E00265CD0 /* MailboxCaptchaViewController.swift */,
+				754508391E14860500265CD0 /* MailboxHumanCheckMenuVC.swift */,
 			);
 			name = Mailbox;
 			sourceTree = "<group>";
@@ -1494,6 +1508,18 @@
 			children = (
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		7545083F1E149B3900265CD0 /* Mailbox */ = {
+			isa = PBXGroup;
+			children = (
+				756489971B7F2AB3007EA207 /* MailboxViewModel.swift */,
+				756489991B7F2ACA007EA207 /* MailboxViewModelImpl.swift */,
+				7564899B1B7F2B1B007EA207 /* LabelboxViewModelImpl.swift */,
+				754508401E149B6600265CD0 /* HumanCheckViewModel.swift */,
+				754508431E149BD000265CD0 /* CaptchaViewModelImpl.swift */,
+			);
+			name = Mailbox;
 			sourceTree = "<group>";
 		};
 		7547130F1DCD517E0084BF34 /* TwoFA */ = {
@@ -1699,6 +1725,7 @@
 		75ECC2361AB9F10600B8FC78 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				7545083F1E149B3900265CD0 /* Mailbox */,
 				754713161DCD61510084BF34 /* SignIn */,
 				7547130F1DCD517E0084BF34 /* TwoFA */,
 				75BDECA71CBCCC5A00982089 /* PinCode */,
@@ -1710,9 +1737,6 @@
 				759339BF1ABB45C700535F1B /* ViewModelFactory.swift */,
 				7567B06C1B334FA400A72A1E /* ViewModelService.swift */,
 				7567B06E1B334FD300A72A1E /* ViewModelServiceImpl.swift */,
-				756489971B7F2AB3007EA207 /* MailboxViewModel.swift */,
-				756489991B7F2ACA007EA207 /* MailboxViewModelImpl.swift */,
-				7564899B1B7F2B1B007EA207 /* LabelboxViewModelImpl.swift */,
 				75510BAC1B82F990001348FF /* LabelViewModel.swift */,
 				752A9EBC1DB80E40008D4392 /* LabelApplayViewModel.swift */,
 				7576355C1D0B6D8E00DF46DC /* LabelManagerViewModel.swift */,
@@ -2256,6 +2280,7 @@
 				752EEC1C1BB0A9D800770331 /* QuickViewViewController.swift in Sources */,
 				073FD9321A71C60900EB0CAF /* UserDataService.swift in Sources */,
 				7546BE571C8D557C00FCEB0A /* TouchIDCell.swift in Sources */,
+				754508441E149BD000265CD0 /* CaptchaViewModelImpl.swift in Sources */,
 				756CDEFC1D9DB3A0004455F6 /* JKBCryptRandom.swift in Sources */,
 				07CCCC301AA4E26000ECA79E /* NSCoderExtension.swift in Sources */,
 				752A9EBD1DB80E40008D4392 /* LabelApplayViewModel.swift in Sources */,
@@ -2275,6 +2300,7 @@
 				07CFC9D41A81A2B0007A72B7 /* Attachment.swift in Sources */,
 				075F0A541ABF5E3E00E6B9AE /* MessageAction.swift in Sources */,
 				75A2F44C1C97D69800BF4306 /* ComposeErrorView.swift in Sources */,
+				754508411E149B6600265CD0 /* HumanCheckViewModel.swift in Sources */,
 				752FAA121CB5AEC300F03228 /* PinCodeView.swift in Sources */,
 				750B00981B7AB91400F180BD /* NotificationDefined.swift in Sources */,
 				7567B06B1B334AF200A72A1E /* ComposeViewModel.swift in Sources */,
@@ -2438,9 +2464,11 @@
 				071323A01A7C1AB10043DB41 /* NSTimeIntervalExtension.swift in Sources */,
 				75C037461C1F94D20071E04B /* SplashViewController.swift in Sources */,
 				753745071D6B885500682C5A /* APIService+ResponseTransformer.swift in Sources */,
+				7545083D1E14861E00265CD0 /* MailboxCaptchaViewController.swift in Sources */,
 				75F023AF1C4E0271008F6276 /* SignupViewModel.swift in Sources */,
 				7564899C1B7F2B1B007EA207 /* LabelboxViewModelImpl.swift in Sources */,
 				701DDE921AA64DEB0038149C /* MBContactCollectionViewEntryCell.m in Sources */,
+				7545083A1E14860500265CD0 /* MailboxHumanCheckMenuVC.swift in Sources */,
 				758DB00E1DDBBCA8007B83D3 /* OrganizationsAPI.swift in Sources */,
 				7578B7831CADD1EA006B523B /* PMImagePickerController.swift in Sources */,
 				7567B0731B3363D000A72A1E /* ControllerDefined.swift in Sources */,
@@ -2504,6 +2532,7 @@
 				75DE7CB61CAAEA4900F5443E /* Snapshot.swift in Sources */,
 				75DE7CB71CAAEA4900F5443E /* LabelViewModel.swift in Sources */,
 				75DE7CB81CAAEA4900F5443E /* FeedbackViewController.swift in Sources */,
+				7545083E1E14861E00265CD0 /* MailboxCaptchaViewController.swift in Sources */,
 				75DE7CB91CAAEA4900F5443E /* MailboxViewModelImpl.swift in Sources */,
 				75DE7CBA1CAAEA4900F5443E /* AttachmentExtension.swift in Sources */,
 				75F7756E1D63A9DA00FD3893 /* APIService+TokenManagerExtension.swift in Sources */,
@@ -2563,6 +2592,7 @@
 				754713191DCD616D0084BF34 /* SignInViewModel.swift in Sources */,
 				75DE7CE91CAAEA4900F5443E /* MessageViewModelImpl.swift in Sources */,
 				75DE7CEA1CAAEA4900F5443E /* ActivityIndicatorHelper.swift in Sources */,
+				754508421E149B6600265CD0 /* HumanCheckViewModel.swift in Sources */,
 				75DE7CEB1CAAEA4900F5443E /* RecipientView.swift in Sources */,
 				75DE7CEC1CAAEA4900F5443E /* EventAPI.swift in Sources */,
 				75DE7CED1CAAEA4900F5443E /* SecureStore.swift in Sources */,
@@ -2597,6 +2627,7 @@
 				75DE7D051CAAEA4900F5443E /* UIButton+ProtonMail.swift in Sources */,
 				75DE7D061CAAEA4900F5443E /* LabelDisplayView.swift in Sources */,
 				75DE7D071CAAEA4900F5443E /* AuthCredential.swift in Sources */,
+				7545083B1E14860500265CD0 /* MailboxHumanCheckMenuVC.swift in Sources */,
 				75DE7D081CAAEA4900F5443E /* MBContactCollectionViewContactCell.m in Sources */,
 				752A9EBE1DB80E40008D4392 /* LabelApplayViewModel.swift in Sources */,
 				75DE7D091CAAEA4900F5443E /* ShowImageView.swift in Sources */,
@@ -2718,6 +2749,7 @@
 				75DE7D641CAAEA4900F5443E /* BugsAPI.swift in Sources */,
 				75DE7D651CAAEA4900F5443E /* ComposeView.swift in Sources */,
 				75DE7D661CAAEA4900F5443E /* NSDateExtension.swift in Sources */,
+				754508451E149BD000265CD0 /* CaptchaViewModelImpl.swift in Sources */,
 				75DE7D671CAAEA4900F5443E /* MBContactCollectionViewPromptCell.m in Sources */,
 				75DE7D681CAAEA4900F5443E /* SettingDebugTableViewController.swift in Sources */,
 				75DE7D691CAAEA4900F5443E /* NSSetExtension.swift in Sources */,

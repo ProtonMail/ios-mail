@@ -30,6 +30,7 @@ class MessageQueue: PersistentQueue {
     // MARK: - Public variables
     var isBlocked: Bool = false
     var isInProgress: Bool = false
+    var isRequiredHumanCheck : Bool = false
     
     //TODO::here need input the time of action when local cache changed.
     func addMessage(messageID: String, action: MessageAction) -> NSUUID {
@@ -39,7 +40,7 @@ class MessageQueue: PersistentQueue {
     }
     
     func nextMessage() -> (uuid: NSUUID, messageID: String, action: String)? {
-        if isBlocked || isInProgress {
+        if isBlocked || isInProgress || isRequiredHumanCheck {
             return nil
         }
         if let (uuid, object) = next() {

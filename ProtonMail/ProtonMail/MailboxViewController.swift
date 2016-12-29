@@ -45,6 +45,7 @@ class MailboxViewController: ProtonMailViewController {
     private let kSegueToTour = "to_onboarding_segue"
     private let kSegueToFeedback = "to_feedback_segue"
     private let kSegueToFeedbackView = "to_feedback_view_segue"
+    private let kSegueToHumanCheckView = "toHumanCheckView"
     
     @IBOutlet weak var undoBottomDistance: NSLayoutConstraint!
     // MARK: - Private attributes
@@ -68,6 +69,9 @@ class MailboxViewController: ProtonMailViewController {
     
     private var isShowUndo : Bool = false
     //private var notificationMessageID : String? = nil
+    
+    
+    private var isCheckingHuman: Bool = false
     
     private var ratingMessage : Message?
     
@@ -165,6 +169,8 @@ class MailboxViewController: ProtonMailViewController {
         
         if self.viewModel.getNotificationMessage() != nil {
             performSegueWithIdentifier(kSegueToMessageDetailFromNotification, sender: self)
+        } else {
+            checkHuman()
         }
     }
     
@@ -292,6 +298,12 @@ class MailboxViewController: ProtonMailViewController {
             self.setPresentationStyleForSelfController(self, presentingController: popup)
             self.cancelButtonTapped()
             
+        } else if segue.identifier == kSegueToHumanCheckView{
+            let popup = segue.destinationViewController as! MailboxCaptchaViewController
+            popup.viewModel = CaptchaViewModelImpl()
+            popup.delegate = self
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
+            
         } else if segue.identifier == kSegueToCompose {
             let composeViewController = segue.destinationViewController.childViewControllers[0] as! ComposeEmailViewController
             sharedVMService.newDraftViewModel(composeViewController)
@@ -314,7 +326,9 @@ class MailboxViewController: ProtonMailViewController {
     // MARK: - Button Targets
     
     internal func composeButtonTapped() {
-        self.performSegueWithIdentifier(kSegueToCompose, sender: self)
+        if checkHuman() {
+            self.performSegueWithIdentifier(kSegueToCompose, sender: self)
+        }
     }
     
     internal func searchButtonTapped() {
@@ -487,6 +501,16 @@ class MailboxViewController: ProtonMailViewController {
         if !fetchingStopped {
             getLatestMessages()
         }
+    }
+    
+    private func checkHuman() -> Bool {
+        if sharedMessageQueue.isRequiredHumanCheck && isCheckingHuman == false {
+            //show human check view with warning
+            isCheckingHuman = true
+            performSegueWithIdentifier(kSegueToHumanCheckView, sender: self)
+            return false
+        }
+        return true
     }
     
     private var timerInterval : NSTimeInterval = 30
@@ -708,6 +732,7 @@ class MailboxViewController: ProtonMailViewController {
                                     } else {
                                         
                                     }
+                                    self.checkHuman()
                                 })
                             }
                         }
@@ -739,6 +764,7 @@ class MailboxViewController: ProtonMailViewController {
                             } else {
                                 
                             }
+                            self.checkHuman()
                         })
                     }
                 }
@@ -800,6 +826,7 @@ class MailboxViewController: ProtonMailViewController {
                     }
                     self.showNoResultLabel();
                     self.tableView.reloadData()
+                    self.checkHuman()
                 })
             }
             
@@ -860,11 +887,16 @@ class MailboxViewController: ProtonMailViewController {
                     else
                     {
                         self.selectedDraft = msg
-                        self.performSegueWithIdentifier(self.kSegueToComposeShow, sender: self)
+                        
+                        if self.checkHuman() {
+                            self.performSegueWithIdentifier(self.kSegueToComposeShow, sender: self)
+                        }
                     }
                 }
             } else {
-                self.performSegueWithIdentifier(self.kSegueToComposeShow, sender: self)
+                if self.checkHuman() {
+                    self.performSegueWithIdentifier(self.kSegueToComposeShow, sender: self)
+                }
             }
         } else {
             performSegueWithIdentifier(kSegueToMessageDetailController, sender: self)
@@ -1072,6 +1104,18 @@ class MailboxViewController: ProtonMailViewController {
             self.title = ""
             self.navigationTitleLabel.text = ""
         }
+    }
+}
+
+extension MailboxViewController : MailboxCaptchaVCDelegate {
+   
+    func cancel() {
+        isCheckingHuman = false
+    }
+    
+    func done() {
+        isCheckingHuman = false
+        sharedMessageQueue.isRequiredHumanCheck = false
     }
 }
 

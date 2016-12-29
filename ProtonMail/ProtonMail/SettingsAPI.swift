@@ -241,8 +241,6 @@ public class UpdateSwiftRightAction<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
-
-
 // update login password this is only in two password mode
 public class UpdateLoginPassword<T : ApiResponse> : ApiRequest<T> {
     let clientEphemeral : String! //base64_encoded_ephemeral

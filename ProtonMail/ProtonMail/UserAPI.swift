@@ -83,6 +83,20 @@ public class CreateNewUserRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
+public class GetUserInfoResponse : ApiResponse {
+    var userInfo : UserInfo?
+    
+    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
+        guard let res = response["User"] as? Dictionary<String, AnyObject> else {
+            let err = NSError.badUserInfoResponse("\(response)")
+            err.uploadFabricAnswer(FetchUserInfoErrorTitle)
+            return false
+        }
+        self.userInfo = UserInfo(response: res)
+        return true
+    }
+}
+
 
 public class GetUserInfoRequest<T : ApiResponse> : ApiRequest<T> {
     
@@ -106,20 +120,66 @@ public class GetUserInfoRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
-public class GetUserInfoResponse : ApiResponse {
-    var userInfo : UserInfo?
+
+
+public class GetHumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
     
+    override init() {
+    }
+    
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+        return nil
+    }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .GET
+    }
+    
+    override public func getRequestPath() -> String {
+        return UsersAPI.Path + "/human"
+    }
+    
+    override public func getVersion() -> Int {
+        return UsersAPI.V_GetHumanRequest
+    }
+}
+
+public class GetHumanCheckResponse : ApiResponse {
+    var token : String?
+    var type : [String]?
     override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
-        guard let res = response["User"] as? Dictionary<String, AnyObject> else {
-            let err = NSError.badUserInfoResponse("\(response)")
-            err.uploadFabricAnswer(FetchUserInfoErrorTitle)
-            return false
-        }
-        self.userInfo = UserInfo(response: res)
+        self.type = response["VerifyMethods"] as? [String]
+        self.token = response["Token"] as? String
         return true
     }
 }
 
+public class HumanCheckRequest<T : ApiResponse> : ApiRequest<T> {
+    var token : String
+    var type : String
+    
+    init(type: String, token: String) {
+        self.token = token
+        self.type = type
+    }
+    
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+        let out =  ["Token":self.token, "TokenType":self.type ]
+        return out
+    }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .POST
+    }
+    
+    override public func getRequestPath() -> String {
+        return UsersAPI.Path + "/human"
+    }
+    
+    override public func getVersion() -> Int {
+        return UsersAPI.V_HumanCheckRequest
+    }
+}
 
 public class CheckUserExistRequest<T : ApiResponse> : ApiRequest<T> {
     
