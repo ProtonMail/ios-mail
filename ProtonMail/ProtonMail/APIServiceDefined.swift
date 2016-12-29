@@ -89,7 +89,8 @@ public struct AddressesAPI {
     
     /// fetch message request version
     static let V_AddressesUpdateRequest : Int = 1
-
+    
+    static let V_AddressesSetupRequest : Int = 1
 }
 
 public struct EventAPI {
@@ -128,6 +129,7 @@ public struct KeysAPI {
     
     //Update private keys only, use for mailbox password/single password updatesPUT
     static let V_UpdatePrivateKeyRequest : Int = 1
+    static let V_KeysSeuptRequest : Int = 1
     static let V_GetKeysSaltsRequest : Int = 1
 }
 

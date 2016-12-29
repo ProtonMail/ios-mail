@@ -25,6 +25,7 @@ public class SignupViewModelImpl : SignupViewModel {
     private var lastSendTime : NSDate?
     
     private var keysalt : NSData?
+    private var keypwd_with_keysalt : String = ""
     private var bit : Int32 = 2048
     
     private var delegate : SignupViewModelDelegate?
@@ -107,6 +108,7 @@ public class SignupViewModelImpl : SignupViewModel {
                 //generate key hashed password.
                 let new_hashed_mpwd = PasswordUtils.getMailboxPassword(self.plaintext_password, salt: new_mpwd_salt)
                 self.keysalt = new_mpwd_salt
+                self.keypwd_with_keysalt = new_hashed_mpwd
                 //generate new key
                 self.newKey = try sharedOpenPGP.generateKey(new_hashed_mpwd, userName: self.userName, domain: self.domain, bits: self.bit);
                 
@@ -160,45 +162,73 @@ public class SignupViewModelImpl : SignupViewModel {
                             userCachedStatus.signOut()
                             sharedMessageDataService.launchCleanUpIfNeeded()
                             
-                            //need setup address
-                            
-                            //need setup keys
-                            
-                            
-                            
-                            //need pass twoFACode
-//                            sharedUserDataService.signIn(self.userName, password: self.login, twoFACode: nil,
-//                                ask2fa: {
-//                                    //2fa will show error
-//                                    complete(false, true, "2fa Authentication failed please try to login again", nil)
-//                                },
-//                                onError: { (error) in
-//                                    complete(false, true, "Authentication failed please try to login again", error);
-//                                },
-//                                onSuccess: { (mailboxpwd) in
-//                                    do {
-//                                        if sharedUserDataService.isMailboxPasswordValid(self.mailbox, privateKey: AuthCredential.getPrivateKey()) {
-//                                            try AuthCredential.setupToken(self.mailbox, isRememberMailbox: true)
-//                                            sharedLabelsDataService.fetchLabels()
-//                                            sharedUserDataService.fetchUserInfo() { info, _, error in
-//                                                 if error != nil {
-//                                                    complete(false, true, "Fetch user info failed", error)
-//                                                } else if info != nil {
-//                                                    sharedUserDataService.isNewUser = true
-//                                                    sharedUserDataService.setMailboxPassword(self.mailbox, keysalt: nil, isRemembered: true)
-//                                                    complete(true, true, "", nil)
-//                                                } else {
-//                                                    complete(false, true, "Unknown Error", nil)
-//                                                }
-//                                            }
-//                                        } else {
-//                                            complete(false, true, "Decrypt token failed please try again", nil);
-//                                        }
-//                                    } catch let ex as NSError {
-//                                        PMLog.D(ex)
-//                                        complete(false, true, "Decrypt token failed please try again", nil);
-//                                    }
-//                            })
+                            //login first
+                            sharedUserDataService.signIn(self.userName, password: self.plaintext_password, twoFACode: nil,
+                                ask2fa: {
+                                    //2fa will show error
+                                    complete(false, true, "2fa Authentication failed please try to login again", nil)
+                                },
+                                onError: { (error) in
+                                    complete(false, true, "Authentication failed please try to login again", error);
+                                },
+                                onSuccess: { (mailboxpwd) in
+                                    {
+                                        do {
+                                            try AuthCredential.setupToken(self.keypwd_with_keysalt, isRememberMailbox: true)
+                                            
+                                            //need setup address
+                                            let setupAddrApi = try SetupAddressRequest<SetupAddressResponse>(domain_name: self.domain).syncCall()
+                                            
+                                            //need setup keys
+                                            let authModuls_for_key = try AuthModulusRequest<AuthModulusResponse>().syncCall()
+                                            guard let moduls_id_for_key = authModuls_for_key?.ModulusID else {
+                                                throw SignUpCreateUserError.InvalidModulsID.toError()
+                                            }
+                                            guard let new_moduls_for_key = authModuls_for_key?.Modulus, let new_encodedModulus_for_key = try new_moduls_for_key.getSignature() else {
+                                                throw SignUpCreateUserError.InvalidModuls.toError()
+                                            }
+                                            //generat new verifier
+                                            let new_decodedModulus_for_key : NSData = new_encodedModulus_for_key.decodeBase64()
+                                            let new_salt_for_key : NSData = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
+                                            guard let new_hashed_password_for_key = PasswordUtils.hashPasswordVersion4(self.plaintext_password, salt: new_salt_for_key, modulus: new_decodedModulus_for_key) else {
+                                                throw SignUpCreateUserError.CantHashPassword.toError()
+                                            }
+                                            guard let verifier_for_key = try generateVerifier(2048, modulus: new_decodedModulus_for_key, hashedPassword: new_hashed_password_for_key) else {
+                                                throw SignUpCreateUserError.CantGenerateVerifier.toError()
+                                            }
+                                            
+                                            let addr_id = setupAddrApi?.addresses.first?.address_id
+                                            let pwd_auth = PasswordAuth(modulus_id: moduls_id_for_key,salt: new_salt_for_key.encodeBase64(), verifer: verifier_for_key.encodeBase64())
+                                            
+                                            let setupKeyApi = try SetupKeyRequest<ApiResponse>(address_id: addr_id, private_key: key.privateKey, keysalt: self.keysalt!.encodeBase64(), auth: pwd_auth).syncCall()
+                                            if setupKeyApi?.error != nil {
+                                                PMLog.D("signup seupt key error")
+                                            }
+                                            
+                                            
+                                            //setup swipe function
+                                            try UpdateSwiftLeftAction<ApiResponse>(action: MessageSwipeAction.spam).syncCall()
+                                            try UpdateSwiftRightAction<ApiResponse>(action: MessageSwipeAction.trash).syncCall()
+
+                                            
+                                            sharedLabelsDataService.fetchLabels()
+                                            sharedUserDataService.fetchUserInfo() { info, _, error in
+                                                if error != nil {
+                                                    complete(false, true, "Fetch user info failed", error)
+                                                } else if info != nil {
+                                                    sharedUserDataService.isNewUser = true
+                                                    sharedUserDataService.setMailboxPassword(self.keypwd_with_keysalt, keysalt: nil, isRemembered: true)
+                                                    complete(true, true, "", nil)
+                                                } else {
+                                                    complete(false, true, "Unknown Error", nil)
+                                                }
+                                            }
+                                        } catch let ex as NSError {
+                                            PMLog.D(ex)
+                                            complete(false, true, "Decrypt token failed please try again", nil);
+                                        }
+                                    } ~> .Async
+                            })
                         } else {
                             if response?.error?.code == 7002 {
                                 complete(false, true, "Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.", response!.error);
@@ -236,21 +266,13 @@ public class SignupViewModelImpl : SignupViewModel {
         
         if !self.displayName.isEmpty {
             sharedUserDataService.updateDisplayName(displayName) { _, _, error in
-                //                if error != nil {
-                //                    //complete(false, error)
-                //                } else {
-                //                    //complete(true, nil)
-                //                }
+
             }
         }
         
         if !self.recoverEmail.isEmpty {
             sharedUserDataService.updateNotificationEmail(recoverEmail, login_password: sharedUserDataService.password ?? "", twoFACode: nil) { _, _, error in
-                //                if error != nil {
-                //                    //complete(false, error)
-                //                } else {
-                //                    //complete(true, nil)
-                //                }
+
             }
         }
         
