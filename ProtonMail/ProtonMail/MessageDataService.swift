@@ -161,7 +161,7 @@ class MessageDataService {
                                     lastUpdatedStore.updateInboxForKey(location, updateTime: updateTime)
                                 }
                                 
-                                //fetch inbox count 
+                                //fetch inbox count
                                 if location == .inbox {
                                     let counterApi = MessageCountRequest<MessageCountResponse>();
                                     counterApi.call({ (task, response, hasError) in
@@ -535,94 +535,94 @@ class MessageDataService {
                     continue
                 }
                 lastUpdatedStore.updateLabelsUnreadCountForKey(labelID, count: unread)
-//                if let total = count["Total"] as? Int {
-//                    //didn't use now from the counter event
-//                }
+                //                if let total = count["Total"] as? Int {
+                //                    //didn't use now from the counter event
+                //                }
             }
         }
         
         
         //MessageLocation
-//        var badgeNumber = inboxCount //inboxCount + draftCount + sendCount + spamCount + starCount + trashCount;
-//        if  badgeNumber < 0 {
-//            badgeNumber = 0
-//        }
-//        UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
-//        tempUnreadAddjustCount = 0
+        //        var badgeNumber = inboxCount //inboxCount + draftCount + sendCount + spamCount + starCount + trashCount;
+        //        if  badgeNumber < 0 {
+        //            badgeNumber = 0
+        //        }
+        //        UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
+        //        tempUnreadAddjustCount = 0
     }
-
     
-//    func processIncrementalUpdateUnread(unreads: Dictionary<String, AnyObject>?) {
-//        
-//        var inboxCount : Int = 0;
-//        var draftCount : Int = 0;
-//        var sendCount : Int = 0;
-//        var spamCount : Int = 0;
-//        var starCount : Int = 0;
-//        var trashCount : Int = 0;
-//        
-//        
-//        if let star = unreads?["Starred"] as? Int {
-//            starCount = star;
-//        }
-//        
-//        if let locations = unreads?["Locations"] as? [Dictionary<String,AnyObject>] {
-//            lastUpdatedStore.resetUnreadCounts()
-//            for location:[String : AnyObject] in locations {
-//                
-//                if let l = location["Location"] as? Int {
-//                    if var c = location["Count"] as? Int {
-//                        if let lo = MessageLocation(rawValue: l) {
-//                            switch lo {
-//                            case .inbox:
-//                                inboxCount = c
-//                                inboxCount = inboxCount + tempUnreadAddjustCount
-//                                break;
-//                            case .draft:
-//                                c = 0
-//                                draftCount = c
-//                                break;
-//                            case .outbox:
-//                                sendCount = c
-//                                break;
-//                            case .spam:
-//                                spamCount = c
-//                                break;
-//                            case .trash:
-//                                trashCount = c
-//                                break;
-//                            default:
-//                                break;
-//                            }
-//                            lastUpdatedStore.updateUnreadCountForKey(lo, count: c ?? 0)
-//                        }
-//                    }
-//                }
-//            }
-//            lastUpdatedStore.updateUnreadCountForKey(MessageLocation.starred, count: starCount ?? 0)
-//            
-//            //MessageLocation
-//            var badgeNumber = inboxCount //inboxCount + draftCount + sendCount + spamCount + starCount + trashCount;
-//            if  badgeNumber < 0 {
-//                badgeNumber = 0
-//            }
-//            UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
-//            tempUnreadAddjustCount = 0
-//        }
-//        
-//        if let locations = unreads?["Labels"] as? [Dictionary<String,AnyObject>] {
-//            lastUpdatedStore.resetLabelsUnreadCounts()
-//            for location:[String : AnyObject] in locations {
-//                
-//                if let l = location["LabelID"] as? String {
-//                    if let c = location["Count"] as? Int {
-//                        lastUpdatedStore.updateLabelsUnreadCountForKey(l, count: c)
-//                    }
-//                }
-//            }
-//        }
-//        //PMLog.D("\(inboxCount + draftCount + sendCount + spamCount + starCount + trashCount)")
-//    }
+    
+    //    func processIncrementalUpdateUnread(unreads: Dictionary<String, AnyObject>?) {
+    //
+    //        var inboxCount : Int = 0;
+    //        var draftCount : Int = 0;
+    //        var sendCount : Int = 0;
+    //        var spamCount : Int = 0;
+    //        var starCount : Int = 0;
+    //        var trashCount : Int = 0;
+    //
+    //
+    //        if let star = unreads?["Starred"] as? Int {
+    //            starCount = star;
+    //        }
+    //
+    //        if let locations = unreads?["Locations"] as? [Dictionary<String,AnyObject>] {
+    //            lastUpdatedStore.resetUnreadCounts()
+    //            for location:[String : AnyObject] in locations {
+    //
+    //                if let l = location["Location"] as? Int {
+    //                    if var c = location["Count"] as? Int {
+    //                        if let lo = MessageLocation(rawValue: l) {
+    //                            switch lo {
+    //                            case .inbox:
+    //                                inboxCount = c
+    //                                inboxCount = inboxCount + tempUnreadAddjustCount
+    //                                break;
+    //                            case .draft:
+    //                                c = 0
+    //                                draftCount = c
+    //                                break;
+    //                            case .outbox:
+    //                                sendCount = c
+    //                                break;
+    //                            case .spam:
+    //                                spamCount = c
+    //                                break;
+    //                            case .trash:
+    //                                trashCount = c
+    //                                break;
+    //                            default:
+    //                                break;
+    //                            }
+    //                            lastUpdatedStore.updateUnreadCountForKey(lo, count: c ?? 0)
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //            lastUpdatedStore.updateUnreadCountForKey(MessageLocation.starred, count: starCount ?? 0)
+    //
+    //            //MessageLocation
+    //            var badgeNumber = inboxCount //inboxCount + draftCount + sendCount + spamCount + starCount + trashCount;
+    //            if  badgeNumber < 0 {
+    //                badgeNumber = 0
+    //            }
+    //            UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
+    //            tempUnreadAddjustCount = 0
+    //        }
+    //
+    //        if let locations = unreads?["Labels"] as? [Dictionary<String,AnyObject>] {
+    //            lastUpdatedStore.resetLabelsUnreadCounts()
+    //            for location:[String : AnyObject] in locations {
+    //
+    //                if let l = location["LabelID"] as? String {
+    //                    if let c = location["Count"] as? Int {
+    //                        lastUpdatedStore.updateLabelsUnreadCountForKey(l, count: c)
+    //                    }
+    //                }
+    //            }
+    //        }
+    //        //PMLog.D("\(inboxCount + draftCount + sendCount + spamCount + starCount + trashCount)")
+    //    }
     
     func cleanLocalMessageCache(completion: CompletionBlock?) {
         let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
@@ -1018,13 +1018,14 @@ class MessageDataService {
     func fetchedResultsControllerForLocation(location: MessageLocation) -> NSFetchedResultsController? {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
-            if location == .starred {
-                fetchRequest.predicate = NSPredicate(format: "(%K == true) AND (%K > 0)", Message.Attributes.isStarred, Message.Attributes.messageStatus)
-            } else if location == .draft {
-                fetchRequest.predicate = NSPredicate(format: "(%K == %i) AND (%K > 0)" , Message.Attributes.locationNumber, location.rawValue, Message.Attributes.messageStatus) //((%K == %i) OR (%K == 1)) AND (%K > 0)
-            } else {
-                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)", "\(location.rawValue)", Message.Attributes.messageStatus)
-            }
+            //            if location == .starred {
+            //                fetchRequest.predicate = NSPredicate(format: "(%K == true) AND (%K > 0)", Message.Attributes.isStarred, Message.Attributes.messageStatus)
+            //            } else
+            //            if location == .draft {
+            //                fetchRequest.predicate = NSPredicate(format: "(%K == %i) AND (%K > 0)" , Message.Attributes.locationNumber, location.rawValue, Message.Attributes.messageStatus) //((%K == %i) OR (%K == 1)) AND (%K > 0)
+            //            } else {
+            fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)", "\(location.rawValue)", Message.Attributes.messageStatus)
+            //            }
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         }

@@ -14,6 +14,7 @@ enum MenuItem: String {
     case starred = "Starred"
     case archive = "Archive"
     case drafts = "Drafts"
+    case allmail = "All Mail"
     case sent = "Sent"
     case trash = "Trash"
     case spam = "Spam"
@@ -65,6 +66,8 @@ enum MenuItem: String {
             image = "menu_feedback"
         case .lockapp:
             image = "menu_lockapp"
+        case .allmail:
+            image = "menu_archive"
         }
         return image;
     }
@@ -98,6 +101,8 @@ enum MenuItem: String {
             image = "menu_feedback-active"
         case .lockapp:
             image = "menu_lockapp"
+        case .allmail:
+            image = "menu_archive-active"
         }
         return image;
     }
@@ -119,6 +124,8 @@ enum MenuItem: String {
             return .trash
         case spam:
             return .spam
+        case .allmail:
+            return .allmail
         default:
             return .inbox
         }
