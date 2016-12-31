@@ -84,6 +84,23 @@ extension Message {
         }
     }
     
+    func getLocationFromLabels() ->  [MessageLocation] {
+        var locations = [MessageLocation]()
+        let labels = self.labels
+        for l in labels {
+            if let label = l as? Label {
+                if let l_id = Int(label.labelID) {
+                    if let new_loc = MessageLocation(rawValue: l_id) {
+                        locations.append(new_loc)
+                    }
+                }
+                
+            }
+        }
+        
+        return locations
+    }
+    
     var subject : String {
         return title
     }
