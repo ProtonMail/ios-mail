@@ -943,7 +943,9 @@ class MessageDataService {
                 sharedAPIService.messageDetail(messageID: message.messageID, completion: completionWrapper)
             }
         } else {
-            completion(task: nil, response: nil, message:nil, error: nil)
+            dispatch_async(dispatch_get_main_queue()) {
+                completion(task: nil, response: nil, message:nil, error: nil)
+            }
         }
     }
     
