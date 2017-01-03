@@ -243,7 +243,7 @@ extension String {
         return false
     }
     
-    func hasImange () -> Bool {
+    func hasImage () -> Bool {
         if self.preg_match("\\ssrc='(?!cid:)") {
             return true
         }
@@ -297,7 +297,8 @@ extension String {
     }
     
     func stringByPurifyHTML() -> String {
-        let out = self.preg_replace("<style[^>]*?>.*?</style>|<script(.*?)<\\/script>|<(\\/?script.*?)>|<(\\/?meta.*?)>|<object(.*?)<\\/object>|<(\\/?object.*?)>|<input(.*?)<\\/input>|<(\\/?input.*?)>|<(\\/?link.*?)>|<iframe(.*?)<\\/iframe>|<video(.*?)<\\/video>|<audio(.*?)<\\/audio>|<[^>]*?onload.*?>|<input(.*?)<\\/input>|<[^>]*?prompt.*?>|<[^>]*?alert.*?>|<[^>]*?confirm.*?>", replaceto: " ")
+        //|<(\\/?link.*?)>   <[^>]*?alert.*?>|  //the comment out part case hpylink have those key works been filtered out
+        let out = self.preg_replace("<style[^>]*?>.*?</style>|<script(.*?)<\\/script>|<(\\/?script.*?)>|<(\\/?meta.*?)>|<object(.*?)<\\/object>|<(\\/?object.*?)>|<input(.*?)<\\/input>|<(\\/?input.*?)>|<iframe(.*?)<\\/iframe>|<video(.*?)<\\/video>|<audio(.*?)<\\/audio>|<[^>]*?onload.*?>|<input(.*?)<\\/input>|<[^>]*?prompt.*?>|<[^>]*?confirm.*?>", replaceto: " ")
         
 //        var out = self.preg_replace("<script(.*?)<\\/script>", replaceto: "")
 //        //out = out.preg_replace("<(script.*?)>(.*?)<(\\/script.*?)>", replaceto: "")
