@@ -355,13 +355,9 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         }
     }
     
-    //
-    //var purifiedBody :  String? = nil
-    //var purifiedBodyWithoutImage :  String? = nil
     private var purifiedBodyLock: Int = 0
-    
-    var fixedBody : String? = nil
-    var bodyHasImages : Bool = false
+    private var fixedBody : String? = nil
+    private var bodyHasImages : Bool = false
     
     // MARK : private function
     private func updateEmailBody (force forceReload : Bool = false) {
