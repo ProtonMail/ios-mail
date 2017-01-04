@@ -1623,7 +1623,7 @@ class MessageDataService {
                                         message.hasAttachments = true;
                                     }
                                     
-                                    message.needsUpdate = false;
+                                    message.needsUpdate = false
                                     message.isRead = true
                                     lastUpdatedStore.ReadMailboxMessage(message.location)
                                     message.location = MessageLocation.outbox

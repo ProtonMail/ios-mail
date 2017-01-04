@@ -217,8 +217,8 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     }
     
     internal func spamButtonTapped() {
-        message.needsUpdate = true
         self.message.removeLocationFromLabels(message.location, location: MessageLocation.spam)
+        message.needsUpdate = true
         message.location = .spam
         if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D(" error: \(error)")

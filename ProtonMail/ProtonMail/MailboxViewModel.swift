@@ -37,8 +37,8 @@ public class MailboxViewModel {
     
     public func archiveMessage(msg: Message) {
         self.updateBadgeNumberWhenMove(msg, to: .archive)
-        msg.needsUpdate = true
         msg.removeLocationFromLabels(msg.location, location: .archive)
+        msg.needsUpdate = true
         msg.location = .archive
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D("error: \(error)")
@@ -47,8 +47,8 @@ public class MailboxViewModel {
     
     public func spamMessage(msg: Message) {
         self.updateBadgeNumberWhenMove(msg, to: .spam)
-        msg.needsUpdate = true
         msg.removeLocationFromLabels(msg.location, location: .spam)
+        msg.needsUpdate = true
         msg.location = .spam
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D("error: \(error)")
@@ -57,8 +57,8 @@ public class MailboxViewModel {
     
     public func starMessage(msg: Message) {
         self.updateBadgeNumberWhenMove(msg, to: .starred)
-        msg.isStarred = true
         msg.removeLocationFromLabels(msg.location, location: .starred)
+        msg.isStarred = true
         msg.needsUpdate = true
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D("error: \(error)")

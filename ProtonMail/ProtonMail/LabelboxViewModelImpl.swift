@@ -39,8 +39,8 @@ public class LabelboxViewModelImpl : MailboxViewModel {
     }
     
     public override func deleteMessage(msg: Message) -> Bool {
-        msg.needsUpdate = true
         msg.removeLocationFromLabels(msg.location, location: .trash)
+        msg.needsUpdate = true
         msg.location = .trash
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D(" error: \(error)")

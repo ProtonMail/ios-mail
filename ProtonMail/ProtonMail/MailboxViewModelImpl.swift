@@ -82,14 +82,14 @@ public class MailboxViewModelImpl : MailboxViewModel {
         if msg.managedObjectContext != nil {
             switch(self.location!) {
             case .trash, .spam:
-                msg.needsUpdate = true
                 msg.removeLocationFromLabels(self.location, location: .deleted)
+                msg.needsUpdate = true
                 msg.location = .deleted
                 needShowMessage = false
             default:
+                msg.removeLocationFromLabels(self.location, location: .trash)
                 msg.needsUpdate = true
                 self.updateBadgeNumberWhenMove(msg, to: .deleted)
-                msg.removeLocationFromLabels(self.location, location: .trash)
                 msg.location = .trash
             }
             if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
