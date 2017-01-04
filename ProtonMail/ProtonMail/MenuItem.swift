@@ -67,7 +67,7 @@ enum MenuItem: String {
         case .lockapp:
             image = "menu_lockapp"
         case .allmail:
-            image = "menu_archive"
+            image = "menu_allmail"
         }
         return image;
     }
@@ -102,7 +102,7 @@ enum MenuItem: String {
         case .lockapp:
             image = "menu_lockapp"
         case .allmail:
-            image = "menu_archive-active"
+            image = "menu_allmail-active"
         }
         return image;
     }
