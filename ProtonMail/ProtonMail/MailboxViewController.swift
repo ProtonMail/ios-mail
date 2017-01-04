@@ -633,8 +633,9 @@ class MailboxViewController: ProtonMailViewController {
     private func deleteMessageForIndexPath(indexPath: NSIndexPath) {
         if let message = self.messageAtIndexPath(indexPath) {
             undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
-            viewModel.deleteMessage(message)
-            showUndoView("Deleted")
+            if viewModel.deleteMessage(message) {
+                showUndoView("Deleted")
+            }
         }
     }
     
@@ -659,9 +660,9 @@ class MailboxViewController: ProtonMailViewController {
                 if let message = Message.messageForMessageID(undoMsg.messageID, inManagedObjectContext: context) {
                     //viewModel.updateBadgeNumberMoveOutInbox(message)
                     viewModel.updateBadgeNumberWhenMove(message, to: undoMsg.oldLocation)
-                    message.location = undoMsg.oldLocation
+                    message.removeLocationFromLabels(message.location, location: undoMsg.oldLocation)
                     message.needsUpdate = true
-                    //viewModel.updateBadgeNumberMoveInInbox(message)
+                    message.location = undoMsg.oldLocation
                     if let error = context.saveUpstreamIfNeeded() {
                         PMLog.D("error: \(error)")
                     }
@@ -865,8 +866,8 @@ class MailboxViewController: ProtonMailViewController {
             do {
                 if let messages = try context.executeFetchRequest(fetchRequest) as? [Message] {
                     for message in messages {
-                        message.location = location
                         message.needsUpdate = true
+                        message.location = location
                     }
                     if let error = context.saveUpstreamIfNeeded() {
                         PMLog.D("error: \(error)")

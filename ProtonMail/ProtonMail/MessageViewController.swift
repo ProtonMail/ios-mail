@@ -202,9 +202,11 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         switch(message.location) {
         case .trash, .spam:
             if self.message.managedObjectContext != nil {
+                self.message.removeLocationFromLabels(message.location, location: MessageLocation.deleted)
                 self.messagesSetValue(setValue: MessageLocation.deleted.rawValue, forKey: Message.Attributes.locationNumber)
             }
         default:
+            self.message.removeLocationFromLabels(message.location, location: MessageLocation.trash)
             self.messagesSetValue(setValue: MessageLocation.trash.rawValue, forKey: Message.Attributes.locationNumber)
         }
         self.navigationController?.popViewControllerAnimated(true)
@@ -215,8 +217,9 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     }
     
     internal func spamButtonTapped() {
-        message.location = .spam
         message.needsUpdate = true
+        self.message.removeLocationFromLabels(message.location, location: MessageLocation.spam)
+        message.location = .spam
         if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D(" error: \(error)")
         }
@@ -231,6 +234,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         for (location, style) in locations {
             if message.location != location {
                 alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
+                    self.message.removeLocationFromLabels(self.message.location, location: location)
                     self.messagesSetValue(setValue: location.rawValue, forKey: Message.Attributes.locationNumber)
                     self.navigationController?.popViewControllerAnimated(true)
                 }))
@@ -348,7 +352,6 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
                 if self.message.managedObjectContext != nil {
                     self.message.isDetailDownloaded = false
                     self.message.managedObjectContext?.saveUpstreamIfNeeded()
-                    //self.messagesSetValue(setValue: MessageLocation.deleted.rawValue, forKey: Message.Attributes.locationNumber)
                 }
                 self.navigationController?.popViewControllerAnimated(true)
             }
@@ -550,6 +553,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     }
     
     func starredChanged(isStarred: Bool) {
+        self.message.removeLocationFromLabels(message.location, location: .starred)
         self.messagesSetValue(setValue: isStarred, forKey: Message.Attributes.isStarred)
     }
     

@@ -38,12 +38,14 @@ public class LabelboxViewModelImpl : MailboxViewModel {
         return true
     }
     
-    public override func deleteMessage(msg: Message) {
-        msg.location = .trash
+    public override func deleteMessage(msg: Message) -> Bool {
         msg.needsUpdate = true
+        msg.removeLocationFromLabels(msg.location, location: .trash)
+        msg.location = .trash
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D(" error: \(error)")
         }
+        return true
     }
 
     public override func getFetchedResultsController() -> NSFetchedResultsController? {

@@ -101,6 +101,42 @@ extension Message {
         return locations
     }
     
+    func removeLocationFromLabels(currentlocation:MessageLocation, location : MessageLocation) {
+        if let context = self.managedObjectContext {
+            let fromLabelID = String(currentlocation.rawValue)
+            let toLableID = String(location.rawValue)
+            let labelObjs = self.mutableSetValueForKey("labels")
+            for l in labelObjs {
+                if let label = l as? Label {
+                    if label.labelID == fromLabelID {
+                        labelObjs.removeObject(label)
+                        break
+                    }
+                }
+            }
+            
+            if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
+                var exsited = false
+                for l in labelObjs {
+                    if let label = l as? Label {
+                        if label == toLabel {
+                            exsited = true
+                            break
+                        }
+                    }
+                }
+                if !exsited {
+                    labelObjs.addObject(toLabel)
+                }
+            }
+            
+            self.setValue(labelObjs, forKey: "labels")
+            if let error = context.saveUpstreamIfNeeded() {
+                PMLog.D("error: \(error)")
+            }
+        }
+    }
+    
     var subject : String {
         return title
     }

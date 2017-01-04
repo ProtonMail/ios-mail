@@ -31,25 +31,25 @@ public class MailboxViewModel {
         fatalError("This method must be overridden")
     }
     
-    public func deleteMessage(msg: Message) {
+    public func deleteMessage(msg: Message) -> Bool {
         fatalError("This method must be overridden")
     }
     
     public func archiveMessage(msg: Message) {
-        //self.updateBadgeNumberMoveOutInbox(msg)
         self.updateBadgeNumberWhenMove(msg, to: .archive)
-        msg.location = .archive
         msg.needsUpdate = true
+        msg.removeLocationFromLabels(msg.location, location: .archive)
+        msg.location = .archive
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D("error: \(error)")
         }
     }
     
     public func spamMessage(msg: Message) {
-        //self.updateBadgeNumberMoveOutInbox(msg)
         self.updateBadgeNumberWhenMove(msg, to: .spam)
-        msg.location = .spam
         msg.needsUpdate = true
+        msg.removeLocationFromLabels(msg.location, location: .spam)
+        msg.location = .spam
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D("error: \(error)")
         }
@@ -58,37 +58,12 @@ public class MailboxViewModel {
     public func starMessage(msg: Message) {
         self.updateBadgeNumberWhenMove(msg, to: .starred)
         msg.isStarred = true
+        msg.removeLocationFromLabels(msg.location, location: .starred)
         msg.needsUpdate = true
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D("error: \(error)")
         }
     }
-    
-//    func updateBadgeNumberMoveOutInbox(message : Message) {
-//        if message.location == .inbox {
-//            var count = lastUpdatedStore.unreadCountForKey(.inbox)
-//            let offset = message.isRead ? 0 : -1
-//            count = count + offset
-//            if count < 0 {
-//                count = 0
-//            }
-//            lastUpdatedStore.updateUnreadCountForKey(.inbox, count: count)
-//            UIApplication.sharedApplication().applicationIconBadgeNumber = count
-//        }
-//    }
-//    
-//    func updateBadgeNumberMoveInInbox(message : Message) {
-//        if message.location == .inbox {
-//            var count = lastUpdatedStore.unreadCountForKey(.inbox)
-//            let offset = message.isRead ? 0 : 1
-//            count = count + offset
-//            if count < 0 {
-//                count = 0
-//            }
-//            lastUpdatedStore.updateUnreadCountForKey(.inbox, count: count)
-//            UIApplication.sharedApplication().applicationIconBadgeNumber = count
-//        }
-//    }
     
     func updateBadgeNumberWhenMove(message : Message, to : MessageLocation) {
         let fromLocation = message.location
