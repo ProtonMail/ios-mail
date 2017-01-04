@@ -824,7 +824,7 @@ class MailboxViewController: ProtonMailViewController {
                     if self.fetchingStopped! == true {
                         return;
                     }
-                    self.showNoResultLabel();
+                    self.showNoResultLabel()
                     self.tableView.reloadData()
                     self.checkHuman()
                 })
@@ -1400,6 +1400,10 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             }
         default:
             return
+        }
+        
+        if self.noResultLabel.hidden == false {
+            self.showNoResultLabel()
         }
     }
 }
