@@ -392,7 +392,7 @@ extension String {
         let boundarLine = "boundary=".dataUsingEncoding(NSASCIIStringEncoding)!
         let boundaryRange = data.rangeOfData(boundarLine, options: NSDataSearchOptions.init(rawValue: 0), range: NSMakeRange(0, len))
         if boundaryRange.location == NSNotFound {
-            return "";
+            return self.ln2br()
         }
         
         //new len
@@ -401,7 +401,7 @@ extension String {
         let lineEnd = "\n".dataUsingEncoding(NSASCIIStringEncoding)!;
         let nextLine = data.rangeOfData(lineEnd, options: NSDataSearchOptions.init(rawValue: 0), range: NSMakeRange(0, len))
         if nextLine.location == NSNotFound {
-            return "";
+            return self.ln2br()
         }
         let boundary = data.subdataWithRange(NSMakeRange(0, nextLine.location))
         var boundaryString = NSString(data: boundary, encoding: NSUTF8StringEncoding) as! String
@@ -420,7 +420,7 @@ extension String {
         var firstboundaryRange = data.rangeOfData(nextBoundaryLine, options: NSDataSearchOptions(rawValue: 0), range: NSMakeRange(0, len))
         
         if firstboundaryRange.location == NSNotFound {
-            return "";
+            return self.ln2br()
         }
         
         while true {
