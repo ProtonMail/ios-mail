@@ -12,35 +12,52 @@ import Foundation
 class AppConstants {
     
     
-    static let CacheVersion : Int = 83
+    static let CacheVersion : Int = 86
     static let AuthCacheVersion : Int = 12
     static let SpaceWarningThreshold: Double = 80
     static let SplashVersion : Int = 1
     static let TourVersion : Int = 2
     
     static let AskTouchID : Int = 1
-    static var AppVersion : Int = 1;
+    static var AppVersion : Int = 1
+    
+    //
+    static let URL_Protocol : String = "https://"
+    //static let URL_Protocol : String = "http://"
     
     //live api
-    static let BaseURLString : String = "https://api.protonmail.ch"
+    static let URL_HOST : String = "api.protonmail.ch"
     
     //live test api
-    //static let BaseURLString : String = "https://test-api.protonmail.ch"
+    //static let URL_HOST : String = "test-api.protonmail.ch"
     
     //live dev api
-    //static let BaseURLString : String = "https://dev-api.protonmail.ch"
-    //static let BaseURLString : String = "https://dev.protonmail.com"
+    //static let URL_HOST : String = "dev-api.protonmail.ch"
+    //static let URL_HOST : String = "dev.protonmail.com"
     
     //blue test
-    //static let BaseURLString : String = "https://protonmail.blue"
-    //static let BaseURLString : String = "https://midnight.protonmail.blue"
+    //static let URL_HOST : String = "protonmail.blue"
+    //static let URL_HOST : String = "midnight.protonmail.blue"
+
     
-    //static let BaseURLString : String = "http://127.0.0.1"
-    //static let BaseURLString : String = "http://protonmail.xyz"
+    //static let URL_HOST : String = "http://127.0.0.1"  //http
+    //static let URL_HOST : String = "http://protonmail.xyz"  //http
     
     //api options
-    //static let BaseAPIPath : String = "/api"
-    static let BaseAPIPath : String = ""
+    //static let API_PATH : String = "/api"
+    static let API_PATH : String = ""
+    
+    static var API_HOST_URL : String {
+        get {
+            return URL_Protocol + URL_HOST
+        }
+    }
+    
+    static var API_FULL_URL : String {
+        get {
+            return API_HOST_URL + API_PATH
+        }
+    }
     
     static var getDebugOption : String {
         get {

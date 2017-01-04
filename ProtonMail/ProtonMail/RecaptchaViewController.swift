@@ -50,7 +50,9 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
         
         NSURLCache.sharedURLCache().removeAllCachedResponses();
         MBProgressHUD.showHUDAddedTo(webView, animated: true)
-        let recptcha = NSURL(string: "https://secure.protonmail.com/mobile.html")!
+        //let recptcha = NSURL(string: "https://secure.protonmail.com/mobile.html")!
+        
+        let recptcha = NSURL(string: "https://secure.protonmail.com/captcha/captcha.html?token=signup&client=ios&host=\(AppConstants.URL_HOST)")!
         let requestObj = NSURLRequest(URL: recptcha)
         webView.loadRequest(requestObj)
     }
@@ -175,22 +177,32 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
             startVerify = true;
         }
         
+        if urlString?.contains(".com/fc/api/nojs") == true {
+            startVerify = true;
+        }
+        if urlString?.contains("fc/apps/canvas") == true {
+            startVerify = true;
+        }
+        
         if urlString?.contains("https://www.google.com/intl/en/policies/privacy") == true {
             return false
         }
-        
+
+        if urlString?.contains("how-to-solve-") == true {
+            return false
+        }
         if urlString?.contains("https://www.google.com/intl/en/policies/terms") == true {
             return false
         }
-        
+
         if let _ = urlString?.rangeOfString("https://secure.protonmail.com/expired_recaptcha_response://") {
             viewModel.setRecaptchaToken("", isExpired: true)
             resetWebviewHeight()
             webView.reload()
             return false
         }
-        else if let _ = urlString?.rangeOfString("https://secure.protonmail.com/recaptcha_response://") {
-            if let token = urlString?.stringByReplacingOccurrencesOfString("https://secure.protonmail.com/recaptcha_response://", withString: "", options: NSStringCompareOptions.WidthInsensitiveSearch, range: nil) {
+        else if let _ = urlString?.rangeOfString("https://secure.protonmail.com/captcha/recaptcha_response://") {
+            if let token = urlString?.stringByReplacingOccurrencesOfString("https://secure.protonmail.com/captcha/recaptcha_response://", withString: "", options: NSStringCompareOptions.WidthInsensitiveSearch, range: nil) {
                 viewModel.setRecaptchaToken(token, isExpired: false)
             }
             resetWebviewHeight()
@@ -207,7 +219,6 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
             }
             startVerify = false
         }
-        
         MBProgressHUD.hideHUDForView(self.webView, animated: true)
     }
     

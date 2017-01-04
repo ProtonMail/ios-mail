@@ -44,7 +44,7 @@ class APIService {
         // init lock
         pthread_mutex_init(&mutex, nil)
         
-        sessionManager = AFHTTPSessionManager(baseURL: NSURL(string: AppConstants.BaseURLString)!)
+        sessionManager = AFHTTPSessionManager(baseURL: NSURL(string: AppConstants.API_HOST_URL)!)
         sessionManager.requestSerializer = AFJSONRequestSerializer() as AFHTTPRequestSerializer
         //sessionManager.requestSerializer.timeoutInterval = 20.0;
         sessionManager.securityPolicy.validatesDomainName = false

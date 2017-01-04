@@ -28,26 +28,43 @@ class Snapshot {
         static let Name = "LaunchScreen"
     }
     
+    static var cachedSnapshotView : UIView? = nil
+    
     // create a view and overlay the screen
     func didEnterBackground(application: UIApplication) {
         if let window = application.keyWindow {
-            if let launchScreen = NSBundle.mainBundle().loadNibNamed(NibName.Name, owner: window, options: nil) {
-                let snapshotView = launchScreen.first as? UIView ?? {
-                    let view = UIView(frame: window.bounds)
-                    view.backgroundColor = UIColor.ProtonMail.Blue_85B1DE
-                    return view
-                    }() as UIView
-                
-                snapshotView.tag = Tag.snapshot
-                window.addSubview(snapshotView)
-                snapshotView.mas_makeConstraints { (make) -> Void in
-                    make.top.equalTo()(window)
-                    make.left.equalTo()(window)
-                    make.right.equalTo()(window)
-                    make.bottom.equalTo()(window)
+            guard let view = Snapshot.cachedSnapshotView else {
+                if let launchScreen = NSBundle.mainBundle().loadNibNamed(NibName.Name, owner: window, options: nil),
+                    let snapshotView = launchScreen.first as? UIView {
+                    snapshotView.tag = Tag.snapshot
+                    Snapshot.cachedSnapshotView = snapshotView
+                    showView(window, view: snapshotView)
+                } else {
+                    let v = getDefaultView()
+                    Snapshot.cachedSnapshotView = v
+                    showView(window, view: v)
                 }
+                return
             }
+            showView(window, view: view)
         }
+    }
+    
+    func showView(window: UIWindow, view: UIView) {
+        window.addSubview(view)
+        view.mas_makeConstraints { (make) -> Void in
+            make.top.equalTo()(window)
+            make.left.equalTo()(window)
+            make.right.equalTo()(window)
+            make.bottom.equalTo()(window)
+        }
+    }
+    
+    func getDefaultView() -> UIView {
+        let view = UIView(frame: CGRect.zero)
+        view.backgroundColor = UIColor.ProtonMail.Blue_85B1DE
+        view.tag = Tag.snapshot
+        return view
     }
     
     func willEnterForeground(application: UIApplication) {

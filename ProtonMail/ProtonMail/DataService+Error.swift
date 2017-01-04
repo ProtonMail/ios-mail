@@ -105,7 +105,7 @@ enum UpdatePasswordError : Int, ErrorType, CustomErrorVar {
 }
 
 
-// code start at 0x110000
+// code start at 0x110100
 enum UpdateNotificationEmailError : Int, ErrorType, CustomErrorVar {
     case InvalidUserName = 0x110101
     case CantHashPassword = 0x110102

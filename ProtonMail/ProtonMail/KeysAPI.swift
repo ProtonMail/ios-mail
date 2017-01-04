@@ -146,3 +146,52 @@ public class UpdatePrivateKeyRequest<T : ApiResponse> : ApiRequest<T> {
         return KeysAPI.V_UpdatePrivateKeyRequest
     }
 }
+
+
+//MARK : update user's private keys
+public class SetupKeyRequest<T : ApiResponse> : ApiRequest<T> {
+    
+    let addressID : String!
+    let privateKey : String!
+    let keySalt : String! //base64 encoded need random value
+    
+    let auth : PasswordAuth!
+    
+    
+    init(address_id: String!, private_key : String!, keysalt:String!,
+         auth: PasswordAuth!
+        ) {
+        self.keySalt = keysalt
+        self.addressID = address_id
+        self.privateKey = private_key
+        self.auth = auth
+    }
+    
+    override func toDictionary() -> Dictionary<String, AnyObject>? {
+        let address : [String: AnyObject] = [
+            "AddressID" : self.addressID,
+            "PrivateKey" : self.privateKey
+        ]
+        
+        let out : [String : AnyObject] = [
+            "KeySalt" : self.keySalt,
+            "PrimaryKey": self.privateKey,
+            "AddressKeys" : [address],
+            "Auth" : self.auth.toDictionary()!
+        ]
+
+        return out
+    }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .POST
+    }
+    
+    override public func getRequestPath() -> String {
+        return KeysAPI.Path + "/setup" + AppConstants.getDebugOption
+    }
+    
+    override public func getVersion() -> Int {
+        return KeysAPI.V_KeysSeuptRequest
+    }
+}

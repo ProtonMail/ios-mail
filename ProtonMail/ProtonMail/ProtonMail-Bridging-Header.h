@@ -18,7 +18,8 @@
 
 #import <AFNetworking/AFNetworking.h>
 #import <AFNetworking/UIKit+AFNetworking.h>
-//#import <AFNetworkActivityLogger.h>
+#import <AFNetworkActivityLogger.h>
+#import <AFNetworkActivityConsoleLogger.h>
 #import <Groot/Groot.h>
 #import <Masonry/Masonry.h>
 #import "MBContactPicker.h"
@@ -26,6 +27,7 @@
 #import <NSDate+Helper/NSDate+Helper.h>
 #import <OpenPGP/PMNOpenPgp.h>
 #import <OpenPGP/PMNSrpClient.h>
+#import <OpenPGP/PMNLibVersion.h>
 #import "SwiftTryCatch.h"
 #import <RHAddressBook/AddressBook.h>
 #import <RHAddressBook/RHMultiValue.h>

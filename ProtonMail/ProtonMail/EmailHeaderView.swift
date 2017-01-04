@@ -881,13 +881,15 @@ class EmailHeaderView: UIView {
         guard self.visible == true else {
             return
         }
-        UIView.animateWithDuration(anim == true ? 0.3 : 0.0, animations: { () -> Void in
-            self.layoutIfNeeded()
-            var f = self.frame;
-            f.size.height = self.getHeight();
-            self.frame = f;
-            self.viewDelegate?.updateSize()
-        })
+        dispatch_async(dispatch_get_main_queue()) {
+            UIView.animateWithDuration(anim == true ? 0.3 : 0.0, animations: { () -> Void in
+                self.layoutIfNeeded()
+                var f = self.frame;
+                f.size.height = self.getHeight();
+                self.frame = f;
+                self.viewDelegate?.updateSize()
+            })
+        }
     }
     
     private let kAnimationOption: UIViewAnimationOptions = .TransitionCrossDissolve
