@@ -26,8 +26,8 @@ class MenuViewController: UIViewController {
     
     // MARK: - Private constants
     
-    private let inboxItems = [MenuItem.inbox, MenuItem.drafts, MenuItem.sent, MenuItem.starred, MenuItem.archive, MenuItem.spam, MenuItem.trash]
-    private var otherItems = [MenuItem.contacts, MenuItem.settings, MenuItem.bugs, /*MenuItem.feedback,*/ MenuItem.signout]
+    private let inboxItems : [MenuItem] = [.inbox, .drafts, .sent, .starred, .archive, .spam, .trash, .allmail]
+    private var otherItems : [MenuItem] = [.contacts, .settings, .bugs, /*MenuItem.feedback,*/ .signout]
     private var fetchedLabels: NSFetchedResultsController?
     private var signingOut: Bool = false
     

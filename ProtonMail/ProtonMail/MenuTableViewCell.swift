@@ -48,7 +48,7 @@ class MenuTableViewCell: UITableViewCell {
     }
     
     func configUnreadCount () {
-        let count = lastUpdatedStore.unreadCountForKey(self.item.menuToLocation)
+        let count = lastUpdatedStore.UnreadCountForKey(self.item.menuToLocation)
         if count > 0 {
             unreadLabel.text = "\(count)";
             unreadLabel.hidden = false;
@@ -68,12 +68,6 @@ class MenuTableViewCell: UITableViewCell {
         if highlighted {
             unreadLabel.backgroundColor = UIColor.ProtonMail.Menu_UnreadCountBackground
         }
-//
-//        if highlighted {
-//            self.backgroundColor = UIColor.ProtonMail.Menu_SelectedBackground
-//        } else {
-//            self.backgroundColor = UIColor.ProtonMail.Menu_UnSelectBackground
-//        }
     }
     
     override func setSelected(selected: Bool, animated: Bool) {
@@ -81,11 +75,5 @@ class MenuTableViewCell: UITableViewCell {
         if selected {
             unreadLabel.backgroundColor = UIColor.ProtonMail.Menu_UnreadCountBackground
         }
-//
-//        if selected {
-//            self.backgroundColor = UIColor.ProtonMail.Menu_SelectedBackground
-//        } else {
-//            self.backgroundColor = UIColor.ProtonMail.Menu_UnSelectBackground
-//        }
     }
 }

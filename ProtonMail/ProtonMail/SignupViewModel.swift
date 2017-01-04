@@ -66,7 +66,7 @@ public class SignupViewModel : NSObject {
         fatalError("This method must be overridden")
     }
     
-    func setPasswords(loginPwd:String, mailboxPwd:String) {
+    func setSinglePassword(password: String) {
         fatalError("This method must be overridden")
     }
     

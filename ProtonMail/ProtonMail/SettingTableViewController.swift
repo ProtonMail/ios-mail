@@ -424,17 +424,21 @@ class SettingTableViewController: ProtonMailViewController {
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let  headerCell = tableView.dequeueReusableCellWithIdentifier(HeaderCell) as! CustomHeaderView
+        let headerCell = tableView.dequeueReusableCellWithIdentifier(HeaderCell) as! CustomHeaderView
         if(setting_headers[section] == SettingSections.Version){
+            var appVersion = "Unkonw Version"
+            var libVersion = "| LibVersion: 1.0.0"
+            
             if let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String {
-                if let build = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"] as? String {
-                    headerCell.headerText.text = NSLocalizedString("Version ") + version + " (\(build))"
-                } else {
-                    headerCell.headerText.text = NSLocalizedString("Version ") + version
-                }
-            } else {
-                headerCell.headerText.text = NSLocalizedString("Unkonw Version")
+                appVersion = "AppVersion: \(version)"
             }
+            if let build = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"] as? String {
+                appVersion = appVersion.stringByAppendingString(" (\(build))")
+            }
+            
+            let lib_v = PMNLibVersion.getLibVersion()
+            libVersion = "| LibVersion: \(lib_v)"
+            headerCell.headerText.text = NSLocalizedString(appVersion + " " + libVersion)
         }
         else
         {

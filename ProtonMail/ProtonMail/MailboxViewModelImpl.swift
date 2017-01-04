@@ -77,21 +77,26 @@ public class MailboxViewModelImpl : MailboxViewModel {
         }
     }
     
-    public override func deleteMessage(msg: Message) {
+    public override func deleteMessage(msg: Message) -> Bool  {
+        var needShowMessage = true
         if msg.managedObjectContext != nil {
             switch(self.location!) {
             case .trash, .spam:
+                msg.removeLocationFromLabels(self.location, location: .deleted)
+                msg.needsUpdate = true
                 msg.location = .deleted
+                needShowMessage = false
             default:
+                msg.removeLocationFromLabels(self.location, location: .trash)
+                msg.needsUpdate = true
                 self.updateBadgeNumberWhenMove(msg, to: .deleted)
-                //self.updateBadgeNumberMoveOutInbox(msg)
                 msg.location = .trash
             }
-            msg.needsUpdate = true
             if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
                 PMLog.D("error: \(error)")
             }
         }
+        return needShowMessage
     }
     
     public override func isDrafts() -> Bool {

@@ -107,12 +107,22 @@ class MailboxMessageCell: MCSwipeTableViewCell {
     
     
     // MARK: - Cell configuration
-    
     func configureCell(message: Message, showLocation : Bool) {
         self.title.text = message.subject
     
+        var title = ""
         if showLocation {
-            self.locationLabel.text = " \(message.location.title) "
+            let locations = message.getLocationFromLabels()
+            for loc in locations {
+                if loc != .allmail {
+                    title = loc.title
+                    break
+                }
+            }
+        }
+        
+        if showLocation && !title.isEmpty {
+            self.locationLabel.text = " \(title) "
             locationWidth.constant = self.locationLabel.sizeThatFits(CGSizeZero).width
             loctionRightSpace.constant = 4.0;
         } else {
@@ -167,7 +177,7 @@ class MailboxMessageCell: MCSwipeTableViewCell {
             labelsView.configLables( message.displaySender, labels: labels)
         }
         
-        if (message.isRead || message.location == .draft) {//draft alway show as read #MOBA-2602
+        if (message.isRead) {
             changeStyleToReadDesign()
         } else {
             changeStyleToUnreadDesign()

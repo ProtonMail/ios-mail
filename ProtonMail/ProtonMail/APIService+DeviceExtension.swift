@@ -61,7 +61,7 @@ extension APIService {
         ]
         
         setApiVesion(1, appVersion: 1)
-        request(method: .POST, path: AppConstants.BaseAPIPath + DevicePath.basePath, parameters: parameters, completion: completion)
+        request(method: .POST, path: AppConstants.API_PATH + DevicePath.basePath, parameters: parameters, completion: completion)
     }
     
     func deviceUnregister() {
@@ -83,7 +83,7 @@ extension APIService {
                     }
                 }
                 setApiVesion(1, appVersion: 1)
-                request(method: HTTPMethod.POST, path: AppConstants.BaseAPIPath + DevicePath.basePath + "/delete", parameters: parameters, completion: completionWrapper)
+                request(method: HTTPMethod.POST, path: AppConstants.API_PATH + DevicePath.basePath + "/delete", parameters: parameters, completion: completionWrapper)
             }
         }
     }
@@ -101,7 +101,7 @@ extension APIService {
                 let completionWrapper: CompletionBlock = {task, response, error in
                 }
                 setApiVesion(1, appVersion: 1)
-                request(method: HTTPMethod.POST, path: AppConstants.BaseAPIPath + DevicePath.basePath + "/delete", parameters: parameters, completion: completionWrapper)
+                request(method: HTTPMethod.POST, path: AppConstants.API_PATH + DevicePath.basePath + "/delete", parameters: parameters, completion: completionWrapper)
             }
         }
         
@@ -112,7 +112,7 @@ extension APIService {
             ]
             
             setApiVesion(1, appVersion: 1)
-            request(method: HTTPMethod.POST, path: AppConstants.BaseAPIPath + DevicePath.basePath + "/delete", parameters: parameters, completion:{ (task, response, error) -> Void in
+            request(method: HTTPMethod.POST, path: AppConstants.API_PATH + DevicePath.basePath + "/delete", parameters: parameters, completion:{ (task, response, error) -> Void in
                 if error == nil {
                     self.badToken = ""
                     self.badUID = ""

@@ -97,7 +97,7 @@ extension SWRevealViewController {
 
 //move to a manager class later
 let sharedInternetReachability : Reachability = Reachability.reachabilityForInternetConnection()
-let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.BaseURLString)
+let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.API_HOST_URL)
 
 extension AppDelegate: UIApplicationDelegate {
     func application(application: UIApplication, supportedInterfaceOrientationsForWindow window: UIWindow?) -> UIInterfaceOrientationMask {
@@ -133,19 +133,22 @@ extension AppDelegate: UIApplicationDelegate {
         shareViewModelFactoy = ViewModelFactoryProduction()
         AFNetworkActivityIndicatorManager.sharedManager().enabled = true
         
+        let tmp = UIApplication.sharedApplication().releaseMode()
         //net work debug option
-        //AFNetworkActivityLogger.sharedLogger().startLogging()
-        //AFNetworkActivityLogger.sharedLogger().level = AFHTTPRequestLoggerLevel.AFLoggerLevelDebug
+        if let logger = AFNetworkActivityLogger.sharedLogger().loggers.first as? AFNetworkActivityConsoleLogger {
+            logger.level = .AFLoggerLevelDebug;
+        }
+        AFNetworkActivityLogger.sharedLogger().startLogging()
         
+        //
         sharedInternetReachability.startNotifier()
         
         setupWindow()
         sharedMessageDataService.launchCleanUpIfNeeded()
         sharedPushNotificationService.registerForRemoteNotifications()
         
-        let tmp = UIApplication.sharedApplication().releaseMode()
         if tmp != .Dev && tmp != .Sim {
-            //AFNetworkActivityLogger.sharedLogger().stopLogging()
+            AFNetworkActivityLogger.sharedLogger().stopLogging()
         }
         sharedPushNotificationService.setLaunchOptions(launchOptions)
         
@@ -168,11 +171,6 @@ extension AppDelegate: UIApplicationDelegate {
         return true
     }
     
-    func applicationWillResignActive(application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-    }
-    
     func applicationDidEnterBackground(application: UIApplication) {
         Snapshot().didEnterBackground(application)
         if sharedUserDataService.isSignedIn {
@@ -188,6 +186,11 @@ extension AppDelegate: UIApplicationDelegate {
             (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: false)
             sharedVMService.resetComposerView()
         }
+    }
+    
+    func applicationWillResignActive(application: UIApplication) {
+        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
+        // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
     
     func applicationDidBecomeActive(application: UIApplication) {
@@ -211,8 +214,6 @@ extension AppDelegate: UIApplicationDelegate {
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
         PMLog.D("receive \(userInfo)")
-        
-        print("receive: \(userInfo)")
         if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
             var timeIndex : Int = -1
             if let t = Int(userCachedStatus.lockTime) {
