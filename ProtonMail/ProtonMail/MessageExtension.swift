@@ -90,7 +90,7 @@ extension Message {
         for l in labels {
             if let label = l as? Label {
                 if let l_id = Int(label.labelID) {
-                    if let new_loc = MessageLocation(rawValue: l_id) {
+                    if let new_loc = MessageLocation(rawValue: l_id) where new_loc != .starred {
                         locations.append(new_loc)
                     }
                 }

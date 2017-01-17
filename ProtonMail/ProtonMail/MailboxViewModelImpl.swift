@@ -118,6 +118,15 @@ public class MailboxViewModelImpl : MailboxViewModel {
         }
     }
     
+    override public func showLocation() -> Bool {
+        switch(self.location!) {
+        case .allmail:
+            return true
+        default:
+            return false
+        }
+    }
+    
     public override func isCurrentLocation(l: MessageLocation) -> Bool {
         return self.location == l
     }
