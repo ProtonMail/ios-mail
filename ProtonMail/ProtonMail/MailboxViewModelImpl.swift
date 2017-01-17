@@ -63,6 +63,8 @@ public class MailboxViewModelImpl : MailboxViewModel {
             return action != .spam && action != .trash && action != .archive
         case .trash:
             return action != .trash
+        case .allmail:
+            return false;
         default:
             return true
         }

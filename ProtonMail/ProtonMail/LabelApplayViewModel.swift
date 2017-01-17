@@ -99,6 +99,7 @@ public class LabelViewModelImpl : LabelViewModel {
         
         if archiveMessage {
             for message in self.messages {
+                message.removeLocationFromLabels(message.location, location: .archive)
                 message.needsUpdate = false
                 message.location = .archive
             }

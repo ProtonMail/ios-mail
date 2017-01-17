@@ -57,7 +57,7 @@ public class MailboxViewModel {
     
     public func starMessage(msg: Message) {
         self.updateBadgeNumberWhenMove(msg, to: .starred)
-        msg.removeLocationFromLabels(msg.location, location: .starred)
+        msg.setLabelLocation(.starred)
         msg.isStarred = true
         msg.needsUpdate = true
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
