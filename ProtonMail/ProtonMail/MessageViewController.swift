@@ -553,7 +553,11 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     }
     
     func starredChanged(isStarred: Bool) {
-        self.message.removeLocationFromLabels(message.location, location: .starred)
+        if isStarred {
+            self.message.setLabelLocation(.starred)
+        } else {
+            self.message.removeLocationFromLabels(.starred, location: .deleted)
+        }
         self.messagesSetValue(setValue: isStarred, forKey: Message.Attributes.isStarred)
     }
     
