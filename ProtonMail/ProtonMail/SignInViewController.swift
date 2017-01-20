@@ -94,9 +94,11 @@ class SignInViewController: ProtonMailViewController {
         let signinFlow = getViewFlow()
         switch signinFlow {
         case .RequirePin:
+            sharedUserDataService.isSignedIn = false
             self.performSegueWithIdentifier(kSegueToPinCodeViewNoAnimation, sender: self)
             break
         case .RequireTouchID:
+            sharedUserDataService.isSignedIn = false
             showTouchID(false)
             authenticateUser()
             break
