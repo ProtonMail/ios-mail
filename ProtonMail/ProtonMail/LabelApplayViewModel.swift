@@ -17,9 +17,17 @@ public class LabelViewModelImpl : LabelViewModel {
         self.messages = msg
         self.labelMessages = Dictionary<String, LabelMessageModel>()
     }
-    
+
     override public func showArchiveOption() -> Bool {
-        return true
+        if let msg = messages.first {
+            let locations = msg.getLocationFromLabels()
+            for loc in locations {
+                if loc == .outbox {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
     
     public override func getApplyButtonText() -> String {
