@@ -111,7 +111,7 @@ public class MailboxViewModelImpl : MailboxViewModel {
     
     public override func isDelete () -> Bool {
         switch(self.location!) {
-        case .trash, .spam:
+        case .trash, .spam, .draft:
             return true;
         default:
             return false
