@@ -59,7 +59,7 @@ public class MailboxViewModelImpl : MailboxViewModel {
             return action != .star
         case .spam:
             return action != .spam
-        case .draft:
+        case .draft, .outbox:
             return action != .spam && action != .trash && action != .archive
         case .trash:
             return action != .trash

@@ -399,6 +399,10 @@ class MailboxViewController: ProtonMailViewController {
                 locations = [.spam : .Default, .archive : .Default]
             }
             
+            if (viewModel.isCurrentLocation(.outbox)) {
+                locations = [:];
+            }
+            
             for (location, style) in locations {
                 if !viewModel.isCurrentLocation(location) {
                     alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
@@ -1076,6 +1080,8 @@ class MailboxViewController: ProtonMailViewController {
             
             if (viewModel.isDrafts()) {
                 rightButtons = [self.removeBarButtonItem]
+            } else if (viewModel.isCurrentLocation(.outbox)) {
+                rightButtons = [self.moreBarButtonItem, self.labelBarButtonItem, self.unreadBarButtonItem]
             } else {
                 rightButtons = [self.moreBarButtonItem, self.removeBarButtonItem, self.labelBarButtonItem, self.unreadBarButtonItem]
             }
