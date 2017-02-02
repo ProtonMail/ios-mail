@@ -961,6 +961,9 @@ class MessageDataService {
                         if response != nil {
                             //TODO need check the respons code
                             if var msg: Dictionary<String,AnyObject> = response?["Message"] as? Dictionary<String,AnyObject> {
+                                
+                                print("\(msg)");
+                                
                                 msg.removeValueForKey("Location")
                                 msg.removeValueForKey("Starred")
                                 msg.removeValueForKey("test")
