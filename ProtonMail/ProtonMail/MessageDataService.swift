@@ -973,7 +973,7 @@ class MessageDataService {
                                         message_out.isDetailDownloaded = true
                                         message_out.needsUpdate = true
                                         message_out.isRead = true
-                                        //message_out.managedObjectContext?.saveUpstreamIfNeeded()
+                                        message_out.managedObjectContext?.saveUpstreamIfNeeded()
                                         let tmpError = context.saveUpstreamIfNeeded()
                                         dispatch_async(dispatch_get_main_queue()) {
                                             completion(task: task, response: response, message: message_out, error: tmpError)
