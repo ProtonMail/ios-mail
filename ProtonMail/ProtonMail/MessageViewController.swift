@@ -49,7 +49,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         
         self.updateHeader()
         
-        if (self.message.hasAttachments) {
+        if (self.message.numAttachments.intValue > 0) {
             let atts = self.message.attachments.allObjects as! [Attachment]
             self.emailView?.updateEmailAttachment(atts);
         }
@@ -364,7 +364,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     // MARK : private function
     private func updateEmailBody (force forceReload : Bool = false) {
-        if (self.message.hasAttachments) {
+        if (self.message.numAttachments.intValue > 0) {
             let atts = self.message.attachments.allObjects as! [Attachment]
             self.emailView?.updateEmailAttachment(atts);
         }
@@ -433,7 +433,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     // MARK : private function
     private func updateEmailBodyWithError (error:String) {
-        if (self.message.hasAttachments) {
+        if (self.message.numAttachments.intValue > 0 ) {
             let atts = self.message.attachments.allObjects as! [Attachment]
             self.emailView?.updateEmailAttachment(atts);
         }

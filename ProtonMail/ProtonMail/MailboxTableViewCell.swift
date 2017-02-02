@@ -119,9 +119,9 @@ class MailboxTableViewCell: UITableViewCell {
         }
         
         self.encryptedImage.hidden = !message.checkIsEncrypted()
-        self.attachImage.hidden = !message.hasAttachments
+        self.attachImage.hidden = !(message.numAttachments.intValue > 0)
         
-        if message.hasAttachments {
+        if message.numAttachments.intValue > 0 {
             self.attachmentConstraint.constant = self.kAttachmentWidth
         } else {
             self.attachmentConstraint.constant = 0

@@ -1621,6 +1621,7 @@ class MessageDataService {
                                     
                                     if attachments.count > 0 {
                                         message.hasAttachments = true;
+                                        message.numAttachments = attachments.count
                                     }
                                     
                                     message.needsUpdate = false

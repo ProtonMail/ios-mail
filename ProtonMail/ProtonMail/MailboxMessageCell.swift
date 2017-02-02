@@ -146,7 +146,7 @@ class MailboxMessageCell: MCSwipeTableViewCell {
             break;
         }
         
-        if message.hasAttachments {
+        if message.numAttachments.intValue > 0 {
             self.attachmentWidth.constant = kIconsWidth
         } else {
             self.attachmentWidth.constant = 0
