@@ -971,10 +971,14 @@ class MessageDataService {
                                     if let message_out = try GRTJSONSerialization.objectWithEntityName(Message.Attributes.entityName, fromJSONDictionary: msg, inContext: context) as? Message {
                                         message_out.messageStatus = 1
                                         message_out.isDetailDownloaded = true
-                                        message_out.needsUpdate = true
-                                        message_out.isRead = true
+                                        message_out.needsUpdate = false
+                                        if message_out.isRead == false {
+                                            message_out.isRead = true
+                                            self.queue(message_out, action: .read)
+                                        }
                                         message_out.managedObjectContext?.saveUpstreamIfNeeded()
                                         let tmpError = context.saveUpstreamIfNeeded()
+                                        
                                         dispatch_async(dispatch_get_main_queue()) {
                                             completion(task: task, response: response, message: message_out, error: tmpError)
                                         }
