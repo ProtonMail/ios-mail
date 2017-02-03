@@ -184,6 +184,10 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
             startVerify = true;
         }
         
+        if urlString?.contains("about:blank") == true {
+            startVerify = true;
+        }
+        
         if urlString?.contains("https://www.google.com/intl/en/policies/privacy") == true {
             return false
         }
