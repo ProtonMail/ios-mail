@@ -541,6 +541,11 @@ class MessageDataService {
             }
         }
         
+        var badgeNumber = lastUpdatedStore.UnreadCountForKey(.inbox)
+        if  badgeNumber < 0 {
+            badgeNumber = 0
+        }
+        UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
         
         //MessageLocation
         //        var badgeNumber = inboxCount //inboxCount + draftCount + sendCount + spamCount + starCount + trashCount;
