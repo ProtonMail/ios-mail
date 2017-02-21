@@ -541,6 +541,11 @@ class MessageDataService {
             }
         }
         
+        var badgeNumber = lastUpdatedStore.UnreadCountForKey(.inbox)
+        if  badgeNumber < 0 {
+            badgeNumber = 0
+        }
+        UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
         
         //MessageLocation
         //        var badgeNumber = inboxCount //inboxCount + draftCount + sendCount + spamCount + starCount + trashCount;
@@ -968,17 +973,31 @@ class MessageDataService {
                                 msg.removeValueForKey("Starred")
                                 msg.removeValueForKey("test")
                                 do {
+                                    
+                                    var needOffset = 0
+                                    if let msg = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                                        needOffset = msg.isRead ? 0 : -1
+                                    }
                                     if let message_out = try GRTJSONSerialization.objectWithEntityName(Message.Attributes.entityName, fromJSONDictionary: msg, inContext: context) as? Message {
                                         message_out.messageStatus = 1
                                         message_out.isDetailDownloaded = true
                                         message_out.needsUpdate = false
+                                        
+                                        var count = lastUpdatedStore.UnreadCountForKey(.inbox)
                                         if message_out.isRead == false {
                                             message_out.isRead = true
                                             self.queue(message_out, action: .read)
+
+                                            count = count + needOffset
+                                            if count < 0 {
+                                                count = 0
+                                            }
+                                            lastUpdatedStore.updateUnreadCountForKey(.inbox, count: count)
                                         }
                                         message_out.managedObjectContext?.saveUpstreamIfNeeded()
                                         let tmpError = context.saveUpstreamIfNeeded()
                                         
+                                        UIApplication.sharedApplication().applicationIconBadgeNumber = count
                                         dispatch_async(dispatch_get_main_queue()) {
                                             completion(task: task, response: response, message: message_out, error: tmpError)
                                         }
