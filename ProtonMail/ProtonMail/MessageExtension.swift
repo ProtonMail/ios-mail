@@ -84,6 +84,86 @@ extension Message {
         }
     }
     
+    func getLocationFromLabels() ->  [MessageLocation] {
+        var locations = [MessageLocation]()
+        let labels = self.labels
+        for l in labels {
+            if let label = l as? Label {
+                if let l_id = Int(label.labelID) {
+                    if let new_loc = MessageLocation(rawValue: l_id) where new_loc != .starred {
+                        locations.append(new_loc)
+                    }
+                }
+                
+            }
+        }
+        
+        return locations
+    }
+    
+    func setLabelLocation(location : MessageLocation) {
+        if let context = self.managedObjectContext {
+            let toLableID = String(location.rawValue)
+            let labelObjs = self.mutableSetValueForKey("labels")
+            
+            if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
+                var exsited = false
+                for l in labelObjs {
+                    if let label = l as? Label {
+                        if label == toLabel {
+                            exsited = true
+                            break
+                        }
+                    }
+                }
+                if !exsited {
+                    labelObjs.addObject(toLabel)
+                }
+            }
+            
+            self.setValue(labelObjs, forKey: "labels")
+            if let error = context.saveUpstreamIfNeeded() {
+                PMLog.D("error: \(error)")
+            }
+        }
+    }
+    
+    func removeLocationFromLabels(currentlocation:MessageLocation, location : MessageLocation) {
+        if let context = self.managedObjectContext {
+            let fromLabelID = String(currentlocation.rawValue)
+            let toLableID = String(location.rawValue)
+            let labelObjs = self.mutableSetValueForKey("labels")
+            for l in labelObjs {
+                if let label = l as? Label {
+                    if label.labelID == fromLabelID {
+                        labelObjs.removeObject(label)
+                        break
+                    }
+                }
+            }
+            
+            if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
+                var exsited = false
+                for l in labelObjs {
+                    if let label = l as? Label {
+                        if label == toLabel {
+                            exsited = true
+                            break
+                        }
+                    }
+                }
+                if !exsited {
+                    labelObjs.addObject(toLabel)
+                }
+            }
+            
+            self.setValue(labelObjs, forKey: "labels")
+            if let error = context.saveUpstreamIfNeeded() {
+                PMLog.D("error: \(error)")
+            }
+        }
+    }
+    
     var subject : String {
         return title
     }
@@ -339,7 +419,7 @@ extension String {
         let boundarLine = "boundary=".dataUsingEncoding(NSASCIIStringEncoding)!
         let boundaryRange = data.rangeOfData(boundarLine, options: NSDataSearchOptions.init(rawValue: 0), range: NSMakeRange(0, len))
         if boundaryRange.location == NSNotFound {
-            return "";
+            return self.ln2br()
         }
         
         //new len
@@ -348,7 +428,7 @@ extension String {
         let lineEnd = "\n".dataUsingEncoding(NSASCIIStringEncoding)!;
         let nextLine = data.rangeOfData(lineEnd, options: NSDataSearchOptions.init(rawValue: 0), range: NSMakeRange(0, len))
         if nextLine.location == NSNotFound {
-            return "";
+            return self.ln2br()
         }
         let boundary = data.subdataWithRange(NSMakeRange(0, nextLine.location))
         var boundaryString = NSString(data: boundary, encoding: NSUTF8StringEncoding) as! String
@@ -367,7 +447,7 @@ extension String {
         var firstboundaryRange = data.rangeOfData(nextBoundaryLine, options: NSDataSearchOptions(rawValue: 0), range: NSMakeRange(0, len))
         
         if firstboundaryRange.location == NSNotFound {
-            return "";
+            return self.ln2br()
         }
         
         while true {

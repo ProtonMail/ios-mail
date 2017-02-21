@@ -104,7 +104,7 @@ class CoreDataService {
         dict[NSUnderlyingErrorKey] = error
         //TODO:: need monitor
         let alertError = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict as [NSObject : AnyObject])
-        NSLog("Unresolved error \(error), \(error.userInfo)")
+        PMLog.D("Unresolved error \(error), \(error.userInfo)")
         
         let alertController = alertError.alertController()
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Close"), style: .Default, handler: { (action) -> Void in

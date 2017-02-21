@@ -36,7 +36,7 @@ class HumanCheckMenuViewController: UIViewController {
             self.presentViewController(alert, animated: true, completion: nil)
         } else {
             for dir in directs {
-                if dir == "recaptcha" {
+                if dir == "captcha" {
                     recaptchaViewConstraint.constant = kButtonHeight
                 } else if dir == "email" {
                     emailViewConstraint.constant = kButtonHeight

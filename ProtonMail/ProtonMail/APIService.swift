@@ -44,7 +44,7 @@ class APIService {
         // init lock
         pthread_mutex_init(&mutex, nil)
         
-        sessionManager = AFHTTPSessionManager(baseURL: NSURL(string: AppConstants.BaseURLString)!)
+        sessionManager = AFHTTPSessionManager(baseURL: NSURL(string: AppConstants.API_HOST_URL)!)
         sessionManager.requestSerializer = AFJSONRequestSerializer() as AFHTTPRequestSerializer
         //sessionManager.requestSerializer.timeoutInterval = 20.0;
         sessionManager.securityPolicy.validatesDomainName = false
@@ -145,24 +145,16 @@ class APIService {
     
     internal func fetchAuthCredential(completion: AuthCredentialBlock) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
-            PMLog.D("Read Waiting!")
             pthread_mutex_lock(&self.mutex)
-            PMLog.D("Enter Reading!!")
-            
             //fetch auth info
             if let credential = AuthCredential.fetchFromKeychain() {
-                PMLog.D("\(credential.description)")
-                
+                //PMLog.D("\(credential.description)")
                 if !credential.isExpired { // access token time is valid
                     if (credential.password ?? "").isEmpty { // mailbox pwd is empty should show error and logout
                         
                         //clean auth cache let user relogin
                         AuthCredential.clearFromKeychain()
-                        
-                        PMLog.D("Exiting Reading!!!")
                         pthread_mutex_unlock(&self.mutex)
-                        PMLog.D("Exit Reading!!!!")
-                        
                         dispatch_async(dispatch_get_main_queue()) {
                             completion(nil, NSError.AuthCachePassEmpty())
                             UserTempCachedStatus.backup()
@@ -172,23 +164,15 @@ class APIService {
                         }
                     } else {
                         self.sessionManager.requestSerializer.setAuthorizationHeaderFieldWithCredential(credential)
-                        
-                        PMLog.D("Exiting Reading!!!")
                         pthread_mutex_unlock(&self.mutex)
-                        PMLog.D("Exit Reading!!!!")
-                        
                         dispatch_async(dispatch_get_main_queue()) {
                             completion(credential, nil)
                         }
                     }
                 } else {
                     if (credential.password ?? "").isEmpty {
-                        
                         AuthCredential.clearFromKeychain()
-                        
-                        PMLog.D("Exiting Reading!!!")
                         pthread_mutex_unlock(&self.mutex)
-                        PMLog.D("Exit Reading!!!!")
                         dispatch_async(dispatch_get_main_queue()) {
                             completion(nil, NSError.AuthCachePassEmpty())
                             UserTempCachedStatus.backup()
@@ -198,11 +182,7 @@ class APIService {
                         }
                     } else {
                         self.authRefresh (credential.password  ?? "") { (task, authCredential, error) -> Void in
-                            
-                            PMLog.D("Exiting Reading!!!")
                             pthread_mutex_unlock(&self.mutex)
-                            PMLog.D("Exit Reading!!!!")
-                            
                             if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
                                 AuthCredential.clearFromKeychain()
                                 dispatch_async(dispatch_get_main_queue()) {
@@ -228,11 +208,7 @@ class APIService {
                 }
             } else { //the cache have issues
                 AuthCredential.clearFromKeychain()
-                
-                PMLog.D("Exiting Reading!!!")
                 pthread_mutex_unlock(&self.mutex)
-                PMLog.D("Exit Reading!!!!")
-                
                 dispatch_async(dispatch_get_main_queue()) {
                     if sharedUserDataService.isSignedIn {
                         completion(nil, NSError.authCacheBad())

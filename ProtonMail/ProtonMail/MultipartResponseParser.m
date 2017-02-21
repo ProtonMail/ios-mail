@@ -86,7 +86,7 @@ NSString *const kMultipartBodyKey = @"body";
 
     NSRange keySeparatorRange = [data rangeOfData:keySeparator options:0 range:NSMakeRange(0, len)];
     if (keySeparatorRange.location == NSNotFound) {
-        NSLog( @"%s warning: bad header line: %@", __PRETTY_FUNCTION__, [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding] );
+        NSLog( @"splitHeaderFromData: %s warning: bad header line: %@", __PRETTY_FUNCTION__, [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding] );
         return;
     }
 

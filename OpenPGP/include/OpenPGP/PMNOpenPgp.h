@@ -49,6 +49,17 @@
                                              oldPassphrase:(nonnull NSString *)oldPassphrase
                                              newPassphrase:(nonnull NSString *)newPassphrase;
 
+/**decrypt message use the address key ring with password */
++ (nonnull NSString *)decryptMessageWithAddress:(nonnull PMNAddress *)address
+                                    encryptText:(nonnull NSString *)encryptText
+                                      passphras:(nonnull NSString *)passphras;
+
+/**decrypt attachment use the address key ring with password */
++ (nonnull NSData *)decryptAttachmentWithAddress:(nonnull PMNAddress *)address
+                                             key:(nonnull NSData *)key
+                                            data:(nonnull NSData *)data
+                                       passphras:(nonnull NSString *)passphras;
+
 /**Random bits */
 + (nonnull NSData *)randomBits:(int32_t)bits;
 

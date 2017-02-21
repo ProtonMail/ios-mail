@@ -22,7 +22,7 @@ extension APIService {
     typealias UserInfoBlock = (UserInfo?, String?, NSError?) -> Void
 
     private struct UserPath {
-        static let base = AppConstants.BaseAPIPath + "/users"
+        static let base = AppConstants.API_PATH + "/users"
     }
 
     func userPublicKeyForUsername(username: String, completion: CompletionBlock?) {

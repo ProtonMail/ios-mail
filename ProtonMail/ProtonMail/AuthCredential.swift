@@ -26,7 +26,7 @@ class AuthCredential: NSObject, NSCoding {
     var refreshToken: String!
     var userID: String!
     var expiration: NSDate!
-    var privateKey : String!
+    var privateKey : String?
     var plainToken : String?
     var password : String?
     var passwordKeySalt : String?
@@ -56,7 +56,11 @@ class AuthCredential: NSObject, NSCoding {
     }
     
     func setupToken (password:String) throws {
-        self.plainToken = try self.encryptToken.decryptMessageWithSinglKey(self.privateKey, passphrase: password)
+        if let key = self.privateKey {
+            self.plainToken = try self.encryptToken.decryptMessageWithSinglKey(key, passphrase: password)
+        } else {
+            self.plainToken = encryptToken
+        }
         self.password = password;
         self.storeInKeychain()
     }
@@ -128,13 +132,13 @@ class AuthCredential: NSObject, NSCoding {
         #if DEBUG
             if let data = authDebugCached.dataForKey(Key.keychainStore) {
                 if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? AuthCredential {
-                    return authCredential.privateKey
+                    return authCredential.privateKey ?? ""
                 }
             }
         #else
             if let data = UICKeyChainStore.dataForKey(Key.keychainStore) {
                 if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? AuthCredential {
-                    return authCredential.privateKey
+                    return authCredential.privateKey ?? ""
                 }
             }
         #endif

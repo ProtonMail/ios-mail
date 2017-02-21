@@ -24,16 +24,18 @@ public class LastUpdatedStore : SharedCacheBase {
 
     
     private struct Key {
-        static let lastInboxesUpdated = "LastInboxesUpdated"
-        static let lastLabelsUpdated = "LastLabelsUpdated"
-        static let lastEventID = "lastEventID"
-        static let unreadMessageCount = "unreadMessageCount"
-        static let mailboxUnreadCount = "MailboxUnreadCount"
-        static let labelsUnreadCount = "LabelsUnreadCount"
+        static let labelsUnreadCount = "LabelsUnreadCount"  //for inbox & labels
+        static let lastLabelsUpdated = "LastLabelsUpdated" //for inbox & labels
         
+        static let unreadMessageCount = "unreadMessageCount"  //total unread
+        
+        static let lastEventID = "lastEventID"  //
         //
-        static let lastCantactsUpdated = "LastCantactsUpdated"
-
+        static let lastCantactsUpdated = "LastCantactsUpdated" //
+        
+        //Removed at 1.5.5 still need for cleanup
+        static let mailboxUnreadCount = "MailboxUnreadCount"
+        static let lastInboxesUpdated = "LastInboxesUpdated"
     }
     
     
@@ -90,15 +92,15 @@ public class LastUpdatedStore : SharedCacheBase {
     }
 
     
-    private var lastInboxesUpdateds: Dictionary<String, UpdateTime> {
-        get {
-            return (getShared().customObjectForKey(Key.lastInboxesUpdated) as? Dictionary<String, UpdateTime>) ?? [:]
-        }
-        set {
-            getShared().setCustomValue(newValue, forKey: Key.lastInboxesUpdated)
-            getShared().synchronize()
-        }
-    }
+//    private var lastInboxesUpdateds: Dictionary<String, UpdateTime> {
+//        get {
+//            return (getShared().customObjectForKey(Key.lastInboxesUpdated) as? Dictionary<String, UpdateTime>) ?? [:]
+//        }
+//        set {
+//            getShared().setCustomValue(newValue, forKey: Key.lastInboxesUpdated)
+//            getShared().synchronize()
+//        }
+//    }
     
     private var lastLabelsUpdateds: Dictionary<String, UpdateTime> {
         get {
@@ -110,23 +112,12 @@ public class LastUpdatedStore : SharedCacheBase {
         }
     }
     
-    
-    private var mailboxUnreadCounts: Dictionary<String, Int> {
-        get {
-            return (getShared().customObjectForKey(Key.mailboxUnreadCount) as? Dictionary<String, Int>) ?? [:]
-        }
-        set {
-            getShared().setCustomValue(newValue, forKey: Key.mailboxUnreadCount)
-            getShared().synchronize()
-        }
-    }
-    
     private var labelsUnreadCounts: Dictionary<String, Int> {
         get {
-            return (getShared().customObjectForKey(Key.mailboxUnreadCount) as? Dictionary<String, Int>) ?? [:]
+            return (getShared().customObjectForKey(Key.labelsUnreadCount) as? Dictionary<String, Int>) ?? [:]
         }
         set {
-            getShared().setCustomValue(newValue, forKey: Key.mailboxUnreadCount)
+            getShared().setCustomValue(newValue, forKey: Key.labelsUnreadCount)
             getShared().synchronize()
         }
     }
@@ -156,13 +147,18 @@ public class LastUpdatedStore : SharedCacheBase {
     clear the last update time cache
     */
     public func clear() {
+        //in use
         getShared().removeObjectForKey(Key.lastCantactsUpdated)
         getShared().removeObjectForKey(Key.lastLabelsUpdated)
-        getShared().removeObjectForKey(Key.lastInboxesUpdated)
         getShared().removeObjectForKey(Key.lastEventID)
         getShared().removeObjectForKey(Key.unreadMessageCount)
-        getShared().removeObjectForKey(Key.mailboxUnreadCount)
         getShared().removeObjectForKey(Key.labelsUnreadCount)
+        
+        //removed
+        getShared().removeObjectForKey(Key.mailboxUnreadCount)
+        getShared().removeObjectForKey(Key.lastInboxesUpdated)
+        
+        //sync
         getShared().synchronize()
     }
     
@@ -175,7 +171,8 @@ public class LastUpdatedStore : SharedCacheBase {
     :returns: the Update Time
     */
     public func inboxLastForKey(location : MessageLocation) -> UpdateTime {
-        return lastInboxesUpdateds[location.key] ?? UpdateTime.distantPast()
+        let str_location = String(location.rawValue)
+        return lastLabelsUpdateds[str_location] ?? UpdateTime.distantPast()
     }
     
     /**
@@ -185,9 +182,9 @@ public class LastUpdatedStore : SharedCacheBase {
     :param: updateTime the new update time
     */
     public func updateInboxForKey(location : MessageLocation, updateTime: UpdateTime) -> Void {
-        return lastInboxesUpdateds[location.key] = updateTime
+        let str_location = String(location.rawValue)
+        return lastLabelsUpdateds[str_location] = updateTime
     }
-    
     
     public func labelsLastForKey(labelID : String) -> UpdateTime {
         return lastLabelsUpdateds[labelID] ?? UpdateTime.distantPast()
@@ -198,50 +195,55 @@ public class LastUpdatedStore : SharedCacheBase {
     }
     
     
-    public func resetUnreadCounts() {
-        getShared().removeObjectForKey(Key.mailboxUnreadCount)
-        getShared().synchronize()
+    // location & label: message unread count
+    public func UnreadCountForKey(labelID : String) -> Int {
+        return labelsUnreadCounts[labelID] ?? 0
+    }
+    public func UnreadCountForKey(location : MessageLocation) -> Int {
+        let str_location = String(location.rawValue)
+        return labelsUnreadCounts[str_location] ?? 0
     }
     
-    public func unreadCountForKey(location : MessageLocation) -> Int {
-        return mailboxUnreadCounts[location.key] ?? 0
-    }
-    public func updateUnreadCountForKey(location : MessageLocation, count: Int) -> Void {
-        return mailboxUnreadCounts[location.key] = count
-    }
-    
-    public func resetLabelsUnreadCounts() {
-        getShared().removeObjectForKey(Key.labelsUnreadCount)
-        getShared().synchronize()
-    }
-    
-    public func unreadLabelsCountForKey(labelID : String) -> Int {
-        return mailboxUnreadCounts[labelID] ?? 0
-    }
     public func updateLabelsUnreadCountForKey(labelID : String, count: Int) -> Void {
-        return mailboxUnreadCounts[labelID] = count
+        return labelsUnreadCounts[labelID] = count
+    }
+    
+    public func updateUnreadCountForKey(location : MessageLocation, count: Int) -> Void {
+        let str_location = String(location.rawValue)
+        return labelsUnreadCounts[str_location] = count
     }
     
     
     // Mailbox unread count change
     public func UnreadMailboxMessage(location : MessageLocation) {
-        var currentCount = mailboxUnreadCounts[location.key] ?? 0
+        let str_location = String(location.rawValue)
+        var currentCount = labelsUnreadCounts[str_location] ?? 0
         currentCount += 1;
-        mailboxUnreadCounts[location.key] = currentCount
+        labelsUnreadCounts[str_location] = currentCount
     }
     
     public func ReadMailboxMessage(location : MessageLocation) {
-        var currentCount = mailboxUnreadCounts[location.key] ?? 0
+        let str_location = String(location.rawValue)
+        var currentCount = labelsUnreadCounts[str_location] ?? 0
         currentCount -= 1;
         if currentCount < 0 {
             currentCount = 0
         }
-        mailboxUnreadCounts[location.key] = currentCount
+        labelsUnreadCounts[str_location] = currentCount
     }
     
     public func MoveUnReadMailboxMessage(from : MessageLocation, to : MessageLocation) {
         UnreadMailboxMessage(from);
         ReadMailboxMessage(to)
+    }
+    
+    
+    // reset functions    
+    public func resetUnreadCounts() {
+        getShared().removeObjectForKey(Key.mailboxUnreadCount)
+        getShared().removeObjectForKey(Key.labelsUnreadCount)
+        getShared().removeObjectForKey(Key.lastCantactsUpdated)
+        getShared().synchronize()
     }
 }
 

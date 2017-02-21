@@ -89,7 +89,6 @@ class ContactDataService {
                                 PMLog.D(" error: \(error)")
                                 completion?(nil, error)
                             } else {
-                                PMLog.D(" updated \(contacts.count) contacts")
                                 completion?(self.allContacts(), nil)
                             }
                         }

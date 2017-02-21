@@ -47,10 +47,7 @@ extension UIApplication {
                     PMLog.D("unable to find end of plist");
                     //return UIApplicationReleaseUnknown;
                 }
-                
                 let newStr = String("\(plistString!)</plist>")
-                
-                PMLog.D(newStr)
                 // juggle latin1 back to utf-8!
                 let plistdata_latin1 : NSData = newStr.dataUsingEncoding(NSISOLatin1StringEncoding, allowLossyConversion: false)!
                 

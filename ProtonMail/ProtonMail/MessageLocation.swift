@@ -22,9 +22,10 @@ public enum MessageLocation: Int, CustomStringConvertible {
     case inbox = 0
     case outbox = 2
     case spam = 4
-    case starred = 5
     case archive = 6
     case trash = 3
+    case allmail = 5
+    case starred = 10
     
     public var actionTitle : String {
         get {
@@ -45,6 +46,8 @@ public enum MessageLocation: Int, CustomStringConvertible {
                 return NSLocalizedString("Move to Archive")
             case trash:
                 return NSLocalizedString("Move to Trash")
+            case allmail:
+                return NSLocalizedString("Move to AllMail") //not in used
             }
         }
     }
@@ -69,6 +72,8 @@ public enum MessageLocation: Int, CustomStringConvertible {
                 return NSLocalizedString("Archive")
             case trash:
                 return NSLocalizedString("Trash")
+            case allmail:
+                return NSLocalizedString("All Mail")
             }
         }
     }
@@ -90,6 +95,8 @@ public enum MessageLocation: Int, CustomStringConvertible {
             return "ARCHIVE"
         case .spam:
             return "SPAM"
+        case allmail:
+            return NSLocalizedString("All Mail")
         default:
             return "INBOX"
         }
@@ -113,6 +120,8 @@ public enum MessageLocation: Int, CustomStringConvertible {
             return "Archive"
         case trash:
             return "Trash"
+        case allmail:
+            return NSLocalizedString("AllMail")
         }
     }
     

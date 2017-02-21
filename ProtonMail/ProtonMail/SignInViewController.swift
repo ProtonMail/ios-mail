@@ -94,9 +94,11 @@ class SignInViewController: ProtonMailViewController {
         let signinFlow = getViewFlow()
         switch signinFlow {
         case .RequirePin:
+            sharedUserDataService.isSignedIn = false
             self.performSegueWithIdentifier(kSegueToPinCodeViewNoAnimation, sender: self)
             break
         case .RequireTouchID:
+            sharedUserDataService.isSignedIn = false
             showTouchID(false)
             authenticateUser()
             break
@@ -281,7 +283,7 @@ class SignInViewController: ProtonMailViewController {
         
         // Check if the device can evaluate the policy.
         if context.canEvaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, error: &error) {
-            [context .evaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString, reply: { (success: Bool, evalPolicyError: NSError?) -> Void in
+            [context.evaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString, reply: { (success: Bool, evalPolicyError: NSError?) -> Void in
                 if success {
                     dispatch_async(dispatch_get_main_queue()) {
                         self.signInIfRememberedCredentials()
@@ -577,9 +579,9 @@ class SignInViewController: ProtonMailViewController {
         sharedUserDataService.fetchUserInfo()
         sharedContactDataService.fetchContacts({ (contacts, error) -> Void in
             if error != nil {
-                NSLog("\(error)")
+                PMLog.D("\(error)")
             } else {
-                NSLog("Contacts count: \(contacts!.count)")
+                PMLog.D("Contacts count: \(contacts!.count)")
             }
         })
     }

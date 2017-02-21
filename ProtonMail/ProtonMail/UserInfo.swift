@@ -63,7 +63,6 @@ final class UserInfo: NSObject {
         self.usedSpace = usedSpace ?? 0
         self.userStatus = userStatus ?? 0
         self.userAddresses = userAddresses ?? Array<Address>()
-        PMLog.D("\(userAddresses)")
         self.autoSaveContact  = autoSC ?? 0
         self.language = language ?? "en_US"
         self.maxUpload = maxUpload ?? 0

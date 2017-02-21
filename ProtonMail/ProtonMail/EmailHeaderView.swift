@@ -881,13 +881,15 @@ class EmailHeaderView: UIView {
         guard self.visible == true else {
             return
         }
-        UIView.animateWithDuration(anim == true ? 0.3 : 0.0, animations: { () -> Void in
-            self.layoutIfNeeded()
-            var f = self.frame;
-            f.size.height = self.getHeight();
-            self.frame = f;
-            self.viewDelegate?.updateSize()
-        })
+        dispatch_async(dispatch_get_main_queue()) {
+            UIView.animateWithDuration(anim == true ? 0.3 : 0.0, animations: { () -> Void in
+                self.layoutIfNeeded()
+                var f = self.frame;
+                f.size.height = self.getHeight();
+                self.frame = f;
+                self.viewDelegate?.updateSize()
+            })
+        }
     }
     
     private let kAnimationOption: UIViewAnimationOptions = .TransitionCrossDissolve
@@ -1265,11 +1267,10 @@ extension EmailHeaderView: UITableViewDelegate {
                 let totalValue = attachment.fileSize.floatValue;
                 sharedAPIService.getSession().setDownloadTaskDidWriteDataBlock({ (session, taskTwo, bytesWritten, totalBytesWritten, totalBytesExpectedToWrite) -> Void in
                     if taskOne == taskTwo {
-                        NSLog("\(totalValue)")
-                        NSLog("%lld  - %lld - %lld", bytesWritten, totalBytesWritten, totalBytesExpectedToWrite)
-                        
+                        //NSLog("\(totalValue)")
+                        //NSLog("%lld  - %lld - %lld", bytesWritten, totalBytesWritten, totalBytesExpectedToWrite)
                         var progressPercentage =  ( Float(totalBytesWritten) / totalValue )
-                        NSLog("\(progressPercentage)")
+                        //NSLog("\(progressPercentage)")
                         if progressPercentage >= 1.000000000 {
                             progressPercentage = 1.0
                         }

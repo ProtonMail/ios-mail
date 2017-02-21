@@ -49,7 +49,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         
         self.updateHeader()
         
-        if (self.message.hasAttachments) {
+        if (self.message.numAttachments.intValue > 0) {
             let atts = self.message.attachments.allObjects as! [Attachment]
             self.emailView?.updateEmailAttachment(atts);
         }
@@ -202,9 +202,11 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         switch(message.location) {
         case .trash, .spam:
             if self.message.managedObjectContext != nil {
+                self.message.removeLocationFromLabels(message.location, location: MessageLocation.deleted)
                 self.messagesSetValue(setValue: MessageLocation.deleted.rawValue, forKey: Message.Attributes.locationNumber)
             }
         default:
+            self.message.removeLocationFromLabels(message.location, location: MessageLocation.trash)
             self.messagesSetValue(setValue: MessageLocation.trash.rawValue, forKey: Message.Attributes.locationNumber)
         }
         self.navigationController?.popViewControllerAnimated(true)
@@ -215,8 +217,9 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     }
     
     internal func spamButtonTapped() {
-        message.location = .spam
+        self.message.removeLocationFromLabels(message.location, location: MessageLocation.spam)
         message.needsUpdate = true
+        message.location = .spam
         if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D(" error: \(error)")
         }
@@ -231,6 +234,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         for (location, style) in locations {
             if message.location != location {
                 alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
+                    self.message.removeLocationFromLabels(self.message.location, location: location)
                     self.messagesSetValue(setValue: location.rawValue, forKey: Message.Attributes.locationNumber)
                     self.navigationController?.popViewControllerAnimated(true)
                 }))
@@ -348,24 +352,19 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
                 if self.message.managedObjectContext != nil {
                     self.message.isDetailDownloaded = false
                     self.message.managedObjectContext?.saveUpstreamIfNeeded()
-                    //self.messagesSetValue(setValue: MessageLocation.deleted.rawValue, forKey: Message.Attributes.locationNumber)
                 }
                 self.navigationController?.popViewControllerAnimated(true)
             }
         }
     }
     
-    //
-    //var purifiedBody :  String? = nil
-    //var purifiedBodyWithoutImage :  String? = nil
     private var purifiedBodyLock: Int = 0
-    
-    var fixedBody : String? = nil
-    var bodyHasImages : Bool = false
+    private var fixedBody : String? = nil
+    private var bodyHasImages : Bool = false
     
     // MARK : private function
     private func updateEmailBody (force forceReload : Bool = false) {
-        if (self.message.hasAttachments) {
+        if (self.message.numAttachments.intValue > 0) {
             let atts = self.message.attachments.allObjects as! [Attachment]
             self.emailView?.updateEmailAttachment(atts);
         }
@@ -404,12 +403,11 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     {
         do {
             var bodyText = try self.message.decryptBodyIfNeeded() ?? NSLocalizedString("Unable to decrypt message.")
-
             bodyText = bodyText.stringByStrippingBodyStyle()
             bodyText = bodyText.stringByPurifyHTML()
-            self.bodyHasImages = bodyText.hasImange()
+            self.bodyHasImages = bodyText.hasImage()
             if !autoloadimage {
-                 bodyText = bodyText.stringByPurifyImages()
+                bodyText = bodyText.stringByPurifyImages()
             }
             return bodyText
         } catch let ex as NSError {
@@ -435,7 +433,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     // MARK : private function
     private func updateEmailBodyWithError (error:String) {
-        if (self.message.hasAttachments) {
+        if (self.message.numAttachments.intValue > 0 ) {
             let atts = self.message.attachments.allObjects as! [Attachment]
             self.emailView?.updateEmailAttachment(atts);
         }
@@ -555,6 +553,11 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     }
     
     func starredChanged(isStarred: Bool) {
+        if isStarred {
+            self.message.setLabelLocation(.starred)
+        } else {
+            self.message.removeLocationFromLabels(.starred, location: .deleted)
+        }
         self.messagesSetValue(setValue: isStarred, forKey: Message.Attributes.isStarred)
     }
     
