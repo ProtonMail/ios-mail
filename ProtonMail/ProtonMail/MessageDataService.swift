@@ -953,39 +953,50 @@ class MessageDataService {
     func fetchNotificationMessageDetail(messageID: String, completion: CompletionFetchDetail) {
         queue {
             let completionWrapper: CompletionBlock = { task, response, error in
-                let context = sharedCoreDataService.newMainManagedObjectContext()
-                context.performBlock() {
-                    if response != nil {
-                        //TODO need check the respons code
-                        if var msg: Dictionary<String,AnyObject> = response?["Message"] as? Dictionary<String,AnyObject> {
-                            msg.removeValueForKey("Location")
-                            msg.removeValueForKey("Starred")
-                            msg.removeValueForKey("test")
-                            do {
-                                if let message_out = try GRTJSONSerialization.objectWithEntityName(Message.Attributes.entityName, fromJSONDictionary: msg, inContext: context) as? Message {
-                                    message_out.messageStatus = 1
-                                    message_out.isDetailDownloaded = true
-                                    message_out.needsUpdate = true
-                                    message_out.isRead = true
-                                    message_out.managedObjectContext?.saveUpstreamIfNeeded()
-                                    let tmpError = context.saveUpstreamIfNeeded()
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    
+                    let context = sharedCoreDataService.newMainManagedObjectContext()
+                    context.performBlock() {
+                        if response != nil {
+                            //TODO need check the respons code
+                            if var msg: Dictionary<String,AnyObject> = response?["Message"] as? Dictionary<String,AnyObject> {
+                                
+                                print("\(msg)");
+                                
+                                msg.removeValueForKey("Location")
+                                msg.removeValueForKey("Starred")
+                                msg.removeValueForKey("test")
+                                do {
+                                    if let message_out = try GRTJSONSerialization.objectWithEntityName(Message.Attributes.entityName, fromJSONDictionary: msg, inContext: context) as? Message {
+                                        message_out.messageStatus = 1
+                                        message_out.isDetailDownloaded = true
+                                        message_out.needsUpdate = false
+                                        if message_out.isRead == false {
+                                            message_out.isRead = true
+                                            self.queue(message_out, action: .read)
+                                        }
+                                        message_out.managedObjectContext?.saveUpstreamIfNeeded()
+                                        let tmpError = context.saveUpstreamIfNeeded()
+                                        
+                                        dispatch_async(dispatch_get_main_queue()) {
+                                            completion(task: task, response: response, message: message_out, error: tmpError)
+                                        }
+                                    }
+                                } catch let ex as NSError {
                                     dispatch_async(dispatch_get_main_queue()) {
-                                        completion(task: task, response: response, message: message_out, error: tmpError)
+                                        completion(task: task, response: response, message: nil, error: ex)
                                     }
                                 }
-                            } catch let ex as NSError {
+                            } else {
                                 dispatch_async(dispatch_get_main_queue()) {
-                                    completion(task: task, response: response, message: nil, error: ex)
+                                    completion(task: task, response: response, message:nil, error: NSError.badResponse())
                                 }
                             }
                         } else {
                             dispatch_async(dispatch_get_main_queue()) {
-                                completion(task: task, response: response, message:nil, error: NSError.badResponse())
+                                completion(task: task, response: response, message:nil, error: error)
                             }
-                        }
-                    } else {
-                        dispatch_async(dispatch_get_main_queue()) {
-                            completion(task: task, response: response, message:nil, error: error)
                         }
                     }
                 }
@@ -1005,6 +1016,7 @@ class MessageDataService {
                 sharedAPIService.messageDetail(messageID: messageID, completion: completionWrapper)
             }
         }
+        
     }
     
     
@@ -1020,14 +1032,7 @@ class MessageDataService {
     func fetchedResultsControllerForLocation(location: MessageLocation) -> NSFetchedResultsController? {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
-            //            if location == .starred {
-            //                fetchRequest.predicate = NSPredicate(format: "(%K == true) AND (%K > 0)", Message.Attributes.isStarred, Message.Attributes.messageStatus)
-            //            } else
-            //            if location == .draft {
-            //                fetchRequest.predicate = NSPredicate(format: "(%K == %i) AND (%K > 0)" , Message.Attributes.locationNumber, location.rawValue, Message.Attributes.messageStatus) //((%K == %i) OR (%K == 1)) AND (%K > 0)
-            //            } else {
             fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)", "\(location.rawValue)", Message.Attributes.messageStatus)
-            //            }
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         }
@@ -1054,7 +1059,6 @@ class MessageDataService {
     func fetchedMessageControllerForID(messageID: String) -> NSFetchedResultsController? {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
-            
             fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.messageID, messageID)
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
@@ -1621,12 +1625,14 @@ class MessageDataService {
                                     
                                     if attachments.count > 0 {
                                         message.hasAttachments = true;
+                                        message.numAttachments = attachments.count
                                     }
                                     
                                     message.needsUpdate = false
                                     message.isRead = true
                                     lastUpdatedStore.ReadMailboxMessage(message.location)
                                     message.location = MessageLocation.outbox
+                                    message.removeLocationFromLabels(.draft, location: .outbox)
                                 }
                                 NSError.alertMessageSentToast()
                                 if let error = context.saveUpstreamIfNeeded() {

@@ -90,7 +90,7 @@ extension Message {
         for l in labels {
             if let label = l as? Label {
                 if let l_id = Int(label.labelID) {
-                    if let new_loc = MessageLocation(rawValue: l_id) {
+                    if let new_loc = MessageLocation(rawValue: l_id) where new_loc != .starred {
                         locations.append(new_loc)
                     }
                 }
@@ -99,6 +99,33 @@ extension Message {
         }
         
         return locations
+    }
+    
+    func setLabelLocation(location : MessageLocation) {
+        if let context = self.managedObjectContext {
+            let toLableID = String(location.rawValue)
+            let labelObjs = self.mutableSetValueForKey("labels")
+            
+            if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
+                var exsited = false
+                for l in labelObjs {
+                    if let label = l as? Label {
+                        if label == toLabel {
+                            exsited = true
+                            break
+                        }
+                    }
+                }
+                if !exsited {
+                    labelObjs.addObject(toLabel)
+                }
+            }
+            
+            self.setValue(labelObjs, forKey: "labels")
+            if let error = context.saveUpstreamIfNeeded() {
+                PMLog.D("error: \(error)")
+            }
+        }
     }
     
     func removeLocationFromLabels(currentlocation:MessageLocation, location : MessageLocation) {

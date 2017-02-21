@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15F34" minimumToolsVersion="Automatic">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16C67" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Attachment" representedClassName="ProtonMail.Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" syncable="YES">
             <userInfo>
@@ -12,7 +12,7 @@
                 <entry key="JSONKeyPath" value="Name"/>
             </userInfo>
         </attribute>
-        <attribute name="fileSize" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES">
+        <attribute name="fileSize" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Size"/>
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
@@ -24,7 +24,7 @@
                 <entry key="JSONTransformerName" value="JsonToObjectTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="isTemp" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isTemp" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="keyPacket" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="KeyPackets"/>
@@ -68,7 +68,7 @@
                 <entry key="JSONKeyPath" value="Color"/>
             </userInfo>
         </attribute>
-        <attribute name="isDisplay" optional="YES" attributeType="Boolean" syncable="YES">
+        <attribute name="isDisplay" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Display"/>
                 <entry key="NumberTransformer" value="NumberTransformer"/>
@@ -84,7 +84,7 @@
                 <entry key="JSONKeyPath" value="Name"/>
             </userInfo>
         </attribute>
-        <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+        <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Order"/>
                 <entry key="NumberTransformer" value="NumberTransformer"/>
@@ -96,7 +96,7 @@
         </userInfo>
     </entity>
     <entity name="Message" representedClassName="ProtonMail.Message" syncable="YES">
-        <attribute name="action" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="action" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="addressID" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="AddressID"/>
@@ -129,14 +129,14 @@
                 <entry key="JSONKeyPath" value="CCNameList"/>
             </userInfo>
         </attribute>
-        <attribute name="expirationOffset" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="expirationTime" optional="YES" attributeType="Date" syncable="YES">
+        <attribute name="expirationOffset" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="expirationTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="ExpirationTime"/>
                 <entry key="JSONTransformerName" value="DateTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="hasAttachments" attributeType="Boolean" defaultValueString="NO" syncable="YES">
+        <attribute name="hasAttachments" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="HasAttachment"/>
                 <entry key="JSONTransformerName" value="BoolTransformer"/>
@@ -147,55 +147,55 @@
                 <entry key="JSONKeyPath" value="Header"/>
             </userInfo>
         </attribute>
-        <attribute name="isDetailDownloaded" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isEncrypted" attributeType="Integer 16" defaultValueString="NO" syncable="YES">
+        <attribute name="isDetailDownloaded" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isEncrypted" attributeType="Integer 16" defaultValueString="NO" usesScalarValueType="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="IsEncrypted"/>
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="isForwarded" attributeType="Boolean" defaultValueString="NO" syncable="YES">
+        <attribute name="isForwarded" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="IsForwarded"/>
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="isRead" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES">
+        <attribute name="isRead" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" indexed="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="IsRead"/>
             </userInfo>
         </attribute>
-        <attribute name="isReplied" attributeType="Boolean" defaultValueString="NO" syncable="YES">
+        <attribute name="isReplied" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="IsReplied"/>
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="isRepliedAll" attributeType="Boolean" defaultValueString="NO" syncable="YES">
+        <attribute name="isRepliedAll" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="IsRepliedAll"/>
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="isShowedImages" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isSoftDelete" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="isStarred" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES">
+        <attribute name="isShowedImages" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isSoftDelete" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isStarred" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" indexed="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Starred"/>
             </userInfo>
         </attribute>
-        <attribute name="lastModified" optional="YES" attributeType="Date" indexed="YES" syncable="YES">
+        <attribute name="lastModified" optional="YES" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="modify_time"/>
                 <entry key="JSONTransformerName" value="DateTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="latestUpdateType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES">
+        <attribute name="latestUpdateType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="locationNumber" attributeType="Integer 16" defaultValueString="0" indexed="YES" syncable="YES">
+        <attribute name="locationNumber" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" indexed="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Location"/>
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
@@ -206,15 +206,21 @@
                 <entry key="JSONKeyPath" value="ID"/>
             </userInfo>
         </attribute>
-        <attribute name="messageStatus" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="messageType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="needsUpdate" attributeType="Boolean" defaultValueString="NO" syncable="YES">
+        <attribute name="messageStatus" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="messageType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="needsUpdate" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="needsUpdate"/>
             </userInfo>
         </attribute>
+        <attribute name="numAttachments" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="NumAttachments"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
+            </userInfo>
+        </attribute>
         <attribute name="orginalMessageID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="orginalTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="orginalTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="password" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="passwordEncryptedBody" attributeType="String" syncable="YES"/>
         <attribute name="passwordHint" attributeType="String" syncable="YES"/>
@@ -251,7 +257,7 @@
                 <entry key="JSONTransformerName" value="JsonToObjectTransformer"/>
             </userInfo>
         </attribute>
-        <attribute name="spamScore" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+        <attribute name="spamScore" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="MessageSpamScore"/>
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
@@ -262,7 +268,7 @@
                 <entry key="JSONKeyPath" value="Tag"/>
             </userInfo>
         </attribute>
-        <attribute name="time" optional="YES" attributeType="Date" indexed="YES" syncable="YES">
+        <attribute name="time" optional="YES" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Time"/>
                 <entry key="JSONTransformerName" value="DateTransformer"/>
@@ -273,7 +279,7 @@
                 <entry key="JSONKeyPath" value="Subject"/>
             </userInfo>
         </attribute>
-        <attribute name="totalSize" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+        <attribute name="totalSize" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="TotalSize"/>
                 <entry key="JSONTransformerName" value="NumberTransformer"/>
@@ -298,6 +304,6 @@
         <element name="Contact" positionX="1521" positionY="-3564" width="128" height="90"/>
         <element name="Conversation" positionX="1719" positionY="-3726" width="128" height="45"/>
         <element name="Label" positionX="2095" positionY="-3357" width="128" height="135"/>
-        <element name="Message" positionX="1717" positionY="-3867" width="128" height="720"/>
+        <element name="Message" positionX="1717" positionY="-3867" width="128" height="735"/>
     </elements>
 </model>

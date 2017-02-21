@@ -59,10 +59,12 @@ public class MailboxViewModelImpl : MailboxViewModel {
             return action != .star
         case .spam:
             return action != .spam
-        case .draft:
+        case .draft, .outbox:
             return action != .spam && action != .trash && action != .archive
         case .trash:
             return action != .trash
+        case .allmail:
+            return false;
         default:
             return true
         }
@@ -109,8 +111,17 @@ public class MailboxViewModelImpl : MailboxViewModel {
     
     public override func isDelete () -> Bool {
         switch(self.location!) {
-        case .trash, .spam:
+        case .trash, .spam, .draft:
             return true;
+        default:
+            return false
+        }
+    }
+    
+    override public func showLocation() -> Bool {
+        switch(self.location!) {
+        case .allmail:
+            return true
         default:
             return false
         }

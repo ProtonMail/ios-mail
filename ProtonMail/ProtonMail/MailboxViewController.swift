@@ -382,12 +382,14 @@ class MailboxViewController: ProtonMailViewController {
             
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Add Star"), style: .Default, handler: { (action) -> Void in
                 self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isStarred)
+                self.selectedMessagesSetStar()
                 self.cancelButtonTapped();
                 self.navigationController?.popViewControllerAnimated(true)
             }))
             
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Remove Star"), style: .Default, handler: { (action) -> Void in
                 self.selectedMessagesSetValue(setValue: false, forKey: Message.Attributes.isStarred)
+                self.selectedMessagesSetUnStar()
                 self.cancelButtonTapped();
                 self.navigationController?.popViewControllerAnimated(true)
             }))
@@ -395,6 +397,10 @@ class MailboxViewController: ProtonMailViewController {
             var locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .archive : .Default]
             if !viewModel.isCurrentLocation(.outbox) {
                 locations = [.spam : .Default, .archive : .Default]
+            }
+            
+            if (viewModel.isCurrentLocation(.outbox)) {
+                locations = [:];
             }
             
             for (location, style) in locations {
@@ -866,12 +872,15 @@ class MailboxViewController: ProtonMailViewController {
             do {
                 if let messages = try context.executeFetchRequest(fetchRequest) as? [Message] {
                     for message in messages {
+                        message.removeLocationFromLabels(message.location, location: location);
                         message.needsUpdate = true
                         message.location = location
+                        
+                        if let error = context.saveUpstreamIfNeeded() {
+                            PMLog.D("error: \(error)")
+                        }
                     }
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D("error: \(error)")
-                    }
+          
                 }
             } catch let ex as NSError {
                 PMLog.D(" error: \(ex)")
@@ -933,6 +942,49 @@ class MailboxViewController: ProtonMailViewController {
                     }
                     NSArray(array: messages).setValue(value, forKey: key)
                     NSArray(array: messages).setValue(true, forKey: "needsUpdate")
+                    let error = context.saveUpstreamIfNeeded()
+                    if let error = error {
+                        PMLog.D(" error: \(error)")
+                    }
+                }
+            } catch let ex as NSError {
+                PMLog.D(" error: \(ex)")
+            }
+        }
+    }
+    
+    
+    private func selectedMessagesSetStar() {
+        if let context = fetchedResultsController?.managedObjectContext {
+            let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
+            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selectedMessages)
+            do {
+                if let messages = try context.executeFetchRequest(fetchRequest) as? [Message] {
+                    
+                    for msg in messages {
+                        msg.setLabelLocation(.starred);
+                    }
+                    let error = context.saveUpstreamIfNeeded()
+                    if let error = error {
+                        PMLog.D(" error: \(error)")
+                    }
+                    
+                }
+            } catch let ex as NSError {
+                PMLog.D(" error: \(ex)")
+            }
+        }
+    }
+    
+    private func selectedMessagesSetUnStar() {
+        if let context = fetchedResultsController?.managedObjectContext {
+            let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
+            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selectedMessages)
+            do {
+                if let messages = try context.executeFetchRequest(fetchRequest) as? [Message] {
+                    for msg in messages {
+                        msg.removeLocationFromLabels(.starred, location: .deleted);
+                    }
                     let error = context.saveUpstreamIfNeeded()
                     if let error = error {
                         PMLog.D(" error: \(error)")
@@ -1028,6 +1080,8 @@ class MailboxViewController: ProtonMailViewController {
             
             if (viewModel.isDrafts()) {
                 rightButtons = [self.removeBarButtonItem]
+            } else if (viewModel.isCurrentLocation(.outbox)) {
+                rightButtons = [self.moreBarButtonItem, self.labelBarButtonItem, self.unreadBarButtonItem]
             } else {
                 rightButtons = [self.moreBarButtonItem, self.removeBarButtonItem, self.labelBarButtonItem, self.unreadBarButtonItem]
             }
