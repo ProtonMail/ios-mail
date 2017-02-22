@@ -60,6 +60,20 @@ class TwoFACodeView : PMView {
             twofacodeTop.constant = 0.0
             twofacodeHeight.constant = 0.0
         }
+        
+        let toolbarDone = UIToolbar.init()
+        toolbarDone.sizeToFit()
+        let barBtnDone = UIBarButtonItem.init(title: "Recovery Code", style: UIBarButtonItemStyle.Done,
+                                              target: self, action: #selector(TwoFACodeView.doneButtonAction))
+        toolbarDone.items = [barBtnDone]
+        twoFactorCodeField.inputAccessoryView = toolbarDone
+        
+    }
+
+    func doneButtonAction() {
+        self.twoFactorCodeField.inputAccessoryView = nil
+        self.twoFactorCodeField.keyboardType = UIKeyboardType.ASCIICapable
+        self.twoFactorCodeField.reloadInputViews()
     }
     
     override func getNibName() -> String {
@@ -78,7 +92,7 @@ class TwoFACodeView : PMView {
         }
     }
     
-    @IBAction func enterAction(sender: AnyObject) {
+    func confirm() {
         let pwd = (loginPasswordField.text ?? "")
         let code = (twoFactorCodeField.text ?? "").trim()
         if mode!.check(.LoginPassword) {
@@ -90,6 +104,10 @@ class TwoFACodeView : PMView {
         
         self.dismissKeyboard()
         delegate?.ConfirmedCode(code, pwd: pwd)
+    }
+    
+    @IBAction func enterAction(sender: AnyObject) {
+        self.confirm()
     }
     
     @IBAction func cancelAction(sender: AnyObject) {

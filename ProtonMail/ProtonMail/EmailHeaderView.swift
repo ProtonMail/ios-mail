@@ -92,8 +92,8 @@ class EmailHeaderView: UIView {
     private let kEmailBodyTextViewMarginRight: CGFloat = 0//-16.0
     private let kEmailBodyTextViewMarginTop: CGFloat = 16.0
     private let kSeparatorBetweenHeaderAndBodyMarginTop: CGFloat = 16.0
-    private let kHourMinuteFormat = "h:mm a"
-    
+    private let k12HourMinuteFormat = "h:mm a"
+    private let k24HourMinuteFormat = "h:mm a"
     private var tempFileUri : NSURL?
     
     func getHeight () -> CGFloat {
@@ -279,9 +279,9 @@ class EmailHeaderView: UIView {
         
         self.emailFavoriteButton.selected = self.starred;
         
-        self.emailShortTime.text = "at \(self.date.stringWithFormat(self.kHourMinuteFormat))".lowercaseString
+        self.emailShortTime.text = "at \(self.date.stringWithFormat(self.k12HourMinuteFormat))".lowercaseString
         //TODO
-        let tm = self.date.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? "";
+        let tm = self.date.formattedWith("'On' EE, MMM d, yyyy 'at' \(k12HourMinuteFormat)") ?? "";
         self.emailDetailDateLabel.text = "Date: \(tm)"
         
         let lockType : LockTypes = encType.lockType
@@ -487,7 +487,7 @@ class EmailHeaderView: UIView {
         self.emailShortTime = UILabel()
         self.emailShortTime.font = UIFont.robotoMedium(size: UIFont.Size.h6)
         self.emailShortTime.numberOfLines = 1
-        self.emailShortTime.text = "at \(self.date.stringWithFormat(self.kHourMinuteFormat))".lowercaseString
+        self.emailShortTime.text = "at \(self.date.stringWithFormat(self.k12HourMinuteFormat))".lowercaseString
         self.emailShortTime.textColor = UIColor(RRGGBB: UInt(0x838897))
         self.emailShortTime.sizeToFit()
         self.emailHeaderView.addSubview(emailShortTime)
