@@ -265,7 +265,7 @@ extension Message {
     func decryptBodyIfNeeded() throws -> String? {
         //PMLog.D("\(body)")
         if !checkIsEncrypted() {
-            return body
+            return body.ln2br() ?? body
         } else {
             if var body = try decryptBody() {
                 if isEncrypted == 8 {
