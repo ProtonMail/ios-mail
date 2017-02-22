@@ -147,14 +147,15 @@ public class AuthRequest<T : ApiResponse> : ApiRequest<T> {
 }
 
 
-// MARK : Get messages part
+// MARK : refresh token
 public class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
     
     var resfreshToken : String!
-    // var password : String!
+    var Uid : String!
     
-    init(resfresh : String) {
+    init(resfresh : String, uid: String) {
         self.resfreshToken = resfresh;
+        self.Uid = uid
     }
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
@@ -165,7 +166,9 @@ public class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
             "RefreshToken": resfreshToken,
             "GrantType": "refresh_token",
             "RedirectURI" : "http://www.protonmail.ch",
-            AuthKey.state : "\(NSUUID().UUIDString)"]
+            AuthKey.state : "\(NSUUID().UUIDString)",
+            "Uid" : self.Uid
+        ]
         
         PMLog.D(self.JSONStringify(out, prettyPrinted: true))
         return out
@@ -186,7 +189,7 @@ public class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
 
 
 
-// MARK : Get messages part
+// MARK :delete auth token
 public class AuthDeleteRequest<T : ApiResponse> : ApiRequest<T> {
     
     override init() {
