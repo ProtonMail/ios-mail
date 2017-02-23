@@ -144,6 +144,7 @@ class MessageDataService {
                                         message.location = location
                                     }
                                     message.messageStatus = 1
+                                    message.needsUpdate = false
                                 }
                                 if let error = context.saveUpstreamIfNeeded() {
                                     PMLog.D(" error: \(error)")
