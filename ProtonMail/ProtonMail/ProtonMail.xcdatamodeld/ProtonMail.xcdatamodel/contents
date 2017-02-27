@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16C67" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16D32" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Attachment" representedClassName="ProtonMail.Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" syncable="YES">
             <userInfo>
@@ -208,6 +208,11 @@
         </attribute>
         <attribute name="messageStatus" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="messageType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="mimeType" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="MIMEType"/>
+            </userInfo>
+        </attribute>
         <attribute name="needsUpdate" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="needsUpdate"/>
@@ -303,7 +308,7 @@
         <element name="Attachment" positionX="1989" positionY="-3666" width="128" height="195"/>
         <element name="Contact" positionX="1521" positionY="-3564" width="128" height="90"/>
         <element name="Conversation" positionX="1719" positionY="-3726" width="128" height="45"/>
-        <element name="Label" positionX="2095" positionY="-3357" width="128" height="135"/>
-        <element name="Message" positionX="1717" positionY="-3867" width="128" height="735"/>
+        <element name="Label" positionX="2095" positionY="-3357" width="128" height="133"/>
+        <element name="Message" positionX="1717" positionY="-3867" width="128" height="748"/>
     </elements>
 </model>

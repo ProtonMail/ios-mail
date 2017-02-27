@@ -141,7 +141,6 @@ extension Message {
                     }
                 }
             }
-            
             if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
                 var exsited = false
                 for l in labelObjs {
@@ -265,13 +264,19 @@ extension Message {
     func decryptBodyIfNeeded() throws -> String? {
         //PMLog.D("\(body)")
         if !checkIsEncrypted() {
-            return body.ln2br() ?? body
+            if isPlainText() {
+                return body.ln2br() ?? body
+            }
+            return body
         } else {
             if var body = try decryptBody() {
                 if isEncrypted == 8 {
                     body = body.multipartGetHtmlContent () ?? body
                 } else if isEncrypted == 7 {
                     body = body.ln2br() ?? body
+                }
+                if isPlainText() {
+                    return body.ln2br() ?? body
                 }
                 return body
             }
@@ -291,6 +296,13 @@ extension Message {
         let enc_type = EncryptTypes(rawValue: isEncrypted.integerValue) ?? EncryptTypes.Internal
         let checkIsEncrypted:Bool = enc_type.isEncrypted
         return checkIsEncrypted
+    }
+    
+    func isPlainText() -> Bool {
+        if let type = mimeType where type.lowercaseString == "text/plain" {
+            return true
+        }
+        return false
     }
     
     var encryptType : EncryptTypes! {

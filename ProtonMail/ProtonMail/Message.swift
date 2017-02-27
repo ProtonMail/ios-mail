@@ -33,9 +33,9 @@ public class Message: NSManagedObject {
     @NSManaged var isRead: Bool
     @NSManaged var isReplied: Bool
     @NSManaged var isRepliedAll: Bool
-    @NSManaged var isStarred: Bool
+    @NSManaged var isStarred: Bool    //Deprecated, use LabelIDs instead
     @NSManaged var lastModified: NSDate?
-    @NSManaged var locationNumber: NSNumber
+    @NSManaged var locationNumber: NSNumber  //Deprecated, use LabelIDs instead
     @NSManaged var messageID: String
     @NSManaged var passwordEncryptedBody: String
     @NSManaged var password: String
@@ -63,6 +63,7 @@ public class Message: NSManagedObject {
     
     @NSManaged var messageType : NSNumber  // 0 message 1 rate
     @NSManaged var messageStatus : NSNumber  // bit 0x00000000 no metadata  0x00000001 has
+    @NSManaged var mimeType : String?
     
     @NSManaged var isShowedImages : Bool
     
