@@ -267,7 +267,10 @@ public class ComposeViewModelImpl : ComposeViewModel {
         
         let defaultSignature = sharedUserDataService.showDefaultSignature ? "<div><br></div><div><br></div><div class=\"protonmail_signature_block\">\(signature)</div>" : ""
         
-        let htmlString = "\(defaultSignature) \(mobileSignature)";
+        let head = "<html><head></head><body>"
+        let foot = "</body></html>"
+        let htmlString = "\(defaultSignature) \(mobileSignature)"
+        
         
         if let msgAction = messageAction {
             switch msgAction
@@ -305,24 +308,26 @@ public class ComposeViewModelImpl : ComposeViewModel {
                 let sn = message?.managedObjectContext != nil ? message!.senderContactVO.name : "unknow"
                 let se = message?.managedObjectContext != nil ? message!.senderContactVO.email : "unknow"
                 
-                var replyHeader = time + ", " + sn + " <'\(se)'>"
+                var replyHeader = time + ", " + sn + " &lt;<a href=\"mailto:\(se)\" class=\"\">\(se)</a>&gt;"
                 replyHeader = replyHeader.stringByStrippingStyleHTML()
                 replyHeader = replyHeader.stringByStrippingBodyStyle()
                 replyHeader = replyHeader.stringByPurifyHTML()
                 let sp = "<div><br><div><div><br></div>\(replyHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
                 
-                return "\(htmlString) \(sp) \(body)</blockquote>"
+                return " \(head) \(htmlString) \(sp) \(body)</blockquote> \(foot)"
             case .Forward:
                 let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
-                var forwardHeader = "---------- Forwarded message ----------<br>From: \( message!.senderContactVO.name) <'\(message!.senderContactVO.email)'> <br>Date: \(time)<br>Subject: \(message!.title)<br>"
+                var forwardHeader =
+                "---------- Forwarded message ----------<br>From: \( message!.senderContactVO.name) &lt;<a href=\"mailto:\(message!.senderContactVO.email)\" class=\"\">\(message!.senderContactVO.email)</a>&gt;<br>Date: \(time)<br>Subject: \(message!.title)<br>"
+                
                 if message!.recipientList != "" {
-                    forwardHeader += "To: \(message!.recipientList.formatJsonContact())<br>"
+                    forwardHeader += "To: \(message!.recipientList.formatJsonContact(true))<br>"
                 }
                 
                 if message!.ccList != "" {
-                    forwardHeader += "CC: \(message!.ccList.formatJsonContact())<br>"
+                    forwardHeader += "CC: \(message!.ccList.formatJsonContact(true))<br>"
                 }
-                forwardHeader += "<br><br>"
+                forwardHeader += ""
                 var body = ""
                 
                 do {
@@ -336,15 +341,15 @@ public class ComposeViewModelImpl : ComposeViewModel {
                 body = body.stringByStrippingBodyStyle()
                 body = body.stringByPurifyHTML()
                 
-                var sp = "<div><br></div><div><br></div>\(forwardHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
+                var sp = "\(forwardHeader)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
                 sp = sp.stringByStrippingStyleHTML()
                 sp = sp.stringByStrippingBodyStyle()
                 sp = sp.stringByPurifyHTML()
                 
-                return "\(defaultSignature) \(mobileSignature) \(sp) \(body)"
+                return "\(head)\(htmlString)\(sp)\(body)\(foot)"
             case .NewDraft:
                 if !self.body.isEmpty {
-                    let newhtmlString = " \(self.body) \(htmlString)"
+                    let newhtmlString = "\(head) \(self.body) \(htmlString) \(foot)"
                     self.body = ""
                     return newhtmlString
                 } else {

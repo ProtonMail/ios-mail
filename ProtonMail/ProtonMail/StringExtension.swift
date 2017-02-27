@@ -159,12 +159,16 @@ extension String {
      
      :returns: String
      */
-    func formatJsonContact() -> String {
+    func formatJsonContact(mailto : Bool = false) -> String {
         var lists: [String] = []
         
         let recipients : [[String : String]] = self.parseJson()!
         for dict:[String : String] in recipients {
-            lists.append(dict.getName() + "&lt;\(dict.getAddress())&gt;")
+            if mailto {
+                lists.append(dict.getName() + " &lt;<a href=\"mailto:\(dict.getAddress())\" class=\"\">\(dict.getAddress())</a>&gt;")
+            } else {
+                lists.append(dict.getName() + "&lt;\(dict.getAddress())&gt;")
+            }
         }
         return lists.joinWithSeparator(",")
     }
