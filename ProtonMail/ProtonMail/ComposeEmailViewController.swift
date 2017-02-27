@@ -138,7 +138,6 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     override func webViewDidFinishLoad(webView: UIWebView) {
         super.webViewDidFinishLoad(webView)
-        
         updateEmbedImages()
     }
     

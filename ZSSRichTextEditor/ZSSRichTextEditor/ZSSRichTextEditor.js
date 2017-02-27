@@ -44,35 +44,35 @@ zss_editor.init = function() {
     $('#zss_editor_content').on('touchend', function(e) {
                                 //zss_editor.enabledEditingItems(e);
                                 var clicked = $(e.target);
-                                if (!clicked.hasClass('zs_active')) {
-                                $('img').removeClass('zs_active');
-                                }
+                                    if (!clicked.hasClass('zs_active')) {
+                                        $('img').removeClass('zs_active');
+                                    }
                                 });
     
     $(document).on('selectionchange',function(e){
-                   zss_editor.calculateEditorHeightWithCaretPosition();
-                   zss_editor.setScrollPosition();
-                   //zss_editor.enabledEditingItems(e);
+                       zss_editor.calculateEditorHeightWithCaretPosition();
+                       zss_editor.setScrollPosition();
+                       //zss_editor.enabledEditingItems(e);
                    });
     
     $(window).on('scroll', function(e) {
-                 zss_editor.updateOffset();
+                     zss_editor.updateOffset();
                  });
     
     // Make sure that when we tap anywhere in the document we focus on the editor
     $(window).on('touchmove', function(e) {
-                 zss_editor.isDragging = true;
-                 zss_editor.updateScrollOffset = true;
-                 zss_editor.setScrollPosition();
-                 //zss_editor.enabledEditingItems(e);
+                     zss_editor.isDragging = true;
+                     zss_editor.updateScrollOffset = true;
+                     zss_editor.setScrollPosition();
+                     //zss_editor.enabledEditingItems(e);
                  });
     $(window).on('touchstart', function(e) {
-                 zss_editor.isDragging = false;
+                     zss_editor.isDragging = false;
                  });
     $(window).on('touchend', function(e) {
-                 if (!zss_editor.isDragging && (e.target.id == "zss_editor_footer"||e.target.nodeName.toLowerCase() == "html")) {
-                 zss_editor.focusEditor();
-                 }
+                     if (!zss_editor.isDragging && (e.target.id == "zss_editor_footer"||e.target.nodeName.toLowerCase() == "html")) {
+                         zss_editor.focusEditor();
+                     }
                  });
     
 }//end
@@ -95,7 +95,6 @@ zss_editor.updateOffset = function() {
     {
         window.scrollTo(0, maxOffsetY);
     }
-    
     zss_editor.setScrollPosition();
 }
 
@@ -122,15 +121,15 @@ zss_editor.setPlaceholder = function(placeholder) {
     }
     //set focus
     editor.focus(function(){
-                 if($(this).text() == placeholder){
-                 $(this).text("");
-                 $(this).css("color","black");
-                 }
+                     if($(this).text() == placeholder){
+                         $(this).text("");
+                         $(this).css("color","black");
+                     }
                  }).focusout(function(){
-                             if(!$(this).text().length){
-                             $(this).text(placeholder);
-                             $(this).css("color","gray");
-                             }
+                                 if(!$(this).text().length){
+                                     $(this).text(placeholder);
+                                     $(this).css("color","gray");
+                                 }
                              });
     
 }
@@ -472,11 +471,11 @@ zss_editor.updateEmbedImage = function(cid, blobdata) {
     var editor = $('img[src="' + cid + '"]');
     if (editor.length) {
         editor.each(function(index, e) {
-            var image = $(this);
-            image.attr('src-original-pm-cid', cid);
-            zss_editor.cachedEmbedImages += cid;
-            image.attr('src', blobdata);
-        });
+                        var image = $(this);
+                        image.attr('src-original-pm-cid', cid);
+                        zss_editor.cachedEmbedImages += cid;
+                        image.attr('src', blobdata);
+                    });
     }
 }
 
@@ -484,8 +483,8 @@ zss_editor.removeEmbedImage = function(cid) {
     var editor = $('img[src-original-pm-cid="' + cid + '"]');
     if (editor.length) {
         editor.each(function(index, e) {
-                    var image = $(this);
-                    image.remove();
+                        var image = $(this);
+                        image.remove();
                     });
     }
 }
@@ -505,9 +504,9 @@ zss_editor.getEditedEmbedImages = function() {
     var editor = $('img[src-original-pm-cid]');
     if (editor.length) {
         editor.each(function(index, e) {
-                    var image = $(this);
-                    var cid = image.attr('src-original-pm-cid');
-                    editedImages += cid;
+                        var image = $(this);
+                        var cid = image.attr('src-original-pm-cid');
+                        editedImages += cid;
                     });
     }
     return editedImages;
@@ -521,13 +520,13 @@ zss_editor.getHTML = function() {
     if (img.length != 0) {
         $('img').removeClass('zs_active');
         $('img').each(function(index, e) {
-                      var image = $(this);
-                      var zs_class = image.attr('class');
-                      if (typeof(zs_class) != "undefined") {
-                      if (zs_class == '') {
-                      image.removeAttr('class');
-                      }
-                      }
+                          var image = $(this);
+                          var zs_class = image.attr('class');
+                          if (typeof(zs_class) != "undefined") {
+                              if (zs_class == '') {
+                                  image.removeAttr('class');
+                              }
+                          }
                       });
     }
     
@@ -535,13 +534,13 @@ zss_editor.getHTML = function() {
     var bq = $('blockquote');
     if (bq.length != 0) {
         bq.each(function() {
-                var b = $(this);
-                if (b.css('border').indexOf('none') != -1) {
-                b.css({'border': ''});
-                }
-                if (b.css('padding').indexOf('0px') != -1) {
-                b.css({'padding': ''});
-                }
+                    var b = $(this);
+                    if (b.css('border').indexOf('none') != -1) {
+                        b.css({'border': ''});
+                    }
+                    if (b.css('padding').indexOf('0px') != -1) {
+                        b.css({'padding': ''});
+                    }
                 });
     }
     
@@ -553,16 +552,16 @@ zss_editor.getHTML = function() {
         var editor = outstring.find('img');
         if (editor.length) {
             editor.each(function(index, e) {
-                var image = $(this);
-                var cid = image.attr('src-original-pm-cid');
-                console.log("old-cid",cid);
-                if (typeof(cid) != "undefined") {
-                    if (cid.length > 0) {
-                        image.attr('src', cid);
-                        image.removeAttr('src-original-pm-cid');
-                    }
-                }
-            });
+                            var image = $(this);
+                            var cid = image.attr('src-original-pm-cid');
+                            console.log("old-cid",cid);
+                            if (typeof(cid) != "undefined") {
+                                if (cid.length > 0) {
+                                    image.attr('src', cid);
+                                    image.removeAttr('src-original-pm-cid');
+                                }
+                            }
+                        });
         }
         
         h = outstring.html();
@@ -628,8 +627,8 @@ zss_editor.enabledEditingItems = function(e) {
     }
     // Images
     $('img').bind('touchstart', function(e) {
-                  $('img').removeClass('zs_active');
-                  $(this).addClass('zs_active');
+                      $('img').removeClass('zs_active');
+                      $(this).addClass('zs_active');
                   });
     
     // Use jQuery to figure out those that are not supported
@@ -701,16 +700,13 @@ zss_editor.focusEditor = function() {
     
     // the following was taken from http://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity/3866442#3866442
     // and ensures we move the cursor to the end of the editor
-    var editor = $('#zss_editor_content');
-    if (!editor.focus) {
-        var range = document.createRange();
-        range.selectNodeContents(editor.get(0));
-        range.collapse(false);
-        var selection = window.getSelection();
-        selection.removeAllRanges();
-        selection.addRange(range);
-        editor.focus();
-    }
+    var range = document.createRange();
+    range.selectNodeContents($('#zss_editor_content').get(0));
+    range.collapse(false);
+    var selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    $('#zss_editor_content').focus();
 }
 zss_editor.blurEditor = function() {
     $('#zss_editor_content').blur();
