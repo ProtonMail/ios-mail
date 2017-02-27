@@ -103,62 +103,66 @@ extension Message {
     
     func setLabelLocation(location : MessageLocation) {
         if let context = self.managedObjectContext {
-            let toLableID = String(location.rawValue)
-            let labelObjs = self.mutableSetValueForKey("labels")
-            
-            if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
-                var exsited = false
-                for l in labelObjs {
-                    if let label = l as? Label {
-                        if label == toLabel {
-                            exsited = true
-                            break
+            context.performBlockAndWait() {
+                let toLableID = String(location.rawValue)
+                let labelObjs = self.mutableSetValueForKey("labels")
+                
+                if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
+                    var exsited = false
+                    for l in labelObjs {
+                        if let label = l as? Label {
+                            if label == toLabel {
+                                exsited = true
+                                break
+                            }
                         }
                     }
+                    if !exsited {
+                        labelObjs.addObject(toLabel)
+                    }
                 }
-                if !exsited {
-                    labelObjs.addObject(toLabel)
+                
+                self.setValue(labelObjs, forKey: "labels")
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D("error: \(error)")
                 }
-            }
-            
-            self.setValue(labelObjs, forKey: "labels")
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D("error: \(error)")
             }
         }
     }
     
     func removeLocationFromLabels(currentlocation:MessageLocation, location : MessageLocation) {
         if let context = self.managedObjectContext {
-            let fromLabelID = String(currentlocation.rawValue)
-            let toLableID = String(location.rawValue)
-            let labelObjs = self.mutableSetValueForKey("labels")
-            for l in labelObjs {
-                if let label = l as? Label {
-                    if label.labelID == fromLabelID {
-                        labelObjs.removeObject(label)
-                        break
-                    }
-                }
-            }
-            if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
-                var exsited = false
+            context.performBlockAndWait() {
+                let fromLabelID = String(currentlocation.rawValue)
+                let toLableID = String(location.rawValue)
+                let labelObjs = self.mutableSetValueForKey("labels")
                 for l in labelObjs {
                     if let label = l as? Label {
-                        if label == toLabel {
-                            exsited = true
+                        if label.labelID == fromLabelID {
+                            labelObjs.removeObject(label)
                             break
                         }
                     }
                 }
-                if !exsited {
-                    labelObjs.addObject(toLabel)
+                if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
+                    var exsited = false
+                    for l in labelObjs {
+                        if let label = l as? Label {
+                            if label == toLabel {
+                                exsited = true
+                                break
+                            }
+                        }
+                    }
+                    if !exsited {
+                        labelObjs.addObject(toLabel)
+                    }
                 }
-            }
-            
-            self.setValue(labelObjs, forKey: "labels")
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D("error: \(error)")
+                
+                self.setValue(labelObjs, forKey: "labels")
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D("error: \(error)")
+                }
             }
         }
     }
@@ -186,10 +190,10 @@ extension Message {
     }
     
     /**
-    delete the message from local cache only use the message id
-    
-    :param: messageID String
-    */
+     delete the message from local cache only use the message id
+     
+     :param: messageID String
+     */
     class func deleteMessage(messageID : String) {
         if let context = sharedCoreDataService.mainManagedObjectContext {
             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
@@ -222,7 +226,7 @@ extension Message {
                         }
                     }
                 } catch {
-                     PMLog.D(" error: \(error)")
+                    PMLog.D(" error: \(error)")
                 }
             }
         }
@@ -351,11 +355,11 @@ extension Message {
     
     var senderContactVO : ContactVO! {
         var sender : ContactVO!
-//        if let beforeParsed = self.newSender, paserdNewSender = beforeParsed.toContact() {
-//            sender = paserdNewSender
-//        } else {
-            sender = ContactVO(id: "", name: self.senderName, email: self.senderAddress)
-//        }
+        //        if let beforeParsed = self.newSender, paserdNewSender = beforeParsed.toContact() {
+        //            sender = paserdNewSender
+        //        } else {
+        sender = ContactVO(id: "", name: self.senderName, email: self.senderAddress)
+        //        }
         return sender
     }
     
@@ -385,7 +389,7 @@ extension Message {
         if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D("error: \(error)")
         }
-
+        
         for (index, attachment) in message.attachments.enumerate() {
             PMLog.D("index: \(index)")
             if let att = attachment as? Attachment {
@@ -405,7 +409,7 @@ extension Message {
                         PMLog.D("error: \(error)")
                     }
                 }
-
+                
             }
         }
         
