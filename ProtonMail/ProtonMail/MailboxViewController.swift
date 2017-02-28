@@ -791,6 +791,8 @@ class MailboxViewController: ProtonMailViewController {
         } else if code == APIErrorCode.HTTP503 || code == NSURLErrorBadServerResponse {
             self.show503ErrorMessage(error)
             offlineTimerReset()
+        } else if code == APIErrorCode.HTTP504 {
+            self.showTimeOutErrorMessage()
         }
         PMLog.D("error: \(error)")
     }

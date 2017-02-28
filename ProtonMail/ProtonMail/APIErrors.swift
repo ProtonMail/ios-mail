@@ -12,6 +12,7 @@ class APIErrorCode {
     static let responseOK = 1000
     
     static let HTTP503 = 503
+    static let HTTP504 = 504
     
     static let badParameter = 1
     static let badPath = 2
