@@ -187,6 +187,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         var rightButtons: [UIBarButtonItem] = []
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_more"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MessageViewController.moreButtonTapped(_:))))
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_trash"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MessageViewController.removeButtonTapped)))
+        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_folder"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MessageViewController.labelButtonTapped)))
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_label"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MessageViewController.labelButtonTapped)))
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_unread"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MessageViewController.unreadButtonTapped)))
         

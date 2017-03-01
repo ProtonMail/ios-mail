@@ -89,6 +89,7 @@ class MailboxViewController: ProtonMailViewController {
     private var removeBarButtonItem: UIBarButtonItem!
     private var favoriteBarButtonItem: UIBarButtonItem!
     private var labelBarButtonItem: UIBarButtonItem!
+    private var folderBarButtonItem: UIBarButtonItem!
     private var unreadBarButtonItem: UIBarButtonItem!
     private var moreBarButtonItem: UIBarButtonItem!
     
@@ -336,6 +337,10 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     internal func labelButtonTapped() {
+        self.performSegueWithIdentifier(kSegueToLabelsController, sender: self)
+    }
+    
+    internal func folderButtonTapped() {
         self.performSegueWithIdentifier(kSegueToLabelsController, sender: self)
     }
     
@@ -1068,6 +1073,10 @@ class MailboxViewController: ProtonMailViewController {
                 self.labelBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_label"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MailboxViewController.labelButtonTapped))
             }
             
+            if (self.folderBarButtonItem == nil) {
+                self.folderBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_folder"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MailboxViewController.folderButtonTapped))
+            }
+            
             if (self.removeBarButtonItem == nil) {
                 self.removeBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_trash"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MailboxViewController.removeButtonTapped))
             }
@@ -1085,7 +1094,7 @@ class MailboxViewController: ProtonMailViewController {
             } else if (viewModel.isCurrentLocation(.outbox)) {
                 rightButtons = [self.moreBarButtonItem, self.labelBarButtonItem, self.unreadBarButtonItem]
             } else {
-                rightButtons = [self.moreBarButtonItem, self.removeBarButtonItem, self.labelBarButtonItem, self.unreadBarButtonItem]
+                rightButtons = [self.moreBarButtonItem, self.removeBarButtonItem, self.folderBarButtonItem, self.labelBarButtonItem, self.unreadBarButtonItem]
             }
         }
         
