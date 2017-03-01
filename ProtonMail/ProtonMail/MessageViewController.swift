@@ -183,6 +183,10 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         self.emailView?.emailHeader.updateHeaderLayout()
     }
     
+    func test() {
+        performSegueWithIdentifier("toLabelManagerSegue", sender: self)
+    }
+    
     private func setupRightButtons() {
         var rightButtons: [UIBarButtonItem] = []
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_more"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MessageViewController.moreButtonTapped(_:))))

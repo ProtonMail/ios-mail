@@ -299,7 +299,14 @@ class MailboxViewController: ProtonMailViewController {
             self.setPresentationStyleForSelfController(self, presentingController: popup)
             self.cancelButtonTapped()
             
-        } else if segue.identifier == kSegueToHumanCheckView{
+        } else if segue.identifier == "toLabelManagerSegue" {
+            let popup = segue.destinationViewController as! LablesViewController
+            popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
+            self.cancelButtonTapped()
+            
+        }
+        else if segue.identifier == kSegueToHumanCheckView{
             let popup = segue.destinationViewController as! MailboxCaptchaViewController
             popup.viewModel = CaptchaViewModelImpl()
             popup.delegate = self
@@ -341,7 +348,7 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     internal func folderButtonTapped() {
-        self.performSegueWithIdentifier(kSegueToLabelsController, sender: self)
+        self.performSegueWithIdentifier("toLabelManagerSegue", sender: self)
     }
     
     func performSegueForMessageFromNotification() {
@@ -481,12 +488,12 @@ class MailboxViewController: ProtonMailViewController {
     internal func beginRefreshingManually() {
         self.refreshControl.beginRefreshing()
         if (self.tableView.contentOffset.y == 0) {
-            UIView.animateWithDuration(0.25, animations: { 
+            UIView.animateWithDuration(0.25, animations: {
                 self.tableView.contentOffset = CGPointMake(0, -self.refreshControl.frame.size.height);
             })
         }
     }
-
+    
     // MARK: - Private methods
     private func startAutoFetch(run : BooleanType = true)
     {
@@ -826,7 +833,7 @@ class MailboxViewController: ProtonMailViewController {
                     self.onlineTimerReset()
                     self.viewModel.resetNotificationMessage()
                     if !updateTime.isNew {
-
+                        
                     }
                     if let notices = res?["Notices"] as? [String] {
                         serverNotice.check(notices)
@@ -887,7 +894,7 @@ class MailboxViewController: ProtonMailViewController {
                             PMLog.D("error: \(error)")
                         }
                     }
-          
+                    
                 }
             } catch let ex as NSError {
                 PMLog.D(" error: \(ex)")
@@ -1174,7 +1181,7 @@ class MailboxViewController: ProtonMailViewController {
 }
 
 extension MailboxViewController : MailboxCaptchaVCDelegate {
-   
+    
     func cancel() {
         isCheckingHuman = false
     }
@@ -1380,10 +1387,10 @@ extension MailboxViewController: UITableViewDataSource {
         
         if let rIndex = self.getRatingIndex() {
             if rIndex == indexPath {
-//                let mailboxRateCell = tableView.dequeueReusableCellWithIdentifier(MailboxRateReviewCell.Constant.identifier, forIndexPath: rIndex) as! MailboxRateReviewCell
-//                mailboxRateCell.callback = self
-//                mailboxRateCell.selectionStyle = .None
-//                return mailboxRateCell
+                //                let mailboxRateCell = tableView.dequeueReusableCellWithIdentifier(MailboxRateReviewCell.Constant.identifier, forIndexPath: rIndex) as! MailboxRateReviewCell
+                //                mailboxRateCell.callback = self
+                //                mailboxRateCell.selectionStyle = .None
+                //                return mailboxRateCell
             }
         }
         let mailboxCell = tableView.dequeueReusableCellWithIdentifier(MailboxMessageCell.Constant.identifier, forIndexPath: indexPath) as! MailboxMessageCell

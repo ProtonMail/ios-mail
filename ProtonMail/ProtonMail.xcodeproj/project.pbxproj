@@ -258,6 +258,8 @@
 		757945D61B66E38D004EEDCA /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757945D51B66E38D004EEDCA /* MessageViewController.swift */; };
 		757945D81B6702A2004EEDCA /* EmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757945D71B6702A2004EEDCA /* EmailView.swift */; };
 		757945DA1B6702B5004EEDCA /* EmailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757945D91B6702B5004EEDCA /* EmailHeaderView.swift */; };
+		757F4A051E677E1D001CDE71 /* LabelManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757F4A041E677E1C001CDE71 /* LabelManagerViewController.swift */; };
+		757F4A061E677E1D001CDE71 /* LabelManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757F4A041E677E1C001CDE71 /* LabelManagerViewController.swift */; };
 		7580D65A1C8E440200A15885 /* OnePasswordExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7580D6591C8E440200A15885 /* OnePasswordExtension.m */; };
 		7582CFBC1D024E2900F521D4 /* TopMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7582CFBB1D024E2800F521D4 /* TopMessageView.xib */; };
 		7582CFBD1D024E2900F521D4 /* TopMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7582CFBB1D024E2800F521D4 /* TopMessageView.xib */; };
@@ -877,6 +879,7 @@
 		757945D51B66E38D004EEDCA /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		757945D71B6702A2004EEDCA /* EmailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailView.swift; sourceTree = "<group>"; };
 		757945D91B6702B5004EEDCA /* EmailHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailHeaderView.swift; sourceTree = "<group>"; };
+		757F4A041E677E1C001CDE71 /* LabelManagerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelManagerViewController.swift; sourceTree = "<group>"; };
 		7580D6581C8E440200A15885 /* OnePasswordExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnePasswordExtension.h; sourceTree = "<group>"; };
 		7580D6591C8E440200A15885 /* OnePasswordExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnePasswordExtension.m; sourceTree = "<group>"; };
 		7582CFBB1D024E2800F521D4 /* TopMessageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopMessageView.xib; sourceTree = "<group>"; };
@@ -1716,6 +1719,7 @@
 		75E652B21B82AA630084DDF8 /* Labels */ = {
 			isa = PBXGroup;
 			children = (
+				757F4A041E677E1C001CDE71 /* LabelManagerViewController.swift */,
 				75E652B31B82AC0D0084DDF8 /* LabelsViewController.swift */,
 				75510BAA1B82BDEB001348FF /* LabelTableViewCell.swift */,
 			);
@@ -2422,6 +2426,7 @@
 				07CC99641A6F076A000FD6F8 /* NSErrorExtension.swift in Sources */,
 				75E49F0D1CAB256900235ACC /* PhoneVerifyViewController.swift in Sources */,
 				756DAC451C92B30300F3486C /* FeedbackPopViewController.swift in Sources */,
+				757F4A051E677E1D001CDE71 /* LabelManagerViewController.swift in Sources */,
 				752FAA141CB5B14500F03228 /* PinCodeViewController.swift in Sources */,
 				075F0A521ABF5DB500E6B9AE /* MessageLocation.swift in Sources */,
 				75E090541CAC7A3A00751136 /* CountryCodeTableViewCell.swift in Sources */,
@@ -2725,6 +2730,7 @@
 				75DE7D531CAAEA4900F5443E /* OnboardingViewController.swift in Sources */,
 				75DE7D541CAAEA4900F5443E /* APIService+ContactExtension.swift in Sources */,
 				75DE7D551CAAEA4900F5443E /* RecaptchaViewController.swift in Sources */,
+				757F4A061E677E1D001CDE71 /* LabelManagerViewController.swift in Sources */,
 				75DE7D561CAAEA4900F5443E /* EncryptionSetupViewController.swift in Sources */,
 				75F161921DCBB7E600912662 /* TwoFACodeViewController.swift in Sources */,
 				75DE7D571CAAEA4900F5443E /* APIService+UserExtension.swift in Sources */,

@@ -10,7 +10,8 @@ import Foundation
 import CoreData
 
 protocol LablesViewControllerDelegate {
-    func dismissed();
+    func dismissed()
+    func test()
 }
 
 class LablesViewController : UIViewController {
@@ -115,6 +116,10 @@ class LablesViewController : UIViewController {
     }
     
     @IBAction func cancelAction(sender: AnyObject) {
+        performSegueWithIdentifier("toLabelManagerSegue", sender: self)
+        
+        
+        return
         if isCreateView {
             newLabelInput.text = ""
             tableView.hidden = false;
@@ -131,17 +136,21 @@ class LablesViewController : UIViewController {
     private func setupFetchedResultsController() {
         self.fetchedLabels = sharedLabelsDataService.fetchedResultsController()
         self.fetchedLabels?.delegate = self
-        if let fetchedResultsController = fetchedLabels {
-            do {
-                try fetchedResultsController.performFetch()
-            } catch let ex as NSError {
-                PMLog.D("error: \(ex)")
-            }
-        }
+//        if let fetchedResultsController = fetchedLabels {
+//            do {
+//                try fetchedResultsController.performFetch()
+//            } catch let ex as NSError {
+//                PMLog.D("error: \(ex)")
+//            }
+//        }
     }
     
     override func viewWillDisappear(animated: Bool) {
         self.fetchedLabels?.delegate = nil
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        
     }
     
     func dismissKeyboard() {
