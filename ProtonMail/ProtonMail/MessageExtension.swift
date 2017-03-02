@@ -90,7 +90,8 @@ extension Message {
         for l in labels {
             if let label = l as? Label {
                 if let l_id = Int(label.labelID) {
-                    if let new_loc = MessageLocation(rawValue: l_id) where new_loc != .starred {
+                    PMLog.D(label.name)
+                    if let new_loc = MessageLocation(rawValue: l_id) where new_loc != .starred && new_loc != .allmail {
                         locations.append(new_loc)
                     }
                 }
@@ -99,6 +100,25 @@ extension Message {
         }
         
         return locations
+    }
+    
+    func getShowLocationNameFromLabels() -> String? {
+        let labels = self.labels
+        for l in labels {
+            if let label = l as? Label {
+                if label.exclusive == true {
+                    return label.name
+                } else {
+                    if let l_id = Int(label.labelID) {
+                        PMLog.D(label.name)
+                        if let new_loc = MessageLocation(rawValue: l_id) where new_loc != .starred && new_loc != .allmail {
+                            return new_loc.title
+                        }
+                    }
+                }
+            }
+        }
+        return nil
     }
     
     func setLabelLocation(location : MessageLocation) {

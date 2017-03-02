@@ -112,13 +112,7 @@ class MailboxMessageCell: MCSwipeTableViewCell {
     
         var title = ""
         if showLocation {
-            let locations = message.getLocationFromLabels()
-            for loc in locations {
-                if loc != .allmail {
-                    title = loc.title
-                    break
-                }
-            }
+            title = message.getShowLocationNameFromLabels() ?? ""
         }
         
         if showLocation && !title.isEmpty {

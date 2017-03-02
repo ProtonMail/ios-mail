@@ -108,7 +108,15 @@ class LabelsView: PMView {
     
     func configLables (leftText : String, labels : [Label]?) {
         self.sender = leftText;
-        self.labels = labels;
+        var tmplabels : [Label] = []
+        if let alllabels = labels {
+            for l in alllabels {
+                if l.exclusive == false {
+                    tmplabels.append(l)
+                }
+            }
+        }
+        self.labels = tmplabels;
         
         self.update();
     }
