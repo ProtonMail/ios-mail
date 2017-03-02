@@ -144,6 +144,10 @@ public class MailboxViewModel {
         return false
     }
     
+    public func ignoredLocationTitle() -> String {
+        return ""
+    }
+    
     public func isCurrentLocation(l : MessageLocation) -> Bool {
         return false
     }

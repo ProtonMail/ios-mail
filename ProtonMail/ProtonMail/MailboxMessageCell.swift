@@ -107,12 +107,12 @@ class MailboxMessageCell: MCSwipeTableViewCell {
     
     
     // MARK: - Cell configuration
-    func configureCell(message: Message, showLocation : Bool) {
+    func configureCell(message: Message, showLocation : Bool, ignoredTitle: String) {
         self.title.text = message.subject
     
         var title = ""
         if showLocation {
-            title = message.getShowLocationNameFromLabels() ?? ""
+            title = message.getShowLocationNameFromLabels(ignoredTitle) ?? ""
         }
         
         if showLocation && !title.isEmpty {

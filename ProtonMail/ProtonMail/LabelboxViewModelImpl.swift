@@ -19,7 +19,11 @@ public class LabelboxViewModelImpl : MailboxViewModel {
     }
     
     public override func showLocation () -> Bool {
-        return !self.label.exclusive
+        return true
+    }
+    
+    public override func ignoredLocationTitle() -> String {
+        return self.label.exclusive ? self.label.name : ""
     }
     
     public func stayAfterAction () -> Bool {

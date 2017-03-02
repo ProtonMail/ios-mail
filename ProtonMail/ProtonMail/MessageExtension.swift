@@ -84,6 +84,21 @@ extension Message {
         }
     }
     
+    func hasDraftLabel() -> Bool {
+        let labels = self.labels
+        for l in labels {
+            if let label = l as? Label {
+                if let l_id = Int(label.labelID) {
+                    if let new_loc = MessageLocation(rawValue: l_id) where new_loc == .draft {
+                        return true
+                    }
+                }
+                
+            }
+        }
+        return false
+    }
+    
     func getLocationFromLabels() ->  [MessageLocation] {
         var locations = [MessageLocation]()
         let labels = self.labels
@@ -98,20 +113,19 @@ extension Message {
                 
             }
         }
-        
         return locations
     }
     
-    func getShowLocationNameFromLabels() -> String? {
+    func getShowLocationNameFromLabels(ignored : String) -> String? {
         let labels = self.labels
         for l in labels {
             if let label = l as? Label {
-                if label.exclusive == true {
+                if label.exclusive == true && label.name != ignored {
                     return label.name
                 } else {
                     if let l_id = Int(label.labelID) {
                         PMLog.D(label.name)
-                        if let new_loc = MessageLocation(rawValue: l_id) where new_loc != .starred && new_loc != .allmail {
+                        if let new_loc = MessageLocation(rawValue: l_id) where new_loc != .starred && new_loc != .allmail && new_loc.title != ignored {
                             return new_loc.title
                         }
                     }

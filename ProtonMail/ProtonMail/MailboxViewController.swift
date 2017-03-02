@@ -562,7 +562,7 @@ class MailboxViewController: ProtonMailViewController {
     
     private func configureCell(mailboxCell: MailboxMessageCell, atIndexPath indexPath: NSIndexPath) {
         if let message = self.messageAtIndexPath(indexPath) {
-            mailboxCell.configureCell(message, showLocation: viewModel.showLocation())
+            mailboxCell.configureCell(message, showLocation: viewModel.showLocation(), ignoredTitle: viewModel.ignoredLocationTitle())
             mailboxCell.setCellIsChecked(selectedMessages.containsObject(message.messageID))
             if (self.isEditing) {
                 mailboxCell.showCheckboxOnLeftSide()
@@ -902,7 +902,7 @@ class MailboxViewController: ProtonMailViewController {
         }
     }
     private func performSegueForMessage(message: Message) {
-        if viewModel.isDrafts() {
+        if viewModel.isDrafts() || message.hasDraftLabel() {
             if !message.messageID.isEmpty {
                 sharedMessageDataService.ForcefetchDetailForMessage(message) {_, _, msg, error in
                     if error != nil {
