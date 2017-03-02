@@ -151,9 +151,10 @@ extension LableManagerViewController : UITextFieldDelegate {
     }
 }
 
+
+// MARK: UICollectionViewDataSource
 extension LableManagerViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    // MARK: UICollectionViewDataSource
-    
+
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }

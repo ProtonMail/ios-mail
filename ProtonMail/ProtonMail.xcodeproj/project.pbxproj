@@ -1593,6 +1593,16 @@
 			name = Review;
 			sourceTree = "<group>";
 		};
+		757F4A071E67A0B8001CDE71 /* Labels */ = {
+			isa = PBXGroup;
+			children = (
+				75510BAC1B82F990001348FF /* LabelViewModel.swift */,
+				752A9EBC1DB80E40008D4392 /* LabelApplayViewModel.swift */,
+				7576355C1D0B6D8E00DF46DC /* LabelManagerViewModel.swift */,
+			);
+			name = Labels;
+			sourceTree = "<group>";
+		};
 		7580D6561C8E436F00A15885 /* OnePassword */ = {
 			isa = PBXGroup;
 			children = (
@@ -1729,6 +1739,7 @@
 		75ECC2361AB9F10600B8FC78 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				757F4A071E67A0B8001CDE71 /* Labels */,
 				7545083F1E149B3900265CD0 /* Mailbox */,
 				754713161DCD61510084BF34 /* SignIn */,
 				7547130F1DCD517E0084BF34 /* TwoFA */,
@@ -1741,9 +1752,6 @@
 				759339BF1ABB45C700535F1B /* ViewModelFactory.swift */,
 				7567B06C1B334FA400A72A1E /* ViewModelService.swift */,
 				7567B06E1B334FD300A72A1E /* ViewModelServiceImpl.swift */,
-				75510BAC1B82F990001348FF /* LabelViewModel.swift */,
-				752A9EBC1DB80E40008D4392 /* LabelApplayViewModel.swift */,
-				7576355C1D0B6D8E00DF46DC /* LabelManagerViewModel.swift */,
 				755638C81CA1F423003FA2D0 /* MessageViewModel.swift */,
 				755638CA1CA1F446003FA2D0 /* MessageViewModelImpl.swift */,
 			);

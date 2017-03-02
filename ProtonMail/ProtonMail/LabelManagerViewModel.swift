@@ -65,7 +65,7 @@ public class LabelManagerViewModelImpl : LabelViewModel {
     }
     
     override public func createLabel(name: String, color: String, error:ErrorBlock,  complete: OkBlock) {
-        let api = CreateLabelRequest<CreateLabelRequestResponse>(name: name, color: color)
+        let api = CreateLabelRequest<CreateLabelRequestResponse>(name: name, color: color, exclusive: false)
         api.call { (task, response, hasError) -> Void in
             if hasError {
                 error(code: response?.code ?? 1000, errorMessage: response?.errorMessage ?? "");
