@@ -42,6 +42,10 @@ public class LabelViewModel {
         fatalError("This method must be overridden")
     }
     
+    public func singleSelectLabel() {
+        
+    }
+    
     public func getTitle() -> String {
         fatalError("This method must be overridden")
     }

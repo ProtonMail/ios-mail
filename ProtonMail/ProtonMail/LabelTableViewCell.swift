@@ -26,6 +26,7 @@ class LabelTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.labelView.updateTextFont(UIFont.robotoLight(size: 20))
+        selectStatusButton.enabled = false
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -33,6 +34,18 @@ class LabelTableViewCell: UITableViewCell {
     }
 
     @IBAction func buttonAction(sender: UIButton) {
+        self.selectAction()
+    }
+    
+    func uncheckAction() {
+        if self.model.status == 2 {
+            selectAction()
+        } else {
+            self.updateStatusButton()
+        }
+    }
+    
+    func selectAction() {
         var plusCount = 1
         if model.totalMessages.count <= 1 || 0 ==  model.originalSelected.count || model.originalSelected.count ==  model.totalMessages.count {
             plusCount = 2
@@ -84,7 +97,7 @@ class LabelTableViewCell: UITableViewCell {
                 mm.setValue(labelObjs, forKey: "labels")
             }
         }
-
+        
         self.model.status = tempStatus
         self.updateStatusButton();
     }
@@ -106,7 +119,7 @@ class LabelTableViewCell: UITableViewCell {
         }
     }
     
-    func ConfigCell(model : LabelMessageModel!, vc : UIViewController) {
+    func ConfigCell(model : LabelMessageModel!, uncheck : Bool, vc : UIViewController) {
         self.vc = vc;
         self.model = model;
         if model.label.managedObjectContext != nil {
@@ -114,6 +127,12 @@ class LabelTableViewCell: UITableViewCell {
             let check = self.frame.width - 50
             labelWidth.constant = w > check ? check : w
         }
-        self.updateStatusButton()
+        
+        if uncheck {
+            self.uncheckAction()
+        } else {
+            self.updateStatusButton()
+        }
+        
     }
 }

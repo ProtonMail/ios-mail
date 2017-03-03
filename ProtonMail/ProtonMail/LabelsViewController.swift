@@ -17,8 +17,6 @@ class LablesViewController : UIViewController {
     
     var viewModel : LabelViewModel!
     
-    let titles : [String] = ["#7272a7","#cf5858", "#c26cc7", "#7569d1", "#69a9d1", "#5ec7b7", "#72bb75", "#c3d261", "#e6c04c", "#e6984c", "#8989ac", "#cf7e7e", "#c793ca", "#9b94d1", "#a8c4d5", "#97c9c1", "#9db99f", "#c6cd97", "#e7d292", "#dfb286"]
-    
     let kToFolderManager : String = "toFolderManagerSegue"
     let kToLableManager : String = "toLabelManagerSegue"
     
@@ -54,7 +52,7 @@ class LablesViewController : UIViewController {
     
     //
     private var fetchedLabels: NSFetchedResultsController?
-    
+    var tempSelected : LabelMessageModel? = nil
     //
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,6 +67,8 @@ class LablesViewController : UIViewController {
             archiveView.hidden = true
             archiveConstrains.constant = 0
         }
+        
+        tableView.allowsSelection = true
         
         switch viewModel.getFetchType() {
         case .all:
@@ -117,47 +117,14 @@ class LablesViewController : UIViewController {
     }
     
     @IBAction func applyAction(sender: AnyObject) {
-
-//            viewModel.createLabel(newLabelInput.text!, color: titles[selected?.row ?? 0], error: { (code, errorMessage) -> Void in
-//                if code == 14005 {
-//                    let alert = NSLocalizedString("The maximum number of labels is 20.").alertController()
-//                    alert.addOKAction()
-//                    self.presentViewController(alert, animated: true, completion: nil)
-//                } else if code == 14002 {
-//                    let alert = NSLocalizedString("The label name is duplicate").alertController()
-//                    alert.addOKAction()
-//                    self.presentViewController(alert, animated: true, completion: nil)
-//                } else {
-//                    let alert = errorMessage.alertController()
-//                    alert.addOKAction()
-//                    self.presentViewController(alert, animated: true, completion: nil)
-//                }
-//                }, complete: { () -> Void in
-//                    //ok
-//            })
-//            
-//            newLabelInput.text = ""
-//            tableView.hidden = false;
-//            isCreateView = false
-//            collectionView.hidden = true;
-//            applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
-
-            self.viewModel.apply(archiveMessage)
-            self.dismissViewControllerAnimated(true, completion: nil)
-            delegate?.dismissed()
+        self.viewModel.apply(archiveMessage)
+        self.dismissViewControllerAnimated(true, completion: nil)
+        delegate?.dismissed()
     }
     
     @IBAction func cancelAction(sender: AnyObject) {
-
-//            newLabelInput.text = ""
-//            tableView.hidden = false;
-//            isCreateView = false
-//            collectionView.hidden = true;
-//            applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
-//        } else {
-//            viewModel.cancel();
-            self.dismissViewControllerAnimated(true, completion: nil)
-            delegate?.dismissed()
+        self.dismissViewControllerAnimated(true, completion: nil)
+        delegate?.dismissed()
     }
     
     private func setupFetchedResultsController() {
@@ -180,7 +147,6 @@ class LablesViewController : UIViewController {
         
     }
     
-    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == kToFolderManager {
             let popup = segue.destinationViewController as! LableEditViewController
@@ -190,7 +156,6 @@ class LablesViewController : UIViewController {
             popup.viewModel = LabelCreatingViewModelImple()
         }
     }
-    
 }
 
 // MARK: - UITableViewDataSource
@@ -213,10 +178,13 @@ extension LablesViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
         let labelCell = tableView.dequeueReusableCellWithIdentifier("labelApplyCell", forIndexPath: indexPath) as! LabelTableViewCell
         if let label = fetchedLabels?.objectAtIndexPath(indexPath) as? Label {
-            labelCell.ConfigCell(viewModel.getLabelMessage(label), vc: self)
+            let lm = viewModel.getLabelMessage(label)
+            labelCell.ConfigCell(lm, uncheck: false, vc: self)
+            if let tmpS = self.tempSelected where tmpS.label != label {
+                labelCell.ConfigCell(viewModel.getLabelMessage(label), uncheck: true, vc: self)
+            }
         }
         return labelCell
     }
@@ -246,6 +214,15 @@ extension LablesViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // verify whether the user is checking messages or not
+        if let cell = tableView.cellForRowAtIndexPath(indexPath) as? LabelTableViewCell {
+            tempSelected = cell.model
+            cell.selectAction()
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
+                tableView.reloadData()
+            }
+        }
+        
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 }
 
@@ -254,7 +231,6 @@ extension LablesViewController: UITableViewDelegate {
 extension LablesViewController : NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
-        // selectMessageIDIfNeeded()
     }
     
     func controllerWillChangeContent(controller: NSFetchedResultsController) {
