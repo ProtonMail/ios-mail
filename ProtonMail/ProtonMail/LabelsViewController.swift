@@ -181,10 +181,10 @@ extension LablesViewController: UITableViewDataSource {
         let labelCell = tableView.dequeueReusableCellWithIdentifier("labelApplyCell", forIndexPath: indexPath) as! LabelTableViewCell
         if let label = fetchedLabels?.objectAtIndexPath(indexPath) as? Label {
             let lm = viewModel.getLabelMessage(label)
-            labelCell.ConfigCell(lm, uncheck: false, vc: self)
-            if let tmpS = self.tempSelected where tmpS.label != label {
-                labelCell.ConfigCell(viewModel.getLabelMessage(label), uncheck: true, vc: self)
-            }
+            labelCell.ConfigCell(lm, vc: self)
+//            if let tmpS = self.tempSelected where tmpS.label != label {
+//                labelCell.ConfigCell(viewModel.getLabelMessage(label), uncheck: true, vc: self)
+//            }
         }
         return labelCell
     }
@@ -214,14 +214,19 @@ extension LablesViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // verify whether the user is checking messages or not
-        if let cell = tableView.cellForRowAtIndexPath(indexPath) as? LabelTableViewCell {
-            tempSelected = cell.model
-            cell.selectAction()
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
-                tableView.reloadData()
+        if let label = fetchedLabels?.objectAtIndexPath(indexPath) as? Label {
+            viewModel.cellClicked(label)
+            switch viewModel.getFetchType()
+            {
+            case .all, .label:
+                tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+                break;
+            case .folder:
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
+                    tableView.reloadData()
+                }
             }
         }
-        
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 }

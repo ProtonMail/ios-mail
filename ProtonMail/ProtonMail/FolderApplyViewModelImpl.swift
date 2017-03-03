@@ -31,15 +31,7 @@ public class FolderApplyViewModelImpl : LabelViewModel {
     }
     
     override public func showArchiveOption() -> Bool {
-        if let msg = messages.first {
-            let locations = msg.getLocationFromLabels()
-            for loc in locations {
-                if loc == .outbox {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return false;
     }
     
     public override func getApplyButtonText() -> String {
@@ -68,14 +60,16 @@ public class FolderApplyViewModelImpl : LabelViewModel {
                 }
             }
             if lmm.originalSelected.count == 0 {
-                lmm.status = 0;
+                lmm.origStatus = 0;
+                lmm.currentStatus = 0;
             }
             else if lmm.originalSelected.count > 0 && lmm.originalSelected.count < lmm.totalMessages.count {
-                lmm.status = 1;
+                lmm.origStatus = 1;
+                lmm.currentStatus = 1;
             } else {
-                lmm.status = 2;
+                lmm.origStatus = 2;
+                lmm.currentStatus = 1;
             }
-            
             self.labelMessages[label.labelID] = lmm;
             return lmm
         }
@@ -85,36 +79,36 @@ public class FolderApplyViewModelImpl : LabelViewModel {
         
         let context = sharedCoreDataService.newMainManagedObjectContext()
         for (key, value) in self.labelMessages {
-            if value.status == 0 { //remove
-                let ids = self.messages.map { ($0).messageID }
-                let api = RemoveLabelFromMessageRequest(labelID: key, messages: ids)
-                api.call(nil)
-                context.performBlockAndWait { () -> Void in
-                    for mm in self.messages {
-                        let labelObjs = mm.mutableSetValueForKey("labels")
-                        labelObjs.removeObject(value.label)
-                        mm.setValue(labelObjs, forKey: "labels")
-                    }
-                }
-            } else if value.status == 2 { //add
-                let ids = self.messages.map { ($0).messageID }
-                let api = ApplyLabelToMessageRequest(labelID: key, messages: ids)
-                api.call(nil)
-                context.performBlockAndWait { () -> Void in
-                    for mm in self.messages {
-                        let labelObjs = mm.mutableSetValueForKey("labels")
-                        labelObjs.addObject(value.label)
-                        mm.setValue(labelObjs, forKey: "labels")
-                    }
-                }
-            } else {
-                
-            }
-            
-            let error = context.saveUpstreamIfNeeded()
-            if let error = error {
-                PMLog.D("error: \(error)")
-            }
+//            if value.status == 0 { //remove
+//                let ids = self.messages.map { ($0).messageID }
+//                let api = RemoveLabelFromMessageRequest(labelID: key, messages: ids)
+//                api.call(nil)
+//                context.performBlockAndWait { () -> Void in
+//                    for mm in self.messages {
+//                        let labelObjs = mm.mutableSetValueForKey("labels")
+//                        labelObjs.removeObject(value.label)
+//                        mm.setValue(labelObjs, forKey: "labels")
+//                    }
+//                }
+//            } else if value.status == 2 { //add
+//                let ids = self.messages.map { ($0).messageID }
+//                let api = ApplyLabelToMessageRequest(labelID: key, messages: ids)
+//                api.call(nil)
+//                context.performBlockAndWait { () -> Void in
+//                    for mm in self.messages {
+//                        let labelObjs = mm.mutableSetValueForKey("labels")
+//                        labelObjs.addObject(value.label)
+//                        mm.setValue(labelObjs, forKey: "labels")
+//                    }
+//                }
+//            } else {
+//                
+//            }
+//            
+//            let error = context.saveUpstreamIfNeeded()
+//            if let error = error {
+//                PMLog.D("error: \(error)")
+//            }
         }
         
         if archiveMessage {

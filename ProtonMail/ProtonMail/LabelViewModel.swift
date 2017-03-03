@@ -14,7 +14,8 @@ public class LabelMessageModel {
     var label : Label!
     var totalMessages : [Message] = []
     var originalSelected : [Message] = []
-    var status : Int = 0
+    var origStatus : Int = 0
+    var currentStatus : Int = 0
 }
 
 public class LabelViewModel {
@@ -39,6 +40,10 @@ public class LabelViewModel {
     }
     
     public func getLabelMessage(label : Label!) -> LabelMessageModel! {
+        fatalError("This method must be overridden")
+    }
+    
+    public func cellClicked(label : Label!) {
         fatalError("This method must be overridden")
     }
     

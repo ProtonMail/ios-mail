@@ -27,7 +27,8 @@ public class LabelManagerViewModelImpl : LabelViewModel {
         } else {
             let lmm = LabelMessageModel();
             lmm.label = label
-            lmm.status = 0
+            lmm.origStatus = 0
+            lmm.currentStatus = 0
             self.labelMessages[label.labelID] = lmm;
             return lmm
         }
@@ -48,7 +49,7 @@ public class LabelManagerViewModelImpl : LabelViewModel {
     override public func apply(archiveMessage : Bool) {
         if let context = sharedCoreDataService.mainManagedObjectContext {
             for (key, value) in self.labelMessages {
-                if value.status == 2 { //delete
+                if value.currentStatus == 2 { //delete
                     if value.label.managedObjectContext != nil && key == value.label.labelID {
                         let api = DeleteLabelRequest(lable_id: key)
                         api.call(nil)
