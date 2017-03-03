@@ -26,15 +26,15 @@ public class LabelViewModel {
         
     }
     
+    public func getFetchType() -> LabelFetchType {
+        fatalError("This method must be overridden")
+    }
+    
     public func apply (archiveMessage : Bool) {
         fatalError("This method must be overridden")
     }
     
     public func cancel () {
-        fatalError("This method must be overridden")
-    }
-    
-    public func createLabel (name : String, color : String, error:ErrorBlock,  complete: OkBlock)  {
         fatalError("This method must be overridden")
     }
     

@@ -12,7 +12,7 @@ import CoreData
 
 let sharedLabelsDataService = LabelsDataService()
 
-enum LabelFetchType : Int {
+public enum LabelFetchType : Int {
     case all = 0
     case label = 1
     case folder = 2

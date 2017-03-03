@@ -646,6 +646,7 @@
                                         <constraints>
                                             <constraint firstItem="1Ma-An-R5C" firstAttribute="centerY" secondItem="WWM-xq-lcc" secondAttribute="centerY" id="9qM-bu-Nm8"/>
                                             <constraint firstItem="wsL-kt-jRe" firstAttribute="top" secondItem="WWM-xq-lcc" secondAttribute="top" id="BrN-DG-N8N"/>
+                                            <constraint firstItem="1Ma-An-R5C" firstAttribute="centerX" secondItem="WWM-xq-lcc" secondAttribute="centerX" priority="750" id="C81-j7-OC3"/>
                                             <constraint firstItem="wsL-kt-jRe" firstAttribute="leading" secondItem="CtQ-0H-IOS" secondAttribute="trailing" constant="10" id="F07-Cc-Plf"/>
                                             <constraint firstItem="wsL-kt-jRe" firstAttribute="centerY" secondItem="WWM-xq-lcc" secondAttribute="centerY" id="JB4-nh-UDh"/>
                                             <constraint firstItem="CtQ-0H-IOS" firstAttribute="centerX" secondItem="WWM-xq-lcc" secondAttribute="centerX" id="JIE-nj-1V4"/>
@@ -653,6 +654,7 @@
                                             <constraint firstItem="CtQ-0H-IOS" firstAttribute="top" secondItem="WWM-xq-lcc" secondAttribute="top" id="dVh-ST-2CT"/>
                                             <constraint firstAttribute="bottom" secondItem="CtQ-0H-IOS" secondAttribute="bottom" id="sc9-YX-Cbw"/>
                                             <constraint firstAttribute="bottom" secondItem="wsL-kt-jRe" secondAttribute="bottom" id="uTU-Xu-7nQ"/>
+                                            <constraint firstItem="wsL-kt-jRe" firstAttribute="centerX" secondItem="WWM-xq-lcc" secondAttribute="centerX" priority="750" id="uW4-hI-gWX"/>
                                             <constraint firstAttribute="height" constant="38" id="vTa-uc-zz9"/>
                                             <constraint firstItem="1Ma-An-R5C" firstAttribute="top" secondItem="WWM-xq-lcc" secondAttribute="top" id="weQ-Hs-sO9"/>
                                             <constraint firstItem="CtQ-0H-IOS" firstAttribute="leading" secondItem="1Ma-An-R5C" secondAttribute="trailing" constant="10" id="ylP-WQ-gWF"/>
@@ -822,6 +824,10 @@
                     </view>
                     <navigationItem key="navigationItem" id="iLS-Gu-LeZ"/>
                     <connections>
+                        <outlet property="addFolderButton" destination="1Ma-An-R5C" id="zWC-Jn-lW6"/>
+                        <outlet property="addFolderCenterConstraint" destination="C81-j7-OC3" id="5BA-6d-g2r"/>
+                        <outlet property="addLabelButton" destination="wsL-kt-jRe" id="qQg-0Z-Xob"/>
+                        <outlet property="addLabelCenterConstraint" destination="uW4-hI-gWX" id="SfN-23-c0b"/>
                         <outlet property="applyButton" destination="aea-99-bTG" id="Q1B-oa-G2p"/>
                         <outlet property="archiveConstrains" destination="igJ-Er-OqR" id="bQk-gE-aGk"/>
                         <outlet property="archiveSelectButton" destination="E7L-cs-KEo" id="Gnz-6e-ZRi"/>
@@ -829,6 +835,7 @@
                         <outlet property="backgroundImageView" destination="viD-Nu-yL2" id="K8Q-uQ-41x"/>
                         <outlet property="cancelButton" destination="yPS-fX-Gy3" id="Q8N-Y4-xDx"/>
                         <outlet property="contentView" destination="tPx-HX-rjT" id="75b-ul-oR4"/>
+                        <outlet property="middleLineConstraint" destination="JIE-nj-1V4" id="LxZ-6l-GBu"/>
                         <outlet property="tableView" destination="DLH-ou-vZe" id="m38-Lh-eKz"/>
                         <outlet property="titleLabel" destination="mSx-Zq-fBF" id="1m2-py-tqy"/>
                         <segue destination="BBo-ig-Gqj" kind="presentation" identifier="toLabelManagerSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="coverVertical" id="Dpt-T7-EMY"/>
@@ -3783,6 +3790,9 @@
                                                 <color key="textColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                                <connections>
+                                                    <action selector="valueChanged:" destination="BBo-ig-Gqj" eventType="valueChanged" id="BEK-4v-LQh"/>
+                                                </connections>
                                             </textField>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bp5-Ze-hCU">
                                                 <rect key="frame" x="0.0" y="44" width="313" height="1"/>
@@ -3962,15 +3972,15 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="LdN-DE-nXL"/>
-        <segue reference="GgS-nT-ctf"/>
+        <segue reference="5rJ-hC-fsT"/>
+        <segue reference="fux-iz-qV0"/>
+        <segue reference="0zg-HM-MdK"/>
+        <segue reference="XIN-Jt-JzU"/>
+        <segue reference="hZj-FM-cPb"/>
+        <segue reference="fFn-p1-JKs"/>
+        <segue reference="ddm-eA-erE"/>
         <segue reference="PpL-SW-U8F"/>
         <segue reference="sPN-i9-NSa"/>
-        <segue reference="fFn-p1-JKs"/>
         <segue reference="gwz-B9-War"/>
-        <segue reference="5rJ-hC-fsT"/>
-        <segue reference="0zg-HM-MdK"/>
-        <segue reference="fux-iz-qV0"/>
-        <segue reference="hZj-FM-cPb"/>
-        <segue reference="ddm-eA-erE"/>
     </inferredMetricsTieBreakers>
 </document>

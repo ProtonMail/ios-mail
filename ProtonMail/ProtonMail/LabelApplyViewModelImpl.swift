@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class LabelViewModelImpl : LabelViewModel {
+public class LabelApplyViewModelImpl : LabelViewModel {
     private var messages : [Message]!
     private var labelMessages : Dictionary<String, LabelMessageModel>!
     
@@ -147,16 +147,11 @@ public class LabelViewModelImpl : LabelViewModel {
         }
     }
     
-    override public func createLabel(name: String, color: String, error:ErrorBlock,  complete: OkBlock) {
-        let api = CreateLabelRequest<CreateLabelRequestResponse>(name: name, color: color, exclusive: false)
-        
-        api.call { (task, response, hasError) -> Void in
-            if hasError {
-                error(code: response?.code ?? 1000, errorMessage: response?.errorMessage ?? "");
-            } else {
-                sharedLabelsDataService.addNewLabel(response?.label);
-                complete()
-            }
-        }
+    public override func fetchController() -> NSFetchedResultsController? {
+        return sharedLabelsDataService.fetchedResultsController(.label)
+    }
+
+    public override func getFetchType() -> LabelFetchType {
+        return .label
     }
 }

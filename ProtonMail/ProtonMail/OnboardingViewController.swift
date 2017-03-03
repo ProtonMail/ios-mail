@@ -21,8 +21,6 @@ class OnboardingViewController : UIViewController, UIScrollViewDelegate {
     
     var pageWidth : CGFloat = 0.0;
     
-    var viewModel : LabelViewModel!
-    
     let onboardingList : [Onboarding] = [.welcome, .swipe, .label, .encryption, .expire, .help] //, .upgrade]
    
     override func viewDidLoad() {

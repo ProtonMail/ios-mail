@@ -83,7 +83,6 @@ class LableEditViewController : UIViewController {
     }
     
     @IBAction func cancelAction(sender: AnyObject) {
-        //viewModel.cancel();
         self.dismissViewControllerAnimated(true, completion: nil)
         delegate?.dismissed()
     }

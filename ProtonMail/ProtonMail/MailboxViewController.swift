@@ -40,12 +40,14 @@ class MailboxViewController: ProtonMailViewController {
     private let kSegueToComposeShow = "toComposeShow"
     private let kSegueToSearchController = "toSearchViewController"
     private let kSegueToMessageDetailController = "toMessageDetailViewController"
-    private let kSegueToLabelsController = "toApplyLabelsSegue"
     private let kSegueToMessageDetailFromNotification = "toMessageDetailViewControllerFromNotification"
     private let kSegueToTour = "to_onboarding_segue"
     private let kSegueToFeedback = "to_feedback_segue"
     private let kSegueToFeedbackView = "to_feedback_view_segue"
     private let kSegueToHumanCheckView = "toHumanCheckView"
+    
+    private let kSegueMoveToFolders : String = "toMoveToFolderSegue"
+    private let kSegueToApplyLabels : String = "toApplyLabelsSegue"
     
     @IBOutlet weak var undoBottomDistance: NSLayoutConstraint!
     // MARK: - Private attributes
@@ -293,15 +295,15 @@ class MailboxViewController: ProtonMailViewController {
                 PMLog.D("No selected row.")
             }
             
-        } else if segue.identifier == kSegueToLabelsController {
+        } else if segue.identifier == kSegueToApplyLabels {
             let popup = segue.destinationViewController as! LablesViewController
-            popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
+            popup.viewModel = LabelApplyViewModelImpl(msg: self.getSelectedMessages())
             self.setPresentationStyleForSelfController(self, presentingController: popup)
             self.cancelButtonTapped()
             
-        } else if segue.identifier == "toLabelManagerSegue" {
+        } else if segue.identifier == kSegueMoveToFolders {
             let popup = segue.destinationViewController as! LablesViewController
-            popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
+            popup.viewModel = FolderApplyViewModelImpl(msg: self.getSelectedMessages())
             self.setPresentationStyleForSelfController(self, presentingController: popup)
             self.cancelButtonTapped()
             
@@ -318,7 +320,6 @@ class MailboxViewController: ProtonMailViewController {
             
         } else if segue.identifier == kSegueToTour {
             let popup = segue.destinationViewController as! OnboardingViewController
-            popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
             self.setPresentationStyleForSelfController(self, presentingController: popup)
         } else if segue.identifier == kSegueToFeedback {
             let popup = segue.destinationViewController as! FeedbackPopViewController
@@ -344,11 +345,11 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     internal func labelButtonTapped() {
-        self.performSegueWithIdentifier(kSegueToLabelsController, sender: self)
+        self.performSegueWithIdentifier(kSegueToApplyLabels, sender: self)
     }
     
     internal func folderButtonTapped() {
-        self.performSegueWithIdentifier("toLabelManagerSegue", sender: self)
+        self.performSegueWithIdentifier(kSegueMoveToFolders, sender: self)
     }
     
     func performSegueForMessageFromNotification() {

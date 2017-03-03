@@ -41,6 +41,14 @@ class LablesViewController : UIViewController {
     @IBOutlet weak var archiveView: UIView!
     @IBOutlet weak var archiveConstrains: NSLayoutConstraint!
     
+    
+    @IBOutlet weak var addFolderCenterConstraint: NSLayoutConstraint!
+    @IBOutlet weak var addLabelCenterConstraint: NSLayoutConstraint!
+    @IBOutlet weak var middleLineConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var addLabelButton: UIButton!
+    @IBOutlet weak var addFolderButton: UIButton!
+    //
     var delegate : LablesViewControllerDelegate?
     var applyButtonText : String!
     
@@ -61,6 +69,28 @@ class LablesViewController : UIViewController {
             archiveView.hidden = true
             archiveConstrains.constant = 0
         }
+        
+        switch viewModel.getFetchType() {
+        case .all:
+            middleLineConstraint.priority = 1000
+            addFolderCenterConstraint.priority = 750
+            addLabelCenterConstraint.priority = 750
+            addLabelButton.hidden = false
+            addFolderButton.hidden = false
+        case .label:
+            middleLineConstraint.priority = 750
+            addFolderCenterConstraint.priority = 750
+            addLabelCenterConstraint.priority = 1000
+            addLabelButton.hidden = false
+            addFolderButton.hidden = true
+        case .folder:
+            middleLineConstraint.priority = 750
+            addFolderCenterConstraint.priority = 1000
+            addLabelCenterConstraint.priority = 750
+            addLabelButton.hidden = true
+            addFolderButton.hidden = false
+        }
+        
         applyButtonText = viewModel.getApplyButtonText()
         applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
         cancelButton.setTitle(viewModel.getCancelButtonText(), forState: UIControlState.Normal)

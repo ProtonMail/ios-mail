@@ -281,7 +281,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             }
         } else if segue.identifier == "toApplyLabelsSegue" {
             let popup = segue.destinationViewController as! LablesViewController
-            popup.viewModel = LabelViewModelImpl(msg: [self.message])
+            popup.viewModel = LabelApplyViewModelImpl(msg: [self.message])
             popup.delegate = self
             self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
