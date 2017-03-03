@@ -46,6 +46,22 @@ public class LabelManagerViewModelImpl : LabelViewModel {
         return NSLocalizedString("Close")
     }
     
+    public override func cellClicked(label: Label!) {
+        if let model = self.labelMessages[label.labelID] {
+            var plusCount = 1
+            if model.totalMessages.count <= 1 || 0 ==  model.originalSelected.count || model.originalSelected.count ==  model.totalMessages.count {
+                plusCount = 2
+            }
+            
+            var tempStatus = model.currentStatus + plusCount;
+            if tempStatus > 2 {
+                tempStatus = 0
+            }
+            
+            model.currentStatus = tempStatus
+        }
+    }
+    
     override public func apply(archiveMessage : Bool) {
         if let context = sharedCoreDataService.mainManagedObjectContext {
             for (key, value) in self.labelMessages {
@@ -75,3 +91,4 @@ public class LabelManagerViewModelImpl : LabelViewModel {
     }
     
 }
+

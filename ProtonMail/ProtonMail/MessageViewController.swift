@@ -16,6 +16,9 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     private let kToComposerSegue = "toCompose"
     
+    private let kSegueMoveToFolders : String = "toMoveToFolderSegue"
+    private let kSegueToApplyLabels : String = "toApplyLabelsSegue"
+    
     /// message info
     var message: Message!
     
@@ -191,7 +194,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         var rightButtons: [UIBarButtonItem] = []
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_more"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MessageViewController.moreButtonTapped(_:))))
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_trash"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MessageViewController.removeButtonTapped)))
-        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_folder"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MessageViewController.labelButtonTapped)))
+        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_folder"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MessageViewController.folderButtonTapped)))
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_label"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MessageViewController.labelButtonTapped)))
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_unread"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MessageViewController.unreadButtonTapped)))
         
@@ -225,9 +228,11 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     }
     
     internal func labelButtonTapped() {
-        self.performSegueWithIdentifier("toApplyLabelsSegue", sender: self)
+        self.performSegueWithIdentifier(kSegueToApplyLabels, sender: self)
     }
-    
+    internal func folderButtonTapped() {
+        self.performSegueWithIdentifier(kSegueMoveToFolders, sender: self)
+    }
     internal func spamButtonTapped() {
         self.message.removeLocationFromLabels(message.location, location: MessageLocation.spam)
         message.needsUpdate = true
@@ -279,14 +284,19 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
                 let composeViewController = segue.destinationViewController as! ComposeEmailViewController
                 sharedVMService.newDraftViewModelWithMailTo(composeViewController, url: self.URL)
             }
-        } else if segue.identifier == "toApplyLabelsSegue" {
+        } else if segue.identifier == kSegueToApplyLabels {
             let popup = segue.destinationViewController as! LablesViewController
             popup.viewModel = LabelApplyViewModelImpl(msg: [self.message])
             popup.delegate = self
             self.setPresentationStyleForSelfController(self, presentingController: popup)
+        } else if segue.identifier == kSegueMoveToFolders {
+            let popup = segue.destinationViewController as! LablesViewController
+            popup.delegate = self
+            popup.viewModel = FolderApplyViewModelImpl(msg: [self.message])
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }
-    
+
     override func shouldShowSideMenu() -> Bool {
         return false
     }
