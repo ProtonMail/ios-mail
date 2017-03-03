@@ -11,8 +11,8 @@ import Foundation
 
 public class LabelEditViewModel {
     
-//    public typealias OkBlock = () -> Void
-//    public typealias ErrorBlock = (code : Int, errorMessage : String) -> Void
+    public typealias OkBlock = () -> Void
+    public typealias ErrorBlock = (code : Int, errorMessage : String) -> Void
     
     let colors : [String] = ["#7272a7","#cf5858", "#c26cc7", "#7569d1", "#69a9d1", "#5ec7b7", "#72bb75", "#c3d261", "#e6c04c", "#e6984c", "#8989ac", "#cf7e7e", "#c793ca", "#9b94d1", "#a8c4d5", "#97c9c1", "#9db99f", "#c6cd97", "#e7d292", "#dfb286"]
     
@@ -46,7 +46,9 @@ public class LabelEditViewModel {
         fatalError("This method must be overridden")
     }
     
-    
+    public func createLabel (name : String, color : String, error:ErrorBlock,  complete: OkBlock)  {
+        fatalError("This method must be overridden")
+    }
 //
 //    public func apply (archiveMessage : Bool) {
 //        fatalError("This method must be overridden")
@@ -55,10 +57,7 @@ public class LabelEditViewModel {
 //    public func cancel () {
 //        fatalError("This method must be overridden")
 //    }
-//    
-//    public func createLabel (name : String, color : String, error:ErrorBlock,  complete: OkBlock)  {
-//        fatalError("This method must be overridden")
-//    }
+
 //    
 //    public func getLabelMessage(label : Label!) -> LabelMessageModel! {
 //        fatalError("This method must be overridden")

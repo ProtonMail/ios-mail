@@ -57,34 +57,31 @@ class LableEditViewController : UIViewController {
     }
     
     @IBAction func applyAction(sender: AnyObject) {
-//        if isCreateView {
-//            // start
-//            viewModel.createLabel(newLabelInput.text!, color: titles[selected?.row ?? 0], error: { (code, errorMessage) -> Void in
-//                if code == 14005 {
-//                    let alert = NSLocalizedString("The maximum number of labels is 20.").alertController()
-//                    alert.addOKAction()
-//                    self.presentViewController(alert, animated: true, completion: nil)
-//                } else if code == 14002 {
-//                    let alert = NSLocalizedString("The label name is duplicate").alertController()
-//                    alert.addOKAction()
-//                    self.presentViewController(alert, animated: true, completion: nil)
-//                } else {
-//                    let alert = errorMessage.alertController()
-//                    alert.addOKAction()
-//                    self.presentViewController(alert, animated: true, completion: nil)
-//                }
-//                }, complete: { () -> Void in
-//                    //ok
-//            })
-//            
-//            newLabelInput.text = ""
-//            tableView.hidden = false;
-//            isCreateView = false
-//            collectionView.hidden = true;
-//            applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
-
+        // start
+        //show loading
+        ActivityIndicatorHelper.showActivityIndicatorAtView(view)
+        let color = viewModel.getColor(selected?.row ?? 0)
+        viewModel.createLabel(newLabelInput.text!, color: color, error: { (code, errorMessage) -> Void in
+            ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+            if code == 14005 {
+                let alert = NSLocalizedString("The maximum number of labels is 20.").alertController()
+                alert.addOKAction()
+                self.presentViewController(alert, animated: true, completion: nil)
+            } else if code == 14002 {
+                let alert = NSLocalizedString("The label name is duplicate").alertController()
+                alert.addOKAction()
+                self.presentViewController(alert, animated: true, completion: nil)
+            } else {
+                let alert = errorMessage.alertController()
+                alert.addOKAction()
+                self.presentViewController(alert, animated: true, completion: nil)
+            }
+            }, complete: { () -> Void in
+                self.dismissViewControllerAnimated(true, completion: nil)
+                self.delegate?.dismissed()
+        })
     }
-
+    
     @IBAction func cancelAction(sender: AnyObject) {
         //viewModel.cancel();
         self.dismissViewControllerAnimated(true, completion: nil)

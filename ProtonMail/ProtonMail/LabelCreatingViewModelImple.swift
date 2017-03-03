@@ -23,6 +23,19 @@ public class LabelCreatingViewModelImple : LabelEditViewModel {
         return "Create"
     }
     
+    public override func createLabel(name: String, color: String, error: ErrorBlock, complete: OkBlock) {
+        let api = CreateLabelRequest<CreateLabelRequestResponse>(name: name, color: color, exclusive: false)
+        api.call { (task, response, hasError) -> Void in
+            if hasError {
+                error(code: response?.code ?? 1000, errorMessage: response?.errorMessage ?? "");
+            } else {
+                sharedLabelsDataService.addNewLabel(response?.label);
+                complete()
+            }
+        }
+    }
+    
+    
 //    private var labelMessages : Dictionary<String, LabelMessageModel>!
 //    public override init() {
 //        super.init()
