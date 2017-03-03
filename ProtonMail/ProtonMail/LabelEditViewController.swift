@@ -82,24 +82,11 @@ class LableEditViewController : UIViewController {
 //            isCreateView = false
 //            collectionView.hidden = true;
 //            applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
-//        } else {
-//            self.viewModel.apply(archiveMessage)
-//            self.dismissViewControllerAnimated(true, completion: nil)
-//            delegate?.dismissed()
-//        }
+
     }
 
     @IBAction func cancelAction(sender: AnyObject) {
-//        if isCreateView {
-//            newLabelInput.text = ""
-//            isCreateView = false
-//            collectionView.hidden = true;
-//            applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
-//        } else {
-//            viewModel.cancel();
-//            self.dismissViewControllerAnimated(true, completion: nil)
-//            delegate?.dismissed()
-//        }
+        //viewModel.cancel();
         self.dismissViewControllerAnimated(true, completion: nil)
         delegate?.dismissed()
     }
@@ -107,21 +94,6 @@ class LableEditViewController : UIViewController {
     func dismissKeyboard() {
         if (self.newLabelInput != nil) {
             newLabelInput.resignFirstResponder()
-        }
-    }
-    
-    @IBAction func startEditing(sender: AnyObject) {
-    }
-    
-    @IBAction func endEditing(sender: UITextField) {
-
-    }
-    
-    @IBAction func valueChanged(sender: UITextField) {
-        if sender.text!.isEmpty {
-            applyButton.enabled = false
-        } else {
-            applyButton.enabled = true
         }
     }
 }
