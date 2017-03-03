@@ -57,5 +57,9 @@ public class LabelViewModel {
     public func getCancelButtonText() -> String {
         fatalError("This method must be overridden")
     }
+    
+    public func fetchController() -> NSFetchedResultsController? {
+        fatalError("This method must be overridden")
+    }
 }
 

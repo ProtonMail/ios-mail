@@ -9,6 +9,7 @@
 import Foundation
 
 
+// labels and folders manager
 public class LabelManagerViewModelImpl : LabelViewModel {
     private var labelMessages : Dictionary<String, LabelMessageModel>!
     public override init() {
@@ -33,7 +34,7 @@ public class LabelManagerViewModelImpl : LabelViewModel {
     }
     
     override public func getTitle() -> String {
-        return NSLocalizedString("Manage Labels")
+        return NSLocalizedString("Manage Labels/Folders")
     }
     
     public override func getApplyButtonText() -> String {
@@ -75,5 +76,10 @@ public class LabelManagerViewModelImpl : LabelViewModel {
             }
         }
     }
+    
+    public override func fetchController() -> NSFetchedResultsController? {
+        return sharedLabelsDataService.fetchedResultsController(.all)
+    }
+
     
 }

@@ -12,8 +12,14 @@ import CoreData
 
 let sharedLabelsDataService = LabelsDataService()
 
-class LabelsDataService {
+enum LabelFetchType : Int {
+    case all = 0
+    case label = 1
+    case folder = 2
+}
 
+class LabelsDataService {
+    
     private var managedObjectContext: NSManagedObjectContext? {
         return sharedCoreDataService.mainManagedObjectContext
     }
@@ -56,10 +62,18 @@ class LabelsDataService {
         }
     }
     
-    func fetchedResultsController() -> NSFetchedResultsController? {
+    func fetchedResultsController(type : LabelFetchType) -> NSFetchedResultsController? {
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest(entityName: Label.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "labelID MATCHES %@", "(?!^\\d+$)^.+$")
+            
+            switch type {
+            case .all:
+                fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@)", "(?!^\\d+$)^.+$")
+            case .folder:
+                fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == true) ", "(?!^\\d+$)^.+$", Label.Attributes.exclusive)
+            case .label:
+                fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == false) ", "(?!^\\d+$)^.+$", Label.Attributes.exclusive)
+            }
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Label.Attributes.order, ascending: true)]
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         }

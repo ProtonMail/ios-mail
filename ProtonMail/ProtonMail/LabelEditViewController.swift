@@ -8,24 +8,16 @@
 
 import Foundation
 
-
-
-//protocol LablesViewControllerDelegate {
-//    func dismissed()
-//    func test()
-//}
-
-class LableManagerViewController : UIViewController {
+class LableEditViewController : UIViewController {
     
-    //var viewModel : LabelViewModel!
-    
-    let titles : [String] = ["#7272a7","#cf5858", "#c26cc7", "#7569d1", "#69a9d1", "#5ec7b7", "#72bb75", "#c3d261", "#e6c04c", "#e6984c", "#8989ac", "#cf7e7e", "#c793ca", "#9b94d1", "#a8c4d5", "#97c9c1", "#9db99f", "#c6cd97", "#e7d292", "#dfb286"]
+    var viewModel : LabelEditViewModel!
+
     
     private var selected : NSIndexPath?
-    private var isCreateView: Bool = false
+    private var selectedFirstLoad : NSIndexPath?
+    
     private var archiveMessage = false;
     
-    @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     
@@ -36,31 +28,33 @@ class LableManagerViewController : UIViewController {
     @IBOutlet weak var cancelButton: UIButton!
     
     @IBOutlet weak var newLabelInput: UITextField!
-    
-    
+
     var delegate : LablesViewControllerDelegate?
     var applyButtonText : String!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         contentView.layer.cornerRadius = 4;
-        inputContentView.layer.cornerRadius = 4;
-        inputContentView.layer.borderColor = UIColor(hexColorCode: "#DADEE8").CGColor
-        inputContentView.layer.borderWidth = 1.0
         newLabelInput.delegate = self
         
-//        titleLabel.text = viewModel.getTitle()
+        titleLabel.text = viewModel.getTitle()
+        newLabelInput.placeholder = viewModel.getPlaceHolder()
 
-//        applyButtonText = viewModel.getApplyButtonText()
+        applyButtonText = viewModel.getRightButtonText()
+        applyButton.setTitle(applyButtonText, forState: UIControlState.Disabled)
         applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
-//        cancelButton.setTitle(viewModel.getCancelButtonText(), forState: UIControlState.Normal)
+        cancelButton.setTitle("Cancel", forState: UIControlState.Normal)
+        applyButton.enabled = false
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent
     }
     
+    override func viewWillAppear(animated: Bool) {
+        newLabelInput.resignFirstResponder()
+        selectedFirstLoad = viewModel.getSelectedIndex()
+    }
     
     @IBAction func applyAction(sender: AnyObject) {
 //        if isCreateView {
@@ -94,12 +88,7 @@ class LableManagerViewController : UIViewController {
 //            delegate?.dismissed()
 //        }
     }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let popup = segue.destinationViewController as! LablesViewController
-        popup.viewModel = LabelViewModelImpl(msg: [])
-    }
-    
+
     @IBAction func cancelAction(sender: AnyObject) {
 //        if isCreateView {
 //            newLabelInput.text = ""
@@ -115,10 +104,6 @@ class LableManagerViewController : UIViewController {
         delegate?.dismissed()
     }
     
-    override func viewWillAppear(animated: Bool) {
-        
-    }
-    
     func dismissKeyboard() {
         if (self.newLabelInput != nil) {
             newLabelInput.resignFirstResponder()
@@ -126,48 +111,63 @@ class LableManagerViewController : UIViewController {
     }
     
     @IBAction func startEditing(sender: AnyObject) {
-        isCreateView = true
-        collectionView.hidden = false;
-        applyButton.setTitle("Add", forState: UIControlState.Normal)
     }
     
     @IBAction func endEditing(sender: UITextField) {
-        if  sender.text!.isEmpty {
-            isCreateView = false
-            collectionView.hidden = false;
-            applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
-        }
+
     }
     
     @IBAction func valueChanged(sender: UITextField) {
+        if sender.text!.isEmpty {
+            applyButton.enabled = false
+        } else {
+            applyButton.enabled = true
+        }
     }
 }
 
-extension LableManagerViewController : UITextFieldDelegate {
+extension LableEditViewController : UITextFieldDelegate {
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         dismissKeyboard()
         return false
     }
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        let text = textField.text! as NSString
+        let changedText = text.stringByReplacingCharactersInRange(range, withString: string)
+        if changedText.isEmpty {
+            applyButton.enabled = false
+        } else {
+            applyButton.enabled = true
+        }
+        return true
+    }
 }
 
-
 // MARK: UICollectionViewDataSource
-extension LableManagerViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+extension LableEditViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
 
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+        return viewModel.getColorCount()
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("labelColorCell", forIndexPath: indexPath)
-        let color = titles[indexPath.row]
+        let color = viewModel.getColor(indexPath.row)
         cell.backgroundColor = UIColor(hexString: color, alpha: 1.0)
         cell.layer.cornerRadius = 17;
+        
+        if selected == nil {
+            if indexPath.row == selectedFirstLoad?.row {
+                cell.layer.borderWidth = 4
+                cell.layer.borderColor = UIColor.darkGrayColor().CGColor
+                self.selected = indexPath
+            }
+        }
         return cell
     }
     
