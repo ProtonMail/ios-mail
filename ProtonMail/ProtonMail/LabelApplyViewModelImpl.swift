@@ -200,26 +200,26 @@ public class LabelApplyViewModelImpl : LabelViewModel {
     }
     
     override public func cancel() {
-        let context = sharedCoreDataService.newMainManagedObjectContext()
-        for (_, value) in self.labelMessages {
-            
-            for mm in self.messages {
-                let labelObjs = mm.mutableSetValueForKey("labels")
-                labelObjs.removeObject(value.label)
-                mm.setValue(labelObjs, forKey: "labels")
-            }
-            
-            for mm in value.originalSelected {
-                let labelObjs = mm.mutableSetValueForKey("labels")
-                labelObjs.addObject(value.label)
-                mm.setValue(labelObjs, forKey: "labels")
-            }
-        }
-        
-        let error = context.saveUpstreamIfNeeded()
-        if let error = error {
-            PMLog.D("error: \(error)")
-        }
+//        let context = sharedCoreDataService.newMainManagedObjectContext()
+//        for (_, value) in self.labelMessages {
+//            
+//            for mm in self.messages {
+//                let labelObjs = mm.mutableSetValueForKey("labels")
+//                labelObjs.removeObject(value.label)
+//                mm.setValue(labelObjs, forKey: "labels")
+//            }
+//            
+//            for mm in value.originalSelected {
+//                let labelObjs = mm.mutableSetValueForKey("labels")
+//                labelObjs.addObject(value.label)
+//                mm.setValue(labelObjs, forKey: "labels")
+//            }
+//        }
+//        
+//        let error = context.saveUpstreamIfNeeded()
+//        if let error = error {
+//            PMLog.D("error: \(error)")
+//        }
     }
     
     public override func fetchController() -> NSFetchedResultsController? {

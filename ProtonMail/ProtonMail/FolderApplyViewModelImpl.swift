@@ -68,10 +68,30 @@ public class FolderApplyViewModelImpl : LabelViewModel {
                 lmm.currentStatus = 1;
             } else {
                 lmm.origStatus = 2;
-                lmm.currentStatus = 1;
+                lmm.currentStatus = 2;
             }
             self.labelMessages[label.labelID] = lmm;
             return lmm
+        }
+    }
+    
+    
+    public override func cellClicked(label: Label!) {
+        
+        for (_, model) in self.labelMessages {
+            if model.label == label {
+                var plusCount = 1
+                if model.totalMessages.count <= 1 || 0 ==  model.originalSelected.count || model.originalSelected.count ==  model.totalMessages.count {
+                    plusCount = 2
+                }
+                var tempStatus = model.currentStatus + plusCount;
+                if tempStatus > 2 {
+                    tempStatus = 0
+                }
+                model.currentStatus = tempStatus
+            } else {
+                model.currentStatus = 0
+            }
         }
     }
     
@@ -79,50 +99,41 @@ public class FolderApplyViewModelImpl : LabelViewModel {
         
         let context = sharedCoreDataService.newMainManagedObjectContext()
         for (key, value) in self.labelMessages {
-//            if value.status == 0 { //remove
-//                let ids = self.messages.map { ($0).messageID }
-//                let api = RemoveLabelFromMessageRequest(labelID: key, messages: ids)
-//                api.call(nil)
-//                context.performBlockAndWait { () -> Void in
-//                    for mm in self.messages {
-//                        let labelObjs = mm.mutableSetValueForKey("labels")
-//                        labelObjs.removeObject(value.label)
-//                        mm.setValue(labelObjs, forKey: "labels")
-//                    }
-//                }
-//            } else if value.status == 2 { //add
-//                let ids = self.messages.map { ($0).messageID }
-//                let api = ApplyLabelToMessageRequest(labelID: key, messages: ids)
-//                api.call(nil)
-//                context.performBlockAndWait { () -> Void in
-//                    for mm in self.messages {
-//                        let labelObjs = mm.mutableSetValueForKey("labels")
-//                        labelObjs.addObject(value.label)
-//                        mm.setValue(labelObjs, forKey: "labels")
-//                    }
-//                }
-//            } else {
-//                
-//            }
-//            
-//            let error = context.saveUpstreamIfNeeded()
-//            if let error = error {
-//                PMLog.D("error: \(error)")
-//            }
-        }
-        
-        if archiveMessage {
-            for message in self.messages {
-                message.removeLocationFromLabels(message.location, location: .archive)
-                message.needsUpdate = false
-                message.location = .archive
+            if value.currentStatus != value.origStatus && value.currentStatus == 2 { //add
+                let ids = self.messages.map { ($0).messageID }
+                let api = ApplyLabelToMessageRequest(labelID: key, messages: ids)
+                api.call(nil)
+                context.performBlockAndWait { () -> Void in
+                    for mm in self.messages {
+                        let labelObjs = mm.mutableSetValueForKey("labels")
+                        var needsDelete : [Label] = []
+                        for lo in labelObjs {
+                            if let l = lo as? Label {
+                                switch l.labelID {
+                                case "0", "3", "4", "6":
+                                    needsDelete.append(l)
+                                default:
+                                    if l.exclusive == true {
+                                        needsDelete.append(l)
+                                    }
+                                    break
+                                }
+                                
+                            }
+                        }
+                        for l in needsDelete {
+                            labelObjs.removeObject(l)
+                        }
+                        labelObjs.addObject(value.label)
+                        mm.setValue(labelObjs, forKey: "labels")
+                    }
+                }
             }
-            if let error = context.saveUpstreamIfNeeded() {
+            
+            let error = context.saveUpstreamIfNeeded()
+            if let error = error {
                 PMLog.D("error: \(error)")
             }
-            let ids = self.messages.map { ($0).messageID }
-            let api = MessageActionRequest<ApiResponse>(action: "archive", ids: ids)
-            api.call(nil)
         }
     }
     
@@ -131,26 +142,26 @@ public class FolderApplyViewModelImpl : LabelViewModel {
     }
     
     override public func cancel() {
-        let context = sharedCoreDataService.newMainManagedObjectContext()
-        for (_, value) in self.labelMessages {
-            
-            for mm in self.messages {
-                let labelObjs = mm.mutableSetValueForKey("labels")
-                labelObjs.removeObject(value.label)
-                mm.setValue(labelObjs, forKey: "labels")
-            }
-            
-            for mm in value.originalSelected {
-                let labelObjs = mm.mutableSetValueForKey("labels")
-                labelObjs.addObject(value.label)
-                mm.setValue(labelObjs, forKey: "labels")
-            }
-        }
-        
-        let error = context.saveUpstreamIfNeeded()
-        if let error = error {
-            PMLog.D("error: \(error)")
-        }
+//        let context = sharedCoreDataService.newMainManagedObjectContext()
+//        for (_, value) in self.labelMessages {
+//            
+//            for mm in self.messages {
+//                let labelObjs = mm.mutableSetValueForKey("labels")
+//                labelObjs.removeObject(value.label)
+//                mm.setValue(labelObjs, forKey: "labels")
+//            }
+//            
+//            for mm in value.originalSelected {
+//                let labelObjs = mm.mutableSetValueForKey("labels")
+//                labelObjs.addObject(value.label)
+//                mm.setValue(labelObjs, forKey: "labels")
+//            }
+//        }
+//        
+//        let error = context.saveUpstreamIfNeeded()
+//        if let error = error {
+//            PMLog.D("error: \(error)")
+//        }
     }
     
     public override func fetchController() -> NSFetchedResultsController? {
