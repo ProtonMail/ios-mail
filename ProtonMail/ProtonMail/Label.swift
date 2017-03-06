@@ -17,6 +17,8 @@ public class Label: NSManagedObject {
     @NSManaged var isDisplay: Bool
     @NSManaged var labelID: String
     @NSManaged var name: String
+    @NSManaged var type: NSNumber
+    @NSManaged var exclusive: Bool
     
  /// start at 1 , lower number on the top
     @NSManaged var order: NSNumber

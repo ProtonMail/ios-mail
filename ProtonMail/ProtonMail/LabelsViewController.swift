@@ -10,50 +10,54 @@ import Foundation
 import CoreData
 
 protocol LablesViewControllerDelegate {
-    func dismissed();
+    func dismissed()
 }
 
 class LablesViewController : UIViewController {
     
     var viewModel : LabelViewModel!
     
-    let titles : [String] = ["#7272a7","#cf5858", "#c26cc7", "#7569d1", "#69a9d1", "#5ec7b7", "#72bb75", "#c3d261", "#e6c04c", "#e6984c", "#8989ac", "#cf7e7e", "#c793ca", "#9b94d1", "#a8c4d5", "#97c9c1", "#9db99f", "#c6cd97", "#e7d292", "#dfb286"]
+    let kToFolderManager : String = "toFolderManagerSegue"
+    let kToLableManager : String = "toLabelManagerSegue"
+    
     
     private var selected : NSIndexPath?
-    private var isCreateView: Bool = false
+    
     private var archiveMessage = false;
     
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     
-    @IBOutlet weak var inputContentView: UIView!
-    @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var applyButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
-    
-    @IBOutlet weak var newLabelInput: UITextField!
     
     @IBOutlet weak var archiveSelectButton: UIButton!
     
     @IBOutlet weak var archiveView: UIView!
     @IBOutlet weak var archiveConstrains: NSLayoutConstraint!
     
+    
+    @IBOutlet weak var addFolderCenterConstraint: NSLayoutConstraint!
+    @IBOutlet weak var addLabelCenterConstraint: NSLayoutConstraint!
+    @IBOutlet weak var middleLineConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var addLabelButton: UIButton!
+    @IBOutlet weak var addFolderButton: UIButton!
+    //
     var delegate : LablesViewControllerDelegate?
     var applyButtonText : String!
     
     //
     private var fetchedLabels: NSFetchedResultsController?
-    
+    var tempSelected : LabelMessageModel? = nil
+    //
     override func viewDidLoad() {
         super.viewDidLoad()
         contentView.layer.cornerRadius = 4;
-        inputContentView.layer.cornerRadius = 4;
-        inputContentView.layer.borderColor = UIColor(hexColorCode: "#DADEE8").CGColor
-        inputContentView.layer.borderWidth = 1.0
-        newLabelInput.delegate = self
+
         self.setupFetchedResultsController()
         titleLabel.text = viewModel.getTitle()
         if viewModel.showArchiveOption() {
@@ -63,6 +67,30 @@ class LablesViewController : UIViewController {
             archiveView.hidden = true
             archiveConstrains.constant = 0
         }
+        
+        tableView.allowsSelection = true
+        
+        switch viewModel.getFetchType() {
+        case .all:
+            middleLineConstraint.priority = 1000
+            addFolderCenterConstraint.priority = 750
+            addLabelCenterConstraint.priority = 750
+            addLabelButton.hidden = false
+            addFolderButton.hidden = false
+        case .label:
+            middleLineConstraint.priority = 750
+            addFolderCenterConstraint.priority = 750
+            addLabelCenterConstraint.priority = 1000
+            addLabelButton.hidden = false
+            addFolderButton.hidden = true
+        case .folder:
+            middleLineConstraint.priority = 750
+            addFolderCenterConstraint.priority = 1000
+            addLabelCenterConstraint.priority = 750
+            addLabelButton.hidden = true
+            addFolderButton.hidden = false
+        }
+        
         applyButtonText = viewModel.getApplyButtonText()
         applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
         cancelButton.setTitle(viewModel.getCancelButtonText(), forState: UIControlState.Normal)
@@ -80,58 +108,29 @@ class LablesViewController : UIViewController {
             archiveSelectButton.setImage(UIImage(named: "mail_check"), forState: UIControlState.Normal)
         }
     }
+    @IBAction func addFolder(sender: AnyObject) {
+        performSegueWithIdentifier(kToFolderManager, sender: self)
+    }
+    
+    @IBAction func addLabel(sender: AnyObject) {
+        performSegueWithIdentifier(kToLableManager, sender: self)
+    }
     
     @IBAction func applyAction(sender: AnyObject) {
-        if isCreateView {
-            // start
-            viewModel.createLabel(newLabelInput.text!, color: titles[selected?.row ?? 0], error: { (code, errorMessage) -> Void in
-                if code == 14005 {
-                    let alert = NSLocalizedString("The maximum number of labels is 20.").alertController()
-                    alert.addOKAction()
-                    self.presentViewController(alert, animated: true, completion: nil)
-                } else if code == 14002 {
-                    let alert = NSLocalizedString("The label name is duplicate").alertController()
-                    alert.addOKAction()
-                    self.presentViewController(alert, animated: true, completion: nil)
-                } else {
-                    let alert = errorMessage.alertController()
-                    alert.addOKAction()
-                    self.presentViewController(alert, animated: true, completion: nil)
-                }
-                }, complete: { () -> Void in
-                    //ok
-            })
-            
-            newLabelInput.text = ""
-            tableView.hidden = false;
-            isCreateView = false
-            collectionView.hidden = true;
-            applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
-        } else {
-            self.viewModel.apply(archiveMessage)
-            self.dismissViewControllerAnimated(true, completion: nil)
-            delegate?.dismissed()
-        }
+        self.viewModel.apply(archiveMessage)
+        self.dismissViewControllerAnimated(true, completion: nil)
+        delegate?.dismissed()
     }
     
     @IBAction func cancelAction(sender: AnyObject) {
-        if isCreateView {
-            newLabelInput.text = ""
-            tableView.hidden = false;
-            isCreateView = false
-            collectionView.hidden = true;
-            applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
-        } else {
-            viewModel.cancel();
-            self.dismissViewControllerAnimated(true, completion: nil)
-            delegate?.dismissed()
-        }
+        self.dismissViewControllerAnimated(true, completion: nil)
+        delegate?.dismissed()
     }
     
     private func setupFetchedResultsController() {
-        self.fetchedLabels = sharedLabelsDataService.fetchedResultsController()
-        self.fetchedLabels?.delegate = self
-        if let fetchedResultsController = fetchedLabels {
+        self.fetchedLabels = viewModel.fetchController()
+        if let fetchedResultsController = self.fetchedLabels {
+            fetchedResultsController.delegate = self
             do {
                 try fetchedResultsController.performFetch()
             } catch let ex as NSError {
@@ -144,29 +143,18 @@ class LablesViewController : UIViewController {
         self.fetchedLabels?.delegate = nil
     }
     
-    func dismissKeyboard() {
-        if (self.newLabelInput != nil) {
-            newLabelInput.resignFirstResponder()
+    override func viewWillAppear(animated: Bool) {
+        
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == kToFolderManager {
+            let popup = segue.destinationViewController as! LableEditViewController
+            popup.viewModel = FolderCreatingViewModelImple()
+        } else if segue.identifier == kToLableManager {
+            let popup = segue.destinationViewController as! LableEditViewController
+            popup.viewModel = LabelCreatingViewModelImple()
         }
-    }
-    
-    @IBAction func startEditing(sender: AnyObject) {
-        tableView.hidden = true;
-        isCreateView = true
-        collectionView.hidden = false;
-        applyButton.setTitle("Add", forState: UIControlState.Normal)
-    }
-    
-    @IBAction func endEditing(sender: UITextField) {
-        if  sender.text!.isEmpty {
-            tableView.hidden = false;
-            isCreateView = false
-            collectionView.hidden = true;
-            applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
-        }
-    }
-    
-    @IBAction func valueChanged(sender: UITextField) {
     }
 }
 
@@ -190,10 +178,13 @@ extension LablesViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
         let labelCell = tableView.dequeueReusableCellWithIdentifier("labelApplyCell", forIndexPath: indexPath) as! LabelTableViewCell
         if let label = fetchedLabels?.objectAtIndexPath(indexPath) as? Label {
-            labelCell.ConfigCell(viewModel.getLabelMessage(label), vc: self)
+            let lm = viewModel.getLabelMessage(label)
+            labelCell.ConfigCell(lm, vc: self)
+//            if let tmpS = self.tempSelected where tmpS.label != label {
+//                labelCell.ConfigCell(viewModel.getLabelMessage(label), uncheck: true, vc: self)
+//            }
         }
         return labelCell
     }
@@ -223,72 +214,28 @@ extension LablesViewController: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // verify whether the user is checking messages or not
-    }
-}
-
-
-extension LablesViewController : UITextFieldDelegate {
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        dismissKeyboard()
-        return false
-    }
-}
-
-
-
-
-extension LablesViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    //    let sectionInsets = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
-    
-    // MARK: UICollectionViewDataSource
-    
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
-    }
-    
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("labelColorCell", forIndexPath: indexPath)
-        let color = titles[indexPath.row]
-        cell.backgroundColor = UIColor(hexString: color, alpha: 1.0)
-        return cell
-    }
-    
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if let index = selected {
-            let oldCell = collectionView.cellForItemAtIndexPath(index)
-            oldCell?.layer.borderWidth = 0
+        if let label = fetchedLabels?.objectAtIndexPath(indexPath) as? Label {
+            viewModel.cellClicked(label)
+            switch viewModel.getFetchType()
+            {
+            case .all, .label:
+                tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+                break;
+            case .folder:
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
+                    tableView.reloadData()
+                }
+            }
         }
-        
-        let newCell = collectionView.cellForItemAtIndexPath(indexPath)
-        newCell?.layer.borderWidth = 4
-        newCell?.layer.borderColor = UIColor.whiteColor().CGColor
-        self.selected = indexPath
-        
-        self.dismissKeyboard()
-    }
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(0, 0, 0, 0);
-    }
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
-    {
-        return CGSize(width: collectionView.frame.size.width/2, height: 30)
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 }
-
 
 // MARK: - NSFetchedResultsControllerDelegate
 
 extension LablesViewController : NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         tableView.endUpdates()
-        // selectMessageIDIfNeeded()
     }
     
     func controllerWillChangeContent(controller: NSFetchedResultsController) {

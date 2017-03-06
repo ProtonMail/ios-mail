@@ -14,7 +14,8 @@ public class LabelMessageModel {
     var label : Label!
     var totalMessages : [Message] = []
     var originalSelected : [Message] = []
-    var status : Int = 0
+    var origStatus : Int = 0
+    var currentStatus : Int = 0
 }
 
 public class LabelViewModel {
@@ -26,6 +27,10 @@ public class LabelViewModel {
         
     }
     
+    public func getFetchType() -> LabelFetchType {
+        fatalError("This method must be overridden")
+    }
+    
     public func apply (archiveMessage : Bool) {
         fatalError("This method must be overridden")
     }
@@ -34,12 +39,16 @@ public class LabelViewModel {
         fatalError("This method must be overridden")
     }
     
-    public func createLabel (name : String, color : String, error:ErrorBlock,  complete: OkBlock)  {
+    public func getLabelMessage(label : Label!) -> LabelMessageModel! {
         fatalError("This method must be overridden")
     }
     
-    public func getLabelMessage(label : Label!) -> LabelMessageModel! {
+    public func cellClicked(label : Label!) {
         fatalError("This method must be overridden")
+    }
+    
+    public func singleSelectLabel() {
+        
     }
     
     public func getTitle() -> String {
@@ -55,6 +64,10 @@ public class LabelViewModel {
     }
     
     public func getCancelButtonText() -> String {
+        fatalError("This method must be overridden")
+    }
+    
+    public func fetchController() -> NSFetchedResultsController? {
         fatalError("This method must be overridden")
     }
 }

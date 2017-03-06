@@ -136,38 +136,45 @@ class MailboxTableViewCell: UITableViewCell {
             self.starConstraint.constant = 0
         }
         
-        let labels = message.labels.allObjects
+        let alllabels = message.labels.allObjects
+        var labels : [Label] = []
+        for l in alllabels {
+            if let label = l as? Label where label.exclusive == false {
+                labels.append(label)
+            }
+        }
+        
         let lc = labels.count - 1;
         for i in 0 ... 4 {
             switch i {
             case 0:
                 var label : Label? = nil
                 if i <= lc {
-                    label = labels[i] as? Label
+                    label = labels[i]
                 }
                 self.updateLables(labelView, labelConstraint: label1, label: label)
             case 1:
                 var label : Label? = nil
                 if i <= lc {
-                    label = labels[i] as? Label
+                    label = labels[i]
                 }
                 self.updateLables(labelView2, labelConstraint: label2, label: label)
             case 2:
                 var label : Label? = nil
                 if i <= lc {
-                    label = labels[i] as? Label
+                    label = labels[i]
                 }
                 self.updateLables(labelView3, labelConstraint: label3, label: label)
             case 3:
                 var label : Label? = nil
                 if i <= lc {
-                    label = labels[i] as? Label
+                    label = labels[i]
                 }
                 self.updateLables(labelView4, labelConstraint: label4, label: label)
             case 4:
                 var label : Label? = nil
                 if i <= lc {
-                    label = labels[i] as? Label
+                    label = labels[i]
                 }
                 self.updateLables(labelView5, labelConstraint: label5, label: label)
             default:

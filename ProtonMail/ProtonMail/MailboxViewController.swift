@@ -40,12 +40,14 @@ class MailboxViewController: ProtonMailViewController {
     private let kSegueToComposeShow = "toComposeShow"
     private let kSegueToSearchController = "toSearchViewController"
     private let kSegueToMessageDetailController = "toMessageDetailViewController"
-    private let kSegueToLabelsController = "toApplyLabelsSegue"
     private let kSegueToMessageDetailFromNotification = "toMessageDetailViewControllerFromNotification"
     private let kSegueToTour = "to_onboarding_segue"
     private let kSegueToFeedback = "to_feedback_segue"
     private let kSegueToFeedbackView = "to_feedback_view_segue"
     private let kSegueToHumanCheckView = "toHumanCheckView"
+    
+    private let kSegueMoveToFolders : String = "toMoveToFolderSegue"
+    private let kSegueToApplyLabels : String = "toApplyLabelsSegue"
     
     @IBOutlet weak var undoBottomDistance: NSLayoutConstraint!
     // MARK: - Private attributes
@@ -89,6 +91,7 @@ class MailboxViewController: ProtonMailViewController {
     private var removeBarButtonItem: UIBarButtonItem!
     private var favoriteBarButtonItem: UIBarButtonItem!
     private var labelBarButtonItem: UIBarButtonItem!
+    private var folderBarButtonItem: UIBarButtonItem!
     private var unreadBarButtonItem: UIBarButtonItem!
     private var moreBarButtonItem: UIBarButtonItem!
     
@@ -292,13 +295,20 @@ class MailboxViewController: ProtonMailViewController {
                 PMLog.D("No selected row.")
             }
             
-        } else if segue.identifier == kSegueToLabelsController {
+        } else if segue.identifier == kSegueToApplyLabels {
             let popup = segue.destinationViewController as! LablesViewController
-            popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
+            popup.viewModel = LabelApplyViewModelImpl(msg: self.getSelectedMessages())
             self.setPresentationStyleForSelfController(self, presentingController: popup)
             self.cancelButtonTapped()
             
-        } else if segue.identifier == kSegueToHumanCheckView{
+        } else if segue.identifier == kSegueMoveToFolders {
+            let popup = segue.destinationViewController as! LablesViewController
+            popup.viewModel = FolderApplyViewModelImpl(msg: self.getSelectedMessages())
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
+            self.cancelButtonTapped()
+            
+        }
+        else if segue.identifier == kSegueToHumanCheckView{
             let popup = segue.destinationViewController as! MailboxCaptchaViewController
             popup.viewModel = CaptchaViewModelImpl()
             popup.delegate = self
@@ -310,7 +320,6 @@ class MailboxViewController: ProtonMailViewController {
             
         } else if segue.identifier == kSegueToTour {
             let popup = segue.destinationViewController as! OnboardingViewController
-            popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
             self.setPresentationStyleForSelfController(self, presentingController: popup)
         } else if segue.identifier == kSegueToFeedback {
             let popup = segue.destinationViewController as! FeedbackPopViewController
@@ -336,7 +345,11 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     internal func labelButtonTapped() {
-        self.performSegueWithIdentifier(kSegueToLabelsController, sender: self)
+        self.performSegueWithIdentifier(kSegueToApplyLabels, sender: self)
+    }
+    
+    internal func folderButtonTapped() {
+        self.performSegueWithIdentifier(kSegueMoveToFolders, sender: self)
     }
     
     func performSegueForMessageFromNotification() {
@@ -476,12 +489,12 @@ class MailboxViewController: ProtonMailViewController {
     internal func beginRefreshingManually() {
         self.refreshControl.beginRefreshing()
         if (self.tableView.contentOffset.y == 0) {
-            UIView.animateWithDuration(0.25, animations: { 
+            UIView.animateWithDuration(0.25, animations: {
                 self.tableView.contentOffset = CGPointMake(0, -self.refreshControl.frame.size.height);
             })
         }
     }
-
+    
     // MARK: - Private methods
     private func startAutoFetch(run : BooleanType = true)
     {
@@ -550,7 +563,7 @@ class MailboxViewController: ProtonMailViewController {
     
     private func configureCell(mailboxCell: MailboxMessageCell, atIndexPath indexPath: NSIndexPath) {
         if let message = self.messageAtIndexPath(indexPath) {
-            mailboxCell.configureCell(message, showLocation: viewModel.showLocation())
+            mailboxCell.configureCell(message, showLocation: viewModel.showLocation(), ignoredTitle: viewModel.ignoredLocationTitle())
             mailboxCell.setCellIsChecked(selectedMessages.containsObject(message.messageID))
             if (self.isEditing) {
                 mailboxCell.showCheckboxOnLeftSide()
@@ -821,7 +834,7 @@ class MailboxViewController: ProtonMailViewController {
                     self.onlineTimerReset()
                     self.viewModel.resetNotificationMessage()
                     if !updateTime.isNew {
-
+                        
                     }
                     if let notices = res?["Notices"] as? [String] {
                         serverNotice.check(notices)
@@ -882,7 +895,7 @@ class MailboxViewController: ProtonMailViewController {
                             PMLog.D("error: \(error)")
                         }
                     }
-          
+                    
                 }
             } catch let ex as NSError {
                 PMLog.D(" error: \(ex)")
@@ -890,7 +903,7 @@ class MailboxViewController: ProtonMailViewController {
         }
     }
     private func performSegueForMessage(message: Message) {
-        if viewModel.isDrafts() {
+        if viewModel.isDrafts() || message.hasDraftLabel() {
             if !message.messageID.isEmpty {
                 sharedMessageDataService.ForcefetchDetailForMessage(message) {_, _, msg, error in
                     if error != nil {
@@ -1068,6 +1081,10 @@ class MailboxViewController: ProtonMailViewController {
                 self.labelBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_label"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MailboxViewController.labelButtonTapped))
             }
             
+            if (self.folderBarButtonItem == nil) {
+                self.folderBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_folder"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MailboxViewController.folderButtonTapped))
+            }
+            
             if (self.removeBarButtonItem == nil) {
                 self.removeBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_trash"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MailboxViewController.removeButtonTapped))
             }
@@ -1085,7 +1102,7 @@ class MailboxViewController: ProtonMailViewController {
             } else if (viewModel.isCurrentLocation(.outbox)) {
                 rightButtons = [self.moreBarButtonItem, self.labelBarButtonItem, self.unreadBarButtonItem]
             } else {
-                rightButtons = [self.moreBarButtonItem, self.removeBarButtonItem, self.labelBarButtonItem, self.unreadBarButtonItem]
+                rightButtons = [self.moreBarButtonItem, self.removeBarButtonItem, self.folderBarButtonItem, self.labelBarButtonItem, self.unreadBarButtonItem]
             }
         }
         
@@ -1165,7 +1182,7 @@ class MailboxViewController: ProtonMailViewController {
 }
 
 extension MailboxViewController : MailboxCaptchaVCDelegate {
-   
+    
     func cancel() {
         isCheckingHuman = false
     }
@@ -1371,10 +1388,10 @@ extension MailboxViewController: UITableViewDataSource {
         
         if let rIndex = self.getRatingIndex() {
             if rIndex == indexPath {
-//                let mailboxRateCell = tableView.dequeueReusableCellWithIdentifier(MailboxRateReviewCell.Constant.identifier, forIndexPath: rIndex) as! MailboxRateReviewCell
-//                mailboxRateCell.callback = self
-//                mailboxRateCell.selectionStyle = .None
-//                return mailboxRateCell
+                //                let mailboxRateCell = tableView.dequeueReusableCellWithIdentifier(MailboxRateReviewCell.Constant.identifier, forIndexPath: rIndex) as! MailboxRateReviewCell
+                //                mailboxRateCell.callback = self
+                //                mailboxRateCell.selectionStyle = .None
+                //                return mailboxRateCell
             }
         }
         let mailboxCell = tableView.dequeueReusableCellWithIdentifier(MailboxMessageCell.Constant.identifier, forIndexPath: indexPath) as! MailboxMessageCell

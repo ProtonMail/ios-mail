@@ -278,7 +278,7 @@ extension SearchViewController: NSFetchedResultsControllerDelegate {
             if let indexPath = indexPath {
                 if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MailboxMessageCell {
                     if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-                        cell.configureCell(message, showLocation: true)
+                        cell.configureCell(message, showLocation: true, ignoredTitle: "")
                     }
                 }
             }
@@ -305,7 +305,7 @@ extension SearchViewController: UITableViewDataSource {
         let mailboxCell = tableView.dequeueReusableCellWithIdentifier(MailboxMessageCell.Constant.identifier, forIndexPath: indexPath) as! MailboxMessageCell
         if self.fetchedResultsController?.numberOfRowsInSection(indexPath.section) > indexPath.row {
             if let message = fetchedResultsController?.objectAtIndexPath(indexPath) as? Message {
-                mailboxCell.configureCell(message, showLocation: true)
+                mailboxCell.configureCell(message, showLocation: true, ignoredTitle: "")
             }
         }
         return mailboxCell

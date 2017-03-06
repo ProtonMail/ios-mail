@@ -110,18 +110,23 @@ public class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
     
     var labelName: String!
     var color:String!
+    var exclusive : Bool = false
     
-    init(name:String!, color:String!) {
+    init(name:String!, color:String!, exclusive : Bool) {
         self.labelName = name
         self.color = color
+        self.exclusive = exclusive
     }
     
     override func toDictionary() -> Dictionary<String, AnyObject>? {
-        var out : [String : AnyObject] = [String : AnyObject]()
-        out["Name"] = self.labelName
-        out["Color"] = self.color
-        out["Display"] = "0"
-        PMLog.D(self.JSONStringify(out, prettyPrinted: true))
+        
+        let out : [String : AnyObject] = [
+            "Name": self.labelName,
+            "Color": self.color,
+            "Display": 0,
+            "Exclusive" : self.exclusive
+        ]
+
         return out
     }
     

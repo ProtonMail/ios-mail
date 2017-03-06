@@ -153,8 +153,8 @@
 		7523E88E1BB1561F00126D62 /* NSData+MultipartResponses.m in Sources */ = {isa = PBXBuildFile; fileRef = 7523E88D1BB1561F00126D62 /* NSData+MultipartResponses.m */; };
 		7523E8C01BB182B300126D62 /* MultipartResponseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7523E8BF1BB182B300126D62 /* MultipartResponseParser.m */; };
 		7526AC8E1B6C4B3700E1967E /* backup.css in Resources */ = {isa = PBXBuildFile; fileRef = 7526AC8D1B6C4B3700E1967E /* backup.css */; };
-		752A9EBD1DB80E40008D4392 /* LabelApplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752A9EBC1DB80E40008D4392 /* LabelApplayViewModel.swift */; };
-		752A9EBE1DB80E40008D4392 /* LabelApplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752A9EBC1DB80E40008D4392 /* LabelApplayViewModel.swift */; };
+		752A9EBD1DB80E40008D4392 /* LabelApplyViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752A9EBC1DB80E40008D4392 /* LabelApplyViewModelImpl.swift */; };
+		752A9EBE1DB80E40008D4392 /* LabelApplyViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752A9EBC1DB80E40008D4392 /* LabelApplyViewModelImpl.swift */; };
 		752A9EC01DB8286C008D4392 /* BugReportCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752A9EBF1DB8286C008D4392 /* BugReportCache.swift */; };
 		752A9EC11DB8286C008D4392 /* BugReportCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752A9EBF1DB8286C008D4392 /* BugReportCache.swift */; };
 		752D3DC11BD18CA800103DC8 /* AttachmentsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752D3DC01BD18CA800103DC8 /* AttachmentsTableViewController.swift */; };
@@ -249,8 +249,8 @@
 		756DAC421C923D4500F3486C /* MailboxRateReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 756DAC401C9236D000F3486C /* MailboxRateReviewCell.xib */; };
 		756DAC451C92B30300F3486C /* FeedbackPopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DAC441C92B30300F3486C /* FeedbackPopViewController.swift */; };
 		756DAC471C93691900F3486C /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756DAC461C93691900F3486C /* FeedbackViewController.swift */; };
-		7576355D1D0B6D8E00DF46DC /* LabelManagerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7576355C1D0B6D8E00DF46DC /* LabelManagerViewModel.swift */; };
-		7576355E1D0B6EB400DF46DC /* LabelManagerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7576355C1D0B6D8E00DF46DC /* LabelManagerViewModel.swift */; };
+		7576355D1D0B6D8E00DF46DC /* LabelManagerViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7576355C1D0B6D8E00DF46DC /* LabelManagerViewModelImpl.swift */; };
+		7576355E1D0B6EB400DF46DC /* LabelManagerViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7576355C1D0B6D8E00DF46DC /* LabelManagerViewModelImpl.swift */; };
 		7578B7831CADD1EA006B523B /* PMImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B7821CADD1EA006B523B /* PMImagePickerController.swift */; };
 		7578B7841CADD1EA006B523B /* PMImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B7821CADD1EA006B523B /* PMImagePickerController.swift */; };
 		7578B7861CADD20A006B523B /* PMDocumentPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578B7851CADD20A006B523B /* PMDocumentPickerViewController.swift */; };
@@ -258,6 +258,18 @@
 		757945D61B66E38D004EEDCA /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757945D51B66E38D004EEDCA /* MessageViewController.swift */; };
 		757945D81B6702A2004EEDCA /* EmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757945D71B6702A2004EEDCA /* EmailView.swift */; };
 		757945DA1B6702B5004EEDCA /* EmailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757945D91B6702B5004EEDCA /* EmailHeaderView.swift */; };
+		757F4A051E677E1D001CDE71 /* LabelEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757F4A041E677E1C001CDE71 /* LabelEditViewController.swift */; };
+		757F4A061E677E1D001CDE71 /* LabelEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757F4A041E677E1C001CDE71 /* LabelEditViewController.swift */; };
+		757F4A091E68F37E001CDE71 /* LabelEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757F4A081E68F37E001CDE71 /* LabelEditViewModel.swift */; };
+		757F4A0A1E68F380001CDE71 /* LabelEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757F4A081E68F37E001CDE71 /* LabelEditViewModel.swift */; };
+		757F4A0C1E68F3A4001CDE71 /* FolderApplyViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757F4A0B1E68F3A4001CDE71 /* FolderApplyViewModelImpl.swift */; };
+		757F4A0D1E68F3A4001CDE71 /* FolderApplyViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757F4A0B1E68F3A4001CDE71 /* FolderApplyViewModelImpl.swift */; };
+		757F4A0F1E68F3F3001CDE71 /* LabelEditingViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757F4A0E1E68F3F3001CDE71 /* LabelEditingViewModelImpl.swift */; };
+		757F4A101E68F3F3001CDE71 /* LabelEditingViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757F4A0E1E68F3F3001CDE71 /* LabelEditingViewModelImpl.swift */; };
+		757F4A121E68F409001CDE71 /* LabelCreatingViewModelImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757F4A111E68F408001CDE71 /* LabelCreatingViewModelImple.swift */; };
+		757F4A131E68F409001CDE71 /* LabelCreatingViewModelImple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757F4A111E68F408001CDE71 /* LabelCreatingViewModelImple.swift */; };
+		757F4A151E68F817001CDE71 /* FolderCreatingViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757F4A141E68F817001CDE71 /* FolderCreatingViewModelImpl.swift */; };
+		757F4A161E68F817001CDE71 /* FolderCreatingViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757F4A141E68F817001CDE71 /* FolderCreatingViewModelImpl.swift */; };
 		7580D65A1C8E440200A15885 /* OnePasswordExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7580D6591C8E440200A15885 /* OnePasswordExtension.m */; };
 		7582CFBC1D024E2900F521D4 /* TopMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7582CFBB1D024E2800F521D4 /* TopMessageView.xib */; };
 		7582CFBD1D024E2900F521D4 /* TopMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7582CFBB1D024E2800F521D4 /* TopMessageView.xib */; };
@@ -793,7 +805,7 @@
 		7523E8BE1BB182B300126D62 /* MultipartResponseParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultipartResponseParser.h; sourceTree = "<group>"; };
 		7523E8BF1BB182B300126D62 /* MultipartResponseParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultipartResponseParser.m; sourceTree = "<group>"; };
 		7526AC8D1B6C4B3700E1967E /* backup.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = backup.css; sourceTree = "<group>"; };
-		752A9EBC1DB80E40008D4392 /* LabelApplayViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelApplayViewModel.swift; sourceTree = "<group>"; };
+		752A9EBC1DB80E40008D4392 /* LabelApplyViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelApplyViewModelImpl.swift; sourceTree = "<group>"; };
 		752A9EBF1DB8286C008D4392 /* BugReportCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportCache.swift; sourceTree = "<group>"; };
 		752D3DC01BD18CA800103DC8 /* AttachmentsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsTableViewController.swift; sourceTree = "<group>"; };
 		752EEC1B1BB0A9D800770331 /* QuickViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickViewViewController.swift; sourceTree = "<group>"; };
@@ -871,12 +883,18 @@
 		756DAC401C9236D000F3486C /* MailboxRateReviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MailboxRateReviewCell.xib; sourceTree = "<group>"; };
 		756DAC441C92B30300F3486C /* FeedbackPopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackPopViewController.swift; sourceTree = "<group>"; };
 		756DAC461C93691900F3486C /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
-		7576355C1D0B6D8E00DF46DC /* LabelManagerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelManagerViewModel.swift; sourceTree = "<group>"; };
+		7576355C1D0B6D8E00DF46DC /* LabelManagerViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelManagerViewModelImpl.swift; sourceTree = "<group>"; };
 		7578B7821CADD1EA006B523B /* PMImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMImagePickerController.swift; sourceTree = "<group>"; };
 		7578B7851CADD20A006B523B /* PMDocumentPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMDocumentPickerViewController.swift; sourceTree = "<group>"; };
 		757945D51B66E38D004EEDCA /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		757945D71B6702A2004EEDCA /* EmailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailView.swift; sourceTree = "<group>"; };
 		757945D91B6702B5004EEDCA /* EmailHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailHeaderView.swift; sourceTree = "<group>"; };
+		757F4A041E677E1C001CDE71 /* LabelEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelEditViewController.swift; sourceTree = "<group>"; };
+		757F4A081E68F37E001CDE71 /* LabelEditViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelEditViewModel.swift; sourceTree = "<group>"; };
+		757F4A0B1E68F3A4001CDE71 /* FolderApplyViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderApplyViewModelImpl.swift; sourceTree = "<group>"; };
+		757F4A0E1E68F3F3001CDE71 /* LabelEditingViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelEditingViewModelImpl.swift; sourceTree = "<group>"; };
+		757F4A111E68F408001CDE71 /* LabelCreatingViewModelImple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelCreatingViewModelImple.swift; sourceTree = "<group>"; };
+		757F4A141E68F817001CDE71 /* FolderCreatingViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderCreatingViewModelImpl.swift; sourceTree = "<group>"; };
 		7580D6581C8E440200A15885 /* OnePasswordExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnePasswordExtension.h; sourceTree = "<group>"; };
 		7580D6591C8E440200A15885 /* OnePasswordExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnePasswordExtension.m; sourceTree = "<group>"; };
 		7582CFBB1D024E2800F521D4 /* TopMessageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopMessageView.xib; sourceTree = "<group>"; };
@@ -1590,6 +1608,21 @@
 			name = Review;
 			sourceTree = "<group>";
 		};
+		757F4A071E67A0B8001CDE71 /* Labels */ = {
+			isa = PBXGroup;
+			children = (
+				75510BAC1B82F990001348FF /* LabelViewModel.swift */,
+				752A9EBC1DB80E40008D4392 /* LabelApplyViewModelImpl.swift */,
+				757F4A0B1E68F3A4001CDE71 /* FolderApplyViewModelImpl.swift */,
+				7576355C1D0B6D8E00DF46DC /* LabelManagerViewModelImpl.swift */,
+				757F4A081E68F37E001CDE71 /* LabelEditViewModel.swift */,
+				757F4A0E1E68F3F3001CDE71 /* LabelEditingViewModelImpl.swift */,
+				757F4A111E68F408001CDE71 /* LabelCreatingViewModelImple.swift */,
+				757F4A141E68F817001CDE71 /* FolderCreatingViewModelImpl.swift */,
+			);
+			name = Labels;
+			sourceTree = "<group>";
+		};
 		7580D6561C8E436F00A15885 /* OnePassword */ = {
 			isa = PBXGroup;
 			children = (
@@ -1716,8 +1749,9 @@
 		75E652B21B82AA630084DDF8 /* Labels */ = {
 			isa = PBXGroup;
 			children = (
-				75E652B31B82AC0D0084DDF8 /* LabelsViewController.swift */,
 				75510BAA1B82BDEB001348FF /* LabelTableViewCell.swift */,
+				75E652B31B82AC0D0084DDF8 /* LabelsViewController.swift */,
+				757F4A041E677E1C001CDE71 /* LabelEditViewController.swift */,
 			);
 			name = Labels;
 			sourceTree = "<group>";
@@ -1725,6 +1759,7 @@
 		75ECC2361AB9F10600B8FC78 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				757F4A071E67A0B8001CDE71 /* Labels */,
 				7545083F1E149B3900265CD0 /* Mailbox */,
 				754713161DCD61510084BF34 /* SignIn */,
 				7547130F1DCD517E0084BF34 /* TwoFA */,
@@ -1737,9 +1772,6 @@
 				759339BF1ABB45C700535F1B /* ViewModelFactory.swift */,
 				7567B06C1B334FA400A72A1E /* ViewModelService.swift */,
 				7567B06E1B334FD300A72A1E /* ViewModelServiceImpl.swift */,
-				75510BAC1B82F990001348FF /* LabelViewModel.swift */,
-				752A9EBC1DB80E40008D4392 /* LabelApplayViewModel.swift */,
-				7576355C1D0B6D8E00DF46DC /* LabelManagerViewModel.swift */,
 				755638C81CA1F423003FA2D0 /* MessageViewModel.swift */,
 				755638CA1CA1F446003FA2D0 /* MessageViewModelImpl.swift */,
 			);
@@ -2281,9 +2313,10 @@
 				073FD9321A71C60900EB0CAF /* UserDataService.swift in Sources */,
 				7546BE571C8D557C00FCEB0A /* TouchIDCell.swift in Sources */,
 				754508441E149BD000265CD0 /* CaptchaViewModelImpl.swift in Sources */,
+				757F4A0F1E68F3F3001CDE71 /* LabelEditingViewModelImpl.swift in Sources */,
 				756CDEFC1D9DB3A0004455F6 /* JKBCryptRandom.swift in Sources */,
 				07CCCC301AA4E26000ECA79E /* NSCoderExtension.swift in Sources */,
-				752A9EBD1DB80E40008D4392 /* LabelApplayViewModel.swift in Sources */,
+				752A9EBD1DB80E40008D4392 /* LabelApplyViewModelImpl.swift in Sources */,
 				7547131B1DCD61850084BF34 /* SignInViewModelImpl.swift in Sources */,
 				754CD4881AB809D60084C54A /* SettingTableViewController.swift in Sources */,
 				07009F091A65E45600129B07 /* NSNotificationCenter+KeyboardExtension.swift in Sources */,
@@ -2294,6 +2327,7 @@
 				071323811A7846150043DB41 /* UIViewExtension.swift in Sources */,
 				757945D81B6702A2004EEDCA /* EmailView.swift in Sources */,
 				759337851D18917400004A3D /* PMWebView.swift in Sources */,
+				757F4A151E68F817001CDE71 /* FolderCreatingViewModelImpl.swift in Sources */,
 				756489941B7E77AC007EA207 /* MenuLabelViewCell.swift in Sources */,
 				7567B0791B33880500A72A1E /* APIServiceResponse.swift in Sources */,
 				701FFE611A9CBAD600380C2B /* EditContactViewController.swift in Sources */,
@@ -2391,6 +2425,7 @@
 				7507BBB61E0CAF9600056D66 /* SignUp+Error.swift in Sources */,
 				756DAC3F1C922C3800F3486C /* MailboxRateReviewCell.swift in Sources */,
 				750729531DEFA52D0021483D /* MimeTypes.swift in Sources */,
+				757F4A0C1E68F3A4001CDE71 /* FolderApplyViewModelImpl.swift in Sources */,
 				07009F011A65CF4800129B07 /* SignInViewController.swift in Sources */,
 				75F023B11C4E566F008F6276 /* SwitchTableViewCell.swift in Sources */,
 				7564899E1B7F2C9F007EA207 /* ComposeViewModelImpl.swift in Sources */,
@@ -2422,6 +2457,7 @@
 				07CC99641A6F076A000FD6F8 /* NSErrorExtension.swift in Sources */,
 				75E49F0D1CAB256900235ACC /* PhoneVerifyViewController.swift in Sources */,
 				756DAC451C92B30300F3486C /* FeedbackPopViewController.swift in Sources */,
+				757F4A051E677E1D001CDE71 /* LabelEditViewController.swift in Sources */,
 				752FAA141CB5B14500F03228 /* PinCodeViewController.swift in Sources */,
 				075F0A521ABF5DB500E6B9AE /* MessageLocation.swift in Sources */,
 				75E090541CAC7A3A00751136 /* CountryCodeTableViewCell.swift in Sources */,
@@ -2486,7 +2522,7 @@
 				7027B02B1A700F0200D28F52 /* MenuTableViewCell.swift in Sources */,
 				075675591AB135F500449905 /* UIAlertActionExtension.swift in Sources */,
 				753745041D6B7E8F00682C5A /* APIError+Auth.swift in Sources */,
-				7576355D1D0B6D8E00DF46DC /* LabelManagerViewModel.swift in Sources */,
+				7576355D1D0B6D8E00DF46DC /* LabelManagerViewModelImpl.swift in Sources */,
 				754B70C81C975271004F991A /* FeedbackItem.swift in Sources */,
 				75FFC65F1B45C549007FB75A /* DictionaryExtension.swift in Sources */,
 				07DD68A11A96BCDD00ED130C /* NSUserDefaultsExtension.swift in Sources */,
@@ -2505,7 +2541,9 @@
 				07DD68A51A97DE9F00ED130C /* APIService+AttachmentExtension.swift in Sources */,
 				07411D8E1AAA407A002A4611 /* AttachmentTableViewCell.swift in Sources */,
 				750AAAC81C2490DB00BAC444 /* SignUpPasswordViewController.swift in Sources */,
+				757F4A121E68F409001CDE71 /* LabelCreatingViewModelImple.swift in Sources */,
 				757945D61B66E38D004EEDCA /* MessageViewController.swift in Sources */,
+				757F4A091E68F37E001CDE71 /* LabelEditViewModel.swift in Sources */,
 				07A0E1AB1A9D2D1D005FD04B /* NSStringExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2547,6 +2585,7 @@
 				75DE7CC11CAAEA4900F5443E /* MBContactCollectionViewFlowLayout.m in Sources */,
 				756CDEFD1D9DB3A0004455F6 /* JKBCryptRandom.swift in Sources */,
 				75DE7CC21CAAEA4900F5443E /* MessageExtension.swift in Sources */,
+				757F4A0D1E68F3A4001CDE71 /* FolderApplyViewModelImpl.swift in Sources */,
 				75B549E71D02731300F21A30 /* Reachability.m in Sources */,
 				75E220331DDA642500078D6C /* DataService+Error.swift in Sources */,
 				75DE7CC31CAAEA4900F5443E /* MailboxViewModel.swift in Sources */,
@@ -2592,6 +2631,7 @@
 				754713191DCD616D0084BF34 /* SignInViewModel.swift in Sources */,
 				75DE7CE91CAAEA4900F5443E /* MessageViewModelImpl.swift in Sources */,
 				75DE7CEA1CAAEA4900F5443E /* ActivityIndicatorHelper.swift in Sources */,
+				757F4A131E68F409001CDE71 /* LabelCreatingViewModelImple.swift in Sources */,
 				754508421E149B6600265CD0 /* HumanCheckViewModel.swift in Sources */,
 				75DE7CEB1CAAEA4900F5443E /* RecipientView.swift in Sources */,
 				75DE7CEC1CAAEA4900F5443E /* EventAPI.swift in Sources */,
@@ -2629,7 +2669,8 @@
 				75DE7D071CAAEA4900F5443E /* AuthCredential.swift in Sources */,
 				7545083B1E14860500265CD0 /* MailboxHumanCheckMenuVC.swift in Sources */,
 				75DE7D081CAAEA4900F5443E /* MBContactCollectionViewContactCell.m in Sources */,
-				752A9EBE1DB80E40008D4392 /* LabelApplayViewModel.swift in Sources */,
+				757F4A0A1E68F380001CDE71 /* LabelEditViewModel.swift in Sources */,
+				752A9EBE1DB80E40008D4392 /* LabelApplyViewModelImpl.swift in Sources */,
 				75DE7D091CAAEA4900F5443E /* ShowImageView.swift in Sources */,
 				75DE7D0A1CAAEA4900F5443E /* AttachmentHelper.swift in Sources */,
 				750729541DEFA52E0021483D /* MimeTypes.swift in Sources */,
@@ -2725,6 +2766,9 @@
 				75DE7D531CAAEA4900F5443E /* OnboardingViewController.swift in Sources */,
 				75DE7D541CAAEA4900F5443E /* APIService+ContactExtension.swift in Sources */,
 				75DE7D551CAAEA4900F5443E /* RecaptchaViewController.swift in Sources */,
+				757F4A061E677E1D001CDE71 /* LabelEditViewController.swift in Sources */,
+				757F4A161E68F817001CDE71 /* FolderCreatingViewModelImpl.swift in Sources */,
+				757F4A101E68F3F3001CDE71 /* LabelEditingViewModelImpl.swift in Sources */,
 				75DE7D561CAAEA4900F5443E /* EncryptionSetupViewController.swift in Sources */,
 				75F161921DCBB7E600912662 /* TwoFACodeViewController.swift in Sources */,
 				75DE7D571CAAEA4900F5443E /* APIService+UserExtension.swift in Sources */,
@@ -2764,7 +2808,7 @@
 				75DE7D711CAAEA4900F5443E /* NSUserDefaultsExtension.swift in Sources */,
 				75DE7D721CAAEA4900F5443E /* MoreOptionsView.swift in Sources */,
 				75BDECB01CBCD0FA00982089 /* UnlockPinCodeModelImpl.swift in Sources */,
-				7576355E1D0B6EB400DF46DC /* LabelManagerViewModel.swift in Sources */,
+				7576355E1D0B6EB400DF46DC /* LabelManagerViewModelImpl.swift in Sources */,
 				75DE7D731CAAEA4900F5443E /* NSFetchedResultsControllerExtension.swift in Sources */,
 				75DE7D741CAAEA4900F5443E /* EncryptTypes.swift in Sources */,
 				75DE7D751CAAEA4900F5443E /* UIFontExtension.swift in Sources */,

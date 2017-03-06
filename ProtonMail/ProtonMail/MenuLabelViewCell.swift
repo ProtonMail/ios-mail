@@ -42,7 +42,11 @@ class MenuLabelViewCell: UITableViewCell {
         
         if item.managedObjectContext != nil {
             let color = UIColor(hexString: item.color, alpha:1)
-            let image = UIImage(named: "menu_label")
+            
+            var image = UIImage(named: "menu_label")
+            if item.exclusive {
+                image = UIImage(named: "menu_folder")
+            }
             titleLabel.text = item.name;
             
             titleImageView.image = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)

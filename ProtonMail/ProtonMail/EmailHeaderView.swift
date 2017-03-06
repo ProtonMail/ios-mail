@@ -300,8 +300,16 @@ class EmailHeaderView: UIView {
             break;
         }
         
-        self.labels = labels;
-        if let labels = labels {
+        var tmplabels : [Label] = []
+        if let alllabels = labels {
+            for l in alllabels {
+                if l.exclusive == false {
+                    tmplabels.append(l)
+                }
+            }
+        }
+        self.labels = tmplabels;
+        if let labels = self.labels {
             let lc = labels.count - 1;
             for i in 0 ... 4 {
                 switch i {

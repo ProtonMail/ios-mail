@@ -84,21 +84,55 @@ extension Message {
         }
     }
     
+    func hasDraftLabel() -> Bool {
+        let labels = self.labels
+        for l in labels {
+            if let label = l as? Label {
+                if let l_id = Int(label.labelID) {
+                    if let new_loc = MessageLocation(rawValue: l_id) where new_loc == .draft {
+                        return true
+                    }
+                }
+                
+            }
+        }
+        return false
+    }
+    
     func getLocationFromLabels() ->  [MessageLocation] {
         var locations = [MessageLocation]()
         let labels = self.labels
         for l in labels {
             if let label = l as? Label {
                 if let l_id = Int(label.labelID) {
-                    if let new_loc = MessageLocation(rawValue: l_id) where new_loc != .starred {
+                    PMLog.D(label.name)
+                    if let new_loc = MessageLocation(rawValue: l_id) where new_loc != .starred && new_loc != .allmail {
                         locations.append(new_loc)
                     }
                 }
                 
             }
         }
-        
         return locations
+    }
+    
+    func getShowLocationNameFromLabels(ignored : String) -> String? {
+        let labels = self.labels
+        for l in labels {
+            if let label = l as? Label {
+                if label.exclusive == true && label.name != ignored {
+                    return label.name
+                } else {
+                    if let l_id = Int(label.labelID) {
+                        PMLog.D(label.name)
+                        if let new_loc = MessageLocation(rawValue: l_id) where new_loc != .starred && new_loc != .allmail && new_loc.title != ignored {
+                            return new_loc.title
+                        }
+                    }
+                }
+            }
+        }
+        return nil
     }
     
     func setLabelLocation(location : MessageLocation) {
