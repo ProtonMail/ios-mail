@@ -18,7 +18,7 @@ import Foundation
 
 extension UILabel {
     
-    class func labelWith(font: UIFont, text: String, textColor: UIColor) -> UILabel {
+    class func labelWith(_ font: UIFont, text: String, textColor: UIColor) -> UILabel {
         let label = UILabel()
         label.font = font
         label.numberOfLines = 1

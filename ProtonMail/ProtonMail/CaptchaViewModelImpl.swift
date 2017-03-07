@@ -10,19 +10,19 @@ import Foundation
 
 
 
-public class CaptchaViewModelImpl : HumanCheckViewModel {
+open class CaptchaViewModelImpl : HumanCheckViewModel {
     
-    override public func getToken(complete: HumanResBlock) {
+    override open func getToken(_ complete: @escaping HumanResBlock) {
         let api = GetHumanCheckRequest<GetHumanCheckResponse>()
         api.call { (task, response, hasError) in
-            complete(token: response?.token, error: response?.error)
+            complete(response?.token, response?.error)
         }
     }
     
-    override public func humanCheck(type: String, token: String, complete: HumanCheckBlock) {
+    override open func humanCheck(_ type: String, token: String, complete: @escaping HumanCheckBlock) {
         let api = HumanCheckRequest<ApiResponse>(type: type, token: token)
         api.call { (task, response, hasError) in
-            complete(error: response?.error)
+            complete(response?.error)
         }
     }
 }

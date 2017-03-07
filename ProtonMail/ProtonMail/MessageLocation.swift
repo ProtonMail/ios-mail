@@ -30,23 +30,23 @@ public enum MessageLocation: Int, CustomStringConvertible {
     public var actionTitle : String {
         get {
             switch(self) {
-            case deleted:
+            case .deleted:
                 return NSLocalizedString("Trash")
-            case inbox:
+            case .inbox:
                 return NSLocalizedString("Move to Inbox")
-            case draft:
+            case .draft:
                 return NSLocalizedString("Move to Draft")
-            case outbox:
+            case .outbox:
                 return NSLocalizedString("Move to Outbox")
-            case spam:
+            case .spam:
                 return NSLocalizedString("Move to Spam")
-            case starred:
+            case .starred:
                 return NSLocalizedString("Add Star")
-            case archive:
+            case .archive:
                 return NSLocalizedString("Move to Archive")
-            case trash:
+            case .trash:
                 return NSLocalizedString("Move to Trash")
-            case allmail:
+            case .allmail:
                 return NSLocalizedString("Move to AllMail") //not in used
             }
         }
@@ -56,23 +56,23 @@ public enum MessageLocation: Int, CustomStringConvertible {
     public var description : String {
         get {
             switch(self) {
-            case deleted:
+            case .deleted:
                 return NSLocalizedString("Deleted")
-            case inbox:
+            case .inbox:
                 return NSLocalizedString("Inbox")
-            case draft:
+            case .draft:
                 return NSLocalizedString("Draft")
-            case outbox:
+            case .outbox:
                 return NSLocalizedString("Outbox")
-            case spam:
+            case .spam:
                 return NSLocalizedString("Spam")
-            case starred:
+            case .starred:
                 return NSLocalizedString("Starred")
-            case archive:
+            case .archive:
                 return NSLocalizedString("Archive")
-            case trash:
+            case .trash:
                 return NSLocalizedString("Trash")
-            case allmail:
+            case .allmail:
                 return NSLocalizedString("All Mail")
             }
         }
@@ -95,7 +95,7 @@ public enum MessageLocation: Int, CustomStringConvertible {
             return "ARCHIVE"
         case .spam:
             return "SPAM"
-        case allmail:
+        case .allmail:
             return NSLocalizedString("All Mail")
         default:
             return "INBOX"
@@ -104,23 +104,23 @@ public enum MessageLocation: Int, CustomStringConvertible {
     
     public var key: String {
         switch(self) {
-        case deleted:
+        case .deleted:
             return "Deleted"
-        case inbox:
+        case .inbox:
             return "Inbox"
-        case draft:
+        case .draft:
             return "Draft"
-        case outbox:
+        case .outbox:
             return "Outbox"
-        case spam:
+        case .spam:
             return "Spam"
-        case starred:
+        case .starred:
             return "Starred"
-        case archive:
+        case .archive:
             return "Archive"
-        case trash:
+        case .trash:
             return "Trash"
-        case allmail:
+        case .allmail:
             return NSLocalizedString("AllMail")
         }
     }

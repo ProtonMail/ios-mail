@@ -20,11 +20,11 @@ import Crashlytics
 @UIApplicationMain
 class AppDelegate: UIResponder {
     
-    private let animationDuration: NSTimeInterval = 0.5
+    fileprivate let animationDuration: TimeInterval = 0.5
     
     // FIXME: Before this code is shared publicly, inject the API key from the build command.
     
-    private let mintAPIKey = "2b423dec"
+    fileprivate let mintAPIKey = "2b423dec"
     
     var window: UIWindow?
     
@@ -34,20 +34,20 @@ class AppDelegate: UIResponder {
     }
     
     func setupWindow() {
-        window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = instantiateRootViewController()
         window?.makeKeyAndVisible()
     }
     
     // MARK: - Public methods
-    func switchTo(storyboard storyboard: UIStoryboard.Storyboard, animated: Bool) {
+    func switchTo(storyboard: UIStoryboard.Storyboard, animated: Bool) {
         if let window = window {
             if let rootViewController = window.rootViewController {
                 if rootViewController.restorationIdentifier != storyboard.restorationIdentifier {
                     if !animated {
                         window.rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
                     } else {
-                        UIView.animateWithDuration(animationDuration/2, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+                        UIView.animate(withDuration: animationDuration/2, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
                             rootViewController.view.alpha = 0
                             }, completion: { (finished) -> Void in
                                 let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
@@ -55,7 +55,7 @@ class AppDelegate: UIResponder {
                                 if let oldView = window.rootViewController as? SWRevealViewController {
                                     if let nav = oldView.frontViewController as? UINavigationController {
                                         if let firstViewController: UIViewController = nav.viewControllers.first as UIViewController? {
-                                            if (firstViewController.isKindOfClass(MailboxViewController)) {
+                                            if (firstViewController.isKind(of: MailboxViewController.self)) {
                                                 if let mailboxViewController: MailboxViewController = firstViewController as? MailboxViewController {
                                                     mailboxViewController.resetFetchedResultsController()
                                                 }
@@ -67,7 +67,7 @@ class AppDelegate: UIResponder {
                                 viewController.view.alpha = 0
                                 window.rootViewController = viewController
                                 
-                                UIView.animateWithDuration(self.animationDuration/2, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+                                UIView.animate(withDuration: self.animationDuration/2, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
                                     viewController.view.alpha = 1.0
                                     }, completion: nil)
                         })
@@ -80,11 +80,11 @@ class AppDelegate: UIResponder {
 
 extension SWRevealViewController {
     
-    public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "sw_front") {
-            let navigationController = segue.destinationViewController as! UINavigationController
+            let navigationController = segue.destination as! UINavigationController
             if let firstViewController: UIViewController = navigationController.viewControllers.first as UIViewController? {
-                if (firstViewController.isKindOfClass(MailboxViewController)) {
+                if (firstViewController.isKind(of: MailboxViewController.self)) {
                     let mailboxViewController: MailboxViewController = navigationController.viewControllers.first as! MailboxViewController
                     mailboxViewController.viewModel = MailboxViewModelImpl(location: .inbox)
                 }
@@ -96,49 +96,49 @@ extension SWRevealViewController {
 // MARK: - UIApplicationDelegate
 
 //move to a manager class later
-let sharedInternetReachability : Reachability = Reachability.reachabilityForInternetConnection()
+let sharedInternetReachability : Reachability = Reachability.forInternetConnection()
 let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.API_HOST_URL)
 
 extension AppDelegate: UIApplicationDelegate {
-    func application(application: UIApplication, supportedInterfaceOrientationsForWindow window: UIWindow?) -> UIInterfaceOrientationMask {
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return self.checkOrientation(self.window?.rootViewController)
     }
     
-    func checkOrientation (viewController: UIViewController?) -> UIInterfaceOrientationMask {
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad || viewController == nil {
-            return UIInterfaceOrientationMask.All
+    func checkOrientation (_ viewController: UIViewController?) -> UIInterfaceOrientationMask {
+        if UIDevice.current.userInterfaceIdiom == .pad || viewController == nil {
+            return UIInterfaceOrientationMask.all
         } else if (viewController is UINavigationController) {
             if let nav = viewController as? UINavigationController {
-                if (nav.topViewController!.isKindOfClass(PinCodeViewController)) {
-                    return UIInterfaceOrientationMask.Portrait
+                if (nav.topViewController!.isKind(of: PinCodeViewController.self)) {
+                    return UIInterfaceOrientationMask.portrait
                 }
             }
-            return UIInterfaceOrientationMask.All
+            return UIInterfaceOrientationMask.all
         }
         else {
             if let sw = viewController as? SWRevealViewController {
                 if let nav = sw.frontViewController as? UINavigationController {
-                    if (nav.topViewController!.isKindOfClass(PinCodeViewController)) {
-                        return UIInterfaceOrientationMask.Portrait
+                    if (nav.topViewController!.isKind(of: PinCodeViewController.self)) {
+                        return UIInterfaceOrientationMask.portrait
                     }
                 }
             }
-            return  UIInterfaceOrientationMask.All
+            return  UIInterfaceOrientationMask.all
         }
     }
     
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         Fabric.with([Crashlytics()])
         
         shareViewModelFactoy = ViewModelFactoryProduction()
-        AFNetworkActivityIndicatorManager.sharedManager().enabled = true
+        AFNetworkActivityIndicatorManager.shared().isEnabled = true
         
-        let tmp = UIApplication.sharedApplication().releaseMode()
+        let tmp = UIApplication.shared.releaseMode()
         //net work debug option
-        if let logger = AFNetworkActivityLogger.sharedLogger().loggers.first as? AFNetworkActivityConsoleLogger {
+        if let logger = AFNetworkActivityLogger.shared().loggers.first as? AFNetworkActivityConsoleLogger {
             logger.level = .AFLoggerLevelDebug;
         }
-        AFNetworkActivityLogger.sharedLogger().startLogging()
+        AFNetworkActivityLogger.shared().startLogging()
         
         //
         sharedInternetReachability.startNotifier()
@@ -147,22 +147,22 @@ extension AppDelegate: UIApplicationDelegate {
         sharedMessageDataService.launchCleanUpIfNeeded()
         sharedPushNotificationService.registerForRemoteNotifications()
         
-        if tmp != .Dev && tmp != .Sim {
-            AFNetworkActivityLogger.sharedLogger().stopLogging()
+        if tmp != .dev && tmp != .sim {
+            AFNetworkActivityLogger.shared().stopLogging()
         }
         sharedPushNotificationService.setLaunchOptions(launchOptions)
         
         return true
     }
     
-    func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
-        let urlComponents = NSURLComponents(URL: url, resolvingAgainstBaseURL: true)
+    func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
+        let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true)
         if urlComponents?.host == "signup" {
             if let queryItems = urlComponents?.queryItems {
                 if let verifyObject = queryItems.filter({$0.name == "verifyCode"}).first {
                     if let code = verifyObject.value {
                         let info : [String:String] = ["verifyCode" : code]
-                        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: NotificationDefined.CustomizeURLSchema, object: nil, userInfo: info))
+                        NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: NotificationDefined.CustomizeURLSchema), object: nil, userInfo: info))
                         PMLog.D("\(code)")
                     }
                 }
@@ -171,48 +171,48 @@ extension AppDelegate: UIApplicationDelegate {
         return true
     }
     
-    func applicationDidEnterBackground(application: UIApplication) {
+    func applicationDidEnterBackground(_ application: UIApplication) {
         Snapshot().didEnterBackground(application)
         if sharedUserDataService.isSignedIn {
-            let timeInterval : Int = Int(NSDate().timeIntervalSince1970)
+            let timeInterval : Int = Int(Date().timeIntervalSince1970)
             userCachedStatus.exitTime = "\(timeInterval)";
         }
         sharedMessageDataService.purgeOldMessages()
     }
     
-    func applicationWillEnterForeground(application: UIApplication) {
+    func applicationWillEnterForeground(_ application: UIApplication) {
         Snapshot().willEnterForeground(application)
         if sharedTouchID.showTouchIDOrPin() {
-            (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: false)
+            (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: false)
             sharedVMService.resetComposerView()
         }
     }
     
-    func applicationWillResignActive(application: UIApplication) {
+    func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
     
-    func applicationDidBecomeActive(application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
     
-    func applicationWillTerminate(application: UIApplication) {
+    func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
-        sharedCoreDataService.mainManagedObjectContext?.saveUpstreamIfNeeded()
+        let _ = sharedCoreDataService.mainManagedObjectContext?.saveUpstreamIfNeeded()
     }
     
     // MARK: Notification methods
     
-    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
-        Answers.logCustomEventWithName("NotificationError", customAttributes:["error" : "\(error)"])
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        Answers.logCustomEvent(withName: "NotificationError", customAttributes:["error" : "\(error)"])
         
         // Crashlytics.sharedInstance().core.log(error);
-        sharedPushNotificationService.didFailToRegisterForRemoteNotificationsWithError(error)
+        sharedPushNotificationService.didFailToRegisterForRemoteNotificationsWithError(error as NSError)
     }
     
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         PMLog.D("receive \(userInfo)")
         if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
             var timeIndex : Int = -1
@@ -226,7 +226,7 @@ extension AppDelegate: UIApplicationDelegate {
                 if let t = Int(userCachedStatus.exitTime) {
                     exitTime = t
                 }
-                let timeInterval : Int = Int(NSDate().timeIntervalSince1970)
+                let timeInterval : Int = Int(Date().timeIntervalSince1970)
                 let diff = timeInterval - exitTime
                 if diff > (timeIndex*60) || diff <= 0 {
                     sharedPushNotificationService.setNotificationOptions(userInfo);
@@ -242,25 +242,25 @@ extension AppDelegate: UIApplicationDelegate {
         
     }
     
-    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
+    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
         sharedPushNotificationService.didRegisterUserNotificationSettings(notificationSettings)
     }
     
-    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         sharedPushNotificationService.didRegisterForRemoteNotificationsWithDeviceToken(deviceToken)
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first as UITouch!
-        let point = touch.locationInView(self.window)
-        let statusBarFrame = UIApplication.sharedApplication().statusBarFrame
-        if (CGRectContainsPoint(statusBarFrame, point)) {
+        let point = touch?.location(in: self.window)
+        let statusBarFrame = UIApplication.shared.statusBarFrame
+        if (statusBarFrame.contains(point!)) {
             self.touchStatusBar()
         }
     }
     
     func touchStatusBar() {
-        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: NotificationDefined.TouchStatusBar, object: nil, userInfo: nil))
+        NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: NotificationDefined.TouchStatusBar), object: nil, userInfo: nil))
     }
 }
 

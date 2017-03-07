@@ -12,7 +12,7 @@ class UnlockPinCodeModelImpl : PinCodeViewModel {
     
     let titleText : String = "Enter your PIN to unlock your inbox."
     
-    var currentStep : PinCodeStep = .EnterPin
+    var currentStep : PinCodeStep = .enterPin
     
     var enterPin : String = ""
     
@@ -32,17 +32,17 @@ class UnlockPinCodeModelImpl : PinCodeViewModel {
         return ""
     }
     
-    override func setCode (code : String) -> PinCodeStep {
+    override func setCode (_ code : String) -> PinCodeStep {
         
         switch currentStep {
-        case .EnterPin:
+        case .enterPin:
             enterPin = code
-            currentStep = .Done
-        case .ReEnterPin, .Done:
+            currentStep = .done
+        case .reEnterPin, .done:
             break
         default:
             enterPin = ""
-            currentStep = .EnterPin
+            currentStep = .enterPin
         }
         
         return currentStep
@@ -54,7 +54,7 @@ class UnlockPinCodeModelImpl : PinCodeViewModel {
             return true
         } else {
             userCachedStatus.pinFailedCount += 1
-            currentStep = .EnterPin
+            currentStep = .enterPin
             return false
         }
     }

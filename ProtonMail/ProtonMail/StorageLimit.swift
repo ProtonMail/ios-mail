@@ -22,7 +22,7 @@ class StorageLimit {
     
     // MARK: - Public methods
     
-    func checkSpace(usedSpace: Int64, maxSpace: Int64) {
+    func checkSpace(_ usedSpace: Int64, maxSpace: Int64) {
         
         if userCachedStatus.isCheckSpaceDisabled {
             return
@@ -36,7 +36,7 @@ class StorageLimit {
             return
         }
         
-        let formattedMaxSpace = NSByteCountFormatter.stringFromByteCount(Int64(maxSpace), countStyle: NSByteCountFormatterCountStyle.File)
+        let formattedMaxSpace = ByteCountFormatter.string(fromByteCount: Int64(maxSpace), countStyle: ByteCountFormatter.CountStyle.file)
         var message = ""
         
         if usedSpace >= maxSpace {
@@ -48,12 +48,12 @@ class StorageLimit {
         let alertController = UIAlertController(
             title: NSLocalizedString("Space Warning"),
             message: message,
-            preferredStyle: .Alert)
+            preferredStyle: .alert)
         alertController.addOKAction()
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Hide"), style: .Destructive, handler: { action in
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Hide"), style: .destructive, handler: { action in
             userCachedStatus.isCheckSpaceDisabled = true
         }))
         
-        UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
+        UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
     }
 }

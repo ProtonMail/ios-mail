@@ -11,7 +11,7 @@ import UIKit
 
 protocol TwoFACodeViewControllerDelegate {
     func Cancel2FA()
-    func ConfirmedCode(code : String, pwd:String)
+    func ConfirmedCode(_ code : String, pwd:String)
 }
 
 class TwoFACodeViewController : UIViewController {
@@ -32,43 +32,43 @@ class TwoFACodeViewController : UIViewController {
         self.twoFACodeView.showKeyboard()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
+        NotificationCenter.default.addKeyboardObserver(self)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
+        NotificationCenter.default.removeKeyboardObserver(self)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
 
 }
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 extension TwoFACodeViewController: NSNotificationCenterKeyboardObserverProtocol {
-    func keyboardWillHideNotification(notification: NSNotification) {
+    func keyboardWillHideNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         tfaCodeCenterConstraint.constant = 0.0
-        UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
+        UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
     }
     
-    func keyboardWillShowNotification(notification: NSNotification) {
-        let info: NSDictionary = notification.userInfo!
-        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
+    func keyboardWillShowNotification(_ notification: Notification) {
+        let info: NSDictionary = notification.userInfo! as NSDictionary
+        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             tfaCodeCenterConstraint.constant = (keyboardSize.height / 2) * -1.0
         }
     }
@@ -77,13 +77,13 @@ extension TwoFACodeViewController: NSNotificationCenterKeyboardObserverProtocol 
 
 extension TwoFACodeViewController : TwoFACodeViewDelegate {
 
-    func ConfirmedCode(code: String, pwd : String) {
+    func ConfirmedCode(_ code: String, pwd : String) {
         delegate?.ConfirmedCode(code, pwd:pwd)
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     func Cancel() {
         delegate?.Cancel2FA()
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
 }

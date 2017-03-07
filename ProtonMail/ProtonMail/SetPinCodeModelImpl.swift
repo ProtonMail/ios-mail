@@ -14,17 +14,17 @@ class SetPinCodeModelImpl : PinCodeViewModel {
     let StepOneTitle : String = "Enter your PIN"
     let StepTwoTitle : String = "Re-Enter your PIN"
     
-    var currentStep : PinCodeStep = .EnterPin
+    var currentStep : PinCodeStep = .enterPin
     
     var enterPin : String = ""
     var reEnterPin : String = "";
     
     override func title() -> String {
-        return currentStep == .EnterPin ? StepOneTitle : StepTwoTitle
+        return currentStep == .enterPin ? StepOneTitle : StepTwoTitle
     }
     
     override func cancel() -> String {
-        return currentStep == .EnterPin ? "CREATE" : "CONFIRM"
+        return currentStep == .enterPin ? "CREATE" : "CONFIRM"
     }
     
     override func showConfirm() -> Bool {
@@ -35,21 +35,21 @@ class SetPinCodeModelImpl : PinCodeViewModel {
         return ""
     }
     
-    override func setCode (code : String) -> PinCodeStep {
+    override func setCode (_ code : String) -> PinCodeStep {
         
         switch currentStep {
-        case .EnterPin:
+        case .enterPin:
             enterPin = code
-            currentStep = .ReEnterPin
-        case .ReEnterPin:
+            currentStep = .reEnterPin
+        case .reEnterPin:
             reEnterPin = code
-            currentStep = .Done
-        case .Done:
+            currentStep = .done
+        case .done:
             break
         default:
             enterPin = ""
             reEnterPin = ""
-            currentStep = .EnterPin
+            currentStep = .enterPin
         }
         
         return currentStep
@@ -59,7 +59,7 @@ class SetPinCodeModelImpl : PinCodeViewModel {
         if !enterPin.isEmpty && !reEnterPin.isEmpty && reEnterPin == enterPin {
             return true
         } else {
-            currentStep = .ReEnterPin
+            currentStep = .reEnterPin
             return false
         }
     }

@@ -21,34 +21,34 @@ enum FeedbackItem: String {
     
     var image : String {
         switch self {
-        case header:
+        case .header:
             return ""
-        case rate:
+        case .rate:
             return "feedback_rating"
-        case tweet:
+        case .tweet:
             return "feedback_twitter"
-        case facebook:
+        case .facebook:
             return "feedback_facebook"
-        case contact:
+        case .contact:
             return "feedback_contact"
-        case guide:
+        case .guide:
             return "feedback_support"
         }
     }
     
     var title : String {
         switch self {
-        case header:
+        case .header:
             return ""
-        case rate:
+        case .rate:
             return "Rate & Review"
-        case tweet:
+        case .tweet:
             return "Tweet about ProtonMail"
-        case facebook:
+        case .facebook:
             return "Share it with your friends"
-        case contact:
+        case .contact:
             return "Contact the ProtonMail team"
-        case guide:
+        case .guide:
             return "Trouble shooting guide"
         }
     }
@@ -66,7 +66,7 @@ enum FeedbackSection: Int {
     var hasTitle : Bool {
         var has = false
         switch self {
-        case reviews, guid, helping:
+        case .reviews, .guid, .helping:
             has = true
         default:
             has = false
@@ -76,13 +76,13 @@ enum FeedbackSection: Int {
     
     var title : String {
         switch self {
-        case header:
+        case .header:
             return ""
-        case reviews:
+        case .reviews:
             return "Help us to make privacy the default in the web."
-        case guid:
+        case .guid:
             return "Help us to improve ProtonMail with your input."
-        case helping:
+        case .helping:
             return "We would like to know what we can do better."
         }
     }

@@ -13,8 +13,8 @@
 import UIKit
 
 @objc protocol MailboxTableViewCellDelegate {
-    func mailboxTableViewCell(cell: MailboxTableViewCell, didChangeStarred: Bool)
-    func mailBoxTableViewCell(cell: MailboxTableViewCell, didChangeChecked: Bool)
+    func mailboxTableViewCell(_ cell: MailboxTableViewCell, didChangeStarred: Bool)
+    func mailBoxTableViewCell(_ cell: MailboxTableViewCell, didChangeChecked: Bool)
 }
 
 
@@ -49,15 +49,15 @@ class MailboxTableViewCell: UITableViewCell {
     
     // MARK: - Private constants
     
-    private let kCheckboxWidth: CGFloat = 22.0
-    private let kStarWidth : CGFloat = 22.0
-    private let kAttachmentWidth : CGFloat = 24.0
+    fileprivate let kCheckboxWidth: CGFloat = 22.0
+    fileprivate let kStarWidth : CGFloat = 22.0
+    fileprivate let kAttachmentWidth : CGFloat = 24.0
     
-    private let kCheckboxButtonCornerRadius: CGFloat = 1.0
-    private let kCheckboxUncheckedImage: UIImage = UIImage(named: "unchecked")!
-    private let kCheckboxCheckedImage: UIImage = UIImage(named: "checked")!
-    private let kTitleMarginLeft: CGFloat = 16.0
-    private let kReplyImageWidth : CGFloat = 27.0
+    fileprivate let kCheckboxButtonCornerRadius: CGFloat = 1.0
+    fileprivate let kCheckboxUncheckedImage: UIImage = UIImage(named: "unchecked")!
+    fileprivate let kCheckboxCheckedImage: UIImage = UIImage(named: "checked")!
+    fileprivate let kTitleMarginLeft: CGFloat = 16.0
+    fileprivate let kReplyImageWidth : CGFloat = 27.0
     
     //MAKR : constants
     
@@ -73,17 +73,17 @@ class MailboxTableViewCell: UITableViewCell {
     
     // MARK: - Private attributes
     
-    private var isChecked: Bool = false
+    fileprivate var isChecked: Bool = false
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        checkboxButton.addTarget(self, action: #selector(MailboxTableViewCell.checkboxTapped), forControlEvents: UIControlEvents.TouchUpInside)
+        checkboxButton.addTarget(self, action: #selector(MailboxTableViewCell.checkboxTapped), for: UIControlEvents.touchUpInside)
         
-        labelView.backgroundColor = UIColor.clearColor();
-        labelView2.backgroundColor = UIColor.clearColor();
-        labelView3.backgroundColor = UIColor.clearColor();
-        labelView4.backgroundColor = UIColor.clearColor();
-        labelView5.backgroundColor = UIColor.clearColor();
+        labelView.backgroundColor = UIColor.clear;
+        labelView2.backgroundColor = UIColor.clear;
+        labelView3.backgroundColor = UIColor.clear;
+        labelView4.backgroundColor = UIColor.clear;
+        labelView5.backgroundColor = UIColor.clear;
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -92,14 +92,14 @@ class MailboxTableViewCell: UITableViewCell {
 
     // MARK: - Actions
     
-    @IBAction func favoriteButtonAction(sender: UIButton) {
+    @IBAction func favoriteButtonAction(_ sender: UIButton) {
     }
     
     func checkboxTapped() {
         if (isChecked) {
-            checkboxButton.setImage(kCheckboxUncheckedImage, forState: UIControlState.Normal)
+            checkboxButton.setImage(kCheckboxUncheckedImage, for: UIControlState())
         } else {
-            checkboxButton.setImage(kCheckboxCheckedImage, forState: UIControlState.Normal)
+            checkboxButton.setImage(kCheckboxCheckedImage, for: UIControlState())
         }
         
         self.isChecked = !self.isChecked
@@ -109,7 +109,7 @@ class MailboxTableViewCell: UITableViewCell {
     
     // MARK: - Cell configuration
     
-    func configureCell(message: Message) {
+    func configureCell(_ message: Message) {
         self.title.text = message.subject
         
         if message.location == MessageLocation.outbox {
@@ -118,10 +118,10 @@ class MailboxTableViewCell: UITableViewCell {
             self.sender.text = message.displaySender
         }
         
-        self.encryptedImage.hidden = !message.checkIsEncrypted()
-        self.attachImage.hidden = !(message.numAttachments.intValue > 0)
+        self.encryptedImage.isHidden = !message.checkIsEncrypted()
+        self.attachImage.isHidden = !(message.numAttachments.int32Value > 0)
         
-        if message.numAttachments.intValue > 0 {
+        if message.numAttachments.int32Value > 0 {
             self.attachmentConstraint.constant = self.kAttachmentWidth
         } else {
             self.attachmentConstraint.constant = 0
@@ -139,7 +139,7 @@ class MailboxTableViewCell: UITableViewCell {
         let alllabels = message.labels.allObjects
         var labels : [Label] = []
         for l in alllabels {
-            if let label = l as? Label where label.exclusive == false {
+            if let label = l as? Label, label.exclusive == false {
                 labels.append(label)
             }
         }
@@ -198,12 +198,12 @@ class MailboxTableViewCell: UITableViewCell {
             hideReply()
         }
         
-        self.time.text = message.time != nil ? " \(NSDate.stringForDisplayFromDate(message.time))" : ""
+        self.time.text = message.time != nil ? " \(NSDate.stringForDisplay(from: message.time as Date!))" : ""
         
-        timeConstraint.constant = self.time.sizeThatFits(CGSizeZero).width
+        timeConstraint.constant = self.time.sizeThatFits(CGSize.zero).width
     }
     
-    private func updateLables (labelView : TableCellLabelView, labelConstraint : NSLayoutConstraint, label:Label?) {
+    fileprivate func updateLables (_ labelView : TableCellLabelView, labelConstraint : NSLayoutConstraint, label:Label?) {
         if let label = label {
             if label.name.isEmpty || label.color.isEmpty {
                 labelConstraint.constant = 0
@@ -236,14 +236,14 @@ class MailboxTableViewCell: UITableViewCell {
         self.setNeedsUpdateConstraints()
     }
     
-    func showImage(isShow: Bool){
+    func showImage(_ isShow: Bool){
         if isShow {
             self.titleLeadingConstraint.constant = kReplyImageWidth
-            self.replyImage.hidden = false
+            self.replyImage.isHidden = false
         }
         else {
             self.titleLeadingConstraint.constant = 0
-            self.replyImage.hidden = true
+            self.replyImage.isHidden = true
         }
     }
     
@@ -278,13 +278,13 @@ class MailboxTableViewCell: UITableViewCell {
         self.setNeedsUpdateConstraints()
     }
     
-    func setCellIsChecked(checked: Bool) {
+    func setCellIsChecked(_ checked: Bool) {
         self.isChecked = checked
         
         if (checked) {
-            self.checkboxButton.setImage(kCheckboxCheckedImage, forState: UIControlState.Normal)
+            self.checkboxButton.setImage(kCheckboxCheckedImage, for: UIControlState())
         } else {
-            self.checkboxButton.setImage(kCheckboxUncheckedImage, forState: UIControlState.Normal)
+            self.checkboxButton.setImage(kCheckboxUncheckedImage, for: UIControlState())
         }
     }
     

@@ -7,6 +7,30 @@
 //
 
 import Foundation
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 protocol SettingDetailsViewModel {
     
@@ -21,8 +45,8 @@ protocol SettingDetailsViewModel {
     func getPlaceholdText() -> String
     
     func getCurrentValue() -> String
-    func updateValue(new_value: String, password: String, tfaCode: String?, complete:(Bool, NSError?) -> Void)
-    func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void)
+    func updateValue(_ new_value: String, password: String, tfaCode: String?, complete:@escaping (Bool, NSError?) -> Void)
+    func updateNotification(_ isOn : Bool, complete:@escaping(Bool, NSError?) -> Void)
     
     func isSwitchEnabled() -> Bool
     func isTextEnabled() -> Bool
@@ -74,11 +98,11 @@ class SettingDetailsViewModelTest : SettingDetailsViewModel{
         return "test value"
     }
     
-    func updateValue(new_value: String, password: String, tfaCode: String?, complete: (Bool, NSError?) -> Void) {
+    func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping(Bool, NSError?) -> Void) {
         complete(true, nil)
     }
     
-    func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void) {
+    func updateNotification(_ isOn : Bool, complete:@escaping(Bool, NSError?) -> Void) {
         complete(true, nil)
     }
     
@@ -144,7 +168,7 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
         return sharedUserDataService.displayName
     }
     
-    func updateValue(new_value: String, password: String, tfaCode: String?, complete: (Bool, NSError?) -> Void) {
+    func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {
         if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
             sharedUserDataService.updateAddress(addr.address_id, displayName: new_value, signature: addr.signature, completion: { (_, _, error) in
                 if let error = error {
@@ -164,7 +188,7 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
         }
     }
     
-    func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void) {
+    func updateNotification(_ isOn : Bool, complete:@escaping(Bool, NSError?) -> Void) {
         complete(true, nil)
     }
     func isSwitchEnabled() -> Bool {
@@ -228,7 +252,7 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
         return sharedUserDataService.signature
     }
     
-    func updateValue(new_value: String, password: String, tfaCode: String?, complete: (Bool, NSError?) -> Void) {
+    func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {
         if let addr = sharedUserDataService.userAddresses.getDefaultAddress() {
             sharedUserDataService.updateAddress(addr.address_id, displayName: addr.display_name, signature: new_value.ln2br(), completion: { (_, _, error) in
                 if let error = error {
@@ -248,7 +272,7 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
         }
     }
     
-    func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void) {
+    func updateNotification(_ isOn : Bool, complete:@escaping(Bool, NSError?) -> Void) {
         sharedUserDataService.showDefaultSignature = isOn
         complete(true, nil)
     }
@@ -310,7 +334,7 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
         return sharedUserDataService.mobileSignature
     }
     
-    func updateValue(new_value: String, password: String, tfaCode: String?, complete: (Bool, NSError?) -> Void) {
+    func updateValue(_ new_value: String, password: String, tfaCode: String?, complete:@escaping (Bool, NSError?) -> Void) {
         if new_value == getCurrentValue() {
             complete(true, nil)
         } else {
@@ -319,7 +343,7 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel{
         }
     }
     
-    func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void) {
+    func updateNotification(_ isOn : Bool, complete:@escaping(Bool, NSError?) -> Void) {
         if isOn == getSwitchStatus() {
             complete(true, nil)
         } else {
@@ -395,7 +419,7 @@ class ChangeNotificationEmailViewModel : SettingDetailsViewModel{
         return sharedUserDataService.notificationEmail
     }
     
-    func updateValue(new_value: String, password: String, tfaCode: String?, complete: (Bool, NSError?) -> Void) {
+    func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {
         if new_value == getCurrentValue() {
              complete(true, nil)
         } else {
@@ -409,7 +433,7 @@ class ChangeNotificationEmailViewModel : SettingDetailsViewModel{
         }
     }
     
-    func updateNotification(isOn : Bool, complete:(Bool, NSError?) -> Void) {
+    func updateNotification(_ isOn : Bool, complete:@escaping (Bool, NSError?) -> Void) {
         if isOn == getSwitchStatus() {
             complete(true, nil)
         } else {

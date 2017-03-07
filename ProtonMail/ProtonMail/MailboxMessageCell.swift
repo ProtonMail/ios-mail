@@ -17,9 +17,9 @@ class MailboxMessageCell: MCSwipeTableViewCell {
         static let identifier = "MailboxMessageCell"
     }
     
-    private let kCheckboxWidth : CGFloat = 36.0
-    private let kIconsWidth : CGFloat = 18.0
-    private let kReplyWidth : CGFloat = 20.0
+    fileprivate let kCheckboxWidth : CGFloat = 36.0
+    fileprivate let kIconsWidth : CGFloat = 18.0
+    fileprivate let kReplyWidth : CGFloat = 20.0
     @IBOutlet weak var checkboxWidth: NSLayoutConstraint!
     @IBOutlet weak var timeWidth: NSLayoutConstraint!
     @IBOutlet weak var starWidth: NSLayoutConstraint!
@@ -38,7 +38,7 @@ class MailboxMessageCell: MCSwipeTableViewCell {
     
     @IBOutlet weak var locationLabel: UILabel!
     // MARK : vars
-    private var isChecked : Bool = false
+    fileprivate var isChecked : Bool = false
     
     @IBOutlet weak var checkboxButton: UIButton!
     @IBOutlet weak var title: UILabel!
@@ -55,15 +55,15 @@ class MailboxMessageCell: MCSwipeTableViewCell {
         locationLabel.layer.cornerRadius = 2;
     }
     
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
-        locationLabel.backgroundColor = UIColor.grayColor()
+        locationLabel.backgroundColor = UIColor.gray
     }
     
-    override func setHighlighted(highlighted: Bool, animated: Bool) {
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
-        locationLabel.backgroundColor = UIColor.grayColor()
+        locationLabel.backgroundColor = UIColor.gray
     }
     
     
@@ -81,9 +81,9 @@ class MailboxMessageCell: MCSwipeTableViewCell {
         self.setNeedsUpdateConstraints()
     }
     
-    func setCellIsChecked(checked: Bool) {
+    func setCellIsChecked(_ checked: Bool) {
         self.isChecked = checked
-        checkboxButton.selected = checked
+        checkboxButton.isSelected = checked
     }
     
     func isCheckBoxSelected() -> Bool {
@@ -107,17 +107,17 @@ class MailboxMessageCell: MCSwipeTableViewCell {
     
     
     // MARK: - Cell configuration
-    func configureCell(message: Message, showLocation : Bool, ignoredTitle: String) {
+    func configureCell(_ message: Message, showLocation : Bool, ignoredTitle: String) {
         self.title.text = message.subject
     
         var title = ""
         if showLocation {
-            title = message.getShowLocationNameFromLabels(ignoredTitle) ?? ""
+            title = message.getShowLocationNameFromLabels(ignored: ignoredTitle) ?? ""
         }
         
         if showLocation && !title.isEmpty {
             self.locationLabel.text = " \(title) "
-            locationWidth.constant = self.locationLabel.sizeThatFits(CGSizeZero).width
+            locationWidth.constant = self.locationLabel.sizeThatFits(CGSize.zero).width
             loctionRightSpace.constant = 4.0;
         } else {
             locationWidth.constant = 0.0;
@@ -126,21 +126,21 @@ class MailboxMessageCell: MCSwipeTableViewCell {
         
         let lockType : LockTypes = message.lockType
         switch (lockType) {
-        case .PlainTextLock:
+        case .plainTextLock:
             self.lockImage.image = UIImage(named: "mail_lock");
-            self.lockImage.highlighted = true;
+            self.lockImage.isHighlighted = true;
             break
-        case .EncryptLock:
+        case .encryptLock:
             self.lockImage.image = UIImage(named: "mail_lock");
-            self.lockImage.highlighted = false;
+            self.lockImage.isHighlighted = false;
             break
-        case .PGPLock:
+        case .pgpLock:
             self.lockImage.image = UIImage(named: "mail_lock-pgpmime");
-            self.lockImage.highlighted = false;
+            self.lockImage.isHighlighted = false;
             break;
         }
         
-        if message.numAttachments.intValue > 0 {
+        if message.numAttachments.int32Value > 0 {
             self.attachmentWidth.constant = kIconsWidth
         } else {
             self.attachmentWidth.constant = 0
@@ -159,7 +159,7 @@ class MailboxMessageCell: MCSwipeTableViewCell {
         }
         
         let predicate = NSPredicate(format: "labelID MATCHES %@", "(?!^\\d+$)^.+$")
-        let tempLabels = message.labels.filteredSetUsingPredicate(predicate) //TODO:: later need add lables exsiting check 
+        let tempLabels = message.labels.filtered(using: predicate) //TODO:: later need add lables exsiting check 
         var labels : [Label] = []
         for vowel in tempLabels {
             let label = vowel as! Label;
@@ -193,22 +193,27 @@ class MailboxMessageCell: MCSwipeTableViewCell {
             hideForward()
         }
         
-        self.time.text = message.time != nil ? " \(NSDate.stringForDisplayFromDate(message.time))" : ""
-        timeWidth.constant = self.time.sizeThatFits(CGSizeZero).width
+        if let t : Date = message.time, let displayString = NSDate.stringForDisplay(from: t) {
+            self.time.text = " \(displayString)"
+        } else {
+            self.time.text = " "
+        }
+        
+        timeWidth.constant = self.time.sizeThatFits(CGSize.zero).width
         
         self.setNeedsUpdateConstraints()
     }
-    private func updateLables (labelView : LabelDisplayView, label:Label?) {
+    fileprivate func updateLables (_ labelView : LabelDisplayView, label:Label?) {
         if let label = label {
             if label.name.isEmpty || label.color.isEmpty {
-                labelView.hidden = true;
+                labelView.isHidden = true;
             } else {
-                labelView.hidden = false;
+                labelView.isHidden = false;
                 labelView.labelTitle = label.name
                 labelView.LabelTintColor = UIColor(hexString: label.color, alpha: 1.0)
             }
         } else {
-            labelView.hidden = true;
+            labelView.isHidden = true;
         }
     }
     

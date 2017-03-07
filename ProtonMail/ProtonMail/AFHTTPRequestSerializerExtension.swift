@@ -17,14 +17,14 @@
 import Foundation
 
 extension AFHTTPRequestSerializer {
-    func setAuthorizationHeaderFieldWithCredential(credential: AuthCredential) {
+    func setAuthorizationHeaderFieldWithCredential(_ credential: AuthCredential) {
         let accessToken = credential.token ?? ""
         setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         setValue(credential.userID, forHTTPHeaderField: "x-pm-uid")
     }
     
-    func setVersionHeader (apiVersion: Int, appVersion:Int) {
-        let appversion = "iOS_\(NSBundle.mainBundle().majorVersion)"
+    func setVersionHeader (_ apiVersion: Int, appVersion:Int) {
+        let appversion = "iOS_\(Bundle.main.majorVersion)"
         //setValue("application/vnd.protonmail.api+json;apiversion=\(apiVersion);appversion=\(appVersion)", forHTTPHeaderField: "Accept")
         setValue(appversion, forHTTPHeaderField: "x-pm-appversion")
         setValue("1", forHTTPHeaderField: "x-pm-apiversion")

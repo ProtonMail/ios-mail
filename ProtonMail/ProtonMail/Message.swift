@@ -16,14 +16,14 @@
 import Foundation
 import CoreData
 
-public class Message: NSManagedObject {
+open class Message: NSManagedObject {
 
     @NSManaged var bccList: String
     @NSManaged var bccNameList: String
     @NSManaged var body: String
     @NSManaged var ccList: String
     @NSManaged var ccNameList: String
-    @NSManaged var expirationTime: NSDate?
+    @NSManaged var expirationTime: Date?
     @NSManaged var hasAttachments: Bool   //removed
     @NSManaged var numAttachments: NSNumber
     @NSManaged var header: String
@@ -34,7 +34,7 @@ public class Message: NSManagedObject {
     @NSManaged var isReplied: Bool
     @NSManaged var isRepliedAll: Bool
     @NSManaged var isStarred: Bool    //Deprecated, use LabelIDs instead
-    @NSManaged var lastModified: NSDate?
+    @NSManaged var lastModified: Date?
     @NSManaged var locationNumber: NSNumber  //Deprecated, use LabelIDs instead
     @NSManaged var messageID: String
     @NSManaged var passwordEncryptedBody: String
@@ -48,13 +48,13 @@ public class Message: NSManagedObject {
     @NSManaged var senderName: String
     @NSManaged var spamScore: NSNumber
     @NSManaged var tag: String
-    @NSManaged var time: NSDate?
+    @NSManaged var time: Date?
     @NSManaged var title: String
     @NSManaged var totalSize: NSNumber
     @NSManaged var latestUpdateType : NSNumber
     @NSManaged var needsUpdate : Bool
     @NSManaged var orginalMessageID: String?
-    @NSManaged var orginalTime: NSDate?
+    @NSManaged var orginalTime: Date?
     @NSManaged var action: NSNumber?
     @NSManaged var isSoftDelete: Bool
     @NSManaged var expirationOffset : Int32

@@ -18,22 +18,22 @@ class MenuLabelViewCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var unreadLabel: UILabel!
     
-    private var item: Label!
+    fileprivate var item: Label!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
-        self.layoutMargins = UIEdgeInsetsZero;
-        self.separatorInset = UIEdgeInsetsZero
+        self.layoutMargins = UIEdgeInsets.zero;
+        self.separatorInset = UIEdgeInsets.zero
         
-        let selectedBackgroundView = UIView(frame: CGRectZero)
+        let selectedBackgroundView = UIView(frame: CGRect.zero)
         selectedBackgroundView.backgroundColor = UIColor.ProtonMail.Menu_SelectedBackground
         
         self.selectedBackgroundView = selectedBackgroundView
-        self.separatorInset = UIEdgeInsetsZero
-        self.layoutMargins = UIEdgeInsetsZero
+        self.separatorInset = UIEdgeInsets.zero
+        self.layoutMargins = UIEdgeInsets.zero
     }
     
-    func configCell (item : Label!) {
+    func configCell (_ item : Label!) {
         self.item = item;
         
         unreadLabel.layer.masksToBounds = true;
@@ -49,8 +49,8 @@ class MenuLabelViewCell: UITableViewCell {
             }
             titleLabel.text = item.name;
             
-            titleImageView.image = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-            titleImageView.highlightedImage = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            titleImageView.image = image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+            titleImageView.highlightedImage = image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
             titleImageView.tintColor = color
         }
     }
@@ -60,14 +60,14 @@ class MenuLabelViewCell: UITableViewCell {
         let count = lastUpdatedStore.UnreadCountForKey(item.labelID)
         if count > 0 {
             unreadLabel.text = "\(count)";
-            unreadLabel.hidden = false;
+            unreadLabel.isHidden = false;
         } else {
             unreadLabel.text = "0";
-            unreadLabel.hidden = true;
+            unreadLabel.isHidden = true;
         }
     }
     
-    override func setHighlighted(highlighted: Bool, animated: Bool) {
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
         if highlighted {
             unreadLabel.backgroundColor = UIColor.ProtonMail.Menu_UnreadCountBackground
@@ -80,7 +80,7 @@ class MenuLabelViewCell: UITableViewCell {
         }
     }
     
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         if selected {
             unreadLabel.backgroundColor = UIColor.ProtonMail.Menu_UnreadCountBackground

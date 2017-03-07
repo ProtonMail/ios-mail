@@ -9,10 +9,10 @@
 import Foundation
 
 
-public class LabelEditViewModel {
+open class LabelEditViewModel {
     
     public typealias OkBlock = () -> Void
-    public typealias ErrorBlock = (code : Int, errorMessage : String) -> Void
+    public typealias ErrorBlock = (_ code : Int, _ errorMessage : String) -> Void
     
     let colors : [String] = ["#7272a7","#cf5858", "#c26cc7", "#7569d1", "#69a9d1", "#5ec7b7", "#72bb75", "#c3d261", "#e6c04c", "#e6984c", "#8989ac", "#cf7e7e", "#c793ca", "#9b94d1", "#a8c4d5", "#97c9c1", "#9db99f", "#c6cd97", "#e7d292", "#dfb286"]
     
@@ -24,29 +24,29 @@ public class LabelEditViewModel {
         return colors.count
     }
     
-    func getColor(index : Int) -> String {
+    func getColor(_ index : Int) -> String {
         return colors[index]
     }
 
-    public func getTitle() -> String {
+    open func getTitle() -> String {
         fatalError("This method must be overridden")
     }
     
-    public func getSelectedIndex() -> NSIndexPath {
+    open func getSelectedIndex() -> IndexPath {
         let count = UInt32(colors.count)
         let rand = Int(arc4random_uniform(count))
-        return NSIndexPath(forRow: rand, inSection: 0)
+        return IndexPath(row: rand, section: 0)
     }
     
-    public func getPlaceHolder() -> String {
+    open func getPlaceHolder() -> String {
         fatalError("This method must be overridden")
     }
     
-    public func getRightButtonText() -> String {
+    open func getRightButtonText() -> String {
         fatalError("This method must be overridden")
     }
     
-    public func createLabel (name : String, color : String, error:ErrorBlock,  complete: OkBlock)  {
+    open func createLabel (_ name : String, color : String, error:@escaping ErrorBlock, complete:@escaping OkBlock)  {
         fatalError("This method must be overridden")
     }
 //

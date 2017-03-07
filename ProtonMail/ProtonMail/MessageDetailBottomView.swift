@@ -27,15 +27,15 @@ class MessageDetailBottomView: UIView {
     var delegate: MessageDetailBottomViewProtocol?
     
     
-    @IBAction func replyClicked(sender: AnyObject) {
+    @IBAction func replyClicked(_ sender: AnyObject) {
         self.delegate?.replyClicked()
     }
     
-    @IBAction func replyAllClicked(sender: AnyObject) {
+    @IBAction func replyAllClicked(_ sender: AnyObject) {
         self.delegate?.replyAllClicked()
     }
     
-    @IBAction func forwardClicked(sender: AnyObject) {
+    @IBAction func forwardClicked(_ sender: AnyObject) {
         self.delegate?.forwardClicked()
     }
 }

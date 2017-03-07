@@ -9,29 +9,29 @@
 import Foundation
 
 
-public class SignupViewModelImpl : SignupViewModel {
-    private var userName : String = ""
-    private var token : String = ""
-    private var isExpired : Bool = true
-    private var newKey : PMNOpenPgpKey?
-    private var domain : String = ""
-    private var destination : String = ""
-    private var recoverEmail : String = ""
-    private var news : Bool = true
-    private var plaintext_password : String = ""
-    private var agreePolicy : Bool = false
-    private var displayName : String = ""
+open class SignupViewModelImpl : SignupViewModel {
+    fileprivate var userName : String = ""
+    fileprivate var token : String = ""
+    fileprivate var isExpired : Bool = true
+    fileprivate var newKey : PMNOpenPgpKey?
+    fileprivate var domain : String = ""
+    fileprivate var destination : String = ""
+    fileprivate var recoverEmail : String = ""
+    fileprivate var news : Bool = true
+    fileprivate var plaintext_password : String = ""
+    fileprivate var agreePolicy : Bool = false
+    fileprivate var displayName : String = ""
     
-    private var lastSendTime : NSDate?
+    fileprivate var lastSendTime : Date?
     
-    private var keysalt : NSData?
-    private var keypwd_with_keysalt : String = ""
-    private var bit : Int32 = 2048
+    fileprivate var keysalt : Data?
+    fileprivate var keypwd_with_keysalt : String = ""
+    fileprivate var bit : Int32 = 2048
     
-    private var delegate : SignupViewModelDelegate?
-    private var verifyType : VerifyCodeType = .email
+    fileprivate var delegate : SignupViewModelDelegate?
+    fileprivate var verifyType : VerifyCodeType = .email
     
-    private var direct : [String] = []
+    fileprivate var direct : [String] = []
     
     override func getDirect() -> [String] {
         return direct
@@ -40,24 +40,24 @@ public class SignupViewModelImpl : SignupViewModel {
     override init() {
         super.init()
         //register observer
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SignupViewModelImpl.notifyReceiveURLSchema(_:)), name: NotificationDefined.CustomizeURLSchema, object:nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SignupViewModelImpl.notifyReceiveURLSchema(_:)), name: NSNotification.Name(rawValue: NotificationDefined.CustomizeURLSchema), object:nil)
     }
     deinit {
         //unregister observer
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationDefined.CustomizeURLSchema, object:nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationDefined.CustomizeURLSchema), object:nil)
     }
     
-    internal func notifyReceiveURLSchema (notify: NSNotification) {
+    internal func notifyReceiveURLSchema (_ notify: Notification) {
         if let verifyCode = notify.userInfo?["verifyCode"] as? String {
             delegate?.verificationCodeChanged(self, code: verifyCode)
         }
     }
     
-    override func setDelegate(delegate: SignupViewModelDelegate?) {
+    override func setDelegate(_ delegate: SignupViewModelDelegate?) {
         self.delegate = delegate
     }
     
-    override func checkUserName(username: String, complete: CheckUserNameBlock!) {
+    override func checkUserName(_ username: String, complete: CheckUserNameBlock!) {
         // need valide user name format
         let api = CheckUserExistRequest<CheckUserExistResponse>(userName: username)
         api.call { (task, response, hasError) -> Void in
@@ -69,17 +69,17 @@ public class SignupViewModelImpl : SignupViewModel {
         return self.bit
     }
     
-    override func setBit(bit: Int32) {
+    override func setBit(_ bit: Int32) {
         self.bit = bit
     }
     
-    override func setRecaptchaToken(token: String, isExpired: Bool) {
+    override func setRecaptchaToken(_ token: String, isExpired: Bool) {
         self.token = token
         self.isExpired = isExpired
         self.verifyType = .recaptcha
     }
     
-    override func setPickedUserName(username: String, domain:String) {
+    override func setPickedUserName(_ username: String, domain:String) {
         self.userName = username
         self.domain = domain
     }
@@ -88,23 +88,23 @@ public class SignupViewModelImpl : SignupViewModel {
         return !isExpired
     }
     
-    override func setEmailVerifyCode(code: String) {
+    override func setEmailVerifyCode(_ code: String) {
         self.token = code
         self.isExpired = false
         self.verifyType = .email
     }
     
-    override func setPhoneVerifyCode (code: String) {
+    override func setPhoneVerifyCode (_ code: String) {
         self.token = code
         self.isExpired = false
         self.verifyType = .sms
     }
     
-    override func generateKey(complete: GenerateKey) {
+    override func generateKey(_ complete: @escaping GenerateKey) {
         {
             do {
                 //generate key salt
-                let new_mpwd_salt : NSData = PMNOpenPgp.randomBits(128) //mailbox pwd need 128 bits
+                let new_mpwd_salt : Data = PMNOpenPgp.randomBits(128) //mailbox pwd need 128 bits
                 //generate key hashed password.
                 let new_hashed_mpwd = PasswordUtils.getMailboxPassword(self.plaintext_password, salt: new_mpwd_salt)
                 self.keysalt = new_mpwd_salt
@@ -119,34 +119,34 @@ public class SignupViewModelImpl : SignupViewModel {
                     } else {
                         complete(false, nil, nil);
                     }
-                } ~> .Main
+                } ~> .main
             }
             catch let ex as NSError {
-                { complete(false, "Key generation failed please try again", ex) } ~> .Main
+                { complete(false, "Key generation failed please try again", ex) } ~> .main
             }
-        } ~> .Async
+        } ~> .async
     }
     
-    override func createNewUser(complete: CreateUserBlock) {
+    override func createNewUser(_ complete: @escaping CreateUserBlock) {
         //validation here
         if let key = self.newKey {
             {
                 do {
                     let authModuls = try AuthModulusRequest<AuthModulusResponse>().syncCall()
                     guard let moduls_id = authModuls?.ModulusID else {
-                        throw SignUpCreateUserError.InvalidModulsID.toError()
+                        throw SignUpCreateUserError.invalidModulsID.toError()
                     }
                     guard let new_moduls = authModuls?.Modulus, let new_encodedModulus = try new_moduls.getSignature() else {
-                        throw SignUpCreateUserError.InvalidModuls.toError()
+                        throw SignUpCreateUserError.invalidModuls.toError()
                     }
                     //generat new verifier
-                    let new_decodedModulus : NSData = new_encodedModulus.decodeBase64()
-                    let new_salt : NSData = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
+                    let new_decodedModulus : Data = new_encodedModulus.decodeBase64()
+                    let new_salt : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
                     guard let new_hashed_password = PasswordUtils.hashPasswordVersion4(self.plaintext_password, salt: new_salt, modulus: new_decodedModulus) else {
-                        throw SignUpCreateUserError.CantHashPassword.toError()
+                        throw SignUpCreateUserError.cantHashPassword.toError()
                     }
                     guard let verifier = try generateVerifier(2048, modulus: new_decodedModulus, hashedPassword: new_hashed_password) else {
-                        throw SignUpCreateUserError.CantGenerateVerifier.toError()
+                        throw SignUpCreateUserError.cantGenerateVerifier.toError()
                     }
                     
                     let api = CreateNewUserRequest<ApiResponse>(token: self.token,
@@ -182,19 +182,19 @@ public class SignupViewModelImpl : SignupViewModel {
                                             //need setup keys
                                             let authModuls_for_key = try AuthModulusRequest<AuthModulusResponse>().syncCall()
                                             guard let moduls_id_for_key = authModuls_for_key?.ModulusID else {
-                                                throw SignUpCreateUserError.InvalidModulsID.toError()
+                                                throw SignUpCreateUserError.invalidModulsID.toError()
                                             }
                                             guard let new_moduls_for_key = authModuls_for_key?.Modulus, let new_encodedModulus_for_key = try new_moduls_for_key.getSignature() else {
-                                                throw SignUpCreateUserError.InvalidModuls.toError()
+                                                throw SignUpCreateUserError.invalidModuls.toError()
                                             }
                                             //generat new verifier
-                                            let new_decodedModulus_for_key : NSData = new_encodedModulus_for_key.decodeBase64()
-                                            let new_salt_for_key : NSData = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
+                                            let new_decodedModulus_for_key : Data = new_encodedModulus_for_key.decodeBase64()
+                                            let new_salt_for_key : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
                                             guard let new_hashed_password_for_key = PasswordUtils.hashPasswordVersion4(self.plaintext_password, salt: new_salt_for_key, modulus: new_decodedModulus_for_key) else {
-                                                throw SignUpCreateUserError.CantHashPassword.toError()
+                                                throw SignUpCreateUserError.cantHashPassword.toError()
                                             }
                                             guard let verifier_for_key = try generateVerifier(2048, modulus: new_decodedModulus_for_key, hashedPassword: new_hashed_password_for_key) else {
-                                                throw SignUpCreateUserError.CantGenerateVerifier.toError()
+                                                throw SignUpCreateUserError.cantGenerateVerifier.toError()
                                             }
                                             
                                             let addr_id = setupAddrApi?.addresses.first?.address_id
@@ -207,8 +207,8 @@ public class SignupViewModelImpl : SignupViewModel {
                                             
                                             
                                             //setup swipe function
-                                            try UpdateSwiftLeftAction<ApiResponse>(action: MessageSwipeAction.spam).syncCall()
-                                            try UpdateSwiftRightAction<ApiResponse>(action: MessageSwipeAction.trash).syncCall()
+                                            let _ = try UpdateSwiftLeftAction<ApiResponse>(action: MessageSwipeAction.spam).syncCall()
+                                            let _ = try UpdateSwiftRightAction<ApiResponse>(action: MessageSwipeAction.trash).syncCall()
 
                                             
                                             sharedLabelsDataService.fetchLabels()
@@ -227,7 +227,7 @@ public class SignupViewModelImpl : SignupViewModel {
                                             PMLog.D(ex)
                                             complete(false, true, "Decrypt token failed please try again", nil);
                                         }
-                                    } ~> .Async
+                                    } ~> .async
                             })
                         } else {
                             if response?.error?.code == 7002 {
@@ -242,24 +242,24 @@ public class SignupViewModelImpl : SignupViewModel {
                 }
                 
 
-            } ~> .Async
+            } ~> .async
             
         } else {
             complete(false, false, "Key invalid please go back try again", nil);
         }
     }
     
-    override func sendVerifyCode(type: VerifyCodeType, complete: SendVerificationCodeBlock!) {
+    override func sendVerifyCode(_ type: VerifyCodeType, complete: SendVerificationCodeBlock!) {
         let api = VerificationCodeRequest(userName: self.userName, destination: destination, type: type)
         api.call { (task, response, hasError) -> Void in
             if !hasError {
-                self.lastSendTime = NSDate()
+                self.lastSendTime = Date()
             }
             complete(!hasError, response?.error)
         }
     }
     
-    override func setRecovery(receiveNews: Bool, email: String, displayName : String) {
+    override func setRecovery(_ receiveNews: Bool, email: String, displayName : String) {
         self.recoverEmail = email
         self.news = receiveNews
         self.displayName = displayName
@@ -284,44 +284,44 @@ public class SignupViewModelImpl : SignupViewModel {
         }
     }
     
-    override func fetchDirect(res : (directs:[String]) -> Void) {
+    override func fetchDirect(_ res : @escaping (_ directs:[String]) -> Void) {
         if direct.count <= 0 {
             let api = DirectRequest<DirectResponse>()
             api.call { (task, response, hasError) -> Void in
                 if hasError {
-                    res(directs: [])
+                    res([])
                 } else {
                     self.direct = response?.signupFunctions ?? []
-                    res(directs: self.direct)
+                    res(self.direct)
                 }
             }
         } else {
-            res(directs: self.direct)
+            res(self.direct)
         }
     }
     
-    override func setCodeEmail(email: String) {
+    override func setCodeEmail(_ email: String) {
         self.destination = email
         self.recoverEmail = email
         self.news = true
     }
     
-    override func setCodePhone(phone: String) {
+    override func setCodePhone(_ phone: String) {
         self.destination = phone
     }
     
-    override func setSinglePassword(password: String) {
+    override func setSinglePassword(_ password: String) {
         self.plaintext_password = password
     }
     
-    override func setAgreePolicy(isAgree: Bool) {
+    override func setAgreePolicy(_ isAgree: Bool) {
         self.agreePolicy = isAgree;
     }
     
-    private var count : Int = 10;
+    fileprivate var count : Int = 10;
     override func getTimerSet() -> Int {
         if let lastTime = lastSendTime {
-            let time = NSDate().timeIntervalSinceDate(lastTime)
+            let time = Date().timeIntervalSince(lastTime)
             let newCount = 120 - Int(time);
             if newCount <= 0 {
                 lastSendTime = nil

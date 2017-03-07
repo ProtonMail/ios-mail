@@ -10,38 +10,36 @@ import Foundation
 
 
 // MARK : Get messages part
-public class GetLabelsRequest<T : ApiResponse> : ApiRequest<T> {
+final class GetLabelsRequest<T : ApiResponse> : ApiRequest<T> {
     
     override init() {
     }
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .GET
+        return .get
     }
     
-    override public func getRequestPath() -> String {
+    override open func getRequestPath() -> String {
         return LabelAPI.Path + AppConstants.getDebugOption
     }
     
-    override public func getVersion() -> Int {
+    override open func getVersion() -> Int {
         return LabelAPI.V_LabelFetchRequest
     }
 }
 
-public class GetLabelsResponse : ApiResponse {
-    var labels : [Dictionary<String,AnyObject>]?
-    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
-        
+final class GetLabelsResponse : ApiResponse {
+    var labels : [Dictionary<String, Any>]?
+    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
         PMLog.D(response.JSONStringify(true))
-        self.labels =  response["Labels"] as? [Dictionary<String,AnyObject>]
-        
+        self.labels =  response["Labels"]  as? [Dictionary<String, Any>]
         return true
     }
 }
 
 
 // MARK : apply label to message
-public class ApplyLabelToMessageRequest<T : ApiResponse> : ApiRequest<T> {
+final class ApplyLabelToMessageRequest<T : ApiResponse> : ApiRequest<T> {
     var labelID: String!
     var messages:[String]!
     
@@ -50,29 +48,29 @@ public class ApplyLabelToMessageRequest<T : ApiResponse> : ApiRequest<T> {
         self.messages = messages
     }
     
-    override func toDictionary() -> Dictionary<String, AnyObject>? {
-        var out : [String : AnyObject] = [String : AnyObject]()
-        out["MessageIDs"] = messages;
-        PMLog.D(self.JSONStringify(out, prettyPrinted: true))
+    override func toDictionary() -> Dictionary<String, Any>? {
+        var out : [String : Any] = [String : Any]()
+        out["MessageIDs"] = messages
+        //PMLog.D(self.JSONStringify(out as AnyObject, prettyPrinted: true))
         return out
     }
     
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .PUT
+        return .put
     }
     
-    override public func getRequestPath() -> String {
+    override open func getRequestPath() -> String {
         return LabelAPI.Path + "/apply/" + self.labelID + AppConstants.getDebugOption
     }
     
-    override public func getVersion() -> Int {
+    override open func getVersion() -> Int {
         return LabelAPI.V_ApplyLabelToMessageRequest
     }
 }
 
 // MARK : remove label from message
-public class RemoveLabelFromMessageRequest<T : ApiResponse> : ApiRequest<T> {
+final class RemoveLabelFromMessageRequest<T : ApiResponse> : ApiRequest<T> {
     
     var labelID: String!
     var messages:[String]!
@@ -82,31 +80,30 @@ public class RemoveLabelFromMessageRequest<T : ApiResponse> : ApiRequest<T> {
         self.messages = messages
     }
     
-    override func toDictionary() -> Dictionary<String, AnyObject>? {
-        var out : [String : AnyObject] = [String : AnyObject]()
-        out["MessageIDs"] = messages;
-        
-        PMLog.D(self.JSONStringify(out, prettyPrinted: true))
+    override func toDictionary() -> Dictionary<String, Any>? {
+        var out : [String : Any] = [String : Any]()
+        out["MessageIDs"] = messages
+        //PMLog.D(self.JSONStringify(out, prettyPrinted: true))
         return out
     }
     
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .PUT
+        return .put
     }
     
-    override public func getRequestPath() -> String {
+    override open func getRequestPath() -> String {
         return LabelAPI.Path + "/remove/" + self.labelID + AppConstants.getDebugOption
     }
     
-    override public func getVersion() -> Int {
+    override open func getVersion() -> Int {
         return LabelAPI.V_RemoveLabelFromMessageRequest
     }
 }
 
 
 // MARK : create label
-public class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
+final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
     
     var labelName: String!
     var color:String!
@@ -118,9 +115,9 @@ public class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
         self.exclusive = exclusive
     }
     
-    override func toDictionary() -> Dictionary<String, AnyObject>? {
+    override func toDictionary() -> Dictionary<String, Any>? {
         
-        let out : [String : AnyObject] = [
+        let out : [String : Any] = [
             "Name": self.labelName,
             "Color": self.color,
             "Display": 0,
@@ -131,26 +128,26 @@ public class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .POST
+        return .post
     }
     
-    override public func getRequestPath() -> String {
+    override open func getRequestPath() -> String {
         return LabelAPI.Path + AppConstants.getDebugOption
     }
     
-    override public func getVersion() -> Int {
+    override open func getVersion() -> Int {
         return LabelAPI.V_CreateLabelRequest
     }
 }
 
-public class CreateLabelRequestResponse : ApiResponse {
-    var label:Dictionary<String,AnyObject>?
+final class CreateLabelRequestResponse : ApiResponse {
+    var label:Dictionary<String, Any>?
     
-    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
+    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
         
         PMLog.D(response.JSONStringify(true))
         
-        self.label = response["Label"] as? Dictionary<String,AnyObject>
+        self.label = response["Label"] as? Dictionary<String, Any>
         
         return true
     }
@@ -158,7 +155,7 @@ public class CreateLabelRequestResponse : ApiResponse {
 
 
 // MARK : create label
-public class DeleteLabelRequest<T : ApiResponse> : ApiRequest<T> {
+final class DeleteLabelRequest<T : ApiResponse> : ApiRequest<T> {
     
     var labelID: String!
     
@@ -167,14 +164,14 @@ public class DeleteLabelRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .DELETE
+        return .delete
     }
     
-    override public func getRequestPath() -> String {
+    override open func getRequestPath() -> String {
         return LabelAPI.Path + "/\(labelID)" + AppConstants.getDebugOption
     }
     
-    override public func getVersion() -> Int {
+    override open func getVersion() -> Int {
         return LabelAPI.V_DeleteLabelRequest
     }
 }

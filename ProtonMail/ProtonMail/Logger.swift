@@ -11,14 +11,14 @@ import Foundation
 
 class PMLog {
     
-    static func D(message: String, file: String = #function, function: String = #file, line: Int = #line, column: Int = #column)
+    static func D(_ message: String, file: String = #function, function: String = #file, line: Int = #line, column: Int = #column)
     {
         #if DEBUG
             print("\(file) : \(function) : \(line) : \(column) - \(message)")
         #endif
     }
     
-    static func D(message: AnyObject, file: String = #function, function: String = #file, line: Int = #line, column: Int = #column )
+    static func D(_ message: AnyObject, file: String = #function, function: String = #file, line: Int = #line, column: Int = #column )
     {
         #if DEBUG
             print("\(file) : \(function) : \(line) : \(column) - \(message)")

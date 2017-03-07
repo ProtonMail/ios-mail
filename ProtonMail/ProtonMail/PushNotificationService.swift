@@ -21,52 +21,52 @@ let sharedPushNotificationService = PushNotificationService()
 
 class PushNotificationService {
     
-    private var launchOptions: [NSObject: AnyObject]? = nil
+    fileprivate var launchOptions: [AnyHashable: Any]? = nil
     
     init() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushNotificationService.didSignInNotification(_:)), name: NotificationDefined.didSignIn, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(PushNotificationService.didSignOutNotification(_:)), name: NotificationDefined.didSignOut, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(PushNotificationService.didSignInNotification(_:)), name: NSNotification.Name(rawValue: NotificationDefined.didSignIn), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(PushNotificationService.didSignOutNotification(_:)), name: NSNotification.Name(rawValue: NotificationDefined.didSignOut), object: nil)
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - registration methods
     
     func registerUserNotificationSettings() {
-        let types: UIUserNotificationType = [.Badge , .Sound , .Alert]
-        let settings = UIUserNotificationSettings(forTypes: types, categories: nil)
-        UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+        let types: UIUserNotificationType = [.badge , .sound , .alert]
+        let settings = UIUserNotificationSettings(types: types, categories: nil)
+        UIApplication.shared.registerUserNotificationSettings(settings)
     }
     
     func registerForRemoteNotifications() {
         if sharedUserDataService.isSignedIn {
-           UIApplication.sharedApplication().registerForRemoteNotifications()
+           UIApplication.shared.registerForRemoteNotifications()
         }
     }
     
     func unregisterForRemoteNotifications() {
-        UIApplication.sharedApplication().unregisterForRemoteNotifications()
+        UIApplication.shared.unregisterForRemoteNotifications()
         sharedAPIService.deviceUnregister()
     }
     
     
     // MARK: - callback methods
     
-    func didFailToRegisterForRemoteNotificationsWithError(error: NSError) {
+    func didFailToRegisterForRemoteNotificationsWithError(_ error: NSError) {
         PMLog.D(" \(error)")
     }
     
-    func setLaunchOptions (launchOptions: [NSObject: AnyObject]?) {
+    func setLaunchOptions (_ launchOptions: [AnyHashable: Any]?) {
         if let launchoption = launchOptions {
-            if let option = launchoption["UIApplicationLaunchOptionsRemoteNotificationKey"] as? [NSObject: AnyObject] {
+            if let option = launchoption["UIApplicationLaunchOptionsRemoteNotificationKey"] as? [AnyHashable: Any] {
                 self.launchOptions = option;
             }
         }
     }
     
-    func setNotificationOptions (userInfo: [NSObject : AnyObject]?) {
+    func setNotificationOptions (_ userInfo: [AnyHashable: Any]?) {
         self.launchOptions = userInfo;
     }
     
@@ -78,17 +78,17 @@ class PushNotificationService {
         }
     }
     
-    func didReceiveRemoteNotification(userInfo: [NSObject : AnyObject], forceProcess : Bool = false, fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+    func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any], forceProcess : Bool = false, fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         if sharedUserDataService.isSignedIn && sharedUserDataService.isMailboxPWDOk {
-            let application = UIApplication.sharedApplication()
+            let application = UIApplication.shared
             if let messageid = messageIDForUserInfo(userInfo) {
                 // if the app is in the background, then switch to the inbox and load the message detail
-                if application.applicationState == UIApplicationState.Inactive || application.applicationState == UIApplicationState.Background || forceProcess {
+                if application.applicationState == UIApplicationState.inactive || application.applicationState == UIApplicationState.background || forceProcess {
                     if let revealViewController = application.keyWindow?.rootViewController as? SWRevealViewController {
                         //revealViewController
                         sharedMessageDataService.fetchNotificationMessageDetail(messageid, completion: { (task, response, message, error) -> Void in
                             if error != nil {
-                                completionHandler(.Failed)
+                                completionHandler(.failed)
                             } else {
                                 if let front = revealViewController.frontViewController as? UINavigationController {
                                     if let mailboxViewController: MailboxViewController = front.viewControllers.first as? MailboxViewController {
@@ -97,7 +97,7 @@ class PushNotificationService {
                                     } else {
                                     }
                                 }
-                                completionHandler(.NewData)
+                                completionHandler(.newData)
                             }
                         });
                     }
@@ -117,7 +117,7 @@ class PushNotificationService {
         //        })
     }
     
-    func didRegisterForRemoteNotificationsWithDeviceToken(deviceToken: NSData) {
+    func didRegisterForRemoteNotificationsWithDeviceToken(_ deviceToken: Data) {
         sharedAPIService.cleanBadKey(deviceToken)
         sharedAPIService.deviceRegisterWithToken(deviceToken, completion: { (_, _, error) -> Void in
             if let error = error {
@@ -126,26 +126,26 @@ class PushNotificationService {
         })
     }
     
-    func didRegisterUserNotificationSettings(notificationSettings: UIUserNotificationSettings) {
+    func didRegisterUserNotificationSettings(_ notificationSettings: UIUserNotificationSettings) {
         
     }
     
     
     // MARK: - Notifications
     
-    @objc func didSignInNotification(notification: NSNotification) {
+    @objc func didSignInNotification(_ notification: Notification) {
         registerUserNotificationSettings()
         registerForRemoteNotifications()
     }
     
-    @objc func didSignOutNotification(notification: NSNotification) {
+    @objc func didSignOutNotification(_ notification: Notification) {
         unregisterForRemoteNotifications()
     }
     
     
     // MARK: - Private methods
     
-    private func messageIDForUserInfo(userInfo: [NSObject : AnyObject]) -> String? {
+    fileprivate func messageIDForUserInfo(_ userInfo: [AnyHashable: Any]) -> String? {
         let messageArray = userInfo["message_id"] as? NSArray
         return messageArray?.firstObject as? String
     }

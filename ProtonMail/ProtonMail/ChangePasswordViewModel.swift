@@ -19,7 +19,7 @@ protocol ChangePWDViewModel {
     func getLabelTwo() -> String
     func getLabelThree() -> String
     func needAsk2FA() -> Bool
-    func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete:ChangePasswordComplete)
+    func setNewPassword(_ current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete:@escaping ChangePasswordComplete)
 }
 
 class ChangeLoginPWDViewModel : ChangePWDViewModel{
@@ -49,19 +49,19 @@ class ChangeLoginPWDViewModel : ChangePWDViewModel{
         return sharedUserDataService.twoFactorStatus == 1
     }
     
-    func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: ChangePasswordComplete) {
+    func setNewPassword(_ current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: @escaping ChangePasswordComplete) {
         let curr_pwd = current //.trim();
         let newpwd = new_pwd //.trim();
         let confirmpwd = confirm_new_pwd //.trim();
         
         if curr_pwd != sharedUserDataService.password {
-            complete(false, UpdatePasswordError.CurrentPasswordWrong.toError())
+            complete(false, UpdatePasswordError.currentPasswordWrong.toError())
         }
         else if newpwd == "" || confirmpwd == "" {
-            complete(false, UpdatePasswordError.PasswordEmpty.toError())
+            complete(false, UpdatePasswordError.passwordEmpty.toError())
         }
         else if newpwd != confirmpwd {
-            complete(false, UpdatePasswordError.NewNotMatch.toError());
+            complete(false, UpdatePasswordError.newNotMatch.toError());
         }
         else if curr_pwd == newpwd {
             complete(true, nil)
@@ -102,7 +102,7 @@ class ChangeMailboxPWDViewModel : ChangePWDViewModel{
         return sharedUserDataService.twoFactorStatus == 1
     }
     
-    func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: ChangePasswordComplete) {
+    func setNewPassword(_ current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: @escaping ChangePasswordComplete) {
         //passwords support empty spaces like " 1 1 "
         let curr_pwd = current
         let newpwd = new_pwd
@@ -110,10 +110,10 @@ class ChangeMailboxPWDViewModel : ChangePWDViewModel{
         
 
         if newpwd == "" || confirmpwd == "" {
-            complete(false, UpdatePasswordError.PasswordEmpty.toError())
+            complete(false, UpdatePasswordError.passwordEmpty.toError())
         }
         else if newpwd != confirmpwd {
-            complete(false, UpdatePasswordError.NewNotMatch.toError())
+            complete(false, UpdatePasswordError.newNotMatch.toError())
         }
 //        else if curr_pwd == newpwd {
 //            complete(true, nil)
@@ -155,7 +155,7 @@ class ChangeSinglePasswordViewModel : ChangePWDViewModel{
         return sharedUserDataService.twoFactorStatus == 1
     }
     
-    func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: ChangePasswordComplete) {
+    func setNewPassword(_ current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: @escaping ChangePasswordComplete) {
         //passwords support empty spaces like " 1 1 "
         let curr_pwd = current
         let newpwd = new_pwd
@@ -163,10 +163,10 @@ class ChangeSinglePasswordViewModel : ChangePWDViewModel{
         
         
         if newpwd == "" || confirmpwd == "" {
-            complete(false, UpdatePasswordError.PasswordEmpty.toError())
+            complete(false, UpdatePasswordError.passwordEmpty.toError())
         }
         else if newpwd != confirmpwd {
-            complete(false, UpdatePasswordError.NewNotMatch.toError())
+            complete(false, UpdatePasswordError.newNotMatch.toError())
         }
             //        else if curr_pwd == newpwd {
             //            complete(true, nil)
@@ -207,7 +207,7 @@ class ChangePWDViewModelTest : ChangePWDViewModel{
         return false
     }
     
-    func setNewPassword(current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: (Bool, NSError?) -> Void) {
+    func setNewPassword(_ current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete:@escaping (Bool, NSError?) -> Void) {
         //add random test case and random
         //remove space.
         let curr_pwd = current//.trim();
@@ -215,13 +215,13 @@ class ChangePWDViewModelTest : ChangePWDViewModel{
         let confirmpwd = confirm_new_pwd//.trim();
         
         if curr_pwd != sharedUserDataService.mailboxPassword || !sharedUserDataService.isMailboxPasswordValid(curr_pwd, privateKey: sharedUserDataService.userInfo?.privateKey ?? "") {
-            complete(false, UpdatePasswordError.CurrentPasswordWrong.toError())
+            complete(false, UpdatePasswordError.currentPasswordWrong.toError())
         }
         else if newpwd == "" || confirmpwd == "" {
-            complete(false, UpdatePasswordError.PasswordEmpty.toError())
+            complete(false, UpdatePasswordError.passwordEmpty.toError())
         }
         else if newpwd != confirmpwd {
-            complete(false, UpdatePasswordError.NewNotMatch.toError())
+            complete(false, UpdatePasswordError.newNotMatch.toError())
         }
         else if curr_pwd == newpwd {
             complete(true, nil)

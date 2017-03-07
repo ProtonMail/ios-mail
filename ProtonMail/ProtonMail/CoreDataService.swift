@@ -27,12 +27,12 @@ class CoreDataService {
         static let noManagedObjectContext = 10000
     }
     
-    private lazy var managedObjectModel: NSManagedObjectModel = {
-        let modelURL = NSBundle.mainBundle().URLForResource("ProtonMail", withExtension: "momd")!
-        return NSManagedObjectModel(contentsOfURL: modelURL)!
+    fileprivate lazy var managedObjectModel: NSManagedObjectModel = {
+        let modelURL = Bundle.main.url(forResource: "ProtonMail", withExtension: "momd")!
+        return NSManagedObjectModel(contentsOf: modelURL)!
         }()
     
-    private lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator? = {
+    fileprivate lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator? = {
         return self.newPersistentStoreCoordinator(self.managedObjectModel)
     }()
     
@@ -43,7 +43,7 @@ class CoreDataService {
             return nil
         }
         
-        let managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator
         return managedObjectContext
         }()
@@ -51,37 +51,37 @@ class CoreDataService {
     
     // MARK: - Public methods
     
-    func managedObjectIDForURIRepresentation(urlString: String) -> NSManagedObjectID? {
-        if let url = NSURL(string: urlString) {
-            return persistentStoreCoordinator?.managedObjectIDForURIRepresentation(url)
+    func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID? {
+        if let url = URL(string: urlString) {
+            return persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url)
         }
         return nil
     }
     
     func newMainManagedObjectContext() -> NSManagedObjectContext {
-        let managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-        managedObjectContext.parentContext = mainManagedObjectContext
+        let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        managedObjectContext.parent = mainManagedObjectContext
         return managedObjectContext
     }
     
     // This context will not automatically merge upstream context saves
     func newManagedObjectContext() -> NSManagedObjectContext {
-        let managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-        managedObjectContext.parentContext = mainManagedObjectContext
+        let managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        managedObjectContext.parent = mainManagedObjectContext
         return managedObjectContext
     }
     
-    func newPersistentStoreCoordinator(managedObjectModel: NSManagedObjectModel) -> NSPersistentStoreCoordinator? {
+    func newPersistentStoreCoordinator(_ managedObjectModel: NSManagedObjectModel) -> NSPersistentStoreCoordinator? {
         var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
-        let url = NSFileManager.defaultManager().applicationSupportDirectoryURL.URLByAppendingPathComponent("ProtonMail.sqlite")
+        var url = FileManager.default.applicationSupportDirectoryURL.appendingPathComponent("ProtonMail.sqlite")
         do {
-            try coordinator?.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
-            url!.excludeFromBackup()
+            try coordinator?.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil)
+            url.excludeFromBackup()
             //TODO:: need to handle empty instead of !
         } catch let ex as NSError {
             if (ex.domain == "NSCocoaErrorDomain" && ex.code == 134100) {
                 do {
-                    try NSFileManager.defaultManager().removeItemAtURL(url!)
+                    try FileManager.default.removeItem(at: url)
                     coordinator = newPersistentStoreCoordinator(managedObjectModel)
                 } catch let error as NSError{
                     coordinator = nil
@@ -95,22 +95,22 @@ class CoreDataService {
         return coordinator
     }
     
-    func popError (error : NSError) {
+    func popError (_ error : NSError) {
         
         // Report any error we got.
-        var dict = [NSObject : AnyObject]()
+        var dict = [AnyHashable: Any]()
         dict[NSLocalizedDescriptionKey] = NSLocalizedString("Failed to initialize the application's saved data")
         dict[NSLocalizedFailureReasonErrorKey] = NSLocalizedString("There was an error creating or loading the application's saved data.")
         dict[NSUnderlyingErrorKey] = error
         //TODO:: need monitor
-        let alertError = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict as [NSObject : AnyObject])
+        let alertError = NSError(domain: CoreDataServiceErrorDomain, code: 9999, userInfo: dict as [AnyHashable: Any])
         PMLog.D("Unresolved error \(error), \(error.userInfo)")
         
         let alertController = alertError.alertController()
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Close"), style: .Default, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Close"), style: .default, handler: { (action) -> Void in
             abort()
         }))
-        UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
+        UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
         
     }
 }

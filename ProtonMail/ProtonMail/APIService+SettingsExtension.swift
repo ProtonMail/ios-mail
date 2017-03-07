@@ -16,19 +16,20 @@
 
 import Foundation
 
-/// Settings extension
+//Settings extension
 extension APIService {
     
-    private struct SettingPath {
+    fileprivate struct SettingPath {
         static let base = AppConstants.API_PATH + "/settings"
     }
     
-    func settingUpdateSignature(signature: String, completion: CompletionBlock) {
+    //TODO::Swift
+    func settingUpdateSignature(_ signature: String, completion: @escaping CompletionBlock) {
         let path = SettingPath.base + "/signature"
         let parameters = ["Signature" : signature]
         
         setApiVesion(1, appVersion: 1)
-        request(method: .PUT, path: path, parameters: parameters, completion: completion)
+        request(method: .put, path: path, parameters: parameters, completion: completion)
     }
 }
 

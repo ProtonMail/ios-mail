@@ -16,7 +16,7 @@ class ComposeErrorView: PMView {
         return "ComposeErrorView"
     }
     
-    func setError(msg : String, withShake : Bool) {
+    func setError(_ msg : String, withShake : Bool) {
         errorLabel.text = msg
         self.layoutIfNeeded()
         if withShake {

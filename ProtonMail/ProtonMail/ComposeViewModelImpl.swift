@@ -9,7 +9,7 @@
 import Foundation
 
 
-public class ComposeViewModelImpl : ComposeViewModel {
+open class ComposeViewModelImpl : ComposeViewModel {
     
     init(msg: Message?, action : ComposeMessageAction!) {
         super.init()
@@ -23,15 +23,15 @@ public class ComposeViewModelImpl : ComposeViewModel {
             if msg?.managedObjectContext == nil {
                 self.message = nil
             } else {
-                self.message = msg?.copyMessage(action == ComposeMessageAction.Forward)
-                self.message?.action = action.rawValue
-                if action == ComposeMessageAction.Reply || action == ComposeMessageAction.ReplyAll {
+                self.message = msg?.copyMessage(action == ComposeMessageAction.forward)
+                self.message?.action = action.rawValue as NSNumber?
+                if action == ComposeMessageAction.reply || action == ComposeMessageAction.replyAll {
                     if let title = self.message?.title {
                         if !title.hasRe() {
                             self.message?.title = "Re: \(title)"
                         }
                     }
-                } else if action == ComposeMessageAction.Forward {
+                } else if action == ComposeMessageAction.forward {
                     if let title = self.message?.title {
                         if !title.hasFwd() {
                             self.message?.title = "Fwd: \(title)"
@@ -52,12 +52,12 @@ public class ComposeViewModelImpl : ComposeViewModel {
         PMLog.D("ComposeViewModelImpl deinit")
     }
     
-    override func uploadAtt(att: Attachment!) {
+    override func uploadAtt(_ att: Attachment!) {
         sharedMessageDataService.uploadAttachment(att)
         self.updateDraft()
     }
     
-    override func deleteAtt(att: Attachment!) {
+    override func deleteAtt(_ att: Attachment!) {
         sharedMessageDataService.deleteAttachment(message?.messageID ?? "", att: att)
         self.updateDraft()
     }
@@ -66,7 +66,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
         return self.message?.attachments.allObjects as? [Attachment]
     }
     
-    override func updateAddressID(address_id: String) {
+    override func updateAddressID(_ address_id: String) {
         self.message?.addressID = address_id
         self.updateDraft()
     }
@@ -84,7 +84,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
         return self.message?.defaultAddress
     }
     
-    override func getCurrrentSignature(addr_id : String) -> String? {
+    override func getCurrrentSignature(_ addr_id : String) -> String? {
         if let addr = sharedUserDataService.userAddresses.indexOfAddress(addr_id) {
             return addr.signature
         }
@@ -95,14 +95,14 @@ public class ComposeViewModelImpl : ComposeViewModel {
         return true;
     }
     
-    private func updateContacts(oldLocation : MessageLocation?)
+    fileprivate func updateContacts(_ oldLocation : MessageLocation?)
     {
         if message != nil {
             switch messageAction!
             {
-            case .NewDraft, .Forward:
+            case .newDraft, .forward:
                 break;
-            case .OpenDraft:
+            case .openDraft:
                 let toContacts = self.toContacts(self.message!.recipientList)
                 for cont in toContacts {
                     if !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
@@ -122,7 +122,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
                         self.bccSelectedContacts.append(cont)
                     }
                 }
-            case .Reply:
+            case .reply:
                 if oldLocation == .outbox {
                     let toContacts = self.toContacts(self.message!.recipientList)
                     for cont in toContacts {
@@ -142,7 +142,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
                     
                     self.toSelectedContacts.append(sender)
                 }
-            case .ReplyAll:
+            case .replyAll:
                 if oldLocation == .outbox {
                     let toContacts = self.toContacts(self.message!.recipientList)
                     for cont in toContacts {
@@ -189,7 +189,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
         }
     }
     
-    public override func sendMessage() {
+    open override func sendMessage() {
         
         self.updateDraft()
         sharedMessageDataService.send(self.message?.messageID)  { task, response, error in
@@ -198,10 +198,10 @@ public class ComposeViewModelImpl : ComposeViewModel {
         
     }
     
-    override func collectDraft(title: String, body: String, expir:NSTimeInterval, pwd:String, pwdHit:String) {
-        PMLog.D(self.toSelectedContacts)
-        PMLog.D(self.ccSelectedContacts)
-        PMLog.D(self.bccSelectedContacts)
+    override func collectDraft(_ title: String, body: String, expir:TimeInterval, pwd:String, pwdHit:String) {
+//        PMLog.D(self.toSelectedContacts)
+//        PMLog.D(self.ccSelectedContacts)
+//        PMLog.D(self.bccSelectedContacts)
         
         //self.setBody(body)
         self.setSubject(title)
@@ -223,7 +223,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
             self.message?.ccList = toJsonString(self.ccSelectedContacts)
             self.message?.bccList = toJsonString(self.bccSelectedContacts)
             self.message?.title = self.subject
-            self.message?.time = NSDate()
+            self.message?.time = Date()
             self.message?.password = pwd
             self.message?.isRead = true
             self.message?.passwordHint = pwdHit
@@ -239,18 +239,18 @@ public class ComposeViewModelImpl : ComposeViewModel {
         
     }
     
-    public override func updateDraft() {
+    open override func updateDraft() {
         sharedMessageDataService.saveDraft(self.message);
     }
     
-    override public func deleteDraft() {
+    override open func deleteDraft() {
         if let tmpLocation = self.message?.location {
             lastUpdatedStore.ReadMailboxMessage(tmpLocation)
         }
         sharedMessageDataService.deleteDraft(self.message);
     }
     
-    public override func markAsRead() {
+    open override func markAsRead() {
         if message != nil {
             message?.isRead = true;
             if let error = message!.managedObjectContext?.saveUpstreamIfNeeded() {
@@ -259,7 +259,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
         }
     }
     
-    override public func getHtmlBody() -> String {
+    override open func getHtmlBody() -> String {
         //sharedUserDataService.signature
         let signature = self.getDefaultAddress()?.signature ?? "\(sharedUserDataService.signature)"
         
@@ -275,7 +275,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
         if let msgAction = messageAction {
             switch msgAction
             {
-            case .OpenDraft:
+            case .openDraft:
                 var body = ""
                 do {
                     body = try message?.decryptBodyIfNeeded() ?? ""
@@ -289,7 +289,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
                 body = body.stringByPurifyHTML()
                 return body
                 
-            case .Reply, .ReplyAll:
+            case .reply, .replyAll:
                 
                 var body = ""
                 do {
@@ -305,17 +305,17 @@ public class ComposeViewModelImpl : ComposeViewModel {
                 
                 let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
                 
-                let sn = message?.managedObjectContext != nil ? message!.senderContactVO.name : "unknow"
+                let sn = (message?.managedObjectContext != nil) ? message!.senderContactVO.name : "unknow"
                 let se = message?.managedObjectContext != nil ? message!.senderContactVO.email : "unknow"
                 
-                var replyHeader = time + ", " + sn + " &lt;<a href=\"mailto:\(se)\" class=\"\">\(se)</a>&gt;"
+                var replyHeader = time + ", " + sn! + " &lt;<a href=\"mailto:\(String(describing: se))\" class=\"\">\(String(describing: se))</a>&gt;"
                 replyHeader = replyHeader.stringByStrippingStyleHTML()
                 replyHeader = replyHeader.stringByStrippingBodyStyle()
                 replyHeader = replyHeader.stringByPurifyHTML()
                 let sp = "<div><br><div><div><br></div>\(replyHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
                 
                 return " \(head) \(htmlString) \(sp) \(body)</blockquote> \(foot)"
-            case .Forward:
+            case .forward:
                 let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
                 var forwardHeader =
                 "---------- Forwarded message ----------<br>From: \( message!.senderContactVO.name) &lt;<a href=\"mailto:\(message!.senderContactVO.email)\" class=\"\">\(message!.senderContactVO.email)</a>&gt;<br>Date: \(time)<br>Subject: \(message!.title)<br>"
@@ -347,7 +347,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
                 sp = sp.stringByPurifyHTML()
                 
                 return "\(head)\(htmlString)\(sp)\(body)\(foot)"
-            case .NewDraft:
+            case .newDraft:
                 if !self.body.isEmpty {
                     let newhtmlString = "\(head) \(self.body) \(htmlString) \(foot)"
                     self.body = ""
@@ -368,7 +368,7 @@ public class ComposeViewModelImpl : ComposeViewModel {
 }
 
 extension ComposeViewModelImpl {
-    func toJsonString(contacts : [ContactVO]) -> String {
+    func toJsonString(_ contacts : [ContactVO]) -> String {
         
         var out : [[String : String]] = [[String : String]]();
         for contact in contacts {
@@ -376,12 +376,12 @@ extension ComposeViewModelImpl {
             out.append(to)
         }
         
-        let bytes : NSData = try! NSJSONSerialization.dataWithJSONObject(out, options: NSJSONWritingOptions())
-        let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
+        let bytes : Data = try! JSONSerialization.data(withJSONObject: out, options: JSONSerialization.WritingOptions())
+        let strJson : String = NSString(data: bytes, encoding: String.Encoding.utf8.rawValue)! as String
         
         return strJson
     }
-    func toContacts(json : String) -> [ContactVO] {
+    func toContacts(_ json : String) -> [ContactVO] {
         
         var out : [ContactVO] = [ContactVO]();
         
@@ -392,7 +392,7 @@ extension ComposeViewModelImpl {
         return out
     }
     
-    func toContact(json : String) -> ContactVO? {
+    func toContact(_ json : String) -> ContactVO? {
         var out : ContactVO? = nil
         let recipients : [String : String] = self.parse(json)
         
@@ -405,13 +405,13 @@ extension ComposeViewModelImpl {
         return out
     }
     
-    func parse (json : String) -> [String:String] {
+    func parse (_ json : String) -> [String:String] {
         if json.isEmpty {
             return ["" : ""];
         }
         do {
-            let data : NSData! = json.dataUsingEncoding(NSUTF8StringEncoding)
-            let decoded = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers) as? [String:String]
+            let data : Data! = json.data(using: String.Encoding.utf8)
+            let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String:String]
             return decoded ?? ["" : ""]
         } catch {
             PMLog.D(" func parseJson() -> error error \(error)")

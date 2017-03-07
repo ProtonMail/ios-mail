@@ -70,7 +70,7 @@ extension NSError {
 
 extension NSError {
     
-    class func apiServiceError(code code: Int, localizedDescription: String, localizedFailureReason: String?, localizedRecoverySuggestion: String? = nil) -> NSError {
+    class func apiServiceError(code: Int, localizedDescription: String, localizedFailureReason: String?, localizedRecoverySuggestion: String? = nil) -> NSError {
         return NSError(
             domain: APIServiceErrorDomain,
             code: code,
@@ -79,14 +79,14 @@ extension NSError {
             localizedRecoverySuggestion: localizedRecoverySuggestion)
     }
     
-    class func badParameter(parameter: AnyObject?) -> NSError {
+    class func badParameter(_ parameter: Any?) -> NSError {
         return apiServiceError(
             code: APIErrorCode.badParameter,
             localizedDescription: NSLocalizedString("Bad parameter"),
-            localizedFailureReason: NSLocalizedString("Bad parameter: \(parameter)"))
+            localizedFailureReason: NSLocalizedString("Bad parameter: \(parameter ?? "unknow")"))
     }
     
-    class func badPath(path: String) -> NSError {
+    class func badPath(_ path: String) -> NSError {
         return apiServiceError(
             code: APIErrorCode.badPath,
             localizedDescription: NSLocalizedString("Bad path"),
@@ -100,9 +100,8 @@ extension NSError {
             localizedFailureReason: NSLocalizedString("Can't not find the value from the response body"))
     }
     
-    class func unableToParseResponse(response: AnyObject?) -> NSError {
+    class func unableToParseResponse(_ response: Any?) -> NSError {
         let noObject = NSLocalizedString("<no object>")
-        
         return apiServiceError(
             code: APIErrorCode.unableToParseResponse,
             localizedDescription: NSLocalizedString("Unable to parse response"),

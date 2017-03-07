@@ -10,17 +10,17 @@ import Foundation
 
 
 
-public class HumanCheckViewModel {
-    public typealias HumanResBlock = (token: String?, error: NSError?) -> Void
-    public typealias HumanCheckBlock = (error: NSError?) -> Void
+open class HumanCheckViewModel {
+    public typealias HumanResBlock = (_ token: String?, _ error: NSError?) -> Void
+    public typealias HumanCheckBlock = (_ error: NSError?) -> Void
     
     public init() { }
 
-    public func getToken(complete: HumanResBlock) {
+    open func getToken(_ complete: @escaping HumanResBlock) {
         fatalError("This method must be overridden")
     }
    
-    public func humanCheck(type: String, token: String, complete: HumanCheckBlock) {
+    open func humanCheck(_ type: String, token: String, complete:@escaping HumanCheckBlock) {
         fatalError("This method must be overridden")
     }
     

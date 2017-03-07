@@ -29,7 +29,7 @@ enum MenuItem: String {
     var hasCount : Bool {
         var has = false
         switch self {
-        case inbox, archive, starred, drafts, sent, trash, spam:
+        case .inbox, .archive, .starred, .drafts, .sent, .trash, .spam:
             has = true
         default:
             has = false
@@ -40,29 +40,29 @@ enum MenuItem: String {
     var image : String {
         var image = "menu_inbox"
         switch self {
-        case bugs:
+        case .bugs:
             image = "menu_bugs"
-        case inbox:
+        case .inbox:
             image = "menu_inbox"
-        case archive:
+        case .archive:
             image = "menu_archive"
-        case starred:
+        case .starred:
             image = "menu_starred"
-        case drafts:
+        case .drafts:
             image = "menu_draft"
-        case sent:
+        case .sent:
             image = "menu_sent"
-        case trash:
+        case .trash:
             image = "menu_trash"
-        case spam:
+        case .spam:
             image = "menu_spam"
-        case contacts:
+        case .contacts:
             image = "menu_contacts"
-        case settings:
+        case .settings:
             image = "menu_settings"
-        case signout:
+        case .signout:
             image = "menu_logout"
-        case feedback:
+        case .feedback:
             image = "menu_feedback"
         case .lockapp:
             image = "menu_lockapp"
@@ -75,29 +75,29 @@ enum MenuItem: String {
     var imageSelected : String {
         var image = "menu_inbox-active"
         switch self {
-        case bugs:
+        case .bugs:
             image = "menu_bugs-active"
-        case inbox:
+        case .inbox:
             image = "menu_inbox-active"
-        case archive:
+        case .archive:
             image = "menu_archive-active"
-        case starred:
+        case .starred:
             image = "menu_starred-active"
-        case drafts:
+        case .drafts:
             image = "menu_draft-active"
-        case sent:
+        case .sent:
             image = "menu_sent-active"
-        case trash:
+        case .trash:
             image = "menu_trash-active"
-        case spam:
+        case .spam:
             image = "menu_spam-active"
-        case contacts:
+        case .contacts:
             image = "menu_contacts-active"
-        case settings:
+        case .settings:
             image = "menu_settings-active"
-        case signout:
+        case .signout:
             image = "menu_logout-active"
-        case feedback:
+        case .feedback:
             image = "menu_feedback-active"
         case .lockapp:
             image = "menu_lockapp"
@@ -110,19 +110,19 @@ enum MenuItem: String {
     
     var menuToLocation : MessageLocation {
         switch self {
-        case inbox:
+        case .inbox:
             return .inbox
-        case starred:
+        case .starred:
             return .starred
-        case archive:
+        case .archive:
             return .archive
-        case drafts:
+        case .drafts:
             return .draft
-        case sent:
+        case .sent:
             return .outbox
-        case trash:
+        case .trash:
             return .trash
-        case spam:
+        case .spam:
             return .spam
         case .allmail:
             return .allmail

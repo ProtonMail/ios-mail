@@ -128,11 +128,9 @@ final class Key : NSObject {
 
 extension UserInfo {
     /// Initializes the UserInfo with the response data
-    convenience init(response: Dictionary<String, AnyObject>) {
-        //        privateKeyResponseKey: "EncPrivateKey",
-        //        publicKeyResponseKey: "PublicKey",
+    convenience init(response: Dictionary<String, Any>) {
         var uKeys: Array<Key> = Array<Key>()
-        if let user_keys = response["Keys"] as? Array<Dictionary<String, AnyObject>> {
+        if let user_keys = response["Keys"] as? Array<Dictionary<String, Any>> {
             for key_res in user_keys {
                 uKeys.append(Key(
                     key_id: key_res["ID"] as? String,
@@ -144,11 +142,11 @@ extension UserInfo {
         }
         
         var addresses: [Address] = Array<Address>()
-        if let address_response = response["Addresses"] as? Array<Dictionary<String, AnyObject>> {
+        if let address_response = response["Addresses"] as? Array<Dictionary<String, Any>> {
             for res in address_response
             {
                 var keys: [Key] = Array<Key>()
-                if let address_keys = res["Keys"] as? Array<Dictionary<String, AnyObject>> {
+                if let address_keys = res["Keys"] as? Array<Dictionary<String, Any>> {
                     for key_res in address_keys {
                         keys.append(Key(
                             key_id: key_res["ID"] as? String,
@@ -177,12 +175,12 @@ extension UserInfo {
         let maxS = response["MaxSpace"] as? NSNumber
         self.init(
             displayName: response["DisplayName"] as? String,
-            maxSpace: maxS?.longLongValue,
+            maxSpace: maxS?.int64Value,
             notificationEmail: response["NotificationEmail"] as? String,
-            privateKey: "", //response[privateKeyResponseKey] as? String,
-            publicKey: "", //response[publicKeyResponseKey] as? String,
+            privateKey: "",
+            publicKey: "",
             signature: response["Signature"] as? String,
-            usedSpace: usedS?.longLongValue,
+            usedSpace: usedS?.int64Value,
             userStatus: response["UserStatus"] as? Int,
             userAddresses: addresses,
             
@@ -207,7 +205,7 @@ extension UserInfo {
 // MARK: - NSCoding
 extension UserInfo: NSCoding {
     
-    private struct CoderKey {
+    fileprivate struct CoderKey {
         static let displayName = "displayName"
         static let maxSpace = "maxSpace"
         static let notificationEmail = "notificationEmail"
@@ -237,63 +235,63 @@ extension UserInfo: NSCoding {
     convenience init(coder aDecoder: NSCoder) {
         self.init(
             displayName: aDecoder.decodeStringForKey(CoderKey.displayName),
-            maxSpace: aDecoder.decodeInt64ForKey(CoderKey.maxSpace),
+            maxSpace: aDecoder.decodeInt64(forKey: CoderKey.maxSpace),
             notificationEmail: aDecoder.decodeStringForKey(CoderKey.notificationEmail),
-            privateKey: "", //aDecoder.decodeStringForKey(CoderKey.privateKey),
-            publicKey: "", //aDecoder.decodeStringForKey(CoderKey.publicKey),
+            privateKey: "",
+            publicKey: "",
             signature: aDecoder.decodeStringForKey(CoderKey.signature),
-            usedSpace: aDecoder.decodeInt64ForKey(CoderKey.usedSpace),
-            userStatus: aDecoder.decodeIntegerForKey(CoderKey.userStatus),
-            userAddresses: aDecoder.decodeObjectForKey(CoderKey.userAddress) as? Array<Address>,
+            usedSpace: aDecoder.decodeInt64(forKey: CoderKey.usedSpace),
+            userStatus: aDecoder.decodeInteger(forKey: CoderKey.userStatus),
+            userAddresses: aDecoder.decodeObject(forKey: CoderKey.userAddress) as? Array<Address>,
             
-            autoSC:aDecoder.decodeIntegerForKey(CoderKey.autoSaveContact),
+            autoSC:aDecoder.decodeInteger(forKey: CoderKey.autoSaveContact),
             language:aDecoder.decodeStringForKey(CoderKey.language),
-            maxUpload:aDecoder.decodeInt64ForKey(CoderKey.maxUpload),
-            notify:aDecoder.decodeIntegerForKey(CoderKey.notify),
-            showImage:aDecoder.decodeIntegerForKey(CoderKey.showImages),
+            maxUpload:aDecoder.decodeInt64(forKey: CoderKey.maxUpload),
+            notify:aDecoder.decodeInteger(forKey: CoderKey.notify),
+            showImage:aDecoder.decodeInteger(forKey: CoderKey.showImages),
             
-            swipeL:aDecoder.decodeIntegerForKey(CoderKey.swipeLeft),
-            swipeR:aDecoder.decodeIntegerForKey(CoderKey.swipeRight),
+            swipeL:aDecoder.decodeInteger(forKey: CoderKey.swipeLeft),
+            swipeR:aDecoder.decodeInteger(forKey: CoderKey.swipeRight),
             
-            role : aDecoder.decodeIntegerForKey(CoderKey.role),
+            role : aDecoder.decodeInteger(forKey: CoderKey.role),
             
-            delinquent : aDecoder.decodeIntegerForKey(CoderKey.delinquent),
+            delinquent : aDecoder.decodeInteger(forKey: CoderKey.delinquent),
             
-            keys: aDecoder.decodeObjectForKey(CoderKey.userKeys) as? Array<Key>
+            keys: aDecoder.decodeObject(forKey: CoderKey.userKeys) as? Array<Key>
         )
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(displayName, forKey: CoderKey.displayName)
-        aCoder.encodeInt64(maxSpace, forKey: CoderKey.maxSpace)
-        aCoder.encodeObject(notificationEmail, forKey: CoderKey.notificationEmail)
-        aCoder.encodeObject(privateKey, forKey: CoderKey.privateKey)
-        aCoder.encodeObject(publicKey, forKey: CoderKey.publicKey)
-        aCoder.encodeObject(signature, forKey: CoderKey.signature)
-        aCoder.encodeInt64(usedSpace, forKey: CoderKey.usedSpace)
-        aCoder.encodeInteger(userStatus, forKey: CoderKey.userStatus)
-        aCoder.encodeObject(userAddresses, forKey: CoderKey.userAddress)
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(displayName, forKey: CoderKey.displayName)
+        aCoder.encode(maxSpace, forKey: CoderKey.maxSpace)
+        aCoder.encode(notificationEmail, forKey: CoderKey.notificationEmail)
+        aCoder.encode(privateKey, forKey: CoderKey.privateKey)
+        aCoder.encode(publicKey, forKey: CoderKey.publicKey)
+        aCoder.encode(signature, forKey: CoderKey.signature)
+        aCoder.encode(usedSpace, forKey: CoderKey.usedSpace)
+        aCoder.encode(userStatus, forKey: CoderKey.userStatus)
+        aCoder.encode(userAddresses, forKey: CoderKey.userAddress)
         
-        aCoder.encodeInteger(autoSaveContact, forKey: CoderKey.autoSaveContact)
-        aCoder.encodeObject(language, forKey: CoderKey.language)
-        aCoder.encodeInt64(maxUpload, forKey: CoderKey.maxUpload)
-        aCoder.encodeInteger(notify, forKey: CoderKey.notify)
-        aCoder.encodeInteger(showImages, forKey: CoderKey.showImages)
+        aCoder.encode(autoSaveContact, forKey: CoderKey.autoSaveContact)
+        aCoder.encode(language, forKey: CoderKey.language)
+        aCoder.encode(maxUpload, forKey: CoderKey.maxUpload)
+        aCoder.encode(notify, forKey: CoderKey.notify)
+        aCoder.encode(showImages, forKey: CoderKey.showImages)
         
-        aCoder.encodeInteger(swipeLeft, forKey: CoderKey.swipeLeft)
-        aCoder.encodeInteger(swipeRight, forKey: CoderKey.swipeRight)
+        aCoder.encode(swipeLeft, forKey: CoderKey.swipeLeft)
+        aCoder.encode(swipeRight, forKey: CoderKey.swipeRight)
         
-        aCoder.encodeInteger(role, forKey: CoderKey.role)
+        aCoder.encode(role, forKey: CoderKey.role)
         
-        aCoder.encodeInteger(delinquent, forKey: CoderKey.delinquent)
+        aCoder.encode(delinquent, forKey: CoderKey.delinquent)
         
-        aCoder.encodeObject(userKeys, forKey: CoderKey.userKeys)
+        aCoder.encode(userKeys, forKey: CoderKey.userKeys)
     }
 }
 
 extension Address: NSCoding {
     
-    private struct CoderKey { //the keys all messed up but it works
+    fileprivate struct CoderKey { //the keys all messed up but it works
         static let displayName = "displayName"
         static let maxSpace = "maxSpace"
         static let notificationEmail = "notificationEmail"
@@ -311,36 +309,36 @@ extension Address: NSCoding {
         self.init(
             addressid: aDecoder.decodeStringForKey(CoderKey.displayName),
             email: aDecoder.decodeStringForKey(CoderKey.maxSpace),
-            send: aDecoder.decodeIntegerForKey(CoderKey.notificationEmail),
-            receive: aDecoder.decodeIntegerForKey(CoderKey.privateKey),
-            mailbox: aDecoder.decodeIntegerForKey(CoderKey.publicKey),
+            send: aDecoder.decodeInteger(forKey: CoderKey.notificationEmail),
+            receive: aDecoder.decodeInteger(forKey: CoderKey.privateKey),
+            mailbox: aDecoder.decodeInteger(forKey: CoderKey.publicKey),
             display_name: aDecoder.decodeStringForKey(CoderKey.signature),
             signature: aDecoder.decodeStringForKey(CoderKey.usedSpace),
-            keys: aDecoder.decodeObjectForKey(CoderKey.userKeys) as?  Array<Key>,
+            keys: aDecoder.decodeObject(forKey: CoderKey.userKeys) as?  Array<Key>,
             
-            status : aDecoder.decodeIntegerForKey(CoderKey.addressStatus),
-            type:aDecoder.decodeIntegerForKey(CoderKey.addressType)
+            status : aDecoder.decodeInteger(forKey: CoderKey.addressStatus),
+            type:aDecoder.decodeInteger(forKey: CoderKey.addressType)
         )
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(address_id, forKey: CoderKey.displayName)
-        aCoder.encodeObject(email, forKey: CoderKey.maxSpace)
-        aCoder.encodeInteger(send, forKey: CoderKey.notificationEmail)
-        aCoder.encodeInteger(receive, forKey: CoderKey.privateKey)
-        aCoder.encodeInteger(mailbox, forKey: CoderKey.publicKey)
-        aCoder.encodeObject(display_name, forKey: CoderKey.signature)
-        aCoder.encodeObject(signature, forKey: CoderKey.usedSpace)
-        aCoder.encodeObject(keys, forKey: CoderKey.userKeys)
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(address_id, forKey: CoderKey.displayName)
+        aCoder.encode(email, forKey: CoderKey.maxSpace)
+        aCoder.encode(send, forKey: CoderKey.notificationEmail)
+        aCoder.encode(receive, forKey: CoderKey.privateKey)
+        aCoder.encode(mailbox, forKey: CoderKey.publicKey)
+        aCoder.encode(display_name, forKey: CoderKey.signature)
+        aCoder.encode(signature, forKey: CoderKey.usedSpace)
+        aCoder.encode(keys, forKey: CoderKey.userKeys)
         
-        aCoder.encodeInteger(status, forKey: CoderKey.addressStatus)
-        aCoder.encodeInteger(type, forKey: CoderKey.addressType)
+        aCoder.encode(status, forKey: CoderKey.addressStatus)
+        aCoder.encode(type, forKey: CoderKey.addressType)
     }
 }
 
 extension Key: NSCoding {
     
-    private struct CoderKey {
+    fileprivate struct CoderKey {
         static let keyID = "keyID"
         static let publicKey = "publicKey"
         static let privateKey = "privateKey"
@@ -356,11 +354,11 @@ extension Key: NSCoding {
             isupdated: false)
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(key_id, forKey: CoderKey.keyID)
-        aCoder.encodeObject(public_key, forKey: CoderKey.publicKey)
-        aCoder.encodeObject(private_key, forKey: CoderKey.privateKey)
-        aCoder.encodeObject(fingerprint, forKey: CoderKey.fingerprintKey)
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(key_id, forKey: CoderKey.keyID)
+        aCoder.encode(public_key, forKey: CoderKey.publicKey)
+        aCoder.encode(private_key, forKey: CoderKey.privateKey)
+        aCoder.encode(fingerprint, forKey: CoderKey.fingerprintKey)
     }
 }
 
@@ -423,7 +421,7 @@ extension Array where Element : Address {
         return nil;
     }
     
-    func indexOfAddress(addressid : String) -> Address? {
+    func indexOfAddress(_ addressid : String) -> Address? {
         for addr in self {
             if addr.status == 1 && addr.receive == 1 && addr.address_id == addressid {
                 return addr;

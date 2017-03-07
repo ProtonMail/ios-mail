@@ -13,7 +13,7 @@
 import Foundation
 import UIKit
 
-public class ContactsTableViewCell: MCSwipeTableViewCell {
+open class ContactsTableViewCell: MCSwipeTableViewCell {
 
     @IBOutlet var contactNameLabel: UILabel!
     @IBOutlet var contactEmailLabel: UILabel!

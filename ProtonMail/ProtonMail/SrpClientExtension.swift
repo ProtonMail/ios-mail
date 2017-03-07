@@ -9,45 +9,28 @@
 import Foundation
 
 
-
-func generateSrpProofs (bit : Int32, modulus: NSData, serverEphemeral: NSData, hashedPassword :NSData) throws -> PMNSrpProofs? {
-    
-    var error : NSError?
+func generateSrpProofs (_ bit : Int32, modulus: Data, serverEphemeral: Data, hashedPassword :Data) throws -> PMNSrpProofs? {
     var dec_out_att : PMNSrpProofs?
-    SwiftTryCatch.tryBlock({ () -> Void in
+    try ObjC.catchException {
         dec_out_att = PMNSrpClient.generateProofs(bit, modulusRepr: modulus, serverEphemeralRepr: serverEphemeral, hashedPasswordRepr: hashedPassword)
-        }, catchBlock: { (exc) -> Void in
-            error = exc.toError()
-    }) { () -> Void in
     }
-    if error == nil {
-        return dec_out_att
-    } else {
-        throw error!
-    }
+    
+    return dec_out_att
 }
 
-func generateVerifier (bit : Int32, modulus: NSData, hashedPassword :NSData) throws -> NSData? {
-    
-    var error : NSError?
-    var data_out : NSData?
-    SwiftTryCatch.tryBlock({ () -> Void in
+func generateVerifier (_ bit : Int32, modulus: Data, hashedPassword :Data) throws -> Data? {
+    var data_out : Data?
+    try ObjC.catchException {
         data_out = PMNSrpClient.generateVerifier(bit, modulusRepr: modulus, hashedPasswordRepr: hashedPassword)
-        }, catchBlock: { (exc) -> Void in
-            error = exc.toError()
-    }) { () -> Void in
     }
-    if error == nil {
-        return data_out
-    } else {
-        throw error!
-    }
+    
+    return data_out
 }
 
 
 extension PMNSrpProofs {
     func isValid() -> Bool {
-        guard self.clientEphemeral.length > 0 && self.clientProof.length > 0 && self.expectedServerProof.length > 0  else {
+        guard self.clientEphemeral.count > 0 && self.clientProof.count > 0 && self.expectedServerProof.count > 0  else {
             return false
         }
         return true

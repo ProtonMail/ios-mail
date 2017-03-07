@@ -82,13 +82,13 @@ public enum MessageSwipeAction : Int, CustomStringConvertible {
     public var description : String {
         get {
             switch(self) {
-            case trash:
+            case .trash:
                 return NSLocalizedString("Trash")
-            case spam:
+            case .spam:
                 return NSLocalizedString("Spam")
-            case star:
+            case .star:
                 return NSLocalizedString("Star")
-            case archive:
+            case .archive:
                 return NSLocalizedString("Archive")
             }
         }
@@ -97,7 +97,7 @@ public enum MessageSwipeAction : Int, CustomStringConvertible {
     var actionColor: UIColor {
         switch(self) {
         case .trash:
-            return UIColor.redColor()
+            return UIColor.red
         default:
             return UIColor.ProtonMail.MessageActionTintColor
         }

@@ -49,13 +49,13 @@ extension Dictionary { //email name
     
     :returns: String value
     */
-    func JSONStringify(prettyPrinted: Bool = false) -> String {
-        let options : NSJSONWritingOptions = prettyPrinted ? .PrettyPrinted : NSJSONWritingOptions()
-        let anyObject: AnyObject = self as! AnyObject
-        if NSJSONSerialization.isValidJSONObject(anyObject) {
+    func JSONStringify(_ prettyPrinted: Bool = false) -> String {
+        let options : JSONSerialization.WritingOptions = prettyPrinted ? .prettyPrinted : JSONSerialization.WritingOptions()
+        let anyObject: AnyObject = self as AnyObject
+        if JSONSerialization.isValidJSONObject(anyObject) {
             do {
-                let data = try NSJSONSerialization.dataWithJSONObject(anyObject, options: options)
-                if let string = NSString(data: data, encoding: NSUTF8StringEncoding) {
+                let data = try JSONSerialization.data(withJSONObject: anyObject, options: options)
+                if let string = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
                     return string as String
                 }
             } catch let ex as NSError {

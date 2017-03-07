@@ -20,37 +20,37 @@ class LabelTableViewCell: UITableViewCell {
     @IBOutlet weak var labelWidth: NSLayoutConstraint!
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
-        self.layoutMargins = UIEdgeInsetsZero;
-        self.separatorInset = UIEdgeInsetsZero
+        self.layoutMargins = UIEdgeInsets.zero;
+        self.separatorInset = UIEdgeInsets.zero
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.labelView.updateTextFont(UIFont.robotoLight(size: 20))
-        selectStatusButton.enabled = false
+        selectStatusButton.isEnabled = false
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
 
-    @IBAction func buttonAction(sender: UIButton) {
+    @IBAction func buttonAction(_ sender: UIButton) {
 
     }
     
     func updateStatusButton () {
         switch self.model.currentStatus {
         case 0:
-            selectStatusButton.setImage(UIImage(named:"mail_check"), forState: UIControlState.Normal)
+            selectStatusButton.setImage(UIImage(named:"mail_check"), for: UIControlState())
             break
         case 1:
-            selectStatusButton.setImage(UIImage(named:"mail_check-neutral"), forState: UIControlState.Normal)
+            selectStatusButton.setImage(UIImage(named:"mail_check-neutral"), for: UIControlState())
             break;
         case 2:
-            selectStatusButton.setImage(UIImage(named:"mail_check-active"), forState: UIControlState.Normal)
+            selectStatusButton.setImage(UIImage(named:"mail_check-active"), for: UIControlState())
             break
         default:
-            selectStatusButton.setImage(UIImage(named:"mail_check"), forState: UIControlState.Normal)
+            selectStatusButton.setImage(UIImage(named:"mail_check"), for: UIControlState())
             break
         }
     }
@@ -64,7 +64,7 @@ class LabelTableViewCell: UITableViewCell {
             labelWidth.constant = w > check ? check : w
             
             if showIcon {
-                labelIcon.hidden = false
+                labelIcon.isHidden = false
                 labelleft.priority = 500
                 let color = UIColor(hexString: model.label.color, alpha:1)
                 var image = UIImage(named: "menu_label")
@@ -72,11 +72,11 @@ class LabelTableViewCell: UITableViewCell {
                     image = UIImage(named: "menu_folder")
                 }
                 
-                labelIcon.image = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-                labelIcon.highlightedImage = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+                labelIcon.image = image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+                labelIcon.highlightedImage = image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
                 labelIcon.tintColor = color
             } else {
-                labelIcon.hidden = true
+                labelIcon.isHidden = true
                 labelleft.priority = 900
             }
         }

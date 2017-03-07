@@ -11,7 +11,7 @@ import Foundation
 
 
 // MARK : Get messages part
-public class BugReportRequest<T : ApiResponse> : ApiRequest<T> {
+final class BugReportRequest<T : ApiResponse> : ApiRequest<T> {
     let os : String!
     let osVersion : String!
     let clientVersion : String!
@@ -31,9 +31,8 @@ public class BugReportRequest<T : ApiResponse> : ApiRequest<T> {
         self.email = email
     }
     
-    override func toDictionary() -> Dictionary<String, AnyObject>? {
-        
-        let out : [String : AnyObject] = [
+    override func toDictionary() -> Dictionary<String, Any>? {
+        let out : [String : Any] = [
             "OS": self.os,
             "OSVersion" : self.osVersion,
             "Client": "iOS_Native",
@@ -43,21 +42,19 @@ public class BugReportRequest<T : ApiResponse> : ApiRequest<T> {
             "Username": self.userName,
             "Email": self.email
         ]
-        
-        PMLog.D(self.JSONStringify(out, prettyPrinted: true))
-        
+        //PMLog.D(self.JSONStringify(out, prettyPrinted: true))
         return out
     }
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .POST
+        return .post
     }
     
-    override public func getRequestPath() -> String {
+    override func getRequestPath() -> String {
         return BugsAPI.Path + AppConstants.getDebugOption
     }
     
-    override public func getVersion() -> Int {
+    override func getVersion() -> Int {
         return BugsAPI.V_BugsReportRequest
     }
 }

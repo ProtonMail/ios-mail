@@ -8,9 +8,9 @@
 
 import Foundation
 
-public class LabelApplyViewModelImpl : LabelViewModel {
-    private var messages : [Message]!
-    private var labelMessages : Dictionary<String, LabelMessageModel>!
+open class LabelApplyViewModelImpl : LabelViewModel {
+    fileprivate var messages : [Message]!
+    fileprivate var labelMessages : Dictionary<String, LabelMessageModel>!
     
     init(msg:[Message]!) {
         super.init()
@@ -18,7 +18,7 @@ public class LabelApplyViewModelImpl : LabelViewModel {
         self.labelMessages = Dictionary<String, LabelMessageModel>()
     }
 
-    override public func showArchiveOption() -> Bool {
+    override open func showArchiveOption() -> Bool {
         if let msg = messages.first {
             let locations = msg.getLocationFromLabels()
             for loc in locations {
@@ -30,15 +30,15 @@ public class LabelApplyViewModelImpl : LabelViewModel {
         return true;
     }
     
-    public override func getApplyButtonText() -> String {
+    open override func getApplyButtonText() -> String {
         return NSLocalizedString("Apply")
     }
     
-    public override func getCancelButtonText() -> String {
+    open override func getCancelButtonText() -> String {
         return NSLocalizedString("Cancel")
     }
     
-    override public func getLabelMessage( label : Label!) -> LabelMessageModel! {
+    override open func getLabelMessage( _ label : Label!) -> LabelMessageModel! {
         if let outVar = self.labelMessages[label.labelID] {
             return outVar
         } else {
@@ -46,7 +46,7 @@ public class LabelApplyViewModelImpl : LabelViewModel {
             lmm.label = label
             lmm.totalMessages = self.messages;
             for  m  in self.messages {
-                let labels = m.mutableSetValueForKey("labels")
+                let labels = m.mutableSetValue(forKey: "labels")
                 for lb in labels {
                     if let lb = lb as? Label {
                         if lb.labelID == lmm.label.labelID {
@@ -71,7 +71,7 @@ public class LabelApplyViewModelImpl : LabelViewModel {
         }
     }
     
-    public override func cellClicked(label: Label!) {
+    open override func cellClicked(_ label: Label!) {
         if let model = self.labelMessages[label.labelID] {
             var plusCount = 1
             if model.totalMessages.count <= 1 || 0 ==  model.originalSelected.count || model.originalSelected.count ==  model.totalMessages.count {
@@ -145,17 +145,16 @@ public class LabelApplyViewModelImpl : LabelViewModel {
 //    }
     
     override public func apply(archiveMessage : Bool) -> Bool {
-        
         let context = sharedCoreDataService.newMainManagedObjectContext()
         for (key, value) in self.labelMessages {
             if value.currentStatus != value.origStatus && value.currentStatus == 0 { //remove
                 let ids = self.messages.map { ($0).messageID }
                 let api = RemoveLabelFromMessageRequest(labelID: key, messages: ids)
                 api.call(nil)
-                context.performBlockAndWait { () -> Void in
+                context.performAndWait { () -> Void in
                     for mm in self.messages {
-                        let labelObjs = mm.mutableSetValueForKey("labels")
-                        labelObjs.removeObject(value.label)
+                        let labelObjs = mm.mutableSetValue(forKey: "labels")
+                        labelObjs.remove(value.label)
                         mm.setValue(labelObjs, forKey: "labels")
                     }
                 }
@@ -163,10 +162,10 @@ public class LabelApplyViewModelImpl : LabelViewModel {
                 let ids = self.messages.map { ($0).messageID }
                 let api = ApplyLabelToMessageRequest(labelID: key, messages: ids)
                 api.call(nil)
-                context.performBlockAndWait { () -> Void in
+                context.performAndWait { () -> Void in
                     for mm in self.messages {
-                        let labelObjs = mm.mutableSetValueForKey("labels")
-                        labelObjs.addObject(value.label)
+                        let labelObjs = mm.mutableSetValue(forKey: "labels")
+                        labelObjs.add(value.label)
                         mm.setValue(labelObjs, forKey: "labels")
                     }
                 }
@@ -182,7 +181,7 @@ public class LabelApplyViewModelImpl : LabelViewModel {
         
         if archiveMessage {
             for message in self.messages {
-                message.removeLocationFromLabels(message.location, location: .archive, keepSent: true)
+                message.removeLocationFromLabels(currentlocation: message.location, location: .archive, keepSent: true)
                 message.needsUpdate = false
                 message.location = .archive
             }
@@ -197,11 +196,11 @@ public class LabelApplyViewModelImpl : LabelViewModel {
         return true
     }
     
-    override public func getTitle() -> String {
+    override open func getTitle() -> String {
         return NSLocalizedString("Apply Labels")
     }
     
-    override public func cancel() {
+    override open func cancel() {
 //        let context = sharedCoreDataService.newMainManagedObjectContext()
 //        for (_, value) in self.labelMessages {
 //            
@@ -224,11 +223,11 @@ public class LabelApplyViewModelImpl : LabelViewModel {
 //        }
     }
     
-    public override func fetchController() -> NSFetchedResultsController? {
+    open override func fetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
         return sharedLabelsDataService.fetchedResultsController(.label)
     }
 
-    public override func getFetchType() -> LabelFetchType {
+    open override func getFetchType() -> LabelFetchType {
         return .label
     }
 }

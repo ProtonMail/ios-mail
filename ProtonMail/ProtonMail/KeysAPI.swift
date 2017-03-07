@@ -10,33 +10,33 @@ import Foundation
 
 
 //MARK : get keys salt  #not in used
-public class GetKeysSalts<T : ApiResponse> : ApiRequest<T> {
+final class GetKeysSalts<T : ApiResponse> : ApiRequest<T> {
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .GET
+        return .get
     }
     
-    override public func getRequestPath() -> String {
+    override open func getRequestPath() -> String {
         return KeysAPI.Path + "/salts" + AppConstants.getDebugOption
     }
     
-    override public func getVersion() -> Int {
+    override open func getVersion() -> Int {
         return KeysAPI.V_GetKeysSaltsRequest
     }
 }
 
-public class KeySaltResponse : ApiResponse {
+final class KeySaltResponse : ApiResponse {
     
-    var keySalts : [Dictionary<String,AnyObject>]?
+    var keySalts : [Dictionary<String, Any>]?
 
-    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
-        self.keySalts = response["KeySalts"] as? [Dictionary<String,AnyObject>]
+    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+        self.keySalts = response["KeySalts"] as? [Dictionary<String, Any>]
         return true
     }
 }
 
 /// message packages
-public class PasswordAuth : Package {
+open class PasswordAuth : Package {
 
     let AuthVersion : Int = 4
     let ModulusID : String! //encrypted id
@@ -50,8 +50,8 @@ public class PasswordAuth : Package {
     }
     
     // Mark : override class functions
-    func toDictionary() -> Dictionary<String,AnyObject>? {
-        let out : Dictionary<String, AnyObject> = [
+    func toDictionary() -> Dictionary<String,Any>? {
+        let out : Dictionary<String, Any> = [
             "Version" : self.AuthVersion,
             "ModulusID" : self.ModulusID,
             "Salt" : self.salt,
@@ -62,7 +62,7 @@ public class PasswordAuth : Package {
 
 
 //MARK : update user's private keys
-public class UpdatePrivateKeyRequest<T : ApiResponse> : ApiRequest<T> {
+final class UpdatePrivateKeyRequest<T : ApiResponse> : ApiRequest<T> {
     
     let clientEphemeral : String! //base64 encoded
     let clientProof : String! //base64 encoded
@@ -101,8 +101,8 @@ public class UpdatePrivateKeyRequest<T : ApiResponse> : ApiRequest<T> {
         self.auth = auth
     }
     
-    override func toDictionary() -> Dictionary<String, AnyObject>? {
-        var keysDict : [AnyObject] = [AnyObject]()
+    override func toDictionary() -> Dictionary<String, Any>? {
+        var keysDict : [Any] = [Any]()
         for _key in userLevelKeys {
             if _key.is_updated {
                 keysDict.append( ["ID": _key.key_id, "PrivateKey" : _key.private_key] )
@@ -114,7 +114,7 @@ public class UpdatePrivateKeyRequest<T : ApiResponse> : ApiRequest<T> {
             }
         }
         
-        var out : [String : AnyObject] = [
+        var out : [String : Any] = [
             "ClientEphemeral" : self.clientEphemeral,
             "ClientProof" : self.clientProof,
             "SRPSession": self.SRPSession,
@@ -135,21 +135,21 @@ public class UpdatePrivateKeyRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .PUT
+        return .put
     }
     
-    override public func getRequestPath() -> String {
+    override func getRequestPath() -> String {
         return KeysAPI.Path + "/private" + AppConstants.getDebugOption
     }
     
-    override public func getVersion() -> Int {
+    override func getVersion() -> Int {
         return KeysAPI.V_UpdatePrivateKeyRequest
     }
 }
 
 
 //MARK : update user's private keys
-public class SetupKeyRequest<T : ApiResponse> : ApiRequest<T> {
+final class SetupKeyRequest<T : ApiResponse> : ApiRequest<T> {
     
     let addressID : String!
     let privateKey : String!
@@ -167,16 +167,16 @@ public class SetupKeyRequest<T : ApiResponse> : ApiRequest<T> {
         self.auth = auth
     }
     
-    override func toDictionary() -> Dictionary<String, AnyObject>? {
-        let address : [String: AnyObject] = [
+    override func toDictionary() -> Dictionary<String, Any>? {
+        let address : [String: Any] = [
             "AddressID" : self.addressID,
             "PrivateKey" : self.privateKey
         ]
         
-        let out : [String : AnyObject] = [
+        let out : [String : Any] = [
             "KeySalt" : self.keySalt,
             "PrimaryKey": self.privateKey,
-            "AddressKeys" : [address],
+            "AddressKeys" : [address] ,
             "Auth" : self.auth.toDictionary()!
         ]
 
@@ -184,14 +184,14 @@ public class SetupKeyRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .POST
+        return .post
     }
     
-    override public func getRequestPath() -> String {
+    override func getRequestPath() -> String {
         return KeysAPI.Path + "/setup" + AppConstants.getDebugOption
     }
     
-    override public func getVersion() -> Int {
+    override func getVersion() -> Int {
         return KeysAPI.V_KeysSeuptRequest
     }
 }

@@ -20,10 +20,10 @@ import Foundation
 
 extension APIService {
     
-    private struct DevicePath {
+    fileprivate struct DevicePath {
         static let basePath = "/device"
     }
-    func deviceRegisterWithToken(token: NSData, completion: CompletionBlock?) {
+    func deviceRegisterWithToken(_ token: Data, completion: CompletionBlock?) {
         let tokenString = stringFromToken(token)
         deviceToken = tokenString
         deviceUID = deviceID
@@ -47,21 +47,21 @@ extension APIService {
         #endif
         
         var ver = "1.0.0"
-        if let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String {
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             ver = version
         }
         let parameters = [
             "DeviceUID" : deviceID,
             "DeviceToken" : tokenString,
-            "DeviceName" : UIDevice.currentDevice().name,
-            "DeviceModel" : UIDevice.currentDevice().model,
-            "DeviceVersion" : UIDevice.currentDevice().systemVersion,
+            "DeviceName" : UIDevice.current.name,
+            "DeviceModel" : UIDevice.current.model,
+            "DeviceVersion" : UIDevice.current.systemVersion,
             "AppVersion" : "iOS_\(ver)",
             "Environment" : env
-        ]
+        ] as [String : Any]
         
         setApiVesion(1, appVersion: 1)
-        request(method: .POST, path: AppConstants.API_PATH + DevicePath.basePath, parameters: parameters, completion: completion)
+        request(method: .post, path: AppConstants.API_PATH + DevicePath.basePath, parameters: parameters, completion: completion)
     }
     
     func deviceUnregister() {
@@ -83,12 +83,12 @@ extension APIService {
                     }
                 }
                 setApiVesion(1, appVersion: 1)
-                request(method: HTTPMethod.POST, path: AppConstants.API_PATH + DevicePath.basePath + "/delete", parameters: parameters, completion: completionWrapper)
+                request(method: HTTPMethod.post, path: AppConstants.API_PATH + DevicePath.basePath + "/delete", parameters: parameters, completion: completionWrapper)
             }
         }
     }
     
-    func cleanBadKey(newToken : NSData) {
+    func cleanBadKey(_ newToken : Data) {
         let newTokenString = stringFromToken(newToken)
         let oldDeviceToken = self.deviceToken
         if !oldDeviceToken.isEmpty {
@@ -101,7 +101,7 @@ extension APIService {
                 let completionWrapper: CompletionBlock = {task, response, error in
                 }
                 setApiVesion(1, appVersion: 1)
-                request(method: HTTPMethod.POST, path: AppConstants.API_PATH + DevicePath.basePath + "/delete", parameters: parameters, completion: completionWrapper)
+                request(method: HTTPMethod.post, path: AppConstants.API_PATH + DevicePath.basePath + "/delete", parameters: parameters, completion: completionWrapper)
             }
         }
         
@@ -112,7 +112,7 @@ extension APIService {
             ]
             
             setApiVesion(1, appVersion: 1)
-            request(method: HTTPMethod.POST, path: AppConstants.API_PATH + DevicePath.basePath + "/delete", parameters: parameters, completion:{ (task, response, error) -> Void in
+            request(method: HTTPMethod.post, path: AppConstants.API_PATH + DevicePath.basePath + "/delete", parameters: parameters, completion:{ (task, response, error) -> Void in
                 if error == nil {
                     self.badToken = ""
                     self.badUID = ""
@@ -123,7 +123,7 @@ extension APIService {
     
     // MARK: - Private methods
     
-    private struct DeviceKey {
+    fileprivate struct DeviceKey {
         static let token = "DeviceTokenKey"
         static let UID = "DeviceUID"
         
@@ -131,48 +131,48 @@ extension APIService {
         static let badUID = "DeviceBadUID"
     }
     
-    private var deviceID: String {
-        return UIDevice.currentDevice().identifierForVendor?.UUIDString ?? ""
+    fileprivate var deviceID: String {
+        return UIDevice.current.identifierForVendor?.uuidString ?? ""
     }
     
-    private var deviceToken: String {
+    fileprivate var deviceToken: String {
         get {
-            return NSUserDefaults.standardUserDefaults().stringForKey(DeviceKey.token) ?? ""
+            return UserDefaults.standard.string(forKey: DeviceKey.token) ?? ""
         }
         set {
-            NSUserDefaults.standardUserDefaults().setValue(newValue, forKey: DeviceKey.token)
+            UserDefaults.standard.setValue(newValue, forKey: DeviceKey.token)
         }
     }
-    private var deviceUID: String {
+    fileprivate var deviceUID: String {
         get {
-            return NSUserDefaults.standardUserDefaults().stringForKey(DeviceKey.UID) ?? ""
+            return UserDefaults.standard.string(forKey: DeviceKey.UID) ?? ""
         }
         set {
-            NSUserDefaults.standardUserDefaults().setValue(newValue, forKey: DeviceKey.UID)
-        }
-    }
-    
-    private var badToken: String {
-        get {
-            return NSUserDefaults.standardUserDefaults().stringForKey(DeviceKey.badToken) ?? ""
-        }
-        set {
-            NSUserDefaults.standardUserDefaults().setValue(newValue, forKey: DeviceKey.badToken)
-        }
-    }
-    private var badUID: String {
-        get {
-            return NSUserDefaults.standardUserDefaults().stringForKey(DeviceKey.badUID) ?? ""
-        }
-        set {
-            NSUserDefaults.standardUserDefaults().setValue(newValue, forKey: DeviceKey.badUID)
+            UserDefaults.standard.setValue(newValue, forKey: DeviceKey.UID)
         }
     }
     
-    private func stringFromToken(token: NSData) -> String {
-        let tokenChars = UnsafePointer<CChar>(token.bytes)
+    fileprivate var badToken: String {
+        get {
+            return UserDefaults.standard.string(forKey: DeviceKey.badToken) ?? ""
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: DeviceKey.badToken)
+        }
+    }
+    fileprivate var badUID: String {
+        get {
+            return UserDefaults.standard.string(forKey: DeviceKey.badUID) ?? ""
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: DeviceKey.badUID)
+        }
+    }
+    
+    fileprivate func stringFromToken(_ token: Data) -> String {
+        let tokenChars = (token as NSData).bytes.bindMemory(to: CChar.self, capacity: token.count)
         var tokenString = ""
-        for i in 0 ..< token.length {
+        for i in 0 ..< token.count {
             tokenString += String(format: "%02.2hhx", arguments: [tokenChars[i]])
         }
         return tokenString

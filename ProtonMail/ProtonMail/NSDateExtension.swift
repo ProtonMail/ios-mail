@@ -9,23 +9,24 @@
 import Foundation
 
 
-extension NSDate {
+extension Date {
     
     // you can create a read-only computed property to return just the nanoseconds as Int
-    var nanosecond: Int { return NSCalendar.currentCalendar().components(.Nanosecond,  fromDate: self).nanosecond   }
+    var nanosecond: Int { return (Calendar.current as NSCalendar).components(.nanosecond,  from: self).nanosecond!   }
     
     // or an extension function to format your date
-    func formattedWith(format:String)-> String {
-        let formatter = NSDateFormatter()
+    func formattedWith(_ format:String)-> String {
+        let formatter = DateFormatter()
         //formatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)  // you can set GMT time
-        formatter.timeZone = NSTimeZone.localTimeZone()        // or as local time
+        formatter.timeZone = TimeZone.autoupdatingCurrent        // or as local time
         formatter.dateFormat = format
-        return formatter.stringFromDate(self)
+        return formatter.string(from: self)
     }
     
-}//Wed, Apr 29, 2015 at 2:13 PM
-
-//NSDate().formattedWith("EEEE d MMMM yyyy")
-//NSDate().nanosecond
-
- // [dateFormatter setDateFormat:@"' ('EEEE d MMMM yyyy')'"];
+    func string(format: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        return dateFormatter.string(from: self)
+    }
+    
+}

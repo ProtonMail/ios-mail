@@ -19,8 +19,8 @@ class EditContactViewController: ProtonMailViewController {
     
     var contact: ContactVO!
     
-    private let kInvalidEmailShakeTimes: Float = 3.0
-    private let kInvalidEmailShakeOffset: CGFloat = 10.0
+    fileprivate let kInvalidEmailShakeTimes: Float = 3.0
+    fileprivate let kInvalidEmailShakeOffset: CGFloat = 10.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,12 +36,12 @@ class EditContactViewController: ProtonMailViewController {
         }
     }
     
-    @IBAction func didTapCancelButton(sender: UIBarButtonItem) {
+    @IBAction func didTapCancelButton(_ sender: UIBarButtonItem) {
         dismissKeyboard()
-        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+        self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func didTapSaveButton(sender: UIBarButtonItem) {
+    @IBAction func didTapSaveButton(_ sender: UIBarButtonItem) {
         let name: String = (nameTextField.text ?? "").trim()
         let email: String = (emailTextField.text ?? "").trim()
         
@@ -53,12 +53,12 @@ class EditContactViewController: ProtonMailViewController {
             if (contact == nil) {
                 sharedContactDataService.addContact(name: name, email: email) { (contacts: [Contact]?, error: NSError?) in
                     ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-                    self.dismissViewControllerAnimated(true, completion: nil)
+                    self.dismiss(animated: true, completion: nil)
                 }
             } else {
                 sharedContactDataService.updateContact(contactID: contact.contactId, name: name, email: email, completion: { ( contacts: [Contact]?, error: NSError?) -> Void in
                     ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-                    self.dismissViewControllerAnimated(true, completion: nil)
+                    self.dismiss(animated: true, completion: nil)
                 })
             }
         }
@@ -75,15 +75,15 @@ class EditContactViewController: ProtonMailViewController {
         return false
     }
     
-    private func showInvalidEmailError() {
-        emailTextField.layer.borderColor = UIColor.redColor().CGColor
+    fileprivate func showInvalidEmailError() {
+        emailTextField.layer.borderColor = UIColor.red.cgColor
         emailTextField.layer.borderWidth = 0.5
         emailTextField.shake(kInvalidEmailShakeTimes, offset: kInvalidEmailShakeOffset)
     }
 }
 
 extension EditContactViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if (textField == nameTextField) {
             textField.resignFirstResponder()
             emailTextField.becomeFirstResponder()

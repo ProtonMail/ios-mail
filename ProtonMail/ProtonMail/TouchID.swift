@@ -10,9 +10,9 @@ import Foundation
 
 let sharedTouchID = TouchID ()
 
-public class TouchID {
+open class TouchID {
     
-    public func showTouchIDOrPin() -> Bool {
+    open func showTouchIDOrPin() -> Bool {
         if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
             if userCachedStatus.lockedApp {
                 return true
@@ -29,7 +29,7 @@ public class TouchID {
                 if let t = Int(userCachedStatus.exitTime) {
                     exitTime = t
                 }
-                let timeInterval : Int = Int(NSDate().timeIntervalSince1970)
+                let timeInterval : Int = Int(Date().timeIntervalSince1970)
                 let diff = timeInterval - exitTime
                 if diff > (timeIndex*60) || diff <= 0 {
                     return true

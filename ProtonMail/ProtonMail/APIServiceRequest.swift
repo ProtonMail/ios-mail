@@ -17,19 +17,19 @@ protocol Package {
      
      :returns: request dictionary
      */
-    func toDictionary() -> Dictionary<String, AnyObject>?
+    func toDictionary() -> Dictionary<String, Any>?
 }
 
 
 //abstract api request base class
-public class ApiRequest<T : ApiResponse> : Package {
+class ApiRequest<T : ApiResponse> : Package {
     
     public init () { }
     
     //add error response
-    public typealias ResponseCompletionBlock = (task: NSURLSessionDataTask!, response: T?, hasError : Bool) -> Void
+    public typealias ResponseCompletionBlock = (_ task: URLSessionDataTask?, _ response: T?, _ hasError : Bool) -> Void
     
-    func toDictionary() -> Dictionary<String, AnyObject>? {
+    func toDictionary() -> Dictionary<String, Any>? {
         return nil
     }
     
@@ -38,7 +38,7 @@ public class ApiRequest<T : ApiResponse> : Package {
      
      :returns: int version number
      */
-    public func getVersion () -> Int {
+    func getVersion () -> Int {
         return 1
     }
     
@@ -48,7 +48,7 @@ public class ApiRequest<T : ApiResponse> : Package {
      
      :returns: default is true
      */
-    public func getIsAuthFunction () -> Bool {
+    func getIsAuthFunction () -> Bool {
         return true
     }
     
@@ -57,8 +57,8 @@ public class ApiRequest<T : ApiResponse> : Package {
      
      :returns: String value
      */
-    public func getRequestPath () -> String {
-        NSException(name:"Error", reason:"Not Implement, you need override the function", userInfo:nil).raise()
+    func getRequestPath () -> String {
+        NSException(name:NSExceptionName(rawValue: "Error"), reason:"Not Implement, you need override the function", userInfo:nil).raise()
         return "";
     }
     
@@ -70,12 +70,12 @@ public class ApiRequest<T : ApiResponse> : Package {
      
      :returns: String value
      */
-    func JSONStringify(value: AnyObject, prettyPrinted: Bool = false) -> String {
-        let options = prettyPrinted ? NSJSONWritingOptions.PrettyPrinted : NSJSONWritingOptions()
-        if NSJSONSerialization.isValidJSONObject(value) {
+    func JSONStringify(_ value: Any, prettyPrinted: Bool = false) -> String {
+        let options = prettyPrinted ? JSONSerialization.WritingOptions.prettyPrinted : JSONSerialization.WritingOptions()
+        if JSONSerialization.isValidJSONObject(value) {
             do {
-                let data = try NSJSONSerialization.dataWithJSONObject(value, options: options)
-                if let string = NSString(data: data, encoding: NSUTF8StringEncoding) {
+                let data = try JSONSerialization.data(withJSONObject: value, options: options)
+                if let string = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
                     return string as String
                 }
             } catch let ex as NSError {
@@ -88,10 +88,10 @@ public class ApiRequest<T : ApiResponse> : Package {
     
     
     func getAPIMethod() -> APIService.HTTPMethod {
-        return .GET
+        return .get
     }
     
-    func call(complete: ResponseCompletionBlock?) {
+    func call(_ complete: ResponseCompletionBlock?) {
         //TODO :: 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
         let completionWrapper:  APIService.CompletionBlock = { task, res, error in
             let realType = T.self
@@ -100,14 +100,14 @@ public class ApiRequest<T : ApiResponse> : Package {
             if error != nil {
                 //TODO check error
                 apiRes.ParseHttpError(error!)
-                complete?(task:task, response:apiRes, hasError: true)
+                complete?(task, apiRes, true)
                 return
             }
             
             if res == nil {
                 // TODO check res
                 apiRes.error = NSError.badResponse()
-                complete?(task:task, response:apiRes, hasError: true)
+                complete?(task, apiRes, true)
                 return
             }
             
@@ -116,7 +116,7 @@ public class ApiRequest<T : ApiResponse> : Package {
                 hasError = !apiRes.ParseResponse(res!)
             }
             
-            complete?(task:task, response:apiRes, hasError: hasError)
+            complete?(task, apiRes, hasError)
         }
         
         sharedAPIService.setApiVesion(self.getVersion(), appVersion: 1) // TODO: here need get functions
@@ -127,11 +127,11 @@ public class ApiRequest<T : ApiResponse> : Package {
     func syncCall() throws -> T? {
         var ret_res : T? = nil
         var ret_error : NSError? = nil
-        let sema = dispatch_semaphore_create(0);
+        let sema = DispatchSemaphore(value: 0);
         //TODO :: 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
         let completionWrapper:  APIService.CompletionBlock = { task, res, error in
             defer {
-                dispatch_semaphore_signal(sema);
+                sema.signal();
             }
             let realType = T.self
             let apiRes = realType.init()
@@ -164,7 +164,7 @@ public class ApiRequest<T : ApiResponse> : Package {
         sharedAPIService.request(method: self.getAPIMethod(), path: self.getRequestPath(), parameters: self.toDictionary(), authenticated: self.getIsAuthFunction(), completion:completionWrapper)
         
         //wait operations
-        dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER)
+        let _ = sema.wait(timeout: DispatchTime.distantFuture)
         
         if let e = ret_error {
             throw e

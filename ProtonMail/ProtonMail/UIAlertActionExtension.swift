@@ -18,7 +18,7 @@ import Foundation
 
 extension UIAlertAction {
     
-    class func okAction(handler : ((UIAlertAction!) -> Void)? = nil) -> UIAlertAction {
-        return UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: handler)
+    class func okAction(_ handler : ((UIAlertAction?) -> Void)? = nil) -> UIAlertAction {
+        return UIAlertAction(title: NSLocalizedString("OK"), style: .default, handler: handler)
     }
 }

@@ -36,7 +36,7 @@ extension UIStoryboard {
         }
     }
     
-    class func instantiateInitialViewController(storyboard storyboard: Storyboard) -> UIViewController {
+    class func instantiateInitialViewController(storyboard: Storyboard) -> UIViewController {
         return storyboard.instantiateInitialViewController()
     }
 }

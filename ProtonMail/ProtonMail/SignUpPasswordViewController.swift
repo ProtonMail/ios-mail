@@ -11,8 +11,8 @@ import UIKit
 class SignUpPasswordViewController: UIViewController {
     
     //define
-    private let hidePriority : UILayoutPriority = 1.0;
-    private let showPriority: UILayoutPriority = 750.0;
+    fileprivate let hidePriority : UILayoutPriority = 1.0;
+    fileprivate let showPriority: UILayoutPriority = 750.0;
     
     @IBOutlet weak var createPasswordButton: UIButton!
     
@@ -29,13 +29,13 @@ class SignUpPasswordViewController: UIViewController {
     @IBOutlet weak var loginPasswordField: TextInsetTextField!
     @IBOutlet weak var confirmLoginPasswordField: TextInsetTextField!
     
-    private let kSegueToEncryptionSetup = "sign_up_password_to_encryption_segue"
+    fileprivate let kSegueToEncryptionSetup = "sign_up_password_to_encryption_segue"
     
     var viewModel : SignupViewModel!
     
-    private var stopLoading : Bool = false
+    fileprivate var stopLoading : Bool = false
     
-    func configConstraint(show : Bool) -> Void {
+    func configConstraint(_ show : Bool) -> Void {
         let level = show ? showPriority : hidePriority
         
         logoTopPaddingConstraint.priority = level
@@ -60,19 +60,19 @@ class SignUpPasswordViewController: UIViewController {
         }
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
-        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
+        NotificationCenter.default.addKeyboardObserver(self)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
+        NotificationCenter.default.removeKeyboardObserver(self)
     }
 
     override func didReceiveMemoryWarning() {
@@ -81,19 +81,19 @@ class SignUpPasswordViewController: UIViewController {
     
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kSegueToEncryptionSetup {
-            let viewController = segue.destinationViewController as! EncryptionSetupViewController
+            let viewController = segue.destination as! EncryptionSetupViewController
             viewController.viewModel = self.viewModel
         }
     }
 
-    @IBAction func backAction(sender: UIButton) {
+    @IBAction func backAction(_ sender: UIButton) {
         stopLoading = true;
-        self.navigationController?.popViewControllerAnimated(true)
+        let _ = self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func createPasswordAction(sender: UIButton) {
+    @IBAction func createPasswordAction(_ sender: UIButton) {
         dismissKeyboard()
         
         let login_pwd = (loginPasswordField.text ?? "") //.trim()
@@ -102,15 +102,15 @@ class SignUpPasswordViewController: UIViewController {
         if !login_pwd.isEmpty && confirm_login_pwd == login_pwd {
             //create user & login
             viewModel.setSinglePassword(login_pwd)
-            self.performSegueWithIdentifier(kSegueToEncryptionSetup, sender: self)
+            self.performSegue(withIdentifier: kSegueToEncryptionSetup, sender: self)
         } else {
             let alert = NSLocalizedString("Login password doesn't match").alertController()
             alert.addOKAction()
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         }
     }
     
-    @IBAction func tapAction(sender: UITapGestureRecognizer) {
+    @IBAction func tapAction(_ sender: UITapGestureRecognizer) {
         updateButtonStatus()
         dismissKeyboard()
     }
@@ -120,10 +120,10 @@ class SignUpPasswordViewController: UIViewController {
         confirmLoginPasswordField.resignFirstResponder()
     }
     
-    @IBAction func editingEnd(sender: AnyObject) {
+    @IBAction func editingEnd(_ sender: AnyObject) {
     }
     
-    @IBAction func editingChange(sender: AnyObject) {
+    @IBAction func editingChange(_ sender: AnyObject) {
         updateButtonStatus();
     }
     
@@ -132,24 +132,24 @@ class SignUpPasswordViewController: UIViewController {
         let confirm_login_pwd = (confirmLoginPasswordField.text ?? "") //.trim()
         
         if !login_pwd.isEmpty && !confirm_login_pwd.isEmpty {
-            createPasswordButton.enabled = true
+            createPasswordButton.isEnabled = true
         } else {
-            createPasswordButton.enabled = false
+            createPasswordButton.isEnabled = false
         }
     }
 }
 
 // MARK: - UITextFieldDelegatesf
 extension SignUpPasswordViewController: UITextFieldDelegate {
-    func textFieldShouldClear(textField: UITextField) -> Bool {
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
         return true
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return true
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         updateButtonStatus()
         if textField == loginPasswordField {
             confirmLoginPasswordField.becomeFirstResponder()
@@ -162,23 +162,23 @@ extension SignUpPasswordViewController: UITextFieldDelegate {
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 extension SignUpPasswordViewController: NSNotificationCenterKeyboardObserverProtocol {
-    func keyboardWillHideNotification(notification: NSNotification) {
+    func keyboardWillHideNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         scrollBottomPaddingConstraint.constant = 0.0
         self.configConstraint(false)
-        UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
+        UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
     }
     
-    func keyboardWillShowNotification(notification: NSNotification) {
+    func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
-        let info: NSDictionary = notification.userInfo!
-        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
+        let info: NSDictionary = notification.userInfo! as NSDictionary
+        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollBottomPaddingConstraint.constant = keyboardSize.height;
         }
         self.configConstraint(true)
-        UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
+        UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
     }

@@ -28,9 +28,9 @@ class SettingDetailViewController: UIViewController {
     @IBOutlet weak var notesLabel: UILabel!
     let kAsk2FASegue = "password_to_twofa_code_segue"
     
-    private var doneButton: UIBarButtonItem!
-    private var viewModel : SettingDetailsViewModel!
-    func setViewModel(vm:SettingDetailsViewModel) -> Void
+    fileprivate var doneButton: UIBarButtonItem!
+    fileprivate var viewModel : SettingDetailsViewModel!
+    func setViewModel(_ vm:SettingDetailsViewModel) -> Void
     {
         self.viewModel = vm
     }
@@ -38,7 +38,7 @@ class SettingDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        doneButton = self.editButtonItem()
+        doneButton = self.editButtonItem
         doneButton.target = self;
         doneButton.action = #selector(SettingDetailViewController.doneAction(_:))
         doneButton.title = "Done"
@@ -48,36 +48,36 @@ class SettingDetailViewController: UIViewController {
         
         if viewModel.isDisplaySwitch() {
             switchLabel.text = viewModel.getSwitchText()
-            switcher.on = viewModel.getSwitchStatus()
-            switchView.hidden = false
+            switcher.isOn = viewModel.getSwitchStatus()
+            switchView.isHidden = false
         }
         else {
-            switchView.hidden = true
+            switchView.isHidden = true
             inputViewTopDistance.constant = 22
         }
         
         if viewModel.isShowTextView() {
             inputViewHight.constant = 200.0
-            inputTextField.hidden = true
-            inputTextView.hidden = false
+            inputTextField.isHidden = true
+            inputTextView.isHidden = false
             inputTextView.text = viewModel.getCurrentValue()
         }
         else {
             inputViewHight.constant = 44.0
-            inputTextField.hidden = false
-            inputTextView.hidden = true
+            inputTextField.isHidden = false
+            inputTextView.isHidden = true
             inputTextField.text = viewModel.getCurrentValue()
             inputTextField.placeholder = viewModel.getPlaceholdText()
         }
         
         if viewModel.isRequireLoginPassword() {
-            passwordView.hidden = false
+            passwordView.isHidden = false
         } else {
-            passwordView.hidden = true
+            passwordView.isHidden = true
         }
         
-        switcher.enabled = viewModel.isSwitchEnabled()
-        inputTextView.editable = viewModel.isSwitchEnabled()
+        switcher.isEnabled = viewModel.isSwitchEnabled()
+        inputTextView.isEditable = viewModel.isSwitchEnabled()
         
         notesLabel.text = viewModel.getNotes()
     }
@@ -86,12 +86,12 @@ class SettingDetailViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
-    @IBAction func doneAction(sender: AnyObject) {
+    @IBAction func doneAction(_ sender: AnyObject) {
         startUpdateValue()
     }
     
-    @IBAction func swiitchAction(sender: AnyObject) {
-        if viewModel.getCurrentValue() == inputTextField.text && viewModel.getSwitchStatus() == self.switcher.on {
+    @IBAction func swiitchAction(_ sender: AnyObject) {
+        if viewModel.getCurrentValue() == inputTextField.text && viewModel.getSwitchStatus() == self.switcher.isOn {
             self.navigationItem.rightBarButtonItem = nil;
         }
         else {
@@ -99,24 +99,24 @@ class SettingDetailViewController: UIViewController {
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kAsk2FASegue {
-            let popup = segue.destinationViewController as! TwoFACodeViewController
+            let popup = segue.destination as! TwoFACodeViewController
             popup.delegate = self
-            popup.mode = .TwoFactorCode
+            popup.mode = .twoFactorCode
             self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }
     
-    internal func setPresentationStyleForSelfController(selfController : UIViewController,  presentingController: UIViewController)
+    internal func setPresentationStyleForSelfController(_ selfController : UIViewController,  presentingController: UIViewController)
     {
         presentingController.providesPresentationContextTransitionStyle = true;
         presentingController.definesPresentationContext = true;
-        presentingController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+        presentingController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
     }
     
     // MARK: private methods
-    private func dismissKeyboard() {
+    fileprivate func dismissKeyboard() {
         if viewModel.isShowTextView() {
             if (self.inputTextView != nil) {
                 self.inputTextView.resignFirstResponder()
@@ -129,7 +129,7 @@ class SettingDetailViewController: UIViewController {
         }
     }
     
-    private func focusTextField() -> Void {
+    fileprivate func focusTextField() -> Void {
         if viewModel.isShowTextView() {
             if (self.inputTextView != nil) {
                 self.inputTextView.becomeFirstResponder()
@@ -142,7 +142,7 @@ class SettingDetailViewController: UIViewController {
         }
     }
     
-    private func getTextValue () -> String {
+    fileprivate func getTextValue () -> String {
         if viewModel.isShowTextView() {
             return inputTextView.text
         }
@@ -151,22 +151,22 @@ class SettingDetailViewController: UIViewController {
         }
     }
     
-    private func getPasswordValue () -> String {
+    fileprivate func getPasswordValue () -> String {
         return passwordTextField.text ?? ""
     }
     
     var cached2faCode : String?
-    private func startUpdateValue () -> Void {
+    fileprivate func startUpdateValue () -> Void {
         dismissKeyboard()
         if viewModel.needAsk2FA() && cached2faCode == nil {
-            self.performSegueWithIdentifier(self.kAsk2FASegue, sender: self)
+            self.performSegue(withIdentifier: self.kAsk2FASegue, sender: self)
         } else {
             ActivityIndicatorHelper.showActivityIndicatorAtView(view)
-            viewModel.updateNotification(self.switcher.on, complete: { (value, error) -> Void in
+            viewModel.updateNotification(self.switcher.isOn, complete: { (value, error) -> Void in
                 if let error = error {
                     let alertController = error.alertController()
                     alertController.addOKAction()
-                    self.presentViewController(alertController, animated: true, completion: nil)
+                    self.present(alertController, animated: true, completion: nil)
                 } else {
                     self.viewModel.updateValue(self.getTextValue(), password: self.getPasswordValue(), tfaCode: self.cached2faCode, complete: { value, error in
                         self.cached2faCode = nil
@@ -174,9 +174,9 @@ class SettingDetailViewController: UIViewController {
                         if let error = error {
                             let alertController = error.alertController()
                             alertController.addOKAction()
-                            self.presentViewController(alertController, animated: true, completion: nil)
+                            self.present(alertController, animated: true, completion: nil)
                         } else {
-                            self.navigationController?.popToRootViewControllerAnimated(true)
+                            let _ = self.navigationController?.popToRootViewController(animated: true)
                         }
                     });
                 }
@@ -186,7 +186,7 @@ class SettingDetailViewController: UIViewController {
 }
 
 extension SettingDetailViewController : TwoFACodeViewControllerDelegate {
-    func ConfirmedCode(code: String, pwd : String) {
+    func ConfirmedCode(_ code: String, pwd : String) {
         self.cached2faCode = code
         self.startUpdateValue()
     }
@@ -197,19 +197,19 @@ extension SettingDetailViewController : TwoFACodeViewControllerDelegate {
 
 // MARK: - UITextFieldDelegate
 extension SettingDetailViewController: UITextFieldDelegate {
-    func textFieldShouldClear(textField: UITextField) -> Bool {
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
         return true
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let text = textField.text! as NSString
-        let changedText = text.stringByReplacingCharactersInRange(range, withString: string)
+        let changedText = text.replacingCharacters(in: range, with: string)
         
-        if viewModel.getCurrentValue() == changedText && viewModel.getSwitchStatus() == self.switcher.on {
+        if viewModel.getCurrentValue() == changedText && viewModel.getSwitchStatus() == self.switcher.isOn {
             self.navigationItem.rightBarButtonItem = nil;
         }
         else {
@@ -219,7 +219,7 @@ extension SettingDetailViewController: UITextFieldDelegate {
         return true
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         startUpdateValue()
         return true
     }
@@ -227,14 +227,14 @@ extension SettingDetailViewController: UITextFieldDelegate {
 
 
 extension SettingDetailViewController: UITextViewDelegate {
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         
     }
     
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let ctext = textView.text as NSString
         
-        let changedText = ctext.stringByReplacingCharactersInRange(range, withString: text)
+        let changedText = ctext.replacingCharacters(in: range, with: text)
         
         if viewModel.getCurrentValue() == changedText {
             self.navigationItem.rightBarButtonItem = nil;

@@ -16,12 +16,12 @@ class GeneralSettingViewCell: UITableViewCell {
         super.awakeFromNib()
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
 
     
-    func configCell(left:String, right:String) {
+    func configCell(_ left:String, right:String) {
         LeftText.text = left
         RightText.text = right
     }

@@ -29,14 +29,14 @@ class LastUpdateCacheTests: XCTestCase {
 
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measureBlock() {
+        self.measure() {
             // Put the code you want to measure the time of here.
         }
     }
     
     func testInboxUpdateCache() {
         // initial the cache
-        let lastUpdatedStore = LastUpdatedStore(shared: NSUserDefaults.standardUserDefaults())
+        let lastUpdatedStore = LastUpdatedStore(shared: UserDefaults.standardUserDefaults())
         lastUpdatedStore.clear()
         
 //        // test default cache

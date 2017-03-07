@@ -16,22 +16,21 @@
 
 import Foundation
 
-extension NSUserDefaults {
+extension UserDefaults {
     
-    func customObjectForKey(key: String) -> AnyObject? {
-        if let data = NSUserDefaults.standardUserDefaults().objectForKey(key) as? NSData {
-            return NSKeyedUnarchiver.unarchiveObjectWithData(data)
+    func customObjectForKey(_ key: String) -> Any? {
+        if let data = object(forKey: key) as? Data {
+            return NSKeyedUnarchiver.unarchiveObject(with: data)
         }
-        
         return nil
     }
     
-    func setCustomValue(value: NSCoding?, forKey key: String) {
-        let data: NSData? = (value == nil) ? nil : NSKeyedArchiver.archivedDataWithRootObject(value!)
-        NSUserDefaults.standardUserDefaults().setValue(data, forKey: key)
+    func setCustomValue(_ value: NSCoding?, forKey key: String) {
+        let data: Data? = (value == nil) ? nil : NSKeyedArchiver.archivedData(withRootObject: value!)
+        setValue(data, forKey: key)
     }
     
-    func stringOrEmptyStringForKey(key: String) -> String {
-        return stringForKey(key) ?? ""
+    func stringOrEmptyStringForKey(_ key: String) -> String {
+        return string(forKey: key) ?? ""
     }
 }

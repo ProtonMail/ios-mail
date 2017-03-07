@@ -11,15 +11,15 @@ import UIKit
 
 class HumanCheckMenuViewController: UIViewController {
     
-    private let kSegueToRecaptcha = "check_menu_to_recaptcha_verify_segue"
-    private let kSegueToEmailVerify = "check_menu_to_email_verify_segue"
-    private let kSegueToPhoneVerify = "check_menu_to_phone_verify_segue"
+    fileprivate let kSegueToRecaptcha = "check_menu_to_recaptcha_verify_segue"
+    fileprivate let kSegueToEmailVerify = "check_menu_to_email_verify_segue"
+    fileprivate let kSegueToPhoneVerify = "check_menu_to_phone_verify_segue"
     
     @IBOutlet weak var recaptchaViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var emailViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var phoneViewConstraint: NSLayoutConstraint!
     
-    private let kButtonHeight : CGFloat = 60.0
+    fileprivate let kButtonHeight : CGFloat = 60.0
     
     var viewModel : SignupViewModel!
     
@@ -33,7 +33,7 @@ class HumanCheckMenuViewController: UIViewController {
         if directs.count <= 0 {
             let alert = NSLocalizedString("Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.").alertController()
             alert.addOKAction()
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         } else {
             for dir in directs {
                 if dir == "captcha" {
@@ -47,20 +47,20 @@ class HumanCheckMenuViewController: UIViewController {
         }
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.Default;
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.default;
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
     
@@ -71,33 +71,33 @@ class HumanCheckMenuViewController: UIViewController {
     
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kSegueToRecaptcha {
-            let viewController = segue.destinationViewController as! RecaptchaViewController
+            let viewController = segue.destination as! RecaptchaViewController
             viewController.viewModel = self.viewModel
         } else if segue.identifier == kSegueToEmailVerify {
-            let viewController = segue.destinationViewController as! EmailVerifyViewController
+            let viewController = segue.destination as! EmailVerifyViewController
             viewController.viewModel = self.viewModel
         } else if segue.identifier == kSegueToPhoneVerify {
-            let viewController = segue.destinationViewController as! PhoneVerifyViewController
+            let viewController = segue.destination as! PhoneVerifyViewController
             viewController.viewModel = self.viewModel
         }
     }
     
-    @IBAction func backAction(sender: UIButton) {
-        self.navigationController?.popViewControllerAnimated(true)
+    @IBAction func backAction(_ sender: UIButton) {
+        let _ = self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func recaptchaAction(sender: UIButton) {
-        self.performSegueWithIdentifier(kSegueToRecaptcha, sender: self)
+    @IBAction func recaptchaAction(_ sender: UIButton) {
+        self.performSegue(withIdentifier: kSegueToRecaptcha, sender: self)
     }
     
-    @IBAction func emailVerifyAction(sender: UIButton) {
-        self.performSegueWithIdentifier(kSegueToEmailVerify, sender: self)
+    @IBAction func emailVerifyAction(_ sender: UIButton) {
+        self.performSegue(withIdentifier: kSegueToEmailVerify, sender: self)
     }
     
-    @IBAction func phoneVerifyAction(sender: UIButton) {
-        self.performSegueWithIdentifier(kSegueToPhoneVerify, sender: self)
+    @IBAction func phoneVerifyAction(_ sender: UIButton) {
+        self.performSegue(withIdentifier: kSegueToPhoneVerify, sender: self)
     }
     
 }

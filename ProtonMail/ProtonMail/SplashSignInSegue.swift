@@ -9,8 +9,8 @@
 class SplashSignInSegue: UIStoryboardSegue {
     
     override func perform() {
-        let src = self.sourceViewController
-        let dst = self.destinationViewController
+        let src = self.source
+        let dst = self.destination
         src.navigationController?.pushViewController(dst, animated:false)
     }
 }

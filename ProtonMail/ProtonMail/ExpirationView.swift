@@ -17,7 +17,7 @@ class ExpirationView: PMView {
     
     @IBOutlet weak var expirationLabel: UILabel!
     
-    func setExpirationTime(offset : Int) {
+    func setExpirationTime(_ offset : Int) {
         let (d,h,m,s) = durationsBySecond(seconds: offset)
         if offset <= 0 {
             expirationLabel.text = NSLocalizedString("Message expired")

@@ -20,7 +20,7 @@ let sharedMessageQueue = MessageQueue(queueName: "writeQueue")
 let sharedFailedQueue = MessageQueue(queueName: "failedQueue")
 
 class MessageQueue: PersistentQueue {
-    private struct Key {
+    fileprivate struct Key {
         static let id = "id"
         static let action = "action"
         static let time = "time"
@@ -33,13 +33,13 @@ class MessageQueue: PersistentQueue {
     var isRequiredHumanCheck : Bool = false
     
     //TODO::here need input the time of action when local cache changed.
-    func addMessage(messageID: String, action: MessageAction) -> NSUUID {
-        let time = NSDate().timeIntervalSince1970
+    func addMessage(_ messageID: String, action: MessageAction) -> UUID {
+        let time = Date().timeIntervalSince1970
         let element = [Key.id : messageID, Key.action : action.rawValue, Key.time : "\(time)", Key.count : "0"]
-        return add(element)
+        return add(element as NSCoding)
     }
     
-    func nextMessage() -> (uuid: NSUUID, messageID: String, action: String)? {
+    func nextMessage() -> (uuid: UUID, messageID: String, action: String)? {
         if isBlocked || isInProgress || isRequiredHumanCheck {
             return nil
         }
@@ -47,12 +47,12 @@ class MessageQueue: PersistentQueue {
             if let element = object as? [String : String] {
                 if let id = element[Key.id] {
                     if let action = element[Key.action] {
-                        return (uuid, id, action)
+                        return (uuid as UUID, id, action)
                     }
                 }
             }
             PMLog.D(" Removing invalid networkElement: \(object) from the queue.")
-            remove(uuid)
+            let _ = remove(uuid)
         }
         return nil
     }

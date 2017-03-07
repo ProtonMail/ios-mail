@@ -9,22 +9,22 @@
 import Foundation
 
 
-public class DeviceUtil {
+open class DeviceUtil {
     
-    private struct DeviceKey {
+    fileprivate struct DeviceKey {
         static let token = "DeviceTokenKey"
     }
     
     static var deviceID: String {
-        return UIDevice.currentDevice().identifierForVendor?.UUIDString ?? ""
+        return UIDevice.current.identifierForVendor?.uuidString ?? ""
     }
     
      static var deviceToken: String? {
         get {
-            return NSUserDefaults.standardUserDefaults().stringForKey(DeviceKey.token)
+            return UserDefaults.standard.string(forKey: DeviceKey.token)
         }
         set {
-            NSUserDefaults.standardUserDefaults().setValue(newValue, forKey: DeviceKey.token)
+            UserDefaults.standard.setValue(newValue, forKey: DeviceKey.token)
         }
     }
 
@@ -32,14 +32,14 @@ public class DeviceUtil {
 
 
 // MARK : update right swipe action
-public class RegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
-    let token: NSData!
+final class RegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
+    let token: Data!
     
-    init(token: NSData) {
+    init(token: Data) {
         self.token = token
     }
     
-    override func toDictionary() -> Dictionary<String, AnyObject>? {
+    override func toDictionary() -> Dictionary<String, Any>? {
         let tokenString = token.stringFromToken()
         DeviceUtil.deviceToken = tokenString
         
@@ -68,15 +68,15 @@ public class RegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
         #endif
         
         var ver = "1.0.0"
-        if let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String {
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             ver = version
         }
-        let parameters : Dictionary<String, AnyObject> = [
+        let parameters : Dictionary<String, Any> = [
             "DeviceUID" : DeviceUtil.deviceID,
             "DeviceToken" : tokenString,
-            "DeviceName" : UIDevice.currentDevice().name,
-            "DeviceModel" : UIDevice.currentDevice().model,
-            "DeviceVersion" : UIDevice.currentDevice().systemVersion,
+            "DeviceName" : UIDevice.current.name,
+            "DeviceModel" : UIDevice.current.model,
+            "DeviceVersion" : UIDevice.current.systemVersion,
             "AppVersion" : "iOS_\(ver)",
             "Environment" : env
         ]
@@ -84,31 +84,31 @@ public class RegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
         return parameters
     }
     
-    override public func getIsAuthFunction() -> Bool {
+    override open func getIsAuthFunction() -> Bool {
         return false
     }
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .POST
+        return .post
     }
     
-    override public func getRequestPath() -> String {
+    override open func getRequestPath() -> String {
         return DeviceAPI.Path
     }
     
-    override public func getVersion() -> Int {
+    override open func getVersion() -> Int {
         return DeviceAPI.V_RegisterDeviceRequest
     }
 }
 
 
 
-public class UnRegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
+final class UnRegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
 
     override init() {
     }
 
-    override func toDictionary() -> Dictionary<String, AnyObject>? {
+    override func toDictionary() -> Dictionary<String, Any>? {
         if let deviceToken = DeviceUtil.deviceToken {
             let parameters = [
                 "device_uid": DeviceUtil.deviceID,
@@ -120,14 +120,14 @@ public class UnRegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
     }
 
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .DELETE
+        return .delete
     }
 
-    override public func getRequestPath() -> String {
+    override open func getRequestPath() -> String {
         return DeviceAPI.Path
     }
 
-    override public func getVersion() -> Int {
+    override open func getVersion() -> Int {
         return DeviceAPI.V_UnRegisterDeviceRequest
     }
 }

@@ -13,7 +13,7 @@ let dataServiceDomain = NSError.protonMailErrorDomain("DataService")
 
 extension NSError {
     
-    class func CreateError(domain : String,
+    class func CreateError(_ domain : String,
                            code: Int,
                            localizedDescription: String,
                            localizedFailureReason: String?, localizedRecoverySuggestion: String? = nil) -> NSError {
@@ -49,22 +49,22 @@ extension CustomErrorVar {
 // notify email 0x110 100
 
 // code start at 0x110000
-enum UpdatePasswordError : Int, ErrorType, CustomErrorVar {
-    case InvalidUserName = 0x110001
-    case InvalidModulsID = 0x110002
-    case InvalidModuls = 0x110003
-    case CantHashPassword = 0x110004
-    case CantGenerateVerifier = 0x110005
-    case CantGenerateSRPClient = 0x110006
-    case InvalideAuthInfo = 0x110007
+enum UpdatePasswordError : Int, Error, CustomErrorVar {
+    case invalidUserName = 0x110001
+    case invalidModulsID = 0x110002
+    case invalidModuls = 0x110003
+    case cantHashPassword = 0x110004
+    case cantGenerateVerifier = 0x110005
+    case cantGenerateSRPClient = 0x110006
+    case invalideAuthInfo = 0x110007
     
     // mailbox password part
-    case CurrentPasswordWrong = 0x110008
-    case NewNotMatch = 0x110009
-    case PasswordEmpty = 0x110010
-    case KeyUpdateFailed = 0x110011
+    case currentPasswordWrong = 0x110008
+    case newNotMatch = 0x110009
+    case passwordEmpty = 0x110010
+    case keyUpdateFailed = 0x110011
     
-    case Default = 0x110000
+    case `default` = 0x110000
     
     var code : Int {
         return self.rawValue
@@ -76,29 +76,29 @@ enum UpdatePasswordError : Int, ErrorType, CustomErrorVar {
     
     var reason : String {
         switch self {
-        case .InvalidUserName:
+        case .invalidUserName:
             return NSLocalizedString("Invalid UserName!")
-        case .InvalidModulsID:
+        case .invalidModulsID:
             return NSLocalizedString("Can't get a Moduls ID!")
-        case .InvalidModuls:
+        case .invalidModuls:
             return NSLocalizedString("Can't get a Moduls!")
-        case .CantHashPassword:
+        case .cantHashPassword:
             return NSLocalizedString("Invalid hashed password!")
-        case .CantGenerateVerifier:
+        case .cantGenerateVerifier:
             return NSLocalizedString("Can't create a SRP verifier!")
-        case .CantGenerateSRPClient:
+        case .cantGenerateSRPClient:
             return NSLocalizedString("Can't create a SRP Client")
-        case .InvalideAuthInfo:
+        case .invalideAuthInfo:
             return NSLocalizedString("Can't get user auth info")
-        case .CurrentPasswordWrong:
+        case .currentPasswordWrong:
             return NSLocalizedString("The Password is wrong.")
-        case .NewNotMatch:
+        case .newNotMatch:
             return NSLocalizedString("The new password not match.")
-        case .PasswordEmpty:
+        case .passwordEmpty:
             return NSLocalizedString("The new password can't empty.")
-        case .KeyUpdateFailed:
+        case .keyUpdateFailed:
             return NSLocalizedString("The private update failed.")
-        case .Default:
+        case .default:
             return NSLocalizedString("Password update failed")
         }
     }
@@ -106,14 +106,14 @@ enum UpdatePasswordError : Int, ErrorType, CustomErrorVar {
 
 
 // code start at 0x110100
-enum UpdateNotificationEmailError : Int, ErrorType, CustomErrorVar {
-    case InvalidUserName = 0x110101
-    case CantHashPassword = 0x110102
-    case CantGenerateVerifier = 0x110103
-    case CantGenerateSRPClient = 0x110104
-    case InvalideAuthInfo = 0x110105
+enum UpdateNotificationEmailError : Int, Error, CustomErrorVar {
+    case invalidUserName = 0x110101
+    case cantHashPassword = 0x110102
+    case cantGenerateVerifier = 0x110103
+    case cantGenerateSRPClient = 0x110104
+    case invalideAuthInfo = 0x110105
     
-    case Default = 0x110100
+    case `default` = 0x110100
     
     var code : Int {
         return self.rawValue
@@ -125,17 +125,17 @@ enum UpdateNotificationEmailError : Int, ErrorType, CustomErrorVar {
     
     var reason : String {
         switch self {
-        case .InvalidUserName:
+        case .invalidUserName:
             return NSLocalizedString("Invalid UserName!")
-        case .CantHashPassword:
+        case .cantHashPassword:
             return NSLocalizedString("Invalid hashed password!")
-        case .CantGenerateVerifier:
+        case .cantGenerateVerifier:
             return NSLocalizedString("Can't create a SRP verifier!")
-        case .CantGenerateSRPClient:
+        case .cantGenerateSRPClient:
             return NSLocalizedString("Can't create a SRP Client")
-        case .InvalideAuthInfo:
+        case .invalideAuthInfo:
             return NSLocalizedString("Can't get user auth info")
-        case .Default:
+        case .default:
             return NSLocalizedString("Password update failed")
         }
     }

@@ -11,7 +11,7 @@ class DebugDetailViewController: UIViewController {
     
     @IBOutlet weak var debugDetail: UITextView!
     
-    private var detail : String!
+    fileprivate var detail : String!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,13 +21,13 @@ class DebugDetailViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         self.debugDetail.text = detail
     }
     
-    func setDetailText (detail : String)
+    func setDetailText (_ detail : String)
     {
         self.detail = detail;
     }
