@@ -9,9 +9,7 @@
 import Foundation
 
 
-
-
-open class TwoFAViewModel {
+class TwoFAViewModel {
     var mode : AuthMode!
     
     init(mode : AuthMode) {

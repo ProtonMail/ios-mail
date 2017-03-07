@@ -93,7 +93,9 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         
         // update content values
         updateMessageView()
-        self.contacts = sharedContactDataService.allContactVOs()
+        
+        // load all contacts
+        //self.contacts = sharedContactDataService.allContactVOs()
         retrieveAllContacts()
         
         self.expirationPicker.alpha = 0.0
@@ -134,11 +136,13 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     
     internal func retrieveAllContacts() {
-        sharedContactDataService.getContactVOs { (contacts, error) -> Void in
+        sharedContactDataService.fetchContacts { (contacts, error) -> Void in
             if let error = error {
                 PMLog.D(" error: \(error)")
             }
-            self.contacts = contacts
+            
+            //TODO::
+            //self.contacts = contacts
             
             self.composeView.toContactPicker.reloadData()
             self.composeView.ccContactPicker.reloadData()
@@ -164,7 +168,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     internal func updateEmbedImages() {
         if let atts = viewModel.getAttachments() {
             for att in atts {
-                if let content_id = att.getContentID(), !content_id.isEmpty && att.isInline() {
+                if let content_id = att.contentID(), !content_id.isEmpty && att.inline() {
                     att.base64AttachmentData({ (based64String) in
                         if !based64String.isEmpty {
                             self.updateEmbedImage(byCID: "cid:\(content_id)", blob:  "data:\(att.mimeType);base64,\(based64String)")
@@ -410,7 +414,8 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         }
     }
     
-    @objc func autoSaveTimer() {
+    @objc func autoSaveTimer()
+    {
         self.collectDraft()
         self.viewModel.updateDraft()
     }
@@ -436,7 +441,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         PMLog.D(edited)
         if let atts = viewModel.getAttachments() {
             for att in atts {
-                if let content_id = att.getContentID(), !content_id.isEmpty && att.isInline() {
+                if let content_id = att.contentID(), !content_id.isEmpty && att.inline() {
                     PMLog.D(content_id)
                     if orignal.contains(content_id) {
                         if !edited.contains(content_id) {
@@ -686,7 +691,7 @@ extension ComposeEmailViewController: AttachmentsTableViewControllerDelegate {
     func attachments(_ attViewController: AttachmentsTableViewController, didDeletedAttachment attachment: Attachment) {
         self.collectDraft()
         
-        if let content_id = attachment.getContentID(), !content_id.isEmpty && attachment.isInline() {
+        if let content_id = attachment.contentID(), !content_id.isEmpty && attachment.inline() {
             self.removeEmbedImage(byCID: "cid:\(content_id)")
         }
         

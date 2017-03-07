@@ -30,7 +30,7 @@ final class UpdateDomainOrder<T : ApiResponse> : ApiRequest<T> {
         return SettingsAPI.Path + "/addressorder" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return SettingsAPI.V_SettingsUpdateDomainRequest
     }
 }
@@ -57,7 +57,7 @@ final class UpdateNotify<T : ApiResponse> : ApiRequest<T> {
         return SettingsAPI.Path + "/notify" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return SettingsAPI.V_SettingsUpdateNotifyRequest
     }
 }
@@ -104,7 +104,7 @@ final class UpdateNotificationEmail<T : ApiResponse> : ApiRequest<T> {
         return SettingsAPI.Path + "/noticeemail" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return SettingsAPI.V_SettingsUpdateNotifyRequest
     }
 }
@@ -131,7 +131,7 @@ final class UpdateNewsRequest<T : ApiResponse> : ApiRequest<T> {
         return SettingsAPI.Path + "/news" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return SettingsAPI.V_SettingsUpdateNewsRequest
     }
 }
@@ -157,7 +157,7 @@ final class UpdateDisplayNameRequest<T : ApiResponse> : ApiRequest<T> {
         return SettingsAPI.Path + "/display" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return SettingsAPI.V_SettingsUpdateDisplayNameRequest
     }
 }
@@ -183,7 +183,7 @@ final class UpdateShowImagesRequest<T : ApiResponse> : ApiRequest<T> {
         return SettingsAPI.Path + "/showimages" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return SettingsAPI.V_SettingsUpdateShowImagesRequest
     }
 }
@@ -209,7 +209,7 @@ final class UpdateSwiftLeftAction<T : ApiResponse> : ApiRequest<T> {
         return SettingsAPI.Path + "/swipeleft" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return SettingsAPI.V_SettingsUpdateSwipeLeftRequest
     }
 }
@@ -235,7 +235,7 @@ final class UpdateSwiftRightAction<T : ApiResponse> : ApiRequest<T> {
         return SettingsAPI.Path + "/swiperight" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return SettingsAPI.V_SettingsUpdateSwipeRightRequest
     }
 }
@@ -300,7 +300,7 @@ final class UpdateLoginPassword<T : ApiResponse> : ApiRequest<T> {
         return SettingsAPI.Path + "/password" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return SettingsAPI.V_SettingsUpdateLoginPasswordRequest
     }
 }

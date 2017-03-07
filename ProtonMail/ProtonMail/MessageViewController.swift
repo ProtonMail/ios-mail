@@ -608,7 +608,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
         if let atts = self.message.attachments.allObjects as? [Attachment] {
             var checkCount = atts.count
             for att in atts {
-                if let content_id = att.getContentID(), !content_id.isEmpty && att.isInline() {
+                if let content_id = att.contentID(), !content_id.isEmpty && att.inline() {
                     att.base64AttachmentData({ (based64String) in
                         if !based64String.isEmpty {
                             objc_sync_enter(self.purifiedBodyLock)

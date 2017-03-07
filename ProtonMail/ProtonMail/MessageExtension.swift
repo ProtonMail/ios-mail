@@ -510,7 +510,7 @@ extension Message {
         for (index, attachment) in message.attachments.enumerated() {
             PMLog.D("index: \(index)")
             if let att = attachment as? Attachment {
-                if att.isInline() || copyAtts {
+                if att.inline() || copyAtts {
                     let attachment = Attachment(context: newMessage.managedObjectContext!)
                     attachment.attachmentID = "0"
                     attachment.message = newMessage

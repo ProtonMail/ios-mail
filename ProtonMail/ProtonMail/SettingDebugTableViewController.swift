@@ -12,10 +12,10 @@ import Foundation
 class SettingDebugViewController: UITableViewController {
     
     //
-    let CellHeight : CGFloat = 30.0
+    let cellHeight : CGFloat             = 30.0
+    let headers : [String]               = ["InQueue", "InFailedQueue"]
     
-    
-    let Headers = ["InQueue", "InFailedQueue"]
+    let kQueueDebugDetailsSegue : String = "queue_debug_details"
     
     fileprivate var tempSelected : Any!
     //
@@ -41,13 +41,13 @@ class SettingDebugViewController: UITableViewController {
         let segueID:String! = segue.identifier
         if (segueID == "queue_debug_details") {
             let detailView = segue.destination as! DebugDetailViewController;
-            detailView.setDetailText("\(tempSelected)")
+            detailView.setDetailText("\(tempSelected!)")
         }
     }
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return Headers.count
+        return headers.count
     }
     
     @objc override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -71,11 +71,11 @@ class SettingDebugViewController: UITableViewController {
         var element : [String : Any]!
         if indexPath.section == 0
         {
-            element = sharedMessageQueue.getQueue()[indexPath.row] as! [String : Any]
+            element = sharedMessageQueue.queueArray()[indexPath.row] as! [String : Any]
         }
         else if indexPath.section == 1
         {
-            element = sharedFailedQueue.getQueue()[indexPath.row] as! [String : Any]
+            element = sharedFailedQueue.queueArray()[indexPath.row] as! [String : Any]
         }
         
         if let element = element["object"] as? [String : String] {
@@ -96,21 +96,21 @@ class SettingDebugViewController: UITableViewController {
     
     @objc override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
     {
-        return CellHeight;
+        return cellHeight;
     }
     
     @objc override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.section == 0
         {
-            tempSelected = sharedMessageQueue.getQueue()[indexPath.row]
+            tempSelected = sharedMessageQueue.queueArray()[indexPath.row]
         }
         else if indexPath.section == 1
         {
-            tempSelected = sharedFailedQueue.getQueue()[indexPath.row]
+            tempSelected = sharedFailedQueue.queueArray()[indexPath.row]
         }
         
-        self.performSegue(withIdentifier: "queue_debug_details", sender: self)
+        self.performSegue(withIdentifier: kQueueDebugDetailsSegue, sender: self)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -129,7 +129,7 @@ class SettingDebugViewController: UITableViewController {
     }
     
     @objc override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        return UITableViewCellEditingStyle.none;
+        return .none;
     }
     
     @objc override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {

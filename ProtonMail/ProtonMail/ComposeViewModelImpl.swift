@@ -230,7 +230,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
         }
     }
     
-    open override func sendMessage() {
+    override func sendMessage() {
         
         self.updateDraft()
         sharedMessageDataService.send(self.message?.messageID)  { task, response, error in
@@ -287,18 +287,18 @@ final class ComposeViewModelImpl : ComposeViewModel {
         
     }
     
-    open override func updateDraft() {
+    override func updateDraft() {
         sharedMessageDataService.saveDraft(self.message);
     }
     
-    override open func deleteDraft() {
+    override func deleteDraft() {
         if let tmpLocation = self.message?.location {
             lastUpdatedStore.ReadMailboxMessage(tmpLocation)
         }
         sharedMessageDataService.deleteDraft(self.message);
     }
     
-    open override func markAsRead() {
+    override func markAsRead() {
         if message != nil {
             message?.isRead = true;
             if let context = message!.managedObjectContext {
@@ -311,7 +311,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
         }
     }
     
-    override open func getHtmlBody() -> String {
+    override func getHtmlBody() -> String {
         //sharedUserDataService.signature
         let signature = self.getDefaultAddress()?.signature ?? "\(sharedUserDataService.signature)"
         

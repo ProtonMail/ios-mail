@@ -133,6 +133,10 @@ class MenuViewController: UIViewController {
                     } else {
                     }
                 }
+            } else if (segue.identifier == kSegueToContacts ) {
+                if let contactViewController = navigationController.viewControllers.first as? ViewModelProtocol {
+                    sharedVMService.contactsViewModel(contactViewController)
+                }
             }
         }
     }

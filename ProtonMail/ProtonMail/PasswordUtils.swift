@@ -15,8 +15,6 @@ enum PasswordError: Error {
 }
 
 final class PasswordUtils {
-    
-    
     static func getHashedPwd(_ authVersion: Int , password: String, username: String, decodedSalt : Data, decodedModulus : Data) -> Data? {
         var hashedPassword : Data?
         switch authVersion {

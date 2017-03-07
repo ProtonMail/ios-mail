@@ -49,7 +49,6 @@ class ComposeViewModel {
     
     func getSubject() -> String {
         return self.subject
-        //return self.message?.subject ?? ""
     }
     
     func setSubject(_ sub : String) {

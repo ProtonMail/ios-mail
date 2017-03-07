@@ -95,7 +95,7 @@ class MailboxTableViewCell: UITableViewCell {
     @IBAction func favoriteButtonAction(_ sender: UIButton) {
     }
     
-    func checkboxTapped() {
+    @objc func checkboxTapped() {
         if (isChecked) {
             checkboxButton.setImage(kCheckboxUncheckedImage, for: UIControlState())
         } else {

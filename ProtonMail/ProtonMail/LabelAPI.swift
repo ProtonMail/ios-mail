@@ -22,7 +22,7 @@ final class GetLabelsRequest<T : ApiResponse> : ApiRequest<T> {
         return LabelAPI.Path + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return LabelAPI.V_LabelFetchRequest
     }
 }
@@ -61,7 +61,7 @@ final class ApplyLabelToMessageRequest<T : ApiResponse> : ApiRequest<T> {
         return LabelAPI.Path + "/apply/" + self.labelID + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return LabelAPI.V_ApplyLabelToMessageRequest
     }
 }
@@ -93,7 +93,7 @@ final class RemoveLabelFromMessageRequest<T : ApiResponse> : ApiRequest<T> {
         return LabelAPI.Path + "/remove/" + self.labelID + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return LabelAPI.V_RemoveLabelFromMessageRequest
     }
 }
@@ -131,7 +131,7 @@ final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
         return LabelAPI.Path + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return LabelAPI.V_CreateLabelRequest
     }
 }
@@ -167,7 +167,7 @@ final class UpdateLabelRequest<T : ApiResponse> : ApiRequest<T> {
         return LabelAPI.Path + "/\(labelID)" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return LabelAPI.V_UpdateLabelRequest
     }
 }
@@ -199,7 +199,7 @@ final class DeleteLabelRequest<T : ApiResponse> : ApiRequest<T> {
         return LabelAPI.Path + "/\(labelID)" + AppConstants.DEBUG_OPTION
     }
     
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return LabelAPI.V_DeleteLabelRequest
     }
 }

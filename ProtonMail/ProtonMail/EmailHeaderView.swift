@@ -1288,7 +1288,7 @@ extension EmailHeaderView: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         if attachments.count > indexPath.row {
             let attachment = attachmentForIndexPath(indexPath)
-            if !attachment.isDownloaded {
+            if !attachment.downloaded {
                 downloadAttachment(attachment, forIndexPath: indexPath)
             } else if let localURL = attachment.localURL {
                 if FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {

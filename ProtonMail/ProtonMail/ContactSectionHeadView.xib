@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ContactSectionHeadView" customModule="ProtonMail" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="365" height="65"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yaY-1h-iLG">
+                    <rect key="frame" x="0.0" y="0.0" width="365" height="65"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Encrypted Contact Details" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uor-VI-44p">
+                            <rect key="frame" x="0.0" y="0.0" width="365" height="65"/>
+                            <color key="backgroundColor" red="0.57647058819999997" green="0.59215686270000001" blue="0.80392156859999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_lock-pgpmime" translatesAutoresizingMaskIntoConstraints="NO" id="y7u-Sb-7HT">
+                            <rect key="frame" x="335" y="25.5" width="14" height="14"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="14" id="5Ey-ZU-2ys"/>
+                                <constraint firstAttribute="width" constant="14" id="tUk-ug-6d5"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="uor-VI-44p" secondAttribute="bottom" id="4Ms-Zl-cCm"/>
+                        <constraint firstItem="uor-VI-44p" firstAttribute="leading" secondItem="yaY-1h-iLG" secondAttribute="leading" id="9hq-Tq-bCR"/>
+                        <constraint firstAttribute="trailing" secondItem="y7u-Sb-7HT" secondAttribute="trailing" constant="16" id="DHa-EO-qaX"/>
+                        <constraint firstAttribute="trailing" secondItem="uor-VI-44p" secondAttribute="trailing" id="TQg-2N-T1Y"/>
+                        <constraint firstItem="uor-VI-44p" firstAttribute="top" secondItem="yaY-1h-iLG" secondAttribute="top" id="cON-F5-BZx"/>
+                        <constraint firstItem="y7u-Sb-7HT" firstAttribute="centerY" secondItem="yaY-1h-iLG" secondAttribute="centerY" id="vuO-lm-zau"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="yaY-1h-iLG" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="42Z-xS-QY9"/>
+                <constraint firstAttribute="trailing" secondItem="yaY-1h-iLG" secondAttribute="trailing" id="fd8-u2-b1B"/>
+                <constraint firstItem="yaY-1h-iLG" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="hpu-dH-Dea"/>
+                <constraint firstAttribute="bottom" secondItem="yaY-1h-iLG" secondAttribute="bottom" id="rUB-tD-9gI"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="headerLabel" destination="uor-VI-44p" id="mQT-HL-zar"/>
+                <outlet property="signMark" destination="y7u-Sb-7HT" id="NWu-Eg-eDj"/>
+            </connections>
+            <point key="canvasLocation" x="5.5" y="-242.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="mail_lock-pgpmime" width="14" height="14"/>
+    </resources>
+</document>

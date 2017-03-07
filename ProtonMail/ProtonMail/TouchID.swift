@@ -10,9 +10,9 @@ import Foundation
 
 let sharedTouchID = TouchID ()
 
-open class TouchID {
+class TouchID {
     
-    open func showTouchIDOrPin() -> Bool {
+    func showTouchIDOrPin() -> Bool {
         if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
             if userCachedStatus.lockedApp {
                 return true

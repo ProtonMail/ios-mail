@@ -57,7 +57,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     @IBOutlet weak var undoBottomDistance: NSLayoutConstraint!
     // MARK: - Private attributes
     
-    fileprivate var viewModel: MailboxViewModel!
+    internal var viewModel: MailboxViewModel!
+    //TODO:: this need release the delegate after use
     fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     
     // this is for when user click the notification email
@@ -75,9 +76,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate var undoMessage : UndoMessage?
     
     fileprivate var isShowUndo : Bool = false
-    //private var notificationMessageID : String? = nil
-    
-    
     fileprivate var isCheckingHuman: Bool = false
     
     fileprivate var ratingMessage : Message?

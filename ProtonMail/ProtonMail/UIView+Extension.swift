@@ -28,8 +28,6 @@ extension UIView {
     }
     
     func shake(_ times: Float, offset: CGFloat) {
-        
-        PMLog.D("\(self.center)");
         UIView.animate(withDuration: 1.0, animations: {
             let shakeAnimation = CABasicAnimation(keyPath: "position")
             shakeAnimation.duration = 0.075
@@ -42,7 +40,7 @@ extension UIView {
         })
     }
     
-    func addBorder(_ side: BorderSide, color: UIColor, borderWidth: CGFloat) {
+    public func add(border side: UIBorderSide, color: UIColor, borderWidth: CGFloat) {
         let border = CALayer()
         border.backgroundColor = color.cgColor
         

@@ -75,7 +75,7 @@ class AddressBookService {
             }
         } else {
             let err =  NSError.getContactsError()
-            err.uploadFabricAnswer(ContactsErrorTitle)
+            err.upload(toFabric: ContactsErrorTitle)
         }
         return contactVOs
     }

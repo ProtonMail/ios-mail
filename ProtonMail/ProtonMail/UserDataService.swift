@@ -166,7 +166,16 @@ class UserDataService {
         return userInfo?.showImages == 0
     }
     
-    // MARK: - variables
+    var firstUserPublicKey: String? {
+        if let keys = userInfo?.userKeys, keys.count > 0 {
+            for k in keys {
+                return k.public_key
+            }
+        }
+        return nil
+    }
+    
+    // MARK: - Public variables
     
     var defaultEmail : String {
         if let addr = userAddresses.getDefaultAddress() {
@@ -499,7 +508,7 @@ class UserDataService {
                 } while(forceRetry && forceRetryVersion >= 0)
                 return { completion(nil, nil, nil) } ~> .main
             } catch let error as NSError {
-                error.uploadFabricAnswer("UpdateLoginPassword")
+                error.upload(toFabric: "UpdateLoginPassword")
                 return { completion(nil, nil, error) } ~> .main
             }
         } ~> .async
@@ -634,7 +643,7 @@ class UserDataService {
                 } while(forceRetry && forceRetryVersion >= 0)
                 return { completion(nil, nil, nil) } ~> .main
             } catch let error as NSError {
-                error.uploadFabricAnswer("UpdateMailBoxPassword")
+                error.upload(toFabric: "UpdateMailBoxPassword")
                 return { completion(nil, nil, error) } ~> .main
             }
         } ~> .async
@@ -737,7 +746,7 @@ class UserDataService {
                 } while(forceRetry && forceRetryVersion >= 0)
                 return { completion(nil, nil, nil) } ~> .main
             } catch let error as NSError {
-                error.uploadFabricAnswer("UpdateLoginPassword")
+                error.upload(toFabric: "UpdateLoginPassword")
                 return { completion(nil, nil, error) } ~> .main
             }
         } ~> .async

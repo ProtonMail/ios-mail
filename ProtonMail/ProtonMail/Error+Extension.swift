@@ -11,9 +11,9 @@ import Foundation
 
 extension Error {
     
-    func alertController() -> UIAlertController {
+//    func alertController() -> UIAlertController {
         
-        let message = self.localizedDescription
+//        let message = self.localizedDescription
        // var title = self.localizedTitle
         
 //        var message = self.localizedFailureReason
@@ -27,6 +27,6 @@ extension Error {
 //            
 //            message = message! + localizedRecoverySuggestion!
 //        }
-        return UIAlertController(title: message /*localizedDescription*/, message: message, preferredStyle: .alert)
-    }
+//        return UIAlertController(title: message /*localizedDescription*/, message: message, preferredStyle: .alert)
+//    }
 }

@@ -92,6 +92,7 @@ class ApiRequest<T : ApiResponse> : Package {
     public func call(_ complete: ResponseCompletionBlock?) {
         //TODO :: 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
         let completionWrapper:  APIService.CompletionBlock = { task, res, error in
+            
             let realType = T.self
             let apiRes = realType.init()
             

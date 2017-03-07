@@ -26,11 +26,11 @@ extension UITableView {
         UIView.animate(withDuration: Constant.animationDuration, animations: { () -> Void in
             self.tableFooterView?.alpha = 0
             return
-            }, completion: { (finished) -> Void in
-                UIView.animate(withDuration: Constant.animationDuration, animations: { () -> Void in
-                    self.tableFooterView = view
-                })
-        }) 
+        }, completion: { (finished) -> Void in
+            UIView.animate(withDuration: Constant.animationDuration, animations: { () -> Void in
+                self.tableFooterView = view
+            })
+        })
     }
     func noSeparatorsBelowFooter() {
         tableFooterView = UIView(frame: CGRect.zero)
@@ -39,7 +39,7 @@ extension UITableView {
     func showLoadingFooter() {
         tableFooterView = LoadingView.viewForOwner(self)
         tableFooterView?.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
-    }    
+    }
 }
 
 

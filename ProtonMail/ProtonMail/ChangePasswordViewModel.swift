@@ -154,7 +154,7 @@ class ChangeSinglePasswordViewModel : ChangePWDViewModel{
     }
     
     func setNewPassword(_ current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: @escaping ChangePasswordComplete) {
-        //passwords support empty spaces like " 1 1 "
+        //passwords support empty spaces like " * * "
         let curr_pwd = current
         let newpwd = new_pwd
         let confirmpwd = confirm_new_pwd

@@ -10,6 +10,6 @@ import Foundation
 
 
 
-open class MessageViewModel {
+class MessageViewModel {
     
 }

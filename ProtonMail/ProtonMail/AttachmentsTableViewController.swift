@@ -64,7 +64,7 @@ class AttachmentsTableViewController: UITableViewController {
         normalAttachments.removeAll()
         inlineAttachments.removeAll()
         for att in attachments {
-            if att.isInline() {
+            if att.inline() {
                 inlineAttachments.append(att)
             } else {
                 normalAttachments.append(att)

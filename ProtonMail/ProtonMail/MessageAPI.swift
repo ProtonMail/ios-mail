@@ -14,7 +14,7 @@ final class MessageCountRequest<T : ApiResponse> : ApiRequest<T> {
     override open func getRequestPath() -> String {
         return MessageAPI.Path + "/count" + AppConstants.DEBUG_OPTION
     }
-    override open func getVersion() -> Int {
+    override func getVersion() -> Int {
         return MessageAPI.V_MessageFetchRequest
     }
 }
@@ -426,7 +426,7 @@ final class AttachmentKeyPackage : Package {
         self.algo = Algo
     }
     
-    open func toDictionary() -> Dictionary<String, Any>? {
+    func toDictionary() -> Dictionary<String, Any>? {
         var out : [String : Any] = [ "ID" : self.ID ]
         if !self.algo.isEmpty {
             out["Algo"] = self.algo

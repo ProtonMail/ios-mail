@@ -20,15 +20,12 @@ import CoreData
 let sharedContactDataService = ContactDataService()
 
 class ContactDataService {
-    typealias ContactCompletionBlock = (([Contact]?, NSError?) -> Void)
-    
-    func addContact(name: String, email: String, completion: ContactCompletionBlock?) {
-        sharedAPIService.contactAdd(name: name, email: email, completion: completionBlockForContactCompletionBlock(completion))
-    }
-    
-    var managedObjectContext: NSManagedObjectContext? {
-        return sharedCoreDataService.mainManagedObjectContext
-    }
+
+    typealias ContactFetchComplete = (([Contact]?, NSError?) -> Void)
+    typealias ContactAddComplete = ((Contact?, NSError?) -> Void)
+    typealias ContactDeleteComplete = ((NSError?) -> Void)
+    typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
+    typealias ContactDetailsComplete = ((Contact?, NSError?) -> Void)
     
     func cleanUp()
     {
@@ -37,31 +34,65 @@ class ContactDataService {
         }
     }
     
-    /// Only call from the main thread
-    func allContacts() -> [Contact] {
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            //context.performBlockAndWait() {
-            return self.allContactsInManagedObjectContext(context)
-            //}
-        }
-        return []
+    fileprivate var managedObjectContext: NSManagedObjectContext? {
+        return sharedCoreDataService.mainManagedObjectContext
     }
     
-    func allContactsInManagedObjectContext(_ context: NSManagedObjectContext) -> [Contact] {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
-        do {
-            if let contacts = try context.fetch(fetchRequest) as? [Contact] {
-                return contacts
-            }
-        } catch let ex as NSError {
-            PMLog.D(" error: \(ex)")
+    // MARK : fuctions for only fetch the local cache
+    
+    /**
+     fetch the all contacts from local cache
+     
+     :returns: NSFetchedResultsController
+     */
+    func fetchedResultsControllerForLocation() -> NSFetchedResultsController<NSFetchRequestResult>? {
+        if let moc = managedObjectContext {
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: Contact.Attributes.name, ascending: true)]
+            return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         }
-        return []
+        return nil
     }
     
-    func deleteContact(_ contactID: String!, completion: ContactCompletionBlock?) {
-        sharedAPIService.contactDelete(contactID: contactID) { (task, response, error) -> Void in
-            if error == nil {
+    
+    
+//    /// Only call from the main thread
+//    func allContacts() -> [Contact] {
+//        if let context = sharedCoreDataService.mainManagedObjectContext {
+//            //context.performBlockAndWait() {
+//            return self.allContactsInManagedObjectContext(context)
+//            //}
+//        }
+//        return []
+//    }
+//    
+//    fileprivate func allContactsInManagedObjectContext(_ context: NSManagedObjectContext) -> [Contact] {
+//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
+//        do {
+//            if let contacts = try context.fetch(fetchRequest) as? [Contact] {
+//
+////             if let contacts = try context.executeFetchRequest(fetchRequest) as? [Contact] {
+////                 for c in contacts {
+////                     if let emails = c.getEmails() {
+////                         for e in emails {
+////                             e.log()
+////                         }
+////                     }
+////                 }
+//                return contacts
+//            }
+//        } catch let ex as NSError {
+//            PMLog.D(" error: \(ex)")
+//        }
+//        return []
+//    }
+
+    func deleteContact(_ contactID: String, completion: @escaping ContactDeleteComplete) {
+        let api = ContactDeleteRequest<ApiResponse>(ids: [contactID])
+        api.call { (task, response, hasError) in
+            if hasError {
+                completion(response?.error)
+            } else {
                 if let context = sharedCoreDataService.mainManagedObjectContext {
                     context.performAndWait() {
                         if let contact = Contact.contactForContactID(contactID, inManagedObjectContext: context) {
@@ -69,27 +100,42 @@ class ContactDataService {
                         }
                         if let error = context.saveUpstreamIfNeeded() {
                             PMLog.D(" error: \(error)")
+                            completion(error)
+                        } else {
+                            completion(nil)
                         }
                     }
+                } else {
+                    completion(NSError.unableToParseResponse(response))
                 }
             }
-            completion?(nil,nil)
         }
     }
-    
-    func fetchContacts(_ completion: ContactCompletionBlock?) {
-        let completionWrapper: APIService.CompletionBlock = { task, response, error in
-            if let contactsArray = response?["Contacts"] as? [Dictionary<String, Any>] {
+
+    func addContact(name: String,
+                    emails: [ContactEmail],
+                    cards: [CardData],
+                    completion: ContactAddComplete?) {
+        
+        let api = ContactAddRequest<ContactAddResponse>(name: name,
+                                                        lids: [],
+                                                        emails: emails,
+                                                        cards: cards)
+        api.call { (task, response, hasError) in
+            if let error = response?.resError {
+                completion?(nil, error)
+            } else if let contactDict = response?.contact {
                 let context = sharedCoreDataService.newManagedObjectContext()
                 context.performAndWait() {
                     do {
-                        if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName, fromJSONArray: contactsArray, in: context) as? [Contact] {
-                            self.removeContacts(contacts, notInContext: context)
+                        if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName,
+                                                                         fromJSONDictionary: contactDict,
+                                                                         in: context) as? Contact {
                             if let error = context.saveUpstreamIfNeeded() {
                                 PMLog.D(" error: \(error)")
                                 completion?(nil, error)
                             } else {
-                                completion?(self.allContacts(), nil)
+                               completion?(contact, nil)
                             }
                         }
                     } catch let ex as NSError {
@@ -101,109 +147,218 @@ class ContactDataService {
                 completion?(nil, NSError.unableToParseResponse(response))
             }
         }
-        sharedAPIService.contactList(completionWrapper)
     }
     
-    func updateContact(contactID: String, name: String, email: String, completion: ContactCompletionBlock?) {
-        if (completion != nil) {
-            sharedAPIService.contactUpdate(contactID: contactID, name: name, email: email, completion: completionBlockForContactCompletionBlock(completion))
-        } else {
-            sharedAPIService.contactUpdate(contactID: contactID, name: name, email: email, completion: nil)
-        }
-    }
-    
-    // MARK: - Private methods
-    func completionBlockForContactCompletionBlock(_ completion: ContactCompletionBlock?) -> APIService.CompletionBlock {
-        return { task, response, error in
-            if error == nil {
-                self.fetchContacts(completion)
-            } else {
-                completion?(nil, error)
-            }
-        }
-    }
-    
-    func removeContacts(_ contacts: [Contact], notInContext context: NSManagedObjectContext) {
-        if contacts.count == 0 {
-            return
-        }
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "NOT (SELF IN %@)", contacts)
-        do {
-            let deletedObjects = try context.fetch(fetchRequest)
-            for deletedObject in deletedObjects as! [NSManagedObject] {
-                context.delete(deletedObject)
-            }
-        } catch let ex as NSError {
-            PMLog.D(" error: \(ex)")
-        }
-    }
-}
-
-// MARK: AddressBook contact extension
-
-extension ContactDataService {
-    typealias ContactVOCompletionBlock = ((_ contacts: [ContactVO], _ error: Error?) -> Void)
-    
-    func allContactVOs() -> [ContactVO] {
-        var contacts: [ContactVO] = []
-        
-        for contact in sharedContactDataService.allContacts() {
-            contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: contact.email, isProtonMailContact: true))
-        }
-        
-        return contacts
-    }
-    
-    func fetchContactVOs(_ completion: @escaping ContactVOCompletionBlock) {
-        // fetch latest contacts from server
-        fetchContacts { (_, error) -> Void in
-            self.requestAccessToAddressBookIfNeeded(completion)
-            self.processContacts(addressBookAccessGranted: sharedAddressBookService.hasAccessToAddressBook(), lastError: error, completion: completion)
-        }
-    }
-    
-    func getContactVOs(_ completion: @escaping ContactVOCompletionBlock) {
-        
-        self.requestAccessToAddressBookIfNeeded(completion)
-        self.processContacts(addressBookAccessGranted: sharedAddressBookService.hasAccessToAddressBook(), lastError: nil, completion: completion)
-        
-    }
-    
-    func requestAccessToAddressBookIfNeeded(_ cp: @escaping ContactVOCompletionBlock) {
-        if !sharedAddressBookService.hasAccessToAddressBook() {
-            sharedAddressBookService.requestAuthorizationWithCompletion({ (granted: Bool, error: Error?) -> Void in
-                self.processContacts(addressBookAccessGranted: granted, lastError: error, completion: cp)
-            })
-        }
-    }
-    
-    func processContacts(addressBookAccessGranted granted: Bool, lastError: Error?, completion: @escaping ContactVOCompletionBlock) {
-        DispatchQueue.global(qos: DispatchQoS.QoSClass.utility).async {
-            var contacts: [ContactVO] = []
-            if granted {
-                // get contacts from address book
-                contacts = sharedAddressBookService.contacts()
-            }
-            
-            // merge address book and core data contacts
-            let context = sharedCoreDataService.newManagedObjectContext()
-            context.performAndWait() {
-                let contactesCache = sharedContactDataService.allContactsInManagedObjectContext(context)
-                var pm_contacts: [ContactVO] = []
-                for contact in contactesCache {
-                    if contact.managedObjectContext != nil {
-                        pm_contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: contact.email, isProtonMailContact: true))
+    func updateContact(contactid : String,
+                       name: String?,
+                       emails: [ContactEmail]?,
+                       cards: [CardData]?,
+                       completion: ContactAddComplete?) {
+        let api = ContactUpdateRequest<ContactDetailResponse>(contactid: contactid,
+                                                              name: name,
+                                                              lids: nil,
+                                                              emails: nil,
+                                                              ecryptData: nil)
+        api.call { (task, response, hasError) in
+            if hasError {
+                completion?(nil, response?.error)
+            } else if let contactDict = response?.contact {
+                let context = sharedCoreDataService.newManagedObjectContext()
+                context.performAndWait() {
+                    do {
+                        if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName,
+                                                                         fromJSONDictionary: contactDict,
+                                                                         in: context) as? Contact {
+                            if let error = context.saveUpstreamIfNeeded() {
+                                PMLog.D(" error: \(error)")
+                                completion?(nil, error)
+                            } else {
+                                completion?(contact, nil)
+                            }
+                        }
+                    } catch let ex as NSError {
+                        PMLog.D(" error: \(ex)")
+                        completion?(nil, ex)
                     }
                 }
-                pm_contacts.distinctMerge(contacts)
-                contacts = pm_contacts
-            }
-            contacts.sort { $0.name.lowercased() == $1.name.lowercased() ?  $0.email.lowercased() < $1.email.lowercased() : $0.name.lowercased() < $1.name.lowercased()}
-            
-            DispatchQueue.main.async {
-                completion(contacts, lastError)
+            } else {
+                completion?(nil, NSError.unableToParseResponse(response))
             }
         }
     }
+    
+    func fetchContacts(completion: ContactFetchComplete?) {
+        //TODO::here need change to fetch by page until got total
+        let api = ContactEmailsRequest<ContactEmailsResponse>(page: 0, pageSize: 300)
+        api.call { (task, response, hasError) in
+            if let contactsArray = response?.contacts {
+                let context = sharedCoreDataService.newManagedObjectContext()
+                context.performAndWait() {
+                    do {
+                        if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName, fromJSONArray: contactsArray, in: context) as? [Contact] {
+                            //self.removeContacts(contacts, notInContext: context)
+                            if let error = context.saveUpstreamIfNeeded() {
+                                PMLog.D(" error: \(error)")
+                                completion?(nil, error)
+                            } else {
+                                completion?(contacts, nil)
+                                //completion?(self.allContacts(), nil)
+                            }
+                        }
+                    } catch let ex as NSError {
+                        PMLog.D(" error: \(ex)")
+                        completion?(nil, ex)
+                    }
+                }
+            } else {
+                completion?(nil, NSError.unableToParseResponse(response))
+            }
+        }
+    }
+    
+    
+    func fetchContactDetails(cid: String, completion: ContactDetailsComplete?) {
+        let api = ContactDetailRequest<ContactDetailResponse>(cid: cid)
+        api.call { (task, response, hasError) in
+            if let contactDict = response?.contact {
+                let context = sharedCoreDataService.newManagedObjectContext()
+                context.performAndWait() {
+                    do {
+                        if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: contactDict, in: context) as? Contact {
+                            contact.isDownloaded = true
+                            if let error = context.saveUpstreamIfNeeded() {
+                                PMLog.D(" error: \(error)")
+                                completion?(nil, error)
+                            } else {
+                                completion?(contact, nil)
+                            }
+                        }
+                    } catch let ex as NSError {
+                        PMLog.D(" error: \(ex)")
+                        completion?(nil, ex)
+                    }
+                }
+            } else {
+                completion?(nil, NSError.unableToParseResponse(response))
+            }
+            
+            
+//            if let datas = response?.contact?["Data"] as? [[String : Any]], datas.count > 0 {
+//                if let dataString = datas[0]["Data"] as? String {
+//                    if let userKeys = sharedUserDataService.userInfo?.userKeys {
+//                        for k in userKeys {
+//                            let out = sharedOpenPGP.decryptMessageSingleKey(dataString, privateKey: k.private_key, passphras: sharedUserDataService.mailboxPassword!)
+//                            
+//                            PMLog.D(out);
+//                        }
+//                    }
+//                }
+//            }
+        }
+
+    }
+    
+
+//    func updateContact(contactID: String, name: String, email: String, completion: ContactCompletionBlock?) {
+////        if (completion != nil) {
+////            sharedAPIService.contactUpdate(contactID: contactID, name: name, email: email, completion: completionBlockForContactCompletionBlock(completion))
+////        } else {
+////            sharedAPIService.contactUpdate(contactID: contactID, name: name, email: email, completion: nil)
+////        }
+//    }
+//    
+//    // MARK: - Private methods
+//    fileprivate func completionBlockForContactCompletionBlock(_ completion: ContactCompletionBlock?) -> APIService.CompletionBlock {
+//        return { task, response, error in
+//            if error == nil {
+//                self.getContacts(completion: completion)
+//            } else {
+//                completion?(nil, error)
+//            }
+//        }
+//    }
+//    
+//    fileprivate func removeContacts(_ contacts: [Contact], notInContext context: NSManagedObjectContext) {
+//        if contacts.count == 0 {
+//            return
+//        }
+//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
+//        fetchRequest.predicate = NSPredicate(format: "NOT (SELF IN %@)", contacts)
+//        do {
+//            let deletedObjects = try context.fetch(fetchRequest)
+//            for deletedObject in deletedObjects as! [NSManagedObject] {
+//                context.delete(deletedObject)
+//            }
+//        } catch let ex as NSError {
+//            PMLog.D(" error: \(ex)")
+//        }
+//    }
+//}
+//
+//// MARK: AddressBook contact extension
+//
+//extension ContactDataService {
+//    typealias ContactVOCompletionBlock = ((_ contacts: [ContactVO], _ error: Error?) -> Void)
+//    
+//    func allContactVOs() -> [ContactVO] {
+//        var contacts: [ContactVO] = []
+//        
+//        for contact in sharedContactDataService.allContacts() {
+//            contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: contact.getDisplayEmails(), isProtonMailContact: true))
+//        }
+//        
+//        return contacts
+//    }
+//    
+//    func fetchContactVOs(_ completion: @escaping ContactVOCompletionBlock) {
+//        // fetch latest contacts from server
+//        getContacts { (_, error) -> Void in
+//            self.requestAccessToAddressBookIfNeeded(completion)
+//            self.processContacts(addressBookAccessGranted: sharedAddressBookService.hasAccessToAddressBook(), lastError: error, completion: completion)
+//        }
+//    }
+//    
+//    func getContactVOs(_ completion: @escaping ContactVOCompletionBlock) {
+//        
+//        self.requestAccessToAddressBookIfNeeded(completion)
+//        self.processContacts(addressBookAccessGranted: sharedAddressBookService.hasAccessToAddressBook(), lastError: nil, completion: completion)
+//        
+//    }
+//    
+//    fileprivate func requestAccessToAddressBookIfNeeded(_ cp: @escaping ContactVOCompletionBlock) {
+//        if !sharedAddressBookService.hasAccessToAddressBook() {
+//            sharedAddressBookService.requestAuthorizationWithCompletion({ (granted: Bool, error: Error?) -> Void in
+//                self.processContacts(addressBookAccessGranted: granted, lastError: error, completion: cp)
+//            })
+//        }
+//    }
+//    
+//    fileprivate func processContacts(addressBookAccessGranted granted: Bool, lastError: Error?, completion: @escaping ContactVOCompletionBlock) {
+//        DispatchQueue.global(qos: DispatchQoS.QoSClass.utility).async {
+//            var contacts: [ContactVO] = []
+//            if granted {
+//                // get contacts from address book
+//                contacts = sharedAddressBookService.contacts()
+//            }
+//            
+//            // merge address book and core data contacts
+//            let context = sharedCoreDataService.newManagedObjectContext()
+//            context.performAndWait() {
+//                let contactesCache = sharedContactDataService.allContactsInManagedObjectContext(context)
+//                var pm_contacts: [ContactVO] = []
+//                for contact in contactesCache {
+//                    if contact.managedObjectContext != nil {
+//                        pm_contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: contact.getDisplayEmails(), isProtonMailContact: true))
+//                    }
+//                }
+//                pm_contacts.distinctMerge(contacts)
+//                contacts = pm_contacts
+//            }
+//            contacts.sort { $0.name.lowercased() == $1.name.lowercased() ?  $0.email.lowercased() < $1.email.lowercased() : $0.name.lowercased() < $1.name.lowercased()}
+//            
+//            DispatchQueue.main.async {
+//                completion(contacts, lastError)
+//            }
+//        }
+//    }
 }

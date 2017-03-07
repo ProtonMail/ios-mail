@@ -79,6 +79,13 @@ final class UserInfo : NSObject {
         
         self.userKeys = keys ?? Array<Key>()
     }
+    
+    func firstUserKey() -> Key? {
+        if self.userKeys.count > 0 {
+            return self.userKeys[0]
+        }
+        return nil
+    }
 }
 
 final class Address: NSObject {

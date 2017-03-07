@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-private let DeviceList = [
+fileprivate let DeviceList = [
     /* iPod 5 */          "iPod5,1": "iPod Touch 5",
     /* iPhone 4 */        "iPhone3,1":  "iPhone 4", "iPhone3,2": "iPhone 4", "iPhone3,3": "iPhone 4",
     /* iPhone 4S */       "iPhone4,1": "iPhone 4S",
@@ -29,7 +29,7 @@ private let DeviceList = [
     /* Simulator */       "x86_64": "Simulator", "i386": "Simulator"
 ]
 
-public extension UIDevice {
+extension UIDevice {
     
     var modelName: String {
         var systemInfo = utsname()
@@ -68,53 +68,13 @@ public extension UIDevice {
         }
     }
     
-    
     func isLargeScreen() -> Bool{
         let screenBounds = UIScreen.main.bounds;
-//        PMLog.D("height: \(screenBounds.height)")
-//        PMLog.D("model: \(self.model)")
         if(screenBounds.height > 568)
         {
             return true;
         }
-        
         return false;
-//        var isLarge = false;
-//        let modelName = self.modelName;
-//        switch(modelName)
-//        {
-//        case "iPhone 6":
-//            isLarge = true;
-//            break;
-//        case "iPhone 6 Plus":
-//            isLarge = true;
-//            break;
-//        case "iPhone 6 Plus":
-//            isLarge = true;
-//            break;
-//        case "iPad 2":
-//            isLarge = true;
-//            break;
-//        case "iPad 3":
-//            isLarge = true;
-//            break;
-//        case "iPad 4":
-//            isLarge = true;
-//            break;
-//        case   "iPad Air":
-//            isLarge = true;
-//            break;
-//        case  "iPad Air 2":
-//            isLarge = true;
-//            break;
-//        case "iPad Mini":
-//            isLarge = true;
-//            break;
-//        default:
-//            break;
-//        }
-//        
-//        return isLarge;
     }
     
 }

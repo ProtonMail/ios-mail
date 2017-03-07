@@ -8,7 +8,7 @@
 
 import Foundation
 
-open class Proofs {
+class Proofs {
     var clientEphemeral : Data
     var clientProof : Data
     var expectedServerProof : Data
@@ -19,8 +19,6 @@ open class Proofs {
         self.expectedServerProof = serverProof
     }
 }
-
-
 
 
 //public static Proofs generateProofs(final int bitLength, final byte[] modulusRepr, final byte[] serverEphemeralRepr, final byte[] hashedPasswordRepr) throws NoSuchAlgorithmException {

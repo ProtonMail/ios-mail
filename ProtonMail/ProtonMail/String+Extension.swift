@@ -86,6 +86,7 @@ extension String {
             return [];
         }
 
+        print(self)
         do {
             if let data = self.data(using: String.Encoding.utf8) {
                 let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! [[String:String]]

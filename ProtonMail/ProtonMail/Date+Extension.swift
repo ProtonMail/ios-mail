@@ -12,7 +12,9 @@ import Foundation
 extension Date {
     
     // you can create a read-only computed property to return just the nanoseconds as Int
-    var nanosecond: Int { return (Calendar.current as NSCalendar).components(.nanosecond,  from: self).nanosecond!   }
+    var nanosecond: Int {
+        return (Calendar.current as NSCalendar).components(.nanosecond,  from: self).nanosecond!
+    }
     
     // or an extension function to format your date
     func formattedWith(_ format:String)-> String {

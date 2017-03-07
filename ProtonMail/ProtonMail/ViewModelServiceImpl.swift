@@ -178,5 +178,65 @@ class ViewModelServiceImpl: ViewModelService {
             oldDefault.synchronize()
         }
     }
+    
+    //contacts
+    override func contactsViewModel(_ vmp: ViewModelProtocol) {
+        if latestComposerViewModel != nil {
+            
+        }
+        
+        if activeViewController != nil {
+            
+        }
+        activeViewController = vmp
+        vmp.setViewModel(ContactsViewModelImpl())
+    }
+    
+    override func contactDetailsViewModel(_ vmp: ViewModelProtocol, contact: Contact!) {
+        if latestComposerViewModel != nil {
+            
+        }
+        
+        if activeViewController != nil {
+            
+        }
+        activeViewController = vmp
+        vmp.setViewModel(ContactDetailsViewModelImpl(c: contact))
+    }
+    
+    override func contactAddViewModel(_ vmp: ViewModelProtocol) {
+        if latestComposerViewModel != nil {
+            
+        }
+        
+        if activeViewController != nil {
+            
+        }
+        activeViewController = vmp
+        vmp.setViewModel(ContactAddViewModelImpl())
+    }
+    
+    override func contactEditViewModel(_ vmp: ViewModelProtocol, contact: Contact!) {
+        if latestComposerViewModel != nil {
+            
+        }
+        
+        if activeViewController != nil {
+            
+        }
+        activeViewController = vmp
+        vmp.setViewModel(ContactEditViewModelImpl(c: contact))
+    }
 
+    override func contactTypeViewModel(_ vmp : ViewModelProtocol, type: ContactEditTypeInterface) {
+        if latestComposerViewModel != nil {
+            
+        }
+        
+        if activeViewController != nil {
+            
+        }
+        activeViewController = vmp
+        vmp.setViewModel(ContactTypeViewModelImpl(t: type))
+    }
 }

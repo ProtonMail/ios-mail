@@ -20,14 +20,9 @@ import CoreData
 extension Attachment {
     
     struct Attributes {
-        static let entityName = "Attachment"
+        static let entityName   = "Attachment"
         static let attachmentID = "attachmentID"
     }
-    
-    var isDownloaded: Bool {
-        return localURL != nil
-    }
-    
     convenience init(context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entity(forEntityName: Attributes.entityName, in: context)!, insertInto: context)
     }
@@ -45,13 +40,17 @@ extension Attachment {
     
     // MARK: - This is private functions
     
+    var downloaded: Bool {
+        return localURL != nil
+    }
+    
     fileprivate var passphrase: String {
         return sharedUserDataService.mailboxPassword ?? ""
     }
     
     
-    // Mark : functions
-    func encryptAttachment(_ sender_address_id : String) -> PMNEncryptPackage? {
+    // Mark : public functions
+    func encrypt(byAddrID sender_address_id : String) -> PMNEncryptPackage? {
         do {
             guard let out =  try fileData?.encryptAttachment(sender_address_id, fileName: self.fileName) else {
                 return nil
@@ -62,7 +61,7 @@ extension Attachment {
         }
     }
     
-    func getSessionKey() throws -> Data? {
+    func sessionKey() throws -> Data? {
         if self.keyPacket == nil {
             return nil
         }
@@ -137,7 +136,7 @@ extension Attachment {
         return ""
     }
     
-    func isInline() -> Bool {
+    func inline() -> Bool {
         guard let headerInfo = self.headerInfo else {
             return false
         }
@@ -153,7 +152,7 @@ extension Attachment {
         return false
     }
     
-    func getContentID() -> String? {
+    func contentID() -> String? {
         guard let headerInfo = self.headerInfo else {
             return nil
         }
@@ -169,20 +168,6 @@ extension Attachment {
     }
 }
 
-extension Attachment {
-    class func attachmentDelete(_ attachmentObjectID: NSManagedObjectID, inManagedObjectContext context: NSManagedObjectContext) -> Void {
-        do {
-            if let att = try context.existingObject(with: attachmentObjectID) as? Attachment {
-                context.delete(att)
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D("error: \(error)")
-                }
-            }
-        } catch let ex as NSError {
-            PMLog.D("error: \(ex)")
-        }
-    }
-}
 
 extension UIImage {
     func toAttachment (_ message:Message, fileName : String, type:String) -> Attachment? {

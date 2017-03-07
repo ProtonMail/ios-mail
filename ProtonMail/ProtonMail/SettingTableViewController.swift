@@ -224,9 +224,9 @@ class SettingTableViewController: ProtonMailViewController {
                             if let indexp = tableView.indexPath(for: cell!) {
                                 if indexPath == indexp {
                                     let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
-                                    ActivityIndicatorHelper.showActivityIndicatorAtView(window)
+                                    ActivityIndicatorHelper.showActivityIndicator(at: window)
                                     sharedUserDataService.updateAutoLoadImage(newStatus == true ? 1 : 0) { _, _, error in
-                                        ActivityIndicatorHelper.hideActivityIndicatorAtView(window)
+                                        ActivityIndicatorHelper.hideActivityIndicator(at: window)
                                         if let error = error {
                                             feedback(false)
                                             let alertController = error.alertController()
@@ -602,10 +602,10 @@ class SettingTableViewController: ProtonMailViewController {
                                             }
                                         }
                                         let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
-                                        ActivityIndicatorHelper.showActivityIndicatorAtView(window)
+                                        ActivityIndicatorHelper.showActivityIndicator(at: window)
                                         sharedUserDataService.updateUserDomiansOrder(newAddrs,  newOrder:newOrder) { _, _, error in
                                             tableView.reloadData()
-                                            ActivityIndicatorHelper.hideActivityIndicatorAtView(window)
+                                            ActivityIndicatorHelper.hideActivityIndicator(at: window)
                                             if error == nil {
                                                 self.multi_domains = newAddrs
                                                 tableView.reloadData()
@@ -641,10 +641,10 @@ class SettingTableViewController: ProtonMailViewController {
                             alertController.addAction(UIAlertAction(title: swipeAction.description, style: .default, handler: { (action) -> Void in
                                 let _ = self.navigationController?.popViewController(animated: true)
                                 let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
-                                ActivityIndicatorHelper.showActivityIndicatorAtView(window)
+                                ActivityIndicatorHelper.showActivityIndicator(at: window)
                                 sharedUserDataService.updateUserSwipeAction(action_item == .left, action: swipeAction, completion: { (task, response, error) -> Void in
                                     tableView.reloadData()
-                                    ActivityIndicatorHelper.hideActivityIndicatorAtView(window)
+                                    ActivityIndicatorHelper.hideActivityIndicator(at: window)
                                     if error == nil {
                                         tableView.reloadData()
                                     }
