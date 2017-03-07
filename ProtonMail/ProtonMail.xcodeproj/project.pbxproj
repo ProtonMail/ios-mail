@@ -94,7 +94,7 @@
 		701DDE941AA64DEB0038149C /* MBContactCollectionViewPromptCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE8A1AA64DEB0038149C /* MBContactCollectionViewPromptCell.m */; };
 		701DDE951AA64DEB0038149C /* MBContactModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE8C1AA64DEB0038149C /* MBContactModel.m */; };
 		701DDE971AA651100038149C /* ContactVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE961AA651100038149C /* ContactVO.swift */; };
-		701FFE611A9CBAD600380C2B /* EditContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701FFE601A9CBAD600380C2B /* EditContactViewController.swift */; };
+		701FFE611A9CBAD600380C2B /* ContactDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701FFE601A9CBAD600380C2B /* ContactDetailViewController.swift */; };
 		7027B02B1A700F0200D28F52 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7027B02A1A700F0200D28F52 /* MenuTableViewCell.swift */; };
 		7048B9F41A9E385B00D45F57 /* ContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7048B9F21A9E385B00D45F57 /* ContactsTableViewCell.swift */; };
 		7048B9F51A9E385B00D45F57 /* ContactsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7048B9F31A9E385B00D45F57 /* ContactsTableViewCell.xib */; };
@@ -308,6 +308,8 @@
 		75A2F44E1C97D6B400BF4306 /* ComposeErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75A2F44D1C97D6B400BF4306 /* ComposeErrorView.xib */; };
 		75A4321B1B1D040A00D046B3 /* QueueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A4321A1B1D040A00D046B3 /* QueueManager.swift */; };
 		75A4321D1B1D042C00D046B3 /* QueueConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A4321C1B1D042C00D046B3 /* QueueConstant.swift */; };
+		75A8141D1E6E230E00C5D390 /* ContactEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A8141C1E6E230E00C5D390 /* ContactEditViewController.swift */; };
+		75A8141E1E6E230E00C5D390 /* ContactEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A8141C1E6E230E00C5D390 /* ContactEditViewController.swift */; };
 		75B047B31AE708CC005C6D1A /* ComposeEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B047B21AE708CC005C6D1A /* ComposeEmailViewController.swift */; };
 		75B1794C1B376D2E006044D4 /* AttachmentHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B1794B1B376D2D006044D4 /* AttachmentHelper.swift */; };
 		75B179501B377748006044D4 /* ContactVOExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B1794F1B377748006044D4 /* ContactVOExtension.swift */; };
@@ -369,7 +371,7 @@
 		75DE7CD31CAAEA4900F5443E /* EmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757945D71B6702A2004EEDCA /* EmailView.swift */; };
 		75DE7CD41CAAEA4900F5443E /* MenuLabelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756489931B7E77AC007EA207 /* MenuLabelViewCell.swift */; };
 		75DE7CD51CAAEA4900F5443E /* APIServiceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7567B0781B33880500A72A1E /* APIServiceResponse.swift */; };
-		75DE7CD61CAAEA4900F5443E /* EditContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701FFE601A9CBAD600380C2B /* EditContactViewController.swift */; };
+		75DE7CD61CAAEA4900F5443E /* ContactDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701FFE601A9CBAD600380C2B /* ContactDetailViewController.swift */; };
 		75DE7CD71CAAEA4900F5443E /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CFC9D31A81A2B0007A72B7 /* Attachment.swift */; };
 		75DE7CD81CAAEA4900F5443E /* MessageAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075F0A531ABF5E3E00E6B9AE /* MessageAction.swift */; };
 		75DE7CD91CAAEA4900F5443E /* ComposeErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A2F44B1C97D69800BF4306 /* ComposeErrorView.swift */; };
@@ -753,7 +755,7 @@
 		701DDE8C1AA64DEB0038149C /* MBContactModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBContactModel.m; sourceTree = "<group>"; };
 		701DDE8D1AA64DEB0038149C /* MBContactPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBContactPicker.h; sourceTree = "<group>"; };
 		701DDE961AA651100038149C /* ContactVO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactVO.swift; sourceTree = "<group>"; };
-		701FFE601A9CBAD600380C2B /* EditContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditContactViewController.swift; sourceTree = "<group>"; };
+		701FFE601A9CBAD600380C2B /* ContactDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactDetailViewController.swift; sourceTree = "<group>"; };
 		7027B02A1A700F0200D28F52 /* MenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuTableViewCell.swift; sourceTree = "<group>"; };
 		7048B9F21A9E385B00D45F57 /* ContactsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsTableViewCell.swift; sourceTree = "<group>"; };
 		7048B9F31A9E385B00D45F57 /* ContactsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactsTableViewCell.xib; sourceTree = "<group>"; };
@@ -932,6 +934,7 @@
 		75A2F44D1C97D6B400BF4306 /* ComposeErrorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComposeErrorView.xib; sourceTree = "<group>"; };
 		75A4321A1B1D040A00D046B3 /* QueueManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueManager.swift; sourceTree = "<group>"; };
 		75A4321C1B1D042C00D046B3 /* QueueConstant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueConstant.swift; sourceTree = "<group>"; };
+		75A8141C1E6E230E00C5D390 /* ContactEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditViewController.swift; sourceTree = "<group>"; };
 		75B047B21AE708CC005C6D1A /* ComposeEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeEmailViewController.swift; sourceTree = "<group>"; };
 		75B1794B1B376D2D006044D4 /* AttachmentHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentHelper.swift; sourceTree = "<group>"; };
 		75B1794F1B377748006044D4 /* ContactVOExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactVOExtension.swift; sourceTree = "<group>"; };
@@ -1439,7 +1442,8 @@
 				7048B9F61A9E3B1B00D45F57 /* Cell */,
 				701DDE7C1AA64D430038149C /* MBContactPicker */,
 				706962061A71399D001443B2 /* ContactsViewController.swift */,
-				701FFE601A9CBAD600380C2B /* EditContactViewController.swift */,
+				701FFE601A9CBAD600380C2B /* ContactDetailViewController.swift */,
+				75A8141C1E6E230E00C5D390 /* ContactEditViewController.swift */,
 			);
 			name = Contacts;
 			sourceTree = "<group>";
@@ -2364,7 +2368,7 @@
 				757F4A151E68F817001CDE71 /* FolderCreatingViewModelImpl.swift in Sources */,
 				756489941B7E77AC007EA207 /* MenuLabelViewCell.swift in Sources */,
 				7567B0791B33880500A72A1E /* APIServiceResponse.swift in Sources */,
-				701FFE611A9CBAD600380C2B /* EditContactViewController.swift in Sources */,
+				701FFE611A9CBAD600380C2B /* ContactDetailViewController.swift in Sources */,
 				07CFC9D41A81A2B0007A72B7 /* Attachment.swift in Sources */,
 				075F0A541ABF5E3E00E6B9AE /* MessageAction.swift in Sources */,
 				75A2F44C1C97D69800BF4306 /* ComposeErrorView.swift in Sources */,
@@ -2536,6 +2540,7 @@
 				753745071D6B885500682C5A /* APIService+ResponseTransformer.swift in Sources */,
 				75F22BEE1E83335000677E67 /* ToastMessageView.swift in Sources */,
 				7545083D1E14861E00265CD0 /* MailboxCaptchaViewController.swift in Sources */,
+				75A8141D1E6E230E00C5D390 /* ContactEditViewController.swift in Sources */,
 				75F023AF1C4E0271008F6276 /* SignupViewModel.swift in Sources */,
 				7564899C1B7F2B1B007EA207 /* LabelboxViewModelImpl.swift in Sources */,
 				701DDE921AA64DEB0038149C /* MBContactCollectionViewEntryCell.m in Sources */,
@@ -2643,7 +2648,7 @@
 				75DE7CD31CAAEA4900F5443E /* EmailView.swift in Sources */,
 				75DE7CD41CAAEA4900F5443E /* MenuLabelViewCell.swift in Sources */,
 				75DE7CD51CAAEA4900F5443E /* APIServiceResponse.swift in Sources */,
-				75DE7CD61CAAEA4900F5443E /* EditContactViewController.swift in Sources */,
+				75DE7CD61CAAEA4900F5443E /* ContactDetailViewController.swift in Sources */,
 				75DE7CD71CAAEA4900F5443E /* Attachment.swift in Sources */,
 				75DE7CD81CAAEA4900F5443E /* MessageAction.swift in Sources */,
 				75DE7CD91CAAEA4900F5443E /* ComposeErrorView.swift in Sources */,
@@ -2754,6 +2759,7 @@
 				75DE7D2C1CAAEA4900F5443E /* FeedbackTableViewCell.swift in Sources */,
 				75DE7D2D1CAAEA4900F5443E /* ViewModelServiceImpl.swift in Sources */,
 				75DE7D2E1CAAEA4900F5443E /* Logger.swift in Sources */,
+				75A8141E1E6E230E00C5D390 /* ContactEditViewController.swift in Sources */,
 				75DE7D2F1CAAEA4900F5443E /* MenuItem.swift in Sources */,
 				75DE7D301CAAEA4900F5443E /* SettingsViewController.swift in Sources */,
 				75DE7D311CAAEA4900F5443E /* PushNotificationService.swift in Sources */,

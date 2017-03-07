@@ -17,6 +17,9 @@ class ContactsViewController: ProtonMailViewController {
     private let kContactCellIdentifier: String = "ContactCell"
     private let kProtonMailImage: UIImage = UIImage(named: "encrypted_main")!
     
+    private let kContactDetailsSugue = "toContactDetailsSegue";
+    
+    
     // MARK: - View Outlets
     
     @IBOutlet var tableView: UITableView!
@@ -54,6 +57,7 @@ class ContactsViewController: ProtonMailViewController {
         self.extendedLayoutIncludesOpaqueBars = true
         self.searchController.searchBar.sizeToFit()
         self.automaticallyAdjustsScrollViewInsets = false
+        self.tableView.noSeparatorsBelowFooter()
         
         
         refreshControl = UIRefreshControl()
@@ -77,6 +81,18 @@ class ContactsViewController: ProtonMailViewController {
         tableView.setEditing(false, animated: true)
         
         retrieveAllContacts()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if (self.tableView.respondsToSelector(Selector("setSeparatorInset:"))) {
+            self.tableView.separatorInset = UIEdgeInsetsZero
+        }
+        
+        if (self.tableView.respondsToSelector(Selector("setLayoutMargins:"))) {
+            self.tableView.layoutMargins = UIEdgeInsetsZero
+        }
     }
     
     
@@ -252,17 +268,20 @@ extension ContactsViewController: UITableViewDelegate {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if (segue.identifier == "toEditContact") {
-            let editContactViewController: EditContactViewController = segue.destinationViewController.childViewControllers[0] as! EditContactViewController
-            editContactViewController.contact = self.selectedContact
-            
-            PMLog.D("tableView.indexPathForSelectedRow() = \(tableView.indexPathForSelectedRow)")
-        }
-        
-        if (segue.identifier == "toCompose") {
-            let composeViewController = segue.destinationViewController.childViewControllers[0] as! ComposeEmailViewController
-            sharedVMService.newDraftViewModelWithContact(composeViewController, contact: self.selectedContact)
-        }
+//        if (segue.identifier == "toEditContact") {
+//            let editContactViewController: EditContactViewController = segue.destinationViewController.childViewControllers[0] as! EditContactViewController
+//            editContactViewController.contact = self.selectedContact
+//            
+//            PMLog.D("tableView.indexPathForSelectedRow() = \(tableView.indexPathForSelectedRow)")
+//        } else if (segue.identifier == "toContactDetails") {
+//            let editContactViewController: EditContactViewController = segue.destinationViewController.childViewControllers[0] as! EditContactViewController
+//            editContactViewController.contact = self.selectedContact
+//            
+//            PMLog.D("tableView.indexPathForSelectedRow() = \(tableView.indexPathForSelectedRow)")
+//        } else if (segue.identifier == "toCompose") {
+//            let composeViewController = segue.destinationViewController.childViewControllers[0] as! ComposeEmailViewController
+//            sharedVMService.newDraftViewModelWithContact(composeViewController, contact: self.selectedContact)
+//        }
     }
     
     private func showContactBelongsToAddressBookError() {
@@ -280,7 +299,8 @@ extension ContactsViewController: UITableViewDelegate {
         } else {
             self.selectedContact = self.contacts[indexPath.row]
         }
-        self.performSegueWithIdentifier("toCompose", sender: self)
+        //self.performSegueWithIdentifier("toCompose", sender: self)
+        self.performSegueWithIdentifier(kContactDetailsSugue, sender: self)
     }
 }
 
