@@ -329,9 +329,9 @@ class APIService {
                 
                 var task: NSURLSessionDataTask? = nil
                 task = self.sessionManager.dataTaskWithRequest(request, uploadProgress: { (progress) in
-                    
+                    //TODO::add later
                 }, downloadProgress: { (progress) in
-                    
+                    //TODO::add later
                 }, completionHandler: { (urlresponse, res, error) in
                     if let err = error {
                         failureBlock?(task, err)
