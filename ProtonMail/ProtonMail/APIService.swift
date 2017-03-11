@@ -303,5 +303,53 @@ class APIService {
     }
     
     
+    //new requestion function
+    func request(method: HTTPMethod, path: String, parameters: AnyObject?, headers: [String : AnyObject]?, authenticated: Bool = true, completion: CompletionBlock?) {
+        let authBlock: AuthCredentialBlock = { auth, error in
+            if let error = error {
+                completion?(task: nil, response: nil, error: error)
+            } else {
+                let (successBlock, failureBlock) = self.afNetworkingBlocksForRequest(method, path: path, parameters: parameters, auth:auth, authenticated: authenticated, completion: completion)
+                let url = AppConstants.API_HOST_URL + path
+                let request = AFJSONRequestSerializer().requestWithMethod(method.toString(), URLString: url, parameters: parameters, error: nil)
+                //request.timeoutInterval = 120
+                if let header = headers {
+                    for (k, v) in header {
+                        request.setValue("\(v)", forHTTPHeaderField: k)
+                    }
+                }
+                let accessToken = auth?.token ?? ""
+                request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+                if let userid = auth?.userID {
+                    request.setValue(userid, forHTTPHeaderField: "x-pm-uid")
+                }
+                let appversion = "iOS_\(NSBundle.mainBundle().majorVersion)"
+                request.setValue("application/vnd.protonmail.v1+json", forHTTPHeaderField: "Accept")
+                request.setValue(appversion, forHTTPHeaderField: "x-pm-appversion")
+                
+                var task: NSURLSessionDataTask? = nil
+                task = self.sessionManager.dataTaskWithRequest(request, uploadProgress: { (progress) in
+                    
+                }, downloadProgress: { (progress) in
+                    
+                }, completionHandler: { (urlresponse, res, error) in
+                    if let err = error {
+                        failureBlock?(task, err)
+                    } else {
+                        successBlock?(task, res)
+                    }
+                })
+                task!.resume()
+            }
+        }
+        
+        if authenticated {
+            fetchAuthCredential(authBlock)
+        } else {
+            authBlock(nil, nil)
+        }
+    }
+    
+    
 }
 

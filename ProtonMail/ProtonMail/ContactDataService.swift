@@ -77,9 +77,10 @@ class ContactDataService {
         }
     }
     
-    func fetchContacts(completion: ContactCompletionBlock?) {
-        let completionWrapper: APIService.CompletionBlock = { task, response, error in
-            if let contactsArray = response?["Contacts"] as? [Dictionary<String, AnyObject>] {
+    func getContacts(completion: ContactCompletionBlock?) {
+        let api = ContactEmailsRequest<ContactEmailsResponse>()
+        api.call { (task, response, hasError) in
+            if let contactsArray = response?.contacts {
                 let context = sharedCoreDataService.newManagedObjectContext()
                 context.performBlockAndWait() {
                     do {
@@ -101,7 +102,36 @@ class ContactDataService {
                 completion?(nil, NSError.unableToParseResponse(response))
             }
         }
-        sharedAPIService.contactList(completionWrapper)
+        
+        
+//        let completionWrapper: APIService.CompletionBlock = { task, response, error in
+//            if let contactsArray = response?["Contacts"] as? [Dictionary<String, AnyObject>] {
+//                let context = sharedCoreDataService.newManagedObjectContext()
+//                context.performBlockAndWait() {
+//                    do {
+//                        if let contacts = try GRTJSONSerialization.objectsWithEntityName(Contact.Attributes.entityName, fromJSONArray: contactsArray, inContext: context) as? [Contact] {
+//                            self.removeContacts(contacts, notInContext: context)
+//                            if let error = context.saveUpstreamIfNeeded() {
+//                                PMLog.D(" error: \(error)")
+//                                completion?(nil, error)
+//                            } else {
+//                                completion?(self.allContacts(), nil)
+//                            }
+//                        }
+//                    } catch let ex as NSError {
+//                        PMLog.D(" error: \(ex)")
+//                        completion?(nil, ex)
+//                    }
+//                }
+//            } else {
+//                completion?(nil, NSError.unableToParseResponse(response))
+//            }
+//        }
+        //sharedAPIService.contactList(completionWrapper)
+        
+
+        
+        
     }
     
     func updateContact(contactID contactID: String, name: String, email: String, completion: ContactCompletionBlock?) {
@@ -116,7 +146,7 @@ class ContactDataService {
     private func completionBlockForContactCompletionBlock(completion: ContactCompletionBlock?) -> APIService.CompletionBlock {
         return { task, response, error in
             if error == nil {
-                self.fetchContacts(completion)
+                self.getContacts(completion)
             } else {
                 completion?(nil, error)
             }
@@ -157,7 +187,7 @@ extension ContactDataService {
     
     func fetchContactVOs(completion: ContactVOCompletionBlock) {
         // fetch latest contacts from server
-        fetchContacts { (_, error) -> Void in
+        getContacts { (_, error) -> Void in
             self.requestAccessToAddressBookIfNeeded(completion)
             self.processContacts(addressBookAccessGranted: sharedAddressBookService.hasAccessToAddressBook(), lastError: error, completion: completion)
         }

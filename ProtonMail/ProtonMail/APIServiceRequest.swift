@@ -119,8 +119,9 @@ public class ApiRequest<T : ApiResponse> : Package {
             complete?(task:task, response:apiRes, hasError: hasError)
         }
         
-        sharedAPIService.setApiVesion(self.getVersion(), appVersion: 1) // TODO: here need get functions
-        sharedAPIService.request(method: self.getAPIMethod(), path: self.getRequestPath(), parameters: self.toDictionary(), authenticated: self.getIsAuthFunction(), completion:completionWrapper)
+        //sharedAPIService.setApiVesion(self.getVersion(), appVersion: 1) // TODO: here need get functions
+//        sharedAPIService.request(method: self.getAPIMethod(), path: self.getRequestPath(), parameters: self.toDictionary(), authenticated: self.getIsAuthFunction(), completion:completionWrapper)
+        sharedAPIService.request(self.getAPIMethod(), path: self.getRequestPath(), parameters: self.toDictionary(), headers: ["x-pm-apiversion": self.getVersion()], authenticated: self.getIsAuthFunction(), completion: completionWrapper)
     }
     
     

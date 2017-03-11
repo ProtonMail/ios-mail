@@ -236,7 +236,7 @@ class MailboxPasswordViewController: UIViewController {
     
     func loadContactsAfterInstall()
     {
-        sharedContactDataService.fetchContacts({ (contacts, error) -> Void in
+        sharedContactDataService.getContacts({ (contacts, error) -> Void in
             if error != nil {
                 PMLog.D("\(error)")
             } else {

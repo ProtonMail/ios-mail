@@ -15,16 +15,29 @@ extension APIService {
         case GET
         case POST
         case PUT
+        
+        func toString() -> String {
+            switch self {
+            case DELETE:
+                return "DELETE"
+            case GET:
+                return "GET"
+            case POST:
+                return "POST"
+            case PUT:
+                return "PUT"
+            }
+        }
     }
     
     struct GeneralResponse {
-        static let errorCode = "Code"
-        static let errorMsg = "Error"
-        static let errorDesc = "ErrorDescription"
+        static let errorCode                    = "Code"
+        static let errorMsg                     = "Error"
+        static let errorDesc                    = "ErrorDescription"
     }
     
-    internal typealias CompletionBlock = (task: NSURLSessionDataTask?, response: Dictionary<String,AnyObject>?, error: NSError?) -> Void
-    internal typealias CompletionFetchDetail = (task: NSURLSessionDataTask?, response: Dictionary<String,AnyObject>?, message:Message?, error: NSError?) -> Void
+    internal typealias CompletionBlock          = (task: NSURLSessionDataTask?, response: Dictionary<String,AnyObject>?, error: NSError?) -> Void
+    internal typealias CompletionFetchDetail    = (task: NSURLSessionDataTask?, response: Dictionary<String,AnyObject>?, message:Message?, error: NSError?) -> Void
     
     // MARK: - Internal variables
     
@@ -32,12 +45,11 @@ extension APIService {
     internal typealias AFNetworkingSuccessBlock = (NSURLSessionDataTask?, AnyObject?) -> Void
     
     
-    internal typealias AuthCredentialBlock = (AuthCredential?, NSError?) -> Void
-    internal typealias AuthInfo = (accessToken: String?, expiresId: NSTimeInterval?, refreshToken: String?, userID: String?)
+    internal typealias AuthInfo                 = (accessToken: String?, expiresId: NSTimeInterval?, refreshToken: String?, userID: String?)
     
     
-    internal typealias AuthComplete = (task: NSURLSessionDataTask?, mailpassword: String?, hasError : NSError?) -> Void
-    internal typealias AuthRefreshComplete = (task: NSURLSessionDataTask?, auth:AuthCredential?, hasError : NSError?) -> Void
+    internal typealias AuthComplete             = (task: NSURLSessionDataTask?, mailpassword: String?, hasError : NSError?) -> Void
+    internal typealias AuthRefreshComplete      = (task: NSURLSessionDataTask?, auth:AuthCredential?, hasError : NSError?) -> Void
     
     
     
@@ -46,6 +58,7 @@ extension APIService {
         case Ask2FA
     }
     
-    internal typealias AuthCompleteBlock = (task: NSURLSessionDataTask?, mailpassword: String?, authStatus: AuthStatus, error : NSError?) -> Void
+    internal typealias AuthCredentialBlock      = (AuthCredential?, NSError?) -> Void
+    internal typealias AuthCompleteBlock        = (task: NSURLSessionDataTask?, mailpassword: String?, authStatus: AuthStatus, error : NSError?) -> Void
 
 }

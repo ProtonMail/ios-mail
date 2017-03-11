@@ -317,6 +317,8 @@
 		75B549E71D02731300F21A30 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 75B549E51D02731300F21A30 /* Reachability.m */; };
 		75B9C6081DA2D39A001DE21E /* Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B9C6071DA2D39A001DE21E /* Hash.swift */; };
 		75B9C6091DA2D39A001DE21E /* Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B9C6071DA2D39A001DE21E /* Hash.swift */; };
+		75BA47981E735F3D00AFF63B /* ContactsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BA47971E735F3D00AFF63B /* ContactsAPI.swift */; };
+		75BA47991E735F3D00AFF63B /* ContactsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BA47971E735F3D00AFF63B /* ContactsAPI.swift */; };
 		75BA55A71D087F6A0081DD88 /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 75BA55A61D087F6A0081DD88 /* Readme.txt */; };
 		75BA55A81D087F6A0081DD88 /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 75BA55A61D087F6A0081DD88 /* Readme.txt */; };
 		75BB65761BD5C88800F9432D /* AttachmentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BB65751BD5C88800F9432D /* AttachmentAPI.swift */; };
@@ -941,6 +943,7 @@
 		75B549E41D02731300F21A30 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		75B549E51D02731300F21A30 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		75B9C6071DA2D39A001DE21E /* Hash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hash.swift; sourceTree = "<group>"; };
+		75BA47971E735F3D00AFF63B /* ContactsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsAPI.swift; sourceTree = "<group>"; };
 		75BA55A61D087F6A0081DD88 /* Readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.txt; sourceTree = "<group>"; };
 		75BB65751BD5C88800F9432D /* AttachmentAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentAPI.swift; sourceTree = "<group>"; };
 		75BDECA81CBCCE4400982089 /* PinCodeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinCodeModel.swift; sourceTree = "<group>"; };
@@ -1149,8 +1152,8 @@
 				753745021D6B7E7000682C5A /* Errors */,
 				753A1F4D1C52C06000B618D2 /* Extensions */,
 				073FD92D1A71C33B00EB0CAF /* Models */,
-				75ECCDFC1B31EF3600A8C800 /* APIService */,
 				75F54C631B3B314100290F73 /* Cache */,
+				75ECCDFC1B31EF3600A8C800 /* APIService */,
 				70B28D091A9BA0AC002D9EC8 /* AddressBookService.swift */,
 				07655BBC1AB1036200CD3883 /* BugDataService.swift */,
 				073FE0181A955ED900825980 /* ContactDataService.swift */,
@@ -1833,6 +1836,7 @@
 				75A021A31C617D3F00A22A25 /* DomainAPI.swift */,
 				75D0CA401C6BE97F00D9F21C /* DeviceAPI.swift */,
 				758DB00D1DDBBCA8007B83D3 /* OrganizationsAPI.swift */,
+				75BA47971E735F3D00AFF63B /* ContactsAPI.swift */,
 			);
 			name = APIService;
 			sourceTree = "<group>";
@@ -2500,6 +2504,7 @@
 				075F0A521ABF5DB500E6B9AE /* MessageLocation.swift in Sources */,
 				75E090541CAC7A3A00751136 /* CountryCodeTableViewCell.swift in Sources */,
 				751B446E1B81245100B68CD6 /* TableCellLabelView.swift in Sources */,
+				75BA47981E735F3D00AFF63B /* ContactsAPI.swift in Sources */,
 				75ECCE021B31F44600A8C800 /* AuthAPI.swift in Sources */,
 				750778CE1BE98900009F516C /* UserAPI.swift in Sources */,
 				75E49F0F1CAB288F00235ACC /* CountryPickerViewController.swift in Sources */,
@@ -2862,6 +2867,7 @@
 				75F1618F1DCBB1CA00912662 /* TwoFACodeView.swift in Sources */,
 				75E49F101CAB296500235ACC /* PhoneVerifyViewController.swift in Sources */,
 				75DE7D7B1CAAEA4900F5443E /* StorageViewCell.swift in Sources */,
+				75BA47991E735F3D00AFF63B /* ContactsAPI.swift in Sources */,
 				7599B17E1CC8247E00B2CB8D /* Localization.swift in Sources */,
 				75DE7D7C1CAAEA4900F5443E /* APIService+AttachmentExtension.swift in Sources */,
 				75DE7D7D1CAAEA4900F5443E /* AttachmentTableViewCell.swift in Sources */,

@@ -38,12 +38,6 @@ extension APIService {
         request(method: .PUT, path: path, parameters: parameters, completion: completion)
     }
     
-    func contactList(completion: CompletionBlock?) {
-        let path = ContactPath.base
-        setApiVesion(1, appVersion: 1)
-        request(method: .GET, path: path, parameters: nil, completion: completion)
-    }
-    
     func contactUpdate(contactID contactID: String, name: String, email: String, completion: CompletionBlock?) {
         let path = ContactPath.base + "/\(contactID)"
         
@@ -53,7 +47,7 @@ extension APIService {
     }
     
     // MARK: - Private methods
-    
+//    
     private func parametersForName(name: String, email: String) -> NSDictionary {
         return [
             "Name" : name,

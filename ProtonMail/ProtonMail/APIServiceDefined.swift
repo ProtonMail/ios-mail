@@ -155,3 +155,9 @@ public struct DeviceAPI {
 }
 
 
+public struct ContactsAPI {
+    
+    static let Path : String = AppConstants.API_PATH + "/contacts"
+    
+    static let V_ContactEmailsRequest : Int = 2
+}

@@ -264,7 +264,7 @@ class MessageDataService {
                     self.cleanMessage()
                     sharedContactDataService.cleanUp()
                     self.fetchMessagesForLocation(location, MessageID: MessageID, Time: Time, foucsClean: false, completion: completionWrapper)
-                    sharedContactDataService.fetchContacts(nil)
+                    sharedContactDataService.getContacts(nil)
                     sharedLabelsDataService.fetchLabels();
                 }  else {
                     completion?(task: task, response:nil, error: nil)
@@ -302,7 +302,7 @@ class MessageDataService {
                                 self.cleanMessage()
                                 sharedContactDataService.cleanUp()
                                 self.fetchMessagesForLocation(location, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
-                                sharedContactDataService.fetchContacts(nil)
+                                sharedContactDataService.getContacts(nil)
                                 sharedLabelsDataService.fetchLabels();
                             } else {
                                 completion?(task: task, response:nil, error: nil)
@@ -374,7 +374,7 @@ class MessageDataService {
                             self.cleanMessage()
                             sharedContactDataService.cleanUp()
                             self.fetchMessagesForLabels(labelID, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
-                            sharedContactDataService.fetchContacts(nil)
+                            sharedContactDataService.getContacts(nil)
                             sharedLabelsDataService.fetchLabels();
                         }
                     }
