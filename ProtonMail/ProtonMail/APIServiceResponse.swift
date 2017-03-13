@@ -59,4 +59,29 @@ public class ApiResponse {
     func ParseResponse (response: Dictionary<String,AnyObject>!) -> Bool {
         return true
     }
+    
+    
+    /**
+     base class for convert anyobject to a json string
+     
+     :param: value         AnyObject input value
+     :param: prettyPrinted Bool is need pretty format
+     
+     :returns: String value
+     */
+    func JSONStringify(value: AnyObject, prettyPrinted: Bool = false) -> String {
+        let options = prettyPrinted ? NSJSONWritingOptions.PrettyPrinted : NSJSONWritingOptions()
+        if NSJSONSerialization.isValidJSONObject(value) {
+            do {
+                let data = try NSJSONSerialization.dataWithJSONObject(value, options: options)
+                if let string = NSString(data: data, encoding: NSUTF8StringEncoding) {
+                    return string as String
+                }
+            } catch let ex as NSError {
+                PMLog.D("\(ex)")
+            }
+            
+        }
+        return ""
+    }
 }

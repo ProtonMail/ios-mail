@@ -28,10 +28,39 @@ public class ContactEmailsRequest<T : ApiResponse> : ApiRequest<T> {
 
 
 public class ContactEmailsResponse : ApiResponse {
-    var contacts : [Dictionary<String, AnyObject>]?
+    var contacts : [Dictionary<String, AnyObject>] = []
     
     override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
-        self.contacts = response?["Contacts"] as? [Dictionary<String, AnyObject>]
+        if let tempContacts = response?["Contacts"] as? [Dictionary<String, AnyObject>] {
+            for contact in tempContacts {
+                if let contactID = contact["ContactID"] as? String, let name = contact["Name"] as? String {
+                    var found = false
+                    for (index, var c) in contacts.enumerate() {
+                        if let obj = c["ID"] as? String where obj == contactID {
+                            found = true
+                            if var emails = c["Emails"] as? [Dictionary<String, AnyObject>] {
+                                emails.append(contact)
+                                c["Emails"] = emails
+                            } else {
+                                c["Emails"] = [contact]
+                            }
+                            contacts[index] = c
+                        }
+                    }
+                    if !found {
+                        let newContact : Dictionary<String, AnyObject> = [
+                            "ID" : contactID,
+                            "Name" : name,
+                            "Emails" : [contact]
+                        ]
+                        self.contacts.append(newContact)
+                    }
+                }
+            }
+        }
+        
+        PMLog.D(self.JSONStringify(self.contacts, prettyPrinted: true))
+        
         return true
     }
 }

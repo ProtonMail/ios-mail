@@ -247,8 +247,6 @@ class MessageDataService {
         }
     }
     
-    
-    
     func fetchMessagesForLocationWithEventReset(location: MessageLocation, MessageID : String, Time: Int, completion: CompletionBlock?) {
         queue {
             let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
