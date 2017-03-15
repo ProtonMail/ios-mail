@@ -51,6 +51,14 @@ class ContactDataService {
         let fetchRequest = NSFetchRequest(entityName: Contact.Attributes.entityName)
         do {
             if let contacts = try context.executeFetchRequest(fetchRequest) as? [Contact] {
+                for c in contacts {
+                    if let emails = c.getEmails() {
+                        for e in emails {
+                            e.log()
+                        }
+                    }
+                }
+                
                 return contacts
             }
         } catch let ex as NSError {
@@ -177,9 +185,9 @@ extension ContactDataService {
     
     func allContactVOs() -> [ContactVO] {
         var contacts: [ContactVO] = []
-        
+        //TODO::Contact
         for contact in sharedContactDataService.allContacts() {
-            contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: contact.email, isProtonMailContact: true))
+            contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: "", isProtonMailContact: true))
         }
         
         return contacts
@@ -223,7 +231,8 @@ extension ContactDataService {
                 var pm_contacts: [ContactVO] = []
                 for contact in contactesCache {
                     if contact.managedObjectContext != nil {
-                        pm_contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: contact.email, isProtonMailContact: true))
+//TODO::Contact
+                        pm_contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: "", isProtonMailContact: true))
                     }
                 }
                 pm_contacts.distinctMerge(contacts)

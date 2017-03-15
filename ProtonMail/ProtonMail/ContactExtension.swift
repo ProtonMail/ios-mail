@@ -22,7 +22,7 @@ extension Contact {
     struct Attributes {
         static let entityName = "Contact"
         static let contactID = "contactID"
-        static let email = "email"
+//        static let email = "email"
         static let name = "name"
     }
 
@@ -44,5 +44,9 @@ extension Contact {
     
     class func contactForContactID(contactID: String, inManagedObjectContext context: NSManagedObjectContext) -> Contact? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.contactID, matchingValue: contactID) as? Contact
+    }
+    
+    func getEmails() -> [Email]? {
+        return self.emails.allObjects as? [Email]
     }
 }

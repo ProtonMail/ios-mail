@@ -58,9 +58,7 @@ public class ContactEmailsResponse : ApiResponse {
                 }
             }
         }
-        
         PMLog.D(self.JSONStringify(self.contacts, prettyPrinted: true))
-        
         return true
     }
 }

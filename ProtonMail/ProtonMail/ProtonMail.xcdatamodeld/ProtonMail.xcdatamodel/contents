@@ -47,28 +47,23 @@
                 <entry key="JSONKeyPath" value="ID"/>
             </userInfo>
         </attribute>
-        <attribute name="datas" optional="YES" attributeType="String" syncable="YES">
-            <userInfo>
-                <entry key="JSONKeyPath" value="Data"/>
-            </userInfo>
-        </attribute>
-        <attribute name="email" attributeType="String" indexed="YES" syncable="YES">
-            <userInfo>
-                <entry key="JSONKeyPath" value="Email"/>
-            </userInfo>
-        </attribute>
+        <attribute name="datas" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" indexed="YES" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Name"/>
             </userInfo>
         </attribute>
-        <relationship name="emails" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Email" inverseName="contact" inverseEntity="Email" syncable="YES"/>
+        <relationship name="emails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Email" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="Emails"/>
+            </userInfo>
+        </relationship>
         <userInfo>
-            <entry key="JSONKeyPath" value="Emails"/>
+            <entry key="identityAttribute" value="contactID"/>
         </userInfo>
     </entity>
     <entity name="Conversation" syncable="YES"/>
-    <entity name="Email" syncable="YES">
+    <entity name="Email" representedClassName="ProtonMail.Email" syncable="YES">
         <attribute name="contactID" optional="YES" attributeType="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="ContactID"/>
@@ -84,9 +79,10 @@
                 <entry key="JSONKeyPath" value="ID"/>
             </userInfo>
         </attribute>
-        <attribute name="encrypt" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES">
+        <attribute name="encrypt" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Encrypt"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES">
@@ -94,9 +90,10 @@
                 <entry key="JSONKeyPath" value="Name"/>
             </userInfo>
         </attribute>
-        <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES">
+        <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Order"/>
+                <entry key="JSONTransformerName" value="NumberTransformer"/>
             </userInfo>
         </attribute>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES">
@@ -104,7 +101,9 @@
                 <entry key="JSONKeyPath" value="Type"/>
             </userInfo>
         </attribute>
-        <relationship name="contact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" inverseName="emails" inverseEntity="Contact" syncable="YES"/>
+        <userInfo>
+            <entry key="identityAttribute" value="emailID"/>
+        </userInfo>
     </entity>
     <entity name="Label" representedClassName="ProtonMail.Label" syncable="YES">
         <attribute name="color" optional="YES" attributeType="String" syncable="YES">
@@ -362,10 +361,10 @@
     </entity>
     <elements>
         <element name="Attachment" positionX="1989" positionY="-3666" width="128" height="195"/>
-        <element name="Contact" positionX="1240" positionY="-3582" width="128" height="118"/>
+        <element name="Contact" positionX="1240" positionY="-3582" width="128" height="103"/>
         <element name="Conversation" positionX="1719" positionY="-3726" width="128" height="45"/>
+        <element name="Email" positionX="1539" positionY="-3582" width="128" height="148"/>
         <element name="Label" positionX="2095" positionY="-3357" width="128" height="165"/>
-        <element name="Message" positionX="1717" positionY="-3867" width="128" height="748"/>
-        <element name="Email" positionX="1539" positionY="-3582" width="128" height="163"/>
+        <element name="Message" positionX="1717" positionY="-3867" width="128" height="750"/>
     </elements>
 </model>

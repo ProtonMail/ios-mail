@@ -13,5 +13,7 @@ class Contact: NSManagedObject {
 
     @NSManaged var contactID: String
     @NSManaged var name: String
-    @NSManaged var email: String
+    @NSManaged var datas: String
+    
+    @NSManaged var emails: NSSet
 }
