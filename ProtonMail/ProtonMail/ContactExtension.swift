@@ -22,7 +22,6 @@ extension Contact {
     struct Attributes {
         static let entityName = "Contact"
         static let contactID = "contactID"
-//        static let email = "email"
         static let name = "name"
     }
 
@@ -49,4 +48,13 @@ extension Contact {
     func getEmails() -> [Email]? {
         return self.emails.allObjects as? [Email]
     }
+    
+    func getDisplayEmails() -> String {
+        if let emails = getEmails()?.order() {
+            let arrayMap: Array = emails.map(){ $0.email }
+            return arrayMap.joinWithSeparator(",")
+        }
+        return ""
+    }
 }
+

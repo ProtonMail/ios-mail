@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,7 +22,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="59"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="59.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="encrypted_main" translatesAutoresizingMaskIntoConstraints="NO" id="Ueb-Ca-8K0">
@@ -32,7 +33,7 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="diegosantiviago@gmail.com" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kYh-fi-hLy">
-                        <rect key="frame" x="8" y="35" width="312" height="16"/>
+                        <rect key="frame" x="59.5" y="35" width="256.5" height="16"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="Kdw-oJ-foG"/>
                         </constraints>
@@ -41,23 +42,34 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Diego Santiviago" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GKP-Aj-VfK">
-                        <rect key="frame" x="8" y="8" width="294" height="20"/>
+                        <rect key="frame" x="59.5" y="8" width="242.5" height="20"/>
                         <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="16"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j5t-Vq-0R8">
+                        <rect key="frame" x="8" y="8" width="43.5" height="43.5"/>
+                        <color key="backgroundColor" red="0.82133853440000004" green="0.83856713770000002" blue="0.88747489450000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="j5t-Vq-0R8" secondAttribute="height" multiplier="1:1" id="EtV-Gf-aoY"/>
+                        </constraints>
+                        <state key="normal" image="menu_allmail"/>
+                    </button>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="j5t-Vq-0R8" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="Ex7-mr-qXU"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="j5t-Vq-0R8" secondAttribute="bottom" id="Mj0-h6-qvE"/>
                     <constraint firstItem="GKP-Aj-VfK" firstAttribute="trailing" secondItem="Ueb-Ca-8K0" secondAttribute="leading" id="Njc-SL-6MQ"/>
                     <constraint firstItem="kYh-fi-hLy" firstAttribute="top" secondItem="GKP-Aj-VfK" secondAttribute="bottom" constant="7" id="Ufp-FO-nqD"/>
-                    <constraint firstAttribute="trailing" secondItem="kYh-fi-hLy" secondAttribute="trailing" id="XPN-zX-PYd"/>
+                    <constraint firstAttribute="trailing" secondItem="kYh-fi-hLy" secondAttribute="trailing" constant="4" id="XPN-zX-PYd"/>
                     <constraint firstItem="Ueb-Ca-8K0" firstAttribute="bottom" secondItem="GKP-Aj-VfK" secondAttribute="bottom" constant="-4" id="aEj-Zc-rlo"/>
+                    <constraint firstItem="j5t-Vq-0R8" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="bHR-te-r4K"/>
                     <constraint firstItem="GKP-Aj-VfK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="chi-gW-BO7"/>
                     <constraint firstItem="Ueb-Ca-8K0" firstAttribute="leading" secondItem="GKP-Aj-VfK" secondAttribute="trailing" id="dof-1v-7ly"/>
                     <constraint firstItem="kYh-fi-hLy" firstAttribute="leading" secondItem="GKP-Aj-VfK" secondAttribute="leading" id="gUQ-1X-Uo7"/>
+                    <constraint firstItem="GKP-Aj-VfK" firstAttribute="leading" secondItem="j5t-Vq-0R8" secondAttribute="trailing" constant="8" id="moG-eM-eJl"/>
                     <constraint firstItem="kYh-fi-hLy" firstAttribute="bottom" secondItem="H2p-sc-9uM" secondAttribute="bottomMargin" id="t6K-Ob-hio"/>
                     <constraint firstAttribute="trailingMargin" secondItem="Ueb-Ca-8K0" secondAttribute="trailing" id="taa-Fp-pTt"/>
-                    <constraint firstItem="GKP-Aj-VfK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="vhT-ua-FbF"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
@@ -70,5 +82,6 @@
     </objects>
     <resources>
         <image name="encrypted_main" width="15" height="20"/>
+        <image name="menu_allmail" width="16" height="16"/>
     </resources>
 </document>

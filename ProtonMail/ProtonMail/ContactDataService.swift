@@ -185,9 +185,9 @@ extension ContactDataService {
     
     func allContactVOs() -> [ContactVO] {
         var contacts: [ContactVO] = []
-        //TODO::Contact
+        
         for contact in sharedContactDataService.allContacts() {
-            contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: "", isProtonMailContact: true))
+            contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: contact.getDisplayEmails(), isProtonMailContact: true))
         }
         
         return contacts
@@ -231,8 +231,7 @@ extension ContactDataService {
                 var pm_contacts: [ContactVO] = []
                 for contact in contactesCache {
                     if contact.managedObjectContext != nil {
-//TODO::Contact
-                        pm_contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: "", isProtonMailContact: true))
+                        pm_contacts.append(ContactVO(id: contact.contactID, name: contact.name, email: contact.getDisplayEmails(), isProtonMailContact: true))
                     }
                 }
                 pm_contacts.distinctMerge(contacts)
