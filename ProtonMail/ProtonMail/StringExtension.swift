@@ -159,12 +159,16 @@ extension String {
      
      :returns: String
      */
-    func formatJsonContact() -> String {
+    func formatJsonContact(mailto : Bool = false) -> String {
         var lists: [String] = []
         
         let recipients : [[String : String]] = self.parseJson()!
         for dict:[String : String] in recipients {
-            lists.append(dict.getName() + "&lt;\(dict.getAddress())&gt;")
+            if mailto {
+                lists.append(dict.getName() + " &lt;<a href=\"mailto:\(dict.getAddress())\" class=\"\">\(dict.getAddress())</a>&gt;")
+            } else {
+                lists.append(dict.getName() + "&lt;\(dict.getAddress())&gt;")
+            }
         }
         return lists.joinWithSeparator(",")
     }
@@ -297,8 +301,8 @@ extension String {
     }
     
     func stringByPurifyHTML() -> String {
-        //|<(\\/?link.*?)>   <[^>]*?alert.*?>|  //the comment out part case hpylink have those key works been filtered out
-        let out = self.preg_replace("<style[^>]*?>.*?</style>|<script(.*?)<\\/script>|<(\\/?script.*?)>|<(\\/?meta.*?)>|<object(.*?)<\\/object>|<(\\/?object.*?)>|<input(.*?)<\\/input>|<(\\/?input.*?)>|<iframe(.*?)<\\/iframe>|<video(.*?)<\\/video>|<audio(.*?)<\\/audio>|<[^>]*?onload.*?>|<input(.*?)<\\/input>|<[^>]*?prompt.*?>|<[^>]*?confirm.*?>", replaceto: " ")
+        //|<(\\/?link.*?)>   <[^>]*?alert.*?>| |<[^>]*?confirm.*?> //the comment out part case hpylink have those key works been filtered out
+        let out = self.preg_replace("<style[^>]*?>.*?</style>|<script(.*?)<\\/script>|<(\\/?script.*?)>|<(\\/?meta.*?)>|<object(.*?)<\\/object>|<(\\/?object.*?)>|<input(.*?)<\\/input>|<(\\/?input.*?)>|<iframe(.*?)<\\/iframe>|<video(.*?)<\\/video>|<audio(.*?)<\\/audio>|<[^>]*?onload.*?>|<input(.*?)<\\/input>|<[^>]*?prompt.*?>", replaceto: " ")
         
 //        var out = self.preg_replace("<script(.*?)<\\/script>", replaceto: "")
 //        //out = out.preg_replace("<(script.*?)>(.*?)<(\\/script.*?)>", replaceto: "")

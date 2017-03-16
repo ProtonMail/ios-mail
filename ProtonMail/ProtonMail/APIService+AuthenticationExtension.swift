@@ -138,7 +138,7 @@ extension APIService {
     }
     func authRefresh(password:String, completion: AuthRefreshComplete?) {
         if let authCredential = AuthCredential.fetchFromKeychain() {
-            AuthRefreshRequest<AuthResponse>(resfresh: authCredential.refreshToken).call() { task, res , hasError in
+            AuthRefreshRequest<AuthResponse>(resfresh: authCredential.refreshToken, uid: authCredential.userID).call() { task, res , hasError in
                 if hasError {
                     self.refreshTokenFailedCount += 1
                     if let err = res?.error {

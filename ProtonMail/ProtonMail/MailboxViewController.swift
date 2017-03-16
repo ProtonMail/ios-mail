@@ -157,21 +157,6 @@ class MailboxViewController: ProtonMailViewController {
         rightSwipeAction = sharedUserDataService.swiftRight
         
         self.refreshControl.endRefreshing()
-        
-        let selectedItem: NSIndexPath? = self.tableView.indexPathForSelectedRow as NSIndexPath?
-        if let selectedItem = selectedItem {
-            self.tableView.reloadRowsAtIndexPaths([selectedItem], withRowAnimation: UITableViewRowAnimation.Fade)
-            self.tableView.deselectRowAtIndexPath(selectedItem, animated: true)
-        }
-        self.startAutoFetch()
-        
-        NSFileManager.defaultManager().cleanCachedAtts()
-        
-        if self.viewModel.getNotificationMessage() != nil {
-            performSegueWithIdentifier(kSegueToMessageDetailFromNotification, sender: self)
-        } else {
-            checkHuman()
-        }
     }
     
     @IBAction func undoAction(sender: UIButton) {
@@ -196,6 +181,21 @@ class MailboxViewController: ProtonMailViewController {
         
         self.updateInterfaceWithReachability(sharedInternetReachability)
         //self.updateInterfaceWithReachability(sharedRemoteReachability)
+        
+        let selectedItem: NSIndexPath? = self.tableView.indexPathForSelectedRow as NSIndexPath?
+        if let selectedItem = selectedItem {
+            self.tableView.reloadRowsAtIndexPaths([selectedItem], withRowAnimation: UITableViewRowAnimation.Fade)
+            self.tableView.deselectRowAtIndexPath(selectedItem, animated: true)
+        }
+        self.startAutoFetch()
+        
+        NSFileManager.defaultManager().cleanCachedAtts()
+        
+        if self.viewModel.getNotificationMessage() != nil {
+            performSegueWithIdentifier(kSegueToMessageDetailFromNotification, sender: self)
+        } else {
+            checkHuman()
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -791,6 +791,8 @@ class MailboxViewController: ProtonMailViewController {
         } else if code == APIErrorCode.HTTP503 || code == NSURLErrorBadServerResponse {
             self.show503ErrorMessage(error)
             offlineTimerReset()
+        } else if code == APIErrorCode.HTTP504 {
+            self.showTimeOutErrorMessage()
         }
         PMLog.D("error: \(error)")
     }
@@ -1442,7 +1444,6 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
                             if msgTime.compare(updateTime.start) != NSComparisonResult.OrderedAscending {
                                 self.newMessageCount += 1
                             }
-                            
                         }
                     }
                 }
