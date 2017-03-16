@@ -203,6 +203,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     internal func unreadButtonTapped() {
         messagesSetValue(setValue: false, forKey: Message.Attributes.isRead)
+        self.popViewController()
     }
     
     internal func popViewController() {
