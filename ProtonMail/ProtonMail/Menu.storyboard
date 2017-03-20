@@ -3771,7 +3771,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </imageView>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Fh-NZ-VaY">
-                                <rect key="frame" x="15" y="70" width="345" height="587"/>
+                                <rect key="frame" x="15" y="30" width="345" height="627"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manage Labels" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x8T-uN-d18">
                                         <rect key="frame" x="16" y="12" width="313" height="20"/>
@@ -3815,7 +3815,7 @@
                                         </constraints>
                                     </view>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FOA-oo-b79">
-                                        <rect key="frame" x="16" y="109" width="313" height="417"/>
+                                        <rect key="frame" x="16" y="109" width="313" height="457"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="5" minimumInteritemSpacing="5" id="jvc-Du-LxR">
                                             <size key="itemSize" width="30" height="30"/>
@@ -3853,7 +3853,7 @@
                                         </connections>
                                     </collectionView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KG0-c6-7uc">
-                                        <rect key="frame" x="0.0" y="542" width="345" height="45"/>
+                                        <rect key="frame" x="0.0" y="582" width="345" height="45"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Dg-tq-bRz">
                                                 <rect key="frame" x="0.0" y="1" width="172" height="44"/>
@@ -3924,7 +3924,7 @@
                             <constraint firstAttribute="trailing" secondItem="ye4-ge-bmc" secondAttribute="trailing" id="dQy-N9-C3h"/>
                             <constraint firstItem="7Fh-NZ-VaY" firstAttribute="leading" secondItem="oId-9X-SD8" secondAttribute="leading" constant="15" id="eqe-0Y-5FU"/>
                             <constraint firstItem="ean-UD-qMJ" firstAttribute="top" secondItem="7Fh-NZ-VaY" secondAttribute="bottom" constant="10" id="nVE-af-5wy"/>
-                            <constraint firstItem="7Fh-NZ-VaY" firstAttribute="top" secondItem="8bl-aB-5kq" secondAttribute="bottom" constant="50" id="shv-FG-gXT"/>
+                            <constraint firstItem="7Fh-NZ-VaY" firstAttribute="top" secondItem="8bl-aB-5kq" secondAttribute="bottom" constant="10" id="shv-FG-gXT"/>
                             <constraint firstItem="ye4-ge-bmc" firstAttribute="leading" secondItem="oId-9X-SD8" secondAttribute="leading" id="xJ7-k7-WGS"/>
                         </constraints>
                     </view>
