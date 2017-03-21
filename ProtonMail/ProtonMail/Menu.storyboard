@@ -672,7 +672,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ob3-FJ-Dei" customClass="TableCellLabelView" customModule="ProtonMail" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="8" width="156" height="28"/>
+                                                            <rect key="frame" x="20" y="8" width="156" height="28"/>
                                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="156" id="drj-8y-wfa"/>
@@ -690,19 +690,31 @@
                                                                 <action selector="buttonAction:" destination="zeh-GA-VuO" eventType="touchUpInside" id="6iF-G5-lac"/>
                                                             </connections>
                                                         </button>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hFW-ma-ZRM">
+                                                            <rect key="frame" x="0.0" y="14" width="16" height="16"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="16" id="9f2-lE-YVp"/>
+                                                                <constraint firstAttribute="width" constant="16" id="bqi-uN-67t"/>
+                                                            </constraints>
+                                                        </imageView>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstAttribute="bottom" secondItem="Ob3-FJ-Dei" secondAttribute="bottom" constant="8" id="GuV-jt-wKQ"/>
                                                         <constraint firstItem="Ob3-FJ-Dei" firstAttribute="top" secondItem="wuB-ho-YEh" secondAttribute="top" constant="8" id="KYa-x6-6eW"/>
+                                                        <constraint firstItem="hFW-ma-ZRM" firstAttribute="centerY" secondItem="wuB-ho-YEh" secondAttribute="centerY" id="LnY-1P-0Co"/>
+                                                        <constraint firstItem="Ob3-FJ-Dei" firstAttribute="leading" secondItem="hFW-ma-ZRM" secondAttribute="trailing" priority="750" constant="4" id="NOz-nT-b1O"/>
                                                         <constraint firstAttribute="bottom" secondItem="hli-Rq-vrf" secondAttribute="bottom" id="bQW-jx-4RY"/>
+                                                        <constraint firstItem="hFW-ma-ZRM" firstAttribute="leading" secondItem="wuB-ho-YEh" secondAttribute="leading" id="eyw-2y-RCm"/>
                                                         <constraint firstItem="hli-Rq-vrf" firstAttribute="top" secondItem="wuB-ho-YEh" secondAttribute="top" id="f7j-M6-9Vo"/>
+                                                        <constraint firstItem="Ob3-FJ-Dei" firstAttribute="leading" secondItem="wuB-ho-YEh" secondAttribute="leading" priority="500" id="hCk-T9-oaA"/>
                                                         <constraint firstAttribute="trailing" secondItem="hli-Rq-vrf" secondAttribute="trailing" id="ll5-W0-H3j"/>
-                                                        <constraint firstItem="Ob3-FJ-Dei" firstAttribute="leading" secondItem="wuB-ho-YEh" secondAttribute="leading" id="uJx-OB-Lpd"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
+                                                    <outlet property="labelIcon" destination="hFW-ma-ZRM" id="kRW-ez-AaI"/>
                                                     <outlet property="labelView" destination="Ob3-FJ-Dei" id="hrW-lt-lA0"/>
                                                     <outlet property="labelWidth" destination="drj-8y-wfa" id="ZZ9-d5-0Zs"/>
+                                                    <outlet property="labelleft" destination="hCk-T9-oaA" id="aD5-3H-I1T"/>
                                                     <outlet property="selectStatusButton" destination="hli-Rq-vrf" id="wGH-vL-kaP"/>
                                                 </connections>
                                             </tableViewCell>
@@ -844,7 +856,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FVt-bG-ZYT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4967" y="1919"/>
+            <point key="canvasLocation" x="4965.6000000000004" y="1918.2908545727139"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Hfi-Ob-mMm">
