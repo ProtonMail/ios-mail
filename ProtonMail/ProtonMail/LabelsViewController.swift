@@ -94,6 +94,8 @@ class LablesViewController : UIViewController {
         applyButtonText = viewModel.getApplyButtonText()
         applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
         cancelButton.setTitle(viewModel.getCancelButtonText(), forState: UIControlState.Normal)
+        
+        tableView.noSeparatorsBelowFooter()
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -181,10 +183,7 @@ extension LablesViewController: UITableViewDataSource {
         let labelCell = tableView.dequeueReusableCellWithIdentifier("labelApplyCell", forIndexPath: indexPath) as! LabelTableViewCell
         if let label = fetchedLabels?.objectAtIndexPath(indexPath) as? Label {
             let lm = viewModel.getLabelMessage(label)
-            labelCell.ConfigCell(lm, vc: self)
-//            if let tmpS = self.tempSelected where tmpS.label != label {
-//                labelCell.ConfigCell(viewModel.getLabelMessage(label), uncheck: true, vc: self)
-//            }
+            labelCell.ConfigCell(lm, showIcon: viewModel.getFetchType() == .all, vc: self)
         }
         return labelCell
     }

@@ -15,7 +15,8 @@ class LabelTableViewCell: UITableViewCell {
 
     @IBOutlet weak var labelView: TableCellLabelView!
     @IBOutlet weak var selectStatusButton: UIButton!
-    
+    @IBOutlet weak var labelIcon: UIImageView!
+    @IBOutlet weak var labelleft: NSLayoutConstraint!
     @IBOutlet weak var labelWidth: NSLayoutConstraint!
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
@@ -54,13 +55,30 @@ class LabelTableViewCell: UITableViewCell {
         }
     }
     
-    func ConfigCell(model : LabelMessageModel!, vc : UIViewController) {
+    func ConfigCell(model : LabelMessageModel!, showIcon : Bool, vc : UIViewController) {
         self.vc = vc;
         self.model = model;
         if model.label.managedObjectContext != nil {
             let w = labelView.setText(model.label.name, color: UIColor(hexString: model.label.color, alpha: 1.0))
             let check = self.frame.width - 50
             labelWidth.constant = w > check ? check : w
+            
+            if showIcon {
+                labelIcon.hidden = false
+                labelleft.priority = 500
+                let color = UIColor(hexString: model.label.color, alpha:1)
+                var image = UIImage(named: "menu_label")
+                if model.label.exclusive {
+                    image = UIImage(named: "menu_folder")
+                }
+                
+                labelIcon.image = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+                labelIcon.highlightedImage = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+                labelIcon.tintColor = color
+            } else {
+                labelIcon.hidden = true
+                labelleft.priority = 900
+            }
         }
         self.updateStatusButton()
     }

@@ -203,13 +203,14 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     internal func unreadButtonTapped() {
         messagesSetValue(setValue: false, forKey: Message.Attributes.isRead)
+        self.popViewController()
     }
     
     internal func popViewController() {
         //ActivityIndicatorHelper.showActivityIndicatorAtView(view)
         //dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.3 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
-            //ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-            self.navigationController?.popViewControllerAnimated(true)
+        //ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+        self.navigationController?.popViewControllerAnimated(true)
         //}
     }
     
