@@ -138,7 +138,7 @@ public class FolderApplyViewModelImpl : LabelViewModel {
     }
     
     override public func getTitle() -> String {
-        return NSLocalizedString("Apply Labels")
+        return NSLocalizedString("Move to Folder")
     }
     
     override public func cancel() {

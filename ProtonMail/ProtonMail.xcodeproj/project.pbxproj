@@ -1709,6 +1709,33 @@
 			name = Defined;
 			sourceTree = "<group>";
 		};
+		75DD3E531E81BF94005A7B93 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				75ECC2371AB9F28100B8FC78 /* ChangePasswordViewModel.swift */,
+				759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
+		75DD3E541E81BFB0005A7B93 /* Composer */ = {
+			isa = PBXGroup;
+			children = (
+				7567B06A1B334AF200A72A1E /* ComposeViewModel.swift */,
+				7564899D1B7F2C9F007EA207 /* ComposeViewModelImpl.swift */,
+			);
+			name = Composer;
+			sourceTree = "<group>";
+		};
+		75DD3E551E81BFCD005A7B93 /* MessageDetail */ = {
+			isa = PBXGroup;
+			children = (
+				755638C81CA1F423003FA2D0 /* MessageViewModel.swift */,
+				755638CA1CA1F446003FA2D0 /* MessageViewModelImpl.swift */,
+			);
+			name = MessageDetail;
+			sourceTree = "<group>";
+		};
 		75E0904E1CAC6D7600751136 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
@@ -1759,21 +1786,18 @@
 		75ECC2361AB9F10600B8FC78 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				75DD3E551E81BFCD005A7B93 /* MessageDetail */,
+				75DD3E541E81BFB0005A7B93 /* Composer */,
+				75DD3E531E81BF94005A7B93 /* Settings */,
 				757F4A071E67A0B8001CDE71 /* Labels */,
 				7545083F1E149B3900265CD0 /* Mailbox */,
 				754713161DCD61510084BF34 /* SignIn */,
 				7547130F1DCD517E0084BF34 /* TwoFA */,
 				75BDECA71CBCCC5A00982089 /* PinCode */,
 				75E49EFE1CAB07BC00235ACC /* SignUp */,
-				7567B06A1B334AF200A72A1E /* ComposeViewModel.swift */,
-				7564899D1B7F2C9F007EA207 /* ComposeViewModelImpl.swift */,
-				75ECC2371AB9F28100B8FC78 /* ChangePasswordViewModel.swift */,
-				759339C31ABB5EA900535F1B /* SettingDetailsViewModel.swift */,
 				759339BF1ABB45C700535F1B /* ViewModelFactory.swift */,
 				7567B06C1B334FA400A72A1E /* ViewModelService.swift */,
 				7567B06E1B334FD300A72A1E /* ViewModelServiceImpl.swift */,
-				755638C81CA1F423003FA2D0 /* MessageViewModel.swift */,
-				755638CA1CA1F446003FA2D0 /* MessageViewModelImpl.swift */,
 			);
 			name = ViewModels;
 			sourceTree = "<group>";
