@@ -14,8 +14,7 @@ import CoreData
 
 class MessageViewController: ProtonMailViewController, LablesViewControllerDelegate {
     
-    private let kToComposerSegue = "toCompose"
-    
+    private let kToComposerSegue : String    = "toCompose"
     private let kSegueMoveToFolders : String = "toMoveToFolderSegue"
     private let kSegueToApplyLabels : String = "toApplyLabelsSegue"
     
@@ -27,16 +26,15 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     ///
     private var URL : NSURL?
-    //private var actionTapped: ComposeMessageAction!
-    //private var fetchedMessageController: NSFetchedResultsController?
     
     @IBOutlet var backButton: UIBarButtonItem!
     
-    private var bodyLoaded: Bool = false
-    
-    private var showedShowImageView : Bool = false
-    private var isAutoLoadImage : Bool = false
+    ///
+    private var bodyLoaded: Bool             = false
+    private var showedShowImageView : Bool   = false
+    private var isAutoLoadImage : Bool       = false
     private var needShowShowImageView : Bool = false
+    private var actionTapped : Bool          = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -202,30 +200,36 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     }
     
     internal func unreadButtonTapped() {
-        messagesSetValue(setValue: false, forKey: Message.Attributes.isRead)
-        self.popViewController()
+        if !actionTapped {
+            actionTapped = true
+            messagesSetValue(setValue: false, forKey: Message.Attributes.isRead)
+            self.popViewController()
+        }
     }
-    
     internal func popViewController() {
         //ActivityIndicatorHelper.showActivityIndicatorAtView(view)
-        //dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.3 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
-        //ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-        self.navigationController?.popViewControllerAnimated(true)
-        //}
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.3 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
+            //ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+            self.actionTapped = false
+            self.navigationController?.popViewControllerAnimated(true)
+        }
     }
     
     internal func removeButtonTapped() {
-        switch(message.location) {
-        case .trash, .spam:
-            if self.message.managedObjectContext != nil {
-                self.message.removeLocationFromLabels(message.location, location: MessageLocation.deleted)
-                self.messagesSetValue(setValue: MessageLocation.deleted.rawValue, forKey: Message.Attributes.locationNumber)
+        if !actionTapped {
+            actionTapped = true
+            switch(message.location) {
+            case .trash, .spam:
+                if self.message.managedObjectContext != nil {
+                    self.message.removeLocationFromLabels(message.location, location: MessageLocation.deleted)
+                    self.messagesSetValue(setValue: MessageLocation.deleted.rawValue, forKey: Message.Attributes.locationNumber)
+                }
+            default:
+                self.message.removeLocationFromLabels(message.location, location: MessageLocation.trash)
+                self.messagesSetValue(setValue: MessageLocation.trash.rawValue, forKey: Message.Attributes.locationNumber)
             }
-        default:
-            self.message.removeLocationFromLabels(message.location, location: MessageLocation.trash)
-            self.messagesSetValue(setValue: MessageLocation.trash.rawValue, forKey: Message.Attributes.locationNumber)
+            popViewController()
         }
-        popViewController()
     }
     
     internal func labelButtonTapped() {
@@ -235,13 +239,17 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         self.performSegueWithIdentifier(kSegueMoveToFolders, sender: self)
     }
     internal func spamButtonTapped() {
-        self.message.removeLocationFromLabels(message.location, location: MessageLocation.spam)
-        message.needsUpdate = true
-        message.location = .spam
-        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
-            PMLog.D(" error: \(error)")
+        if !actionTapped {
+            actionTapped = true
+            
+            self.message.removeLocationFromLabels(message.location, location: MessageLocation.spam)
+            message.needsUpdate = true
+            message.location = .spam
+            if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
+                PMLog.D(" error: \(error)")
+            }
+            popViewController()
         }
-        popViewController()
     }
     
     internal func moreButtonTapped(sender : UIBarButtonItem) {
@@ -297,7 +305,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }
-
+    
     override func shouldShowSideMenu() -> Bool {
         return false
     }
@@ -465,16 +473,16 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         self.emailView?.updateEmailBody(bodyText, meta: meta1)
     }
     
-//    private func setupFetchedResultsController(msg_id:String) {
-//        self.fetchedMessageController = sharedMessageDataService.fetchedMessageControllerForID(msg_id)
-//        if let fetchedMessageController = fetchedMessageController {
-//            do {
-//                try fetchedMessageController.performFetch()
-//            } catch let ex as NSError {
-//                PMLog.D("error: \(ex)")
-//            }
-//        }
-//    }
+    //    private func setupFetchedResultsController(msg_id:String) {
+    //        self.fetchedMessageController = sharedMessageDataService.fetchedMessageControllerForID(msg_id)
+    //        if let fetchedMessageController = fetchedMessageController {
+    //            do {
+    //                try fetchedMessageController.performFetch()
+    //            } catch let ex as NSError {
+    //                PMLog.D("error: \(ex)")
+    //            }
+    //        }
+    //    }
     
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         self.emailView?.rotate()
