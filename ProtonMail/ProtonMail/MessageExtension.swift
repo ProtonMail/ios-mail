@@ -116,22 +116,22 @@ extension Message {
     }
     
     func getShowLocationNameFromLabels(ignored : String) -> String? {
+        var lableOnly = false
         if ignored == MessageLocation.outbox.title {
             for l in getLocationFromLabels() {
                 if l == .trash || l == .spam {
                     return l.title
                 }
             }
-            return ""
+            lableOnly = true
         }
-        
         
         let labels = self.labels
         for l in labels {
             if let label = l as? Label {
                 if label.exclusive == true && label.name != ignored {
                     return label.name
-                } else {
+                } else if !lableOnly {
                     if let l_id = Int(label.labelID) {
                         PMLog.D(label.name)
                         if let new_loc = MessageLocation(rawValue: l_id) where new_loc != .starred && new_loc != .allmail && new_loc.title != ignored {

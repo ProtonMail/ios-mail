@@ -373,7 +373,7 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                             dispatch_async(dispatch_get_main_queue()) {
                                 picker.dismissViewControllerAnimated(true, completion: nil)
 //                                self.showErrorAlert("The file is too big")
-//                                self.delegate?.attachments(self, error:"The file is too big")                                
+//                                self.delegate?.attachments(self, error:"The file is too big")
                                 self.showSizeErrorAlert(0)
                                 self.delegate?.attachments(self, didReachedSizeLimitation:0)
                             }
