@@ -119,7 +119,7 @@ extension Message {
         var lableOnly = false
         if ignored == MessageLocation.outbox.title {
             for l in getLocationFromLabels() {
-                if l == .trash || l == .spam {
+                if l == .trash || l == .spam || l == .archive {
                     return l.title
                 }
             }
