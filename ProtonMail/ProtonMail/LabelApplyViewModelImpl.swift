@@ -182,7 +182,7 @@ public class LabelApplyViewModelImpl : LabelViewModel {
         
         if archiveMessage {
             for message in self.messages {
-                message.removeLocationFromLabels(message.location, location: .archive)
+                message.removeLocationFromLabels(message.location, location: .archive, keepSent: true)
                 message.needsUpdate = false
                 message.location = .archive
             }

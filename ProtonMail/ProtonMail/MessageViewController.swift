@@ -221,11 +221,11 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
             switch(message.location) {
             case .trash, .spam:
                 if self.message.managedObjectContext != nil {
-                    self.message.removeLocationFromLabels(message.location, location: MessageLocation.deleted)
+                    self.message.removeLocationFromLabels(message.location, location: MessageLocation.deleted, keepSent: true)
                     self.messagesSetValue(setValue: MessageLocation.deleted.rawValue, forKey: Message.Attributes.locationNumber)
                 }
             default:
-                self.message.removeLocationFromLabels(message.location, location: MessageLocation.trash)
+                self.message.removeLocationFromLabels(message.location, location: MessageLocation.trash, keepSent: true)
                 self.messagesSetValue(setValue: MessageLocation.trash.rawValue, forKey: Message.Attributes.locationNumber)
             }
             popViewController()
@@ -242,7 +242,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         if !actionTapped {
             actionTapped = true
             
-            self.message.removeLocationFromLabels(message.location, location: MessageLocation.spam)
+            self.message.removeLocationFromLabels(message.location, location: MessageLocation.spam, keepSent: true)
             message.needsUpdate = true
             message.location = .spam
             if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
@@ -259,7 +259,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         for (location, style) in locations {
             if message.location != location {
                 alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
-                    self.message.removeLocationFromLabels(self.message.location, location: location)
+                    self.message.removeLocationFromLabels(self.message.location, location: location, keepSent: true)
                     self.messagesSetValue(setValue: location.rawValue, forKey: Message.Attributes.locationNumber)
                     self.popViewController()
                 }))
@@ -586,7 +586,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
         if isStarred {
             self.message.setLabelLocation(.starred)
         } else {
-            self.message.removeLocationFromLabels(.starred, location: .deleted)
+            self.message.removeLocationFromLabels(.starred, location: .deleted, keepSent: true)
         }
         self.messagesSetValue(setValue: isStarred, forKey: Message.Attributes.isStarred)
     }

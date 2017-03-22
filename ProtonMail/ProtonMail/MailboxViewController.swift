@@ -678,7 +678,7 @@ class MailboxViewController: ProtonMailViewController {
                 if let message = Message.messageForMessageID(undoMsg.messageID, inManagedObjectContext: context) {
                     //viewModel.updateBadgeNumberMoveOutInbox(message)
                     viewModel.updateBadgeNumberWhenMove(message, to: undoMsg.oldLocation)
-                    message.removeLocationFromLabels(message.location, location: undoMsg.oldLocation)
+                    message.removeLocationFromLabels(message.location, location: undoMsg.oldLocation, keepSent: true)
                     message.needsUpdate = true
                     message.location = undoMsg.oldLocation
                     if let error = context.saveUpstreamIfNeeded() {
@@ -886,7 +886,7 @@ class MailboxViewController: ProtonMailViewController {
             do {
                 if let messages = try context.executeFetchRequest(fetchRequest) as? [Message] {
                     for message in messages {
-                        message.removeLocationFromLabels(message.location, location: location);
+                        message.removeLocationFromLabels(message.location, location: location, keepSent: true);
                         message.needsUpdate = true
                         message.location = location
                         
@@ -997,7 +997,7 @@ class MailboxViewController: ProtonMailViewController {
             do {
                 if let messages = try context.executeFetchRequest(fetchRequest) as? [Message] {
                     for msg in messages {
-                        msg.removeLocationFromLabels(.starred, location: .deleted);
+                        msg.removeLocationFromLabels(.starred, location: .deleted, keepSent: true);
                     }
                     let error = context.saveUpstreamIfNeeded()
                     if let error = error {
@@ -1099,7 +1099,7 @@ class MailboxViewController: ProtonMailViewController {
             if (viewModel.isDrafts()) {
                 rightButtons = [self.removeBarButtonItem]
             } else if (viewModel.isCurrentLocation(.outbox)) {
-                rightButtons = [self.moreBarButtonItem, self.labelBarButtonItem, self.unreadBarButtonItem]
+                rightButtons = [self.moreBarButtonItem, self.removeBarButtonItem, self.labelBarButtonItem, self.unreadBarButtonItem]
             } else {
                 rightButtons = [self.moreBarButtonItem, self.removeBarButtonItem, self.folderBarButtonItem, self.labelBarButtonItem, self.unreadBarButtonItem]
             }

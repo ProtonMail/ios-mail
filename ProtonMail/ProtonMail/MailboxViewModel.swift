@@ -37,7 +37,7 @@ public class MailboxViewModel {
     
     public func archiveMessage(msg: Message) {
         self.updateBadgeNumberWhenMove(msg, to: .archive)
-        msg.removeLocationFromLabels(msg.location, location: .archive)
+        msg.removeLocationFromLabels(msg.location, location: .archive, keepSent: true)
         msg.needsUpdate = true
         msg.location = .archive
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
@@ -47,7 +47,7 @@ public class MailboxViewModel {
     
     public func spamMessage(msg: Message) {
         self.updateBadgeNumberWhenMove(msg, to: .spam)
-        msg.removeLocationFromLabels(msg.location, location: .spam)
+        msg.removeLocationFromLabels(msg.location, location: .spam, keepSent: true)
         msg.needsUpdate = true
         msg.location = .spam
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {

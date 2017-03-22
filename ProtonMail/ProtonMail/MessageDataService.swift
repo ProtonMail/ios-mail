@@ -1652,7 +1652,7 @@ class MessageDataService {
                                     message.isRead = true
                                     lastUpdatedStore.ReadMailboxMessage(message.location)
                                     message.location = MessageLocation.outbox
-                                    message.removeLocationFromLabels(.draft, location: .outbox)
+                                    message.removeLocationFromLabels(.draft, location: .outbox, keepSent: true)
                                 }
                                 NSError.alertMessageSentToast()
                                 if let error = context.saveUpstreamIfNeeded() {

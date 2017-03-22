@@ -105,7 +105,6 @@ extension Message {
         for l in labels {
             if let label = l as? Label {
                 if let l_id = Int(label.labelID) {
-                    PMLog.D(label.name)
                     if let new_loc = MessageLocation(rawValue: l_id) where new_loc != .starred && new_loc != .allmail {
                         locations.append(new_loc)
                     }
@@ -119,7 +118,7 @@ extension Message {
     func getShowLocationNameFromLabels(ignored : String) -> String? {
         if ignored == MessageLocation.outbox.title {
             for l in getLocationFromLabels() {
-                if l == .trash {
+                if l == .trash || l == .spam {
                     return l.title
                 }
             }
@@ -174,20 +173,25 @@ extension Message {
         }
     }
     
-    func removeLocationFromLabels(currentlocation:MessageLocation, location : MessageLocation) {
+    func removeLocationFromLabels(currentlocation:MessageLocation, location : MessageLocation, keepSent: Bool) {
         if let context = self.managedObjectContext {
             context.performBlockAndWait() {
-                let fromLabelID = String(currentlocation.rawValue)
-                let toLableID = String(location.rawValue)
                 let labelObjs = self.mutableSetValueForKey("labels")
-                for l in labelObjs {
-                    if let label = l as? Label {
-                        if label.labelID == fromLabelID {
-                            labelObjs.removeObject(label)
-                            break
+                if keepSent && currentlocation == .outbox {
+                    
+                } else {
+                    let fromLabelID = String(currentlocation.rawValue)
+                    for l in labelObjs {
+                        if let label = l as? Label {
+                            if label.labelID == fromLabelID {
+                                labelObjs.removeObject(label)
+                                break
+                            }
                         }
                     }
                 }
+                
+                let toLableID = String(location.rawValue)
                 if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
                     var exsited = false
                     for l in labelObjs {
