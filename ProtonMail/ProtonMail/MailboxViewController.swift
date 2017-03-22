@@ -49,6 +49,8 @@ class MailboxViewController: ProtonMailViewController {
     private let kSegueMoveToFolders : String = "toMoveToFolderSegue"
     private let kSegueToApplyLabels : String = "toApplyLabelsSegue"
     
+    @IBOutlet weak var undoButton: UIButton!
+    @IBOutlet weak var undoButtonWidth: NSLayoutConstraint!
     @IBOutlet weak var undoBottomDistance: NSLayoutConstraint!
     // MARK: - Private attributes
     
@@ -81,7 +83,6 @@ class MailboxViewController: ProtonMailViewController {
     internal var refreshControl: UIRefreshControl!
     private var navigationTitleLabel = UILabel()
     @IBOutlet weak var undoLabel: UILabel!
-    
     @IBOutlet weak var noResultLabel: UILabel!
     
     // MARK: - Right bar buttons
@@ -298,12 +299,14 @@ class MailboxViewController: ProtonMailViewController {
         } else if segue.identifier == kSegueToApplyLabels {
             let popup = segue.destinationViewController as! LablesViewController
             popup.viewModel = LabelApplyViewModelImpl(msg: self.getSelectedMessages())
+            popup.delegate = self
             self.setPresentationStyleForSelfController(self, presentingController: popup)
             self.cancelButtonTapped()
             
         } else if segue.identifier == kSegueMoveToFolders {
             let popup = segue.destinationViewController as! LablesViewController
             popup.viewModel = FolderApplyViewModelImpl(msg: self.getSelectedMessages())
+            popup.delegate = self
             self.setPresentationStyleForSelfController(self, presentingController: popup)
             self.cancelButtonTapped()
             
@@ -359,8 +362,10 @@ class MailboxViewController: ProtonMailViewController {
     internal func removeButtonTapped() {
         if viewModel.isDelete() {
             moveMessagesToLocation(.deleted)
+            showMessageMoved("Message has been deleted.")
         } else {
             moveMessagesToLocation(.trash)
+            showMessageMoved("Message has been moved.")
         }
         cancelButtonTapped();
     }
@@ -676,7 +681,6 @@ class MailboxViewController: ProtonMailViewController {
         if let undoMsg = undoMessage {
             if let context = fetchedResultsController?.managedObjectContext {
                 if let message = Message.messageForMessageID(undoMsg.messageID, inManagedObjectContext: context) {
-                    //viewModel.updateBadgeNumberMoveOutInbox(message)
                     viewModel.updateBadgeNumberWhenMove(message, to: undoMsg.oldLocation)
                     message.removeLocationFromLabels(message.location, location: undoMsg.oldLocation, keepSent: true)
                     message.needsUpdate = true
@@ -693,6 +697,22 @@ class MailboxViewController: ProtonMailViewController {
     private func showUndoView(title : String!) {
         undoLabel.text = "Message \(title)"
         self.undoBottomDistance.constant = 0
+        self.undoButton.hidden = false
+        self.undoButtonWidth.constant = 100.0
+        self.updateViewConstraints()
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+        })
+        self.timerAutoDismiss?.invalidate()
+        self.timerAutoDismiss = nil
+        self.timerAutoDismiss = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: #selector(MailboxViewController.timerTriggered), userInfo: nil, repeats: false)
+    }
+    
+    private func showMessageMoved(title : String!) {
+        undoLabel.text = "\(title)"
+        self.undoBottomDistance.constant = 0
+        self.undoButton.hidden = true
+        self.undoButtonWidth.constant = 0.0
         self.updateViewConstraints()
         UIView.animateWithDuration(0.25, animations: { () -> Void in
             self.view.layoutIfNeeded()
@@ -707,6 +727,7 @@ class MailboxViewController: ProtonMailViewController {
         self.timerAutoDismiss = nil
         
         self.undoBottomDistance.constant = -44
+        self.undoButton.hidden = true
         self.updateViewConstraints()
         UIView.animateWithDuration(0.25, animations: { () -> Void in
             self.view.layoutIfNeeded()
@@ -1176,6 +1197,20 @@ class MailboxViewController: ProtonMailViewController {
         } else {
             self.title = ""
             self.navigationTitleLabel.text = ""
+        }
+    }
+}
+
+extension MailboxViewController : LablesViewControllerDelegate {
+    func dismissed() {
+        
+    }
+    
+    func apply(type: LabelFetchType) {
+        if type == .label {
+            showMessageMoved("Labels have been applied.")
+        } else if type == .folder {
+            showMessageMoved("Message has been moved.")
         }
     }
 }

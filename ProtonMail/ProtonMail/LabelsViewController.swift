@@ -11,6 +11,7 @@ import CoreData
 
 protocol LablesViewControllerDelegate {
     func dismissed()
+    func apply(type: LabelFetchType)
 }
 
 class LablesViewController : UIViewController {
@@ -122,6 +123,7 @@ class LablesViewController : UIViewController {
         self.viewModel.apply(archiveMessage)
         self.dismissViewControllerAnimated(true, completion: nil)
         delegate?.dismissed()
+        delegate?.apply(viewModel.getFetchType())
     }
     
     @IBAction func cancelAction(sender: AnyObject) {

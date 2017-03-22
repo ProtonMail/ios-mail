@@ -31,7 +31,7 @@ public class LabelViewModel {
         fatalError("This method must be overridden")
     }
     
-    public func apply (archiveMessage : Bool) {
+    public func apply (archiveMessage : Bool) -> Bool {
         fatalError("This method must be overridden")
     }
     

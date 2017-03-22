@@ -144,7 +144,7 @@ public class LabelApplyViewModelImpl : LabelViewModel {
 //        self.updateStatusButton();
 //    }
     
-    override public func apply(archiveMessage : Bool) {
+    override public func apply(archiveMessage : Bool) -> Bool {
         
         let context = sharedCoreDataService.newMainManagedObjectContext()
         for (key, value) in self.labelMessages {
@@ -193,6 +193,8 @@ public class LabelApplyViewModelImpl : LabelViewModel {
             let api = MessageActionRequest<ApiResponse>(action: "archive", ids: ids)
             api.call(nil)
         }
+        
+        return true
     }
     
     override public func getTitle() -> String {

@@ -611,6 +611,10 @@
 		75F161921DCBB7E600912662 /* TwoFACodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F161901DCBB7E600912662 /* TwoFACodeViewController.swift */; };
 		75F1697E1AF7F43A00BE6E79 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F1697D1AF7F43A00BE6E79 /* Logger.swift */; };
 		75F169811AF80B5900BE6E79 /* UserCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F169801AF80B5900BE6E79 /* UserCachedStatus.swift */; };
+		75F22BEE1E83335000677E67 /* ToastMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F22BED1E83335000677E67 /* ToastMessageView.swift */; };
+		75F22BEF1E83335100677E67 /* ToastMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F22BED1E83335000677E67 /* ToastMessageView.swift */; };
+		75F22BF11E83348100677E67 /* ToastMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75F22BF01E83348100677E67 /* ToastMessageView.xib */; };
+		75F22BF21E83348100677E67 /* ToastMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75F22BF01E83348100677E67 /* ToastMessageView.xib */; };
 		75F463881C5FEBF400918B46 /* HumanCheckMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F463871C5FEBF400918B46 /* HumanCheckMenuViewController.swift */; };
 		75F4638A1C60071B00918B46 /* EmailVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F463891C60071B00918B46 /* EmailVerifyViewController.swift */; };
 		75F4638E1C60172300918B46 /* SignUpUserNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F4638D1C60172300918B46 /* SignUpUserNameViewController.swift */; };
@@ -976,6 +980,8 @@
 		75F161901DCBB7E600912662 /* TwoFACodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoFACodeViewController.swift; sourceTree = "<group>"; };
 		75F1697D1AF7F43A00BE6E79 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		75F169801AF80B5900BE6E79 /* UserCachedStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCachedStatus.swift; sourceTree = "<group>"; };
+		75F22BED1E83335000677E67 /* ToastMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToastMessageView.swift; sourceTree = "<group>"; };
+		75F22BF01E83348100677E67 /* ToastMessageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ToastMessageView.xib; sourceTree = "<group>"; };
 		75F463871C5FEBF400918B46 /* HumanCheckMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanCheckMenuViewController.swift; sourceTree = "<group>"; };
 		75F463891C60071B00918B46 /* EmailVerifyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailVerifyViewController.swift; sourceTree = "<group>"; };
 		75F4638D1C60172300918B46 /* SignUpUserNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpUserNameViewController.swift; sourceTree = "<group>"; };
@@ -1304,6 +1310,8 @@
 				75F1618A1DCBB19300912662 /* TwoFACodeView.xib */,
 				759BBDC71BA0D1E3002608B5 /* PMView.swift */,
 				759337841D18917400004A3D /* PMWebView.swift */,
+				75F22BED1E83335000677E67 /* ToastMessageView.swift */,
+				75F22BF01E83348100677E67 /* ToastMessageView.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -2049,6 +2057,7 @@
 				7526AC8E1B6C4B3700E1967E /* backup.css in Resources */,
 				752FAA101CB5AEAF00F03228 /* PinCodeView.xib in Resources */,
 				7550648E1B9A5ECA006F2D39 /* Roboto-Medium.ttf in Resources */,
+				75F22BF11E83348100677E67 /* ToastMessageView.xib in Resources */,
 				75A2F44E1C97D6B400BF4306 /* ComposeErrorView.xib in Resources */,
 				701704781A794C69000A90D2 /* Roboto-MediumItalic.ttf in Resources */,
 				07411D8C1AAA3F1B002A4611 /* AttachmentTableViewCell.xib in Resources */,
@@ -2075,6 +2084,7 @@
 				75DE7D8C1CAAEA4900F5443E /* editor.css in Resources */,
 				75DE7D8D1CAAEA4900F5443E /* ComposeView.xib in Resources */,
 				7516452F1D7F66C800DE0BD2 /* test_email.html in Resources */,
+				75F22BF21E83348100677E67 /* ToastMessageView.xib in Resources */,
 				75DE7EB21CAAEF9000F5443E /* Images.xcassets in Resources */,
 				75BA55A81D087F6A0081DD88 /* Readme.txt in Resources */,
 				75DE7D8E1CAAEA4900F5443E /* Roboto-Regular.ttf in Resources */,
@@ -2524,6 +2534,7 @@
 				071323A01A7C1AB10043DB41 /* NSTimeIntervalExtension.swift in Sources */,
 				75C037461C1F94D20071E04B /* SplashViewController.swift in Sources */,
 				753745071D6B885500682C5A /* APIService+ResponseTransformer.swift in Sources */,
+				75F22BEE1E83335000677E67 /* ToastMessageView.swift in Sources */,
 				7545083D1E14861E00265CD0 /* MailboxCaptchaViewController.swift in Sources */,
 				75F023AF1C4E0271008F6276 /* SignupViewModel.swift in Sources */,
 				7564899C1B7F2B1B007EA207 /* LabelboxViewModelImpl.swift in Sources */,
@@ -2593,6 +2604,7 @@
 				75DE7CB51CAAEA4900F5443E /* UIAlertControllerExtension.swift in Sources */,
 				75DE7CB61CAAEA4900F5443E /* Snapshot.swift in Sources */,
 				75DE7CB71CAAEA4900F5443E /* LabelViewModel.swift in Sources */,
+				75F22BEF1E83335100677E67 /* ToastMessageView.swift in Sources */,
 				75DE7CB81CAAEA4900F5443E /* FeedbackViewController.swift in Sources */,
 				7545083E1E14861E00265CD0 /* MailboxCaptchaViewController.swift in Sources */,
 				75DE7CB91CAAEA4900F5443E /* MailboxViewModelImpl.swift in Sources */,

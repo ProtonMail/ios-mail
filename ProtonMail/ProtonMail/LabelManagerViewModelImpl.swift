@@ -62,7 +62,7 @@ public class LabelManagerViewModelImpl : LabelViewModel {
         }
     }
     
-    override public func apply(archiveMessage : Bool) {
+    override public func apply(archiveMessage : Bool) -> Bool {
         if let context = sharedCoreDataService.mainManagedObjectContext {
             for (key, value) in self.labelMessages {
                 if value.currentStatus == 2 { //delete
@@ -76,6 +76,7 @@ public class LabelManagerViewModelImpl : LabelViewModel {
                 }
             }
         }
+        return true
     }
     
     override public func cancel() {

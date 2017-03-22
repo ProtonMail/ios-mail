@@ -99,6 +99,15 @@ extension Message {
         return false
     }
     
+    func hasLocation(location : MessageLocation) -> Bool {
+        for l in getLocationFromLabels() {
+            if l == location {
+                return true
+            }
+        }
+        return false
+    }
+    
     func getLocationFromLabels() ->  [MessageLocation] {
         var locations = [MessageLocation]()
         let labels = self.labels

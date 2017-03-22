@@ -12,7 +12,7 @@ import Foundation
 import CoreData
 
 
-class MessageViewController: ProtonMailViewController, LablesViewControllerDelegate {
+class MessageViewController: ProtonMailViewController {
     
     private let kToComposerSegue : String    = "toCompose"
     private let kSegueMoveToFolders : String = "toMoveToFolderSegue"
@@ -179,11 +179,6 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         }
     }
     
-    func dismissed() {
-        self.updateHeader();
-        self.emailView?.emailHeader.updateHeaderLayout()
-    }
-    
     func test() {
         performSegueWithIdentifier("toLabelManagerSegue", sender: self)
     }
@@ -257,7 +252,7 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
         let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .archive : .Default]
         for (location, style) in locations {
-            if message.location != location {
+            if !message.hasLocation(location) {
                 alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
                     self.message.removeLocationFromLabels(self.message.location, location: location, keepSent: true)
                     self.messagesSetValue(setValue: location.rawValue, forKey: Message.Attributes.locationNumber)
@@ -473,22 +468,24 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         self.emailView?.updateEmailBody(bodyText, meta: meta1)
     }
     
-    //    private func setupFetchedResultsController(msg_id:String) {
-    //        self.fetchedMessageController = sharedMessageDataService.fetchedMessageControllerForID(msg_id)
-    //        if let fetchedMessageController = fetchedMessageController {
-    //            do {
-    //                try fetchedMessageController.performFetch()
-    //            } catch let ex as NSError {
-    //                PMLog.D("error: \(ex)")
-    //            }
-    //        }
-    //    }
-    
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         self.emailView?.rotate()
     }
 }
 
+extension MessageViewController : LablesViewControllerDelegate {
+    
+    func dismissed() {
+        self.updateHeader();
+        self.emailView?.emailHeader.updateHeaderLayout()
+    }
+    
+    func apply(type: LabelFetchType) {
+        if type == .folder {
+            popViewController()
+        }
+    }
+}
 extension MessageViewController : TopMessageViewDelegate {
     
     func close() {

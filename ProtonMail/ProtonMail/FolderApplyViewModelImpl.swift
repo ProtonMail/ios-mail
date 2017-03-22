@@ -95,8 +95,8 @@ public class FolderApplyViewModelImpl : LabelViewModel {
         }
     }
     
-    override public func apply(archiveMessage : Bool) {
-        
+    override public func apply(archiveMessage : Bool) -> Bool {
+        var changed : Bool = false
         let context = sharedCoreDataService.newMainManagedObjectContext()
         for (key, value) in self.labelMessages {
             if value.currentStatus != value.origStatus && value.currentStatus == 2 { //add
@@ -112,9 +112,11 @@ public class FolderApplyViewModelImpl : LabelViewModel {
                                 switch l.labelID {
                                 case "0", "3", "4", "6":
                                     needsDelete.append(l)
+                                    changed = true
                                 default:
                                     if l.exclusive == true {
                                         needsDelete.append(l)
+                                        changed = true
                                     }
                                     break
                                 }
@@ -123,6 +125,7 @@ public class FolderApplyViewModelImpl : LabelViewModel {
                         }
                         for l in needsDelete {
                             labelObjs.removeObject(l)
+                            changed = true
                         }
                         labelObjs.addObject(value.label)
                         mm.setValue(labelObjs, forKey: "labels")
@@ -135,6 +138,7 @@ public class FolderApplyViewModelImpl : LabelViewModel {
                 PMLog.D("error: \(error)")
             }
         }
+        return changed
     }
     
     override public func getTitle() -> String {
