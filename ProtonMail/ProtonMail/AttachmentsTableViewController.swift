@@ -359,11 +359,23 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                 let options = PHVideoRequestOptions()
                 PHImageManager.defaultManager().requestAVAssetForVideo(asset, options:options, resultHandler:
                     { (asset: AVAsset?, audioMix: AVAudioMix?, info: [NSObject : AnyObject]?) in
+                        
+                        if let error = info?[PHImageErrorKey] as? NSError {
+                            dispatch_async(dispatch_get_main_queue()) {
+                                picker.dismissViewControllerAnimated(true, completion: nil)
+                                self.showErrorAlert(error.debugDescription)
+                                self.delegate?.attachments(self, error:error.debugDescription)
+                            }
+                            return
+                        }
+                        
                         guard let asset = asset as? AVURLAsset, let image_data = NSData(contentsOfURL: asset.URL), let info = info where image_data.length > 0 else {
                             dispatch_async(dispatch_get_main_queue()) {
                                 picker.dismissViewControllerAnimated(true, completion: nil)
-                                self.showErrorAlert("Can't open the file")
-                                self.delegate?.attachments(self, error:"Can't open the file")
+//                                self.showErrorAlert("The file is too big")
+//                                self.delegate?.attachments(self, error:"The file is too big")                                
+                                self.showSizeErrorAlert(0)
+                                self.delegate?.attachments(self, didReachedSizeLimitation:0)
                             }
                             return
                         }
@@ -384,16 +396,16 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
                                     self.delegate?.attachments(self, didPickedAttachment: attachment!)
                                 } else {
                                     PMLog.D(" Error during copying size incorrect")
-                                    self.showErrorAlert("Can't copy the file")
-                                    self.delegate?.attachments(self, error:"Can't copy the file")
+                                    self.showErrorAlert("System can't copy the file")
+                                    self.delegate?.attachments(self, error:"System can't copy the file")
                                 }
                             }
                         } else {
                             dispatch_async(dispatch_get_main_queue()) {
+                                picker.dismissViewControllerAnimated(true, completion: nil)
                                 self.showSizeErrorAlert(0)
                                 self.delegate?.attachments(self, didReachedSizeLimitation:0)
                                 PMLog.D(" Size too big Orig: \(length) -- Limit: \(self.kDefaultAttachmentFileSize)")
-                                picker.dismissViewControllerAnimated(true, completion: nil)
                             }
                         }
                 })
