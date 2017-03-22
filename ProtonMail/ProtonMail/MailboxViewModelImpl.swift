@@ -120,7 +120,7 @@ public class MailboxViewModelImpl : MailboxViewModel {
     
     override public func showLocation() -> Bool {
         switch(self.location!) {
-        case .allmail:
+        case .allmail, .outbox:
             return true
         default:
             return false
@@ -149,6 +149,13 @@ public class MailboxViewModelImpl : MailboxViewModel {
         default:
             break
         }
+    }
+    
+    public override func ignoredLocationTitle() -> String {
+        if self.location == .outbox {
+            return MessageLocation.outbox.title
+        }
+        return ""
     }
     
     override func fetchMessages(MessageID: String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {

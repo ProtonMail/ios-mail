@@ -567,8 +567,7 @@ class MailboxViewController: ProtonMailViewController {
             mailboxCell.setCellIsChecked(selectedMessages.containsObject(message.messageID))
             if (self.isEditing) {
                 mailboxCell.showCheckboxOnLeftSide()
-            }
-            else {
+            } else {
                 mailboxCell.hideCheckboxOnLeftSide()
             }
             

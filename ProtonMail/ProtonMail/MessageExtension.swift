@@ -117,6 +117,16 @@ extension Message {
     }
     
     func getShowLocationNameFromLabels(ignored : String) -> String? {
+        if ignored == MessageLocation.outbox.title {
+            for l in getLocationFromLabels() {
+                if l == .trash {
+                    return l.title
+                }
+            }
+            return ""
+        }
+        
+        
         let labels = self.labels
         for l in labels {
             if let label = l as? Label {
