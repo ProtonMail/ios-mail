@@ -15,20 +15,10 @@ import UIKit
 enum ContactDetailSectionType: Int {
     case phone = 0
     case email = 1
-    case MultiDomain = 2
-    case Storage = 3
-    case Version = 4
-    case SwipeAction = 5
-    case Protection = 6
-    case Language = 7
-    case Labels = 8
 }
-
 
 class ContactDetailViewController: ProtonMailViewController {
     
-//    @IBOutlet var nameTextField: UITextField!
-//    @IBOutlet var emailTextField: UITextField!
     var contact: ContactVO!
     
     private let kInvalidEmailShakeTimes: Float = 3.0
@@ -106,3 +96,85 @@ extension ContactDetailViewController: UITextFieldDelegate {
         return true
     }
 }
+
+
+
+// MARK: - UITableViewDataSource
+
+extension ContactDetailViewController: UITableViewDataSource {
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell: UITableViewCell = tableView.dequeueReusableCellWithIdentifier("contacts_email_cell", forIndexPath: indexPath) //as! UITableViewCell
+        
+//        var contact: ContactVO
+//        
+//        if (self.searchController.active) {
+//            contact = searchResults[indexPath.row]
+//        } else {
+//            contact = contacts[indexPath.row]
+//        }
+//        
+//        cell.contactEmailLabel.text = contact.email
+//        cell.contactNameLabel.text = contact.name
+//        
+//        // temporary solution to show the icon
+//        if (contact.isProtonMailContact) {
+//            cell.contactSourceImageView.image = kProtonMailImage
+//        } else {
+//            cell.contactSourceImageView.hidden = true
+//        }
+        
+        return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension ContactDetailViewController: UITableViewDelegate {
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 0 {
+            return "Contact Details"
+        } else {
+            return "Encrypted Contact Details"
+        }
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 60.0
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    }
+    
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let deleteClosure = { (action: UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
+            
+        }
+        
+        let editClosure = { (action: UITableViewRowAction!, indexPath: NSIndexPath!) -> Void in
+            
+        }
+        
+        let deleteAction = UITableViewRowAction(style: .Default, title: NSLocalizedString("Delete"), handler: deleteClosure)
+        let editAction = UITableViewRowAction(style: .Normal, title: NSLocalizedString("Edit"), handler: editClosure)
+        
+        return [deleteAction, editAction]
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return false
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+
+    }
+}
+
