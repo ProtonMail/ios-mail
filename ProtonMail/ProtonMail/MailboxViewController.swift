@@ -40,13 +40,17 @@ class MailboxViewController: ProtonMailViewController {
     private let kSegueToComposeShow = "toComposeShow"
     private let kSegueToSearchController = "toSearchViewController"
     private let kSegueToMessageDetailController = "toMessageDetailViewController"
-    private let kSegueToLabelsController = "toApplyLabelsSegue"
     private let kSegueToMessageDetailFromNotification = "toMessageDetailViewControllerFromNotification"
     private let kSegueToTour = "to_onboarding_segue"
     private let kSegueToFeedback = "to_feedback_segue"
     private let kSegueToFeedbackView = "to_feedback_view_segue"
     private let kSegueToHumanCheckView = "toHumanCheckView"
     
+    private let kSegueMoveToFolders : String = "toMoveToFolderSegue"
+    private let kSegueToApplyLabels : String = "toApplyLabelsSegue"
+    
+    @IBOutlet weak var undoButton: UIButton!
+    @IBOutlet weak var undoButtonWidth: NSLayoutConstraint!
     @IBOutlet weak var undoBottomDistance: NSLayoutConstraint!
     // MARK: - Private attributes
     
@@ -79,7 +83,6 @@ class MailboxViewController: ProtonMailViewController {
     internal var refreshControl: UIRefreshControl!
     private var navigationTitleLabel = UILabel()
     @IBOutlet weak var undoLabel: UILabel!
-    
     @IBOutlet weak var noResultLabel: UILabel!
     
     // MARK: - Right bar buttons
@@ -89,6 +92,7 @@ class MailboxViewController: ProtonMailViewController {
     private var removeBarButtonItem: UIBarButtonItem!
     private var favoriteBarButtonItem: UIBarButtonItem!
     private var labelBarButtonItem: UIBarButtonItem!
+    private var folderBarButtonItem: UIBarButtonItem!
     private var unreadBarButtonItem: UIBarButtonItem!
     private var moreBarButtonItem: UIBarButtonItem!
     
@@ -292,13 +296,22 @@ class MailboxViewController: ProtonMailViewController {
                 PMLog.D("No selected row.")
             }
             
-        } else if segue.identifier == kSegueToLabelsController {
+        } else if segue.identifier == kSegueToApplyLabels {
             let popup = segue.destinationViewController as! LablesViewController
-            popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
+            popup.viewModel = LabelApplyViewModelImpl(msg: self.getSelectedMessages())
+            popup.delegate = self
             self.setPresentationStyleForSelfController(self, presentingController: popup)
             self.cancelButtonTapped()
             
-        } else if segue.identifier == kSegueToHumanCheckView{
+        } else if segue.identifier == kSegueMoveToFolders {
+            let popup = segue.destinationViewController as! LablesViewController
+            popup.viewModel = FolderApplyViewModelImpl(msg: self.getSelectedMessages())
+            popup.delegate = self
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
+            self.cancelButtonTapped()
+            
+        }
+        else if segue.identifier == kSegueToHumanCheckView{
             let popup = segue.destinationViewController as! MailboxCaptchaViewController
             popup.viewModel = CaptchaViewModelImpl()
             popup.delegate = self
@@ -310,7 +323,6 @@ class MailboxViewController: ProtonMailViewController {
             
         } else if segue.identifier == kSegueToTour {
             let popup = segue.destinationViewController as! OnboardingViewController
-            popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
             self.setPresentationStyleForSelfController(self, presentingController: popup)
         } else if segue.identifier == kSegueToFeedback {
             let popup = segue.destinationViewController as! FeedbackPopViewController
@@ -336,7 +348,11 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     internal func labelButtonTapped() {
-        self.performSegueWithIdentifier(kSegueToLabelsController, sender: self)
+        self.performSegueWithIdentifier(kSegueToApplyLabels, sender: self)
+    }
+    
+    internal func folderButtonTapped() {
+        self.performSegueWithIdentifier(kSegueMoveToFolders, sender: self)
     }
     
     func performSegueForMessageFromNotification() {
@@ -346,8 +362,10 @@ class MailboxViewController: ProtonMailViewController {
     internal func removeButtonTapped() {
         if viewModel.isDelete() {
             moveMessagesToLocation(.deleted)
+            showMessageMoved("Message has been deleted.")
         } else {
             moveMessagesToLocation(.trash)
+            showMessageMoved("Message has been moved.")
         }
         cancelButtonTapped();
     }
@@ -476,12 +494,12 @@ class MailboxViewController: ProtonMailViewController {
     internal func beginRefreshingManually() {
         self.refreshControl.beginRefreshing()
         if (self.tableView.contentOffset.y == 0) {
-            UIView.animateWithDuration(0.25, animations: { 
+            UIView.animateWithDuration(0.25, animations: {
                 self.tableView.contentOffset = CGPointMake(0, -self.refreshControl.frame.size.height);
             })
         }
     }
-
+    
     // MARK: - Private methods
     private func startAutoFetch(run : BooleanType = true)
     {
@@ -550,12 +568,11 @@ class MailboxViewController: ProtonMailViewController {
     
     private func configureCell(mailboxCell: MailboxMessageCell, atIndexPath indexPath: NSIndexPath) {
         if let message = self.messageAtIndexPath(indexPath) {
-            mailboxCell.configureCell(message, showLocation: viewModel.showLocation())
+            mailboxCell.configureCell(message, showLocation: viewModel.showLocation(), ignoredTitle: viewModel.ignoredLocationTitle())
             mailboxCell.setCellIsChecked(selectedMessages.containsObject(message.messageID))
             if (self.isEditing) {
                 mailboxCell.showCheckboxOnLeftSide()
-            }
-            else {
+            } else {
                 mailboxCell.hideCheckboxOnLeftSide()
             }
             
@@ -664,9 +681,8 @@ class MailboxViewController: ProtonMailViewController {
         if let undoMsg = undoMessage {
             if let context = fetchedResultsController?.managedObjectContext {
                 if let message = Message.messageForMessageID(undoMsg.messageID, inManagedObjectContext: context) {
-                    //viewModel.updateBadgeNumberMoveOutInbox(message)
                     viewModel.updateBadgeNumberWhenMove(message, to: undoMsg.oldLocation)
-                    message.removeLocationFromLabels(message.location, location: undoMsg.oldLocation)
+                    message.removeLocationFromLabels(message.location, location: undoMsg.oldLocation, keepSent: true)
                     message.needsUpdate = true
                     message.location = undoMsg.oldLocation
                     if let error = context.saveUpstreamIfNeeded() {
@@ -681,6 +697,22 @@ class MailboxViewController: ProtonMailViewController {
     private func showUndoView(title : String!) {
         undoLabel.text = "Message \(title)"
         self.undoBottomDistance.constant = 0
+        self.undoButton.hidden = false
+        self.undoButtonWidth.constant = 100.0
+        self.updateViewConstraints()
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+        })
+        self.timerAutoDismiss?.invalidate()
+        self.timerAutoDismiss = nil
+        self.timerAutoDismiss = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: #selector(MailboxViewController.timerTriggered), userInfo: nil, repeats: false)
+    }
+    
+    private func showMessageMoved(title : String!) {
+        undoLabel.text = "\(title)"
+        self.undoBottomDistance.constant = 0
+        self.undoButton.hidden = true
+        self.undoButtonWidth.constant = 0.0
         self.updateViewConstraints()
         UIView.animateWithDuration(0.25, animations: { () -> Void in
             self.view.layoutIfNeeded()
@@ -695,6 +727,7 @@ class MailboxViewController: ProtonMailViewController {
         self.timerAutoDismiss = nil
         
         self.undoBottomDistance.constant = -44
+        self.undoButton.hidden = true
         self.updateViewConstraints()
         UIView.animateWithDuration(0.25, animations: { () -> Void in
             self.view.layoutIfNeeded()
@@ -821,7 +854,7 @@ class MailboxViewController: ProtonMailViewController {
                     self.onlineTimerReset()
                     self.viewModel.resetNotificationMessage()
                     if !updateTime.isNew {
-
+                        
                     }
                     if let notices = res?["Notices"] as? [String] {
                         serverNotice.check(notices)
@@ -874,7 +907,7 @@ class MailboxViewController: ProtonMailViewController {
             do {
                 if let messages = try context.executeFetchRequest(fetchRequest) as? [Message] {
                     for message in messages {
-                        message.removeLocationFromLabels(message.location, location: location);
+                        message.removeLocationFromLabels(message.location, location: location, keepSent: true);
                         message.needsUpdate = true
                         message.location = location
                         
@@ -882,7 +915,7 @@ class MailboxViewController: ProtonMailViewController {
                             PMLog.D("error: \(error)")
                         }
                     }
-          
+                    
                 }
             } catch let ex as NSError {
                 PMLog.D(" error: \(ex)")
@@ -890,7 +923,7 @@ class MailboxViewController: ProtonMailViewController {
         }
     }
     private func performSegueForMessage(message: Message) {
-        if viewModel.isDrafts() {
+        if viewModel.isDrafts() || message.hasDraftLabel() {
             if !message.messageID.isEmpty {
                 sharedMessageDataService.ForcefetchDetailForMessage(message) {_, _, msg, error in
                     if error != nil {
@@ -985,7 +1018,7 @@ class MailboxViewController: ProtonMailViewController {
             do {
                 if let messages = try context.executeFetchRequest(fetchRequest) as? [Message] {
                     for msg in messages {
-                        msg.removeLocationFromLabels(.starred, location: .deleted);
+                        msg.removeLocationFromLabels(.starred, location: .deleted, keepSent: true);
                     }
                     let error = context.saveUpstreamIfNeeded()
                     if let error = error {
@@ -1068,6 +1101,10 @@ class MailboxViewController: ProtonMailViewController {
                 self.labelBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_label"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MailboxViewController.labelButtonTapped))
             }
             
+            if (self.folderBarButtonItem == nil) {
+                self.folderBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_folder"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MailboxViewController.folderButtonTapped))
+            }
+            
             if (self.removeBarButtonItem == nil) {
                 self.removeBarButtonItem = UIBarButtonItem(image: UIImage(named: "top_trash"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MailboxViewController.removeButtonTapped))
             }
@@ -1083,9 +1120,9 @@ class MailboxViewController: ProtonMailViewController {
             if (viewModel.isDrafts()) {
                 rightButtons = [self.removeBarButtonItem]
             } else if (viewModel.isCurrentLocation(.outbox)) {
-                rightButtons = [self.moreBarButtonItem, self.labelBarButtonItem, self.unreadBarButtonItem]
-            } else {
                 rightButtons = [self.moreBarButtonItem, self.removeBarButtonItem, self.labelBarButtonItem, self.unreadBarButtonItem]
+            } else {
+                rightButtons = [self.moreBarButtonItem, self.removeBarButtonItem, self.folderBarButtonItem, self.labelBarButtonItem, self.unreadBarButtonItem]
             }
         }
         
@@ -1164,8 +1201,22 @@ class MailboxViewController: ProtonMailViewController {
     }
 }
 
+extension MailboxViewController : LablesViewControllerDelegate {
+    func dismissed() {
+        
+    }
+    
+    func apply(type: LabelFetchType) {
+        if type == .label {
+            showMessageMoved("Labels have been applied.")
+        } else if type == .folder {
+            showMessageMoved("Message has been moved.")
+        }
+    }
+}
+
 extension MailboxViewController : MailboxCaptchaVCDelegate {
-   
+    
     func cancel() {
         isCheckingHuman = false
     }
@@ -1371,10 +1422,10 @@ extension MailboxViewController: UITableViewDataSource {
         
         if let rIndex = self.getRatingIndex() {
             if rIndex == indexPath {
-//                let mailboxRateCell = tableView.dequeueReusableCellWithIdentifier(MailboxRateReviewCell.Constant.identifier, forIndexPath: rIndex) as! MailboxRateReviewCell
-//                mailboxRateCell.callback = self
-//                mailboxRateCell.selectionStyle = .None
-//                return mailboxRateCell
+                //                let mailboxRateCell = tableView.dequeueReusableCellWithIdentifier(MailboxRateReviewCell.Constant.identifier, forIndexPath: rIndex) as! MailboxRateReviewCell
+                //                mailboxRateCell.callback = self
+                //                mailboxRateCell.selectionStyle = .None
+                //                return mailboxRateCell
             }
         }
         let mailboxCell = tableView.dequeueReusableCellWithIdentifier(MailboxMessageCell.Constant.identifier, forIndexPath: indexPath) as! MailboxMessageCell

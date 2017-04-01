@@ -12,9 +12,11 @@ import Foundation
 import CoreData
 
 
-class MessageViewController: ProtonMailViewController, LablesViewControllerDelegate {
+class MessageViewController: ProtonMailViewController {
     
-    private let kToComposerSegue = "toCompose"
+    private let kToComposerSegue : String    = "toCompose"
+    private let kSegueMoveToFolders : String = "toMoveToFolderSegue"
+    private let kSegueToApplyLabels : String = "toApplyLabelsSegue"
     
     /// message info
     var message: Message!
@@ -24,16 +26,15 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     
     ///
     private var URL : NSURL?
-    //private var actionTapped: ComposeMessageAction!
-    //private var fetchedMessageController: NSFetchedResultsController?
     
     @IBOutlet var backButton: UIBarButtonItem!
     
-    private var bodyLoaded: Bool = false
-    
-    private var showedShowImageView : Bool = false
-    private var isAutoLoadImage : Bool = false
+    ///
+    private var bodyLoaded: Bool             = false
+    private var showedShowImageView : Bool   = false
+    private var isAutoLoadImage : Bool       = false
     private var needShowShowImageView : Bool = false
+    private var actionTapped : Bool          = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -178,15 +179,15 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         }
     }
     
-    func dismissed() {
-        self.updateHeader();
-        self.emailView?.emailHeader.updateHeaderLayout()
+    func test() {
+        performSegueWithIdentifier("toLabelManagerSegue", sender: self)
     }
     
     private func setupRightButtons() {
         var rightButtons: [UIBarButtonItem] = []
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_more"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MessageViewController.moreButtonTapped(_:))))
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_trash"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MessageViewController.removeButtonTapped)))
+        rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_folder"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MessageViewController.folderButtonTapped)))
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_label"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MessageViewController.labelButtonTapped)))
         rightButtons.append(UIBarButtonItem(image: UIImage(named: "top_unread"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(MessageViewController.unreadButtonTapped)))
         
@@ -194,43 +195,56 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
     }
     
     internal func unreadButtonTapped() {
-        messagesSetValue(setValue: false, forKey: Message.Attributes.isRead)
+        if !actionTapped {
+            actionTapped = true
+            messagesSetValue(setValue: false, forKey: Message.Attributes.isRead)
+            self.popViewController()
+        }
     }
-    
     internal func popViewController() {
         //ActivityIndicatorHelper.showActivityIndicatorAtView(view)
-        //dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.3 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.3 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
             //ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
+            self.actionTapped = false
             self.navigationController?.popViewControllerAnimated(true)
-        //}
+        }
     }
     
     internal func removeButtonTapped() {
-        switch(message.location) {
-        case .trash, .spam:
-            if self.message.managedObjectContext != nil {
-                self.message.removeLocationFromLabels(message.location, location: MessageLocation.deleted)
-                self.messagesSetValue(setValue: MessageLocation.deleted.rawValue, forKey: Message.Attributes.locationNumber)
+        if !actionTapped {
+            actionTapped = true
+            switch(message.location) {
+            case .trash, .spam:
+                if self.message.managedObjectContext != nil {
+                    self.message.removeLocationFromLabels(message.location, location: MessageLocation.deleted, keepSent: true)
+                    self.messagesSetValue(setValue: MessageLocation.deleted.rawValue, forKey: Message.Attributes.locationNumber)
+                }
+            default:
+                self.message.removeLocationFromLabels(message.location, location: MessageLocation.trash, keepSent: true)
+                self.messagesSetValue(setValue: MessageLocation.trash.rawValue, forKey: Message.Attributes.locationNumber)
             }
-        default:
-            self.message.removeLocationFromLabels(message.location, location: MessageLocation.trash)
-            self.messagesSetValue(setValue: MessageLocation.trash.rawValue, forKey: Message.Attributes.locationNumber)
+            popViewController()
         }
-        popViewController()
     }
     
     internal func labelButtonTapped() {
-        self.performSegueWithIdentifier("toApplyLabelsSegue", sender: self)
+        self.performSegueWithIdentifier(kSegueToApplyLabels, sender: self)
     }
-    
+    internal func folderButtonTapped() {
+        self.performSegueWithIdentifier(kSegueMoveToFolders, sender: self)
+    }
     internal func spamButtonTapped() {
-        self.message.removeLocationFromLabels(message.location, location: MessageLocation.spam)
-        message.needsUpdate = true
-        message.location = .spam
-        if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
-            PMLog.D(" error: \(error)")
+        if !actionTapped {
+            actionTapped = true
+            
+            self.message.removeLocationFromLabels(message.location, location: MessageLocation.spam, keepSent: true)
+            message.needsUpdate = true
+            message.location = .spam
+            if let error = message.managedObjectContext?.saveUpstreamIfNeeded() {
+                PMLog.D(" error: \(error)")
+            }
+            popViewController()
         }
-        popViewController()
     }
     
     internal func moreButtonTapped(sender : UIBarButtonItem) {
@@ -238,9 +252,9 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
         let locations: [MessageLocation : UIAlertActionStyle] = [.inbox : .Default, .spam : .Default, .archive : .Default]
         for (location, style) in locations {
-            if message.location != location {
+            if !message.hasLocation(location) {
                 alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
-                    self.message.removeLocationFromLabels(self.message.location, location: location)
+                    self.message.removeLocationFromLabels(self.message.location, location: location, keepSent: true)
                     self.messagesSetValue(setValue: location.rawValue, forKey: Message.Attributes.locationNumber)
                     self.popViewController()
                 }))
@@ -274,10 +288,15 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
                 let composeViewController = segue.destinationViewController as! ComposeEmailViewController
                 sharedVMService.newDraftViewModelWithMailTo(composeViewController, url: self.URL)
             }
-        } else if segue.identifier == "toApplyLabelsSegue" {
+        } else if segue.identifier == kSegueToApplyLabels {
             let popup = segue.destinationViewController as! LablesViewController
-            popup.viewModel = LabelViewModelImpl(msg: [self.message])
+            popup.viewModel = LabelApplyViewModelImpl(msg: [self.message])
             popup.delegate = self
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
+        } else if segue.identifier == kSegueMoveToFolders {
+            let popup = segue.destinationViewController as! LablesViewController
+            popup.delegate = self
+            popup.viewModel = FolderApplyViewModelImpl(msg: [self.message])
             self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }
@@ -449,22 +468,24 @@ class MessageViewController: ProtonMailViewController, LablesViewControllerDeleg
         self.emailView?.updateEmailBody(bodyText, meta: meta1)
     }
     
-//    private func setupFetchedResultsController(msg_id:String) {
-//        self.fetchedMessageController = sharedMessageDataService.fetchedMessageControllerForID(msg_id)
-//        if let fetchedMessageController = fetchedMessageController {
-//            do {
-//                try fetchedMessageController.performFetch()
-//            } catch let ex as NSError {
-//                PMLog.D("error: \(ex)")
-//            }
-//        }
-//    }
-    
     override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
         self.emailView?.rotate()
     }
 }
 
+extension MessageViewController : LablesViewControllerDelegate {
+    
+    func dismissed() {
+        self.updateHeader();
+        self.emailView?.emailHeader.updateHeaderLayout()
+    }
+    
+    func apply(type: LabelFetchType) {
+        if type == .folder {
+            popViewController()
+        }
+    }
+}
 extension MessageViewController : TopMessageViewDelegate {
     
     func close() {
@@ -562,7 +583,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
         if isStarred {
             self.message.setLabelLocation(.starred)
         } else {
-            self.message.removeLocationFromLabels(.starred, location: .deleted)
+            self.message.removeLocationFromLabels(.starred, location: .deleted, keepSent: true)
         }
         self.messagesSetValue(setValue: isStarred, forKey: Message.Attributes.isStarred)
     }

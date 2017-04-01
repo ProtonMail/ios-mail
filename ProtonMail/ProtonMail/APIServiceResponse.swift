@@ -51,7 +51,7 @@ public class ApiResponse {
         else {
             internetCode = error.code
         }
-        self.errorMessage = error.description
+        self.errorMessage = error.localizedDescription
         self.errorDetails = error.debugDescription
         self.error = error
     }

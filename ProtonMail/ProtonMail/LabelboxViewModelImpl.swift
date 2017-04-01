@@ -22,6 +22,10 @@ public class LabelboxViewModelImpl : MailboxViewModel {
         return true
     }
     
+    public override func ignoredLocationTitle() -> String {
+        return self.label.exclusive ? self.label.name : ""
+    }
+    
     public func stayAfterAction () -> Bool {
         return true
     }
@@ -39,7 +43,7 @@ public class LabelboxViewModelImpl : MailboxViewModel {
     }
     
     public override func deleteMessage(msg: Message) -> Bool {
-        msg.removeLocationFromLabels(msg.location, location: .trash)
+        msg.removeLocationFromLabels(msg.location, location: .trash, keepSent: true)
         msg.needsUpdate = true
         msg.location = .trash
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {

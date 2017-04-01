@@ -21,7 +21,7 @@ class SettingTableViewController: ProtonMailViewController {
     var setting_protection_items : [SProtectionItems] = [.TouchID, .PinCode] // [.TouchID, .PinCode, .UpdatePin, .AutoLogout, .EnterTime]
     var setting_addresses_items : [SAddressItems] = [.Addresses, .DisplayName, .Signature, .DefaultMobilSign]
     
-    var setting_labels_items : [SLabelsItems] = [.LabelManager]
+    var setting_labels_items : [SLabelsItems] = [.LabelFolderManager]
     
     var protection_auto_logout : [Int] = [-1, 0, 1, 2, 5, 10, 15, 30, 60]
     
@@ -788,11 +788,11 @@ extension SettingTableViewController {
     }
     
     enum SLabelsItems: Int, CustomStringConvertible {
-        case LabelManager = 0
+        case LabelFolderManager = 0
         var description : String {
             switch(self){
-            case LabelManager:
-                return NSLocalizedString("Manage Labels")
+            case LabelFolderManager:
+                return NSLocalizedString("Manage Labels/Folders")
             }
         }
     }
@@ -827,7 +827,7 @@ extension SettingTableViewController {
             case Language:
                 return NSLocalizedString("Language")
             case Labels:
-                return NSLocalizedString("Labels Manager")
+                return NSLocalizedString("Labels/Folders")
             }
         }
     }

@@ -84,12 +84,12 @@ public class MailboxViewModelImpl : MailboxViewModel {
         if msg.managedObjectContext != nil {
             switch(self.location!) {
             case .trash, .spam:
-                msg.removeLocationFromLabels(self.location, location: .deleted)
+                msg.removeLocationFromLabels(self.location, location: .deleted, keepSent: false)
                 msg.needsUpdate = true
                 msg.location = .deleted
                 needShowMessage = false
             default:
-                msg.removeLocationFromLabels(self.location, location: .trash)
+                msg.removeLocationFromLabels(self.location, location: .trash, keepSent: true)
                 msg.needsUpdate = true
                 self.updateBadgeNumberWhenMove(msg, to: .deleted)
                 msg.location = .trash
@@ -120,7 +120,7 @@ public class MailboxViewModelImpl : MailboxViewModel {
     
     override public func showLocation() -> Bool {
         switch(self.location!) {
-        case .allmail:
+        case .allmail, .outbox:
             return true
         default:
             return false
@@ -149,6 +149,13 @@ public class MailboxViewModelImpl : MailboxViewModel {
         default:
             break
         }
+    }
+    
+    public override func ignoredLocationTitle() -> String {
+        if self.location == .outbox {
+            return MessageLocation.outbox.title
+        }
+        return ""
     }
     
     override func fetchMessages(MessageID: String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {

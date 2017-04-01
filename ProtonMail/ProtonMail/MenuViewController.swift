@@ -146,7 +146,7 @@ class MenuViewController: UIViewController {
     
     // MARK: - Methods
     private func setupFetchedResultsController() {
-        self.fetchedLabels = sharedLabelsDataService.fetchedResultsController()
+        self.fetchedLabels = sharedLabelsDataService.fetchedResultsController(.all)
         self.fetchedLabels?.delegate = self
         PMLog.D("INFO: \(fetchedLabels?.sections)")
         if let fetchedResultsController = fetchedLabels {
