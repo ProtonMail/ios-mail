@@ -30,6 +30,8 @@ class SignInViewController: ProtonMailViewController {
     
     static var isComeBackFromMailbox                = false
     
+    private var showingTouchID                      = false
+    
     fileprivate let animationDuration: TimeInterval = 0.5
     fileprivate let keyboardPadding: CGFloat        = 12
     fileprivate let buttonDisabledAlpha: CGFloat    = 0.5
@@ -84,8 +86,15 @@ class SignInViewController: ProtonMailViewController {
         super.init(coder: aDecoder)!
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doYourStuff), name:  NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         
         hideTouchID(false)
         setupTextFields()
@@ -110,6 +119,12 @@ class SignInViewController: ProtonMailViewController {
         }
     }
     
+    func doYourStuff(){
+        if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+            authenticateUser()
+        }
+    }
+
     
     fileprivate func setupVersionLabel () {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
@@ -264,6 +279,11 @@ class SignInViewController: ProtonMailViewController {
     }
     
     func authenticateUser() {
+        if !showingTouchID {
+            showingTouchID = true
+        } else {
+            return
+        }
         let savedEmail = userCachedStatus.touchIDEmail
         // Get the local authentication context.
         let context = LAContext()
@@ -276,6 +296,7 @@ class SignInViewController: ProtonMailViewController {
         // Check if the device can evaluate the policy.
         if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
             context.evaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString, reply: { (success: Bool, evalPolicyError: Error?) in
+                self.showingTouchID = false
                 if success {
                     DispatchQueue.main.async {
                         self.signInIfRememberedCredentials()
@@ -302,6 +323,7 @@ class SignInViewController: ProtonMailViewController {
             })
         }
         else{
+            showingTouchID = false
             var alertString : String = "";
             // If the security policy cannot be evaluated then show a short message depending on the error.
             switch error!.code{
