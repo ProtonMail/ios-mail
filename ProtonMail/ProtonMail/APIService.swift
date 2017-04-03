@@ -81,8 +81,8 @@ class APIService {
                         sharedUserDataService.signOut(true);
                         userCachedStatus.signOut()
                     }else {
-                        self.setApiVesion(1, appVersion: 1)
-                        self.request(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)
+                        //self.setApiVesion(1, appVersion: 1)
+                        self.request(method: method, path: path, parameters: parameters as AnyObject, headers: ["x-pm-apiversion": 1], authenticated: authenticated, completion: completion)
                     }
                 } else {
                     completion(task, nil, error)
@@ -104,8 +104,8 @@ class APIService {
                     
                     if authenticated && responseCode == 401 {
                         AuthCredential.expireOrClear(auth?.token)
-                        self.setApiVesion(1, appVersion: 1)
-                        self.request(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)
+                        //self.setApiVesion(1, appVersion: 1)
+                        self.request(method: method, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], authenticated: authenticated, completion: completion)
                     } else if responseCode == 5001 || responseCode == 5002 || responseCode == 5003 || responseCode == 5004 {
                         NSError.alertUpdatedToast()
                         completion(task, responseDictionary, error)
@@ -281,23 +281,70 @@ class APIService {
         }
     }
     
-    func request(method: HTTPMethod, path: String, parameters: Any?, authenticated: Bool = true, completion: CompletionBlock?) {
+//    func request(method: HTTPMethod, path: String, parameters: Any?, authenticated: Bool = true, completion: CompletionBlock?) {
+//        let authBlock: AuthCredentialBlock = { auth, error in
+//            if error == nil {
+//                let (successBlock, failureBlock) = self.afNetworkingBlocksForRequest(method, path: path, parameters: parameters, auth:auth, authenticated: authenticated, completion: completion)
+//                //TODO:: need use progress later
+//                switch(method) {
+//                case .delete:
+//                    self.sessionManager.delete(path, parameters: parameters, success: successBlock, failure: failureBlock)
+//                case .post:
+//                    self.sessionManager.post(path, parameters: parameters, progress: nil, success: successBlock, failure: failureBlock)
+//                case .put:
+//                    self.sessionManager.put(path, parameters: parameters, success: successBlock, failure: failureBlock)
+//                default:
+//                    self.sessionManager.get(path, parameters: parameters, progress: nil, success: successBlock, failure: failureBlock)
+//                }
+//            } else {
+//                completion?(nil, nil, error)
+//            }
+//        }
+//        
+//        if authenticated {
+//            fetchAuthCredential(authBlock)
+//        } else {
+//            authBlock(nil, nil)
+//        }
+//    }
+    
+    //new requestion function
+    func request(method: HTTPMethod, path: String, parameters: Any?, headers: [String : Any]?, authenticated: Bool = true, completion: CompletionBlock?) {
         let authBlock: AuthCredentialBlock = { auth, error in
-            if error == nil {
-                let (successBlock, failureBlock) = self.afNetworkingBlocksForRequest(method, path: path, parameters: parameters, auth:auth, authenticated: authenticated, completion: completion)
-                //TODO:: need use progress later
-                switch(method) {
-                case .delete:
-                    self.sessionManager.delete(path, parameters: parameters, success: successBlock, failure: failureBlock)
-                case .post:
-                    self.sessionManager.post(path, parameters: parameters, progress: nil, success: successBlock, failure: failureBlock)
-                case .put:
-                    self.sessionManager.put(path, parameters: parameters, success: successBlock, failure: failureBlock)
-                default:
-                    self.sessionManager.get(path, parameters: parameters, progress: nil, success: successBlock, failure: failureBlock)
-                }
-            } else {
+            if let error = error {
                 completion?(nil, nil, error)
+            } else {
+                let (successBlock, failureBlock) = self.afNetworkingBlocksForRequest(method, path: path, parameters: parameters, auth:auth, authenticated: authenticated, completion: completion)
+                let url = AppConstants.API_HOST_URL + path
+                let request = AFJSONRequestSerializer().request(withMethod: method.toString(), urlString: url, parameters: parameters, error: nil)
+                //request.timeoutInterval = 120
+                if let header = headers {
+                    for (k, v) in header {
+                        request.setValue("\(v)", forHTTPHeaderField: k)
+                    }
+                }
+                let accessToken = auth?.token ?? ""
+                request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+                if let userid = auth?.userID {
+                    request.setValue(userid, forHTTPHeaderField: "x-pm-uid")
+                }
+                let appversion = "iOS_\(Bundle.main.majorVersion)"
+                request.setValue("application/vnd.protonmail.v1+json", forHTTPHeaderField: "Accept")
+                request.setValue(appversion, forHTTPHeaderField: "x-pm-appversion")
+                
+                var task: URLSessionDataTask? = nil
+                task = self.sessionManager.dataTask(with: request as URLRequest, uploadProgress: { (progress) in
+                    //TODO::add later
+                }, downloadProgress: { (progress) in
+                    //TODO::add later
+                }, completionHandler: { (urlresponse, res, error) in
+                    if let err = error {
+                        failureBlock?(task, err)
+                    } else {
+                        successBlock?(task, res)
+                    }
+                })
+                task!.resume()
             }
         }
         
@@ -307,7 +354,7 @@ class APIService {
             authBlock(nil, nil)
         }
     }
-    
+
     
 }
 

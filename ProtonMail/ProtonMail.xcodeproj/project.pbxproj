@@ -1064,7 +1064,6 @@
 			isa = PBXGroup;
 			children = (
 				70762C3A1A94EC30006B9693 /* ActivityIndicatorHelper.swift */,
-				073FD9331A732C5F00EB0CAF /* AFHTTPRequestSerializerExtension.swift */,
 				07CC99651A6F1380000FD6F8 /* FoundationExtension.swift */,
 				07655BC01AB10D7100CD3883 /* NSBundleExtension.swift */,
 				07CCCC2F1AA4E26000ECA79E /* NSCoderExtension.swift */,
@@ -1254,6 +1253,7 @@
 			isa = PBXGroup;
 			children = (
 				07B797BF1A6EDFF400244532 /* APIService.swift */,
+				073FD9331A732C5F00EB0CAF /* AFHTTPRequestSerializerExtension.swift */,
 				75F7756F1D63AA5B00FD3893 /* APIService+DefinedExtension.swift */,
 				753745061D6B885500682C5A /* APIService+ResponseTransformer.swift */,
 				753745091D6BA85B00682C5A /* APIService+ErrorExtension.swift */,

@@ -15,6 +15,19 @@ extension APIService {
         case get
         case post
         case put
+        
+        func toString() -> String {
+            switch self {
+            case .delete:
+                return "DELETE"
+            case .get:
+                return "GET"
+            case .post:
+                return "POST"
+            case .put:
+                return "PUT"
+            }
+        }
     }
     
     struct GeneralResponse {

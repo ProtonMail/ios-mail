@@ -130,7 +130,7 @@ extension APIService {
                 completion?(nil, error)
                 return
             }
-            request(method: .post, path: path, parameters: parameters, completion: completionWrapper)
+            request(method: .post, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completionWrapper)
         } else {
             completion?(nil, nil)
         }

@@ -60,8 +60,8 @@ extension APIService {
             "Environment" : env
         ] as [String : Any]
         
-        setApiVesion(1, appVersion: 1)
-        request(method: .post, path: AppConstants.API_PATH + DevicePath.basePath, parameters: parameters, completion: completion)
+        //setApiVesion(1, appVersion: 1)
+        request(method: .post, path: AppConstants.API_PATH + DevicePath.basePath, parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completion)
     }
     
     func deviceUnregister() {
@@ -82,8 +82,8 @@ extension APIService {
                         self.deviceToken = ""
                     }
                 }
-                setApiVesion(1, appVersion: 1)
-                request(method: HTTPMethod.post, path: AppConstants.API_PATH + DevicePath.basePath + "/delete", parameters: parameters, completion: completionWrapper)
+                //setApiVesion(1, appVersion: 1)
+                request(method: HTTPMethod.post, path: AppConstants.API_PATH + DevicePath.basePath + "/delete", parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completionWrapper)
             }
         }
     }
@@ -100,8 +100,8 @@ extension APIService {
                 
                 let completionWrapper: CompletionBlock = {task, response, error in
                 }
-                setApiVesion(1, appVersion: 1)
-                request(method: HTTPMethod.post, path: AppConstants.API_PATH + DevicePath.basePath + "/delete", parameters: parameters, completion: completionWrapper)
+               // setApiVesion(1, appVersion: 1)
+                request(method: HTTPMethod.post, path: AppConstants.API_PATH + DevicePath.basePath + "/delete", parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completionWrapper)
             }
         }
         
@@ -111,8 +111,8 @@ extension APIService {
                 "DeviceToken": badToken
             ]
             
-            setApiVesion(1, appVersion: 1)
-            request(method: HTTPMethod.post, path: AppConstants.API_PATH + DevicePath.basePath + "/delete", parameters: parameters, completion:{ (task, response, error) -> Void in
+           // setApiVesion(1, appVersion: 1)
+            request(method: HTTPMethod.post, path: AppConstants.API_PATH + DevicePath.basePath + "/delete", parameters: parameters, headers: ["x-pm-apiversion": 1], completion:{ (task, response, error) -> Void in
                 if error == nil {
                     self.badToken = ""
                     self.badUID = ""

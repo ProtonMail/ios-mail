@@ -27,28 +27,28 @@ extension APIService {
         let path = ContactPath.base
         let contact = [ "Name": name, "Email" : email];
         let parameters = ["Contacts": [contact] ];
-        setApiVesion(1, appVersion: 1)
-        request(method: .post, path: path, parameters: parameters, completion: completion)
+        //setApiVesion(1, appVersion: 1)
+        request(method: .post, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completion)
     }
     
     func contactDelete(contactID: String, completion: CompletionBlock?) {
         let path = ContactPath.base + "/delete"
         let parameters = ["IDs": [ contactID ] ]
-        setApiVesion(1, appVersion: 1)
-        request(method: .put, path: path, parameters: parameters, completion: completion)
+        //setApiVesion(1, appVersion: 1)
+        request(method: .put, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completion)
     }
     
     func contactList(_ completion: CompletionBlock?) {
         let path = ContactPath.base
-        setApiVesion(1, appVersion: 1)
-        request(method: .get, path: path, parameters: nil, completion: completion)
+        //setApiVesion(1, appVersion: 1)
+        request(method: .get, path: path, parameters: nil, headers: ["x-pm-apiversion": 1], completion: completion)
     }
     
     func contactUpdate(contactID: String, name: String, email: String, completion: CompletionBlock?) {
         let path = ContactPath.base + "/\(contactID)"
         let parameters = parametersForName(name, email: email)
-        setApiVesion(1, appVersion: 1)
-        request(method: .put, path: path, parameters: parameters, completion: completion)
+        //setApiVesion(1, appVersion: 1)
+        request(method: .put, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completion)
     }
     
     // MARK: - Private methods

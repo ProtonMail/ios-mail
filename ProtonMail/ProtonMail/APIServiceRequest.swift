@@ -118,9 +118,7 @@ class ApiRequest<T : ApiResponse> : Package {
             
             complete?(task, apiRes, hasError)
         }
-        
-        sharedAPIService.setApiVesion(self.getVersion(), appVersion: 1) // TODO: here need get functions
-        sharedAPIService.request(method: self.getAPIMethod(), path: self.getRequestPath(), parameters: self.toDictionary(), authenticated: self.getIsAuthFunction(), completion:completionWrapper)
+        sharedAPIService.request(method: self.getAPIMethod(), path: self.getRequestPath(), parameters: self.toDictionary() as AnyObject, headers: ["x-pm-apiversion": self.getVersion()], authenticated: self.getIsAuthFunction(), completion: completionWrapper)
     }
     
     
@@ -159,10 +157,7 @@ class ApiRequest<T : ApiResponse> : Package {
             }
             ret_res = apiRes
         }
-        
-        sharedAPIService.setApiVesion(self.getVersion(), appVersion: 1) // TODO: here need get functions
-        sharedAPIService.request(method: self.getAPIMethod(), path: self.getRequestPath(), parameters: self.toDictionary(), authenticated: self.getIsAuthFunction(), completion:completionWrapper)
-        
+        sharedAPIService.request(method: self.getAPIMethod(), path: self.getRequestPath(), parameters: self.toDictionary(), headers: ["x-pm-apiversion": self.getVersion()], authenticated: self.getIsAuthFunction(), completion: completionWrapper)
         //wait operations
         let _ = sema.wait(timeout: DispatchTime.distantFuture)
         
