@@ -164,7 +164,6 @@ class APIService {
                             NSError.alertBadTokenToast()
                         }
                     } else {
-                        self.sessionManager.requestSerializer.setAuthorizationHeaderFieldWithCredential(credential)
                         pthread_mutex_unlock(&self.mutex)
                         DispatchQueue.main.async {
                             completion(credential, nil)
@@ -197,9 +196,6 @@ class APIService {
                                     completion(authCredential, error)
                                 }
                             } else {
-                                if let credential = AuthCredential.fetchFromKeychain() {
-                                    self.sessionManager.requestSerializer.setAuthorizationHeaderFieldWithCredential(credential)
-                                }
                                 DispatchQueue.main.async {
                                     completion(authCredential, error)
                                 }
@@ -249,11 +245,11 @@ class APIService {
         }
     }
     
-    internal func setApiVesion(_ apiVersion:Int, appVersion:Int)
-    {
-        self.sessionManager.requestSerializer.setVersionHeader(apiVersion, appVersion: appVersion)
-    }
-    
+//    internal func setApiVesion(_ apiVersion:Int, appVersion:Int)
+//    {
+//        self.sessionManager.requestSerializer.setVersionHeader(apiVersion, appVersion: appVersion)
+//    }
+//    
     
     /**
      this function only for upload attachments for now.
