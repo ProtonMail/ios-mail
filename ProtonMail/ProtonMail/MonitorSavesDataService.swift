@@ -108,7 +108,6 @@ class MonitorSavesDataService {
                     
                     for managedObject in filteredObjects {
                         let changedValues = (managedObject as AnyObject).changedValues()
-                        
                         for (attribute, handler) in attributeHandlerDictionary {
                             if changedValues[attribute] != nil {
                                 addMonitorQueueHandler(handler, forManagedObject: managedObject as! NSManagedObject)

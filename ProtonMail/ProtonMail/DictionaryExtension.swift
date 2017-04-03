@@ -51,7 +51,7 @@ extension Dictionary { //email name
     */
     func JSONStringify(_ prettyPrinted: Bool = false) -> String {
         let options : JSONSerialization.WritingOptions = prettyPrinted ? .prettyPrinted : JSONSerialization.WritingOptions()
-        let anyObject: Any = self as Any
+        let anyObject: Any = self
         if JSONSerialization.isValidJSONObject(anyObject) {
             do {
                 let data = try JSONSerialization.data(withJSONObject: anyObject, options: options)
