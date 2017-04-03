@@ -83,8 +83,6 @@ extension APIService {
     }
     
     
-    
-    
     // MARK: - Public methods
     
     func messageCheck(timestamp: TimeInterval, completion: CompletionBlock?) {
@@ -130,18 +128,7 @@ extension APIService {
             }
             parameters["IsEncrypted"] = isEncrypted.isEncrypted() ? 1 : 0
             parameters["MessageBody"] = body
-            
-            if !attachments.isEmpty {
-//                var attachmentsArray: [[String : Any]] = []
-//                
-//                for attachment in attachments {
-//                    attachmentsArray.append(attachment.asJSON())
-//                }
-//                
-//                parameters["Attachments"] = attachmentsArray
-            }
         
-        //setApiVesion(2, appVersion: 1)
         request(method: .post, path: path, parameters: parameters, headers: ["x-pm-apiversion": 2], completion: completion)
     }
     
@@ -166,17 +153,7 @@ extension APIService {
                 "ExpirationTime" : (expirationDate?.timeIntervalSince1970 ?? 0),
                 "IsEncrypted" : isEncrypted,
                 "MessageBody" : body]
-            
- //           if let attachments = attachments {
-//                var attachmentsJSON: Array<Dictionary<String, Any>> = []
-//                
-//                for attachment in attachments {
-//                    attachmentsJSON.append(attachment.asJSON())
-//                }
-//                
-//                parameters["Attachments"] = attachmentsJSON
-
-            //setApiVesion(1, appVersion: 1)
+        
             request(method: .post, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completion)
     }
     
@@ -204,17 +181,7 @@ extension APIService {
                 "ExpirationTime" : (expirationDate?.timeIntervalSince1970 ?? 0),
                 "IsEncrypted" : isEncrypted,
                 "MessageBody" : body]
-            
-            //            if let attachments = attachments {
-            //                var attachmentsJSON: Array<Dictionary<String, Any>> = []
-            //
-            //                for attachment in attachments {
-            //                    attachmentsJSON.append(attachment.asJSON())
-            //                }
-            //
-            //                parameters["Attachments"] = attachmentsJSON
-            
-            //setApiVesion(1, appVersion: 1)
+        
             request(method: .post, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completion)
     }
     

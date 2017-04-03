@@ -1285,21 +1285,25 @@ extension EmailHeaderView: UITableViewDelegate {
                 })
             }
             }, completion: { (_, url, error) -> Void in
-                if let cell = self.attachmentView!.cellForRow(at: indexPath) as? AttachmentTableViewCell {
-                    UIView.animate(withDuration: 0.25, animations: { () -> Void in
-                        cell.progressView.isHidden = true
-                        if let localURL = attachment.localURL {
-                            if FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
-                                if let cell = self.attachmentView!.cellForRow(at: indexPath) {
-                                    if let key_packet = attachment.keyPacket {
-                                        if let data: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-                                            self.openLocalURL(localURL, keyPackage: data, fileName: attachment.fileName, forCell: cell)
+                if let e = error {
+                    e.alertErrorToast()
+                } else {
+                    if let cell = self.attachmentView!.cellForRow(at: indexPath) as? AttachmentTableViewCell {
+                        UIView.animate(withDuration: 0.25, animations: { () -> Void in
+                            cell.progressView.isHidden = true
+                            if let localURL = attachment.localURL {
+                                if FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
+                                    if let cell = self.attachmentView!.cellForRow(at: indexPath) {
+                                        if let key_packet = attachment.keyPacket {
+                                            if let data: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
+                                                self.openLocalURL(localURL, keyPackage: data, fileName: attachment.fileName, forCell: cell)
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                    })
+                        })
+                    }
                 }
         })
     }

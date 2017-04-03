@@ -218,18 +218,44 @@ class APIService {
         }
 
     }
-    // MARK: - Request methods
     
+    
+    // MARK: - Request methods
+
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
     //TODO:: update completion
-    internal func download(byUrl path: String, destinationDirectoryURL: URL, downloadTask: ((URLSessionDownloadTask) -> Void)?, completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
-        let url = URL(string: path, relativeTo: self.sessionManager.baseURL)
-        if let abs_string = url?.absoluteString {
-            var error:NSError? = nil
-            let request = self.sessionManager.requestSerializer.request(withMethod: "GET", urlString: abs_string, parameters: nil, error: &error)
-            if let ex = error {
-                completion(nil, nil, ex)
+    internal func download(byUrl url: String,
+                           destinationDirectoryURL: URL,
+                           headers: [String : Any]?,
+                           authenticated: Bool = true,
+                           downloadTask: ((URLSessionDownloadTask) -> Void)?,
+                           completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
+        
+        
+        let authBlock: AuthCredentialBlock = { auth, error in
+            if let error = error {
+                completion(nil, nil, error)
             } else {
+                let request = self.sessionManager.requestSerializer.request(withMethod: HTTPMethod.get.toString(),
+                                                                            urlString: url,
+                                                                            parameters: nil, error: nil)
+                
+                if let header = headers {
+                    for (k, v) in header {
+                        request.setValue("\(v)", forHTTPHeaderField: k)
+                    }
+                }
+                
+                let accessToken = auth?.token ?? ""
+                request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+                if let userid = auth?.userID {
+                    request.setValue(userid, forHTTPHeaderField: "x-pm-uid")
+                }
+                
+                let appversion = "iOS_\(Bundle.main.majorVersion)"
+                request.setValue("application/vnd.protonmail.v1+json", forHTTPHeaderField: "Accept")
+                request.setValue(appversion, forHTTPHeaderField: "x-pm-appversion")
+                
                 let sessionDownloadTask = self.sessionManager.downloadTask(with: request as URLRequest, progress: { (progress) in
                     
                 }, destination: { (targetURL, response) -> URL in
@@ -240,16 +266,15 @@ class APIService {
                 downloadTask?(sessionDownloadTask)
                 sessionDownloadTask.resume()
             }
+        }
+        
+        if authenticated {
+            fetchAuthCredential(authBlock)
         } else {
-            completion(nil, nil, NSError.badPath(path))
+            authBlock(nil, nil)
         }
     }
-    
-//    internal func setApiVesion(_ apiVersion:Int, appVersion:Int)
-//    {
-//        self.sessionManager.requestSerializer.setVersionHeader(apiVersion, appVersion: appVersion)
-//    }
-//    
+
     
     /**
      this function only for upload attachments for now.
@@ -259,53 +284,66 @@ class APIService {
      :param: keyPackets encrypt attachment key package
      :param: dataPacket encrypt attachment data package
      */
-    internal func upload (byUrl url: String, parameters: Any?, keyPackets : Data!, dataPacket : Data!, completion: @escaping CompletionBlock) {
-        //TODO / RUSH : need add respons handling, progress bar later
-        var error: NSError? = nil
-        let request = sessionManager.requestSerializer.multipartFormRequest(withMethod: "POST", urlString: url, parameters: parameters as! [String:String], constructingBodyWith: { (formData) -> Void in
-            let data: AFMultipartFormData = formData
-            data.appendPart(withFileData: keyPackets, name: "KeyPackets", fileName: "KeyPackets.txt", mimeType: "" )
-            data.appendPart(withFileData: dataPacket, name: "DataPacket", fileName: "DataPacket.txt", mimeType: "" ) }, error: &error)
-        if let ex = error {
-            completion(nil, nil, ex)
-        } else {
-            let uploadTask = self.sessionManager.uploadTask(withStreamedRequest: request as URLRequest, progress: nil) { (response, responseObject, error) -> Void in
-                let resObject = responseObject as? Dictionary<String, Any>
-                completion(nil, resObject, error as NSError?)
+    internal func upload (byUrl url: String,
+                          parameters: Any?,
+                          keyPackets : Data!,
+                          dataPacket : Data!,
+                          headers: [String : Any]?,
+                          authenticated: Bool = true,
+                          completion: @escaping CompletionBlock) {
+        
+        
+        let authBlock: AuthCredentialBlock = { auth, error in
+            if let error = error {
+                completion(nil, nil, error)
+            } else {
+                let request = self.sessionManager.requestSerializer.multipartFormRequest(withMethod: "POST", urlString: url, parameters: parameters as! [String:String], constructingBodyWith: { (formData) -> Void in
+                    let data: AFMultipartFormData = formData
+                    data.appendPart(withFileData: keyPackets, name: "KeyPackets", fileName: "KeyPackets.txt", mimeType: "" )
+                    data.appendPart(withFileData: dataPacket, name: "DataPacket", fileName: "DataPacket.txt", mimeType: "" ) }, error: nil)
+
+                if let header = headers {
+                    for (k, v) in header {
+                        request.setValue("\(v)", forHTTPHeaderField: k)
+                    }
+                }
+                
+                let accessToken = auth?.token ?? ""
+                request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+                if let userid = auth?.userID {
+                    request.setValue(userid, forHTTPHeaderField: "x-pm-uid")
+                }
+                
+                let appversion = "iOS_\(Bundle.main.majorVersion)"
+                request.setValue("application/vnd.protonmail.v1+json", forHTTPHeaderField: "Accept")
+                request.setValue(appversion, forHTTPHeaderField: "x-pm-appversion")
+                
+            
+                var uploadTask: URLSessionDataTask? = nil
+                uploadTask = self.sessionManager.uploadTask(withStreamedRequest: request as URLRequest, progress: { (progress) in
+                    //
+                }, completionHandler: { (response, responseObject, error) in
+                    let resObject = responseObject as? Dictionary<String, Any>
+                    completion(uploadTask, resObject, error as NSError?)
+                })
+                uploadTask?.resume()
             }
-            uploadTask.resume()
+        }
+        
+        if authenticated {
+            fetchAuthCredential(authBlock)
+        } else {
+            authBlock(nil, nil)
         }
     }
     
-//    func request(method: HTTPMethod, path: String, parameters: Any?, authenticated: Bool = true, completion: CompletionBlock?) {
-//        let authBlock: AuthCredentialBlock = { auth, error in
-//            if error == nil {
-//                let (successBlock, failureBlock) = self.afNetworkingBlocksForRequest(method, path: path, parameters: parameters, auth:auth, authenticated: authenticated, completion: completion)
-//                //TODO:: need use progress later
-//                switch(method) {
-//                case .delete:
-//                    self.sessionManager.delete(path, parameters: parameters, success: successBlock, failure: failureBlock)
-//                case .post:
-//                    self.sessionManager.post(path, parameters: parameters, progress: nil, success: successBlock, failure: failureBlock)
-//                case .put:
-//                    self.sessionManager.put(path, parameters: parameters, success: successBlock, failure: failureBlock)
-//                default:
-//                    self.sessionManager.get(path, parameters: parameters, progress: nil, success: successBlock, failure: failureBlock)
-//                }
-//            } else {
-//                completion?(nil, nil, error)
-//            }
-//        }
-//        
-//        if authenticated {
-//            fetchAuthCredential(authBlock)
-//        } else {
-//            authBlock(nil, nil)
-//        }
-//    }
-    
     //new requestion function
-    func request(method: HTTPMethod, path: String, parameters: Any?, headers: [String : Any]?, authenticated: Bool = true, completion: CompletionBlock?) {
+    func request(method: HTTPMethod,
+                 path: String, parameters: Any?,
+                 headers: [String : Any]?,
+                 authenticated: Bool = true,
+                 completion: CompletionBlock?) {
+        
         let authBlock: AuthCredentialBlock = { auth, error in
             if let error = error {
                 completion?(nil, nil, error)

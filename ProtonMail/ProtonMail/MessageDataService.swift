@@ -1460,8 +1460,9 @@ class MessageDataService {
                                              parameters: params,
                                              keyPackets: keyPacket,
                                              dataPacket: dataPacket,
+                                             headers: ["x-pm-apiversion":1],
+                                             authenticated: true,
                                              completion: completionWrapper)
-                    return
                 }
             }
         }

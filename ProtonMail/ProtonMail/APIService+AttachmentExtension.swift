@@ -25,7 +25,11 @@ extension APIService {
                             completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
         
         let filepath = destinationDirectoryURL.appendingPathComponent(attachmentID)
-        download(byUrl: pathForAttachmentID(attachmentID), destinationDirectoryURL: filepath, downloadTask: downloadTask, completion: completion)
+        download(byUrl: AppConstants.API_HOST_URL + pathForAttachmentID(attachmentID),
+                 destinationDirectoryURL: filepath,
+                 headers: ["x-pm-apiversion": 1],
+                 downloadTask: downloadTask,
+                 completion: completion)
     }
     
     func attachmentDeleteForAttachmentID(_ attachmentID: String, completion: CompletionBlock?) {
