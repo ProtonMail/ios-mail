@@ -395,12 +395,12 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     internal func favoriteButtonTapped() {
-        selectedMessagesSetValue(setValue: true as AnyObject?, forKey: Message.Attributes.isStarred)
+        selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isStarred)
         cancelButtonTapped();
     }
     
     internal func unreadButtonTapped() {
-        selectedMessagesSetValue(setValue: false as AnyObject?, forKey: Message.Attributes.isRead)
+        selectedMessagesSetValue(setValue: false, forKey: Message.Attributes.isRead)
         cancelButtonTapped();
     }
     

@@ -19,7 +19,7 @@ class CountryCode {
         return phone_code > 0 && !country_en.isEmpty && !country_code.isEmpty
     }
     
-    static func getCountryCodes (_ content: [Dictionary<String,AnyObject>]!) -> [CountryCode]! {
+    static func getCountryCodes (_ content: [Dictionary<String,Any>]!) -> [CountryCode]! {
         var outList : [CountryCode] = [CountryCode]()
         
         for con in content {
@@ -32,7 +32,7 @@ class CountryCode {
         return outList
     }
     
-    func parseCountryCode (_ content: Dictionary<String,AnyObject>!) -> Bool {
+    func parseCountryCode (_ content: Dictionary<String,Any>!) -> Bool {
         country_en = content["country_en"] as? String ?? ""
         country_code = content["country_code"] as? String ?? ""
         phone_code =  content["phone_code"] as? Int ?? 0

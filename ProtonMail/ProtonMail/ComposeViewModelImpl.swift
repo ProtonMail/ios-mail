@@ -199,11 +199,7 @@ open class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func collectDraft(_ title: String, body: String, expir:TimeInterval, pwd:String, pwdHit:String) {
-//        PMLog.D(self.toSelectedContacts)
-//        PMLog.D(self.ccSelectedContacts)
-//        PMLog.D(self.bccSelectedContacts)
-        
-        //self.setBody(body)
+
         self.setSubject(title)
         
         if message == nil || message?.managedObjectContext == nil {
@@ -235,7 +231,7 @@ open class ComposeViewModelImpl : ComposeViewModel {
             }
         }
         
-        PMLog.D(message!);
+        PMLog.D(any: message!);
         
     }
     

@@ -14,7 +14,7 @@ import Photos
 
 protocol AttachmentsTableViewControllerDelegate {
     
-    func attachments(_ attViewController: AttachmentsTableViewController, didFinishPickingAttachments: [AnyObject]) -> Void
+    func attachments(_ attViewController: AttachmentsTableViewController, didFinishPickingAttachments: [Any]) -> Void
     
     func attachments(_ attViewController: AttachmentsTableViewController, didPickedAttachment: Attachment) -> Void
     
@@ -168,9 +168,9 @@ class AttachmentsTableViewController: UITableViewController {
                 kUTTypeGNUZipArchive as String,
                 kUTTypeBzip2Archive as String,
                 kUTTypeZipArchive as String,
-                kUTTypeData as String,
-                "rar",
-                "RAR"
+                kUTTypeData as String
+//                "rar",
+//                "RAR"
             ]
             let importMenu = UIDocumentMenuViewController(documentTypes: types, in: .import)
             importMenu.delegate = self
@@ -350,7 +350,8 @@ extension AttachmentsTableViewController: UIDocumentPickerDelegate {
 }
 
 extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    private func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+    
+    internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let url = info[UIImagePickerControllerReferenceURL] as? NSURL, let asset = PHAsset.fetchAssets(withALAssetURLs: [url as URL], options: nil).firstObject {
             if asset.mediaType == .video {
                 let options = PHVideoRequestOptions()

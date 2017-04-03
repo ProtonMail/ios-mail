@@ -28,8 +28,8 @@ protocol ComposeViewDelegate {
 }
 
 protocol ComposeViewDataSource {
-    func composeViewContactsModelForPicker(_ composeView: ComposeView, picker: MBContactPicker) -> [AnyObject]!
-    func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: MBContactPicker) -> [AnyObject]!
+    func composeViewContactsModelForPicker(_ composeView: ComposeView, picker: MBContactPicker) -> [Any]!
+    func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: MBContactPicker) -> [Any]!
 }
 
 class ComposeView: UIViewController {

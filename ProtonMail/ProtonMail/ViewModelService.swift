@@ -10,7 +10,7 @@ import Foundation
 
 
 protocol ViewModelProtocol {
-    func setViewModel(_ vm: AnyObject)
+    func setViewModel(_ vm: Any)
     func inactiveViewModel()
 }
 

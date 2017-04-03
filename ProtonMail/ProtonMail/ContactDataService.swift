@@ -79,7 +79,7 @@ class ContactDataService {
     
     func fetchContacts(_ completion: ContactCompletionBlock?) {
         let completionWrapper: APIService.CompletionBlock = { task, response, error in
-            if let contactsArray = response?["Contacts"] as? [Dictionary<String, AnyObject>] {
+            if let contactsArray = response?["Contacts"] as? [Dictionary<String, Any>] {
                 let context = sharedCoreDataService.newManagedObjectContext()
                 context.performAndWait() {
                     do {

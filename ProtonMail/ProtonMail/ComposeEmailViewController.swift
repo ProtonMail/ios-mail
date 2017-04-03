@@ -38,7 +38,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     // view model
     fileprivate var viewModel : ComposeViewModel!
     
-    func setViewModel(_ vm: AnyObject) {
+    func setViewModel(_ vm: Any) {
         self.viewModel = vm as! ComposeViewModel
     }
     
@@ -61,7 +61,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     fileprivate var encryptionPasswordHint: String = ""
     fileprivate var hasAccessToAddressBook: Bool = false
     
-    fileprivate var attachments: [AnyObject]?
+    fileprivate var attachments: [Any]?
     
     @IBOutlet weak var expirationPicker: UIPickerView!
     // offsets
@@ -629,11 +629,12 @@ extension ComposeEmailViewController : ComposeViewDelegate {
 
 // MARK : compose data source
 extension ComposeEmailViewController : ComposeViewDataSource {
-    func composeViewContactsModelForPicker(_ composeView: ComposeView, picker: MBContactPicker) -> [AnyObject]! {
+    
+    func composeViewContactsModelForPicker(_ composeView: ComposeView, picker: MBContactPicker) -> [Any]! {
         return contacts
     }
     
-    func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: MBContactPicker) ->  [AnyObject]! {
+    func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: MBContactPicker) ->  [Any]! {
         var selectedContacts: [ContactVO] = [ContactVO]()
         if (picker == composeView.toContactPicker) {
             selectedContacts = self.viewModel.toSelectedContacts
@@ -650,7 +651,7 @@ extension ComposeEmailViewController : ComposeViewDataSource {
 // MARK: - AttachmentsViewControllerDelegate
 extension ComposeEmailViewController: AttachmentsTableViewControllerDelegate {
     
-    func attachments(_ attViewController: AttachmentsTableViewController, didFinishPickingAttachments attachments: [AnyObject]) {
+    func attachments(_ attViewController: AttachmentsTableViewController, didFinishPickingAttachments attachments: [Any]) {
         self.attachments = attachments
     }
     

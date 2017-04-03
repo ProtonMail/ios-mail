@@ -197,7 +197,7 @@ class MessageViewController: ProtonMailViewController {
     internal func unreadButtonTapped() {
         if !actionTapped {
             actionTapped = true
-            messagesSetValue(setValue: false as AnyObject, forKey: Message.Attributes.isRead)
+            messagesSetValue(setValue: false, forKey: Message.Attributes.isRead)
             self.popViewController()
         }
     }
@@ -216,11 +216,11 @@ class MessageViewController: ProtonMailViewController {
             case .trash, .spam:
                 if self.message.managedObjectContext != nil {
                     self.message.removeLocationFromLabels(currentlocation: message.location, location: MessageLocation.deleted, keepSent: true)
-                    self.messagesSetValue(setValue: MessageLocation.deleted.rawValue as AnyObject, forKey: Message.Attributes.locationNumber)
+                    self.messagesSetValue(setValue: MessageLocation.deleted.rawValue, forKey: Message.Attributes.locationNumber)
                 }
             default:
                 self.message.removeLocationFromLabels(currentlocation: message.location, location: MessageLocation.trash, keepSent: true)
-                self.messagesSetValue(setValue: MessageLocation.trash.rawValue as AnyObject, forKey: Message.Attributes.locationNumber)
+                self.messagesSetValue(setValue: MessageLocation.trash.rawValue, forKey: Message.Attributes.locationNumber)
             }
             popViewController()
         }
@@ -254,7 +254,7 @@ class MessageViewController: ProtonMailViewController {
             if !message.hasLocation(location: location) {
                 alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
                     self.message.removeLocationFromLabels(currentlocation: self.message.location, location: location, keepSent: true)
-                    self.messagesSetValue(setValue: location.rawValue as AnyObject, forKey: Message.Attributes.locationNumber)
+                    self.messagesSetValue(setValue: location.rawValue, forKey: Message.Attributes.locationNumber)
                     self.popViewController()
                 }))
             }
@@ -264,7 +264,7 @@ class MessageViewController: ProtonMailViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-    fileprivate func messagesSetValue(setValue value: AnyObject?, forKey key: String) {
+    fileprivate func messagesSetValue(setValue value: Any?, forKey key: String) {
         if let context = message.managedObjectContext {
             message.setValue(value, forKey: key)
             message.setValue(true, forKey: "needsUpdate")
@@ -587,7 +587,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
         } else {
             self.message.removeLocationFromLabels(currentlocation: .starred, location: .deleted, keepSent: true)
         }
-        self.messagesSetValue(setValue: isStarred as AnyObject?, forKey: Message.Attributes.isStarred)
+        self.messagesSetValue(setValue: isStarred, forKey: Message.Attributes.isStarred)
     }
     
     func quickLookAttachment (_ localURL : Foundation.URL, keyPackage:Data, fileName:String) {

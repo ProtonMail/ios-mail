@@ -118,7 +118,7 @@ class ApiRequest<T : ApiResponse> : Package {
             
             complete?(task, apiRes, hasError)
         }
-        sharedAPIService.request(method: self.getAPIMethod(), path: self.getRequestPath(), parameters: self.toDictionary() as AnyObject, headers: ["x-pm-apiversion": self.getVersion()], authenticated: self.getIsAuthFunction(), completion: completionWrapper)
+        sharedAPIService.request(method: self.getAPIMethod(), path: self.getRequestPath(), parameters: self.toDictionary(), headers: ["x-pm-apiversion": self.getVersion()], authenticated: self.getIsAuthFunction(), completion: completionWrapper)
     }
     
     

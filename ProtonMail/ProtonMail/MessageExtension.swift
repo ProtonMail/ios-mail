@@ -584,7 +584,7 @@ extension String {
             
             firstboundaryRange = secondboundaryRange
             
-            PMLog.D(bodyString!)
+            PMLog.D(nstring: bodyString!)
         }
         
         if ( html.isEmpty && plaintext.isEmpty ) {

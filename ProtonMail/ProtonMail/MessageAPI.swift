@@ -297,7 +297,7 @@ final class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
     
     override func toDictionary() -> Dictionary<String, Any>? {
         
-        var out : [String : Any] = [String : AnyObject]()
+        var out : [String : Any] = [String : Any]()
         
         if !self.clearBody.isEmpty {
             out["ClearBody"] = self.clearBody

@@ -25,7 +25,7 @@ class LoadingView: UIView {
         static let Name = "LoadingView"
     }
     
-    class func viewForOwner(_ owner: AnyObject?) -> LoadingView {
+    class func viewForOwner(_ owner: Any?) -> LoadingView {
         if let objects = Bundle.main.loadNibNamed(NibName.Name, owner: owner, options: nil) {
             for object in objects {
                 if let view = object as? LoadingView {

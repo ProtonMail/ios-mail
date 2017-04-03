@@ -560,9 +560,6 @@ class MessageDataService {
                     continue
                 }
                 lastUpdatedStore.updateLabelsUnreadCountForKey(labelID, count: unread)
-                //                if let total = count["Total"] as? Int {
-                //                    //didn't use now from the counter event
-                //                }
             }
         }
         
@@ -571,88 +568,7 @@ class MessageDataService {
             badgeNumber = 0
         }
         UIApplication.shared.applicationIconBadgeNumber = badgeNumber
-        
-        //MessageLocation
-        //        var badgeNumber = inboxCount //inboxCount + draftCount + sendCount + spamCount + starCount + trashCount;
-        //        if  badgeNumber < 0 {
-        //            badgeNumber = 0
-        //        }
-        //        UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
-        //        tempUnreadAddjustCount = 0
     }
-    
-    
-    //    func processIncrementalUpdateUnread(unreads: Dictionary<String, AnyObject>?) {
-    //
-    //        var inboxCount : Int = 0;
-    //        var draftCount : Int = 0;
-    //        var sendCount : Int = 0;
-    //        var spamCount : Int = 0;
-    //        var starCount : Int = 0;
-    //        var trashCount : Int = 0;
-    //
-    //
-    //        if let star = unreads?["Starred"] as? Int {
-    //            starCount = star;
-    //        }
-    //
-    //        if let locations = unreads?["Locations"] as? [Dictionary<String,AnyObject>] {
-    //            lastUpdatedStore.resetUnreadCounts()
-    //            for location:[String : AnyObject] in locations {
-    //
-    //                if let l = location["Location"] as? Int {
-    //                    if var c = location["Count"] as? Int {
-    //                        if let lo = MessageLocation(rawValue: l) {
-    //                            switch lo {
-    //                            case .inbox:
-    //                                inboxCount = c
-    //                                inboxCount = inboxCount + tempUnreadAddjustCount
-    //                                break;
-    //                            case .draft:
-    //                                c = 0
-    //                                draftCount = c
-    //                                break;
-    //                            case .outbox:
-    //                                sendCount = c
-    //                                break;
-    //                            case .spam:
-    //                                spamCount = c
-    //                                break;
-    //                            case .trash:
-    //                                trashCount = c
-    //                                break;
-    //                            default:
-    //                                break;
-    //                            }
-    //                            lastUpdatedStore.updateUnreadCountForKey(lo, count: c ?? 0)
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //            lastUpdatedStore.updateUnreadCountForKey(MessageLocation.starred, count: starCount ?? 0)
-    //
-    //            //MessageLocation
-    //            var badgeNumber = inboxCount //inboxCount + draftCount + sendCount + spamCount + starCount + trashCount;
-    //            if  badgeNumber < 0 {
-    //                badgeNumber = 0
-    //            }
-    //            UIApplication.sharedApplication().applicationIconBadgeNumber = badgeNumber
-    //            tempUnreadAddjustCount = 0
-    //        }
-    //
-    //        if let locations = unreads?["Labels"] as? [Dictionary<String,AnyObject>] {
-    //            lastUpdatedStore.resetLabelsUnreadCounts()
-    //            for location:[String : AnyObject] in locations {
-    //
-    //                if let l = location["LabelID"] as? String {
-    //                    if let c = location["Count"] as? Int {
-    //                        lastUpdatedStore.updateLabelsUnreadCountForKey(l, count: c)
-    //                    }
-    //                }
-    //            }
-    //        }
-    //        //PMLog.D("\(inboxCount + draftCount + sendCount + spamCount + starCount + trashCount)")
-    //    }
     
     func cleanLocalMessageCache(_ completion: CompletionBlock?) {
         let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
@@ -878,7 +794,7 @@ class MessageDataService {
                     var error: NSError?
                     if response != nil {
                         //TODO need check the respons code
-                        if var msg: Dictionary<String,AnyObject> = response?["Message"] as? Dictionary<String,AnyObject> {
+                        if var msg: Dictionary<String,Any> = response?["Message"] as? Dictionary<String, Any> {
                             msg.removeValue(forKey: "Location")
                             msg.removeValue(forKey: "Starred")
                             msg.removeValue(forKey: "test")
@@ -991,7 +907,7 @@ class MessageDataService {
                     context.perform() {
                         if response != nil {
                             //TODO need check the respons code
-                            if var msg: Dictionary<String,AnyObject> = response?["Message"] as? Dictionary<String,AnyObject> {
+                            if var msg: Dictionary<String,Any> = response?["Message"] as? Dictionary<String,Any> {
                                 
                                 print("\(msg)");
                                 

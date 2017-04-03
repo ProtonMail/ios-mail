@@ -22,7 +22,7 @@ open class MessageHelper {
         passwordHint: String,
         expirationTimeInterval: TimeInterval,
         body: String,
-        attachments: [AnyObject]?,
+        attachments: [Any]?,
         inManagedObjectContext context: NSManagedObjectContext) -> Message {
             let message = Message(context: context)
             message.messageID = UUID().uuidString
@@ -63,9 +63,6 @@ open class MessageHelper {
                                 continue
                             }
                         }
-                        
-                        let description = attachment.description ?? "unknown"
-                        PMLog.D("unsupported attachment type \(description)")
                     }
                 }
                 
@@ -78,7 +75,7 @@ open class MessageHelper {
     static func updateMessage (_ message: Message ,
         expirationTimeInterval: TimeInterval,
         body: String,
-        attachments: [AnyObject]?)
+        attachments: [Any]?)
     {
         if expirationTimeInterval > 0 {
             message.expirationTime = Date(timeIntervalSinceNow: expirationTimeInterval)

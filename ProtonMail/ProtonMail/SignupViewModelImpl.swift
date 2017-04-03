@@ -224,7 +224,7 @@ open class SignupViewModelImpl : SignupViewModel {
                                                 }
                                             }
                                         } catch let ex as NSError {
-                                            PMLog.D(ex)
+                                            PMLog.D(any: ex)
                                             complete(false, true, "Decrypt token failed please try again", nil);
                                         }
                                     } ~> .async

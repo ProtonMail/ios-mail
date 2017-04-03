@@ -82,7 +82,7 @@ class APIService {
                         userCachedStatus.signOut()
                     }else {
                         //self.setApiVesion(1, appVersion: 1)
-                        self.request(method: method, path: path, parameters: parameters as AnyObject, headers: ["x-pm-apiversion": 1], authenticated: authenticated, completion: completion)
+                        self.request(method: method, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], authenticated: authenticated, completion: completion)
                     }
                 } else {
                     completion(task, nil, error)
@@ -92,7 +92,7 @@ class APIService {
             let success: AFNetworkingSuccessBlock = { task, responseObject in
                 if responseObject == nil {
                     completion(task, [:], nil)
-                } else if let responseDictionary = responseObject as? Dictionary<String, AnyObject> {
+                } else if let responseDictionary = responseObject as? Dictionary<String, Any> {
                     var error : NSError?
                     let responseCode = responseDictionary["Code"] as? Int
                     

@@ -160,7 +160,7 @@ extension APIService {
                         
                         self.refreshTokenFailedCount = 0
                     } catch let ex as NSError {
-                        PMLog.D(ex)
+                        PMLog.D(any: ex)
                     }
                     DispatchQueue.main.async {
                         completion?(task, authCredential, nil)

@@ -11,6 +11,13 @@ import Foundation
 
 class PMLog {
     
+    static func D(nstring message: NSString, file: String = #function, function: String = #file, line: Int = #line, column: Int = #column)
+    {
+        #if DEBUG
+            print("\(file) : \(function) : \(line) : \(column) - \(message)")
+        #endif
+    }
+    
     static func D(_ message: String, file: String = #function, function: String = #file, line: Int = #line, column: Int = #column)
     {
         #if DEBUG
@@ -18,7 +25,7 @@ class PMLog {
         #endif
     }
     
-    static func D(_ message: AnyObject, file: String = #function, function: String = #file, line: Int = #line, column: Int = #column )
+    static func D(any message: Any, file: String = #function, function: String = #file, line: Int = #line, column: Int = #column )
     {
         #if DEBUG
             print("\(file) : \(function) : \(line) : \(column) - \(message)")

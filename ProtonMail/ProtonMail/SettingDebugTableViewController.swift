@@ -17,7 +17,7 @@ class SettingDebugViewController: UITableViewController {
     
     let Headers = ["InQueue", "InFailedQueue"]
     
-    fileprivate var tempSelected : AnyObject!
+    fileprivate var tempSelected : Any!
     //
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,14 +68,14 @@ class SettingDebugViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "setting_debug_cell", for: indexPath) 
         cell.selectionStyle = UITableViewCellSelectionStyle.none
         
-        var element : [String : AnyObject]!
+        var element : [String : Any]!
         if indexPath.section == 0
         {
-            element = sharedMessageQueue.getQueue()[indexPath.row] as! [String : AnyObject]
+            element = sharedMessageQueue.getQueue()[indexPath.row] as! [String : Any]
         }
         else if indexPath.section == 1
         {
-            element = sharedFailedQueue.getQueue()[indexPath.row] as! [String : AnyObject]
+            element = sharedFailedQueue.getQueue()[indexPath.row] as! [String : Any]
         }
         
         if let element = element["object"] as? [String : String] {
@@ -103,11 +103,11 @@ class SettingDebugViewController: UITableViewController {
         
         if indexPath.section == 0
         {
-            tempSelected = sharedMessageQueue.getQueue()[indexPath.row] as? [String : AnyObject] as AnyObject!
+            tempSelected = sharedMessageQueue.getQueue()[indexPath.row]
         }
         else if indexPath.section == 1
         {
-            tempSelected = sharedFailedQueue.getQueue()[indexPath.row] as? [String : AnyObject] as AnyObject!
+            tempSelected = sharedFailedQueue.getQueue()[indexPath.row]
         }
         
         self.performSegue(withIdentifier: "queue_debug_details", sender: self)
