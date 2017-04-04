@@ -269,7 +269,7 @@ extension Message {
         if let mContext = sharedCoreDataService.mainManagedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
             if location == .spam || location == .trash {
-                fetchRequest.predicate = NSPredicate(format: "%K == %i", Message.Attributes.locationNumber, location.rawValue)
+                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@)", "\(location.rawValue)")
                 fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
                 do {
                     if let oldMessages = try mContext.fetch(fetchRequest) as? [Message] {
