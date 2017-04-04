@@ -717,7 +717,7 @@ class MailboxViewController: ProtonMailViewController {
         }
     }
     
-    fileprivate func showUndoView(_ title : String!) {
+    fileprivate func showUndoView(_ title : String) {
         undoLabel.text = "Message \(title)"
         self.undoBottomDistance.constant = 0
         self.undoButton.isHidden = false
@@ -731,8 +731,8 @@ class MailboxViewController: ProtonMailViewController {
         self.timerAutoDismiss = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(MailboxViewController.timerTriggered), userInfo: nil, repeats: false)
     }
     
-    fileprivate func showMessageMoved(title : String!) {
-        undoLabel.text = "\(title)"
+    fileprivate func showMessageMoved(title : String) {
+        undoLabel.text = title
         self.undoBottomDistance.constant = 0
         self.undoButton.isHidden = true
         self.undoButtonWidth.constant = 0.0
