@@ -711,6 +711,12 @@ extension ComposeEmailViewController: UIPickerViewDelegate {
         let hour = "\(selectedHour) " + NSLocalizedString("hours")
         self.composeView.updateExpirationValue(((Double(selectedDay) * 24) + Double(selectedHour)) * 3600, text: "\(day) \(hour)")
     }
+    
+
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        return super.canPerformAction(action, withSender: sender)
+    }
+    
 }
 
 

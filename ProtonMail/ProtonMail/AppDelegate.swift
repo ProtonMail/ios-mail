@@ -22,10 +22,6 @@ class AppDelegate: UIResponder {
     
     fileprivate let animationDuration: TimeInterval = 0.5
     
-    // FIXME: Before this code is shared publicly, inject the API key from the build command.
-    
-    fileprivate let mintAPIKey = "2b423dec"
-    
     var window: UIWindow?
     
     func instantiateRootViewController() -> UIViewController {
