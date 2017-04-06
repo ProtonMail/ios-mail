@@ -76,7 +76,10 @@ zss_editor.init = function() {
                  });
     
     $('#zss_editor_content').on('paste', function(e) {
-
+                                //var pasteData = e.originalEvent.clipboardData.getData('text')
+                                //window.location = 'paste://'+ e //.clipboardData.types;
+//                                window.location = 'paste://'+ e.originalEvent.clipboardData;
+                        
                                 });
     
 }//end

@@ -1050,7 +1050,8 @@ class EmailHeaderView: UIView {
             UIView.transition(with: self.emailFrom, duration: 0.3, options: kAnimationOption, animations: { () -> Void in
                 self.emailFrom.attributedText = self.fromSinglelineAttr
                 self.emailTo.attributedText = self.toSinglelineAttr
-                self.emailFromTable.alpha = 0.0;
+                self.emailFromTable.alpha = 0.0
+                self.emailTo.alpha = self.showTo ? 1.0 : 0.0
                 self.emailToTable.alpha = 0.0;
                 self.emailCc.alpha = 0.0;
                 self.emailCcTable.alpha = 0.0
