@@ -37,14 +37,17 @@ class LableEditViewController : UIViewController {
         contentView.layer.cornerRadius = 4;
         newLabelInput.delegate = self
         
-        titleLabel.text = viewModel.getTitle()
-        newLabelInput.placeholder = viewModel.getPlaceHolder()
-
-        applyButtonText = viewModel.getRightButtonText()
+        titleLabel.text = viewModel.title()
+        newLabelInput.placeholder = viewModel.placeHolder()
+        let name = viewModel.name()
+        newLabelInput.text = name
+        
+        applyButtonText = viewModel.rightButtonText()
         applyButton.setTitle(applyButtonText, for: UIControlState.disabled)
         applyButton.setTitle(applyButtonText, for: UIControlState())
         cancelButton.setTitle("Cancel", for: UIControlState())
-        applyButton.isEnabled = false
+        
+        applyButton.isEnabled = !name.isEmpty
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -53,15 +56,15 @@ class LableEditViewController : UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         newLabelInput.resignFirstResponder()
-        selectedFirstLoad = viewModel.getSelectedIndex() as IndexPath
+        selectedFirstLoad = viewModel.seletedIndex()
     }
     
     @IBAction func applyAction(_ sender: AnyObject) {
         // start
         //show loading
         ActivityIndicatorHelper.showActivityIndicatorAtView(view)
-        let color = viewModel.getColor(selected?.row ?? 0)
-        viewModel.createLabel(newLabelInput.text!, color: color, error: { (code, errorMessage) -> Void in
+        let color = viewModel.color(at: selected?.row ?? 0)
+        viewModel.apply(withName: newLabelInput.text!, color: color, error: { (code, errorMessage) -> Void in
             ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
             if code == 14005 {
                 let alert = NSLocalizedString("The maximum number of labels is 20.").alertController()
@@ -120,12 +123,12 @@ extension LableEditViewController: UICollectionViewDelegateFlowLayout, UICollect
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.getColorCount()
+        return viewModel.colorCount()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "labelColorCell", for: indexPath)
-        let color = viewModel.getColor(indexPath.row)
+        let color = viewModel.color(at: indexPath.row)
         cell.backgroundColor = UIColor(hexString: color, alpha: 1.0)
         cell.layer.cornerRadius = 17;
         

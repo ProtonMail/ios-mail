@@ -18,9 +18,10 @@ class LablesViewController : UIViewController {
     
     var viewModel : LabelViewModel!
     
-    let kToFolderManager : String = "toFolderManagerSegue"
-    let kToLableManager : String = "toLabelManagerSegue"
-    
+    let kToCreateFolder : String = "toCreateFolderSegue"
+    let kToCreateLabel : String = "toCreateLabelSegue"
+    let kToEditingFolder : String = "toEditingFolderSegue"
+    let kToEditingLabel : String = "toEditingLabelSegue"
     
     fileprivate var selected : IndexPath?
     
@@ -112,11 +113,11 @@ class LablesViewController : UIViewController {
         }
     }
     @IBAction func addFolder(_ sender: AnyObject) {
-        performSegue(withIdentifier: kToFolderManager, sender: self)
+        performSegue(withIdentifier: kToCreateFolder, sender: self)
     }
     
     @IBAction func addLabel(_ sender: AnyObject) {
-        performSegue(withIdentifier: kToLableManager, sender: self)
+        performSegue(withIdentifier: kToCreateLabel, sender: self)
     }
     
     @IBAction func applyAction(_ sender: AnyObject) {
@@ -152,12 +153,18 @@ class LablesViewController : UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == kToFolderManager {
+        if segue.identifier == kToCreateFolder {
             let popup = segue.destination as! LableEditViewController
             popup.viewModel = FolderCreatingViewModelImple()
-        } else if segue.identifier == kToLableManager {
+        } else if segue.identifier == kToCreateLabel {
             let popup = segue.destination as! LableEditViewController
             popup.viewModel = LabelCreatingViewModelImple()
+        } else if segue.identifier == kToEditingLabel {
+            let popup = segue.destination as! LableEditViewController
+            popup.viewModel = LabelEditingViewModelImple(label: sender as! Label)
+        } else if segue.identifier == kToEditingFolder {
+            let popup = segue.destination as! LableEditViewController
+            popup.viewModel = FolderEditingViewModelImple(label: sender as! Label)
         }
     }
 }
@@ -213,6 +220,30 @@ extension LablesViewController: UITableViewDelegate {
         return 45.0
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if self.viewModel.getFetchType() == .all {
+            return true
+        } else {
+            return false
+        }
+    }
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        if self.viewModel.getFetchType() == .all {
+            let edit = UITableViewRowAction(style: .default, title: "Edit") { (action, indexPath) in
+                if let label = self.fetchedLabels?.object(at: indexPath) as? Label {
+                    if label.exclusive {
+                        self.performSegue(withIdentifier: self.kToEditingFolder, sender: label)
+                    } else {
+                        self.performSegue(withIdentifier: self.kToEditingLabel, sender: label)
+                    }
+                }
+                self.tableView.reloadRows(at: [indexPath], with: .none)
+            }
+            return [edit]
+        }
+        return []
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // verify whether the user is checking messages or not
         if let label = fetchedLabels?.object(at: indexPath) as? Label {
@@ -265,11 +296,11 @@ extension LablesViewController : NSFetchedResultsControllerDelegate {
                 tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
             }
         case .update:
-            if let _ = indexPath {
-                //TODO:: need check here
-                //if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MailboxTableViewCell {
-                //configureCell(cell, atIndexPath: indexPath)
-                //}
+            if let index = indexPath {
+                if let cell = tableView.cellForRow(at: index) as? LabelTableViewCell, let label = fetchedLabels?.object(at: index) as? Label {
+                    let lm = viewModel.getLabelMessage(label)
+                    cell.ConfigCell(model: lm, showIcon: viewModel.getFetchType() == .all, vc: self)
+                }
             }
         default:
             return

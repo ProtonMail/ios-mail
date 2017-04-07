@@ -9,7 +9,7 @@
 import Foundation
 
 
-open class LabelEditViewModel {
+class LabelEditViewModel {
     
     public typealias OkBlock = () -> Void
     public typealias ErrorBlock = (_ code : Int, _ errorMessage : String) -> Void
@@ -20,36 +20,41 @@ open class LabelEditViewModel {
         
     }
     
-    func getColorCount() -> Int {
+    func colorCount() -> Int {
         return colors.count
     }
     
-    func getColor(_ index : Int) -> String {
+    func color(at index : Int) -> String {
         return colors[index]
     }
 
-    open func getTitle() -> String {
+    func title() -> String {
         fatalError("This method must be overridden")
     }
     
-    open func getSelectedIndex() -> IndexPath {
+    func seletedIndex() -> IndexPath {
         let count = UInt32(colors.count)
         let rand = Int(arc4random_uniform(count))
         return IndexPath(row: rand, section: 0)
     }
     
-    open func getPlaceHolder() -> String {
+    func name() -> String {
+        return ""
+    }
+    
+    func placeHolder() -> String {
         fatalError("This method must be overridden")
     }
     
-    open func getRightButtonText() -> String {
+    func rightButtonText() -> String {
         fatalError("This method must be overridden")
     }
     
-    open func createLabel (_ name : String, color : String, error:@escaping ErrorBlock, complete:@escaping OkBlock)  {
+    func apply(withName name : String, color : String, error:@escaping ErrorBlock, complete:@escaping OkBlock) {
         fatalError("This method must be overridden")
     }
-//
+
+    
 //    public func apply (archiveMessage : Bool) {
 //        fatalError("This method must be overridden")
 //    }

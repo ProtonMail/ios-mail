@@ -103,12 +103,11 @@ final class RemoveLabelFromMessageRequest<T : ApiResponse> : ApiRequest<T> {
 
 // MARK : create label
 final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
-    
-    var labelName: String!
-    var color:String!
+    var labelName: String
+    var color:String
     var exclusive : Bool = false
     
-    init(name:String!, color:String!, exclusive : Bool) {
+    init(name:String, color:String, exclusive : Bool) {
         self.labelName = name
         self.color = color
         self.exclusive = exclusive
@@ -139,6 +138,42 @@ final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
+
+// MARK : update label
+final class UpdateLabelRequest<T : ApiResponse> : ApiRequest<T> {
+    
+    var labelID : String
+    var labelName: String
+    var color:String
+    
+    init(id:String, name:String, color:String) {
+        self.labelID = id
+        self.labelName = name
+        self.color = color
+    }
+    
+    override func toDictionary() -> Dictionary<String, Any>? {
+        let out : [String : Any] = [
+            "Name": self.labelName,
+            "Color": self.color,
+            "Display": 0
+        ]
+        return out
+    }
+    
+    override func getAPIMethod() -> APIService.HTTPMethod {
+        return .put
+    }
+    
+    override open func getRequestPath() -> String {
+        return LabelAPI.Path + "/\(labelID)" + AppConstants.getDebugOption
+    }
+    
+    override open func getVersion() -> Int {
+        return LabelAPI.V_UpdateLabelRequest
+    }
+}
+
 final class CreateLabelRequestResponse : ApiResponse {
     var label:Dictionary<String, Any>?
     
@@ -156,9 +191,9 @@ final class CreateLabelRequestResponse : ApiResponse {
 // MARK : create label
 final class DeleteLabelRequest<T : ApiResponse> : ApiRequest<T> {
     
-    var labelID: String!
+    var labelID: String
     
-    init(lable_id:String) {
+    init(lable_id: String) {
         labelID = lable_id
     }
     

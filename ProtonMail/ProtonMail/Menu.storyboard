@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="14k-5d-srV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="14k-5d-srV">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -850,8 +850,10 @@
                         <outlet property="middleLineConstraint" destination="JIE-nj-1V4" id="LxZ-6l-GBu"/>
                         <outlet property="tableView" destination="DLH-ou-vZe" id="m38-Lh-eKz"/>
                         <outlet property="titleLabel" destination="mSx-Zq-fBF" id="1m2-py-tqy"/>
-                        <segue destination="BBo-ig-Gqj" kind="presentation" identifier="toLabelManagerSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="coverVertical" id="Dpt-T7-EMY"/>
-                        <segue destination="BBo-ig-Gqj" kind="presentation" identifier="toFolderManagerSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="coverVertical" id="fFn-p1-JKs"/>
+                        <segue destination="BBo-ig-Gqj" kind="presentation" identifier="toCreateLabelSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="coverVertical" id="Dpt-T7-EMY"/>
+                        <segue destination="BBo-ig-Gqj" kind="presentation" identifier="toCreateFolderSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="coverVertical" id="fFn-p1-JKs"/>
+                        <segue destination="BBo-ig-Gqj" kind="presentation" identifier="toEditingLabelSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="coverVertical" id="8Kc-9a-dPs"/>
+                        <segue destination="BBo-ig-Gqj" kind="presentation" identifier="toEditingFolderSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="coverVertical" id="oa9-8b-dT8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FVt-bG-ZYT" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3955,7 +3957,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3QC-xB-fsc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5813.6000000000004" y="1918.2908545727139"/>
+            <point key="canvasLocation" x="5921" y="1707"/>
         </scene>
     </scenes>
     <resources>
@@ -3986,15 +3988,15 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="LdN-DE-nXL"/>
+        <segue reference="5rJ-hC-fsT"/>
         <segue reference="hZj-FM-cPb"/>
-        <segue reference="fux-iz-qV0"/>
         <segue reference="zIE-XJ-wkG"/>
         <segue reference="0zg-HM-MdK"/>
+        <segue reference="fux-iz-qV0"/>
         <segue reference="ddm-eA-erE"/>
-        <segue reference="fFn-p1-JKs"/>
-        <segue reference="5rJ-hC-fsT"/>
-        <segue reference="sPN-i9-NSa"/>
+        <segue reference="oa9-8b-dT8"/>
         <segue reference="PpL-SW-U8F"/>
+        <segue reference="sPN-i9-NSa"/>
         <segue reference="gwz-B9-War"/>
     </inferredMetricsTieBreakers>
 </document>

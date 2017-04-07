@@ -1,28 +1,27 @@
 //
-//  LabelEditingViewModelImpl.swift
+//  FolderEditingViewModelImpl .swift
 //  ProtonMail
 //
-//  Created by Yanfeng Zhang on 3/2/17.
+//  Created by Yanfeng Zhang on 4/6/17.
 //  Copyright © 2017 ProtonMail. All rights reserved.
 //
 
 import Foundation
-
-
-// label editing
-final class LabelEditingViewModelImple : LabelEditViewModel {
+// folder editing
+final class FolderEditingViewModelImple : LabelEditViewModel {
     var currentLabel : Label
     
     required init(label : Label) {
+    
         self.currentLabel = label
     }
     
-    override func title() -> String {
-        return "Edit Label"
+     override func title() -> String {
+        return "Edit Folder"
     }
     
     override func placeHolder() -> String {
-        return "Label Name"
+        return "Folder Name"
     }
     
     override func rightButtonText() -> String {
@@ -45,6 +44,5 @@ final class LabelEditingViewModelImple : LabelEditViewModel {
                 complete()
             }
         }
-        
     }
 }
