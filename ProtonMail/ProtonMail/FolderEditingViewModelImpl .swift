@@ -12,7 +12,6 @@ final class FolderEditingViewModelImple : LabelEditViewModel {
     var currentLabel : Label
     
     required init(label : Label) {
-    
         self.currentLabel = label
     }
     
@@ -30,6 +29,15 @@ final class FolderEditingViewModelImple : LabelEditViewModel {
     
     override func name() -> String {
         return currentLabel.name
+    }
+    
+    override func seletedIndex() -> IndexPath {
+        let currentColor = currentLabel.color
+        if let index = colors.index(of: currentColor) {
+            return IndexPath(row: index, section: 0)
+        } else {
+            return super.seletedIndex()
+        }
     }
     
     override func apply(withName name: String, color: String, error: @escaping LabelEditViewModel.ErrorBlock, complete: @escaping LabelEditViewModel.OkBlock) {

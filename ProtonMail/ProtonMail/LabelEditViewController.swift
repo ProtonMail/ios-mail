@@ -60,7 +60,6 @@ class LableEditViewController : UIViewController {
     }
     
     @IBAction func applyAction(_ sender: AnyObject) {
-        // start
         //show loading
         ActivityIndicatorHelper.showActivityIndicatorAtView(view)
         let color = viewModel.color(at: selected?.row ?? 0)
