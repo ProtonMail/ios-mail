@@ -8,13 +8,17 @@
 
 import UIKit
 
+internal typealias EditAction = (_ sender: LabelTableViewCell) -> Void
+
 class LabelTableViewCell: UITableViewCell {
-    var vc : UIViewController!
     var model : LabelMessageModel!
     let maxLabelCount : Int = 100
 
+    var editLabelAction : EditAction?
+    
     @IBOutlet weak var labelView: TableCellLabelView!
     @IBOutlet weak var selectStatusButton: UIButton!
+    @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var labelIcon: UIImageView!
     @IBOutlet weak var labelleft: NSLayoutConstraint!
     @IBOutlet weak var labelWidth: NSLayoutConstraint!
@@ -38,6 +42,10 @@ class LabelTableViewCell: UITableViewCell {
 
     }
     
+    @IBAction func editAction(_ sender: UIButton) {
+        editLabelAction?(self)
+    }
+    
     func updateStatusButton () {
         switch self.model.currentStatus {
         case 0:
@@ -55,15 +63,13 @@ class LabelTableViewCell: UITableViewCell {
         }
     }
     
-    func ConfigCell(model : LabelMessageModel!, showIcon : Bool, vc : UIViewController) {
-        self.vc = vc;
+    func ConfigCell(model : LabelMessageModel!, showIcon : Bool, showEdit : Bool, editAction : EditAction?) {
         self.model = model;
+        self.editLabelAction = editAction
         if model.label.managedObjectContext != nil {
-            let w = labelView.setText(model.label.name, color: UIColor(hexString: model.label.color, alpha: 1.0))
-            let check = self.frame.width - 50
-            labelWidth.constant = w > check ? check : w
-            
+            var offset : CGFloat = 30
             if showIcon {
+                offset += 16
                 labelIcon.isHidden = false
                 labelleft.priority = 500
                 let color = UIColor(hexString: model.label.color, alpha:1)
@@ -79,6 +85,20 @@ class LabelTableViewCell: UITableViewCell {
                 labelIcon.isHidden = true
                 labelleft.priority = 900
             }
+            
+            if showEdit {
+                offset += 40
+                editButton.isHidden = false
+                editButton.isEnabled = true
+            } else {
+                editButton.isHidden = true
+                editButton.isEnabled = false
+            }
+            
+            let w = labelView.setText(model.label.name, color: UIColor(hexString: model.label.color, alpha: 1.0))
+            let check = self.frame.width - offset
+            
+            labelWidth.constant = w > check ? check : w
         }
         self.updateStatusButton()
     }

@@ -192,7 +192,19 @@ extension LablesViewController: UITableViewDataSource {
         let labelCell = tableView.dequeueReusableCell(withIdentifier: "labelApplyCell", for: indexPath) as! LabelTableViewCell
         if let label = fetchedLabels?.object(at: indexPath) as? Label {
             let lm = viewModel.getLabelMessage(label)
-            labelCell.ConfigCell(model: lm, showIcon: viewModel.getFetchType() == .all, vc: self)
+            let showEdit = viewModel.getFetchType() == .all
+            labelCell.ConfigCell(model: lm,
+                                 showIcon: viewModel.getFetchType() == .all,
+                                 showEdit: showEdit,
+                                 editAction: { (sender) in
+                                    if labelCell == sender, let editlabel = self.fetchedLabels?.object(at: indexPath) as? Label {
+                                        if editlabel.exclusive {
+                                            self.performSegue(withIdentifier: self.kToEditingFolder, sender: editlabel)
+                                        } else {
+                                            self.performSegue(withIdentifier: self.kToEditingLabel, sender: editlabel)
+                                        }
+                                    }
+            })
         }
         return labelCell
     }
@@ -218,30 +230,6 @@ extension LablesViewController: UITableViewDataSource {
 extension LablesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 45.0
-    }
-    
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if self.viewModel.getFetchType() == .all {
-            return true
-        } else {
-            return false
-        }
-    }
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        if self.viewModel.getFetchType() == .all {
-            let edit = UITableViewRowAction(style: .default, title: "Edit") { (action, indexPath) in
-                if let label = self.fetchedLabels?.object(at: indexPath) as? Label {
-                    if label.exclusive {
-                        self.performSegue(withIdentifier: self.kToEditingFolder, sender: label)
-                    } else {
-                        self.performSegue(withIdentifier: self.kToEditingLabel, sender: label)
-                    }
-                }
-                self.tableView.reloadRows(at: [indexPath], with: .none)
-            }
-            return [edit]
-        }
-        return []
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -297,10 +285,7 @@ extension LablesViewController : NSFetchedResultsControllerDelegate {
             }
         case .update:
             if let index = indexPath {
-                if let cell = tableView.cellForRow(at: index) as? LabelTableViewCell, let label = fetchedLabels?.object(at: index) as? Label {
-                    let lm = viewModel.getLabelMessage(label)
-                    cell.ConfigCell(model: lm, showIcon: viewModel.getFetchType() == .all, vc: self)
-                }
+                tableView.reloadRows(at: [index], with: UITableViewRowAnimation.automatic)
             }
         default:
             return

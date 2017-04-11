@@ -47,7 +47,7 @@
         <scene sceneID="ho3-Du-wUo">
             <objects>
                 <navigationController id="8dN-79-EXg" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="0vy-7G-ikU">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="0vy-7G-ikU">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -562,7 +562,7 @@
         <scene sceneID="O0q-7F-TSt">
             <objects>
                 <navigationController id="N9H-or-xL9" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="e1C-fN-Z7f">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="e1C-fN-Z7f">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -690,6 +690,20 @@
                                                                 <action selector="buttonAction:" destination="zeh-GA-VuO" eventType="touchUpInside" id="6iF-G5-lac"/>
                                                             </connections>
                                                         </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GmK-Jm-f4Q" userLabel="edit label button">
+                                                            <rect key="frame" x="203" y="0.0" width="70" height="44"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="70" id="50f-Tx-7GZ"/>
+                                                            </constraints>
+                                                            <state key="normal" image="label_edit-active">
+                                                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            </state>
+                                                            <state key="disabled" image="label_edit"/>
+                                                            <connections>
+                                                                <action selector="buttonAction:" destination="zeh-GA-VuO" eventType="touchUpInside" id="Vgp-7M-CR3"/>
+                                                                <action selector="editAction:" destination="zeh-GA-VuO" eventType="touchUpInside" id="Wbj-4h-oUj"/>
+                                                            </connections>
+                                                        </button>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hFW-ma-ZRM">
                                                             <rect key="frame" x="0.0" y="14" width="16" height="16"/>
                                                             <constraints>
@@ -699,6 +713,8 @@
                                                         </imageView>
                                                     </subviews>
                                                     <constraints>
+                                                        <constraint firstItem="GmK-Jm-f4Q" firstAttribute="top" secondItem="wuB-ho-YEh" secondAttribute="top" id="3kq-2W-mBP"/>
+                                                        <constraint firstAttribute="trailing" secondItem="GmK-Jm-f4Q" secondAttribute="trailing" constant="30" id="Gor-rI-5A2"/>
                                                         <constraint firstAttribute="bottom" secondItem="Ob3-FJ-Dei" secondAttribute="bottom" constant="8" id="GuV-jt-wKQ"/>
                                                         <constraint firstItem="Ob3-FJ-Dei" firstAttribute="top" secondItem="wuB-ho-YEh" secondAttribute="top" constant="8" id="KYa-x6-6eW"/>
                                                         <constraint firstItem="hFW-ma-ZRM" firstAttribute="centerY" secondItem="wuB-ho-YEh" secondAttribute="centerY" id="LnY-1P-0Co"/>
@@ -708,9 +724,11 @@
                                                         <constraint firstItem="hli-Rq-vrf" firstAttribute="top" secondItem="wuB-ho-YEh" secondAttribute="top" id="f7j-M6-9Vo"/>
                                                         <constraint firstItem="Ob3-FJ-Dei" firstAttribute="leading" secondItem="wuB-ho-YEh" secondAttribute="leading" priority="500" id="hCk-T9-oaA"/>
                                                         <constraint firstAttribute="trailing" secondItem="hli-Rq-vrf" secondAttribute="trailing" id="ll5-W0-H3j"/>
+                                                        <constraint firstAttribute="bottom" secondItem="GmK-Jm-f4Q" secondAttribute="bottom" id="qNP-Oi-PBu"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
+                                                    <outlet property="editButton" destination="GmK-Jm-f4Q" id="fOo-Tf-spE"/>
                                                     <outlet property="labelIcon" destination="hFW-ma-ZRM" id="kRW-ez-AaI"/>
                                                     <outlet property="labelView" destination="Ob3-FJ-Dei" id="hrW-lt-lA0"/>
                                                     <outlet property="labelWidth" destination="drj-8y-wfa" id="ZZ9-d5-0Zs"/>
@@ -864,7 +882,7 @@
         <scene sceneID="Hfi-Ob-mMm">
             <objects>
                 <navigationController id="vDl-7h-rdD" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="NgW-qO-WdT">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="NgW-qO-WdT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1225,7 +1243,7 @@
         <scene sceneID="4pa-9S-l0a">
             <objects>
                 <navigationController id="fzN-Ci-Qyg" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="ol1-XJ-ywN">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ol1-XJ-ywN">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2744,7 +2762,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="PFX-v3-PCL" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="n9F-Oz-CJH">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="n9F-Oz-CJH">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2763,7 +2781,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Olh-tY-NxQ" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="xAT-mr-j4s">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xAT-mr-j4s">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2783,7 +2801,7 @@
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="arL-wy-xoq">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="arL-wy-xoq">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2801,7 +2819,7 @@
             <objects>
                 <navigationController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="xBI-ex-VGk" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="aTD-c0-dRX">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="aTD-c0-dRX">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -3970,6 +3988,8 @@
         <image name="favorite_main_selected" width="19" height="19"/>
         <image name="feedback_contact" width="16" height="16"/>
         <image name="hamburger" width="20" height="16"/>
+        <image name="label_edit" width="24" height="24"/>
+        <image name="label_edit-active" width="24" height="24"/>
         <image name="mail_attachment" width="14" height="14"/>
         <image name="mail_check" width="24" height="24"/>
         <image name="mail_lock" width="14" height="14"/>
@@ -3988,15 +4008,15 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="LdN-DE-nXL"/>
+        <segue reference="sPN-i9-NSa"/>
+        <segue reference="PpL-SW-U8F"/>
+        <segue reference="gwz-B9-War"/>
         <segue reference="5rJ-hC-fsT"/>
         <segue reference="hZj-FM-cPb"/>
         <segue reference="zIE-XJ-wkG"/>
-        <segue reference="0zg-HM-MdK"/>
         <segue reference="fux-iz-qV0"/>
+        <segue reference="0zg-HM-MdK"/>
         <segue reference="ddm-eA-erE"/>
-        <segue reference="oa9-8b-dT8"/>
-        <segue reference="PpL-SW-U8F"/>
-        <segue reference="sPN-i9-NSa"/>
-        <segue reference="gwz-B9-War"/>
+        <segue reference="Dpt-T7-EMY"/>
     </inferredMetricsTieBreakers>
 </document>
