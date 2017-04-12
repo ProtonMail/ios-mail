@@ -45,6 +45,13 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     func inactiveViewModel() {
         self.stopAutoSave()
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillResignActive, object:nil)
+        
+        self.dismissKeyboard()
+        if self.presentingViewController != nil {
+            self.dismiss(animated: true, completion: nil)
+        } else {
+            let _ = self.navigationController?.popViewController(animated: true)
+        }
     }
     
     // private views

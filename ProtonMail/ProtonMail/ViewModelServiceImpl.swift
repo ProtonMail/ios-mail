@@ -27,8 +27,8 @@ class ViewModelServiceImpl: ViewModelService {
         if latestComposerViewController != nil {
             DispatchQueue.main.async {
                 self.latestComposerViewController?.inactiveViewModel()
+                self.latestComposerViewController = nil
             }
-            latestComposerViewController = nil
         }
         latestComposerViewModel = nil
     }

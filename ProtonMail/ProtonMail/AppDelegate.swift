@@ -179,8 +179,8 @@ extension AppDelegate: UIApplicationDelegate {
     func applicationWillEnterForeground(_ application: UIApplication) {
         Snapshot().willEnterForeground(application)
         if sharedTouchID.showTouchIDOrPin() {
-            (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: false)
             sharedVMService.resetComposerView()
+            (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: false)
         }
     }
     
