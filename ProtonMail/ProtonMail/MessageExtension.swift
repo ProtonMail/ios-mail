@@ -72,15 +72,15 @@ extension Message {
         }
         
         PMLog.D("allEmailAddresses  ---  \(lists)" )
-        return lists.joinWithSeparator(",")
+        return lists.joined(separator: ",")
     }
     
     var location: MessageLocation {
         get {
-            return MessageLocation(rawValue: locationNumber.integerValue) ?? .inbox
+            return MessageLocation(rawValue: locationNumber.intValue) ?? .inbox
         }
         set {
-            locationNumber = newValue.rawValue
+            locationNumber = newValue.rawValue as NSNumber
         }
     }
     
@@ -89,7 +89,7 @@ extension Message {
         for l in labels {
             if let label = l as? Label {
                 if let l_id = Int(label.labelID) {
-                    if let new_loc = MessageLocation(rawValue: l_id) where new_loc == .draft {
+                    if let new_loc = MessageLocation(rawValue: l_id), new_loc == .draft {
                         return true
                     }
                 }
@@ -114,7 +114,7 @@ extension Message {
         for l in labels {
             if let label = l as? Label {
                 if let l_id = Int(label.labelID) {
-                    if let new_loc = MessageLocation(rawValue: l_id) where new_loc != .starred && new_loc != .allmail {
+                    if let new_loc = MessageLocation(rawValue: l_id), new_loc != .starred && new_loc != .allmail {
                         locations.append(new_loc)
                     }
                 }
@@ -134,7 +134,7 @@ extension Message {
             }
             lableOnly = true
         }
-        
+    
         let labels = self.labels
         for l in labels {
             if let label = l as? Label {
@@ -143,7 +143,7 @@ extension Message {
                 } else if !lableOnly {
                     if let l_id = Int(label.labelID) {
                         PMLog.D(label.name)
-                        if let new_loc = MessageLocation(rawValue: l_id) where new_loc != .starred && new_loc != .allmail && new_loc.title != ignored {
+                        if let new_loc = MessageLocation(rawValue: l_id), new_loc != .starred && new_loc != .allmail && new_loc.title != ignored {
                             return new_loc.title
                         }
                     }
@@ -153,11 +153,11 @@ extension Message {
         return nil
     }
     
-    func setLabelLocation(location : MessageLocation) {
+    func setLabelLocation(_ location : MessageLocation) {
         if let context = self.managedObjectContext {
-            context.performBlockAndWait() {
+            context.performAndWait() {
                 let toLableID = String(location.rawValue)
-                let labelObjs = self.mutableSetValueForKey("labels")
+                let labelObjs = self.mutableSetValue(forKey: "labels")
                 
                 if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
                     var exsited = false
@@ -170,7 +170,7 @@ extension Message {
                         }
                     }
                     if !exsited {
-                        labelObjs.addObject(toLabel)
+                        labelObjs.add(toLabel)
                     }
                 }
                 
@@ -184,8 +184,8 @@ extension Message {
     
     func removeLocationFromLabels(currentlocation:MessageLocation, location : MessageLocation, keepSent: Bool) {
         if let context = self.managedObjectContext {
-            context.performBlockAndWait() {
-                let labelObjs = self.mutableSetValueForKey("labels")
+            context.performAndWait() {
+                let labelObjs = self.mutableSetValue(forKey: "labels")
                 if keepSent && currentlocation == .outbox {
                     
                 } else {
@@ -193,7 +193,7 @@ extension Message {
                     for l in labelObjs {
                         if let label = l as? Label {
                             if label.labelID == fromLabelID {
-                                labelObjs.removeObject(label)
+                                labelObjs.remove(label)
                                 break
                             }
                         }
@@ -212,7 +212,7 @@ extension Message {
                         }
                     }
                     if !exsited {
-                        labelObjs.addObject(toLabel)
+                        labelObjs.add(toLabel)
                     }
                 }
                 
@@ -231,14 +231,14 @@ extension Message {
     var displaySender : String {
         get {
             let sc = senderContactVO
-            return sc.name.isEmpty ?  sc.email : sc.name
+            return sc!.name.isEmpty ?  sc!.email : sc!.name
         }
         
     }
     
     // MARK: - Public methods
     convenience init(context: NSManagedObjectContext) {
-        self.init(entity: NSEntityDescription.entityForName(Attributes.entityName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
+        self.init(entity: NSEntityDescription.entity(forEntityName: Attributes.entityName, in: context)!, insertInto: context)
     }
     
     /// Removes all messages from the store.
@@ -251,13 +251,13 @@ extension Message {
      
      :param: messageID String
      */
-    class func deleteMessage(messageID : String) {
+    class func deleteMessage(_ messageID : String) {
         if let context = sharedCoreDataService.mainManagedObjectContext {
             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                let labelObjs = message.mutableSetValueForKey("labels")
+                let labelObjs = message.mutableSetValue(forKey: "labels")
                 labelObjs.removeAllObjects()
                 message.setValue(labelObjs, forKey: "labels")
-                context.deleteObject(message)
+                context.delete(message)
             }
             if let error = context.saveUpstreamIfNeeded() {
                 PMLog.D("error: \(error)")
@@ -265,16 +265,16 @@ extension Message {
         }
     }
     
-    class func deleteLocation(location : MessageLocation) -> Bool{
+    class func deleteLocation(_ location : MessageLocation) -> Bool{
         if let mContext = sharedCoreDataService.mainManagedObjectContext {
-            let fetchRequest = NSFetchRequest(entityName: Message.Attributes.entityName)
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
             if location == .spam || location == .trash {
-                fetchRequest.predicate = NSPredicate(format: "%K == %i", Message.Attributes.locationNumber, location.rawValue)
+                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@)", "\(location.rawValue)")
                 fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
                 do {
-                    if let oldMessages = try mContext.executeFetchRequest(fetchRequest) as? [Message] {
+                    if let oldMessages = try mContext.fetch(fetchRequest) as? [Message] {
                         for message in oldMessages {
-                            mContext.deleteObject(message)
+                            mContext.delete(message)
                         }
                         if let error = mContext.saveUpstreamIfNeeded() {
                             PMLog.D(" error: \(error)")
@@ -290,22 +290,22 @@ extension Message {
         return false
     }
     
-    class func messageForMessageID(messageID: String, inManagedObjectContext context: NSManagedObjectContext) -> Message? {
+    class func messageForMessageID(_ messageID: String, inManagedObjectContext context: NSManagedObjectContext) -> Message? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.messageID, matchingValue: messageID) as? Message
     }
     
-    class func messagesForObjectIDs(objectIDs: [NSManagedObjectID], inManagedObjectContext context: NSManagedObjectContext, error: NSErrorPointer) -> [Message]? {
+    class func messagesForObjectIDs(_ objectIDs: [NSManagedObjectID], inManagedObjectContext context: NSManagedObjectContext, error: NSErrorPointer) -> [Message]? {
         return context.managedObjectsWithEntityName(Attributes.entityName, forManagedObjectIDs: objectIDs, error: error) as? [Message]
     }
     
-    override public func awakeFromInsert() {
+    override open func awakeFromInsert() {
         super.awakeFromInsert()
         replaceNilStringAttributesWithEmptyString()
     }
     
-    func updateTag(tag: String) {
+    func updateTag(_ tag: String) {
         self.tag = tag
-        isStarred = tag.rangeOfString(Constants.starredTag) != nil
+        isStarred = tag.range(of: Constants.starredTag) != nil
     }
     
     // MARK: Public methods
@@ -314,7 +314,7 @@ extension Message {
     }
     
     func bodyToHtml() -> String {
-        if lockType == .PlainTextLock {
+        if lockType == .plainTextLock {
             return "<div>" + body.ln2br() + "</div>"
         } else {
             let body_without_ln = body.rmln()
@@ -326,18 +326,18 @@ extension Message {
         //PMLog.D("\(body)")
         if !checkIsEncrypted() {
             if isPlainText() {
-                return body.ln2br() ?? body
+                return body.ln2br() 
             }
             return body
         } else {
             if var body = try decryptBody() {
                 if isEncrypted == 8 {
-                    body = body.multipartGetHtmlContent () ?? body
+                    body = body.multipartGetHtmlContent () 
                 } else if isEncrypted == 7 {
-                    body = body.ln2br() ?? body
+                    body = body.ln2br() 
                 }
                 if isPlainText() {
-                    return body.ln2br() ?? body
+                    return body.ln2br() 
                 }
                 return body
             }
@@ -345,7 +345,7 @@ extension Message {
         }
     }
     
-    func encryptBody(body: String, error: NSErrorPointer?) {
+    func encryptBody(_ body: String, error: NSErrorPointer?) {
         let address_id = self.getAddressID;
         if address_id.isEmpty {
             return
@@ -354,20 +354,20 @@ extension Message {
     }
     
     func checkIsEncrypted() -> Bool! {
-        let enc_type = EncryptTypes(rawValue: isEncrypted.integerValue) ?? EncryptTypes.Internal
+        let enc_type = EncryptTypes(rawValue: isEncrypted.intValue) ?? EncryptTypes.inner
         let checkIsEncrypted:Bool = enc_type.isEncrypted
         return checkIsEncrypted
     }
     
     func isPlainText() -> Bool {
-        if let type = mimeType where type.lowercaseString == "text/plain" {
+        if let type = mimeType, type.lowercased() == "text/plain" {
             return true
         }
         return false
     }
     
     var encryptType : EncryptTypes! {
-        let enc_type = EncryptTypes(rawValue: isEncrypted.integerValue) ?? EncryptTypes.Internal
+        let enc_type = EncryptTypes(rawValue: isEncrypted.intValue) ?? EncryptTypes.inner
         return enc_type
     }
     
@@ -376,7 +376,7 @@ extension Message {
     }
     
     // MARK: Private variables
-    private var passphrase: String {
+    fileprivate var passphrase: String {
         return sharedUserDataService.mailboxPassword ?? ""
     }
     
@@ -420,7 +420,7 @@ extension Message {
         return sender
     }
     
-    func copyMessage (copyAtts : Bool) -> Message {
+    func copyMessage (_ copyAtts : Bool) -> Message {
         let message = self
         let newMessage = Message(context: sharedCoreDataService.mainManagedObjectContext!)
         newMessage.location = MessageLocation.draft
@@ -428,7 +428,7 @@ extension Message {
         newMessage.bccList = message.bccList
         newMessage.ccList = message.ccList
         newMessage.title = message.title
-        newMessage.time = NSDate()
+        newMessage.time = Date()
         newMessage.body = message.body
         newMessage.isEncrypted = message.isEncrypted
         newMessage.senderAddress = message.senderAddress
@@ -447,7 +447,7 @@ extension Message {
             PMLog.D("error: \(error)")
         }
         
-        for (index, attachment) in message.attachments.enumerate() {
+        for (index, attachment) in message.attachments.enumerated() {
             PMLog.D("index: \(index)")
             if let att = attachment as? Attachment {
                 if att.isInline() || copyAtts {
@@ -473,7 +473,7 @@ extension Message {
         return newMessage
     }
     
-    func fetchDetailIfNeeded(completion: MessageDataService.CompletionFetchDetail) {
+    func fetchDetailIfNeeded(_ completion: @escaping MessageDataService.CompletionFetchDetail) {
         sharedMessageDataService.fetchMessageDetailForMessage(self, completion: completion)
     }
 }
@@ -481,43 +481,47 @@ extension Message {
 extension String {
     
     public func multipartGetHtmlContent() -> String {
-        PMLog.D(self)
-        let textplainType = "text/plain".dataUsingEncoding(NSUTF8StringEncoding)!
-        let htmlType = "text/html".dataUsingEncoding(NSUTF8StringEncoding)!
+
+        let textplainType = "text/plain".data(using: String.Encoding.utf8)
+        let htmlType = "text/html".data(using: String.Encoding.utf8)
         
-        var data = self.dataUsingEncoding(NSUTF8StringEncoding)!
-        var len = data.length as Int;
+        guard
+            var data = self.data(using: String.Encoding.utf8) as NSData?,
+            var len = data.length as Int?
+        else {
+            return self.ln2br()
+        }
         
         //get boundary=
-        let boundarLine = "boundary=".dataUsingEncoding(NSASCIIStringEncoding)!
-        let boundaryRange = data.rangeOfData(boundarLine, options: NSDataSearchOptions.init(rawValue: 0), range: NSMakeRange(0, len))
+        let boundarLine = "boundary=".data(using: String.Encoding.ascii)!
+        let boundaryRange = data.range(of: boundarLine, options: NSData.SearchOptions.init(rawValue: 0), in: NSMakeRange(0, len))
         if boundaryRange.location == NSNotFound {
             return self.ln2br()
         }
         
         //new len
         len = len - (boundaryRange.location + boundaryRange.length);
-        data = data.subdataWithRange(NSMakeRange(boundaryRange.location + boundaryRange.length, len))
-        let lineEnd = "\n".dataUsingEncoding(NSASCIIStringEncoding)!;
-        let nextLine = data.rangeOfData(lineEnd, options: NSDataSearchOptions.init(rawValue: 0), range: NSMakeRange(0, len))
+        data = data.subdata(with: NSMakeRange(boundaryRange.location + boundaryRange.length, len)) as NSData
+        let lineEnd = "\n".data(using: String.Encoding.ascii)!;
+        let nextLine = data.range(of: lineEnd, options: NSData.SearchOptions.init(rawValue: 0), in: NSMakeRange(0, len))
         if nextLine.location == NSNotFound {
             return self.ln2br()
         }
-        let boundary = data.subdataWithRange(NSMakeRange(0, nextLine.location))
-        var boundaryString = NSString(data: boundary, encoding: NSUTF8StringEncoding) as! String
-        boundaryString = boundaryString.stringByReplacingOccurrencesOfString("\"", withString: "")
-        boundaryString = boundaryString.stringByReplacingOccurrencesOfString("\r", withString: "")
-        boundaryString = "--" + boundaryString;
+        let boundary = data.subdata(with: NSMakeRange(0, nextLine.location))
+        var boundaryString = NSString(data: boundary, encoding: String.Encoding.utf8.rawValue)!
+        boundaryString = boundaryString.replacingOccurrences(of: "\"", with: "") as NSString
+        boundaryString = boundaryString.replacingOccurrences(of: "\r", with: "") as NSString
+        boundaryString = "--".appending(boundaryString as String) as NSString //+ boundaryString;
         
         len = len - (nextLine.location + nextLine.length);
-        data = data.subdataWithRange(NSMakeRange(nextLine.location + nextLine.length, len))
+        data = data.subdata(with: NSMakeRange(nextLine.location + nextLine.length, len)) as NSData
         
         var html : String = "";
         var plaintext : String = "";
         
         var count = 0;
-        let nextBoundaryLine = boundaryString.dataUsingEncoding(NSASCIIStringEncoding)!
-        var firstboundaryRange = data.rangeOfData(nextBoundaryLine, options: NSDataSearchOptions(rawValue: 0), range: NSMakeRange(0, len))
+        let nextBoundaryLine = boundaryString.data(using: String.Encoding.ascii.rawValue)!
+        var firstboundaryRange = data.range(of: nextBoundaryLine, options: NSData.SearchOptions(rawValue: 0), in: NSMakeRange(0, len))
         
         if firstboundaryRange.location == NSNotFound {
             return self.ln2br()
@@ -529,65 +533,65 @@ extension String {
             }
             count += 1;
             len = len - (firstboundaryRange.location + firstboundaryRange.length) - 1;
-            data = data.subdataWithRange(NSMakeRange(1 + firstboundaryRange.location + firstboundaryRange.length, len))
+            data = data.subdata(with: NSMakeRange(1 + firstboundaryRange.location + firstboundaryRange.length, len)) as NSData
             
-            if data.subdataWithRange(NSMakeRange(0 , 1)).isEqualToData("-".dataUsingEncoding(NSASCIIStringEncoding)!) {
+            if (data.subdata(with: NSMakeRange(0 , 1)) as NSData).isEqual(to: "-".data(using: String.Encoding.ascii)!) {
                 break;
             }
             
-            var bodyString = NSString(data: data, encoding: NSUTF8StringEncoding) as! String
+            var bodyString = NSString(data: data as Data, encoding: String.Encoding.utf8.rawValue)
             
-            let ContentEnd = data.rangeOfData(lineEnd, options: NSDataSearchOptions(rawValue: 0), range: NSMakeRange(2, len - 2))
+            let ContentEnd = data.range(of: lineEnd, options: NSData.SearchOptions(rawValue: 0), in: NSMakeRange(2, len - 2))
             if ContentEnd.location == NSNotFound {
                 break
             }
-            let ContentType = data.subdataWithRange(NSMakeRange(0, ContentEnd.location))
+            let contentType = data.subdata(with: NSMakeRange(0, ContentEnd.location)) as NSData
             len = len - (ContentEnd.location + ContentEnd.length);
-            data = data.subdataWithRange(NSMakeRange(ContentEnd.location + ContentEnd.length, len))
+            data = data.subdata(with: NSMakeRange(ContentEnd.location + ContentEnd.length, len)) as NSData
             
-            bodyString = NSString(data: ContentType, encoding: NSUTF8StringEncoding) as! String
+            bodyString = NSString(data: contentType as Data, encoding: String.Encoding.utf8.rawValue)!
             
-            let EncodingEnd = data.rangeOfData(lineEnd, options: NSDataSearchOptions(rawValue: 0), range: NSMakeRange(2, len - 2))
+            let EncodingEnd = data.range(of: lineEnd, options: NSData.SearchOptions(rawValue: 0), in: NSMakeRange(2, len - 2))
             if EncodingEnd.location == NSNotFound {
                 break
             }
-            let EncodingType = data.subdataWithRange(NSMakeRange(0, EncodingEnd.location))
+            let EncodingType = data.subdata(with: NSMakeRange(0, EncodingEnd.location))
             len = len - (EncodingEnd.location + EncodingEnd.length);
-            data = data.subdataWithRange(NSMakeRange(EncodingEnd.location + EncodingEnd.length, len))
+            data = data.subdata(with: NSMakeRange(EncodingEnd.location + EncodingEnd.length, len)) as NSData
             
-            bodyString = NSString(data: EncodingType, encoding: NSUTF8StringEncoding) as! String
+            bodyString = NSString(data: EncodingType, encoding: String.Encoding.utf8.rawValue)!
             
-            let secondboundaryRange = data.rangeOfData(nextBoundaryLine, options: NSDataSearchOptions(rawValue: 0), range: NSMakeRange(0, len))
+            let secondboundaryRange = data.range(of: nextBoundaryLine, options: NSData.SearchOptions(rawValue: 0), in: NSMakeRange(0, len))
             if secondboundaryRange.location == NSNotFound {
                 break
             }
             //get data
             
-            let text = data.subdataWithRange(NSMakeRange(1, secondboundaryRange.location - 1))
+            let text = data.subdata(with: NSMakeRange(1, secondboundaryRange.location - 1))
             
-            let plainFound = ContentType.rangeOfData(textplainType, options: NSDataSearchOptions(rawValue: 0), range: NSMakeRange(0, ContentType.length))
+            let plainFound = contentType.range(of: textplainType!, options: NSData.SearchOptions(rawValue: 0), in: NSMakeRange(0, contentType.length))
             if plainFound.location != NSNotFound {
-                plaintext = NSString(data: text, encoding: NSUTF8StringEncoding) as! String;
+                plaintext = NSString(data: text, encoding: String.Encoding.utf8.rawValue)! as String
             }
             
-            let htmlFound = ContentType.rangeOfData(htmlType, options: NSDataSearchOptions(rawValue: 0), range: NSMakeRange(0, ContentType.length))
+            let htmlFound = contentType.range(of: htmlType!, options: NSData.SearchOptions(rawValue: 0), in: NSMakeRange(0, contentType.length))
             if htmlFound.location != NSNotFound {
-                html = NSString(data: text, encoding: NSUTF8StringEncoding) as! String;
+                html = NSString(data: text, encoding: String.Encoding.utf8.rawValue)! as String
             }
             
             // check html or plain text
-            bodyString = NSString(data: text, encoding: NSUTF8StringEncoding) as! String
+            bodyString = NSString(data: text, encoding: String.Encoding.utf8.rawValue)!
             
             firstboundaryRange = secondboundaryRange
             
-            PMLog.D(bodyString)
+            PMLog.D(nstring: bodyString!)
         }
         
         if ( html.isEmpty && plaintext.isEmpty ) {
             return "<div><pre>" + self.rmln() + "</pre></div>"
         }
         
-        return html.isEmpty ? plaintext.ln2br() : html;
+        return html.isEmpty ? plaintext.ln2br() : html
     }
     
 }

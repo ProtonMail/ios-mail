@@ -13,8 +13,8 @@ import Crashlytics
 class SignUpEmailViewController: UIViewController {
     
     //define
-    private let hidePriority : UILayoutPriority = 1.0;
-    private let showPriority: UILayoutPriority = 750.0;
+    fileprivate let hidePriority : UILayoutPriority = 1.0;
+    fileprivate let showPriority: UILayoutPriority = 750.0;
     
     @IBOutlet weak var logoTopPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var logoLeftPaddingConstraint: NSLayoutConstraint!
@@ -35,7 +35,7 @@ class SignUpEmailViewController: UIViewController {
     
     var viewModel : SignupViewModel!
     
-    func configConstraint(show : Bool) -> Void {
+    func configConstraint(_ show : Bool) -> Void {
         let level = show ? showPriority : hidePriority
         
         logoTopPaddingConstraint.priority = level
@@ -45,7 +45,7 @@ class SignUpEmailViewController: UIViewController {
 
         recoveryEmailTopPaddingConstraint.priority = level
         
-        titleWarningLabel.hidden = show
+        titleWarningLabel.isHidden = show
     }
     
     override func viewDidLoad() {
@@ -55,19 +55,19 @@ class SignUpEmailViewController: UIViewController {
         displayNameField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Display Name"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
-        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
+        NotificationCenter.default.addKeyboardObserver(self)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
+        NotificationCenter.default.removeKeyboardObserver(self)
     }
     
     override func didReceiveMemoryWarning() {
@@ -77,66 +77,66 @@ class SignUpEmailViewController: UIViewController {
 
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
     }
 
-    @IBAction func checkAction(sender: UIButton) {
-        checkButton.selected = !checkButton.selected
+    @IBAction func checkAction(_ sender: UIButton) {
+        checkButton.isSelected = !checkButton.isSelected
     }
 
-    @IBAction func backAction(sender: UIButton) {
-        self.navigationController?.popViewControllerAnimated(true)
+    @IBAction func backAction(_ sender: UIButton) {
+        let _ = self.navigationController?.popViewController(animated: true)
     }
     
-    private var doneClicked : Bool = false
-    @IBAction func doneAction(sender: UIButton) {
+    fileprivate var doneClicked : Bool = false
+    @IBAction func doneAction(_ sender: UIButton) {
         let email = (recoveryEmailField.text ?? "").trim()
         if email.isEmpty {
             // show a warning
             let alertController = UIAlertController(
                 title: NSLocalizedString("Recovery Email Warning"),
                 message: NSLocalizedString("Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?"),
-                preferredStyle: .Alert)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Default, handler: { action in
+                preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .default, handler: { action in
                 
             }))
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Confirm"), style: .Destructive, handler: { action in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Confirm"), style: .destructive, handler: { action in
                 if (!email.isEmpty && !email.isValidEmail()) {
                     let alert = NSLocalizedString("Please input a valid email address.").alertController()
                     alert.addOKAction()
-                    self.presentViewController(alert, animated: true, completion: nil)
+                    self.present(alert, animated: true, completion: nil)
                 } else {
                     if self.doneClicked {
                         return
                     }
                     self.doneClicked = true
-                    MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+                    MBProgressHUD.showAdded(to: self.view, animated: true)
                     self.dismissKeyboard()
-                    self.viewModel.setRecovery(self.checkButton.selected, email: self.recoveryEmailField.text!, displayName: self.displayNameField.text!)
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    self.viewModel.setRecovery(self.checkButton.isSelected, email: self.recoveryEmailField.text!, displayName: self.displayNameField.text!)
+                    DispatchQueue.main.async(execute: { () -> Void in
+                        MBProgressHUD.hide(for: self.view, animated: true)
                         self.doneClicked = false
                         self.moveToInbox()
                     })
                 }
             }))
-            self.presentViewController(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
         } else {
             if (!email.isValidEmail()) {
                 let alert = NSLocalizedString("Please input a valid email address.").alertController()
                 alert.addOKAction()
-                self.presentViewController(alert, animated: true, completion: nil)
+                self.present(alert, animated: true, completion: nil)
             } else {
                 if self.doneClicked {
                     return
                 }
                 self.doneClicked = true
-                MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+                MBProgressHUD.showAdded(to: self.view, animated: true)
                 self.dismissKeyboard()
-                self.viewModel.setRecovery(self.checkButton.selected, email: self.recoveryEmailField.text!, displayName: self.displayNameField.text!)
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                self.viewModel.setRecovery(self.checkButton.isSelected, email: self.recoveryEmailField.text!, displayName: self.displayNameField.text!)
+                DispatchQueue.main.async(execute: { () -> Void in
+                    MBProgressHUD.hide(for: self.view, animated: true)
                     self.doneClicked = false
                     self.moveToInbox()
                 })
@@ -144,7 +144,7 @@ class SignUpEmailViewController: UIViewController {
         }
     }
     
-    private func moveToInbox() {
+    fileprivate func moveToInbox() {
         sharedUserDataService.isSignedIn = true
         if let addresses = sharedUserDataService.userInfo?.userAddresses.toPMNAddresses() {
             sharedOpenPGP.setAddresses(addresses);
@@ -152,11 +152,11 @@ class SignUpEmailViewController: UIViewController {
         self.loadContent()
     }
     
-    private func loadContent() {
+    fileprivate func loadContent() {
         logUser()
         userCachedStatus.pinFailedCount = 0;
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)
-        (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: self)
+        (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
         loadContactsAfterInstall()
     }
     
@@ -172,7 +172,7 @@ class SignUpEmailViewController: UIViewController {
         sharedUserDataService.fetchUserInfo()
         sharedContactDataService.fetchContacts({ (contacts, error) -> Void in
             if error != nil {
-                PMLog.D("\(error)")
+                PMLog.D("\(String(describing: error))")
             } else {
                 PMLog.D("Contacts count: \(contacts!.count)")
             }
@@ -180,7 +180,7 @@ class SignUpEmailViewController: UIViewController {
     }
 
     
-    @IBAction func tapAction(sender: UITapGestureRecognizer) {
+    @IBAction func tapAction(_ sender: UITapGestureRecognizer) {
         dismissKeyboard()
     }
     func dismissKeyboard() {
@@ -191,23 +191,23 @@ class SignUpEmailViewController: UIViewController {
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 extension SignUpEmailViewController: NSNotificationCenterKeyboardObserverProtocol {
-    func keyboardWillHideNotification(notification: NSNotification) {
+    func keyboardWillHideNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         scrollBottomPaddingConstraint.constant = 0.0
         self.configConstraint(false)
-        UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
+        UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
     }
     
-    func keyboardWillShowNotification(notification: NSNotification) {
+    func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
-        let info: NSDictionary = notification.userInfo!
-        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
+        let info: NSDictionary = notification.userInfo! as NSDictionary
+        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollBottomPaddingConstraint.constant = keyboardSize.height;
         }
         self.configConstraint(true)
-        UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
+        UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
     }

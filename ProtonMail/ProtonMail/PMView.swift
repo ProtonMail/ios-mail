@@ -34,7 +34,7 @@ class PMView: UIView {
     func setupView() {
         if let pmView = loadViewFromNib() {
             pmView.frame = self.bounds
-            pmView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+            pmView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             self.addSubview(pmView)
             pmView.clipsToBounds = true;
             self.clipsToBounds = true;
@@ -44,10 +44,10 @@ class PMView: UIView {
         }
     }
     
-    private func loadViewFromNib () -> UIView? {
-        let bundle = NSBundle(forClass: self.dynamicType )
+    fileprivate func loadViewFromNib () -> UIView? {
+        let bundle = Bundle(for: type(of: self) )
         let nib = UINib(nibName: self.getNibName(), bundle: bundle)
-        let views = nib.instantiateWithOwner(self, options: nil)
+        let views = nib.instantiate(withOwner: self, options: nil)
         if views.count > 0 {
             if let view = views[0] as? UIView {
                 return view

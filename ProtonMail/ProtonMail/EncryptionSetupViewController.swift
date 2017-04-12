@@ -10,7 +10,7 @@ import Foundation
 
 class EncryptionSetupViewController: UIViewController {
     
-    private let kSegueToSignUpVerification = "encryption_to_verification_segue"
+    fileprivate let kSegueToSignUpVerification = "encryption_to_verification_segue"
     
     @IBOutlet weak var highBitLevel: UIButton! //low
     @IBOutlet weak var normalBitLevel: UIButton! //high
@@ -26,20 +26,20 @@ class EncryptionSetupViewController: UIViewController {
         updateButtonsStatus()
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.Default;
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.default;
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
     
@@ -47,57 +47,57 @@ class EncryptionSetupViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
-    private func updateButtonsStatus() {
-        highBitLevel.selected = false
-        normalBitLevel.selected = false
+    fileprivate func updateButtonsStatus() {
+        highBitLevel.isSelected = false
+        normalBitLevel.isSelected = false
         let bit = self.viewModel.getCurrentBit()
         if bit == hight {
-            highBitLevel.selected = true
+            highBitLevel.isSelected = true
         } else if bit == low {
-            normalBitLevel.selected = true
+            normalBitLevel.isSelected = true
         } else {
-            highBitLevel.selected = true
+            highBitLevel.isSelected = true
             self.viewModel.setBit(hight)
         }
     }
     
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kSegueToSignUpVerification {
-            let viewController = segue.destinationViewController as! HumanCheckMenuViewController
+            let viewController = segue.destination as! HumanCheckMenuViewController
             viewController.viewModel = self.viewModel
         }
     }
     
-    @IBAction func backAction(sender: UIButton) {
-        self.navigationController?.popViewControllerAnimated(true)
+    @IBAction func backAction(_ sender: UIButton) {
+        let _ = self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func continueAction(sender: UIButton) {
-        MBProgressHUD.showHUDAddedTo(view, animated: true)
+    @IBAction func continueAction(_ sender: UIButton) {
+        MBProgressHUD.showAdded(to: view, animated: true)
         self.viewModel.generateKey { (isOk, msg, error) -> Void in
             if error == nil {
                 self.viewModel.fetchDirect { (directs) -> Void in
-                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    MBProgressHUD.hide(for: self.view, animated: true)
                     if directs.count > 0 {
-                        self.performSegueWithIdentifier(self.kSegueToSignUpVerification, sender: self)
+                        self.performSegue(withIdentifier: self.kSegueToSignUpVerification, sender: self)
                     } else {
                         let alert = NSLocalizedString("Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.").alertController()
                         alert.addOKAction()
-                        self.presentViewController(alert, animated: true, completion: nil)
+                        self.present(alert, animated: true, completion: nil)
                     }
                 }
             } else {
-                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                MBProgressHUD.hide(for: self.view, animated: true)
                 let alert = error!.alertController(NSLocalizedString("Key generation failed"))
                 alert.addOKAction()
-                self.presentViewController(alert, animated: true, completion: nil)
+                self.present(alert, animated: true, completion: nil)
             }
         }
     }
     
-    @IBAction func switchAction(sender: UIButton) {
+    @IBAction func switchAction(_ sender: UIButton) {
         if sender == normalBitLevel {
             self.viewModel.setBit(low)
         } else {

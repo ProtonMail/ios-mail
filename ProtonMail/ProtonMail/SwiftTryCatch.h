@@ -47,3 +47,10 @@
 @interface NSException ( SwiftTryCatch )
 - (NSError *) toError;
 @end
+
+
+@interface ObjC : NSObject
+
++ (BOOL)catchException:(void(^)())tryBlock error:(__autoreleasing NSError **)error;
+
+@end

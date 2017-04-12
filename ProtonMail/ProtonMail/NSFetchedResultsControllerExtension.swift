@@ -18,17 +18,18 @@ import Foundation
 import CoreData
 
 extension NSFetchedResultsController {
-    func numberOfRowsInSection(section: Int) -> Int {
+    func numberOfRowsInSection(_ section: Int) -> Int {
         if let sectionInfo = sections?[section] {
-            let n = sectionInfo.numberOfObjects
-            return n ?? 0
+            return sectionInfo.numberOfObjects
         } else {
             return 0
         }
     }
     
     func numberOfSections() -> Int {
-        let n = sections?.count
-        return n ?? 0
+        if let n = sections?.count {
+            return n
+        }
+        return 0
     }
 }

@@ -12,13 +12,13 @@ import Foundation
 
 
 // code start at 0x110200
-enum SignUpCreateUserError : Int, ErrorType, CustomErrorVar {
-    case InvalidModulsID = 0x110201
-    case InvalidModuls = 0x110202
-    case CantHashPassword = 0x110203
-    case CantGenerateVerifier = 0x110204
+enum SignUpCreateUserError : Int, Error, CustomErrorVar {
+    case invalidModulsID = 0x110201
+    case invalidModuls = 0x110202
+    case cantHashPassword = 0x110203
+    case cantGenerateVerifier = 0x110204
     
-    case Default = 0x110200
+    case `default` = 0x110200
     
     var code : Int {
         return self.rawValue
@@ -30,15 +30,15 @@ enum SignUpCreateUserError : Int, ErrorType, CustomErrorVar {
     
     var reason : String {
         switch self {
-        case .InvalidModulsID:
+        case .invalidModulsID:
             return NSLocalizedString("Can't get a Moduls ID!")
-        case .InvalidModuls:
+        case .invalidModuls:
             return NSLocalizedString("Can't get a Moduls!")
-        case .CantHashPassword:
+        case .cantHashPassword:
             return NSLocalizedString("Invalid hashed password!")
-        case .CantGenerateVerifier:
+        case .cantGenerateVerifier:
             return NSLocalizedString("Can't create a SRP verifier!")
-        case .Default:
+        case .default:
             return NSLocalizedString("Create user failed")
         }
     }

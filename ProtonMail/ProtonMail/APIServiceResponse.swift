@@ -9,15 +9,15 @@
 import Foundation
 
 
-public class ApiResponse {
-    public required init() {}
+class ApiResponse {
+    required init() {}
     
-    public var code : Int! = 1000
-    public var errorMessage : String?
-    public var errorDetails : String?
-    public var internetCode : Int? //only use when error happend.
+    var code : Int! = 1000
+    var errorMessage : String?
+    var errorDetails : String?
+    var internetCode : Int? //only use when error happend.
     
-    public var error : NSError?
+    var error : NSError?
     
     func CheckHttpStatus() -> Bool {
         return code == 200 || code == 1000
@@ -27,7 +27,7 @@ public class ApiResponse {
         return code == 1000
     }
     
-    func ParseResponseError (response: Dictionary<String,AnyObject>!) -> Bool {
+    func ParseResponseError (_ response: Dictionary<String, Any>!) -> Bool {
         code = response["Code"] as? Int
         errorMessage = response["Error"] as? String
         errorDetails = response["ErrorDescription"] as? String
@@ -43,9 +43,9 @@ public class ApiResponse {
         return code != 1000 && code != 1001
     }
     
-    func ParseHttpError (error: NSError) {
+    func ParseHttpError (_ error: NSError) {
         self.code = 404
-        if let detail = error.userInfo["com.alamofire.serialization.response.error.response"] as? NSHTTPURLResponse {
+        if let detail = error.userInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
             self.code = detail.statusCode
         }
         else {
@@ -56,7 +56,7 @@ public class ApiResponse {
         self.error = error
     }
     
-    func ParseResponse (response: Dictionary<String,AnyObject>!) -> Bool {
+    func ParseResponse (_ response: Dictionary<String, Any>!) -> Bool {
         return true
     }
 }

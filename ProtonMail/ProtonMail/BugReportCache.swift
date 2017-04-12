@@ -10,17 +10,17 @@ import Foundation
 
 
 
-let cachedBugReport = BugReportCache(shared: NSUserDefaults.standardUserDefaults())
+let cachedBugReport = BugReportCache(shared: UserDefaults.standard)
 
-public class BugReportCache : SharedCacheBase {
+final class BugReportCache : SharedCacheBase {
     
-    private struct Key {
+    fileprivate struct Key {
         static let lastBugReport = "BugReportCache_LastBugReport"
     }
     
-    public var cachedBug: String! {
+    open var cachedBug: String! {
         get {
-            return getShared().stringForKey(Key.lastBugReport) ?? ""
+            return getShared().string(forKey: Key.lastBugReport) ?? ""
         }
         set {
             getShared().setValue(newValue, forKey: Key.lastBugReport)
@@ -28,8 +28,8 @@ public class BugReportCache : SharedCacheBase {
         }
     }
     
-    public func clear() {
-        getShared().removeObjectForKey(Key.lastBugReport)
+    open func clear() {
+        getShared().removeObject(forKey: Key.lastBugReport)
         getShared().synchronize()
     }
 }

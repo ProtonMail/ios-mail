@@ -19,13 +19,13 @@ import Foundation
 extension NSString {
     
     func base64Decoded() -> String? {
-        if let data = NSData(base64EncodedString:self as String, options: NSDataBase64DecodingOptions(rawValue: 0)) {
-            return NSString(data: data, encoding: NSUTF8StringEncoding) as? String ?? ""
+        if let data = Data(base64Encoded:self as String, options: NSData.Base64DecodingOptions(rawValue: 0)) {
+            return String(data: data, encoding: .utf8) ?? ""
         }
         return nil
     }
     
     func base64Encoded() -> String? {
-        return dataUsingEncoding(NSUTF8StringEncoding)?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+        return data(using: String.Encoding.utf8.rawValue)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
     }
 }

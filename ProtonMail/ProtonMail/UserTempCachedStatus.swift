@@ -9,7 +9,7 @@
 import Foundation
 
 
-let userDebugCached =  NSUserDefaults.standardUserDefaults()
+let userDebugCached =  UserDefaults.standard
 class UserTempCachedStatus: NSObject, NSCoding {
     struct Key{
         static let keychainStore = "UserTempCachedStatusKey"
@@ -37,13 +37,13 @@ class UserTempCachedStatus: NSObject, NSCoding {
     
     convenience required init(coder aDecoder: NSCoder) {
         self.init(
-            lastLoggedInUser: aDecoder.decodeObjectForKey(CoderKey.lastLoggedInUser) as? String,
-            touchIDEmail: aDecoder.decodeObjectForKey(CoderKey.touchIDEmail) as? String,
-            isPinCodeEnabled: aDecoder.decodeObjectForKey(CoderKey.isPinCodeEnabled) as? Bool ?? false,
-            pinCodeCache: aDecoder.decodeObjectForKey(CoderKey.pinCodeCache) as? String,
-            autoLockTime: aDecoder.decodeObjectForKey(CoderKey.autoLockTime) as? String,
-            showMobileSignature: aDecoder.decodeObjectForKey(CoderKey.showMobileSignature) as? Bool ?? false,
-            localMobileSignature: aDecoder.decodeObjectForKey(CoderKey.localMobileSignature) as? String);
+            lastLoggedInUser: aDecoder.decodeObject(forKey: CoderKey.lastLoggedInUser) as? String,
+            touchIDEmail: aDecoder.decodeObject(forKey: CoderKey.touchIDEmail) as? String,
+            isPinCodeEnabled: aDecoder.decodeObject(forKey: CoderKey.isPinCodeEnabled) as? Bool ?? false,
+            pinCodeCache: aDecoder.decodeObject(forKey: CoderKey.pinCodeCache) as? String,
+            autoLockTime: aDecoder.decodeObject(forKey: CoderKey.autoLockTime) as? String,
+            showMobileSignature: aDecoder.decodeObject(forKey: CoderKey.showMobileSignature) as? Bool ?? false,
+            localMobileSignature: aDecoder.decodeObject(forKey: CoderKey.localMobileSignature) as? String);
     }
     
     struct CoderKey {
@@ -56,14 +56,14 @@ class UserTempCachedStatus: NSObject, NSCoding {
         static let localMobileSignature = "localMobileSignature"
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(lastLoggedInUser, forKey: CoderKey.lastLoggedInUser)
-        aCoder.encodeObject(touchIDEmail, forKey: CoderKey.touchIDEmail)
-        aCoder.encodeObject(isPinCodeEnabled, forKey: CoderKey.isPinCodeEnabled)
-        aCoder.encodeObject(pinCodeCache, forKey: CoderKey.pinCodeCache)
-        aCoder.encodeObject(autoLockTime, forKey: CoderKey.autoLockTime)
-        aCoder.encodeObject(showMobileSignature, forKey: CoderKey.showMobileSignature)
-        aCoder.encodeObject(localMobileSignature, forKey: CoderKey.localMobileSignature)
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(lastLoggedInUser, forKey: CoderKey.lastLoggedInUser)
+        aCoder.encode(touchIDEmail, forKey: CoderKey.touchIDEmail)
+        aCoder.encode(isPinCodeEnabled, forKey: CoderKey.isPinCodeEnabled)
+        aCoder.encode(pinCodeCache, forKey: CoderKey.pinCodeCache)
+        aCoder.encode(autoLockTime, forKey: CoderKey.autoLockTime)
+        aCoder.encode(showMobileSignature, forKey: CoderKey.showMobileSignature)
+        aCoder.encode(localMobileSignature, forKey: CoderKey.localMobileSignature)
     }
     
     
@@ -99,29 +99,29 @@ class UserTempCachedStatus: NSObject, NSCoding {
     func storeInKeychain() {
         userCachedStatus.isForcedLogout = false
         #if DEBUG
-            userDebugCached.setObject(NSKeyedArchiver.archivedDataWithRootObject(self), forKey: Key.keychainStore)
+            userDebugCached.set(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
         #else
-            UICKeyChainStore().setData(NSKeyedArchiver.archivedDataWithRootObject(self), forKey: Key.keychainStore)
+            UICKeyChainStore().setData(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
         #endif
     }
     
     // MARK - Class methods
     class func clearFromKeychain() {
-        userDebugCached.removeObjectForKey(Key.keychainStore)
-        UICKeyChainStore.removeItemForKey(Key.keychainStore)
+        userDebugCached.removeObject(forKey: Key.keychainStore)
+        UICKeyChainStore.removeItem(forKey: Key.keychainStore)
     }
     
     class func fetchFromKeychain() -> UserTempCachedStatus? {
         
         #if DEBUG
-            if let data = userDebugCached.dataForKey(Key.keychainStore) {
-                if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? UserTempCachedStatus {
+            if let data = userDebugCached.data(forKey: Key.keychainStore) {
+                if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? UserTempCachedStatus {
                     return authCredential
                 }
             }
         #else
-            if let data = UICKeyChainStore.dataForKey(Key.keychainStore) {
-                if let authCredential = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? UserTempCachedStatus {
+            if let data = UICKeyChainStore.data(forKey: Key.keychainStore) {
+                if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? UserTempCachedStatus {
                     return authCredential
                 }
             }

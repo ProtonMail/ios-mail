@@ -16,7 +16,7 @@
 
 import Foundation
 
-extension NSBundle {
+extension Bundle {
     
     /// Returns the app version in a nice to read format
     var appVersion: String {

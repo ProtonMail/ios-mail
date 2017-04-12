@@ -11,14 +11,14 @@ import Foundation
 
 
  enum PinCodeStep: Int {
-    case EnterPin = 0
-    case ReEnterPin = 1
-    case Unlock = 2
-    case Done = 3
+    case enterPin = 0
+    case reEnterPin = 1
+    case unlock = 2
+    case done = 3
 }
 
 
-public class PinCodeViewModel : NSObject {
+open class PinCodeViewModel : NSObject {
     
     func title() -> String {
         fatalError("This method must be overridden")
@@ -36,7 +36,7 @@ public class PinCodeViewModel : NSObject {
         fatalError("This method must be overridden")
     }
     
-    func setCode (code : String) -> PinCodeStep {
+    func setCode (_ code : String) -> PinCodeStep {
         fatalError("This method must be overridden")
     }
     

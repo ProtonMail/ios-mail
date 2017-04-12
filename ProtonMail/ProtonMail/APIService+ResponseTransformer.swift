@@ -9,7 +9,7 @@
 import Foundation
 extension APIService {
     
-    private struct TransType {
+    fileprivate struct TransType {
         static let boolean = "BoolTransformer"
         static let date = "DateTransformer"
         static let number = "NumberTransformer"
@@ -20,7 +20,7 @@ extension APIService {
     
     // MARK: - Private methods
     internal func setupValueTransforms() {
-        NSValueTransformer.grt_setValueTransformerWithName(TransType.boolean) { (value) -> AnyObject? in
+        ValueTransformer.grt_setValueTransformer(withName: TransType.boolean) { (value) -> Any? in
             if let bool = value as? NSString {
                 return bool.boolValue
             } else if let bool = value as? Bool {
@@ -29,16 +29,16 @@ extension APIService {
             return nil
         }
         
-        NSValueTransformer.grt_setValueTransformerWithName(TransType.date) { (value) -> AnyObject? in
+        ValueTransformer.grt_setValueTransformer(withName: TransType.date) { (value) -> Any? in
             if let timeString = value as? NSString {
-                let time = timeString.doubleValue as NSTimeInterval
+                let time = timeString.doubleValue as TimeInterval
                 if time != 0 {
                     return time.asDate()
                 }
-            } else if let date = value as? NSDate {
+            } else if let date = value as? Date {
                 return date.timeIntervalSince1970
             } else if let dateNumber = value as? NSNumber {
-                let time = dateNumber.doubleValue as NSTimeInterval
+                let time = dateNumber.doubleValue as TimeInterval
                 if time != 0 {
                     return time.asDate()
                 }
@@ -46,48 +46,48 @@ extension APIService {
             return nil
         }
         
-        NSValueTransformer.grt_setValueTransformerWithName(TransType.number) { (value) -> AnyObject? in
+        ValueTransformer.grt_setValueTransformer(withName: TransType.number) { (value) -> Any? in
             if let number = value as? String {
-                return number ?? 0 as NSNumber
+                return number
             } else if let number = value as? NSNumber {
                 return number
             }
             return nil
         }
         
-        NSValueTransformer.grt_setValueTransformerWithName(TransType.jsonString) { (value) -> AnyObject? in
+        ValueTransformer.grt_setValueTransformer(withName: TransType.jsonString) { (value) -> Any? in
             do {
                 if let tag = value as? NSArray {
-                    let bytes : NSData = try NSJSONSerialization.dataWithJSONObject(tag, options: NSJSONWritingOptions())
-                    let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
+                    let bytes : Data = try JSONSerialization.data(withJSONObject: tag, options: JSONSerialization.WritingOptions())
+                    let strJson : String = NSString(data: bytes, encoding: String.Encoding.utf8.rawValue)! as String
                     return strJson
                 }
             } catch let ex as NSError {
                 PMLog.D("\(ex)")
             }
-            return "";
+            return ""
         }
         
-        NSValueTransformer.grt_setValueTransformerWithName(TransType.jsonObject) { (value) -> AnyObject? in
+        ValueTransformer.grt_setValueTransformer(withName: TransType.jsonObject) { (value) -> Any? in
             do {
-                if let tag = value as? [String:String] {
-                    let bytes : NSData = try NSJSONSerialization.dataWithJSONObject(tag, options: NSJSONWritingOptions())
-                    let strJson : String = NSString(data: bytes, encoding: NSUTF8StringEncoding)! as String
+                if let tag = value as? [String : String] {
+                    let bytes : Data = try JSONSerialization.data(withJSONObject: tag, options: JSONSerialization.WritingOptions())
+                    let strJson : String = NSString(data: bytes, encoding: String.Encoding.utf8.rawValue)! as String
                     return strJson
                 }
             } catch let ex as NSError {
                 PMLog.D("\(ex)")
             }
-            return "";
+            return ""
         }
         
-        NSValueTransformer.grt_setValueTransformerWithName(TransType.encodedData) { (value) -> AnyObject? in
+        ValueTransformer.grt_setValueTransformer(withName: TransType.encodedData) { (value) -> Any? in
             if let tag = value as? String {
-                if let data: NSData = NSData(base64EncodedString: tag, options: NSDataBase64DecodingOptions(rawValue: 0)) {
+                if let data: Data = Data(base64Encoded: tag, options: NSData.Base64DecodingOptions(rawValue: 0)) {
                     return data
                 }
             }
-            return nil;
+            return nil
         }
     }
 }

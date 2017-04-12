@@ -21,19 +21,19 @@ public enum Onboarding: Int, CustomStringConvertible {
     public var image : String {
         get {
             switch(self) {
-            case welcome:
+            case .welcome:
                 return "onboarding_welcome"
-            case swipe:
+            case .swipe:
                 return "onboarding_swipe"
-            case label:
+            case .label:
                 return "onboarding_labels"
-            case encryption:
+            case .encryption:
                 return "onboarding_encryption"
-            case expire:
+            case .expire:
                 return "onboarding_expire"
-            case help:
+            case .help:
                 return "onboarding_help"
-            case upgrade:
+            case .upgrade:
                 return "onboarding_upgrade"
             }
         }
@@ -42,19 +42,19 @@ public enum Onboarding: Int, CustomStringConvertible {
     public var description : String {
         get {
             switch(self) {
-            case welcome:
+            case .welcome:
                 return NSLocalizedString("Your new encrypted email account has been set up and is ready to send and receive encrypted messages.")
-            case swipe:
+            case .swipe:
                 return NSLocalizedString("You can customize swipe gestures in the ProtonMail App Settings.")
-            case label:
+            case .label:
                 return NSLocalizedString("Create and add Labels to organize your inbox. Press and hold down on a message for all options.")
-            case encryption:
+            case .encryption:
                 return NSLocalizedString("Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail.")
-            case expire:
+            case .expire:
                 return NSLocalizedString("Messages you send can be set to auto delete after a certain time period.")
-            case help:
+            case .help:
                 return NSLocalizedString("You can get help and support at protonmail.com/support. Bugs can also be reported with the app.")
-            case upgrade:
+            case .upgrade:
                 return NSLocalizedString("ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail.")
             }
         }
@@ -63,19 +63,19 @@ public enum Onboarding: Int, CustomStringConvertible {
     public var title : String {
         get {
             switch(self) {
-            case welcome:
+            case .welcome:
                 return NSLocalizedString("Welcome to ProtonMail!")
-            case swipe:
+            case .swipe:
                 return NSLocalizedString("Quick swipe actions")
-            case label:
+            case .label:
                 return NSLocalizedString("Label Management")
-            case encryption:
+            case .encryption:
                 return NSLocalizedString("End-to-End Encryption")
-            case expire:
+            case .expire:
                 return NSLocalizedString("Expiring Messages")
-            case help:
+            case .help:
                 return NSLocalizedString("Help & Support")
-            case upgrade:
+            case .upgrade:
                 return NSLocalizedString("Support ProtonMail")
             }
         }

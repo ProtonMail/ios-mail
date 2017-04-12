@@ -19,7 +19,7 @@ class OnboardingView : PMView {
         return "OnboardingView"
     }
 
-    func configView(board: Onboarding) {
+    func configView(_ board: Onboarding) {
         imageView.image = UIImage(named: board.image)
         titleLabel.text = board.title
         descLabel.text = board.description

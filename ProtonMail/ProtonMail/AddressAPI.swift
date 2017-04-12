@@ -10,7 +10,7 @@ import Foundation
 
 
 //MARK : update display name
-public class UpdateAddressRequest<T : ApiResponse> : ApiRequest<T> {
+final class UpdateAddressRequest<T : ApiResponse> : ApiRequest<T> {
     let addressid : String!
     let displayName : String!
     let signature : String!
@@ -20,56 +20,56 @@ public class UpdateAddressRequest<T : ApiResponse> : ApiRequest<T> {
         self.signature = signature;
     }
     
-    override func toDictionary() -> Dictionary<String, AnyObject>? {
-        let out : [String : AnyObject] = ["DisplayName" : displayName, "Signature":signature ]
+    override func toDictionary() -> Dictionary<String, Any>? {
+        let out : [String : Any] = ["DisplayName" : displayName, "Signature":signature]
         return out
     }
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .PUT
+        return .put
     }
     
-    override public func getRequestPath() -> String {
+    override func getRequestPath() -> String {
         return AddressesAPI.Path + "/" + addressid + AppConstants.getDebugOption
     }
     
-    override public func getVersion() -> Int {
+    override func getVersion() -> Int {
         return AddressesAPI.V_AddressesUpdateRequest
     }
 }
 
-public class SetupAddressRequest<T : ApiResponse> : ApiRequest<T> {
+final class SetupAddressRequest<T : ApiResponse> : ApiRequest<T> {
     let domain: String!
     init(domain_name: String) {
         self.domain = domain_name
     }
     
-    override func toDictionary() -> Dictionary<String, AnyObject>? {
-        let out : [String : AnyObject] = ["Domain": self.domain ]
+    override func toDictionary() -> Dictionary<String, Any>? {
+        let out : [String : Any] = ["Domain": self.domain]
         return out
     }
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .POST
+        return .post
     }
     
-    override public func getRequestPath() -> String {
+    override func getRequestPath() -> String {
         return AddressesAPI.Path + "/setup"
     }
     
-    override public func getVersion() -> Int {
+    override func getVersion() -> Int {
         return AddressesAPI.V_AddressesSetupRequest
     }
 }
 
-public class SetupAddressResponse : ApiResponse {
+final class SetupAddressResponse : ApiResponse {
     var addresses: [Address] = Array<Address>()
-    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
+    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
         
-        if let res = response["Address"] as? Dictionary<String, AnyObject> {
+        if let res = response["Address"] as? Dictionary<String, Any> {
             
             var keys: [Key] = Array<Key>()
-            if let address_keys = res["Keys"] as? Array<Dictionary<String, AnyObject>> {
+            if let address_keys = res["Keys"] as? Array<Dictionary<String, Any>> {
                 for key_res in address_keys {
                     keys.append(Key(
                         key_id: key_res["ID"] as? String,

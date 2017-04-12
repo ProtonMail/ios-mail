@@ -10,35 +10,35 @@ import Foundation
 import CoreData
 
 
-public class MessageHelper {
+open class MessageHelper {
     
     static func messageWithLocation (
-        location: MessageLocation,
+        _ location: MessageLocation,
         recipientList: String,
         bccList: String,
         ccList: String,
         title: String,
         encryptionPassword: String,
         passwordHint: String,
-        expirationTimeInterval: NSTimeInterval,
+        expirationTimeInterval: TimeInterval,
         body: String,
-        attachments: [AnyObject]?,
+        attachments: [Any]?,
         inManagedObjectContext context: NSManagedObjectContext) -> Message {
             let message = Message(context: context)
-            message.messageID = NSUUID().UUIDString
+            message.messageID = UUID().uuidString
             message.location = location
             message.recipientList = recipientList
             message.bccList = bccList
             message.ccList = ccList
             message.title = title
             message.passwordHint = passwordHint
-            message.time = NSDate()
+            message.time = Date()
             message.isEncrypted = 1
             message.expirationOffset = Int32(expirationTimeInterval)
             message.messageStatus = 1
             
             if expirationTimeInterval > 0 {
-                message.expirationTime = NSDate(timeIntervalSinceNow: expirationTimeInterval)
+                message.expirationTime = Date(timeIntervalSinceNow: expirationTimeInterval)
             }
             
             do {
@@ -50,7 +50,7 @@ public class MessageHelper {
                     }
                 }
                 if let attachments = attachments {
-                    for (index, attachment) in attachments.enumerate() {
+                    for (index, attachment) in attachments.enumerated() {
                         if let image = attachment as? UIImage {
                             if let fileData = UIImagePNGRepresentation(image) {
                                 let attachment = Attachment(context: context)
@@ -59,13 +59,10 @@ public class MessageHelper {
                                 attachment.fileName = "\(index).png"
                                 attachment.mimeType = "image/png"
                                 attachment.fileData = fileData
-                                attachment.fileSize = fileData.length
+                                attachment.fileSize = fileData.count as NSNumber
                                 continue
                             }
                         }
-                        
-                        let description = attachment.description ?? "unknown"
-                        PMLog.D("unsupported attachment type \(description)")
                     }
                 }
                 
@@ -75,13 +72,13 @@ public class MessageHelper {
             return message
     }
     
-    static func updateMessage (message: Message ,
-        expirationTimeInterval: NSTimeInterval,
+    static func updateMessage (_ message: Message ,
+        expirationTimeInterval: TimeInterval,
         body: String,
-        attachments: [AnyObject]?)
+        attachments: [Any]?)
     {
         if expirationTimeInterval > 0 {
-            message.expirationTime = NSDate(timeIntervalSinceNow: expirationTimeInterval)
+            message.expirationTime = Date(timeIntervalSinceNow: expirationTimeInterval)
         }
 
             message.encryptBody(body, error: nil)
@@ -119,7 +116,7 @@ public class MessageHelper {
     }
 
     
-    static func contactsToAddresses (contacts : String!) -> String
+    static func contactsToAddresses (_ contacts : String!) -> String
     {
         var lists: [String] = []
         let recipients : [[String : String]] = contacts.parseJson()!
@@ -130,6 +127,6 @@ public class MessageHelper {
                 lists.append(to)
             }
         }
-        return lists.joinWithSeparator(",")
+        return lists.joined(separator: ",")
     }
 }

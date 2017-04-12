@@ -18,20 +18,20 @@ class MenuTableViewCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var unreadLabel: UILabel!
     
-    private var item: MenuItem!
+    fileprivate var item: MenuItem!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
-        self.layoutMargins = UIEdgeInsetsZero;
-        self.separatorInset = UIEdgeInsetsZero
+        self.layoutMargins = UIEdgeInsets.zero;
+        self.separatorInset = UIEdgeInsets.zero
         
-        let selectedBackgroundView = UIView(frame: CGRectZero)
+        let selectedBackgroundView = UIView(frame: CGRect.zero)
         selectedBackgroundView.backgroundColor = UIColor.ProtonMail.Menu_SelectedBackground
         
         self.selectedBackgroundView = selectedBackgroundView
     }
     
-    func configCell (item : MenuItem!) {
+    func configCell (_ item : MenuItem!) {
         self.item = item;
         unreadLabel.layer.masksToBounds = true;
         unreadLabel.layer.cornerRadius = 12;
@@ -44,33 +44,33 @@ class MenuTableViewCell: UITableViewCell {
         titleImageView.image = defaultImage
         titleImageView.highlightedImage = selectedImage
         
-        unreadLabel.hidden = !item.hasCount
+        unreadLabel.isHidden = !item.hasCount
     }
     
     func configUnreadCount () {
         let count = lastUpdatedStore.UnreadCountForKey(self.item.menuToLocation)
         if count > 0 {
             unreadLabel.text = "\(count)";
-            unreadLabel.hidden = false;
+            unreadLabel.isHidden = false;
         } else {
             unreadLabel.text = "0";
-            unreadLabel.hidden = true;
+            unreadLabel.isHidden = true;
         }
     }
     
     func hideCount () {
         unreadLabel.text = "0";
-        unreadLabel.hidden = true;
+        unreadLabel.isHidden = true;
     }
     
-    override func setHighlighted(highlighted: Bool, animated: Bool) {
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
         if highlighted {
             unreadLabel.backgroundColor = UIColor.ProtonMail.Menu_UnreadCountBackground
         }
     }
     
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         if selected {
             unreadLabel.backgroundColor = UIColor.ProtonMail.Menu_UnreadCountBackground

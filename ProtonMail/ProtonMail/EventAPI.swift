@@ -11,38 +11,38 @@ import Foundation
 
     
 // MARK : Get messages part
-public class EventCheckRequest<T : ApiResponse> : ApiRequest<T>{
-    let eventID : String!
+final class EventCheckRequest<T : ApiResponse> : ApiRequest<T>{
+    let eventID : String
     
     init(eventID : String) {
         self.eventID = eventID
     }
     
-    override public func getRequestPath() -> String {
+    override open func getRequestPath() -> String {
         return EventAPI.Path + "/\(self.eventID)" + AppConstants.getDebugOption
     }
     
-    override public func getVersion() -> Int {
+    override open func getVersion() -> Int {
         return EventAPI.V_EventCheckRequest
     }
 }
 
 
-public class EventLatestIDRequest<T : ApiResponse> : ApiRequest<T>{
+final class EventLatestIDRequest<T : ApiResponse> : ApiRequest<T>{
 
-    override public func getRequestPath() -> String {
+    override open func getRequestPath() -> String {
         return EventAPI.Path + "/latest" + AppConstants.getDebugOption
     }
     
-    override public func getVersion() -> Int {
+    override open func getVersion() -> Int {
         return EventAPI.V_LatestEventRequest
     }
 }
 
-public class EventLatestIDResponse : ApiResponse {
+final class EventLatestIDResponse : ApiResponse {
     var eventID : String = ""
 
-    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
+    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
         
         PMLog.D(response.JSONStringify(true))
         self.eventID = response["EventID"] as? String ?? ""
@@ -51,86 +51,86 @@ public class EventLatestIDResponse : ApiResponse {
     }
 }
 
-public class EventCheckResponse : ApiResponse {
+final class EventCheckResponse : ApiResponse {
     var eventID : String = ""
     var isRefresh : Bool = false
     
-    var messages : [Dictionary<String,AnyObject>]?
-    var contacts : [Dictionary<String,AnyObject>]?
-    var userinfo : Dictionary<String,AnyObject>?
-    var unreads : Dictionary<String,AnyObject>?
-    var total : Dictionary<String,AnyObject>?
-    var labels : [Dictionary<String,AnyObject>]?
+    var messages : [Dictionary<String, Any>]?
+    var contacts : [Dictionary<String, Any>]?
+    var userinfo : Dictionary<String, Any>?
+    var unreads : Dictionary<String, Any>?
+    var total : Dictionary<String, Any>?
+    var labels : [Dictionary<String, Any>]?
     var usedSpace : String?
     var notices : [String]?
-    var messageCounts: [Dictionary<String,AnyObject>]?
+    var messageCounts: [Dictionary<String, Any>]?
     
-    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
+    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
 
         //PMLog.D(response.JSONStringify(prettyPrinted: true))
         
         self.eventID = response["EventID"] as? String ?? ""
-        self.messages =  response["Messages"] as? [Dictionary<String,AnyObject>]
+        self.messages =  response["Messages"] as? [Dictionary<String, Any>]
         
         self.isRefresh = response["Refresh"] as? Bool ?? false
         
-        self.userinfo = response["User"] as? Dictionary<String,AnyObject>
+        self.userinfo = response["User"] as? Dictionary<String, Any>
         
-        self.unreads = response["Unread"] as? Dictionary<String,AnyObject>
+        self.unreads = response["Unread"] as? Dictionary<String, Any>
 
         self.usedSpace = response["UsedSpace"] as? String
         
-        self.total = response["Total"] as? Dictionary<String,AnyObject>
+        self.total = response["Total"] as? Dictionary<String, Any>
         
-        self.labels =  response["Labels"] as? [Dictionary<String,AnyObject>]
+        self.labels =  response["Labels"] as? [Dictionary<String, Any>]
         
-        self.contacts = response["Contacts"] as? [Dictionary<String,AnyObject>]
+        self.contacts = response["Contacts"] as? [Dictionary<String, Any>]
         
         self.notices = response["Notices"] as? [String]
         
-        self.messageCounts = response["MessageCounts"] as? [Dictionary<String,AnyObject>]
+        self.messageCounts = response["MessageCounts"] as? [Dictionary<String, Any>]
         
         return true
     }
 }
 
-public class MessageEvent {
+open class MessageEvent {
     
     var Action : Int!
     var ID : String!;
-    var message : Dictionary<String,AnyObject>?
+    var message : Dictionary<String, Any>?
     
-    init(event: Dictionary<String,AnyObject>!) {
+    init(event: Dictionary<String, Any>!) {
         self.Action = event["Action"] as! Int
-        self.message =  event["Message"] as? Dictionary<String,AnyObject>
+        self.message =  event["Message"] as? Dictionary<String, Any>
         self.ID =  event["ID"] as! String
         self.message?["ID"] = self.ID
         self.message?["needsUpdate"] = false
     }
 }
 
-public class ContactEvent {
+open class ContactEvent {
     
     var Action : Int!
     var ID : String!;
-    var contact : Dictionary<String,AnyObject>?
+    var contact : Dictionary<String, Any>?
     
-    init(event: Dictionary<String,AnyObject>!) {
+    init(event: Dictionary<String, Any>!) {
         self.Action = event["Action"] as! Int
-        self.contact =  event["Contact"] as? Dictionary<String,AnyObject>
+        self.contact =  event["Contact"] as? Dictionary<String, Any>
         self.ID =  event["ID"] as! String
     }
 }
 
-public class LabelEvent {
+open class LabelEvent {
     
     var Action : Int!
     var ID : String!;
-    var label : Dictionary<String,AnyObject>?
+    var label : Dictionary<String, Any>?
     
-    init(event: Dictionary<String,AnyObject>!) {
+    init(event: Dictionary<String, Any>!) {
         self.Action = event["Action"] as! Int
-        self.label =  event["Label"] as? Dictionary<String,AnyObject>
+        self.label =  event["Label"] as? Dictionary<String, Any>
         self.ID =  event["ID"] as! String
     }
 }

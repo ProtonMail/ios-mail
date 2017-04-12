@@ -75,6 +75,13 @@ zss_editor.init = function() {
                      }
                  });
     
+    $('#zss_editor_content').on('paste', function(e) {
+                                //var pasteData = e.originalEvent.clipboardData.getData('text')
+                                //window.location = 'paste://'+ e //.clipboardData.types;
+//                                window.location = 'paste://'+ e.originalEvent.clipboardData;
+                        
+                                });
+    
 }//end
 
 zss_editor.updateOffset = function() {
@@ -449,6 +456,9 @@ zss_editor.prepareInsert = function() {
 }
 
 zss_editor.insertImage = function(url, alt) {
+    
+    window.location = 'debug://insertimage';
+    
     zss_editor.restorerange();
     var html = '<img src="'+url+'" alt="'+alt+'" />';
     zss_editor.insertHTML(html);

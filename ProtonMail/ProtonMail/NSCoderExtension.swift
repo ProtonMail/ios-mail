@@ -18,7 +18,7 @@ import Foundation
 
 extension NSCoder {
     
-    func decodeStringForKey(key: String) -> String? {
-        return decodeObjectForKey(key) as? String
+    func decodeStringForKey(_ key: String) -> String? {
+        return decodeObject(forKey: key) as? String
     }
 }

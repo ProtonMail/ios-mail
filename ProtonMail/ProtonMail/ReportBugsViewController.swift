@@ -18,7 +18,7 @@ import Foundation
 
 class ReportBugsViewController: ProtonMailViewController {
     
-    private let bottomPadding: CGFloat = 30.0
+    fileprivate let bottomPadding: CGFloat = 30.0
     
     @IBOutlet weak var sendButton: UIBarButtonItem!
     @IBOutlet weak var textView: UITextView!
@@ -29,51 +29,51 @@ class ReportBugsViewController: ProtonMailViewController {
         textView.text = cachedBugReport.cachedBug
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateSendButtonForText(textView.text)
-        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
+        NotificationCenter.default.addKeyboardObserver(self)
         textView.becomeFirstResponder()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         textView.resignFirstResponder()
-        NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
+        NotificationCenter.default.removeKeyboardObserver(self)
     }
     
     // MARK: - Private methods
     
-    private func reset() {
+    fileprivate func reset() {
         textView.text = ""
         cachedBugReport.cachedBug = ""
         updateSendButtonForText(textView.text)
     }
     
-    private func updateSendButtonForText(text: String?) {
-        sendButton.enabled = (text != nil) && !text!.isEmpty
+    fileprivate func updateSendButtonForText(_ text: String?) {
+        sendButton.isEnabled = (text != nil) && !text!.isEmpty
     }
     
     // MARK: Actions
     
-    @IBAction private func sendAction(sender: UIBarButtonItem) {
+    @IBAction fileprivate func sendAction(_ sender: UIBarButtonItem) {
         if let text = textView.text {
             if !text.isEmpty {
                 ActivityIndicatorHelper.showActivityIndicatorAtView(view)
-                sender.enabled = false
+                sender.isEnabled = false
                 BugDataService().reportBug(text, completion: { error in
                     ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
-                    sender.enabled = true
+                    sender.isEnabled = true
                     if let error = error {
                         let alert = error.alertController()
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
-                        self.presentViewController(alert, animated: true, completion: nil)
+                        alert.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
                     } else {
-                        let alert = UIAlertController(title: NSLocalizedString("Bug Report Received"), message: NSLocalizedString("Thank you for submitting a bug report.  We have added your report to our bug tracking system."), preferredStyle: .Alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .Default, handler: nil))
-                        self.presentViewController(alert, animated: true, completion: {
+                        let alert = UIAlertController(title: NSLocalizedString("Bug Report Received"), message: NSLocalizedString("Thank you for submitting a bug report.  We have added your report to our bug tracking system."), preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: NSLocalizedString("OK"), style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: {
                             self.reset()
-                            NSNotificationCenter.defaultCenter().postNotificationName(MenuViewController.ObserverSwitchView, object: nil)
+                            NotificationCenter.default.post(name: Notification.Name(rawValue: MenuViewController.ObserverSwitchView), object: nil)
                         })
                     }
                 })
@@ -85,18 +85,18 @@ class ReportBugsViewController: ProtonMailViewController {
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 
 extension ReportBugsViewController: NSNotificationCenterKeyboardObserverProtocol {
-    func keyboardWillHideNotification(notification: NSNotification) {
+    func keyboardWillHideNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         textViewBottomConstraint.constant = bottomPadding
-        UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
+        UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
     }
     
-    func keyboardWillShowNotification(notification: NSNotification) {
+    func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         textViewBottomConstraint.constant = keyboardInfo.beginFrame.height + bottomPadding
-        UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
+        UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
     }
@@ -104,9 +104,9 @@ extension ReportBugsViewController: NSNotificationCenterKeyboardObserverProtocol
 
 extension ReportBugsViewController: UITextViewDelegate {
     
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let oldText = textView.text as NSString
-        let changedText = oldText.stringByReplacingCharactersInRange(range, withString: text)
+        let changedText = oldText.replacingCharacters(in: range, with: text)
         updateSendButtonForText(changedText)
         cachedBugReport.cachedBug = changedText
         return true

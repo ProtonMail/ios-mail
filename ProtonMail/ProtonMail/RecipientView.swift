@@ -22,13 +22,13 @@ class RecipientView: PMView {
     //@IBOutlet weak var fromLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
-    private let kContactCellIdentifier: String = "RecipientCell"
+    fileprivate let kContactCellIdentifier: String = "RecipientCell"
     
     
     override func setup() {
-        self.tableView.registerNib(UINib(nibName: "RecipientCell", bundle: NSBundle.mainBundle()), forCellReuseIdentifier: kContactCellIdentifier)
+        self.tableView.register(UINib(nibName: "RecipientCell", bundle: Bundle.main), forCellReuseIdentifier: kContactCellIdentifier)
         self.tableView.alwaysBounceVertical = false
-        self.tableView.separatorStyle = .None
+        self.tableView.separatorStyle = .none
         self.tableView.allowsSelection = false
 
     }
@@ -61,8 +61,8 @@ class RecipientView: PMView {
 
 extension RecipientView: UITableViewDataSource {
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(kContactCellIdentifier, forIndexPath: indexPath) as! RecipientCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: kContactCellIdentifier, for: indexPath) as! RecipientCell
         
         let c = contacts?[indexPath.row]
         let n = (c?.name ?? "")
@@ -72,19 +72,19 @@ extension RecipientView: UITableViewDataSource {
         return cell;
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return contacts?.count ?? 0
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 30;
     }
 }
 
 extension RecipientView: UITableViewDelegate {
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         
     }
 }

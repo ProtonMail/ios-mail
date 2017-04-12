@@ -9,6 +9,11 @@
 import Foundation
 
 
+protocol ViewModelProtocol {
+    func setViewModel(_ vm: Any)
+    func inactiveViewModel()
+}
+
 // this is abstract ViewModel service
 class ViewModelService {
     
@@ -16,23 +21,23 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
-    func newDraftViewModel(vmp : ViewModelProtocol) {
+    func newDraftViewModel(_ vmp : ViewModelProtocol) {
         fatalError("This method must be overridden")
     }
     
-    func newDraftViewModelWithContact(vmp : ViewModelProtocol, contact: ContactVO!) {
+    func newDraftViewModelWithContact(_ vmp : ViewModelProtocol, contact: ContactVO!) {
         fatalError("This method must be overridden")
     }
     
-    func newDraftViewModelWithMailTo(vmp : ViewModelProtocol, url: NSURL?) {
+    func newDraftViewModelWithMailTo(_ vmp : ViewModelProtocol, url: URL?) {
         fatalError("This method must be overridden")
     }
     
-    func openDraftViewModel(vmp : ViewModelProtocol, msg: Message!) {
+    func openDraftViewModel(_ vmp : ViewModelProtocol, msg: Message!) {
         fatalError("This method must be overridden")
     }
     
-    func actionDraftViewModel(vmp : ViewModelProtocol, msg: Message!, action: ComposeMessageAction) {
+    func actionDraftViewModel(_ vmp : ViewModelProtocol, msg: Message!, action: ComposeMessageAction) {
         fatalError("This method must be overridden")
     }
     
@@ -45,8 +50,3 @@ class ViewModelService {
     }
 }
 
-
-protocol ViewModelProtocol {
-    func setViewModel(vm: AnyObject)
-    func inactiveViewModel()
-}

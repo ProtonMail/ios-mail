@@ -13,10 +13,10 @@ class LableEditViewController : UIViewController {
     var viewModel : LabelEditViewModel!
 
     
-    private var selected : NSIndexPath?
-    private var selectedFirstLoad : NSIndexPath?
+    fileprivate var selected : IndexPath?
+    fileprivate var selectedFirstLoad : IndexPath?
     
-    private var archiveMessage = false;
+    fileprivate var archiveMessage = false;
     
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -37,53 +37,55 @@ class LableEditViewController : UIViewController {
         contentView.layer.cornerRadius = 4;
         newLabelInput.delegate = self
         
-        titleLabel.text = viewModel.getTitle()
-        newLabelInput.placeholder = viewModel.getPlaceHolder()
-
-        applyButtonText = viewModel.getRightButtonText()
-        applyButton.setTitle(applyButtonText, forState: UIControlState.Disabled)
-        applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
-        cancelButton.setTitle("Cancel", forState: UIControlState.Normal)
-        applyButton.enabled = false
+        titleLabel.text = viewModel.title()
+        newLabelInput.placeholder = viewModel.placeHolder()
+        let name = viewModel.name()
+        newLabelInput.text = name
+        
+        applyButtonText = viewModel.rightButtonText()
+        applyButton.setTitle(applyButtonText, for: UIControlState.disabled)
+        applyButton.setTitle(applyButtonText, for: UIControlState())
+        cancelButton.setTitle("Cancel", for: UIControlState())
+        
+        applyButton.isEnabled = !name.isEmpty
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         newLabelInput.resignFirstResponder()
-        selectedFirstLoad = viewModel.getSelectedIndex()
+        selectedFirstLoad = viewModel.seletedIndex()
     }
     
-    @IBAction func applyAction(sender: AnyObject) {
-        // start
+    @IBAction func applyAction(_ sender: AnyObject) {
         //show loading
         ActivityIndicatorHelper.showActivityIndicatorAtView(view)
-        let color = viewModel.getColor(selected?.row ?? 0)
-        viewModel.createLabel(newLabelInput.text!, color: color, error: { (code, errorMessage) -> Void in
+        let color = viewModel.color(at: selected?.row ?? 0)
+        viewModel.apply(withName: newLabelInput.text!, color: color, error: { (code, errorMessage) -> Void in
             ActivityIndicatorHelper.hideActivityIndicatorAtView(self.view)
             if code == 14005 {
                 let alert = NSLocalizedString("The maximum number of labels is 20.").alertController()
                 alert.addOKAction()
-                self.presentViewController(alert, animated: true, completion: nil)
+                self.present(alert, animated: true, completion: nil)
             } else if code == 14002 {
                 let alert = NSLocalizedString("The label name is duplicate").alertController()
                 alert.addOKAction()
-                self.presentViewController(alert, animated: true, completion: nil)
+                self.present(alert, animated: true, completion: nil)
             } else {
                 let alert = errorMessage.alertController()
                 alert.addOKAction()
-                self.presentViewController(alert, animated: true, completion: nil)
+                self.present(alert, animated: true, completion: nil)
             }
             }, complete: { () -> Void in
-                self.dismissViewControllerAnimated(true, completion: nil)
+                self.dismiss(animated: true, completion: nil)
                 self.delegate?.dismissed()
         })
     }
     
-    @IBAction func cancelAction(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancelAction(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
         delegate?.dismissed()
     }
     
@@ -96,17 +98,17 @@ class LableEditViewController : UIViewController {
 
 extension LableEditViewController : UITextFieldDelegate {
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         dismissKeyboard()
         return false
     }
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let text = textField.text! as NSString
-        let changedText = text.stringByReplacingCharactersInRange(range, withString: string)
+        let changedText = text.replacingCharacters(in: range, with: string)
         if changedText.isEmpty {
-            applyButton.enabled = false
+            applyButton.isEnabled = false
         } else {
-            applyButton.enabled = true
+            applyButton.isEnabled = true
         }
         return true
     }
@@ -115,49 +117,49 @@ extension LableEditViewController : UITextFieldDelegate {
 // MARK: UICollectionViewDataSource
 extension LableEditViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
 
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.getColorCount()
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return viewModel.colorCount()
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("labelColorCell", forIndexPath: indexPath)
-        let color = viewModel.getColor(indexPath.row)
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "labelColorCell", for: indexPath)
+        let color = viewModel.color(at: indexPath.row)
         cell.backgroundColor = UIColor(hexString: color, alpha: 1.0)
         cell.layer.cornerRadius = 17;
         
         if selected == nil {
             if indexPath.row == selectedFirstLoad?.row {
                 cell.layer.borderWidth = 4
-                cell.layer.borderColor = UIColor.darkGrayColor().CGColor
+                cell.layer.borderColor = UIColor.darkGray.cgColor
                 self.selected = indexPath
             }
         }
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let index = selected {
-            let oldCell = collectionView.cellForItemAtIndexPath(index)
+            let oldCell = collectionView.cellForItem(at: index)
             oldCell?.layer.borderWidth = 0
         }
         
-        let newCell = collectionView.cellForItemAtIndexPath(indexPath)
+        let newCell = collectionView.cellForItem(at: indexPath)
         newCell?.layer.borderWidth = 4
-        newCell?.layer.borderColor = UIColor.darkGrayColor().CGColor
+        newCell?.layer.borderColor = UIColor.darkGray.cgColor
         self.selected = indexPath
         
         self.dismissKeyboard()
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsetsMake(0,0,0,0);
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
     {
         return CGSize(width: 34, height: 34)
     }

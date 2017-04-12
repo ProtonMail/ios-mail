@@ -15,6 +15,30 @@
 //
 
 import Foundation
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 let sharedUserDataService = UserDataService()
 
@@ -24,11 +48,10 @@ class UserDataService {
     typealias CompletionBlock = APIService.CompletionBlock
     typealias UserInfoBlock = APIService.UserInfoBlock
     
-    //typealias LoginBlock = (mailboxPwd: String? error: NSError?) -> Void
     //Login callback blocks
     typealias LoginAsk2FABlock = () -> Void
-    typealias LoginErrorBlock = (error: NSError) -> Void
-    typealias LoginSuccessBlock = (mpwd: String?) -> Void
+    typealias LoginErrorBlock = (_ error: NSError) -> Void
+    typealias LoginSuccessBlock = (_ mpwd: String?) -> Void
     
     struct Key {
         static let isRememberMailboxPassword = "isRememberMailboxPasswordKey"
@@ -45,56 +68,56 @@ class UserDataService {
     }
     
     // MARK: - Private variables
-    private(set) var userInfo: UserInfo? = NSUserDefaults.standardUserDefaults().customObjectForKey(Key.userInfo) as? UserInfo {
+    fileprivate(set) var userInfo: UserInfo? = UserDefaults.standard.customObjectForKey(Key.userInfo) as? UserInfo {
         didSet {
-            NSUserDefaults.standardUserDefaults().setCustomValue(userInfo, forKey: Key.userInfo)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.setCustomValue(userInfo, forKey: Key.userInfo)
+            UserDefaults.standard.synchronize()
         }
     }
     
-    private(set) var username: String? = NSUserDefaults.standardUserDefaults().stringForKey(Key.username) {
+    fileprivate(set) var username: String? = UserDefaults.standard.string(forKey: Key.username) {
         didSet {
-            NSUserDefaults.standardUserDefaults().setValue(username, forKey: Key.username)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.setValue(username, forKey: Key.username)
+            UserDefaults.standard.synchronize()
         }
     }
     
     // Value is only stored in the keychain
-    private(set) var password: String? {
+    fileprivate(set) var password: String? {
         get {
-            return UICKeyChainStore.stringForKey(Key.password)
+            return UICKeyChainStore.string(forKey: Key.password)
         }
         set {
             UICKeyChainStore.setString(newValue, forKey: Key.password)
         }
     }
     
-    private var switchCacheOff: Bool? = NSUserDefaults.standardUserDefaults().boolForKey(Key.roleSwitchCache) {
+    fileprivate var switchCacheOff: Bool? = UserDefaults.standard.bool(forKey: Key.roleSwitchCache) {
         
         didSet {
-            NSUserDefaults.standardUserDefaults().setValue(switchCacheOff, forKey: Key.roleSwitchCache)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.setValue(switchCacheOff, forKey: Key.roleSwitchCache)
+            UserDefaults.standard.synchronize()
         }
     }
     
-    private var defaultSignatureStauts: Bool = NSUserDefaults.standardUserDefaults().boolForKey(Key.defaultSignatureStatus) {
+    fileprivate var defaultSignatureStauts: Bool = UserDefaults.standard.bool(forKey: Key.defaultSignatureStatus) {
         didSet {
-            NSUserDefaults.standardUserDefaults().setValue(defaultSignatureStauts, forKey: Key.defaultSignatureStatus)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.setValue(defaultSignatureStauts, forKey: Key.defaultSignatureStatus)
+            UserDefaults.standard.synchronize()
         }
     }
     
-    var twoFactorStatus: Int = NSUserDefaults.standardUserDefaults().integerForKey(Key.twoFAStatus)  {
+    var twoFactorStatus: Int = UserDefaults.standard.integer(forKey: Key.twoFAStatus)  {
         didSet {
-            NSUserDefaults.standardUserDefaults().setValue(twoFactorStatus, forKey: Key.twoFAStatus)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.setValue(twoFactorStatus, forKey: Key.twoFAStatus)
+            UserDefaults.standard.synchronize()
         }
     }
     
-    var passwordMode: Int = NSUserDefaults.standardUserDefaults().integerForKey(Key.userPasswordMode)  {
+    var passwordMode: Int = UserDefaults.standard.integer(forKey: Key.userPasswordMode)  {
         didSet {
-            NSUserDefaults.standardUserDefaults().setValue(passwordMode, forKey: Key.userPasswordMode)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.setValue(passwordMode, forKey: Key.userPasswordMode)
+            UserDefaults.standard.synchronize()
         }
     }
     
@@ -116,7 +139,7 @@ class UserDataService {
             #endif
             
             if userInfo?.role > 0 || isEnterprise {
-                return (switchCacheOff == false) ?? true
+                return switchCacheOff == false //TODO:: need test this part
             } else {
                 switchCacheOff = false
                 return true;
@@ -197,32 +220,32 @@ class UserDataService {
         return mailboxPassword != nil
     }
     
-    var isRememberMailboxPassword: Bool = NSUserDefaults.standardUserDefaults().boolForKey(Key.isRememberMailboxPassword) {
+    var isRememberMailboxPassword: Bool = UserDefaults.standard.bool(forKey: Key.isRememberMailboxPassword) {
         didSet {
-            NSUserDefaults.standardUserDefaults().setBool(isRememberMailboxPassword, forKey: Key.isRememberMailboxPassword)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(isRememberMailboxPassword, forKey: Key.isRememberMailboxPassword)
+            UserDefaults.standard.synchronize()
         }
     }
     
-    var isRememberUser: Bool = NSUserDefaults.standardUserDefaults().boolForKey(Key.isRememberUser) {
+    var isRememberUser: Bool = UserDefaults.standard.bool(forKey: Key.isRememberUser) {
         didSet {
-            NSUserDefaults.standardUserDefaults().setBool(isRememberUser, forKey: Key.isRememberUser)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(isRememberUser, forKey: Key.isRememberUser)
+            UserDefaults.standard.synchronize()
         }
     }
     
     var isSignedIn: Bool = false
     var isNewUser : Bool = false
-    private(set) var isMailboxPWDOk: Bool = false
+    fileprivate(set) var isMailboxPWDOk: Bool = false
     
     var isUserCredentialStored: Bool {
         return username != nil && password != nil && isRememberUser
     }
     
     /// Value is only stored in the keychain
-    private(set) var mailboxPassword: String? {
+    fileprivate(set) var mailboxPassword: String? {
         get {
-            return UICKeyChainStore.stringForKey(Key.mailboxPassword)
+            return UICKeyChainStore.string(forKey: Key.mailboxPassword)
         }
         set {
             UICKeyChainStore.setString(newValue, forKey: Key.mailboxPassword)
@@ -255,7 +278,7 @@ class UserDataService {
         launchCleanUp()
     }
     
-    func fetchUserInfo(completion: UserInfoBlock? = nil) {
+    func fetchUserInfo(_ completion: UserInfoBlock? = nil) {
         
         let getUserInfo = GetUserInfoRequest<GetUserInfoResponse>()
         getUserInfo.call { (task, response, hasError) -> Void in
@@ -269,31 +292,31 @@ class UserDataService {
         }
     }
     
-    func updateUserInfoFromEventLog (userInfo : UserInfo){
+    func updateUserInfoFromEventLog (_ userInfo : UserInfo){
         self.userInfo = userInfo
         if let addresses = self.userInfo?.userAddresses.toPMNAddresses() {
             sharedOpenPGP.setAddresses(addresses);
         }
     }
     
-    func isMailboxPasswordValid(password: String, privateKey : String) -> Bool {
+    func isMailboxPasswordValid(_ password: String, privateKey : String) -> Bool {
         let result = PMNOpenPgp.checkPassphrase(password, forPrivateKey: privateKey)
         return result
     }
     
-    func setMailboxPassword(password: String, keysalt: String?, isRemembered: Bool) {
+    func setMailboxPassword(_ password: String, keysalt: String?, isRemembered: Bool) {
         mailboxPassword = password
         isRememberMailboxPassword = isRemembered
         self.isMailboxPWDOk = true;
     }
     
-    func isPasswordValid(password: String?) -> Bool {
+    func isPasswordValid(_ password: String?) -> Bool {
         return self.password == password
     }
     
-    func signIn(username: String, password: String, twoFACode: String?, ask2fa: LoginAsk2FABlock, onError:LoginErrorBlock, onSuccess: LoginSuccessBlock) {
+    func signIn(_ username: String, password: String, twoFACode: String?, ask2fa: @escaping LoginAsk2FABlock, onError:@escaping LoginErrorBlock, onSuccess: @escaping LoginSuccessBlock) {
         sharedAPIService.auth(username, password: password, twoFACode: twoFACode) { task, mpwd, status, error in
-            if status == .Ask2FA {
+            if status == .ask2FA {
                 self.twoFactorStatus = 1
                 ask2fa()
             } else {
@@ -304,11 +327,11 @@ class UserDataService {
                     self.isRememberUser = true
                     self.passwordMode = mpwd != nil ? 1 : 2
                     
-                    onSuccess(mpwd: mpwd)
+                    onSuccess(mpwd)
                 } else {
                     self.twoFactorStatus = 0
                     self.signOut(true)
-                    onError(error: error!)
+                    onError(error!)
                 }
             }
         }
@@ -319,28 +342,28 @@ class UserDataService {
         clearAuthToken()
     }
     
-    func signOut(animated: Bool) {
+    func signOut(_ animated: Bool) {
         sharedVMService.signOut()
-        if let authCredential = AuthCredential.fetchFromKeychain(), token = authCredential.token where !token.isEmpty {
+        if let authCredential = AuthCredential.fetchFromKeychain(), let token = authCredential.token, !token.isEmpty {
             AuthDeleteRequest().call { (task, response, hasError) in }
         }
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignOut, object: self)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignOut), object: self)
         clearAll()
         clearAuthToken()
-        (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: animated)
+        (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: animated)
     }
     
     func signOutAfterSignUp() {
         sharedVMService.signOut()
-        if let authCredential = AuthCredential.fetchFromKeychain(), token = authCredential.token where !token.isEmpty {
+        if let authCredential = AuthCredential.fetchFromKeychain(), let token = authCredential.token, !token.isEmpty {
             AuthDeleteRequest().call { (task, response, hasError) in }
         }
-        NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignOut, object: self)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignOut), object: self)
         clearAll()
         clearAuthToken()
     }
     
-    func updateDisplayName(displayName: String, completion: UserInfoBlock?) {
+    func updateDisplayName(_ displayName: String, completion: UserInfoBlock?) {
         let new_displayName = displayName.trim()
         let api = UpdateDisplayNameRequest(displayName: new_displayName)
         api.call() { task, response, hasError in
@@ -354,7 +377,7 @@ class UserDataService {
         }
     }
     
-    func updateAddress(addressId: String, displayName: String, signature: String, completion: UserInfoBlock?) {
+    func updateAddress(_ addressId: String, displayName: String, signature: String, completion: UserInfoBlock?) {
         let new_displayName = displayName.trim()
         let new_signature = signature.trim()
         
@@ -378,7 +401,7 @@ class UserDataService {
         }
     }
     
-    func updateAutoLoadImage(status : Int, completion: UserInfoBlock?) {
+    func updateAutoLoadImage(_ status : Int, completion: UserInfoBlock?) {
         let api = UpdateShowImagesRequest(status: status)
         api.call() { task, response, hasError in
             if !hasError {
@@ -391,29 +414,29 @@ class UserDataService {
         }
     }
     
-    func updatePassword(login_password: String, new_password: String, twoFACode:String?, completion: CompletionBlock) {
+    func updatePassword(_ login_password: String, new_password: String, twoFACode:String?, completion: @escaping CompletionBlock) {
         {//asyn
             do {
                 //generate new pwd and verifier
                 guard let _username = self.username else {
-                    throw UpdatePasswordError.InvalidUserName.toError()
+                    throw UpdatePasswordError.invalidUserName.toError()
                 }
                 let authModuls = try AuthModulusRequest<AuthModulusResponse>().syncCall()
                 guard let moduls_id = authModuls?.ModulusID else {
-                    throw UpdatePasswordError.InvalidModulsID.toError()
+                    throw UpdatePasswordError.invalidModulsID.toError()
                 }
                 guard let new_moduls = authModuls?.Modulus, let new_encodedModulus = try new_moduls.getSignature() else {
-                    throw UpdatePasswordError.InvalidModuls.toError()
+                    throw UpdatePasswordError.invalidModuls.toError()
                 }
                 //generat new verifier
-                let new_decodedModulus : NSData = new_encodedModulus.decodeBase64()
-                let new_salt : NSData = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
+                let new_decodedModulus : Data = new_encodedModulus.decodeBase64()
+                let new_salt : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
                 guard let new_hashed_password = PasswordUtils.hashPasswordVersion4(new_password, salt: new_salt, modulus: new_decodedModulus) else {
-                    throw UpdatePasswordError.CantHashPassword.toError()
+                    throw UpdatePasswordError.cantHashPassword.toError()
                 }
                 
                 guard let verifier = try generateVerifier(2048, modulus: new_decodedModulus, hashedPassword: new_hashed_password) else {
-                    throw UpdatePasswordError.CantGenerateVerifier.toError()
+                    throw UpdatePasswordError.cantGenerateVerifier.toError()
                 }
                 
                 //start check exsit srp
@@ -424,15 +447,15 @@ class UserDataService {
                     // get auto info
                     let info = try AuthInfoRequest<AuthInfoResponse>(username: _username).syncCall()
                     guard let authVersion = info?.Version, let modulus = info?.Modulus, let ephemeral = info?.ServerEphemeral, let salt = info?.Salt, let session = info?.SRPSession else {
-                        throw UpdatePasswordError.InvalideAuthInfo.toError()
+                        throw UpdatePasswordError.invalideAuthInfo.toError()
                     }
                     guard let encodedModulus = try modulus.getSignature() else {
-                        throw UpdatePasswordError.InvalideAuthInfo.toError()
+                        throw UpdatePasswordError.invalideAuthInfo.toError()
                     }
                     
-                    let decodedModulus : NSData = encodedModulus.decodeBase64()
-                    let decodedSalt : NSData = salt.decodeBase64()
-                    let serverEphemeral : NSData = ephemeral.decodeBase64()
+                    let decodedModulus : Data = encodedModulus.decodeBase64()
+                    let decodedSalt : Data = salt.decodeBase64()
+                    let serverEphemeral : Data = ephemeral.decodeBase64()
                     
                     if authVersion <= 2 && !forceRetry {
                         forceRetry = true
@@ -442,11 +465,11 @@ class UserDataService {
                     //init api calls
                     let hashVersion = forceRetry ? forceRetryVersion : authVersion
                     guard let hashedPassword = PasswordUtils.getHashedPwd(hashVersion, password: login_password , username: _username, decodedSalt: decodedSalt, decodedModulus: decodedModulus) else {
-                        throw UpdatePasswordError.CantHashPassword.toError()
+                        throw UpdatePasswordError.cantHashPassword.toError()
                     }
                     
-                    guard let srpClient = try generateSrpProofs(2048, modulus: decodedModulus, serverEphemeral: serverEphemeral, hashedPassword: hashedPassword) where srpClient.isValid() == true else {
-                        throw UpdatePasswordError.CantGenerateSRPClient.toError()
+                    guard let srpClient = try generateSrpProofs(2048, modulus: decodedModulus, serverEphemeral: serverEphemeral, hashedPassword: hashedPassword), srpClient.isValid() == true else {
+                        throw UpdatePasswordError.cantGenerateSRPClient.toError()
                     }
                     
                     do {
@@ -461,7 +484,7 @@ class UserDataService {
                             self.password = new_password
                             forceRetry = false
                         } else {
-                            throw UpdatePasswordError.Default.toError()
+                            throw UpdatePasswordError.default.toError()
                         }
                     } catch let error as NSError {
                         if error.isInternetError() {
@@ -475,31 +498,31 @@ class UserDataService {
                         }
                     }
                 } while(forceRetry && forceRetryVersion >= 0)
-                return { completion(task: nil, response: nil, error: nil) } ~> .Main
+                return { completion(nil, nil, nil) } ~> .main
             } catch let error as NSError {
                 error.uploadFabricAnswer("UpdateLoginPassword")
-                return { completion(task: nil, response: nil, error: error) } ~> .Main
+                return { completion(nil, nil, error) } ~> .main
             }
-        } ~> .Async
+        } ~> .async
     }
     
-    func updateMailboxPassword(login_password: String, new_password: String, twoFACode:String?, buildAuth: Bool, completion: CompletionBlock) {
+    func updateMailboxPassword(_ login_password: String, new_password: String, twoFACode:String?, buildAuth: Bool, completion: @escaping CompletionBlock) {
         {//asyn
             do {
                 guard let _username = self.username else {
-                    throw UpdatePasswordError.InvalidUserName.toError()
+                    throw UpdatePasswordError.invalidUserName.toError()
                 }
                 
                 guard let user_info = self.userInfo else {
-                    throw UpdatePasswordError.Default.toError()
+                    throw UpdatePasswordError.default.toError()
                 }
                 
                 guard let old_password = self.mailboxPassword else {
-                    throw UpdatePasswordError.CurrentPasswordWrong.toError()
+                    throw UpdatePasswordError.currentPasswordWrong.toError()
                 }
                 
                 //generat keysalt
-                let new_mpwd_salt : NSData = PMNOpenPgp.randomBits(128) //mailbox pwd need 128 bits
+                let new_mpwd_salt : Data = PMNOpenPgp.randomBits(128) //mailbox pwd need 128 bits
                 let new_hashed_mpwd = PasswordUtils.getMailboxPassword(new_password, salt: new_mpwd_salt)
                 
                 let updated_address_keys = try PMNOpenPgp.updateAddrKeysPassword(user_info.userAddresses, old_pass: old_password, new_pass: new_hashed_mpwd)
@@ -510,7 +533,7 @@ class UserDataService {
                 if user_info.role == 2 { //need to get the org keys
                     //check user role if equal 2 try to get the org key.
                     let cur_org_key = try GetOrgKeys<OrgKeyResponse>().syncCall()
-                    if let org_priv_key = cur_org_key?.privKey where !org_priv_key.isEmpty {
+                    if let org_priv_key = cur_org_key?.privKey, !org_priv_key.isEmpty {
                         do {
                             new_org_key = try PMNOpenPgp.updateKeyPassword(org_priv_key, old_pass: old_password, new_pass: new_hashed_mpwd)
                         } catch {
@@ -523,19 +546,19 @@ class UserDataService {
                 if buildAuth {
                     let authModuls = try AuthModulusRequest<AuthModulusResponse>().syncCall()
                     guard let moduls_id = authModuls?.ModulusID else {
-                        throw UpdatePasswordError.InvalidModulsID.toError()
+                        throw UpdatePasswordError.invalidModulsID.toError()
                     }
                     guard let new_moduls = authModuls?.Modulus, let new_encodedModulus = try new_moduls.getSignature() else {
-                        throw UpdatePasswordError.InvalidModuls.toError()
+                        throw UpdatePasswordError.invalidModuls.toError()
                     }
                     //generat new verifier
-                    let new_decodedModulus : NSData = new_encodedModulus.decodeBase64()
-                    let new_lpwd_salt : NSData = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
+                    let new_decodedModulus : Data = new_encodedModulus.decodeBase64()
+                    let new_lpwd_salt : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
                     guard let new_hashed_password = PasswordUtils.hashPasswordVersion4(new_password, salt: new_lpwd_salt, modulus: new_decodedModulus) else {
-                        throw UpdatePasswordError.CantHashPassword.toError()
+                        throw UpdatePasswordError.cantHashPassword.toError()
                     }
                     guard let verifier = try generateVerifier(2048, modulus: new_decodedModulus, hashedPassword: new_hashed_password) else {
-                        throw UpdatePasswordError.CantGenerateVerifier.toError()
+                        throw UpdatePasswordError.cantGenerateVerifier.toError()
                     }
                     
                     authPacket = PasswordAuth(modulus_id: moduls_id,
@@ -551,15 +574,15 @@ class UserDataService {
                     // get auto info
                     let info = try AuthInfoRequest<AuthInfoResponse>(username: _username).syncCall()
                     guard let authVersion = info?.Version, let modulus = info?.Modulus, let ephemeral = info?.ServerEphemeral, let salt = info?.Salt, let session = info?.SRPSession else {
-                        throw UpdatePasswordError.InvalideAuthInfo.toError()
+                        throw UpdatePasswordError.invalideAuthInfo.toError()
                     }
                     guard let encodedModulus = try modulus.getSignature() else {
-                        throw UpdatePasswordError.InvalideAuthInfo.toError()
+                        throw UpdatePasswordError.invalideAuthInfo.toError()
                     }
                     
-                    let decodedModulus : NSData = encodedModulus.decodeBase64()
-                    let decodedSalt : NSData = salt.decodeBase64()
-                    let serverEphemeral : NSData = ephemeral.decodeBase64()
+                    let decodedModulus : Data = encodedModulus.decodeBase64()
+                    let decodedSalt : Data = salt.decodeBase64()
+                    let serverEphemeral : Data = ephemeral.decodeBase64()
                     
                     if authVersion <= 2 && !forceRetry {
                         forceRetry = true
@@ -569,11 +592,11 @@ class UserDataService {
                     //init api calls
                     let hashVersion = forceRetry ? forceRetryVersion : authVersion
                     guard let hashedPassword = PasswordUtils.getHashedPwd(hashVersion, password: login_password , username: _username, decodedSalt: decodedSalt, decodedModulus: decodedModulus) else {
-                        throw UpdatePasswordError.CantHashPassword.toError()
+                        throw UpdatePasswordError.cantHashPassword.toError()
                     }
                     
-                    guard let srpClient = try generateSrpProofs(2048, modulus: decodedModulus, serverEphemeral: serverEphemeral, hashedPassword: hashedPassword) where srpClient.isValid() == true else {
-                        throw UpdatePasswordError.CantGenerateSRPClient.toError()
+                    guard let srpClient = try generateSrpProofs(2048, modulus: decodedModulus, serverEphemeral: serverEphemeral, hashedPassword: hashedPassword), srpClient.isValid() == true else {
+                        throw UpdatePasswordError.cantGenerateSRPClient.toError()
                     }
                     
                     do {
@@ -587,7 +610,7 @@ class UserDataService {
                                                                                   orgKey: new_org_key,
                                                                                   auth: authPacket).syncCall()
                         guard update_res?.code == 1000 else {
-                            throw UpdatePasswordError.Default.toError()
+                            throw UpdatePasswordError.default.toError()
                         }
                         //update local keys
                         user_info.userKeys = updated_userlevel_keys
@@ -610,16 +633,16 @@ class UserDataService {
                     }
 
                 } while(forceRetry && forceRetryVersion >= 0)
-                return { completion(task: nil, response: nil, error: nil) } ~> .Main
+                return { completion(nil, nil, nil) } ~> .main
             } catch let error as NSError {
                 error.uploadFabricAnswer("UpdateMailBoxPassword")
-                return { completion(task: nil, response: nil, error: error) } ~> .Main
+                return { completion(nil, nil, error) } ~> .main
             }
-        } ~> .Async
+        } ~> .async
         
     }
     
-    func updateUserDomiansOrder(email_domains: Array<Address>, newOrder : Array<Int>, completion: CompletionBlock) {
+    func updateUserDomiansOrder(_ email_domains: Array<Address>, newOrder : Array<Int>, completion: @escaping CompletionBlock) {
         let domainSetting = UpdateDomainOrder<ApiResponse>(adds: newOrder)
         domainSetting.call() { task, response, hasError in
             if !hasError {
@@ -628,11 +651,11 @@ class UserDataService {
                     self.userInfo = userInfo
                 }
             }
-            completion(task: task, response: nil, error: nil)
+            completion(task, nil, nil)
         }
     }
     
-    func updateUserSwipeAction(isLeft : Bool , action: MessageSwipeAction, completion: CompletionBlock) {
+    func updateUserSwipeAction(_ isLeft : Bool , action: MessageSwipeAction, completion: @escaping CompletionBlock) {
         let api = isLeft ? UpdateSwiftLeftAction<ApiResponse>(action: action) : UpdateSwiftRightAction<ApiResponse>(action: action)
         api.call() { task, response, hasError in
             if !hasError {
@@ -642,15 +665,15 @@ class UserDataService {
                     self.userInfo = userInfo
                 }
             }
-            completion(task: task, response: nil, error: nil)
+            completion(task, nil, nil)
         }
     }
     
-    func updateNotificationEmail(new_notification_email: String, login_password : String, twoFACode: String?, completion: CompletionBlock) {
+    func updateNotificationEmail(_ new_notification_email: String, login_password : String, twoFACode: String?, completion: @escaping CompletionBlock) {
         {//asyn
             do {
                 guard let _username = self.username else {
-                    throw UpdateNotificationEmailError.InvalidUserName.toError()
+                    throw UpdateNotificationEmailError.invalidUserName.toError()
                 }
                 
                 //start check exsit srp
@@ -661,15 +684,15 @@ class UserDataService {
                     // get auto info
                     let info = try AuthInfoRequest<AuthInfoResponse>(username: _username).syncCall()
                     guard let authVersion = info?.Version, let modulus = info?.Modulus, let ephemeral = info?.ServerEphemeral, let salt = info?.Salt, let session = info?.SRPSession else {
-                        throw UpdateNotificationEmailError.InvalideAuthInfo.toError()
+                        throw UpdateNotificationEmailError.invalideAuthInfo.toError()
                     }
                     guard let encodedModulus = try modulus.getSignature() else {
-                        throw UpdateNotificationEmailError.InvalideAuthInfo.toError()
+                        throw UpdateNotificationEmailError.invalideAuthInfo.toError()
                     }
                     
-                    let decodedModulus : NSData = encodedModulus.decodeBase64()
-                    let decodedSalt : NSData = salt.decodeBase64()
-                    let serverEphemeral : NSData = ephemeral.decodeBase64()
+                    let decodedModulus : Data = encodedModulus.decodeBase64()
+                    let decodedSalt : Data = salt.decodeBase64()
+                    let serverEphemeral : Data = ephemeral.decodeBase64()
                     
                     if authVersion <= 2 && !forceRetry {
                         forceRetry = true
@@ -679,11 +702,11 @@ class UserDataService {
                     //init api calls
                     let hashVersion = forceRetry ? forceRetryVersion : authVersion
                     guard let hashedPassword = PasswordUtils.getHashedPwd(hashVersion, password: login_password , username: _username, decodedSalt: decodedSalt, decodedModulus: decodedModulus) else {
-                        throw UpdateNotificationEmailError.CantHashPassword.toError()
+                        throw UpdateNotificationEmailError.cantHashPassword.toError()
                     }
                     
-                    guard let srpClient = try generateSrpProofs(2048, modulus: decodedModulus, serverEphemeral: serverEphemeral, hashedPassword: hashedPassword) where srpClient.isValid() == true else {
-                        throw UpdateNotificationEmailError.CantGenerateSRPClient.toError()
+                    guard let srpClient = try generateSrpProofs(2048, modulus: decodedModulus, serverEphemeral: serverEphemeral, hashedPassword: hashedPassword), srpClient.isValid() == true else {
+                        throw UpdateNotificationEmailError.cantGenerateSRPClient.toError()
                     }
                     
                     do {
@@ -699,7 +722,7 @@ class UserDataService {
                             }
                             forceRetry = false
                         } else {
-                            throw UpdateNotificationEmailError.Default.toError()
+                            throw UpdateNotificationEmailError.default.toError()
                         }
                     } catch let error as NSError {
                         if error.isInternetError() {
@@ -713,14 +736,14 @@ class UserDataService {
                         }
                     }
                 } while(forceRetry && forceRetryVersion >= 0)
-                return { completion(task: nil, response: nil, error: nil) } ~> .Main
+                return { completion(nil, nil, nil) } ~> .main
             } catch let error as NSError {
                 error.uploadFabricAnswer("UpdateLoginPassword")
-                return { completion(task: nil, response: nil, error: error) } ~> .Main
+                return { completion(nil, nil, error) } ~> .main
             }
-        } ~> .Async
+        } ~> .async
     }
-    func updateNotify(isOn: Bool, completion: CompletionBlock) {
+    func updateNotify(_ isOn: Bool, completion: @escaping CompletionBlock) {
         let notifySetting = UpdateNotify<ApiResponse>(notify: isOn ? 1 : 0)
         notifySetting.call() { task, response, hasError in
             if !hasError {
@@ -729,27 +752,27 @@ class UserDataService {
                     self.userInfo = userInfo
                 }
             }
-            completion(task: task, response: nil, error: nil)
+            completion(task, nil, nil)
         }
     }
     
-    func updateSignature(signature: String, completion: UserInfoBlock?) {
+    func updateSignature(_ signature: String, completion: UserInfoBlock?) {
         sharedAPIService.settingUpdateSignature(signature, completion: completionForUserInfo(completion))
     }
     
     // MARK: - Private methods
     
-    private func cleanUpIfFirstRun() {
+    fileprivate func cleanUpIfFirstRun() {
         let firstRunKey = "FirstRunKey"
         
-        if NSUserDefaults.standardUserDefaults().objectForKey(firstRunKey) == nil {
+        if UserDefaults.standard.object(forKey: firstRunKey) == nil {
             clearAll()
-            NSUserDefaults.standardUserDefaults().setObject(NSDate(), forKey: firstRunKey)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(Date(), forKey: firstRunKey)
+            UserDefaults.standard.synchronize()
         }
     }
     
-    private func clearAll() {
+    fileprivate func clearAll() {
         isSignedIn = false
         
         isRememberUser = false
@@ -765,11 +788,11 @@ class UserDataService {
         sharedOpenPGP.cleanAddresses()
     }
     
-    private func clearAuthToken() {
+    fileprivate func clearAuthToken() {
         AuthCredential.clearFromKeychain()
     }
     
-    private func completionForUserInfo(completion: UserInfoBlock?) -> CompletionBlock {
+    fileprivate func completionForUserInfo(_ completion: UserInfoBlock?) -> CompletionBlock {
         return { task, response, error in
             if error == nil {
                 self.fetchUserInfo(completion)
@@ -779,7 +802,7 @@ class UserDataService {
         }
     }
     
-    private func launchCleanUp() {
+    fileprivate func launchCleanUp() {
         if !self.isRememberUser {
             username = nil
             password = nil

@@ -9,41 +9,41 @@
 import Foundation
 import CoreData
 
-public class LabelboxViewModelImpl : MailboxViewModel {
+class LabelboxViewModelImpl : MailboxViewModel {
     
-    private var label : Label!
+    fileprivate var label : Label!
     
     init(label : Label) {
         super.init()
         self.label = label
     }
     
-    public override func showLocation () -> Bool {
+    open override func showLocation () -> Bool {
         return true
     }
     
-    public override func ignoredLocationTitle() -> String {
+    open override func ignoredLocationTitle() -> String {
         return self.label.exclusive ? self.label.name : ""
     }
     
-    public func stayAfterAction () -> Bool {
+    open func stayAfterAction () -> Bool {
         return true
     }
     
-    override public func getNavigationTitle() -> String {
+    override open func getNavigationTitle() -> String {
         return self.label.name
     }
     
-    public override func getSwipeTitle(action: MessageSwipeAction) -> String {
+    open override func getSwipeTitle(_ action: MessageSwipeAction) -> String {
         return action.description;
     }
     
-    public override func stayAfterAction (action: MessageSwipeAction) -> Bool {
+    open override func stayAfterAction (_ action: MessageSwipeAction) -> Bool {
         return true
     }
     
-    public override func deleteMessage(msg: Message) -> Bool {
-        msg.removeLocationFromLabels(msg.location, location: .trash, keepSent: true)
+    open override func deleteMessage(_ msg: Message) -> Bool {
+        msg.removeLocationFromLabels(currentlocation: msg.location, location: .trash, keepSent: true)
         msg.needsUpdate = true
         msg.location = .trash
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
@@ -52,7 +52,7 @@ public class LabelboxViewModelImpl : MailboxViewModel {
         return true
     }
 
-    public override func getFetchedResultsController() -> NSFetchedResultsController? {
+    open override func getFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult>? {
         let fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLabels(self.label)
         if let fetchedResultsController = fetchedResultsController {
             do {
@@ -64,22 +64,22 @@ public class LabelboxViewModelImpl : MailboxViewModel {
         return fetchedResultsController
     }
     
-    private func getLabelID() -> String {
+    fileprivate func getLabelID() -> String {
         if label.managedObjectContext != nil {
             return label.labelID
         }
         return "unknown"
     }
     
-    public override func lastUpdateTime() -> LastUpdatedStore.UpdateTime {
+    override func lastUpdateTime() -> UpdateTime {
         return lastUpdatedStore.labelsLastForKey(self.getLabelID())
     }
     
-    override func fetchMessages(MessageID: String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
+    override func fetchMessages(_ MessageID: String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
         sharedMessageDataService.fetchMessagesForLabels(self.getLabelID(), MessageID: MessageID, Time:Time, foucsClean: foucsClean, completion:completion)
     }
     
-    override func fetchNewMessages(notificationMessageID:String?, Time: Int, completion: CompletionBlock?) {
+    override func fetchNewMessages(_ notificationMessageID:String?, Time: Int, completion: CompletionBlock?) {
         sharedMessageDataService.fetchNewMessagesForLabels(self.getLabelID(), Time: Time, notificationMessageID: notificationMessageID, completion: completion)
     }
     

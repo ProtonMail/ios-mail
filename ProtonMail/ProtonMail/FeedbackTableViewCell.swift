@@ -23,7 +23,7 @@ class FeedbackTableViewCell: UITableViewCell {
     }
     
     
-    func configCell(item : FeedbackItem?) {
+    func configCell(_ item : FeedbackItem?) {
         if let item = item {
             iconView.image = UIImage(named: item.image)
             labelView.text = item.title

@@ -26,10 +26,10 @@ extension Label {
     // MARK: - Public methods
     
     convenience init(context: NSManagedObjectContext) {
-        self.init(entity: NSEntityDescription.entityForName(Attributes.entityName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
+        self.init(entity: NSEntityDescription.entity(forEntityName: Attributes.entityName, in: context)!, insertInto: context)
     }
     
-    public override func awakeFromInsert() {
+    open override func awakeFromInsert() {
         super.awakeFromInsert()
         replaceNilStringAttributesWithEmptyString()
     }
@@ -39,7 +39,7 @@ extension Label {
         context.deleteAll(Attributes.entityName)
     }
     
-    class func labelForLableID(labelID: String, inManagedObjectContext context: NSManagedObjectContext) -> Label? {
+    class func labelForLableID(_ labelID: String, inManagedObjectContext context: NSManagedObjectContext) -> Label? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.labelID, matchingValue: labelID) as? Label
     }
 }

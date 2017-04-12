@@ -20,9 +20,9 @@ import Foundation
 
 import Foundation
 
-public class FolderApplyViewModelImpl : LabelViewModel {
-    private var messages : [Message]!
-    private var labelMessages : Dictionary<String, LabelMessageModel>!
+open class FolderApplyViewModelImpl : LabelViewModel {
+    fileprivate var messages : [Message]!
+    fileprivate var labelMessages : Dictionary<String, LabelMessageModel>!
     
     init(msg:[Message]!) {
         super.init()
@@ -30,19 +30,19 @@ public class FolderApplyViewModelImpl : LabelViewModel {
         self.labelMessages = Dictionary<String, LabelMessageModel>()
     }
     
-    override public func showArchiveOption() -> Bool {
+    override open func showArchiveOption() -> Bool {
         return false;
     }
     
-    public override func getApplyButtonText() -> String {
+    open override func getApplyButtonText() -> String {
         return NSLocalizedString("Apply")
     }
     
-    public override func getCancelButtonText() -> String {
+    open override func getCancelButtonText() -> String {
         return NSLocalizedString("Cancel")
     }
     
-    override public func getLabelMessage( label : Label!) -> LabelMessageModel! {
+    override open func getLabelMessage( _ label : Label!) -> LabelMessageModel! {
         if let outVar = self.labelMessages[label.labelID] {
             return outVar
         } else {
@@ -50,7 +50,7 @@ public class FolderApplyViewModelImpl : LabelViewModel {
             lmm.label = label
             lmm.totalMessages = self.messages;
             for  m  in self.messages {
-                let labels = m.mutableSetValueForKey("labels")
+                let labels = m.mutableSetValue(forKey: "labels")
                 for lb in labels {
                     if let lb = lb as? Label {
                         if lb.labelID == lmm.label.labelID {
@@ -76,7 +76,7 @@ public class FolderApplyViewModelImpl : LabelViewModel {
     }
     
     
-    public override func cellClicked(label: Label!) {
+    open override func cellClicked(_ label: Label!) {
         
         for (_, model) in self.labelMessages {
             if model.label == label {
@@ -95,7 +95,7 @@ public class FolderApplyViewModelImpl : LabelViewModel {
         }
     }
     
-    override public func apply(archiveMessage : Bool) -> Bool {
+    override open func apply(archiveMessage : Bool) -> Bool {
         var changed : Bool = false
         let context = sharedCoreDataService.newMainManagedObjectContext()
         for (key, value) in self.labelMessages {
@@ -103,9 +103,9 @@ public class FolderApplyViewModelImpl : LabelViewModel {
                 let ids = self.messages.map { ($0).messageID }
                 let api = ApplyLabelToMessageRequest(labelID: key, messages: ids)
                 api.call(nil)
-                context.performBlockAndWait { () -> Void in
+                context.performAndWait { () -> Void in
                     for mm in self.messages {
-                        let labelObjs = mm.mutableSetValueForKey("labels")
+                        let labelObjs = mm.mutableSetValue(forKey: "labels")
                         var needsDelete : [Label] = []
                         for lo in labelObjs {
                             if let l = lo as? Label {
@@ -124,10 +124,10 @@ public class FolderApplyViewModelImpl : LabelViewModel {
                             }
                         }
                         for l in needsDelete {
-                            labelObjs.removeObject(l)
+                            labelObjs.remove(l)
                             changed = true
                         }
-                        labelObjs.addObject(value.label)
+                        labelObjs.add(value.label)
                         mm.setValue(labelObjs, forKey: "labels")
                     }
                 }
@@ -141,11 +141,11 @@ public class FolderApplyViewModelImpl : LabelViewModel {
         return changed
     }
     
-    override public func getTitle() -> String {
+    override open func getTitle() -> String {
         return NSLocalizedString("Move to Folder")
     }
     
-    override public func cancel() {
+    override open func cancel() {
 //        let context = sharedCoreDataService.newMainManagedObjectContext()
 //        for (_, value) in self.labelMessages {
 //            
@@ -168,12 +168,12 @@ public class FolderApplyViewModelImpl : LabelViewModel {
 //        }
     }
     
-    public override func fetchController() -> NSFetchedResultsController? {
+    open override func fetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
         return sharedLabelsDataService.fetchedResultsController(.folder)
     }
     
     
-    public override func getFetchType() -> LabelFetchType {
+    open override func getFetchType() -> LabelFetchType {
         return .folder
     }
 

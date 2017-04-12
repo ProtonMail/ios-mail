@@ -14,27 +14,27 @@ import Photos
 
 protocol AttachmentsTableViewControllerDelegate {
     
-    func attachments(attViewController: AttachmentsTableViewController, didFinishPickingAttachments: [AnyObject]) -> Void
+    func attachments(_ attViewController: AttachmentsTableViewController, didFinishPickingAttachments: [Any]) -> Void
     
-    func attachments(attViewController: AttachmentsTableViewController, didPickedAttachment: Attachment) -> Void
+    func attachments(_ attViewController: AttachmentsTableViewController, didPickedAttachment: Attachment) -> Void
     
-    func attachments(attViewController: AttachmentsTableViewController, didDeletedAttachment: Attachment) -> Void
+    func attachments(_ attViewController: AttachmentsTableViewController, didDeletedAttachment: Attachment) -> Void
     
-    func attachments(attViewController: AttachmentsTableViewController, didReachedSizeLimitation: Int) -> Void
+    func attachments(_ attViewController: AttachmentsTableViewController, didReachedSizeLimitation: Int) -> Void
     
-    func attachments(attViewController: AttachmentsTableViewController, error: String) -> Void
+    func attachments(_ attViewController: AttachmentsTableViewController, error: String) -> Void
 }
 
 public enum AttachmentSections: Int {
-    case Normal = 1
-    case Inline = 2
+    case normal = 1
+    case inline = 2
     
     public var actionTitle : String {
         get {
             switch(self) {
-            case Normal:
+            case .normal:
                 return NSLocalizedString("normal attachments")
-            case Inline:
+            case .inline:
                 return NSLocalizedString("inline attachments")
             }
         }
@@ -42,9 +42,9 @@ public enum AttachmentSections: Int {
 }
 
 class AttachmentsTableViewController: UITableViewController {
-    private let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000
+    fileprivate let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000
     
-    private var currentAttachmentSize : Int = 0
+    fileprivate var currentAttachmentSize : Int = 0
     
     var attachments: [Attachment] = [] {
         didSet {
@@ -72,11 +72,11 @@ class AttachmentsTableViewController: UITableViewController {
         attachmentSections.removeAll()
         
         if normalAttachments.count > 0 {
-            attachmentSections.append(.Normal)
+            attachmentSections.append(.normal)
         }
         
         if inlineAttachments.count > 0 {
-            attachmentSections.append(.Inline)
+            attachmentSections.append(.inline)
         }
     }
     
@@ -87,8 +87,8 @@ class AttachmentsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.registerNib(UINib(nibName: "AttachmentTableViewCell", bundle: nil), forCellReuseIdentifier: AttachmentTableViewCell.Constant.identifier)
-        self.tableView.separatorStyle = .None
+        self.tableView.register(UINib(nibName: "AttachmentTableViewCell", bundle: nil), forCellReuseIdentifier: AttachmentTableViewCell.Constant.identifier)
+        self.tableView.separatorStyle = .none
         
         if let navigationController = navigationController {
             configureNavigationBar(navigationController)
@@ -98,24 +98,24 @@ class AttachmentsTableViewController: UITableViewController {
         self.clearsSelectionOnViewWillAppear = false
     }
     
-    func configureNavigationBar(navigationController: UINavigationController) {
-        navigationController.navigationBar.barStyle = UIBarStyle.Black
+    func configureNavigationBar(_ navigationController: UINavigationController) {
+        navigationController.navigationBar.barStyle = UIBarStyle.black
         navigationController.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;
-        navigationController.navigationBar.translucent = false
-        navigationController.navigationBar.tintColor = UIColor.whiteColor()
+        navigationController.navigationBar.isTranslucent = false
+        navigationController.navigationBar.tintColor = UIColor.white
         
         let navigationBarTitleFont = UIFont.robotoLight(size: UIFont.Size.h2)
         navigationController.navigationBar.titleTextAttributes = [
-            NSForegroundColorAttributeName: UIColor.whiteColor(),
+            NSForegroundColorAttributeName: UIColor.white,
             NSFontAttributeName: navigationBarTitleFont
         ]
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.updateAttachmentSize()
     }
     
-    override func shouldAutorotate() -> Bool {
+    override var shouldAutorotate : Bool {
         return true
     }
     
@@ -126,40 +126,40 @@ class AttachmentsTableViewController: UITableViewController {
     internal func updateAttachmentSize () {
         self.currentAttachmentSize = 0
         for att in attachments {
-            let fileSize = att.fileSize.integerValue
+            let fileSize = att.fileSize.intValue
             if fileSize > 0 {
                 self.currentAttachmentSize =  self.currentAttachmentSize + fileSize
             }
         }
     }
     
-    @IBAction func doneAction(sender: AnyObject) {
+    @IBAction func doneAction(_ sender: AnyObject) {
         self.delegate?.attachments(self, didFinishPickingAttachments: attachments)
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func addAction(sender: UIBarButtonItem) {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+    @IBAction func addAction(_ sender: UIBarButtonItem) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Photo Library"), style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Photo Library"), style: UIAlertActionStyle.default, handler: { (action) -> Void in
             let picker: UIImagePickerController = PMImagePickerController()
             picker.delegate = self
-            picker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+            picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
             picker.mediaTypes = [kUTTypeMovie as String, kUTTypeVideo as String, kUTTypeImage as String]
             
-            self.presentViewController(picker, animated: true, completion: nil)
+            self.present(picker, animated: true, completion: nil)
         }))
         
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Take a Photo"), style: UIAlertActionStyle.Default, handler: { (action) -> Void in
-            if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)) {
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Take a Photo"), style: UIAlertActionStyle.default, handler: { (action) -> Void in
+            if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)) {
                 let picker: UIImagePickerController = UIImagePickerController()
                 picker.delegate = self
-                picker.sourceType = UIImagePickerControllerSourceType.Camera
-                self.presentViewController(picker, animated: true, completion: nil)
+                picker.sourceType = UIImagePickerControllerSourceType.camera
+                self.present(picker, animated: true, completion: nil)
             }
         }))
         
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Import File From..."), style: UIAlertActionStyle.Default, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Import File From..."), style: UIAlertActionStyle.default, handler: { (action) -> Void in
             let types = [
                 kUTTypeMovie as String,
                 kUTTypeImage as String,
@@ -168,103 +168,101 @@ class AttachmentsTableViewController: UITableViewController {
                 kUTTypeGNUZipArchive as String,
                 kUTTypeBzip2Archive as String,
                 kUTTypeZipArchive as String,
-                kUTTypeData as String,
-                "rar",
-                "RAR"
+                kUTTypeData as String
+//                "rar",
+//                "RAR"
             ]
-            let importMenu = UIDocumentMenuViewController(documentTypes: types, inMode: .Import)
+            let importMenu = UIDocumentMenuViewController(documentTypes: types, in: .import)
             importMenu.delegate = self
             importMenu.popoverPresentationController?.barButtonItem = sender
             importMenu.popoverPresentationController?.sourceRect = self.view.frame
             // importMenu.addOptionWithTitle("Create New Document", image: nil, order: .First, handler: { println("New Doc Requested") })
-            self.presentViewController(importMenu, animated: true, completion: nil)
+            self.present(importMenu, animated: true, completion: nil)
         }))
         
         alertController.popoverPresentationController?.barButtonItem = sender
         alertController.popoverPresentationController?.sourceRect = self.view.frame
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: UIAlertActionStyle.Cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: UIAlertActionStyle.cancel, handler: nil))
         
-        presentViewController(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
     
-    func showSizeErrorAlert( didReachedSizeLimitation: Int) {
+    func showSizeErrorAlert( _ didReachedSizeLimitation: Int) {
         let alert = NSLocalizedString("The total attachment size can't be bigger than 25MB").alertController()
         alert.addOKAction()
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
     
-    func showErrorAlert( error: String) {
+    func showErrorAlert( _ error: String) {
         let alert = NSLocalizedString(error).alertController()
         alert.addOKAction()
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
     
     
     // MARK: - Table view data source
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         
         return attachmentSections.count
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let section = attachmentSections[section]
         switch section {
-        case .Normal:
+        case .normal:
             return normalAttachments.count
-        case .Inline:
+        case .inline:
             return inlineAttachments.count
         }
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(AttachmentTableViewCell.Constant.identifier, forIndexPath: indexPath) as! AttachmentTableViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: AttachmentTableViewCell.Constant.identifier, for: indexPath) as! AttachmentTableViewCell
         
         let section = attachmentSections[indexPath.section]
         var attachment : Attachment?
         switch section {
-        case .Normal:
+        case .normal:
             attachment = normalAttachments[indexPath.row] as Attachment
             
-        case .Inline:
+        case .inline:
             attachment = inlineAttachments[indexPath.row] as Attachment
         }
         
         if let att = attachment {
-            PMLog.D("\(att)")
-            PMLog.D("\(att.fileName)")
-            cell.configCell(att.fileName ?? "unknow file", fileSize:  Int(att.fileSize ?? 0), showDownload: false)
+            cell.configCell(att.fileName, fileSize:  Int(att.fileSize), showDownload: false)
             
             let crossView = UILabel();
             crossView.text = NSLocalizedString("Remove")
             crossView.sizeToFit()
-            crossView.textColor = UIColor.whiteColor()
-            cell.defaultColor = UIColor.lightGrayColor()
-            cell.setSwipeGestureWithView(crossView, color: UIColor.ProtonMail.MessageActionTintColor, mode: MCSwipeTableViewCellMode.Exit, state: MCSwipeTableViewCellState.State3  ) { (cell, state, mode) -> Void in
-                if let indexp = self.tableView.indexPathForCell(cell) {
+            crossView.textColor = UIColor.white
+            cell.defaultColor = UIColor.lightGray
+            cell.setSwipeGestureWith(crossView, color: UIColor.ProtonMail.MessageActionTintColor, mode: MCSwipeTableViewCellMode.exit, state: MCSwipeTableViewCellState.state3  ) { (cell, state, mode) -> Void in
+                if let indexp = self.tableView.indexPath(for: cell!) {
                     let section = self.attachmentSections[indexp.section]
                     var cellAtt : Attachment?
                     switch section {
-                    case .Normal:
+                    case .normal:
                         cellAtt = self.normalAttachments[indexp.row] as Attachment
-                    case .Inline:
+                    case .inline:
                         cellAtt = self.inlineAttachments[indexp.row] as Attachment
                     }
                     
                     if let att = cellAtt {
                         if att.attachmentID != "0" {
                             self.delegate?.attachments(self, didDeletedAttachment: att)
-                            if let index = self.attachments.indexOf(att) {
-                                self.attachments.removeAtIndex(index)
+                            if let index = self.attachments.index(of: att) {
+                                self.attachments.remove(at: index)
                             }
                             
                             self.buildAttachments()
                             self.tableView.reloadData()
                         } else {
-                            cell.swipeToOriginWithCompletion(nil)
+                            cell?.swipeToOrigin(completion: nil)
                         }
                     } else {
-                        cell.swipeToOriginWithCompletion(nil)
+                        cell?.swipeToOrigin(completion: nil)
                     }
                 } else {
                     
@@ -274,51 +272,51 @@ class AttachmentsTableViewController: UITableViewController {
             }
         }
         
-        cell.selectionStyle = .None;
+        cell.selectionStyle = .none;
         return cell
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44;
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let section = attachmentSections[section]
         return section.actionTitle
     }
     
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 20
     }
     
-    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
     {
         let header = view as! UITableViewHeaderFooterView
-        header.textLabel?.font = UIFont.systemFontOfSize(12)
-        header.textLabel?.textColor = UIColor.grayColor()
+        header.textLabel?.font = UIFont.systemFont(ofSize: 12)
+        header.textLabel?.textColor = UIColor.gray
     }
 }
 
 extension AttachmentsTableViewController : UIDocumentMenuDelegate {
     
-    func documentMenu(documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
+    func documentMenu(_ documentMenu: UIDocumentMenuViewController, didPickDocumentPicker documentPicker: UIDocumentPickerViewController) {
         documentPicker.delegate = self
-        documentPicker.modalPresentationStyle = UIModalPresentationStyle.FormSheet
-        self.presentViewController(documentPicker, animated: true, completion: nil)
+        documentPicker.modalPresentationStyle = UIModalPresentationStyle.formSheet
+        self.present(documentPicker, animated: true, completion: nil)
     }
 }
 
 extension AttachmentsTableViewController: UIDocumentPickerDelegate {
     
-    func documentPicker(controller: UIDocumentPickerViewController, didPickDocumentAtURL url: NSURL) {
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
         let coordinator : NSFileCoordinator = NSFileCoordinator(filePresenter: nil)
         var error : NSError?
-        coordinator.coordinateReadingItemAtURL(url, options: NSFileCoordinatorReadingOptions(), error: &error) { (new_url) -> Void in
-            if let data = NSData(contentsOfURL: url) {
-                dispatch_async(dispatch_get_main_queue()) {
-                    if data.length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
+        coordinator.coordinate(readingItemAt: url, options: NSFileCoordinator.ReadingOptions(), error: &error) { (new_url) -> Void in
+            if let data = try? Data(contentsOf: url) {
+                DispatchQueue.main.async {
+                    if data.count <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
                         let ext = url.mimeType()
-                        let fileName = url.lastPathComponent ?? "\(NSUUID().UUIDString)"
+                        let fileName = url.lastPathComponent
                         let attachment = data.toAttachment(self.message, fileName: fileName, type: ext)
                         self.attachments.append(attachment!)
                         self.delegate?.attachments(self, didPickedAttachment: attachment!)
@@ -331,21 +329,21 @@ extension AttachmentsTableViewController: UIDocumentPickerDelegate {
                     }
                 }
             } else {
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     self.showErrorAlert("Can't load the file")
                     self.delegate?.attachments(self, error:"Can't load the file")
                 }
             }
         }
         if error != nil {
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 self.showErrorAlert("Can't copy the file")
                 self.delegate?.attachments(self, error:"Can't copy the file")
             }
         }
     }
     
-    func documentPickerWasCancelled(controller: UIDocumentPickerViewController) {
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
         PMLog.D("")
     }
     
@@ -353,136 +351,112 @@ extension AttachmentsTableViewController: UIDocumentPickerDelegate {
 
 extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-        if let url = info[UIImagePickerControllerReferenceURL] as? NSURL, let asset = PHAsset.fetchAssetsWithALAssetURLs([url], options: nil).firstObject as? PHAsset {
-            if asset.mediaType == .Video {
+    internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let url = info[UIImagePickerControllerReferenceURL] as? NSURL, let asset = PHAsset.fetchAssets(withALAssetURLs: [url as URL], options: nil).firstObject {
+            if asset.mediaType == .video {
                 let options = PHVideoRequestOptions()
-                PHImageManager.defaultManager().requestAVAssetForVideo(asset, options:options, resultHandler:
-                    { (asset: AVAsset?, audioMix: AVAudioMix?, info: [NSObject : AnyObject]?) in
-                        
-                        if let error = info?[PHImageErrorKey] as? NSError {
-                            dispatch_async(dispatch_get_main_queue()) {
-                                picker.dismissViewControllerAnimated(true, completion: nil)
-                                self.showErrorAlert(error.debugDescription)
-                                self.delegate?.attachments(self, error:error.debugDescription)
-                            }
-                            return
+                PHImageManager.default().requestAVAsset(forVideo: asset, options: options, resultHandler: { (asset: AVAsset?, audioMix: AVAudioMix?, info:[AnyHashable : Any]?) in
+                    
+                    if let error = info?[PHImageErrorKey] as? NSError {
+                        DispatchQueue.main.async() {
+                            picker.dismiss(animated: true, completion: nil)
+                            self.showErrorAlert(error.debugDescription)
+                            self.delegate?.attachments(self, error:error.debugDescription)
                         }
-                        
-                        guard let asset = asset as? AVURLAsset, let image_data = NSData(contentsOfURL: asset.URL), let info = info where image_data.length > 0 else {
-                            dispatch_async(dispatch_get_main_queue()) {
-                                picker.dismissViewControllerAnimated(true, completion: nil)
-//                                self.showErrorAlert("The file is too big")
-//                                self.delegate?.attachments(self, error:"The file is too big")
-                                self.showSizeErrorAlert(0)
-                                self.delegate?.attachments(self, didReachedSizeLimitation:0)
-                            }
-                            return
+                        return
+                    }
+                    guard let asset = asset as? AVURLAsset, let image_data = try? Data(contentsOf: asset.url), let info = info, image_data.count > 0 else {
+                        DispatchQueue.main.async() {
+                            picker.dismiss(animated: true, completion: nil)
+                            self.showSizeErrorAlert(0)
+                            self.delegate?.attachments(self, didReachedSizeLimitation:0)
                         }
-                        
-                        let video_url = asset.URL;
-                        var fileName = "\(NSUUID().UUIDString).mp4"
-                        if let url_filename = video_url.lastPathComponent {
-                            fileName = url_filename
-                        }
-                        let uti = fileName.mimeType()
-                        let length = image_data.length
-                        if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
-                            dispatch_async(dispatch_get_main_queue()) {
-                                picker.dismissViewControllerAnimated(true, completion: nil)
-                                if self.message.managedObjectContext != nil {
-                                    let attachment = image_data.toAttachment(self.message, fileName: fileName, type: uti)
-                                    self.attachments.append(attachment!)
-                                    self.delegate?.attachments(self, didPickedAttachment: attachment!)
-                                } else {
-                                    PMLog.D(" Error during copying size incorrect")
-                                    self.showErrorAlert("System can't copy the file")
-                                    self.delegate?.attachments(self, error:"System can't copy the file")
-                                }
-                            }
-                        } else {
-                            dispatch_async(dispatch_get_main_queue()) {
-                                picker.dismissViewControllerAnimated(true, completion: nil)
-                                self.showSizeErrorAlert(0)
-                                self.delegate?.attachments(self, didReachedSizeLimitation:0)
-                                PMLog.D(" Size too big Orig: \(length) -- Limit: \(self.kDefaultAttachmentFileSize)")
+                        return
+                    }
+                    
+                    let video_url = asset.url;
+                    var fileName = "\(NSUUID().uuidString).mp4"
+                    let url_filename = video_url.lastPathComponent
+                    fileName = url_filename
+                    
+                    let uti = fileName.mimeType()
+                    let length = image_data.count
+                    if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
+                        DispatchQueue.main.async() {
+                            picker.dismiss(animated: true, completion: nil)
+                            if self.message.managedObjectContext != nil {
+                                let attachment = image_data.toAttachment(self.message, fileName: fileName, type: uti)
+                                self.attachments.append(attachment!)
+                                self.delegate?.attachments(self, didPickedAttachment: attachment!)
+                            } else {
+                                PMLog.D(" Error during copying size incorrect")
+                                self.showErrorAlert("System can't copy the file")
+                                self.delegate?.attachments(self, error:"System can't copy the file")
                             }
                         }
+                    } else {
+                        DispatchQueue.main.async() {
+                            picker.dismiss(animated: true, completion: nil)
+                            self.showSizeErrorAlert(0)
+                            self.delegate?.attachments(self, didReachedSizeLimitation:0)
+                            PMLog.D(" Size too big Orig: \(length) -- Limit: \(self.kDefaultAttachmentFileSize)")
+                        }
+                    }
+                
                 })
             }
-                //            else if asset.mediaType == .Audio {
-                //
-                //            }
             else {
                 let options = PHImageRequestOptions()
-                PHImageManager.defaultManager().requestImageDataForAsset(asset, options: options, resultHandler:
-                    { (imagedata, dataUTI, orientation, info) in
-                        defer {
-                            dispatch_async(dispatch_get_main_queue()) {
-                                self.buildAttachments()
-                                self.tableView.reloadData()
+                PHImageManager.default().requestImageData(for: asset, options: options, resultHandler: { (imagedata: Data?, dataUTI: String?, orientation: UIImageOrientation, info:[AnyHashable : Any]?) in
+                    defer {
+                        DispatchQueue.main.async() {
+                            self.buildAttachments()
+                            self.tableView.reloadData()
+                        }
+                    }
+                    guard let image_data = imagedata, /* let _ = dataUTI,*/ let info = info, image_data.count > 0 else {
+                        DispatchQueue.main.async() {
+                            picker.dismiss(animated: true, completion: nil)
+                            self.showErrorAlert("Can't open the file")
+                            self.delegate?.attachments(self, error:"Can't open the file")
+                        }
+                        return
+                    }
+                    var fileName = "\(NSUUID().uuidString).jpg"
+                    if let url = info["PHImageFileURLKey"] as? NSURL, let url_filename = url.lastPathComponent {
+                        fileName = url_filename
+                    }
+                    let uti = fileName.mimeType()
+                    let length = image_data.count
+                    if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
+                        DispatchQueue.main.async() {
+                            picker.dismiss(animated: true, completion: nil)
+                            if self.message.managedObjectContext != nil {
+                                let attachment = image_data.toAttachment(self.message, fileName: fileName, type: uti)
+                                self.attachments.append(attachment!)
+                                self.delegate?.attachments(self, didPickedAttachment: attachment!)
+                            } else {
+                                PMLog.D(" Error during copying size incorrect")
+                                self.showErrorAlert("Can't copy the file")
+                                self.delegate?.attachments(self, error:"Can't copy the file")
                             }
                         }
-                        guard let image_data = imagedata, /* let _ = dataUTI,*/ let info = info where image_data.length > 0 else {
-                            dispatch_async(dispatch_get_main_queue()) {
-                                picker.dismissViewControllerAnimated(true, completion: nil)
-                                self.showErrorAlert("Can't open the file")
-                                self.delegate?.attachments(self, error:"Can't open the file")
-                            }
-                            return
+                    } else {
+                        DispatchQueue.main.async() {
+                            picker.dismiss(animated: true, completion: nil)
+                            self.showSizeErrorAlert(0)
+                            self.delegate?.attachments(self, didReachedSizeLimitation:0)
+                            PMLog.D(" Size too big Orig: \(length) -- Limit: \(self.kDefaultAttachmentFileSize)")
                         }
-                        var fileName = "\(NSUUID().UUIDString).jpg"
-                        if let url_filename = info["PHImageFileURLKey"]?.lastPathComponent {
-                            fileName = url_filename
-                        }
-                        let uti = fileName.mimeType()
-                        let length = image_data.length
-                        if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
-                            dispatch_async(dispatch_get_main_queue()) {
-                                picker.dismissViewControllerAnimated(true, completion: nil)
-                                if self.message.managedObjectContext != nil {
-                                    let attachment = image_data.toAttachment(self.message, fileName: fileName, type: uti)
-                                    self.attachments.append(attachment!)
-                                    self.delegate?.attachments(self, didPickedAttachment: attachment!)
-                                } else {
-                                    PMLog.D(" Error during copying size incorrect")
-                                    self.showErrorAlert("Can't copy the file")
-                                    self.delegate?.attachments(self, error:"Can't copy the file")
-                                }
-                            }
-                        } else {
-                            dispatch_async(dispatch_get_main_queue()) {
-                                picker.dismissViewControllerAnimated(true, completion: nil)
-                                self.showSizeErrorAlert(0)
-                                self.delegate?.attachments(self, didReachedSizeLimitation:0)
-                                PMLog.D(" Size too big Orig: \(length) -- Limit: \(self.kDefaultAttachmentFileSize)")
-                            }
-                        }
+                    }
                 })
             }
-            //            // Fetch Photos Asset and resize image
-            //            let fetchResult = PHAsset.fetchAssetsWithALAssetURLs([assetURL], options: nil)
-            //            let options = PHImageRequestOptions()
-            //            options.synchronous = false
-            //            options.resizeMode = .Fast
-            //            options.deliveryMode = .HighQualityFormat
-            //
-            //            guard let asset = fetchResult.firstObject as? PHAsset else {
-            //                if let image = dictionary[UIImagePickerControllerOriginalImage] as? UIImage {
-            // TODO Cannot find the associated PhotoKit asset. Resize using one of the techniques discussed on http://nshipster.com/image-resizing/
-            //                }
-            //                return
-            //            }
-            //            // Request resized image
-            //            PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: CGSize(width: 1024, height: 1024), contentMode: .AspectFit, options: options, resultHandler: { (image, _) -> Void in
-            //                // image is the resized image
-            //            })
         } else if let originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage {//edge case here, may never go here
-            picker.dismissViewControllerAnimated(true, completion: nil)
-            let fileName = "\(NSUUID().UUIDString).PNG"
+            picker.dismiss(animated: true, completion: nil)
+            let fileName = "\(NSUUID().uuidString).PNG"
             let mimeType = "image/png"
             let attachment = originalImage.toAttachment(self.message, fileName: fileName, type: mimeType)
-            let length = attachment?.fileSize.longValue ?? 0
+            let length = attachment?.fileSize.intValue ?? 0
             if length <= ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize ) {
                 if self.message.managedObjectContext != nil {
                     self.attachments.append(attachment!)
@@ -500,7 +474,7 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
             self.buildAttachments()
             self.tableView.reloadData()
         } else {
-            picker.dismissViewControllerAnimated(true, completion: nil)
+            picker.dismiss(animated: true, completion: nil)
             self.showErrorAlert("Can't copy the file")
             self.delegate?.attachments(self, error:"Can't copy the file")
             self.buildAttachments()
@@ -508,12 +482,12 @@ extension AttachmentsTableViewController: UIImagePickerControllerDelegate, UINav
         }
     }
     
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        picker.dismissViewControllerAnimated(true, completion: nil)
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
     }
     
-    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
-        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: false)
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        UIApplication.shared.setStatusBarStyle(UIStatusBarStyle.lightContent, animated: false)
         configureNavigationBar(navigationController)
     }
 }

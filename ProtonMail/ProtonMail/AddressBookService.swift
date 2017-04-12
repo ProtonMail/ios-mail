@@ -16,9 +16,9 @@ let sharedAddressBookService = AddressBookService()
 
 class AddressBookService {
     
-    typealias AuthorizationCompletionBlock = (granted: Bool, error: NSError!) -> Void
+    typealias AuthorizationCompletionBlock = (_ granted: Bool, _ error: Error?) -> Void
     
-    private var addressBook: RHAddressBook!
+    fileprivate var addressBook: RHAddressBook!
     
     init() {
         addressBook = RHAddressBook()
@@ -28,23 +28,23 @@ class AddressBookService {
         return RHAddressBook.authorizationStatus() == RHAuthorizationStatusAuthorized
     }
     
-    func requestAuthorizationWithCompletion(completion: AuthorizationCompletionBlock) {
+    func requestAuthorizationWithCompletion(_ completion: @escaping AuthorizationCompletionBlock) {
         if let addressBook = addressBook {
-            addressBook.requestAuthorizationWithCompletion(completion)
+            addressBook.requestAuthorization(completion: completion)
         } else {
-            completion(granted: false, error: nil)
+            completion(false, nil)
         }
     }
     
-    func contactsWith(name: String?, email: String?) -> NSArray {
+    func contactsWith(_ name: String?, email: String?) -> NSArray {
         let filteredPeople = NSMutableArray()
         
         if let name = name {
-            filteredPeople.addObjectsFromArray(addressBook.peopleWithName(name))
+            filteredPeople.addObjects(from: addressBook.people(withName: name))
         }
         
         if let email = email {
-            filteredPeople.addObjectsFromArray(addressBook.peopleWithEmail(email))
+            filteredPeople.addObjects(from: addressBook.people(withEmail: email))
         }
         
         return filteredPeople
@@ -59,9 +59,9 @@ class AddressBookService {
                 let count = UInt(emails.count())
                 for emailIndex in 0 ..< count {
                     let index = UInt(emailIndex)
-                    if let emailAsString = emails.valueAtIndex(index) as? String {
+                    if let emailAsString = emails.value(at: index) as? String {
                         
-                        dispatch_sync(dispatch_get_main_queue()) {
+                        DispatchQueue.main.sync {
                             if (emailAsString.isValidEmail()) {
                                 let email = emailAsString
                                 if (name == nil) {

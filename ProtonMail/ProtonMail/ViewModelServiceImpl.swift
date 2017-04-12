@@ -11,8 +11,8 @@ import Foundation
 let sharedVMService : ViewModelService = ViewModelServiceImpl()
 class ViewModelServiceImpl: ViewModelService {
     
-    private var latestComposerViewModel : ComposeViewModel?
-    private var latestComposerViewController : ViewModelProtocol?
+    fileprivate var latestComposerViewModel : ComposeViewModel?
+    fileprivate var latestComposerViewController : ViewModelProtocol?
     
     
     override func signOut() {
@@ -25,56 +25,57 @@ class ViewModelServiceImpl: ViewModelService {
     
     override func resetComposerView() {
         if latestComposerViewController != nil {
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 self.latestComposerViewController?.inactiveViewModel()
+                self.latestComposerViewController = nil
             }
-            latestComposerViewController = nil
         }
         latestComposerViewModel = nil
     }
     
-    override func newDraftViewModel(vmp : ViewModelProtocol) {
+    override func newDraftViewModel(_ vmp : ViewModelProtocol) {
         if latestComposerViewModel != nil {
-            //latestComposerViewModel.inactive
+            
         }
         
         if latestComposerViewController != nil {
-            //vmp.inactive
+            
         }
         
         latestComposerViewController = vmp
-        latestComposerViewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.NewDraft);
+        latestComposerViewModel = ComposeViewModelImpl(msg: nil, action: .newDraft);
         vmp.setViewModel(latestComposerViewModel!)
     }
     
     
-    override func newDraftViewModelWithContact(vmp : ViewModelProtocol, contact: ContactVO!) {
+    override func newDraftViewModelWithContact(_ vmp : ViewModelProtocol, contact: ContactVO!) {
         if latestComposerViewModel != nil {
-            //latestComposerViewModel.inactive
+            
         }
         
         if latestComposerViewController != nil {
-            //vmp.inactive
+            
         }
         
         latestComposerViewController = vmp
-        latestComposerViewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.NewDraft);
+        latestComposerViewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft);
         latestComposerViewModel?.addToContacts(contact)
         vmp.setViewModel(latestComposerViewModel!)
     }
     
-    override func newDraftViewModelWithMailTo(vmp: ViewModelProtocol, url: NSURL?) {
+    override func newDraftViewModelWithMailTo(_ vmp: ViewModelProtocol, url: URL?) {
         if latestComposerViewModel != nil {
-            //latestComposerViewModel.inactive
+            
         }
         if latestComposerViewController != nil {
-            //vmp.inactive
+            
         }
         latestComposerViewController = vmp
-        latestComposerViewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.NewDraft);
+        latestComposerViewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft);
 
-        if let checkedUrl : NSURL = url where checkedUrl.scheme == "mailto" {
-            var rawURLparts = checkedUrl.resourceSpecifier!.componentsSeparatedByString("?")
+        if let mailTo : NSURL = url as NSURL?, mailTo.scheme == "mailto", let resSpecifier = mailTo.resourceSpecifier {
+            PMLog.D("\(mailTo)")
+            var rawURLparts = resSpecifier.components(separatedBy: "?")
             if (rawURLparts.count > 2) {
                 
             } else {
@@ -88,15 +89,15 @@ class ViewModelServiceImpl: ViewModelService {
                 
                 if (rawURLparts.count == 2) {
                     let queryString = rawURLparts[1]
-                    let params = queryString.componentsSeparatedByString("&")
+                    let params = queryString.components(separatedBy: "&")
                     for param in params {
-                        var keyValue = param.componentsSeparatedByString("=")
+                        var keyValue = param.components(separatedBy: "=")
                         if (keyValue.count != 2) {
                             continue;
                         }
-                        let key = keyValue[0].lowercaseString
-                        var value = keyValue[1] ?? ""
-                        value = value.stringByRemovingPercentEncoding ?? ""
+                        let key = keyValue[0].lowercased()
+                        var value = keyValue[1]
+                        value = value.removingPercentEncoding ?? ""
                         if key == "subject" {
                             PMLog.D("subject: \(value)")
                             latestComposerViewModel?.setSubject(value)
@@ -131,33 +132,31 @@ class ViewModelServiceImpl: ViewModelService {
                 }
             }
         }
-        
         vmp.setViewModel(latestComposerViewModel!)
     }
     
-    override func openDraftViewModel(vmp : ViewModelProtocol, msg: Message!) {
+    override func openDraftViewModel(_ vmp : ViewModelProtocol, msg: Message!) {
         if latestComposerViewModel != nil {
-            //latestComposerViewModel.inactive
+            
         }
         
         if latestComposerViewController != nil {
-            //vmp.inactive
+            
         }
         
         latestComposerViewController = vmp
-        latestComposerViewModel = ComposeViewModelImpl(msg: msg, action: ComposeMessageAction.OpenDraft);
+        latestComposerViewModel = ComposeViewModelImpl(msg: msg, action: ComposeMessageAction.openDraft);
         vmp.setViewModel(latestComposerViewModel!)
     }
     
-    override func actionDraftViewModel(vmp : ViewModelProtocol, msg: Message!, action: ComposeMessageAction) {
+    override func actionDraftViewModel(_ vmp : ViewModelProtocol, msg: Message!, action: ComposeMessageAction) {
         if latestComposerViewModel != nil {
-            //latestComposerViewModel.inactive
+            
         }
         
         if latestComposerViewController != nil {
-            //vmp.inactive
+            
         }
-        
         latestComposerViewController = vmp
         latestComposerViewModel = ComposeViewModelImpl(msg: msg, action: action);
         vmp.setViewModel(latestComposerViewModel!)

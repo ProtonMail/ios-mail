@@ -24,24 +24,24 @@ let FetchUserInfoErrorTitle : String = "UserInfo-Error"
 extension NSError {
     
 
-    func uploadFabricAnswer(title : String ) -> Void {
+    func uploadFabricAnswer(_ title : String ) -> Void {
         
         var ver = "1.0.0"
-        if let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String {
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             ver = version
         }
         
-        Answers.logCustomEventWithName(title,
+        Answers.logCustomEvent(withName: title,
                                        customAttributes: [
                                         "name": sharedUserDataService.username ?? "unknow",
-                                        "DeviceName" : UIDevice.currentDevice().name,
-                                        "DeviceModel" : UIDevice.currentDevice().model,
-                                        "DeviceVersion" : UIDevice.currentDevice().systemVersion,
+                                        "DeviceName" : UIDevice.current.name,
+                                        "DeviceModel" : UIDevice.current.model,
+                                        "DeviceVersion" : UIDevice.current.systemVersion,
                                         "AppVersion" : "iOS_\(ver)",
                                         "code" : code,
                                         "error_desc": description,
                                         "error_full": localizedDescription,
-                                        "error_reason" : "\(localizedFailureReason)"])
+                                        "error_reason" : "\(String(describing: localizedFailureReason))"])
     }
 
 

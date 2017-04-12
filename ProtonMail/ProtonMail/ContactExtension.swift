@@ -29,7 +29,7 @@ extension Contact {
     // MARK: - Public methods
     
     convenience init(context: NSManagedObjectContext) {
-        self.init(entity: NSEntityDescription.entityForName(Attributes.entityName, inManagedObjectContext: context)!, insertIntoManagedObjectContext: context)
+        self.init(entity: NSEntityDescription.entity(forEntityName: Attributes.entityName, in: context)!, insertInto: context)
     }
     
     override func awakeFromInsert() {
@@ -42,7 +42,7 @@ extension Contact {
         context.deleteAll(Attributes.entityName)
     }
     
-    class func contactForContactID(contactID: String, inManagedObjectContext context: NSManagedObjectContext) -> Contact? {
+    class func contactForContactID(_ contactID: String, inManagedObjectContext context: NSManagedObjectContext) -> Contact? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.contactID, matchingValue: contactID) as? Contact
     }
 }

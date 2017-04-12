@@ -8,13 +8,13 @@
 
 import Foundation
 
-extension NSData {
+extension Data {
     
     
     public func stringFromToken() -> String {
-        let tokenChars = UnsafePointer<CChar>(self.bytes)
+        let tokenChars = (self as NSData).bytes.bindMemory(to: CChar.self, capacity: self.count)
         var tokenString = ""
-        for i in 0 ..< self.length {
+        for i in 0 ..< self.count {
             tokenString += String(format: "%02.2hhx", arguments: [tokenChars[i]])
         }
         return tokenString
@@ -23,6 +23,6 @@ extension NSData {
     
     
     func encodeBase64() -> String {
-        return self.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+        return self.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
     }
 }

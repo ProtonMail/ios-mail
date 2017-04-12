@@ -16,13 +16,16 @@
 
 import Foundation
 
-extension NSURL {
+extension URL {
     
-    func excludeFromBackup() {
+    mutating func excludeFromBackup() {
         do {
-            try setResourceValue(true, forKey: NSURLIsExcludedFromBackupKey)
+            var resourceValues = URLResourceValues()
+            resourceValues.isExcludedFromBackup = true
+            try setResourceValues(resourceValues)
         } catch let ex as NSError {
             PMLog.D(" path: \(absoluteString) excludeFromBackup error: \(ex)")
         }
     }
 }
+

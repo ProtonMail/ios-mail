@@ -17,15 +17,15 @@ class SettingsViewController: ProtonMailViewController {
     
     // MARK: - Private constants
     
-    private let kKeyboardOffsetHeight: CGFloat = 100.0
-    private let kFieldsMarginLeft: CGFloat = 8.0
-    private let kFieldsMarginTop: CGFloat = 50.0
-    private let resetMailboxPasswordMessage = NSLocalizedString("All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!")
+    fileprivate let kKeyboardOffsetHeight: CGFloat = 100.0
+    fileprivate let kFieldsMarginLeft: CGFloat = 8.0
+    fileprivate let kFieldsMarginTop: CGFloat = 50.0
+    fileprivate let resetMailboxPasswordMessage = NSLocalizedString("All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!")
     
     
     // MARK: - Private attributes
     
-    private var activeField: UIView!
+    fileprivate var activeField: UIView!
     
     
     // MARK: - Constraint Outlets
@@ -108,15 +108,15 @@ class SettingsViewController: ProtonMailViewController {
 //        }
 //    }
     
-    @IBAction func loginPasswordSaveButtonTapped(sender: UIButton) {
+    @IBAction func loginPasswordSaveButtonTapped(_ sender: UIButton) {
         updatePassword()
     }
     
-    @IBAction func mailboxSaveButtonTapped(sender: UIButton) {
+    @IBAction func mailboxSaveButtonTapped(_ sender: UIButton) {
         updateMailboxPassword()
     }
     
-    @IBAction func displayNameSaveButtonTapped(sender: UIButton) {
+    @IBAction func displayNameSaveButtonTapped(_ sender: UIButton) {
         dismissKeyboard()
         ActivityIndicatorHelper.showActivityIndicatorAtView(view)
         
@@ -127,17 +127,17 @@ class SettingsViewController: ProtonMailViewController {
                 let alertController = error.alertController()
                 alertController.addOKAction()
                 
-                self.presentViewController(alertController, animated: true, completion: nil)
+                self.present(alertController, animated: true, completion: nil)
             } else {
-                let alertController = UIAlertController(title: NSLocalizedString("Display Name Updated"), message: NSLocalizedString("The display name is now \(self.displayNameTextField.text)."), preferredStyle: .Alert)
+                let alertController = UIAlertController(title: NSLocalizedString("Display Name Updated"), message: NSLocalizedString("The display name is now \(String(describing: self.displayNameTextField.text))."), preferredStyle: .alert)
                 alertController.addOKAction()
                 
-                self.presentViewController(alertController, animated: true, completion: nil)
+                self.present(alertController, animated: true, completion: nil)
             }
         }
     }
     
-    @IBAction func signatureSaveButtonTapped(sender: UIButton) {
+    @IBAction func signatureSaveButtonTapped(_ sender: UIButton) {
         dismissKeyboard()
         ActivityIndicatorHelper.showActivityIndicatorAtView(view)
         
@@ -148,12 +148,12 @@ class SettingsViewController: ProtonMailViewController {
                 let alertController = error.alertController()
                 alertController.addOKAction()
                 
-                self.presentViewController(alertController, animated: true, completion: nil)
+                self.present(alertController, animated: true, completion: nil)
             } else {
-                let alertController = UIAlertController(title: NSLocalizedString("Signature Updated"), message: NSLocalizedString("Your signature has been updated."), preferredStyle: .Alert)
+                let alertController = UIAlertController(title: NSLocalizedString("Signature Updated"), message: NSLocalizedString("Your signature has been updated."), preferredStyle: .alert)
                 alertController.addOKAction()
                 
-                self.presentViewController(alertController, animated: true, completion: nil)
+                self.present(alertController, animated: true, completion: nil)
             }
         }
     }
@@ -161,13 +161,13 @@ class SettingsViewController: ProtonMailViewController {
     
     // MARK: - Private methods
     
-    private func clearMailboxPasswordFields() {
+    fileprivate func clearMailboxPasswordFields() {
         self.currentMailboxPasswordTextField.text = ""
         self.newMailboxPasswordTextField.text = ""
         self.confirmNewMailboxPasswordTextField.text = ""
     }
     
-    private func updateMailboxPassword() {
+    fileprivate func updateMailboxPassword() {
 //        if !sharedUserDataService.isMailboxPasswordValid(currentMailboxPasswordTextField.text, privateKey: sharedUserDataService.userInfo?.privateKey ?? "") {
 //            let alertController = UIAlertController(title: NSLocalizedString("Password Mismatch"), message: NSLocalizedString("The mailbox password you entered does not match the current mailbox password."), preferredStyle: .Alert)
 //            alertController.addOKAction()
@@ -212,12 +212,12 @@ class SettingsViewController: ProtonMailViewController {
 //        }
     }
     
-    private func updatePassword() {
+    fileprivate func updatePassword() {
         if !sharedUserDataService.isPasswordValid(currentLoginPasswordTextField.text) {
-            let alertController = UIAlertController(title: NSLocalizedString("Password Mismatch"), message: NSLocalizedString("The password you entered does not match the current password."), preferredStyle: .Alert)
+            let alertController = UIAlertController(title: NSLocalizedString("Password Mismatch"), message: NSLocalizedString("The password you entered does not match the current password."), preferredStyle: .alert)
             alertController.addOKAction()
             
-            presentViewController(alertController, animated: true, completion: { () -> Void in
+            present(alertController, animated: true, completion: { () -> Void in
                 self.currentLoginPasswordTextField.text = ""
             })
             
@@ -236,14 +236,14 @@ class SettingsViewController: ProtonMailViewController {
                     let alertController = error.alertController()
                     alertController.addOKAction()
                     
-                    self.presentViewController(alertController, animated: true, completion: nil)
+                    self.present(alertController, animated: true, completion: nil)
                 } else {
                     
                     
-                    let alertController = UIAlertController(title: NSLocalizedString("Password Updated"), message: NSLocalizedString("Please use your new password when signing in."), preferredStyle: .Alert)
+                    let alertController = UIAlertController(title: NSLocalizedString("Password Updated"), message: NSLocalizedString("Please use your new password when signing in."), preferredStyle: .alert)
                     alertController.addOKAction()
                     
-                    self.presentViewController(alertController, animated: true, completion: { () -> Void in
+                    self.present(alertController, animated: true, completion: { () -> Void in
                         self.currentLoginPasswordTextField.text = ""
                         self.newLoginPasswordTextField.text = ""
                         self.confirmNewLoginPasswordTextField.text = ""
@@ -253,14 +253,14 @@ class SettingsViewController: ProtonMailViewController {
         }
     }
     
-    private func validatePasswordTextField(passwordTextField: UITextField, matchesConfirmPasswordTextField confirmPasswordTextField: UITextField) -> Bool {
+    fileprivate func validatePasswordTextField(_ passwordTextField: UITextField, matchesConfirmPasswordTextField confirmPasswordTextField: UITextField) -> Bool {
         let result = !passwordTextField.text!.isEmpty && passwordTextField.text == confirmPasswordTextField.text
         
         if !result {
-            let alertController = UIAlertController(title: NSLocalizedString("Password Mismatch"), message: NSLocalizedString("The passwords you entered do not match."), preferredStyle: .Alert)
+            let alertController = UIAlertController(title: NSLocalizedString("Password Mismatch"), message: NSLocalizedString("The passwords you entered do not match."), preferredStyle: .alert)
             alertController.addOKAction()
             
-            presentViewController(alertController, animated: true, completion: { () -> Void in
+            present(alertController, animated: true, completion: { () -> Void in
                 passwordTextField.text = ""
                 confirmPasswordTextField.text = ""
             })
@@ -269,7 +269,7 @@ class SettingsViewController: ProtonMailViewController {
         return result
     }
     
-    private func setupUserInfo() {
+    fileprivate func setupUserInfo() {
         storageProgressBar.progress = 0.0
         
         recoveryEmailTextField.text = sharedUserDataService.notificationEmail
@@ -279,8 +279,8 @@ class SettingsViewController: ProtonMailViewController {
         let usedSpace = sharedUserDataService.usedSpace
         let maxSpace = sharedUserDataService.maxSpace
         
-        let formattedUsedSpace = NSByteCountFormatter.stringFromByteCount(Int64(usedSpace), countStyle: NSByteCountFormatterCountStyle.File)
-        let formattedMaxSpace = NSByteCountFormatter.stringFromByteCount(Int64(maxSpace), countStyle: NSByteCountFormatterCountStyle.File)
+        let formattedUsedSpace = ByteCountFormatter.string(fromByteCount: Int64(usedSpace), countStyle: ByteCountFormatter.CountStyle.file)
+        let formattedMaxSpace = ByteCountFormatter.string(fromByteCount: Int64(maxSpace), countStyle: ByteCountFormatter.CountStyle.file)
         
         let progress: Float = Float(usedSpace) / Float(maxSpace)
         
@@ -288,24 +288,24 @@ class SettingsViewController: ProtonMailViewController {
         storageUsageDescriptionLabel.text = "\(formattedUsedSpace)/\(formattedMaxSpace)"
     }
     
-    private func includeBorderOnView(view: UIView) {
+    fileprivate func includeBorderOnView(_ view: UIView) {
         view.layer.borderWidth = 0.5
-        view.layer.borderColor = UIColor.ProtonMail.Gray_E8EBED.CGColor
+        view.layer.borderColor = UIColor.ProtonMail.Gray_E8EBED.cgColor
     }
 }
 
 extension SettingsViewController: UITextFieldDelegate {
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         self.activeField = textField
-        let fieldPosition: CGPoint = self.scrollView.convertPoint(CGPointZero, fromView: textField)
-        self.scrollView.setContentOffset(CGPointMake(textField.frame.minX - kFieldsMarginLeft, fieldPosition.y - kFieldsMarginTop), animated: true)
+        let fieldPosition: CGPoint = self.scrollView.convert(CGPoint.zero, from: textField)
+        self.scrollView.setContentOffset(CGPoint(x: textField.frame.minX - kFieldsMarginLeft, y: fieldPosition.y - kFieldsMarginTop), animated: true)
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         self.activeField = nil
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch(textField) {
         case currentLoginPasswordTextField:
             newLoginPasswordTextField.becomeFirstResponder()
@@ -328,22 +328,22 @@ extension SettingsViewController: UITextFieldDelegate {
 }
 
 extension SettingsViewController: UITextViewDelegate {
-    func textViewDidBeginEditing(textView: UITextView) {
+    func textViewDidBeginEditing(_ textView: UITextView) {
         self.activeField = textView
         
         keyboardOffsetHeightConstraint.constant = kKeyboardOffsetHeight
         
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
             self.view.layoutIfNeeded()
             self.scrollView.slideToBottom()
         })
     }
     
-    func textViewDidEndEditing(textView: UITextView) {
+    func textViewDidEndEditing(_ textView: UITextView) {
         self.activeField = nil
         keyboardOffsetHeightConstraint.constant = 0.0
         
-        UIView.animateWithDuration(0.3, animations: { () -> Void in
+        UIView.animate(withDuration: 0.3, animations: { () -> Void in
             self.view.layoutIfNeeded()
             self.scrollView.slideToBottom()
         })

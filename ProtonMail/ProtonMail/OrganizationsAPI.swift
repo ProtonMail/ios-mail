@@ -11,26 +11,26 @@ import Foundation
 
 
 //MARK : get keys salt  #not in used
-public class GetOrgKeys<T : ApiResponse> : ApiRequest<T> {
+final class GetOrgKeys<T : ApiResponse> : ApiRequest<T> {
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .GET
+        return .get
     }
     
-    override public func getRequestPath() -> String {
+    override open func getRequestPath() -> String {
         return OrganizationsAPI.Path + "/keys" + AppConstants.getDebugOption
     }
     
-    override public func getVersion() -> Int {
+    override open func getVersion() -> Int {
         return OrganizationsAPI.V_GetOrgKeysRequest
     }
 }
 
-public class OrgKeyResponse : ApiResponse {
+final class OrgKeyResponse : ApiResponse {
     var pubKey : String?
     var privKey : String?
     
-    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
+    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
         self.pubKey = response["PublicKey"] as? String
         self.privKey = response["PrivateKey"] as? String
         return true

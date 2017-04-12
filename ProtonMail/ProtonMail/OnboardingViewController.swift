@@ -17,7 +17,7 @@ class OnboardingViewController : UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var pageControlView: UIPageControl!
     @IBOutlet weak var learnmoreButton: UIButton!
     
-     private let upgradePageUrl = NSURL(string: "https://protonmail.com/upgrade")!
+     fileprivate let upgradePageUrl = URL(string: "https://protonmail.com/upgrade")!
     
     var pageWidth : CGFloat = 0.0;
     
@@ -26,7 +26,7 @@ class OnboardingViewController : UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         contentView.layer.cornerRadius = 4;
-        learnmoreButton.hidden = true
+        learnmoreButton.isHidden = true
         let p = self.view.frame;
         
         let h : CGFloat = p.height - 84
@@ -45,7 +45,7 @@ class OnboardingViewController : UIViewController, UIScrollViewDelegate {
         pageControlView.currentPage = 0;
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let page : Int = Int( floor((contentScrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1)
         pageControlView.currentPage = page;
         updateStatusForLastPage()
@@ -53,24 +53,24 @@ class OnboardingViewController : UIViewController, UIScrollViewDelegate {
 
     func updateStatusForLastPage () {
         if onboardingList[pageControlView.currentPage] == Onboarding.upgrade {
-            pageControlView.hidden = true
-            learnmoreButton.hidden = false
+            pageControlView.isHidden = true
+            learnmoreButton.isHidden = false
         } else {
-            pageControlView.hidden = false
-            learnmoreButton.hidden = true
+            pageControlView.isHidden = false
+            learnmoreButton.isHidden = true
         }
     }
     
-    @IBAction func learnMoreAction(sender: UIButton) {
-        UIApplication.sharedApplication().openURL(upgradePageUrl)
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func learnMoreAction(_ sender: UIButton) {
+        UIApplication.shared.openURL(upgradePageUrl)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func closeAction(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func closeAction(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
 }

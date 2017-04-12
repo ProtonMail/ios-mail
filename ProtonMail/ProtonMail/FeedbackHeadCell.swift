@@ -20,7 +20,7 @@ class FeedbackHeadCell: UITableViewCell {
         super.awakeFromNib()
     }
     
-    func configCell(text : String) {
+    func configCell(_ text : String) {
         headerLabel.text = text
     }
     

@@ -8,10 +8,12 @@
 
 import UIKit
 
+
+typealias ActionStatus = (_ isOK: Bool) -> Void
+typealias switchActionBlock = (_ cell: SwitchTableViewCell?, _ newStatus: Bool, _ feedback: @escaping ActionStatus) -> Void
+
 class SwitchTableViewCell: UITableViewCell {
     
-    typealias switchActionBlock = (cell: SwitchTableViewCell!, newStatus: Bool, feedback: ActionStatus) -> Void
-    typealias ActionStatus = (isOK: Bool) -> Void
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -23,24 +25,24 @@ class SwitchTableViewCell: UITableViewCell {
     @IBOutlet weak var bottomLineLabel: UILabel!
     
     @IBOutlet weak var switchView: UISwitch!
-    @IBAction func switchAction(sender: UISwitch) {
-        let status = sender.on
-        callback?(cell: self, newStatus : status, feedback: { (isOK ) -> Void in
+    @IBAction func switchAction(_ sender: UISwitch) {
+        let status = sender.isOn
+        callback?(self, status, { (isOK ) -> Void in
             if isOK == false {
-                self.switchView.on = false
+                self.switchView.isOn = false
             }
         })
     }
     
-    func configCell(topline : String, bottomLine : String, status : Bool, complete : switchActionBlock?) {
+    func configCell(_ topline : String, bottomLine : String, status : Bool, complete : switchActionBlock?) {
         topLineLabel.text = topline
         bottomLineLabel.text = bottomLine
-        switchView.on = status
+        switchView.isOn = status
         callback = complete
         
         if bottomLine.isEmpty {
             centerConstraint.priority = 750.0;
-            bottomLineLabel.hidden = true
+            bottomLineLabel.isHidden = true
             self.layoutIfNeeded()
         }
     }

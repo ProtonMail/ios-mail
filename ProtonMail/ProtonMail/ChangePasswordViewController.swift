@@ -26,9 +26,9 @@ class ChangePasswordViewController: UIViewController {
     
     let kAsk2FASegue = "password_to_twofa_code_segue"
     
-    private var doneButton: UIBarButtonItem!
-    private var viewModel : ChangePWDViewModel!
-    func setViewModel(vm:ChangePWDViewModel) -> Void
+    fileprivate var doneButton: UIBarButtonItem!
+    fileprivate var viewModel : ChangePWDViewModel!
+    func setViewModel(_ vm:ChangePWDViewModel) -> Void
     {
         self.viewModel = vm
     }
@@ -36,7 +36,7 @@ class ChangePasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        doneButton = self.editButtonItem()
+        doneButton = self.editButtonItem
         doneButton.target = self;
         doneButton.action = #selector(ChangePasswordViewController.doneAction(_:))
         doneButton.title = "Done"
@@ -55,7 +55,7 @@ class ChangePasswordViewController: UIViewController {
     }
     
     // MARK: privat methods
-    private func dismissKeyboard() {
+    fileprivate func dismissKeyboard() {
         if (self.currentPwdEditor != nil) {
             self.currentPwdEditor.resignFirstResponder()
         }
@@ -66,18 +66,18 @@ class ChangePasswordViewController: UIViewController {
             self.confirmPwdEditor.resignFirstResponder()
         }
     }
-    @IBAction func tapAction(sender: UITapGestureRecognizer) {
+    @IBAction func tapAction(_ sender: UITapGestureRecognizer) {
         dismissKeyboard()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
+        NotificationCenter.default.addKeyboardObserver(self)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
+        NotificationCenter.default.removeKeyboardObserver(self)
     }
 
     func updateView() {
@@ -90,31 +90,31 @@ class ChangePasswordViewController: UIViewController {
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kAsk2FASegue {
-            let popup = segue.destinationViewController as! TwoFACodeViewController
+            let popup = segue.destination as! TwoFACodeViewController
             popup.delegate = self
-            popup.mode = .TwoFactorCode
+            popup.mode = .twoFactorCode
             self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }
     
-    internal func setPresentationStyleForSelfController(selfController : UIViewController,  presentingController: UIViewController)
+    internal func setPresentationStyleForSelfController(_ selfController : UIViewController,  presentingController: UIViewController)
     {
         presentingController.providesPresentationContextTransitionStyle = true;
         presentingController.definesPresentationContext = true;
-        presentingController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+        presentingController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
     }
 
 
     
-    @IBAction func StartEditing(sender: UITextField) {
-        let frame = sender.convertRect(sender.frame, toView: self.view)
+    @IBAction func StartEditing(_ sender: UITextField) {
+        let frame = sender.convert(sender.frame, to: self.view)
         textFieldPoint = frame.origin.y + frame.height + 40;
         updateView();
     }
     
-    private func isInputEmpty() -> Bool {
+    fileprivate func isInputEmpty() -> Bool {
         let cPwd = (currentPwdEditor.text ?? "") //.trim()
         let nPwd = (newPwdEditor.text ?? "") //.trim()
         let cnPwd = (confirmPwdEditor.text ?? "") //.trim()
@@ -130,7 +130,7 @@ class ChangePasswordViewController: UIViewController {
         return true;
     }
     
-    private func focusFirstEmpty() -> Void {
+    fileprivate func focusFirstEmpty() -> Void {
         let cPwd = (currentPwdEditor.text ?? "") //.trim()
         let nPwd = (newPwdEditor.text ?? "") //.trim()
         let cnPwd = (confirmPwdEditor.text ?? "") //.trim()
@@ -146,11 +146,11 @@ class ChangePasswordViewController: UIViewController {
     }
     
     var cached2faCode : String?
-    private func startUpdatePwd () -> Void {
+    fileprivate func startUpdatePwd () -> Void {
         dismissKeyboard()
         if viewModel.needAsk2FA() && cached2faCode == nil {
-            NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
-            self.performSegueWithIdentifier(self.kAsk2FASegue, sender: self)
+            NotificationCenter.default.removeKeyboardObserver(self)
+            self.performSegue(withIdentifier: self.kAsk2FASegue, sender: self)
         } else {
             ActivityIndicatorHelper.showActivityIndicatorAtView(view)
             viewModel.setNewPassword(currentPwdEditor.text!, new_pwd: newPwdEditor.text!, confirm_new_pwd: confirmPwdEditor.text!, tfaCode: self.cached2faCode, complete: { value, error in
@@ -166,16 +166,16 @@ class ChangePasswordViewController: UIViewController {
                     
                     let alertController = error.alertController()
                     alertController.addOKAction()
-                    self.presentViewController(alertController, animated: true, completion: nil)
+                    self.present(alertController, animated: true, completion: nil)
                 } else {
-                    self.navigationController?.popToRootViewControllerAnimated(true)
+                    let _ = self.navigationController?.popToRootViewController(animated: true)
                 }
             });
         }
     }
 
     // MARK: - Actions
-    @IBAction func doneAction(sender: AnyObject) {
+    @IBAction func doneAction(_ sender: AnyObject) {
         startUpdatePwd()
     }
 }
@@ -183,14 +183,14 @@ class ChangePasswordViewController: UIViewController {
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 extension ChangePasswordViewController: NSNotificationCenterKeyboardObserverProtocol {
-    func keyboardWillHideNotification(notification: NSNotification) {
+    func keyboardWillHideNotification(_ notification: Notification) {
         keyboardHeight = 0;
         updateView();
     }
     
-    func keyboardWillShowNotification(notification: NSNotification) {
-        let info: NSDictionary = notification.userInfo!
-        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
+    func keyboardWillShowNotification(_ notification: Notification) {
+        let info: NSDictionary = notification.userInfo! as NSDictionary
+        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             keyboardHeight = keyboardSize.height;
             updateView();
         }
@@ -198,24 +198,24 @@ extension ChangePasswordViewController: NSNotificationCenterKeyboardObserverProt
 }
 
 extension ChangePasswordViewController : TwoFACodeViewControllerDelegate {
-    func ConfirmedCode(code: String, pwd : String) {
-        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
+    func ConfirmedCode(_ code: String, pwd : String) {
+        NotificationCenter.default.addKeyboardObserver(self)
         self.cached2faCode = code
         self.startUpdatePwd()
     }
     
     func Cancel2FA() {
-        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
+        NotificationCenter.default.addKeyboardObserver(self)
     }
 }
 
 // MARK: - UITextFieldDelegate
 extension ChangePasswordViewController: UITextFieldDelegate {
-    func textFieldShouldClear(textField: UITextField) -> Bool {
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
         return true
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         if isInputEmpty() {
             self.navigationItem.rightBarButtonItem = nil;
         }
@@ -224,11 +224,11 @@ extension ChangePasswordViewController: UITextFieldDelegate {
         }
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return true
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField
         {
         case currentPwdEditor:
