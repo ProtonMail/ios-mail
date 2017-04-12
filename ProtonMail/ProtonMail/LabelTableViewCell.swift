@@ -64,8 +64,8 @@ class LabelTableViewCell: UITableViewCell {
     }
     
     func ConfigCell(model : LabelMessageModel!, showIcon : Bool, showEdit : Bool, editAction : EditAction?) {
-        self.model = model;
         self.editLabelAction = editAction
+        self.model = model;
         if model.label.managedObjectContext != nil {
             var offset : CGFloat = 30
             if showIcon {
@@ -87,9 +87,18 @@ class LabelTableViewCell: UITableViewCell {
             }
             
             if showEdit {
-                offset += 40
+                offset += 52
                 editButton.isHidden = false
                 editButton.isEnabled = true
+                
+                if model.label.exclusive {
+                    editButton.setImage(UIImage(named: "folder_edit-active"), for: .normal)
+                    editButton.setImage(UIImage(named: "folder_edit"), for: .highlighted)
+                } else {
+                    editButton.setImage(UIImage(named: "label_edit-active"), for: .normal)
+                    editButton.setImage(UIImage(named: "label_edit"), for: .highlighted)
+                }
+                
             } else {
                 editButton.isHidden = true
                 editButton.isEnabled = false
