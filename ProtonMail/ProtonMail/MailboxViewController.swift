@@ -54,24 +54,24 @@ class MailboxViewController: ProtonMailViewController {
     
     // MARK: - Private constants
     
-    fileprivate let kMailboxCellHeight: CGFloat = 62.0
+    fileprivate let kMailboxCellHeight: CGFloat           = 62.0
     fileprivate let kMailboxRateReviewCellHeight: CGFloat = 125.0
-    fileprivate let kLongPressDuration: CFTimeInterval = 0.60 // seconds
-    fileprivate let kMoreOptionsViewHeight: CGFloat = 123.0
+    fileprivate let kLongPressDuration: CFTimeInterval    = 0.60 // seconds
+    fileprivate let kMoreOptionsViewHeight: CGFloat       = 123.0
     
-    fileprivate let kCellIdentifier = "MailboxCell"
-    fileprivate let kSegueToCompose = "toCompose"
-    fileprivate let kSegueToComposeShow = "toComposeShow"
-    fileprivate let kSegueToSearchController = "toSearchViewController"
-    fileprivate let kSegueToMessageDetailController = "toMessageDetailViewController"
+    fileprivate let kCellIdentifier                       = "MailboxCell"
+    fileprivate let kSegueToCompose                       = "toCompose"
+    fileprivate let kSegueToComposeShow                   = "toComposeShow"
+    fileprivate let kSegueToSearchController              = "toSearchViewController"
+    fileprivate let kSegueToMessageDetailController       = "toMessageDetailViewController"
     fileprivate let kSegueToMessageDetailFromNotification = "toMessageDetailViewControllerFromNotification"
-    fileprivate let kSegueToTour = "to_onboarding_segue"
-    fileprivate let kSegueToFeedback = "to_feedback_segue"
-    fileprivate let kSegueToFeedbackView = "to_feedback_view_segue"
-    fileprivate let kSegueToHumanCheckView = "toHumanCheckView"
+    fileprivate let kSegueToTour                          = "to_onboarding_segue"
+    fileprivate let kSegueToFeedback                      = "to_feedback_segue"
+    fileprivate let kSegueToFeedbackView                  = "to_feedback_view_segue"
+    fileprivate let kSegueToHumanCheckView                = "toHumanCheckView"
     
-    fileprivate let kSegueMoveToFolders : String = "toMoveToFolderSegue"
-    fileprivate let kSegueToApplyLabels : String = "toApplyLabelsSegue"
+    fileprivate let kSegueMoveToFolders                   = "toMoveToFolderSegue"
+    fileprivate let kSegueToApplyLabels                   = "toApplyLabelsSegue"
     
     @IBOutlet weak var undoButton: UIButton!
     @IBOutlet weak var undoButtonWidth: NSLayoutConstraint!
@@ -279,6 +279,7 @@ class MailboxViewController: ProtonMailViewController {
         if segue.identifier == kSegueToMessageDetailFromNotification {
             self.cancelButtonTapped()
             let messageDetailViewController = segue.destination as! MessageViewController
+            sharedVMService.messageDetails(fromPush: messageDetailViewController)
             if let msgID = self.viewModel.getNotificationMessage() {
                 if let context = fetchedResultsController?.managedObjectContext {
                     if let message = Message.messageForMessageID(msgID, inManagedObjectContext: context) {
@@ -292,6 +293,7 @@ class MailboxViewController: ProtonMailViewController {
         } else if (segue.identifier == kSegueToMessageDetailController) {
             self.cancelButtonTapped()
             let messageDetailViewController = segue.destination as! MessageViewController
+            sharedVMService.messageDetails(fromList: messageDetailViewController)
             let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 if let message = self.messageAtIndexPath(indexPathForSelectedRow) {

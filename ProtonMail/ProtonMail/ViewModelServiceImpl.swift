@@ -11,66 +11,48 @@ import Foundation
 let sharedVMService : ViewModelService = ViewModelServiceImpl()
 class ViewModelServiceImpl: ViewModelService {
     
-    fileprivate var latestComposerViewModel : ComposeViewModel?
-    fileprivate var latestComposerViewController : ViewModelProtocol?
+    //latest composer view model, not in used now.
+    private var latestComposerViewModel : ComposeViewModel?
+    
+    
+    //the active view controller needs to be reset when resetComposerView be called
+    private var activeViewController : ViewModelProtocol?
     
     
     override func signOut() {
-        self.resetComposerView()
+        self.resetView()
     }
     
     override func changeIndex() {
         
     }
     
-    override func resetComposerView() {
-        if latestComposerViewController != nil {
+    override func resetView() {
+        if activeViewController != nil {
             DispatchQueue.main.async {
-                self.latestComposerViewController?.inactiveViewModel()
-                self.latestComposerViewController = nil
+                self.activeViewController?.inactiveViewModel()
+                self.activeViewController = nil
             }
         }
         latestComposerViewModel = nil
     }
     
     override func newDraftViewModel(_ vmp : ViewModelProtocol) {
-        if latestComposerViewModel != nil {
-            
-        }
-        
-        if latestComposerViewController != nil {
-            
-        }
-        
-        latestComposerViewController = vmp
+        activeViewController = vmp
         latestComposerViewModel = ComposeViewModelImpl(msg: nil, action: .newDraft);
         vmp.setViewModel(latestComposerViewModel!)
     }
     
     
     override func newDraftViewModelWithContact(_ vmp : ViewModelProtocol, contact: ContactVO!) {
-        if latestComposerViewModel != nil {
-            
-        }
-        
-        if latestComposerViewController != nil {
-            
-        }
-        
-        latestComposerViewController = vmp
+        activeViewController = vmp
         latestComposerViewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft);
         latestComposerViewModel?.addToContacts(contact)
         vmp.setViewModel(latestComposerViewModel!)
     }
     
     override func newDraftViewModelWithMailTo(_ vmp: ViewModelProtocol, url: URL?) {
-        if latestComposerViewModel != nil {
-            
-        }
-        if latestComposerViewController != nil {
-            
-        }
-        latestComposerViewController = vmp
+        activeViewController = vmp
         latestComposerViewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft);
 
         if let mailTo : NSURL = url as NSURL?, mailTo.scheme == "mailto", let resSpecifier = mailTo.resourceSpecifier {
@@ -136,30 +118,24 @@ class ViewModelServiceImpl: ViewModelService {
     }
     
     override func openDraftViewModel(_ vmp : ViewModelProtocol, msg: Message!) {
-        if latestComposerViewModel != nil {
-            
-        }
-        
-        if latestComposerViewController != nil {
-            
-        }
-        
-        latestComposerViewController = vmp
+        activeViewController = vmp
         latestComposerViewModel = ComposeViewModelImpl(msg: msg, action: ComposeMessageAction.openDraft);
         vmp.setViewModel(latestComposerViewModel!)
     }
     
     override func actionDraftViewModel(_ vmp : ViewModelProtocol, msg: Message!, action: ComposeMessageAction) {
-        if latestComposerViewModel != nil {
-            
-        }
-        
-        if latestComposerViewController != nil {
-            
-        }
-        latestComposerViewController = vmp
+        activeViewController = vmp
         latestComposerViewModel = ComposeViewModelImpl(msg: msg, action: action);
         vmp.setViewModel(latestComposerViewModel!)
+    }
+    
+    // msg details
+    override func messageDetails(fromList vmp: ViewModelProtocol) {
+        activeViewController = vmp
+    }
+    
+    override func messageDetails(fromPush vmp: ViewModelProtocol) {
+        activeViewController = vmp
     }
     
 }

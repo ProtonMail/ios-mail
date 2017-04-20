@@ -41,7 +41,16 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
-    func resetComposerView() {
+    //messgae detail part
+    func messageDetails(fromList vmp : ViewModelProtocol) -> Void {
+        fatalError("This method must be overridden")
+    }
+    func messageDetails(fromPush vmp : ViewModelProtocol) -> Void {
+        fatalError("This method must be overridden")
+    }
+    
+    
+    func resetView() {
         fatalError("This method must be overridden")
     }
     

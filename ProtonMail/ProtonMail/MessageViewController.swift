@@ -12,7 +12,7 @@ import Foundation
 import CoreData
 
 
-class MessageViewController: ProtonMailViewController {
+class MessageViewController: ProtonMailViewController, ViewModelProtocol{
     
     fileprivate let kToComposerSegue : String    = "toCompose"
     fileprivate let kSegueMoveToFolders : String = "toMoveToFolderSegue"
@@ -30,11 +30,20 @@ class MessageViewController: ProtonMailViewController {
     @IBOutlet var backButton: UIBarButtonItem!
     
     ///
-    private var bodyLoaded: Bool             = false
-    fileprivate var showedShowImageView : Bool   = false
-    private var isAutoLoadImage : Bool       = false
-    fileprivate var needShowShowImageView : Bool = false
-    private var actionTapped : Bool          = false
+    private var bodyLoaded: Bool                             = false
+    fileprivate var showedShowImageView : Bool               = false
+    private var isAutoLoadImage : Bool                       = false
+    fileprivate var needShowShowImageView : Bool             = false
+    private var actionTapped : Bool                          = false
+    fileprivate var latestPresentedView : UIViewController?  = nil
+    //not in used
+    func setViewModel(_ vm: Any) {
+    }
+    
+    func inactiveViewModel() {
+        latestPresentedView?.dismiss(animated: true, completion: nil)
+        self.navigationController?.popToRootViewController(animated: true)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +55,6 @@ class MessageViewController: ProtonMailViewController {
             return
         }
         self.isAutoLoadImage = !sharedUserDataService.showShowImageView
-        //self.setupFetchedResultsController(message.messageID)
         
         self.updateHeader()
         
@@ -261,7 +269,9 @@ class MessageViewController: ProtonMailViewController {
         }
         alertController.popoverPresentationController?.barButtonItem = sender
         alertController.popoverPresentationController?.sourceRect = self.view.frame
-        present(alertController, animated: true, completion: nil)
+        
+        latestPresentedView = alertController
+        self.present(alertController, animated: true, completion: nil)
     }
     
     fileprivate func messagesSetValue(setValue value: Any?, forKey key: String) {
@@ -528,6 +538,7 @@ extension MessageViewController : MessageDetailBottomViewProtocol {
     func showAlertWhenNoDetails() {
         let alert = NSLocalizedString("Please wait until the email downloaded!").alertController();
         alert.addOKAction()
+        latestPresentedView = alert
         self.present(alert, animated: true, completion: nil)
     }
 }
@@ -591,7 +602,6 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     }
     
     func quickLookAttachment (_ localURL : Foundation.URL, keyPackage:Data, fileName:String) {
-        //PMLog.D(localURL)
         if let data : Data = try? Data(contentsOf: localURL) {
             do {
                 tempFileUri = FileManager.default.attachmentDirectory.appendingPathComponent(fileName)
@@ -599,17 +609,20 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                     try? decryptData.write(to: tempFileUri!, options: [.atomic])
                     let previewQL = QuickViewViewController()
                     previewQL.dataSource = self
+                    latestPresentedView = previewQL
                     self.present(previewQL, animated: true, completion: nil)
                 }
             } catch let ex as NSError {
                 PMLog.D("quickLookAttachment error : \(ex)")
                 let alert = NSLocalizedString("Can't decrypt this attachment!").alertController();
                 alert.addOKAction()
+                latestPresentedView = alert
                 self.present(alert, animated: true, completion: nil)
             }
         } else{
             let alert = NSLocalizedString("Can't find this attachment!").alertController();
             alert.addOKAction()
+            latestPresentedView = alert
             self.present(alert, animated: true, completion: nil)
         }
     }

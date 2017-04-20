@@ -238,7 +238,7 @@ extension MenuViewController: UITableViewDelegate {
             } else if item == .lockapp {
                 userCachedStatus.lockedApp = true;
                 (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: true)
-                sharedVMService.resetComposerView()
+                sharedVMService.resetView()
             }
         } else if (indexPath.section == 2) {
             //labels
