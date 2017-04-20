@@ -1463,6 +1463,7 @@ class MessageDataService {
                                              headers: ["x-pm-apiversion":1],
                                              authenticated: true,
                                              completion: completionWrapper)
+                    return
                 }
             }
         }
