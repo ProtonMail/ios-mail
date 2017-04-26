@@ -85,16 +85,9 @@ class SignInViewController: ProtonMailViewController {
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
     }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doYourStuff), name:  NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         
         hideTouchID(false)
         setupTextFields()
@@ -118,13 +111,6 @@ class SignInViewController: ProtonMailViewController {
             break
         }
     }
-    
-    func doYourStuff(){
-        if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
-            authenticateUser()
-        }
-    }
-
     
     fileprivate func setupVersionLabel () {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
@@ -261,7 +247,7 @@ class SignInViewController: ProtonMailViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
         NotificationCenter.default.addKeyboardObserver(self)
-        
+        NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doEnterForeground), name:  NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         let uName = (usernameTextField.text ?? "").trim()
         let pwd = (passwordTextField.text ?? "") //.trim()
         
@@ -275,6 +261,12 @@ class SignInViewController: ProtonMailViewController {
             onePasswordButton.isHidden = true
             loginWidthConstraint.constant = 200
             loginMidlineConstraint.constant = 0
+        }
+    }
+    
+    func doEnterForeground(){
+        if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+            authenticateUser()
         }
     }
     
@@ -372,6 +364,7 @@ class SignInViewController: ProtonMailViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeKeyboardObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
