@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="14k-5d-srV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="14k-5d-srV">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -4006,16 +4006,16 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="sPN-i9-NSa"/>
         <segue reference="YGe-pV-72F"/>
-        <segue reference="fux-iz-qV0"/>
         <segue reference="0zg-HM-MdK"/>
         <segue reference="hZj-FM-cPb"/>
-        <segue reference="zIE-XJ-wkG"/>
+        <segue reference="fux-iz-qV0"/>
         <segue reference="ddm-eA-erE"/>
-        <segue reference="Dpt-T7-EMY"/>
-        <segue reference="5rJ-hC-fsT"/>
+        <segue reference="GgS-nT-ctf"/>
+        <segue reference="3FM-PP-oeV"/>
         <segue reference="PpL-SW-U8F"/>
-        <segue reference="gwz-B9-War"/>
+        <segue reference="Dpt-T7-EMY"/>
+        <segue reference="Yep-Vd-dxY"/>
+        <segue reference="5rJ-hC-fsT"/>
     </inferredMetricsTieBreakers>
 </document>
