@@ -84,6 +84,13 @@ extension Message {
         }
     }
     
+    func getScore() -> MessageSpamScore {
+        if let e = MessageSpamScore(rawValue: self.spamScore.intValue) {
+            return e
+        }
+        return .others
+    }
+    
     func hasDraftLabel() -> Bool {
         let labels = self.labels
         for l in labels {

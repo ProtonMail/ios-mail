@@ -180,7 +180,8 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol{
                                              encType: self.message.encryptType,
                                              labels : self.message.labels.allObjects as? [Label],
                                              showShowImages: self.needShowShowImageView,
-                                             expiration: self.message.expirationTime
+                                             expiration: self.message.expirationTime,
+                                             score: self.message.getScore()
             )
         } else {
             PMLog.D(" MessageViewController self.message.managedObjectContext == nil")

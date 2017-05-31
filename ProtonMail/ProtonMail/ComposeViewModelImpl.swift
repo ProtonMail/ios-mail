@@ -299,22 +299,23 @@ open class ComposeViewModelImpl : ComposeViewModel {
                 body = body.stringByStrippingBodyStyle()
                 body = body.stringByPurifyHTML()
                 
-                let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
+                let time : String! = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
+                let sn : String! = (message?.managedObjectContext != nil) ? message!.senderContactVO.name : "unknow"
+                let se : String! = message?.managedObjectContext != nil ? message!.senderContactVO.email : "unknow"
                 
-                let sn = (message?.managedObjectContext != nil) ? message!.senderContactVO.name : "unknow"
-                let se = message?.managedObjectContext != nil ? message!.senderContactVO.email : "unknow"
-                
-                var replyHeader = time + ", " + sn! + " &lt;<a href=\"mailto:\(String(describing: se))\" class=\"\">\(String(describing: se))</a>&gt;"
+                var replyHeader = time + ", " + sn! + " &lt;<a href=\"mailto:" + se + "\" class=\"\">" + se + "</a>&gt;"
                 replyHeader = replyHeader.stringByStrippingStyleHTML()
                 replyHeader = replyHeader.stringByStrippingBodyStyle()
                 replyHeader = replyHeader.stringByPurifyHTML()
+                
+                
                 let sp = "<div><br><div><div><br></div>\(replyHeader) wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
                 
                 return " \(head) \(htmlString) \(sp) \(body)</blockquote> \(foot)"
             case .forward:
                 let time = message!.orginalTime?.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a") ?? ""
                 var forwardHeader =
-                "---------- Forwarded message ----------<br>From: \( message!.senderContactVO.name) &lt;<a href=\"mailto:\(message!.senderContactVO.email)\" class=\"\">\(message!.senderContactVO.email)</a>&gt;<br>Date: \(time)<br>Subject: \(message!.title)<br>"
+                "---------- Forwarded message ----------<br>From: " + message!.senderContactVO.name + "&lt;<a href=\"mailto:" + message!.senderContactVO.email + " class=\"\">" + message!.senderContactVO.email + "</a>&gt;<br>Date: \(time)<br>Subject: \(message!.title)<br>"
                 
                 if message!.recipientList != "" {
                     forwardHeader += "To: \(message!.recipientList.formatJsonContact(true))<br>"

@@ -63,6 +63,7 @@ class EmailHeaderView: UIView {
     
     fileprivate var expirationView : ExpirationView!
     fileprivate var showImageView : ShowImageView!
+    fileprivate var spamScoreView : SpamScoreWarningView!
     
     //separators
     fileprivate var separatorHeader : UIView!
@@ -116,6 +117,8 @@ class EmailHeaderView: UIView {
     
     fileprivate var hasExpiration : Bool = false
     fileprivate var hasShowImageCheck : Bool = true
+    
+    fileprivate var spamScore: MessageSpamScore = .others
     
     fileprivate var fromSinglelineAttr : NSMutableAttributedString! {
         get {
@@ -246,7 +249,11 @@ class EmailHeaderView: UIView {
     }
     
     // MARK : Private functions
-    func updateHeaderData (_ title : String, sender : ContactVO, to : [ContactVO]?, cc : [ContactVO]?, bcc : [ContactVO]?, isStarred : Bool, time : Date?, encType : EncryptTypes, labels : [Label]?, showShowImages: Bool, expiration : Date?) {
+    func updateHeaderData (_ title : String,
+                           sender : ContactVO, to : [ContactVO]?, cc : [ContactVO]?, bcc : [ContactVO]?,
+                           isStarred : Bool, time : Date?, encType : EncryptTypes, labels : [Label]?,
+                           showShowImages: Bool, expiration : Date?,
+                           score: MessageSpamScore) {
         self.title = title
         self.sender = sender
         self.toList = to
@@ -343,6 +350,11 @@ class EmailHeaderView: UIView {
         }
         self.updateExpirationDate(expiration)
         hasShowImageCheck = showShowImages
+        
+        //update score information
+        self.spamScore = score
+        self.spamScoreView.setMessage(msg: self.spamScore.description)
+        
         self.layoutIfNeeded()
     }
     
@@ -389,6 +401,7 @@ class EmailHeaderView: UIView {
         self.createExpirationView()
         self.createAttachmentView()
         self.createShowImageView()
+        self.createSpamScoreView()
         self.createSeparator()
     }
     
@@ -411,6 +424,12 @@ class EmailHeaderView: UIView {
         self.showImageView = ShowImageView()
         self.showImageView.actionDelegate = self
         self.addSubview(showImageView!)
+    }
+    
+    fileprivate func createSpamScoreView() {
+        self.spamScoreView = SpamScoreWarningView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 0))
+        self.spamScoreView.alpha = 0.0
+        self.addSubview(spamScoreView!)
     }
     
     fileprivate func createSeparator() {
@@ -538,6 +557,7 @@ class EmailHeaderView: UIView {
         self.makeHeaderConstraints()
         self.updateExpirationConstraints()
         self.updateShowImageConstraints()
+        self.updateSpamScoreConstraints()
         self.updateAttConstraints(false)
     }
     
@@ -569,16 +589,28 @@ class EmailHeaderView: UIView {
         }
     }
     
+    func updateSpamScoreConstraints() {
+        let size = self.spamScore == .others ? 0.0 : self.spamScoreView.fitHeight()
+        self.spamScoreView.alpha = self.spamScore == .others ? 0.0 : 1.0
+        self.spamScoreView.mas_updateConstraints({ (make) -> Void in
+            make?.removeExisting = true
+            let _ = make?.left.equalTo()(self)
+            let _ = make?.right.equalTo()(self)
+            let _ = make?.top.equalTo()(self.separatorAttachment.mas_bottom)
+            let _ = make?.height.equalTo()(size)
+        })
+    }
+    
     func updateShowImageConstraints() {
         let viewHeight = self.hasShowImageCheck ? 36 : 0
         self.showImageView.mas_updateConstraints({ (make) -> Void in
             make?.removeExisting = true
             let _ = make?.left.equalTo()(self)
             let _ = make?.right.equalTo()(self)
-            let _ = make?.top.equalTo()(self.separatorAttachment.mas_bottom)
+            let _ = make?.top.equalTo()(self.spamScoreView.mas_bottom)
             let _ = make?.height.equalTo()(viewHeight)
         })
-
+        
         self.separatorShowImage.mas_updateConstraints({ (make) -> Void in
             make?.removeExisting = true
             let _ = make?.left.equalTo()(self)
@@ -627,6 +659,7 @@ class EmailHeaderView: UIView {
         
         self.updateExpirationConstraints()
         self.updateShowImageConstraints()
+        self.updateSpamScoreConstraints()
         
         self.updateSelf(animition)
     }

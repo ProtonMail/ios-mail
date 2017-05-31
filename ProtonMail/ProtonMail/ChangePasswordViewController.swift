@@ -39,7 +39,7 @@ class ChangePasswordViewController: UIViewController {
         doneButton = self.editButtonItem
         doneButton.target = self;
         doneButton.action = #selector(ChangePasswordViewController.doneAction(_:))
-        doneButton.title = "Done"
+        doneButton.title = "Save"
         
         self.navigationItem.title = viewModel.getNavigationTitle()
         self.titleLable.text = viewModel.getSectionTitle()

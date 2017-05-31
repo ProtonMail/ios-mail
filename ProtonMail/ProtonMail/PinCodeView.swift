@@ -140,6 +140,7 @@ class PinCodeView : PMView {
     
     func showError() {
         pinView.shake(3, offset: 10)
+        pinCode = ""
     }
     
     func setCorner(_ button : UIView) {

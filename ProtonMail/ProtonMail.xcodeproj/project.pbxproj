@@ -317,6 +317,13 @@
 		75B549E71D02731300F21A30 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 75B549E51D02731300F21A30 /* Reachability.m */; };
 		75B9C6081DA2D39A001DE21E /* Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B9C6071DA2D39A001DE21E /* Hash.swift */; };
 		75B9C6091DA2D39A001DE21E /* Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75B9C6071DA2D39A001DE21E /* Hash.swift */; };
+		75BA19991EC631A300153A1A /* SpamScoreWarningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75BA19961EC631A300153A1A /* SpamScoreWarningView.xib */; };
+		75BA199A1EC631A300153A1A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75BA19971EC631A300153A1A /* Images.xcassets */; };
+		75BA199B1EC631A300153A1A /* SpamScoreWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BA19981EC631A300153A1A /* SpamScoreWarningView.swift */; };
+		75BA199C1EC632E100153A1A /* SpamScoreWarningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75BA19961EC631A300153A1A /* SpamScoreWarningView.xib */; };
+		75BA199D1EC632E400153A1A /* SpamScoreWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BA19981EC631A300153A1A /* SpamScoreWarningView.swift */; };
+		75BA199F1EC6474D00153A1A /* MessageSpamScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BA199E1EC6474D00153A1A /* MessageSpamScore.swift */; };
+		75BA19A01EC6474D00153A1A /* MessageSpamScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BA199E1EC6474D00153A1A /* MessageSpamScore.swift */; };
 		75BA55A71D087F6A0081DD88 /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 75BA55A61D087F6A0081DD88 /* Readme.txt */; };
 		75BA55A81D087F6A0081DD88 /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 75BA55A61D087F6A0081DD88 /* Readme.txt */; };
 		75BB65761BD5C88800F9432D /* AttachmentAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75BB65751BD5C88800F9432D /* AttachmentAPI.swift */; };
@@ -938,6 +945,10 @@
 		75B549E41D02731300F21A30 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		75B549E51D02731300F21A30 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		75B9C6071DA2D39A001DE21E /* Hash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hash.swift; sourceTree = "<group>"; };
+		75BA19961EC631A300153A1A /* SpamScoreWarningView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpamScoreWarningView.xib; sourceTree = "<group>"; };
+		75BA19971EC631A300153A1A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		75BA19981EC631A300153A1A /* SpamScoreWarningView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpamScoreWarningView.swift; sourceTree = "<group>"; };
+		75BA199E1EC6474D00153A1A /* MessageSpamScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSpamScore.swift; sourceTree = "<group>"; };
 		75BA55A61D087F6A0081DD88 /* Readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.txt; sourceTree = "<group>"; };
 		75BB65751BD5C88800F9432D /* AttachmentAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentAPI.swift; sourceTree = "<group>"; };
 		75BDECA81CBCCE4400982089 /* PinCodeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinCodeModel.swift; sourceTree = "<group>"; };
@@ -1338,6 +1349,7 @@
 		701704761A79185D000A90D2 /* Message Detail */ = {
 			isa = PBXGroup;
 			children = (
+				75BA19971EC631A300153A1A /* Images.xcassets */,
 				757945D51B66E38D004EEDCA /* MessageViewController.swift */,
 				752EEC1B1BB0A9D800770331 /* QuickViewViewController.swift */,
 				07411D8D1AAA407A002A4611 /* AttachmentTableViewCell.swift */,
@@ -1353,6 +1365,8 @@
 				75DCB2061BA2A1560085BE8C /* RecipientCell.xib */,
 				755638C41CA1AE6B003FA2D0 /* ExpirationView.swift */,
 				755638C21CA1AE5B003FA2D0 /* ExpirationView.xib */,
+				75BA19981EC631A300153A1A /* SpamScoreWarningView.swift */,
+				75BA19961EC631A300153A1A /* SpamScoreWarningView.xib */,
 				755638C61CA1AE78003FA2D0 /* ShowImageView.swift */,
 				755638C01CA1AE42003FA2D0 /* ShowImageView.xib */,
 			);
@@ -1746,6 +1760,7 @@
 				073FE01E1A95620D00825980 /* ContactExtension.swift */,
 				071323991A7C02AB0043DB41 /* Message.swift */,
 				07CF61931A89895600ED38AE /* MessageExtension.swift */,
+				75BA199E1EC6474D00153A1A /* MessageSpamScore.swift */,
 				075F0A531ABF5E3E00E6B9AE /* MessageAction.swift */,
 				075F0A511ABF5DB500E6B9AE /* MessageLocation.swift */,
 				7567B07A1B338EB900A72A1E /* MessageHelper.swift */,
@@ -2025,6 +2040,7 @@
 				70C6ABE41A72C1B7006EC400 /* Roboto-Regular.ttf in Resources */,
 				07009EFF1A659AD400129B07 /* SignIn.storyboard in Resources */,
 				7017047A1A794C9F000A90D2 /* Roboto-LightItalic.ttf in Resources */,
+				75BA19991EC631A300153A1A /* SpamScoreWarningView.xib in Resources */,
 				75230C251B9A3A3600EC2AC2 /* MailboxMessageCell.xib in Resources */,
 				7516452E1D7F66C800DE0BD2 /* test_email.html in Resources */,
 				759BBDC21BA0C586002608B5 /* LabelDisplayView.xib in Resources */,
@@ -2039,6 +2055,7 @@
 				75DCB2081BA2A1560085BE8C /* RecipientCell.xib in Resources */,
 				75BA55A71D087F6A0081DD88 /* Readme.txt in Resources */,
 				75E49EFB1CAAF47D00235ACC /* InfoDev.plist in Resources */,
+				75BA199A1EC631A300153A1A /* Images.xcassets in Resources */,
 				07009F141A684C1900129B07 /* Roboto-Thin.ttf in Resources */,
 				7558C5481BE82D6300043009 /* LabelsView.xib in Resources */,
 				75187BB11CAC54DD00C84382 /* phone_country_code.geojson in Resources */,
@@ -2083,6 +2100,7 @@
 				75DE7EB21CAAEF9000F5443E /* Images.xcassets in Resources */,
 				75BA55A81D087F6A0081DD88 /* Readme.txt in Resources */,
 				75DE7D8E1CAAEA4900F5443E /* Roboto-Regular.ttf in Resources */,
+				75BA199C1EC632E100153A1A /* SpamScoreWarningView.xib in Resources */,
 				75DE7D8F1CAAEA4900F5443E /* SignIn.storyboard in Resources */,
 				7582CFBD1D024E2900F521D4 /* TopMessageView.xib in Resources */,
 				75DE7D901CAAEA4900F5443E /* Roboto-LightItalic.ttf in Resources */,
@@ -2380,6 +2398,7 @@
 				07CC996C1A717ABD000FD6F8 /* UIStoryboardExtension.swift in Sources */,
 				759BBDC81BA0D1E3002608B5 /* PMView.swift in Sources */,
 				75AD87321E975CC600B8265B /* FolderEditingViewModelImpl .swift in Sources */,
+				75BA199F1EC6474D00153A1A /* MessageSpamScore.swift in Sources */,
 				07CB23561AB0F24700699068 /* ReportBugsViewController.swift in Sources */,
 				7510AE761AB8989E00EF3C41 /* DomainsTableViewCell.swift in Sources */,
 				75BDECA91CBCCE4400982089 /* PinCodeModel.swift in Sources */,
@@ -2437,6 +2456,7 @@
 				75B179501B377748006044D4 /* ContactVOExtension.swift in Sources */,
 				701DDE951AA64DEB0038149C /* MBContactModel.m in Sources */,
 				07655BC11AB10D7100CD3883 /* NSBundleExtension.swift in Sources */,
+				75BA199B1EC631A300153A1A /* SpamScoreWarningView.swift in Sources */,
 				75A4321D1B1D042C00D046B3 /* QueueConstant.swift in Sources */,
 				75ECC2381AB9F28100B8FC78 /* ChangePasswordViewModel.swift in Sources */,
 				755638C51CA1AE6B003FA2D0 /* ExpirationView.swift in Sources */,
@@ -2680,6 +2700,7 @@
 				75DE7CF51CAAEA4900F5443E /* ViewModelFactory.swift in Sources */,
 				75DE7CF61CAAEA4900F5443E /* UIDeviceExtension.swift in Sources */,
 				75DE7CF81CAAEA4900F5443E /* CustomHeaderView.swift in Sources */,
+				75BA19A01EC6474D00153A1A /* MessageSpamScore.swift in Sources */,
 				75DE7CF91CAAEA4900F5443E /* MonitorSavesDataServiceMessageExtension.swift in Sources */,
 				75BDECAF1CBCD0FA00982089 /* SetPinCodeModelImpl.swift in Sources */,
 				75DE7CFA1CAAEA4900F5443E /* RecipientCell.swift in Sources */,
@@ -2803,6 +2824,7 @@
 				75DE7D561CAAEA4900F5443E /* EncryptionSetupViewController.swift in Sources */,
 				75F161921DCBB7E600912662 /* TwoFACodeViewController.swift in Sources */,
 				75DE7D571CAAEA4900F5443E /* APIService+UserExtension.swift in Sources */,
+				75BA199D1EC632E400153A1A /* SpamScoreWarningView.swift in Sources */,
 				75DE7D581CAAEA4900F5443E /* SignUpEmailViewController.swift in Sources */,
 				75DE7D591CAAEA4900F5443E /* MessageQueue.swift in Sources */,
 				75DE7D5A1CAAEA4900F5443E /* DebugDetailsViewController.swift in Sources */,

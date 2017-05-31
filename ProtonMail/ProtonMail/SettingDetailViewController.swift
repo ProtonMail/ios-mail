@@ -41,10 +41,13 @@ class SettingDetailViewController: UIViewController {
         doneButton = self.editButtonItem
         doneButton.target = self;
         doneButton.action = #selector(SettingDetailViewController.doneAction(_:))
-        doneButton.title = "Done"
+        doneButton.title = "Save"
         self.navigationItem.title = viewModel.getNavigationTitle()
         sectionTitleLabel.text = viewModel.getSectionTitle()
         
+        self.navigationItem.hidesBackButton = true
+        let newBackButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.plain, target: self, action: #selector(SettingDetailViewController.back(sender:)))
+        self.navigationItem.leftBarButtonItem = newBackButton
         
         if viewModel.isDisplaySwitch() {
             switchLabel.text = viewModel.getSwitchText()
@@ -80,6 +83,33 @@ class SettingDetailViewController: UIViewController {
         inputTextView.isEditable = viewModel.isSwitchEnabled()
         
         notesLabel.text = viewModel.getNotes()
+    }
+    
+    func back(sender: UIBarButtonItem) {
+        dismissKeyboard()
+        if viewModel.getCurrentValue() == getTextValue() && viewModel.getSwitchStatus() == self.switcher.isOn {
+            _ = self.navigationController?.popViewController(animated: true)
+        }
+        else {
+            let alertController = UIAlertController(
+                title: NSLocalizedString("Confirmation"),
+                message: NSLocalizedString("You have unsaved changes. Do you want to save it?"),
+                preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"),
+                                                    style: .destructive,
+                                                    handler: { action in
+                                                        _ = self.navigationController?.popViewController(animated: true)
+            }))
+            
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Save Changes"),
+                                                    style: .default,
+                                                    handler: { action in
+                                                        self.startUpdateValue()
+            }))
+            
+            self.present(alertController, animated: true, completion: nil)
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {
