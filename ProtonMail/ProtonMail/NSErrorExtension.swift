@@ -32,12 +32,12 @@ extension NSError {
         self.init(domain: domain, code: code, userInfo: userInfo)
     }
     
-    class func protonMailError(code: Int, localizedDescription: String, localizedFailureReason: String? = nil, localizedRecoverySuggestion: String? = nil) -> NSError {
+    class func protonMailError(_ code: Int, localizedDescription: String, localizedFailureReason: String? = nil, localizedRecoverySuggestion: String? = nil) -> NSError {
         return NSError(domain: protonMailErrorDomain(), code: code, localizedDescription: localizedDescription, localizedFailureReason: localizedFailureReason, localizedRecoverySuggestion: localizedRecoverySuggestion)
     }
     
-    class func protonMailErrorDomain(subdomain: String? = nil) -> String {
-        var domain = NSBundle.mainBundle().bundleIdentifier ?? "ch.protonmail"
+    class func protonMailErrorDomain(_ subdomain: String? = nil) -> String {
+        var domain = Bundle.main.bundleIdentifier ?? "ch.protonmail"
         
         if let subdomain = subdomain {
             domain += ".\(subdomain)"
@@ -57,20 +57,20 @@ extension NSError {
             
             message = message! + localizedRecoverySuggestion!
         }
-        return UIAlertController(title: localizedDescription, message: message, preferredStyle: .Alert)
+        return UIAlertController(title: localizedDescription, message: message, preferredStyle: .alert)
     }
     
     func getCode() -> Int {
         var defaultCode : Int = code;
         if defaultCode == Int.max {
-            if let detail = self.userInfo["com.alamofire.serialization.response.error.response"] as? NSHTTPURLResponse {
+            if let detail = self.userInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
                 defaultCode = detail.statusCode
             }
         }
         return defaultCode
     }
     
-    func alertController(title : String) -> UIAlertController {
+    func alertController(_ title : String) -> UIAlertController {
         var message = localizedFailureReason
         
         if localizedRecoverySuggestion != nil {
@@ -82,14 +82,14 @@ extension NSError {
             
             message = message! + localizedRecoverySuggestion!
         }
-        return UIAlertController(title: title, message: localizedDescription, preferredStyle: .Alert)
+        return UIAlertController(title: title, message: localizedDescription, preferredStyle: .alert)
     }
     
     
     func alertToast() ->Void {
-        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
-        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
-        hud.mode = MBProgressHUDMode.Text
+        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        hud.mode = MBProgressHUDMode.text
         hud.labelText = NSLocalizedString("Alert");
         hud.detailsLabelText = localizedDescription
         hud.removeFromSuperViewOnHide = true
@@ -97,9 +97,9 @@ extension NSError {
     }
     
     func alertErrorToast() ->Void {
-        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
-        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
-        hud.mode = MBProgressHUDMode.Text
+        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        hud.mode = MBProgressHUDMode.text
         hud.labelText = NSLocalizedString(localizedDescription);
         hud.detailsLabelText = description
         hud.removeFromSuperViewOnHide = true
@@ -107,9 +107,9 @@ extension NSError {
     }
     
     func alertSentErrorToast() ->Void {
-        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
-        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
-        hud.mode = MBProgressHUDMode.Text
+        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        hud.mode = MBProgressHUDMode.text
         hud.detailsLabelText = NSLocalizedString("Sent Failed: \(self.localizedDescription)");
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
@@ -118,9 +118,9 @@ extension NSError {
     }
     
     func alertHumanCheckErrorToast() ->Void {
-        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
-        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
-        hud.mode = MBProgressHUDMode.Text
+        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        hud.mode = MBProgressHUDMode.text
         hud.detailsLabelText = NSLocalizedString("Human Check Failed: \(self.localizedDescription)");
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
@@ -130,9 +130,9 @@ extension NSError {
     
     
     class func alertUpdatedToast() ->Void {
-        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
-        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
-        hud.mode = MBProgressHUDMode.Text
+        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        hud.mode = MBProgressHUDMode.text
         hud.labelText = NSLocalizedString("Alert");
         hud.detailsLabelText = NSLocalizedString("A new version of ProtonMail app is available, please update to latest version.");
         hud.removeFromSuperViewOnHide = true
@@ -140,9 +140,9 @@ extension NSError {
     }
     
     class func alertBadTokenToast() ->Void {
-        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
-        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
-        hud.mode = MBProgressHUDMode.Text
+        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        hud.mode = MBProgressHUDMode.text
         hud.labelText = NSLocalizedString("Alert");
         hud.detailsLabelText = NSLocalizedString("Invalid access token please relogin");
         hud.removeFromSuperViewOnHide = true
@@ -150,9 +150,9 @@ extension NSError {
     }
     
     class func alertOfflineToast() ->Void {
-        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
-        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
-        hud.mode = MBProgressHUDMode.Text
+        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        hud.mode = MBProgressHUDMode.text
         hud.labelText = NSLocalizedString("Alert");
         hud.detailsLabelText = NSLocalizedString("ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail");
         hud.removeFromSuperViewOnHide = true
@@ -160,9 +160,9 @@ extension NSError {
     }
     
     class func alertMessageSendingToast() ->Void {
-        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
-        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
-        hud.mode = MBProgressHUDMode.Text
+        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        hud.mode = MBProgressHUDMode.text
         hud.detailsLabelText = NSLocalizedString("Sending Message");
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
@@ -171,9 +171,9 @@ extension NSError {
     }
     
     class func alertMessageSentToast() ->Void {
-        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
-        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
-        hud.mode = MBProgressHUDMode.Text
+        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        hud.mode = MBProgressHUDMode.text
         hud.detailsLabelText = NSLocalizedString("Message sent");
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
@@ -182,9 +182,9 @@ extension NSError {
     }
 
     class func alertMessageSentErrorToast() ->Void {
-        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
-        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
-        hud.mode = MBProgressHUDMode.Text
+        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        hud.mode = MBProgressHUDMode.text
         hud.detailsLabelText = NSLocalizedString("Message sending failed please try again");
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
@@ -193,9 +193,9 @@ extension NSError {
     }
     
     class func alertLocalCacheErrorToast() ->Void {
-        let window : UIWindow = UIApplication.sharedApplication().windows.last as UIWindow!
-        let hud : MBProgressHUD = MBProgressHUD.showHUDAddedTo(window, animated: true)
-        hud.mode = MBProgressHUDMode.Text
+        let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
+        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        hud.mode = MBProgressHUDMode.text
         hud.detailsLabelText = NSLocalizedString("The draft cache is broken please try again");
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
@@ -212,7 +212,7 @@ extension NSError {
     
     func isInternetError() -> Bool {
         var isInternetIssue = false
-        if let _ = self.userInfo ["com.alamofire.serialization.response.error.response"] as? NSHTTPURLResponse {
+        if let _ = self.userInfo ["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
         } else {
             //                        if(error?.code == -1001) {
             //                            // request timed out

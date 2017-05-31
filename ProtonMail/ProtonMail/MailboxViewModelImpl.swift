@@ -9,21 +9,20 @@
 import Foundation
 import CoreData
 
-
-public class MailboxViewModelImpl : MailboxViewModel {
+class MailboxViewModelImpl : MailboxViewModel {
     
-    private var location : MessageLocation!
+    fileprivate var location : MessageLocation!
     
     init(location : MessageLocation) {
         super.init()
         self.location = location
     }
     
-    override public func getNavigationTitle() -> String {
+    override func getNavigationTitle() -> String {
         return self.location.title
     }
     
-    public override func getFetchedResultsController() -> NSFetchedResultsController? {
+    override func getFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult>? {
         let fetchedResultsController = sharedMessageDataService.fetchedResultsControllerForLocation(self.location)
         if let fetchedResultsController = fetchedResultsController {
             do {
@@ -35,11 +34,11 @@ public class MailboxViewModelImpl : MailboxViewModel {
         return fetchedResultsController
     }
     
-    public override func lastUpdateTime() -> LastUpdatedStore.UpdateTime {
+    override func lastUpdateTime() -> UpdateTime {
         return lastUpdatedStore.inboxLastForKey(self.location)
     }
     
-    public override func getSwipeTitle(action: MessageSwipeAction) -> String {
+    override func getSwipeTitle(_ action: MessageSwipeAction) -> String {
         switch(self.location!) {
         case .trash, .spam:
             if action == .trash {
@@ -51,7 +50,7 @@ public class MailboxViewModelImpl : MailboxViewModel {
         }
     }
     
-    public override func isSwipeActionValid(action: MessageSwipeAction) -> Bool {
+    override func isSwipeActionValid(_ action: MessageSwipeAction) -> Bool {
         switch(self.location!) {
         case .archive:
             return action != .archive
@@ -70,7 +69,7 @@ public class MailboxViewModelImpl : MailboxViewModel {
         }
     }
     
-    public override func stayAfterAction (action: MessageSwipeAction) -> Bool {
+    override func stayAfterAction (_ action: MessageSwipeAction) -> Bool {
         switch(self.location!) {
         case .starred:
             return true
@@ -79,17 +78,17 @@ public class MailboxViewModelImpl : MailboxViewModel {
         }
     }
     
-    public override func deleteMessage(msg: Message) -> Bool  {
+    override func deleteMessage(_ msg: Message) -> Bool  {
         var needShowMessage = true
         if msg.managedObjectContext != nil {
             switch(self.location!) {
             case .trash, .spam:
-                msg.removeLocationFromLabels(self.location, location: .deleted, keepSent: false)
+                msg.removeLocationFromLabels(currentlocation: self.location, location: .deleted, keepSent: false)
                 msg.needsUpdate = true
                 msg.location = .deleted
                 needShowMessage = false
             default:
-                msg.removeLocationFromLabels(self.location, location: .trash, keepSent: true)
+                msg.removeLocationFromLabels(currentlocation: self.location, location: .trash, keepSent: true)
                 msg.needsUpdate = true
                 self.updateBadgeNumberWhenMove(msg, to: .deleted)
                 msg.location = .trash
@@ -101,15 +100,15 @@ public class MailboxViewModelImpl : MailboxViewModel {
         return needShowMessage
     }
     
-    public override func isDrafts() -> Bool {
+    override func isDrafts() -> Bool {
         return self.location == MessageLocation.draft
     }
     
-    public override func isArchive() -> Bool {
+    override func isArchive() -> Bool {
         return self.location == MessageLocation.archive
     }
     
-    public override func isDelete () -> Bool {
+    override func isDelete () -> Bool {
         switch(self.location!) {
         case .trash, .spam, .draft:
             return true;
@@ -118,7 +117,7 @@ public class MailboxViewModelImpl : MailboxViewModel {
         }
     }
     
-    override public func showLocation() -> Bool {
+    override func showLocation() -> Bool {
         switch(self.location!) {
         case .allmail, .outbox:
             return true
@@ -127,11 +126,11 @@ public class MailboxViewModelImpl : MailboxViewModel {
         }
     }
     
-    public override func isCurrentLocation(l: MessageLocation) -> Bool {
+    override func isCurrentLocation(_ l: MessageLocation) -> Bool {
         return self.location == l
     }
     
-    public override func isShowEmptyFolder() -> Bool {
+    override func isShowEmptyFolder() -> Bool {
         switch(self.location!) {
         case .trash, .spam:
             return true;
@@ -140,7 +139,7 @@ public class MailboxViewModelImpl : MailboxViewModel {
         }
     }
     
-    override public func emptyFolder() {
+    override func emptyFolder() {
         switch(self.location!) {
         case .trash:
             sharedMessageDataService.emptyTrash();
@@ -151,22 +150,22 @@ public class MailboxViewModelImpl : MailboxViewModel {
         }
     }
     
-    public override func ignoredLocationTitle() -> String {
+    override func ignoredLocationTitle() -> String {
         if self.location == .outbox {
             return MessageLocation.outbox.title
         }
         return ""
     }
     
-    override func fetchMessages(MessageID: String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
+    override func fetchMessages(_ MessageID: String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
         sharedMessageDataService.fetchMessagesForLocation(self.location, MessageID: MessageID, Time:Time, foucsClean: foucsClean, completion:completion)
     }
     
-    override func fetchNewMessages(notificationMessageID:String?, Time: Int, completion: CompletionBlock?) {
+    override func fetchNewMessages(_ notificationMessageID:String?, Time: Int, completion: CompletionBlock?) {
         sharedMessageDataService.fetchNewMessagesForLocation(self.location, Time: Time, notificationMessageID: notificationMessageID, completion: completion)
     }
     
-    override func fetchMessagesForLocationWithEventReset(MessageID: String, Time: Int, completion: CompletionBlock?) {
+    override func fetchMessagesForLocationWithEventReset(_ MessageID: String, Time: Int, completion: CompletionBlock?) {
         sharedMessageDataService.fetchMessagesForLocationWithEventReset(self.location, MessageID: MessageID, Time: Time, completion: completion)
     }
     

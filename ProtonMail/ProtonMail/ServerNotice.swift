@@ -12,20 +12,20 @@ let serverNotice = ServerNotice()
 
 class ServerNotice {
     
-    private func setTime(diff : Int) {
-        var new_current_time : Int = Int(NSDate().timeIntervalSince1970)
+    fileprivate func setTime(_ diff : Int) {
+        var new_current_time : Int = Int(Date().timeIntervalSince1970)
         new_current_time = new_current_time + diff
         userCachedStatus.serverNoticesNextTime = String(new_current_time)
     }
     
     // MARK: - Public methods
-    func check(messages : [String]) {
+    func check(_ messages : [String]) {
         guard messages.count > 0 else {
             return
         }
         let cachedMessgaes = userCachedStatus.serverNotices
         let nextTime = Int(userCachedStatus.serverNoticesNextTime) ?? 0
-        let currentTime : Int = Int(NSDate().timeIntervalSince1970)
+        let currentTime : Int = Int(Date().timeIntervalSince1970)
         
         var need_show = [String]()
         if cachedMessgaes.count <= 0 {
@@ -64,13 +64,13 @@ class ServerNotice {
         let alertController = UIAlertController(
             title: NSLocalizedString("ProtonMail"),
             message: message,
-            preferredStyle: .Alert)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Remind Me Later"), style: .Default, handler: { action in
+            preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Remind Me Later"), style: .default, handler: { action in
             self.setTime(10)
         }))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Don't Show Again"), style: .Destructive, handler: { action in
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Don't Show Again"), style: .destructive, handler: { action in
              self.setTime(31536000)//1 year 1 * 365 * 24 * 60 * 60
         }))
-        UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(alertController, animated: true, completion: nil)
+        UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
     }
 }

@@ -38,7 +38,7 @@ struct Constants {
 
 
 
-public class AuthInfoRequest<T : ApiResponse> : ApiRequest<T> {
+final class AuthInfoRequest<T : ApiResponse> : ApiRequest<T> {
     
     var username : String!
     
@@ -47,52 +47,52 @@ public class AuthInfoRequest<T : ApiResponse> : ApiRequest<T> {
         self.username = username;
     }
     
-    override func toDictionary() -> Dictionary<String, AnyObject>? {
-        let out : [String : AnyObject] = [
+    override func toDictionary() -> Dictionary<String, Any>? {
+        let out : [String : Any] = [
             AuthKey.clientID : Constants.clientID,
             AuthKey.clientSecret : Constants.clientSecret,
             AuthKey.userName : username
         ]
-        PMLog.D(self.JSONStringify(out, prettyPrinted: true))
+        //PMLog.D(self.JSONStringify(out, prettyPrinted: true))
         return out
     }
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .POST
+        return .post
     }
     
-    override public func getRequestPath() -> String {
+    override open func getRequestPath() -> String {
         return AuthAPI.Path + "/info" + AppConstants.getDebugOption
     }
     
-    override public func getIsAuthFunction() -> Bool {
+    override open func getIsAuthFunction() -> Bool {
         return false
     }
 }
 
 
-public class AuthModulusRequest<T : ApiResponse> : ApiRequest<T> {
+final class AuthModulusRequest<T : ApiResponse> : ApiRequest<T> {
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .GET
+        return .get
     }
     
-    override public func getRequestPath() -> String {
+    override open func getRequestPath() -> String {
         return AuthAPI.Path + "/modulus" + AppConstants.getDebugOption
     }
     
-    override public func getIsAuthFunction() -> Bool {
+    override open func getIsAuthFunction() -> Bool {
         return false
     }
     
-    override public func getVersion() -> Int {
+    override open func getVersion() -> Int {
         return AuthAPI.V_AuthModulusRequest
     }
 }
 
 
 // MARK : Get messages part
-public class AuthRequest<T : ApiResponse> : ApiRequest<T> {
+final class AuthRequest<T : ApiResponse> : ApiRequest<T> {
     
     var username : String!
     var clientEphemeral : String! //base64
@@ -101,20 +101,19 @@ public class AuthRequest<T : ApiResponse> : ApiRequest<T> {
     var twoFactorCode : String?
     
     //local verify only
-    var serverProof : NSData!
+    var serverProof : Data!
     
-    init(username : String, ephemeral:NSData, proof:NSData, session:String!, serverProof : NSData!, code:String?) {
+    init(username : String, ephemeral:Data, proof:Data, session:String!, serverProof : Data!, code:String?) {
         self.username = username
-        self.clientEphemeral = ephemeral.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
-        self.clientProof = proof.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+        self.clientEphemeral = ephemeral.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+        self.clientProof = proof.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
         self.srpSession = session
         self.twoFactorCode = code
         self.serverProof = serverProof
     }
     
-    override func toDictionary() -> Dictionary<String, AnyObject>? {
-        
-        var out : [String : AnyObject] = [
+    override func toDictionary() -> Dictionary<String, Any>? {
+        var out : [String : Any] = [
             AuthKey.clientID : Constants.clientID,
             AuthKey.clientSecret : Constants.clientSecret,
             AuthKey.userName : username,
@@ -127,28 +126,26 @@ public class AuthRequest<T : ApiResponse> : ApiRequest<T> {
         if let code = self.twoFactorCode {
             out[AuthKey.twoFactor] = code
         }
-        
-        PMLog.D(self.JSONStringify(out, prettyPrinted: true))
-        
+        //PMLog.D(self.JSONStringify(out, prettyPrinted: true))
         return out
     }
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .POST
+        return .post
     }
     
-    override public func getRequestPath() -> String {
+    override open func getRequestPath() -> String {
         return AuthAPI.Path + AppConstants.getDebugOption
     }
     
-    override public func getIsAuthFunction() -> Bool {
+    override open func getIsAuthFunction() -> Bool {
         return false
     }
 }
 
 
 // MARK : refresh token
-public class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
+final class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
     
     var resfreshToken : String!
     var Uid : String!
@@ -158,31 +155,29 @@ public class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
         self.Uid = uid
     }
     
-    override func toDictionary() -> Dictionary<String, AnyObject>? {
-        
-        let out = [
+    override func toDictionary() -> Dictionary<String, Any>? {
+        let out : [String : Any] = [
             "ClientID": Constants.clientID,
             "ResponseType": "token",
             "RefreshToken": resfreshToken,
             "GrantType": "refresh_token",
             "RedirectURI" : "http://www.protonmail.ch",
-            AuthKey.state : "\(NSUUID().UUIDString)",
+            AuthKey.state : "\(UUID().uuidString)",
             "Uid" : self.Uid
         ]
-        
         PMLog.D(self.JSONStringify(out, prettyPrinted: true))
         return out
     }
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .POST
+        return .post
     }
     
-    override public func getRequestPath() -> String {
+    override open func getRequestPath() -> String {
         return AuthAPI.Path + "/refresh" + AppConstants.getDebugOption
     }
     
-    override public func getIsAuthFunction() -> Bool {
+    override open func getIsAuthFunction() -> Bool {
         return false
     }
 }
@@ -190,31 +185,31 @@ public class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
 
 
 // MARK :delete auth token
-public class AuthDeleteRequest<T : ApiResponse> : ApiRequest<T> {
+final class AuthDeleteRequest<T : ApiResponse> : ApiRequest<T> {
     
     override init() {
     }
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .DELETE
+        return .delete
     }
     
-    override public func getRequestPath() -> String {
+    override func getRequestPath() -> String {
         return AuthAPI.Path + AppConstants.getDebugOption
     }
     
-    override public func getIsAuthFunction() -> Bool {
+    override func getIsAuthFunction() -> Bool {
         return false
     }
 }
 
 
 // MARK : Response part
-public class AuthResponse : ApiResponse {
+final class AuthResponse : ApiResponse {
     
     var encPrivateKey : String?
     var accessToken : String?
-    var expiresIn : NSTimeInterval?
+    var expiresIn : TimeInterval?
     var refreshToken : String?
     var userID : String?
     var eventID : String?
@@ -229,13 +224,13 @@ public class AuthResponse : ApiResponse {
     
     var userStatus : Int = 0
     
-    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
+    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
         
         PMLog.D(response.JSONStringify(true))
         self.encPrivateKey = response["EncPrivateKey"] as? String
         self.userID = response["Uid"] as? String
         self.accessToken = response["AccessToken"] as? String
-        self.expiresIn = response["ExpiresIn"] as? NSTimeInterval
+        self.expiresIn = response["ExpiresIn"] as? TimeInterval
         self.scope = response["Scope"] as? String
         self.eventID = response["EventID"] as? String
         
@@ -253,7 +248,7 @@ public class AuthResponse : ApiResponse {
     }
 }
 
-public class AuthInfoResponse : ApiResponse {
+final class AuthInfoResponse : ApiResponse {
     
     var Modulus : String?
     var ServerEphemeral : String?
@@ -262,7 +257,7 @@ public class AuthInfoResponse : ApiResponse {
     var SRPSession : String?
     var TwoFactor : Int = 0   //0 is off
     
-    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
+    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
         
         PMLog.D(response.JSONStringify(true))
         
@@ -278,12 +273,12 @@ public class AuthInfoResponse : ApiResponse {
 }
 
 
-public class AuthModulusResponse : ApiResponse {
+final class AuthModulusResponse : ApiResponse {
     
     var Modulus : String?
     var ModulusID : String?
     
-    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
+    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
         self.Modulus = response["Modulus"] as? String
         self.ModulusID = response["ModulusID"] as? String
         return true

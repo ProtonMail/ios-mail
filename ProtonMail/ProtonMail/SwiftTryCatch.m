@@ -39,6 +39,22 @@
 }
 @end
 
+
+@implementation ObjC
+
++ (BOOL)catchException:(void(^)())tryBlock error:(__autoreleasing NSError **)error {
+    @try {
+        tryBlock();
+        return YES;
+    }
+    @catch (NSException *exception) {
+        *error = [[NSError alloc] initWithDomain:exception.name code:1000000 userInfo:exception.userInfo];
+    }
+}
+
+@end
+
+
 @implementation SwiftTryCatch
 /**
  Provides try catch functionality for swift by wrapping around Objective-C

@@ -15,10 +15,10 @@ class TouchIDCell: UITableViewCell {
         super.awakeFromNib()
     }
     
-    typealias ActionBlock = (cell: TouchIDCell!, newStatus: Bool) -> Void
+    typealias ActionBlock = (_ cell: TouchIDCell?, _ newStatus: Bool) -> Void
     
     @IBOutlet weak var switchView: UISwitch!
-    @IBAction func switchAction(sender: UISwitch) {
+    @IBAction func switchAction(_ sender: UISwitch) {
         if !userCachedStatus.isTouchIDEnabled {
             
             // try to enable touch id
@@ -26,7 +26,7 @@ class TouchIDCell: UITableViewCell {
             // Declare a NSError variable.
             var error: NSError?
             // Check if the device can evaluate the policy.
-            if context.canEvaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, error: &error) {
+            if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
                 userCachedStatus.isTouchIDEnabled = true
                 userCachedStatus.touchIDEmail = sharedUserDataService.username ?? ""
             }
@@ -34,18 +34,18 @@ class TouchIDCell: UITableViewCell {
                 var alertString : String = "";
                 // If the security policy cannot be evaluated then show a short message depending on the error.
                 switch error!.code{
-                case LAError.TouchIDNotEnrolled.rawValue:
+                case LAError.Code.touchIDNotEnrolled.rawValue:
                     alertString = NSLocalizedString("TouchID is not enrolled, enable it in the system Settings")
-                case LAError.PasscodeNotSet.rawValue:
+                case LAError.Code.passcodeNotSet.rawValue:
                     alertString = NSLocalizedString("A passcode has not been set, enable it in the system Settings")
                 default:
                     // The LAError.TouchIDNotAvailable case.
                     alertString = NSLocalizedString("TouchID not available")
                 }
                 PMLog.D(alertString)
-                PMLog.D("\(error?.localizedDescription)")
+                PMLog.D("\(String(describing: error?.localizedDescription))")
                 alertString.alertToast()
-                switchView.on = false;
+                switchView.isOn = false;
             }
         } else {
             userCachedStatus.isTouchIDEnabled = false
@@ -53,10 +53,10 @@ class TouchIDCell: UITableViewCell {
         }
     }
     
-    func setUpSwitch(enabled : Bool, complete : ActionBlock) {
-        switchView.enabled = true
+    func setUpSwitch(_ enabled : Bool, complete : ActionBlock) {
+        switchView.isEnabled = true
 
-        switchView.on = enabled;
+        switchView.isOn = enabled;
         self.updateStatus()
     }
     

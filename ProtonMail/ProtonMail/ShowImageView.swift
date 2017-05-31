@@ -20,12 +20,12 @@ class ShowImageView: PMView {
         return "ShowImageView"
     }
     
-    @IBAction func clickAction(sender: AnyObject) {
+    @IBAction func clickAction(_ sender: AnyObject) {
         actionDelegate?.showImageClicked()
     }
     
     override func setup() {
-        showImageButton.layer.borderColor = UIColor.ProtonMail.Gray_C9CED4.CGColor
+        showImageButton.layer.borderColor = UIColor.ProtonMail.Gray_C9CED4.cgColor
         showImageButton.layer.borderWidth = 1.0
         showImageButton.layer.cornerRadius = 2.0
     }

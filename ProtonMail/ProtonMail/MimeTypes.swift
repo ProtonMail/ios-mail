@@ -116,23 +116,23 @@ internal let mimeTypes = [
     "avi": "video/x-msvideo"
 ]
 
-public func mimeTypeForUTI(UTI: String) -> String {
+public func mimeTypeForUTI(_ UTI: String) -> String {
    // UTTypeCopyPreferredTagWithClass("public.jpeg", kUTTagClassMIMEType).takeRetainedValue()
-    let cfMimeType = UTTypeCopyPreferredTagWithClass(UTI, kUTTagClassMIMEType)?.takeRetainedValue()
-    if let mimeType = cfMimeType as? String {
+    let cfMimeType = UTTypeCopyPreferredTagWithClass(UTI as CFString, kUTTagClassMIMEType)?.takeRetainedValue()
+    if let mimeType = cfMimeType as String? {
         return mimeType
     }
     return "application/octet-stream"
 }
 
-internal func MimeType(ext: String?) -> String {
-    if let _ext = ext where mimeTypes.contains({ $0.0 == _ext.lowercaseString }) {
-        return mimeTypes[_ext.lowercaseString]!
+internal func MimeType(_ ext: String?) -> String {
+    if let _ext = ext, mimeTypes.contains(where: { $0.0 == _ext.lowercased() }) {
+        return mimeTypes[_ext.lowercased()]!
     }
     return DEFAULT_MIME_TYPE
 }
 
-extension NSURL {
+extension URL {
     public func mimeType() -> String {
         return MimeType(self.pathExtension)
     }

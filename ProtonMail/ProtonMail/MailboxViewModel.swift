@@ -10,34 +10,34 @@ import Foundation
 import CoreData
 
 
-public class MailboxViewModel {
+class MailboxViewModel {
     typealias CompletionBlock = APIService.CompletionBlock
     
     public init() { }
     
-    public func getNavigationTitle() -> String {
+    func getNavigationTitle() -> String {
         fatalError("This method must be overridden")
     }
     
-    public func getFetchedResultsController() -> NSFetchedResultsController? {
+    func getFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult>? {
         fatalError("This method must be overridden")
     }
     
-    public func lastUpdateTime() -> LastUpdatedStore.UpdateTime {
+    func lastUpdateTime() -> UpdateTime {
         fatalError("This method must be overridden")
     }
     
-    public func getSwipeTitle(action: MessageSwipeAction) -> String {
+    func getSwipeTitle(_ action: MessageSwipeAction) -> String {
         fatalError("This method must be overridden")
     }
     
-    public func deleteMessage(msg: Message) -> Bool {
+    func deleteMessage(_ msg: Message) -> Bool {
         fatalError("This method must be overridden")
     }
     
-    public func archiveMessage(msg: Message) {
+    func archiveMessage(_ msg: Message) {
         self.updateBadgeNumberWhenMove(msg, to: .archive)
-        msg.removeLocationFromLabels(msg.location, location: .archive, keepSent: true)
+        msg.removeLocationFromLabels(currentlocation: msg.location, location: .archive, keepSent: true)
         msg.needsUpdate = true
         msg.location = .archive
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
@@ -45,9 +45,9 @@ public class MailboxViewModel {
         }
     }
     
-    public func spamMessage(msg: Message) {
+    func spamMessage(_ msg: Message) {
         self.updateBadgeNumberWhenMove(msg, to: .spam)
-        msg.removeLocationFromLabels(msg.location, location: .spam, keepSent: true)
+        msg.removeLocationFromLabels(currentlocation: msg.location, location: .spam, keepSent: true)
         msg.needsUpdate = true
         msg.location = .spam
         if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
@@ -55,7 +55,7 @@ public class MailboxViewModel {
         }
     }
     
-    public func starMessage(msg: Message) {
+    func starMessage(_ msg: Message) {
         self.updateBadgeNumberWhenMove(msg, to: .starred)
         msg.setLabelLocation(.starred)
         msg.isStarred = true
@@ -65,7 +65,7 @@ public class MailboxViewModel {
         }
     }
     
-    func updateBadgeNumberWhenMove(message : Message, to : MessageLocation) {
+    func updateBadgeNumberWhenMove(_ message : Message, to : MessageLocation) {
         let fromLocation = message.location
         let toLocation = to
         
@@ -95,14 +95,14 @@ public class MailboxViewModel {
         }
         
         if fromLocation == .inbox {
-            UIApplication.sharedApplication().applicationIconBadgeNumber = fromCount
+            UIApplication.shared.applicationIconBadgeNumber = fromCount
         }
         if toLocation == .inbox {
-            UIApplication.sharedApplication().applicationIconBadgeNumber = toCount
+            UIApplication.shared.applicationIconBadgeNumber = toCount
         }
     }
     
-    func updateBadgeNumberWhenRead(message : Message, changeToRead : Bool) {
+    func updateBadgeNumberWhenRead(_ message : Message, changeToRead : Bool) {
         let location = message.location
         
         if message.isRead == changeToRead {
@@ -124,56 +124,56 @@ public class MailboxViewModel {
             lastUpdatedStore.updateUnreadCountForKey(.starred, count: staredCount)
         }
         if location == .inbox {
-            UIApplication.sharedApplication().applicationIconBadgeNumber = count
+            UIApplication.shared.applicationIconBadgeNumber = count
         }
     }
     
-    public func isDrafts() -> Bool {
+    func isDrafts() -> Bool {
         return false
     }
     
-    public func isArchive() -> Bool {
+    func isArchive() -> Bool {
         return false
     }
     
-    public func isDelete () -> Bool {
+    func isDelete () -> Bool {
         return false
     }
     
-    public func showLocation () -> Bool {
+    func showLocation () -> Bool {
         return false
     }
     
-    public func ignoredLocationTitle() -> String {
+    func ignoredLocationTitle() -> String {
         return ""
     }
     
-    public func isCurrentLocation(l : MessageLocation) -> Bool {
+    func isCurrentLocation(_ l : MessageLocation) -> Bool {
         return false
     }
     
-    public func isSwipeActionValid(action: MessageSwipeAction) -> Bool {
+    func isSwipeActionValid(_ action: MessageSwipeAction) -> Bool {
         return true
     }
     
-    public func stayAfterAction (action: MessageSwipeAction) -> Bool {
+    func stayAfterAction (_ action: MessageSwipeAction) -> Bool {
         return false
     }
     
-    public func isShowEmptyFolder() -> Bool {
+    func isShowEmptyFolder() -> Bool {
         return false
     }
     
-    public func emptyFolder() {
+    func emptyFolder() {
     }
     
-    func fetchMessages(MessageID : String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
+    func fetchMessages(_ MessageID : String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
         fatalError("This method must be overridden")
     }
-    func fetchNewMessages(notificationMessageID:String?, Time: Int, completion: CompletionBlock?) {
+    func fetchNewMessages(_ notificationMessageID:String?, Time: Int, completion: CompletionBlock?) {
         fatalError("This method must be overridden")
     }
-    func fetchMessagesForLocationWithEventReset(MessageID : String, Time: Int, completion: CompletionBlock?) {
+    func fetchMessagesForLocationWithEventReset(_ MessageID : String, Time: Int, completion: CompletionBlock?) {
         //fatalError("This method must be overridden")
     }
     

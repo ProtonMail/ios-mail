@@ -9,7 +9,7 @@
 import Foundation
 
 
-public class ComposeViewModel {
+open class ComposeViewModel {
     var message : Message?
     var messageAction : ComposeMessageAction!
     var toSelectedContacts: [ContactVO]! = [ContactVO]()
@@ -39,28 +39,28 @@ public class ComposeViewModel {
     
     public init() { }
     
-    public func getSubject() -> String {
+    open func getSubject() -> String {
         return self.subject
         //return self.message?.subject ?? ""
     }
     
-    public func setSubject(sub : String) {
+    open func setSubject(_ sub : String) {
         self.subject = sub
     }
     
-    public func setBody(body : String) {
+    open func setBody(_ body : String) {
         self.body = body
     }
     
-    internal func addToContacts(contacts: ContactVO! ) {
+    internal func addToContacts(_ contacts: ContactVO! ) {
         toSelectedContacts.append(contacts)
     }
     
-    internal func addCcContacts(contacts: ContactVO! ) {
+    internal func addCcContacts(_ contacts: ContactVO! ) {
         ccSelectedContacts.append(contacts)
     }
     
-    internal func addBccContacts(contacts: ContactVO! ) {
+    internal func addBccContacts(_ contacts: ContactVO! ) {
         bccSelectedContacts.append(contacts)
     }
     
@@ -69,48 +69,48 @@ public class ComposeViewModel {
     }
     
     ///
-    public func sendMessage() {
-        NSException(name:"name", reason:"reason", userInfo:nil).raise()
+    open func sendMessage() {
+        NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    public func updateDraft() {
-        NSException(name:"name", reason:"reason", userInfo:nil).raise()
+    open func updateDraft() {
+        NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    public func deleteDraft() {
-        NSException(name:"name", reason:"reason", userInfo:nil).raise()
+    open func deleteDraft() {
+        NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    func uploadAtt(att : Attachment!) {
-        NSException(name:"name", reason:"reason", userInfo:nil).raise()
+    func uploadAtt(_ att : Attachment!) {
+        NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    func deleteAtt(att : Attachment!) {
-        NSException(name:"name", reason:"reason", userInfo:nil).raise()
+    func deleteAtt(_ att : Attachment!) {
+        NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    public func markAsRead() {
-        NSException(name:"name", reason:"reason", userInfo:nil).raise()
+    open func markAsRead() {
+        NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    public func getDefaultComposeBody() {
-        NSException(name:"name", reason:"reason", userInfo:nil).raise()
+    open func getDefaultComposeBody() {
+        NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    public func getHtmlBody() -> String {
-        NSException(name:"name", reason:"reason", userInfo:nil).raise()
+    open func getHtmlBody() -> String {
+        NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
         return ""
     }
     
-    func collectDraft(title:String, body:String, expir:NSTimeInterval, pwd:String, pwdHit:String) -> Void {
-         NSException(name:"name", reason:"reason", userInfo:nil).raise()
+    func collectDraft(_ title:String, body:String, expir:TimeInterval, pwd:String, pwdHit:String) -> Void {
+         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
     func getAttachments() -> [Attachment]? {
         fatalError("This method must be overridden")
     }
     
-    func updateAddressID (address_id : String) {
+    func updateAddressID (_ address_id : String) {
         fatalError("This method must be overridden")
     }
     
@@ -122,7 +122,7 @@ public class ComposeViewModel {
         fatalError("This method must be overridden")
     }
     
-    func getCurrrentSignature(addr_id : String) -> String? {
+    func getCurrrentSignature(_ addr_id : String) -> String? {
         fatalError("This method must be overridden")
     }
     

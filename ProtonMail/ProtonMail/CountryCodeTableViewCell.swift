@@ -17,16 +17,16 @@ class CountryCodeTableViewCell : UITableViewCell {
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
-        self.layoutMargins = UIEdgeInsetsZero;
-        self.separatorInset = UIEdgeInsetsZero
+        self.layoutMargins = UIEdgeInsets.zero;
+        self.separatorInset = UIEdgeInsets.zero
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        imageView?.contentMode = .ScaleAspectFit
+        imageView?.contentMode = .scaleAspectFit
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
     
@@ -38,7 +38,7 @@ class CountryCodeTableViewCell : UITableViewCell {
         imageView?.frame = frame!
     }
     
-    func ConfigCell(countryCode : CountryCode!, vc : UIViewController) {
+    func ConfigCell(_ countryCode : CountryCode!, vc : UIViewController) {
         let image = UIImage(named: "flags.bundle/\(countryCode.country_code)" )
         imageView?.image = image
         countryLabel.text = countryCode.country_en

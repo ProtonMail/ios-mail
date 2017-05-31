@@ -40,33 +40,41 @@ class PinCodeViewController : UIViewController {
         }
     }
     
-    internal func setUpView(reset: Bool) {
+    internal func setUpView(_ reset: Bool) {
         pinCodeView.updateViewText(viewModel.title(), cancelText: viewModel.cancel(), resetPin: reset)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let value = UIInterfaceOrientation.Portrait.rawValue
-        UIDevice.currentDevice().setValue(value, forKey: "orientation")
+        let value = UIInterfaceOrientation.portrait.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.view.layoutIfNeeded()
+        NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doEnterForeground), name:  NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         pinCodeView.updateCorner()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent;
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent;
+    }
+    
+    func doEnterForeground(){
+        if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+            authenticateUser()
+        }
     }
     
     func authenticateUser() {
@@ -80,28 +88,28 @@ class PinCodeViewController : UIViewController {
         let reasonString = "Login: \(savedEmail)"
         
         // Check if the device can evaluate the policy.
-        if context.canEvaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, error: &error) {
-            [context .evaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString, reply: { (success: Bool, evalPolicyError: NSError?) -> Void in
+        if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            context.evaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString, reply: { (success: Bool, evalPolicyError: Error?) in
                 if success {
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         self.viewModel.done()
                         self.delegate?.Next()
-                        self.navigationController?.popViewControllerAnimated(true)
+                        let _ = self.navigationController?.popViewController(animated: true)
                     }
                 }
                 else{
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         
-                        PMLog.D("\(evalPolicyError?.localizedDescription)")
-                        switch evalPolicyError!.code {
-                        case LAError.SystemCancel.rawValue:
+                        PMLog.D("\(String(describing: evalPolicyError?.localizedDescription))")
+                        switch evalPolicyError!._code {
+                        case LAError.Code.systemCancel.rawValue:
                             PMLog.D("Authentication was cancelled by the system")
                             "Authentication was cancelled by the system".alertToast()
-                        case LAError.UserCancel.rawValue:
+                        case LAError.Code.userCancel.rawValue:
                             PMLog.D("Authentication was cancelled by the user")
-                        case LAError.UserFallback.rawValue:
+                        case LAError.Code.userFallback.rawValue:
                             PMLog.D("User selected to enter custom password")
-                            //self.showPasswordAlert()
+                        //self.showPasswordAlert()
                         default:
                             PMLog.D("Authentication failed")
                             //self.showPasswordAlert()
@@ -110,22 +118,22 @@ class PinCodeViewController : UIViewController {
                         
                     }
                 }
-            })]
+            })
         }
         else{
             var alertString : String = "";
             // If the security policy cannot be evaluated then show a short message depending on the error.
             switch error!.code{
-            case LAError.TouchIDNotEnrolled.rawValue:
+            case LAError.Code.touchIDNotEnrolled.rawValue:
                 alertString = "TouchID is not enrolled, enable it in the system Settings"
-            case LAError.PasscodeNotSet.rawValue:
+            case LAError.Code.passcodeNotSet.rawValue:
                 alertString = "A passcode has not been set, enable it in the system Settings"
             default:
                 // The LAError.TouchIDNotAvailable case.
                 alertString = "TouchID not available"
             }
             PMLog.D(alertString)
-            PMLog.D("\(error?.localizedDescription)")
+            PMLog.D("\(String(describing: error?.localizedDescription))")
             alertString.alertToast()
         }
     }
@@ -146,24 +154,24 @@ extension PinCodeViewController : PinCodeViewDelegate {
     
     func Cancel() {
         delegate?.Cancel()
-        self.navigationController?.popViewControllerAnimated(true)
+        let _ = self.navigationController?.popViewController(animated: true)
     }
     
-    func Next(code : String) {
+    func Next(_ code : String) {
         if code.isEmpty {
             let alert = "Pin code can't be empty.".alertController()
             alert.addOKAction()
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         } else {
             let step : PinCodeStep = self.viewModel.setCode(code)
-            if step != .Done {
+            if step != .done {
                 self.setUpView(true)
             } else {
                 if self.viewModel.isPinMatched() {
                     self.pinCodeView.hideAttempError(true)
                     self.viewModel.done()
                     self.delegate?.Next()
-                    self.navigationController?.popViewControllerAnimated(true)
+                    let _ = self.navigationController?.popViewController(animated: true)
                 } else {
                     let count = self.viewModel.getPinFailedRemainingCount()
                     if count < 10 {

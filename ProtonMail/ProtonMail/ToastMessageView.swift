@@ -32,12 +32,11 @@ extension ProtonMailViewController {
         
         self.view.addSubview(v)
         
-        
-        var f = CGRect(x: 10, y: self.view.frame.height - 40, width: self.view.frame.width - 10, height: 40)
+        let f = CGRect(x: 10, y: self.view.frame.height - 40, width: self.view.frame.width - 10, height: 40)
         
         v.frame = f;
         
-        v.backgroundColor = UIColor.blackColor()
+        v.backgroundColor = UIColor.black
         return v;
         
         

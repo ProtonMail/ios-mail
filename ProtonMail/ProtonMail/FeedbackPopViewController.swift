@@ -24,26 +24,26 @@ class FeedbackPopViewController : UIViewController {
         
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
     
-    @IBAction func ilikeitAction(sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func ilikeitAction(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
         feedbackDelegate?.showRating()
     }
     
-    @IBAction func itisokAction(sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func itisokAction(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
         feedbackDelegate?.showHelp()
     }
-    @IBAction func dontlikeAction(sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func dontlikeAction(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
         feedbackDelegate?.showSupport()
         
     }
-    @IBAction func cancelAction(sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancelAction(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
         feedbackDelegate?.cancelled()
     }
     

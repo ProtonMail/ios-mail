@@ -42,7 +42,7 @@ class LabelsView: PMView {
     var sender : String = "";
     var inited : Bool = false;
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         if  !self.inited {
             self.inited = true;
             self.update();
@@ -55,31 +55,31 @@ class LabelsView: PMView {
         labelView1.layer.borderWidth = 1
         labelView1.layer.cornerRadius = 2
         labelView1.font = UIFont.robotoLight(size: 9)
-        labelView1.lineBreakMode = .ByTruncatingTail
+        labelView1.lineBreakMode = .byTruncatingTail
         
         labelView2.numberOfLines = 0;
         labelView2.layer.borderWidth = 1
         labelView2.layer.cornerRadius = 2
         labelView2.font = UIFont.robotoLight(size: 9)
-        labelView2.lineBreakMode = .ByTruncatingTail
+        labelView2.lineBreakMode = .byTruncatingTail
         
         labelView3.numberOfLines = 0;
         labelView3.layer.borderWidth = 1
         labelView3.layer.cornerRadius = 2
         labelView3.font = UIFont.robotoLight(size: 9)
-        labelView3.lineBreakMode = .ByTruncatingTail
+        labelView3.lineBreakMode = .byTruncatingTail
         
         labelView4.numberOfLines = 0;
         labelView4.layer.borderWidth = 1
         labelView4.layer.cornerRadius = 2
         labelView4.font = UIFont.robotoLight(size: 9)
-        labelView4.lineBreakMode = .ByTruncatingTail
+        labelView4.lineBreakMode = .byTruncatingTail
         
         labelView5.numberOfLines = 0;
         labelView5.layer.borderWidth = 1
         labelView5.layer.cornerRadius = 2
         labelView5.font = UIFont.robotoLight(size: 9)
-        labelView5.lineBreakMode = .ByTruncatingTail
+        labelView5.lineBreakMode = .byTruncatingTail
         
         labelViews.append(labelView1)
         labelViews.append(labelView2)
@@ -99,14 +99,14 @@ class LabelsView: PMView {
         imageViews.append(image4)
         imageViews.append(image5)
         
-        leftLabelView.textAlignment = .Left
+        leftLabelView.textAlignment = .left
         leftLabelView.font = UIFont.robotoLight(size: UIFont.Size.h6)
         leftLabelView.numberOfLines = 1;
         leftLabelView.textColor = UIColor(hexColorCode: "#838897")
-        leftLabelView.lineBreakMode = .ByTruncatingTail
+        leftLabelView.lineBreakMode = .byTruncatingTail
     }
     
-    func configLables (leftText : String, labels : [Label]?) {
+    func configLables (_ leftText : String, labels : [Label]?) {
         self.sender = leftText;
         var tmplabels : [Label] = []
         if let alllabels = labels {
@@ -121,11 +121,11 @@ class LabelsView: PMView {
         self.update();
     }
     
-    private func update() {
+    fileprivate func update() {
         let width = self.frame.width
         
         leftLabelView.text =  self.sender
-        let leftLabelSize = leftLabelView.sizeThatFits(CGSizeZero).width
+        let leftLabelSize = leftLabelView.sizeThatFits(CGSize.zero).width
         let sizeLimit : CGFloat = width - leftLabelSize
         
         var labelsSize : [CGFloat] = [];
@@ -144,16 +144,16 @@ class LabelsView: PMView {
                             return ;
                         }
                         labelView.text = "  \(label.name.trim())  "
-                        let color = label.color.isEmpty ? UIColor.whiteColor() : UIColor(hexString: label.color, alpha: 1.0)
+                        let color = label.color.isEmpty ? UIColor.white : UIColor(hexString: label.color, alpha: 1.0)
                         labelView.textColor = color
-                        labelView.layer.borderColor = color.CGColor
+                        labelView.layer.borderColor = color.cgColor
                         
                         let image = UIImage(named: "mail_label-collapsed")
-                        imageView.image = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-                        imageView.highlightedImage = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+                        imageView.image = image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+                        imageView.highlightedImage = image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
                         imageView.tintColor = color
                         
-                        labelsSize.append(labelView.sizeThatFits(CGSizeZero).width)
+                        labelsSize.append(labelView.sizeThatFits(CGSize.zero).width)
                     } else {
                         labelView.text = ""
                         labelsSize.append(0)
@@ -170,23 +170,23 @@ class LabelsView: PMView {
                     
                     let labelConstraint = labelLayoutConstraints[i]
                     if  labels.count == i + 1 {
-                        labelView.hidden = false;
-                        imageView.hidden = true;
+                        labelView.isHidden = false;
+                        imageView.isHidden = true;
                         labelConstraint.constant = labelsSize[i]
                     } else {
                         if labels.count > i {
                             if check > sizeLimit {
-                                if let text = labelView.text?.trim() where text.characters.count > 0 {
+                                if let text = labelView.text?.trim(), text.characters.count > 0 {
                                     labelView.text = "  " + text[0] + "  ";
                                 }
                                 
-                                labelView.hidden = true;
-                                imageView.hidden = false;
+                                labelView.isHidden = true;
+                                imageView.isHidden = false;
                                 labelConstraint.constant = 14.0
                                 labelsSize[i] = 14
                             } else {
-                                labelView.hidden = false;
-                                imageView.hidden = true;
+                                labelView.isHidden = false;
+                                imageView.isHidden = true;
                                 labelConstraint.constant = labelsSize[i]
                             }
                         } else {
@@ -204,7 +204,7 @@ class LabelsView: PMView {
         //self.updateConstraintsIfNeeded()
     }
     
-    private func hideAll() {
+    fileprivate func hideAll() {
         labelConstraint1.constant = 0;
         labelConstraint2.constant = 0;
         labelConstraint3.constant = 0;
@@ -212,8 +212,8 @@ class LabelsView: PMView {
         labelConstraint5.constant = 0;
     }
     
-    private func hideLabelView (labeView : LabelDisplayView) {
+    fileprivate func hideLabelView (_ labeView : LabelDisplayView) {
         labeView.labelTitle = "";
-        labeView.hidden = true;
+        labeView.isHidden = true;
     }
 }

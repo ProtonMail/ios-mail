@@ -20,16 +20,16 @@ import CoreData
 
 extension NSManagedObjectContext {
     
-    func deleteAll(entityName: String) {
-        let fetchRequest = NSFetchRequest(entityName: entityName)
+    func deleteAll(_ entityName: String) {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fetchRequest.includesPropertyValues = false
         
-        performBlock { () -> Void in
+        perform { () -> Void in
             do {
-                let objects = try self.executeFetchRequest(fetchRequest)
+                let objects = try self.fetch(fetchRequest)
                 for object in objects as! [NSManagedObject] {
                     if object.managedObjectContext != nil {
-                        self.deleteObject(object)
+                        self.delete(object)
                     }
                 }
                 PMLog.D("Deleted \(objects.count) objects.")
@@ -42,12 +42,12 @@ extension NSManagedObjectContext {
         }
     }
     
-    func managedObjectWithEntityName(entityName: String, forKey key: String, matchingValue value: CVarArgType) -> NSManagedObject? {
-        let fetchRequest = NSFetchRequest(entityName: entityName)
+    func managedObjectWithEntityName(_ entityName: String, forKey key: String, matchingValue value: CVarArg) -> NSManagedObject? {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fetchRequest.predicate = NSPredicate(format: "%K == %@", key, value)
         
         do {
-            let results = try executeFetchRequest(fetchRequest)
+            let results = try fetch(fetchRequest)
             return results.first as? NSManagedObject
         } catch let ex as NSError {
             PMLog.D("error: \(ex)")
@@ -55,11 +55,11 @@ extension NSManagedObjectContext {
         return nil
     }
     
-    func managedObjectsWithEntityName(entityName: String, forManagedObjectIDs objectIDs: [NSManagedObjectID], error: NSErrorPointer) -> [NSManagedObject]? {
-        let request = NSFetchRequest(entityName: entityName)
+    func managedObjectsWithEntityName(_ entityName: String, forManagedObjectIDs objectIDs: [NSManagedObjectID], error: NSErrorPointer) -> [NSManagedObject]? {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         request.predicate = NSPredicate(format: "SELF in %@", objectIDs)
         do {
-            let results = try executeFetchRequest(request)
+            let results = try fetch(request)
             return results as? [NSManagedObject]
         } catch let ex as NSError {
             PMLog.D("error: \(ex)")
@@ -72,8 +72,8 @@ extension NSManagedObjectContext {
         do {
             if hasChanges {
                 try save()
-                if let parentContext = parentContext {
-                    parentContext.performBlockAndWait() { () -> Void in
+                if let parentContext = parent {
+                    parentContext.performAndWait() { () -> Void in
                         error = parentContext.saveUpstreamIfNeeded()
                     }
                 }

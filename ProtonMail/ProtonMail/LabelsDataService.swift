@@ -20,7 +20,7 @@ public enum LabelFetchType : Int {
 
 class LabelsDataService {
     
-    private var managedObjectContext: NSManagedObjectContext? {
+    fileprivate var managedObjectContext: NSManagedObjectContext? {
         return sharedCoreDataService.mainManagedObjectContext
     }
     
@@ -40,9 +40,9 @@ class LabelsDataService {
             } else if let labels = response?.labels {
                 //save
                 let context = sharedCoreDataService.newMainManagedObjectContext()
-                context.performBlockAndWait() {
+                context.performAndWait() {
                     do {
-                        let labels_out = try GRTJSONSerialization.objectsWithEntityName(Label.Attributes.entityName, fromJSONArray: labels, inContext: context)
+                        let labels_out = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: labels, in: context)
                         let error = context.saveUpstreamIfNeeded()
                         if error == nil {
                             if labels_out.count != labels.count {
@@ -50,7 +50,7 @@ class LabelsDataService {
                             }
                         } else {
                             //TODO:: error
-                            PMLog.D("error: \(error)")
+                            PMLog.D("error: \(String(describing: error))")
                         }
                     } catch let ex as NSError {
                         PMLog.D("error: \(ex)")
@@ -62,9 +62,9 @@ class LabelsDataService {
         }
     }
     
-    func fetchedResultsController(type : LabelFetchType) -> NSFetchedResultsController? {
+    func fetchedResultsController(_ type : LabelFetchType) -> NSFetchedResultsController<NSFetchRequestResult>? {
         if let moc = managedObjectContext {
-            let fetchRequest = NSFetchRequest(entityName: Label.Attributes.entityName)
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
             
             switch type {
             case .all:
@@ -80,12 +80,12 @@ class LabelsDataService {
         return nil
     }
     
-    func addNewLabel(response : Dictionary<String, AnyObject>?) {
+    func addNewLabel(_ response : Dictionary<String, Any>?) {
         if let label = response {
             let context = sharedCoreDataService.newMainManagedObjectContext()
-            context.performBlockAndWait() {
+            context.performAndWait() {
                 do {
-                    try GRTJSONSerialization.objectWithEntityName(Label.Attributes.entityName, fromJSONDictionary: label, inContext: context)
+                    try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: label, in: context)
                     if let error = context.saveUpstreamIfNeeded() {
                         PMLog.D("error: \(error)")
                     }

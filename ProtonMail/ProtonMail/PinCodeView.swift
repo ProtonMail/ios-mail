@@ -10,7 +10,7 @@ import Foundation
 
 protocol PinCodeViewDelegate {
     func Cancel()
-    func Next(code : String)
+    func Next(_ code : String)
     func TouchID()
 }
 
@@ -49,27 +49,27 @@ class PinCodeView : PMView {
     }
     
     func showTouchID() {
-        touchIDButton.hidden = false
+        touchIDButton.isHidden = false
     }
     
     func hideTouchID() {
-        touchIDButton.hidden = true
+        touchIDButton.isHidden = true
     }
     
     override func setup() {
         touchIDButton.layer.cornerRadius = 25
-        touchIDButton.hidden = true
+        touchIDButton.isHidden = true
     }
     
-    func updateViewText(title : String, cancelText : String, resetPin : Bool) {
+    func updateViewText(_ title : String, cancelText : String, resetPin : Bool) {
         titleLabel.text = title
-        logoutButton.setTitle(cancelText, forState: UIControlState.Normal)
+        logoutButton.setTitle(cancelText, for: UIControlState())
         if resetPin {
             self.resetPin()
         }
     }
     
-    func updateTitle(title : String) {
+    func updateTitle(_ title : String) {
         titleLabel.text = title
     }
     
@@ -86,45 +86,45 @@ class PinCodeView : PMView {
         self.setCorner(zeroButton)
         self.setCorner(goButton)
         
-        logoutButton.transform = CGAffineTransformMakeScale(-1.0, 1.0);
-        logoutButton.titleLabel?.transform = CGAffineTransformMakeScale(-1.0, 1.0);
-        logoutButton.imageView?.transform = CGAffineTransformMakeScale(-1.0, 1.0);
+        logoutButton.transform = CGAffineTransform(scaleX: -1.0, y: 1.0);
+        logoutButton.titleLabel?.transform = CGAffineTransform(scaleX: -1.0, y: 1.0);
+        logoutButton.imageView?.transform = CGAffineTransform(scaleX: -1.0, y: 1.0);
     }
     
-    @IBAction func touchIDAction(sender: AnyObject) {
+    @IBAction func touchIDAction(_ sender: AnyObject) {
         delegate?.TouchID()
     }
     
-    func showAttempError(error:String, low : Bool) {
-        pinDisplayView.textColor = UIColor.redColor()
-        whiteLineView.backgroundColor = UIColor.redColor()
-        attempsLabel.hidden = false
+    func showAttempError(_ error:String, low : Bool) {
+        pinDisplayView.textColor = UIColor.red
+        whiteLineView.backgroundColor = UIColor.red
+        attempsLabel.isHidden = false
         attempsLabel.text = error
         if low {
-            attempsLabel.backgroundColor = UIColor.redColor()
-            attempsLabel.textColor = UIColor.whiteColor()
+            attempsLabel.backgroundColor = UIColor.red
+            attempsLabel.textColor = UIColor.white
         } else {
-            attempsLabel.backgroundColor = UIColor.clearColor()
-            attempsLabel.textColor = UIColor.redColor()
+            attempsLabel.backgroundColor = UIColor.clear
+            attempsLabel.textColor = UIColor.red
         }
     }
     
-    func hideAttempError(reset : Bool) {
-        pinDisplayView.textColor = UIColor.lightGrayColor()
-        whiteLineView.backgroundColor = UIColor.whiteColor()
+    func hideAttempError(_ reset : Bool) {
+        pinDisplayView.textColor = UIColor.lightGray
+        whiteLineView.backgroundColor = UIColor.white
         if reset {
-            attempsLabel.hidden = false
+            attempsLabel.isHidden = false
         }
     }
     
-    internal func add(number : Int) {
+    internal func add(_ number : Int) {
         pinCode = pinCode + String(number)
         self.updateCodeDisplay()
     }
     
     internal func remove() {
         if !pinCode.isEmpty {
-            pinCode =  pinCode.substringToIndex(pinCode.endIndex.predecessor())
+            pinCode =  pinCode.substring(to: pinCode.characters.index(before: pinCode.endIndex))
             self.updateCodeDisplay()
         }
     }
@@ -140,47 +140,48 @@ class PinCodeView : PMView {
     
     func showError() {
         pinView.shake(3, offset: 10)
+        pinCode = ""
     }
     
-    func setCorner(button : UIView) {
+    func setCorner(_ button : UIView) {
         let w = button.frame.size.width
         button.layer.cornerRadius = w/2
         button.clipsToBounds = true
         
-        button.layer.borderColor = UIColor.whiteColor().CGColor
+        button.layer.borderColor = UIColor.white.cgColor
         button.layer.borderWidth = 1.0
     }
     
-    @IBAction func buttonActions(sender: UIButton) {
+    @IBAction func buttonActions(_ sender: UIButton) {
         self.hideAttempError(false)
         let numberClicked = sender.tag
         self.add(numberClicked)
     }
     
-    @IBAction func deleteAction(sender: UIButton) {
+    @IBAction func deleteAction(_ sender: UIButton) {
         self.hideAttempError(false)
         self.remove()
     }
     
-    @IBAction func logoutAction(sender: UIButton) {
+    @IBAction func logoutAction(_ sender: UIButton) {
         delegate?.Next(pinCode)
     }
     
-    @IBAction func backAction(sender: UIButton) {
+    @IBAction func backAction(_ sender: UIButton) {
         delegate?.Cancel()
     }
     
     
-    @IBAction func goAction(sender: UIButton) {
+    @IBAction func goAction(_ sender: UIButton) {
         delegate?.Next(pinCode)
     }
     
-    internal func changePinStatus(pin : UIView, on : Bool) {
+    internal func changePinStatus(_ pin : UIView, on : Bool) {
         if on {
-            pin.backgroundColor = UIColor.lightGrayColor()
+            pin.backgroundColor = UIColor.lightGray
             pin.layer.borderWidth = 0.0
         } else {
-            pin.backgroundColor = UIColor.clearColor()
+            pin.backgroundColor = UIColor.clear
             pin.layer.borderWidth = 1.0
         }
         

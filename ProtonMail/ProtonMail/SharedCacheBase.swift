@@ -9,15 +9,15 @@
 import Foundation
 
 
-public class  SharedCacheBase {
+class  SharedCacheBase {
     
-    private var userDefaults : NSUserDefaults!
+    fileprivate var userDefaults : UserDefaults!
     
-    func getShared() ->NSUserDefaults! {
+    func getShared() ->UserDefaults! {
         return self.userDefaults
     }
         
-    public convenience init (shared : NSUserDefaults) {
+    public convenience init (shared : UserDefaults) {
         self.init()
         self.userDefaults = shared
     }
@@ -26,7 +26,7 @@ public class  SharedCacheBase {
         //
     }
     
-    func setValue(value: AnyObject?, forKey key: String)
+    func setValue(_ value: Any?, forKey key: String)
     {
         self.userDefaults.setValue(value, forKey: key)
         self.userDefaults.synchronize()

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="14k-5d-srV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="14k-5d-srV">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -690,6 +690,20 @@
                                                                 <action selector="buttonAction:" destination="zeh-GA-VuO" eventType="touchUpInside" id="6iF-G5-lac"/>
                                                             </connections>
                                                         </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GmK-Jm-f4Q" userLabel="edit label button">
+                                                            <rect key="frame" x="193" y="0.0" width="80" height="44"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="80" id="50f-Tx-7GZ"/>
+                                                            </constraints>
+                                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="12" maxY="0.0"/>
+                                                            <state key="normal" image="label_edit-active">
+                                                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="buttonAction:" destination="zeh-GA-VuO" eventType="touchUpInside" id="Vgp-7M-CR3"/>
+                                                                <action selector="editAction:" destination="zeh-GA-VuO" eventType="touchUpInside" id="Wbj-4h-oUj"/>
+                                                            </connections>
+                                                        </button>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hFW-ma-ZRM">
                                                             <rect key="frame" x="0.0" y="14" width="16" height="16"/>
                                                             <constraints>
@@ -699,6 +713,8 @@
                                                         </imageView>
                                                     </subviews>
                                                     <constraints>
+                                                        <constraint firstItem="GmK-Jm-f4Q" firstAttribute="top" secondItem="wuB-ho-YEh" secondAttribute="top" id="3kq-2W-mBP"/>
+                                                        <constraint firstAttribute="trailing" secondItem="GmK-Jm-f4Q" secondAttribute="trailing" constant="30" id="Gor-rI-5A2"/>
                                                         <constraint firstAttribute="bottom" secondItem="Ob3-FJ-Dei" secondAttribute="bottom" constant="8" id="GuV-jt-wKQ"/>
                                                         <constraint firstItem="Ob3-FJ-Dei" firstAttribute="top" secondItem="wuB-ho-YEh" secondAttribute="top" constant="8" id="KYa-x6-6eW"/>
                                                         <constraint firstItem="hFW-ma-ZRM" firstAttribute="centerY" secondItem="wuB-ho-YEh" secondAttribute="centerY" id="LnY-1P-0Co"/>
@@ -708,9 +724,11 @@
                                                         <constraint firstItem="hli-Rq-vrf" firstAttribute="top" secondItem="wuB-ho-YEh" secondAttribute="top" id="f7j-M6-9Vo"/>
                                                         <constraint firstItem="Ob3-FJ-Dei" firstAttribute="leading" secondItem="wuB-ho-YEh" secondAttribute="leading" priority="500" id="hCk-T9-oaA"/>
                                                         <constraint firstAttribute="trailing" secondItem="hli-Rq-vrf" secondAttribute="trailing" id="ll5-W0-H3j"/>
+                                                        <constraint firstAttribute="bottom" secondItem="GmK-Jm-f4Q" secondAttribute="bottom" id="qNP-Oi-PBu"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
+                                                    <outlet property="editButton" destination="GmK-Jm-f4Q" id="fOo-Tf-spE"/>
                                                     <outlet property="labelIcon" destination="hFW-ma-ZRM" id="kRW-ez-AaI"/>
                                                     <outlet property="labelView" destination="Ob3-FJ-Dei" id="hrW-lt-lA0"/>
                                                     <outlet property="labelWidth" destination="drj-8y-wfa" id="ZZ9-d5-0Zs"/>
@@ -850,8 +868,10 @@
                         <outlet property="middleLineConstraint" destination="JIE-nj-1V4" id="LxZ-6l-GBu"/>
                         <outlet property="tableView" destination="DLH-ou-vZe" id="m38-Lh-eKz"/>
                         <outlet property="titleLabel" destination="mSx-Zq-fBF" id="1m2-py-tqy"/>
-                        <segue destination="BBo-ig-Gqj" kind="presentation" identifier="toLabelManagerSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="coverVertical" id="Dpt-T7-EMY"/>
-                        <segue destination="BBo-ig-Gqj" kind="presentation" identifier="toFolderManagerSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="coverVertical" id="fFn-p1-JKs"/>
+                        <segue destination="BBo-ig-Gqj" kind="presentation" identifier="toCreateLabelSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="coverVertical" id="Dpt-T7-EMY"/>
+                        <segue destination="BBo-ig-Gqj" kind="presentation" identifier="toCreateFolderSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="coverVertical" id="fFn-p1-JKs"/>
+                        <segue destination="BBo-ig-Gqj" kind="presentation" identifier="toEditingLabelSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="coverVertical" id="8Kc-9a-dPs"/>
+                        <segue destination="BBo-ig-Gqj" kind="presentation" identifier="toEditingFolderSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="coverVertical" id="oa9-8b-dT8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FVt-bG-ZYT" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3955,7 +3975,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3QC-xB-fsc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5813.6000000000004" y="1918.2908545727139"/>
+            <point key="canvasLocation" x="5921" y="1707"/>
         </scene>
     </scenes>
     <resources>
@@ -3968,6 +3988,7 @@
         <image name="favorite_main_selected" width="19" height="19"/>
         <image name="feedback_contact" width="16" height="16"/>
         <image name="hamburger" width="20" height="16"/>
+        <image name="label_edit-active" width="24" height="24"/>
         <image name="mail_attachment" width="14" height="14"/>
         <image name="mail_check" width="24" height="24"/>
         <image name="mail_lock" width="14" height="14"/>
@@ -3985,16 +4006,16 @@
         <image name="unchecked" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="LdN-DE-nXL"/>
+        <segue reference="YGe-pV-72F"/>
+        <segue reference="0zg-HM-MdK"/>
         <segue reference="hZj-FM-cPb"/>
         <segue reference="fux-iz-qV0"/>
-        <segue reference="zIE-XJ-wkG"/>
-        <segue reference="0zg-HM-MdK"/>
         <segue reference="ddm-eA-erE"/>
-        <segue reference="fFn-p1-JKs"/>
-        <segue reference="5rJ-hC-fsT"/>
-        <segue reference="sPN-i9-NSa"/>
+        <segue reference="GgS-nT-ctf"/>
+        <segue reference="3FM-PP-oeV"/>
         <segue reference="PpL-SW-U8F"/>
-        <segue reference="gwz-B9-War"/>
+        <segue reference="Dpt-T7-EMY"/>
+        <segue reference="Yep-Vd-dxY"/>
+        <segue reference="5rJ-hC-fsT"/>
     </inferredMetricsTieBreakers>
 </document>

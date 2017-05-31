@@ -8,12 +8,12 @@
 
 import Foundation
 
-public class Proofs {
-    var clientEphemeral : NSData
-    var clientProof : NSData
-    var expectedServerProof : NSData
+open class Proofs {
+    var clientEphemeral : Data
+    var clientProof : Data
+    var expectedServerProof : Data
 
-    init (ephemeral : NSData, proof : NSData, serverProof :NSData ) {
+    init (ephemeral : Data, proof : Data, serverProof :Data ) {
         self.clientEphemeral = ephemeral
         self.clientProof = proof
         self.expectedServerProof = serverProof

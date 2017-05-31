@@ -19,22 +19,22 @@ import UIKit
 
 class Snapshot {
     
-    private struct Tag {
+    fileprivate struct Tag {
         static let snapshot = 101
     }
     
     // the launchScreen
-    private struct NibName {
+    fileprivate struct NibName {
         static let Name = "LaunchScreen"
     }
     
     static var cachedSnapshotView : UIView? = nil
     
     // create a view and overlay the screen
-    func didEnterBackground(application: UIApplication) {
+    func didEnterBackground(_ application: UIApplication) {
         if let window = application.keyWindow {
             guard let view = Snapshot.cachedSnapshotView else {
-                if let launchScreen = NSBundle.mainBundle().loadNibNamed(NibName.Name, owner: window, options: nil),
+                if let launchScreen = Bundle.main.loadNibNamed(NibName.Name, owner: window, options: nil),
                     let snapshotView = launchScreen.first as? UIView {
                     snapshotView.tag = Tag.snapshot
                     Snapshot.cachedSnapshotView = snapshotView
@@ -50,13 +50,13 @@ class Snapshot {
         }
     }
     
-    func showView(window: UIWindow, view: UIView) {
+    func showView(_ window: UIWindow, view: UIView) {
         window.addSubview(view)
         view.mas_makeConstraints { (make) -> Void in
-            make.top.equalTo()(window)
-            make.left.equalTo()(window)
-            make.right.equalTo()(window)
-            make.bottom.equalTo()(window)
+            make?.top.equalTo()(window)
+            make?.left.equalTo()(window)
+            make?.right.equalTo()(window)
+            make?.bottom.equalTo()(window)
         }
     }
     
@@ -67,7 +67,7 @@ class Snapshot {
         return view
     }
     
-    func willEnterForeground(application: UIApplication) {
+    func willEnterForeground(_ application: UIApplication) {
         if let snapshotView = application.keyWindow?.viewWithTag(Tag.snapshot) {
             snapshotView.removeFromSuperview()
         }

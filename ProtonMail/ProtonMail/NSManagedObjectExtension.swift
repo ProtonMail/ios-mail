@@ -23,8 +23,8 @@ extension NSManagedObject {
     /// Set nil string attributes to ""
     internal func replaceNilStringAttributesWithEmptyString() {
         for (_, attribute) in entity.attributesByName {
-            if attribute.attributeType == .StringAttributeType {
-                if valueForKey(attribute.name) == nil {
+            if attribute.attributeType == .stringAttributeType {
+                if value(forKey: attribute.name) == nil {
                     setValue("", forKey: attribute.name)
                 }
             }

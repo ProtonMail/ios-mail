@@ -18,13 +18,14 @@ class LablesViewController : UIViewController {
     
     var viewModel : LabelViewModel!
     
-    let kToFolderManager : String = "toFolderManagerSegue"
-    let kToLableManager : String = "toLabelManagerSegue"
+    let kToCreateFolder : String = "toCreateFolderSegue"
+    let kToCreateLabel : String = "toCreateLabelSegue"
+    let kToEditingFolder : String = "toEditingFolderSegue"
+    let kToEditingLabel : String = "toEditingLabelSegue"
     
+    fileprivate var selected : IndexPath?
     
-    private var selected : NSIndexPath?
-    
-    private var archiveMessage = false;
+    fileprivate var archiveMessage = false;
     
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var contentView: UIView!
@@ -52,7 +53,7 @@ class LablesViewController : UIViewController {
     var applyButtonText : String!
     
     //
-    private var fetchedLabels: NSFetchedResultsController?
+    fileprivate var fetchedLabels: NSFetchedResultsController<NSFetchRequestResult>?
     var tempSelected : LabelMessageModel? = nil
     //
     override func viewDidLoad() {
@@ -62,10 +63,10 @@ class LablesViewController : UIViewController {
         self.setupFetchedResultsController()
         titleLabel.text = viewModel.getTitle()
         if viewModel.showArchiveOption() {
-            archiveView.hidden = false
+            archiveView.isHidden = false
             archiveConstrains.constant = 45.0
         } else {
-            archiveView.hidden = true
+            archiveView.isHidden = true
             archiveConstrains.constant = 0
         }
         
@@ -76,62 +77,62 @@ class LablesViewController : UIViewController {
             middleLineConstraint.priority = 1000
             addFolderCenterConstraint.priority = 750
             addLabelCenterConstraint.priority = 750
-            addLabelButton.hidden = false
-            addFolderButton.hidden = false
+            addLabelButton.isHidden = false
+            addFolderButton.isHidden = false
         case .label:
             middleLineConstraint.priority = 750
             addFolderCenterConstraint.priority = 750
             addLabelCenterConstraint.priority = 1000
-            addLabelButton.hidden = false
-            addFolderButton.hidden = true
+            addLabelButton.isHidden = false
+            addFolderButton.isHidden = true
         case .folder:
             middleLineConstraint.priority = 750
             addFolderCenterConstraint.priority = 1000
             addLabelCenterConstraint.priority = 750
-            addLabelButton.hidden = true
-            addFolderButton.hidden = false
+            addLabelButton.isHidden = true
+            addFolderButton.isHidden = false
         }
         
         applyButtonText = viewModel.getApplyButtonText()
-        applyButton.setTitle(applyButtonText, forState: UIControlState.Normal)
-        cancelButton.setTitle(viewModel.getCancelButtonText(), forState: UIControlState.Normal)
+        applyButton.setTitle(applyButtonText, for: UIControlState())
+        cancelButton.setTitle(viewModel.getCancelButtonText(), for: UIControlState())
         
         tableView.noSeparatorsBelowFooter()
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
     
-    @IBAction func archiveSelectAction(sender: UIButton) {
+    @IBAction func archiveSelectAction(_ sender: UIButton) {
         archiveMessage = !archiveMessage
         if archiveMessage {
-            archiveSelectButton.setImage(UIImage(named: "mail_check-active"), forState: UIControlState.Normal)
+            archiveSelectButton.setImage(UIImage(named: "mail_check-active"), for: UIControlState())
         } else {
-            archiveSelectButton.setImage(UIImage(named: "mail_check"), forState: UIControlState.Normal)
+            archiveSelectButton.setImage(UIImage(named: "mail_check"), for: UIControlState())
         }
     }
-    @IBAction func addFolder(sender: AnyObject) {
-        performSegueWithIdentifier(kToFolderManager, sender: self)
+    @IBAction func addFolder(_ sender: AnyObject) {
+        performSegue(withIdentifier: kToCreateFolder, sender: self)
     }
     
-    @IBAction func addLabel(sender: AnyObject) {
-        performSegueWithIdentifier(kToLableManager, sender: self)
+    @IBAction func addLabel(_ sender: AnyObject) {
+        performSegue(withIdentifier: kToCreateLabel, sender: self)
     }
     
-    @IBAction func applyAction(sender: AnyObject) {
-        self.viewModel.apply(archiveMessage)
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func applyAction(_ sender: AnyObject) {
+        let _ = self.viewModel.apply(archiveMessage: archiveMessage)
+        self.dismiss(animated: true, completion: nil)
         delegate?.dismissed()
-        delegate?.apply(viewModel.getFetchType())
+        delegate?.apply(type: viewModel.getFetchType())
     }
     
-    @IBAction func cancelAction(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func cancelAction(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
         delegate?.dismissed()
     }
     
-    private func setupFetchedResultsController() {
+    fileprivate func setupFetchedResultsController() {
         self.fetchedLabels = viewModel.fetchController()
         if let fetchedResultsController = self.fetchedLabels {
             fetchedResultsController.delegate = self
@@ -143,21 +144,27 @@ class LablesViewController : UIViewController {
         }
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         self.fetchedLabels?.delegate = nil
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == kToFolderManager {
-            let popup = segue.destinationViewController as! LableEditViewController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == kToCreateFolder {
+            let popup = segue.destination as! LableEditViewController
             popup.viewModel = FolderCreatingViewModelImple()
-        } else if segue.identifier == kToLableManager {
-            let popup = segue.destinationViewController as! LableEditViewController
+        } else if segue.identifier == kToCreateLabel {
+            let popup = segue.destination as! LableEditViewController
             popup.viewModel = LabelCreatingViewModelImple()
+        } else if segue.identifier == kToEditingLabel {
+            let popup = segue.destination as! LableEditViewController
+            popup.viewModel = LabelEditingViewModelImple(label: sender as! Label)
+        } else if segue.identifier == kToEditingFolder {
+            let popup = segue.destination as! LableEditViewController
+            popup.viewModel = FolderEditingViewModelImple(label: sender as! Label)
         }
     }
 }
@@ -168,40 +175,52 @@ extension LablesViewController: UITableViewDataSource {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        if (self.tableView.respondsToSelector(Selector("setSeparatorInset:"))) {
-            self.tableView.separatorInset = UIEdgeInsetsZero
+        if (self.tableView.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
+            self.tableView.separatorInset = UIEdgeInsets.zero
         }
         
-        if (self.tableView.respondsToSelector(Selector("setLayoutMargins:"))) {
-            self.tableView.layoutMargins = UIEdgeInsetsZero
+        if (self.tableView.responds(to: #selector(setter: UIView.layoutMargins))) {
+            self.tableView.layoutMargins = UIEdgeInsets.zero
         }
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let labelCell = tableView.dequeueReusableCellWithIdentifier("labelApplyCell", forIndexPath: indexPath) as! LabelTableViewCell
-        if let label = fetchedLabels?.objectAtIndexPath(indexPath) as? Label {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let labelCell = tableView.dequeueReusableCell(withIdentifier: "labelApplyCell", for: indexPath) as! LabelTableViewCell
+        if let label = fetchedLabels?.object(at: indexPath) as? Label {
             let lm = viewModel.getLabelMessage(label)
-            labelCell.ConfigCell(lm, showIcon: viewModel.getFetchType() == .all, vc: self)
+            let showEdit = viewModel.getFetchType() == .all
+            labelCell.ConfigCell(model: lm,
+                                 showIcon: viewModel.getFetchType() == .all,
+                                 showEdit: showEdit,
+                                 editAction: { (sender) in
+                                    if labelCell == sender, let editlabel = self.fetchedLabels?.object(at: indexPath) as? Label {
+                                        if editlabel.exclusive {
+                                            self.performSegue(withIdentifier: self.kToEditingFolder, sender: editlabel)
+                                        } else {
+                                            self.performSegue(withIdentifier: self.kToEditingLabel, sender: editlabel)
+                                        }
+                                    }
+            })
         }
         return labelCell
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count = fetchedLabels?.numberOfRowsInSection(section) ?? 0
         return count
     }
     
-    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if (cell.respondsToSelector(Selector("setSeparatorInset:"))) {
-            cell.separatorInset = UIEdgeInsetsZero
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if (cell.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
+            cell.separatorInset = UIEdgeInsets.zero
         }
         
-        if (cell.respondsToSelector(Selector("setLayoutMargins:"))) {
-            cell.layoutMargins = UIEdgeInsetsZero
+        if (cell.responds(to: #selector(setter: UIView.layoutMargins))) {
+            cell.layoutMargins = UIEdgeInsets.zero
         }
     }
 }
@@ -209,67 +228,64 @@ extension LablesViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension LablesViewController: UITableViewDelegate {
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 45.0
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // verify whether the user is checking messages or not
-        if let label = fetchedLabels?.objectAtIndexPath(indexPath) as? Label {
+        if let label = fetchedLabels?.object(at: indexPath) as? Label {
             viewModel.cellClicked(label)
             switch viewModel.getFetchType()
             {
             case .all, .label:
-                tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+                tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
                 break;
             case .folder:
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.1 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) { () -> Void in
                     tableView.reloadData()
                 }
             }
         }
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
 // MARK: - NSFetchedResultsControllerDelegate
 
 extension LablesViewController : NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
     }
     
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         switch(type) {
-        case .Delete:
-            tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
-        case .Insert:
-            tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Fade)
+        case .delete:
+            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
+        case .insert:
+            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
         default:
             return
         }
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch(type) {
-        case .Delete:
+        case .delete:
             if let indexPath = indexPath {
-                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+                tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
             }
-        case .Insert:
+        case .insert:
             if let newIndexPath = newIndexPath {
-                tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+                tableView.insertRows(at: [newIndexPath], with: UITableViewRowAnimation.fade)
             }
-        case .Update:
-            if let _ = indexPath {
-                //TODO:: need check here
-                //if let cell = tableView.cellForRowAtIndexPath(indexPath) as? MailboxTableViewCell {
-                //configureCell(cell, atIndexPath: indexPath)
-                //}
+        case .update:
+            if let index = indexPath {
+                tableView.reloadRows(at: [index], with: UITableViewRowAnimation.automatic)
             }
         default:
             return

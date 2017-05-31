@@ -10,12 +10,12 @@ import Foundation
 
 
 extension UIImage {
-    class func imageWithColor(color: UIColor) -> UIImage? {
-        let rect = CGRectMake(0.0, 0.0, 1.0, 1.0)
+    class func imageWithColor(_ color: UIColor) -> UIImage? {
+        let rect = CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0)
         UIGraphicsBeginImageContext(rect.size)
         if let context = UIGraphicsGetCurrentContext() {
-            CGContextSetFillColorWithColor(context, color.CGColor)
-            CGContextFillRect(context, rect)
+            context.setFillColor(color.cgColor)
+            context.fill(rect)
         }//TODO:: need add throw errors when else
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()

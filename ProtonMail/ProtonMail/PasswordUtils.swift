@@ -8,17 +8,17 @@
 
 import Foundation
 
-enum PasswordError: ErrorType {
-    case HashEmpty
-    case HashEmptyEncode
-    case HashSizeWrong
+enum PasswordError: Error {
+    case hashEmpty
+    case hashEmptyEncode
+    case hashSizeWrong
 }
 
-public class PasswordUtils {
+open class PasswordUtils {
     
     
-    public static func getHashedPwd(authVersion: Int , password: String, username: String, decodedSalt : NSData, decodedModulus : NSData) -> NSData? {
-        var hashedPassword : NSData?
+    open static func getHashedPwd(_ authVersion: Int , password: String, username: String, decodedSalt : Data, decodedModulus : Data) -> Data? {
+        var hashedPassword : Data?
         switch authVersion {
         case 0:
             hashedPassword = PasswordUtils.hashPasswordVersion0(password, username: username, modulus: decodedModulus)
@@ -41,53 +41,53 @@ public class PasswordUtils {
     }
     
     
-    public static func CleanUserName(username : String) -> String {
-        return username.preg_replace("_|\\.|-", replaceto: "").lowercaseString
+    open static func CleanUserName(_ username : String) -> String {
+        return username.preg_replace("_|\\.|-", replaceto: "").lowercased()
     }
     
-    private static func bcrypt(password :String, salt :String) throws -> String {
-        if let out = JKBCrypt.hashPassword(password, withSalt: "$2a$10$" + salt) where !out.isEmpty {
+    fileprivate static func bcrypt(_ password :String, salt :String) throws -> String {
+        if let out = JKBCrypt.hashPassword(password, withSalt: "$2a$10$" + salt), !out.isEmpty {
             let size = out.characters.count
             if size > 4 {
-                let index = out.startIndex.advancedBy(4)
-                return "$2y$" + out.substringFromIndex(index)
+                let index = out.characters.index(out.startIndex, offsetBy: 4)
+                return "$2y$" + out.substring(from: index)
             } else {
-                throw PasswordError.HashSizeWrong
+                throw PasswordError.hashSizeWrong
             }
         }
-        throw PasswordError.HashEmpty
+        throw PasswordError.hashEmpty
     }
     
-    private static func bcrypt_byte(password :String, salt :String) throws -> NSData? {
+    fileprivate static func bcrypt_byte(_ password :String, salt :String) throws -> Data? {
         let b = try bcrypt(password, salt: salt)
-        if let stringData = b.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
+        if let stringData = b.data(using: String.Encoding.utf8, allowLossyConversion: false) {
             return stringData
         }
-        throw PasswordError.HashEmptyEncode
+        throw PasswordError.hashEmptyEncode
     }
     
-    private static func bcrypt_string(password :String, salt :String) throws -> String {
+    fileprivate static func bcrypt_string(_ password :String, salt :String) throws -> String {
         let b = try bcrypt(password, salt: salt)
         return b
     }
     
     
-    public static func expandHash(input : NSData) -> NSData {
+    open static func expandHash(_ input : Data) -> Data {
         return PMNSrpClient.expandHash(input);
     }
     
-    public static func getMailboxPassword(password : String, salt : NSData) -> String {
+    open static func getMailboxPassword(_ password : String, salt : Data) -> String {
         let byteArray = NSMutableData()
-        byteArray.appendData(salt)
-        let source = NSData(data: byteArray)
+        byteArray.append(salt)
+        let source = NSData(data: byteArray as Data) as Data
         let encodedSalt = JKBCrypt.based64DotSlash(source)
         do {
             let out = try bcrypt_string(password, salt: encodedSalt)
-            let index = out.startIndex.advancedBy(29)
-            return out.substringFromIndex(index)
-        } catch PasswordError.HashEmpty {
+            let index = out.characters.index(out.startIndex, offsetBy: 29)
+            return out.substring(from: index)
+        } catch PasswordError.hashEmpty {
             // check error
-        } catch PasswordError.HashSizeWrong {
+        } catch PasswordError.hashSizeWrong {
             // check error
         } catch {
             // check error
@@ -96,30 +96,30 @@ public class PasswordUtils {
         
     }
     
-    public static func hashPasswordVersion4(password : String, salt : NSData, modulus : NSData) -> NSData? {
+    open static func hashPasswordVersion4(_ password : String, salt : Data, modulus : Data) -> Data? {
         return hashPasswordVersion3(password, salt: salt, modulus: modulus);
     }
     
-    public static func hashPasswordVersion3(password : String, salt : NSData, modulus : NSData) -> NSData? {
+    open static func hashPasswordVersion3(_ password : String, salt : Data, modulus : Data) -> Data? {
         let byteArray = NSMutableData()
-        byteArray.appendData(salt)
-        if let encodedSalt = "proton".dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
-            byteArray.appendData(encodedSalt)
+        byteArray.append(salt)
+        if let encodedSalt = "proton".data(using: String.Encoding.utf8, allowLossyConversion: false) {
+            byteArray.append(encodedSalt)
         }
         
-        let source = NSData(data: byteArray)
+        let source = NSData(data: byteArray as Data) as Data
         let encodedSalt = JKBCrypt.based64DotSlash(source)
         
         do {
             if let out = try bcrypt_byte(password, salt: encodedSalt) {
                 let outArray = NSMutableData()
-                outArray.appendData(out)
-                outArray.appendData(modulus)
-                return expandHash(NSData(data: outArray))
+                outArray.append(out)
+                outArray.append(modulus)
+                return expandHash(NSData(data: outArray as Data) as Data)
             }
-        } catch PasswordError.HashEmpty {
+        } catch PasswordError.hashEmpty {
             // check error
-        } catch PasswordError.HashSizeWrong {
+        } catch PasswordError.hashSizeWrong {
             // check error
         } catch {
             // check error
@@ -127,23 +127,23 @@ public class PasswordUtils {
         return nil
     }
 
-    public static func hashPasswordVersion2(password : String, username : String, modulus : NSData) -> NSData? {
+    open static func hashPasswordVersion2(_ password : String, username : String, modulus : Data) -> Data? {
         return hashPasswordVersion1(password, username: CleanUserName(username), modulus: modulus);
     }
     
-    public static func hashPasswordVersion1(password : String, username : String, modulus : NSData) -> NSData? {
-        let un = username.lowercaseString
+    open static func hashPasswordVersion1(_ password : String, username : String, modulus : Data) -> Data? {
+        let un = username.lowercased()
         let salt = un.md5
         do {
             if let out = try bcrypt_byte(password, salt: salt) {
                 let byteArray = NSMutableData()
-                byteArray.appendData(out)
-                byteArray.appendData(modulus)
-                return expandHash(NSData(data: byteArray))
+                byteArray.append(out)
+                byteArray.append(modulus)
+                return expandHash(NSData(data: byteArray as Data) as Data)
             }
-        } catch PasswordError.HashEmpty {
+        } catch PasswordError.hashEmpty {
             // check error
-        } catch PasswordError.HashSizeWrong {
+        } catch PasswordError.hashSizeWrong {
             // check error
         } catch {
             // check error
@@ -151,10 +151,10 @@ public class PasswordUtils {
         return nil
     }
     
-    public static func hashPasswordVersion0(password : String,   username : String,  modulus: NSData ) -> NSData? {
+    open static func hashPasswordVersion0(_ password : String,   username : String,  modulus: Data ) -> Data? {
         //need check password size
         if let prehashed = password.sha512_byte {
-            let encoded = prehashed.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+            let encoded = prehashed.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
             return hashPasswordVersion1(encoded, username: username, modulus: modulus);
         }
         return nil

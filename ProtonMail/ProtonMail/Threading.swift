@@ -13,15 +13,15 @@ import Dispatch
 import UIKit
 
 enum ThreadType {
-    case Main
-    case Async
+    case main
+    case async
 }
 
 /** Serial dispatch queue used by the ~> operator. */
-private let async_q : dispatch_queue_t = dispatch_queue_create("Async queue", DISPATCH_QUEUE_CONCURRENT)
+private let async_q : DispatchQueue = DispatchQueue(label: "Async queue", attributes: DispatchQueue.Attributes.concurrent)
 
 
-infix operator ~> {}
+infix operator ~>
 
 ///**
 // Executes the lefthand closure on a background thread and,
@@ -29,13 +29,13 @@ infix operator ~> {}
 // Passes the background closure's output, if any, to the main closure.
 // */
 func ~> <R> (
-    backgroundClosure: () -> R,
-    mainClosure: (result: R) -> ())
+    backgroundClosure: @escaping () -> R,
+    mainClosure: @escaping (_ result: R) -> ())
 {
-    dispatch_async(async_q, {
+    async_q.async(execute: {
         let result = backgroundClosure()
-        NSOperationQueue.mainQueue().addOperationWithBlock {
-            mainClosure(result: result)
+        OperationQueue.main.addOperation {
+            mainClosure(result)
         }
     })
 }
@@ -43,16 +43,16 @@ func ~> <R> (
 //TODO:: need add some ui handling, 
 //like if some operation need to force user logout need ui to handle the response make sure not popup any unnecessary windows
 func ~> (
-    left: () -> Void,
+    left: @escaping () -> Void,
     type: ThreadType)
 {
     switch type {
-    case .Main:
-        NSOperationQueue.mainQueue().addOperationWithBlock {
+    case .main:
+        OperationQueue.main.addOperation {
             left()
         }
     default:
-        dispatch_async(async_q, {
+        async_q.async(execute: {
             left()
         })
     }

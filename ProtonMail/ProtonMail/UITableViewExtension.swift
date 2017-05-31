@@ -18,22 +18,22 @@ import Foundation
 
 extension UITableView {
     
-    private struct Constant {
-        static let animationDuration: NSTimeInterval = 1
+    fileprivate struct Constant {
+        static let animationDuration: TimeInterval = 1
     }
     
-    func hideLoadingFooter(replaceWithView view: UIView? = UIView(frame: CGRectZero)) {
-        UIView.animateWithDuration(Constant.animationDuration, animations: { () -> Void in
+    func hideLoadingFooter(replaceWithView view: UIView? = UIView(frame: CGRect.zero)) {
+        UIView.animate(withDuration: Constant.animationDuration, animations: { () -> Void in
             self.tableFooterView?.alpha = 0
             return
-            }) { (finished) -> Void in
-                UIView.animateWithDuration(Constant.animationDuration, animations: { () -> Void in
+            }, completion: { (finished) -> Void in
+                UIView.animate(withDuration: Constant.animationDuration, animations: { () -> Void in
                     self.tableFooterView = view
                 })
-        }
+        }) 
     }
     func noSeparatorsBelowFooter() {
-        tableFooterView = UIView(frame: CGRectZero)
+        tableFooterView = UIView(frame: CGRect.zero)
     }
     
     func showLoadingFooter() {
@@ -46,7 +46,7 @@ extension UITableView {
 
 extension UITableView {
     
-    func RegisterCell(cellID : String) {
-        self.registerNib(UINib(nibName: cellID, bundle: nil), forCellReuseIdentifier: cellID)
+    func RegisterCell(_ cellID : String) {
+        self.register(UINib(nibName: cellID, bundle: nil), forCellReuseIdentifier: cellID)
     }
 }

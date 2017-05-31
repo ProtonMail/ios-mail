@@ -9,18 +9,18 @@
 import Foundation
 
 protocol TwoFACodeViewDelegate {
-    func ConfirmedCode(code : String, pwd : String)
+    func ConfirmedCode(_ code : String, pwd : String)
     func Cancel()
 }
 
 
 enum AuthMode : Int
 {
-    case LoginPassword =      0x01
-    case TwoFactorCode =      0x02
-    case PwdAnd2FA = 0x03   // LoginPassword | TwoFactorCode
+    case loginPassword =      0x01
+    case twoFactorCode =      0x02
+    case pwdAnd2FA = 0x03   // LoginPassword | TwoFactorCode
     
-    func check(check: AuthMode) -> Bool {
+    func check(_ check: AuthMode) -> Bool {
         if self.rawValue & check.rawValue == check.rawValue {
             return true
         }
@@ -42,10 +42,10 @@ class TwoFACodeView : PMView {
     @IBOutlet weak var twoFactorCodeField: TextInsetTextField!
     @IBOutlet weak var loginPasswordField: TextInsetTextField!
     
-    func initViewMode(mode : AuthMode) {
+    func initViewMode(_ mode : AuthMode) {
         self.mode = mode
         
-        if mode.check(.LoginPassword) {
+        if mode.check(.loginPassword) {
             pwdTop.constant = 18.0
             pwdHeight.constant = 40.0
         } else {
@@ -53,7 +53,7 @@ class TwoFACodeView : PMView {
             pwdHeight.constant = 0.0
         }
         
-        if mode.check(.TwoFactorCode) {
+        if mode.check(.twoFactorCode) {
             twofacodeTop.constant = 18.0
             twofacodeHeight.constant = 40.0
         } else {
@@ -63,7 +63,7 @@ class TwoFACodeView : PMView {
         
         let toolbarDone = UIToolbar.init()
         toolbarDone.sizeToFit()
-        let barBtnDone = UIBarButtonItem.init(title: "Recovery Code", style: UIBarButtonItemStyle.Done,
+        let barBtnDone = UIBarButtonItem.init(title: "Recovery Code", style: UIBarButtonItemStyle.done,
                                               target: self, action: #selector(TwoFACodeView.doneButtonAction))
         toolbarDone.items = [barBtnDone]
         twoFactorCodeField.inputAccessoryView = toolbarDone
@@ -72,7 +72,7 @@ class TwoFACodeView : PMView {
 
     func doneButtonAction() {
         self.twoFactorCodeField.inputAccessoryView = nil
-        self.twoFactorCodeField.keyboardType = UIKeyboardType.ASCIICapable
+        self.twoFactorCodeField.keyboardType = UIKeyboardType.asciiCapable
         self.twoFactorCodeField.reloadInputViews()
     }
     
@@ -85,9 +85,9 @@ class TwoFACodeView : PMView {
     }
     
     func showKeyboard() {
-        if mode!.check(.LoginPassword) {
+        if mode!.check(.loginPassword) {
             loginPasswordField.becomeFirstResponder()
-        } else if mode!.check(.TwoFactorCode) {
+        } else if mode!.check(.twoFactorCode) {
             twoFactorCodeField.becomeFirstResponder()
         }
     }
@@ -95,10 +95,10 @@ class TwoFACodeView : PMView {
     func confirm() {
         let pwd = (loginPasswordField.text ?? "")
         let code = (twoFactorCodeField.text ?? "").trim()
-        if mode!.check(.LoginPassword) {
+        if mode!.check(.loginPassword) {
             //error need
         }
-        if mode!.check(.TwoFactorCode) {
+        if mode!.check(.twoFactorCode) {
             //error need
         }
         
@@ -106,11 +106,11 @@ class TwoFACodeView : PMView {
         delegate?.ConfirmedCode(code, pwd: pwd)
     }
     
-    @IBAction func enterAction(sender: AnyObject) {
+    @IBAction func enterAction(_ sender: AnyObject) {
         self.confirm()
     }
     
-    @IBAction func cancelAction(sender: AnyObject) {
+    @IBAction func cancelAction(_ sender: AnyObject) {
         self.dismissKeyboard()
         delegate?.Cancel()
     }

@@ -7,48 +7,79 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 
 class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     // view model
-    private var viewModel : ComposeViewModel!
+    fileprivate var viewModel : ComposeViewModel!
     
-    func setViewModel(vm: AnyObject) {
+    func setViewModel(_ vm: Any) {
         self.viewModel = vm as! ComposeViewModel
     }
     
     func inactiveViewModel() {
         self.stopAutoSave()
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillResignActiveNotification, object:nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillResignActive, object:nil)
+        
+        self.dismissKeyboard()
+        if self.presentingViewController != nil {
+            self.dismiss(animated: true, completion: nil)
+        } else {
+            let _ = self.navigationController?.popViewController(animated: true)
+        }
     }
     
     // private views
-    private var webView : UIWebView!
-    private var composeView : ComposeView!
+    fileprivate var webView : UIWebView!
+    fileprivate var composeView : ComposeView!
     
     // private vars
-    private var timer : NSTimer!
-    private var draggin : Bool! = false
-    private var contacts: [ContactVO]! = [ContactVO]()
-    private var actualEncryptionStep = EncryptionStep.DefinePassword
-    private var encryptionPassword: String = ""
-    private var encryptionConfirmPassword: String = ""
-    private var encryptionPasswordHint: String = ""
-    private var hasAccessToAddressBook: Bool = false
+    fileprivate var timer : Timer!
+    fileprivate var draggin : Bool! = false
+    fileprivate var contacts: [ContactVO]! = [ContactVO]()
+    fileprivate var actualEncryptionStep = EncryptionStep.DefinePassword
+    fileprivate var encryptionPassword: String = ""
+    fileprivate var encryptionConfirmPassword: String = ""
+    fileprivate var encryptionPasswordHint: String = ""
+    fileprivate var hasAccessToAddressBook: Bool = false
     
-    private var attachments: [AnyObject]?
+    fileprivate var attachments: [Any]?
     
     @IBOutlet weak var expirationPicker: UIPickerView!
     // offsets
-    private var composeViewSize : CGFloat = 186;
+    fileprivate var composeViewSize : CGFloat = 186;
     
     // MARK : const values
-    private let kNumberOfColumnsInTimePicker: Int = 2
-    private let kNumberOfDaysInTimePicker: Int = 30
-    private let kNumberOfHoursInTimePicker: Int = 24
+    fileprivate let kNumberOfColumnsInTimePicker: Int = 2
+    fileprivate let kNumberOfDaysInTimePicker: Int = 30
+    fileprivate let kNumberOfHoursInTimePicker: Int = 24
     
-    private let kPasswordSegue : String = "to_eo_password_segue"
+    fileprivate let kPasswordSegue : String = "to_eo_password_segue"
 
     deinit {
         self.webView.delegate = nil
@@ -61,18 +92,18 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         configureNavigationBar()
         setNeedsStatusBarAppearanceUpdate()
         
-        self.baseURL = NSURL( fileURLWithPath: "https://protonmail.ch")
+        self.baseURL = URL( fileURLWithPath: "https://protonmail.ch")
         //self.formatHTML = false
         self.webView = self.getWebView()
         
         // init views
         self.composeView = ComposeView(nibName: "ComposeView", bundle: nil)
-        let w = UIScreen.mainScreen().applicationFrame.width;
+        let w = UIScreen.main.applicationFrame.width;
         self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize + 60)
         self.composeView.delegate = self
         self.composeView.datasource = self
         self.webView.scrollView.addSubview(composeView.view);
-        self.webView.scrollView.bringSubviewToFront(composeView.view)
+        self.webView.scrollView.bringSubview(toFront: composeView.view)
         
         // update content values
         updateMessageView()
@@ -111,8 +142,8 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
             
             switch self.viewModel.messageAction!
             {
-            case .OpenDraft, .Reply, .ReplyAll:
-                self.focusTextEditor();
+            case .openDraft, .reply, .replyAll:
+                self.focus();
                 self.composeView.notifyViewSize(true)
                 break
             default:
@@ -125,10 +156,10 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     internal func updateEmbedImages() {
         if let atts = viewModel.getAttachments() {
             for att in atts {
-                if let content_id = att.getContentID() where !content_id.isEmpty && att.isInline() {
+                if let content_id = att.getContentID(), !content_id.isEmpty && att.isInline() {
                     att.base64AttachmentData({ (based64String) in
                         if !based64String.isEmpty {
-                            self.updateEmbedImageByCID("cid:\(content_id)", blob:  "data:\(att.mimeType);base64,\(based64String)");
+                            self.updateEmbedImage(byCID: "cid:\(content_id)", blob:  "data:\(att.mimeType);base64,\(based64String)");
                         }
                     })
                 }
@@ -136,65 +167,65 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         }
     }
     
-    override func webViewDidFinishLoad(webView: UIWebView) {
+    override func webViewDidFinishLoad(_ webView: UIWebView) {
         super.webViewDidFinishLoad(webView)
         updateEmbedImages()
     }
     
-    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
         self.composeView.notifyViewSize(true)
     }
     
-    private func dismissKeyboard() {
+    fileprivate func dismissKeyboard() {
         self.composeView.subject.becomeFirstResponder()
         self.composeView.subject.resignFirstResponder()
     }
     
-    private func updateMessageView() {
+    fileprivate func updateMessageView() {
         self.composeView.updateFromValue(self.viewModel.getDefaultAddress()?.email ?? "", pickerEnabled: true)
         self.composeView.subject.text = self.viewModel.getSubject();
         self.shouldShowKeyboard = false
         self.setHTML(self.viewModel.getHtmlBody())
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.updateAttachmentButton()
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ComposeEmailViewController.statusBarHit(_:)), name: NotificationDefined.TouchStatusBar, object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ComposeEmailViewController.willResignActiveNotification(_:)), name: UIApplicationWillResignActiveNotification, object:nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ComposeEmailViewController.statusBarHit(_:)), name: NSNotification.Name(rawValue: NotificationDefined.TouchStatusBar), object:nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ComposeEmailViewController.willResignActiveNotification(_:)), name: NSNotification.Name.UIApplicationWillResignActive, object:nil)
         setupAutoSave()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationDefined.TouchStatusBar, object:nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillResignActiveNotification, object:nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationDefined.TouchStatusBar), object:nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillResignActive, object:nil)
         
         stopAutoSave()
     }
     
-    internal func willResignActiveNotification (notify: NSNotification) {
+    internal func willResignActiveNotification (_ notify: Notification) {
         self.autoSaveTimer()
         dismissKeyboard()
     }
     
-    internal func statusBarHit (notify: NSNotification) {
+    internal func statusBarHit (_ notify: Notification) {
         webView.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
     
     func configureNavigationBar() {
-        self.navigationController?.navigationBar.barStyle = UIBarStyle.Black
+        self.navigationController?.navigationBar.barStyle = UIBarStyle.black
         self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;
-        self.navigationController?.navigationBar.translucent = false
-        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.tintColor = UIColor.white
         
         let navigationBarTitleFont = UIFont.robotoLight(size: UIFont.Size.h2)
         self.navigationController?.navigationBar.titleTextAttributes = [
-            NSForegroundColorAttributeName: UIColor.whiteColor(),
+            NSForegroundColorAttributeName: UIColor.white,
             NSFontAttributeName: navigationBarTitleFont
         ]
     }
@@ -203,9 +234,9 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         super.didReceiveMemoryWarning()
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kPasswordSegue {
-            let popup = segue.destinationViewController as! ComposePasswordViewController
+            let popup = segue.destination as! ComposePasswordViewController
             popup.pwdDelegate = self
             popup.setupPasswords(self.encryptionPassword, confirmPassword: self.encryptionConfirmPassword, hint: self.encryptionPasswordHint)
             //popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
@@ -213,24 +244,24 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         }
     }
     
-    internal func setPresentationStyleForSelfController(selfController : UIViewController,  presentingController: UIViewController)
+    internal func setPresentationStyleForSelfController(_ selfController : UIViewController,  presentingController: UIViewController)
     {
         presentingController.providesPresentationContextTransitionStyle = true;
         presentingController.definesPresentationContext = true;
-        presentingController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+        presentingController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
     }
 
     
-    override func editorDidScrollWithPosition(position: Int) {
-        super.editorDidScrollWithPosition(position)
+    override func editorDidScroll(withPosition position: Int) {
+        super.editorDidScroll(withPosition: position)
         
         //let new_position = self.getCaretPosition().toInt() ?? 0
         //self.delegate?.editorSizeChanged(self.getContentSize())
         //self.delegate?.editorCaretPosition(new_position)
     }
     
-    private func updateContentLayout(animation: Bool) {
-        UIView.animateWithDuration(animation ? 0.25 : 0, animations: { () -> Void in
+    fileprivate func updateContentLayout(_ animation: Bool) {
+        UIView.animate(withDuration: animation ? 0.25 : 0, animations: { () -> Void in
             for subview in self.webView.scrollView.subviews {
                 let sub = subview 
                 if sub == self.composeView.view {
@@ -247,7 +278,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     }
     
     
-    @IBAction func send_clicked(sender: AnyObject) {
+    @IBAction func send_clicked(_ sender: AnyObject) {
         self.dismissKeyboard()
         
         if let suject = self.composeView.subject.text {
@@ -257,12 +288,12 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
             }
         }
         
-        let alertController = UIAlertController(title: NSLocalizedString("Compose"), message: "Send message without subject?", preferredStyle: .Alert)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Send"), style: .Destructive, handler: { (action) -> Void in
+        let alertController = UIAlertController(title: NSLocalizedString("Compose"), message: "Send message without subject?", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Send"), style: .destructive, handler: { (action) -> Void in
             self.sendMessage()
         }))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
-        presentViewController(alertController, animated: true, completion: nil)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .cancel, handler: nil))
+        present(alertController, animated: true, completion: nil)
         
     }
     
@@ -275,9 +306,9 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         }
         
         if self.viewModel.toSelectedContacts.count <= 0 && self.viewModel.ccSelectedContacts.count <= 0 && self.viewModel.bccSelectedContacts.count <= 0 {
-            let alert = UIAlertController(title: NSLocalizedString("Alert"), message: NSLocalizedString("You need at least one recipient to send"), preferredStyle: .Alert)
+            let alert = UIAlertController(title: NSLocalizedString("Alert"), message: NSLocalizedString("You need at least one recipient to send"), preferredStyle: .alert)
             alert.addAction((UIAlertAction.okAction()))
-            presentViewController(alert, animated: true, completion: nil)
+            present(alert, animated: true, completion: nil)
             return;
         }
         
@@ -291,33 +322,33 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         }
         
         if presentingViewController != nil {
-            dismissViewControllerAnimated(true, completion: nil)
+            dismiss(animated: true, completion: nil)
         } else {
-            navigationController?.popToRootViewControllerAnimated(true)
+            let _ = navigationController?.popToRootViewController(animated: true)
         }
     }
     
-    @IBAction func cancel_clicked(sender: UIBarButtonItem) {
+    @IBAction func cancel_clicked(_ sender: UIBarButtonItem) {
         
         let dismiss: (() -> Void) = {
             self.dismissKeyboard()
             if self.presentingViewController != nil {
-                self.dismissViewControllerAnimated(true, completion: nil)
+                self.dismiss(animated: true, completion: nil)
             } else {
-                self.navigationController?.popViewControllerAnimated(true)
+                let _ = self.navigationController?.popViewController(animated: true)
             }
         }
         
         if self.viewModel.hasDraft || composeView.hasContent || ((attachments?.count ?? 0) > 0) {
-            let alertController = UIAlertController(title: NSLocalizedString("Confirmation"), message: nil, preferredStyle: .ActionSheet)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Save draft"), style: .Default, handler: { (action) -> Void in
+            let alertController = UIAlertController(title: NSLocalizedString("Confirmation"), message: nil, preferredStyle: .actionSheet)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Save draft"), style: .default, handler: { (action) -> Void in
                 self.stopAutoSave()
                 self.collectDraft()
                 self.viewModel.updateDraft()
                 dismiss()
             }))
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Discard draft"), style: .Destructive, handler: { (action) -> Void in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .cancel, handler: nil))
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Discard draft"), style: .destructive, handler: { (action) -> Void in
                 self.stopAutoSave()
                 self.viewModel.deleteDraft()
                 dismiss()
@@ -325,22 +356,22 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
             
             alertController.popoverPresentationController?.barButtonItem = sender
             alertController.popoverPresentationController?.sourceRect = self.view.frame
-            presentViewController(alertController, animated: true, completion: nil)
+            present(alertController, animated: true, completion: nil)
         } else {
             dismiss()
         }
     }
     
     // MARK: - Private methods
-    private func setupAutoSave()
+    fileprivate func setupAutoSave()
     {
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(120, target: self, selector: #selector(ComposeEmailViewController.autoSaveTimer), userInfo: nil, repeats: true)
-        if viewModel.getActionType() != .OpenDraft {
+        self.timer = Timer.scheduledTimer(timeInterval: 120, target: self, selector: #selector(ComposeEmailViewController.autoSaveTimer), userInfo: nil, repeats: true)
+        if viewModel.getActionType() != .openDraft {
             self.timer.fire()
         }
     }
     
-    private func stopAutoSave()
+    fileprivate func stopAutoSave()
     {
         if self.timer != nil {
             self.timer.invalidate()
@@ -354,29 +385,29 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         self.viewModel.updateDraft()
     }
     
-    private func collectDraft()
+    fileprivate func collectDraft()
     {
         let orignal = self.getOrignalEmbedImages()
         let edited = self.getEditedEmbedImages()
-        self.checkEmbedImageEdit(orignal, edited: edited)
+        self.checkEmbedImageEdit(orignal!, edited: edited!)
         var body = self.getHTML()
-        if body.isEmpty {
+        if (body?.isEmpty)! {
             body = "<div><br></div>"
         }
         self.viewModel.collectDraft(
             self.composeView.subject.text!,
-            body: body,
+            body: body!,
             expir: self.composeView.expirationTimeInterval,
             pwd:self.encryptionPassword,
             pwdHit:self.encryptionPasswordHint
         )
     }
     
-    private func checkEmbedImageEdit(orignal: String, edited: String) {
+    fileprivate func checkEmbedImageEdit(_ orignal: String, edited: String) {
         PMLog.D(edited)
         if let atts = viewModel.getAttachments() {
             for att in atts {
-                if let content_id = att.getContentID() where !content_id.isEmpty && att.isInline() {
+                if let content_id = att.getContentID(), !content_id.isEmpty && att.isInline() {
                     PMLog.D(content_id)
                     if orignal.contains(content_id) {
                         if !edited.contains(content_id) {
@@ -388,7 +419,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
         }
     }
     
-    private func updateAttachmentButton () {
+    fileprivate func updateAttachmentButton () {
         if attachments?.count > 0 {
             self.composeView.updateAttachmentButton(true)
         } else {
@@ -407,7 +438,7 @@ extension ComposeEmailViewController : ComposePasswordViewControllerDelegate {
 //        PMLog.D(test)
     }
     
-    func Apply(password: String, confirmPassword: String, hint: String) {
+    func Apply(_ password: String, confirmPassword: String, hint: String) {
         
         self.encryptionPassword = password
         self.encryptionConfirmPassword = confirmPassword
@@ -426,21 +457,21 @@ extension ComposeEmailViewController : ComposePasswordViewControllerDelegate {
 
 // MARK : - view extensions
 extension ComposeEmailViewController : ComposeViewDelegate {
-    func composeViewPickFrom(composeView: ComposeView) {
+    func composeViewPickFrom(_ composeView: ComposeView) {
         if attachments?.count > 0 {
             let alertController = NSLocalizedString("Please remove all attachments before changing sender!").alertController()
             alertController.addOKAction()
-            self.presentViewController(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
         } else {
             var needsShow : Bool = false
-            let alertController = UIAlertController(title: NSLocalizedString("Change sender address to .."), message: nil, preferredStyle: .ActionSheet)
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .Cancel, handler: nil))
+            let alertController = UIAlertController(title: NSLocalizedString("Change sender address to .."), message: nil, preferredStyle: .actionSheet)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel"), style: .cancel, handler: nil))
             let multi_domains = self.viewModel.getAddresses()
             let defaultAddr = self.viewModel.getDefaultAddress()
             for addr in multi_domains {
                 if addr.status == 1 && addr.receive == 1 && defaultAddr != addr {
                     needsShow = true
-                    alertController.addAction(UIAlertAction(title: addr.email, style: .Default, handler: { (action) -> Void in
+                    alertController.addAction(UIAlertAction(title: addr.email, style: .default, handler: { (action) -> Void in
                         if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
                             self.updateSignature("\(signature)")
                         }
@@ -452,22 +483,22 @@ extension ComposeEmailViewController : ComposeViewDelegate {
             if needsShow {
                 alertController.popoverPresentationController?.sourceView = self.composeView.fromView
                 alertController.popoverPresentationController?.sourceRect = self.composeView.fromView.frame
-                presentViewController(alertController, animated: true, completion: nil)
+                present(alertController, animated: true, completion: nil)
             }
         }
     }
     
-    func ComposeViewDidSizeChanged(size: CGSize) {
+    func ComposeViewDidSizeChanged(_ size: CGSize) {
         //self.composeSize = size
         //self.updateViewSize()
         self.composeViewSize = size.height;
-        let w = UIScreen.mainScreen().applicationFrame.width;
+        let w = UIScreen.main.applicationFrame.width;
         self.composeView.view.frame = CGRect(x: 0, y: 0, width: w, height: composeViewSize )
         
         self.updateContentLayout(true)
     }
     
-    func ComposeViewDidOffsetChanged(offset: CGPoint){
+    func ComposeViewDidOffsetChanged(_ offset: CGPoint){
         //        if ( self.cousorOffset  != offset.y)
         //        {
         //            self.cousorOffset = offset.y
@@ -475,7 +506,7 @@ extension ComposeEmailViewController : ComposeViewDelegate {
         //        }
     }
     
-    func composeViewDidTapNextButton(composeView: ComposeView) {
+    func composeViewDidTapNextButton(_ composeView: ComposeView) {
         switch(actualEncryptionStep) {
         case EncryptionStep.DefinePassword:
             self.encryptionPassword = (composeView.encryptedPasswordTextField.text ?? "").trim()
@@ -505,14 +536,14 @@ extension ComposeEmailViewController : ComposeViewDelegate {
         }
     }
     
-    func composeViewDidTapEncryptedButton(composeView: ComposeView) {
-        self.performSegueWithIdentifier(kPasswordSegue, sender: self)
+    func composeViewDidTapEncryptedButton(_ composeView: ComposeView) {
+        self.performSegue(withIdentifier: kPasswordSegue, sender: self)
 //        self.actualEncryptionStep = EncryptionStep.DefinePassword
 //        self.composeView.showDefinePasswordView()
 //        self.composeView.hidePasswordAndConfirmDoesntMatch()
     }
     
-    func composeViewDidTapAttachmentButton(composeView: ComposeView) {
+    func composeViewDidTapAttachmentButton(_ composeView: ComposeView) {
         if let viewController = UIStoryboard.instantiateInitialViewController(storyboard: .attachments) as? UINavigationController {
             if let attachmentsViewController = viewController.viewControllers.first as? AttachmentsTableViewController {
                 attachmentsViewController.delegate = self
@@ -521,38 +552,38 @@ extension ComposeEmailViewController : ComposeViewDelegate {
                     attachmentsViewController.attachments = viewModel.getAttachments() ?? []
                 }
             }
-            presentViewController(viewController, animated: true, completion: nil)
+            present(viewController, animated: true, completion: nil)
         }
     }
     
-    func composeViewDidTapExpirationButton(composeView: ComposeView)
+    func composeViewDidTapExpirationButton(_ composeView: ComposeView)
     {
         self.expirationPicker.alpha = 1;
-        self.view.bringSubviewToFront(expirationPicker)
+        self.view.bringSubview(toFront: expirationPicker)
     }
     
-    func composeViewHideExpirationView(composeView: ComposeView)
+    func composeViewHideExpirationView(_ composeView: ComposeView)
     {
         self.expirationPicker.alpha = 0;
     }
     
-    func composeViewCancelExpirationData(composeView: ComposeView)
+    func composeViewCancelExpirationData(_ composeView: ComposeView)
     {
         self.expirationPicker.selectRow(0, inComponent: 0, animated: true)
         self.expirationPicker.selectRow(0, inComponent: 1, animated: true)
     }
     
-    func composeViewCollectExpirationData(composeView: ComposeView)
+    func composeViewCollectExpirationData(_ composeView: ComposeView)
     {
-        let selectedDay = expirationPicker.selectedRowInComponent(0)
-        let selectedHour = expirationPicker.selectedRowInComponent(1)
+        let selectedDay = expirationPicker.selectedRow(inComponent: 0)
+        let selectedHour = expirationPicker.selectedRow(inComponent: 1)
         if self.composeView.setExpirationValue(selectedDay, hour: selectedHour)
         {
             self.expirationPicker.alpha = 0;
         }
     }
     
-    func composeView(composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: MBContactPicker)
+    func composeView(_ composeView: ComposeView, didAddContact contact: ContactVO, toPicker picker: MBContactPicker)
     {
         if (picker == composeView.toContactPicker) {
             self.viewModel.toSelectedContacts.append(contact)
@@ -563,40 +594,40 @@ extension ComposeEmailViewController : ComposeViewDelegate {
         }
     }
     
-    func composeView(composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker)
+    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactVO, fromPicker picker: MBContactPicker)
     {// here each logic most same, need refactor later
         if (picker == composeView.toContactPicker) {
             var contactIndex = -1
             let selectedContacts = self.viewModel.toSelectedContacts
-            for (index, selectedContact) in selectedContacts.enumerate() {
+            for (index, selectedContact) in (selectedContacts?.enumerated())! {
                 if (contact.email == selectedContact.email) {
                     contactIndex = index
                 }
             }
             if (contactIndex >= 0) {
-                self.viewModel.toSelectedContacts.removeAtIndex(contactIndex)
+                self.viewModel.toSelectedContacts.remove(at: contactIndex)
             }
         } else if (picker == composeView.ccContactPicker) {
             var contactIndex = -1
             let selectedContacts = self.viewModel.ccSelectedContacts
-            for (index, selectedContact) in selectedContacts.enumerate() {
+            for (index, selectedContact) in (selectedContacts?.enumerated())! {
                 if (contact.email == selectedContact.email) {
                     contactIndex = index
                 }
             }
             if (contactIndex >= 0) {
-                self.viewModel.ccSelectedContacts.removeAtIndex(contactIndex)
+                self.viewModel.ccSelectedContacts.remove(at: contactIndex)
             }
         } else if (picker == composeView.bccContactPicker) {
             var contactIndex = -1
             let selectedContacts = self.viewModel.bccSelectedContacts
-            for (index, selectedContact) in selectedContacts.enumerate() {
+            for (index, selectedContact) in (selectedContacts?.enumerated())! {
                 if (contact.email == selectedContact.email) {
                     contactIndex = index
                 }
             }
             if (contactIndex >= 0) {
-                self.viewModel.bccSelectedContacts.removeAtIndex(contactIndex)
+                self.viewModel.bccSelectedContacts.remove(at: contactIndex)
             }
         }
     }
@@ -605,11 +636,12 @@ extension ComposeEmailViewController : ComposeViewDelegate {
 
 // MARK : compose data source
 extension ComposeEmailViewController : ComposeViewDataSource {
-    func composeViewContactsModelForPicker(composeView: ComposeView, picker: MBContactPicker) -> [AnyObject]! {
+    
+    func composeViewContactsModelForPicker(_ composeView: ComposeView, picker: MBContactPicker) -> [Any]! {
         return contacts
     }
     
-    func composeViewSelectedContactsForPicker(composeView: ComposeView, picker: MBContactPicker) ->  [AnyObject]! {
+    func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: MBContactPicker) ->  [Any]! {
         var selectedContacts: [ContactVO] = [ContactVO]()
         if (picker == composeView.toContactPicker) {
             selectedContacts = self.viewModel.toSelectedContacts
@@ -626,39 +658,39 @@ extension ComposeEmailViewController : ComposeViewDataSource {
 // MARK: - AttachmentsViewControllerDelegate
 extension ComposeEmailViewController: AttachmentsTableViewControllerDelegate {
     
-    func attachments(attViewController: AttachmentsTableViewController, didFinishPickingAttachments attachments: [AnyObject]) {
+    func attachments(_ attViewController: AttachmentsTableViewController, didFinishPickingAttachments attachments: [Any]) {
         self.attachments = attachments
     }
     
-    func attachments(attViewController: AttachmentsTableViewController, didPickedAttachment attachment: Attachment) {
+    func attachments(_ attViewController: AttachmentsTableViewController, didPickedAttachment attachment: Attachment) {
         self.collectDraft()
         self.viewModel.uploadAtt(attachment)
     }
     
-    func attachments(attViewController: AttachmentsTableViewController, didDeletedAttachment attachment: Attachment) {
+    func attachments(_ attViewController: AttachmentsTableViewController, didDeletedAttachment attachment: Attachment) {
         self.collectDraft()
         
-        if let content_id = attachment.getContentID() where !content_id.isEmpty && attachment.isInline() {
-            self.removeEmbedImageByCID("cid:\(content_id)")
+        if let content_id = attachment.getContentID(), !content_id.isEmpty && attachment.isInline() {
+            self.removeEmbedImage(byCID: "cid:\(content_id)")
         }
         
         self.viewModel.deleteAtt(attachment)
     }
     
-    func attachments(attViewController: AttachmentsTableViewController, didReachedSizeLimitation: Int) {
+    func attachments(_ attViewController: AttachmentsTableViewController, didReachedSizeLimitation: Int) {
     }
     
-    func attachments(attViewController: AttachmentsTableViewController, error: String) {
+    func attachments(_ attViewController: AttachmentsTableViewController, error: String) {
     }
 }
 
 // MARK: - UIPickerViewDataSource
 
 extension ComposeEmailViewController: UIPickerViewDataSource {
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return kNumberOfColumnsInTimePicker
     }
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if (component == 0) {
             return kNumberOfDaysInTimePicker
         } else {
@@ -670,7 +702,7 @@ extension ComposeEmailViewController: UIPickerViewDataSource {
 // MARK: - UIPickerViewDelegate
 
 extension ComposeEmailViewController: UIPickerViewDelegate {
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if (component == 0) {
             return "\(row) " + NSLocalizedString("days")
         } else {
@@ -678,14 +710,20 @@ extension ComposeEmailViewController: UIPickerViewDelegate {
         }
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let selectedDay = pickerView.selectedRowInComponent(0)
-        let selectedHour = pickerView.selectedRowInComponent(1)
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let selectedDay = pickerView.selectedRow(inComponent: 0)
+        let selectedHour = pickerView.selectedRow(inComponent: 1)
         
         let day = "\(selectedDay) " + NSLocalizedString("days")
         let hour = "\(selectedHour) " + NSLocalizedString("hours")
         self.composeView.updateExpirationValue(((Double(selectedDay) * 24) + Double(selectedHour)) * 3600, text: "\(day) \(hour)")
     }
+    
+
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        return super.canPerformAction(action, withSender: sender)
+    }
+    
 }
 
 

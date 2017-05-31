@@ -18,24 +18,24 @@ public struct EncryptionStep {
 }
 
 enum ComposeMessageAction: Int, CustomStringConvertible {
-    case Reply = 0
-    case ReplyAll = 1
-    case Forward = 2
-    case NewDraft = 3
-    case OpenDraft = 4
+    case reply = 0
+    case replyAll = 1
+    case forward = 2
+    case newDraft = 3
+    case openDraft = 4
     
     var description : String {
         get {
             switch(self) {
-            case Reply:
+            case .reply:
                 return NSLocalizedString("Reply")
-            case ReplyAll:
+            case .replyAll:
                 return NSLocalizedString("ReplyAll")
-            case Forward:
+            case .forward:
                 return NSLocalizedString("Forward")
-            case NewDraft:
+            case .newDraft:
                 return NSLocalizedString("Draft")
-            case OpenDraft:
+            case .openDraft:
                 return NSLocalizedString("OpenDraft")
             }
         }

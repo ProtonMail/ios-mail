@@ -21,61 +21,58 @@ extension APIService {
     
     typealias UserInfoBlock = (UserInfo?, String?, NSError?) -> Void
 
-    private struct UserPath {
+    fileprivate struct UserPath {
         static let base = AppConstants.API_PATH + "/users"
     }
 
-    func userPublicKeyForUsername(username: String, completion: CompletionBlock?) {
+    func userPublicKeyForUsername(_ username: String, completion: CompletionBlock?) {
         let path = UserPath.base + "/pubkey" + "/\(username)"
-        
-        setApiVesion(1, appVersion: 1)
-        request(method: .GET, path: path, parameters: nil, completion: completion)
+        //setApiVesion(1, appVersion: 1)
+        request(method: .get, path: path, parameters: nil, headers: ["x-pm-apiversion": 1], completion: completion)
     }
     
-    func userPublicKeysForEmails(emails: Array<String>, completion: CompletionBlock?) {
-        let emailsString = emails.joinWithSeparator(",")
+    func userPublicKeysForEmails(_ emails: Array<String>, completion: CompletionBlock?) {
+        let emailsString = emails.joined(separator: ",")
         
         userPublicKeysForEmails(emailsString, completion: completion)
     }
     
-    func userPublicKeysForEmails(emails: String, completion: CompletionBlock?) {
+    func userPublicKeysForEmails(_ emails: String, completion: CompletionBlock?) {
         PMLog.D("userPublicKeysForEmails -- \(emails)")
         if !emails.isEmpty {
             if let base64Emails = emails.base64Encoded() {
-                let escapedValue : String? = base64Emails.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet(charactersInString: "/+=\n").invertedSet)
+                let escapedValue : String? = base64Emails.addingPercentEncoding(withAllowedCharacters: CharacterSet(charactersIn: "/+=\n").inverted)
                 let path = UserPath.base.stringByAppendingPathComponent("pubkeys").stringByAppendingPathComponent(escapedValue ?? base64Emails)
-                setApiVesion(2, appVersion: 1)
-                request(method: .GET, path: path, parameters: nil, completion: { task, response, error in
-                    PMLog.D("userPublicKeysForEmails -- res \(response) || error -- \(error)")
-                    let error = error
-                    let response = response
+                //setApiVesion(2, appVersion: 1)
+                request(method: .get, path: path, parameters: nil, headers: ["x-pm-apiversion": 2], completion: { task, response, error in
+                    PMLog.D("userPublicKeysForEmails -- res \(String(describing: response)) || error -- \(String(describing: error))")
                     if let paserError = self.isErrorResponse(response) {
-                        completion?(task: task, response: response, error: paserError)
+                        completion?(task, response, paserError)
                     } else {
-                        completion?(task: task, response: response, error: error)
+                        completion?(task, response, error)
                     }
                 })
                 return
             }
         }
-        completion?(task: nil, response: nil, error: NSError.badParameter(emails))
+        completion?(nil, nil, NSError.badParameter(emails))
     }
     
-    func userUpdateKeypair(pwd: String, publicKey: String, privateKey: String, completion: CompletionBlock?) {
+    func userUpdateKeypair(_ pwd: String, publicKey: String, privateKey: String, completion: CompletionBlock?) {
         let path = UserPath.base + "/keys"
         let parameters = [
             "Password" : pwd,
             "PublicKey" : publicKey,
             "PrivateKey" : privateKey
         ]
-        setApiVesion(2, appVersion: 1)
-        request(method: .PUT, path: path, parameters: parameters, completion: completion)
+        //setApiVesion(2, appVersion: 1)
+        request(method: .put, path: path, parameters: parameters, headers: ["x-pm-apiversion": 2], completion: completion)
     }
     
     // MARK: private mothods
-    private func isErrorResponse(response: AnyObject!) -> NSError? {
+    fileprivate func isErrorResponse(_ response: Any!) -> NSError? {
         if let dict = response as? NSDictionary {
-            if let code = dict["Code"] as? Int where code != 1000 && code != 1001 {
+            if let code = dict["Code"] as? Int, code != 1000 && code != 1001 {
                 let error = dict["Error"] as? String ?? ""
                 let desc = dict["ErrorDescription"] as? String ?? ""
                 return NSError.apiServiceError(code: code, localizedDescription: error, localizedFailureReason: desc, localizedRecoverySuggestion: "")

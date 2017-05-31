@@ -10,7 +10,7 @@ import Foundation
 
 
 
-public class DeviceInfoCache : SharedCacheBase {
+final class DeviceInfoCache : SharedCacheBase {
 
 
 

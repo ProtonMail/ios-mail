@@ -21,8 +21,8 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     @IBOutlet weak var createAccountButton: UIButton!
     
     //define
-    private let hidePriority : UILayoutPriority = 1.0;
-    private let showPriority: UILayoutPriority = 750.0;
+    fileprivate let hidePriority : UILayoutPriority = 1.0;
+    fileprivate let showPriority: UILayoutPriority = 750.0;
     
     @IBOutlet weak var logoTopPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var logoLeftPaddingConstraint: NSLayoutConstraint!
@@ -37,19 +37,19 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     let domains : [String] = ["protonmail.com", "protonmail.ch"]
     var selected : Int = 0;
     
-    private let kSegueToSignUpPassword = "sign_up_password_segue"
-    private let termsURL = NSURL(string: "https://protonmail.com/terms-and-conditions")!
-    private let policyURL = NSURL(string: "https://protonmail.com/privacy-policy")!
+    fileprivate let kSegueToSignUpPassword = "sign_up_password_segue"
+    fileprivate let termsURL = URL(string: "https://protonmail.com/terms-and-conditions")!
+    fileprivate let policyURL = URL(string: "https://protonmail.com/privacy-policy")!
     
-    private var startVerify : Bool = false
-    private var checkUserStatus : Bool = false
-    private var stopLoading : Bool = false
-    private var agreePolicy : Bool = true
-    private var moveAfterCheck : Bool = false
+    fileprivate var startVerify : Bool = false
+    fileprivate var checkUserStatus : Bool = false
+    fileprivate var stopLoading : Bool = false
+    fileprivate var agreePolicy : Bool = true
+    fileprivate var moveAfterCheck : Bool = false
     
     var viewModel : SignupViewModel!
     
-    func configConstraint(show : Bool) -> Void {
+    func configConstraint(_ show : Bool) -> Void {
         let level = show ? showPriority : hidePriority
         
         logoTopPaddingConstraint.priority = level
@@ -73,23 +73,23 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         pickedDomainLabel.text = "@\(domains[selected])"
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.Default;
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.default;
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
-        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
+        NotificationCenter.default.addKeyboardObserver(self)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
+        NotificationCenter.default.removeKeyboardObserver(self)
     }
     
     override func didReceiveMemoryWarning() {
@@ -98,66 +98,66 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kSegueToSignUpPassword {
-            let viewController = segue.destinationViewController as! SignUpPasswordViewController
+            let viewController = segue.destination as! SignUpPasswordViewController
             viewController.viewModel = self.viewModel
         }
     }
-    @IBAction func checkAction(sender: AnyObject) {
+    @IBAction func checkAction(_ sender: AnyObject) {
         dismissKeyboard()
-        agreeCheck.selected = !agreeCheck.selected
-        agreePolicy = agreeCheck.selected
+        agreeCheck.isSelected = !agreeCheck.isSelected
+        agreePolicy = agreeCheck.isSelected
     }
     
-    @IBAction func backAction(sender: UIButton) {
+    @IBAction func backAction(_ sender: UIButton) {
         stopLoading = true
-        self.navigationController?.popViewControllerAnimated(true)
+        let _ = self.navigationController?.popViewController(animated: true)
     }
     
     func startChecking() {
-        warningView.hidden = false
+        warningView.isHidden = false
         warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
         warningLabel.text = NSLocalizedString("Checking ....")
-        warningIcon.hidden = true;
+        warningIcon.isHidden = true;
     }
     
     func resetChecking() {
         checkUserStatus = false
-        warningView.hidden = true
+        warningView.isHidden = true
         warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
         warningLabel.text = ""
-        warningIcon.hidden = true
+        warningIcon.isHidden = true
     }
     
-    func finishChecking(isOk : Bool) {
+    func finishChecking(_ isOk : Bool) {
         if isOk {
             checkUserStatus = true
-            warningView.hidden = false
+            warningView.isHidden = false
             warningLabel.textColor = UIColor(hexString: "A2C173", alpha: 1.0)
             warningLabel.text = NSLocalizedString("User is available!")
-            warningIcon.hidden = false
+            warningIcon.isHidden = false
         } else {
-            warningView.hidden = false
-            warningLabel.textColor = UIColor.redColor()
+            warningView.isHidden = false
+            warningLabel.textColor = UIColor.red
             warningLabel.text = NSLocalizedString("User already exist!")
-            warningIcon.hidden = true
+            warningIcon.isHidden = true
         }
     }
     
-    @IBAction func createAccountAction(sender: UIButton) {
+    @IBAction func createAccountAction(_ sender: UIButton) {
         dismissKeyboard()
-        MBProgressHUD.showHUDAddedTo(view, animated: true)
+        MBProgressHUD.showAdded(to: view, animated: true)
         if agreePolicy {
             if checkUserStatus {
-                MBProgressHUD.hideHUDForView(view, animated: true)
+                MBProgressHUD.hide(for: view, animated: true)
                 self.goPasswordsView()
             } else {
                 let userName = (usernameTextField.text ?? "").trim()
                 if !userName.isEmpty {
                     startChecking()
                     viewModel.checkUserName(userName, complete: { (isOk, error) -> Void in
-                        MBProgressHUD.hideHUDForView(self.view, animated: true)
+                        MBProgressHUD.hide(for: self.view, animated: true)
                         if error != nil {
                             self.finishChecking(false)
                         } else {
@@ -170,38 +170,38 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
                         }
                     })
                 } else {
-                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    MBProgressHUD.hide(for: self.view, animated: true)
                     let alert = NSLocalizedString("Please pick a user name first!").alertController()
                     alert.addOKAction()
-                    self.presentViewController(alert, animated: true, completion: nil)
+                    self.present(alert, animated: true, completion: nil)
                 }
             }
         } else {
-            MBProgressHUD.hideHUDForView(view, animated: true)
+            MBProgressHUD.hide(for: view, animated: true)
             let alert = NSLocalizedString("In order to use our services, you must agree to ProtonMail's Terms of Service.").alertController()
             alert.addOKAction()
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         }
     }
     
     func goPasswordsView() {
         let username = (usernameTextField.text ?? "").trim()
         viewModel.setPickedUserName(username, domain: domains[selected])
-        self.performSegueWithIdentifier(kSegueToSignUpPassword, sender: self)
+        self.performSegue(withIdentifier: kSegueToSignUpPassword, sender: self)
     }
     
-    @IBAction func pickDomainName(sender: UIButton) {
+    @IBAction func pickDomainName(_ sender: UIButton) {
         showPickerInActionSheet(sender)
     }
     
-    func showPickerInActionSheet(sender : UIButton) {
+    func showPickerInActionSheet(_ sender : UIButton) {
         let title = ""
         let message = "\n\n\n\n\n\n\n\n\n\n";
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.ActionSheet);
-        alert.modalInPopover = true;
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.actionSheet);
+        alert.isModalInPopover = true;
         
         //Create a frame (placeholder/wrapper) for the picker and then create the picker
-        let pickerFrame: CGRect = CGRectMake(17, 52, 270, 100); // CGRectMake(left), top, width, height) - left and top are like margins
+        let pickerFrame: CGRect = CGRect(x: 17, y: 52, width: 270, height: 100); // CGRectMake(left), top, width, height) - left and top are like margins
         let picker: UIPickerView = UIPickerView(frame: pickerFrame);
         
         //set the pickers datasource and delegate
@@ -212,21 +212,21 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         alert.view.addSubview(picker);
         
         //Create the toolbar view - the view witch will hold our 2 buttons
-        let toolFrame = CGRectMake(17, 5, 270, 45);
+        let toolFrame = CGRect(x: 17, y: 5, width: 270, height: 45);
         let toolView: UIView = UIView(frame: toolFrame);
         
         //add buttons to the view
-        let buttonCancelFrame: CGRect = CGRectMake(0, 7, 100, 30); //size & position of the button as placed on the toolView
+        let buttonCancelFrame: CGRect = CGRect(x: 0, y: 7, width: 100, height: 30); //size & position of the button as placed on the toolView
         
         //Create the cancel button & set its title
         let buttonCancel: UIButton = UIButton(frame: buttonCancelFrame);
-        buttonCancel.setTitle(NSLocalizedString("Done"), forState: UIControlState.Normal);
+        buttonCancel.setTitle(NSLocalizedString("Done"), for: UIControlState());
         
-        buttonCancel.setTitleColor(UIColor.blueColor(), forState: UIControlState.Normal);
+        buttonCancel.setTitleColor(UIColor.blue, for: UIControlState());
         toolView.addSubview(buttonCancel); //add it to the toolView
         
         //Add the target - target, function to call, the event witch will trigger the function call
-        buttonCancel.addTarget(self, action: #selector(SignUpUserNameViewController.cancelSelection(_:)), forControlEvents: UIControlEvents.TouchDown);
+        buttonCancel.addTarget(self, action: #selector(SignUpUserNameViewController.cancelSelection(_:)), for: UIControlEvents.touchDown);
         
         //add the toolbar to the alert controller
         alert.view.addSubview(toolView);
@@ -234,47 +234,47 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         picker.selectRow(selected, inComponent: 0, animated: true)
         alert.popoverPresentationController?.sourceView = sender
         alert.popoverPresentationController?.sourceRect = sender.bounds
-        self.presentViewController(alert, animated: true, completion: nil);
+        self.present(alert, animated: true, completion: nil);
     }
     
-    func pickedOK(sender: UIButton){
+    func pickedOK(_ sender: UIButton){
         PMLog.D("OK");
-        self.dismissViewControllerAnimated(true, completion: nil);
+        self.dismiss(animated: true, completion: nil);
     }
     
-    func cancelSelection(sender: UIButton){
+    func cancelSelection(_ sender: UIButton){
         PMLog.D("Cancel");
-        self.dismissViewControllerAnimated(true, completion: nil);
+        self.dismiss(animated: true, completion: nil);
     }
     
     // Return the title of each row in your picker ... In my case that will be the profile name or the username string
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return domains[row]
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selected = row;
         updatePickedDomain ()
     }
     
     // returns the number of 'columns' to display.
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
     // returns the # of rows in each component..
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return domains.count
     }
     
-    @IBAction func tapAction(sender: UITapGestureRecognizer) {
+    @IBAction func tapAction(_ sender: UITapGestureRecognizer) {
         dismissKeyboard()
     }
     func dismissKeyboard() {
         usernameTextField.resignFirstResponder()
     }
     
-    @IBAction func editEnd(sender: UITextField) {
+    @IBAction func editEnd(_ sender: UITextField) {
         checkUserName();
     }
     
@@ -306,32 +306,32 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
         
     }
     
-    @IBAction func editingChanged(sender: AnyObject) {
+    @IBAction func editingChanged(_ sender: AnyObject) {
         resetChecking()
     }
     
-    @IBAction func termsAction(sender: UIButton) {
+    @IBAction func termsAction(_ sender: UIButton) {
         dismissKeyboard()
-        UIApplication.sharedApplication().openURL(termsURL)
+        UIApplication.shared.openURL(termsURL)
     }
     
-    @IBAction func policyAction(sender: UIButton) {
+    @IBAction func policyAction(_ sender: UIButton) {
         dismissKeyboard()
-        UIApplication.sharedApplication().openURL(policyURL)
+        UIApplication.shared.openURL(policyURL)
     }
 }
 
 // MARK: - UITextFieldDelegatesf
 extension SignUpUserNameViewController: UITextFieldDelegate {
-    func textFieldShouldClear(textField: UITextField) -> Bool {
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
         return true
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return true
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         dismissKeyboard()
         checkUserName();
         return true
@@ -340,23 +340,23 @@ extension SignUpUserNameViewController: UITextFieldDelegate {
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 extension SignUpUserNameViewController: NSNotificationCenterKeyboardObserverProtocol {
-    func keyboardWillHideNotification(notification: NSNotification) {
+    func keyboardWillHideNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         scrollBottomPaddingConstraint.constant = 0.0
         self.configConstraint(false)
-        UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
+        UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
     }
     
-    func keyboardWillShowNotification(notification: NSNotification) {
+    func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
-        let info: NSDictionary = notification.userInfo!
-        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
+        let info: NSDictionary = notification.userInfo! as NSDictionary
+        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollBottomPaddingConstraint.constant = keyboardSize.height;
         }
         self.configConstraint(true)
-        UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
+        UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
     }

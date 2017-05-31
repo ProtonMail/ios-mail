@@ -31,7 +31,7 @@ class APIService {
     internal var mutex = pthread_mutex_t()
     
     // api session manager
-    private var sessionManager: AFHTTPSessionManager
+    fileprivate var sessionManager: AFHTTPSessionManager
     
     // get session
     func getSession() -> AFHTTPSessionManager{
@@ -44,7 +44,7 @@ class APIService {
         // init lock
         pthread_mutex_init(&mutex, nil)
         
-        sessionManager = AFHTTPSessionManager(baseURL: NSURL(string: AppConstants.API_HOST_URL)!)
+        sessionManager = AFHTTPSessionManager(baseURL: URL(string: AppConstants.API_HOST_URL)!)
         sessionManager.requestSerializer = AFJSONRequestSerializer() as AFHTTPRequestSerializer
         //sessionManager.requestSerializer.timeoutInterval = 20.0;
         sessionManager.securityPolicy.validatesDomainName = false
@@ -59,12 +59,14 @@ class APIService {
         setupValueTransforms()
     }
     
-    internal func afNetworkingBlocksForRequest(method: HTTPMethod, path: String, parameters: AnyObject?, auth: AuthCredential?, authenticated: Bool = true, completion: CompletionBlock?) -> (AFNetworkingSuccessBlock?, AFNetworkingFailureBlock?) {
+    internal func afNetworkingBlocksForRequest(_ method: HTTPMethod, path: String, parameters: Any?, auth: AuthCredential?, authenticated: Bool = true, completion: CompletionBlock?) -> (AFNetworkingSuccessBlock?, AFNetworkingFailureBlock?) {
         if let completion = completion {
             let failure: AFNetworkingFailureBlock = { task, error in
-                PMLog.D("Error: \(error)")
+                //TODO::Swift
+                let error = error! as NSError
+                PMLog.D("Error: \(String(describing: error))")
                 var errorCode : Int = 200;
-                if let detail = error.userInfo["com.alamofire.serialization.response.error.response"] as? NSHTTPURLResponse {
+                if let detail = error.userInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
                     errorCode = detail.statusCode
                 }
                 else {
@@ -79,18 +81,18 @@ class APIService {
                         sharedUserDataService.signOut(true);
                         userCachedStatus.signOut()
                     }else {
-                        self.setApiVesion(1, appVersion: 1)
-                        self.request(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)
+                        //self.setApiVesion(1, appVersion: 1)
+                        self.request(method: method, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], authenticated: authenticated, completion: completion)
                     }
                 } else {
-                    completion(task: task, response: nil, error: error)
+                    completion(task, nil, error)
                 }
             }
             
             let success: AFNetworkingSuccessBlock = { task, responseObject in
                 if responseObject == nil {
-                    completion(task: task, response: [:], error: nil)
-                } else if let responseDictionary = responseObject as? Dictionary<String, AnyObject> {
+                    completion(task, [:], nil)
+                } else if let responseDictionary = responseObject as? Dictionary<String, Any> {
                     var error : NSError?
                     let responseCode = responseDictionary["Code"] as? Int
                     
@@ -102,22 +104,22 @@ class APIService {
                     
                     if authenticated && responseCode == 401 {
                         AuthCredential.expireOrClear(auth?.token)
-                        self.setApiVesion(1, appVersion: 1)
-                        self.request(method: method, path: path, parameters: parameters, authenticated: authenticated, completion: completion)
+                        //self.setApiVesion(1, appVersion: 1)
+                        self.request(method: method, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], authenticated: authenticated, completion: completion)
                     } else if responseCode == 5001 || responseCode == 5002 || responseCode == 5003 || responseCode == 5004 {
                         NSError.alertUpdatedToast()
-                        completion(task: task, response: responseDictionary, error: error)
+                        completion(task, responseDictionary, error)
                         UserTempCachedStatus.backup()
                         sharedUserDataService.signOut(true);
                         userCachedStatus.signOut()
                     } else if responseCode == APIErrorCode.API_offline {
-                        completion(task: task, response: responseDictionary, error: error)
+                        completion(task, responseDictionary, error)
                     }
                     else {
-                        completion(task: task, response: responseDictionary, error: error)
+                        completion(task, responseDictionary, error)
                     }
                 } else {
-                    completion(task: task, response: nil, error: NSError.unableToParseResponse(responseObject))
+                    completion(task, nil, NSError.unableToParseResponse(responseObject))
                 }
             }
             return (success, failure)
@@ -125,37 +127,36 @@ class APIService {
         return (nil, nil)
     }
     
-    internal func completionWrapperParseCompletion(completion: CompletionBlock?, forKey key: String) -> CompletionBlock? {
+    internal func completionWrapperParseCompletion(_ completion: CompletionBlock?, forKey key: String) -> CompletionBlock? {
         if completion == nil {
             return nil
         }
         
         return { task, response, error in
             if error != nil {
-                completion?(task: task, response: nil, error: error)
+                completion?(task, nil, error)
             } else {
-                if let parsedResponse = response?[key] as? Dictionary<String, AnyObject> {
-                    completion?(task: task, response: parsedResponse, error: nil)
+                if let parsedResponse = response?[key] as? Dictionary<String, Any> {
+                    completion?(task, parsedResponse, nil)
                 } else {
-                    completion?(task: task, response: nil, error: NSError.unableToParseResponse(response))
+                    completion?(task, nil, NSError.unableToParseResponse(response))
                 }
             }
         }
     }
     
-    internal func fetchAuthCredential(completion: AuthCredentialBlock) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+    internal func fetchAuthCredential(_ completion: @escaping AuthCredentialBlock) {
+        DispatchQueue.global(qos: .default).async {
             pthread_mutex_lock(&self.mutex)
             //fetch auth info
             if let credential = AuthCredential.fetchFromKeychain() {
-                //PMLog.D("\(credential.description)")
                 if !credential.isExpired { // access token time is valid
                     if (credential.password ?? "").isEmpty { // mailbox pwd is empty should show error and logout
                         
                         //clean auth cache let user relogin
                         AuthCredential.clearFromKeychain()
                         pthread_mutex_unlock(&self.mutex)
-                        dispatch_async(dispatch_get_main_queue()) {
+                        DispatchQueue.main.async {
                             completion(nil, NSError.AuthCachePassEmpty())
                             UserTempCachedStatus.backup()
                             sharedUserDataService.signOut(true) //NOTES:signout + errors
@@ -163,9 +164,8 @@ class APIService {
                             NSError.alertBadTokenToast()
                         }
                     } else {
-                        self.sessionManager.requestSerializer.setAuthorizationHeaderFieldWithCredential(credential)
                         pthread_mutex_unlock(&self.mutex)
-                        dispatch_async(dispatch_get_main_queue()) {
+                        DispatchQueue.main.async {
                             completion(credential, nil)
                         }
                     }
@@ -173,7 +173,7 @@ class APIService {
                     if (credential.password ?? "").isEmpty {
                         AuthCredential.clearFromKeychain()
                         pthread_mutex_unlock(&self.mutex)
-                        dispatch_async(dispatch_get_main_queue()) {
+                        DispatchQueue.main.async {
                             completion(nil, NSError.AuthCachePassEmpty())
                             UserTempCachedStatus.backup()
                             sharedUserDataService.signOut(true)
@@ -185,21 +185,18 @@ class APIService {
                             pthread_mutex_unlock(&self.mutex)
                             if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
                                 AuthCredential.clearFromKeychain()
-                                dispatch_async(dispatch_get_main_queue()) {
+                                DispatchQueue.main.async {
                                     NSError.alertBadTokenToast()
                                     self.fetchAuthCredential(completion)
                                 }
                             } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
                                 AuthCredential.clearFromKeychain()
-                                dispatch_async(dispatch_get_main_queue()) {
+                                DispatchQueue.main.async {
                                     NSError.alertBadTokenToast()
                                     completion(authCredential, error)
                                 }
                             } else {
-                                if let credential = AuthCredential.fetchFromKeychain() {
-                                    self.sessionManager.requestSerializer.setAuthorizationHeaderFieldWithCredential(credential)
-                                }
-                                dispatch_async(dispatch_get_main_queue()) {
+                                DispatchQueue.main.async {
                                     completion(authCredential, error)
                                 }
                             }
@@ -209,7 +206,7 @@ class APIService {
             } else { //the cache have issues
                 AuthCredential.clearFromKeychain()
                 pthread_mutex_unlock(&self.mutex)
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     if sharedUserDataService.isSignedIn {
                         completion(nil, NSError.authCacheBad())
                         UserTempCachedStatus.backup()
@@ -221,32 +218,63 @@ class APIService {
         }
 
     }
-    // MARK: - Request methods
     
+    
+    // MARK: - Request methods
+
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
-    internal func download(path: String, destinationDirectoryURL: NSURL, downloadTask: ((NSURLSessionDownloadTask) -> Void)?, completion: ((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
-        if let url = NSURL(string: path, relativeToURL: self.sessionManager.baseURL), let abs_string = url.absoluteString {
-            var error:NSError? = nil
-            let request = self.sessionManager.requestSerializer.requestWithMethod("GET", URLString: abs_string, parameters: nil, error: &error)
-            if let ex = error {
-                completion?(nil, nil, ex)
+    //TODO:: update completion
+    internal func download(byUrl url: String,
+                           destinationDirectoryURL: URL,
+                           headers: [String : Any]?,
+                           authenticated: Bool = true,
+                           downloadTask: ((URLSessionDownloadTask) -> Void)?,
+                           completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
+        
+        
+        let authBlock: AuthCredentialBlock = { auth, error in
+            if let error = error {
+                completion(nil, nil, error)
             } else {
-                let sessionDownloadTask = self.sessionManager.downloadTaskWithRequest(request, progress: nil, destination: { (targetURL, response) -> NSURL in
+                let request = self.sessionManager.requestSerializer.request(withMethod: HTTPMethod.get.toString(),
+                                                                            urlString: url,
+                                                                            parameters: nil, error: nil)
+                
+                if let header = headers {
+                    for (k, v) in header {
+                        request.setValue("\(v)", forHTTPHeaderField: k)
+                    }
+                }
+                
+                let accessToken = auth?.token ?? ""
+                request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+                if let userid = auth?.userID {
+                    request.setValue(userid, forHTTPHeaderField: "x-pm-uid")
+                }
+                
+                let appversion = "iOS_\(Bundle.main.majorVersion)"
+                request.setValue("application/vnd.protonmail.v1+json", forHTTPHeaderField: "Accept")
+                request.setValue(appversion, forHTTPHeaderField: "x-pm-appversion")
+                
+                let sessionDownloadTask = self.sessionManager.downloadTask(with: request as URLRequest, progress: { (progress) in
+                    
+                }, destination: { (targetURL, response) -> URL in
                     return destinationDirectoryURL
-                    }, completionHandler: completion )
+                }, completionHandler: { (response, url, error) in
+                    completion(response, url, error as NSError?)
+                })
                 downloadTask?(sessionDownloadTask)
                 sessionDownloadTask.resume()
             }
+        }
+        
+        if authenticated {
+            fetchAuthCredential(authBlock)
         } else {
-            completion?(nil, nil, NSError.badPath(path))
+            authBlock(nil, nil)
         }
     }
-    
-    internal func setApiVesion(apiVersion:Int, appVersion:Int)
-    {
-        self.sessionManager.requestSerializer.setVersionHeader(apiVersion, appVersion: appVersion)
-    }
-    
+
     
     /**
      this function only for upload attachments for now.
@@ -256,42 +284,49 @@ class APIService {
      :param: keyPackets encrypt attachment key package
      :param: dataPacket encrypt attachment data package
      */
-    internal func upload (url: String, parameters: AnyObject?, keyPackets : NSData!, dataPacket : NSData!, completion: CompletionBlock?) {
-        //TODO / RUSH : need add respons handling, progress bar later
-        var error:NSError? = nil
-        let request = sessionManager.requestSerializer.multipartFormRequestWithMethod("POST", URLString: url, parameters: parameters as! [String:String], constructingBodyWithBlock: { (formData) -> Void in
-            let data: AFMultipartFormData = formData
-            data.appendPartWithFileData(keyPackets, name: "KeyPackets", fileName: "KeyPackets.txt", mimeType: "" )
-            data.appendPartWithFileData(dataPacket, name: "DataPacket", fileName: "DataPacket.txt", mimeType: "" ) }, error: &error)
+    internal func upload (byUrl url: String,
+                          parameters: Any?,
+                          keyPackets : Data!,
+                          dataPacket : Data!,
+                          headers: [String : Any]?,
+                          authenticated: Bool = true,
+                          completion: @escaping CompletionBlock) {
         
-        if let ex = error {
-            completion?(task: nil, response: nil, error: ex)
-        } else {
-            let uploadTask = self.sessionManager.uploadTaskWithStreamedRequest(request, progress: nil) { (response, responseObject, error) -> Void in
-                completion?(task: nil, response: responseObject as? Dictionary<String,AnyObject>, error: error)
-            }
-            uploadTask.resume()
-        }
-    }
-    
-    func request(method method: HTTPMethod, path: String, parameters: AnyObject?, authenticated: Bool = true, completion: CompletionBlock?) {
+        
         let authBlock: AuthCredentialBlock = { auth, error in
-            if error == nil {
-                let (successBlock, failureBlock) = self.afNetworkingBlocksForRequest(method, path: path, parameters: parameters, auth:auth, authenticated: authenticated, completion: completion)
-                
-                //TODO:: need use progress later
-                switch(method) {
-                case .DELETE:
-                    self.sessionManager.DELETE(path, parameters: parameters, success: successBlock, failure: failureBlock)
-                case .POST:
-                    self.sessionManager.POST(path, parameters: parameters, progress: nil, success: successBlock, failure: failureBlock)
-                case .PUT:
-                    self.sessionManager.PUT(path, parameters: parameters, success: successBlock, failure: failureBlock)
-                default:
-                    self.sessionManager.GET(path, parameters: parameters, progress: nil, success: successBlock, failure: failureBlock)
-                }
+            if let error = error {
+                completion(nil, nil, error)
             } else {
-                completion?(task: nil, response: nil, error: error)
+                let request = self.sessionManager.requestSerializer.multipartFormRequest(withMethod: "POST", urlString: url, parameters: parameters as! [String:String], constructingBodyWith: { (formData) -> Void in
+                    let data: AFMultipartFormData = formData
+                    data.appendPart(withFileData: keyPackets, name: "KeyPackets", fileName: "KeyPackets.txt", mimeType: "" )
+                    data.appendPart(withFileData: dataPacket, name: "DataPacket", fileName: "DataPacket.txt", mimeType: "" ) }, error: nil)
+
+                if let header = headers {
+                    for (k, v) in header {
+                        request.setValue("\(v)", forHTTPHeaderField: k)
+                    }
+                }
+                
+                let accessToken = auth?.token ?? ""
+                request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+                if let userid = auth?.userID {
+                    request.setValue(userid, forHTTPHeaderField: "x-pm-uid")
+                }
+                
+                let appversion = "iOS_\(Bundle.main.majorVersion)"
+                request.setValue("application/vnd.protonmail.v1+json", forHTTPHeaderField: "Accept")
+                request.setValue(appversion, forHTTPHeaderField: "x-pm-appversion")
+                
+            
+                var uploadTask: URLSessionDataTask? = nil
+                uploadTask = self.sessionManager.uploadTask(withStreamedRequest: request as URLRequest, progress: { (progress) in
+                    //
+                }, completionHandler: { (response, responseObject, error) in
+                    let resObject = responseObject as? Dictionary<String, Any>
+                    completion(uploadTask, resObject, error as NSError?)
+                })
+                uploadTask?.resume()
             }
         }
         
@@ -302,6 +337,58 @@ class APIService {
         }
     }
     
+    //new requestion function
+    func request(method: HTTPMethod,
+                 path: String, parameters: Any?,
+                 headers: [String : Any]?,
+                 authenticated: Bool = true,
+                 completion: CompletionBlock?) {
+        
+        let authBlock: AuthCredentialBlock = { auth, error in
+            if let error = error {
+                completion?(nil, nil, error)
+            } else {
+                let (successBlock, failureBlock) = self.afNetworkingBlocksForRequest(method, path: path, parameters: parameters, auth:auth, authenticated: authenticated, completion: completion)
+                let url = AppConstants.API_HOST_URL + path
+                let request = AFJSONRequestSerializer().request(withMethod: method.toString(), urlString: url, parameters: parameters, error: nil)
+                //request.timeoutInterval = 120
+                if let header = headers {
+                    for (k, v) in header {
+                        request.setValue("\(v)", forHTTPHeaderField: k)
+                    }
+                }
+                let accessToken = auth?.token ?? ""
+                request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+                if let userid = auth?.userID {
+                    request.setValue(userid, forHTTPHeaderField: "x-pm-uid")
+                }
+                let appversion = "iOS_\(Bundle.main.majorVersion)"
+                request.setValue("application/vnd.protonmail.v1+json", forHTTPHeaderField: "Accept")
+                request.setValue(appversion, forHTTPHeaderField: "x-pm-appversion")
+                
+                var task: URLSessionDataTask? = nil
+                task = self.sessionManager.dataTask(with: request as URLRequest, uploadProgress: { (progress) in
+                    //TODO::add later
+                }, downloadProgress: { (progress) in
+                    //TODO::add later
+                }, completionHandler: { (urlresponse, res, error) in
+                    if let err = error {
+                        failureBlock?(task, err)
+                    } else {
+                        successBlock?(task, res)
+                    }
+                })
+                task!.resume()
+            }
+        }
+        
+        if authenticated {
+            fetchAuthCredential(authBlock)
+        } else {
+            authBlock(nil, nil)
+        }
+    }
+
     
 }
 

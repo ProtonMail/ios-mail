@@ -14,9 +14,9 @@ class SplashViewController: UIViewController {
     
     @IBOutlet weak var signInButton: UIButton!
     
-    private let kSegueToSignInWithNoAnimation = "splash_sign_in_no_segue"
-    private let kSegueToSignIn = "splash_sign_in_segue"
-    private let kSegueToSignUp = "splash_sign_up_segue"
+    fileprivate let kSegueToSignInWithNoAnimation = "splash_sign_in_no_segue"
+    fileprivate let kSegueToSignIn = "splash_sign_in_segue"
+    fileprivate let kSegueToSignUp = "splash_sign_up_segue"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,31 +24,31 @@ class SplashViewController: UIViewController {
         userCachedStatus.resetSplashCache()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
     
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     
-    @IBAction func signUpAction(sender: UIButton) {
-        self.performSegueWithIdentifier(kSegueToSignUp, sender: self)
+    @IBAction func signUpAction(_ sender: UIButton) {
+        self.performSegue(withIdentifier: kSegueToSignUp, sender: self)
     }
     
-    @IBAction func signInAction(sender: UIButton) {
-        self.navigationController?.popViewControllerAnimated(true)
+    @IBAction func signInAction(_ sender: UIButton) {
+        let _ = self.navigationController?.popViewController(animated: true)
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kSegueToSignUp {
-            let viewController = segue.destinationViewController as! SignUpUserNameViewController
+            let viewController = segue.destination as! SignUpUserNameViewController
             viewController.viewModel = SignupViewModelImpl()
         }
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent;
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent;
     }
 }

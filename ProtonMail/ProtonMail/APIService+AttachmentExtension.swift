@@ -19,23 +19,27 @@ import Foundation
 extension APIService {
     
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
-    func attachmentForAttachmentID(attachmentID: String, destinationDirectoryURL: NSURL, downloadTask: ((NSURLSessionDownloadTask) -> Void)?, completion: ((NSURLResponse?, NSURL?, NSError?) -> Void)?) {
-        if let filepath = destinationDirectoryURL.URLByAppendingPathComponent("\(attachmentID)") {
-            download(pathForAttachmentID(attachmentID), destinationDirectoryURL: filepath, downloadTask: downloadTask, completion: completion)
-        } else {
-            //TODO:: need add throw errors
-            completion?(nil, nil, NSError.badPath(attachmentID))
-        }
+    func downloadAttachment(byID attachmentID: String,
+                            destinationDirectoryURL: URL,
+                            downloadTask: ((URLSessionDownloadTask) -> Void)?,
+                            completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
+        
+        let filepath = destinationDirectoryURL.appendingPathComponent(attachmentID)
+        download(byUrl: AppConstants.API_HOST_URL + pathForAttachmentID(attachmentID),
+                 destinationDirectoryURL: filepath,
+                 headers: ["x-pm-apiversion": 1],
+                 downloadTask: downloadTask,
+                 completion: completion)
     }
     
-    func attachmentDeleteForAttachmentID(attachmentID: String, completion: CompletionBlock?) {
-        setApiVesion(1, appVersion: 1)
-        request(method: .DELETE, path: pathForAttachmentID(attachmentID), parameters: nil, completion: completion)
+    func attachmentDeleteForAttachmentID(_ attachmentID: String, completion: CompletionBlock?) {
+        //setApiVesion(1, appVersion: 1)
+        request(method: .delete, path: pathForAttachmentID(attachmentID), parameters: nil, headers: ["x-pm-apiversion": 1], completion: completion)
     }
     
     // MARK: - Private methods
     
-    private func pathForAttachmentID(attachmentID: String) -> String {
+    fileprivate func pathForAttachmentID(_ attachmentID: String) -> String {
         return AppConstants.API_PATH + "/attachments/\(attachmentID)"
     }
     

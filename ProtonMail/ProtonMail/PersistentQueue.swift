@@ -23,11 +23,11 @@ class PersistentQueue {
         static let object = "object"
     }
     
-    private var queue: [AnyObject] {
+    fileprivate var queue: [Any] {
         didSet {
-            dispatch_sync(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)) { () -> Void in
-                let data = NSKeyedArchiver.archivedDataWithRootObject(self.queue)
-                if !data.writeToURL(self.queueURL, atomically: true) {
+            DispatchQueue.global(qos: DispatchQoS.QoSClass.background).sync { () -> Void in
+                let data = NSKeyedArchiver.archivedData(withRootObject: self.queue)
+                if !((try? data.write(to: self.queueURL, options: [.atomic])) != nil) {
                     PMLog.D("Unable to save queue: \(self.queue as NSArray)\n to \(self.queueURL.absoluteString)")
                 } else {
                     self.queueURL.excludeFromBackup()
@@ -35,15 +35,15 @@ class PersistentQueue {
             }
         }
     }
-    private var queueURL: NSURL
-    private var queueName: String
+    fileprivate var queueURL: URL
+    fileprivate var queueName: String
     
     /// Number of objects in the Queue
     var count: Int {
         return self.queue.count
     }
     
-    func getQueue() -> [AnyObject]
+    func getQueue() -> [Any]
     {
         return self.queue
     }
@@ -51,25 +51,24 @@ class PersistentQueue {
     init(queueName: String) {
         self.queueName = "\(QueueConstant.queueIdentifer).\(queueName)"
         //TODO:: need to handle the empty instead of !
-        self.queueURL = NSFileManager.defaultManager().applicationSupportDirectoryURL.URLByAppendingPathComponent(self.queueName)!
-        if let data = NSData(contentsOfURL: queueURL) {
-            self.queue = (NSKeyedUnarchiver.unarchiveObjectWithData(data) ?? []) as! [AnyObject]
+        self.queueURL = FileManager.default.applicationSupportDirectoryURL.appendingPathComponent(self.queueName)
+        if let data = try? Data(contentsOf: queueURL) {
+            self.queue = (NSKeyedUnarchiver.unarchiveObject(with: data) ?? []) as! [Any]
         }
         else {
             self.queue = []
         }
     }
     
-    func add (uuid: NSUUID, object: NSCoding) -> NSUUID {
-        let element = [Key.elementID : uuid, Key.object : object]
-        PMLog.D(element)
+    func add (_ uuid: UUID, object: NSCoding) -> UUID {
+        let element = [Key.elementID : uuid, Key.object : object] as [String : Any]
         self.queue.append(element)
         return uuid
     }
     
     /// Adds an object to the persistent queue.
-    func add(object: NSCoding) -> NSUUID {
-        let uuid = NSUUID()
+    func add(_ object: NSCoding) -> UUID {
+        let uuid = UUID()
         return self.add(uuid, object: object)
     }
     
@@ -79,21 +78,19 @@ class PersistentQueue {
     }
     
     /// Returns the next item in the persistent queue or nil, if the queue is empty.
-    func next() -> (elementID: NSUUID, object: AnyObject)? {
-        if let element = queue.first as? [String : AnyObject] {
-            return (element[Key.elementID] as! NSUUID, element[Key.object]!)
+    func next() -> (elementID: UUID, object: Any)? {
+        if let element = queue.first as? [String : Any] {
+            return (element[Key.elementID] as! UUID, element[Key.object]!)
         }
         return nil
     }
     
     /// Removes an element from the persistent queue
-    func remove(elementID: NSUUID) -> Bool {
-        PMLog.D(elementID)
-        for (index, element) in queue.enumerate() {
-            PMLog.D(element)
-            if let elementDict = element as? [String : AnyObject], let kID = elementDict[Key.elementID] as? NSUUID{
+    func remove(_ elementID: UUID) -> Bool {
+        for (index, element) in queue.enumerated() {
+            if let elementDict = element as? [String : Any], let kID = elementDict[Key.elementID] as? UUID{
                 if kID == elementID {
-                    queue.removeAtIndex(index)
+                    queue.remove(at: index)
                     return true
                 }
             }

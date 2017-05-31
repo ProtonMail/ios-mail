@@ -18,24 +18,24 @@ class QuickViewViewController: QLPreviewController {
         super.viewDidLoad()
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent;
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent;
     }
     
-    func configureNavigationBar(navigationController: UINavigationController) {
-        navigationController.navigationBar.barStyle = UIBarStyle.Black
+    func configureNavigationBar(_ navigationController: UINavigationController) {
+        navigationController.navigationBar.barStyle = UIBarStyle.black
         navigationController.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;
-        navigationController.navigationBar.translucent = false
-        navigationController.navigationBar.tintColor = UIColor.whiteColor()
+        navigationController.navigationBar.isTranslucent = false
+        navigationController.navigationBar.tintColor = UIColor.white
         
         let navigationBarTitleFont = UIFont.robotoLight(size: UIFont.Size.h2)
         navigationController.navigationBar.titleTextAttributes = [
-            NSForegroundColorAttributeName: UIColor.whiteColor(),
+            NSForegroundColorAttributeName: UIColor.white,
             NSFontAttributeName: navigationBarTitleFont
         ]
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         let views = self.childViewControllers
@@ -47,7 +47,7 @@ class QuickViewViewController: QLPreviewController {
         }
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         isPresented = false
         super.viewWillDisappear(animated)
     }
@@ -57,7 +57,7 @@ class QuickViewViewController: QLPreviewController {
         // Dispose of any resources that can be recreated.
     }
     
-    override func shouldAutorotate() -> Bool {
+    override var shouldAutorotate : Bool {
         
         return true
     }
@@ -66,7 +66,7 @@ class QuickViewViewController: QLPreviewController {
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }

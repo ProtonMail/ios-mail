@@ -11,7 +11,7 @@ import Foundation
 protocol ComposePasswordViewControllerDelegate {
     func Cancelled()
     func Removed()
-    func Apply(password : String, confirmPassword :String, hint : String)
+    func Apply(_ password : String, confirmPassword :String, hint : String)
 }
 
 class ComposePasswordViewController: UIViewController {
@@ -28,11 +28,11 @@ class ComposePasswordViewController: UIViewController {
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
 
     @IBOutlet weak var removeButton: UIButton!
-    private let upgradePageUrl = NSURL(string: "https://protonmail.com/support/knowledge-base/encrypt-for-outside-users/")!
+    fileprivate let upgradePageUrl = URL(string: "https://protonmail.com/support/knowledge-base/encrypt-for-outside-users/")!
     
-    private var pwd : String = ""
-    private var pwdConfirm : String  = ""
-    private var pwdHint : String = ""
+    fileprivate var pwd : String = ""
+    fileprivate var pwdConfirm : String  = ""
+    fileprivate var pwdHint : String = ""
     
     var pwdDelegate : ComposePasswordViewControllerDelegate?
 
@@ -40,70 +40,70 @@ class ComposePasswordViewController: UIViewController {
         super.viewDidLoad()
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
     
-    override func viewWillAppear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
+    override func viewWillAppear(_ animated: Bool) {
+        NotificationCenter.default.addKeyboardObserver(self)
         
         self.passwordField.text = pwd
         self.confirmPasswordField.text = pwdConfirm
         self.hintField.text = pwdHint
         
         if (!pwd.isEmpty) {
-            removeButton.hidden = false
+            removeButton.isHidden = false
         } else {
-            removeButton.hidden = true
+            removeButton.isHidden = true
         }
     }
     
-    override func viewWillDisappear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeKeyboardObserver(self)
     }
     
     //
     
-    @IBAction func getMoreInfoAction(sender: UIButton) {
-        UIApplication.sharedApplication().openURL(upgradePageUrl)
+    @IBAction func getMoreInfoAction(_ sender: UIButton) {
+        UIApplication.shared.openURL(upgradePageUrl)
     }
 
-    @IBAction func closeAction(sender: AnyObject) {
+    @IBAction func closeAction(_ sender: AnyObject) {
         pwdDelegate?.Cancelled()
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func removeAction(sender: UIButton) {
+    @IBAction func removeAction(_ sender: UIButton) {
         pwdDelegate?.Removed()
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
         
     }
     
-    @IBAction func applyAction(sender: UIButton) {
-        passwordErrorLabel.hidden = true
-        confirmPasswordErrorLabel.hidden = true
+    @IBAction func applyAction(_ sender: UIButton) {
+        passwordErrorLabel.isHidden = true
+        confirmPasswordErrorLabel.isHidden = true
         
         let pwd = (passwordField.text ?? "").trim()
         let pwdConfirm = (confirmPasswordField.text ?? "").trim()
         let hint = (hintField.text ?? "").trim()
         
         if pwd.isEmpty {
-            passwordErrorLabel.hidden = false
+            passwordErrorLabel.isHidden = false
             passwordErrorLabel.shake(3, offset: 10)
             return
         }
         
         if pwd != pwdConfirm {
-            confirmPasswordErrorLabel.hidden = false
+            confirmPasswordErrorLabel.isHidden = false
             confirmPasswordErrorLabel.shake(3, offset: 10)
             return
         }
         
         pwdDelegate?.Apply(pwd, confirmPassword: pwdConfirm, hint: hint)
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func tapAction(sender: UITapGestureRecognizer) {
+    @IBAction func tapAction(_ sender: UITapGestureRecognizer) {
         dismissKeyboard()
     }
     
@@ -113,7 +113,7 @@ class ComposePasswordViewController: UIViewController {
         hintField.resignFirstResponder()
     }
     
-    func setupPasswords(password : String, confirmPassword : String, hint : String) {
+    func setupPasswords(_ password : String, confirmPassword : String, hint : String) {
         self.pwd = password
         self.pwdConfirm = confirmPassword
         self.pwdHint = hint
@@ -123,23 +123,23 @@ class ComposePasswordViewController: UIViewController {
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 extension ComposePasswordViewController: NSNotificationCenterKeyboardObserverProtocol {
-    func keyboardWillHideNotification(notification: NSNotification) {
+    func keyboardWillHideNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         scrollBottomPaddingConstraint.constant = 0.0
         //self.configConstraint(false)
-        UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
+        UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
     }
     
-    func keyboardWillShowNotification(notification: NSNotification) {
+    func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
-        let info: NSDictionary = notification.userInfo!
-        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
+        let info: NSDictionary = notification.userInfo! as NSDictionary
+        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollBottomPaddingConstraint.constant = keyboardSize.height;
         }
         //self.configConstraint(true)
-        UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
+        UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
     }

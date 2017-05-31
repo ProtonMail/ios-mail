@@ -26,25 +26,25 @@ class AttachmentTableViewCell: MCSwipeTableViewCell {
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var attachmentIcon: UIImageView!
     
-    func setFilename(filename: String, fileSize: Int) {
-        let byteCountFormatter = NSByteCountFormatter()
-        fileNameLabel.text = "\(filename) (\(byteCountFormatter.stringFromByteCount(Int64(fileSize))))"
+    func setFilename(_ filename: String, fileSize: Int) {
+        let byteCountFormatter = ByteCountFormatter()
+        fileNameLabel.text = "\(filename) (\(byteCountFormatter.string(fromByteCount: Int64(fileSize))))"
     }
     
     
-    func configCell ( filename : String, fileSize : Int, showDownload : Bool = false) {
-        let byteCountFormatter = NSByteCountFormatter()
-        fileNameLabel.text = "\(filename) (\(byteCountFormatter.stringFromByteCount(Int64(fileSize))))"
+    func configCell ( _ filename : String, fileSize : Int, showDownload : Bool = false) {
+        let byteCountFormatter = ByteCountFormatter()
+        fileNameLabel.text = "\(filename) (\(byteCountFormatter.string(fromByteCount: Int64(fileSize))))"
         
         if showDownload {
-            downloadIcon.hidden = false
+            downloadIcon.isHidden = false
         } else {
-            downloadIcon.hidden = true
+            downloadIcon.isHidden = true
         }
     }
     
     
-    func configAttachmentIcon (mimeType : String) {
+    func configAttachmentIcon (_ mimeType : String) {
         //TODO:: sometime see general mime type like "application/octet-stream" then need parse the extention to get types
         //PMLog.D(mimeType)
         var image : UIImage;

@@ -19,42 +19,40 @@ import Foundation
 /// Contact extension
 extension APIService {
     
-    private struct ContactPath {
+    fileprivate struct ContactPath {
         static let base = AppConstants.API_PATH + "/contacts"
     }
     
-    func contactAdd(name name: String, email: String, completion: CompletionBlock?) {
+    func contactAdd(name: String, email: String, completion: CompletionBlock?) {
         let path = ContactPath.base
         let contact = [ "Name": name, "Email" : email];
         let parameters = ["Contacts": [contact] ];
-        setApiVesion(1, appVersion: 1)
-        request(method: .POST, path: path, parameters: parameters, completion: completion)
+        //setApiVesion(1, appVersion: 1)
+        request(method: .post, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completion)
     }
     
-    func contactDelete(contactID contactID: String, completion: CompletionBlock?) {
+    func contactDelete(contactID: String, completion: CompletionBlock?) {
         let path = ContactPath.base + "/delete"
         let parameters = ["IDs": [ contactID ] ]
-        setApiVesion(1, appVersion: 1)
-        request(method: .PUT, path: path, parameters: parameters, completion: completion)
+        //setApiVesion(1, appVersion: 1)
+        request(method: .put, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completion)
     }
     
-    func contactList(completion: CompletionBlock?) {
+    func contactList(_ completion: CompletionBlock?) {
         let path = ContactPath.base
-        setApiVesion(1, appVersion: 1)
-        request(method: .GET, path: path, parameters: nil, completion: completion)
+        //setApiVesion(1, appVersion: 1)
+        request(method: .get, path: path, parameters: nil, headers: ["x-pm-apiversion": 1], completion: completion)
     }
     
-    func contactUpdate(contactID contactID: String, name: String, email: String, completion: CompletionBlock?) {
+    func contactUpdate(contactID: String, name: String, email: String, completion: CompletionBlock?) {
         let path = ContactPath.base + "/\(contactID)"
-        
         let parameters = parametersForName(name, email: email)
-        setApiVesion(1, appVersion: 1)
-        request(method: .PUT, path: path, parameters: parameters, completion: completion)
+        //setApiVesion(1, appVersion: 1)
+        request(method: .put, path: path, parameters: parameters, headers: ["x-pm-apiversion": 1], completion: completion)
     }
     
     // MARK: - Private methods
-    
-    private func parametersForName(name: String, email: String) -> NSDictionary {
+    fileprivate func parametersForName(_ name: String, email: String) -> NSDictionary {
         return [
             "Name" : name,
             "Email" :email]

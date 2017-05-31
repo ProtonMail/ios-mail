@@ -11,7 +11,7 @@ import Foundation
 
 protocol CountryPickerViewControllerDelegate {
     func dismissed();
-    func apply(country : CountryCode);
+    func apply(_ country : CountryCode);
 }
 
 class CountryPickerViewController : UIViewController {
@@ -27,9 +27,9 @@ class CountryPickerViewController : UIViewController {
 
     var delegate : CountryPickerViewControllerDelegate?
     
-    private var countryCodes : [CountryCode] = []
-    private var titleIndex : [String] = [String]()
-    private var indexCache : [String: Int] = [String: Int]()
+    fileprivate var countryCodes : [CountryCode] = []
+    fileprivate var titleIndex : [String] = [String]()
+    fileprivate var indexCache : [String: Int] = [String: Int]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,25 +42,25 @@ class CountryPickerViewController : UIViewController {
     
     func prepareSource () {
         var country_code : String = ""
-        let bundleInstance = NSBundle(forClass: self.dynamicType)
-        if let localFile = bundleInstance.pathForResource("phone_country_code", ofType: "geojson") {
-            if let content = try? String(contentsOfFile:localFile, encoding:NSUTF8StringEncoding) {
+        let bundleInstance = Bundle(for: type(of: self))
+        if let localFile = bundleInstance.path(forResource: "phone_country_code", ofType: "geojson") {
+            if let content = try? String(contentsOfFile:localFile, encoding:String.Encoding.utf8) {
                 country_code = content
             }
         }
         
-        let parsedObject: AnyObject? = try! NSJSONSerialization.JSONObjectWithData(country_code.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!, options: NSJSONReadingOptions.AllowFragments)
-        if let objects = parsedObject as? [Dictionary<String,AnyObject>] {
+        let parsedObject: Any? = try! JSONSerialization.jsonObject(with: country_code.data(using: String.Encoding.utf8, allowLossyConversion: false)!, options: JSONSerialization.ReadingOptions.allowFragments) as Any?
+        if let objects = parsedObject as? [Dictionary<String,Any>] {
             countryCodes = CountryCode.getCountryCodes(objects)
         }
-        countryCodes.sortInPlace({ (v1, v2) -> Bool in
+        countryCodes.sort(by: { (v1, v2) -> Bool in
             return v1.country_en < v2.country_en
         })
         
         var lastLetter : String = ""
-        for (index, value) in countryCodes.enumerate() {
-            let firstIndex = value.country_en.startIndex.advancedBy(1)
-            let firstString = value.country_en.substringToIndex(firstIndex)
+        for (index, value) in countryCodes.enumerated() {
+            let firstIndex = value.country_en.characters.index(value.country_en.startIndex, offsetBy: 1)
+            let firstString = value.country_en.substring(to: firstIndex)
             if firstString != lastLetter {
                 lastLetter = firstString
                 titleIndex.append(lastLetter)
@@ -69,26 +69,26 @@ class CountryPickerViewController : UIViewController {
         }
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
     
-    @IBAction func applyAction(sender: AnyObject) {
+    @IBAction func applyAction(_ sender: AnyObject) {
         if let indexPath = self.tableView.indexPathForSelectedRow {
             if indexPath.row < countryCodes.count {
                 let country = countryCodes[indexPath.row]
                 delegate?.apply(country)
             }
         }
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func cancelAction(sender: AnyObject) {
+    @IBAction func cancelAction(_ sender: AnyObject) {
         delegate?.dismissed()
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
 }
@@ -99,21 +99,21 @@ extension CountryPickerViewController: UITableViewDataSource {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        if (self.tableView.respondsToSelector(Selector("setSeparatorInset:"))) {
-            self.tableView.separatorInset = UIEdgeInsetsZero
+        if (self.tableView.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
+            self.tableView.separatorInset = UIEdgeInsets.zero
         }
         
-        if (self.tableView.respondsToSelector(Selector("setLayoutMargins:"))) {
-            self.tableView.layoutMargins = UIEdgeInsetsZero
+        if (self.tableView.responds(to: #selector(setter: UIView.layoutMargins))) {
+            self.tableView.layoutMargins = UIEdgeInsets.zero
         }
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let countryCell = tableView.dequeueReusableCellWithIdentifier("country_code_table_cell", forIndexPath: indexPath) as! CountryCodeTableViewCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let countryCell = tableView.dequeueReusableCell(withIdentifier: "country_code_table_cell", for: indexPath) as! CountryCodeTableViewCell
         if indexPath.row < countryCodes.count {
             let country = countryCodes[indexPath.row]
             countryCell.ConfigCell(country, vc: self)
@@ -121,28 +121,28 @@ extension CountryPickerViewController: UITableViewDataSource {
         return countryCell
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return countryCodes.count ?? 0
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return countryCodes.count
     }
     
-    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if (cell.respondsToSelector(Selector("setSeparatorInset:"))) {
-            cell.separatorInset = UIEdgeInsetsZero
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if (cell.responds(to: #selector(setter: UITableViewCell.separatorInset))) {
+            cell.separatorInset = UIEdgeInsets.zero
         }
         
-        if (cell.respondsToSelector(Selector("setLayoutMargins:"))) {
-            cell.layoutMargins = UIEdgeInsetsZero
+        if (cell.responds(to: #selector(setter: UIView.layoutMargins))) {
+            cell.layoutMargins = UIEdgeInsets.zero
         }
     }
     
-    func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
+    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
         if let selectIndex = indexCache[title] {
-            tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: selectIndex, inSection: 0), atScrollPosition: UITableViewScrollPosition.Top, animated: true)
+            tableView.scrollToRow(at: IndexPath(row: selectIndex, section: 0), at: UITableViewScrollPosition.top, animated: true)
         }
         return -1
     }
     
-    func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         return titleIndex;
     }
     
@@ -152,11 +152,11 @@ extension CountryPickerViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension CountryPickerViewController: UITableViewDelegate {
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 45.0
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // verify whether the user is checking messages or not
     }
 }

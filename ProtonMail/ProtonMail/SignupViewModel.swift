@@ -10,28 +10,28 @@ import Foundation
 
 
 protocol SignupViewModelDelegate{
-    func verificationCodeChanged(viewModel : SignupViewModel, code : String!)
+    func verificationCodeChanged(_ viewModel : SignupViewModel, code : String!)
 }
 
-public class SignupViewModel : NSObject {
-    func setDelegate (delegate: SignupViewModelDelegate?) {
+open class SignupViewModel : NSObject {
+    func setDelegate (_ delegate: SignupViewModelDelegate?) {
         fatalError("This method must be overridden")
     }
     
-    func checkUserName(username: String, complete: CheckUserNameBlock!) -> Void {
+    func checkUserName(_ username: String, complete: CheckUserNameBlock!) -> Void {
         fatalError("This method must be overridden")
     }
     
-    func sendVerifyCode (type: VerifyCodeType, complete: SendVerificationCodeBlock!) -> Void {
+    func sendVerifyCode (_ type: VerifyCodeType, complete: SendVerificationCodeBlock!) -> Void {
         fatalError("This method must be overridden")
     }
     
     //
-    func setRecaptchaToken (token : String, isExpired : Bool ) {
+    func setRecaptchaToken (_ token : String, isExpired : Bool ) {
         fatalError("This method must be overridden")
     }
     
-    func setPickedUserName (username: String, domain:String) {
+    func setPickedUserName (_ username: String, domain:String) {
         fatalError("This method must be overridden")
     }
     
@@ -39,38 +39,38 @@ public class SignupViewModel : NSObject {
         fatalError("This method must be overridden")
     }
     
-    func createNewUser(complete : CreateUserBlock) {
+    func createNewUser(_ complete :@escaping CreateUserBlock) {
         fatalError("This method must be overridden")
     }
     
-    func generateKey(complete : GenerateKey) {
+    func generateKey(_ complete :@escaping GenerateKey) {
         fatalError("This method must be overridden")
     }
     
-    func setRecovery(receiveNews:Bool, email : String, displayName : String) {
+    func setRecovery(_ receiveNews:Bool, email : String, displayName : String) {
         fatalError("This method must be overridden")
     }
     
-    func setCodeEmail(email : String) {
+    func setCodeEmail(_ email : String) {
         fatalError("This method must be overridden")
     }
-    func setCodePhone(phone : String) {
-        fatalError("This method must be overridden")
-    }
-    
-    func setEmailVerifyCode(code: String) {
+    func setCodePhone(_ phone : String) {
         fatalError("This method must be overridden")
     }
     
-    func setPhoneVerifyCode (code: String) {
+    func setEmailVerifyCode(_ code: String) {
         fatalError("This method must be overridden")
     }
     
-    func setSinglePassword(password: String) {
+    func setPhoneVerifyCode (_ code: String) {
         fatalError("This method must be overridden")
     }
     
-    func setAgreePolicy(isAgree : Bool) {
+    func setSinglePassword(_ password: String) {
+        fatalError("This method must be overridden")
+    }
+    
+    func setAgreePolicy(_ isAgree : Bool) {
         fatalError("This method must be overridden")
     }
         
@@ -82,11 +82,11 @@ public class SignupViewModel : NSObject {
         fatalError("This method must be overridden")
     }
     
-    func setBit(bit: Int32) {
+    func setBit(_ bit: Int32) {
         fatalError("This method must be overridden")
     }
     
-    func fetchDirect(res : (directs:[String]) -> Void) {
+    func fetchDirect(_ res : @escaping (_ directs:[String]) -> Void) {
         fatalError("This method must be overridden")
     }
     

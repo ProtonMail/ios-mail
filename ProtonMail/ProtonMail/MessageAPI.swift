@@ -10,26 +10,26 @@ import Foundation
 
 
 // MARK : Get messages part
-public class MessageCountRequest<T : ApiResponse> : ApiRequest<T> {
-    override public func getRequestPath() -> String {
+final class MessageCountRequest<T : ApiResponse> : ApiRequest<T> {
+    override open func getRequestPath() -> String {
         return MessageAPI.Path + "/count" + AppConstants.getDebugOption
     }
-    override public func getVersion() -> Int {
+    override open func getVersion() -> Int {
         return MessageAPI.V_MessageFetchRequest
     }
 }
 
-public class MessageCountResponse : ApiResponse {
-    var counts : [Dictionary<String, AnyObject>]?
-    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
-        self.counts = response?["Counts"] as? [Dictionary<String, AnyObject>]
+final class MessageCountResponse : ApiResponse {
+    var counts : [Dictionary<String, Any>]?
+    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+        self.counts = response?["Counts"] as? [Dictionary<String, Any>]
         return true
     }
 }
 
 
 // MARK : Get messages part
-public class MessageFetchRequest<T : ApiResponse> : ApiRequest<T> {
+final class MessageFetchRequest<T : ApiResponse> : ApiRequest<T> {
     let location : MessageLocation!
     let startTime : Int?
     let endTime : Int
@@ -40,8 +40,8 @@ public class MessageFetchRequest<T : ApiResponse> : ApiRequest<T> {
         self.startTime = 0
     }
     
-    override func toDictionary() -> Dictionary<String, AnyObject>? {
-        var out : [String : AnyObject] = ["Sort" : "Time"]
+    override func toDictionary() -> Dictionary<String, Any>? {
+        var out : [String : Any] = ["Sort" : "Time"]
         if self.location == MessageLocation.starred {
             out["Starred"] = 1
         } else {
@@ -52,21 +52,20 @@ public class MessageFetchRequest<T : ApiResponse> : ApiRequest<T> {
             let newTime = self.endTime - 1
             out["End"] = newTime
         }
-        
         PMLog.D(self.JSONStringify(out, prettyPrinted: true))
         return out
     }
     
-    override public func getRequestPath() -> String {
+    override func getRequestPath() -> String {
         return MessageAPI.Path + AppConstants.getDebugOption
     }
     
-    override public func getVersion() -> Int {
+    override func getVersion() -> Int {
         return MessageAPI.V_MessageFetchRequest
     }
 }
 
-public class MessageFetchByIDsRequest<T : ApiResponse> : ApiRequest<T> {
+final class MessageFetchByIDsRequest<T : ApiResponse> : ApiRequest<T> {
     let messages : [Message]!
     init(messages: [Message]) {
         self.messages = messages
@@ -89,17 +88,17 @@ public class MessageFetchByIDsRequest<T : ApiResponse> : ApiRequest<T> {
         return out;
     }
     
-    override public func getRequestPath() -> String {
+    override func getRequestPath() -> String {
         return MessageAPI.Path + self.buildURL()
     }
     
-    override public func getVersion() -> Int {
+    override func getVersion() -> Int {
         return MessageAPI.V_MessageFetchRequest
     }
 }
 
 
-public class MessageByLabelRequest<T : ApiResponse> : ApiRequest<T> {
+final class MessageByLabelRequest<T : ApiResponse> : ApiRequest<T> {
     let labelID : String!
     let startTime : Int?
     let endTime : Int
@@ -110,24 +109,23 @@ public class MessageByLabelRequest<T : ApiResponse> : ApiRequest<T> {
         self.startTime = 0
     }
     
-    override func toDictionary() -> Dictionary<String, AnyObject>? {
-        var out : [String : AnyObject] = ["Sort" : "Time"]
+    override func toDictionary() -> Dictionary<String, Any>? {
+        var out : [String : Any] = ["Sort" : "Time"]
         out["Label"] = self.labelID
         if(self.endTime > 0)
         {
             let newTime = self.endTime - 1
             out["End"] = newTime
         }
-        
         PMLog.D(self.JSONStringify(out, prettyPrinted: true))
         return out
     }
     
-    override public func getRequestPath() -> String {
+    override func getRequestPath() -> String {
         return MessageAPI.Path + AppConstants.getDebugOption
     }
     
-    override public func getVersion() -> Int {
+    override func getVersion() -> Int {
         return MessageAPI.V_MessageFetchRequest
     }
 }
@@ -135,7 +133,7 @@ public class MessageByLabelRequest<T : ApiResponse> : ApiRequest<T> {
 // MARK : Create/Update Draft Part
 
 /// create draft message request class
-public class MessageDraftRequest<T: ApiResponse>  : ApiRequest<T> {
+class MessageDraftRequest<T: ApiResponse>  : ApiRequest<T> {
     
     let message : Message!;
     
@@ -143,68 +141,68 @@ public class MessageDraftRequest<T: ApiResponse>  : ApiRequest<T> {
         self.message = message
     }
     
-    override func toDictionary() -> Dictionary<String, AnyObject>? {
+    override func toDictionary() -> Dictionary<String, Any>? {
         let address_id : String                 = message.getAddressID
-        var messsageDict : [String : AnyObject] = [
+        var messsageDict : [String : Any] = [
             "AddressID" : address_id,
             "Body" : message.body,
             "Subject" : message.title,
             "IsRead" : message.isRead]
+        
         messsageDict["ToList"]                  = message.recipientList.parseJson()
         messsageDict["CCList"]                  = message.ccList.parseJson()
         messsageDict["BCCList"]                 = message.bccList.parseJson()
-        var out : [String : AnyObject] = ["Message" : messsageDict]
+        var out : [String : Any] = ["Message" : messsageDict]
         
         if let orginalMsgID = message.orginalMessageID {
             if !orginalMsgID.isEmpty {
                 out["ParentID"] = message.orginalMessageID
-                out["Action"] = message.action ?? "0"   //{0|1|2} // Optional, reply = 0, reply all = 1, forward = 2
+                out["Action"] = message.action ?? "0"  //{0|1|2} // Optional, reply = 0, reply all = 1, forward = 2
             }
         }
-        
         PMLog.D(self.JSONStringify(out, prettyPrinted: true))
         return out
         
     }
     
-    override public func getRequestPath() -> String {
+    override func getRequestPath() -> String {
         return MessageAPI.Path + "/draft"
     }
     
-    override public func getVersion() -> Int {
+    override func getVersion() -> Int {
         return MessageAPI.V_MessageDraftRequest
     }
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .POST
+        return .post
     }
 }
 
 /// message update draft api request
-public class MessageUpdateDraftRequest<T: ApiResponse> : MessageDraftRequest<T> {
+final class MessageUpdateDraftRequest<T: ApiResponse> : MessageDraftRequest<T> {
     override init(message: Message!) {
         super.init(message: message)
     }
     
-    override public func getRequestPath() -> String {
+    override func getRequestPath() -> String {
         return MessageAPI.Path + "/draft/" + message.messageID + AppConstants.getDebugOption
     }
     
-    override public func getVersion() -> Int {
+    override func getVersion() -> Int {
         return MessageAPI.V_MessageUpdateDraftRequest
     }
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .PUT
+        return .put
     }
 }
 
 
-public class MessageResponse : ApiResponse {
-    var message : Dictionary<String, AnyObject>?
+final class MessageResponse : ApiResponse {
+    var message : Dictionary<String, Any>?
     
-    override func ParseResponse(response: Dictionary<String, AnyObject>!) -> Bool {
-        self.message = response?["Message"] as? Dictionary<String, AnyObject>
+    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+        self.message = response?["Message"] as? Dictionary<String, Any>
         return true
     }
 }
@@ -213,7 +211,7 @@ public class MessageResponse : ApiResponse {
 // MARK : Message actions part
 
 /// mesaage action request PUT method
-public class MessageActionRequest<T : ApiResponse>  : ApiRequest <T> {
+final class MessageActionRequest<T : ApiResponse>  : ApiRequest <T> {
     let messages : [Message]!
     let action : String!
     var ids : [String] = [String] ()
@@ -235,54 +233,54 @@ public class MessageActionRequest<T : ApiResponse>  : ApiRequest <T> {
         self.messages = [Message]()
     }
     
-    override func toDictionary() -> Dictionary<String, AnyObject>? {
+    override func toDictionary() -> Dictionary<String, Any>? {
         let out = ["IDs" : self.ids]
         // PMLog.D(self.JSONStringify(out, prettyPrinted: true))
         return out
     }
     
-    override public func getRequestPath() -> String {
+    override func getRequestPath() -> String {
         return MessageAPI.Path + "/" + self.action + AppConstants.getDebugOption
     }
     
-    override public func getVersion() -> Int {
+    override func getVersion() -> Int {
         return MessageAPI.V_MessageActionRequest
     }
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .PUT
+        return .put
     }
 }
 
 /// empty trash or spam
-public class MessageEmptyRequest<T : ApiResponse> : ApiRequest <T> {
+final class MessageEmptyRequest<T : ApiResponse> : ApiRequest <T> {
     let location : String!
     
     public init(location: String! ) {
         self.location = location
     }
     
-    override func toDictionary() -> Dictionary<String, AnyObject>? {
+    override func toDictionary() -> Dictionary<String, Any>? {
         return nil
     }
     
-    override public func getRequestPath() -> String {
+    override func getRequestPath() -> String {
         return MessageAPI.Path + "/" + location + AppConstants.getDebugOption
     }
     
-    override public func getVersion() -> Int {
+    override func getVersion() -> Int {
         return MessageAPI.V_MessageEmptyRequest
     }
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .DELETE
+        return .delete
     }
 }
 
 // MARK : Message Send part
 
 /// send message reuqest
-public class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
+final class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
     var messagePackage : [MessagePackage]!     // message package
     var attPackets : [AttachmentKeyPackage]!    //  for optside encrypt att.
     var clearBody : String!                     //  optional for out side user
@@ -297,17 +295,18 @@ public class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
         self.expirationTime = expirationTime
     }
     
-    override func toDictionary() -> Dictionary<String,AnyObject>? {
+    override func toDictionary() -> Dictionary<String, Any>? {
         
-        var out : [String : AnyObject] = [String : AnyObject]()
+        var out : [String : Any] = [String : Any]()
         
         if !self.clearBody.isEmpty {
             out["ClearBody"] = self.clearBody
         }
         
         if self.attPackets != nil {
-            var attPack : [AnyObject] = [AnyObject]()
+            var attPack : [Any] = [Any]()
             for pack in self.attPackets {
+                //TODO:: ! check
                 attPack.append(pack.toDictionary()!)
             }
             out["AttachmentKeys"] = attPack
@@ -319,33 +318,33 @@ public class MessageSendRequest<T: ApiResponse>  : ApiRequest<T> {
             }
         }
         
-        var package : [AnyObject] = [AnyObject]()
+        var package : [Any] = [Any]()
         if self.messagePackage != nil {
             for pack in self.messagePackage {
+                //TODO:: ! check
                 package.append(pack.toDictionary()!)
             }
         }
         out["Packages"] = package
-        
         PMLog.D(self.JSONStringify(out, prettyPrinted: true))
         return out
     }
     
-    override public func getRequestPath() -> String {
+    override func getRequestPath() -> String {
         return MessageAPI.Path + "/send/" + self.messageID + AppConstants.getDebugOption
     }
     
-    override public func getVersion() -> Int {
+    override func getVersion() -> Int {
         return MessageAPI.V_MessageSendRequest
     }
     
     override func getAPIMethod() -> APIService.HTTPMethod {
-        return .POST
+        return .post
     }
 }
 
 /// message packages
-public class MessagePackage : Package {
+final class MessagePackage : Package {
     
     /// default sender email address
     let address : String!
@@ -389,12 +388,12 @@ public class MessagePackage : Package {
     }
     
     // Mark : override class functions
-    func toDictionary() -> Dictionary<String,AnyObject>? {
-        var atts : [AnyObject] = [AnyObject]()
+    func toDictionary() -> Dictionary<String, Any>? {
+        var atts : [Any] = [Any]()
         for attPacket in attPackets {
             atts.append(attPacket.toDictionary()!)
         }
-        var out : Dictionary<String, AnyObject> = [
+        var out : Dictionary<String, Any> = [
             "Address" : self.address,
             "Type" : self.type,
             "Body" : self.body,
@@ -411,14 +410,13 @@ public class MessagePackage : Package {
         if !self.passwordHint.isEmpty {
             out["PasswordHint"] = self.passwordHint
         }
-        
         return out
     }
 }
 
 
 // message attachment key package
-public class AttachmentKeyPackage : Package {
+final class AttachmentKeyPackage : Package {
     let ID : String!
     let keyPacket : String!
     let algo : String!
@@ -428,15 +426,14 @@ public class AttachmentKeyPackage : Package {
         self.algo = Algo
     }
     
-    public func toDictionary() -> Dictionary<String,AnyObject>? {
-        var out = [ "ID" : self.ID ]
+    open func toDictionary() -> Dictionary<String, Any>? {
+        var out : [String : Any] = [ "ID" : self.ID ]
         if !self.algo.isEmpty {
             out["Algo"] = self.algo
             out["Key"] = self.keyPacket
         } else {
             out["KeyPackets"] = self.keyPacket
         }
-        
         return out
     }
 }
@@ -445,11 +442,11 @@ public class AttachmentKeyPackage : Package {
 /**
 *  temporary table for formating the message send package
 */
-public class TempAttachment {
+final class TempAttachment {
     let ID : String!
-    let Key : NSData?
+    let Key : Data?
     
-    public init(id: String, key: NSData?) {
+    public init(id: String, key: Data?) {
         self.ID = id
         self.Key = key
     }
@@ -473,7 +470,7 @@ public struct Contacts {
         self.email                              = email
     }
     
-    func asJSON() -> Dictionary<String,AnyObject> {
+    func asJSON() -> Dictionary<String, Any> {
         return [
             "Name" : self.name,
             "Email" : self.email]

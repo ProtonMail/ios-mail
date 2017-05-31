@@ -39,14 +39,14 @@ class LabelDisplayView: PMView {
         set (t) {
             if let t = t {
                 labelText.layer.borderWidth = 1
-                halfLabelIcon.hidden = true
+                halfLabelIcon.isHidden = true
                 labelText.text = "  \(t)  ";
             }
         }
     }
     
-    func setIcon(color : UIColor?) {
-        halfLabelIcon.hidden = false
+    func setIcon(_ color : UIColor?) {
+        halfLabelIcon.isHidden = false
         labelText.layer.borderWidth = 0
         labelText.text = "";
     }
@@ -56,7 +56,7 @@ class LabelDisplayView: PMView {
         super.sizeToFit();
     }
     
-    override func sizeThatFits(size: CGSize) -> CGSize {
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
         let s = super.sizeThatFits(size)
         return  CGSize(width: s.width + 4, height: s.height)
     }
@@ -67,11 +67,11 @@ class LabelDisplayView: PMView {
         labelText.font = UIFont.robotoLight(size: 9)
     }
     
-    private func updateLabel(color : UIColor?) {
+    fileprivate func updateLabel(_ color : UIColor?) {
         if let color = color {
 
             labelText.textColor = color
-            labelText.layer.borderColor = color.CGColor
+            labelText.layer.borderColor = color.cgColor
 
         }
     }

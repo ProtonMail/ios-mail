@@ -9,25 +9,25 @@
 import Foundation
 
 // label creating
-public class LabelCreatingViewModelImple : LabelEditViewModel {
+final class LabelCreatingViewModelImple : LabelEditViewModel {
 
-    public override func getTitle() -> String {
+    override func title() -> String {
         return "Add New Label"
     }
     
-    public override func getPlaceHolder() -> String {
+    override func placeHolder() -> String {
         return "Label Name"
     }
     
-    public override func getRightButtonText() -> String {
+    override func rightButtonText() -> String {
         return "Create"
     }
     
-    public override func createLabel(name: String, color: String, error: ErrorBlock, complete: OkBlock) {
+    override func apply(withName name: String, color: String, error: @escaping LabelEditViewModel.ErrorBlock, complete: @escaping LabelEditViewModel.OkBlock) {
         let api = CreateLabelRequest<CreateLabelRequestResponse>(name: name, color: color, exclusive: false)
         api.call { (task, response, hasError) -> Void in
             if hasError {
-                error(code: response?.code ?? 1000, errorMessage: response?.errorMessage ?? "");
+                error(response?.code ?? 1000, response?.errorMessage ?? "");
             } else {
                 sharedLabelsDataService.addNewLabel(response?.label);
                 complete()

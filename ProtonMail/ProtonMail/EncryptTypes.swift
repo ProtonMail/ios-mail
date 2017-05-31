@@ -9,43 +9,43 @@
 import Foundation
 
 enum EncryptTypes: Int, CustomStringConvertible {
-    case Plain = 0          //Plain text
-    case Internal = 1       // ProtonMail encrypted emails
-    case External = 2       // Encrypted from outside
-    case OutEnc = 3         // Encrypted for outside
-    case OutPlain = 4       // Send plain but stored enc
-    case DraftStoreEnc = 5  // Draft
-    case OutEncReply = 6    // Encrypted for outside reply
+    case plain = 0          //Plain text
+    case inner = 1       // ProtonMail encrypted emails
+    case external = 2       // Encrypted from outside
+    case outEnc = 3         // Encrypted for outside
+    case outPlain = 4       // Send plain but stored enc
+    case draftStoreEnc = 5  // Draft
+    case outEncReply = 6    // Encrypted for outside reply
     
-    case OutPGPInline = 7    // out side pgp inline
-    case OutPGPMime = 8    // out pgp mime
+    case outPGPInline = 7    // out side pgp inline
+    case outPGPMime = 8    // out pgp mime
     
     var description : String {
         switch(self){
-        case Plain:
+        case .plain:
             return NSLocalizedString("Plain text")
-        case Internal:
+        case .inner:
             return NSLocalizedString("ProtonMail encrypted emails")
-        case External:
+        case .external:
             return NSLocalizedString("Encrypted from outside")
-        case OutEnc:
+        case .outEnc:
             return NSLocalizedString("Encrypted for outside")
-        case OutPlain:
+        case .outPlain:
             return NSLocalizedString("Send plain but stored enc")
-        case DraftStoreEnc:
+        case .draftStoreEnc:
             return NSLocalizedString("Draft")
-        case OutEncReply:
+        case .outEncReply:
             return NSLocalizedString("Encrypted for outside reply")
-        case OutPGPInline:
+        case .outPGPInline:
             return NSLocalizedString("Encrypted from outside pgp inline")
-        case OutPGPMime:
+        case .outPGPMime:
             return NSLocalizedString("Encrypted from outside pgp mime")
         }
     }
     
     var isEncrypted: Bool {
         switch(self) {
-        case Plain:
+        case .plain:
             return false
         default:
             return true
@@ -54,27 +54,27 @@ enum EncryptTypes: Int, CustomStringConvertible {
     
     var lockType : LockTypes {
         switch(self) {
-        case Plain, OutPlain, External:
-            return .PlainTextLock
-        case Internal, OutEnc, DraftStoreEnc, OutEncReply:
-            return .EncryptLock
-        case OutPGPInline, OutPGPMime:
-            return .PGPLock
+        case .plain, .outPlain, .external:
+            return .plainTextLock
+        case .inner, .outEnc, .draftStoreEnc, .outEncReply:
+            return .encryptLock
+        case .outPGPInline, .outPGPMime:
+            return .pgpLock
         }
     }
 }
 
 enum LockTypes : Int {
-    case PlainTextLock = 0
-    case EncryptLock = 1
-    case PGPLock = 2
+    case plainTextLock = 0
+    case encryptLock = 1
+    case pgpLock = 2
 }
 
 
 extension NSNumber {
     
     func isEncrypted() -> Bool {
-        let enc_type = EncryptTypes(rawValue: self.integerValue) ?? EncryptTypes.Internal
+        let enc_type = EncryptTypes(rawValue: self.intValue) ?? .inner
         let checkIsEncrypted:Bool = enc_type.isEncrypted
 
         return checkIsEncrypted

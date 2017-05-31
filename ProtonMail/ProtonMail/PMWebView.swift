@@ -11,7 +11,7 @@ import Foundation
 
 class  PMWebView: UIWebView {
     
-    override func canBecomeFirstResponder() -> Bool {
+    override var canBecomeFirstResponder : Bool {
         return true
     }
 }

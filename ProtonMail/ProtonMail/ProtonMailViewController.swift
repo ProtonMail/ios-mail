@@ -35,19 +35,19 @@ class ProtonMailViewController: UIViewController {
         setNeedsStatusBarAppearanceUpdate()
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
     
     func configureNavigationBar() {
-        self.navigationController?.navigationBar.barStyle = UIBarStyle.Black
+        self.navigationController?.navigationBar.barStyle = UIBarStyle.black
         self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;//.Blue_475F77
-        self.navigationController?.navigationBar.translucent = false
-        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.tintColor = UIColor.white
         
         let navigationBarTitleFont = UIFont.robotoRegular(size: UIFont.Size.h2)
         self.navigationController?.navigationBar.titleTextAttributes = [
-            NSForegroundColorAttributeName: UIColor.whiteColor(),
+            NSForegroundColorAttributeName: UIColor.white,
             NSFontAttributeName: navigationBarTitleFont
         ]
     }
@@ -56,11 +56,11 @@ class ProtonMailViewController: UIViewController {
         return true
     }
     
-    func setPresentationStyleForSelfController(selfController : UIViewController,  presentingController: UIViewController)
+    func setPresentationStyleForSelfController(_ selfController : UIViewController,  presentingController: UIViewController)
     {
         presentingController.providesPresentationContextTransitionStyle = true;
         presentingController.definesPresentationContext = true;
-        presentingController.modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+        presentingController.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
     }
 
 }

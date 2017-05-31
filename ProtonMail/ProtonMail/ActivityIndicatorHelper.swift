@@ -16,8 +16,8 @@ private let ACTIVITY_INDICATOR_FADE_ANIMATION_DURATION = 0.25
 
 class ActivityIndicatorHelper {
     
-    class func showActivityIndicatorAtView(view: UIView, style: UIActivityIndicatorViewStyle) {
-        view.userInteractionEnabled = false
+    class func showActivityIndicatorAtView(_ view: UIView, style: UIActivityIndicatorViewStyle) {
+        view.isUserInteractionEnabled = false
         let block = { () -> Void in
             var activityIndicator: UIActivityIndicatorView?
             for subview in view.subviews {
@@ -32,36 +32,36 @@ class ActivityIndicatorHelper {
                 view.addSubview(activityIndicator!)
                 
                 activityIndicator!.mas_makeConstraints { (make) -> Void in
-                    make.center.equalTo()(view)
-                    make.width.equalTo()(ACTIVITY_INDICATOR_SIZE)
-                    make.height.equalTo()(ACTIVITY_INDICATOR_SIZE)
+                    let _ = make?.center.equalTo()(view)
+                    let _ = make?.width.equalTo()(ACTIVITY_INDICATOR_SIZE)
+                    let _ = make?.height.equalTo()(ACTIVITY_INDICATOR_SIZE)
                 }
             }
             
-            view.userInteractionEnabled = false
+            view.isUserInteractionEnabled = false
             activityIndicator!.startAnimating()
-            UIView.animateWithDuration(ACTIVITY_INDICATOR_FADE_ANIMATION_DURATION, animations: { () -> Void in
+            UIView.animate(withDuration: ACTIVITY_INDICATOR_FADE_ANIMATION_DURATION, animations: { () -> Void in
                 activityIndicator!.alpha = 0.8
             })
         }
         
-        if (NSThread.currentThread() == NSThread.mainThread()) {
+        if (Thread.current == Thread.main) {
             block()
         } else {
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            DispatchQueue.main.async(execute: { () -> Void in
                 block()
             })
         }
     }
     
     
-    class func showActivityIndicatorAtView(view: UIView) {
-        showActivityIndicatorAtView(view, style: UIActivityIndicatorViewStyle.WhiteLarge)
+    class func showActivityIndicatorAtView(_ view: UIView) {
+        showActivityIndicatorAtView(view, style: UIActivityIndicatorViewStyle.whiteLarge)
     }
     
-    class func hideActivityIndicatorAtView(view: UIView) {
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            view.userInteractionEnabled = true
+    class func hideActivityIndicatorAtView(_ view: UIView) {
+        DispatchQueue.main.async(execute: { () -> Void in
+            view.isUserInteractionEnabled = true
             
             var activityIndicator: UIActivityIndicatorView?
             for subview in view.subviews {
@@ -72,26 +72,26 @@ class ActivityIndicatorHelper {
             
             if (activityIndicator != nil) {
                 activityIndicator!.startAnimating()
-                UIView.animateWithDuration(ACTIVITY_INDICATOR_FADE_ANIMATION_DURATION, animations: { () -> Void in
+                UIView.animate(withDuration: ACTIVITY_INDICATOR_FADE_ANIMATION_DURATION, animations: { () -> Void in
                     activityIndicator!.alpha = 0
                     }, completion: { (finished) -> Void in
                         activityIndicator!.stopAnimating()
-                        view.userInteractionEnabled = true
+                        view.isUserInteractionEnabled = true
                 })
             }
         })
     }
     
-    private class func setupActivityIndicator(style: UIActivityIndicatorViewStyle?) -> UIActivityIndicatorView {
+    fileprivate class func setupActivityIndicator(_ style: UIActivityIndicatorViewStyle?) -> UIActivityIndicatorView {
         var activityIndicator: UIActivityIndicatorView!
         
         if let indicatorStyle = style {
             activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: indicatorStyle)
         } else {
-            activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
+            activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.whiteLarge)
         }
         
-        activityIndicator.backgroundColor = UIColor.blackColor()
+        activityIndicator.backgroundColor = UIColor.black
         activityIndicator.alpha = 0
         activityIndicator.layer.cornerRadius = 8
         activityIndicator.layer.masksToBounds = true

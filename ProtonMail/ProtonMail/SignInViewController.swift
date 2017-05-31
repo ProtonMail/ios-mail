@@ -20,32 +20,39 @@ import Crashlytics
 import LocalAuthentication
 
 
-enum SignInUIFlow : Int {
-    case RequirePin = 0
-    case RequireTouchID = 1
-    case Restore = 2
+fileprivate enum SignInUIFlow : Int {
+    case requirePin = 0
+    case requireTouchID = 1
+    case restore = 2
 }
 
 class SignInViewController: ProtonMailViewController {
     
-    private let kMailboxSegue = "mailboxSegue"
-    private let kSignUpKeySegue = "sign_in_to_sign_up_segue"
+    static var isComeBackFromMailbox                = false
     
-    private let animationDuration: NSTimeInterval = 0.5
-    private let keyboardPadding: CGFloat = 12
-    private let buttonDisabledAlpha: CGFloat = 0.5
-    private let signUpURL = NSURL(string: "https://protonmail.com/invite")!
-    private let forgotPasswordURL = NSURL(string: "https://mail.protonmail.com/help/reset-login-password")!
+    private var showingTouchID                      = false
     
-    private let kSegueToSignUpWithNoAnimation = "sign_in_to_splash_no_segue"
-    private let kSegueToPinCodeViewNoAnimation = "pin_code_segue"
-    private let kSegueTo2FACodeSegue = "2fa_code_segue"
+    fileprivate let animationDuration: TimeInterval = 0.5
+    fileprivate let keyboardPadding: CGFloat        = 12
+    fileprivate let buttonDisabledAlpha: CGFloat    = 0.5
+    fileprivate let signUpURL                       = URL(string: "https://protonmail.com/invite")!
+    fileprivate let forgotPasswordURL               = URL(string: "https://mail.protonmail.com/help/reset-login-password")!
     
-    static var isComeBackFromMailbox = false
+    fileprivate let kMailboxSegue                   = "mailboxSegue"
+    fileprivate let kSignUpKeySegue                 = "sign_in_to_sign_up_segue"
+    fileprivate let kSegueToSignUpWithNoAnimation   = "sign_in_to_splash_no_segue"
+    fileprivate let kSegueToPinCodeViewNoAnimation  = "pin_code_segue"
+    fileprivate let kSegueTo2FACodeSegue            = "2fa_code_segue"
     
-    var isShowpwd = false;
-    var isRemembered = false;
+    private var isShowpwd                           = false;
+    private var isRemembered                        = false;
     
+    //define
+    fileprivate let hidePriority : UILayoutPriority = 1.0;
+    fileprivate let showPriority: UILayoutPriority  = 750.0;
+    
+    
+    //views
     @IBOutlet weak var versionLabel: UILabel!
     @IBOutlet weak var usernameView: UIView!
     @IBOutlet weak var passwordView: UIView!
@@ -58,10 +65,6 @@ class SignInViewController: ProtonMailViewController {
     @IBOutlet weak var onePasswordButton: UIButton!
     
     @IBOutlet weak var backgroundImage: UIImageView!
-    
-    //define
-    private let hidePriority : UILayoutPriority = 1.0;
-    private let showPriority: UILayoutPriority = 750.0;
     
     // Constraints
     @IBOutlet weak var userLeftPaddingConstraint: NSLayoutConstraint!
@@ -82,7 +85,7 @@ class SignInViewController: ProtonMailViewController {
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -93,26 +96,25 @@ class SignInViewController: ProtonMailViewController {
         
         let signinFlow = getViewFlow()
         switch signinFlow {
-        case .RequirePin:
+        case .requirePin:
             sharedUserDataService.isSignedIn = false
-            self.performSegueWithIdentifier(kSegueToPinCodeViewNoAnimation, sender: self)
+            self.performSegue(withIdentifier: kSegueToPinCodeViewNoAnimation, sender: self)
             break
-        case .RequireTouchID:
+        case .requireTouchID:
             sharedUserDataService.isSignedIn = false
             showTouchID(false)
             authenticateUser()
             break
-        case .Restore:
+        case .restore:
             signInIfRememberedCredentials()
             setupView();
             break
         }
     }
     
-    
-    private func setupVersionLabel () {
-        if let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String {
-            if let build = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"] as? String {
+    fileprivate func setupVersionLabel () {
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
                 versionLabel.text = NSLocalizedString("v") + version + "(\(build))"
             } else {
                 versionLabel.text = NSLocalizedString("v") + version
@@ -122,20 +124,20 @@ class SignInViewController: ProtonMailViewController {
         }
     }
     
-    private func getViewFlow() -> SignInUIFlow {
+    fileprivate func getViewFlow() -> SignInUIFlow {
         if sharedTouchID.showTouchIDOrPin() {
             if userCachedStatus.isPinCodeEnabled && !userCachedStatus.pinCode.isEmpty {
-                return SignInUIFlow.RequirePin
+                return SignInUIFlow.requirePin
             } else {
                 //check touch id status
                 if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
-                    return SignInUIFlow.RequireTouchID
+                    return SignInUIFlow.requireTouchID
                 } else {
-                    return SignInUIFlow.Restore
+                    return SignInUIFlow.restore
                 }
             }
         } else {
-            return SignInUIFlow.Restore
+            return SignInUIFlow.restore
         }
     }
     
@@ -148,34 +150,34 @@ class SignInViewController: ProtonMailViewController {
         {
             ShowLoginViews();
             if !userCachedStatus.isSplashOk() {
-                self.performSegueWithIdentifier(kSegueToSignUpWithNoAnimation, sender: self)
+                self.performSegue(withIdentifier: kSegueToSignUpWithNoAnimation, sender: self)
             }
         }
     }
     
-    override func shouldAutorotate() -> Bool {
+    override var shouldAutorotate : Bool {
         return false
     }
     
-    internal func showTouchID(animated : Bool = true) {
+    internal func showTouchID(_ animated : Bool = true) {
         touchIDButton.layer.cornerRadius = 25
-        touchIDButton.hidden = false
+        touchIDButton.isHidden = false
         signUpTopConstraint.priority = 1
-        UIView.animateWithDuration(animated ? 0.25 : 0, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
+        UIView.animate(withDuration: animated ? 0.25 : 0, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
     }
     
-    internal func hideTouchID(animated : Bool = true) {
+    internal func hideTouchID(_ animated : Bool = true) {
         touchIDButton.layer.cornerRadius = 25
-        touchIDButton.hidden = true
+        touchIDButton.isHidden = true
         signUpTopConstraint.priority = 750
-        UIView.animateWithDuration(animated ? 0.25 : 0, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
+        UIView.animate(withDuration: animated ? 0.25 : 0, delay: 0, options: UIViewAnimationOptions(), animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
     }
     
-    func configConstraint(show : Bool) -> Void {
+    func configConstraint(_ show : Bool) -> Void {
         let level = show ? showPriority : hidePriority
         
         userLeftPaddingConstraint.priority = level
@@ -186,18 +188,18 @@ class SignInViewController: ProtonMailViewController {
         userNameTopPaddingConstraint.priority = level
     }
     
-    @IBAction func showPasswordAction(sender: UIButton) {
+    @IBAction func showPasswordAction(_ sender: UIButton) {
         isShowpwd = !isShowpwd
-        sender.selected = isShowpwd
+        sender.isSelected = isShowpwd
         
         if isShowpwd {
-            self.passwordTextField.secureTextEntry = false;
+            self.passwordTextField.isSecureTextEntry = false;
         } else {
-            self.passwordTextField.secureTextEntry = true;
+            self.passwordTextField.isSecureTextEntry = true;
         }
     }
     
-    @IBAction func touchIDAction(sender: UIButton) {
+    @IBAction func touchIDAction(_ sender: UIButton) {
         if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
             authenticateUser()
         } else {
@@ -205,8 +207,8 @@ class SignInViewController: ProtonMailViewController {
         }
     }
     
-    override func didMoveToParentViewController(parent: UIViewController?) {
-        if (!(parent?.isEqual(self.parentViewController) ?? false)) {
+    override func didMove(toParentViewController parent: UIViewController?) {
+        if (!(parent?.isEqual(self.parent) ?? false)) {
         }
         
         if(SignInViewController.isComeBackFromMailbox)
@@ -216,33 +218,24 @@ class SignInViewController: ProtonMailViewController {
         }
     }
     
-    @IBAction func onePasswordAction(sender: UIButton) {
-        OnePasswordExtension.sharedExtension().findLoginForURLString("https://protonmail.com", forViewController: self, sender: sender, completion: { (loginDictionary, error) -> Void in
+    @IBAction func onePasswordAction(_ sender: UIButton) {
+        OnePasswordExtension.shared().findLogin(forURLString: "https://protonmail.com",
+                                                for: self,
+                                                sender: sender,
+                                                completion: { (loginDictionary, error) -> Void in
             if loginDictionary == nil {
-                if error!.code != Int(AppExtensionErrorCodeCancelledByUser) {
-                    print("Error invoking Password App Extension for find login: \(error)")
+                if error!._code != Int(AppExtensionErrorCodeCancelledByUser) {
+                    PMLog.D("Error invoking Password App Extension for find login: \(String(describing: error))")
                 }
                 return
             }
             
-            PMLog.D("\(loginDictionary)")
-            
             let username : String! = (loginDictionary?[AppExtensionUsernameKey] as? String ?? "").trim()
-            let password : String! = (loginDictionary?[AppExtensionPasswordKey] as? String ?? "") //.trim()
+            let password : String! = (loginDictionary?[AppExtensionPasswordKey] as? String ?? "")
             
             self.usernameTextField.text = username
             self.passwordTextField.text = password
             
-            //            if let generatedOneTimePassword = loginDictionary?[AppExtensionTOTPKey] as? String {
-            //                //self.oneTimePasswordTextField.hidden = false
-            //                //self.oneTimePasswordTextField.text = generatedOneTimePassword
-            //
-            //                // Important: It is recommended that you submit the OTP/TOTP to your validation server as soon as you receive it, otherwise it may expire.
-            //                let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
-            //                dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
-            //                    self.performSegueWithIdentifier("showThankYouViewController", sender: self)
-            //                })
-            //            }
             if !username.isEmpty && !password.isEmpty {
                 self.updateSignInButton(usernameText: username, passwordText: password)
                 self.signIn()
@@ -250,28 +243,39 @@ class SignInViewController: ProtonMailViewController {
         })
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
-        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
-        
+        NotificationCenter.default.addKeyboardObserver(self)
+        NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doEnterForeground), name:  NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         let uName = (usernameTextField.text ?? "").trim()
         let pwd = (passwordTextField.text ?? "") //.trim()
         
         updateSignInButton(usernameText: uName, passwordText: pwd)
         
-        if OnePasswordExtension.sharedExtension().isAppExtensionAvailable() == true {
-            onePasswordButton.hidden = false
+        if OnePasswordExtension.shared().isAppExtensionAvailable() == true {
+            onePasswordButton.isHidden = false
             loginWidthConstraint.constant = 120
             loginMidlineConstraint.constant = -72
         } else {
-            onePasswordButton.hidden = true
+            onePasswordButton.isHidden = true
             loginWidthConstraint.constant = 200
             loginMidlineConstraint.constant = 0
         }
     }
     
+    func doEnterForeground(){
+        if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+            authenticateUser()
+        }
+    }
+    
     func authenticateUser() {
+        if !showingTouchID {
+            showingTouchID = true
+        } else {
+            return
+        }
         let savedEmail = userCachedStatus.touchIDEmail
         // Get the local authentication context.
         let context = LAContext()
@@ -282,24 +286,25 @@ class SignInViewController: ProtonMailViewController {
         let reasonString = "Login: \(savedEmail)"
         
         // Check if the device can evaluate the policy.
-        if context.canEvaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, error: &error) {
-            [context.evaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString, reply: { (success: Bool, evalPolicyError: NSError?) -> Void in
+        if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            context.evaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString, reply: { (success: Bool, evalPolicyError: Error?) in
+                self.showingTouchID = false
                 if success {
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         self.signInIfRememberedCredentials()
                         self.setupView()
                     }
                 }
                 else{
-                    dispatch_async(dispatch_get_main_queue()) {
-                        PMLog.D("\(evalPolicyError?.localizedDescription)")
-                        switch evalPolicyError!.code {
-                        case LAError.SystemCancel.rawValue:
+                    DispatchQueue.main.async {
+                        //PMLog.D("\(evalPolicyError?.localizedDescription)")
+                        switch evalPolicyError!._code {
+                        case LAError.Code.systemCancel.rawValue:
                             PMLog.D("Authentication was cancelled by the system")
                             NSLocalizedString("Authentication was cancelled by the system").alertToast()
-                        case LAError.UserCancel.rawValue:
+                        case LAError.Code.userCancel.rawValue:
                             PMLog.D("Authentication was cancelled by the user")
-                        case LAError.UserFallback.rawValue:
+                        case LAError.Code.userFallback.rawValue:
                             PMLog.D("User selected to enter custom password")
                         default:
                             PMLog.D("Authentication failed")
@@ -307,33 +312,26 @@ class SignInViewController: ProtonMailViewController {
                         }
                     }
                 }
-            })]
+            })
         }
         else{
+            showingTouchID = false
             var alertString : String = "";
             // If the security policy cannot be evaluated then show a short message depending on the error.
             switch error!.code{
-            case LAError.TouchIDNotEnrolled.rawValue:
+            case LAError.Code.touchIDNotEnrolled.rawValue:
                 alertString = NSLocalizedString("TouchID is not enrolled, enable it in the system Settings")
-            case LAError.PasscodeNotSet.rawValue:
+            case LAError.Code.passcodeNotSet.rawValue:
                 alertString = NSLocalizedString("A passcode has not been set, enable it in the system Settings")
             default:
                 // The LAError.TouchIDNotAvailable case.
                 alertString = NSLocalizedString("TouchID not available")
             }
-            PMLog.D(alertString)
-            PMLog.D("\(error?.localizedDescription)")
             alertString.alertToast()
         }
     }
     
-    func showPasswordAlert() {
-        //ar passwordAlert : UIAlertView = UIAlertView(title: "TouchIDDemo", message: "Please type your password", delegate: self, cancelButtonTitle: "Cancel", otherButtonTitles: "Okay")
-        //passwordAlert.alertViewStyle = UIAlertViewStyle.SecureTextInput
-        //passwordAlert.show()
-    }
-    
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         if sharedUserDataService.isNewUser {
@@ -357,57 +355,58 @@ class SignInViewController: ProtonMailViewController {
             clean();
         }
         
-        if(UIDevice.currentDevice().isLargeScreen() && !isRemembered && userCachedStatus.touchIDEmail.isEmpty)
+        if(UIDevice.current.isLargeScreen() && !isRemembered && userCachedStatus.touchIDEmail.isEmpty)
         {
             usernameTextField.becomeFirstResponder()
         }
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
+        NotificationCenter.default.removeKeyboardObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent;
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent;
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kSignUpKeySegue {
-            let viewController = segue.destinationViewController as! SignUpUserNameViewController
+            let viewController = segue.destination as! SignUpUserNameViewController
             viewController.viewModel = SignupViewModelImpl()
         } else if segue.identifier == kSegueToPinCodeViewNoAnimation {
-            let viewController = segue.destinationViewController as! PinCodeViewController
+            let viewController = segue.destination as! PinCodeViewController
             viewController.viewModel = UnlockPinCodeModelImpl()
             viewController.delegate = self
         } else if segue.identifier == kSegueTo2FACodeSegue {
-            let popup = segue.destinationViewController as! TwoFACodeViewController
+            let popup = segue.destination as! TwoFACodeViewController
             popup.delegate = self
-            popup.mode = .TwoFactorCode
+            popup.mode = .twoFactorCode
             self.setPresentationStyleForSelfController(self, presentingController: popup)
         }
     }
     
     // MARK: - Private methods
     
-    private func HideLoginViews()
+    fileprivate func HideLoginViews()
     {
-        self.usernameView.alpha = 0.0
-        self.passwordView.alpha = 0.0
-        self.signInButton.alpha = 0.0
+        self.usernameView.alpha      = 0.0
+        self.passwordView.alpha      = 0.0
+        self.signInButton.alpha      = 0.0
         self.onePasswordButton.alpha = 0.0
     }
     
-    private func ShowLoginViews()
+    fileprivate func ShowLoginViews()
     {
         sharedPushNotificationService.unregisterForRemoteNotifications()
-        UIView.animateWithDuration(1.0, animations: { () -> Void in
-            self.usernameView.alpha = 1.0
-            self.passwordView.alpha = 1.0
-            self.signInButton.alpha = 1.0
+        UIView.animate(withDuration: 1.0, animations: { () -> Void in
+            self.usernameView.alpha      = 1.0
+            self.passwordView.alpha      = 1.0
+            self.signInButton.alpha      = 1.0
             self.onePasswordButton.alpha = 1.0
-            
-            }, completion: { finished in
+        }, completion: { finished in
+                        
         })
     }
     
@@ -422,16 +421,16 @@ class SignInViewController: ProtonMailViewController {
     }
     
     func setupButtons() {
-        signInButton.layer.borderColor = UIColor.ProtonMail.Login_Button_Border_Color.CGColor;
-        signInButton.alpha = buttonDisabledAlpha
+        signInButton.layer.borderColor      = UIColor.ProtonMail.Login_Button_Border_Color.cgColor;
+        signInButton.alpha                  = buttonDisabledAlpha
         
-        onePasswordButton.layer.borderColor = UIColor.whiteColor().CGColor
+        onePasswordButton.layer.borderColor = UIColor.white.cgColor
         onePasswordButton.layer.borderWidth = 2
     }
     
-    private var cachedTwoCode : String?
+    fileprivate var cachedTwoCode : String?
     func signIn() {
-        MBProgressHUD.showHUDAddedTo(view, animated: true)
+        MBProgressHUD.showAdded(to: view, animated: true)
         isRemembered = true
         if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
             clean();
@@ -440,31 +439,31 @@ class SignInViewController: ProtonMailViewController {
         SignInViewController.isComeBackFromMailbox = false
         
         let username = (usernameTextField.text ?? "").trim()
-        let password = (passwordTextField.text ?? "") //.trim()
+        let password = (passwordTextField.text ?? "")
         
         
         //need pass twoFACode
         sharedUserDataService.signIn(username, password: password, twoFACode: cachedTwoCode,
             ask2fa: {
             //2fa
-                MBProgressHUD.hideHUDForView(self.view, animated: true)
-                NSNotificationCenter.defaultCenter().removeKeyboardObserver(self)
-                self.performSegueWithIdentifier(self.kSegueTo2FACodeSegue, sender: self)
+                MBProgressHUD.hide(for: self.view, animated: true)
+                NotificationCenter.default.removeKeyboardObserver(self)
+                self.performSegue(withIdentifier: self.kSegueTo2FACodeSegue, sender: self)
             },
             onError: { (error) in
                 //error
                 self.cachedTwoCode = nil
-                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                MBProgressHUD.hide(for: self.view, animated: true)
                 PMLog.D("error: \(error)")
                 self.ShowLoginViews();
                 let alertController = error.alertController()
                 alertController.addOKAction()
-                self.presentViewController(alertController, animated: true, completion: nil)
+                self.present(alertController, animated: true, completion: nil)
             },
             onSuccess: { (mailboxpwd) in
                 //ok
                 self.cachedTwoCode = nil
-                MBProgressHUD.hideHUDForView(self.view, animated: true)
+                MBProgressHUD.hide(for: self.view, animated: true)
                 if mailboxpwd != nil {
                     self.decryptPassword(mailboxpwd!)
                 } else {
@@ -474,25 +473,25 @@ class SignInViewController: ProtonMailViewController {
             })
     }
     
-    func decryptPassword(mailboxPassword:String!) {
+    func decryptPassword(_ mailboxPassword:String!) {
         isRemembered = true
         if sharedUserDataService.isMailboxPasswordValid(mailboxPassword, privateKey: AuthCredential.getPrivateKey()) {
             if sharedUserDataService.isSet {
                 sharedUserDataService.setMailboxPassword(mailboxPassword, keysalt: nil, isRemembered: self.isRemembered)
-                (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
+                (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
             } else {
                 do {
                     try AuthCredential.setupToken(mailboxPassword, isRememberMailbox: self.isRemembered)
-                    MBProgressHUD.showHUDAddedTo(view, animated: true)
+                    MBProgressHUD.showAdded(to: view, animated: true)
                     sharedLabelsDataService.fetchLabels()
                     sharedUserDataService.fetchUserInfo() { info, _, error in
-                        MBProgressHUD.hideHUDForView(self.view, animated: true)
+                        MBProgressHUD.hide(for: self.view, animated: true)
                         if error != nil {
                             let alertController = error!.alertController()
                             alertController.addOKAction()
-                            self.presentViewController(alertController, animated: true, completion: nil)
+                            self.present(alertController, animated: true, completion: nil)
                             if error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
-                                self.navigationController?.popViewControllerAnimated(true)
+                                let _ = self.navigationController?.popViewController(animated: true)
                             }
                         } else if info != nil {
                             if info!.delinquent < 3 {
@@ -500,32 +499,32 @@ class SignInViewController: ProtonMailViewController {
                                 sharedUserDataService.setMailboxPassword(mailboxPassword, keysalt: nil, isRemembered: self.isRemembered)
                                 self.restoreBackup()
                                 self.loadContent()
-                                NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)
+                                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: self)
                             } else {
                                 let alertController = NSLocalizedString("Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.").alertController() //here needs change to a clickable link
                                 alertController.addAction(UIAlertAction.okAction({ (action) -> Void in
-                                    self.navigationController?.popViewControllerAnimated(true)
+                                    let _ = self.navigationController?.popViewController(animated: true)
                                 }))
-                                self.presentViewController(alertController, animated: true, completion: nil)
+                                self.present(alertController, animated: true, completion: nil)
                             }
                         } else {
                             let alertController = NSError.unknowError().alertController()
                             alertController.addOKAction()
-                            self.presentViewController(alertController, animated: true, completion: nil)
+                            self.present(alertController, animated: true, completion: nil)
                         }
                     }
                 } catch let ex as NSError {
-                    MBProgressHUD.hideHUDForView(self.view, animated: true)
+                    MBProgressHUD.hide(for: self.view, animated: true)
                     let message = (ex.userInfo["MONExceptionReason"] as? String) ?? NSLocalizedString("The mailbox password is incorrect.")
-                    let alertController = UIAlertController(title: NSLocalizedString("Incorrect password"), message: NSLocalizedString(message),preferredStyle: .Alert)
+                    let alertController = UIAlertController(title: NSLocalizedString("Incorrect password"), message: NSLocalizedString(message),preferredStyle: .alert)
                     alertController.addOKAction()
-                    presentViewController(alertController, animated: true, completion: nil)
+                    present(alertController, animated: true, completion: nil)
                 }
             }
         } else {
-            let alert = UIAlertController(title: NSLocalizedString("Incorrect password"), message: NSLocalizedString("The mailbox password is incorrect."), preferredStyle: .Alert)
+            let alert = UIAlertController(title: NSLocalizedString("Incorrect password"), message: NSLocalizedString("The mailbox password is incorrect."), preferredStyle: .alert)
             alert.addAction((UIAlertAction.okAction()))
-            presentViewController(alert, animated: true, completion: nil)
+            present(alert, animated: true, completion: nil)
         }
     }
     
@@ -561,16 +560,16 @@ class SignInViewController: ProtonMailViewController {
         }
     }
     
-    private func loadContent() {
+    fileprivate func loadContent() {
         logUser()
         if sharedUserDataService.isMailboxPasswordStored {
             UserTempCachedStatus.clearFromKeychain()
             userCachedStatus.pinFailedCount = 0;
-            NSNotificationCenter.defaultCenter().postNotificationName(NotificationDefined.didSignIn, object: self)
-            (UIApplication.sharedApplication().delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: self)
+            (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
             loadContactsAfterInstall()
         } else {
-            self.performSegueWithIdentifier(self.kMailboxSegue, sender: self)
+            self.performSegue(withIdentifier: self.kMailboxSegue, sender: self)
         }
     }
     
@@ -579,7 +578,7 @@ class SignInViewController: ProtonMailViewController {
         sharedUserDataService.fetchUserInfo()
         sharedContactDataService.fetchContacts({ (contacts, error) -> Void in
             if error != nil {
-                PMLog.D("\(error)")
+                PMLog.D("\(String(describing: error))")
             } else {
                 PMLog.D("Contacts count: \(contacts!.count)")
             }
@@ -594,53 +593,53 @@ class SignInViewController: ProtonMailViewController {
         sharedMessageDataService.launchCleanUpIfNeeded()
     }
     
-    func updateSignInButton(usernameText usernameText: String, passwordText: String) {
-        signInButton.enabled = !usernameText.isEmpty && !passwordText.isEmpty
+    func updateSignInButton(usernameText: String, passwordText: String) {
+        signInButton.isEnabled = !usernameText.isEmpty && !passwordText.isEmpty
         
-        UIView.animateWithDuration(animationDuration, animations: { () -> Void in
+        UIView.animate(withDuration: animationDuration, animations: { () -> Void in
             if (self.signInButton.alpha != 0.0) {
-                self.signInButton.alpha = self.signInButton.enabled ? 1.0 : self.buttonDisabledAlpha
+                self.signInButton.alpha = self.signInButton.isEnabled ? 1.0 : self.buttonDisabledAlpha
             }
         })
     }
     
     // MARK: - Actions
     
-    @IBAction func rememberButtonAction(sender: UIButton) {
+    @IBAction func rememberButtonAction(_ sender: UIButton) {
         isRemembered = !isRemembered
         isRemembered = true
     }
     
-    @IBAction func signInAction(sender: UIButton) {
+    @IBAction func signInAction(_ sender: UIButton) {
         dismissKeyboard()
         signIn()
     }
     
-    @IBAction func fogorPasswordAction(sender: AnyObject) {
+    @IBAction func fogorPasswordAction(_ sender: AnyObject) {
         dismissKeyboard()
-        UIApplication.sharedApplication().openURL(forgotPasswordURL)
+        UIApplication.shared.openURL(forgotPasswordURL)
     }
     
-    @IBAction func signUpAction(sender: UIButton) {
+    @IBAction func signUpAction(_ sender: UIButton) {
         dismissKeyboard()
-        self.performSegueWithIdentifier(kSignUpKeySegue, sender: self)
+        self.performSegue(withIdentifier: kSignUpKeySegue, sender: self)
     }
     
-    @IBAction func tapAction(sender: UITapGestureRecognizer) {
+    @IBAction func tapAction(_ sender: UITapGestureRecognizer) {
         dismissKeyboard()
     }
 }
 
 extension SignInViewController : TwoFACodeViewControllerDelegate {
-    func ConfirmedCode(code: String, pwd : String) {
-        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
+    func ConfirmedCode(_ code: String, pwd : String) {
+        NotificationCenter.default.addKeyboardObserver(self)
         self.cachedTwoCode = code
         self.signIn()
     }
 
     func Cancel2FA() {
         sharedUserDataService.twoFactorStatus = 0
-        NSNotificationCenter.defaultCenter().addKeyboardObserver(self)
+        NotificationCenter.default.addKeyboardObserver(self)
     }
 }
 
@@ -659,23 +658,23 @@ extension SignInViewController : PinCodeViewControllerDelegate {
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 extension SignInViewController: NSNotificationCenterKeyboardObserverProtocol {
-    func keyboardWillHideNotification(notification: NSNotification) {
+    func keyboardWillHideNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         scrollBottomPaddingConstraint.constant = 0.0
         self.configConstraint(false)
-        UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
+        UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
     }
     
-    func keyboardWillShowNotification(notification: NSNotification) {
+    func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
-        let info: NSDictionary = notification.userInfo!
-        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue() {
+        let info: NSDictionary = notification.userInfo! as NSDictionary
+        if let keyboardSize = (info[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             scrollBottomPaddingConstraint.constant = keyboardSize.height;
         }
         self.configConstraint(true)
-        UIView.animateWithDuration(keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
+        UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
             }, completion: nil)
     }
@@ -683,14 +682,14 @@ extension SignInViewController: NSNotificationCenterKeyboardObserverProtocol {
 
 // MARK: - UITextFieldDelegate
 extension SignInViewController: UITextFieldDelegate {
-    func textFieldShouldClear(textField: UITextField) -> Bool {
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
         updateSignInButton(usernameText: "", passwordText: "")
         return true
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let text = textField.text! as NSString
-        let changedText = text.stringByReplacingCharactersInRange(range, withString: string)
+        let changedText = text.replacingCharacters(in: range, with: string)
         
         if textField == usernameTextField {
             updateSignInButton(usernameText: changedText, passwordText: passwordTextField.text!)
@@ -700,7 +699,7 @@ extension SignInViewController: UITextFieldDelegate {
         return true
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == usernameTextField {
             passwordTextField.becomeFirstResponder()
         } else {

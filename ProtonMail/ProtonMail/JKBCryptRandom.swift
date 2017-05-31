@@ -30,7 +30,7 @@ class JKBCryptRandom : NSObject {
      
      :returns: Int32  Random 32-bit number
      */
-    class func generateNumberBetween(first: Int32, _ second: Int32) -> Int32 {
+    class func generateNumberBetween(_ first: Int32, _ second: Int32) -> Int32 {
         var low : Int32
         var high : Int32
         
@@ -61,15 +61,15 @@ class JKBCryptRandom : NSObject {
      
      :returns: [Int32]
      */
-    class func generateNumberSequenceBetween(first: Int32, _ second: Int32, ofLength length: Int, withUniqueValues unique: Bool) -> [Int32] {
+    class func generateNumberSequenceBetween(_ first: Int32, _ second: Int32, ofLength length: Int, withUniqueValues unique: Bool) -> [Int32] {
         if length < 1 {
             return [Int32]()
         }
         
-        var sequence : [Int32] = [Int32](count: length, repeatedValue: 0)
+        var sequence : [Int32] = [Int32](repeating: 0, count: length)
         if unique {
-            if (first <= second && (length > (second - first) + 1)) ||
-                (first > second  && (length > (first - second) + 1)) {
+            if (first <= second && (length > Int(second - first) + 1)) ||
+                (first > second  && (length > Int(first - second) + 1)) {
                 return [Int32]()
             }
             
@@ -102,7 +102,7 @@ class JKBCryptRandom : NSObject {
      
      :returns: Int? Int if `length` is properly set and `sequence` is not nil; nil otherwise.
      */
-    class func chooseNumberFromSequence(sequence: [Int32], ofLength length: Int) -> Int32? {
+    class func chooseNumberFromSequence(_ sequence: [Int32], ofLength length: Int) -> Int32? {
         if length < 1 || length > sequence.count {
             return nil
         }
@@ -122,7 +122,7 @@ class JKBCryptRandom : NSObject {
      
      :returns: Bool      TRUE if `number` is found in sequence, FALSE if not found.
      */
-    class func isNumber(number: Int32, inSequence sequence: [Int32], ofLength length: Int) -> Bool {
+    class func isNumber(_ number: Int32, inSequence sequence: [Int32], ofLength length: Int) -> Bool {
         if length < 1 || length > sequence.count {
             return false
         }
@@ -145,19 +145,19 @@ class JKBCryptRandom : NSObject {
      
      :returns: NSData   NSData containing random bytes.
      */
-    class func generateRandomDataOfLength(length: Int) -> NSData {
+    class func generateRandomDataOfLength(_ length: Int) -> Data {
         if length < 1 {
-            return NSData()
+            return Data()
         }
         
         var sequence = JKBCryptRandom.generateNumberSequenceBetween(0, 255, ofLength: length, withUniqueValues: false)
-        var randomData : [UInt8] = [UInt8](count: length, repeatedValue: 0)
+        var randomData : [UInt8] = [UInt8](repeating: 0, count: length)
         
         for i in 0 ..< length {
             randomData[i] = UInt8(sequence[i])
         }
         
-        return NSData(bytes: randomData, length:length)
+        return Data(bytes: UnsafePointer<UInt8>(randomData), count:length)
     }
     
     /**
@@ -167,19 +167,19 @@ class JKBCryptRandom : NSObject {
      
      :returns: NSData   NSData containing random signed bytes.
      */
-    class func generateRandomSignedDataOfLength(length: Int) -> NSData {
+    class func generateRandomSignedDataOfLength(_ length: Int) -> Data {
         if length < 1 {
-            return NSData()
+            return Data()
         }
         
         var sequence = JKBCryptRandom.generateNumberSequenceBetween(-128, 127, ofLength: length, withUniqueValues: false)
-        var randomData : [Int8] = [Int8](count: length, repeatedValue: 0)
+        var randomData : [Int8] = [Int8](repeating: 0, count: length)
         
         for i in 0 ..< length {
             randomData[i] = Int8(sequence[i])
         }
         
-        return NSData(bytes: randomData, length:length)
+        return Data(bytes:randomData, count:length)
     }
     
     /**
@@ -189,7 +189,7 @@ class JKBCryptRandom : NSObject {
      
      :returns: String   String containing random ASCII encoded characters.
      */
-    class func generateRandomStringOfLength(length: Int) -> String {
+    class func generateRandomStringOfLength(_ length: Int) -> String {
         if length < 1 {
             return String()
         }
@@ -199,7 +199,7 @@ class JKBCryptRandom : NSObject {
         
         for i in 0 ..< length {
             let nextCharacter = UnicodeScalar(UInt8(sequence[i]))
-            randomString.append(nextCharacter)
+            randomString.append(String(nextCharacter))
         }
         
         // init?<S : SequenceType where UInt8 == UInt8>(bytes: S, encoding: NSStringEncoding)
