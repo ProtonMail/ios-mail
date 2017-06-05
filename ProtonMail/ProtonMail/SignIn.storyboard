@@ -270,7 +270,7 @@
                                                     <constraint firstAttribute="width" constant="200" id="34x-ap-wAQ"/>
                                                     <constraint firstAttribute="height" constant="42" id="gLb-Jh-YuB"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="16"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <state key="normal" title="LOGIN">
                                                     <color key="titleColor" red="0.31372549020000001" green="0.31372549020000001" blue="0.3803921569" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
@@ -413,6 +413,7 @@
                     <navigationItem key="navigationItem" id="UC0-zs-LZ5"/>
                     <connections>
                         <outlet property="backgroundImage" destination="B79-ZV-yWF" id="p2w-gn-VV6"/>
+                        <outlet property="forgotPwdButton" destination="BlP-nl-XPC" id="zIN-HW-4nG"/>
                         <outlet property="loginMidlineConstraint" destination="xtp-kV-X4M" id="rOO-hQ-Hkv"/>
                         <outlet property="loginWidthConstraint" destination="34x-ap-wAQ" id="USv-dF-9Uw"/>
                         <outlet property="logoLeftPaddingConstraint" destination="uel-ce-NZp" id="ykA-9O-VZv"/>
@@ -422,6 +423,8 @@
                         <outlet property="passwordView" destination="bOD-D6-5za" id="Tz8-k0-WmG"/>
                         <outlet property="scrollBottomPaddingConstraint" destination="f3K-Vi-4pQ" id="Eaa-cQ-XRp"/>
                         <outlet property="signInButton" destination="MgP-0E-i6P" id="aJo-QJ-EqF"/>
+                        <outlet property="signInTitle" destination="Os0-Xv-V8f" id="0TQ-Bm-jIk"/>
+                        <outlet property="signUpButton" destination="1qu-T6-Tyc" id="ffa-xY-gtj"/>
                         <outlet property="signUpTopConstraint" destination="tPr-d6-uFP" id="qbi-WE-zO2"/>
                         <outlet property="touchIDButton" destination="liV-Dc-2Hc" id="9Qn-Ja-jXi"/>
                         <outlet property="userLeftPaddingConstraint" destination="i9Z-2s-4GQ" id="6h5-WQ-M7m"/>

@@ -552,7 +552,7 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 "Key invalid please go back try again" = "Schlüssel ungültig bitte gehen Sie zurück und versuchen es nocheinmal";
 
 /* Title */
-"LOGIN" = "Login";
+"LOGIN" = "Anmeldung";
 
 /* Title */
 "Label Management" = "Labelverwaltung";

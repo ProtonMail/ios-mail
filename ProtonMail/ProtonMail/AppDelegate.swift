@@ -153,7 +153,6 @@ extension AppDelegate: UIApplicationDelegate {
        // LanguageManager.setupCurrentLanguage()
         //Localization.restoreLanguage()
         //sharedPushNotificationService.setLaunchOptions(launchOptions)
-        
         return true
     }
     
