@@ -147,9 +147,12 @@ extension AppDelegate: UIApplicationDelegate {
         if tmp != .dev && tmp != .sim {
             AFNetworkActivityLogger.shared().stopLogging()
         }
+        
+        LanguageManager.setupCurrentLanguage()
 
-        Localization.restoreLanguage()
-        sharedPushNotificationService.setLaunchOptions(launchOptions)
+       // LanguageManager.setupCurrentLanguage()
+        //Localization.restoreLanguage()
+        //sharedPushNotificationService.setLaunchOptions(launchOptions)
         
         return true
     }

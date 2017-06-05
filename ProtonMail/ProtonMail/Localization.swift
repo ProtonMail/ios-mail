@@ -56,22 +56,22 @@ public class Localization {
     }
     
     class func setCurrentLanguage(language: String) {
-        let selectedLanguage = availableLanguages().contains(language) ? language : defaultLanguage()
-        if (selectedLanguage != currentLanguage()){
-            UserDefaults.standard.set(selectedLanguage, forKey: kProtonMailCurrentLanguageKey)
-            UserDefaults.standard.synchronize()
-            self.latestBundle = nil
-            Bundle.setLanguage(selectedLanguage)
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationDefined.languageDidChange), object: selectedLanguage)
-        }
+//        let selectedLanguage = availableLanguages().contains(language) ? language : defaultLanguage()
+//        if (selectedLanguage != currentLanguage()){
+//            UserDefaults.standard.set(selectedLanguage, forKey: kProtonMailCurrentLanguageKey)
+//            UserDefaults.standard.synchronize()
+//            self.latestBundle = nil
+//            Bundle.setLanguage(selectedLanguage)
+//            NotificationCenter.default.post(name: NSNotification.Name(rawValue: NotificationDefined.languageDidChange), object: selectedLanguage)
+//        }
     }
     
     class func restoreLanguage() {
-        let selectedLanguage = currentLanguage();
-        self.latestBundle = nil
-        Bundle.setLanguage(selectedLanguage)
-        UserDefaults.standard.set(selectedLanguage, forKey: kProtonMailCurrentLanguageKey)
-        UserDefaults.standard.synchronize()
+//        let selectedLanguage = currentLanguage();
+//        self.latestBundle = nil
+//        Bundle.setLanguage(selectedLanguage)
+//        UserDefaults.standard.set(selectedLanguage, forKey: kProtonMailCurrentLanguageKey)
+//        UserDefaults.standard.synchronize()
     }
     
     class func defaultLanguage() -> String {
