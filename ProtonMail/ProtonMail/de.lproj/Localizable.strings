@@ -277,6 +277,12 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* Title */
 "Contact the ProtonMail team" = "Kontaktieren Sie das ProtonMail-team";
 
+/* Title */
+"CONTACTS" = "Kontakte";
+
+/* Title */
+"Contacts" = "Kontakte";
+
 /* top right action item title
    top right action text */
 "Create" = "Erstellen";
@@ -303,6 +309,9 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 
 /* Title */
 "DRAFTS" = "Entwürfe";
+
+/* Title */
+"Drafts" = "Entwürfe";
 
 /* like Date: 2017-10-10 */
 "Date" = "Datum";
@@ -884,6 +893,12 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 "SENT" = "Gesendet";
 
 /* Title */
+"Send" = "Gesendet";
+
+/* Title */
+"Sent" = "Gesendet";
+
+/* Title */
 "SIGNATURE" = "UNTERSCHRIFT";
 
 /* Title */
@@ -966,6 +981,12 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 
 /* Title */
 "Storage" = "Speicher";
+
+/* Title */
+"Settings" = "Einstellungen";
+
+/* Title */
+"SETTINGS" = "Einstellungen";
 
 /* Title */
 "Support ProtonMail" = "Unterstützung ProtonMail";

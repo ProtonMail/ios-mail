@@ -277,6 +277,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 /* Title */
 "Contact the ProtonMail team" = "Связаться с командой ProtonMail";
 
+/* Title */
+"CONTACTS" = "контакты";
+
+/* Title */
+"Contacts" = "контакты";
+
+
 /* top right action item title
    top right action text */
 "Create" = "Новый контакт";
@@ -303,6 +310,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 
 /* Title */
 "DRAFTS" = "Черновики";
+
+/* Title */
+"Drafts" = "Черновики";
 
 /* like Date: 2017-10-10 */
 "Date" = "Дата";
@@ -884,6 +894,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 "SENT" = "Отправлено";
 
 /* Title */
+"Send" = "Отправить";
+
+/* Title */
+"Sent" = "Отправлено";
+
+
+/* Title */
 "SIGNATURE" = "ПОДПИСЬ";
 
 /* Title */
@@ -966,6 +983,12 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши шифрованные пис�
 
 /* Title */
 "Storage" = "Хранилище";
+
+"Settings" = "настройки";
+
+/* Title */
+"SETTINGS" = "настройки";
+
 
 /* Title */
 "Support ProtonMail" = "Поддержите ProtonMail";

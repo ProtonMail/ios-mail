@@ -277,6 +277,12 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 /* Title */
 "Contact the ProtonMail team" = "Contacter l'équipe ProtonMail";
 
+/* Title */
+"CONTACTS" = "Contacts";
+
+/* Title */
+"Contacts" = "Contacts";
+
 /* top right action item title
    top right action text */
 "Create" = "Créer";
@@ -303,6 +309,9 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 
 /* Title */
 "DRAFTS" = "Brouillons";
+
+/* Title */
+"Drafts" = "Brouillons";
 
 /* like Date: 2017-10-10 */
 "Date" = "Date";
@@ -884,6 +893,12 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 "SENT" = "Envoyé";
 
 /* Title */
+"Send" = "envoyer";
+
+/* Title */
+"Sent" = "Envoyé";
+
+/* Title */
 "SIGNATURE" = "SIGNATURE";
 
 /* Title */
@@ -966,6 +981,15 @@ CETTE ACTION NE PEUT PAS ÊTRE ANNULÉE !";
 
 /* Title */
 "Storage" = "Espace de stockage";
+
+
+"Settings" = "Paramètres";
+
+/* Title */
+"SETTINGS" = "Paramètres";
+
+
+
 
 /* Title */
 "Support ProtonMail" = "Aider ProtonMail";
