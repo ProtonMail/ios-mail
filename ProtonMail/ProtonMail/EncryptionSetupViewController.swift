@@ -12,17 +12,62 @@ class EncryptionSetupViewController: UIViewController {
     
     fileprivate let kSegueToSignUpVerification = "encryption_to_verification_segue"
     
-    @IBOutlet weak var highBitLevel: UIButton! //low
-    @IBOutlet weak var normalBitLevel: UIButton! //high
-    
+    //Notes: low means high(4096) high means normal(2048)
     let hight : Int32 = 2048
     let low : Int32 = 4096
     
-    
     var viewModel : SignupViewModel!
+    
+    @IBOutlet weak var topLeftButton: UIButton!
+    @IBOutlet weak var topTitleLabel: UILabel!
+    @IBOutlet weak var highBitLevel: UIButton! //low
+    @IBOutlet weak var normalBitLevel: UIButton! //high
+
+    @IBOutlet weak var highSecurityLabel: UILabel!
+    @IBOutlet weak var extremeSecurityNoteLabel: UILabel!
+    @IBOutlet weak var continueButton: UIButton!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        topLeftButton.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
+        topTitleLabel.text = NSLocalizedString("Encryption Setup", comment: "key setup top title")
+        
+        let font = UIFont.boldSystemFont(ofSize: 16)
+        let attrHigh = NSMutableAttributedString(
+            string: " " + NSLocalizedString("High Security", comment: "Key size checkbox"),
+            attributes: [NSFontAttributeName:font])
+        let font1 = UIFont.systemFont(ofSize: 16)
+        let attrHighSize = NSMutableAttributedString(
+            string: " " + NSLocalizedString("(2048 bit)", comment: "Key size text"),
+            attributes: [NSFontAttributeName:font1])
+        attrHigh.append(attrHighSize)
+        highBitLevel.setAttributedTitle(attrHigh, for: .normal)
+        
+        let attrExtreme = NSMutableAttributedString(
+            string: NSLocalizedString("Extreme Security", comment: "Key size checkbox"),
+            attributes: [NSFontAttributeName:font])
+        let attrExtremeSize = NSMutableAttributedString(
+            string: " " + NSLocalizedString("(4096 bit)", comment: "Key size text"),
+            attributes: [NSFontAttributeName:font1])
+        attrExtreme.append(attrExtremeSize)
+        normalBitLevel.setAttributedTitle(attrExtreme, for: .normal)
+        
+        highSecurityLabel.text = NSLocalizedString("The current standard", comment: "key size notes")
+        
+        let notesfont = UIFont.systemFont(ofSize: 13)
+        let attr1 = NSMutableAttributedString(
+            string: NSLocalizedString("The highest level of encryption available.", comment: "key size note part 1") + " ",
+            attributes: [NSFontAttributeName:notesfont])
+        let notesfont1 = UIFont.boldSystemFont(ofSize: 13)
+        let attr2 = NSMutableAttributedString(
+            string: NSLocalizedString("Can take several minutes to setup.", comment: "key size note part 2"),
+            attributes: [NSFontAttributeName:notesfont1])
+        attr1.append(attr2)
+        extremeSecurityNoteLabel.attributedText = attr1
+        continueButton.setTitle(NSLocalizedString("Continue", comment: "key setup continue button"), for: .normal)
+        
         updateButtonsStatus()
     }
     

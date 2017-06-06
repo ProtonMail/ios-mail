@@ -19,12 +19,31 @@ class HumanCheckMenuViewController: UIViewController {
     @IBOutlet weak var emailViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var phoneViewConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var topLeftButton: UIButton!
+    @IBOutlet weak var topTitleLabel: UILabel!
+    @IBOutlet weak var topNotesLabel: UILabel!
+    @IBOutlet weak var optionsTitleLabel: UILabel!
+    
+    @IBOutlet weak var captchaButton: UIButton!
+    @IBOutlet weak var emailCheckButton: UIButton!
+    @IBOutlet weak var phoneCheckButton: UIButton!
+    
     fileprivate let kButtonHeight : CGFloat = 60.0
     
     var viewModel : SignupViewModel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        topLeftButton.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
+        topTitleLabel.text = NSLocalizedString("Human Verification", comment: "human verification top title")
+        topNotesLabel.text = NSLocalizedString("To prevent abuse of ProtonMail,\r\n we need to verify that you are human.", comment: "human verification notes")
+        optionsTitleLabel.text = NSLocalizedString("Please select one of the following options:", comment: "human check select option title")
+        
+        captchaButton.setTitle(NSLocalizedString("CAPTCHA", comment: "human check option button"), for: .normal)
+        emailCheckButton.setTitle(NSLocalizedString("Email Verification", comment: "human check option button"), for: .normal)
+        phoneCheckButton.setTitle(NSLocalizedString("Phone Verification", comment: "human check option button"), for: .normal)
+        
         self.setupSignUpFunctions()
     }
     

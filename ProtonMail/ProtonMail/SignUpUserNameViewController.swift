@@ -21,6 +21,15 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     @IBOutlet weak var createAccountButton: UIButton!
     @IBOutlet weak var pickerButton: UIButton!
     
+    @IBOutlet weak var topTitleLabel: UILabel!
+    @IBOutlet weak var leftBackItem: UIButton!
+    
+    @IBOutlet weak var userNameNoteLabel: UILabel!
+    @IBOutlet weak var agreementButton: UIButton!
+    @IBOutlet weak var termsButton: UIButton!
+    @IBOutlet weak var andLable: UILabel!
+    @IBOutlet weak var privacyButton: UIButton!
+    
     //define
     fileprivate let hidePriority : UILayoutPriority = 1.0;
     fileprivate let showPriority: UILayoutPriority = 750.0;
@@ -75,6 +84,16 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
             self.domains = ds
             self.updatePickedDomain()
         }
+        leftBackItem.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
+        topTitleLabel.text = NSLocalizedString("Create a new account", comment: "Signup top title")
+        userNameNoteLabel.text = NSLocalizedString("Note: The Username is also your ProtonMail address.", comment: "Signup user name notes")
+        agreementButton.setTitle(NSLocalizedString("By using protonmail, you agree to our", comment: "agree check box first part words"), for: .normal)
+        termsButton.setTitle(NSLocalizedString("terms and conditions", comment: "agree check box terms"), for: .normal)
+        andLable.text = NSLocalizedString("and", comment: "agree check box middle word")
+        privacyButton.setTitle(NSLocalizedString("privacy policy.", comment: "agree check box privacy"), for: .normal)
+        createAccountButton.setTitle(NSLocalizedString("Create Account", comment: "Create account button"), for: .normal)
+        
+        self.updatePickedDomain()
     }
     
     func updatePickedDomain () {

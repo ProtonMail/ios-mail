@@ -35,6 +35,10 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
     @IBOutlet weak var userNameTopPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var topLeftButton: UIButton!
+    @IBOutlet weak var topTitleLabel: UILabel!
+    @IBOutlet weak var phoneFieldNoteLabel: UILabel!
+    
     fileprivate let kSegueToNotificationEmail = "sign_up_pwd_email_segue"
     fileprivate let kSegueToCountryPicker = "phone_verify_to_country_picker_segue"
     
@@ -66,6 +70,13 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
         super.viewDidLoad()
         emailTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Cell phone number", comment: "place holder"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
         verifyCodeTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Enter Verification Code", comment: "place holder"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
+        
+        topLeftButton.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
+        topTitleLabel.text = NSLocalizedString("Human Verification", comment: "human verification top title")
+        titleTwoLabel.text = NSLocalizedString("Enter your cell phone number", comment: "human verification top title")
+        phoneFieldNoteLabel.text = NSLocalizedString("We will send a verification code to the cell phone above.", comment: "text field notes")
+        continueButton.setTitle(NSLocalizedString("Continue", comment: "Action"), for: .normal)
+        
         self.updateCountryCode(1)
         self.updateButtonStatus()
     }

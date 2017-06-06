@@ -18,14 +18,15 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
     
     @IBOutlet weak var logoTopPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var logoLeftPaddingConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var titleTopPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var titleLeftPaddingConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var webViewHeightConstraint: NSLayoutConstraint!
 
+    @IBOutlet weak var topLeftButton: UIButton!
+    @IBOutlet weak var topTitleLabel: UILabel!
+    @IBOutlet weak var continueButton: UIButton!
+    
     fileprivate let kSegueToNotificationEmail = "sign_up_pwd_email_segue"
     fileprivate var startVerify : Bool = false
     fileprivate var checkUserStatus : Bool = false
@@ -44,6 +45,10 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        topLeftButton.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
+        topTitleLabel.text = NSLocalizedString("Human Verification", comment: "view top title")
+        continueButton.setTitle(NSLocalizedString("Continue", comment: "Action"), for: .normal)
         
         resetChecking()
         webView.scrollView.isScrollEnabled = false

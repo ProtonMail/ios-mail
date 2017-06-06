@@ -23,6 +23,10 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     @IBOutlet weak var sendCodeButton: UIButton!
     @IBOutlet weak var continueButton: UIButton!
     
+    @IBOutlet weak var topLeftButton: UIButton!
+    @IBOutlet weak var topTitleLabel: UILabel!
+    @IBOutlet weak var emailFieldNotes: UILabel!
+
     //define
     fileprivate let hidePriority : UILayoutPriority = 1.0;
     fileprivate let showPriority: UILayoutPriority = 750.0;
@@ -62,6 +66,14 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
         emailTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Email address", comment: "Title"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
         verifyCodeTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Enter Verification Code", comment: "Title"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
         
+        
+        topLeftButton.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
+        topTitleLabel.text = NSLocalizedString("Human Verification", comment: "top title")
+        
+        emailFieldNotes.text = NSLocalizedString("We will send a verification code to the email address above.", comment: "email field notes")
+        titleTwoLabel.text = NSLocalizedString("Enter your existing email address.", comment: "top title")
+
+        continueButton.setTitle(NSLocalizedString("Continue", comment: "Action"), for: .normal)
         self.updateButtonStatus()
     }
     

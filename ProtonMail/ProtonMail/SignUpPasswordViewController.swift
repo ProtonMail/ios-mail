@@ -29,6 +29,11 @@ class SignUpPasswordViewController: UIViewController {
     @IBOutlet weak var loginPasswordField: TextInsetTextField!
     @IBOutlet weak var confirmLoginPasswordField: TextInsetTextField!
     
+    @IBOutlet weak var leftTopItem: UIButton!
+    @IBOutlet weak var topTitleLabel: UILabel!
+    @IBOutlet weak var noteOneLable: UILabel!
+    @IBOutlet weak var noteTwoLabel: UILabel!
+    
     fileprivate let kSegueToEncryptionSetup = "sign_up_password_to_encryption_segue"
     
     var viewModel : SignupViewModel!
@@ -52,7 +57,13 @@ class SignUpPasswordViewController: UIViewController {
         
         loginPasswordField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Choose a Password", comment: "place holder"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
         confirmLoginPasswordField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Confirm Password", comment: "place holder"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
-
+        
+        leftTopItem.setTitle(NSLocalizedString("Back", comment: "top left back button"), for: .normal)
+        topTitleLabel.text = NSLocalizedString("Set passwords", comment: "Signup passwords top title")
+        noteOneLable.text = NSLocalizedString("Note: This is used to log you into your account.", comment: "setup password notes")
+        noteTwoLabel.text = NSLocalizedString("Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it.", comment: "setup password notes")
+        createPasswordButton.setTitle(NSLocalizedString("Create Account", comment: "Create account button"), for: .normal)
+        
         self.updateButtonStatus()
         
         self.viewModel.fetchDirect { (directs) -> Void in
