@@ -11,21 +11,35 @@ import LocalAuthentication
 
 class SettingTableViewController: ProtonMailViewController {
     
-    var setting_headers : [SettingSections] = [.general, .protection, .labels, .multiDomain, .swipeAction, .language, .storage, .version] //.Debug,
-    var setting_general_items : [SGItems] = [.notifyEmail, .loginPWD, .mbp, .autoLoadImage, .cleanCache]
-    var setting_debug_items : [SDebugItem] = [.queue, .errorLogs]
+    var setting_headers : [SettingSections]              = [.general,
+                                                            .protection,
+                                                            .labels,
+                                                            .multiDomain,
+                                                            .swipeAction,
+                                                            .language,
+                                                            .storage,
+                                                            .version] //.Debug,
+    
+    var setting_general_items : [SGItems]                = [.notifyEmail, .loginPWD,
+                                                            .mbp, .autoLoadImage, .cleanCache]
+    var setting_debug_items : [SDebugItem]               = [.queue, .errorLogs]
     
     var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
-    var setting_swipe_actions : [MessageSwipeAction] = [.trash, .spam, .star, .archive]
+    var setting_swipe_actions : [MessageSwipeAction]     = [.trash, .spam,
+                                                            .star, .archive]
     
-    var setting_protection_items : [SProtectionItems] = [.touchID, .pinCode] // [.TouchID, .PinCode, .UpdatePin, .AutoLogout, .EnterTime]
-    var setting_addresses_items : [SAddressItems] = [.addresses, .displayName, .signature, .defaultMobilSign]
+    var setting_protection_items : [SProtectionItems]    = [.touchID, .pinCode] // [.TouchID, .PinCode, .UpdatePin, .AutoLogout, .EnterTime]
+    var setting_addresses_items : [SAddressItems]        = [.addresses,
+                                                            .displayName,
+                                                            .signature,
+                                                            .defaultMobilSign]
     
-    var setting_labels_items : [SLabelsItems] = [.labelFolderManager]
+    var setting_labels_items : [SLabelsItems]            = [.labelFolderManager]
     
-    var setting_languages : [ELanguage] = ELanguage.allItems()
+    var setting_languages : [ELanguage]                  = ELanguage.allItems()
     
-    var protection_auto_logout : [Int] = [-1, 0, 1, 2, 5, 10, 15, 30, 60]
+    var protection_auto_logout : [Int]                   = [-1, 0, 1, 2, 5,
+                                                            10, 15, 30, 60]
     
     var multi_domains: Array<Address>!
     var userInfo = sharedUserDataService.userInfo
@@ -62,6 +76,8 @@ class SettingTableViewController: ProtonMailViewController {
     //
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.title = NSLocalizedString("SETTINGS", comment: "Title")
     }
     
     override func didReceiveMemoryWarning() {

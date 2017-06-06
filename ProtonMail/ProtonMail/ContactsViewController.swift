@@ -39,6 +39,8 @@ class ContactsViewController: ProtonMailViewController {
         super.viewDidLoad()
         tableView.register(UINib(nibName: "ContactsTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: kContactCellIdentifier)
         
+        self.title = NSLocalizedString("CONTACTS", comment: "Title")
+        
         searchController = UISearchController(searchResultsController: nil)
         
         self.searchController.searchResultsUpdater = self
