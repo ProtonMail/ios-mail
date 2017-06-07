@@ -20,7 +20,7 @@
         <scene sceneID="Yge-wa-Lrb">
             <objects>
                 <navigationController storyboardIdentifier="SignIn" useStoryboardIdentifierAsRestorationIdentifier="YES" navigationBarHidden="YES" id="iNi-o2-nXB" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="WlM-tk-eWt">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="WlM-tk-eWt">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1791,6 +1791,7 @@
                         <outlet property="scrollBottomPaddingConstraint" destination="1DM-ZH-shG" id="YK8-bu-x5U"/>
                         <outlet property="titleLeftPaddingConstraint" destination="gsG-04-lH4" id="Gke-Qe-nze"/>
                         <outlet property="titleTopPaddingConstraint" destination="ydB-tk-Hvg" id="zWd-1U-ile"/>
+                        <outlet property="topTitleLabel" destination="Jzp-6U-vEt" id="bP6-rS-5DW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gtd-a3-Tsl" userLabel="First Responder" sceneMemberID="firstResponder"/>

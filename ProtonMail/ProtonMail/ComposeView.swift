@@ -108,6 +108,7 @@ class ComposeView: UIViewController {
     @IBOutlet weak var fromView: UIView!
     @IBOutlet weak var fromAddress: UILabel!
     @IBOutlet weak var fromPickerButton: UIButton!
+    @IBOutlet weak var fromLable: UILabel!
     
     // MARK: - Delegate and Datasource
     var datasource: ComposeViewDataSource?
@@ -134,6 +135,11 @@ class ComposeView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.selfView = self.view;
+        
+        
+        fromLable.text = NSLocalizedString("From", comment: "Title")
+        subject.placeholder = NSLocalizedString("Subject", comment: "Placeholder")
+        encryptedPasswordTextField.placeholder = NSLocalizedString("Define Expiration Date", comment: "Placeholder")
         
         self.configureContactPickerTemplate()
         self.includeButtonBorder(encryptedButton)

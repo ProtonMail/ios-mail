@@ -43,6 +43,7 @@ class SearchViewController: ProtonMailViewController {
     @IBOutlet weak var searchTextField: UITextField!
     
     @IBOutlet weak var noResultLabel: UILabel!
+    @IBOutlet weak var cancelButton: UIButton!
     
     // MARK: - Private Constants
     
@@ -68,6 +69,8 @@ class SearchViewController: ProtonMailViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
+        
+        cancelButton.setTitle(NSLocalizedString("Cancel", comment: "Action"), for: .normal)
         
         self.tableView.delegate = self
         self.tableView.dataSource = self

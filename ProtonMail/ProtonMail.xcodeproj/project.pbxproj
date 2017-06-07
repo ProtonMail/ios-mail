@@ -987,7 +987,6 @@
 		75B549E51D02731300F21A30 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		75B9C6071DA2D39A001DE21E /* Hash.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hash.swift; sourceTree = "<group>"; };
 		75BA19961EC631A300153A1A /* SpamScoreWarningView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpamScoreWarningView.xib; sourceTree = "<group>"; };
-		75BA19971EC631A300153A1A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		75BA19981EC631A300153A1A /* SpamScoreWarningView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpamScoreWarningView.swift; sourceTree = "<group>"; };
 		75BA199E1EC6474D00153A1A /* MessageSpamScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSpamScore.swift; sourceTree = "<group>"; };
 		75BA55A61D087F6A0081DD88 /* Readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.txt; sourceTree = "<group>"; };
@@ -1395,7 +1394,6 @@
 		701704761A79185D000A90D2 /* Message Detail */ = {
 			isa = PBXGroup;
 			children = (
-				75BA19971EC631A300153A1A /* Images.xcassets */,
 				757945D51B66E38D004EEDCA /* MessageViewController.swift */,
 				752EEC1B1BB0A9D800770331 /* QuickViewViewController.swift */,
 				07411D8D1AAA407A002A4611 /* AttachmentTableViewCell.swift */,

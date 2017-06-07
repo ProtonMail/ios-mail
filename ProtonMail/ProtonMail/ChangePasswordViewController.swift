@@ -47,6 +47,10 @@ class ChangePasswordViewController: UIViewController {
         self.labelTwo.text = viewModel.getLabelTwo()
         self.labelThree.text = viewModel.getLabelThree()
         
+        currentPwdEditor.placeholder = NSLocalizedString("Current password", comment: "Placeholder")
+        newPwdEditor.placeholder = NSLocalizedString("New password", comment: "Placeholder")
+        confirmPwdEditor.placeholder = NSLocalizedString("Confirm new password", comment: "Placeholder")
+        
         focusFirstEmpty();
     }
     

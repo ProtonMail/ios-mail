@@ -42,6 +42,10 @@ class TwoFACodeView : PMView {
     @IBOutlet weak var twoFactorCodeField: TextInsetTextField!
     @IBOutlet weak var loginPasswordField: TextInsetTextField!
     
+    @IBOutlet weak var topTitleLabel: UILabel!
+    @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var enterButton: UIButton!
+    
     func initViewMode(_ mode : AuthMode) {
         self.mode = mode
         
@@ -70,6 +74,11 @@ class TwoFACodeView : PMView {
         toolbarDone.items = [barBtnDone]
         twoFactorCodeField.inputAccessoryView = toolbarDone
         
+        twoFactorCodeField.placeholder = NSLocalizedString("Two Factor Code", comment: "Placeholder")
+        loginPasswordField.placeholder = NSLocalizedString("Login Password", comment: "Placeholder")
+        topTitleLabel.text = NSLocalizedString("Authentication", comment: "Title")
+        cancelButton.setTitle(NSLocalizedString("Cancel", comment: "Action"), for: .normal)
+        enterButton.setTitle(NSLocalizedString("Enter", comment: "Action"), for: .normal)
     }
 
     func doneButtonAction() {

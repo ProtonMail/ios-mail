@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,9 +17,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TwoFACodeView" customModule="ProtonMail" customModuleProvider="target">
             <connections>
+                <outlet property="cancelButton" destination="yO1-76-Esh" id="3ss-HN-PEU"/>
+                <outlet property="enterButton" destination="mVZ-Rh-Rc6" id="lpU-f9-zF9"/>
                 <outlet property="loginPasswordField" destination="A8V-lM-bgH" id="5Eo-G6-gaO"/>
                 <outlet property="pwdHeight" destination="5Gn-ZK-Cm6" id="qnx-9V-skm"/>
                 <outlet property="pwdTop" destination="NGU-cD-s4H" id="3n5-SG-R8E"/>
+                <outlet property="topTitleLabel" destination="D95-yI-alT" id="vUg-24-uVU"/>
                 <outlet property="twoFactorCodeField" destination="6aO-pr-YfA" id="KGy-5p-JVA"/>
                 <outlet property="twofacodeHeight" destination="UfZ-Gb-q1p" id="ihG-Ij-uuA"/>
                 <outlet property="twofacodeTop" destination="RTj-vc-fVn" id="7cm-54-wOZ"/>

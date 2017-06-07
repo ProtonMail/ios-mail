@@ -43,10 +43,10 @@
             </objects>
             <point key="canvasLocation" x="321" y="1173"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Report Bug Navigation Controller-->
         <scene sceneID="ho3-Du-wUo">
             <objects>
-                <navigationController id="8dN-79-EXg" sceneMemberID="viewController">
+                <navigationController id="8dN-79-EXg" userLabel="Report Bug Navigation Controller" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="0vy-7G-ikU">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -100,17 +100,12 @@
                     </view>
                     <navigationItem key="navigationItem" title="REPORT BUGS" id="V6k-R2-Ziv" userLabel="SETTINGS">
                         <barButtonItem key="leftBarButtonItem" image="hamburger" id="G3s-bn-rVj"/>
-                        <barButtonItem key="rightBarButtonItem" title="Send" id="YG8-Ca-0Bt">
-                            <connections>
-                                <action selector="sendAction:" destination="jNg-ua-VGF" id="w2V-5z-TrT"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="menuButton" destination="G3s-bn-rVj" id="dRo-vS-Pzj"/>
-                        <outlet property="sendButton" destination="YG8-Ca-0Bt" id="eqH-kQ-kgP"/>
                         <outlet property="textView" destination="5sX-Zk-W85" id="CLI-h2-uS2"/>
                         <outlet property="textViewBottomConstraint" destination="F0r-BE-NrT" id="sH4-Q9-Mwl"/>
+                        <outlet property="topTitleLabel" destination="K0q-PU-hIm" id="XTI-xE-UyW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="trg-Ug-uZy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -558,10 +553,10 @@
             </objects>
             <point key="canvasLocation" x="321" y="1920"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Mailbox Navigation Controller-->
         <scene sceneID="O0q-7F-TSt">
             <objects>
-                <navigationController id="N9H-or-xL9" sceneMemberID="viewController">
+                <navigationController id="N9H-or-xL9" userLabel="Mailbox Navigation Controller" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="e1C-fN-Z7f">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -860,6 +855,7 @@
                         <outlet property="addLabelCenterConstraint" destination="uW4-hI-gWX" id="SfN-23-c0b"/>
                         <outlet property="applyButton" destination="aea-99-bTG" id="Q1B-oa-G2p"/>
                         <outlet property="archiveConstrains" destination="igJ-Er-OqR" id="bQk-gE-aGk"/>
+                        <outlet property="archiveOptionLabel" destination="MhH-jF-Qky" id="TbT-kn-tPS"/>
                         <outlet property="archiveSelectButton" destination="E7L-cs-KEo" id="Gnz-6e-ZRi"/>
                         <outlet property="archiveView" destination="jzF-8V-78C" id="Cys-C2-dQT"/>
                         <outlet property="backgroundImageView" destination="viD-Nu-yL2" id="K8Q-uQ-41x"/>
@@ -878,11 +874,11 @@
             </objects>
             <point key="canvasLocation" x="4965.6000000000004" y="1918.2908545727139"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Feedback Navigation Controller-->
         <scene sceneID="Hfi-Ob-mMm">
             <objects>
-                <navigationController id="vDl-7h-rdD" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="NgW-qO-WdT">
+                <navigationController id="vDl-7h-rdD" userLabel="Feedback Navigation Controller" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="NgW-qO-WdT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1239,10 +1235,10 @@
             </objects>
             <point key="canvasLocation" x="3957" y="2649"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Compose Navigation Controller-->
         <scene sceneID="4pa-9S-l0a">
             <objects>
-                <navigationController id="fzN-Ci-Qyg" sceneMemberID="viewController">
+                <navigationController id="fzN-Ci-Qyg" userLabel="Compose Navigation Controller" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ol1-XJ-ywN">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1285,11 +1281,6 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="hw7-TX-6n5">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="nXX-6p-5Cw">
-                            <connections>
-                                <action selector="cancel_clicked:" destination="3qu-iX-9kV" id="N75-mb-5Rq"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="sent_compose" id="bl0-O6-gSg">
                             <connections>
                                 <action selector="send_clicked:" destination="3qu-iX-9kV" id="rp9-R2-Kea"/>
@@ -1843,6 +1834,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="ra6-z6-Jk4"/>
                     <connections>
+                        <outlet property="cancelButton" destination="Bbn-ia-w6G" id="LzW-AY-9ph"/>
                         <outlet property="noResultLabel" destination="hkd-6v-qIH" id="7OS-3B-k7O"/>
                         <outlet property="searchTextField" destination="osS-Tz-qFA" id="htt-nR-W0x"/>
                         <outlet property="tableView" destination="bZe-7F-cQr" id="Xyl-eG-V8M"/>
@@ -2201,10 +2193,10 @@
             </objects>
             <point key="canvasLocation" x="337" y="4426"/>
         </scene>
-        <!--NavigationTitle-->
+        <!--Setting Detail View Controller-->
         <scene sceneID="3ab-f8-cjQ">
             <objects>
-                <viewController id="OCS-Qd-wj6" customClass="SettingDetailViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="OCS-Qd-wj6" userLabel="Setting Detail View Controller" customClass="SettingDetailViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="x0M-ng-1bV"/>
                         <viewControllerLayoutGuide type="bottom" id="QgQ-5X-ETT"/>
@@ -2757,10 +2749,10 @@
             </objects>
             <point key="canvasLocation" x="3065" y="4432"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Contact Navigation Controller-->
         <scene sceneID="SEY-3E-LYY">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="PFX-v3-PCL" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="PFX-v3-PCL" userLabel="Contact Navigation Controller" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="n9F-Oz-CJH">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -2775,13 +2767,13 @@
             </objects>
             <point key="canvasLocation" x="1162" y="3604"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Settings Navigation Controller-->
         <scene sceneID="ueG-Jo-XMf">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Olh-tY-NxQ" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Olh-tY-NxQ" userLabel="Settings Navigation Controller" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="xAT-mr-j4s">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xAT-mr-j4s">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2794,10 +2786,10 @@
             </objects>
             <point key="canvasLocation" x="337" y="3604"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--AddContact Navigation-->
         <scene sceneID="IQb-f9-tk6">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="d3P-H0-xNt" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="d3P-H0-xNt" userLabel="AddContact Navigation" sceneMemberID="viewController">
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
@@ -2814,12 +2806,12 @@
             </objects>
             <point key="canvasLocation" x="2258" y="4432"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Search Navigation Controller-->
         <scene sceneID="arq-ry-cmQ">
             <objects>
-                <navigationController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="xBI-ex-VGk" sceneMemberID="viewController">
+                <navigationController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="xBI-ex-VGk" userLabel="Search Navigation Controller" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="aTD-c0-dRX">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="aTD-c0-dRX">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -3605,14 +3597,19 @@
                     <navigationItem key="navigationItem" id="SHS-Cu-dtE"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="applyButton" destination="B6u-kW-eeN" id="WEV-vI-byJ"/>
+                        <outlet property="cancelButton" destination="IEc-oo-40o" id="9et-Yb-g56"/>
                         <outlet property="confirmPasswordErrorLabel" destination="KOo-na-US5" id="8tg-nz-hwB"/>
                         <outlet property="confirmPasswordField" destination="gQY-ri-D5h" id="gLa-cN-Orx"/>
                         <outlet property="hintErrorLabel" destination="q0n-in-oMg" id="drV-wX-fvZ"/>
                         <outlet property="hintField" destination="fpg-HV-7Sb" id="4Hp-ht-frj"/>
+                        <outlet property="moreInfoButton" destination="cmx-xE-Ipy" id="zbf-WI-rDM"/>
                         <outlet property="passwordErrorLabel" destination="ctc-VL-qc1" id="t5R-Pw-9NG"/>
                         <outlet property="passwordField" destination="n94-T2-2CO" id="dBw-GO-JD1"/>
                         <outlet property="removeButton" destination="CTd-8G-IRS" id="PeD-bH-38x"/>
                         <outlet property="scrollBottomPaddingConstraint" destination="cQy-sp-47p" id="dgm-I9-5UR"/>
+                        <outlet property="titleDesLabel" destination="hJf-vS-0Yw" id="Xfb-Xl-1hj"/>
+                        <outlet property="viewTitleLable" destination="ReU-hV-qXl" id="i0w-0T-X3u"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UTH-ze-3dV" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4008,15 +4005,15 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="YGe-pV-72F"/>
-        <segue reference="0zg-HM-MdK"/>
-        <segue reference="hZj-FM-cPb"/>
         <segue reference="fux-iz-qV0"/>
-        <segue reference="ddm-eA-erE"/>
-        <segue reference="GgS-nT-ctf"/>
+        <segue reference="w5b-0j-26v"/>
+        <segue reference="uj7-oW-fwS"/>
+        <segue reference="5rJ-hC-fsT"/>
+        <segue reference="zcW-AE-icm"/>
         <segue reference="3FM-PP-oeV"/>
+        <segue reference="GgS-nT-ctf"/>
         <segue reference="PpL-SW-U8F"/>
         <segue reference="Dpt-T7-EMY"/>
-        <segue reference="Yep-Vd-dxY"/>
-        <segue reference="5rJ-hC-fsT"/>
+        <segue reference="gwz-B9-War"/>
     </inferredMetricsTieBreakers>
 </document>

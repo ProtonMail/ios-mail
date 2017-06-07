@@ -21,7 +21,6 @@ class MailboxPasswordViewController: UIViewController {
     let buttonDisabledAlpha: CGFloat = 0.5
     let keyboardPadding: CGFloat = 12
     
-    @IBOutlet weak var decryptButton: UIButton!
     @IBOutlet weak var keyboardPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var backgroundImage: UIImageView!
@@ -35,24 +34,26 @@ class MailboxPasswordViewController: UIViewController {
     fileprivate let showPriority: UILayoutPriority = 750.0;
     
     @IBOutlet weak var logoTopPaddingConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var logoLeftPaddingConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var titleTopPaddingConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var titleLeftPaddingConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var passwordTopPaddingConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var decryptWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var decryptMidConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var topTitleLabel: UILabel!
+    @IBOutlet weak var decryptButton: UIButton!
+    @IBOutlet weak var resetMailboxPasswordAction: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDecryptButton()
         passwordTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("MAILBOX PASSWORD", comment: "Title"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#cecaca")])
+        
+        topTitleLabel.text = NSLocalizedString("DECRYPT MAILBOX", comment: "Title")
+        decryptButton.setTitle(NSLocalizedString("Decrypt", comment: "Action"), for: .normal)
+        resetMailboxPasswordAction.setTitle(NSLocalizedString("RESET MAILBOX PASSWORD", comment: "Action"), for: .normal)
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -246,7 +247,6 @@ class MailboxPasswordViewController: UIViewController {
     
     
     // MARK: - Actions
-    @IBOutlet weak var resetMailboxPasswordAction: UIButton!
     @IBAction func resetMBPAction(_ sender: AnyObject) {
         let alert = UIAlertController(title: NSLocalizedString("Alert", comment: "Title"), message: NSLocalizedString("To reset your mailbox password, please use the web version of ProtonMail at protonmail.com", comment: "Description"), preferredStyle: .alert)
         alert.addAction((UIAlertAction.okAction()))

@@ -1089,7 +1089,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
             leftButtons = [self.menuBarButtonItem]
         } else {
             if (self.cancelBarButtonItem == nil) {
-                self.cancelBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(MailboxViewController.cancelButtonTapped))
+                self.cancelBarButtonItem = UIBarButtonItem(title:NSLocalizedString("Cancel", comment: "Action"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(MailboxViewController.cancelButtonTapped))
             }
             
             leftButtons = [self.cancelBarButtonItem]

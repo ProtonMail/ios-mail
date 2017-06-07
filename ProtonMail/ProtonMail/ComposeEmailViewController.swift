@@ -57,6 +57,7 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     // private views
     fileprivate var webView : UIWebView!
     fileprivate var composeView : ComposeView!
+    fileprivate var cancelButton: UIBarButtonItem!
     
     // private vars
     fileprivate var timer : Timer!
@@ -88,6 +89,9 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.cancelButton = UIBarButtonItem(title:NSLocalizedString("Cancel", comment: "Action"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(ComposeEmailViewController.cancel_clicked(_:)))
+        self.navigationItem.leftBarButtonItem = cancelButton
         
         configureNavigationBar()
         setNeedsStatusBarAppearanceUpdate()
@@ -228,6 +232,10 @@ class ComposeEmailViewController: ZSSRichTextEditor, ViewModelProtocol {
             NSForegroundColorAttributeName: UIColor.white,
             NSFontAttributeName: navigationBarTitleFont
         ]
+        
+        self.navigationItem.leftBarButtonItem?.title = NSLocalizedString("Cancel", comment: "Action")
+        
+        cancelButton.title = NSLocalizedString("Cancel", comment: "Action")
     }
     
     override func didReceiveMemoryWarning() {

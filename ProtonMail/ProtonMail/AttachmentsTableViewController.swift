@@ -46,6 +46,9 @@ class AttachmentsTableViewController: UITableViewController {
     
     fileprivate var currentAttachmentSize : Int = 0
     
+    
+    fileprivate var doneButton: UIBarButtonItem!
+    
     var attachments: [Attachment] = [] {
         didSet {
             buildAttachments()
@@ -86,6 +89,9 @@ class AttachmentsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.doneButton = UIBarButtonItem(title:NSLocalizedString("Done", comment: "Action"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(AttachmentsTableViewController.doneAction(_:)))
+        self.navigationItem.leftBarButtonItem = doneButton
         
         self.tableView.register(UINib(nibName: "AttachmentTableViewCell", bundle: nil), forCellReuseIdentifier: AttachmentTableViewCell.Constant.identifier)
         self.tableView.separatorStyle = .none
