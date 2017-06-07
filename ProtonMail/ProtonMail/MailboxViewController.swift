@@ -159,6 +159,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        undoButton.setTitle(NSLocalizedString("Undo", comment: "Action"), for: .normal)
+
         self.setNavigationTitleText(viewModel.getNavigationTitle())
         
         self.tableView!.RegisterCell(MailboxMessageCell.Constant.identifier)
@@ -398,10 +400,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     internal func removeButtonTapped() {
         if viewModel.isDelete() {
             moveMessagesToLocation(.deleted)
-            showMessageMoved(title: "Message has been deleted.")
+            showMessageMoved(title: NSLocalizedString("Message has been deleted.", comment: "Title"))
         } else {
             moveMessagesToLocation(.trash)
-            showMessageMoved(title: "Message has been moved.")
+            showMessageMoved(title: NSLocalizedString("Message has been moved.", comment: "Title"))
         }
         cancelButtonTapped();
     }
@@ -730,7 +732,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     }
     
     fileprivate func showUndoView(_ title : String) {
-        undoLabel.text = "Message \(title)"
+        undoLabel.text = String(format: NSLocalizedString("Message %@", comment: "Message with title"), title)
         self.undoBottomDistance.constant = 0
         self.undoButton.isHidden = false
         self.undoButtonWidth.constant = 100.0
@@ -1244,9 +1246,9 @@ extension MailboxViewController : LablesViewControllerDelegate {
     
     func apply(type: LabelFetchType) {
         if type == .label {
-            showMessageMoved(title: "Labels have been applied.")
+            showMessageMoved(title: NSLocalizedString("Labels have been applied.", comment: "Title"))
         } else if type == .folder {
-            showMessageMoved(title: "Message has been moved.")
+            showMessageMoved(title: NSLocalizedString("Message has been moved.", comment: "Title"))
         }
     }
 }
@@ -1280,7 +1282,7 @@ extension MailboxViewController : TopMessageViewDelegate {
     
     internal func showTimeOutErrorMessage() {
         self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
-        self.latestSpaceHide = self.topMessageView.updateMessage(timeOut: "The request timed out.")
+        self.latestSpaceHide = self.topMessageView.updateMessage(timeOut: NSLocalizedString("The request timed out.", comment: "Title"))
         self.topMsgHeightConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : (self.latestSpaceHide * -1)
         self.updateViewConstraints()
         UIView.animate(withDuration: 0.25, animations: { () -> Void in
@@ -1290,7 +1292,7 @@ extension MailboxViewController : TopMessageViewDelegate {
     
     internal func showNoInternetErrorMessage() {
         self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
-        self.latestSpaceHide = self.topMessageView.updateMessage(noInternet : "No connectivity detected...")
+        self.latestSpaceHide = self.topMessageView.updateMessage(noInternet : NSLocalizedString("No connectivity detected...", comment: "Title"))
         self.topMsgHeightConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : (self.latestSpaceHide * -1)
         self.updateViewConstraints()
         UIView.animate(withDuration: 0.25, animations: { () -> Void in
@@ -1300,7 +1302,7 @@ extension MailboxViewController : TopMessageViewDelegate {
     
     internal func showOfflineErrorMessage(_ error : NSError?) {
         self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
-        self.latestSpaceHide = self.topMessageView.updateMessage(noInternet : error?.localizedDescription ?? "The ProtonMail current offline...")
+        self.latestSpaceHide = self.topMessageView.updateMessage(noInternet : error?.localizedDescription ?? NSLocalizedString("The ProtonMail current offline...", comment: "Title"))
         self.topMsgHeightConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : (self.latestSpaceHide * -1)
         self.updateViewConstraints()
         UIView.animate(withDuration: 0.25, animations: { () -> Void in
@@ -1310,7 +1312,7 @@ extension MailboxViewController : TopMessageViewDelegate {
     
     internal func show503ErrorMessage(_ error : NSError?) {
         self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
-        self.latestSpaceHide = self.topMessageView.updateMessage(noInternet : "API Server not reachable...")
+        self.latestSpaceHide = self.topMessageView.updateMessage(noInternet : NSLocalizedString("API Server not reachable...", comment: "Title"))
         self.topMsgHeightConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : (self.latestSpaceHide * -1)
         self.updateViewConstraints()
         
@@ -1327,9 +1329,9 @@ extension MailboxViewController : TopMessageViewDelegate {
             if count > 0 {
                 self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
                 if count == 1 {
-                    self.latestSpaceHide = self.topMessageView.updateMessage(newMessage: "You have a new email!")
+                    self.latestSpaceHide = self.topMessageView.updateMessage(newMessage: NSLocalizedString("You have a new email!", comment: "Title"))
                 } else {
-                    self.latestSpaceHide = self.topMessageView.updateMessage(newMessage: "You have \(count) new emails!")
+                    self.latestSpaceHide = self.topMessageView.updateMessage(newMessage: String(format: NSLocalizedString("You have %d new emails!", comment: "Message"), count))
                 }
                 self.topMsgHeightConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : (self.latestSpaceHide * -1)
                 self.updateViewConstraints()
@@ -1364,7 +1366,7 @@ extension MailboxViewController : TopMessageViewDelegate {
         case NotReachable:
             PMLog.D("Access Not Available")
             self.topMsgTopConstraint.constant = self.kDefaultSpaceShow
-            self.latestSpaceHide = self.topMessageView.updateMessage(noInternet: "No connectivity detected...")
+            self.latestSpaceHide = self.topMessageView.updateMessage(noInternet: NSLocalizedString("No connectivity detected...", comment: "Title"))
             self.topMsgHeightConstraint.constant = self.latestSpaceHide >= 0.0 ? self.kDefaultSpaceHide : (self.latestSpaceHide * -1)
             self.updateViewConstraints()
         case ReachableViaWWAN:

@@ -47,7 +47,7 @@
         <scene sceneID="ho3-Du-wUo">
             <objects>
                 <navigationController id="8dN-79-EXg" userLabel="Report Bug Navigation Controller" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="0vy-7G-ikU">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="0vy-7G-ikU">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -557,7 +557,7 @@
         <scene sceneID="O0q-7F-TSt">
             <objects>
                 <navigationController id="N9H-or-xL9" userLabel="Mailbox Navigation Controller" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="e1C-fN-Z7f">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="e1C-fN-Z7f">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -878,7 +878,7 @@
         <scene sceneID="Hfi-Ob-mMm">
             <objects>
                 <navigationController id="vDl-7h-rdD" userLabel="Feedback Navigation Controller" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="NgW-qO-WdT">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="NgW-qO-WdT">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1160,6 +1160,7 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="Mail" id="Y7X-YF-pK8">
+                        <barButtonItem key="backBarButtonItem" title=" " id="ucd-t8-khK"/>
                         <barButtonItem key="leftBarButtonItem" image="top_menu" id="MGt-Hd-KyR" userLabel="MenuItem"/>
                     </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
@@ -1224,7 +1225,6 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="backButton" destination="IrE-60-aCv" id="eWw-9W-awV"/>
-                        <outlet property="ev" destination="gvk-Br-Xxh" id="qqM-WR-dO8"/>
                         <segue destination="3qu-iX-9kV" kind="show" identifier="toCompose" id="ddm-eA-erE"/>
                         <segue destination="C6e-Un-S8J" kind="presentation" identifier="toApplyLabelsSegue" id="xUw-S1-zl5"/>
                         <segue destination="C6e-Un-S8J" kind="presentation" identifier="toMoveToFolderSegue" id="CfN-TC-C8a"/>
@@ -1239,7 +1239,7 @@
         <scene sceneID="4pa-9S-l0a">
             <objects>
                 <navigationController id="fzN-Ci-Qyg" userLabel="Compose Navigation Controller" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ol1-XJ-ywN">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="ol1-XJ-ywN">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1832,7 +1832,9 @@
                             <outletCollection property="gestureRecognizers" destination="JUq-cC-kZS" appends="YES" id="e8Z-dF-oEE"/>
                         </connections>
                     </view>
-                    <navigationItem key="navigationItem" id="ra6-z6-Jk4"/>
+                    <navigationItem key="navigationItem" id="ra6-z6-Jk4">
+                        <barButtonItem key="backBarButtonItem" title=" " id="0Jc-XC-2wP"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="cancelButton" destination="Bbn-ia-w6G" id="LzW-AY-9ph"/>
                         <outlet property="noResultLabel" destination="hkd-6v-qIH" id="7OS-3B-k7O"/>
@@ -2726,20 +2728,7 @@
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <navigationItem key="navigationItem" title="Add Contact" id="YFN-fV-0py">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="bSC-Uz-oGh">
-                            <color key="tintColor" red="0.98540240526199341" green="0.9950486421585083" blue="0.99995875358581543" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <connections>
-                                <action selector="didTapCancelButton:" destination="ZBC-AC-6J6" id="Ej3-jx-844"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="Tf1-6A-m7Y">
-                            <color key="tintColor" red="0.98540240526199341" green="0.9950486421585083" blue="0.99995875358581543" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <connections>
-                                <action selector="didTapSaveButton:" destination="ZBC-AC-6J6" id="3MI-tA-zUv"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Add Contact" id="YFN-fV-0py"/>
                     <connections>
                         <outlet property="emailTextField" destination="JnB-0D-abg" id="pQb-Ms-6hp"/>
                         <outlet property="nameTextField" destination="Wbh-mO-MsL" id="pHD-nR-YQ9"/>
@@ -2754,7 +2743,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="PFX-v3-PCL" userLabel="Contact Navigation Controller" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="n9F-Oz-CJH">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="n9F-Oz-CJH">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2773,7 +2762,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Olh-tY-NxQ" userLabel="Settings Navigation Controller" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xAT-mr-j4s">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="xAT-mr-j4s">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2793,7 +2782,7 @@
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="arL-wy-xoq">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="arL-wy-xoq">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2811,7 +2800,7 @@
             <objects>
                 <navigationController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="xBI-ex-VGk" userLabel="Search Navigation Controller" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="aTD-c0-dRX">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="aTD-c0-dRX">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -4005,15 +3994,15 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="YGe-pV-72F"/>
-        <segue reference="fux-iz-qV0"/>
-        <segue reference="w5b-0j-26v"/>
-        <segue reference="uj7-oW-fwS"/>
-        <segue reference="5rJ-hC-fsT"/>
-        <segue reference="zcW-AE-icm"/>
-        <segue reference="3FM-PP-oeV"/>
-        <segue reference="GgS-nT-ctf"/>
-        <segue reference="PpL-SW-U8F"/>
+        <segue reference="0zg-HM-MdK"/>
+        <segue reference="hZj-FM-cPb"/>
+        <segue reference="zIE-XJ-wkG"/>
+        <segue reference="uv8-bX-yhD"/>
+        <segue reference="ddm-eA-erE"/>
         <segue reference="Dpt-T7-EMY"/>
+        <segue reference="5rJ-hC-fsT"/>
+        <segue reference="3FM-PP-oeV"/>
+        <segue reference="PpL-SW-U8F"/>
         <segue reference="gwz-B9-War"/>
     </inferredMetricsTieBreakers>
 </document>

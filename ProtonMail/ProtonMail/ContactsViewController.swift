@@ -42,7 +42,8 @@ class ContactsViewController: ProtonMailViewController {
         self.title = NSLocalizedString("CONTACTS", comment: "Title")
         
         searchController = UISearchController(searchResultsController: nil)
-        
+        searchController.searchBar.placeholder = NSLocalizedString("Search", comment: "Placeholder")
+        searchController.searchBar.setValue(NSLocalizedString("Cancel", comment: "Action"), forKey:"_cancelButtonText")
         self.searchController.searchResultsUpdater = self
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.searchBar.delegate = self
