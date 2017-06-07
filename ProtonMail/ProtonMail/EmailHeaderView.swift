@@ -125,7 +125,8 @@ class EmailHeaderView: UIView {
         get {
             let n = self.sender?.name ?? ""
             let e = self.sender?.email ?? ""
-            let from = "From: \((n.isEmpty ? e : n))"
+            let f = NSLocalizedString("From:", comment: "Title")
+            let from = "From: \((n.isEmpty ? e : n))"  //TODO:: fix later
             let formRange = NSRange (location: 0, length: 6)
             let attributedString = NSMutableAttributedString(string: from, attributes: [NSFontAttributeName : UIFont.robotoMedium(size: 12), NSForegroundColorAttributeName : UIColor(hexColorCode: "#838897")])
             attributedString.setAttributes([NSFontAttributeName : UIFont.robotoMedium(size: 12), NSForegroundColorAttributeName : UIColor(hexColorCode: "#C0C4CE")], range: formRange)
@@ -161,6 +162,7 @@ class EmailHeaderView: UIView {
                 strTo += " +\(count - 1)"
             }
             
+            let t = NSLocalizedString("To:", comment: "Title")
             let to = "To: \(strTo)"
             let formRange = NSRange (location: 0, length: 4)
             let attributedString = NSMutableAttributedString(string: to, attributes: [NSFontAttributeName : UIFont.robotoMedium(size: 12), NSForegroundColorAttributeName : UIColor(hexColorCode: "#838897")])
@@ -181,6 +183,7 @@ class EmailHeaderView: UIView {
     
     fileprivate var ccShortAttr : NSMutableAttributedString! {
         get {
+            let c = NSLocalizedString("Cc:", comment: "Title")
             let to = "Cc: "
             let formRange = NSRange (location: 0, length: 4)
             let attributedString = NSMutableAttributedString(string: to, attributes: [NSFontAttributeName : UIFont.robotoMedium(size: 12), NSForegroundColorAttributeName : UIColor(hexColorCode: "#838897")])
