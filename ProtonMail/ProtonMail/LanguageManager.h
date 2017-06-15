@@ -14,6 +14,8 @@ typedef NS_ENUM(NSInteger, ELanguage)
     ELanguageGerman,
     ELanguageFrench,
     ELanguageRussian,
+    ELanguageSpanish,
+    ELanguageTurkish,
     
     ELanguageCount
 };

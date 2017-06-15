@@ -23,6 +23,10 @@ extension ELanguage {
                 return NSLocalizedString("French", comment: "Action")
             case .russian:
                 return NSLocalizedString("Russian", comment: "Action")
+            case .spanish:
+                return NSLocalizedString("Spanish", comment: "Action")
+            case .turkish:
+                return NSLocalizedString("Turkish", comment: "Action")
             default:
                 return ""
             }
@@ -40,6 +44,10 @@ extension ELanguage {
                 return "fr"
             case .russian:
                 return "ru"
+            case .spanish:
+                 return "es"
+            case .turkish:
+                return "tr"
             default:
                 return "en"
             }
@@ -50,13 +58,19 @@ extension ELanguage {
         return [ELanguage.english.code,
                 ELanguage.german.code,
                 ELanguage.french.code,
-                ELanguage.russian.code]
+                ELanguage.russian.code,
+                ELanguage.spanish.code,
+                ELanguage.turkish.code
+        ]
     }
     static func allItems() -> [ELanguage] {
         return [ELanguage.english,
                 ELanguage.german,
                 ELanguage.french,
-                ELanguage.russian]
+                ELanguage.russian,
+                ELanguage.spanish,
+                ELanguage.turkish
+        ]
     }
 }
 

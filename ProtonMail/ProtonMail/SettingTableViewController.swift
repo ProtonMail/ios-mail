@@ -77,6 +77,10 @@ class SettingTableViewController: ProtonMailViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.updateTitle()
+    }
+    
+    private func updateTitle() {
         self.title = NSLocalizedString("SETTINGS", comment: "Title")
     }
     
@@ -660,21 +664,9 @@ class SettingTableViewController: ProtonMailViewController {
                     if l != current_language {
                         alertController.addAction(UIAlertAction(title: l.description, style: .default, handler: { (action) -> Void in
                             let _ = self.navigationController?.popViewController(animated: true)
-                            //let window : UIWindow = UIApplication.shared.windows.last as UIWindow!
-                            
                             LanguageManager.saveLanguage(byCode: l.code)
-                            
-                            
+                            self.updateTitle()
                             tableView.reloadData()
-                            
-//                            ActivityIndicatorHelper.showActivityIndicatorAtView(window)
-//                            sharedUserDataService.updateUserSwipeAction(action_item == .left, action: swipeAction, completion: { (task, response, error) -> Void in
-//                                tableView.reloadData()
-//                                ActivityIndicatorHelper.hideActivityIndicatorAtView(window)
-//                                if error == nil {
-//                                    tableView.reloadData()
-//                                }
-//                            })
                         }))
                     }
                 }

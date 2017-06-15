@@ -4,11 +4,20 @@
 /* No comment provided by engineer. */
 "%d Minutes" = "%d Minuten";
 
+/* Key size text */
+"(2048 bit)" = "(2048 bit)";
+
+/* Key size text */
+"(4096 bit)" = "(4096 bit)";
+
 /* No comment provided by engineer. */
 "(string_show)" = "(kette_zeigen)";
 
 /* No comment provided by engineer. */
 "**********" = "**********";
+
+/* Title */
+"*OPTIONAL" = "*optional";
 
 /* Error */
 "2fa Authentication failed please try to login again" = "2FA-Authentifizierung fehlgeschlagen, bitte versuchen Sie es erneut";
@@ -27,7 +36,8 @@
    Touch id error message */
 "A passcode has not been set, enable it in the system Settings" = "Ein Kennwort wurde nicht festgestellt, rufen Sie System Einstellung um neues zu aktivieren";
 
-/* Error */
+/* Error
+   Title */
 "API Server not reachable..." = "API-Server nicht erreichbar...";
 
 /* Title */
@@ -48,6 +58,16 @@ Bitte besuchen Sie <a href=\"https://protonmail.com/support/knowledge-base/delin
 
 /* (No Commment) */
 "Add" = "Hinzufügen";
+
+/* edit contact navigation title */
+"Add Contact" = "Kontakt hinzufügen";
+
+/* Action
+   Apply label then also archive */
+"Add Folder" = "Ordner erstellen";
+
+/* Action */
+"Add Label" = "Label erstellen";
 
 /* Title */
 "Add New Folder" = "Neuen Ordner hinzufügen";
@@ -71,7 +91,7 @@ Bitte besuchen Sie <a href=\"https://protonmail.com/support/knowledge-base/delin
 
 THIS ACTION CANNOT BE UNDONE!" = "Alle Ihre bestehend verschlüsselte Nachrichten werden für immer verloren sein, aber Sie werden noch in der Lage, Ihre unverschlüsselte Nachrichten zu sehen.
 
-DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
+DIESE AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 
 /* Description */
 "Also used to reset a forgotten password." = "Kann auch verwendet werden, um ein vergessenes Kennwort zurücksetzen zu können.";
@@ -92,6 +112,9 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* Description */
 "Archived" = "Archiviert";
 
+/* Title */
+"Authentication" = "Autorisierung";
+
 /* Description */
 "Authentication Failed Wrong username or password" = "Authentifizierung fehlgeschlagen. Falscher Benutzername oder falsches Passwort.";
 
@@ -106,10 +129,14 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 
 /* settings protection section title
    Title */
-"Auto Lock Time" = "Automatische Sperre";
+"Auto Lock Time" = "Zeit zur automatischen Sperrung";
 
 /* settings general section title */
-"Auto Show Images" = "Bilder immer anzeigen";
+"Auto Show Images" = "Bilder automatisch laden";
+
+/* Action
+   top left back button */
+"Back" = "Zurück";
 
 /* Error */
 "Bad auth cache" = "Ungültiger Auth-Cache";
@@ -130,14 +157,29 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 "Bcc" = "Bcc";
 
 /* Title */
+"Bug Description" = "Beschreibung des Fehlers";
+
+/* Title */
 "Bug Report Received" = "Fehlerbericht empfangen";
+
+/* agree check box first part words */
+"By using protonmail, you agree to our" = "Durch die Verwendung von ProtonMail stimmen Sie unseren #Please-Insert-Link zu";
+
+/* human check option button */
+"CAPTCHA" = "CAPTCH";
 
 /* Action
    setup pin action */
 "CONFIRM" = "BESTÄTIGEN";
 
+/* Title */
+"CONTACTS" = "Kontakte";
+
 /* setup pin action */
 "CREATE" = "ERSTELLEN";
+
+/* key size note part 2 */
+"Can take several minutes to setup." = "Dieser Schritt kann einige Minuten in Anspruch nehmen.";
 
 /* Error */
 "Can't copy the file" = "Datei konnte nicht kopiert werden";
@@ -186,8 +228,8 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 
 /* Action
    folder apply - cancel button text
-   title
-   Title */
+   Title
+   title */
 "Cancel" = "Abbrechen";
 
 /* Action */
@@ -198,6 +240,9 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 
 /* Title */
 "Cc" = "Cc";
+
+/* Title */
+"Cc:" = "CC:";
 
 /* place holder */
 "Cell phone number" = "Handynummer";
@@ -259,6 +304,7 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 "Confirm Mailbox Password" = "Mailbox-Passwort bestätigen";
 
 /* place holder
+   Placeholder
    Title */
 "Confirm Password" = "Kennwort wiederholen";
 
@@ -268,27 +314,38 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* Title */
 "Confirm new mailbox password" = "Neues Passwort bestätigen";
 
-/* Title */
+/* Placeholder
+   Title */
 "Confirm new password" = "Neues Passwort wiederholen";
 
 /* Title */
 "Confirmation" = "Bestätigung";
 
+/* view top title */
+"Congratulations!" = "Glückwunsch!";
+
 /* Title */
 "Contact the ProtonMail team" = "Kontaktieren Sie das ProtonMail-team";
 
 /* Title */
-"CONTACTS" = "Kontakte";
-
-/* Title */
 "Contacts" = "Kontakte";
+
+/* Action
+   key setup continue button */
+"Continue" = "Weiter";
 
 /* top right action item title
    top right action text */
 "Create" = "Erstellen";
 
+/* Create account button */
+"Create Account" = "Konto erstellen";
+
 /* Error */
 "Create User failed please try again" = "Erstellen des Benutzer fehlgeschlagen, bitte versuchen Sie es erneut";
+
+/* Signup top title */
+"Create a new account" = "Erstelle ein neues Konto";
 
 /* Description */
 "Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Erstellen und Hinzufügen von Kategorien um Ihren Posteingang besser zu organisieren. Tippen und halten eine Nachricht, um alle Optionen zeigen zu lassen.";
@@ -298,11 +355,18 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
    Title */
 "Create user failed" = "Fehler bei der Erstellung des Nutzers";
 
+/* Change language title */
+"Current Language is: " = "Aktuelle Sprache ist: ";
+
 /* Title */
 "Current login password" = "Aktuelles Passwort";
 
-/* Title */
+/* Placeholder
+   Title */
 "Current password" = "Aktuelles Passwort";
+
+/* Title */
+"DECRYPT MAILBOX" = "Mailbox entschlüsseln";
 
 /* Title */
 "DISPLAY NAME" = "Angezeigter Name";
@@ -310,17 +374,20 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* Title */
 "DRAFTS" = "Entwürfe";
 
-/* Title */
-"Drafts" = "Entwürfe";
-
 /* like Date: 2017-10-10 */
 "Date" = "Datum";
+
+/* Title */
+"Date:" = "Datum:";
 
 /* No comment provided by engineer. */
 "Date: %@" = "Datum: %@";
 
 /* Title */
 "Debug" = "Debug";
+
+/* Action */
+"Decrypt" = "Entschlüsseln";
 
 /* Description */
 "Decrypt token failed please try again" = "Entschlüsselung der Sicherheitskette fehlgeschlagen";
@@ -333,7 +400,11 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
    error message when create new user */
 "Default error, please try again." = "Fehler, bitte versuchen Sie es erneut.";
 
-/* place holder */
+/* Placeholder */
+"Define Expiration Date" = "Ablaufdatum definieren";
+
+/* place holder
+   Placeholder */
 "Define Hint (Optional)" = "Definieren Sie Hinweis (Optional)";
 
 /* place holder */
@@ -366,12 +437,16 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* Title */
 "Don't Show Again" = "Nicht erneut anzeigen";
 
-/* Title */
+/* Action
+   Title */
 "Done" = "Erledigt";
 
 /* Action
    Title */
 "Draft" = "Entwurf";
+
+/* Title */
+"Drafts" = "Entwürfe";
 
 /* Action */
 "Edit" = "Bearbeiten";
@@ -384,6 +459,12 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 
 /* Title */
 "Edit Label" = "Kategorie bearbeiten";
+
+/* Placeholder */
+"Email" = "E-Mail";
+
+/* human check option button */
+"Email Verification" = "E-Mail Verifizierung";
 
 /* Title */
 "Email address" = "E-Mail-Adresse";
@@ -434,8 +515,17 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* Title */
 "Encrypted from outside pgp mime" = "Von extern mit pgp-mime verschlüsselt";
 
+/* key setup top title */
+"Encryption Setup" = "Einrichten der Verschlüsselung";
+
 /* Title */
 "End-to-End Encryption" = "Ende-zu-Ende Vershlüsselung";
+
+/* Action */
+"English" = "Englisch";
+
+/* Action */
+"Enter" = "Eingeben";
 
 /* place holder
    Title */
@@ -446,6 +536,12 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 
 /* Title */
 "Enter your PIN to unlock your inbox." = "Geben Sie Ihre PIN ein um den Posteingang zu entsperren.";
+
+/* human verification top title */
+"Enter your cell phone number" = "Geben Sie Ihre Handynummer an";
+
+/* top title */
+"Enter your existing email address." = "Geben Sie Ihre bereits existierende E-Mail-Adresse ein.";
 
 /* settings debug section title */
 "Error Logs" = "Fehlerprotokolle";
@@ -460,11 +556,17 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* Title */
 "Expiring Messages" = "Auslaufende Nachrichten";
 
-/* (No Commment) */
+/* Key size checkbox */
+"Extreme Security" = "Extreme Sicherheit";
+
+/* login page forgot pwd */
 "FORGOT PASSWORD?" = "Passwort vergessen?";
 
 /* Description */
 "Failed to initialize the application's saved data" = "Fehler beim Initialisieren der gespeicherten App-Daten";
+
+/* Title */
+"Feedback" = "Feedback";
 
 /* Error */
 "Fetch user info failed" = "Abrufen der Benutzerinformationen fehlgeschlagen";
@@ -473,11 +575,36 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
    place holder */
 "Folder Name" = "Ordnername";
 
-/* Action */
+/* Action
+   top left back button */
 "Forward" = "Weiterleiten";
 
 /* Title */
+"Forwarded message" = "Weitergeleitete Nachricht";
+
+/* Action */
+"French" = "Französisch";
+
+/* Title */
+"From" = "Von";
+
+/* Title */
+"From:" = "Von:";
+
+/* Title */
+"Fwd:" = "Fwd:";
+
+/* Title */
 "General Settings" = "Allgemeine Einstellungen";
+
+/* Action */
+"German" = "Deutsch";
+
+/* Action */
+"Get more information" = "Weitere Informationen";
+
+/* Action */
+"Go to inbox" = "Zum Posteingang";
 
 /* Title */
 "Help & Support" = "Hilfe & Support";
@@ -494,6 +621,9 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* Title */
 "Hide Details" = "Details ausblenden";
 
+/* Key size checkbox */
+"High Security" = "Hohe Sicherheit";
+
 /* No comment provided by engineer. */
 "Hours" = "Stunden";
 
@@ -502,6 +632,11 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 
 /* human check warning title */
 "Human Check Warning" = "Human Check Warnung";
+
+/* human verification top title
+   top title
+   view top title */
+"Human Verification" = "Captcha";
 
 /* Title */
 "INBOX" = "Posteingang";
@@ -551,6 +686,9 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
    update password error */
 "Invalid hashed password!" = "Ungültiger Passwordhash!";
 
+/* Title */
+"Keep me updated about new features" = "Informieren Sie mich über neue Funktionen";
+
 /* Error */
 "Key generation failed" = "Schlüsselgenerierung fehlgeschlagen";
 
@@ -561,7 +699,7 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 "Key invalid please go back try again" = "Schlüssel ungültig bitte gehen Sie zurück und versuchen es nocheinmal";
 
 /* Title */
-"LOGIN" = "Anmeldung";
+"LOGIN" = "Login";
 
 /* Title */
 "Label Management" = "Labelverwaltung";
@@ -574,6 +712,9 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 "Label as..." = "Kategorie als...";
 
 /* Title */
+"Labels have been applied." = "Labels wurden zugewiesen.";
+
+/* Title */
 "Labels/Folders" = "Kategorien/Ordner";
 
 /* Title */
@@ -581,6 +722,9 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 
 /* lib version text */
 "LibVersion" = "LibVersion";
+
+/* Action */
+"Load remote content" = "Externe Inhalte laden";
 
 /* No comment provided by engineer. */
 "Loading..." = "Wird geladen...";
@@ -591,14 +735,21 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* (No Commment) */
 "Localizable.strings" = "Englisch";
 
+/* Title */
+"Lock The App" = "App sperren";
+
 /* touch id box title like Login: email@email.com */
 "Login" = "Anmeldung";
 
-/* settings general section title */
+/* Placeholder
+   settings general section title */
 "Login Password" = "Anmeldung Kennwort";
 
 /* Error */
 "Login password doesn't match" = "Passwörter stimmen nicht überein";
+
+/* Title */
+"Logout" = "Abmelden";
 
 /* Title */
 "MAILBOX PASSWORD" = "Mailbox Kennwort";
@@ -621,6 +772,12 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* Action */
 "Mark as unread" = "Als ungelesen markieren";
 
+/* Message with title */
+"Message %@" = "Nachricht %@";
+
+/* Placeholder */
+"Message Password" = "Kennwort für diese Nachricht";
+
 /* settings debug section title */
 "Message Queue" = "Nachrichtenwarteschlange";
 
@@ -629,6 +786,12 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 
 /* No comment provided by engineer. */
 "Message expired" = "Nachricht ist abgelaufen";
+
+/* Title */
+"Message has been deleted." = "Nachricht wurde gelöscht.";
+
+/* Title */
+"Message has been moved." = "Nachricht wurde verschoben.";
 
 /* Error */
 "Message password does not match." = "Die eingegebenen Passwörter stimmen nicht überein.";
@@ -682,6 +845,9 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* Action */
 "NEED AN ACCOUNT? SIGN UP." = "Kostenlos anmelden";
 
+/* Placeholder */
+"Name" = "Name";
+
 /* Test */
 "Navigation Title - Test" = "Navigationstitel - Test";
 
@@ -691,10 +857,12 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* Title */
 "New mailbox password" = "Neues Mailbox Kennwort";
 
-/* Title */
+/* Placeholder
+   Title */
 "New password" = "Neues Kennwort";
 
-/* Error */
+/* Error
+   Title */
 "No connectivity detected..." = "Keine Verbindung erkannt...";
 
 /* Description */
@@ -709,6 +877,15 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* No comment provided by engineer. */
 "None" = "Keine";
 
+/* Signup user name notes */
+"Note: The Username is also your ProtonMail address." = "Hinweis: Der Benutzername ist auch Ihre ProtonMail-Adresse.";
+
+/* setup password notes */
+"Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it." = "Hinweis: Dies wird genutzt, um Ihre Nachrichten zu ver- & entschlüsseln. Verlieren Sie dieses Passwort nicht, wir können es nicht zurücksetzen.";
+
+/* setup password notes */
+"Note: This is used to log you into your account." = "Hinweis: Dies verwenden Sie, um sich in Ihr Konto einzuloggen.";
+
 /* Title */
 "Notification / Recovery Email" = "Benachrichtigung / E-Mail Wiederherstellung";
 
@@ -718,6 +895,9 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 
 /* Action */
 "OK" = "OK";
+
+/* Title */
+"On" = "AN";
 
 /* Description */
 "Only plus user could modify default mobile signature or turn it off!" = "Nur plus Benutzer dürfen Standard-Handy-Signatur ändern oder auschalten!";
@@ -749,6 +929,9 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* update notification email error
    update password error */
 "Password update failed" = "Aktualisierung des Passworts fehlgeschlagen";
+
+/* human check option button */
+"Phone Verification" = "Telefonische Verifizierung";
 
 /* Title */
 "Phone number invalid" = "Ungültige Mobilfunknummer";
@@ -783,6 +966,9 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 
 /* Error */
 "Please remove all attachments before changing sender!" = "Bitte entfernen Sie alle Anhänge vor dem Ändern des Absenders";
+
+/* human check select option title */
+"Please select one of the following options:" = "Bitte wählen Sie eine der folgenden Optionen:";
 
 /* Description */
 "Please set a password." = "Bitte legen Sie ein Kennwort fest.";
@@ -847,10 +1033,19 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 "Quick swipe actions" = "Aktionen für Wischgesten";
 
 /* Title */
+"REPORT BUGS" = "FEHLER MELDEN";
+
+/* Action */
+"RESET MAILBOX PASSWORD" = "MAILBOX-PASSWORT ZURÜCKSETZEN";
+
+/* Title */
 "Rate & Review" = "Bewerten & Rezensieren";
 
 /* set pin title */
 "Re-Enter your PIN" = "Bitte geben Sie ihre PIN erneut ein";
+
+/* Title */
+"Re:" = "Aw:";
 
 /* Title */
 "Recovery Code" = "Wiederherstellungscode";
@@ -870,8 +1065,12 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* Action */
 "Remove Star" = "Von Favoriten entfernen";
 
-/* Action */
+/* Action
+   top left back button */
 "Reply" = "Antworten";
+
+/* top left back button */
+"Reply All" = "Allen antworten";
 
 /* (No Commment) */
 "Reply message" = "Nachricht beantworten";
@@ -879,24 +1078,30 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* Action */
 "ReplyAll" = "Allen antworten";
 
+/* Title */
+"Report Bugs" = "Fehler melden";
+
 /* (No Commment) */
 "Reseting message cache ..." = "Nachrichtenspeicher zurücksetzen...";
 
 /* Title */
 "Resetting message cache ..." = "Nachrichtenspeicher zurücksetzen ...";
 
+/* Action */
+"Retry" = "Wiederholen";
+
 /* email verify code resend count down
    Title */
 "Retry after %d seconds" = "Nach %d Sekunden nochmal versuchen";
+
+/* Action */
+"Russian" = "Russisch";
 
 /* Title */
 "SENT" = "Gesendet";
 
 /* Title */
-"Send" = "Gesendet";
-
-/* Title */
-"Sent" = "Gesendet";
+"SETTINGS" = "EINSTELLUNGEN";
 
 /* Title */
 "SIGNATURE" = "UNTERSCHRIFT";
@@ -913,10 +1118,18 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* Title */
 "STARRED" = "Markiert";
 
+/* Action
+   Title */
+"Save" = "Speichern";
+
+/* title */
+"Save Changes" = "Änderungen speichern";
+
 /* Action */
 "Save draft" = "Entwurf speichern";
 
-/* Title */
+/* Placeholder
+   Title */
 "Search" = "Suche";
 
 /* Test */
@@ -940,11 +1153,26 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* Description */
 "Sending Message" = "Nachricht wird gesendet";
 
+/* Title */
+"Sent" = "Gesendet";
+
 /* Description */
 "Sent Failed" = "Senden fehlgeschlagen";
 
 /* Description */
 "Server proofs not valid!" = "Server-Kontrolle nicht gültig!";
+
+/* Title */
+"Set Password" = "Passwort festlegen";
+
+/* Description */
+"Set a password to encrypt this message for non-ProtonMail users." = "Legen Sie ein Kennwort zum Verschlüsseln dieser Nachricht für nicht-ProtonMail-Nutzer fest.";
+
+/* Signup passwords top title */
+"Set passwords" = "Passwort festlegen";
+
+/* Title */
+"Settings" = "Einstellungen";
 
 /* Title */
 "Share it with your friends" = "Mit Freunden teilen";
@@ -982,13 +1210,14 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* Title */
 "Storage" = "Speicher";
 
-/* Title */
-"Settings" = "Einstellungen";
+/* Placeholder */
+"Subject" = "Betreff";
 
 /* Title */
-"SETTINGS" = "Einstellungen";
+"Subject:" = "Betreff:";
 
-/* Title */
+/* Action
+   Title */
 "Support ProtonMail" = "Unterstützung ProtonMail";
 
 /* settings swipe actions section title */
@@ -1012,6 +1241,9 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* update password error */
 "The Password is wrong." = "Das Kennwort ist falsch.";
 
+/* Title */
+"The ProtonMail current offline..." = "ProtonMail ist momentan offline...";
+
 /* Error Description */
 "The UserName have been taken." = "Dieser Benutzername ist bereits vergeben.";
 
@@ -1021,6 +1253,9 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* Description */
 "The authentication token has expired." = "Die Authentifizierungskette ist abgelaufen.";
 
+/* key size notes */
+"The current standard" = "Der aktuelle Standard";
+
 /* Description */
 "The display name is now %@." = "Der Anzeigename ist jetzt %@.";
 
@@ -1029,6 +1264,9 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Senden fehlgeschlagen. Es gab einen Fehler mit dem Entwurf-Format.";
+
+/* key size note part 1 */
+"The highest level of encryption available." = "Die höchstmögliche Verschlüsselung, die zur Verfügung steht.";
 
 /* Description */
 "The label name is duplicate" = "Der Kategoriename ist dupliziert";
@@ -1043,6 +1281,12 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* Description */
 "The maximum number of labels is 20." = "Die maximale Anzahl von Kategorien ist 20.";
 
+/* Description */
+"The message password can't be empty" = "Das Nachrichten-Kennwort kann nicht leer sein";
+
+/* Description */
+"The message password didn't match" = "Die Passwörter stimmen nicht überein";
+
 /* (No Commment) */
 "The new password can't empty" = "Das neue Kennwort darf nicht leer sein";
 
@@ -1055,6 +1299,9 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* update password error */
 "The new password not match." = "Passwort stimmt nicht überein.";
 
+/* recovery email notes */
+"The optional recovery email address allows you to reset your login password if you forget it." = "Die optionale Wiederherstellungs-E-Mail ermöglicht es Ihnen, das Login-Passwort zurückzusetzen, wenn Sie es vergessen.";
+
 /* Description */
 "The password you entered does not match the current password." = "Das eingegebene Kennwort entspricht nicht das aktuelles Kennwort.";
 
@@ -1064,7 +1311,8 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* update password error */
 "The private update failed." = "Die private Aktualisierung fehlgeschlagen.";
 
-/* Error */
+/* Error
+   Title */
 "The request timed out." = "Die Anfrage ist abgelaufen.";
 
 /* Description */
@@ -1086,6 +1334,12 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* No comment provided by engineer. */
 "This contact belongs to your Address Book." = "Dieser Kontakt gehört zu Ihrem Adressbuch.";
 
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Diese E-Mail entspricht nicht den Authentifizierungsanforderungen Ihrer Domain. Sie könnte gefälscht oder unsachgemäß weitergeleitet sein!";
+
+/* spam score warning */
+"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Diese E-Mail scheint von einer ProtonMail-Adresse zu stammen, kam jedoch von außerhalb unseres Systems und entspricht nicht unseren Authentifizierungsanforderungen. Sie ist eventuell gefälscht oder unsachgemäß weitergeleitet!";
+
 /* Title */
 "To" = "An";
 
@@ -1094,6 +1348,9 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 
 /* Description */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" = "Sie können Ihr Mailbox-Passwort auf protonmail.com zurücksetzen";
+
+/* Title */
+"To:" = "An:";
 
 /* Error */
 "Token expired" = "Token abgelaufen";
@@ -1117,6 +1374,9 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 
 /* Title */
 "Tweet about ProtonMail" = "Tweete über ProtonMail";
+
+/* Placeholder */
+"Two Factor Code" = "Zwei-Faktor-Code";
 
 /* Title */
 "USER LOGIN" = "Benutzeranmeldung";
@@ -1161,6 +1421,9 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 
 /* error when sending the message */
 "Unable to send the email" = "Fehler beim Senden der E-Mail.";
+
+/* Action */
+"Undo" = "Rückgängig";
 
 /* Description */
 "Unknow Error" = "Ein unbekannter Fehler ist aufgetreten";
@@ -1217,6 +1480,12 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Warnung: Sie haben keine Wiederherstellungs-E-Mail eingerichtet sodass eine Wiederherstellung des Accounts unmöglich ist falls Sie Ihr Passwort vergessen. Ohne Wiederherstellungs-E-Mail fortfahren?";
 
+/* text field notes */
+"We will send a verification code to the cell phone above." = "Wir schicken einen Bestätigungs-Code auf das oben genannte Handy.";
+
+/* email field notes */
+"We will send a verification code to the email address above." = "Wir schicken einen Bestätigungs-Code an die obige E-Mail Adresse.";
+
 /* Title */
 "We would like to know what we can do better." = "Wir würden gerne wissen, was wir besser machen können.";
 
@@ -1225,6 +1494,9 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 
 /* Description */
 "What people see in the \"From\" field." = "Was andere im Feld \"Von\" sehen.";
+
+/* display name notes */
+"When you send an email, this is the name that appears in the sender field." = "Wenn Sie eine E-Mail senden, ist dies der Name, der im Absender-Feld erscheint.";
 
 /* error message title
    Title */
@@ -1236,6 +1508,15 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* Description */
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Sie können Hilfe und Unterstützung auf protonmail.com/support erhalten. Fehler können auch innerhalb der App gemeldet werden.";
 
+/* Message */
+"You have %d new emails!" = "Sie haben %d neue e-Mails!";
+
+/* Title */
+"You have a new email!" = "Sie haben eine neue E-Mail!";
+
+/* Confirmation message */
+"You have unsaved changes. Do you want to save it?" = "Sie haben nicht gespeicherte Änderungen. Möchten Sie diese speichern?";
+
 /* Description */
 "You have used %d%% of your storage space (%@)." = "Sie haben %d%% ihres Speicherplatzes (%@) in Verwendung.";
 
@@ -1244,6 +1525,9 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 
 /* Description */
 "You need at least one recipient to send" = "Sie benötigen wenigstens einen Empfänger um die Nachricht zu senden";
+
+/* view top title */
+"Your Country Code" = "Ihre Länder-Vorwahl";
 
 /* Description */
 "Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Ihr Postfach ist nun mit Ende-zu-Ende-Verschlüsselung geschützt. Um automatisch sicher E-Mails an Freunde zu senden holen Sie diese zu ProtonMail! Sie können auch manuell Nachrichten an sie verschlüsseln falls sie nicht ProtonMail verwenden.";
@@ -1254,7 +1538,11 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* Description */
 "Your signature has been updated." = "Deine Signatur wurde aktualisiert.";
 
-/* like at 10:00pm */
+/* agree check box middle word */
+"and" = "und";
+
+/* like at 10:00pm
+   Title */
 "at" = "bei";
 
 /* Error */
@@ -1265,6 +1553,9 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 
 /* Error */
 "attempts remaining until secure data wipe!" = "verbleibende Versuche bis zur sicheren Datenlöschung!";
+
+/* Action */
+"close tour" = "Tour schließen";
 
 /* No comment provided by engineer. */
 "days" = "Tage";
@@ -1281,8 +1572,14 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 /* Title */
 "normal attachments" = "normale Anhänge";
 
+/* agree check box privacy */
+"privacy policy." = "Datenschutzerklärung.";
+
 /* Title */
 "reCAPTCHA verification failed" = "reCAPTCHA Verifizierung fehlgeschlagen";
+
+/* agree check box terms */
+"terms and conditions" = "Nutzungsbedingungen";
 
 /* Test */
 "test value" = "Testwert";
@@ -1292,4 +1589,7 @@ DIES AKTION KANN NICHT RÜCKGÄNGIG GEMACHT WERDEN!";
 
 /* versions first character */
 "v" = "v";
+
+/* Title */
+"wrote:" = "Schrieb:";
 
