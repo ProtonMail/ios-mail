@@ -13,6 +13,9 @@ protocol SignupViewModelDelegate{
     func verificationCodeChanged(_ viewModel : SignupViewModel, code : String!)
 }
 
+
+typealias AvailableDomainsComplete = ([String]) -> Void
+
 open class SignupViewModel : NSObject {
     func setDelegate (_ delegate: SignupViewModelDelegate?) {
         fatalError("This method must be overridden")
@@ -91,6 +94,10 @@ open class SignupViewModel : NSObject {
     }
     
     func getDirect() -> [String] {
+        fatalError("This method must be overridden")
+    }
+    
+    func getDomains(_ complete : @escaping AvailableDomainsComplete) -> Void {
         fatalError("This method must be overridden")
     }
 }
