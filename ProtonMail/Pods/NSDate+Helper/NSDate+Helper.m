@@ -37,6 +37,7 @@ static NSString *kNSDateHelperFormatShortDate           = @"MMM d";
 static NSString *kNSDateHelperFormatWeekday             = @"EEEE";
 static NSString *kNSDateHelperFormatWeekdayWithTime     = @"EEEE h:mm a";
 static NSString *kNSDateHelperFormatTime                = @"h:mm a";
+static NSString *kNSDateHelperFormatTime24Hour          = @"HH:mm";
 static NSString *kNSDateHelperFormatTimeWithPrefix      = @"'at' h:mm a";
 static NSString *kNSDateHelperFormatSQLDate             = @"yyyy-MM-dd";
 static NSString *kNSDateHelperFormatSQLTime             = @"HH:mm:ss";
@@ -46,6 +47,19 @@ static NSString *kNSDateHelperFormatSQLDateWithTime     = @"yyyy-MM-dd HH:mm:ss"
 
 static NSCalendar *_calendar = nil;
 static NSDateFormatter *_displayFormatter = nil;
+
++ (Boolean)using12hClockFormat {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setLocale:[NSLocale currentLocale]];
+    [formatter setDateStyle:NSDateFormatterNoStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    NSString *dateString = [formatter stringFromDate:[NSDate date]];
+    NSRange amRange = [dateString rangeOfString:[formatter AMSymbol]];
+    NSRange pmRange = [dateString rangeOfString:[formatter PMSymbol]];
+    BOOL is24h = (amRange.location == NSNotFound && pmRange.location == NSNotFound);
+    [formatter release];
+    return !is24h;
+}
 
 + (void)initializeStatics {
     static dispatch_once_t onceToken;
@@ -202,7 +216,12 @@ static NSDateFormatter *_displayFormatter = nil;
 		if (prefixed) {
 			[[self sharedDateFormatter] setDateFormat:kNSDateHelperFormatTimeWithPrefix]; // at 11:30 am
 		} else {
-			[[self sharedDateFormatter] setDateFormat:kNSDateHelperFormatTime]; // 11:30 am
+            if ([self using12hClockFormat]) {
+                [[self sharedDateFormatter] setDateFormat:kNSDateHelperFormatTime]; // 11:30 am  04:30 pm
+            } else {
+                [[self sharedDateFormatter] setDateFormat:kNSDateHelperFormatTime24Hour]; // 16:30
+            }
+            
 		}
 	} else {
 		// check if date is within last 7 days

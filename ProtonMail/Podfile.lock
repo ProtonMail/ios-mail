@@ -40,7 +40,7 @@ DEPENDENCIES:
   - Masonry (= 1.0.2)
   - MBProgressHUD (= 0.9.2)
   - MCSwipeTableViewCell (~> 2.1.4)
-  - NSDate+Helper (= 1.0.4)
+  - NSDate+Helper (from `https://github.com/ProtonMail/nsdate-helper.git`, branch `master`)
   - OpenPGP (from `../OpenPGP`)
   - RHAddressBook (= 1.1.1)
   - SWRevealViewController (= 2.3.0)
@@ -52,6 +52,9 @@ EXTERNAL SOURCES:
   AFNetworkActivityLogger:
     :branch: '3_0_0'
     :git: https://github.com/AFNetworking/AFNetworkActivityLogger.git
+  NSDate+Helper:
+    :branch: master
+    :git: https://github.com/ProtonMail/nsdate-helper.git
   OpenPGP:
     :path: "../OpenPGP"
   ZSSRichTextEditor:
@@ -61,6 +64,9 @@ CHECKOUT OPTIONS:
   AFNetworkActivityLogger:
     :commit: abc565fe804f210dfda3b028c9a64e7c32e44600
     :git: https://github.com/AFNetworking/AFNetworkActivityLogger.git
+  NSDate+Helper:
+    :commit: 43d1301b1449d9d98f6ae1f3e2c049b158885758
+    :git: https://github.com/ProtonMail/nsdate-helper.git
 
 SPEC CHECKSUMS:
   AFNetworkActivityLogger: e77f68d014becb33c4306a23f56a64906ff72670
@@ -78,6 +84,6 @@ SPEC CHECKSUMS:
   UIColor+Hex: 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   ZSSRichTextEditor: b61bdcb41a0b5609d523efadc680f0d6b022c3dd
 
-PODFILE CHECKSUM: 655740f344cec3bbabee28859020df921f40346c
+PODFILE CHECKSUM: 48a5c2753ca455e601d8071aff47f37d21a8d068
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.1

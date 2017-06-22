@@ -15,7 +15,8 @@ def pm_pods
     pod 'AFNetworkActivityLogger', :git => 'https://github.com/AFNetworking/AFNetworkActivityLogger.git', :branch => '3_0_0'
     #pod 'AFNetworkActivityLogger', '2.0.4'
 	pod 'MBProgressHUD' , '0.9.2'
-	pod 'NSDate+Helper', '1.0.4'
+    #based on 1.0.4
+    pod 'NSDate+Helper', :git => 'https://github.com/ProtonMail/nsdate-helper.git', :branch => 'master'
 	pod 'UICKeyChainStore', '2.1.0'
 	pod 'SWRevealViewController', '2.3.0'
 	pod 'Masonry', '1.0.2'
