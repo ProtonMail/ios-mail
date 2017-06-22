@@ -183,31 +183,12 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
                     MBProgressHUD.hide(for: self.view, animated: true)
                     self.doneClicked = false
                     if !message.isEmpty {
-                        var alert :  UIAlertController!
-                        var title = NSLocalizedString("Create user failed")
-                        var message = ""
-                        if error?._code == 12081 { //USER_CREATE_NAME_INVALID = 12081
-                            title = NSLocalizedString("User name invalid")
-                            message = NSLocalizedString("Please try a different user name.")
-                        } else if error?._code == 12082 { //USER_CREATE_PWD_INVALID = 12082
-                            title = NSLocalizedString("Account password invalid")
-                            message = NSLocalizedString("Please try a different password.")
-                        } else if error?._code == 12083 { //USER_CREATE_EMAIL_INVALID = 12083
-                            title = NSLocalizedString("The verification email invalid")
-                            message = NSLocalizedString("Please try a different email address.")
-                        } else if error?._code == 12084 { //USER_CREATE_EXISTS = 12084
-                            title = NSLocalizedString("User name exist")
-                            message = NSLocalizedString("Please try a different user name.")
-                        } else if error?._code == 12085 { //USER_CREATE_DOMAIN_INVALID = 12085
-                            title = NSLocalizedString("Email domain invalid")
-                            message = NSLocalizedString("Please try a different domain.")
-                        } else if error?._code == 12087 { //USER_CREATE_TOKEN_INVALID = 12087
-                            title = NSLocalizedString("Wrong verification code")
-                            message = NSLocalizedString("Please try again.")
-                        } else {
-                            message = error?.localizedDescription ?? NSLocalizedString("Default error, please try again.");
+                        let title = NSLocalizedString("Create user failed")
+                        var message = NSLocalizedString("Default error, please try again.")
+                        if let error = error {
+                            message = error.localizedDescription
                         }
-                        alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
                         alert.addOKAction()
                         self.present(alert, animated: true, completion: nil)
                     } else {
