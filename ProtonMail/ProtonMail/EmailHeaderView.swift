@@ -85,7 +85,6 @@ class EmailHeaderView: UIView {
     fileprivate let kEmailDetailToWidth: CGFloat = 40.0
     fileprivate let kEmailDetailCCLabelMarginTop: CGFloat = 10.0
     fileprivate let kEmailDetailDateLabelMarginTop: CGFloat = 10.0
-    fileprivate let kEmailTimeLongFormat: String = "MMMM d, yyyy, h:mm a"
     fileprivate let kEmailDetailButtonMarginLeft: CGFloat = 5.0
     fileprivate let kEmailHasAttachmentsImageViewMarginRight: CGFloat = -4.0
     fileprivate let kEmailIsEncryptedImageViewMarginRight: CGFloat = -8.0
@@ -93,8 +92,10 @@ class EmailHeaderView: UIView {
     fileprivate let kEmailBodyTextViewMarginRight: CGFloat = 0//-16.0
     fileprivate let kEmailBodyTextViewMarginTop: CGFloat = 16.0
     fileprivate let kSeparatorBetweenHeaderAndBodyMarginTop: CGFloat = 16.0
+    
     fileprivate let k12HourMinuteFormat = "h:mm a"
-    fileprivate let k24HourMinuteFormat = "h:mm a"
+    fileprivate let k24HourMinuteFormat = "HH:mm"
+
     fileprivate var tempFileUri : URL?
     
     func getHeight () -> CGFloat {
@@ -248,6 +249,20 @@ class EmailHeaderView: UIView {
         }
     }
     
+    func using12hClockFormat() -> Bool {
+        
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.dateStyle = .none
+        formatter.timeStyle = .short
+        
+        let dateString = formatter.string(from: Date())
+        let amRange = dateString.range(of: formatter.amSymbol)
+        let pmRange = dateString.range(of: formatter.pmSymbol)
+        
+        return !(pmRange == nil && amRange == nil)
+    }
+    
     // MARK : Private functions
     func updateHeaderData (_ title : String,
                            sender : ContactVO, to : [ContactVO]?, cc : [ContactVO]?, bcc : [ContactVO]?,
@@ -280,8 +295,9 @@ class EmailHeaderView: UIView {
         
         self.emailFavoriteButton.isSelected = self.starred;
         
-        self.emailShortTime.text = "at \(self.date.string(format:self.k12HourMinuteFormat))".lowercased()
-        let tm = self.date.formattedWith("'On' EE, MMM d, yyyy 'at' \(k12HourMinuteFormat)") ;
+        let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
+        self.emailShortTime.text = "at \(self.date.string(format:timeformat))".lowercased()
+        let tm = self.date.formattedWith("'On' EE, MMM d, yyyy 'at' \(timeformat)") ;
         self.emailDetailDateLabel.text = "Date: \(tm)"
         
         let lockType : LockTypes = encType.lockType
@@ -669,7 +685,8 @@ class EmailHeaderView: UIView {
         self.emailDetailDateLabel.font = UIFont.robotoMedium(size: UIFont.Size.h6)
         self.emailDetailDateLabel.numberOfLines = 1
         if let messageTime = self.date {
-            let tm = messageTime.formattedWith("'On' EE, MMM d, yyyy 'at' h:mm a");
+            let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
+            let tm = messageTime.formattedWith("'On' EE, MMM d, yyyy 'at' \(timeformat)");
             self.emailDetailDateLabel.text = "Date: \(tm)"
         } else {
             self.emailDetailDateLabel.text = "Date: "
