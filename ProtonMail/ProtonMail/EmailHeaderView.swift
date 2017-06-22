@@ -16,7 +16,7 @@ protocol EmailHeaderViewProtocol {
 protocol EmailHeaderActionsProtocol {
     func starredChanged(_ isStarred : Bool)
     
-    func quickLookAttachment (_ tempfile : URL, keyPackage:Data, fileName:String)
+    func quickLookAttachment (_ tempfile : URL, keyPackage:Data, fileName:String, type: String)
     
     func showImage()
 }
@@ -1290,7 +1290,7 @@ extension EmailHeaderView: UITableViewDelegate {
                     if let cell = tableView.cellForRow(at: indexPath) {
                         if let key_packet = attachment.keyPacket {
                             if let data: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-                                openLocalURL(localURL, keyPackage: data, fileName: attachment.fileName, forCell: cell)
+                                openLocalURL(localURL, keyPackage: data, fileName: attachment.fileName, type: attachment.mimeType, forCell: cell)
                             }
                         }
                     }
@@ -1347,7 +1347,7 @@ extension EmailHeaderView: UITableViewDelegate {
                                     if let cell = self.attachmentView!.cellForRow(at: indexPath) {
                                         if let key_packet = attachment.keyPacket {
                                             if let data: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-                                                self.openLocalURL(localURL, keyPackage: data, fileName: attachment.fileName, forCell: cell)
+                                                self.openLocalURL(localURL, keyPackage: data, fileName: attachment.fileName, type: attachment.mimeType, forCell: cell)
                                             }
                                         }
                                     }
@@ -1373,7 +1373,7 @@ extension EmailHeaderView: UITableViewDelegate {
     //    }
     //    }
     
-    fileprivate func openLocalURL(_ localURL: URL, keyPackage:Data, fileName:String, forCell cell: UITableViewCell) {
-        self.actionsDelegate?.quickLookAttachment(localURL, keyPackage: keyPackage, fileName: fileName)
+    fileprivate func openLocalURL(_ localURL: URL, keyPackage:Data, fileName:String, type: String, forCell cell: UITableViewCell) {
+        self.actionsDelegate?.quickLookAttachment(localURL, keyPackage: keyPackage, fileName: fileName, type: type)
     }
 }
