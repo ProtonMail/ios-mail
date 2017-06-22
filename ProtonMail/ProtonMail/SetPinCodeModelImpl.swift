@@ -72,10 +72,10 @@ class SetPinCodeModelImpl : PinCodeViewModel {
     }
     
     override func getPinFailedRemainingCount() -> Int {
-        return 10;
+        return 11;
     }
     
     override func getPinFailedError() -> String {
-        return ""
+        return "The PIN does not match!!!"
     }
 }

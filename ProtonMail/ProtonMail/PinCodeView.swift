@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AudioToolbox
 
 protocol PinCodeViewDelegate {
     func Cancel()
@@ -107,6 +108,7 @@ class PinCodeView : PMView {
             attempsLabel.backgroundColor = UIColor.clear
             attempsLabel.textColor = UIColor.red
         }
+        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
     }
     
     func hideAttempError(_ reset : Bool) {
@@ -139,7 +141,7 @@ class PinCodeView : PMView {
     }
     
     func showError() {
-        pinView.shake(3, offset: 10)
+        attempsLabel.shake(3, offset: 10)
         pinCode = ""
     }
     

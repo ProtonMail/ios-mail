@@ -10,6 +10,7 @@ import UIKit
 import QuickLook
 import Foundation
 import CoreData
+import PassKit
 
 
 class MessageViewController: ProtonMailViewController, ViewModelProtocol{
@@ -602,16 +603,23 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
         self.messagesSetValue(setValue: isStarred, forKey: Message.Attributes.isStarred)
     }
     
-    func quickLookAttachment (_ localURL : Foundation.URL, keyPackage:Data, fileName:String) {
+    func quickLookAttachment (_ localURL : Foundation.URL, keyPackage:Data, fileName:String, type: String) {
         if let data : Data = try? Data(contentsOf: localURL) {
             do {
                 tempFileUri = FileManager.default.attachmentDirectory.appendingPathComponent(fileName)
                 if let decryptData = try data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!) {
                     try? decryptData.write(to: tempFileUri!, options: [.atomic])
-                    let previewQL = QuickViewViewController()
-                    previewQL.dataSource = self
-                    latestPresentedView = previewQL
-                    self.present(previewQL, animated: true, completion: nil)
+                    //TODO:: the hard code string need change it to enum later
+                    if type == "application/vnd.apple.pkpass", let pkfile = try? Data(contentsOf: tempFileUri!) {
+                        let pass : PKPass = PKPass(data: pkfile, error: nil)
+                        let vc = PKAddPassesViewController(pass: pass) as PKAddPassesViewController
+                        self.present(vc, animated: true, completion: nil)
+                    } else {
+                        let previewQL = QuickViewViewController()
+                        previewQL.dataSource = self
+                        latestPresentedView = previewQL
+                        self.present(previewQL, animated: true, completion: nil)
+                    }
                 }
             } catch let ex as NSError {
                 PMLog.D("quickLookAttachment error : \(ex)")
