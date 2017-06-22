@@ -67,4 +67,5 @@
 + (NSString *)timestampFormatString;
 + (NSString *)dbFormatString;
 
++ (Boolean)using12hClockFormat;
 @end

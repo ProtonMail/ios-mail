@@ -19,6 +19,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     
     @IBOutlet weak var agreeCheck: UIButton!
     @IBOutlet weak var createAccountButton: UIButton!
+    @IBOutlet weak var pickerButton: UIButton!
     
     //define
     fileprivate let hidePriority : UILayoutPriority = 1.0;
@@ -34,7 +35,7 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
     
-    let domains : [String] = ["protonmail.com", "protonmail.ch"]
+    var domains : [String] = ["protonmail.com", "protonmail.ch"]
     var selected : Int = 0;
     
     fileprivate let kSegueToSignUpPassword = "sign_up_password_segue"
@@ -62,11 +63,18 @@ class SignUpUserNameViewController: UIViewController, UIWebViewDelegate, UIPicke
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         resetChecking()
-        
         usernameTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Username"), attributes:[NSForegroundColorAttributeName : UIColor(hexColorCode: "#9898a8")])
-        self.updatePickedDomain()
+        MBProgressHUD.showAdded(to: view, animated: true)
+        pickerButton.isHidden = true
+        pickedDomainLabel.isHidden = true
+        viewModel.getDomains { (ds : [String]) in
+            MBProgressHUD.hide(for: self.view, animated: true)
+            self.pickerButton.isHidden = false
+            self.pickedDomainLabel.isHidden = false
+            self.domains = ds
+            self.updatePickedDomain()
+        }
     }
     
     func updatePickedDomain () {

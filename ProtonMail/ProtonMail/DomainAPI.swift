@@ -28,7 +28,7 @@ final class GetAvailableDomainsRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override open func getRequestPath() -> String {
-        return DomainsAPI.Path
+        return DomainsAPI.Path + "/available"
     }
     
     override open func getVersion() -> Int {
@@ -36,5 +36,10 @@ final class GetAvailableDomainsRequest<T : ApiResponse> : ApiRequest<T> {
     }
 }
 
-
-
+final class AvailableDomainsResponse : ApiResponse {
+    var domains : [String]?
+    override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
+        self.domains = response?["Domains"] as? [String]
+        return true
+    }
+}
