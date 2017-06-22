@@ -174,10 +174,14 @@ extension PinCodeViewController : PinCodeViewDelegate {
                     let _ = self.navigationController?.popViewController(animated: true)
                 } else {
                     let count = self.viewModel.getPinFailedRemainingCount()
-                    if count < 10 {
+                    if count == 11 { //when setup
+                        self.pinCodeView.resetPin()
+                        self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: false)
+                    } else if count < 10 {
                         if count <= 0 {
                             Cancel()
                         } else {
+                            self.pinCodeView.resetPin()
                             self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: count < 4)
                         }
                     }
