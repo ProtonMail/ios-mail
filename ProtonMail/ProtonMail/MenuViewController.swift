@@ -125,12 +125,12 @@ class MenuViewController: UIViewController {
                     PMLog.D("Menu Table Clicked -- Done")
                     if indexPath.section == 0 {
                         self.lastMenuItem = self.itemForIndexPath(indexPath)
-                        mailboxViewController.viewModel = MailboxViewModelImpl(location: self.lastMenuItem.menuToLocation)
+                        sharedVMService.mailbox(fromMenu: mailboxViewController, location: self.lastMenuItem.menuToLocation)
                     } else if indexPath.section == 1 {
                     } else if indexPath.section == 2 {
                         //if indexPath.row < fetchedLabels?.fetchedObjects?.count {
                         let label = self.fetchedLabels?.object(at: IndexPath(row: indexPath.row, section: 0)) as! Label
-                        mailboxViewController.viewModel = LabelboxViewModelImpl(label: label)
+                        sharedVMService.labelbox(fromMenu: mailboxViewController, label: label)
                         //}
                     } else {
                     }

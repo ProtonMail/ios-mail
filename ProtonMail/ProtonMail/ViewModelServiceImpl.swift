@@ -18,6 +18,9 @@ class ViewModelServiceImpl: ViewModelService {
     //the active view controller needs to be reset when resetComposerView be called
     private var activeViewController : ViewModelProtocol?
     
+    //the active mailbox
+    private var mailboxViewController : ViewModelProtocol?
+    
     
     override func signOut() {
         self.resetView()
@@ -137,5 +140,24 @@ class ViewModelServiceImpl: ViewModelService {
     override func messageDetails(fromPush vmp: ViewModelProtocol) {
         activeViewController = vmp
     }
+    
+    
+    override func mailbox(fromMenu vmp : ViewModelProtocol, location : MessageLocation) -> Void {
+        if let oldVC = mailboxViewController {
+            oldVC.inactiveViewModel()
+        }
+        mailboxViewController = vmp
+        let viewModel = MailboxViewModelImpl(location: location)
+        vmp.setViewModel(viewModel)
+    }
+    override func labelbox(fromMenu vmp : ViewModelProtocol, label: Label) -> Void {
+        if let oldVC = mailboxViewController {
+            oldVC.inactiveViewModel()
+        }
+        mailboxViewController = vmp
+        let viewModel = LabelboxViewModelImpl(label: label)
+        vmp.setViewModel(viewModel)
+    }
+    
     
 }

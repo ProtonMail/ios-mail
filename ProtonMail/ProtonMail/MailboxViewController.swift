@@ -47,7 +47,7 @@ class UndoMessage {
     }
 }
 
-class MailboxViewController: ProtonMailViewController {
+class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     
     // MARK: - View Outlets
     @IBOutlet weak var tableView: UITableView!
@@ -78,8 +78,8 @@ class MailboxViewController: ProtonMailViewController {
     @IBOutlet weak var undoBottomDistance: NSLayoutConstraint!
     // MARK: - Private attributes
     
-    internal var viewModel: MailboxViewModel!
-    fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>? //TODO:: this need release the delegate after use
+    fileprivate var viewModel: MailboxViewModel!
+    fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     
     // this is for when user click the notification email
     internal var messageID: String?
@@ -143,6 +143,16 @@ class MailboxViewController: ProtonMailViewController {
     fileprivate let kDefaultSpaceHide : CGFloat = -34.0
     fileprivate let kDefaultSpaceShow : CGFloat = 4.0
     fileprivate var latestSpaceHide : CGFloat = 0.0
+    
+    
+    //not in used
+    func setViewModel(_ vm: Any) {
+        self.viewModel = vm as! MailboxViewModel
+    }
+    
+    func inactiveViewModel() {
+        resetFetchedResultsController()
+    }
     
     // MARK: - UIViewController Lifecycle
     
@@ -769,7 +779,9 @@ class MailboxViewController: ProtonMailViewController {
     }
     
     func resetFetchedResultsController() {
-        self.fetchedResultsController?.delegate = nil
+        if let controller = self.fetchedResultsController {
+            controller.delegate = nil
+        }
     }
     
     fileprivate func fetchMessagesIfNeededForIndexPath(_ indexPath: IndexPath) {
@@ -787,7 +799,6 @@ class MailboxViewController: ProtonMailViewController {
                                 self.fetching = true
                                 tableView.showLoadingFooter()
                                 let updateTime = viewModel.lastUpdateTime()
-                                
                                 let unixTimt:Int = (updateTime.end as Date == Date.distantPast ) ? 0 : Int(updateTime.end.timeIntervalSince1970)
                                 viewModel.fetchMessages(last.messageID, Time: unixTimt, foucsClean: false, completion: { (task, response, error) -> Void in
                                     self.tableView.hideLoadingFooter()

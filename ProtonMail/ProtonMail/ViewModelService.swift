@@ -49,6 +49,14 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
+    //inbox part
+    func mailbox(fromMenu vmp : ViewModelProtocol, location : MessageLocation) -> Void {
+        fatalError("This method must be overridden")
+    }
+    func labelbox(fromMenu vmp : ViewModelProtocol, label: Label) -> Void {
+        fatalError("This method must be overridden")
+    }
+    
     
     func resetView() {
         fatalError("This method must be overridden")
