@@ -36,7 +36,7 @@
         <!--Splash View Controller-->
         <scene sceneID="VNp-ym-I6X">
             <objects>
-                <viewController id="HPp-sz-RGE" customClass="SplashViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SplashViewController" id="HPp-sz-RGE" customClass="SplashViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bDl-fX-u7M"/>
                         <viewControllerLayoutGuide type="bottom" id="EPW-cP-FuY"/>
@@ -1576,6 +1576,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3KV-cb-mgo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1538.4000000000001" y="-174.06296851574214"/>
+        </scene>
+        <!--Share View Controller-->
+        <scene sceneID="hR0-U9-ljN">
+            <objects>
+                <viewController storyboardIdentifier="ShareViewController" id="r2C-aY-Mjz" customClass="ShareViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="DzT-nF-QGh"/>
+                        <viewControllerLayoutGuide type="bottom" id="CDg-Xz-8es"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ib9-ql-cDZ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ahz-jg-7f1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3082" y="698"/>
         </scene>
         <!--Pin View-->
         <scene sceneID="fxK-BO-32Y">
@@ -3123,7 +3141,7 @@ we need to verify that you are human.</string>
         <image name="welcome_logo" width="188" height="31"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="lvd-zK-Trc"/>
+        <segue reference="C54-0t-rzM"/>
         <segue reference="BQ1-JS-Xpb"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -49,12 +49,12 @@
 
 - (void)didTapCustomToolbarButton:(UIButton *)button {
     
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Custom Button!"
-                                                        message:nil
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                              otherButtonTitles:nil];
-    [alertView show];
+    // UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Custom Button!"
+    //                                                     message:nil
+    //                                                    delegate:self
+    //                                           cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+    //                                           otherButtonTitles:nil];
+    // [alertView show];
     
 }
 

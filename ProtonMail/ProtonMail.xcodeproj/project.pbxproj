@@ -84,6 +84,7 @@
 		07E6C8281A9CF36400D4C8D4 /* NSManagedObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E6C8271A9CF36400D4C8D4 /* NSManagedObjectExtension.swift */; };
 		07FBA7A51A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FBA7A41A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift */; };
 		4E0220EFD2D3FFE70AC21C16 /* libPods-ProtonMailTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3EF314E2219A1089E6DAF06 /* libPods-ProtonMailTests.a */; };
+		6B20F88C73391838DC3A5113 /* libPods-ShareDev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2723A6BEC97254756259C1CF /* libPods-ShareDev.a */; };
 		701704781A794C69000A90D2 /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701704771A794C69000A90D2 /* Roboto-MediumItalic.ttf */; };
 		7017047A1A794C9F000A90D2 /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701704791A794C9F000A90D2 /* Roboto-LightItalic.ttf */; };
 		701DDE8E1AA64DEB0038149C /* MBContactPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 701DDE7F1AA64DEB0038149C /* MBContactPicker.m */; };
@@ -318,6 +319,9 @@
 		75A021A41C617D3F00A22A25 /* DomainAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A021A31C617D3F00A22A25 /* DomainAPI.swift */; };
 		75A2F44C1C97D69800BF4306 /* ComposeErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A2F44B1C97D69800BF4306 /* ComposeErrorView.swift */; };
 		75A2F44E1C97D6B400BF4306 /* ComposeErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75A2F44D1C97D6B400BF4306 /* ComposeErrorView.xib */; };
+		75A42B6B1F0439690025F52C /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 75A42B6A1F0439690025F52C /* libstdc++.tbd */; };
+		75A42B6E1F0443D40025F52C /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07009EFE1A659AD400129B07 /* SignIn.storyboard */; };
+		75A42B721F044B750025F52C /* ShareExtensionEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A42B711F044B750025F52C /* ShareExtensionEntry.swift */; };
 		75A4321B1B1D040A00D046B3 /* QueueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A4321A1B1D040A00D046B3 /* QueueManager.swift */; };
 		75A4321D1B1D042C00D046B3 /* QueueConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A4321C1B1D042C00D046B3 /* QueueConstant.swift */; };
 		75AD87321E975CC600B8265B /* FolderEditingViewModelImpl .swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AD87311E975CC600B8265B /* FolderEditingViewModelImpl .swift */; };
@@ -646,6 +650,8 @@
 		75F906101B1FBECA00107509 /* DebugDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F9060F1B1FBECA00107509 /* DebugDetailsViewController.swift */; };
 		75F9A1121AFD705B007229C7 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F9A1111AFD705B007229C7 /* UIDeviceExtension.swift */; };
 		75FC06731C88F8B50013422D /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FC06721C88F8B50013422D /* LocalAuthentication.framework */; };
+		75FE232E1F04347C00DF12C1 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FE232D1F04347C00DF12C1 /* ShareViewController.swift */; };
+		75FE23351F04347C00DF12C1 /* ShareDev.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 75FE232B1F04347B00DF12C1 /* ShareDev.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		75FFC65F1B45C549007FB75A /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FFC65E1B45C549007FB75A /* DictionaryExtension.swift */; };
 		75FFCACA1B5D70FC0065BFEC /* APIErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */; };
 		E0543BDD2F4BC3F59ABC6EC6 /* libPods-ProtonMail.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7825C5C162EAD55A62734859 /* libPods-ProtonMail.a */; };
@@ -668,7 +674,28 @@
 			remoteGlobalIDString = 75DE7CB21CAAEA4900F5443E;
 			remoteInfo = ProtonMailDev;
 		};
+		75FE23331F04347C00DF12C1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 075E3DDE1A5F4ECF00E001A7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 75FE232A1F04347B00DF12C1;
+			remoteInfo = ShareDev;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		75FE233A1F04347C00DF12C1 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				75FE23351F04347C00DF12C1 /* ShareDev.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		03DAAEEC4F9617D98B8AB393 /* Pods-ProtonMail.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMail.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.distribution.xcconfig"; sourceTree = "<group>"; };
@@ -754,6 +781,8 @@
 		07FBA7A41A800AAC006E2390 /* NSFetchedResultsControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSFetchedResultsControllerExtension.swift; sourceTree = "<group>"; };
 		132129A26ED76512DB66C024 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		244A62D4C89F2BB7DF4957E0 /* Pods-ProtonMail.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMail.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.release.xcconfig"; sourceTree = "<group>"; };
+		2723A6BEC97254756259C1CF /* libPods-ShareDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ShareDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3BA479B770B35B0782BCAF37 /* Pods-ShareDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.debug.xcconfig"; sourceTree = "<group>"; };
 		41169F68B3FE8907F2C72783 /* Pods-ProtonMailTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.debug.xcconfig"; sourceTree = "<group>"; };
 		54F29596C87DC71ECEC2B74B /* Pods-ProtonMailDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev.distribution.xcconfig"; sourceTree = "<group>"; };
 		701704771A794C69000A90D2 /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-MediumItalic.ttf"; sourceTree = "<group>"; };
@@ -795,6 +824,7 @@
 		70FC90D91A9BC11F00498B42 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		70FD2BCB1A6FDC9B0086ADC5 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		72AC1531F9DC8F37E025D0ED /* Pods-ProtonMailDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev.release.xcconfig"; sourceTree = "<group>"; };
+		74746AFE1D9521FFFE30EDFB /* Pods-ShareDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.distribution.xcconfig"; sourceTree = "<group>"; };
 		750254D91AB8157800050B12 /* GeneralSettingViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralSettingViewCell.swift; sourceTree = "<group>"; };
 		750729521DEFA52D0021483D /* MimeTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MimeTypes.swift; sourceTree = "<group>"; };
 		750778CD1BE98900009F516C /* UserAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserAPI.swift; sourceTree = "<group>"; };
@@ -977,6 +1007,10 @@
 		75A021A31C617D3F00A22A25 /* DomainAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainAPI.swift; sourceTree = "<group>"; };
 		75A2F44B1C97D69800BF4306 /* ComposeErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeErrorView.swift; sourceTree = "<group>"; };
 		75A2F44D1C97D6B400BF4306 /* ComposeErrorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComposeErrorView.xib; sourceTree = "<group>"; };
+		75A42B681F0439570025F52C /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		75A42B6A1F0439690025F52C /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
+		75A42B6D1F043E3F0025F52C /* ShareDev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareDev.entitlements; sourceTree = "<group>"; };
+		75A42B711F044B750025F52C /* ShareExtensionEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareExtensionEntry.swift; sourceTree = "<group>"; };
 		75A4321A1B1D040A00D046B3 /* QueueManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueManager.swift; sourceTree = "<group>"; };
 		75A4321C1B1D042C00D046B3 /* QueueConstant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueConstant.swift; sourceTree = "<group>"; };
 		75AD87311E975CC600B8265B /* FolderEditingViewModelImpl .swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FolderEditingViewModelImpl .swift"; sourceTree = "<group>"; };
@@ -1043,6 +1077,9 @@
 		75F9060F1B1FBECA00107509 /* DebugDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugDetailsViewController.swift; sourceTree = "<group>"; };
 		75F9A1111AFD705B007229C7 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
 		75FC06721C88F8B50013422D /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
+		75FE232B1F04347B00DF12C1 /* ShareDev.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareDev.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		75FE232D1F04347C00DF12C1 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		75FE23321F04347C00DF12C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		75FFC65E1B45C549007FB75A /* DictionaryExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
 		75FFCAC91B5D70FC0065BFEC /* APIErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIErrors.swift; sourceTree = "<group>"; };
 		7825C5C162EAD55A62734859 /* libPods-ProtonMail.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProtonMail.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1050,6 +1087,7 @@
 		802280F25581311CFBC3C8E3 /* libPods-ProtonMailDev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProtonMailDev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A7CF350E37E2333C78D200A /* Pods-ProtonMailDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailDev/Pods-ProtonMailDev.debug.xcconfig"; sourceTree = "<group>"; };
 		AF1532103B091E2244D6CFE4 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		B32DFF869C0F203D317CE968 /* Pods-ShareDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.release.xcconfig"; sourceTree = "<group>"; };
 		C87DB98FF3BD404B025BC4DC /* Pods-ProtonMail.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMail.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.debug.xcconfig"; sourceTree = "<group>"; };
 		D150620E49C5EDEC5065FEA1 /* Pods-ProtonMailTests.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.distribution.xcconfig"; sourceTree = "<group>"; };
 		F3EF314E2219A1089E6DAF06 /* libPods-ProtonMailTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ProtonMailTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1087,6 +1125,15 @@
 				75DE7D851CAAEA4900F5443E /* Crashlytics.framework in Frameworks */,
 				75DE7D871CAAEA4900F5443E /* Fabric.framework in Frameworks */,
 				E2B40018E0A64B49A01B3DF6 /* libPods-ProtonMailDev.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		75FE23281F04347B00DF12C1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				75A42B6B1F0439690025F52C /* libstdc++.tbd in Frameworks */,
+				6B20F88C73391838DC3A5113 /* libPods-ShareDev.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1221,6 +1268,8 @@
 				075E3DE81A5F4ECF00E001A7 /* ProtonMail */,
 				075E3DF51A5F4ECF00E001A7 /* Images.xcassets */,
 				075E3E011A5F4ECF00E001A7 /* ProtonMailTests */,
+				75FE232C1F04347C00DF12C1 /* ShareDev */,
+				75A42B6C1F043AD30025F52C /* Common */,
 				075E3DE71A5F4ECF00E001A7 /* Products */,
 				518B9570F3E0BF19912099F3 /* Pods */,
 				EDDC3A27CB6370D84ADB05EA /* Frameworks */,
@@ -1233,6 +1282,7 @@
 				075E3DE61A5F4ECF00E001A7 /* ProtonMail.app */,
 				075E3DFE1A5F4ECF00E001A7 /* ProtonMailTests.xctest */,
 				75DE7DAE1CAAEA4900F5443E /* ProtonMail.app */,
+				75FE232B1F04347B00DF12C1 /* ShareDev.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1384,6 +1434,9 @@
 				41169F68B3FE8907F2C72783 /* Pods-ProtonMailTests.debug.xcconfig */,
 				7BBE5AA309996CC3AE0CB72A /* Pods-ProtonMailTests.release.xcconfig */,
 				D150620E49C5EDEC5065FEA1 /* Pods-ProtonMailTests.distribution.xcconfig */,
+				3BA479B770B35B0782BCAF37 /* Pods-ShareDev.debug.xcconfig */,
+				B32DFF869C0F203D317CE968 /* Pods-ShareDev.release.xcconfig */,
+				74746AFE1D9521FFFE30EDFB /* Pods-ShareDev.distribution.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1731,6 +1784,13 @@
 			name = Resource;
 			sourceTree = "<group>";
 		};
+		75A42B6C1F043AD30025F52C /* Common */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
 		75B1794D1B3775BA006044D4 /* General */ = {
 			isa = PBXGroup;
 			children = (
@@ -1932,9 +1992,22 @@
 			name = Cache;
 			sourceTree = "<group>";
 		};
+		75FE232C1F04347C00DF12C1 /* ShareDev */ = {
+			isa = PBXGroup;
+			children = (
+				75A42B711F044B750025F52C /* ShareExtensionEntry.swift */,
+				75FE232D1F04347C00DF12C1 /* ShareViewController.swift */,
+				75A42B6D1F043E3F0025F52C /* ShareDev.entitlements */,
+				75FE23321F04347C00DF12C1 /* Info.plist */,
+			);
+			path = ShareDev;
+			sourceTree = "<group>";
+		};
 		EDDC3A27CB6370D84ADB05EA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				75A42B6A1F0439690025F52C /* libstdc++.tbd */,
+				75A42B681F0439570025F52C /* libz.tbd */,
 				7590F08C1C9894E1009C5059 /* Social.framework */,
 				75FC06721C88F8B50013422D /* LocalAuthentication.framework */,
 				75C217581AD6F1B800978579 /* Crashlytics.framework */,
@@ -1942,6 +2015,7 @@
 				7825C5C162EAD55A62734859 /* libPods-ProtonMail.a */,
 				802280F25581311CFBC3C8E3 /* libPods-ProtonMailDev.a */,
 				F3EF314E2219A1089E6DAF06 /* libPods-ProtonMailTests.a */,
+				2723A6BEC97254756259C1CF /* libPods-ShareDev.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2005,15 +2079,36 @@
 				75DE7DA81CAAEA4900F5443E /* [CP] Copy Pods Resources */,
 				75DE7DA91CAAEA4900F5443E /* Run Script */,
 				9C600B3B587864959ECA81AA /* [CP] Embed Pods Frameworks */,
+				75FE233A1F04347C00DF12C1 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				75FE23341F04347C00DF12C1 /* PBXTargetDependency */,
 			);
 			name = ProtonMailDev;
 			productName = ProtonMail;
 			productReference = 75DE7DAE1CAAEA4900F5443E /* ProtonMail.app */;
 			productType = "com.apple.product-type.application";
+		};
+		75FE232A1F04347B00DF12C1 /* ShareDev */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 75FE23391F04347C00DF12C1 /* Build configuration list for PBXNativeTarget "ShareDev" */;
+			buildPhases = (
+				4BC11EF1A40FB7C24C98F29E /* [CP] Check Pods Manifest.lock */,
+				75FE23271F04347B00DF12C1 /* Sources */,
+				75FE23281F04347B00DF12C1 /* Frameworks */,
+				75FE23291F04347B00DF12C1 /* Resources */,
+				8436DC4902E9445DC9D1165E /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ShareDev;
+			productName = ShareDev;
+			productReference = 75FE232B1F04347B00DF12C1 /* ShareDev.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -2022,7 +2117,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftMigration = 0720;
-				LastSwiftUpdateCheck = 0700;
+				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = ProtonMail;
 				TargetAttributes = {
@@ -2050,11 +2145,33 @@
 						LastSwiftMigration = 0830;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
+							com.apple.SafariKeychain = {
+								enabled = 0;
+							};
 							com.apple.iCloud = {
 								enabled = 1;
+							};
+						};
+					};
+					75FE232A1F04347B00DF12C1 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 6UN54H93QT;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 0;
+							};
+							com.apple.iCloud = {
+								enabled = 0;
 							};
 						};
 					};
@@ -2078,6 +2195,7 @@
 				075E3DE51A5F4ECF00E001A7 /* ProtonMail */,
 				075E3DFD1A5F4ECF00E001A7 /* ProtonMailTests */,
 				75DE7CB21CAAEA4900F5443E /* ProtonMailDev */,
+				75FE232A1F04347B00DF12C1 /* ShareDev */,
 			);
 		};
 /* End PBXProject section */
@@ -2189,9 +2307,32 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		75FE23291F04347B00DF12C1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				75A42B6E1F0443D40025F52C /* SignIn.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4BC11EF1A40FB7C24C98F29E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		699B2164D0A6890D3758CAAB /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2305,6 +2446,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "./Fabric.framework/run 982063ac8b41a8754cf79640ebab8b392ebe7e86 e66156cd496bbb89d6374b216ff8adf504838a4c1bf02c34c5390d289840bd02";
+		};
+		8436DC4902E9445DC9D1165E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		9C600B3B587864959ECA81AA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2951,6 +3107,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		75FE23271F04347B00DF12C1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				75A42B721F044B750025F52C /* ShareExtensionEntry.swift in Sources */,
+				75FE232E1F04347C00DF12C1 /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -2963,6 +3128,11 @@
 			isa = PBXTargetDependency;
 			target = 75DE7CB21CAAEA4900F5443E /* ProtonMailDev */;
 			targetProxy = 759223381D9DD6D60064DAA1 /* PBXContainerItemProxy */;
+		};
+		75FE23341F04347C00DF12C1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 75FE232A1F04347B00DF12C1 /* ShareDev */;
+			targetProxy = 75FE23331F04347C00DF12C1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -3233,6 +3403,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8A7CF350E37E2333C78D200A /* Pods-ProtonMailDev.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIconDev;
 				CODE_SIGN_ENTITLEMENTS = ProtonMail/ProtonMail.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -3268,6 +3439,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 72AC1531F9DC8F37E025D0ED /* Pods-ProtonMailDev.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIconDev;
 				CODE_SIGN_ENTITLEMENTS = ProtonMail/ProtonMail.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -3303,6 +3475,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 54F29596C87DC71ECEC2B74B /* Pods-ProtonMailDev.distribution.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppUniversalIconDev;
 				CODE_SIGN_ENTITLEMENTS = ProtonMail/ProtonMail.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -3328,6 +3501,78 @@
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = USE_ON_FLY_LOCALIZATION;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(inherited)";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Distribution;
+		};
+		75FE23361F04347C00DF12C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3BA479B770B35B0782BCAF37 /* Pods-ShareDev.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_ENTITLEMENTS = ShareDev/ShareDev.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 6UN54H93QT;
+				INFOPLIST_FILE = ShareDev/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.ShareDev;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		75FE23371F04347C00DF12C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B32DFF869C0F203D317CE968 /* Pods-ShareDev.release.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_ENTITLEMENTS = ShareDev/ShareDev.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 6UN54H93QT;
+				INFOPLIST_FILE = ShareDev/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.ShareDev;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		75FE23381F04347C00DF12C1 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 74746AFE1D9521FFFE30EDFB /* Pods-ShareDev.distribution.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_ENTITLEMENTS = ShareDev/ShareDev.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 6UN54H93QT;
+				INFOPLIST_FILE = ShareDev/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.ShareDev;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3470,6 +3715,16 @@
 				75DE7DAB1CAAEA4900F5443E /* Debug */,
 				75DE7DAC1CAAEA4900F5443E /* Release */,
 				75DE7DAD1CAAEA4900F5443E /* Distribution */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		75FE23391F04347C00DF12C1 /* Build configuration list for PBXNativeTarget "ShareDev" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				75FE23361F04347C00DF12C1 /* Debug */,
+				75FE23371F04347C00DF12C1 /* Release */,
+				75FE23381F04347C00DF12C1 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
