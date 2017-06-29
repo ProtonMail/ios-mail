@@ -1289,7 +1289,6 @@
 			children = (
 				75CFA2701B22544F006E4465 /* Defined */,
 				753745021D6B7E7000682C5A /* Errors */,
-				753A1F4D1C52C06000B618D2 /* Extensions */,
 				073FD92D1A71C33B00EB0CAF /* Models */,
 				75ECCDFC1B31EF3600A8C800 /* APIService */,
 				70B28D091A9BA0AC002D9EC8 /* AddressBookService.swift */,
@@ -1735,13 +1734,6 @@
 				753745031D6B7E8F00682C5A /* APIError+Auth.swift */,
 			);
 			name = Errors;
-			sourceTree = "<group>";
-		};
-		753A1F4D1C52C06000B618D2 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Extensions;
 			sourceTree = "<group>";
 		};
 		7545083F1E149B3900265CD0 /* Mailbox */ = {
