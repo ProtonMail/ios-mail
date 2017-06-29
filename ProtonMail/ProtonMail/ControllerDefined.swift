@@ -8,8 +8,6 @@
 
 import Foundation
 
-
-
 //MARK : Compose view controller
 public struct EncryptionStep {
     static let DefinePassword = "DefinePassword"

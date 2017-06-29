@@ -7,8 +7,6 @@
 //
 
 import Foundation
-import ProtonMailCommon
-
 
 // MARK : update domain order
 final class UpdateDomainOrder<T : ApiResponse> : ApiRequest<T> {

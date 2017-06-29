@@ -7,9 +7,6 @@
 //
 
 import Foundation
-import ProtonMailCommon
-
-
 
 // MARK : Get messages part
 final class AttachmentDeleteRequest<T : ApiResponse> : ApiRequest<T> {

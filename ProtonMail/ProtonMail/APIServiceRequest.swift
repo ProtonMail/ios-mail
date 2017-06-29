@@ -8,10 +8,6 @@
 
 import Foundation
 
-import ProtonMailCommon
-
-
-
 protocol Package {
     
     /**

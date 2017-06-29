@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import ProtonMailCommon
 
 
 // MARK : Get messages part

@@ -224,3 +224,11 @@ class AuthCredential: NSObject, NSCoding {
         aCoder.encode(passwordKeySalt, forKey: CoderKey.salt)
     }
 }
+
+extension AuthCredential {
+    convenience init(authInfo: APIService.AuthInfo) {
+        let expiration = Date(timeIntervalSinceNow: (authInfo.expiresId ?? 0))
+        
+        self.init(accessToken: authInfo.accessToken, refreshToken: authInfo.refreshToken, userID: authInfo.userID, expiration: expiration, key : "", plain: authInfo.accessToken, pwd: "", salt: "")
+    }
+}

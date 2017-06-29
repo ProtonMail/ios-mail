@@ -15,7 +15,6 @@
 //
 
 import Foundation
-import ProtonMailCommon
 
 /// User extensions
 extension APIService {

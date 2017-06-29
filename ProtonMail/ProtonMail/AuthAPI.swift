@@ -7,8 +7,6 @@
 //
 
 import Foundation
-import ProtonMailCommon
-
 
 //TODO:: need refacotr the api request structures
 struct AuthKey {

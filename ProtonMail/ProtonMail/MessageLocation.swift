@@ -15,7 +15,6 @@
 //
 
 import Foundation
-import ProtonMailCommon
 
 public enum MessageLocation: Int, CustomStringConvertible {
     case deleted = -1

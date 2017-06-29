@@ -16,7 +16,6 @@
 
 import Foundation
 import CoreData
-import ProtonMailCommon
 
 extension Message {
     

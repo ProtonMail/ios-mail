@@ -8,9 +8,6 @@
 
 import Foundation
 
-import ProtonMailCommon
-
-
     
 // MARK : Get messages part
 final class EventCheckRequest<T : ApiResponse> : ApiRequest<T>{

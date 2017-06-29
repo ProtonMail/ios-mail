@@ -7,8 +7,6 @@
 //
 
 import Foundation
-import ProtonMailCommon
-
 
 // MARK : Get messages part
 final class GetLabelsRequest<T : ApiResponse> : ApiRequest<T> {
@@ -32,7 +30,6 @@ final class GetLabelsRequest<T : ApiResponse> : ApiRequest<T> {
 final class GetLabelsResponse : ApiResponse {
     var labels : [Dictionary<String, Any>]?
     override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
-        PMLog.D(response.JSONStringify(true))
         self.labels =  response["Labels"]  as? [Dictionary<String, Any>]
         return true
     }
@@ -179,11 +176,7 @@ final class CreateLabelRequestResponse : ApiResponse {
     var label:Dictionary<String, Any>?
     
     override func ParseResponse(_ response: Dictionary<String, Any>!) -> Bool {
-        
-        PMLog.D(response.JSONStringify(true))
-        
         self.label = response["Label"] as? Dictionary<String, Any>
-        
         return true
     }
 }

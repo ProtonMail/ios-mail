@@ -15,7 +15,6 @@
 //
 
 import Foundation
-import ProtonMailCommon
 
 //TODO :: all the request post put ... all could abstract a body layer, after change the request only need the url and request object.
 /// Messages extension
